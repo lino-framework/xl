@@ -1,10 +1,18 @@
-Functional specs
-================
+.. _xl.specs:
 
-This section contains fragments of functional specs for certain
-modules.
+=======================
+Technical specification
+=======================
+
+This section contains articles which are meant as technical
+specifications.  One of their goal is to get tested.
+
 
 .. toctree::
    :maxdepth: 1
-   
+  
    cv
+   holidays
+   households
+
+

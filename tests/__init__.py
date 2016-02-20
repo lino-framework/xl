@@ -8,7 +8,7 @@ from lino.utils.html2xhtml import HAS_TIDYLIB
 
 
 class LinoTestCase(TestCase):
-    django_settings_module = "lino_xl.projects.docs.settings.demo"
+    django_settings_module = "lino_xl.projects.msx.settings.demo"
     project_root = Path(__file__).parent.parent
 
 
@@ -22,14 +22,14 @@ class SpecsTests(LinoTestCase):
     def test_holidays(self):
         self.run_simple_doctests('docs/specs/holidays.rst')
 
-
-class DocsTests(LinoTestCase):
-
     def test_cv(self):
         self.run_simple_doctests('docs/specs/cv.rst')
 
     def test_households(self):
-        self.run_simple_doctests('docs/tested/households.rst')
+        self.run_simple_doctests('docs/specs/households.rst')
+
+
+class DocsTests(LinoTestCase):
 
     def test_gfks(self):
         self.run_simple_doctests('docs/tested/gfks.rst')
