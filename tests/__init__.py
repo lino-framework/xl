@@ -239,20 +239,20 @@ class ProjectsTests(LinoTestCase):
     #     from atelier.fablib import run_in_demo_projects
     #     run_in_demo_projects('test')
 
-    def test_events(self):
-        self.run_django_manage_test("lino/projects/events")
+    # def test_events(self):
+    #     self.run_django_manage_test("lino/projects/events")
 
-    def test_belref(self):
-        self.run_django_manage_test("lino/projects/belref")
+    # def test_belref(self):
+    #     self.run_django_manage_test("lino/projects/belref")
 
-    def test_babel_tutorial(self):
-        self.run_django_manage_test("lino/projects/babel_tutorial")
+    # def test_babel_tutorial(self):
+    #     self.run_django_manage_test("lino/projects/babel_tutorial")
 
     def test_min1(self):
-        self.run_django_manage_test("lino/projects/min1")
+        self.run_django_manage_test("lino_xl/projects/min1")
 
     def test_min2(self):
-        self.run_django_manage_test("lino/projects/min2")
+        self.run_django_manage_test("lino_xl/projects/min2")
 
 
 class TestAppsTests(LinoTestCase):
