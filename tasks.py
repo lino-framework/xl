@@ -1,5 +1,5 @@
 from atelier.tasks import *
-env.setup_from_tasks(globals(), "lino_noi")
+env.setup_from_tasks(globals(), "lino_xl")
 
 # caution: ``bs3`` uses the same database file as the first. And then,
 # bs3 has :attr:`default_user <lino.core.site.Site.default_user>` set

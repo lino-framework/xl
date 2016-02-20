@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 
-from lino.projects.min1.settings import *
+from lino_xl.projects.min1.settings import *
 
 
 class Site(Site):
