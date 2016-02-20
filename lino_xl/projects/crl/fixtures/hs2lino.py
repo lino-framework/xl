@@ -49,7 +49,7 @@ import lino
 
 from lino.utils import confirm, iif
 from lino.core.utils import app_labels
-from lino.projects.crl.models import CRL
+from lino_xl.projects.crl.models import CRL
 
 Country = resolve_model('countries.Country')
 Place = resolve_model('countries.Place')

@@ -5,15 +5,15 @@ It is a little bit less minimal than :mod:`lino.projects.min1` in that
 it adds some more modlib plugins:
 
 - :mod:`lino.modlib.changes`
-- :mod:`lino.modlib.excerpts`
-- :mod:`lino.modlib.addresses`
-- :mod:`lino.modlib.reception`
+- :mod:`lino_xl.lib.excerpts`
+- :mod:`lino_xl.lib.addresses`
+- :mod:`lino_xl.lib.reception`
 - :mod:`lino.modlib.sepa`
-- :mod:`lino.modlib.notes`
-- :mod:`lino.modlib.projects`
-- :mod:`lino.modlib.humanlinks`
-- :mod:`lino.modlib.households`
-- :mod:`lino.modlib.pages`
+- :mod:`lino_xl.lib.notes`
+- :mod:`lino_xl.lib.projects`
+- :mod:`lino_xl.lib.humanlinks`
+- :mod:`lino_xl.lib.households`
+- :mod:`lino_xl.lib.pages`
 
 This is also a **usage example** of :doc:`/dev/plugin_inheritance`
 because if overrides the :mod:`lino.modlib.contacts` plugin by its own
