@@ -8,7 +8,7 @@ env.cleanable_files = ['docs/api/lino_xl.*']
 env.locale_dir = 'lino_xl/lib/xl/locale'
 
 add_demo_project('lino_xl.projects.i18n.settings')
-add_demo_project('lino_xl.projects.min1.settings')
-add_demo_project('lino_xl.projects.min2.settings')
+add_demo_project('lino_xl.projects.min1.settings.demo')
+add_demo_project('lino_xl.projects.min2.settings.demo')
 
 env.revision_control_system = 'git'
