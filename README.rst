@@ -1,22 +1,26 @@
 ==========================
-lino-noi README
+lino_xl README
 ==========================
 
-The Lino application used by the Lino team for managing their work on the Lino project
+A framework for writing desktop-like web applications using Django and ExtJS : Lino Extensions Library
 
 Description
 -----------
 
-Lino Noi is a customizable ticket management and time tracking
-system to use when time is more than money.
+Lino is a high-level framework for writing desktop-like customized
+database applications based on `Django <https://www.djangoproject.com/>`_
+and `Sencha ExtJS <http://www.sencha.com/products/extjs/>`_.
+Lino applications are Django projects
+where the application developer does not need to write any
+URLconf, HTML nor CSS (`more <http://lino-framework.org/about/what.html>`__).
 
-It is used by the `Lino <http://www.lino-framework.org/>`_ team for
-managing their work on the Lino project.
+Examples of Lino applications are
+`Lino Welfare <http://welfare.lino-framework.org>`__,
+`Lino Così <http://cosi.lino-framework.org>`__
+or
+`Lino Voga <http://voga.lino-framework.org>`__
+(`more <http://lino-framework.org/about/projects.html>`__)
 
-Current maintainer and recommended service provider is `Rumma & Ko
-<http://www.saffre-rumma.net/about>`_.
 
 
-
-
-Read more on http://noi.lino-framework.org
+Read more on http://www.lino-framework.org
