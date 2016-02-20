@@ -8,7 +8,7 @@ from lino.utils.html2xhtml import HAS_TIDYLIB
 
 
 class LinoTestCase(TestCase):
-    django_settings_module = "lino.projects.docs.settings.demo"
+    django_settings_module = "lino_xl.projects.docs.settings.demo"
     project_root = Path(__file__).parent.parent
 
 
@@ -17,44 +17,16 @@ class PackagesTests(LinoTestCase):
         self.run_packages_test(SETUP_INFO['packages'])
 
 
-class LibTests(LinoTestCase):
-
-    def test_users(self):
-        self.run_simple_doctests("docs/dev/users.rst")
-
-    def test_cal_utils(self):
-        self.run_simple_doctests('lino/modlib/cal/utils.py')
-
-
-class DocsAdminTests(TestCase):
-    def test_printing(self):
-        self.run_simple_doctests('docs/admin/printing.rst')
-
-
 class SpecsTests(LinoTestCase):
 
     def test_holidays(self):
         self.run_simple_doctests('docs/specs/holidays.rst')
 
+
 class DocsTests(LinoTestCase):
 
-    # python setup.py test -s tests.DocsTests.test_docs
-    def test_docs(self):
-        self.run_simple_doctests("""
-        docs/dev/ml/contacts.rst
-        docs/dev/mixins.rst
-        docs/user/templates_api.rst
-        docs/tested/test_i18n.rst
-        """)
-
-    def test_i18n(self):
-        self.run_simple_doctests('docs/dev/i18n.rst')
-
-    def test_setup(self):
-        self.run_simple_doctests('docs/dev/setup.rst')
-
     def test_cv(self):
-        self.run_simple_doctests('docs/tested/cv.rst')
+        self.run_simple_doctests('docs/specs/cv.rst')
 
     def test_households(self):
         self.run_simple_doctests('docs/tested/households.rst')
