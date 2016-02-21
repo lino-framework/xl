@@ -20,7 +20,7 @@ General stuff:
 
 >>> from __future__ import print_function
 >>> import os
->>> os.environ['DJANGO_SETTINGS_MODULE'] = 'lino.projects.min2.settings.doctests'
+>>> os.environ['DJANGO_SETTINGS_MODULE'] = 'lino_xl.projects.min2.settings.doctests'
 >>> from lino.api.doctest import *
 
 >>> url = "/tinymce/templates/notes/MyNotes/69/body"

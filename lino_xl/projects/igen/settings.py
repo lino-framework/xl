@@ -40,18 +40,18 @@ class Site(Site):
 
         yield 'lino.modlib.contacts'
         #~ 'lino.modlib.notes'
-        yield 'lino.modlib.extensible'
-        yield 'lino.modlib.cal'
-        yield 'lino.modlib.outbox'
-        yield 'lino.modlib.products'
+        yield 'lino_xl.lib.extensible'
+        yield 'lino_xl.lib.cal'
+        yield 'lino_xl.lib.outbox'
+        yield 'lino_xl.lib.products'
         #~ 'lino.modlib.journals',
-        yield 'lino.modlib.vat'
-        yield 'lino.modlib.accounts'
-        yield 'lino.modlib.ledger'
-        yield 'lino.modlib.sales'
-        yield 'lino.modlib.finan'
+        # yield 'lino.modlib.vat'
+        # yield 'lino.modlib.accounts'
+        # yield 'lino.modlib.ledger'
+        # yield 'lino.modlib.sales'
+        # yield 'lino.modlib.finan'
         yield 'lino.modlib.uploads'
-        yield 'lino.projects.igen'
+        yield 'lino_xl.projects.igen'
 
     demo_fixtures = 'std few_languages few_countries few_cities demo_ee demo demo2'.split(
     )

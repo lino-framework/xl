@@ -2,9 +2,9 @@
 # Copyright 2009-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-#~ Note that this module may not have a docstring because any
-#~ global variable defined here will override the global
-#~ namespace of lino/__init__.py who includes it with execfile.
+# ~ Note that this module may not have a docstring because any
+# ~ global variable defined here will override the global
+# ~ namespace of lino/__init__.py who includes it with execfile.
 
 # This module is part of the Lino test suite.
 # To test only this module:
@@ -15,21 +15,11 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino_xl',
-    version='1.6.19',  # released 20150901
-    install_requires=['lino'],
+    version='1.0.0',
+    install_requires=['lino', 'appy', 'fuzzy', ],
     tests_require=[],
-    # pisa has a bug which makes it complain that "Reportlab Version
-    # 2.1+ is needed!" when reportlab 3 is installed.
-    # So we install reportlab 2.7 (the latest 2.x version)
-
-    # beautifulsoup4, html5lib, reportlab and pisa are actually needed
-    # only when you want to run the test suite, not for normal
-    # operation.  Despite this they must be specified in
-    # `install_requires`, not in `tests_require`, because the doctests
-    # are run in the environment specified by `install_requires`.
-
     description="A framework for writing desktop-like web applications "
-    "using Django and ExtJS : Lino Extensions Library",
+                "using Django and ExtJS : Lino Extensions Library",
     license='BSD License',
     include_package_data=True,
     zip_safe=False,
@@ -37,7 +27,7 @@ SETUP_INFO = dict(
     author='Luc Saffre',
     author_email='luc.saffre@gmail.com',
     url="http://www.lino-framework.org",
-    #~ test_suite = 'lino_xl.test_apps',
+    # ~ test_suite = 'lino_xl.test_apps',
     test_suite='tests',
     classifiers="""\
   Programming Language :: Python
@@ -143,10 +133,10 @@ lino_xl.projects.min2.tests
 
 SETUP_INFO.update(message_extractors={
     'lino_xl': [
-        ('**/sandbox/**',        'ignore', None),
-        ('**/cache/**',          'ignore', None),
-        ('**.py',                'python', None),
-        ('**/linoweb.js',        'jinja2', None),
+        ('**/sandbox/**', 'ignore', None),
+        ('**/cache/**', 'ignore', None),
+        ('**.py', 'python', None),
+        ('**/linoweb.js', 'jinja2', None),
         ('**/config/**.html', 'jinja2', None),
     ],
 })
@@ -159,6 +149,7 @@ def add_package_data(package, *patterns):
     l = SETUP_INFO['package_data'].setdefault(package, [])
     l.extend(patterns)
     return l
+
 
 add_package_data('lino_xl', 'config/*.odt')
 add_package_data('lino_xl.lib.cal', 'config/*.odt')

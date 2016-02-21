@@ -16,6 +16,13 @@ class PackagesTests(LinoTestCase):
     def test_01(self):
         self.run_packages_test(SETUP_INFO['packages'])
 
+class LibTests(LinoTestCase):
+
+    # def test_users(self):
+    #     self.run_simple_doctests("docs/dev/users.rst")
+
+    def test_cal_utils(self):
+        self.run_simple_doctests('lino_xl/lib/cal/utils.py')
 
 class SpecsTests(LinoTestCase):
 
@@ -172,8 +179,7 @@ class UtilsTests(LinoTestCase):
 
     def test_01(self):
         self.run_simple_doctests("""
-        lino/utils/instantiator.py
-        lino/modlib/cal/utils.py
+        lino_xl/lib/cal/utils.py
         """)
 
     def test_html2odf(self):

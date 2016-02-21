@@ -5,7 +5,7 @@ designed to be used directly as a :setting:`DJANGO_SETTINGS_MODULE`.
 
 """
 
-from lino.projects.min1.settings import *
+from lino_xl.projects.min1.settings import *
 from lino.utils import i2d
 
 
