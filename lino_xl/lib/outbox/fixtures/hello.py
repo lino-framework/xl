@@ -17,7 +17,7 @@ from lino.api import rt
 
 def objects():
 
-    from lino.modlib.outbox.models import RecipientType
+    from lino_xl.lib.outbox.models import RecipientType
     Person = rt.modules.contacts.Person
 
     root = settings.SITE.user_model.objects.get(username='root')

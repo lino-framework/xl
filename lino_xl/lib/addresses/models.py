@@ -1,8 +1,8 @@
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
-Database models of `lino.modlib.addresses`.
+Database models of `lino_xl.lib.addresses`.
 
 """
 

@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
-Database models for `lino.modlib.excerpts`.
+Database models for `lino_xl.lib.excerpts`.
 
 """
 
@@ -43,9 +43,9 @@ from lino.modlib.users.choicelists import SiteAdmin
 davlink = settings.SITE.plugins.get('davlink', None)
 has_davlink = davlink is not None and settings.SITE.use_java
 
-from lino.modlib.postings.mixins import Postable
+from lino_xl.lib.postings.mixins import Postable
 from lino.modlib.contacts.mixins import ContactRelated
-from lino.modlib.outbox.mixins import Mailable, MailableType
+from lino_xl.lib.outbox.mixins import Mailable, MailableType
 
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
@@ -91,7 +91,7 @@ class ExcerptType(mixins.BabelNamed, mixins.PrintableType,
         the given shortcut field will manage excerpts of this type.
 
         See also :class:`Shortcuts`.
-        See also :class:`lino.modlib.excerpts.choicelists.Shortcuts`.
+        See also :class:`lino_xl.lib.excerpts.choicelists.Shortcuts`.
 
     """
     # templates_group = 'excerpts/Excerpt'
@@ -816,7 +816,7 @@ if settings.SITE.project_model is not None:
 def set_excerpts_actions(sender, **kw):
     """Installs (1) print management actions on models for which there is
     an excerpt type and (2) the excerpt shortcut fields defined in
-    :class:`lino.modlib.excerpts.choicelists.Shortcuts`.
+    :class:`lino_xl.lib.excerpts.choicelists.Shortcuts`.
 
     """
     # logger.info("20140401 %s.set_attest_actions()", __name__)

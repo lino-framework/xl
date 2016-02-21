@@ -10,7 +10,7 @@ which inherits from :class:`Certifiable`.
 from django.contrib.contenttypes.models import ContentType
 
 from lino.api import dd, rt
-from lino.modlib.excerpts.mixins import Certifiable
+from lino_xl.lib.excerpts.mixins import Certifiable
 
 
 def objects():

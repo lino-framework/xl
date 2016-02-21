@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
-Defines models for :mod:`lino.modlib.postings`.
+Defines models for :mod:`lino_xl.lib.postings`.
 """
 
 from django.contrib.contenttypes.models import ContentType

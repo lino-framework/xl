@@ -2,7 +2,7 @@ from lino.api import ad
 from lino_xl.projects.min2.settings import *
 from lino.utils import i2d
 
-ad.configure_plugin('sepa', import_statements_path="/home/khchine5/Documents/Documentation/Lino/Ticket 505/test_file")
+# ad.configure_plugin('sepa', import_statements_path="/home/khchine5/Documents/Documentation/Lino/Ticket 505/test_file")
 
 SITE = Site(globals(), the_demo_date=i2d(20141023))
 ALLOWED_HOSTS = ['*']

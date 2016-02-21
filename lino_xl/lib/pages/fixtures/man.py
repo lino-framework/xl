@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -18,7 +18,7 @@ from __future__ import unicode_literals
 
 from django.conf import settings
 
-from lino.modlib.pages.builder import page, objects
+from lino_xl.lib.pages.builder import page, objects
 
 page('man', 'en', 'User manual', """
 This is the user manual for 

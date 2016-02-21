@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -17,8 +17,8 @@ from lino.modlib.contacts.models import *
 
 from lino_xl.lib.cal.workflows import take, feedback
 
-from lino.modlib.addresses.mixins import AddressOwner
-from lino.modlib.dupable_partners.mixins import DupablePartner, DupablePerson
+from lino_xl.lib.addresses.mixins import AddressOwner
+from lino_xl.lib.dupable_partners.mixins import DupablePartner, DupablePerson
 
 
 class Partner(Partner, AddressOwner, mixins.CreatedModified, DupablePartner):

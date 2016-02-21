@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -30,7 +30,7 @@ a virtual display field with actions for quickly managing, from a
 given database object, the excerpt for this object of a given type.
 
 These virtual fields are being installed during pre_analyze by
-:func:`lino.modlib.excerpts.models.set_excerpts_actions`.
+:func:`lino_xl.lib.excerpts.models.set_excerpts_actions`.
 
     """
     verbose_name = _("Excerpt shortcut")

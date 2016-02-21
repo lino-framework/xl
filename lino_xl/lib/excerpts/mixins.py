@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -65,12 +65,12 @@ class Certifiable(dd.Model):
 
     Usage example::
 
-        from lino.modlib.excerpts.mixins import Certifiable
+        from lino_xl.lib.excerpts.mixins import Certifiable
 
         class MyModel(dd.UserAuthored, Certifiable, dd.Duplicable):
             ...
 
-    The :mod:`lino.modlib.excerpts.fixtures.std` fixture automatically
+    The :mod:`lino_xl.lib.excerpts.fixtures.std` fixture automatically
     creates a certifying :class:`ExcerptType` instance for every model
     which inherits from :class:`Certifiable`.
 
@@ -133,7 +133,7 @@ class Certifiable(dd.Model):
         generate a printable excerpt.
 
         This is being called by
-        :mod:`lino.modlib.excerpts.fixtures.demo2`.
+        :mod:`lino_xl.lib.excerpts.fixtures.demo2`.
 
         """
 

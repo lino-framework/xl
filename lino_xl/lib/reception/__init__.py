@@ -27,7 +27,7 @@ class Plugin(ad.Plugin):
     "See :doc:`/dev/plugins`."
     verbose_name = _("Reception")
 
-    needs_plugins = ['lino.modlib.system', 'lino.modlib.cal']
+    needs_plugins = ['lino.modlib.system', 'lino_xl.lib.cal']
 
     required_user_groups = 'reception'
     """The required user groups for viewing actors of this plugin.
