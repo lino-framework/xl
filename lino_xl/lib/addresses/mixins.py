@@ -1,8 +1,8 @@
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
-Model mixins for `lino.modlib.addresses`.
+Model mixins for `lino_xl.lib.addresses`.
 
 """
 

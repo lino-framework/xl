@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2014 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
-Database models for `lino.modlib.postings`.
+Database models for `lino_xl.lib.postings`.
 """
 
 import logging

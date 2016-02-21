@@ -1,4 +1,4 @@
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Provides a framework for configuring and generating printable
@@ -44,14 +44,14 @@ class Plugin(ad.Plugin):
 
     needs_plugins = [
         'lino.modlib.printing',
-        'lino.modlib.outbox', 'lino.modlib.office']
+        'lino_xl.lib.outbox', 'lino.modlib.office']
 
     # _default_template_handlers = {}
 
     responsible_user = None
     """The username of the user responsible for monitoring the excerpts
     system. This is currently used only by
-    :mod:`lino.modlib.excerpts.fixtures.demo2`.
+    :mod:`lino_xl.lib.excerpts.fixtures.demo2`.
     """
 
     def setup_main_menu(self, site, profile, m):

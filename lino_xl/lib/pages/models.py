@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -189,7 +189,7 @@ def lookup(ref, *args, **kw):
     #~ except Page.DoesNotExist:
         #~ pass
 
-from lino.modlib.pages.dummy import render_node
+from lino_xl.lib.pages.dummy import render_node
 
 
 def get_all_pages():

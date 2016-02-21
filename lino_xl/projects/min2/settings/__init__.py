@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
 Default settings for a `lino.projects.min2` application.
@@ -9,7 +9,7 @@ from lino.projects.std.settings import *
 
 
 class Site(Site):
-    """The parent of all :mod:`lino.projects.min2` applications.
+    """The parent of all :mod:`lino_xl.projects.min2` applications.
     """
     title = "Lino Mini 2"
     project_model = 'projects.Project'

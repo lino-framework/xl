@@ -51,11 +51,11 @@ INSTALLED_APPS = (
     'lino.modlib.properties',
     'lino.modlib.contacts',
     #~ 'lino.modlib.projects',
-    'lino.modlib.notes',
+    'lino_xl.lib.notes',
     #~ 'lino.modlib.links',
     'lino.modlib.uploads',
     #~ 'lino.modlib.thirds',
-    'lino.modlib.cal',
+    'lino_xl.lib.cal',
     #~ 'lino.modlib.jobs',
     'lino.projects.crl',
     # ~ 'south', # http://south.aeracode.org

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
 The dummy module for `pages`.
@@ -83,6 +83,6 @@ def get_all_pages():
 
 if not settings.SITE.is_installed('pages'):
     # fill DUMMY_PAGES at import by running the std fixture
-    from lino.modlib.pages.fixtures import std
+    from lino_xl.lib.pages.fixtures import std
     for o in std.objects():
         pass

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2014 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -18,7 +18,7 @@ it will overwrite existing web pages.
 
 from __future__ import unicode_literals
 
-from lino.modlib.pages.builder import page, objects
+from lino_xl.lib.pages.builder import page, objects
 
 page('index', 'en', '', """
 Welcome to the **{{site.title}}** site.

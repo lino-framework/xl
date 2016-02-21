@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Test certain aspects of `lino.modlib.addresses`.
+"""Test certain aspects of `lino_xl.lib.addresses`.
 
 This module is part of the Lino test suite. You can test only this
 module by issuing either::

@@ -28,8 +28,8 @@ from .choicelists import (
 from .utils import setkw, dt2kw, when_text
 
 from lino.modlib.users.mixins import UserAuthored
-from lino.modlib.postings.mixins import Postable
-from lino.modlib.outbox.mixins import MailableType, Mailable
+from lino_xl.lib.postings.mixins import Postable
+from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino.modlib.office.roles import OfficeStaff
 from .workflows import (TaskStates, EventStates, GuestStates)
 

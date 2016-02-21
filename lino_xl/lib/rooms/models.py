@@ -17,8 +17,8 @@ from django.conf import settings
 from lino.api import dd, _
 from lino import mixins
 
-from lino.modlib.cal.choicelists import Recurrencies
-from lino.modlib.cal.mixins import Reservation
+from lino_xl.lib.cal.choicelists import Recurrencies
+from lino_xl.lib.cal.mixins import Reservation
 from lino.modlib.contacts.mixins import ContactRelated
 
 
