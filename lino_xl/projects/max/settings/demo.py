@@ -1,4 +1,4 @@
-from lino.projects.docs.settings import *
+from ..settings import *
 
 SITE = Site(globals())
 

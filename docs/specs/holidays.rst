@@ -12,7 +12,7 @@ Defining holidays
 Some initialization:
 
 >>> from lino import startup
->>> startup('lino.projects.min2.settings.demo')
+>>> startup('lino_xl.projects.min2.settings.demo')
 >>> from lino.api.doctest import *
 >>> settings.SITE.verbose_client_info_message = True
 >>> from lino.api import rt, _

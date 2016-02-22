@@ -44,8 +44,8 @@ class Site(Site):
         yield 'lino.modlib.countries'
         # yield 'lino.modlib.properties'
         yield 'lino.modlib.contacts'
-        # yield 'lino_xl.lib.addresses'
-        # yield 'lino.modlib.humanlinks'  # requires Person to be Born
+        yield 'lino_xl.lib.addresses'
+        yield 'lino_xl.lib.humanlinks'  # requires Person to be Born
         yield 'lino.modlib.polls'
 
         yield 'lino.modlib.uploads'
@@ -60,7 +60,7 @@ class Site(Site):
         yield 'lino_xl.lib.postings'
         yield 'lino_xl.lib.households'
 
-        yield 'lino_xl.lib.concepts'
+        # yield 'lino_xl.lib.concepts'
         yield 'lino_xl.lib.pages'
         yield 'lino_xl.lib.beid'
 
