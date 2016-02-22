@@ -24,7 +24,7 @@ from django.conf import settings
 
 intersphinx_mapping = {}
 from importlib import import_module
-for n in 'atelier lino lino_xl'.split():
+for n in 'atelier lino'.split():
     m = import_module(n)
     intersphinx_mapping[n] = (m.intersphinx_urls['docs'], None)
 

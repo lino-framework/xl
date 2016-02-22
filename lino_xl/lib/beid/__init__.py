@@ -33,7 +33,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):  # was: use_eidreader
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
 
     site_js_snippets = ['beid/eidreader.js']
     media_name = 'eidreader'

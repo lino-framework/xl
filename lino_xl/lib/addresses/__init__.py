@@ -22,7 +22,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
     verbose_name = _("Addresses")
 
     def setup_explorer_menu(self, site, profile, m):

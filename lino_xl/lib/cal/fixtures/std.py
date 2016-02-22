@@ -5,7 +5,7 @@
 """Installs standard values for :mod:`lino_xl.lib.cal`, including a
 demo set of holidays.  (TODO: make them more configurable.)
 
-See also :ref:`lino.specs.holidays`.
+See also :ref:`xl.specs.holidays`.
 
 """
 

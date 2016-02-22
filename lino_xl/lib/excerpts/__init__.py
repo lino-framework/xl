@@ -4,7 +4,7 @@
 """Provides a framework for configuring and generating printable
 documents called "database excerpts".
 
-See also :doc:`/admin/excerpts`.
+See also :doc:`/specs/excerpts`.
 
 
 Lino does not automatically add an action per model to make the
@@ -38,7 +38,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
 
     verbose_name = _("Excerpts")
 

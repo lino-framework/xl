@@ -24,7 +24,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
     verbose_name = _("Reception")
 
     needs_plugins = ['lino.modlib.system', 'lino_xl.lib.cal']
