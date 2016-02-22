@@ -7,7 +7,7 @@ register clients into a waiting queue as they present themselves at a
 reception desk (Empfangsschalter), and unregister them when they leave
 again.
 
-It depends on :mod:`lino.modlib.cal`. It does not add any model, but
+It depends on :mod:`lino_xl.lib.cal`. It does not add any model, but
 adds some workflow states, actions and tables.
 
 Extended by :mod:`lino_welfare.modlib.reception`.
@@ -24,7 +24,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
     verbose_name = _("Reception")
 
     needs_plugins = ['lino.modlib.system', 'lino_xl.lib.cal']

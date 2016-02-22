@@ -2,7 +2,7 @@
 # Copyright 2011-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino.modlib.stars`.
+"""Database models for `lino_xl.lib.stars`.
 
 """
 

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2013 Luc Saffre
 """
-Database models for `lino.modlib.families`.
+Database models for `lino_xl.lib.families`.
 
 .. autosummary::
 
@@ -16,7 +16,7 @@ from django.conf import settings
 from django.db import models
 
 
-#~ from lino.modlib.families import Plugin
+#~ from lino_xl.lib.families import Plugin
 from lino.api import dd, rt
 
 

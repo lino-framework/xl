@@ -1,13 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2014 Luc Saffre
-# License: BSD (see file COPYING for details)
 
-
-from lino_xl.projects.min1.settings import *
+from lino_xl.projects.min2.settings import *
 
 
 class Site(Site):
-    #~ languages = 'en'
     languages = 'en de fr et nl pt-br'
 
 SITE = Site(globals(), no_local=True)

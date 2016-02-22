@@ -48,7 +48,7 @@ Event. The `Event` model instead has a `get_calendar` method.
 
 You might extend Event in your plugin as follows::
 
-    from lino.modlib.cal.models import *
+    from lino_xl.lib.cal.models import *
     class Event(Event):
 
         calendar = dd.ForeignKey('cal.Calendar')
@@ -77,7 +77,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
     verbose_name = _("Calendar")
 
     needs_plugins = ['lino.modlib.gfks', 'lino.modlib.printing']

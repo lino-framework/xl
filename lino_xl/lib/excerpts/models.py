@@ -569,7 +569,8 @@ class Excerpt(mixins.TypedPrintable, UserAuthored,
 
     def get_printable_context(self, ar=None, **kw):
         """Adds a series of names to the context used when rendering printable
-        documents. See :doc:`/user/templates_api`.
+        documents.  Extends
+        :meth:`lino.core.model.Model.get_printable_context`.
 
         """
         if self.owner is not None:

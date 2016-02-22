@@ -12,7 +12,7 @@ class DupablePartner(Dupable):
     Note that using the mixin does not yet install the plugin, it just
     declares a model as being dupable. In order to activate
     verification, you must also add
-    :mod:`lino.modlib.dupable_partners` to your
+    :mod:`lino_xl.lib.dupable_partners` to your
     :meth:`get_installed_apps
     <lino.core.site.Site.get_installed_apps>` method.
 

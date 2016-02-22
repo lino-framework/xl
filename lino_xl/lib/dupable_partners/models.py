@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """
-Database models for `lino.modlib.dupable_partners`.
+Database models for `lino_xl.lib.dupable_partners`.
 """
 
 from lino.api import dd, _

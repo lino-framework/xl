@@ -25,7 +25,7 @@ try:
 except ImportError:
     pass  # the command won't work, but at least sphinx autodoc will
 
-#~ from lino.modlib.cal.models import Calendar, Event
+#~ from lino_xl.lib.cal.models import Calendar, Event
 from vobject.icalendar import VEvent, RecurringComponent
 
 

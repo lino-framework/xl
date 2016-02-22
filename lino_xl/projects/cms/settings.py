@@ -34,7 +34,7 @@ class Site(Site):
         yield 'lino.modlib.users'
         yield 'lino.modlib.countries'
         yield 'lino.modlib.contacts'
-        #~ yield 'lino.modlib.outbox'
+        #~ yield 'lino_xl.lib.outbox'
         yield 'lino_xl.lib.blogs'
         # yield 'lino.modlib.tickets'
         yield 'lino_xl.lib.pages'

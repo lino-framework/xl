@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """
-Tables for `lino.modlib.cal`.
+Tables for `lino_xl.lib.cal`.
 
 """
 
@@ -512,7 +512,7 @@ class RecurrentEvents(dd.Table):
     """
 
 
-# ~ from lino.modlib.workflows import models as workflows # Workflowable
+# ~ from lino_xl.lib.workflows import models as workflows # Workflowable
 
 #~ class Components(dd.Table):
 # ~ # class Components(dd.Table,workflows.Workflowable):

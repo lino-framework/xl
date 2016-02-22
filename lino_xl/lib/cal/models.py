@@ -2,7 +2,7 @@
 # Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino.modlib.cal`.
+"""Database models for `lino_xl.lib.cal`.
 
 """
 
@@ -27,6 +27,7 @@ from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses)
 from .utils import setkw, dt2kw, when_text
 
+from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.users.mixins import UserAuthored
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
@@ -77,7 +78,7 @@ class RemoteCalendar(mixins.Sequenced):
 
     """
     Remote calendars will be synchronized by
-    :mod:`lino.modlib.cal.management.commands.watch_calendars`,
+    :mod:`lino_xl.lib.cal.management.commands.watch_calendars`,
     and local modifications will be sent back to the remote calendar.
     """
     class Meta:
@@ -321,7 +322,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
     .. attribute:: every_unit
 
         Inherited from :attr:`RecurrentSet.every_unit
-        <lino.modlib.cal.models.RecurrentSet.every_unit>`
+        <lino_xl.lib.cal.models.RecurrentSet.every_unit>`
 
     .. attribute:: event_type
 
@@ -435,9 +436,7 @@ class ExtAllDayField(dd.VirtualField):
         return (obj.start_time is None)
 
 
-class Event(Component, Ended,
-            mixins.TypedPrintable,
-            Mailable, Postable):
+class Event(Component, Ended, TypedPrintable, Mailable, Postable):
     """A calendar event is a lapse of time to be visualized in a calendar.
 
     .. attribute:: user

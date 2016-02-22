@@ -12,11 +12,12 @@ extensions = []
 extlinks = {}
 
 from atelier.sphinxconf import configure
-configure(globals(), 'lino_noi.projects.team.settings.doctests')
+configure(globals(), 'lino_xl.projects.max.settings.doctests')
 
 extlinks.update(ticket=('http://bugs.lino-framework.org/tickets/Ticket/%s', '#'))
 
 extensions += ['lino.sphinxcontrib.logo']
+extensions += ['lino.sphinxcontrib.actordoc']
 
 from django.conf import settings
 # settings.SITE.title = "Lino Noi"

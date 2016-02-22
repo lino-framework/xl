@@ -2,7 +2,7 @@
 # Copyright 2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Choicelists for :mod:`lino.modlib.notes`.
+"""Choicelists for :mod:`lino_xl.lib.notes`.
 
 .. autosummary::
 

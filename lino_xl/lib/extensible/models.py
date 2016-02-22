@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """
-Database models for `lino.modlib.extensible`.
+Database models for `lino_xl.lib.extensible`.
 
 .. autosummary::
 

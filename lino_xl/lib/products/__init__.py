@@ -17,7 +17,7 @@ from lino import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
 
     verbose_name = _("Products")
 

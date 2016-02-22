@@ -35,4 +35,6 @@ class Site(Site):
         yield 'lino_xl.lib.dupable_partners'
         yield 'lino.modlib.plausibility'
         yield 'lino.modlib.tinymce'
+        yield 'lino.modlib.wkhtmltopdf'
+        yield 'lino_xl.lib.appypod'
 

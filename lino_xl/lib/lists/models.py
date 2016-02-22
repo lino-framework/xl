@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
-"""The :xfile:`models.py` module for the :mod:`lino.modlib.lists` app.
+"""The :xfile:`models.py` module for the :mod:`lino_xl.lib.lists` app.
 
 This module defines the tables
 
@@ -21,6 +21,8 @@ logger = logging.getLogger(__name__)
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+
+from lino_xl.lib.appypod.mixins import PrintLabelsAction
 
 from lino.core.roles import SiteStaff
 from lino.api import dd
@@ -54,7 +56,7 @@ class List(mixins.BabelNamed, mixins.Referrable):
     list_type = dd.ForeignKey('lists.ListType', blank=True, null=True)
     remarks = models.TextField(_("Remarks"), blank=True)
 
-    print_labels = dd.PrintLabelsAction()
+    print_labels = PrintLabelsAction()
 
 
 class Lists(dd.Table):

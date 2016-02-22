@@ -12,7 +12,10 @@ specifications.  One of their goal is to get tested.
    :maxdepth: 1
   
    cv
+   export_excel
    holidays
    households
-
+   tinymce
+   excerpts
+   printing
 

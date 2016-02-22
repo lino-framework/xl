@@ -11,7 +11,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "See :class:`lino.core.Plugin`."
     verbose_name = _("Lists")
 
     def setup_main_menu(config, site, profile, m):

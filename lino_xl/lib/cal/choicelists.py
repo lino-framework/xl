@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """
-Choicelists for lino.modlib.cal
+Choicelists for lino_xl.lib.cal
 
 
 .. This is a tested document. You can test it using:

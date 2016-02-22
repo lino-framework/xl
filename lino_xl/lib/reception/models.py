@@ -2,11 +2,11 @@
 # Copyright 2013-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""The :xfile:`models.py` file for `lino.modlib.reception`.
+"""The :xfile:`models.py` file for `lino_xl.lib.reception`.
 
 This injects three fields to :class:`cal.Guest
-<lino.modlib.cal.models.Guest>` and defines three new states in
-:class:`cal.GuestStates <lino.modlib.cal.models.GuestStates>`.
+<lino_xl.lib.cal.models.Guest>` and defines three new states in
+:class:`cal.GuestStates <lino_xl.lib.cal.models.GuestStates>`.
 
 
     state   ---action--> new state
@@ -53,9 +53,9 @@ system = dd.resolve_app('system')
 from lino_xl.lib.cal.workflows import GuestStates, EventStates
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 
-# lino.modlib.reception requires the `feedback` workflow. Before
+# lino_xl.lib.reception requires the `feedback` workflow. Before
 # adding new GuestStates, make sure that
-# `lino.modlib.cal.workflows.feedback` has been imported because this
+# `lino_xl.lib.cal.workflows.feedback` has been imported because this
 # will clear GuestStates
 
 import lino_xl.lib.cal.workflows.feedback
@@ -142,7 +142,7 @@ def create_prompt_event(
 
 class CheckinVisitor(dd.NotifyingAction):
     """The "Checkin" action on a :class:`Guest
-    <lino.modlib.cal.models_guest.Guest>`.
+    <lino_xl.lib.cal.models_guest.Guest>`.
 
     """
     label = _("Checkin")
@@ -208,7 +208,7 @@ class MyVisitorAction(dd.Action):
 
 class ReceiveVisitor(MyVisitorAction):
     """The "Receive" action on a :class:`Guest
-    <lino.modlib.cal.models_guest.Guest>`.
+    <lino_xl.lib.cal.models_guest.Guest>`.
 
     """
     label = _("Receive")
@@ -267,7 +267,7 @@ def checkout_guest(obj, ar):
 
 class CheckoutVisitor(MyVisitorAction):
     """The "Checkout" action on a :class:`Guest
-    <lino.modlib.cal.models_guest.Guest>`.
+    <lino_xl.lib.cal.models_guest.Guest>`.
 
     """
     label = _("Checkout")

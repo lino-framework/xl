@@ -8,11 +8,11 @@ To use it, applications must do two things:
 - add the following line to their :meth:`get_installed_apps
   <lino.core.site.Site.get_installed_apps>`::
 
-    yield 'lino.modlib.dupable_partners'
+    yield 'lino_xl.lib.dupable_partners'
 
 - Override their :class:`contacts.Partner
   <lino.modlib.contacts.models.Partner>` model to inherit from
-  :class:`lino.modlib.dupable_partners.mixins.DupablePartner`.
+  :class:`lino_xl.lib.dupable_partners.mixins.DupablePartner`.
 
 Defines a virtual slave table :class:`SimilarPartners`, which shows
 the partners that are "similar" to a given master instance (and

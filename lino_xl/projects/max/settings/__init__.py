@@ -12,9 +12,9 @@ its job.  And that's all we want.
 
 """
 
-import os
-
 from lino.projects.std.settings import *
+
+import lino_xl
 
 
 class Site(Site):
@@ -23,6 +23,7 @@ class Site(Site):
     demo demo2'.split()
 
     verbose_name = "Lino Max"
+    version = lino_xl.__version__
 
     project_name = 'lino_xl_max'
 
@@ -42,10 +43,10 @@ class Site(Site):
         yield 'lino.modlib.changes'
         yield 'lino.modlib.languages'
         yield 'lino.modlib.countries'
-        # yield 'lino.modlib.properties'
+        yield 'lino_xl.lib.properties'
         yield 'lino.modlib.contacts'
-        # yield 'lino_xl.lib.addresses'
-        # yield 'lino.modlib.humanlinks'  # requires Person to be Born
+        yield 'lino_xl.lib.addresses'
+        yield 'lino_xl.lib.humanlinks'  # requires Person to be Born
         yield 'lino.modlib.polls'
 
         yield 'lino.modlib.uploads'
@@ -60,9 +61,11 @@ class Site(Site):
         yield 'lino_xl.lib.postings'
         yield 'lino_xl.lib.households'
 
-        yield 'lino_xl.lib.concepts'
+        # yield 'lino_xl.lib.concepts'
         yield 'lino_xl.lib.pages'
         yield 'lino_xl.lib.beid'
+        yield 'lino.modlib.wkhtmltopdf'
+        yield 'lino_xl.lib.appypod'
 
         yield 'lino.modlib.tinymce'
         yield 'lino.modlib.export_excel'
@@ -72,7 +75,7 @@ class Site(Site):
         self.plugins.countries.configure(country_code='BE')
 
     def do_site_startup(self):
-        # lino.modlib.reception requires some workflow to be imported
+        # lino_xl.lib.reception requires some workflow to be imported
         from lino_xl.lib.cal.workflows import feedback
         super(Site, self).do_site_startup()
 
