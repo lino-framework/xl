@@ -36,14 +36,11 @@ class SpecsTests(LinoTestCase):
     def test_households(self):
         self.run_simple_doctests('docs/specs/households.rst')
 
-
-class DocsTests(LinoTestCase):
-
     def test_tinymce(self):
-        self.run_simple_doctests("docs/tested/tinymce.rst")
+        self.run_simple_doctests("docs/specs/tinymce.rst")
 
     def test_min1(self):
-        self.run_simple_doctests("docs/tested/min1.rst")
+        self.run_simple_doctests("docs/specs/export_excel.rst")
 
 
 class UtilsTests(LinoTestCase):

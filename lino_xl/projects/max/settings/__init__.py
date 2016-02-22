@@ -12,9 +12,9 @@ its job.  And that's all we want.
 
 """
 
-import os
-
 from lino.projects.std.settings import *
+
+import lino_xl
 
 
 class Site(Site):
@@ -23,6 +23,7 @@ class Site(Site):
     demo demo2'.split()
 
     verbose_name = "Lino Max"
+    version = lino_xl.__version__
 
     project_name = 'lino_xl_max'
 
@@ -42,7 +43,7 @@ class Site(Site):
         yield 'lino.modlib.changes'
         yield 'lino.modlib.languages'
         yield 'lino.modlib.countries'
-        # yield 'lino.modlib.properties'
+        yield 'lino_xl.lib.properties'
         yield 'lino.modlib.contacts'
         yield 'lino_xl.lib.addresses'
         yield 'lino_xl.lib.humanlinks'  # requires Person to be Born
