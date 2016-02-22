@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
-"Choicelists for :mod:`lino.modlib.outbox`."
+"Choicelists for :mod:`lino_xl.lib.outbox`."
 
 from django.utils.translation import ugettext_lazy as _
 from lino.api import dd

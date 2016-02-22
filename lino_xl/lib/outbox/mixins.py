@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
-"Model mixins for :mod:`lino.modlib.outbox`."
+"Model mixins for :mod:`lino_xl.lib.outbox`."
 
 
 import logging

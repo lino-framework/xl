@@ -39,7 +39,7 @@ class Site(Site):
         yield 'lino.modlib.countries'
 
         yield 'lino.modlib.contacts'
-        #~ 'lino.modlib.notes'
+        #~ 'lino_xl.lib.notes'
         yield 'lino_xl.lib.extensible'
         yield 'lino_xl.lib.cal'
         yield 'lino_xl.lib.outbox'

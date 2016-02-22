@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2009-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""Choicelists for `lino.modlib.appypod`.
+"""Choicelists for `lino_xl.lib.appypod`.
 """
 
 from __future__ import unicode_literals

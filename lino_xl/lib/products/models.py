@@ -1,7 +1,7 @@
 # Copyright 2008-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
-Database models for `lino.modlib.products`.
+Database models for `lino_xl.lib.products`.
 
 """
 

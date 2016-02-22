@@ -1,7 +1,7 @@
 # coding: UTF-8
 # Copyright 2011-2014 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""Database models for `lino.modlib.thirds`.
+"""Database models for `lino_xl.lib.thirds`.
 
 """
 

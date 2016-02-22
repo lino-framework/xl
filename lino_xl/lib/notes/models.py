@@ -2,7 +2,7 @@
 # Copyright 2009-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
-Database models for `lino.modlib.notes`.
+Database models for `lino_xl.lib.notes`.
 
 .. autosummary::
 

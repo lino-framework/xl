@@ -2,7 +2,7 @@
 # Copyright 2008-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino.modlib.properties`.
+"""Database models for `lino_xl.lib.properties`.
 
 This module is deprecated.
 

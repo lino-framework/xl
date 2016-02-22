@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """Some standard workflow definition modules for
-:mod:`lino.modlib.cal`.
+:mod:`lino_xl.lib.cal`.
 
 .. autosummary::
    :toctree:
@@ -110,7 +110,7 @@ class GuestStates(dd.Workflow):
     the :attr:`Guest.state` field.
 
     The actual content can be redefined by other apps,
-    e.g. :mod:`lino.modlib.reception`.
+    e.g. :mod:`lino_xl.lib.reception`.
 
     """
     verbose_name_plural = _("Guest states")

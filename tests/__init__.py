@@ -27,6 +27,9 @@ class LibTests(LinoTestCase):
 
 class SpecsTests(LinoTestCase):
 
+    def test_printing(self):
+        self.run_simple_doctests('docs/specs/printing.rst')
+
     def test_holidays(self):
         self.run_simple_doctests('docs/specs/holidays.rst')
 

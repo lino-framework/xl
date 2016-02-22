@@ -64,6 +64,8 @@ class Site(Site):
         # yield 'lino_xl.lib.concepts'
         yield 'lino_xl.lib.pages'
         yield 'lino_xl.lib.beid'
+        yield 'lino.modlib.wkhtmltopdf'
+        yield 'lino_xl.lib.appypod'
 
         yield 'lino.modlib.tinymce'
         yield 'lino.modlib.export_excel'
@@ -73,7 +75,7 @@ class Site(Site):
         self.plugins.countries.configure(country_code='BE')
 
     def do_site_startup(self):
-        # lino.modlib.reception requires some workflow to be imported
+        # lino_xl.lib.reception requires some workflow to be imported
         from lino_xl.lib.cal.workflows import feedback
         super(Site, self).do_site_startup()
 

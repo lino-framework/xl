@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2013-2015 Luc Saffre
 
-"""An extension to :mod:`lino.modlib.cal` which uses the `Extensible
+"""An extension to :mod:`lino_xl.lib.cal` which uses the `Extensible
 <http://ext.ensible.com>`_ calendar library to add a special "Calendar
 Panel" view of your calendar events.
 

@@ -2,7 +2,7 @@
 # Copyright 2014-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
-Database models for `lino.modlib.humanlinks`.
+Database models for `lino_xl.lib.humanlinks`.
 
 """
 
@@ -39,7 +39,7 @@ class Link(dd.Model):
     .. attribute:: type
 
         The type of link.  Pointer to :class:`LinkTypes
-        <lino.modlib.humanlinks.choicelists.LinkTypes>`.
+        <lino_xl.lib.humanlinks.choicelists.LinkTypes>`.
 
     """
     class Meta:

@@ -1,4 +1,4 @@
-.. _lino.specs.holidays:
+.. _xl.specs.holidays:
 
 =================
 Defining holidays

@@ -2,7 +2,7 @@
 # Copyright 2014-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
-Choicelists for `lino.modlib.humanlinks`.
+Choicelists for `lino_xl.lib.humanlinks`.
 
 """
 
@@ -49,7 +49,7 @@ class LinkType(dd.Choice):
 
 class LinkTypes(dd.ChoiceList):
     """The global list of human link types.  This is used as choicelist
-    for the :attr:`type <lino.modlib.humanlinks.models.Link.type>`
+    for the :attr:`type <lino_xl.lib.humanlinks.models.Link.type>`
     field of a human link.
 
     The default list contains the following data:

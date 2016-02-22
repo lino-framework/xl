@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """
-The :xfile:`models.py` module for `lino.modlib.outbox`.
+The :xfile:`models.py` module for `lino_xl.lib.outbox`.
 """
 
 import logging

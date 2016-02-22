@@ -2,7 +2,7 @@
 # Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Installs standard values for :mod:`lino.modlib.cal`, including a
+"""Installs standard values for :mod:`lino_xl.lib.cal`, including a
 demo set of holidays.  (TODO: make them more configurable.)
 
 See also :ref:`lino.specs.holidays`.

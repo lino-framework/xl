@@ -2,7 +2,7 @@
 # Copyright 2013-2015 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Adds feedback-based workflow to :mod:`lino.modlib.cal`. You
+"""Adds feedback-based workflow to :mod:`lino_xl.lib.cal`. You
 "activate" this by simply importing it from within a
 :xfile:`models.py` module used by your application.
 

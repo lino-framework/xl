@@ -5,7 +5,7 @@
 to manage them.
 
 This module is probably useful in combination with
-:mod:`lino.modlib.households`.
+:mod:`lino_xl.lib.households`.
 
 .. autosummary::
    :toctree:
