@@ -27,6 +27,7 @@ from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses)
 from .utils import setkw, dt2kw, when_text
 
+from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.users.mixins import UserAuthored
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
@@ -435,9 +436,7 @@ class ExtAllDayField(dd.VirtualField):
         return (obj.start_time is None)
 
 
-class Event(Component, Ended,
-            mixins.TypedPrintable,
-            Mailable, Postable):
+class Event(Component, Ended, TypedPrintable, Mailable, Postable):
     """A calendar event is a lapse of time to be visualized in a calendar.
 
     .. attribute:: user

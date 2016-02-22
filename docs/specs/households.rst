@@ -6,7 +6,7 @@ The Households module
 
 .. How to test only this document:
 
-    $ python setup.py test -s tests.DocsTests.test_households
+    $ python setup.py test -s tests.SpecsTests.test_households
     
     doctest init:
 
@@ -26,7 +26,7 @@ house).
 Configuration
 =============
 
->>> rt.show(households.Types)  #doctest: +REPORT_UDIFF
+>>> rt.show(rt.modules.households.Types)  #doctest: +REPORT_UDIFF
 ==== ==================== ========================= ====================== ==================== ==================== ===================== ====================
  ID   Designation          Designation (de)          Designation (fr)       Designation (et)     Designation (nl)     Designation (pt-br)   Designation (es)
 ---- -------------------- ------------------------- ---------------------- -------------------- -------------------- --------------------- --------------------
@@ -39,7 +39,7 @@ Configuration
 ==== ==================== ========================= ====================== ==================== ==================== ===================== ====================
 <BLANKLINE>
 
->>> rt.show(households.MemberRoles)
+>>> rt.show(rt.modules.households.MemberRoles)
 ======= ============ ===================
  value   name         text
 ------- ------------ -------------------
@@ -66,22 +66,22 @@ Usually this is the membership marked as `primary`.
 But even when a person has multiple household memberships and none of
 them is primary, it can look at the `end_date`.
 
->>> Person = contacts.Person
->>> Member = households.Member
+>>> Person = rt.modules.contacts.Person
+>>> Member = rt.modules.households.Member
 >>> Member.objects.filter(end_date__isnull=False)
 [Member #5 (u'Mr Paul Frisch (Head of household)'), Member #11 (u'Mr Albert Adam (Head of household)'), Member #17 (u'Mr Lars Braun (Head of household)'), Member #23 (u'Mr Ilja Adam (Head of household)')]
 
 >>> p = Person.objects.get(first_name="Lars", last_name="Braun")
 >>> Member.objects.filter(person=p).count()
 2
->>> rt.show(households.MembersByPerson, master_instance=p)
+>>> rt.show(rt.modules.households.MembersByPerson, master_instance=p)
 Mr Lars Braun is
 `☐  <javascript:Lino.households.Members.set_primary(null,31,{  })>`__Head of household in *Lars & Melba Braun-Frisch*
 `☐  <javascript:Lino.households.Members.set_primary(null,17,{  })>`__Head of household in *Lars & Pascale Braun-Adam*
 <BLANKLINE>
 Create a household : **Married couple** / **Divorced couple** / **Factual household** / **Legal cohabitation** / **Isolated** / **Other**
 
->>> rt.show(households.MembersByPerson, p, nosummary=True)
+>>> rt.show(rt.modules.households.MembersByPerson, p, nosummary=True)
 =========================== =================== ========= ============ ==========
  Household                   Role                Primary   Start date   End date
 --------------------------- ------------------- --------- ------------ ----------
@@ -90,7 +90,7 @@ Create a household : **Married couple** / **Divorced couple** / **Factual househ
 =========================== =================== ========= ============ ==========
 <BLANKLINE>
 
->>> SiblingsByPerson = households.SiblingsByPerson
+>>> SiblingsByPerson = rt.modules.households.SiblingsByPerson
 >>> rt.show(SiblingsByPerson, p)
 ================== =================== ============ ==========
  Person             Role                Start date   End date

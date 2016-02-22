@@ -8,7 +8,7 @@ from lino.utils.html2xhtml import HAS_TIDYLIB
 
 
 class LinoTestCase(TestCase):
-    django_settings_module = "lino_xl.projects.msx.settings.demo"
+    django_settings_module = "lino_xl.projects.max.settings.demo"
     project_root = Path(__file__).parent.parent
 
 
@@ -182,78 +182,9 @@ class UtilsTests(LinoTestCase):
         lino_xl/lib/cal/utils.py
         """)
 
-    def test_html2odf(self):
-        self.run_simple_doctests('lino/utils/html2odf.py')
-
-    def test_jinja(self):
-        self.run_simple_doctests('lino/utils/jinja.py')
-
-    def test_xmlgen_html(self):
-        self.run_simple_doctests('lino/utils/xmlgen/html.py')
-
-    def test_html2rst(self):
-        self.run_simple_doctests('lino/utils/html2rst.py')
-
-    def test_xmlgen_sepa(self):
-        if PYAFTER26:
-            self.run_simple_doctests('lino/utils/xmlgen/sepa/__init__.py')
-
-    def test_memo(self):
-        self.run_simple_doctests('lino/utils/memo.py')
-
-    def test_tidy(self):
-        if HAS_TIDYLIB:
-            self.run_simple_doctests('lino/utils/html2xhtml.py')
-
-    def test_demonames(self):
-        self.run_simple_doctests("""
-        lino/utils/demonames/bel.py
-        lino/utils/demonames/est.py
-        """)
-
-    def test_odsreader(self):
-        self.run_simple_doctests('lino/utils/odsreader.py')
-    
-    def test_ssin(self):
-        self.run_simple_doctests('lino/utils/ssin.py')
-
-    # def test_choicelists(self):
-    #     self.run_simple_doctests('lino/core/choicelists.py')
-
-    def test_jsgen(self):
-        self.run_simple_doctests('lino/utils/jsgen.py')
-
-    def test_format_date(self):
-        self.run_simple_doctests('lino/utils/format_date.py')
-
-    def test_ranges(self):
-        self.run_simple_doctests('lino/utils/ranges.py')
-
-    def test_contacts_utils(self):
-        self.run_simple_doctests('lino/modlib/contacts/utils.py')
-
-    def test_addressable(self):
-        self.run_simple_doctests('lino/utils/addressable.py')
-
-    def test_cycler(self):
-        self.run_simple_doctests('lino/utils/cycler.py')
-
 
 class ProjectsTests(LinoTestCase):
     
-    # def test_all(self):
-    #     from atelier.fablib import run_in_demo_projects
-    #     run_in_demo_projects('test')
-
-    # def test_events(self):
-    #     self.run_django_manage_test("lino/projects/events")
-
-    # def test_belref(self):
-    #     self.run_django_manage_test("lino/projects/belref")
-
-    # def test_babel_tutorial(self):
-    #     self.run_django_manage_test("lino/projects/babel_tutorial")
-
     def test_min1(self):
         self.run_django_manage_test("lino_xl/projects/min1")
 
@@ -272,7 +203,7 @@ class TestAppsTests(LinoTestCase):
 
 class DumpTests(LinoTestCase):
     def test_dump2py(self):
-        for prj in ["lino/projects/belref"]:
+        for prj in ["lino_xl/projects/belref"]:
             p = Path(prj)
             tmp = p.child('tmp').absolute()
             tmp.rmtree()
