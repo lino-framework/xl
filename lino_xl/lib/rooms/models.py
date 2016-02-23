@@ -175,18 +175,25 @@ class Bookings(dd.Table):
     )
     params_layout = """company state"""
 
-    simple_param_fields = 'company state'.split()
+    @classmethod
+    def get_simple_parameters(cls):
+        s = super(Bookings, cls).get_simple_parameters()
+        s.add('company')
+        s.add('state')
+        return s
+
+    # simple_parameters = 'company state'.split()
 
     @classmethod
     def get_request_queryset(self, ar):
         qs = super(Bookings, self).get_request_queryset(ar)
         if isinstance(qs, list):
             return qs
-        for n in self.simple_param_fields:
-            v = ar.param_values.get(n)
-            if v:
-                qs = qs.filter(**{n: v})
-                #~ print 20130530, qs.query
+        # for n in self.simple_param_fields:
+        #     v = ar.param_values.get(n)
+        #     if v:
+        #         qs = qs.filter(**{n: v})
+        #         #~ print 20130530, qs.query
 
         return qs
 
@@ -195,10 +202,10 @@ class Bookings(dd.Table):
         for t in super(Bookings, self).get_title_tags(ar):
             yield t
 
-        for n in self.simple_param_fields:
-            v = ar.param_values.get(n)
-            if v:
-                yield unicode(v)
+        # for n in self.simple_param_fields:
+        #     v = ar.param_values.get(n)
+        #     if v:
+        #         yield unicode(v)
 
 
 class BookingsByCompany(Bookings):

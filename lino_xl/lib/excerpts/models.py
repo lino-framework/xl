@@ -705,7 +705,7 @@ class Excerpts(dd.Table):
     start_date end_date pcertifying
     user excerpt_type"""
 
-    simple_parameters = ['user', 'excerpt_type']
+    # simple_parameters = ['user', 'excerpt_type']
 
     @classmethod
     def get_simple_parameters(cls):
