@@ -141,7 +141,7 @@ class BookingDetail(dd.FormLayout):
     #~ end = "end_date end_time"
     #~ freq = "every every_unit"
     #~ start end freq
-    main = "general sales.InvoicingsByInvoiceable"
+    main = "general invoicing.InvoicingsByInvoiceable"
     general = dd.Panel("""
     start_date start_time end_date end_time
     room event_type workflow_buttons
