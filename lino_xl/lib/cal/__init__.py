@@ -74,6 +74,7 @@ Or in :ref:`voga` there is one calendar per Room. Thus the
 """
 
 from lino.api import ad, _
+from dateutil.relativedelta import relativedelta
 
 
 class Plugin(ad.Plugin):
@@ -99,8 +100,9 @@ class Plugin(ad.Plugin):
 
     def on_init(self):
         tod = self.site.today()
-        self.ignore_dates_after = tod.replace(year=tod.year+5)
-        # tod + datetime.timedelta(days=5*365)
+        # self.ignore_dates_after = tod.replace(year=tod.year+5, day=28)
+        # above code should not fail on February 29 of a leap year.
+        self.ignore_dates_after = tod + relativedelta(years=5)
 
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
