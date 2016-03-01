@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
+# Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Database models for `lino_xl.lib.stars`.
@@ -30,11 +30,9 @@ class Star(UserAuthored, Controllable):
 
     .. attribute:: nickname
 
-        
-
     """
 
-    controller_is_optional = False
+    # controller_is_optional = False
 
     nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
 
@@ -53,6 +51,8 @@ class Star(UserAuthored, Controllable):
 
 dd.update_field(Star, 'user', verbose_name=_("User"))
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))
+
+Star.update_controller_field(blank=False, null=False)
 
 
 def get_favourite(obj, user):
