@@ -109,9 +109,9 @@ class AddressOwnerChecker(Checker):
         if num == 0:
             kw = dict()
             for fldname in Address.ADDRESS_FIELDS:
-                v = getattr(obj, fldname)
-                if v:
-                    kw[fldname] = v
+                value = getattr(obj, fldname)
+                if value:
+                    kw[fldname] = value
             if kw:
                 yield (True, self.messages['no_address'])
                 if fix:
