@@ -165,7 +165,7 @@ Estonia''')
             result = self.check_json_result(
                 response, 'navinfo disable_delete data id title')
             self.assertEqual(result['data']['country'], "Estonia")
-            self.assertEqual(result['data']['gender'], "Male")
+            self.assertEqual(result['data']['gender'], "M (Male)")
 
         if settings.SITE.get_language_info('de'):
             u.language = 'de'
@@ -176,7 +176,7 @@ Estonia''')
                 response,
                 'navinfo disable_delete data id title')
             self.assertEqual(result['data']['country'], "Estland")
-            self.assertEqual(result['data']['gender'], u"Männlich")
+            self.assertEqual(result['data']['gender'], "M (Männlich)")
             #~ self.assertEqual(result['data']['disabled_fields'],['contact_ptr_id','id'])
             #~ self.assertEqual(result['data']['disabled_fields'],['id'])
             df = result['data']['disabled_fields']
