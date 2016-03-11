@@ -49,6 +49,8 @@ config = dd.plugins.cv
 ## Language knowledge
 ##
 
+
+@dd.python_2_unicode_compatible
 class LanguageKnowledge(dd.Model):
     """
     Specifies how well a certain Person knows a certain Language.
@@ -71,7 +73,7 @@ class LanguageKnowledge(dd.Model):
     native = models.BooleanField(_("native language"), default=False)
     cef_level = CefLevel.field(blank=True)  # ,null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.language_id is None:
             return ''
         if self.cef_level:
@@ -237,6 +239,8 @@ class PeriodTable(dd.Table):
 # Trainings
 #
 
+
+@dd.python_2_unicode_compatible
 class Training(SectorFunction, EducationEntry):
     """A **training** is an *education entry* with more practical
     priorities than a study. There is no school.
@@ -261,7 +265,7 @@ class Training(SectorFunction, EducationEntry):
         blank=True,  # null=True,
         verbose_name=_("Certificates"))
 
-    def __unicode__(self):
+    def __str__(self):
         return unicode(self.type)
 
     @dd.chooser()
@@ -323,6 +327,7 @@ class TrainingsByPerson(HistoryByPerson, Trainings):
 # Studies
 #
 
+@dd.python_2_unicode_compatible
 class Study(EducationEntry):
     """A **study** is an :class:`EducationEntry` at a higher school or university.
     """
@@ -342,7 +347,7 @@ class Study(EducationEntry):
 
     # success = models.BooleanField(verbose_name=_("Success"), default=False)
 
-    def __unicode__(self):
+    def __str__(self):
         return unicode(self.type)
 
     @dd.chooser()
@@ -527,6 +532,7 @@ class FunctionsBySector(Functions):
     master_key = 'sector'
 
 
+@dd.python_2_unicode_compatible
 class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
     """A **work experience** is when a given person has worked for a given
     period in a given company.
@@ -554,7 +560,7 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
         blank=True,  # null=True,
         verbose_name=_("Termination reason"))
 
-    def __unicode__(self):
+    def __str__(self):
         return unicode(self.title)
 
 

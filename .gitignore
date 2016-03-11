@@ -20,3 +20,4 @@ docs/api/lino_xl.*
 .idea
 
 docs/warnings_html.txt
+.coverage

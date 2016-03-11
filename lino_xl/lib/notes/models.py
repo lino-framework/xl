@@ -103,6 +103,7 @@ class EventTypes(dd.Table):
     """
 
 
+@dd.python_2_unicode_compatible
 class Note(mixins.TypedPrintable,
            UserAuthored,
            Controllable,
@@ -142,7 +143,7 @@ class Note(mixins.TypedPrintable,
 
     language = dd.LanguageField()
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s #%s' % (self._meta.verbose_name, self.pk)
 
     def summary_row(self, ar, **kw):

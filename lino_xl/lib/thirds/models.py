@@ -1,10 +1,11 @@
 # coding: UTF-8
-# Copyright 2011-2014 Luc Saffre
+# Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Database models for `lino_xl.lib.thirds`.
 
 """
 
+from builtins import str
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -15,6 +16,7 @@ from lino.modlib.contacts import models as contacts
 from lino.modlib.gfks.mixins import Controllable
 
 
+@dd.python_2_unicode_compatible
 class Third(mixins.Sequenced, contacts.PartnerDocument, Controllable):
 
     class Meta:
@@ -27,8 +29,8 @@ class Third(mixins.Sequenced, contacts.PartnerDocument, Controllable):
         #~ s = ui.href_to(self)
         return ["(", unicode(self.seqno), ") "] + list(contacts.PartnerDocument.summary_row(self, ar, **kw))
 
-    def __unicode__(self):
-        return unicode(self.seqno)
+    def __str__(self):
+        return str(self.seqno)
         #~ return unicode(self.get_partner())
 
 
