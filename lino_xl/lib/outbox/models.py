@@ -6,6 +6,7 @@
 The :xfile:`models.py` module for `lino_xl.lib.outbox`.
 """
 
+from builtins import str
 import logging
 logger = logging.getLogger(__name__)
 
@@ -31,6 +32,7 @@ from lino.modlib.office.roles import OfficeUser, OfficeStaff
 from .choicelists import RecipientTypes
 
 
+@dd.python_2_unicode_compatible
 class Recipient(dd.Model):
 
     """
@@ -53,9 +55,9 @@ class Recipient(dd.Model):
     def name_address(self):
         return '%s <%s>' % (self.name, self.address)
 
-    def __unicode__(self):
+    def __str__(self):
         #~ return "[%s]" % unicode(self.name or self.address)
-        return unicode(self.name or self.address)
+        return str(self.name or self.address)
         #~ return "[%s]" % unicode(self.address)
 
     def full_clean(self):
@@ -192,6 +194,7 @@ class SendMail(dd.Action):
         ar.success(**kw)
 
 
+@dd.python_2_unicode_compatible
 class Mail(UserAuthored, mixins.Printable,
            mixins.ProjectRelated, Controllable):
 
@@ -238,7 +241,7 @@ class Mail(UserAuthored, mixins.Printable,
             return self.user.language
         return super(Mail, self).get_print_language()
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s #%s' % (self._meta.verbose_name, self.pk)
 
     def get_recipients(self, rr):
@@ -344,6 +347,7 @@ class SentByPartner(Mails):
         return qs
 
 
+@dd.python_2_unicode_compatible
 class Attachment(Controllable):
 
     allow_cascaded_delete = ['mail']
@@ -354,7 +358,7 @@ class Attachment(Controllable):
 
     mail = models.ForeignKey('outbox.Mail')
 
-    def __unicode__(self):
+    def __str__(self):
         if self.owner_id:
             return unicode(self.owner)
         return unicode(self.id)

@@ -135,6 +135,7 @@ class Priority(mixins.BabelNamed):
     ref = models.CharField(max_length=1)
 
 
+@dd.python_2_unicode_compatible
 class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
     """The possible value of the :attr:`Event.type` field.
     Example content:
@@ -190,7 +191,7 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         help_text=_("How many conflicting events should be tolerated."),
         default=1)
 
-    def __unicode__(self):
+    def __str__(self):
         # when selecting an Event.event_type it is more natural to
         # have the event_label. It seems that the current `name` field
         # is actually never used.
@@ -436,6 +437,7 @@ class ExtAllDayField(dd.VirtualField):
         return (obj.start_time is None)
 
 
+@dd.python_2_unicode_compatible
 class Event(Component, Ended, TypedPrintable, Mailable, Postable):
     """A calendar event is a lapse of time to be visualized in a calendar.
 
@@ -504,7 +506,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         else:
             return d
 
-    def __unicode__(self):
+    def __str__(self):
         if self.pk:
             s = self._meta.verbose_name + " #" + str(self.pk)
         else:
@@ -787,6 +789,7 @@ class EventChecker(Checker):
 EventChecker.activate()
 
 
+@dd.python_2_unicode_compatible
 class Guest(dd.Model):
     """Represents the fact that a given person is expected to attend to a
    given event.
@@ -822,7 +825,7 @@ class Guest(dd.Model):
         return self.event.user
     user = property(get_user)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'%s #%s (%s)' % (
             self._meta.verbose_name, self.pk, self.event.strftime())
 

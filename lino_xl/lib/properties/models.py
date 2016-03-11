@@ -60,7 +60,7 @@ class HowWell(dd.ChoiceList):
     "not at all", "a bit", "moderate", "quite well" and "very well"
     
     which are stored in the database as '0' to '4',
-    and whose `__unicode__()` returns their translated text.
+    and whose `__str__()` returns their translated text.
 
     """
     verbose_name = _("How well?")
@@ -152,6 +152,7 @@ class PropType(mixins.BabelNamed):
                 PropChoice.objects.filter(type=self).order_by('value')]
 
 
+@dd.python_2_unicode_compatible
 class PropChoice(dd.Model):
 
     """A Choice for a given PropType.  `text` is the text to be displayed
@@ -188,7 +189,7 @@ class PropChoice(dd.Model):
         r = super(PropChoice, self).save(*args, **kw)
         return r
 
-    def __unicode__(self):
+    def __str__(self):
         return dd.babelattr(self, 'text')
 
 
@@ -214,6 +215,7 @@ class Property(mixins.BabelNamed):
     type = models.ForeignKey(PropType, verbose_name=_("Property Type"))
 
 
+@dd.python_2_unicode_compatible
 class PropertyOccurence(dd.Model):
 
     """A Property Occurence is when a Property occurs, possibly having a
@@ -260,7 +262,7 @@ class PropertyOccurence(dd.Model):
             self.group = self.property.group
         super(PropertyOccurence, self).full_clean()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.property_id is None:
             return u"Undefined %s" % self.group
         # 20111111 : call unicode() because get_text_for_value returns a

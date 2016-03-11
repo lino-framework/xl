@@ -47,6 +47,7 @@ class Types(dd.Table):
     """
 
 
+@dd.python_2_unicode_compatible
 class Household(contacts.Partner):
     """
     A Household is a Partner who represents several Persons living together.
@@ -86,7 +87,7 @@ class Household(contacts.Partner):
         return join_words(self.prefix, self.name)
     full_name = property(get_full_name)
 
-    def __unicode__(self):
+    def __str__(self):
         # if self.type:
         #     return u"%s %s" % (self.type, self.get_full_name())
         return unicode(self.get_full_name())
@@ -191,6 +192,7 @@ class HouseholdsByType(Households):
 #     """
 
 
+@dd.python_2_unicode_compatible
 class Member(mixins.DatePeriod):
     """A **household membership** represents the fact that a given person
     is (or has been) part of a given household.
@@ -240,9 +242,9 @@ class Member(mixins.DatePeriod):
                     o.save()
                     ar.set_response(refresh_all=True)
 
-    def __unicode__(self):
+    def __str__(self):
         if self.person_id is None:
-            return super(Member, self).__unicode__()
+            return super(Member, self).__str__()
         if self.role is None:
             return unicode(self.person)
         return u"%s (%s)" % (self.person, self.role)
