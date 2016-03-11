@@ -5,12 +5,14 @@
 Render all excerpts by running their do_print method.
 
 """
+import traceback
 
 from lino.api import rt, dd
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 
 PRINT_THEM_ALL = True
+SEVERE = True
 
 
 def objects():
@@ -42,6 +44,14 @@ def objects():
 
     for obj in Excerpt.objects.all():
         # dd.logger.info("20150526 rendering %s", obj)
-        rv = ses.run(obj.do_print)
+        try:
+            rv = ses.run(obj.do_print)
+        except Exception as e:
+            if SEVERE:
+                raise
+            else:
+                traceback.print_exc(e)
+                dd.logger.warning(
+                    "20160311 failed to render %s : %s", obj, e)
         assert rv['success']
 

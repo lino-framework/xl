@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2015 Luc Saffre
+# Copyright 2009-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Choicelists for `lino_xl.lib.appypod`.
 """
@@ -17,6 +17,10 @@ from django.utils import translation
 from lino.modlib.printing.choicelists import SimpleBuildMethod, BuildMethods
 
 from .appy_renderer import AppyRenderer
+try:
+    from appy.pod.actions import EvaluationError
+except ImportError:
+    from appy.pod.buffers import EvaluationError
 
 
 class AppyBuildMethod(SimpleBuildMethod):
@@ -48,9 +52,16 @@ class AppyBuildMethod(SimpleBuildMethod):
             # set this earlier because that would cause "render() got
             # multiple values for keyword argument 'self'" exception
             context.update(self=context['this'])
-
-            AppyRenderer(ar, tpl, context, target,
-                         **settings.SITE.appy_params).run()
+            try:
+                AppyRenderer(ar, tpl, context, target,
+                             **settings.SITE.appy_params).run()
+            except EvaluationError as e:
+                if True:
+                    raise
+                else:
+                    raise Exception(
+                        "Exception while rendering {0} ({1}) : {2}".format(
+                            tpl, context, e))
         return os.path.getmtime(target)
 
 
