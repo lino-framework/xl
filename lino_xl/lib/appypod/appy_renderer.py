@@ -18,6 +18,7 @@ logger = logging.getLogger(__name__)
 
 import os
 from copy import copy
+import six
 
 from appy.pod.renderer import Renderer as OriginalAppyRenderer
 
@@ -154,11 +155,11 @@ class AppyRenderer(OriginalAppyRenderer):
             html = html2xhtml(html)
         except Exception as e:
             print 20150923, e
-        # logger.debug("20141210 html_func() got:<<<\n%s\n>>>", html)
+        # logger.debug("20160312 html_func() got:<<<\n%s\n>>>", html)
         # print __file__, ">>>"
         # print html
         # print "<<<", __file__
-        if isinstance(html, unicode):
+        if isinstance(html, six.text_type):
             # some sax parsers refuse unicode strings.
             # appy.pod always expects utf-8 encoding.
             # See /blog/2011/0622.

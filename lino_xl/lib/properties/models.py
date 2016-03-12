@@ -260,9 +260,15 @@ class PropertyOccurence(dd.Model):
     def __str__(self):
         if self.property_id is None:
             return u"Undefined %s" % self.group
-        # 20111111 : call unicode() because get_text_for_value returns a
-        # Promise
+        # We must call str() because get_text_for_value might return a
+        # lazyly translatable string:
         return str(self.property.type.get_text_for_value(self.value))
+        # try:
+        #     return str(self.property.type.get_text_for_value(self.value))
+        # except UnicodeError:
+        #     value = self.property.type.get_text_for_value(self.value)
+        #     raise Exception("Failed get_text_for_value(%s, %r)" % (
+        #         self.property.type.choicelist, value))
 
     #~ def __unicode__(self):
         #~ if self.property_id is None:

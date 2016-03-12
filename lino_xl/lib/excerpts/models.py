@@ -592,7 +592,7 @@ class Excerpt(mixins.TypedPrintable, UserAuthored,
                 template = env.get_template(tplname)
                 # logger.info("body template %s (%s)", tplname, template)
                 body = ar.render_jinja(template, **kw)
-                # logger.info("20150811 body template %s (%s) -> %s",
+                # logger.info("20160311 body template %s (%s) -> %s",
                 #             tplname, template, body)
 
         kw.update(body=body)

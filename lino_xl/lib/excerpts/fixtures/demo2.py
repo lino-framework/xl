@@ -46,6 +46,7 @@ def objects():
         # dd.logger.info("20150526 rendering %s", obj)
         try:
             rv = ses.run(obj.do_print)
+            assert rv['success']
         except Exception as e:
             if SEVERE:
                 raise
@@ -53,5 +54,4 @@ def objects():
                 traceback.print_exc(e)
                 dd.logger.warning(
                     "20160311 failed to render %s : %s", obj, e)
-        assert rv['success']
 
