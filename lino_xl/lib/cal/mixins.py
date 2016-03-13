@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
+# Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -11,6 +11,7 @@ Model mixins for `lino_xl.lib.cal`.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 import datetime
 try:
@@ -635,7 +636,7 @@ class RecurrenceSet(Started, Ended):
 
     @dd.displayfield(_("Description"))
     def what_text(self, ar):
-        return unicode(self)
+        return str(self)
 
     @dd.displayfield(_("Times"))
     def times_text(self, ar):
@@ -651,7 +652,7 @@ class RecurrenceSet(Started, Ended):
         weekdays = []
         for wd in Weekdays.objects():
             if getattr(self, wd.name):
-                weekdays.append(unicode(wd.text))
+                weekdays.append(str(wd.text))
         weekdays = ', '.join(weekdays)
         if self.every == 1:
             return _("Every %s") % weekdays

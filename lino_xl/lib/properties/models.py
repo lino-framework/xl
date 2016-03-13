@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Database models for `lino_xl.lib.properties`.
@@ -18,16 +18,11 @@ A :class:`Property` defines the configuration of a property.
 
 """
 
-import os
-import cgi
-import datetime
+from builtins import str
 
 from django.db import models
 from django.conf import settings
-from django.core.exceptions import ValidationError
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import force_unicode
 
 
 from lino.core.roles import SiteStaff
@@ -265,9 +260,15 @@ class PropertyOccurence(dd.Model):
     def __str__(self):
         if self.property_id is None:
             return u"Undefined %s" % self.group
-        # 20111111 : call unicode() because get_text_for_value returns a
-        # Promise
-        return unicode(self.property.type.get_text_for_value(self.value))
+        # We must call str() because get_text_for_value might return a
+        # lazyly translatable string:
+        return str(self.property.type.get_text_for_value(self.value))
+        # try:
+        #     return str(self.property.type.get_text_for_value(self.value))
+        # except UnicodeError:
+        #     value = self.property.type.get_text_for_value(self.value)
+        #     raise Exception("Failed get_text_for_value(%s, %r)" % (
+        #         self.property.type.choicelist, value))
 
     #~ def __unicode__(self):
         #~ if self.property_id is None:

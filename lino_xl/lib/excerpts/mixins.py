@@ -9,6 +9,7 @@ This defines the :class:`Certifiable` model mixin.
 
 from __future__ import unicode_literals
 from __future__ import print_function
+from builtins import str
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -191,7 +192,7 @@ class Certifiable(dd.Model):
 class ExcerptTitle(BabelNamed):
     """Mixin for models like
     :class:`lino_welfare.modlib.aids.models.AidType` and
-    :class:`lino.modlib.courses.models.Line`.
+    :class:`lino_cosi.lib.courses.models.Line`.
 
     .. attribute:: name
 
@@ -218,5 +219,5 @@ class ExcerptTitle(BabelNamed):
             "The title to be used when printing an excerpt."))
 
     def get_excerpt_title(self):
-        return dd.babelattr(self, 'excerpt_title') or unicode(self)
+        return dd.babelattr(self, 'excerpt_title') or str(self)
 
