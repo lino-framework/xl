@@ -31,7 +31,9 @@ from odf.style import (Style, TextProperties, ParagraphProperties,
                        TableProperties)
 from odf.text import ListStyle
 from odf.style import ListLevelProperties
-# ~ from odf.style import ListLevelLabelAlignment # ImportError: cannot import name ListLevelLabelAlignment
+# from odf.style import ListLevelLabelAlignment # ImportError: cannot
+#                                               # import name
+#                                               # ListLevelLabelAlignment
 from odf.style import (TableColumnProperties, TableRowProperties,
                        TableCellProperties)
 from odf import text
@@ -164,7 +166,7 @@ class AppyRenderer(OriginalAppyRenderer):
             # appy.pod always expects utf-8 encoding.
             # See /blog/2011/0622.
             html = html.encode('utf-8')
-            #~ logger.info("20120726 html_func() %r",html)
+            logger.info("20120726 html_func() %r", html)
         return self.renderXhtml(html, **kw)
 
     def finalize_func(self, fn):
@@ -179,8 +181,9 @@ class AppyRenderer(OriginalAppyRenderer):
             [toxml(n).decode('utf-8') for n in self.my_styles]))
 
     def insert_chunk(self, root, leaf, insert_marker, chunk):
-        """
-        post-process specified xml file by inserting a chunk of XML text after the specified insert_marker
+        """post-process specified xml file by inserting a chunk of XML text
+        after the specified insert_marker
+
         """
         #~ insert_marker = insert_marker.encode('utf-8')
         #~ chunk = chunk.encode('utf-8')
