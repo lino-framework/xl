@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -9,7 +9,7 @@ fixtures.
 To run only this test::
 
   $ go min1
-  $ manage.py test contacts.QuickTest
+  $ python manage.py test
 
 """
 
@@ -165,7 +165,7 @@ Estonia''')
             result = self.check_json_result(
                 response, 'navinfo disable_delete data id title')
             self.assertEqual(result['data']['country'], "Estonia")
-            self.assertEqual(result['data']['gender'], "M (Male)")
+            self.assertEqual(result['data']['gender'], "Male")
 
         if settings.SITE.get_language_info('de'):
             u.language = 'de'
@@ -176,7 +176,7 @@ Estonia''')
                 response,
                 'navinfo disable_delete data id title')
             self.assertEqual(result['data']['country'], "Estland")
-            self.assertEqual(result['data']['gender'], "M (Männlich)")
+            self.assertEqual(result['data']['gender'], "Männlich")
             #~ self.assertEqual(result['data']['disabled_fields'],['contact_ptr_id','id'])
             #~ self.assertEqual(result['data']['disabled_fields'],['id'])
             df = result['data']['disabled_fields']
