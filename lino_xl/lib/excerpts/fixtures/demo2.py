@@ -12,7 +12,7 @@ from lino.api import rt, dd
 from lino_xl.lib.excerpts.mixins import Certifiable
 
 PRINT_THEM_ALL = True
-SEVERE = True
+SEVERE = False
 
 
 def objects():
