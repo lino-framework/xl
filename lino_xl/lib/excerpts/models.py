@@ -39,6 +39,7 @@ from lino.utils import join_elems
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.users.choicelists import SiteAdmin
+from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 
 davlink = settings.SITE.plugins.get('davlink', None)
 has_davlink = davlink is not None and settings.SITE.use_java
@@ -53,8 +54,7 @@ from .mixins import Certifiable
 from .choicelists import Shortcuts
 
 
-class ExcerptType(mixins.BabelNamed, mixins.PrintableType,
-                  MailableType):
+class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
     """The type of an excerpt. Every excerpt has a mandatory field
     :attr:`Excerpt.excerpt_type` which points to an :class:`ExcerptType`
     instance.
@@ -70,7 +70,7 @@ class ExcerptType(mixins.BabelNamed, mixins.PrintableType,
 
     .. attribute:: build_method
 
-        See :attr:`lino.mixinsPrintableType.build_method`.
+        See :attr:`lino.modlib.printing.mixins.PrintableType.build_method`.
 
     .. attribute:: template
  
@@ -369,7 +369,7 @@ class BodyTemplateContentField(dd.VirtualField):
 
 
 @dd.python_2_unicode_compatible
-class Excerpt(mixins.TypedPrintable, UserAuthored,
+class Excerpt(TypedPrintable, UserAuthored,
               Controllable, mixins.ProjectRelated,
               ContactRelated, Mailable, Postable):
     """A printable document that describes some aspect of the current

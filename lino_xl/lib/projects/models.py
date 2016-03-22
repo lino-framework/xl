@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2012 Luc Saffre
+# Copyright 2009-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 u"""
@@ -15,6 +15,7 @@ from django.db import models
 from lino.api import dd, _
 from lino import mixins
 from lino.modlib.users.mixins import ByUser, UserAuthored
+from lino.modlib.printing.mixins import CachedPrintable
 
 
 class ProjectType(mixins.BabelNamed):
@@ -34,7 +35,7 @@ class ProjectTypes(dd.Table):
 #
 
 @dd.python_2_unicode_compatible
-class Project(UserAuthored, mixins.CachedPrintable):
+class Project(UserAuthored, CachedPrintable):
 
     class Meta:
         app_label = 'projects'

@@ -18,6 +18,7 @@ Content
 .. toctree::
    :maxdepth: 1
 
+   install/index
    specs/index
    api/index
    changes
