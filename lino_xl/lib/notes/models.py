@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2015 Luc Saffre
+# Copyright 2009-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
 Database models for `lino_xl.lib.notes`.
@@ -11,8 +11,6 @@ Database models for `lino_xl.lib.notes`.
 import logging
 logger = logging.getLogger(__name__)
 
-import datetime
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy
@@ -22,6 +20,7 @@ from lino.api import dd, rt
 from lino import mixins
 from django.conf import settings
 
+from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import ByUser, UserAuthored
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
@@ -31,7 +30,7 @@ from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 from .choicelists import SpecialTypes
 
 
-class NoteType(mixins.BabelNamed, mixins.PrintableType, MailableType):
+class NoteType(mixins.BabelNamed, PrintableType, MailableType):
     """
     .. attribute:: special_type
     """
@@ -104,7 +103,7 @@ class EventTypes(dd.Table):
 
 
 @dd.python_2_unicode_compatible
-class Note(mixins.TypedPrintable,
+class Note(TypedPrintable,
            UserAuthored,
            Controllable,
            ContactRelated,

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
+# Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -28,6 +28,7 @@ from django.core.mail import EmailMultiAlternatives
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.office.roles import OfficeUser, OfficeStaff
+from lino.modlib.printing.mixins import Printable
 
 from .choicelists import RecipientTypes
 
@@ -195,7 +196,7 @@ class SendMail(dd.Action):
 
 
 @dd.python_2_unicode_compatible
-class Mail(UserAuthored, mixins.Printable,
+class Mail(UserAuthored, Printable,
            mixins.ProjectRelated, Controllable):
 
     class Meta:
