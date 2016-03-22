@@ -157,7 +157,8 @@ class AppyRenderer(OriginalAppyRenderer):
         try:
             html = html2xhtml(html)
         except Exception as e:
-            logger.info("20150923 html2xhtml(%r) failed: %s", html, e)
+            raise Exception(
+                "20150923 html2xhtml(%r) failed: %s" % (html, e))
         # logger.debug("20160312 html_func() got:<<<\n%s\n>>>", html)
         # print __file__, ">>>"
         # print html
@@ -171,7 +172,7 @@ class AppyRenderer(OriginalAppyRenderer):
             # appy.pod always expects utf-8 encoding.
             # See /blog/2011/0622.
             html = html.encode('utf-8')
-            logger.info("20120726 html_func() %r", html)
+            logger.info("20120726 renderXhtml(%r) failed : %s", html, e)
             return self.renderXhtml(html, **kw)
 
     def finalize_func(self, fn):
