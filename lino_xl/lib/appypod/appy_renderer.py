@@ -150,10 +150,17 @@ class AppyRenderer(OriginalAppyRenderer):
         """
         Render a string that is in HTML (not XHTML).
         """
-        if not html:
+
+        if html is None or html == '':
+            # Testing for `if not html:` caused a FutureWarning: The
+            # behavior of this method will change in future versions.
+            # Use specific 'len(elem)' or 'elem is not None' test
+            # instead.
             return ''
+
         if E.iselement(html):
             html = E.tostring(html)
+
         try:
             html = html2xhtml(html)
         except Exception as e:
