@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Database models for `lino_xl.lib.households`.
 
@@ -244,7 +244,11 @@ class Member(mixins.DatePeriod):
 
     def __str__(self):
         if self.person_id is None:
-            return super(Member, self).__str__()
+            # Avoid using super() in a __str__() method. See Luc's
+            # blog 20160324
+            return str('%s object' % self.__class__.__name__)
+            # return models.Model.__str__(self)
+            # return super(Member, self).__str__()
         if self.role is None:
             return unicode(self.person)
         return u"%s (%s)" % (self.person, self.role)
