@@ -104,9 +104,7 @@ class PrintLabelsAction(PrintTableAction):
     """
     label = _("Labels")
     help_text = _('Generate mailing labels for these recipients')
-    #~ icon_name = None
     template_name = "Labels.odt"
-    #~ combo_group = 'pdf'
     sort_index = -8
 
     def get_context(self, ar):
