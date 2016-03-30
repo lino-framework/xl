@@ -20,7 +20,7 @@ The Extended Library adds a series of plugins related to printing:
 - :mod:`lino_xl.lib.wkhtmltopdf`.
 
 
->>> rt.show('printing.BuildMethods')
+>>> rt.show(printing.BuildMethods)
 ============= ============= ====================
  value         name          text
 ------------- ------------- --------------------
@@ -34,3 +34,36 @@ The Extended Library adds a series of plugins related to printing:
  appyrtf       appyrtf       AppyRtfBuildMethod
 ============= ============= ====================
 <BLANKLINE>
+
+
+Printing a normal pdf table
+===========================
+
+>>> settings.SITE.appy_params.update(raiseOnError=True)
+>>> url = 'http://127.0.0.1:8000/api/contacts/Partners?an=as_pdf'
+>>> res = test_client.get(url, REMOTE_USER='robin')
+>>> print(res.status_code)
+200
+>>> result = json.loads(res.content)
+>>> print(result['success'])
+True
+>>> print(result['open_url'])
+/media/cache/appypdf/127.0.0.1/contacts.Partners.pdf
+
+
+
+Printing address labels
+=======================
+
+>>> settings.SITE.appy_params.update(raiseOnError=True)
+>>> url = 'http://127.0.0.1:8000/api/contacts/Partners?an=print_labels'
+>>> res = test_client.get(url, REMOTE_USER='robin')
+>>> print(res.status_code)
+200
+>>> result = json.loads(res.content)
+>>> print(result['success'])
+True
+>>> print(result['open_url'])
+/media/cache/appypdf/127.0.0.1/contacts.Partners.pdf
+
+
