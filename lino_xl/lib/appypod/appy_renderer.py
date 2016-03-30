@@ -179,7 +179,7 @@ class AppyRenderer(OriginalAppyRenderer):
             # appy.pod always expects utf-8 encoding.
             # See /blog/2011/0622.
             html = html.encode('utf-8')
-            logger.info("20120726 renderXhtml(%r) failed : %s", html, e)
+            # logger.info("20120726 renderXhtml(%r) failed : %s", html, e)
             return self.renderXhtml(html, **kw)
 
     def finalize_func(self, fn):
