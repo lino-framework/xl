@@ -30,7 +30,7 @@ class PrintTableAction(actions.Action):
     default_format = 'ajax'
     show_in_bbar = True
     preprocessor = "Lino.get_current_grid_config"
-    MAX_ROW_COUNT = 900
+    # MAX_ROW_COUNT = 900
     template_name = "Table.odt"
     target_file_format = 'pdf'  # can be pdf, odt or rtf
     # target_file_format = 'odt'  # write to odt to see error messages
@@ -53,9 +53,9 @@ class PrintTableAction(actions.Action):
 
     def appy_render(self, ar, target_file):
 
-        if ar.get_total_count() > self.MAX_ROW_COUNT:
-            raise Exception(_("List contains more than %d rows") %
-                            self.MAX_ROW_COUNT)
+        # if ar.get_total_count() > self.MAX_ROW_COUNT:
+        #     raise Exception(_("List contains more than %d rows") %
+        #                     self.MAX_ROW_COUNT)
 
         tplfile = rt.find_config_file(self.template_name, '')
         if not tplfile:
