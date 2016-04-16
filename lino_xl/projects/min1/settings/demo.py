@@ -13,4 +13,5 @@ class Site(Site):
     the_demo_date = i2d(20141023)
 
 SITE = Site(globals())
-SECRET_KEY = "20227"  # see :djangoticket:`20227`
+# SECRET_KEY = "20227"  # see :djangoticket:`20227`
+DEBUG = True

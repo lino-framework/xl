@@ -166,10 +166,10 @@ class AppyRenderer(OriginalAppyRenderer):
         except Exception as e:
             raise Exception(
                 "20150923 html2xhtml(%r) failed: %s" % (html, e))
-        # logger.debug("20160312 html_func() got:<<<\n%s\n>>>", html)
-        # print __file__, ">>>"
-        # print html
-        # print "<<<", __file__
+        # logger.info("20160330 html_func() got:<<<\n%s\n>>>", html)
+        # print(__file__, ">>>")
+        # print(html)
+        # print("<<<", __file__)
         try:
             return self.renderXhtml(html, **kw)
         except Exception as e:
@@ -179,7 +179,7 @@ class AppyRenderer(OriginalAppyRenderer):
             # appy.pod always expects utf-8 encoding.
             # See /blog/2011/0622.
             html = html.encode('utf-8')
-            logger.info("20120726 renderXhtml(%r) failed : %s", html, e)
+            # logger.info("20120726 renderXhtml(%r) failed : %s", html, e)
             return self.renderXhtml(html, **kw)
 
     def finalize_func(self, fn):
@@ -278,6 +278,7 @@ class AppyRenderer(OriginalAppyRenderer):
             return s
 
     def insert_table_(self, ar, column_names=None, table_width=180):
+        # logger.info("20160330 insert_table(%s)", ar)
         ar.setup_from(self.ar)
         columns, headers, widths = ar.get_field_info(column_names)
         widths = map(int, widths)
@@ -419,7 +420,11 @@ class AppyRenderer(OriginalAppyRenderer):
             return "Table Contents"
 
         def value2cell(ar, i, fld, val, style_name, tc):
+            # if i == 0:
+            #     logger.info("20160330a value2cell(%s, %s)", fld.__class__, val)
             txt = fld.value2html(ar, val)
+            # if i == 0:
+            #     logger.info("20160330b value2cell(%s)", E.tostring(txt))
 
             p = text.P(stylename=style_name)
             html2odf(txt, p)
@@ -457,6 +462,7 @@ class AppyRenderer(OriginalAppyRenderer):
             has_numeric_value = False
 
             for i, fld in enumerate(columns):
+
                 #~ tc = TableCell(stylename=CELL_STYLE_NAME)
                 tc = TableCell(stylename=cell_style)
                 #~ if fld.field is not None:
