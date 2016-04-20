@@ -559,8 +559,8 @@ class EventEvents(dd.ChoiceList):
     verbose_name = _("Observed event")
     verbose_name_plural = _("Observed events")
 add = EventEvents.add_item
-add('10', _("Okay"), 'okay')
-add('20', _("Pending"), 'pending')
+add('10', _("Stable"), 'stable')
+add('20', _("Unstable"), 'pending')
 
 
 class Events(dd.Table):
@@ -657,7 +657,7 @@ class Events(dd.Table):
         if pv.room:
             qs = qs.filter(room=pv.room)
 
-        if pv.observed_event == EventEvents.okay:
+        if pv.observed_event == EventEvents.stable:
             qs = qs.filter(state__in=self.fixed_states)
         elif pv.observed_event == EventEvents.pending:
             qs = qs.filter(state__in=self.pending_states)
@@ -889,4 +889,20 @@ class MyAssignedEvents(MyEvents):
         if count > 0:
             txt = _("%d events have been assigned to you.") % count
             yield ar.href_to_request(sar, txt)
+
+
+class OverdueEvents(Events):
+
+    required_roles = dd.required((OfficeUser, OfficeOperator))
+    label = _("Overdue events")
+    column_names = 'when_text project event_type summary workflow_buttons *'
+    auto_fit_column_widths = True
+    params_panel_hidden = False
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(OverdueEvents, self).param_defaults(ar, **kw)
+        kw.update(observed_event=EventEvents.pending)
+        kw.update(end_date=settings.SITE.today())
+        return kw
 

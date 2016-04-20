@@ -71,8 +71,8 @@ class EventStates(dd.Workflow):
     help_text = _("""The possible states of a calendar event.""")
     app_label = 'cal'
     item_class = EventState
-    edit_guests = models.BooleanField(_("Edit guests list"), default=False)
-    fixed = models.BooleanField(_("Fixed"), default=False)
+    edit_guests = models.BooleanField(_("Edit participants"), default=False)
+    fixed = models.BooleanField(_("Stable"), default=False)
     #~ editable_states = set()
     #~ column_names = "value name text edit_guests"
 

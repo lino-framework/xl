@@ -81,7 +81,8 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.Plugin`."
     verbose_name = _("Calendar")
 
-    needs_plugins = ['lino.modlib.gfks', 'lino.modlib.printing']
+    needs_plugins = ['lino.modlib.gfks', 'lino.modlib.printing',
+                     'lino_xl.lib.xl']
 
     ignore_dates_before = None
     """
@@ -107,6 +108,8 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.MyEvents')  # string spec to allow overriding
+        m.add_action('cal.OverdueEvents')
+
         # m.add_separator('-')
         # m  = m.add_menu("tasks",_("Tasks"))
         m.add_action('cal.MyTasks')
