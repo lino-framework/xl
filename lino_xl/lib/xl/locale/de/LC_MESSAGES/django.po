@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 23:54+0200\n"
-"PO-Revision-Date: 2016-04-20 23:55+0100\n"
+"POT-Creation-Date: 2016-04-23 17:48+0300\n"
+"PO-Revision-Date: 2016-04-23 17:49+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -53,9 +53,8 @@ msgid "Reference address"
 msgstr "Referenzadresse"
 
 #: lino_xl/lib/addresses/choicelists.py:23
-#, fuzzy
 msgid "Obsolete"
-msgstr "Konsole"
+msgstr "Veraltet"
 
 #: lino_xl/lib/addresses/choicelists.py:24 lino_xl/lib/cv/fixtures/std.py:132
 #: lino_xl/lib/households/choicelists.py:29
@@ -1096,7 +1095,7 @@ msgid "%d events have been assigned to you."
 msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
 
 #: lino_xl/lib/cal/ui.py:897
-msgid "Overdue events"
+msgid "Overdue appointments"
 msgstr "Überfällige Termine"
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
@@ -5851,3 +5850,6 @@ msgstr "MwSt.-Nr."
 
 #~ msgid "Fixed"
 #~ msgstr "Mitgeteilt"
+
+#~ msgid "Overdue events"
+#~ msgstr "Überfällige Termine"

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-20 23:54+0200\n"
+"POT-Creation-Date: 2016-04-23 17:48+0300\n"
 "PO-Revision-Date: 2016-01-20 14:16+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
@@ -1113,8 +1113,8 @@ msgstr "Enregistrement %s a été mis à jour."
 
 #: lino_xl/lib/cal/ui.py:897
 #, fuzzy
-msgid "Overdue events"
-msgstr "Évènements observés"
+msgid "Overdue appointments"
+msgstr "Mes rendez-vous"
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
 #: lino_xl/lib/rooms/models.py:153
@@ -5813,4 +5813,7 @@ msgstr "N° de TVA"
 
 #~ msgid "Fixed"
 #~ msgstr "Communiqué"
+
+#~ msgid "Overdue events"
+#~ msgstr "Évènements observés"
 

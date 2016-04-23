@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-20 23:54+0200\n"
+"POT-Creation-Date: 2016-04-23 17:48+0300\n"
 "PO-Revision-Date: 2015-04-06 10:26+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: et\n"
@@ -1090,8 +1090,8 @@ msgstr ""
 
 #: lino_xl/lib/cal/ui.py:897
 #, fuzzy
-msgid "Overdue events"
-msgstr "Sündmuste arv"
+msgid "Overdue appointments"
+msgstr "Kokku leppitud ajad"
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
 #: lino_xl/lib/rooms/models.py:153
@@ -6314,4 +6314,7 @@ msgstr "KMKR nr"
 
 #~ msgid "Fixed"
 #~ msgstr ""
+
+#~ msgid "Overdue events"
+#~ msgstr "Sündmuste arv"
 

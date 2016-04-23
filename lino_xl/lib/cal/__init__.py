@@ -108,7 +108,7 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.MyEvents')  # string spec to allow overriding
-        m.add_action('cal.OverdueEvents')
+        m.add_action('cal.OverdueAppointments')
 
         # m.add_separator('-')
         # m  = m.add_menu("tasks",_("Tasks"))

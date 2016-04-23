@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino_xl 1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-20 23:54+0200\n"
+"POT-Creation-Date: 2016-04-23 17:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1071,7 +1071,7 @@ msgid "%d events have been assigned to you."
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:897
-msgid "Overdue events"
+msgid "Overdue appointments"
 msgstr ""
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
