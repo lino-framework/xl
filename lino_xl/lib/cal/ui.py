@@ -573,8 +573,9 @@ class Events(dd.Table):
         means no appointments and leaving it to blank shows both types
         of events.
 
-        An appointment is an event whose EventType has
-        `appointment` checked. 
+        An appointment is an event whose *event type* has
+        :attr:`appointment
+        <lino_xl.lib.cal.models.EventType.appointment>` checked.
 
     """
 
@@ -797,8 +798,8 @@ class EventsByRoom(Events):
 class EventsByController(Events):
     required_roles = dd.required(OfficeUser)
     master_key = 'owner'
-    column_names = 'when_text summary workflow_buttons *'
-    # column_names = 'when_text:20 linked_date summary workflow_buttons *'
+    column_names = 'when_html summary workflow_buttons *'
+    # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
 
 if settings.SITE.project_model:
@@ -807,7 +808,7 @@ if settings.SITE.project_model:
         required_roles = dd.required(OfficeUser)
         master_key = 'project'
         auto_fit_column_widths = True
-        column_names = 'linked_date user summary workflow_buttons'
+        column_names = 'when_html user summary workflow_buttons'
         # column_names = 'when_text user summary workflow_buttons'
 
 
@@ -894,14 +895,14 @@ class MyAssignedEvents(MyEvents):
 class OverdueAppointments(Events):
     """Shows **overdue appointments**, i.e. appointments whose date is
     over but who are still in a nonstable state.
-    :attr:`show_appointments` is set to "Yes",
-    :attr:``observed_event` is set to "Unstable", :attr:``end_date` is
-    set to today.
+
+    :attr:`show_appointments` is set to "Yes", :attr:`observed_event`
+    is set to "Unstable", :attr:`end_date` is set to today.
 
     """
     required_roles = dd.required((OfficeUser, OfficeOperator))
     label = _("Overdue appointments")
-    column_names = 'when_text project event_type summary workflow_buttons *'
+    column_names = 'when_html project owner event_type summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
 
