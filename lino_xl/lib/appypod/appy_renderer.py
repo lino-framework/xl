@@ -21,6 +21,8 @@ import os
 from copy import copy
 import six
 
+# from builtins import str
+
 from appy.pod.renderer import Renderer as OriginalAppyRenderer
 
 from django.utils.encoding import force_unicode
@@ -68,6 +70,13 @@ UL_LIST_STYLE = """\
 <text:list-level-style-bullet text:level="10" text:style-name="Bullet_20_Symbols" text:bullet-char="•"><style:list-level-properties text:list-level-position-and-space-mode="label-alignment"><style:list-level-label-alignment text:label-followed-by="listtab" text:list-tab-stop-position="6.985cm" fo:text-indent="-0.635cm" fo:margin-left="6.985cm"/></style:list-level-properties></text:list-level-style-bullet>
 </text:list-style>
 """
+
+
+def cleankw(kw1):
+    kw = dict()
+    for k, v in kw1.items():
+        kw[str(k)] = v
+    return kw
 
 
 class AppyRenderer(OriginalAppyRenderer):
@@ -295,7 +304,7 @@ class AppyRenderer(OriginalAppyRenderer):
         doc = OpenDocumentText()
 
         def add_style(**kw):
-            st = Style(**kw)
+            st = Style(**cleankw(kw))
             doc.styles.addElement(st)
             self.my_styles.append(st)
             return st
@@ -363,7 +372,7 @@ class AppyRenderer(OriginalAppyRenderer):
         # create some automatic styles
 
         def add_style(**kw):
-            st = Style(**kw)
+            st = Style(**cleankw(kw))
             doc.automaticstyles.addElement(st)
             self.my_automaticstyles.append(st)
             return st
@@ -397,7 +406,7 @@ class AppyRenderer(OriginalAppyRenderer):
         # create table columns and automatic table-column styles
         for i, fld in enumerate(columns):
             #~ print 20120415, repr(fld.name)
-            name = str(ar.actor) + "." + fld.name
+            name = str(ar.actor) + "." + str(fld.name)
             cs = add_style(name=name, family="table-column")
             if use_relative_widths:
                 cs.addElement(

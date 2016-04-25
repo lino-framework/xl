@@ -74,17 +74,17 @@ The :mod:`lino.modlib.cal.fixtures.std` fixture generates
 automatically all Ash Wednesdays for a range of years:
 
 >>> rt.show(cal.EventsByController, master_instance=ash)
-============= =============== ===============
- When          Summary         Workflow
-------------- --------------- ---------------
- Wed 2/13/13   Ash Wednesday   **Suggested**
- Wed 3/5/14    Ash Wednesday   **Suggested**
- Wed 2/18/15   Ash Wednesday   **Suggested**
- Wed 2/10/16   Ash Wednesday   **Suggested**
- Wed 3/1/17    Ash Wednesday   **Suggested**
- Wed 2/14/18   Ash Wednesday   **Suggested**
- Wed 3/6/19    Ash Wednesday   **Suggested**
-============= =============== ===============
+================= =============== ===============
+ When              Summary         Workflow
+----------------- --------------- ---------------
+ **Wed 2/13/13**   Ash Wednesday   **Suggested**
+ **Wed 3/5/14**    Ash Wednesday   **Suggested**
+ **Wed 2/18/15**   Ash Wednesday   **Suggested**
+ **Wed 2/10/16**   Ash Wednesday   **Suggested**
+ **Wed 3/1/17**    Ash Wednesday   **Suggested**
+ **Wed 2/14/18**   Ash Wednesday   **Suggested**
+ **Wed 3/6/19**    Ash Wednesday   **Suggested**
+================= =============== ===============
 <BLANKLINE>
 
 

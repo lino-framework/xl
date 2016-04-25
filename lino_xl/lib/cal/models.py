@@ -150,9 +150,9 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         "appointments" (i.e. whose time and place have been agreed
         upon with other users or external parties).
 
-        The table (:class:`EventsByDay` and
-        :class:`MyEvents`) show only events whose type has the
-        `is_appointment` field checked.
+        Certain tables show only events whose type has the
+        `is_appointment` field checked.  See :attr:`show_appointments
+        <lino_xl.lib.cal.ui.Events.show_appointments>`.
 
     """
     templates_group = 'cal/Event'
@@ -230,7 +230,7 @@ class Calendar(mixins.BabelNamed):
         _("color"), default=default_color,
         validators=[MinValueValidator(1), MaxValueValidator(32)]
     )
-        #~ choices=COLOR_CHOICES)
+    # choices=COLOR_CHOICES)
 
 
 class Subscription(UserAuthored):
@@ -294,22 +294,22 @@ class Task(Component):
             self.state = TaskStates.started
         return super(Task, self).before_ui_save(ar, **kw)
 
-    #~ def on_user_change(self,request):
-        #~ if not self.state:
-            #~ self.state = TaskState.todo
-        #~ self.user_modified = True
+    # def on_user_change(self,request):
+        # if not self.state:
+            # self.state = TaskState.todo
+        # self.user_modified = True
 
     def is_user_modified(self):
         return self.state != TaskStates.todo
 
     @classmethod
     def on_analyze(cls, lino):
-        #~ lino.TASK_AUTO_FIELDS = dd.fields_list(cls,
+        # lino.TASK_AUTO_FIELDS = dd.fields_list(cls,
         cls.DISABLED_AUTO_FIELDS = dd.fields_list(
             cls, """start_date start_time summary""")
         super(Task, cls).on_analyze(lino)
 
-    #~ def __unicode__(self):
+    # def __unicode__(self):
         # ~ return "#" + str(self.pk)
 
 
@@ -347,12 +347,12 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
             obj.end_date = obj.start_date + duration
         super(RecurrentEvent, self).before_auto_event_save(obj)
 
-    #~ def on_create(self,ar):
-        #~ super(RecurrentEvent,self).on_create(ar)
-        #~ self.event_type = settings.SITE.site_config.holiday_event_type
+    # def on_create(self,ar):
+        # super(RecurrentEvent,self).on_create(ar)
+        # self.event_type = settings.SITE.site_config.holiday_event_type
 
-    #~ def __unicode__(self):
-        #~ return self.summary
+    # def __unicode__(self):
+        # return self.summary
 
     def update_cal_rset(self):
         return self
@@ -430,10 +430,10 @@ class ExtAllDayField(dd.VirtualField):
             if not obj.end_time:
                 pass
                 # obj.end_time = datetime.time(10, 0, 0)
-        #~ obj.save()
+        # obj.save()
 
     def value_from_object(self, obj, ar):
-        #~ logger.info("20120118 value_from_object() %s",dd.obj2str(obj))
+        # logger.info("20120118 value_from_object() %s",dd.obj2str(obj))
         return (obj.start_time is None)
 
 
@@ -461,16 +461,17 @@ class Event(Component, Ended, TypedPrintable, Mailable, Postable):
          field pointing to a given :class:`EventType`, which holds
          extended configurable information about this event.
 
-    .. attribute:: linked_date
+    .. attribute:: when_html
 
          Shows the date and time of the event with a link that opens
-         all events on that day (cal.EventsByDay)
+         all events on that day (:class:`EventsByDay
+         <lino_xl.lib.cal.ui.EventsByDay>`).
 
     """
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Event')
-        #~ abstract = True
+        # abstract = True
         verbose_name = pgettext("cal", "Event")
         verbose_name_plural = pgettext("cal", "Events")
 
@@ -537,9 +538,9 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         """
         if self.transparent:
             return
-        #~ return False
-        #~ Event = dd.resolve_model('cal.Event')
-        #~ ot = ContentType.objects.get_for_model(RecurrentEvent)
+        # return False
+        # Event = dd.resolve_model('cal.Event')
+        # ot = ContentType.objects.get_for_model(RecurrentEvent)
         qs = self.__class__.objects.filter(transparent=False)
         end_date = self.end_date or self.start_date
         flt = Q(start_date=self.start_date, end_date__isnull=True)
@@ -574,19 +575,19 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         if self.user is not None:
             if self.event_type is not None:
                 if self.event_type.locks_user:
-                    #~ c1 = Q(event_type__locks_user=False)
-                    #~ c2 = Q(user=self.user)
-                    #~ qs = qs.filter(c1|c2)
+                    # c1 = Q(event_type__locks_user=False)
+                    # c2 = Q(user=self.user)
+                    # qs = qs.filter(c1|c2)
                     qs = qs.filter(user=self.user, event_type__locks_user=True)
-        #~ qs = Event.objects.filter(flt,owner_type=ot)
-        #~ if we.start_date.month == 7:
-            #~ print 20131011, self, we.start_date, qs.count()
-        #~ print 20131025, qs.query
+        # qs = Event.objects.filter(flt,owner_type=ot)
+        # if we.start_date.month == 7:
+            # print 20131011, self, we.start_date, qs.count()
+        # print 20131025, qs.query
         return qs
 
     def is_fixed_state(self):
         return self.state.fixed
-        #~ return self.state in EventStates.editable_states
+        # return self.state in EventStates.editable_states
 
     def is_user_modified(self):
         return self.state != EventStates.suggested
@@ -614,7 +615,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         guests, or in the extensible calendar panel).
 
         """
-        #~ from django.utils.translation import ugettext as _
+        # from django.utils.translation import ugettext as _
         s = event.summary
         # if event.owner_id:
         #     s += " ({0})".format(event.owner)
@@ -638,7 +639,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         user-modified Events.
 
         """
-        #~ logger.info("20130528 before_ui_save")
+        # logger.info("20130528 before_ui_save")
         if self.state is EventStates.suggested:
             self.state = EventStates.draft
         return super(Event, self).before_ui_save(ar, **kw)
@@ -653,16 +654,16 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
             self.assigned_to = ar.subst_user
         super(Event, self).on_create(ar)
 
-    #~ def on_create(self,ar):
-        #~ self.start_date = settings.SITE.today()
-        #~ self.start_time = datetime.datetime.now().time()
+    # def on_create(self,ar):
+        # self.start_date = settings.SITE.today()
+        # self.start_time = datetime.datetime.now().time()
         # ~ # default user is almost the same as for UserAuthored
         # ~ # but we take the *real* user, not the "working as"
-        #~ if self.user_id is None:
-            #~ u = ar.user
-            #~ if u is not None:
-                #~ self.user = u
-        #~ super(Event,self).on_create(ar)
+        # if self.user_id is None:
+            # u = ar.user
+            # if u is not None:
+                # self.user = u
+        # super(Event,self).on_create(ar)
 
     def get_postable_recipients(self):
         """return or yield a list of Partners"""
@@ -671,8 +672,8 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
                 yield self.project
         for g in self.guest_set.all():
             yield g.partner
-        #~ if self.user.partner:
-            #~ yield self.user.partner
+        # if self.user.partner:
+            # yield self.user.partner
 
     def get_mailable_type(self):
         return self.event_type
@@ -686,8 +687,8 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         if self.user.partner:
             yield ('cc', self.user.partner)
 
-    #~ def get_mailable_body(self,ar):
-        #~ return self.description
+    # def get_mailable_body(self,ar):
+        # return self.description
 
     def get_system_note_recipients(self, request, silent):
         if self.user != request.user:
@@ -700,28 +701,28 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 
     @dd.displayfield(_("When"))
     def when_text(self, ar):
-        if ar is None:
-            return ''
         txt = when_text(self.start_date, self.start_time)
         if self.end_date and self.end_date != self.start_date:
             txt += "-" + when_text(self.end_date, self.end_time)
         return txt
-        # return ar.obj2html(self, txt)
+
+    @dd.displayfield(_("When"))
+    # def linked_date(self, ar):
+    def when_html(self, ar):
+        if ar is None:
+            return ''
+        EventsByDay = settings.SITE.modules.cal.EventsByDay
+        txt = when_text(self.start_date, self.start_time)
+        return EventsByDay.as_link(ar, self.start_date, txt)
 
     @dd.displayfield(_("Link URL"))
     def url(self, ar):
         return 'foo'
 
-    @dd.displayfield(_("When"))
-    def linked_date(self, ar):
-        EventsByDay = settings.SITE.modules.cal.EventsByDay
-        txt = when_text(self.start_date, self.start_time)
-        return EventsByDay.as_link(ar, self.start_date, txt)
-
     @dd.virtualfield(dd.DisplayField(_("Reminder")))
     def reminder(self, request):
         return False
-    #~ reminder.return_type = dd.DisplayField(_("Reminder"))
+    # reminder.return_type = dd.DisplayField(_("Reminder"))
 
     def get_calendar(self):
         """
@@ -732,9 +733,9 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         The default implementation returns None.
         Override this if your app uses Calendars.
         """
-        #~ for sub in Subscription.objects.filter(user=ar.get_user()):
-            #~ if sub.contains_event(self):
-                #~ return sub
+        # for sub in Subscription.objects.filter(user=ar.get_user()):
+            # if sub.contains_event(self):
+                # return sub
         return None
 
     @dd.virtualfield(models.ForeignKey('cal.Calendar'))
@@ -866,7 +867,7 @@ def migrate_reminder(obj, reminder_date, reminder_text,
 
     # ~ # These constants must be unique for the whole Lino Site.
     # ~ # Keep in sync with auto types defined in lino.projects.pcsw.models.Person
-    #~ REMINDER = 5
+    # REMINDER = 5
 
     if reminder_text:
         summary = reminder_text
@@ -938,7 +939,7 @@ def update_reminders_for_user(user, ar):
     for model in rt.models_by_base(EventGenerator):
         for obj in model.objects.filter(user=user):
             obj.update_reminders(ar)
-            #~ logger.info("--> %s",unicode(obj))
+            # logger.info("--> %s",unicode(obj))
             n += 1
     return n
 
