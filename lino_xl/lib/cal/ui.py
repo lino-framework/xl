@@ -65,21 +65,21 @@ class Subscriptions(dd.Table):
     required_roles = dd.required(OfficeStaff)
     model = 'cal.Subscription'
     order_by = ['calendar__name']
-    #~ insert_layout = """
-    #~ label
-    #~ event_type
-    #~ """
-    #~ detail_layout = """
-    #~ label user color
-    #~ event_type team other_user room
-    #~ description
-    #~ """
+    # insert_layout = """
+    # label
+    # event_type
+    # """
+    # detail_layout = """
+    # label user color
+    # event_type team other_user room
+    # description
+    # """
 
-#~ class MySubscriptions(Subscriptions, ByUser):
-    #~ pass
+# class MySubscriptions(Subscriptions, ByUser):
+    # pass
 
-#~ class SubscriptionsByCalendar(Subscriptions):
-    #~ master_key = 'calendar'
+# class SubscriptionsByCalendar(Subscriptions):
+    # master_key = 'calendar'
 
 
 class SubscriptionsByUser(Subscriptions):
@@ -163,7 +163,7 @@ class Tasks(dd.Table):
 
     @classmethod
     def get_request_queryset(self, ar):
-        #~ logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
+        # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
         qs = super(Tasks, self).get_request_queryset(ar)
 
         if ar.param_values.user:
@@ -212,7 +212,7 @@ class TasksByController(Tasks):
     master_key = 'owner'
     required_roles = dd.required(OfficeUser)
     column_names = 'start_date summary workflow_buttons id'
-    #~ hidden_columns = set('owner_id owner_type'.split())
+    # hidden_columns = set('owner_id owner_type'.split())
     auto_fit_column_widths = True
 
 
@@ -313,7 +313,7 @@ class Guests(dd.Table):
 
     @classmethod
     def get_request_queryset(self, ar):
-        #~ logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
+        # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
         qs = super(Guests, self).get_request_queryset(ar)
 
         if isinstance(qs, list):
@@ -399,7 +399,7 @@ if settings.SITE.is_installed('contacts'):
 
         @classmethod
         def get_request_queryset(self, ar):
-            #~ logger.info("20130809 MyPresences")
+            # logger.info("20130809 MyPresences")
             if ar.get_user().partner is None:
                 raise Warning("Action not available for users without partner")
             return super(MyPresences, self).get_request_queryset(ar)
@@ -417,29 +417,29 @@ if settings.SITE.is_installed('contacts'):
             u = ar.get_user()
             if u is not None:
                 kw.update(partner=u.partner)
-            #~ kw.update(guest_state=GuestStates.invited)
-            #~ kw.update(start_date=settings.SITE.today())
+            # kw.update(guest_state=GuestStates.invited)
+            # kw.update(start_date=settings.SITE.today())
             return kw
 
-        #~ @classmethod
-        #~ def get_request_queryset(self,ar):
-            #~ ar.master_instance = ar.get_user().partner
-            #~ return super(MyPresences,self).get_request_queryset(ar)
+        # @classmethod
+        # def get_request_queryset(self,ar):
+            # ar.master_instance = ar.get_user().partner
+            # return super(MyPresences,self).get_request_queryset(ar)
 
-    #~ class MyPendingInvitations(Guests):
+    # class MyPendingInvitations(Guests):
     class MyPendingPresences(MyPresences):
         label = _("My pending invitations")
         help_text = _(
             """Received invitations which I must accept or reject.""")
-        #~ filter = models.Q(state=GuestStates.invited)
+        # filter = models.Q(state=GuestStates.invited)
         column_names = 'event__when_text role workflow_buttons remark'
         params_panel_hidden = True
 
         @classmethod
         def param_defaults(self, ar, **kw):
             kw = super(MyPendingPresences, self).param_defaults(ar, **kw)
-            #~ kw.update(partner=ar.get_user().partner)
-            #~ kw.update(user=None)
+            # kw.update(partner=ar.get_user().partner)
+            # kw.update(user=None)
             kw.update(guest_state=GuestStates.invited)
             kw.update(start_date=settings.SITE.today())
             return kw
@@ -514,24 +514,24 @@ class RecurrentEvents(dd.Table):
 
 # ~ from lino_xl.lib.workflows import models as workflows # Workflowable
 
-#~ class Components(dd.Table):
+# class Components(dd.Table):
 # ~ # class Components(dd.Table,workflows.Workflowable):
 
-    #~ workflow_owner_field = 'user'
-    #~ workflow_state_field = 'state'
+    # workflow_owner_field = 'user'
+    # workflow_state_field = 'state'
 
-    #~ def disable_editing(self,request):
-    #~ def get_row_permission(cls,row,user,action):
-        #~ if row.rset: return False
+    # def disable_editing(self,request):
+    # def get_row_permission(cls,row,user,action):
+        # if row.rset: return False
 
-    #~ @classmethod
-    #~ def get_row_permission(cls,action,user,row):
-        #~ if not action.readonly:
-            #~ if row.user != user and user.level < UserLevel.manager:
-                #~ return False
-        #~ if not super(Components,cls).get_row_permission(action,user,row):
-            #~ return False
-        #~ return True
+    # @classmethod
+    # def get_row_permission(cls,action,user,row):
+        # if not action.readonly:
+            # if row.user != user and user.level < UserLevel.manager:
+                # return False
+        # if not super(Components,cls).get_row_permission(action,user,row):
+            # return False
+        # return True
 
 
 class EventDetail(dd.FormLayout):
@@ -615,7 +615,7 @@ class Events(dd.Table):
                                       "Only events assigned to this user.")),
         state=EventStates.field(blank=True,
                                 help_text=_("Only rows having this state.")),
-        #~ unclear = models.BooleanField(_("Unclear events"))
+        # unclear = models.BooleanField(_("Unclear events"))
         observed_event=EventEvents.field(blank=True),
         show_appointments=dd.YesNo.field(_("Appointments"), blank=True),
     )
@@ -627,12 +627,12 @@ class Events(dd.Table):
     # ~ next = NextDateAction() # doesn't yet work. 20121203
 
     fixed_states = set(EventStates.filter(fixed=True))
-    #~ pending_states = set([es for es in EventStates if not es.fixed])
+    # pending_states = set([es for es in EventStates if not es.fixed])
     pending_states = set(EventStates.filter(fixed=False))
 
     @classmethod
     def get_request_queryset(self, ar):
-        #~ logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
+        # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
         qs = super(Events, self).get_request_queryset(ar)
         pv = ar.param_values
 
@@ -779,12 +779,12 @@ class ShowEventsByDay(dd.Action):
         ar.set_response(eval_js=js)
 
 
-#~ class EventsByType(Events):
-    #~ master_key = 'type'
+# class EventsByType(Events):
+    # master_key = 'type'
 
-#~ class EventsByPartner(Events):
-    #~ required = dd.required(user_groups='office')
-    #~ master_key = 'user'
+# class EventsByPartner(Events):
+    # required = dd.required(user_groups='office')
+    # master_key = 'user'
 
 
 class EventsByRoom(Events):
@@ -835,8 +835,8 @@ class MyEvents(Events):
         kw = super(MyEvents, self).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         kw.update(show_appointments=dd.YesNo.yes)
-        #~ kw.update(assigned_to=ar.get_user())
-        #~ logger.info("20130807 %s %s",self,kw)
+        # kw.update(assigned_to=ar.get_user())
+        # logger.info("20130807 %s %s",self,kw)
         kw.update(start_date=dd.today())
         # kw.update(end_date=settings.SITE.today(14))
         return kw
@@ -871,10 +871,10 @@ class MyAssignedEvents(MyEvents):
     """
     label = _("Events assigned to me")
     help_text = _("Table of events assigned to me.")
-    #~ master_key = 'assigned_to'
+    # master_key = 'assigned_to'
     required_roles = dd.required(OfficeUser)
-    #~ column_names = 'when_text:20 project summary workflow_buttons *'
-    #~ known_values = dict(assigned_to=EventStates.assigned)
+    # column_names = 'when_text:20 project summary workflow_buttons *'
+    # known_values = dict(assigned_to=EventStates.assigned)
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -900,7 +900,7 @@ class OverdueAppointments(Events):
     is set to "Unstable", :attr:`end_date` is set to today.
 
     """
-    required_roles = dd.required((OfficeUser, OfficeOperator))
+    required_roles = dd.required(OfficeStaff)
     label = _("Overdue appointments")
     column_names = 'when_html project owner event_type summary workflow_buttons *'
     auto_fit_column_widths = True

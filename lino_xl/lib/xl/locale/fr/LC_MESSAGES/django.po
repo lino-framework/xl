@@ -5,18 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  \n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-23 17:48+0300\n"
-"PO-Revision-Date: 2016-01-20 14:16+0300\n"
+"POT-Creation-Date: 2016-04-26 02:09+0300\n"
+"PO-Revision-Date: 2016-04-26 02:10+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1)\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.2.0\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: lino_xl/lib/addresses/__init__.py:26 lino_xl/lib/addresses/models.py:49
 #: lino_xl/lib/addresses/models.py:131
@@ -115,7 +116,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: lino_xl/lib/addresses/models.py:60 lino_xl/lib/blogs/models.py:33
-#: lino_xl/lib/cal/models.py:821 lino_xl/lib/cv/models.py:482
+#: lino_xl/lib/cal/models.py:822 lino_xl/lib/cv/models.py:482
 #: lino_xl/lib/cv/models.py:508 lino_xl/lib/excerpts/models.py:109
 #: lino_xl/lib/lists/models.py:92 lino_xl/lib/notes/models.py:47
 #: lino_xl/lib/notes/models.py:84 lino_xl/lib/thirds/models.py:26
@@ -257,8 +258,7 @@ msgid ""
 "There is more than one client with national id %(national_id)s in our "
 "database."
 msgstr ""
-"Il y a plus d'un client avec NN %(national_id)s dans notre base de "
-"données."
+"Il y a plus d'un client avec NN %(national_id)s dans notre base de données."
 
 #: lino_xl/lib/beid/mixins.py:301 lino_xl/lib/beid/mixins.py:313
 #, fuzzy, python-format
@@ -273,8 +273,8 @@ msgstr "D'accord pour créer nouveau bénéficiaire %s?"
 #: lino_xl/lib/beid/mixins.py:320
 #, python-format
 msgid ""
-"Cannot create new client because there is already a person named %s in "
-"our database."
+"Cannot create new client because there is already a person named %s in our "
+"database."
 msgstr "Il y a déjà une personne nommée %s dans notre base de données."
 
 #: lino_xl/lib/beid/mixins.py:324 lino_xl/lib/beid/mixins.py:331
@@ -284,8 +284,8 @@ msgstr "Oups!"
 #: lino_xl/lib/beid/mixins.py:327
 #, python-format
 msgid ""
-"Cannot create new client because there is more than one person named %s "
-"in our database."
+"Cannot create new client because there is more than one person named %s in "
+"our database."
 msgstr "Il y a plus d'une personne nommée %s dans notre base de données."
 
 #: lino_xl/lib/beid/mixins.py:350
@@ -621,8 +621,8 @@ msgstr "Nombre d'évènements"
 msgid "Times"
 msgstr "Heure d'échéance"
 
-#: lino_xl/lib/cal/mixins.py:646 lino_xl/lib/cal/models.py:701
-#: lino_xl/lib/cal/models.py:715
+#: lino_xl/lib/cal/mixins.py:646 lino_xl/lib/cal/models.py:702
+#: lino_xl/lib/cal/models.py:709
 msgid "When"
 msgstr "Quand"
 
@@ -781,8 +781,7 @@ msgid ""
 "Whether this subscription should \"\n"
 "        \"initially be displayed as a hidden calendar."
 msgstr ""
-"Activer cette case pour ne pas afficher ce calendrier en ouvrant le "
-"panneau."
+"Activer cette case pour ne pas afficher ce calendrier en ouvrant le panneau."
 
 #: lino_xl/lib/cal/models.py:277
 msgid "Task"
@@ -818,129 +817,130 @@ msgstr "Évènements récurrents"
 msgid "Update Guests"
 msgstr "Générer les participants"
 
-#: lino_xl/lib/cal/models.py:474
+#: lino_xl/lib/cal/models.py:475
 msgctxt "cal"
 msgid "Event"
 msgstr "Évènement"
 
-#: lino_xl/lib/cal/models.py:475
+#: lino_xl/lib/cal/models.py:476
 msgctxt "cal"
 msgid "Events"
 msgstr "Évènements"
 
-#: lino_xl/lib/cal/models.py:482
+#: lino_xl/lib/cal/models.py:483
 msgid "Transparent"
 msgstr "non bloquant"
 
-#: lino_xl/lib/cal/models.py:482
-msgid "Indicates that this Event shouldn't prevent other Events at the same time."
+#: lino_xl/lib/cal/models.py:483
+msgid ""
+"Indicates that this Event shouldn't prevent other Events at the same time."
 msgstr ""
-"Indique que cet évènement n'empêche pas d'avoir d'autres évènements en "
-"même temps."
+"Indique que cet évènement n'empêche pas d'avoir d'autres évènements en même "
+"temps."
 
-#: lino_xl/lib/cal/models.py:488
+#: lino_xl/lib/cal/models.py:489
 msgid "all day"
 msgstr "journée entière"
 
-#: lino_xl/lib/cal/models.py:492 lino_xl/lib/cal/ui.py:611
+#: lino_xl/lib/cal/models.py:493 lino_xl/lib/cal/ui.py:612
 msgid "Assigned to"
 msgstr "Attribué à"
 
-#: lino_xl/lib/cal/models.py:513
+#: lino_xl/lib/cal/models.py:514
 #, python-format
 msgid "Unsaved %s"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:623 lino_xl/lib/reception/models.py:65
+#: lino_xl/lib/cal/models.py:624 lino_xl/lib/reception/models.py:65
 msgid "Busy"
 msgstr "Occupé"
 
-#: lino_xl/lib/cal/models.py:627
+#: lino_xl/lib/cal/models.py:628
 msgid "with"
 msgstr "avec"
 
-#: lino_xl/lib/cal/models.py:711
+#: lino_xl/lib/cal/models.py:718
 msgid "Link URL"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:721
+#: lino_xl/lib/cal/models.py:722
 msgid "Reminder"
 msgstr "Rappel"
 
-#: lino_xl/lib/cal/models.py:762 lino_xl/lib/cal/ui.py:294
+#: lino_xl/lib/cal/models.py:763 lino_xl/lib/cal/ui.py:294
 msgid "Responsible user"
 msgstr "Utilisateur responsable"
 
-#: lino_xl/lib/cal/models.py:773
+#: lino_xl/lib/cal/models.py:774
 msgid "Check for missing participants"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:783
+#: lino_xl/lib/cal/models.py:784
 msgid "No participants although {0} suggestions exist."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:807
+#: lino_xl/lib/cal/models.py:808
 #, fuzzy
 msgid "Participant"
 msgstr "Confirmation"
 
-#: lino_xl/lib/cal/models.py:808
+#: lino_xl/lib/cal/models.py:809
 #, fuzzy
 msgid "Participants"
 msgstr "Confirmation"
 
-#: lino_xl/lib/cal/models.py:815 lino_xl/lib/households/choicelists.py:18
+#: lino_xl/lib/cal/models.py:816 lino_xl/lib/households/choicelists.py:18
 msgid "Role"
 msgstr "Rôle"
 
-#: lino_xl/lib/cal/models.py:841
+#: lino_xl/lib/cal/models.py:842
 msgid "Event"
 msgstr "Évènement"
 
-#: lino_xl/lib/cal/models.py:874
+#: lino_xl/lib/cal/models.py:875
 msgid "due date reached"
 msgstr "date d'échéance atteinte"
 
-#: lino_xl/lib/cal/models.py:891
+#: lino_xl/lib/cal/models.py:892
 msgid "Default access class"
 msgstr "Classe d'accès par défaut"
 
-#: lino_xl/lib/cal/models.py:892
+#: lino_xl/lib/cal/models.py:893
 msgid "The default access class for your calendar events and tasks."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:899 lino_xl/lib/cal/models.py:907
+#: lino_xl/lib/cal/models.py:900 lino_xl/lib/cal/models.py:908
 msgid "Default Event Type"
 msgstr "Type d'évènement par défault"
 
-#: lino_xl/lib/cal/models.py:900
+#: lino_xl/lib/cal/models.py:901
 msgid "The default event type for your calendar events."
 msgstr "Le type par défaut pour vos évènements et tâches."
 
-#: lino_xl/lib/cal/models.py:908
+#: lino_xl/lib/cal/models.py:909
 #, fuzzy
 msgid "The default type of events on this site."
 msgstr "Le calendrier par défaut pour vos évènements et tâches."
 
-#: lino_xl/lib/cal/models.py:918
+#: lino_xl/lib/cal/models.py:919
 #, fuzzy
 msgid "Site Calendar"
 msgstr "Calendrier par défaut"
 
-#: lino_xl/lib/cal/models.py:919
+#: lino_xl/lib/cal/models.py:920
 #, fuzzy
 msgid "The default calendar of this site."
 msgstr "Le calendrier par défaut pour vos rendez-vous et tâches."
 
-#: lino_xl/lib/cal/models.py:925
+#: lino_xl/lib/cal/models.py:926
 msgid "Max automatic events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:927
+#: lino_xl/lib/cal/models.py:928
 msgid "Maximum number of automatic events to be generated."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:956
+#: lino_xl/lib/cal/models.py:957
 #, python-format
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr ""
@@ -957,17 +957,17 @@ msgstr ""
 msgid "A calendar task is something you need to do."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:151 lino_xl/lib/cal/ui.py:603
+#: lino_xl/lib/cal/ui.py:151 lino_xl/lib/cal/ui.py:604
 msgid "Managed by"
 msgstr "Traité par"
 
 #: lino_xl/lib/cal/ui.py:153 lino_xl/lib/cal/ui.py:296
-#: lino_xl/lib/cal/ui.py:605
+#: lino_xl/lib/cal/ui.py:606
 #, fuzzy
 msgid "Only rows managed by this user."
 msgstr "%d rendez-vous vous ont été attribués"
 
-#: lino_xl/lib/cal/ui.py:157 lino_xl/lib/cal/ui.py:616
+#: lino_xl/lib/cal/ui.py:157 lino_xl/lib/cal/ui.py:617
 msgid "Only rows having this state."
 msgstr ""
 
@@ -1014,7 +1014,8 @@ msgid "My presences"
 msgstr "Mes présences"
 
 #: lino_xl/lib/cal/ui.py:395
-msgid "Shows all my presences in calendar events, independently of their state."
+msgid ""
+"Shows all my presences in calendar events, independently of their state."
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:431
@@ -1032,10 +1033,8 @@ msgstr "Mes visiteurs"
 #: lino_xl/lib/cal/ui.py:464
 msgid ""
 "The list of Event Types defined on this system.\n"
-"    An EventType is a list of events which have certain things in common,"
-"\n"
-"    especially they are displayed in the same colour in the calendar "
-"panel.\n"
+"    An EventType is a list of events which have certain things in common,\n"
+"    especially they are displayed in the same colour in the calendar panel.\n"
 "    "
 msgstr ""
 
@@ -1057,64 +1056,63 @@ msgstr "Établissement"
 msgid "Unstable"
 msgstr "au "
 
-#: lino_xl/lib/cal/ui.py:581
+#: lino_xl/lib/cal/ui.py:582
 msgid "A List of calendar entries. Each entry is called an event."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:613
+#: lino_xl/lib/cal/ui.py:614
 #, fuzzy
 msgid "Only events assigned to this user."
 msgstr "%d rendez-vous vous ont été attribués"
 
-#: lino_xl/lib/cal/ui.py:619 lino_xl/lib/reception/models.py:316
+#: lino_xl/lib/cal/ui.py:620 lino_xl/lib/reception/models.py:316
 msgid "Appointments"
 msgstr "Rendez-vous"
 
-#: lino_xl/lib/cal/ui.py:723
+#: lino_xl/lib/cal/ui.py:724
 msgid "Appointments today"
 msgstr "Rendez-vous aujourd'hui"
 
-#: lino_xl/lib/cal/ui.py:761 lino_xl/lib/excerpts/models.py:791
+#: lino_xl/lib/cal/ui.py:762 lino_xl/lib/excerpts/models.py:791
 #, fuzzy
 msgid "Today"
 msgstr "Lundi"
 
-#: lino_xl/lib/cal/ui.py:762
+#: lino_xl/lib/cal/ui.py:763
 #, fuzzy
 msgid "Show all calendar events of the same day."
 msgstr "Le calendrier par défaut pour vos rendez-vous et tâches."
 
-#: lino_xl/lib/cal/ui.py:826
+#: lino_xl/lib/cal/ui.py:827
 msgid "My appointments"
 msgstr "Mes rendez-vous"
 
-#: lino_xl/lib/cal/ui.py:827
+#: lino_xl/lib/cal/ui.py:828
 msgid "Table of my appointments."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:851
+#: lino_xl/lib/cal/ui.py:852
 msgid "My appointments today"
 msgstr "Mes rendez-vous aujourd'hui"
 
-#: lino_xl/lib/cal/ui.py:871
+#: lino_xl/lib/cal/ui.py:872
 #, fuzzy
 msgid "Events assigned to me"
 msgstr "%d rendez-vous vous ont été attribués"
 
-#: lino_xl/lib/cal/ui.py:872
+#: lino_xl/lib/cal/ui.py:873
 #, fuzzy
 msgid "Table of events assigned to me."
 msgstr "Tableau de tous les rendez-vous proposés."
 
-#: lino_xl/lib/cal/ui.py:890
+#: lino_xl/lib/cal/ui.py:891
 #, fuzzy, python-format
 msgid "%d events have been assigned to you."
 msgstr "Enregistrement %s a été mis à jour."
 
-#: lino_xl/lib/cal/ui.py:897
-#, fuzzy
+#: lino_xl/lib/cal/ui.py:904
 msgid "Overdue appointments"
-msgstr "Mes rendez-vous"
+msgstr "Rendez-vous dépassés"
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
 #: lino_xl/lib/rooms/models.py:153
@@ -1690,8 +1688,8 @@ msgstr "Imprimé"
 
 #: lino_xl/lib/excerpts/mixins.py:29
 msgid ""
-"Mark this object as not printed. A subsequent call to print will generate"
-" a new cache file."
+"Mark this object as not printed. A subsequent call to print will generate a "
+"new cache file."
 msgstr ""
 
 #: lino_xl/lib/excerpts/mixins.py:41
@@ -1757,8 +1755,8 @@ msgstr "Céer courrier"
 
 #: lino_xl/lib/excerpts/models.py:129
 msgid ""
-"There's at most one primary type per model.         Enabling this field "
-"will automatically make the other         types non-primary."
+"There's at most one primary type per model.         Enabling this field will "
+"automatically make the other         types non-primary."
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:134
@@ -1802,8 +1800,7 @@ msgstr "Imprimer"
 #, fuzzy
 msgid "Create an excerpt in order to print this data record."
 msgstr ""
-"Historique des impressions qui ont été faites à partir de cet "
-"enregistrement."
+"Historique des impressions qui ont été faites à partir de cet enregistrement."
 
 #: lino_xl/lib/excerpts/models.py:343
 #, python-format
@@ -1843,8 +1840,7 @@ msgstr "Communiqué"
 #: lino_xl/lib/excerpts/models.py:758
 msgid "History of excerpts based on this data record."
 msgstr ""
-"Historique des impressions qui ont été faites à partir de cet "
-"enregistrement."
+"Historique des impressions qui ont été faites à partir de cet enregistrement."
 
 #: lino_xl/lib/excerpts/models.py:759
 msgid "Existing excerpts"
@@ -1965,7 +1961,8 @@ msgstr "Partenaire"
 msgid "Cohabitant"
 msgstr "Cohabitant"
 
-#: lino_xl/lib/households/choicelists.py:26 lino_xl/lib/humanlinks/models.py:58
+#: lino_xl/lib/households/choicelists.py:26
+#: lino_xl/lib/humanlinks/models.py:58
 msgid "Child"
 msgstr "Enfant"
 
@@ -1999,11 +1996,11 @@ msgstr "Membres de ménage"
 
 #: lino_xl/lib/households/models.py:228
 msgid ""
-"Whether this is the primary household of this person. Checking this field"
-" will automatically disable any other primary memberships."
+"Whether this is the primary household of this person. Checking this field "
+"will automatically disable any other primary memberships."
 msgstr ""
-"Marque ceci comme ménage primaire de cette personne. Activer cette case "
-"va la désactiver pour les autres ménages."
+"Marque ceci comme ménage primaire de cette personne. Activer cette case va "
+"la désactiver pour les autres ménages."
 
 #: lino_xl/lib/households/models.py:268
 msgid "Make this the primary household."
@@ -2508,8 +2505,8 @@ msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:55
 msgid ""
-"The name of the file to be used as template when creating an email from a"
-" mailable of this type."
+"The name of the file to be used as template when creating an email from a "
+"mailable of this type."
 msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:72
@@ -2886,7 +2883,8 @@ msgid "Expected Guests"
 msgstr "Visiteurs attendus"
 
 #: lino_xl/lib/reception/models.py:345
-msgid "Consult this table when checking in a partner who     has an appointment."
+msgid ""
+"Consult this table when checking in a partner who     has an appointment."
 msgstr ""
 
 #: lino_xl/lib/reception/models.py:373
@@ -4187,9 +4185,6 @@ msgstr "N° de TVA"
 #~ msgid "Detail"
 #~ msgstr "Détail"
 
-#~ msgid "Open a detail window on this record"
-#~ msgstr ""
-
 #~ msgid "New"
 #~ msgstr "Nouveau"
 
@@ -4202,9 +4197,6 @@ msgstr "N° de TVA"
 #~ msgid "%s has been updated."
 #~ msgstr "%s a été mis à jour."
 
-#~ msgid "%s : nothing to save."
-#~ msgstr ""
-
 #~ msgid "Save changes in this form"
 #~ msgstr "Enregistrer les changements dans ce formulaire"
 
@@ -4213,12 +4205,6 @@ msgstr "N° de TVA"
 
 #~ msgid "%s has been created."
 #~ msgstr "%s a été créé"
-
-#~ msgid "Create the record and open a detail window on it"
-#~ msgstr ""
-
-#~ msgid "Don't send email notification"
-#~ msgstr ""
 
 #~ msgid "%d row(s) have been updated."
 #~ msgstr "Enregistrement %s a été mis à jour."
@@ -4229,9 +4215,6 @@ msgstr "N° de TVA"
 #~ msgid "Delete"
 #~ msgstr "Supprimer"
 
-#~ msgid ""
-#~ msgstr ""
-
 #~ msgid "Are you sure ?"
 #~ msgstr "D'accord ?"
 
@@ -4241,35 +4224,14 @@ msgstr "N° de TVA"
 #~ msgid "Total (%d rows)"
 #~ msgstr "Total (%d lignes)"
 
-#~ msgid "value"
-#~ msgstr ""
-
-#~ msgid "text"
-#~ msgstr ""
-
-#~ msgid "name"
-#~ msgstr ""
-
 #~ msgid "%(value)r (invalid choice for %(list)s)"
 #~ msgstr "%(value)r (choix non valable pour %(list)s)"
-
-#~ msgid "You have no permission to delete this row."
-#~ msgstr ""
-
-#~ msgid "Quantity (Decimal or Duration)"
-#~ msgstr ""
 
 #~ msgid "Invalid date"
 #~ msgstr "Date invalide"
 
 #~ msgid "Confirmation"
 #~ msgstr "Confirmation"
-
-#~ msgid "User abandoned"
-#~ msgstr ""
-
-#~ msgid "Cannot merge an instance to itself."
-#~ msgstr ""
 
 #~ msgid "Merge %(origin)s into %(target)s"
 #~ msgstr "Fusionner %(origin)s vers %(target)s"
@@ -4283,15 +4245,6 @@ msgstr "N° de TVA"
 #~ msgid "%s will be deleted"
 #~ msgstr "%s va être supprimé."
 
-#~ msgid "Are you sure you want to merge %(this)s into %(merge_to)s?"
-#~ msgstr ""
-
-#~ msgid "Merged %(this)s into %(merge_to)s. Updated %(updated)d related rows."
-#~ msgstr ""
-
-#~ msgid "Merge this object into another object of same class."
-#~ msgstr ""
-
 #~ msgid "Merge"
 #~ msgstr "Fusionner"
 
@@ -4301,32 +4254,17 @@ msgstr "N° de TVA"
 #~ msgid "Reason"
 #~ msgstr "Raison"
 
-#~ msgid "Also reassign volatile related objects"
-#~ msgstr ""
-
 #~ msgid "Workflow"
 #~ msgstr "État"
 
 #~ msgid "Show Last"
 #~ msgstr "Dernier"
 
-#~ msgid "Show the last record in a detail window"
-#~ msgstr ""
-
 #~ msgid "Show All"
 #~ msgstr "Montrer tous"
 
-#~ msgid "Show all records in a table window"
-#~ msgstr ""
-
-#~ msgid "Error"
-#~ msgstr ""
-
 #~ msgid "Aborted"
 #~ msgstr "à propos"
-
-#~ msgid "the documentation"
-#~ msgstr ""
 
 #~ msgid "No data to display"
 #~ msgstr "Aucun enregistrement"
@@ -4343,9 +4281,6 @@ msgstr "N° de TVA"
 #~ msgid "Site"
 #~ msgstr "Site"
 
-#~ msgid "English"
-#~ msgstr ""
-
 #~ msgid "This is "
 #~ msgstr "Ceci est "
 
@@ -4360,12 +4295,6 @@ msgstr "N° de TVA"
 
 #~ msgid "%r (invalid choice)"
 #~ msgstr "%r (choix non valide)"
-
-#~ msgid "Invalid value for this field (%s)."
-#~ msgstr ""
-
-#~ msgid "Button"
-#~ msgstr ""
 
 #~ msgid "Row %(rowid)d of %(rowcount)d"
 #~ msgstr "Ligne %(rowid)d de %(rowcount)d"
@@ -4385,35 +4314,8 @@ msgstr "N° de TVA"
 #~ msgid "Created"
 #~ msgstr "Créé"
 
-#~ msgid "Reference"
-#~ msgstr ""
-
-#~ msgid "There are %d similar %s:"
-#~ msgstr ""
-
-#~ msgid "Are you sure you want to create a new %(model)s named %(name)s?"
-#~ msgstr ""
-
-#~ msgid "Must update phonetic words."
-#~ msgstr ""
-
-#~ msgid "Check for missing phonetic words"
-#~ msgstr ""
-
 #~ msgid "Similar record"
 #~ msgstr "Personnes de contact"
-
-#~ msgid "Phonetic words: {0}"
-#~ msgstr ""
-
-#~ msgid "Duplicate this row."
-#~ msgstr ""
-
-#~ msgid "Duplicated %(old)s to %(new)s."
-#~ msgstr ""
-
-#~ msgid "Cannot find first and last name in \"{0}\""
-#~ msgstr ""
 
 #~ msgid "Mrs"
 #~ msgstr "Mme"
@@ -4435,14 +4337,8 @@ msgstr "N° de TVA"
 #~ msgid "Middle name"
 #~ msgstr "Deuxième prénom"
 
-#~ msgid "Space-separated list of all middle names."
-#~ msgstr ""
-
 #~ msgid "Last name"
 #~ msgstr "Nom de famille"
-
-#~ msgid "Last name (family name)."
-#~ msgstr ""
 
 #~ msgid "Birth date"
 #~ msgstr "Date de naissance"
@@ -4458,9 +4354,6 @@ msgstr "N° de TVA"
 
 #~ msgid "End date"
 #~ msgstr "Date de fin"
-
-#~ msgid "Date period ends before it started."
-#~ msgstr ""
 
 #~ msgctxt "date"
 #~ msgid "on %s"
@@ -4481,47 +4374,14 @@ msgstr "N° de TVA"
 #~ msgid "Period from"
 #~ msgstr "Période du"
 
-#~ msgid "Start date of observed period"
-#~ msgstr ""
-
-#~ msgid "End date of observed period"
-#~ msgstr ""
-
 #~ msgid "Situation on"
 #~ msgstr "Durée (unité)"
-
-#~ msgid "Date of observation"
-#~ msgstr ""
-
-#~ msgid "➕"
-#~ msgstr ""
-
-#~ msgid "❌"
-#~ msgstr ""
 
 #~ msgid "See as "
 #~ msgstr "Vue:"
 
-#~ msgid "Move this row one row upwards"
-#~ msgstr ""
-
-#~ msgid "Moved up."
-#~ msgstr ""
-
-#~ msgid "Move this row one row downwards"
-#~ msgstr ""
-
-#~ msgid "Moved down."
-#~ msgstr ""
-
 #~ msgid "Seq.No."
 #~ msgstr "N° de séq"
-
-#~ msgid "Row # %s"
-#~ msgstr ""
-
-#~ msgid "Move"
-#~ msgstr ""
 
 #~ msgid "File"
 #~ msgstr "Fichier"
@@ -4529,44 +4389,8 @@ msgstr "N° de TVA"
 #~ msgid "MIME type"
 #~ msgstr "type MIME"
 
-#~ msgid "Models"
-#~ msgstr ""
-
-#~ msgid "app_label"
-#~ msgstr ""
-
-#~ msgid "docstring"
-#~ msgstr ""
-
-#~ msgid "Rows"
-#~ msgstr ""
-
-#~ msgid "Fields"
-#~ msgstr ""
-
-#~ msgid "verbose name"
-#~ msgstr ""
-
-#~ msgid "help text"
-#~ msgstr ""
-
-#~ msgid "Inspector"
-#~ msgstr ""
-
-#~ msgid "Inspected object"
-#~ msgstr ""
-
-#~ msgid "show callables"
-#~ msgstr ""
-
 #~ msgid "About"
 #~ msgstr "à propos"
-
-#~ msgid "Show information about this site."
-#~ msgstr ""
-
-#~ msgid "%(date)s at %(time)s"
-#~ msgstr ""
 
 #~ msgid "Server uptime"
 #~ msgstr "Ce serveur tourne depuis"
@@ -4577,41 +4401,8 @@ msgstr "N° de TVA"
 #~ msgid "We are running with simulated date set to {0}."
 #~ msgstr "Ce site tourne avec une date simulée fixée au {0}."
 
-#~ msgid "Source timestamps:"
-#~ msgstr ""
-
-#~ msgid "Server status"
-#~ msgstr ""
-
-#~ msgid "%s pending threads"
-#~ msgstr ""
-
-#~ msgid "Source files"
-#~ msgstr ""
-
-#~ msgid "Code"
-#~ msgstr ""
-
-#~ msgid "doc"
-#~ msgstr ""
-
-#~ msgid "module name"
-#~ msgstr ""
-
-#~ msgid "List contains more than %d rows"
-#~ msgstr ""
-
-#~ msgid "Open an window for multiple file uploads."
-#~ msgstr ""
-
 #~ msgid "Uploader"
 #~ msgstr "Télécharger"
-
-#~ msgid "HTML"
-#~ msgstr ""
-
-#~ msgid "Show this table in Bootstrap3 interface"
-#~ msgstr ""
 
 #~ msgid "First page"
 #~ msgstr "Première page"
@@ -4625,9 +4416,6 @@ msgstr "N° de TVA"
 #~ msgid "Last page"
 #~ msgstr "Dernière page"
 
-#~ msgid "Changes"
-#~ msgstr ""
-
 #~ msgid "Change Type"
 #~ msgstr "Langue"
 
@@ -4637,41 +4425,20 @@ msgstr "N° de TVA"
 #~ msgid "Update"
 #~ msgstr "Date"
 
-#~ msgid "Remove child"
-#~ msgstr ""
-
-#~ msgid "Add child"
-#~ msgstr ""
-
 #~ msgid "Change"
 #~ msgstr "Langue"
 
 #~ msgid "Object type"
 #~ msgstr "Type de note"
 
-#~ msgid "Object"
-#~ msgstr ""
-
 #~ msgid "Master type"
 #~ msgstr "Type d'organisation"
-
-#~ msgid "Only changes from"
-#~ msgstr ""
 
 #~ msgid "Comments"
 #~ msgstr "Revenus"
 
 #~ msgid "Comment"
 #~ msgstr "Pays"
-
-#~ msgid "Short text"
-#~ msgstr ""
-
-#~ msgid "More text"
-#~ msgstr ""
-
-#~ msgid "{0} by {1}"
-#~ msgstr ""
 
 #~ msgid "Write comment"
 #~ msgstr "Pays"
@@ -4685,9 +4452,6 @@ msgstr "N° de TVA"
 #~ msgid "Link Types"
 #~ msgstr "Type de lien"
 
-#~ msgid "Jargon"
-#~ msgstr ""
-
 #~ msgid "Obsoletes"
 #~ msgstr "Console"
 
@@ -4697,17 +4461,11 @@ msgstr "N° de TVA"
 #~ msgid "Abbreviation"
 #~ msgstr "Abbréviation"
 
-#~ msgid "Wikipedia"
-#~ msgstr ""
-
 #~ msgid "Definition"
 #~ msgstr "Définition"
 
 #~ msgid "Jargon domain"
 #~ msgstr "Producteur de jargon"
-
-#~ msgid "Whether this concept designates a domain of specialized vocabulary."
-#~ msgstr ""
 
 #~ msgid "Top-level concepts"
 #~ msgstr "Concepts primaires"
@@ -4723,9 +4481,6 @@ msgstr "N° de TVA"
 
 #~ msgid "Contacts"
 #~ msgstr "Contacts"
-
-#~ msgid "Region"
-#~ msgstr ""
 
 #~ msgid "Company"
 #~ msgstr "Organisation"
@@ -4790,14 +4545,8 @@ msgstr "N° de TVA"
 #~ msgid "Contact for"
 #~ msgstr "contact pour"
 
-#~ msgid "Next partner id"
-#~ msgstr ""
-
 #~ msgid "The next automatic id for any new partner."
 #~ msgstr "Identifiant automatique pour la personne ounla société suivante"
-
-#~ msgid "Site owner"
-#~ msgstr ""
 
 #~ msgid "County"
 #~ msgstr "Pays"
@@ -4805,41 +4554,8 @@ msgstr "N° de TVA"
 #~ msgid "Place Type"
 #~ msgstr "Type d'endroit"
 
-#~ msgid "Member State"
-#~ msgstr ""
-
-#~ msgid "Division"
-#~ msgstr ""
-
 #~ msgid "Community"
 #~ msgstr "Pays"
-
-#~ msgid "Territory"
-#~ msgstr ""
-
-#~ msgid "Province"
-#~ msgstr ""
-
-#~ msgid "Shire"
-#~ msgstr ""
-
-#~ msgid "Subregion"
-#~ msgstr ""
-
-#~ msgid "Department"
-#~ msgstr ""
-
-#~ msgid "Arrondissement"
-#~ msgstr ""
-
-#~ msgid "Prefecture"
-#~ msgstr ""
-
-#~ msgid "District"
-#~ msgstr ""
-
-#~ msgid "Sector"
-#~ msgstr ""
 
 #~ msgid "City"
 #~ msgstr "Ville"
@@ -4847,29 +4563,8 @@ msgstr "N° de TVA"
 #~ msgid "Town"
 #~ msgstr "Ville"
 
-#~ msgid "Municipality"
-#~ msgstr ""
-
-#~ msgid "Parish"
-#~ msgstr ""
-
-#~ msgid "Township"
-#~ msgstr ""
-
 #~ msgid "Quarter"
 #~ msgstr "Quartier"
-
-#~ msgid "Borough"
-#~ msgstr ""
-
-#~ msgid "Small borough"
-#~ msgstr ""
-
-#~ msgid "Village"
-#~ msgstr ""
-
-#~ msgid "Zip code"
-#~ msgstr ""
 
 #~ msgid "Address line before street"
 #~ msgstr "Ligne avant le nom de rue"
@@ -4877,14 +4572,8 @@ msgstr "N° de TVA"
 #~ msgid "Street prefix"
 #~ msgstr "Préfixe rue"
 
-#~ msgid "Text to print before name of street, but to ignore for sorting."
-#~ msgstr ""
-
 #~ msgid "Street"
 #~ msgstr "Rue"
-
-#~ msgid "Name of street, without house number."
-#~ msgstr ""
 
 #~ msgid "No."
 #~ msgstr "No"
@@ -4894,9 +4583,6 @@ msgstr "N° de TVA"
 
 #~ msgid "Box"
 #~ msgstr "boîte"
-
-#~ msgid "Text to print after street nuber on the same line."
-#~ msgstr ""
 
 #~ msgid "Address line after street"
 #~ msgstr "Ligne après le nom de rue"
@@ -4910,41 +4596,11 @@ msgstr "N° de TVA"
 #~ msgid "Countries"
 #~ msgstr "Pays"
 
-#~ msgid "ISO code"
-#~ msgstr ""
-
-#~ msgid "Short code"
-#~ msgstr ""
-
-#~ msgid "A short abbreviation for regional usage. Obsolete."
-#~ msgstr ""
-
-#~ msgid "ISO-3 code"
-#~ msgstr ""
-
-#~ msgid "The three-letter code for this country as defined by ISO 3166-1."
-#~ msgstr ""
-
 #~ msgid "Place"
 #~ msgstr "Endroit"
 
-#~ msgid "Part of"
-#~ msgstr ""
-
-#~ msgid "The superordinate geographic place of which this place is a part."
-#~ msgstr ""
-
-#~ msgid "Subdivisions"
-#~ msgstr ""
-
 #~ msgid "%(details)s in %(master)s"
 #~ msgstr "%(details)s de %(master)s"
-
-#~ msgid "Check plausibility of geographical places."
-#~ msgstr ""
-
-#~ msgid "Name contains only digits."
-#~ msgstr ""
 
 #~ msgid "Estonia"
 #~ msgstr "Estonie"
@@ -4970,9 +4626,6 @@ msgstr "N° de TVA"
 #~ msgid "Congo (Democratic Republic)"
 #~ msgstr "Congo (République democratique)"
 
-#~ msgid "Reset DavLink"
-#~ msgstr ""
-
 #~ msgid "Events"
 #~ msgstr "Rendez-vous"
 
@@ -4981,15 +4634,6 @@ msgstr "N° de TVA"
 
 #~ msgid "What"
 #~ msgstr "Quoi"
-
-#~ msgid "Export to Excel xls format"
-#~ msgstr ""
-
-#~ msgid "Export to .xls"
-#~ msgstr ""
-
-#~ msgid "Export this table as an .xls document"
-#~ msgstr ""
 
 #~ msgid "Admin"
 #~ msgstr "Langue"
@@ -5033,17 +4677,8 @@ msgstr "N° de TVA"
 #~ msgid "No data to display."
 #~ msgstr "Pas de données à afficher."
 
-#~ msgid "Show or hide the table parameters panel"
-#~ msgstr ""
-
 #~ msgid "Please wait..."
 #~ msgstr "Veuillez patienter..."
-
-#~ msgid "This field is disabled"
-#~ msgstr ""
-
-#~ msgid "Enter a date in format YYYY-MM-DD (use zeroes for unknown parts)."
-#~ msgstr ""
 
 #~ msgid "Show this panel in own window"
 #~ msgstr "Montrer ce panneau dans une fenêtre à part."
@@ -5053,12 +4688,6 @@ msgstr "N° de TVA"
 
 #~ msgid "Alert"
 #~ msgstr "Alerte"
-
-#~ msgid "Action not available on phantom record."
-#~ msgstr ""
-
-#~ msgid "Cannot show detail for empty foreign key."
-#~ msgstr ""
 
 #~ msgid "Go to record"
 #~ msgstr "Aller vers enregistrement"
@@ -5078,21 +4707,6 @@ msgstr "N° de TVA"
 #~ msgid "Save changes to current record ?"
 #~ msgstr " Sauvegarder les modifications?"
 
-#~ msgid "No more records to display. Detail window has been closed."
-#~ msgstr ""
-
-#~ msgid "Quick Search"
-#~ msgstr ""
-
-#~ msgid "Enter a text to use as quick search filter"
-#~ msgstr ""
-
-#~ msgid "View"
-#~ msgstr ""
-
-#~ msgid "Select another view of this report"
-#~ msgstr ""
-
 #~ msgid "Page"
 #~ msgstr "Page suivante"
 
@@ -5102,32 +4716,14 @@ msgstr "N° de TVA"
 #~ msgid "Displaying {0} - {1} of {2}"
 #~ msgstr "Enregistrements {0} - {1} de {2}"
 
-#~ msgid "This record is disabled"
-#~ msgstr ""
-
-#~ msgid "Edit help texts for fields on this model."
-#~ msgstr ""
-
-#~ msgid "Cannot show MTI child if checkbox is off."
-#~ msgstr ""
-
 #~ msgid "Failed to delete %(record)s : %(error)s."
 #~ msgstr "Echec lors de l'effacement de %(record)s: %(error)s."
-
-#~ msgid "Error while saving GC for %(table)s: %(error)s"
-#~ msgstr ""
 
 #~ msgid "Controlled by"
 #~ msgstr "Lié à"
 
 #~ msgid "(type)"
 #~ msgstr "(type)"
-
-#~ msgid "(object)"
-#~ msgstr ""
-
-#~ msgid "Base classes"
-#~ msgstr ""
 
 #~ msgid "Help Text"
 #~ msgstr "Texte d'aide"
@@ -5138,26 +4734,8 @@ msgstr "N° de TVA"
 #~ msgid "Field"
 #~ msgstr "Fichier"
 
-#~ msgid "HelpText"
-#~ msgstr ""
-
 #~ msgid "Verbose name"
 #~ msgstr "Prénom"
-
-#~ msgid "database field"
-#~ msgstr ""
-
-#~ msgid "Broken GFKs"
-#~ msgstr ""
-
-#~ msgid "Database object"
-#~ msgstr ""
-
-#~ msgid "Message"
-#~ msgstr ""
-
-#~ msgid "Database model"
-#~ msgstr ""
 
 #~ msgid "content type"
 #~ msgstr "Type de note"
@@ -5168,23 +4746,11 @@ msgstr "N° de TVA"
 #~ msgid "Import filters"
 #~ msgstr "important"
 
-#~ msgid "Field separator"
-#~ msgstr ""
-
-#~ msgid "Import Filter Item"
-#~ msgstr ""
-
-#~ msgid "Import Filter Items"
-#~ msgstr ""
-
 #~ msgid "Column"
 #~ msgstr "Compte"
 
 #~ msgid "Data to import"
 #~ msgstr "Aucun enregistrement"
-
-#~ msgid "obj2unicode"
-#~ msgstr ""
 
 #~ msgid "Jinja templates"
 #~ msgstr "Modèle"
@@ -5198,32 +4764,14 @@ msgstr "N° de TVA"
 #~ msgid "German"
 #~ msgstr "Allemagne"
 
-#~ msgid "French"
-#~ msgstr ""
-
-#~ msgid "Dutch"
-#~ msgstr ""
-
 #~ msgid "Estonian"
 #~ msgstr "Estonie"
-
-#~ msgid "Permission denied"
-#~ msgstr ""
-
-#~ msgid "You have no permission to see this resource."
-#~ msgstr ""
 
 #~ msgid "Page not found"
 #~ msgstr "Page non trouvée"
 
 #~ msgid "The requested page could not be found."
 #~ msgstr "La page demandée n'existe pas."
-
-#~ msgid "Server error (500)"
-#~ msgstr ""
-
-#~ msgid "Server Error <em>(500)</em>"
-#~ msgstr ""
 
 #~ msgid "Congratulations, you found an error in our system."
 #~ msgstr "Félicitations, vous avez trouvé une erreur dans notre système."
@@ -5240,9 +4788,6 @@ msgstr "N° de TVA"
 #~ msgid "Hi, %(first_name)s!"
 #~ msgstr "Salut, %(first_name)s!"
 
-#~ msgid "You have entered the <b>admin</b> section."
-#~ msgstr ""
-
 #~ msgid "Welcome to the <b>%s</b> site."
 #~ msgstr "Bienvenue sur <b>%s</b>."
 
@@ -5256,7 +4801,8 @@ msgstr "N° de TVA"
 #~ msgstr "vous connecter"
 
 #~ msgid "using the <b>Log in</b> button in the upper right corner."
-#~ msgstr "en cliquant le bouton <b>Se connecter</b> dans le coin supérieur droit."
+#~ msgstr ""
+#~ "en cliquant le bouton <b>Se connecter</b> dans le coin supérieur droit."
 
 #~ msgid "This demo site has %d users:"
 #~ msgstr "Ce site de démonstration connait %d utilisateurs:"
@@ -5276,29 +4822,14 @@ msgstr "N° de TVA"
 #~ msgid "About {0}"
 #~ msgstr "de {0}"
 
-#~ msgid "You have %d unseen notifications: "
-#~ msgstr ""
-
-#~ msgid "Office"
-#~ msgstr ""
-
 #~ msgid "Plausibility"
 #~ msgstr "Vérification de données"
-
-#~ msgid "Plausibility feedback"
-#~ msgstr ""
 
 #~ msgid "Ignorable"
 #~ msgstr "Facturable"
 
 #~ msgid "Serious"
 #~ msgstr "Utilisateurs"
-
-#~ msgid "Severity"
-#~ msgstr ""
-
-#~ msgid "Plausibility problem severities"
-#~ msgstr ""
 
 #~ msgid "Plausibility checker"
 #~ msgstr "Test de données"
@@ -5320,9 +4851,6 @@ msgstr "N° de TVA"
 
 #~ msgid "Responsible"
 #~ msgstr "Utilisateur responsable"
-
-#~ msgid "Only problems for this responsible."
-#~ msgstr ""
 
 #~ msgid "Only problems by this checker."
 #~ msgstr "%d rendez-vous vous ont été attribués"
@@ -5363,9 +4891,6 @@ msgstr "N° de TVA"
 #~ msgid "Allow multiple choices"
 #~ msgstr "Choix multiples"
 
-#~ msgid "Questions to add"
-#~ msgstr ""
-
 #~ msgid "Result"
 #~ msgstr "Résultat"
 
@@ -5390,9 +4915,6 @@ msgstr "N° de TVA"
 #~ msgid "%(user)s's response to %(poll)s"
 #~ msgstr "Interview  %(poll)s avec %(user)s"
 
-#~ msgid "{poll} {partner} {date}"
-#~ msgstr ""
-
 #~ msgid "Answer Choice"
 #~ msgstr "Choix de réponse"
 
@@ -5411,9 +4933,6 @@ msgstr "N° de TVA"
 #~ msgid "My remark"
 #~ msgstr "Ma remarque"
 
-#~ msgid "N/A"
-#~ msgstr ""
-
 #~ msgid "Answers"
 #~ msgstr "Réponses"
 
@@ -5423,14 +4942,8 @@ msgstr "N° de TVA"
 #~ msgid "#Answers"
 #~ msgstr "# réponses"
 
-#~ msgid "A1"
-#~ msgstr ""
-
 #~ msgid "Poll States"
 #~ msgstr "Mes rendez-vous aujourd'hui"
-
-#~ msgid "Closed"
-#~ msgstr ""
 
 #~ msgid "Publish"
 #~ msgstr "Publié"
@@ -5447,9 +4960,6 @@ msgstr "N° de TVA"
 #~ msgid "Deregister"
 #~ msgstr "Réouvrir"
 
-#~ msgid "Yes/No"
-#~ msgstr ""
-
 #~ msgid "Yes/Maybe/No"
 #~ msgstr "Oui/Peut-être/Non"
 
@@ -5465,17 +4975,11 @@ msgstr "N° de TVA"
 #~ msgid "Not acquired"
 #~ msgstr "Non acquis"
 
-#~ msgid "Print table using Pisa"
-#~ msgstr ""
-
 #~ msgid "Printing"
 #~ msgstr "Formation"
 
 #~ msgid "Build method"
 #~ msgstr "Méthode de construction"
-
-#~ msgid "This will print %d rows."
-#~ msgstr ""
 
 #~ msgid "Edit Print Template"
 #~ msgstr "Modifier le modèle d'impression"
@@ -5487,7 +4991,8 @@ msgstr "N° de TVA"
 #~ msgstr "%s a été créé"
 
 #~ msgid "This will discard all changes in the generated file."
-#~ msgstr "Ceci va écraser toute modification manuelle dans le document généré."
+#~ msgstr ""
+#~ "Ceci va écraser toute modification manuelle dans le document généré."
 
 #~ msgid "Template"
 #~ msgstr "Modèle"
@@ -5495,41 +5000,14 @@ msgstr "N° de TVA"
 #~ msgid "build time"
 #~ msgstr "Méthode de construction"
 
-#~ msgid "Mail server"
-#~ msgstr ""
-
-#~ msgid "INS code"
-#~ msgstr ""
-
-#~ msgid "The official code for this country used by statbel.fgov.be"
-#~ msgstr ""
-
-#~ msgid "Actual country"
-#~ msgstr ""
-
-#~ msgid "The official code for this place used by statbel.fgov.be"
-#~ msgstr ""
-
 #~ msgid "Summaries"
 #~ msgstr "Résumé"
-
-#~ msgid "Compute results"
-#~ msgstr ""
-
-#~ msgid "Update summary"
-#~ msgstr ""
-
-#~ msgid "Update summary data for this object"
-#~ msgstr ""
 
 #~ msgid "Year"
 #~ msgstr "années"
 
 #~ msgid "Month"
 #~ msgstr "mois"
-
-#~ msgid "Update all summary data"
-#~ msgstr ""
 
 #~ msgid "System"
 #~ msgstr "Système"
@@ -5555,9 +5033,6 @@ msgstr "N° de TVA"
 #~ msgid "Ends"
 #~ msgstr "Termine"
 
-#~ msgid "Rebuild site cache"
-#~ msgstr ""
-
 #~ msgid "Site configuration"
 #~ msgstr "Confirmation"
 
@@ -5567,23 +5042,11 @@ msgstr "N° de TVA"
 #~ msgid "Site Parameters"
 #~ msgstr "Paramètres du Site"
 
-#~ msgid "Text Field Template"
-#~ msgstr ""
-
-#~ msgid "Text Field Templates"
-#~ msgstr ""
-
 #~ msgid "Template Text"
 #~ msgstr "Texte modèle"
 
 #~ msgid "Uploads"
 #~ msgstr "Fichiers téléchargés"
-
-#~ msgid "Upload shortcut"
-#~ msgstr ""
-
-#~ msgid "Upload shortcuts"
-#~ msgstr ""
 
 #~ msgid "Upload Area"
 #~ msgstr "Type de fichier téléchargé"
@@ -5594,24 +5057,12 @@ msgstr "N° de TVA"
 #~ msgid "Upload"
 #~ msgstr "Télécharger"
 
-#~ msgid "Upload a file from your PC to the server."
-#~ msgstr ""
-
-#~ msgid "Open the uploaded file in a new browser window"
-#~ msgstr ""
-
 #~ msgid "Edit"
 #~ msgstr "Editer"
-
-#~ msgid "Edit metadata of the uploaded file."
-#~ msgstr ""
 
 #~ msgctxt "uploaded file"
 #~ msgid "Last"
 #~ msgstr "jours"
-
-#~ msgid "All {0} files"
-#~ msgstr ""
 
 #~ msgid "Upload Type"
 #~ msgstr "Type de fichier téléchargé"
@@ -5622,17 +5073,8 @@ msgstr "N° de TVA"
 #~ msgid "Max. number"
 #~ msgstr "Numéro de carte eID"
 
-#~ msgid "No need to upload more uploads than N of this type."
-#~ msgstr ""
-
-#~ msgid "-1 means no limit."
-#~ msgstr ""
-
 #~ msgid "Wanted"
 #~ msgstr "Site"
-
-#~ msgid "Add a (+) button when there is no upload of this type."
-#~ msgstr ""
 
 #~ msgid "Uploaded by"
 #~ msgstr "Type de fichier téléchargé"
@@ -5645,9 +5087,6 @@ msgstr "N° de TVA"
 
 #~ msgid "User Profiles"
 #~ msgstr "Profils d'utilisateur"
-
-#~ msgid "Time zone"
-#~ msgstr ""
 
 #~ msgid "Author"
 #~ msgstr "Auteur"
@@ -5667,20 +5106,11 @@ msgstr "N° de TVA"
 #~ msgid "New password again"
 #~ msgstr "Encore une fois"
 
-#~ msgid "New password has been set for %d users."
-#~ msgstr ""
-
-#~ msgid "Required. Must be unique."
-#~ msgstr ""
-
 #~ msgid "Initials"
 #~ msgstr "au "
 
 #~ msgid "e-mail address"
 #~ msgstr "adresse e-mail"
-
-#~ msgid "Shows the list of all users on this site."
-#~ msgstr ""
 
 #~ msgid "Authority"
 #~ msgstr "Procuration"
@@ -5688,101 +5118,29 @@ msgstr "N° de TVA"
 #~ msgid "Authorities"
 #~ msgstr "Procurations"
 
-#~ msgid "The user who gets authority to act in your name."
-#~ msgstr ""
-
 #~ msgid "Authorities given"
 #~ msgstr "Procurations accordées"
 
 #~ msgid "Authorities taken"
 #~ msgstr "Procurations reÃ§ues"
 
-#~ msgid "wkHtmlToPdf"
-#~ msgstr ""
-
-#~ msgid "Categories"
-#~ msgstr ""
-
-#~ msgid "Hardware"
-#~ msgstr ""
-
-#~ msgid "Service"
-#~ msgstr ""
-
-#~ msgid "Accessories"
-#~ msgstr ""
-
-#~ msgid "Software"
-#~ msgstr ""
-
-#~ msgid "Price"
-#~ msgstr ""
-
 #~ msgid "Under construction"
 #~ msgstr "Titre de noblesse"
-
-#~ msgid "Belgian Reference"
-#~ msgstr ""
-
-#~ msgid "Estonian Reference"
-#~ msgstr ""
 
 #~ msgid "a Lino application to make surveys and polls."
 #~ msgstr "une application Lino qui rend la comptabilité belge facile."
 
-#~ msgid "%(classref)s to %(model)s"
-#~ msgstr ""
-
-#~ msgid "... and %s"
-#~ msgstr ""
-
-#~ msgid " (Menu %s)"
-#~ msgstr ""
-
-#~ msgid "%(field)s (field in %(model)s)"
-#~ msgstr ""
-
-#~ msgid "%s (field)"
-#~ msgstr ""
-
-#~ msgid "%s (app)"
-#~ msgstr ""
-
 #~ msgid "%(model)s (model in %(app)s)"
 #~ msgstr "%(details)s de %(master)s"
-
-#~ msgid "%s (model)"
-#~ msgstr ""
 
 #~ msgid "Views on %s"
 #~ msgstr "Marquer comme %s"
 
-#~ msgid "Fields in %s"
-#~ msgstr ""
-
 #~ msgid "Actions on %s"
 #~ msgstr "Marquer comme %s"
 
-#~ msgid "Tables referring to %s"
-#~ msgstr ""
-
 #~ msgid "%(actor)s (view in %(app)s)"
 #~ msgstr "%(details)s de %(master)s"
-
-#~ msgid "%s (view)"
-#~ msgstr ""
-
-#~ msgid "Problem while inserting %(child)s child of %(parent)s: %(message)s"
-#~ msgstr ""
-
-#~ msgid "Created: {obj}"
-#~ msgstr ""
-
-#~ msgid "Updated: {obj}"
-#~ msgstr ""
-
-#~ msgid "Deleted: {obj}"
-#~ msgstr ""
 
 #~ msgid "Invalid SSIN %s : "
 #~ msgstr "NISS invalide %s : "
@@ -5790,17 +5148,11 @@ msgstr "N° de TVA"
 #~ msgid "A raw SSIN must have 11 positions"
 #~ msgstr "Un NISS a toujours 13 positions"
 
-#~ msgid "Could not recognize checkdigit"
-#~ msgstr ""
-
 #~ msgid "A formatted SSIN must have 13 positions"
 #~ msgstr "Un NISS a toujours 13 positions"
 
 #~ msgid "Invalid SSIN %s :"
 #~ msgstr "NISS invalide %s : "
-
-#~ msgid "Check digit is %(found)d but should be %(expected)d"
-#~ msgstr ""
 
 #~ msgid "Okay"
 #~ msgstr "Lundi"
@@ -5808,12 +5160,8 @@ msgstr "N° de TVA"
 #~ msgid "Pending"
 #~ msgstr "En attente"
 
-#~ msgid "Edit guests list"
-#~ msgstr ""
-
 #~ msgid "Fixed"
 #~ msgstr "Communiqué"
 
 #~ msgid "Overdue events"
 #~ msgstr "Évènements observés"
-

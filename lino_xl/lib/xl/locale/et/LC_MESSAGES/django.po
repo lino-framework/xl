@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-23 17:48+0300\n"
+"POT-Creation-Date: 2016-04-26 02:09+0300\n"
 "PO-Revision-Date: 2015-04-06 10:26+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: et\n"
@@ -114,7 +114,7 @@ msgid "Address"
 msgstr "Aadres"
 
 #: lino_xl/lib/addresses/models.py:60 lino_xl/lib/blogs/models.py:33
-#: lino_xl/lib/cal/models.py:821 lino_xl/lib/cv/models.py:482
+#: lino_xl/lib/cal/models.py:822 lino_xl/lib/cv/models.py:482
 #: lino_xl/lib/cv/models.py:508 lino_xl/lib/excerpts/models.py:109
 #: lino_xl/lib/lists/models.py:92 lino_xl/lib/notes/models.py:47
 #: lino_xl/lib/notes/models.py:84 lino_xl/lib/thirds/models.py:26
@@ -613,8 +613,8 @@ msgstr "Sündmuste arv"
 msgid "Times"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:646 lino_xl/lib/cal/models.py:701
-#: lino_xl/lib/cal/models.py:715
+#: lino_xl/lib/cal/mixins.py:646 lino_xl/lib/cal/models.py:702
+#: lino_xl/lib/cal/models.py:709
 msgid "When"
 msgstr "Millal"
 
@@ -809,123 +809,123 @@ msgstr "Korduvad sündmused"
 msgid "Update Guests"
 msgstr "Isik"
 
-#: lino_xl/lib/cal/models.py:474
+#: lino_xl/lib/cal/models.py:475
 msgctxt "cal"
 msgid "Event"
 msgstr "Sündmus"
 
-#: lino_xl/lib/cal/models.py:475
+#: lino_xl/lib/cal/models.py:476
 msgctxt "cal"
 msgid "Events"
 msgstr "Sündmused"
 
-#: lino_xl/lib/cal/models.py:482
+#: lino_xl/lib/cal/models.py:483
 msgid "Transparent"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:482
+#: lino_xl/lib/cal/models.py:483
 msgid "Indicates that this Event shouldn't prevent other Events at the same time."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:488
+#: lino_xl/lib/cal/models.py:489
 msgid "all day"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:492 lino_xl/lib/cal/ui.py:611
+#: lino_xl/lib/cal/models.py:493 lino_xl/lib/cal/ui.py:612
 msgid "Assigned to"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:513
+#: lino_xl/lib/cal/models.py:514
 #, python-format
 msgid "Unsaved %s"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:623 lino_xl/lib/reception/models.py:65
+#: lino_xl/lib/cal/models.py:624 lino_xl/lib/reception/models.py:65
 msgid "Busy"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:627
+#: lino_xl/lib/cal/models.py:628
 msgid "with"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:711
+#: lino_xl/lib/cal/models.py:718
 msgid "Link URL"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:721
+#: lino_xl/lib/cal/models.py:722
 msgid "Reminder"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:762 lino_xl/lib/cal/ui.py:294
+#: lino_xl/lib/cal/models.py:763 lino_xl/lib/cal/ui.py:294
 msgid "Responsible user"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:773
+#: lino_xl/lib/cal/models.py:774
 msgid "Check for missing participants"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:783
+#: lino_xl/lib/cal/models.py:784
 msgid "No participants although {0} suggestions exist."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:807
+#: lino_xl/lib/cal/models.py:808
 msgid "Participant"
 msgstr "Osavõtja"
 
-#: lino_xl/lib/cal/models.py:808
+#: lino_xl/lib/cal/models.py:809
 #, fuzzy
 msgid "Participants"
 msgstr "Osavõtja"
 
-#: lino_xl/lib/cal/models.py:815 lino_xl/lib/households/choicelists.py:18
+#: lino_xl/lib/cal/models.py:816 lino_xl/lib/households/choicelists.py:18
 msgid "Role"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:841
+#: lino_xl/lib/cal/models.py:842
 msgid "Event"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:874
+#: lino_xl/lib/cal/models.py:875
 msgid "due date reached"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:891
+#: lino_xl/lib/cal/models.py:892
 msgid "Default access class"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:892
+#: lino_xl/lib/cal/models.py:893
 msgid "The default access class for your calendar events and tasks."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:899 lino_xl/lib/cal/models.py:907
+#: lino_xl/lib/cal/models.py:900 lino_xl/lib/cal/models.py:908
 msgid "Default Event Type"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:900
+#: lino_xl/lib/cal/models.py:901
 msgid "The default event type for your calendar events."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:908
+#: lino_xl/lib/cal/models.py:909
 msgid "The default type of events on this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:918
+#: lino_xl/lib/cal/models.py:919
 msgid "Site Calendar"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:919
+#: lino_xl/lib/cal/models.py:920
 msgid "The default calendar of this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:925
+#: lino_xl/lib/cal/models.py:926
 msgid "Max automatic events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:927
+#: lino_xl/lib/cal/models.py:928
 msgid "Maximum number of automatic events to be generated."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:956
+#: lino_xl/lib/cal/models.py:957
 #, python-format
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr ""
@@ -942,16 +942,16 @@ msgstr ""
 msgid "A calendar task is something you need to do."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:151 lino_xl/lib/cal/ui.py:603
+#: lino_xl/lib/cal/ui.py:151 lino_xl/lib/cal/ui.py:604
 msgid "Managed by"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:153 lino_xl/lib/cal/ui.py:296
-#: lino_xl/lib/cal/ui.py:605
+#: lino_xl/lib/cal/ui.py:606
 msgid "Only rows managed by this user."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:157 lino_xl/lib/cal/ui.py:616
+#: lino_xl/lib/cal/ui.py:157 lino_xl/lib/cal/ui.py:617
 msgid "Only rows having this state."
 msgstr ""
 
@@ -1037,58 +1037,58 @@ msgstr ""
 msgid "Unstable"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:581
+#: lino_xl/lib/cal/ui.py:582
 msgid "A List of calendar entries. Each entry is called an event."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:613
+#: lino_xl/lib/cal/ui.py:614
 msgid "Only events assigned to this user."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:619 lino_xl/lib/reception/models.py:316
+#: lino_xl/lib/cal/ui.py:620 lino_xl/lib/reception/models.py:316
 msgid "Appointments"
 msgstr "Kokku leppitud ajad"
 
-#: lino_xl/lib/cal/ui.py:723
+#: lino_xl/lib/cal/ui.py:724
 msgid "Appointments today"
 msgstr "Kokku leppitud ajad täna"
 
-#: lino_xl/lib/cal/ui.py:761 lino_xl/lib/excerpts/models.py:791
+#: lino_xl/lib/cal/ui.py:762 lino_xl/lib/excerpts/models.py:791
 msgid "Today"
 msgstr "Täna"
 
-#: lino_xl/lib/cal/ui.py:762
+#: lino_xl/lib/cal/ui.py:763
 msgid "Show all calendar events of the same day."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:826
+#: lino_xl/lib/cal/ui.py:827
 #, fuzzy
 msgid "My appointments"
 msgstr "Kokku leppitud ajad"
 
-#: lino_xl/lib/cal/ui.py:827
+#: lino_xl/lib/cal/ui.py:828
 msgid "Table of my appointments."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:851
+#: lino_xl/lib/cal/ui.py:852
 #, fuzzy
 msgid "My appointments today"
 msgstr "Kokku leppitud ajad täna"
 
-#: lino_xl/lib/cal/ui.py:871
+#: lino_xl/lib/cal/ui.py:872
 msgid "Events assigned to me"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:872
+#: lino_xl/lib/cal/ui.py:873
 msgid "Table of events assigned to me."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:890
+#: lino_xl/lib/cal/ui.py:891
 #, python-format
 msgid "%d events have been assigned to you."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:897
+#: lino_xl/lib/cal/ui.py:904
 #, fuzzy
 msgid "Overdue appointments"
 msgstr "Kokku leppitud ajad"
