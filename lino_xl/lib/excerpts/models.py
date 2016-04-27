@@ -126,9 +126,11 @@ class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
     primary = models.BooleanField(
         _("Primary"),
         default=False,
-        help_text=_("""There's at most one primary type per model. \
-        Enabling this field will automatically make the other \
-        types non-primary."""))
+        help_text=_(
+            "Whether this is the default type to use for this model. "
+            "There's at most one primary type per model. "
+            "Enabling this field will automatically make the other "
+            "types non-primary."))
 
     backward_compat = models.BooleanField(
         _("Backward compatible"),
@@ -145,7 +147,7 @@ class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
 
     shortcut = Shortcuts.field(blank=True)
 
-    def full_clean(self, *args, **kwargs):
+    def unused_full_clean(self, *args, **kwargs):
         if self.certifying:
             if not self.primary:
                 raise ValidationError(
@@ -236,7 +238,13 @@ We override everything in Excerpt to not call the class method.""")
                 owner_type=ContentType.objects.get_for_model(obj.__class__))
             qs = qs.order_by('id')
             if qs.count() > 0:
-                ex = qs[0]
+                if isinstance(obj, Certifiable):
+                    ex = qs[0]
+                else:
+                    qs.delete()
+                    # Otherwise end-users would have no possibility
+                    # clear the cache, which means that they would get
+                    # always the first version of a printed document.
         if ex is None:
             akw = dict(
                 user=ar.get_user(),
@@ -248,7 +256,7 @@ We override everything in Excerpt to not call the class method.""")
             ex.full_clean()
             ex.save()
 
-        if self.certifying:
+        if self.certifying and isinstance(obj, Certifiable):
             obj.printed_by = ex
             obj.full_clean()
             obj.save()
@@ -319,9 +327,12 @@ class CreateExcerpt(dd.Action):
         super(CreateExcerpt, self).__init__(*args, **kwargs)
 
     def run_from_ui(self, ar, **kw):
-        ex = self.excerpt_type.get_or_create_excerpt(ar)
-        # logger.info("20140812 excerpts.CreateExcerpt %s", self.excerpt_type)
-        if self.excerpt_type.print_directly:
+        et = self.excerpt_type
+        ex = et.get_or_create_excerpt(ar)
+        logger.info(
+            "20160427 excerpts.CreateExcerpt %s, %s",
+            et, et.print_directly)
+        if et.print_directly:
             ex.do_print.run_from_ui(ar, **kw)
         else:
             ar.goto_instance(ex)
@@ -498,15 +509,21 @@ class Excerpt(TypedPrintable, UserAuthored,
         et = self.excerpt_type
         if et is None or not et.certifying:
             return super(Excerpt, self).filename_root()
+        assert et.certifying
         o = self.owner
-        return o._meta.app_label + '.' + o.__class__.__name__ + '-' + str(o.pk)
+        name = o._meta.app_label + '.' + o.__class__.__name__
+        if not et.primary:
+            name += '.' + str(et.pk)
+        name += '-' + str(o.pk)
+        return name
 
     def get_print_templates(self, bm, action):
         et = self.excerpt_type
         if et is not None and et.certifying:
-            tpls = self.owner.get_excerpt_templates(bm)
-            if tpls is not None:
-                return tpls
+            if isinstance(self.owner, Certifiable):
+                tpls = self.owner.get_excerpt_templates(bm)
+                if tpls is not None:
+                    return tpls
         return super(Excerpt, self).get_print_templates(bm, action)
         # ptype = self.get_printable_type()
         # # raise Exception("20150710 %s" % self.owner)
@@ -844,10 +861,10 @@ def set_excerpts_actions(sender, **kw):
                 an = atype.get_action_name()
                 m.define_action(**{an: CreateExcerpt(atype, unicode(atype))})
                 # dd.logger.info("Added print action to %s", m)
-                # if atype.primary:
-                #     if atype.certifying:
-                #         m.define_action(
-                #             clear_printed=ClearPrinted())
+
+                # if atype.certifying and not issubclass(m, Certifiable):
+                #     m.define_action(
+                #         clear_printed=ClearCache())
 
     # An attestable model must also inherit
     # :class:`lino.mixins.printable.BasePrintable` or some subclass
