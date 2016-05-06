@@ -18,7 +18,7 @@ class Site(Site):
     author = 'Luc Saffre'
     author_email = 'luc@lino-framework.org'
 
-    default_ui = 'pages'
+    default_ui = 'lino_xl.lib.pages'
 
     languages = 'en de fr'
 

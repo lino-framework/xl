@@ -329,9 +329,9 @@ class CreateExcerpt(dd.Action):
     def run_from_ui(self, ar, **kw):
         et = self.excerpt_type
         ex = et.get_or_create_excerpt(ar)
-        logger.info(
-            "20160427 excerpts.CreateExcerpt %s, %s",
-            et, et.print_directly)
+        # logger.info(
+        #     "20160427 excerpts.CreateExcerpt %s, %s",
+        #     et, et.print_directly)
         if et.print_directly:
             ex.do_print.run_from_ui(ar, **kw)
         else:
