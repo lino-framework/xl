@@ -185,7 +185,10 @@ class Certifiable(dd.Model):
         return unicode(self)
 
     def get_excerpt_templates(self, bm):
-        """Return either None or a list of template names."""
+        """Return either `None` or a list of template names to be used when
+        printing an excerpt controlled by this object.
+
+        """
         return None
 
 

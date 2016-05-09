@@ -242,7 +242,7 @@ We override everything in Excerpt to not call the class method.""")
                     ex = qs[0]
                 else:
                     qs.delete()
-                    # Otherwise end-users would have no possibility
+                    # Otherwise end-users would have no possibility to
                     # clear the cache, which means that they would get
                     # always the first version of a printed document.
         if ex is None:
@@ -518,6 +518,13 @@ class Excerpt(TypedPrintable, UserAuthored,
         return name
 
     def get_print_templates(self, bm, action):
+        """Overrides
+        :meth:`lino.modlib.printing.mixins.Printable.get_print_templates`.
+
+        When printing an excerpt, the controlling database objects
+        gets a chance to decide which template to use.
+
+        """
         et = self.excerpt_type
         if et is not None and et.certifying:
             if isinstance(self.owner, Certifiable):

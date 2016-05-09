@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino_xl 1.0.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-26 02:09+0300\n"
+"POT-Creation-Date: 2016-05-09 14:46+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,7 +121,7 @@ msgid "Remark"
 msgstr ""
 
 #: lino_xl/lib/addresses/models.py:63 lino_xl/lib/excerpts/models.py:127
-#: lino_xl/lib/excerpts/models.py:153 lino_xl/lib/households/models.py:226
+#: lino_xl/lib/excerpts/models.py:155 lino_xl/lib/households/models.py:226
 msgid "Primary"
 msgstr ""
 
@@ -1037,7 +1037,7 @@ msgstr ""
 msgid "Appointments today"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:762 lino_xl/lib/excerpts/models.py:791
+#: lino_xl/lib/cal/ui.py:762 lino_xl/lib/excerpts/models.py:808
 msgid "Today"
 msgstr ""
 
@@ -1074,7 +1074,7 @@ msgstr ""
 msgid "Overdue appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
+#: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:676
 #: lino_xl/lib/rooms/models.py:153
 #: lino_xl/projects/homeworkschool/models.py:123
 #: lino_xl/projects/min2/modlib/contacts/models.py:49
@@ -1618,7 +1618,7 @@ msgstr ""
 msgid "Similar partners"
 msgstr ""
 
-#: lino_xl/lib/excerpts/__init__.py:43 lino_xl/lib/excerpts/models.py:430
+#: lino_xl/lib/excerpts/__init__.py:43 lino_xl/lib/excerpts/models.py:441
 msgid "Excerpts"
 msgstr ""
 
@@ -1674,8 +1674,8 @@ msgstr ""
 msgid "Excerpt Types"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:105 lino_xl/lib/excerpts/models.py:153
-#: lino_xl/lib/excerpts/models.py:159
+#: lino_xl/lib/excerpts/models.py:105 lino_xl/lib/excerpts/models.py:155
+#: lino_xl/lib/excerpts/models.py:161
 msgid "Certifying"
 msgstr ""
 
@@ -1683,11 +1683,11 @@ msgstr ""
 msgid "Whether an excerpt of this type is a unique printout."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:113 lino_xl/lib/excerpts/models.py:434
+#: lino_xl/lib/excerpts/models.py:113 lino_xl/lib/excerpts/models.py:445
 msgid "Body template"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:120 lino_xl/lib/excerpts/models.py:264
+#: lino_xl/lib/excerpts/models.py:120 lino_xl/lib/excerpts/models.py:272
 msgid "Model"
 msgstr ""
 
@@ -1697,113 +1697,114 @@ msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:129
 msgid ""
-"There's at most one primary type per model.         Enabling this field "
-"will automatically make the other         types non-primary."
-msgstr ""
-
-#: lino_xl/lib/excerpts/models.py:134
-msgid "Backward compatible"
+"Whether this is the default type to use for this model. There's at most "
+"one primary type per model. Enabling this field will automatically make "
+"the other types non-primary."
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:136
+msgid "Backward compatible"
+msgstr ""
+
+#: lino_xl/lib/excerpts/models.py:138
 msgid ""
 "Check this to have `this` in template context point to owner instead of "
 "excerpt."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:140
+#: lino_xl/lib/excerpts/models.py:142
 msgid "Print recipient"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:142
+#: lino_xl/lib/excerpts/models.py:144
 msgid "Whether to print a recipient field in document."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:144
+#: lino_xl/lib/excerpts/models.py:146
 msgid "Print directly"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:152
+#: lino_xl/lib/excerpts/models.py:154
 #, python-format
 msgid "Cannot set %(c)s without %(p)s"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:157
+#: lino_xl/lib/excerpts/models.py:159
 #, python-format
 msgid "Cannot set %(c)s for non.certifiable model %(m)s"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:312 lino_xl/lib/postings/models.py:43
+#: lino_xl/lib/excerpts/models.py:320 lino_xl/lib/postings/models.py:43
 msgid "Print"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:313
+#: lino_xl/lib/excerpts/models.py:321
 msgid "Create an excerpt in order to print this data record."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:343
+#: lino_xl/lib/excerpts/models.py:354
 #, python-format
 msgid "Excerpt type \"%s\" has no body_template"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:429
+#: lino_xl/lib/excerpts/models.py:440
 msgid "Excerpt"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:480
+#: lino_xl/lib/excerpts/models.py:491
 #, python-format
 msgid "Unprinted %s #%s"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:565
+#: lino_xl/lib/excerpts/models.py:582
 msgid "Preview"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:662
+#: lino_xl/lib/excerpts/models.py:679
 msgid "Configure"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:677 lino_xl/lib/notes/models.py:163
+#: lino_xl/lib/excerpts/models.py:694 lino_xl/lib/notes/models.py:163
 msgid "Recipient (Organization)"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:679 lino_xl/lib/notes/models.py:164
+#: lino_xl/lib/excerpts/models.py:696 lino_xl/lib/notes/models.py:164
 msgid "Recipient (Person)"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:704
+#: lino_xl/lib/excerpts/models.py:721
 msgid "Certifying excerpts"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:758
+#: lino_xl/lib/excerpts/models.py:775
 msgid "History of excerpts based on this data record."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:759
+#: lino_xl/lib/excerpts/models.py:776
 msgid "Existing excerpts"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:790
+#: lino_xl/lib/excerpts/models.py:807
 msgid "not printed"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:793
+#: lino_xl/lib/excerpts/models.py:810
 msgid "Last week"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:795
+#: lino_xl/lib/excerpts/models.py:812
 msgid "Older"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:876
+#: lino_xl/lib/excerpts/models.py:893
 msgid "Last"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:880
+#: lino_xl/lib/excerpts/models.py:897
 msgid "All"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:886
+#: lino_xl/lib/excerpts/models.py:903
 msgid "Create"
 msgstr ""
 
