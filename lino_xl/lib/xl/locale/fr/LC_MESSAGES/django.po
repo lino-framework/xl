@@ -5,19 +5,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-04-26 02:09+0300\n"
+"POT-Creation-Date: 2016-05-09 14:46+0300\n"
 "PO-Revision-Date: 2016-04-26 02:10+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=2; plural=(n > 1)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.2.0\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #: lino_xl/lib/addresses/__init__.py:26 lino_xl/lib/addresses/models.py:49
 #: lino_xl/lib/addresses/models.py:131
@@ -124,7 +123,7 @@ msgid "Remark"
 msgstr "Remarque"
 
 #: lino_xl/lib/addresses/models.py:63 lino_xl/lib/excerpts/models.py:127
-#: lino_xl/lib/excerpts/models.py:153 lino_xl/lib/households/models.py:226
+#: lino_xl/lib/excerpts/models.py:155 lino_xl/lib/households/models.py:226
 msgid "Primary"
 msgstr "Primaire"
 
@@ -258,7 +257,8 @@ msgid ""
 "There is more than one client with national id %(national_id)s in our "
 "database."
 msgstr ""
-"Il y a plus d'un client avec NN %(national_id)s dans notre base de données."
+"Il y a plus d'un client avec NN %(national_id)s dans notre base de "
+"données."
 
 #: lino_xl/lib/beid/mixins.py:301 lino_xl/lib/beid/mixins.py:313
 #, fuzzy, python-format
@@ -273,8 +273,8 @@ msgstr "D'accord pour créer nouveau bénéficiaire %s?"
 #: lino_xl/lib/beid/mixins.py:320
 #, python-format
 msgid ""
-"Cannot create new client because there is already a person named %s in our "
-"database."
+"Cannot create new client because there is already a person named %s in "
+"our database."
 msgstr "Il y a déjà une personne nommée %s dans notre base de données."
 
 #: lino_xl/lib/beid/mixins.py:324 lino_xl/lib/beid/mixins.py:331
@@ -284,8 +284,8 @@ msgstr "Oups!"
 #: lino_xl/lib/beid/mixins.py:327
 #, python-format
 msgid ""
-"Cannot create new client because there is more than one person named %s in "
-"our database."
+"Cannot create new client because there is more than one person named %s "
+"in our database."
 msgstr "Il y a plus d'une personne nommée %s dans notre base de données."
 
 #: lino_xl/lib/beid/mixins.py:350
@@ -781,7 +781,8 @@ msgid ""
 "Whether this subscription should \"\n"
 "        \"initially be displayed as a hidden calendar."
 msgstr ""
-"Activer cette case pour ne pas afficher ce calendrier en ouvrant le panneau."
+"Activer cette case pour ne pas afficher ce calendrier en ouvrant le "
+"panneau."
 
 #: lino_xl/lib/cal/models.py:277
 msgid "Task"
@@ -832,11 +833,10 @@ msgid "Transparent"
 msgstr "non bloquant"
 
 #: lino_xl/lib/cal/models.py:483
-msgid ""
-"Indicates that this Event shouldn't prevent other Events at the same time."
+msgid "Indicates that this Event shouldn't prevent other Events at the same time."
 msgstr ""
-"Indique que cet évènement n'empêche pas d'avoir d'autres évènements en même "
-"temps."
+"Indique que cet évènement n'empêche pas d'avoir d'autres évènements en "
+"même temps."
 
 #: lino_xl/lib/cal/models.py:489
 msgid "all day"
@@ -1014,8 +1014,7 @@ msgid "My presences"
 msgstr "Mes présences"
 
 #: lino_xl/lib/cal/ui.py:395
-msgid ""
-"Shows all my presences in calendar events, independently of their state."
+msgid "Shows all my presences in calendar events, independently of their state."
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:431
@@ -1033,8 +1032,10 @@ msgstr "Mes visiteurs"
 #: lino_xl/lib/cal/ui.py:464
 msgid ""
 "The list of Event Types defined on this system.\n"
-"    An EventType is a list of events which have certain things in common,\n"
-"    especially they are displayed in the same colour in the calendar panel.\n"
+"    An EventType is a list of events which have certain things in common,"
+"\n"
+"    especially they are displayed in the same colour in the calendar "
+"panel.\n"
 "    "
 msgstr ""
 
@@ -1073,7 +1074,7 @@ msgstr "Rendez-vous"
 msgid "Appointments today"
 msgstr "Rendez-vous aujourd'hui"
 
-#: lino_xl/lib/cal/ui.py:762 lino_xl/lib/excerpts/models.py:791
+#: lino_xl/lib/cal/ui.py:762 lino_xl/lib/excerpts/models.py:808
 #, fuzzy
 msgid "Today"
 msgstr "Lundi"
@@ -1114,7 +1115,7 @@ msgstr "Enregistrement %s a été mis à jour."
 msgid "Overdue appointments"
 msgstr "Rendez-vous dépassés"
 
-#: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:659
+#: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:676
 #: lino_xl/lib/rooms/models.py:153
 #: lino_xl/projects/homeworkschool/models.py:123
 #: lino_xl/projects/min2/modlib/contacts/models.py:49
@@ -1669,7 +1670,7 @@ msgstr ""
 msgid "Similar partners"
 msgstr "Personnes de contact"
 
-#: lino_xl/lib/excerpts/__init__.py:43 lino_xl/lib/excerpts/models.py:430
+#: lino_xl/lib/excerpts/__init__.py:43 lino_xl/lib/excerpts/models.py:441
 msgid "Excerpts"
 msgstr "Extraits"
 
@@ -1688,8 +1689,8 @@ msgstr "Imprimé"
 
 #: lino_xl/lib/excerpts/mixins.py:29
 msgid ""
-"Mark this object as not printed. A subsequent call to print will generate a "
-"new cache file."
+"Mark this object as not printed. A subsequent call to print will generate"
+" a new cache file."
 msgstr ""
 
 #: lino_xl/lib/excerpts/mixins.py:41
@@ -1729,8 +1730,8 @@ msgstr "Type d'extrait"
 msgid "Excerpt Types"
 msgstr "Types d'extrait"
 
-#: lino_xl/lib/excerpts/models.py:105 lino_xl/lib/excerpts/models.py:153
-#: lino_xl/lib/excerpts/models.py:159
+#: lino_xl/lib/excerpts/models.py:105 lino_xl/lib/excerpts/models.py:155
+#: lino_xl/lib/excerpts/models.py:161
 #, fuzzy
 msgid "Certifying"
 msgstr "Communiqué"
@@ -1739,12 +1740,12 @@ msgstr "Communiqué"
 msgid "Whether an excerpt of this type is a unique printout."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:113 lino_xl/lib/excerpts/models.py:434
+#: lino_xl/lib/excerpts/models.py:113 lino_xl/lib/excerpts/models.py:445
 #, fuzzy
 msgid "Body template"
 msgstr "Modèle"
 
-#: lino_xl/lib/excerpts/models.py:120 lino_xl/lib/excerpts/models.py:264
+#: lino_xl/lib/excerpts/models.py:120 lino_xl/lib/excerpts/models.py:272
 msgid "Model"
 msgstr "Modèle"
 
@@ -1755,121 +1756,124 @@ msgstr "Céer courrier"
 
 #: lino_xl/lib/excerpts/models.py:129
 msgid ""
-"There's at most one primary type per model.         Enabling this field will "
-"automatically make the other         types non-primary."
-msgstr ""
-
-#: lino_xl/lib/excerpts/models.py:134
-msgid "Backward compatible"
+"Whether this is the default type to use for this model. There's at most "
+"one primary type per model. Enabling this field will automatically make "
+"the other types non-primary."
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:136
+msgid "Backward compatible"
+msgstr ""
+
+#: lino_xl/lib/excerpts/models.py:138
 msgid ""
 "Check this to have `this` in template context point to owner instead of "
 "excerpt."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:140
+#: lino_xl/lib/excerpts/models.py:142
 #, fuzzy
 msgid "Print recipient"
 msgstr "Destinataire"
 
-#: lino_xl/lib/excerpts/models.py:142
+#: lino_xl/lib/excerpts/models.py:144
 msgid "Whether to print a recipient field in document."
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:144
+#: lino_xl/lib/excerpts/models.py:146
 msgid "Print directly"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:152
+#: lino_xl/lib/excerpts/models.py:154
 #, python-format
 msgid "Cannot set %(c)s without %(p)s"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:157
+#: lino_xl/lib/excerpts/models.py:159
 #, python-format
 msgid "Cannot set %(c)s for non.certifiable model %(m)s"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:312 lino_xl/lib/postings/models.py:43
+#: lino_xl/lib/excerpts/models.py:320 lino_xl/lib/postings/models.py:43
 msgid "Print"
 msgstr "Imprimer"
 
-#: lino_xl/lib/excerpts/models.py:313
+#: lino_xl/lib/excerpts/models.py:321
 #, fuzzy
 msgid "Create an excerpt in order to print this data record."
 msgstr ""
-"Historique des impressions qui ont été faites à partir de cet enregistrement."
+"Historique des impressions qui ont été faites à partir de cet "
+"enregistrement."
 
-#: lino_xl/lib/excerpts/models.py:343
+#: lino_xl/lib/excerpts/models.py:354
 #, python-format
 msgid "Excerpt type \"%s\" has no body_template"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:429
+#: lino_xl/lib/excerpts/models.py:440
 msgid "Excerpt"
 msgstr "Extrait"
 
-#: lino_xl/lib/excerpts/models.py:480
+#: lino_xl/lib/excerpts/models.py:491
 #, python-format
 msgid "Unprinted %s #%s"
 msgstr "%s #%s non imprimé"
 
-#: lino_xl/lib/excerpts/models.py:565
+#: lino_xl/lib/excerpts/models.py:582
 msgid "Preview"
 msgstr "Prévisualisation"
 
-#: lino_xl/lib/excerpts/models.py:662
+#: lino_xl/lib/excerpts/models.py:679
 msgid "Configure"
 msgstr "Configuration"
 
-#: lino_xl/lib/excerpts/models.py:677 lino_xl/lib/notes/models.py:163
+#: lino_xl/lib/excerpts/models.py:694 lino_xl/lib/notes/models.py:163
 msgid "Recipient (Organization)"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:679 lino_xl/lib/notes/models.py:164
+#: lino_xl/lib/excerpts/models.py:696 lino_xl/lib/notes/models.py:164
 msgid "Recipient (Person)"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:704
+#: lino_xl/lib/excerpts/models.py:721
 #, fuzzy
 msgid "Certifying excerpts"
 msgstr "Communiqué"
 
-#: lino_xl/lib/excerpts/models.py:758
+#: lino_xl/lib/excerpts/models.py:775
 msgid "History of excerpts based on this data record."
 msgstr ""
-"Historique des impressions qui ont été faites à partir de cet enregistrement."
+"Historique des impressions qui ont été faites à partir de cet "
+"enregistrement."
 
-#: lino_xl/lib/excerpts/models.py:759
+#: lino_xl/lib/excerpts/models.py:776
 msgid "Existing excerpts"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:790
+#: lino_xl/lib/excerpts/models.py:807
 msgid "not printed"
 msgstr "non imprimé"
 
-#: lino_xl/lib/excerpts/models.py:793
+#: lino_xl/lib/excerpts/models.py:810
 msgid "Last week"
 msgstr ""
 
-#: lino_xl/lib/excerpts/models.py:795
+#: lino_xl/lib/excerpts/models.py:812
 #, fuzzy
 msgid "Older"
 msgstr "Rôle"
 
-#: lino_xl/lib/excerpts/models.py:876
+#: lino_xl/lib/excerpts/models.py:893
 #, fuzzy
 msgid "Last"
 msgstr "jours"
 
-#: lino_xl/lib/excerpts/models.py:880
+#: lino_xl/lib/excerpts/models.py:897
 #, fuzzy
 msgid "All"
 msgstr "journée entière"
 
-#: lino_xl/lib/excerpts/models.py:886
+#: lino_xl/lib/excerpts/models.py:903
 msgid "Create"
 msgstr "Créer"
 
@@ -1961,8 +1965,7 @@ msgstr "Partenaire"
 msgid "Cohabitant"
 msgstr "Cohabitant"
 
-#: lino_xl/lib/households/choicelists.py:26
-#: lino_xl/lib/humanlinks/models.py:58
+#: lino_xl/lib/households/choicelists.py:26 lino_xl/lib/humanlinks/models.py:58
 msgid "Child"
 msgstr "Enfant"
 
@@ -1996,11 +1999,11 @@ msgstr "Membres de ménage"
 
 #: lino_xl/lib/households/models.py:228
 msgid ""
-"Whether this is the primary household of this person. Checking this field "
-"will automatically disable any other primary memberships."
+"Whether this is the primary household of this person. Checking this field"
+" will automatically disable any other primary memberships."
 msgstr ""
-"Marque ceci comme ménage primaire de cette personne. Activer cette case va "
-"la désactiver pour les autres ménages."
+"Marque ceci comme ménage primaire de cette personne. Activer cette case "
+"va la désactiver pour les autres ménages."
 
 #: lino_xl/lib/households/models.py:268
 msgid "Make this the primary household."
@@ -2505,8 +2508,8 @@ msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:55
 msgid ""
-"The name of the file to be used as template when creating an email from a "
-"mailable of this type."
+"The name of the file to be used as template when creating an email from a"
+" mailable of this type."
 msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:72
@@ -2883,8 +2886,7 @@ msgid "Expected Guests"
 msgstr "Visiteurs attendus"
 
 #: lino_xl/lib/reception/models.py:345
-msgid ""
-"Consult this table when checking in a partner who     has an appointment."
+msgid "Consult this table when checking in a partner who     has an appointment."
 msgstr ""
 
 #: lino_xl/lib/reception/models.py:373
@@ -4802,7 +4804,6 @@ msgstr "N° de TVA"
 
 #~ msgid "using the <b>Log in</b> button in the upper right corner."
 #~ msgstr ""
-#~ "en cliquant le bouton <b>Se connecter</b> dans le coin supérieur droit."
 
 #~ msgid "This demo site has %d users:"
 #~ msgstr "Ce site de démonstration connait %d utilisateurs:"
@@ -4992,7 +4993,6 @@ msgstr "N° de TVA"
 
 #~ msgid "This will discard all changes in the generated file."
 #~ msgstr ""
-#~ "Ceci va écraser toute modification manuelle dans le document généré."
 
 #~ msgid "Template"
 #~ msgstr "Modèle"
@@ -5165,3 +5165,11 @@ msgstr "N° de TVA"
 
 #~ msgid "Overdue events"
 #~ msgstr "Évènements observés"
+
+#~ msgid ""
+#~ "There's at most one primary type "
+#~ "per model.         Enabling this field "
+#~ "will automatically make the other         "
+#~ "types non-primary."
+#~ msgstr ""
+
