@@ -42,7 +42,7 @@ class SpecsTests(LinoTestCase):
     def test_tinymce(self):
         self.run_simple_doctests("docs/specs/tinymce.rst")
 
-    def test_min1(self):
+    def test_export_excel(self):
         self.run_simple_doctests("docs/specs/export_excel.rst")
 
 
