@@ -1,5 +1,22 @@
+# -*- coding: UTF-8 -*-
 # Copyright 2008-2016 Luc Saffre
-# License: BSD (see file COPYING for details)
+# This file is part of Lino XL.
+#
+# Lino XL is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# Lino XL is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with Lino XL.  If not, see
+# <http://www.gnu.org/licenses/>.
+
+
 """
 Database models for `lino_xl.lib.products`.
 
@@ -12,10 +29,13 @@ from django.utils.translation import ugettext_lazy as _
 from lino.api import dd
 from lino import mixins
 
+from .choicelists import DeliveryUnit
+
 vat = dd.resolve_app('vat')
 
 
 class ProductCat(mixins.BabelNamed):
+    """A **product category** is a way to group products."""
 
     class Meta:
         app_label = 'products'
@@ -37,8 +57,16 @@ class ProductCats(dd.Table):
     """
 
 
-#class Product(mixins.BabelNamed, mixins.Referrable):
 class Product(mixins.BabelNamed):
+    """A product is something you can sell or buy.
+
+    .. attribute:: description
+    .. attribute:: cat
+    .. attribute:: delivery_unit
+
+    
+
+    """
 
     class Meta:
         app_label = 'products'
@@ -52,6 +80,9 @@ class Product(mixins.BabelNamed):
     cat = models.ForeignKey(
         ProductCat, verbose_name=_("Category"),
         blank=True, null=True)
+
+    delivery_unit = DeliveryUnit.field(
+        default=DeliveryUnit.piece.as_callable())
 
     if vat:
         vat_class = vat.VatClasses.field(blank=True)
@@ -70,7 +101,7 @@ class Products(dd.Table):
     """
 
     detail_layout = """
-    id cat #sales_price vat_class
+    id cat #sales_price vat_class delivery_unit
     name
     description
     """

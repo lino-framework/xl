@@ -653,6 +653,8 @@ class RecurrenceSet(Started, Ended):
         for wd in Weekdays.objects():
             if getattr(self, wd.name):
                 weekdays.append(str(wd.text))
+        if len(weekdays) == 0:
+            return ''
         weekdays = ', '.join(weekdays)
         if self.every == 1:
             return _("Every %s") % weekdays

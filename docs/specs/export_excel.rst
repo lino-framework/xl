@@ -11,7 +11,7 @@ This document tests this functionality.
 
 .. to run only this test:
 
-    $ python setup.py test -s tests.DocsTests.test_min1
+    $ python setup.py test -s tests.SpecsTests.test_export_excel
     
     doctest init:
 
@@ -29,22 +29,22 @@ Robin has twelve appointments in the period 20141023..20141122:
 =======================================================================
 My appointments (Managed by Robin Rood, Dates 23.10.2014 to 22.11.2014)
 =======================================================================
-====================== ===================== =============== ================
- When                   Calendar Event Type   Summary         Workflow
----------------------- --------------------- --------------- ----------------
- Thu 10/23/14 (10:20)   Meeting               Meeting         **Took place**
- Fri 10/24/14 (11:10)   Meeting               Consultation    **Cancelled**
- Sat 10/25/14 (08:30)   Meeting               Evaluation      **Suggested**
- Sat 10/25/14 (13:30)   Meeting               Seminar         **Omitted**
- Sun 10/26/14 (09:40)   Meeting               First meeting   **Draft**
- Mon 10/27/14 (10:20)   Meeting               Interview       **Took place**
- Mon 10/27/14 (11:10)   Meeting               Lunch           **Cancelled**
- Tue 10/28/14 (13:30)   Meeting               Dinner          **Omitted**
- Wed 10/29/14 (08:30)   Meeting               Breakfast       **Suggested**
- Wed 10/29/14 (09:40)   Meeting               Meeting         **Draft**
- Thu 10/30/14 (10:20)   Meeting               Consultation    **Took place**
- Fri 10/31/14 (11:10)   Meeting               Seminar         **Cancelled**
-====================== ===================== =============== ================
+======================== ===================== =============== ================
+ When                     Calendar Event Type   Summary         Workflow
+------------------------ --------------------- --------------- ----------------
+ Thu 23/10/2014 (10:20)   Meeting               Meeting         **Took place**
+ Fri 24/10/2014 (11:10)   Meeting               Consultation    **Cancelled**
+ Sat 25/10/2014 (08:30)   Meeting               Evaluation      **Suggested**
+ Sat 25/10/2014 (13:30)   Meeting               Seminar         **Omitted**
+ Sun 26/10/2014 (09:40)   Meeting               First meeting   **Draft**
+ Mon 27/10/2014 (10:20)   Meeting               Interview       **Took place**
+ Mon 27/10/2014 (11:10)   Meeting               Lunch           **Cancelled**
+ Tue 28/10/2014 (13:30)   Meeting               Dinner          **Omitted**
+ Wed 29/10/2014 (08:30)   Meeting               Breakfast       **Suggested**
+ Wed 29/10/2014 (09:40)   Meeting               Meeting         **Draft**
+ Thu 30/10/2014 (10:20)   Meeting               Consultation    **Took place**
+ Fri 31/10/2014 (11:10)   Meeting               Seminar         **Cancelled**
+======================== ===================== =============== ================
 <BLANKLINE>
 
 Let's import them to `.xls`.
@@ -122,7 +122,7 @@ the table above because our user had changed them manually:
 
 >>> print(s.row(1))
 ... #doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
-[text:u'Thu 10/23/14 (08:30)', text:u'**Suggested** \u2192 `[img flag_green] <...>`__', xldate:..., xldate:..., xldate:...]
+[text:u'Thu 23/10/2014 (08:30)', text:u'**Suggested** \u2192 `[img flag_green] <...>`__', xldate:..., xldate:..., xldate:...]
 
 
 .. _invalid_requests:

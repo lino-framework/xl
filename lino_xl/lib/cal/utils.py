@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
+# Copyright 2011-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -81,14 +81,15 @@ def when_text(d, t=None):
 
     Examples:
 
-    >>> when_text(datetime.date(2013,12,25))
-    u'Wed 12/25/13'
+    >>> print(when_text(datetime.date(2013,12,25)))
+    Wed 25/12/2013
     
-    >>> when_text(datetime.date(2013,12,25),datetime.time(17,15,00))
-    u'Wed 12/25/13 (17:15)'
+    >>> print(when_text(
+    ...     datetime.date(2013,12,25), datetime.time(17,15,00)))
+    Wed 25/12/2013 (17:15)
     
-    >>> when_text(None)
-    u''
+    >>> print(when_text(None))
+    <BLANKLINE>
 
     """
     if d is None:

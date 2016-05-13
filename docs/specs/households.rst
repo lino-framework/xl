@@ -82,12 +82,12 @@ Mr Lars Braun is
 Create a household : **Married couple** / **Divorced couple** / **Factual household** / **Legal cohabitation** / **Isolated** / **Other**
 
 >>> rt.show(rt.modules.households.MembersByPerson, p, nosummary=True)
-=========================== =================== ========= ============ ==========
+=========================== =================== ========= ============ ============
  Household                   Role                Primary   Start date   End date
---------------------------- ------------------- --------- ------------ ----------
+--------------------------- ------------------- --------- ------------ ------------
  Lars & Melba Braun-Frisch   Head of household   No
- Lars & Pascale Braun-Adam   Head of household   No                     3/4/02
-=========================== =================== ========= ============ ==========
+ Lars & Pascale Braun-Adam   Head of household   No                     04/03/2002
+=========================== =================== ========= ============ ============
 <BLANKLINE>
 
 >>> SiblingsByPerson = rt.modules.households.SiblingsByPerson
