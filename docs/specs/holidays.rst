@@ -29,26 +29,26 @@ Here are the standard holidays, defined as recurrent event rules
 :mod:`lino.modlib.cal.fixtures.std`:
 
 >>> rt.show(cal.RecurrentEvents)
-============ ========== ============================ ======================== ==================== =====================
- Start date   End Date   Designation                  Designation (et)         Recurrency           Calendar Event Type
------------- ---------- ---------------------------- ------------------------ -------------------- ---------------------
- 1/1/13                  New Year's Day               Uusaasta                 yearly               Holidays
- 2/11/13                 Rosenmontag                  Rosenmontag              Relative to Easter   Holidays
- 2/13/13                 Ash Wednesday                Ash Wednesday            Relative to Easter   Holidays
- 3/29/13                 Good Friday                  Good Friday              Relative to Easter   Holidays
- 3/31/13                 Easter sunday                Easter sunday            Relative to Easter   Holidays
- 4/1/13                  Easter monday                Easter monday            Relative to Easter   Holidays
- 5/1/13                  International Workers' Day   kevadpüha                yearly               Holidays
- 5/9/13                  Ascension of Jesus           Ascension of Jesus       Relative to Easter   Holidays
- 5/20/13                 Pentecost                    Pentecost                Relative to Easter   Holidays
- 7/1/13       8/31/13    Summer holidays              Suvevaheaeg              yearly               Holidays
- 7/21/13                 National Day                 Belgia riigipüha         yearly               Holidays
- 8/15/13                 Assumption of Mary           Assumption of Mary       yearly               Holidays
- 10/31/13                All Souls' Day               All Souls' Day           yearly               Holidays
- 11/1/13                 All Saints' Day              All Saints' Day          yearly               Holidays
- 11/11/13                Armistice with Germany       Armistice with Germany   yearly               Holidays
- 12/25/13                Christmas                    Esimene Jõulupüha        yearly               Holidays
-============ ========== ============================ ======================== ==================== =====================
+============ ============ ============================ ======================== ==================== =====================
+ Start date   End Date     Designation                  Designation (et)         Recurrency           Calendar Event Type
+------------ ------------ ---------------------------- ------------------------ -------------------- ---------------------
+ 01/01/2013                New Year's Day               Uusaasta                 yearly               Holidays
+ 11/02/2013                Rosenmontag                  Rosenmontag              Relative to Easter   Holidays
+ 13/02/2013                Ash Wednesday                Ash Wednesday            Relative to Easter   Holidays
+ 29/03/2013                Good Friday                  Good Friday              Relative to Easter   Holidays
+ 31/03/2013                Easter sunday                Easter sunday            Relative to Easter   Holidays
+ 01/04/2013                Easter monday                Easter monday            Relative to Easter   Holidays
+ 01/05/2013                International Workers' Day   kevadpüha                yearly               Holidays
+ 09/05/2013                Ascension of Jesus           Ascension of Jesus       Relative to Easter   Holidays
+ 20/05/2013                Pentecost                    Pentecost                Relative to Easter   Holidays
+ 01/07/2013   31/08/2013   Summer holidays              Suvevaheaeg              yearly               Holidays
+ 21/07/2013                National Day                 Belgia riigipüha         yearly               Holidays
+ 15/08/2013                Assumption of Mary           Assumption of Mary       yearly               Holidays
+ 31/10/2013                All Souls' Day               All Souls' Day           yearly               Holidays
+ 01/11/2013                All Saints' Day              All Saints' Day          yearly               Holidays
+ 11/11/2013                Armistice with Germany       Armistice with Germany   yearly               Holidays
+ 25/12/2013                Christmas                    Esimene Jõulupüha        yearly               Holidays
+============ ============ ============================ ======================== ==================== =====================
 <BLANKLINE>
 
 
@@ -74,17 +74,17 @@ The :mod:`lino.modlib.cal.fixtures.std` fixture generates
 automatically all Ash Wednesdays for a range of years:
 
 >>> rt.show(cal.EventsByController, master_instance=ash)
-================= =============== ===============
- When              Summary         Workflow
------------------ --------------- ---------------
- **Wed 2/13/13**   Ash Wednesday   **Suggested**
- **Wed 3/5/14**    Ash Wednesday   **Suggested**
- **Wed 2/18/15**   Ash Wednesday   **Suggested**
- **Wed 2/10/16**   Ash Wednesday   **Suggested**
- **Wed 3/1/17**    Ash Wednesday   **Suggested**
- **Wed 2/14/18**   Ash Wednesday   **Suggested**
- **Wed 3/6/19**    Ash Wednesday   **Suggested**
-================= =============== ===============
+==================== =============== ===============
+ When                 Summary         Workflow
+-------------------- --------------- ---------------
+ **Wed 13/02/2013**   Ash Wednesday   **Suggested**
+ **Wed 05/03/2014**   Ash Wednesday   **Suggested**
+ **Wed 18/02/2015**   Ash Wednesday   **Suggested**
+ **Wed 10/02/2016**   Ash Wednesday   **Suggested**
+ **Wed 01/03/2017**   Ash Wednesday   **Suggested**
+ **Wed 14/02/2018**   Ash Wednesday   **Suggested**
+ **Wed 06/03/2019**   Ash Wednesday   **Suggested**
+==================== =============== ===============
 <BLANKLINE>
 
 

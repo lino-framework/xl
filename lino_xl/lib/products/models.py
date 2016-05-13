@@ -101,7 +101,7 @@ class Products(dd.Table):
     """
 
     detail_layout = """
-    id cat #sales_price vat_class
+    id cat #sales_price vat_class delivery_unit
     name
     description
     """
