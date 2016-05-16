@@ -23,6 +23,7 @@ from .mixins import BoardDecision
 class Board(mixins.BabelNamed, mixins.DatePeriod):
 
     class Meta:
+        app_label = 'boards'
         verbose_name = _("Board")
         verbose_name_plural = _("Boards")
 
@@ -73,6 +74,7 @@ class Member(dd.Model):
     :class:`ml.contacts.RoleType`.
     """
     class Meta:
+        app_label = 'boards'
         verbose_name = _("Board member")
         verbose_name_plural = _("Board members")
 

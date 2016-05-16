@@ -1,13 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
 Actions and Choicelists used to read Belgian eID cards.
 
 See unit tests in :mod:`lino_welfare.tests.test_beid`.
-
-.. autosummary::
 
 """
 
@@ -43,8 +41,6 @@ from lino.modlib.contacts.utils import street2kw
 from lino.modlib.plausibility.choicelists import Checker
 from .roles import BeIdUser
 
-config = dd.plugins.beid
-
 from .choicelists import BeIdCardTypes
 
 MALE = Path(__file__).parent.child('luc.jpg')
@@ -68,7 +64,7 @@ def get_image_path(card_number):
 
 
 def simulate_wrap(msg):
-    if config.read_only_simulate:
+    if dd.plugins.beid.read_only_simulate:
         msg = "(%s:) %s" % (unicode(_("Simulation")), msg)
     return msg
 
@@ -98,7 +94,7 @@ class BaseBeIdReadCardAction(dd.Action):
         """
         Don't add this action when `beid` app is not installed.
         """
-        if config is None:
+        if dd.plugins.beid is None:
             return False
 
         return super(
@@ -188,10 +184,10 @@ class BaseBeIdReadCardAction(dd.Action):
             return rv
         kw.update(card_type=doctype2cardtype(data.documentType))
 
-        if config.data_collector_dir:
+        if dd.plugins.beid.data_collector_dir:
             logger.info("Gonna write raw eid card data: %r", raw_data)
             fn = os.path.join(
-                config.data_collector_dir,
+                dd.plugins.beid.data_collector_dir,
                 card_number + '.txt')
             file(fn, "w").write(raw_data.encode('utf-8'))
             logger.info("Wrote eid card data to file %s", fn)
@@ -218,7 +214,7 @@ class BaseBeIdReadCardAction(dd.Action):
 
         def yes(ar2):
             msg = _("%s has been saved.") % dd.obj2unicode(obj)
-            if not config.read_only_simulate:
+            if not dd.plugins.beid.read_only_simulate:
                 for o in objects:
                     o.full_clean()
                     o.save()
@@ -299,7 +295,7 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
                 def yes(ar2):
                     obj = holder_model()(**attrs)
                     msg = _("New client %s has been created") % obj
-                    if config.read_only_simulate:
+                    if dd.plugins.beid.read_only_simulate:
                         msg = simulate_wrap(msg)
                         return ar2.warning(msg)
                     obj.full_clean()
@@ -487,7 +483,7 @@ class BeIdCardHolder(dd.Model):
             must_read = True
         if must_read:
             msg = _("Must read eID card!")
-            if config:
+            if dd.plugins.beid:
                 elems.append(ar.instance_action_button(
                     self.read_beid, msg, icon_name=None))
             else:
