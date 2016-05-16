@@ -95,7 +95,6 @@ lino_xl.lib.stars
 lino_xl.lib.thirds
 lino_xl.lib.workflows
 lino_xl.lib.xl
-lino_xl.projects
 """.splitlines() if n])
 
 SETUP_INFO.update(message_extractors={
