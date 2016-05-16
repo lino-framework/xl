@@ -97,7 +97,7 @@ class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
     # templates_group = 'excerpts/Excerpt'
 
     class Meta:
-        app_label = 'exerpts'
+        app_label = 'excerpts'
         abstract = dd.is_abstract_model(__name__, 'ExcerptType')
         verbose_name = _("Excerpt Type")
         verbose_name_plural = _("Excerpt Types")
@@ -437,7 +437,7 @@ class Excerpt(TypedPrintable, UserAuthored,
     allow_cascaded_delete = "owner"
 
     class Meta:
-        app_label = 'exerpts'
+        app_label = 'excerpts'
         abstract = dd.is_abstract_model(__name__, 'Excerpt')
         verbose_name = _("Excerpt")
         verbose_name_plural = _("Excerpts")
