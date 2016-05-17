@@ -2,13 +2,13 @@
 # Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""This is the main module of Lino XL.
+"""The :mod:`lino_xl` package contains a library of extended plugins
+to be used by Lino applications.
 
 .. autosummary::
    :toctree:
 
    lib
-
 
 """
 
