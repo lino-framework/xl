@@ -329,8 +329,9 @@ class EventGenerator(UserAuthored):
             #~ print "20111014 loading_from_dump"
             return 0
         qs = self.get_existing_auto_events()
+        qs = qs.order_by('start_date', 'start_time')
         wanted = self.get_wanted_auto_events(ar)
-        dd.logger.info("20160518 get_wanted_auto_events() returned %s", wanted)
+        # dd.logger.info("20160518 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
         # current = 0
 
@@ -530,9 +531,9 @@ class EventGenerator(UserAuthored):
         # ar.debug("20140310 resolve_conflicts %s", we.start_date)
         while we.has_conflicting_events():
             qs = we.get_conflicting_events()
-            # ar.debug("20140310 %s conflicts with %s. ", we,
-            #          we.get_conflicting_events())
             date = rset.get_next_alt_date(ar, date)
+            ar.debug("%s conflicts with %s, moving to %s. ",
+                     we, we.get_conflicting_events(), date)
             if date is None or date > until:
                 ar.debug(
                     "Failed to get next date for %s (%s > %s).",
