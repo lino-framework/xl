@@ -330,7 +330,8 @@ class EventGenerator(UserAuthored):
             return 0
         qs = self.get_existing_auto_events()
         wanted = self.get_wanted_auto_events(ar)
-        #~ logger.info("20131020 get_wanted_auto_events() returned %s",wanted)
+        dd.logger.info("20160518 get_wanted_auto_events() returned %s",
+                       [e.start_date for e in wanted])
         count = len(wanted)
         # current = 0
 
