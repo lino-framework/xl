@@ -467,6 +467,12 @@ class Event(Component, Ended, TypedPrintable, Mailable, Postable):
          all events on that day (:class:`EventsByDay
          <lino_xl.lib.cal.ui.EventsByDay>`).
 
+    .. attribute:: show_conflicting
+
+         A :class:`ShowSlaveTable <lino.core.actions.ShowSlaveTable>`
+         button which opens the :class:`ConflictingEvents
+         <lino_xl.lib.cal.ui.ConflictingEvents>` table for this event.
+
     """
     class Meta:
         app_label = 'cal'
@@ -496,6 +502,8 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 
     move_next = MoveEventNext()
 
+    show_conflicting = dd.ShowSlaveTable(ConflictingEvents)
+
     def strftime(self):
         if not self.start_date:
             return ''
@@ -520,10 +528,21 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         return s
 
     def has_conflicting_events(self):
+        """Whether this event has any conflicting events.
+        
+        This is roughly equivalent to asking whether
+        :meth:`get_conflicting_events()` returns more than 0 events.
+
+        Except when this event's type tolerates more than one events
+        at the same time.
+
+        """
         qs = self.get_conflicting_events()
         if qs is None:
             return False
         if self.event_type is not None:
+            if qs.filter(event_type__all_rooms=True).count() > 0:
+                return True
             n = self.event_type.max_conflicting - 1
         else:
             n = 0
@@ -566,10 +585,16 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
             qs = qs.exclude(
                 # auto_type=self.auto_type,
                 owner_id=self.owner_id, owner_type=self.owner_type)
-        if self.room is not None:
+        if self.room is None:
+            # a non-holiday event without room conflicts with a
+            # holiday event
+            if self.event_type is None or not self.event_type.all_rooms:
+                qs = qs.filter(event_type__all_rooms=True)
+        else:
             # other event in the same room
             c1 = Q(room=self.room)
-            # other event locks all rooms (e.h. holidays)
+            # other event locks all rooms (e.g. holidays)
+            # c2 = Q(room__isnull=False, event_type__all_rooms=True)
             c2 = Q(event_type__all_rooms=True)
             qs = qs.filter(c1 | c2)
         if self.user is not None:
@@ -765,7 +790,7 @@ dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 from lino.modlib.plausibility.choicelists import Checker
 
 
-class EventChecker(Checker):
+class EventGuestChecker(Checker):
     """Check whether this event has :message:`No participants although NNN
     suggestions exist.` -- This is probably due to some bug, so we
     repair this by adding the suggested guests.
@@ -787,7 +812,24 @@ class EventChecker(Checker):
                     for g in suggested:
                         g.save()
 
-EventChecker.activate()
+EventGuestChecker.activate()
+
+
+class ConflictingEventsChecker(Checker):
+    """Check whether this event conflicts with other event(s).
+
+    """
+    verbose_name = _("Check for conflicting events")
+    model = Event
+
+    def get_plausibility_problems(self, obj, fix=False):
+        if not obj.has_conflicting_events():
+            return
+        qs = obj.get_conflicting_events()
+        msg = _("Event conflicts with {0} other events.")
+        yield (False, msg.format(qs.count()))
+
+ConflictingEventsChecker.activate()
 
 
 @dd.python_2_unicode_compatible

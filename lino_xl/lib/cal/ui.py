@@ -711,6 +711,22 @@ class EventsByType(Events):
     master_key = 'event_type'
 
 
+class ConflictingEvents(Events):
+    """Shows events conflicting with this one (the master).
+    
+    """
+    label = _("Conflicting events")
+    master = 'cal.Event'
+    column_names = 'start_date start_time end_time project room user *'
+
+    @classmethod
+    def get_request_queryset(self, ar, **kw):
+        qs = ar.master_instance.get_conflicting_events()
+        if qs is None:
+            return rt.modules.cal.Event.objects.none()
+        return qs
+
+
 class EventsByDay(Events):
     """
     This table is usually labelled "Appointments today". It has no

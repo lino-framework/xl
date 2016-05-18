@@ -44,7 +44,7 @@ def objects():
     yield holidays
     yield event_type(**dd.str2kw('name', _("Meeting")))
 
-    RecurrentEvent = dd.resolve_model('cal.RecurrentEvent')
+    RecurrentEvent = rt.modules.cal.RecurrentEvent
     add = Instantiator(RecurrentEvent, event_type=holidays).build
 
     def holiday(month, day, en, de, fr, et=None):
@@ -67,12 +67,6 @@ def objects():
     yield holiday(11, 1, "All Saints' Day", "Allerheiligen", "Toussaint")
     yield holiday(11, 11, "Armistice with Germany", "Waffenstillstand", "Armistice")
     yield holiday(12, 25, "Christmas", "Weihnachten", "Noël", "Esimene Jõulupüha")
-
-    summer = holiday(
-        07, 01,
-        "Summer holidays", "Sommerferien", "Vacances d'été", "Suvevaheaeg")
-    summer.end_date = summer.start_date.replace(month=8, day=31)
-    yield summer
 
     easter1 = easter(cal.DEMO_START_YEAR)
 
