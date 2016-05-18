@@ -513,6 +513,8 @@ class Excerpt(TypedPrintable, UserAuthored,
             return super(Excerpt, self).filename_root()
         assert et.certifying
         o = self.owner
+        if o is None:
+            return super(Excerpt, self).filename_root()
         name = o._meta.app_label + '.' + o.__class__.__name__
         if not et.primary:
             name += '.' + str(et.pk)
