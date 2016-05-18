@@ -361,10 +361,10 @@ class EventGenerator(UserAuthored):
                             e.auto_type, ae.start_date,
                             e.start_date, subsequent, delta))
                     for se in wanted.values():
-                        ov = se.start_date
+                        # ov = se.start_date
                         se.start_date += delta
-                        ar.debug("%d : %s -> %s" % (
-                            se.auto_type, ov, se.start_date))
+                        # ar.debug("%d : %s -> %s" % (
+                        #     se.auto_type, ov, se.start_date))
             else:
                 self.compare_auto_event(e, ae)
         # create new Events for remaining wanted
@@ -532,8 +532,8 @@ class EventGenerator(UserAuthored):
         while we.has_conflicting_events():
             qs = we.get_conflicting_events()
             date = rset.get_next_alt_date(ar, date)
-            ar.debug("%s conflicts with %s, moving to %s. ",
-                     we, we.get_conflicting_events(), date)
+            ar.debug("%s wants %s but conflicts with %s, moving to %s. ",
+                     we, we.start_date, we.get_conflicting_events(), date)
             if date is None or date > until:
                 ar.debug(
                     "Failed to get next date for %s (%s > %s).",
