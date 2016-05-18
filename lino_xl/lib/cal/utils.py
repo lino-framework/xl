@@ -5,9 +5,6 @@
 """
 Some calendar utilities
 
-.. autosummary::
-
-
 .. This is a tested document. You can test it using:
 
     $ python setup.py test -s tests.LibTests.test_cal_utils
@@ -15,7 +12,7 @@ Some calendar utilities
 ..
   >>> import datetime
   >>> import lino
-  >>> lino.startup('lino.projects.docs.settings.demo')
+  >>> lino.startup('lino.projects.std.settings_test')
   >>> from lino.api.shell import *
 
 

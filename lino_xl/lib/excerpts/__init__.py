@@ -43,7 +43,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Excerpts")
 
     needs_plugins = [
-        'lino.modlib.printing',
+        'lino.modlib.gfks', 'lino.modlib.printing',
         'lino_xl.lib.outbox', 'lino.modlib.office', 'lino_xl.lib.xl']
 
     # _default_template_handlers = {}

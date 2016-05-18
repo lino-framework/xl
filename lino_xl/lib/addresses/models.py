@@ -45,6 +45,7 @@ class Address(AddressLocation):
     """
 
     class Meta:
+        app_label = 'addresses'
         verbose_name = _("Address")
         verbose_name_plural = _("Addresses")
 

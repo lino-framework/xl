@@ -95,28 +95,6 @@ lino_xl.lib.stars
 lino_xl.lib.thirds
 lino_xl.lib.workflows
 lino_xl.lib.xl
-lino_xl.projects
-lino_xl.projects.cms
-lino_xl.projects.cms.fixtures
-lino_xl.projects.cms.tests
-lino_xl.projects.crl
-lino_xl.projects.crl.fixtures
-lino_xl.projects.homeworkschool
-lino_xl.projects.homeworkschool.fixtures
-lino_xl.projects.homeworkschool.settings
-lino_xl.projects.i18n
-lino_xl.projects.igen
-lino_xl.projects.igen.tests
-lino_xl.projects.max
-lino_xl.projects.max.settings
-lino_xl.projects.min1
-lino_xl.projects.min1.settings
-lino_xl.projects.min2
-lino_xl.projects.min2.modlib
-lino_xl.projects.min2.modlib.contacts
-lino_xl.projects.min2.modlib.contacts.fixtures
-lino_xl.projects.min2.settings
-lino_xl.projects.min2.tests
 """.splitlines() if n])
 
 SETUP_INFO.update(message_extractors={

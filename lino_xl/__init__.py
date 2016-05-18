@@ -2,14 +2,13 @@
 # Copyright 2014-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""This is the main module of Lino XL.
+"""The :mod:`lino_xl` package contains a library of extended plugins
+to be used by Lino applications.
 
 .. autosummary::
    :toctree:
 
    lib
-   projects
-
 
 """
 
@@ -20,6 +19,6 @@ exec(compile(open(fn, "rb").read(), fn, 'exec'))
 
 __version__ = SETUP_INFO['version']
 
-intersphinx_urls = dict(docs="http://xl.lino-framework.org")
+intersphinx_urls = dict(docs="http://www.lino-framework.org")
 srcref_url = 'https://github.com/lino-framework/xl/blob/master/%s'
 
