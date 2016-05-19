@@ -557,6 +557,8 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         """
         if self.transparent:
             return
+        if self.state.transparent:
+            return
         # return False
         # Event = dd.resolve_model('cal.Event')
         # ot = ContentType.objects.get_for_model(RecurrentEvent)
@@ -577,8 +579,14 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
                 c3 = Q(end_time__isnull=True, start_time__isnull=True)
                 flt &= (c1 | c2 | c3)
         qs = qs.filter(flt)
-        if self.id is not None:  # don't conflict with myself
+
+        # cancelled events on a holiday should not cause a conflict:
+        qs = qs.exclude(state__in=EventStates.filter(transparent=True))
+
+        # saved events don't conflict with themselves:
+        if self.id is not None:  
             qs = qs.exclude(id=self.id)
+
         # generated events never conflict with other generated events
         # of same owner. Rule needed for update_events.
         if self.auto_type is not None:
@@ -826,8 +834,12 @@ class ConflictingEventsChecker(Checker):
         if not obj.has_conflicting_events():
             return
         qs = obj.get_conflicting_events()
-        msg = _("Event conflicts with {0} other events.")
-        yield (False, msg.format(qs.count()))
+        num = qs.count()
+        if num == 1:
+            msg = _("Event conflicts with {0}.").format(qs[0])
+        else:
+            msg = _("Event conflicts with {0} other events.").format(num)
+        yield (False, msg)
 
 ConflictingEventsChecker.activate()
 

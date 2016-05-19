@@ -53,6 +53,7 @@ add('50', _("Cancelled"), 'cancelled')
 class EventState(dd.State):
     fixed = False
     edit_guests = False
+    transparent = False
 
 
 class EventStates(dd.Workflow):
@@ -73,6 +74,7 @@ class EventStates(dd.Workflow):
     item_class = EventState
     edit_guests = models.BooleanField(_("Edit participants"), default=False)
     fixed = models.BooleanField(_("Stable"), default=False)
+    transparent = models.BooleanField(_("Transparent"), default=False)
     #~ editable_states = set()
     #~ column_names = "value name text edit_guests"
 
@@ -82,7 +84,7 @@ class EventStates(dd.Workflow):
 
     @classmethod
     def get_column_names(self, ar):
-        return 'value name text edit_guests fixed remark'
+        return 'value name text edit_guests fixed  transparent remark'
 
 add = EventStates.add_item
 add('10', _("Suggested"), 'suggested',
@@ -96,8 +98,8 @@ if False:
     add('30', _("Visit"), 'visit')
     add('60', _("Rescheduled"), 'rescheduled', fixed=True)
 add('50', _("Took place"), 'took_place', fixed=True, edit_guests=True)
-add('70', _("Cancelled"), 'cancelled', fixed=True)
-add('75', _("Omitted"), 'omitted', fixed=True)
+add('70', _("Cancelled"), 'cancelled', fixed=True, transparent=True)
+add('75', _("Omitted"), 'omitted', fixed=True, transparent=True)
 #~ add('80', _("Absent"), 'absent')
 
 

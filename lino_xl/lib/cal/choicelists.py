@@ -5,18 +5,7 @@
 """
 Choicelists for lino_xl.lib.cal
 
-
-.. This is a tested document. You can test it using:
-
-    $ python setup.py test -s tests.LibTests.test_cal_utils
-
-..
-  >>> import datetime
-  >>> import os
-  >>> os.environ['DJANGO_SETTINGS_MODULE'] = \\
-  ...     'lino.projects.docs.settings.demo'
-  >>> from lino.api.shell import *
-
+Functional specs see :ref:`book.specs.cal`.
 
 """
 
@@ -61,35 +50,9 @@ class DurationUnit(dd.Choice):
         
         This is intended for use as a `curried magic method` of a
         specified list item:
+
+        Examples see :ref:`book.specs.cal`.
         
-        Examples:
-    
-        >>> start_date = datetime.date(2011, 10, 26)
-        >>> DurationUnits.months.add_duration(start_date, 2)
-        datetime.date(2011, 12, 26)
-        
-        >>> from lino.utils import i2d
-        >>> start_date = i2d(20111026)
-        >>> DurationUnits.months.add_duration(start_date, 2)
-        datetime.date(2011, 12, 26)
-        >>> DurationUnits.months.add_duration(start_date, -2)
-        datetime.date(2011, 8, 26)
-
-        >>> start_date = i2d(20110131)
-        >>> DurationUnits.months.add_duration(start_date, 1)
-        datetime.date(2011, 2, 28)
-        >>> DurationUnits.months.add_duration(start_date, -1)
-        datetime.date(2010, 12, 31)
-        >>> DurationUnits.months.add_duration(start_date, -2)
-        datetime.date(2010, 11, 30)
-
-        >>> start_date = i2d(20140401)
-        >>> DurationUnits.months.add_duration(start_date, 3)
-        datetime.date(2014, 7, 1)
-        >>> DurationUnits.years.add_duration(start_date, 1)
-        datetime.date(2015, 4, 1)
-
-
         """
         if orig is None:
             return None

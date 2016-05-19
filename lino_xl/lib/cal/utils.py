@@ -11,9 +11,9 @@ Some calendar utilities
 
 ..
   >>> import datetime
-  >>> import lino
-  >>> lino.startup('lino.projects.std.settings_test')
-  >>> from lino.api.shell import *
+  >>> from lino import startup
+  >>> startup('lino.projects.std.settings_test')
+  >>> from lino.api.doctest import *
 
 
 """

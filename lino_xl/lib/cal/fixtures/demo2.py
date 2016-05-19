@@ -11,14 +11,11 @@ logger = logging.getLogger(__name__)
 
 
 import datetime
-import decimal
 from dateutil.relativedelta import relativedelta
 ONE_DAY = relativedelta(days=1)
 DEMO_DURATION = relativedelta(hours=1, minutes=30)
 
-from django.db import models
 from django.conf import settings
-from django.contrib.contenttypes.models import ContentType
 from django.utils.translation import ugettext as _
 
 from lino.utils import Cycler
@@ -44,7 +41,6 @@ def objects():
 
     #~ if settings.SITE.project_model:
         #~ PROJECTS = Cycler(settings.SITE.project_model.objects.all())
-    #~ USERS = Cycler(settings.SITE.user_model.objects.all())
     ETYPES = Cycler(EventType.objects.filter(is_appointment=True))
 
     def s2duration(s):
@@ -99,3 +95,9 @@ def objects():
                                + DURATIONS.pop())
                 yield e
 
+    # # some conflicting events
+    # USERS = Cycler(rt.users.User.objects.all())
+    # ET = EventType.objects.filter(is_appointment=True)
+    # date = settings.SITE.demo_date(200)
+    # e = Event(start_date=date, summary="Conflicting 1", event_type=ETYPES.pop(), user=USERS.pop())
+    # yield e
