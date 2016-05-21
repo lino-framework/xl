@@ -812,6 +812,13 @@ class EventsByRoom(Events):
 
 
 class EventsByController(Events):
+    """Shows the events linked to this database object.
+
+    If the master is an :class:`EventGenerator
+    <lino_xl.lib.cal.mixins.EventGenerator>`, then this includes
+    especially the events which were automatically generated.
+
+    """
     required_roles = dd.required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_html summary workflow_buttons *'

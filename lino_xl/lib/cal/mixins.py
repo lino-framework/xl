@@ -791,7 +791,8 @@ class Component(StartedSummaryDescription,
     access_class = AccessClasses.field(blank=True, help_text=_("""\
 Whether this is private, public or between."""))  # iCal:CLASS
     sequence = models.IntegerField(_("Revision"), default=0)
-    auto_type = models.IntegerField(null=True, blank=True, editable=False)
+    auto_type = models.IntegerField(
+        _("No."), null=True, blank=True, editable=False)
 
     def save(self, *args, **kw):
         if self.user is not None and self.access_class is None:
