@@ -113,14 +113,15 @@ class Members(dd.Table):
 
 
 class MembersByList(Members):
+    label = _("Members")
     master_key = 'list'
     order_by = ['seqno']
-    column_names = "seqno partner remark"
+    column_names = "seqno partner remark workflow_buttons *"
 
 
 class MembersByPartner(Members):
     master_key = 'partner'
-    column_names = "list remark"
+    column_names = "list remark *"
     order_by = ['list__ref']
 
 
