@@ -108,6 +108,7 @@ lino_xl.lib.reception
 lino_xl.lib.rooms
 lino_xl.lib.stars
 lino_xl.lib.thirds
+lino_xl.lib.topics
 lino_xl.lib.workflows
 lino_xl.lib.xl
 """.splitlines() if n])
