@@ -816,6 +816,7 @@ Whether this is private, public or between."""))  # iCal:CLASS
 
     def on_duplicate(self, ar, master):
         self.auto_type = None
+        super(Component, self).on_duplicate(ar, master)
 
     def disabled_fields(self, ar):
         rv = super(Component, self).disabled_fields(ar)
