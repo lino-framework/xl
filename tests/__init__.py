@@ -25,11 +25,5 @@ class LibTests(LinoTestCase):
         self.run_simple_doctests('lino_xl/lib/cal/utils.py')
 
 
-class UtilsTests(LinoTestCase):
-
-    def test_cal(self):
-        self.run_simple_doctests("lino_xl/lib/cal/utils.py")
-
-
 
 from . import test_appy_pod

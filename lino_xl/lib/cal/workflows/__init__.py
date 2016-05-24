@@ -1,6 +1,21 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
-# License: BSD (see file COPYING for details)
+# Copyright 2011-2016 Luc Saffre
+#
+# This file is part of Lino XL.
+#
+# Lino XL is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# Lino XL is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with Lino XL.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 """Some standard workflow definition modules for
 :mod:`lino_xl.lib.cal`.
@@ -46,13 +61,15 @@ add = TaskStates.add_item
 add('10', _("To do"), 'todo')
 add('20', pgettext(u"cal", u"Started"), 'started')
 add('30', _("Done"), 'done')
-#~ add('40', _("Sleeping"),'sleeping')
+# add('40', _("Sleeping"),'sleeping')
 add('50', _("Cancelled"), 'cancelled')
 
 
 class EventState(dd.State):
     fixed = False
     edit_guests = False
+    transparent = False
+    symbol = None
 
 
 class EventStates(dd.Workflow):
@@ -73,32 +90,40 @@ class EventStates(dd.Workflow):
     item_class = EventState
     edit_guests = models.BooleanField(_("Edit participants"), default=False)
     fixed = models.BooleanField(_("Stable"), default=False)
-    #~ editable_states = set()
-    #~ column_names = "value name text edit_guests"
+    transparent = models.BooleanField(_("Transparent"), default=False)
+    # editable_states = set()
+    # column_names = "value name text edit_guests"
 
-    #~ @dd.virtualfield(models.BooleanField("edit_guests"))
-    #~ def edit_guests(cls,obj,ar):
-        #~ return obj.edit_guests
+    # @dd.virtualfield(models.BooleanField("edit_guests"))
+    # def edit_guests(cls,obj,ar):
+        # return obj.edit_guests
 
     @classmethod
     def get_column_names(self, ar):
-        return 'value name text edit_guests fixed remark'
+        return 'value name text edit_guests fixed  transparent remark'
 
 add = EventStates.add_item
 add('10', _("Suggested"), 'suggested',
     edit_guests=True,
+    symbol="?",
     help_text=_("Automatically suggested. "
                 "Default state of an automatic event."))
-add('20', _("Draft"), 'draft', edit_guests=True)
+add('20', _("Draft"), 'draft', edit_guests=True,
+    symbol="\u2610")  # BALLOT BOX
 if False:
     add('40', _("Published"), 'published')
-    #~ add('30', _("Notified"),'notified')
+    # add('30', _("Notified"),'notified')
     add('30', _("Visit"), 'visit')
     add('60', _("Rescheduled"), 'rescheduled', fixed=True)
-add('50', _("Took place"), 'took_place', fixed=True, edit_guests=True)
-add('70', _("Cancelled"), 'cancelled', fixed=True)
-add('75', _("Omitted"), 'omitted', fixed=True)
-#~ add('80', _("Absent"), 'absent')
+add('50', _("Took place"), 'took_place',
+    fixed=True, edit_guests=True,
+    symbol="\u2611")  # BALLOT BOX WITH CHECK
+
+add('70', _("Cancelled"), 'cancelled', fixed=True, transparent=True,
+    symbol="\u2612")  # BALLOT BOX WITH X
+add('75', _("Omitted"), 'omitted', fixed=True, transparent=True,
+    symbol="\u2612")  # BALLOT BOX WITH X
+# add('80', _("Absent"), 'absent')
 
 
 class GuestState(dd.State):

@@ -1,6 +1,21 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2016 Luc Saffre
-# License: BSD (see file COPYING for details)
+#
+# This file is part of Lino XL.
+#
+# Lino XL is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# Lino XL is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with Lino XL.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 """
 Model mixins for `lino_xl.lib.cal`.
@@ -791,7 +806,8 @@ class Component(StartedSummaryDescription,
     access_class = AccessClasses.field(blank=True, help_text=_("""\
 Whether this is private, public or between."""))  # iCal:CLASS
     sequence = models.IntegerField(_("Revision"), default=0)
-    auto_type = models.IntegerField(null=True, blank=True, editable=False)
+    auto_type = models.IntegerField(
+        _("No."), null=True, blank=True, editable=False)
 
     def save(self, *args, **kw):
         if self.user is not None and self.access_class is None:
@@ -800,6 +816,7 @@ Whether this is private, public or between."""))  # iCal:CLASS
 
     def on_duplicate(self, ar, master):
         self.auto_type = None
+        super(Component, self).on_duplicate(ar, master)
 
     def disabled_fields(self, ar):
         rv = super(Component, self).disabled_fields(ar)

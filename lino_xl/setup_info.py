@@ -1,6 +1,21 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2009-2016 Luc Saffre
-# License: BSD (see file COPYING for details)
+#
+# This file is part of Lino XL.
+#
+# Lino XL is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# Lino XL is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with Lino XL.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 # ~ Note that this module may not have a docstring because any
 # ~ global variable defined here will override the global
@@ -93,6 +108,7 @@ lino_xl.lib.reception
 lino_xl.lib.rooms
 lino_xl.lib.stars
 lino_xl.lib.thirds
+lino_xl.lib.topics
 lino_xl.lib.workflows
 lino_xl.lib.xl
 """.splitlines() if n])

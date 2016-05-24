@@ -1,4 +1,5 @@
-# Copyright 2008-2015 Luc Saffre
+# -*- coding: UTF-8 -*-
+# Copyright 2016 Luc Saffre
 #
 # This file is part of Lino XL.
 #
@@ -16,33 +17,40 @@
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-"""
-Adds functionality for managing foos.
+
+"""Adds the concepts of "topics" and "interests".
 
 .. autosummary::
    :toctree:
 
     models
-    dummy
 
 """
 
-from lino import ad, _
+from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.Plugin`."
+    "See :class:`lino.core.plugin.Plugin`."
 
-    verbose_name = _("Projects")
+    verbose_name = _("Topics")
+
+    needs_plugins = ['lino.modlib.contacts']
 
     def setup_main_menu(self, site, profile, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('projects.MyProjects')
+        # p = self.get_menu_group()
+        p = self.site.plugins.contacts
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('topics.Topics')
 
     def setup_config_menu(self, site, profile, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('projects.ProjectTypes')
+        # p = self.get_menu_group()
+        p = self.site.plugins.contacts
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('topics.TopicGroups')
 
     def setup_explorer_menu(self, site, profile, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('projects.Projects')
+        # p = self.get_menu_group()
+        p = self.site.plugins.contacts
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('topics.Interests')

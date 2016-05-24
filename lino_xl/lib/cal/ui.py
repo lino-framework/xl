@@ -1,6 +1,21 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2015 Luc Saffre
-# License: BSD (see file COPYING for details)
+#
+# This file is part of Lino XL.
+#
+# Lino XL is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# Lino XL is distributed in the hope that it will be useful, but
+# WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+# Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License along with Lino XL.  If not, see
+# <http://www.gnu.org/licenses/>.
 
 """
 Tables for `lino_xl.lib.cal`.
@@ -711,6 +726,22 @@ class EventsByType(Events):
     master_key = 'event_type'
 
 
+class ConflictingEvents(Events):
+    """Shows events conflicting with this one (the master).
+    
+    """
+    label = _("Conflicting events")
+    master = 'cal.Event'
+    column_names = 'start_date start_time end_time project room user *'
+
+    @classmethod
+    def get_request_queryset(self, ar, **kw):
+        qs = ar.master_instance.get_conflicting_events()
+        if qs is None:
+            return rt.modules.cal.Event.objects.none()
+        return qs
+
+
 class EventsByDay(Events):
     """
     This table is usually labelled "Appointments today". It has no
@@ -796,6 +827,13 @@ class EventsByRoom(Events):
 
 
 class EventsByController(Events):
+    """Shows the events linked to this database object.
+
+    If the master is an :class:`EventGenerator
+    <lino_xl.lib.cal.mixins.EventGenerator>`, then this includes
+    especially the events which were automatically generated.
+
+    """
     required_roles = dd.required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_html summary workflow_buttons *'
