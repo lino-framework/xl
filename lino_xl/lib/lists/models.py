@@ -52,6 +52,8 @@ class ListType(mixins.BabelNamed):
     """
 
     class Meta:
+        app_label = 'lists'
+        abstract = dd.is_abstract_model(__name__, 'ListType')
         verbose_name = _("List Type")
         verbose_name_plural = _("List Types")
 
@@ -65,6 +67,8 @@ class ListTypes(dd.Table):
 class List(mixins.BabelNamed, mixins.Referrable):
 
     class Meta:
+        app_label = 'lists'
+        abstract = dd.is_abstract_model(__name__, 'List')
         verbose_name = _("Partner List")
         verbose_name_plural = _("Partner Lists")
 
@@ -97,6 +101,8 @@ class Lists(dd.Table):
 class Member(mixins.Sequenced):
 
     class Meta:
+        app_label = 'lists'
+        abstract = dd.is_abstract_model(__name__, 'Member')
         verbose_name = _("List memberships")
         verbose_name_plural = _("List memberships")
 
