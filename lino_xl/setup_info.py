@@ -62,6 +62,10 @@ SETUP_INFO = dict(
 
 SETUP_INFO.update(long_description="""\
 This is a collection of plugins for the Lino framework.
+
+The central documentation is at http://www.lino-framework.org
+
+
 """)
 
 SETUP_INFO.update(packages=[str(n) for n in """
