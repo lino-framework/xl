@@ -77,6 +77,7 @@ lino_xl.lib.appypod
 lino_xl.lib.beid
 lino_xl.lib.blogs
 lino_xl.lib.boards
+lino_xl.lib.teams
 lino_xl.lib.cal
 lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management
