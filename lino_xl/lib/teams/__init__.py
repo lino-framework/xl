@@ -30,7 +30,6 @@ This is the base plugin which defines common things for all user teams:
    :toctree:
 
     models
-    mixins
 
 """
 

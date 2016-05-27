@@ -44,6 +44,7 @@
     reception
     rooms
     stars
+    teams
     thirds
     topics
     workflows

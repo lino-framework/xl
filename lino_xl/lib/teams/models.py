@@ -15,10 +15,10 @@
 # You should have received a copy of the GNU Affero General Public
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
+
 """Database models for this plugin.
 
 """
-
 
 from __future__ import unicode_literals
 
