@@ -45,6 +45,7 @@
     rooms
     stars
     thirds
+    topics
     workflows
 
 
