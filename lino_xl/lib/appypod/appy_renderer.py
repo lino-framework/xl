@@ -64,6 +64,7 @@ from lino.utils.restify import restify
 from lino.utils.html2xhtml import html2xhtml
 from lino.utils.html2odf import html2odf, toxml
 from lino.utils.xmlgen.html import E
+from lino.core.widgets import NumberFieldWidget
 
 # from lino.modlib.extjs.elems import NumberFieldElement
 
@@ -439,8 +440,7 @@ class AppyRenderer(OriginalAppyRenderer):
         def fldstyle(fld):
             #~ if isinstance(fld,ext_store.VirtStoreField):
                 #~ fld = fld.delegate
-            NumberFieldElement = settings.SITE.kernel.widgets.NumberFieldElement
-            if isinstance(fld, NumberFieldElement):
+            if isinstance(fld, NumberFieldWidget):
                 return "Number Cell"
             return "Table Contents"
 
