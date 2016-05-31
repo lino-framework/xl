@@ -512,6 +512,7 @@ class AppyRenderer(OriginalAppyRenderer):
             if sums != [fld.zero for fld in columns]:
                 tr = TableRow(stylename=total_row_style)
                 table_rows.addElement(tr)
+                sums = {fld.name: sums[i] for i, fld in enumerate(columns)}
                 for i, fld in enumerate(columns):
                     tc = TableCell(stylename=cell_style)
                     stylename = fldstyle(fld)
