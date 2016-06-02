@@ -1,4 +1,4 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2016 Luc Saffre
 #
 # This file is part of Lino XL.
 #
@@ -16,38 +16,34 @@
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-"""These are the plugins included with Lino XL.
+"""Adds the notion of "user teams".
+
+This is the base plugin which defines common things for all user teams:
+
+- Define the `Team` model
+- Inject into `users.User` a pointer to `teams.Team`
+- Define a `UsersByTeam` view
+- Add a menu command to configure the list of teams.
+
 
 .. autosummary::
    :toctree:
 
-    addresses
-    appypod
-    beid
-    blogs
-    boards
-    cal
-    cv
-    dupable_partners
-    excerpts
-    families
-    households
-    humanlinks
-    lists
-    notes
-    outbox
-    pages
-    postings
-    products
-    projects
-    properties
-    reception
-    rooms
-    stars
-    teams
-    thirds
-    topics
-    workflows
-
+    models
 
 """
+
+from lino.api import ad, _
+
+
+class Plugin(ad.Plugin):
+    "See :class:`lino.core.Plugin`."
+
+    verbose_name = _("User teams")
+    needs_plugins = ['lino.modlib.users']
+
+    def setup_config_menu(config, site, profile, m):
+        mg = site.plugins.system
+        m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('teams.Teams')
+
