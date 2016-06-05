@@ -50,6 +50,7 @@ from lino.api import dd, rt
 from lino import mixins
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
+from lino.core.exceptions import UnresolvedChoice
 
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored, My
@@ -873,7 +874,7 @@ def set_excerpts_actions(sender, **kw):
     try:
         etypes = [(obj, obj.content_type)
                   for obj in ExcerptType.objects.all()]
-    except (OperationalError, ProgrammingError) as e:
+    except (OperationalError, ProgrammingError, UnresolvedChoice) as e:
         dd.logger.debug("Failed to set excerpts actions : %s", e)
         # Happens e.g. when the database has not yet been migrated
         etypes = []
