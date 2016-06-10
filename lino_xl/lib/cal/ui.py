@@ -730,7 +730,9 @@ class ConflictingEvents(Events):
     """Shows events conflicting with this one (the master).
     
     """
-    label = _("Conflicting events")
+    label = ' ⚔ '  # 2694
+    help_text = _("Show events conflicting with this one.")
+
     master = 'cal.Event'
     column_names = 'start_date start_time end_time project room user *'
 
