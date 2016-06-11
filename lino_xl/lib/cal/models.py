@@ -600,19 +600,27 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
                 flt &= (c1 | c2 | c3)
         qs = qs.filter(flt)
 
-        # cancelled events on a holiday should not cause a conflict:
-        qs = qs.exclude(state__in=EventStates.filter(transparent=True))
-
         # saved events don't conflict with themselves:
-        if self.id is not None:  
+        if self.id is not None:
             qs = qs.exclude(id=self.id)
 
-        # generated events never conflict with other generated events
+        # automatic events never conflict with other generated events
         # of same owner. Rule needed for update_events.
-        if self.auto_type is not None:
+        if self.auto_type:
             qs = qs.exclude(
                 # auto_type=self.auto_type,
+                auto_type__isnull=False,
                 owner_id=self.owner_id, owner_type=self.owner_type)
+
+        # transparent events (cancelled or omitted) usually don't
+        # cause a conflict with other events (e.g. a holiday), except
+        # if the other event has the same owner (because a cancelled
+        # course lesson should not tolerate another lesson on the same
+        # date).
+        qs = qs.filter(
+            Q(state__in=EventStates.filter(transparent=False)) | Q(
+                owner_id=self.owner_id, owner_type=self.owner_type))
+
         if self.room is None:
             # a non-holiday event without room conflicts with a
             # holiday event

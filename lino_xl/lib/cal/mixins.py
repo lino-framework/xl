@@ -371,7 +371,7 @@ class EventGenerator(UserAuthored):
             #~ print "20111014 loading_from_dump"
             return 0
         qs = self.get_existing_auto_events()
-        qs = qs.order_by('start_date', 'start_time')
+        qs = qs.order_by('start_date', 'start_time', 'auto_type')
         wanted = self.get_wanted_auto_events(ar)
         # dd.logger.info("20160518 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
@@ -534,6 +534,8 @@ class EventGenerator(UserAuthored):
     def move_event_next(self, we, ar):
         """Move the specified event to the next date in this series."""
 
+        if we.auto_type is None:
+            raise Exception("Cannot move uncontrolled event")
         if we.owner is not self:
             raise Exception(
                 "%s cannot move event controlled by %s" % (
@@ -550,11 +552,16 @@ class EventGenerator(UserAuthored):
         if self.resolve_conflicts(we, ar, rset, until) is None:
             return
         we.save()
+
+        # update all following events:
+        self.update_auto_events(ar)
+
+        # report success and tell the client to refresh
         ar.set_response(refresh=True)
         ar.success()
 
     def care_about_conflicts(self, we):
-        """Whether this event generator should try to resolve cnoflicts (in
+        """Whether this event generator should try to resolve conflicts (in
         :meth:`resolve_conflicts`)
 
         """
@@ -593,9 +600,9 @@ class EventGenerator(UserAuthored):
         qs = rt.models.cal.Event.objects.filter(
             owner_type=ot, owner_id=self.pk,
             auto_type__isnull=False)
-        noauto_states = set([x for x in EventStates.objects() if x.noauto])
-        if noauto_states:
-            qs = qs.exclude(state__in=noauto_states)
+        # noauto_states = set([x for x in EventStates.objects() if x.noauto])
+        # if noauto_states:
+        #     qs = qs.exclude(state__in=noauto_states)
         return qs
 
     def suggest_cal_guests(self, event):
