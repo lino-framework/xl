@@ -49,11 +49,13 @@ from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino.modlib.office.roles import OfficeStaff
 from .workflows import (TaskStates, EventStates, GuestStates)
 
-from .workflows import take
+# removed from default config because you cannot easily unload it again
+# from .workflows import take
+
 from .mixins import Component
 from .mixins import EventGenerator, RecurrenceSet, Reservation
 from .mixins import Ended
-from .mixins import MoveEventNext, UpdateEvents
+from .mixins import MoveEventNext, UpdateEvents, UpdateEventsByEvent
 from .ui import *
 
 DEMO_START_YEAR = 2013
@@ -404,7 +406,9 @@ class UpdateGuests(dd.MultipleRowAction):
     """
 
     label = _('Update Guests')
-    icon_name = 'lightning'
+    # icon_name = 'lightning'
+    button_text = ' ☷ '  # 2637
+    help_text = _("Populate or update the list of guests for this event.")
 
     def run_on_row(self, obj, ar):
         if settings.SITE.loading_from_dump:
@@ -497,6 +501,7 @@ class Event(Component, Ended, TypedPrintable, Mailable, Postable):
         verbose_name_plural = pgettext("cal", "Events")
 
     update_guests = UpdateGuests()
+    update_events = UpdateEventsByEvent()
 
     event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
 
@@ -595,19 +600,27 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
                 flt &= (c1 | c2 | c3)
         qs = qs.filter(flt)
 
-        # cancelled events on a holiday should not cause a conflict:
-        qs = qs.exclude(state__in=EventStates.filter(transparent=True))
-
         # saved events don't conflict with themselves:
-        if self.id is not None:  
+        if self.id is not None:
             qs = qs.exclude(id=self.id)
 
-        # generated events never conflict with other generated events
+        # automatic events never conflict with other generated events
         # of same owner. Rule needed for update_events.
-        if self.auto_type is not None:
+        if self.auto_type:
             qs = qs.exclude(
                 # auto_type=self.auto_type,
+                auto_type__isnull=False,
                 owner_id=self.owner_id, owner_type=self.owner_type)
+
+        # transparent events (cancelled or omitted) usually don't
+        # cause a conflict with other events (e.g. a holiday), except
+        # if the other event has the same owner (because a cancelled
+        # course lesson should not tolerate another lesson on the same
+        # date).
+        qs = qs.filter(
+            Q(state__in=EventStates.filter(transparent=False)) | Q(
+                owner_id=self.owner_id, owner_type=self.owner_type))
+
         if self.room is None:
             # a non-holiday event without room conflicts with a
             # holiday event
@@ -1002,35 +1015,34 @@ dd.inject_field(
 Reservation.show_today = ShowEventsByDay('start_date')
 Event.show_today = ShowEventsByDay('start_date')
 
+if False:  # removed 20160610 because it is probably not used
 
-def update_reminders_for_user(user, ar):
-    n = 0
-    for model in rt.models_by_base(EventGenerator):
-        for obj in model.objects.filter(user=user):
-            obj.update_reminders(ar)
-            # logger.info("--> %s",unicode(obj))
-            n += 1
-    return n
+    def update_reminders_for_user(user, ar):
+        n = 0
+        for model in rt.models_by_base(EventGenerator):
+            for obj in model.objects.filter(user=user):
+                obj.update_reminders(ar)
+                # logger.info("--> %s",unicode(obj))
+                n += 1
+        return n
 
+    class UpdateUserReminders(UpdateEvents):
 
-class UpdateUserReminders(UpdateEvents):
+        """
+        Users can invoke this to re-generate their automatic tasks.
+        """
 
-    """
-    Users can invoke this to re-generate their automatic tasks.
-    """
+        def run_from_ui(self, ar, **kw):
+            user = ar.selected_rows[0]
+            logger.info("Updating reminders for %s", unicode(user))
+            n = update_reminders_for_user(user, ar)
+            msg = _("%(num)d reminders for %(user)s have been updated."
+                    ) % dict(user=user, num=n)
+            logger.info(msg)
+            ar.success(msg, **kw)
 
-    def run_from_ui(self, ar, **kw):
-        user = ar.selected_rows[0]
-        logger.info("Updating reminders for %s", unicode(user))
-        n = update_reminders_for_user(user, ar)
-        msg = _("%(num)d reminders for %(user)s have been updated."
-                ) % dict(user=user, num=n)
-        logger.info(msg)
-        ar.success(msg, **kw)
-
-
-@dd.receiver(dd.pre_analyze, dispatch_uid="add_update_reminders")
-def pre_analyze(sender, **kw):
-    sender.user_model.define_action(update_reminders=UpdateUserReminders())
+    @dd.receiver(dd.pre_analyze, dispatch_uid="add_update_reminders")
+    def pre_analyze(sender, **kw):
+        sender.user_model.define_action(update_reminders=UpdateUserReminders())
 
 

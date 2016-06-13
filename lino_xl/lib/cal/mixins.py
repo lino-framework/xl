@@ -227,8 +227,12 @@ class StartedSummaryDescription(Started):
 
 class MoveEventNext(dd.MultipleRowAction):
     label = _('Move down')
+    button_text = _('▽')  # 25BD White down-pointing triangle
     custom_handler = True
-    icon_name = 'date_next'
+    # icon_name = 'date_next'
+    show_in_workflow = True
+    show_in_bbar = False
+    help_text = _("Move this event to next available date")
 
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
@@ -242,11 +246,34 @@ class MoveEventNext(dd.MultipleRowAction):
 
 
 class UpdateEvents(dd.MultipleRowAction):
+    """This is installed as :attr:`update_events` on
+    :class:`EventGenerator`.
+
+    """
     label = _('Update Events')
-    icon_name = 'lightning'
+    button_text = ' ⚡ '  # 26A1
+    help_text = _('Create or update the automatic events '
+                  'controlled by this generator.')
+
+    # icon_name = 'lightning'
 
     def run_on_row(self, obj, ar):
         return obj.update_reminders(ar)
+
+
+class UpdateEventsByEvent(UpdateEvents):
+    """Update all events of this series. This is installed as
+    :attr:`update_events` on :class:`Event`.
+
+    """
+    def get_action_permission(self, ar, obj, state):
+        if obj.auto_type is None:
+            return False
+        return super(UpdateEventsByEvent, self).get_action_permission(
+            ar, obj, state)
+
+    def run_on_row(self, obj, ar):
+        return obj.owner.update_reminders(ar)
 
 
 class EventGenerator(UserAuthored):
@@ -344,7 +371,7 @@ class EventGenerator(UserAuthored):
             #~ print "20111014 loading_from_dump"
             return 0
         qs = self.get_existing_auto_events()
-        qs = qs.order_by('start_date', 'start_time')
+        qs = qs.order_by('start_date', 'start_time', 'auto_type')
         wanted = self.get_wanted_auto_events(ar)
         # dd.logger.info("20160518 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
@@ -507,6 +534,8 @@ class EventGenerator(UserAuthored):
     def move_event_next(self, we, ar):
         """Move the specified event to the next date in this series."""
 
+        if we.auto_type is None:
+            raise Exception("Cannot move uncontrolled event")
         if we.owner is not self:
             raise Exception(
                 "%s cannot move event controlled by %s" % (
@@ -523,11 +552,16 @@ class EventGenerator(UserAuthored):
         if self.resolve_conflicts(we, ar, rset, until) is None:
             return
         we.save()
+
+        # update all following events:
+        self.update_auto_events(ar)
+
+        # report success and tell the client to refresh
         ar.set_response(refresh=True)
         ar.success()
 
     def care_about_conflicts(self, we):
-        """Whether this event generator should try to resolve cnoflicts (in
+        """Whether this event generator should try to resolve conflicts (in
         :meth:`resolve_conflicts`)
 
         """
@@ -563,9 +597,13 @@ class EventGenerator(UserAuthored):
 
     def get_existing_auto_events(self):
         ot = ContentType.objects.get_for_model(self.__class__)
-        return rt.modules.cal.Event.objects.filter(
+        qs = rt.models.cal.Event.objects.filter(
             owner_type=ot, owner_id=self.pk,
-            auto_type__isnull=False).order_by('auto_type')
+            auto_type__isnull=False)
+        # noauto_states = set([x for x in EventStates.objects() if x.noauto])
+        # if noauto_states:
+        #     qs = qs.exclude(state__in=noauto_states)
+        return qs
 
     def suggest_cal_guests(self, event):
         """Yield or return a list of (unsaved) :class:`Guest
@@ -793,8 +831,15 @@ class Component(StartedSummaryDescription,
                 Controllable,
                 mixins.CreatedModified):
 
-    """
-    Abstract base class for :class:`Event` and :class:`Task`.
+    """Abstract base class for :class:`Event` and :class:`Task`.
+
+    .. attribute:: auto_type
+
+        Contains the sequence number if this is an automatically
+        generated component. Otherwise this field is empty.
+
+        Automatically generated components behave differently at
+        certain levels.
 
     """
     workflow_state_field = 'state'
@@ -806,8 +851,7 @@ class Component(StartedSummaryDescription,
     access_class = AccessClasses.field(blank=True, help_text=_("""\
 Whether this is private, public or between."""))  # iCal:CLASS
     sequence = models.IntegerField(_("Revision"), default=0)
-    auto_type = models.IntegerField(
-        _("No."), null=True, blank=True, editable=False)
+    auto_type = models.IntegerField(_("No."), null=True, blank=True)
 
     def save(self, *args, **kw):
         if self.user is not None and self.access_class is None:

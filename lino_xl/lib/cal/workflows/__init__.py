@@ -69,7 +69,7 @@ class EventState(dd.State):
     fixed = False
     edit_guests = False
     transparent = False
-    symbol = None
+    noauto = False
 
 
 class EventStates(dd.Workflow):
@@ -91,6 +91,7 @@ class EventStates(dd.Workflow):
     edit_guests = models.BooleanField(_("Edit participants"), default=False)
     fixed = models.BooleanField(_("Stable"), default=False)
     transparent = models.BooleanField(_("Transparent"), default=False)
+    noauto = models.BooleanField(_("No auto"), default=False)
     # editable_states = set()
     # column_names = "value name text edit_guests"
 
@@ -100,16 +101,16 @@ class EventStates(dd.Workflow):
 
     @classmethod
     def get_column_names(self, ar):
-        return 'value name text edit_guests fixed  transparent remark'
+        return 'value name text button_text edit_guests fixed transparent noauto'
 
 add = EventStates.add_item
 add('10', _("Suggested"), 'suggested',
     edit_guests=True,
-    symbol="?",
+    button_text="?",
     help_text=_("Automatically suggested. "
                 "Default state of an automatic event."))
 add('20', _("Draft"), 'draft', edit_guests=True,
-    symbol="\u2610")  # BALLOT BOX
+    button_text="\u2610")  # BALLOT BOX
 if False:
     add('40', _("Published"), 'published')
     # add('30', _("Notified"),'notified')
@@ -117,12 +118,12 @@ if False:
     add('60', _("Rescheduled"), 'rescheduled', fixed=True)
 add('50', _("Took place"), 'took_place',
     fixed=True, edit_guests=True,
-    symbol="\u2611")  # BALLOT BOX WITH CHECK
+    button_text="\u2611")  # BALLOT BOX WITH CHECK
 
 add('70', _("Cancelled"), 'cancelled', fixed=True, transparent=True,
-    symbol="\u2612")  # BALLOT BOX WITH X
+    button_text="\u2609", noauto=True)  # SUN
 add('75', _("Omitted"), 'omitted', fixed=True, transparent=True,
-    symbol="\u2612")  # BALLOT BOX WITH X
+    button_text="\u2612")  # BALLOT BOX WITH X
 # add('80', _("Absent"), 'absent')
 
 
@@ -146,7 +147,7 @@ class GuestStates(dd.Workflow):
 
     @classmethod
     def get_column_names(self, ar):
-        return 'value name afterwards text remark'
+        return 'value name afterwards text button_text'
 
 
 add = GuestStates.add_item
