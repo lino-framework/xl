@@ -42,6 +42,7 @@ from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses)
 from .utils import setkw, dt2kw, when_text
 
+from lino.modlib.plausibility.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.users.mixins import UserAuthored
 from lino_xl.lib.postings.mixins import Postable
@@ -820,10 +821,12 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         cls.DISABLED_AUTO_FIELDS = dd.fields_list(cls, "summary")
         super(Event, cls).on_analyze(lino)
 
+    def auto_type_changed(self, ar):
+        """When the number has changed, we must update the summary."""
+        if self.auto_type:
+            self.summary = self.update_cal_summary(self.auto_type)
 
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
-
-from lino.modlib.plausibility.choicelists import Checker
 
 
 class EventGuestChecker(Checker):
