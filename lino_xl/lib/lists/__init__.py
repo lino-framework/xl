@@ -1,4 +1,4 @@
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2016 Luc Saffre
 #
 # This file is part of Lino XL.
 #
@@ -42,4 +42,4 @@ class Plugin(ad.Plugin):
     def setup_explorer_menu(config, site, profile, m):
         mg = site.plugins.contacts
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('lists.Members')
+        m.add_action('lists.AllMembers')
