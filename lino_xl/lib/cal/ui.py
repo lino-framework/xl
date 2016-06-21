@@ -394,6 +394,9 @@ class GuestsByRole(Guests):
     master_key = 'role'
     required_roles = dd.required(OfficeUser)
 
+from lino.utils import join_elems
+from lino.utils.xmlgen.html import E
+
 if settings.SITE.is_installed('contacts'):
 
     class GuestsByPartner(Guests):
@@ -402,6 +405,29 @@ if settings.SITE.is_installed('contacts'):
         required_roles = dd.required(OfficeUser)
         column_names = 'event__when_text workflow_buttons'
         auto_fit_column_widths = True
+
+        slave_grid_format = "summary"
+
+        @classmethod
+        def get_slave_summary(self, obj, ar):
+            """The summary view for this table.
+
+            See :meth:`lino.core.actors.Actor.get_slave_summary`.
+
+            """
+            if ar is None:
+                return ''
+            sar = self.request_from(ar, master_instance=obj)
+
+            elems = []
+            for guest in sar:
+                lbl = dd.fds(guest.event.start_date)
+                if guest.state.button_text:
+                    lbl = "{0}{1}".format(lbl, guest.state.button_text)
+                elems.append(ar.obj2html(guest.event, lbl))
+            elems = join_elems(elems, sep=', ')
+            return E.div(class_="htmlText", *elems)
+
 
     class MyPresences(Guests):
         required_roles = dd.required(OfficeUser)

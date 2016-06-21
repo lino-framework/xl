@@ -878,9 +878,25 @@ ConflictingEventsChecker.activate()
 @dd.python_2_unicode_compatible
 class Guest(dd.Model):
     """Represents the fact that a given person is expected to attend to a
-   given event.
+    given event.
 
-   TODO: Rename this to "Presence".
+    TODO: Rename this to "Presence".
+
+    .. attribute:: event
+
+        The calendar event to which this presence applies.
+
+    .. attribute:: partner
+
+        The partner to which this presence applies.
+
+    .. attribute:: role
+
+        The role of this partner in this presence.
+
+    .. attribute:: state
+
+        The state of this presence.
 
     """
     workflow_state_field = 'state'
@@ -890,8 +906,10 @@ class Guest(dd.Model):
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Guest')
-        verbose_name = _("Participant")
-        verbose_name_plural = _("Participants")
+        # verbose_name = _("Participant")
+        # verbose_name_plural = _("Participants")
+        verbose_name = _("Presence")
+        verbose_name_plural = _("Presences")
 
     event = models.ForeignKey('cal.Event')
 
