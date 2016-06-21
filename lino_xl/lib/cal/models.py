@@ -824,7 +824,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     def auto_type_changed(self, ar):
         """When the number has changed, we must update the summary."""
         if self.auto_type:
-            self.summary = self.update_cal_summary(self.auto_type)
+            self.summary = self.owner.update_cal_summary(self.auto_type)
 
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 
