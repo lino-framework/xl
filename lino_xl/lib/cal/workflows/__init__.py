@@ -107,6 +107,7 @@ add = EventStates.add_item
 add('10', _("Suggested"), 'suggested',
     edit_guests=True,
     button_text="?",
+    # button_text="♍",  # Virgo
     help_text=_("Automatically suggested. "
                 "Default state of an automatic event."))
 add('20', _("Draft"), 'draft', edit_guests=True,
