@@ -624,6 +624,13 @@ class RecurrenceSet(Started, Ended):
 
     Thanks to http://www.kanzaki.com/docs/ical/rdate.html
 
+    .. attribute:: weekdays_text
+
+        A textual formulation of the weekdays where the recurrence
+        occurs.
+    
+        Usage examples see :ref:`book.specs.cal`.
+
     """
 
     class Meta:
@@ -671,13 +678,13 @@ class RecurrenceSet(Started, Ended):
         yield 'start_time'
         yield 'end_time'
 
-    def save(self, *args, **kw):
+    def full_clean(self, *args, **kw):
         if self.every_unit == Recurrencies.per_weekday:
             self.every_unit = Recurrencies.weekly
         elif self.every_unit == Recurrencies.once:
             self.max_events = 1
             self.every = 0
-        super(RecurrenceSet, self).save(*args, **kw)
+        super(RecurrenceSet, self).full_clean(*args, **kw)
 
     def disabled_fields(self, ar):
         rv = super(RecurrenceSet, self).disabled_fields(ar)
@@ -699,20 +706,30 @@ class RecurrenceSet(Started, Ended):
 
     @dd.displayfield(_("When"))
     def weekdays_text(self, ar):
-        """A textual formulation of "when" the recurrence occurs. This is a
-        virtual field labelled "When".
-
-        """
-        weekdays = []
-        for wd in Weekdays.objects():
-            if getattr(self, wd.name):
-                weekdays.append(str(wd.text))
-        if len(weekdays) == 0:
+        if self.every_unit == Recurrencies.once:
+            if self.end_date:
+                return _("From {0} until {1}").format(
+                    dd.fdf(self.start_date), dd.fdf(self.end_date))
+            return _("On {0}").format(dd.fdf(self.start_date))
+        elif self.every_unit == Recurrencies.weekly:
+            weekdays = []
+            for wd in Weekdays.objects():
+                if getattr(self, wd.name):
+                    weekdays.append(str(wd.text))
+            if len(weekdays) == 0:
+                return ''
+            every_text = ', '.join(weekdays)
+        elif self.every_unit == Recurrencies.daily:
+            every_text = _("day")
+        elif self.every_unit == Recurrencies.monthly:
+            every_text = _("month")
+        elif self.every_unit in (Recurrencies.yearly, Recurrencies.easter):
+            every_text = _("year")
+        else:
             return ''
-        weekdays = ', '.join(weekdays)
         if self.every == 1:
-            return _("Every %s") % weekdays
-        return _("Every %snd %s") % (self.every, weekdays)
+            return _("Every %s") % every_text
+        return _("Every %snd %s") % (self.every, every_text)
 
     def move_event_to(self, ev, newdate):
         """Move given event to a new date.  Also change `end_date` if
