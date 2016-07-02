@@ -27,6 +27,8 @@ from lino.api import dd, _
 
 class DeliveryUnit(dd.Workflow):
     """The list of possible delivery units of a product."""
+    verbose_name = _("Delivery unit")
+    verbose_name_plural = _("Delivery units")
     pass
 
 add = DeliveryUnit.add_item

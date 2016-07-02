@@ -701,8 +701,10 @@ class RecurrenceSet(Started, Ended):
 
     @dd.displayfield(_("Times"))
     def times_text(self, ar):
-        return "%s-%s" % (format_time(self.start_time),
-                          format_time(self.end_time))
+        if self.start_time or self.end_time:
+            return "%s-%s" % (format_time(self.start_time),
+                              format_time(self.end_time))
+        return ''
 
     @dd.displayfield(_("When"))
     def weekdays_text(self, ar):
