@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2016 Luc Saffre
 #
 # This file is part of Lino XL.
 #
@@ -20,6 +20,12 @@
 
 """Adds functionality for "starring" database objects (marking them as
 "favourite").
+
+Note that this plugin is maybe going to replaced by a
+yet-to-be-written :mod:`lino_xl.lib.votes` plugin (:ticket:`831`). The
+biggest difference being that the latter does not use a GFK and
+therefore is more extendable.
+
 
 .. autosummary::
    :toctree:
