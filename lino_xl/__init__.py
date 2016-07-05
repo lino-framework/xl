@@ -17,8 +17,7 @@
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-"""The :mod:`lino_xl` package contains a library of extended plugins
-to be used by Lino applications.
+"""The :mod:`lino_xl` package contains the :ref:`xl`.
 
 .. autosummary::
    :toctree:

@@ -60,11 +60,15 @@ SETUP_INFO = dict(
   Topic :: Office/Business
   Topic :: Software Development :: Libraries :: Application Frameworks""".splitlines())
 
-SETUP_INFO.update(long_description="""\
-This is a collection of plugins for the Lino framework.
+SETUP_INFO.update(long_description="""
 
-The central documentation is at http://www.lino-framework.org
+The **Lino Extensions Library** is a collection of plugins used by
+many Lino projects.
 
+This package is written and maintained by the same author, but not
+part of the Lino core because it adds a given set of solutions for
+"Enterprise" style applications.  It is documented together with the
+core at http://www.lino-framework.org
 
 """)
 
