@@ -17,7 +17,7 @@
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-"""The :mod:`lino_xl` package contains the :ref:`xl`.
+"""The :mod:`lino_xl` package contains the code of the :ref:`xl`.
 
 .. autosummary::
    :toctree:
