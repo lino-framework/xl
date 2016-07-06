@@ -176,7 +176,7 @@ from django.db.models.signals import post_save
 @dd.receiver(post_save, sender=Change)
 def notify_handler(sender, instance=None, **kwargs):
     self = instance  # a Change object
-    notify = rt.modules.notifier.Notification.notify
+    notify = rt.modules.notify.Notification.notify
     others = rt.modules.stars.Star.for_obj(self.master).exclude(user=self.user)
     ar = BaseRequest(user=self.user)
     for star in others:

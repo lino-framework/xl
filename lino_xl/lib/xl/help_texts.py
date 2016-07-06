@@ -38,7 +38,7 @@ which Lino can generate a printable document)."""),
     'lino.modlib.users.models.User.authenticated' : _("""This is always True.
 See also lino.modlib.users.utils.AnonymousUser.authenticated."""),
     'lino.modlib.gfks.models.ContentTypes.base_classes' : _("""Display a clickable list of all MTI parents, i.e. base models"""),
-    'lino.modlib.notifier.models.Notification' : _("""A notification object represents the fact that a given user has
+    'lino.modlib.notify.models.Notification' : _("""A notification object represents the fact that a given user has
 been notified about a given database object."""),
     'lino.core.workflows.Workflow.item_class' : _("""alias of State"""),
     'lino.core.actions.Action.parameters' : _("""See Parametrizable.parameters."""),
@@ -98,7 +98,7 @@ question in a given response."""),
 and should alert and should be presented in a dialog box to be
 confirmed by the user."""),
     'lino.modlib.polls.models.PollResult' : _("""Shows a summay of responses to this poll."""),
-    'lino.modlib.notifier.Plugin.email_subject_template' : _("""The template used to build the subject lino of notification emails."""),
+    'lino.modlib.notify.Plugin.email_subject_template' : _("""The template used to build the subject lino of notification emails."""),
     'lino_xl.lib.notes.models.NoteTypes' : _("""Displays all rows of NoteType."""),
     'lino.modlib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
 printing a postal address for this.
@@ -122,7 +122,7 @@ uppercase letters.  See lino.test_apps.human"""),
     'lino.core.requests.ValidActionResponses.warning_message' : _("""deprecated"""),
     'lino.modlib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
     'lino_xl.lib.cal.ui.Events.model' : _("""alias of Event"""),
-    'lino.modlib.notifier.models.Notification.message' : _("""The message to display. This should be a plain string which
+    'lino.modlib.notify.models.Notification.message' : _("""The message to display. This should be a plain string which
 will be formatted (using standard string format) using the
 following context:"""),
     'lino.modlib.tinymce.Plugin.window_buttons3' : _("""The third row of toolbar buttons when editing in own window."""),
@@ -1172,7 +1172,7 @@ future."""),
     'lino_xl.lib.cal.ui.EventsByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date."""),
     'lino.modlib.printing.actions.DirectPrintAction' : _("""Print using a hard-coded template and without cache."""),
-    'lino.modlib.notifier.models.Notifications' : _("""Shows the gobal list of all notifications."""),
+    'lino.modlib.notify.models.Notifications' : _("""Shows the gobal list of all notifications."""),
     'lino_xl.lib.outbox.models.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino.core.actions.NotifyingAction' : _("""An action with a generic dialog window of three fields "Summary",
 "Description" and a checkbox "Don't send email notification". The
@@ -1198,7 +1198,7 @@ lino.utils.format_date.IncompleteDate."""),
     'lino.core.site.Site.django_settings' : _("""This is a reference to the globals() dictionary of your
 settings.py file (the one you provided when instantiating
 the Site object)."""),
-    'lino.modlib.notifier.models.Notification.overview' : _("""A display field which returns the parsed message."""),
+    'lino.modlib.notify.models.Notification.overview' : _("""A display field which returns the parsed message."""),
     'lino.modlib.system.models.SiteConfigs' : _("""The table used to present the SiteConfig row in a Detail form.
 See also lino.Lino.get_site_config().
 Deserves more documentation."""),
@@ -1212,7 +1212,7 @@ method on the queryset."""),
     'lino.modlib.countries.models.Countries' : _("""The table of all countries."""),
     'lino.core.site.Site.server_url' : _("""The "official" URL used by "normal" users when accessing this Lino
 site. This is used by templates such as the email sent by
-lino.modlib.notifier.Notification"""),
+lino.modlib.notify.Notification"""),
     'lino.sphinxcontrib.actordoc.CurrentProject' : _("""Tell Sphinx to switch to the specified project until the end of
 this document."""),
     'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
@@ -1534,7 +1534,7 @@ values and leaves those from a previous call."""),
 in other words the startup time of this Django process.
 Don't modify this."""),
     'lino.core.site.LanguageInfo.name' : _("""Alias for field number 1"""),
-    'lino.modlib.notifier.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino.modlib.notify.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
@@ -1736,7 +1736,7 @@ testing library."""),
 fields that refer to
 this list."""),
     'lino_xl.lib.humanlinks.models.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
-    'lino.modlib.notifier.models.Notifications.model' : _("""alias of Notification"""),
+    'lino.modlib.notify.models.Notifications.model' : _("""alias of Notification"""),
     'lino.core.site.LanguageInfo.suffix' : _("""Alias for field number 3"""),
     'lino.modlib.importfilters.Plugin' : _("""See Introduction to plugins."""),
     'lino.modlib.contacts.models.Persons.model' : _("""alias of Person"""),
