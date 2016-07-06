@@ -52,7 +52,7 @@ from lino.api import dd, rt
 from lino.utils import ssin
 from lino.utils import join_words
 from lino.utils import IncompleteDate
-from lino.modlib.contacts.utils import street2kw
+from lino_xl.lib.contacts.utils import street2kw
 from lino.modlib.plausibility.choicelists import Checker
 from .roles import BeIdUser
 
@@ -395,7 +395,7 @@ class BeIdCardHolder(dd.Model):
 
         The nationality. This is a pointer to
         :class:`countries.Country
-        <lino.modlib.statbel.countries.models.Country>` which should
+        <lino_xl.lib.statbel.countries.models.Country>` which should
         contain also entries for refugee statuses.
 
         Note that the nationality is *not* being read from eID card

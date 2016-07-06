@@ -31,7 +31,7 @@ logger = logging.getLogger(__name__)
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
-from lino.modlib.contacts.roles import ContactsUser, ContactsStaff
+from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
 from lino.api import dd, rt
 from lino.utils.xmlgen.html import E

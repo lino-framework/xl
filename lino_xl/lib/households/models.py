@@ -32,7 +32,7 @@ from lino import mixins
 
 from lino.utils import join_words, join_elems
 from lino.utils.xmlgen.html import E
-from lino.modlib.contacts.roles import ContactsUser, ContactsStaff
+from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
 from .choicelists import MemberRoles
 
@@ -96,7 +96,7 @@ class Household(contacts.Partner):
 
     def get_full_name(self, salutation=True, **salutation_options):
         """Overrides
-        :meth:`lino.modlib.contacts.models.Partner.get_full_name`.
+        :meth:`lino_xl.lib.contacts.models.Partner.get_full_name`.
 
         """
         return join_words(self.prefix, self.name)

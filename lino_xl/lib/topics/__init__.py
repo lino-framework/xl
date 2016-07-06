@@ -35,7 +35,7 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Topics")
 
-    needs_plugins = ['lino.modlib.contacts']
+    needs_plugins = ['lino_xl.lib.contacts']
 
     # def setup_main_menu(self, site, profile, m):
     #     # p = self.get_menu_group()

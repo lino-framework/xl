@@ -61,7 +61,7 @@ davlink = settings.SITE.plugins.get('davlink', None)
 has_davlink = davlink is not None and settings.SITE.use_java
 
 from lino_xl.lib.postings.mixins import Postable
-from lino.modlib.contacts.mixins import ContactRelated
+from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.outbox.mixins import Mailable, MailableType
 
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
@@ -417,19 +417,19 @@ class Excerpt(TypedPrintable, UserAuthored,
 
       The optional company of the :attr:`recipient` of this
       excerpt.  See :attr:`ContactRelated.company
-      <lino.modlib.contacts.mixins.ContactRelated.company>`.
+      <lino_xl.lib.contacts.mixins.ContactRelated.company>`.
 
     .. attribute:: contact_person
 
       The optional contact person of the :attr:`recipient` of this
       excerpt.  See :attr:`ContactRelated.contact_person
-      <lino.modlib.contacts.mixins.ContactRelated.contact_person>`.
+      <lino_xl.lib.contacts.mixins.ContactRelated.contact_person>`.
 
     .. attribute:: recipient
 
       The recipient of this excerpt.  See
       :attr:`ContactRelated.recipient
-      <lino.modlib.contacts.mixins.ContactRelated.recipient>`
+      <lino_xl.lib.contacts.mixins.ContactRelated.recipient>`
 
     .. attribute:: language
 
@@ -442,7 +442,7 @@ class Excerpt(TypedPrintable, UserAuthored,
     .. method:: get_address_html
 
         See
-        :meth:`lino.modlib.contacts.mixins.ContactRelated.get_address_html`.
+        :meth:`lino_xl.lib.contacts.mixins.ContactRelated.get_address_html`.
 
         Return the address of the :attr:`recipient` of this excerpt.
 

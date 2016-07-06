@@ -27,7 +27,7 @@ from django.conf import settings
 
 from lino.api import dd
 from lino import mixins
-from lino.modlib.contacts import models as contacts
+from lino_xl.lib.contacts import models as contacts
 from lino.modlib.gfks.mixins import Controllable
 
 

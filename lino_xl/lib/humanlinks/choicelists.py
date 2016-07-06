@@ -28,7 +28,7 @@ from __future__ import print_function
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 from django.utils.translation import string_concat
-from lino.modlib.contacts.roles import ContactsStaff
+from lino_xl.lib.contacts.roles import ContactsStaff
 
 from lino.api import dd
 

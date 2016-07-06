@@ -26,7 +26,7 @@ To use it, applications must do two things:
     yield 'lino_xl.lib.dupable_partners'
 
 - Override their :class:`contacts.Partner
-  <lino.modlib.contacts.models.Partner>` model to inherit from
+  <lino_xl.lib.contacts.models.Partner>` model to inherit from
   :class:`lino_xl.lib.dupable_partners.mixins.DupablePartner`.
 
 Defines a virtual slave table :class:`SimilarPartners`, which shows
@@ -47,7 +47,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
     verbose_name = _("Dupable partners")
 
-    needs_plugins = ['lino.modlib.contacts']
+    needs_plugins = ['lino_xl.lib.contacts']
 
     def setup_explorer_menu(self, site, profile, main):
         mg = site.plugins.contacts

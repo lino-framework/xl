@@ -32,7 +32,7 @@ subdirectory named "eidreader".  TODO: move :ref:`eidreader` to a
 `static` directory in the Lino repository.
 
 An (untested) alternative implementation of the same functionality is
-:mod:`lino.modlib.eid_jslib.beid` which overrides this plugin and does
+:mod:`lino_xl.lib.eid_jslib.beid` which overrides this plugin and does
 the same except that it uses `eidjslib` instead of :ref:`eidreader`.
 
 .. autosummary::
