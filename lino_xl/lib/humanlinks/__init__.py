@@ -42,7 +42,7 @@ class Plugin(ad.Plugin):
     """
     A string referring to the model which represents a human in your
     application.  Default value is ``'contacts.Person'`` (referring to
-    :class:`lino.modlib.contacts.Person`).
+    :class:`lino_xl.lib.contacts.Person`).
     """
 
     def setup_explorer_menu(config, site, profile, m):

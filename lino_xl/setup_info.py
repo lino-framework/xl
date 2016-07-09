@@ -60,11 +60,15 @@ SETUP_INFO = dict(
   Topic :: Office/Business
   Topic :: Software Development :: Libraries :: Application Frameworks""".splitlines())
 
-SETUP_INFO.update(long_description="""\
-This is a collection of plugins for the Lino framework.
+SETUP_INFO.update(long_description="""
 
-The central documentation is at http://www.lino-framework.org
+The **Lino Extensions Library** is a collection of plugins used by
+many Lino projects.
 
+This package is written and maintained by the same author, but not
+part of the Lino core because it adds a given set of solutions for
+"Enterprise" style applications.  It is documented together with the
+core at http://www.lino-framework.org
 
 """)
 
@@ -83,10 +87,22 @@ lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management
 lino_xl.lib.cal.management.commands
 lino_xl.lib.cal.workflows
+lino_xl.lib.concepts
+lino_xl.lib.contacts
+lino_xl.lib.contacts.fixtures
+lino_xl.lib.contacts.management
+lino_xl.lib.contacts.management.commands
+lino_xl.lib.countries
+lino_xl.lib.countries.fixtures
 lino_xl.lib.cv
 lino_xl.lib.cv.fixtures
 lino_xl.lib.dupable_partners
 lino_xl.lib.dupable_partners.fixtures
+lino_xl.lib.eid_jslib
+lino_xl.lib.eid_jslib.beid
+lino_xl.lib.events
+lino_xl.lib.events.fixtures
+lino_xl.lib.events.tests
 lino_xl.lib.excerpts
 lino_xl.lib.excerpts.fixtures
 lino_xl.lib.extensible
@@ -103,6 +119,8 @@ lino_xl.lib.outbox
 lino_xl.lib.outbox.fixtures
 lino_xl.lib.pages
 lino_xl.lib.pages.fixtures
+lino_xl.lib.polls
+lino_xl.lib.polls.fixtures
 lino_xl.lib.postings
 lino_xl.lib.products
 lino_xl.lib.products.fixtures
@@ -112,6 +130,9 @@ lino_xl.lib.properties.fixtures
 lino_xl.lib.reception
 lino_xl.lib.rooms
 lino_xl.lib.stars
+lino_xl.lib.statbel
+lino_xl.lib.statbel.countries
+lino_xl.lib.statbel.countries.fixtures
 lino_xl.lib.thirds
 lino_xl.lib.topics
 lino_xl.lib.workflows
@@ -123,7 +144,6 @@ SETUP_INFO.update(message_extractors={
         ('**/sandbox/**', 'ignore', None),
         ('**/cache/**', 'ignore', None),
         ('**.py', 'python', None),
-        ('**/linoweb.js', 'jinja2', None),
         ('**/config/**.html', 'jinja2', None),
     ],
 })
@@ -141,6 +161,9 @@ def add_package_data(package, *patterns):
 add_package_data('lino_xl', 'config/*.odt')
 add_package_data('lino_xl.lib.cal', 'config/*.odt')
 add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
+# add_package_data('lino_xl.lib.cal', 'config/*.odt')
+# add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
+# add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
 
 # l = add_package_data('lino_xl.lib.lino_startup')
 # for lng in 'de fr et nl'.split():

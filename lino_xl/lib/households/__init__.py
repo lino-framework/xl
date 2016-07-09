@@ -45,7 +45,7 @@ class Plugin(ad.Plugin):
     person_model = "contacts.Person"
     """A string referring to the model which represents a human in your
     application.  Default value is ``'contacts.Person'`` (referring to
-    :class:`lino.modlib.contacts.models.Person`).
+    :class:`lino_xl.lib.contacts.models.Person`).
 
     """
 

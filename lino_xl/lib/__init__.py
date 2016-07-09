@@ -18,36 +18,101 @@
 
 """These are the plugins included with Lino XL.
 
+Contacts management
+===================
 .. autosummary::
    :toctree:
 
     addresses
-    appypod
-    beid
-    blogs
-    boards
-    cal
+    contacts
+    countries
     cv
     dupable_partners
-    excerpts
-    families
     households
     humanlinks
+
+Groupware
+=========
+.. autosummary::
+   :toctree:
+
+    boards
+    teams
+    topics
     lists
-    notes
-    outbox
-    pages
-    postings
-    products
     projects
-    properties
+
+Calendar & Co
+====================
+
+.. autosummary::
+   :toctree:
+
+    cal
+    extensible
     reception
     rooms
-    stars
-    teams
-    thirds
-    topics
-    workflows
 
+
+Office
+======
+
+.. autosummary::
+   :toctree:
+
+    notes
+    outbox
+    postings
+
+System extensions
+=================
+
+.. autosummary::
+   :toctree:
+
+    appypod
+    excerpts
+    stars
+
+Miscellaneous
+=============
+
+.. autosummary::
+   :toctree:
+
+    beid
+    polls
+    products
+
+Content management
+==================
+
+.. autosummary::
+   :toctree:
+
+    blogs
+    pages
+
+Differentiator packages
+=======================
+
+.. autosummary::
+   :toctree:
+
+    statbel
+
+Experimental and not much used
+==============================
+
+.. autosummary::
+   :toctree:
+
+    concepts
+    eid_jslib
+    thirds
+    workflows
+    events
+    families
+    properties
 
 """

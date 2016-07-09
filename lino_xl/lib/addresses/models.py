@@ -28,7 +28,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd
-from lino.modlib.countries.mixins import AddressLocation
+from lino_xl.lib.countries.mixins import AddressLocation
 from lino.core.roles import SiteStaff
 
 from .choicelists import AddressTypes, DataSources
@@ -37,8 +37,8 @@ from .choicelists import AddressTypes, DataSources
 @dd.python_2_unicode_compatible
 class Address(AddressLocation):
     """Inherits fields from
-    :class:`lino.modlib.countries.CountryRegionCity` (country, region,
-    city. zip_code) and :class:`lino.modlib.contacts.AddresssLocation`
+    :class:`lino_xl.lib.countries.CountryRegionCity` (country, region,
+    city. zip_code) and :class:`lino_xl.lib.contacts.AddresssLocation`
     (street, street_no, ...)
 
     .. attribute:: partner

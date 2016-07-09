@@ -38,7 +38,7 @@ which Lino can generate a printable document)."""),
     'lino.modlib.users.models.User.authenticated' : _("""This is always True.
 See also lino.modlib.users.utils.AnonymousUser.authenticated."""),
     'lino.modlib.gfks.models.ContentTypes.base_classes' : _("""Display a clickable list of all MTI parents, i.e. base models"""),
-    'lino.modlib.notifier.models.Notification' : _("""A notification object represents the fact that a given user has
+    'lino.modlib.notify.models.Notification' : _("""A notification object represents the fact that a given user has
 been notified about a given database object."""),
     'lino.core.workflows.Workflow.item_class' : _("""alias of State"""),
     'lino.core.actions.Action.parameters' : _("""See Parametrizable.parameters."""),
@@ -58,7 +58,7 @@ to indicate that all deferred objects should get saved before going on."""),
 Stored in the database as a CharField using a delimiter character."""),
     'lino.core.plugin.Plugin.verbose_name' : _("""The verbose name of this plugin, as shown to the user.  This can be
 a lazily translated string."""),
-    'lino.modlib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
+    'lino_xl.lib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
     'lino.core.actions.Action.defining_actor' : _("""Internally used to store the lino.core.actors.Actor who
 defined this action."""),
     'lino_xl.lib.households.models.SiblingsByPerson.model' : _("""alias of Member"""),
@@ -90,23 +90,23 @@ This is currently used only in some fixture..."""),
     'lino.modlib.gfks.fields.GenericForeignKeyIdField' : _("""Use this instead of models.PositiveIntegerField for fields that
 are part of a GFK and you want Lino to render them using a
 Combobox."""),
-    'lino.modlib.polls.models.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
+    'lino_xl.lib.polls.models.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
 question in a given response."""),
-    'lino.modlib.polls.models.Poll' : _("""A series of questions."""),
+    'lino_xl.lib.polls.models.Poll' : _("""A series of questions."""),
     'lino.core.dbtables.Table.screenshot_profiles' : _("""The user profile(s) for which we want a screenshot of this table."""),
     'lino.core.requests.ValidActionResponses.alert' : _("""True to specify that the message is rather important
 and should alert and should be presented in a dialog box to be
 confirmed by the user."""),
-    'lino.modlib.polls.models.PollResult' : _("""Shows a summay of responses to this poll."""),
-    'lino.modlib.notifier.Plugin.email_subject_template' : _("""The template used to build the subject lino of notification emails."""),
+    'lino_xl.lib.polls.models.PollResult' : _("""Shows a summay of responses to this poll."""),
+    'lino.modlib.notify.Plugin.email_subject_template' : _("""The template used to build the subject lino of notification emails."""),
     'lino_xl.lib.notes.models.NoteTypes' : _("""Displays all rows of NoteType."""),
-    'lino.modlib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
+    'lino_xl.lib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
 printing a postal address for this.
 This is typically either the company or
 contact_person (if one of these fields is
 non-empty). It may also be a
-lino.modlib.contacts.models.Role object."""),
-    'lino.modlib.events.Plugin' : _("""See Introduction to plugins."""),
+lino_xl.lib.contacts.models.Role object."""),
+    'lino_xl.lib.events.Plugin' : _("""See Introduction to plugins."""),
     'lino.core.actors.Actor.title' : _("""The text to appear e.g. as window title when the actor's default
 action has been called.  If this is not set, Lino will use the
 label as title."""),
@@ -120,14 +120,14 @@ were yeld by the checker."""),
     'lino.core.site.Site.uppercase_last_name' : _("""Whether last name of persons should (by default) be printed with
 uppercase letters.  See lino.test_apps.human"""),
     'lino.core.requests.ValidActionResponses.warning_message' : _("""deprecated"""),
-    'lino.modlib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
+    'lino_xl.lib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
     'lino_xl.lib.cal.ui.Events.model' : _("""alias of Event"""),
-    'lino.modlib.notifier.models.Notification.message' : _("""The message to display. This should be a plain string which
+    'lino.modlib.notify.models.Notification.message' : _("""The message to display. This should be a plain string which
 will be formatted (using standard string format) using the
 following context:"""),
     'lino.modlib.tinymce.Plugin.window_buttons3' : _("""The third row of toolbar buttons when editing in own window."""),
     'lino.modlib.tinymce.Plugin.window_buttons2' : _("""The second row of toolbar buttons when editing in own window."""),
-    'lino.modlib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
+    'lino_xl.lib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
     'lino.core.tables.AbstractTable.extra' : _("""Examples:"""),
     'lino.utils.xmlgen.cbss.IdentifyPersonRequest' : _("""A request for identifying a person or validating a person's identity"""),
     'lino.modlib.changes.models.Change.master' : _("""The database object which acts as "master"."""),
@@ -137,7 +137,7 @@ implements this by prepending them to the tooltip, which means
 that use_quicktips must also be True.  Default is
 True."""),
     'lino.utils.jsgen.js_code' : _("""A string that py2js will represent as is, not between quotes."""),
-    'lino.modlib.countries.mixins.CountryCity.city' : _("""A pointer to Place."""),
+    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to Place."""),
     'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
     'lino.core.utils.UnresolvedField' : _("""Returned by resolve_field() if the specified field doesn't exist.
 This case happens when sphinx autodoc tries to import a module.
@@ -156,7 +156,7 @@ plain HTML."""),
     'lino.core.tables.AbstractTable.group_by' : _("""A list of field names that define the groups of rows in this table.
 Each group can have her own header and/or total lines."""),
     'lino.utils.dpy.DpyLoader' : _("""Instantiated by restore.py."""),
-    'lino.modlib.countries.models.Countries.model' : _("""alias of Country"""),
+    'lino_xl.lib.countries.models.Countries.model' : _("""alias of Country"""),
     'lino_xl.lib.cal.workflows.take.TakeEvent' : _("""This action means that you declare to become the fully responsible
 user for this event.  Accordingly, this action is available only
 when you are not already fully responsible. You are fully
@@ -219,8 +219,8 @@ father (mother). [thefreedictionary]"""),
     'lino.mixins.Referrable' : _("""Mixin for things that have a unique ref field and a
 get_by_ref method."""),
     'lino.modlib.tinymce.Plugin.field_buttons' : _("""The toolbar buttons when editing a field inside a detail form."""),
-    'lino.modlib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
-    'lino.modlib.contacts.models.Persons' : _("""List of all Persons."""),
+    'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
+    'lino_xl.lib.contacts.models.Persons' : _("""List of all Persons."""),
     'lino.core.site.Site.date_format_extjs' : _("""Format (in ExtJS syntax) to use for displaying dates to the user.
 If you change this setting, you also need to override parse_date()."""),
     'lino.core.site.Site.appy_params' : _("""Used by lino.mixins.printable.AppyBuildMethod."""),
@@ -268,7 +268,7 @@ management.  See also set_user_model()"""),
     'lino.core.site.Site.jasmine_root' : _("""Path to the Jasmine root directory.  Only used on a development
 server if the media directory has no symbolic link to the
 Jasmine root directory and only if use_jasmine is True."""),
-    'lino.modlib.contacts.models.RolesByPerson.master' : _("""alias of Person"""),
+    'lino_xl.lib.contacts.models.RolesByPerson.master' : _("""alias of Person"""),
     'lino.core.fields.HtmlBox' : _("""Like DisplayField, but to be rendered as a panel rather
 than as a form field."""),
     'lino.core.site.Site.use_eid_applet' : _("""Whether to include functionality to read Belgian id cards using
@@ -279,9 +279,9 @@ This option is experimental and doesn't yet work.  See
 consult for finding the user of a request.  The default value
 None means that http authentication is not used.  Apache's
 default value is "REMOTE_USER"."""),
-    'lino.modlib.polls.models.Question' : _("""A question of a poll."""),
+    'lino_xl.lib.polls.models.Question' : _("""A question of a poll."""),
     'lino.modlib.plausibility.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
+    'lino_xl.lib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
 or a company, the latter potentially represented by a contact
 person having a given role in that company.  Typical usages are
 invoices or contracts."""),
@@ -293,7 +293,7 @@ Default is False since currently this is not really useful."""),
     'lino.core.fields.VirtualField' : _("""Represents a virtual field. Virtual fields are not stored in the
 database, but computed each time they are read. Django doesn't see
 them."""),
-    'lino.modlib.contacts.models.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.models.Role.person' : _("""The person having this role in this company."""),
     'lino.modlib.uploads.choicelists.Shortcuts' : _("""The list of upload shortcut fields which have been declared on this
 Site.  See add_shortcut()."""),
     'lino_xl.lib.properties.models.PropGroup' : _("""A Property Group defines a list of Properties that fit together
@@ -307,7 +307,7 @@ neither a database table nor a detail form."""),
 defines any attribute that did not exist in the base class.
 Usually such a warning means that there is something wrong."""),
     'lino.modlib.extjs.elems.ActionParamsPanel' : _("""The optional Panel for parameters of an Action."""),
-    'lino.modlib.contacts.models.Partner' : _("""A Partner is any physical or moral person for which you want to
+    'lino_xl.lib.contacts.models.Partner' : _("""A Partner is any physical or moral person for which you want to
 keep contact data (address, phone numbers, ...)."""),
     'lino.utils.test.HttpQuery.url_base' : _("""Alias for field number 1"""),
     'lino.modlib.changes.models.Changes' : _("""The default table for Change."""),
@@ -323,7 +323,7 @@ when rendered as ExtJS."""),
     'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
     'lino_xl.lib.reception.models.AppointmentsByPartner.model' : _("""alias of Guest"""),
     'lino.core.actions.SubmitDetail' : _("""The "Save" button of a detail window."""),
-    'lino.modlib.contacts.roles.ContactsUser' : _("""A user who has access to contacts functionality."""),
+    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to contacts functionality."""),
     'lino_xl.lib.reception.models.MyWaitingVisitors.model' : _("""alias of Guest"""),
     'lino.core.site.Site.confdirs' : _("""This attribute is available only after site startup.  See
 lino.utils.config."""),
@@ -387,8 +387,8 @@ Django's approach."""),
     'lino.core.requests.ActorRequest' : _("""Base for ActionRequest, but also used directly by
 lino.core.kernel.Kernel.run_callback()."""),
     'lino_xl.lib.households.models.Household.full_name' : _("""Overrides
-lino.modlib.contacts.models.Partner.get_full_name()."""),
-    'lino.modlib.contacts.models.Partner.language' : _("""The language to use when communicating with this partner."""),
+lino_xl.lib.contacts.models.Partner.get_full_name()."""),
+    'lino_xl.lib.contacts.models.Partner.language' : _("""The language to use when communicating with this partner."""),
     'lino.core.site.Site.LANGUAGE_CHOICES' : _("""A tuple in the format expected by Django's choices
 attribute, used e.g. by LanguageField. It's content is
 automatically populated from languages and application
@@ -398,7 +398,7 @@ code should not change it's value."""),
 this is not empty, then the given shortcut field will manage
 uploads of this type.  See also Shortcuts."""),
     'lino.core.fields.FakeField' : _("""Base class for RemoteField and DisplayField."""),
-    'lino.modlib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino.core.site.Site.auto_configure_logger_names' : _("""A string with a space-separated list of logger names to be
 automatically configured. See lino.utils.log."""),
     'lino.utils.odsreader.OdsReader' : _("""Like SimpleOdsReader, but each row is converted to 
@@ -408,7 +408,7 @@ another list of pure ASCII strings which must be valid Python
 attribute names."""),
     'lino_xl.lib.households.models.Type' : _("""Type of a household.
 http://www.belgium.be/fr/famille/couple/cohabitation/"""),
-    'lino.modlib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino.modlib.contacts.models.Company."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino_xl.lib.contacts.models.Company."""),
     'lino.core.choicelists.ChoiceList' : _("""User-defined choice lists must inherit from this base class."""),
     'lino.core.actions.Action.extjs_main_panel' : _("""Used by lino_xl.lib.extensible and
 lino.modlib.awesome_uploader."""),
@@ -449,19 +449,19 @@ A pointer to lino.modlib.users.models.User."""),
     'lino.modlib.summaries.Plugin.end_year' : _("""The last year for which summaries should be computed."""),
     'lino.mixins.dupable.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but adds
 a confirmation if there is a possible duplicate record."""),
-    'lino.modlib.contacts.models.Role.company' : _("""The company where this person has a role."""),
+    'lino_xl.lib.contacts.models.Role.company' : _("""The company where this person has a role."""),
     'lino_xl.lib.properties.models.PropType.multiple_choices' : _("""not yet supported"""),
     'lino.core.store.AutoStoreField' : _("""A StoreField for 
 AutoField"""),
     'lino.core.site.Site.propvalue_max_length' : _("""Used by lino_xl.lib.properties."""),
-    'lino.modlib.polls.models.ResponsesByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.polls.models.ResponsesByPartner.master' : _("""alias of Partner"""),
     'lino.utils.xmlgen.cbss.HealthInsuranceRequest' : _("""A request to the HealthInsurance BCSS service.
 Net yet used in practice."""),
     'lino.core.auth.NoUserMiddleware' : _("""Middleware automatically installed by
 lino.core.site.Site.get_middleware_classes() when
 lino.core.site.Site.user_model is None."""),
     'lino.modlib.export_excel.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.contacts.models.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
+    'lino_xl.lib.contacts.models.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
 Subclasses may hide this field and fill it automatically,
 e.g. saving a Person will automatically set her
 name field to "last_name, first_name"."""),
@@ -472,12 +472,12 @@ lino_xl.lib.excerpts.fixtures.demo2."""),
     'lino.modlib.users.models.User' : _("""Represents a user of this site."""),
     'lino.modlib.uploads.models.UploadType' : _("""The type of an upload."""),
     'lino.modlib.extjs.views.Restful' : _("""Used to collaborate with a restful Ext.data.Store."""),
-    'lino.modlib.countries.models.Place' : _("""Any kind of named geographic region (except those who have an entry
+    'lino_xl.lib.countries.models.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
     'lino.mixins.sequenced.MoveDown' : _("""Move current row one downwards. This action is available on any
 Sequenced object as Sequenced.move_down."""),
     'lino.modlib.print_pisa.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
+    'lino_xl.lib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
     'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
     'lino.modlib.about.models.About' : _("""Display information about this web site.  This defines the window
@@ -490,7 +490,7 @@ OneToOneField."""),
     'lino.core.model.Model.hidden_elements' : _("""If specified, this is the default value for
 hidden_elements
 of every Table on this model."""),
-    'lino.modlib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll. Default is:"""),
+    'lino_xl.lib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll. Default is:"""),
     'lino.core.site.Site.webdav_url' : _("""The URL prefix for webdav files.  In a normal production
 configuration you should leave this to None, Lino will set a
 default value "/media/webdav/", supposing that your Apache is
@@ -523,7 +523,7 @@ is not installed."""),
     'lino.utils.sqllog.SQLLogMiddleware' : _("""Log all SQL statements direct to the console."""),
     'lino.core.kernel.Kernel' : _("""This is the class of the object stored in Site.kernel."""),
     'lino.mixins.dupable.DupableChecker' : _("""Checks for the following repairable problem:"""),
-    'lino.modlib.polls.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.polls.Plugin' : _("""See Introduction to plugins."""),
     'lino_xl.lib.properties.models.ChoicesByType.model' : _("""alias of PropChoice"""),
     'lino.core.plugin.Plugin.media_base_url' : _("""Remote URL base for media files."""),
     'lino_xl.lib.outbox.models.SendMail' : _("""Sends an outbox.Mail as an email."""),
@@ -534,11 +534,11 @@ style "Unknown element "postings.PostingsByController
     'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
 lino_welfare.modlib.aids.mixins.Confirmation."""),
     'lino.utils.dbfreader.DBFFile' : _("""Represents a single DBF file."""),
-    'lino.modlib.contacts.models.Company.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.models.Company.type' : _("""Pointer to the CompanyType."""),
     'lino.modlib.changes.models.ChangesByObject' : _("""Slave Table showing the direct changes related to the current
 object."""),
     'lino.modlib.uploads.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.contacts.models.Partner.email' : _("""The primary email address."""),
+    'lino_xl.lib.contacts.models.Partner.email' : _("""The primary email address."""),
     'lino.core.site.Site.plugins' : _("""An AttrDict object with one entry for each installed
 app, mapping the app_label of every plugin to the
 corresponding lino.core.plugin.Plugin instance."""),
@@ -546,7 +546,7 @@ corresponding lino.core.plugin.Plugin instance."""),
 lino.utils.xmlgen.html.HtmlNamespace and the namespaces
 defined in lino.utils.xmlgen.intervat."""),
     'lino.core.layouts.ParamsLayout' : _("""A Layout description for a table parameter panel."""),
-    'lino.modlib.polls.models.PollResult.model' : _("""alias of Question"""),
+    'lino_xl.lib.polls.models.PollResult.model' : _("""alias of Question"""),
     'lino.core.tables.AbstractTable.active_fields' : _("""A list of field names that are "active".
 Value and inheritance as for hidden_columns."""),
     'lino_xl.lib.cal.models.Room' : _("""A location where calendar events can happen.  For a given Room you
@@ -572,7 +572,7 @@ additional ForeignKey to this model."""),
     'lino.core.site.Site.auto_fit_column_widths' : _("""The default value for the
 auto_fit_column_widths
 of tables in this application."""),
-    'lino.modlib.contacts.models.Role.type' : _("""The role of this person in this company."""),
+    'lino_xl.lib.contacts.models.Role.type' : _("""The role of this person in this company."""),
     'lino.modlib.users.choicelists.UserProfiles' : _("""The list of user profiles available on this site."""),
     'lino_xl.lib.cal.models.Event' : _("""A calendar event is a lapse of time to be visualized in a calendar."""),
     'lino.core.model.Model.workflow_owner_field' : _("""If this is set on a Model, then it will be used as default value
@@ -593,7 +593,7 @@ ActorRequest.goto_instance()."""),
     'lino.modlib.extjs.views.Authenticate' : _("""This view is being used when remote_user_header is
 empty (and user_model not).
 lino.core.auth.SessionUserMiddleware"""),
-    'lino.modlib.contacts.models.Role' : _("""A Contact (historical model name Role) is a
+    'lino_xl.lib.contacts.models.Role' : _("""A Contact (historical model name Role) is a
 Person who has a given role (ContactType) in a
 given Company."""),
     'lino.core.tables.AbstractTable.stay_in_grid' : _("""Set this to True if Lino should not open a newly created record in
@@ -604,7 +604,7 @@ methods like"""),
 Intended for use with the django development server."""),
     'lino.core.choicelists.ChoiceList.item_class' : _("""The class of items of this list."""),
     'lino.core.site.Site.loading_from_dump' : _("""Whether the process is currently loading data from a Python dump."""),
-    'lino.modlib.polls.models.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
+    'lino_xl.lib.polls.models.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
 this question, eventually (if editing is permitted) together with
 buttons to modify the selection."""),
     'lino_xl.lib.cal.ui.Guests' : _("""The default table for Guest."""),
@@ -634,7 +634,7 @@ empty."""),
     'lino.modlib.extjs.elems.NumberFieldElement' : _("""Base class for integers, decimals, RequestField,..."""),
     'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino.core.tables.AbstractTable.row_height' : _("""Number of text rows per data row."""),
-    'lino.modlib.polls.models.ResponsesByPartner.model' : _("""alias of Response"""),
+    'lino_xl.lib.polls.models.ResponsesByPartner.model' : _("""alias of Response"""),
     'lino.modlib.users.models.User.person' : _("""A virtual read-only field which returns the Person MTI child corresponding
 to the partner (if it exists) and otherwise None."""),
     'lino.utils.addressable.Addressable.address' : _("""A property which calls get_address()."""),
@@ -710,13 +710,13 @@ subclass of this."""),
     'lino.core.store.StoreField' : _("""Base class for the fields of a Store."""),
     'lino_xl.lib.topics.models.TopicGroup' : _("""A group of topics is the default way to group topics."""),
     'lino_xl.lib.cal.ui.MyTasks.model' : _("""alias of Task"""),
-    'lino.modlib.contacts.models.CompanyType' : _("""A type of organization. Used by Company.type field."""),
+    'lino_xl.lib.contacts.models.CompanyType' : _("""A type of organization. Used by Company.type field."""),
     'lino.utils.ucsv.UnicodeWriter' : _("""A CSV writer which will write rows to CSV file "f",
 which is encoded in the given encoding."""),
     'lino.core.plugin.Plugin.ui_handle_attr_name' : _("""Currently implemented by lino.modlib.extjs,
 lino.modlib.bootstrap3."""),
     'lino.mixins.sequenced.Sequenced.move_up' : _("""Exchange the seqno of this item and the previous item."""),
-    'lino.modlib.polls.models.AnswersByQuestion.master' : _("""alias of Question"""),
+    'lino_xl.lib.polls.models.AnswersByQuestion.master' : _("""alias of Question"""),
     'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
 communication with the Ext.ensible CalendarPanel
 because we consider the "all day" checkbox
@@ -803,13 +803,13 @@ confirmation when necessary."""),
 all events on that day (EventsByDay)."""),
     'lino_xl.lib.reception.models.MyBusyVisitors' : _("""Show the visitors with whom I am busy."""),
     'lino.modlib.users.choicelists.UserProfile.readonly' : _("""Whether users with this profile get only write-proteced access."""),
-    'lino.modlib.polls.models.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
+    'lino_xl.lib.polls.models.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
 get_slave_summary()."""),
     'lino.modlib.extjs.elems.DisplayElement' : _("""ExtJS element to be used for DisplayFields."""),
     'lino.modlib.extjs.elems.BooleanMixin' : _("""A common base for BooleanDisplayElement and
 BooleanFieldElement."""),
     'lino.core.store.StoreField.options' : _("""A dict with options to be used by as_js()."""),
-    'lino.modlib.countries.mixins.CountryCity' : _("""Model mixin that adds two fields country and city and defines
+    'lino_xl.lib.countries.mixins.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
 method, ..."""),
     'lino.api.doctest.HttpQuery.username' : _("""Alias for field number 0"""),
@@ -830,19 +830,19 @@ actor as a table html page."""),
     'lino.core.actions.Action.icon_name' : _("""The class name of an icon to be used for this action when rendered
 as toolbar button."""),
     'lino.core.layouts.FormLayout' : _("""Base class for layout descriptions of detail and insert windows."""),
-    'lino.modlib.contacts.models.Company.full_name' : _("""Deserves more documentation."""),
+    'lino_xl.lib.contacts.models.Company.full_name' : _("""Deserves more documentation."""),
     'lino.core.actions.Action.http_method' : _("""HTTP method to use when this action is called using an AJAX call."""),
     'lino.core.fields.RichTextField.textfield_format' : _("""Override the global
 lino.core.site.Site.textfield_format setting."""),
     'lino_xl.lib.cal.ui.Events' : _("""Table which shows all calendar events."""),
-    'lino.modlib.contacts.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
+    'lino_xl.lib.contacts.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
 to True if you live in a country like Belgium.  Belgium is
 --despite their constant language disputes-- obviously a very
 united country since they don't need a region field when
 entering a postal address.  In Belgium, when you write a letter,
 you just say the zip code and name of the city.  In many other
 countries there is a mandatory intermediate field."""),
-    'lino.modlib.contacts.mixins.PartnerDocument' : _("""Adds two fields 'partner' and 'person' to this model, making it
+    'lino_xl.lib.contacts.mixins.PartnerDocument' : _("""Adds two fields 'partner' and 'person' to this model, making it
 something that refers to a "partner".  person means a "contact
 person" for the partner."""),
     'lino.modlib.system.models.SiteConfig.simulate_today' : _("""A constant user-defined date to be substituted as current
@@ -899,7 +899,7 @@ action of an actor.  This attribute is not inherited to
 subclasses.  For Actor subclasses that don't have a
 label, Lino will call get_actor_label()."""),
     'lino_xl.lib.cal.ui.EventsByController' : _("""Shows the events linked to this database object."""),
-    'lino.modlib.contacts.models.Person' : _("""A physical person and an individual human being.
+    'lino_xl.lib.contacts.models.Person' : _("""A physical person and an individual human being.
 See also About Humans."""),
     'lino_xl.lib.excerpts.models.Excerpt' : _("""A printable document that describes some aspect of the current
 situation."""),
@@ -909,15 +909,15 @@ existing ChoiceList."""),
     'lino.core.requests.BaseRequest.master_instance' : _("""The database object which acts as master. This is None for master
 requests."""),
     'lino.utils.instantiator.ForeignKeyConverter' : _("""Converter for ForeignKey fields."""),
-    'lino.modlib.countries.Plugin.country_code' : _("""The 2-letter ISO code of the country where the site owner is
+    'lino_xl.lib.countries.Plugin.country_code' : _("""The 2-letter ISO code of the country where the site owner is
 located.  This may not be empty, and there must be a country with
-that ISO code in lino.modlib.countries.models.Country."""),
+that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino.modlib.printing.mixins.PrintableType.template' : _("""The name of the file to be used as template."""),
-    'lino.modlib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
+    'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
     'lino.core.choicelists.Choice.text' : _("""A translatable string containing the text to show to the user."""),
     'lino_xl.lib.cal.models.UpdateGuests' : _("""Decide whether it is time to add Guest instances for this event,
 and if yes, call suggest_guests() to instantiate them."""),
-    'lino.modlib.countries.choicelists.PlaceTypes' : _("""A choicelist of possible place types."""),
+    'lino_xl.lib.countries.choicelists.PlaceTypes' : _("""A choicelist of possible place types."""),
     'lino.core.site.Site.project_dir' : _("""Full path to your local project directory.  Local subclasses should
 not override this variable."""),
     'lino.utils.xmlgen.cbss.Service' : _("""Base class for the individual services."""),
@@ -976,7 +976,7 @@ admin_main.html to display the list of available users."""),
     'lino.core.renderer.TextRenderer' : _("""The renderer used when rendering to .rst files and console output."""),
     'lino.mixins.human.Born' : _("""Abstract base class that adds a birth_date
 field and a virtual field "Age"."""),
-    'lino.modlib.concepts.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.concepts.Plugin' : _("""See Introduction to plugins."""),
     'lino.core.site.Site.hidden_languages' : _("""A string with a space-separated list of django codes of languages
 that should be hidden."""),
     'lino.core.site.Site.textfield_format' : _("""The default format for text fields.
@@ -994,14 +994,14 @@ window. Must be one of the following values:"""),
 CachedPrintable."""),
     'lino_xl.lib.households.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.outbox.models.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
-    'lino.modlib.contacts.models.Organisation' : _("""alias of Company"""),
+    'lino_xl.lib.contacts.models.Organisation' : _("""alias of Company"""),
     'lino.modlib.office.roles.OfficeUser' : _("""A user who has access to office functionality like calendar, notes
 and uploads."""),
     'lino_xl.lib.notes.models.EventType' : _("""A possible choice for Note.event_type."""),
     'lino.core.fields.CharField' : _("""An extension around Django's models.CharField."""),
     'lino.core.roles.SiteUser' : _("""Every authenticated user has this role."""),
     'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
-    'lino.modlib.polls.models.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
+    'lino_xl.lib.polls.models.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
 instances."""),
     'lino.modlib.extjs.elems.SingleRelatedObjectElement' : _("""The widget used to render a SingleRelatedObjectDescriptor,
 i.e. the other side of a OneToOneField."""),
@@ -1064,8 +1064,8 @@ start_time"""),
     'lino_xl.lib.cal.ui.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
     'lino.modlib.plausibility.models.AllProblems' : _("""Show all plausibility problems."""),
     'lino.modlib.printing.actions.BasePrintAction' : _("""Base class for all "Print" actions."""),
-    'lino.modlib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
-    'lino.modlib.polls.models.PollResult.master' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
+    'lino_xl.lib.polls.models.PollResult.master' : _("""alias of Poll"""),
     'lino_xl.lib.excerpts.models.Excerpt.owner' : _("""The object being printed by this excerpt.
 See Controllable.owner."""),
     'lino.modlib.users.mixins.UserAuthored' : _("""Model mixin for database objects that have a user field which
@@ -1153,14 +1153,14 @@ Sequenced object as Sequenced.move_up."""),
     'lino_xl.lib.cal.choicelists.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
     'lino_xl.lib.cal.ui.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
 future."""),
-    'lino.modlib.countries.models.Country' : _("""A "country" or "nation"."""),
+    'lino_xl.lib.countries.models.Country' : _("""A "country" or "nation"."""),
     'lino.utils.test.HttpQuery.kwargs' : _("""Alias for field number 4"""),
     'lino.core.fields.Constant' : _("""Deserves more documentation."""),
     'lino.core.site.Site.site_prefix' : _("""The string to prefix to every URL of the Lino web interface."""),
     'lino.modlib.comments.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.contacts.models.RolesByPerson' : _("""Shows all roles of a person."""),
+    'lino_xl.lib.contacts.models.RolesByPerson' : _("""Shows all roles of a person."""),
     'lino_xl.lib.cal.ui.TasksByUser.model' : _("""alias of Task"""),
-    'lino.modlib.contacts.mixins.ContactRelated.contact_person' : _("""Pointer to lino.modlib.contacts.models.Person."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.contact_person' : _("""Pointer to lino_xl.lib.contacts.models.Person."""),
     'lino.core.fields.RecurrenceField' : _("""Deserves more documentation."""),
     'lino_xl.lib.reception.models.MyWaitingVisitors' : _("""Show visitors waiting for me."""),
     'lino.utils.SumCollector' : _("""A dictionary of sums to be collected using an arbitrary key."""),
@@ -1172,14 +1172,14 @@ future."""),
     'lino_xl.lib.cal.ui.EventsByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date."""),
     'lino.modlib.printing.actions.DirectPrintAction' : _("""Print using a hard-coded template and without cache."""),
-    'lino.modlib.notifier.models.Notifications' : _("""Shows the gobal list of all notifications."""),
+    'lino.modlib.notify.models.Notifications' : _("""Shows the gobal list of all notifications."""),
     'lino_xl.lib.outbox.models.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino.core.actions.NotifyingAction' : _("""An action with a generic dialog window of three fields "Summary",
 "Description" and a checkbox "Don't send email notification". The
 default implementation calls the request's add_system_note method."""),
     'lino.core.actions.Action.label' : _("""The label of this action. A short descriptive text in user
 language."""),
-    'lino.modlib.contacts.models.RoleType' : _("""A RoleType is "what a given Person can be for a
+    'lino_xl.lib.contacts.models.RoleType' : _("""A RoleType is "what a given Person can be for a
 given Company"."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.notes.models.NoteTypes.model' : _("""alias of NoteType"""),
@@ -1198,7 +1198,7 @@ lino.utils.format_date.IncompleteDate."""),
     'lino.core.site.Site.django_settings' : _("""This is a reference to the globals() dictionary of your
 settings.py file (the one you provided when instantiating
 the Site object)."""),
-    'lino.modlib.notifier.models.Notification.overview' : _("""A display field which returns the parsed message."""),
+    'lino.modlib.notify.models.Notification.overview' : _("""A display field which returns the parsed message."""),
     'lino.modlib.system.models.SiteConfigs' : _("""The table used to present the SiteConfig row in a Detail form.
 See also lino.Lino.get_site_config().
 Deserves more documentation."""),
@@ -1209,10 +1209,10 @@ for the gender of a person."""),
 exclude
 method on the queryset."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder.card_issuer' : _("""The administration who issued this ID card."""),
-    'lino.modlib.countries.models.Countries' : _("""The table of all countries."""),
+    'lino_xl.lib.countries.models.Countries' : _("""The table of all countries."""),
     'lino.core.site.Site.server_url' : _("""The "official" URL used by "normal" users when accessing this Lino
 site. This is used by templates such as the email sent by
-lino.modlib.notifier.Notification"""),
+lino.modlib.notify.Notification"""),
     'lino.sphinxcontrib.actordoc.CurrentProject' : _("""Tell Sphinx to switch to the specified project until the end of
 this document."""),
     'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
@@ -1229,7 +1229,7 @@ Application code sees this instance as settings.SITE.site_config."""),
     'lino.core.actions.Action' : _("""Abstract base class for all actions."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""To close a meeting means that the meeting is over and the guests go
 home."""),
-    'lino.modlib.contacts.models.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
+    'lino_xl.lib.contacts.models.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
 formatting characters in phone numbers when searching.  For
 example, if you enter "087/12.34.56" as a phone number, then a
 search for phone number containing "1234" will not find it."""),
@@ -1262,7 +1262,7 @@ See /blog/2011/0523."""),
     'lino.mixins.periods.Today' : _("""A ParameterPanel
 with a field today which defaults to today."""),
     'lino.api.doctest.HttpQuery.json_fields' : _("""Alias for field number 2"""),
-    'lino.modlib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
+    'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
     'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
     'lino.modlib.plausibility.choicelists.Checkers' : _("""The list of plausibility problem types known by this application."""),
     'lino_xl.lib.excerpts.choicelists.Shortcuts' : _("""The list of excerpt shortcut fields.  An excerpt shortcut field is
@@ -1317,7 +1317,7 @@ If the lookup_field is a BabelField, then it tries all available languages."""),
     'lino.core.site.Site.use_esteid' : _("""Whether to include functionality to read Estonian id cards.
 This option is experimental and doesn't yet work."""),
     'lino_xl.lib.outbox.mixins.CreateMail' : _("""Creates an outbox mail and displays it."""),
-    'lino.modlib.polls.models.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
+    'lino_xl.lib.polls.models.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
     'lino.core.actors.Actor.hide_window_title' : _("""This is set to True e.h. in home pages
 (e.g. lino_welfare.modlib.pcsw.models.Home)."""),
     'lino.core.actions.Action.auto_save' : _("""What to do when this action is being called while the user is on a
@@ -1352,7 +1352,7 @@ BooleanField."""),
     'lino.core.fields.PasswordField' : _("""Stored as plain text in database, but not displayed in user
 interface."""),
     'lino.core.utils.PseudoRequest' : _("""A Django HTTP request which isn't really one."""),
-    'lino.modlib.polls.models.AnswerRemarkField' : _("""An editable virtual field."""),
+    'lino_xl.lib.polls.models.AnswerRemarkField' : _("""An editable virtual field."""),
     'lino.core.site.Site.version' : _("""The version number."""),
     'lino.core.site.Site.user_profiles_module' : _("""The full Python path of the user profiles module to be used on
 this site."""),
@@ -1376,7 +1376,7 @@ about length of MIME type field."""),
     'lino.core.actions.Action.js_handler' : _("""This is usually None. Otherwise it is the name of a Javascript
 callable to be called without arguments. That callable must have
 been defined in a lino.core.plugin.Plugin.site_js_snippets of the plugin."""),
-    'lino.modlib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
+    'lino_xl.lib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
     'lino.utils.odsreader.SimpleOdsReader.headers' : _("""A list of unicode strings, one for each column in the file.  The
 headers specified here must match exactly those found in the .ods
 file."""),
@@ -1399,7 +1399,7 @@ if no build hasn't been called yet."""),
     'lino.core.site.Site.datetime_format_strftime' : _("""Format (in strftime syntax) to use for formatting timestamps in
 AJAX responses.  If you change this setting, you also need to
 override parse_datetime()."""),
-    'lino.modlib.polls.models.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
+    'lino_xl.lib.polls.models.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
     'lino.core.site.Site.use_awesome_uploader' : _("""Whether to use AwesomeUploader.
 This option was experimental and doesn't yet work (and maybe never will)."""),
     'lino.core.choicelists.ChoiceList.show_values' : _("""Set this to True if the user interface should include the value
@@ -1446,8 +1446,8 @@ database."""),
     'lino.core.site.Site.title' : _("""The title of this web site to appear in the browser window.  If
 this is None, Lino will use verbose_name as default value."""),
     'lino_xl.lib.addresses.models.Address' : _("""Inherits fields from
-lino.modlib.countries.CountryRegionCity (country, region,
-city. zip_code) and lino.modlib.contacts.AddresssLocation
+lino_xl.lib.countries.CountryRegionCity (country, region,
+city. zip_code) and lino_xl.lib.contacts.AddresssLocation
 (street, street_no, ...)"""),
     'lino.mixins.dupable.SimilarObjects' : _("""Shows the other objects who are similar to this one."""),
     'lino.utils.dates.DatePeriodValue.end_date' : _("""The end date"""),
@@ -1455,7 +1455,7 @@ city. zip_code) and lino.modlib.contacts.AddresssLocation
 See lino.core.kernel."""),
     'lino_xl.lib.humanlinks.Plugin.person_model' : _("""A string referring to the model which represents a human in your
 application.  Default value is 'contacts.Person' (referring to
-lino.modlib.contacts.Person)."""),
+lino_xl.lib.contacts.Person)."""),
     'lino.modlib.plausibility.models.Problem.checker' : _("""The Checker which reported
 this problem."""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
@@ -1484,7 +1484,7 @@ resolved at startup to the model's class object."""),
     'lino.core.site.Site.is_demo_site' : _("""When this is True, then this site runs in "demo" mode.  "Demo
 mode" means:"""),
     'lino_xl.lib.excerpts.models.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
-    'lino.modlib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
+    'lino_xl.lib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
     'lino.utils.test.CommonTestCase' : _("""An extended django.test.TestCase."""),
     'lino.utils.djangotest.DjangoManageTestCase.defining_module' : _("""When you decorate your subclass of TestCase, you must also specify:"""),
     'lino.core.actors.Actor.app_label' : _("""Specify this if you want to "override" an existing actor."""),
@@ -1500,7 +1500,7 @@ users' work."""),
 this to a nonempty value will disable authentication on this site.
 The special value 'anonymous' will cause anonymous requests
 (whose user attribute is the AnonymousUser instance)."""),
-    'lino.modlib.contacts.models.Partner.full_name' : _("""Returns a one-line string representing this Partner.
+    'lino_xl.lib.contacts.models.Partner.full_name' : _("""Returns a one-line string representing this Partner.
 The default returns simply the name field, ignoring any parameters,
 but e.g. Human overrides this."""),
     'lino.modlib.printing.choicelists.TemplatedBuildMethod' : _("""Base class for all build methods.  A build method encapsulates the
@@ -1520,7 +1520,7 @@ default.db file."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
     'lino.modlib.printing.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.polls.models.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
+    'lino_xl.lib.polls.models.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
 volatile AnswersByResponseRow instances."""),
     'lino.core.plugin.Plugin.extends_models' : _("""If specified, a list of model names for which this app provides a
 subclass."""),
@@ -1534,7 +1534,7 @@ values and leaves those from a previous call."""),
 in other words the startup time of this Django process.
 Don't modify this."""),
     'lino.core.site.LanguageInfo.name' : _("""Alias for field number 1"""),
-    'lino.modlib.notifier.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino.modlib.notify.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
@@ -1552,7 +1552,7 @@ which adds default values for decimal_places, max_length and
 max_digits."""),
     'lino_xl.lib.households.Plugin.person_model' : _("""A string referring to the model which represents a human in your
 application.  Default value is 'contacts.Person' (referring to
-lino.modlib.contacts.models.Person)."""),
+lino_xl.lib.contacts.models.Person)."""),
     'lino.core.store.StoreField.field' : _("""The database field (a subclass of
 django.db.models.fields.Field)"""),
     'lino.modlib.users.models.User.username' : _("""Must be unique.
@@ -1608,7 +1608,7 @@ attributes to override before running the test."""),
 display in a modal non-maximized window."""),
     'lino.core.dbtables.Table.expand_memos' : _("""(No longer used; see docs/tickets/44).  Whether multi-line text
 fields in Grid views should be expanded in by default or not."""),
-    'lino.modlib.polls.models.AnswersByResponse.master' : _("""alias of Response"""),
+    'lino_xl.lib.polls.models.AnswersByResponse.master' : _("""alias of Response"""),
     'lino.utils.odsreader.SimpleOdsReader.filename' : _("""The full path name of the .ods file to be read."""),
     'lino.utils.mldbc.fields.LanguageField' : _("""A field that lets the user select a language from the available
 lino.core.site.Site.languages."""),
@@ -1627,7 +1627,7 @@ One field for every language."""),
 to know about this. Typical usage is to specify this in your
 djangosite_local.py file (The djangosite_local module):"""),
     'lino.utils.config.ConfigDir' : _("""A directory that may contain configuration files."""),
-    'lino.modlib.contacts.mixins.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
+    'lino_xl.lib.contacts.mixins.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
 company, except when that field is empty, in which
 case partner contains the contact_person.  If both
 fields are empty, then partner contains None."""),
@@ -1650,12 +1650,12 @@ That is:"""),
     'lino.core.auth.AuthMiddleWareBase' : _("""Common base class for RemoteUserMiddleware,
 SessionUserMiddleware and NoUserMiddleware."""),
     'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
-    'lino.modlib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
+    'lino_xl.lib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino.utils.instantiator.GenericForeignKeyConverter' : _("""Converter for GenericForeignKey fields."""),
-    'lino.modlib.contacts.mixins.ContactRelated.contact_role' : _("""The optional Role
+    'lino_xl.lib.contacts.mixins.ContactRelated.contact_role' : _("""The optional Role
 of the contact_person within company."""),
     'lino.utils.dpy.FakeDeserializedObject' : _("""Imitates DeserializedObject required by loaddata."""),
-    'lino.modlib.countries.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.countries.Plugin' : _("""See Introduction to plugins."""),
     'lino_xl.lib.cal.ui.MyEventsToday.model' : _("""alias of Event"""),
     'lino.core.merge.MergeAction' : _("""Action which merges the selected object into another object of same
 class. It has an automatically generated parameters window."""),
@@ -1705,8 +1705,8 @@ This option was experimental and doesn't yet work (and maybe never will)."""),
 model which implements
 Addressable."""),
     'lino_xl.lib.reception.models.BusyVisitors' : _("""Show busy visitors (with any user)."""),
-    'lino.modlib.countries.models.PlaceChecker' : _("""The name of a geographical place
-(lino.modlib.countries.models.Place.name) should not
+    'lino_xl.lib.countries.models.PlaceChecker' : _("""The name of a geographical place
+(lino_xl.lib.countries.models.Place.name) should not
 consist of only digits."""),
     'lino.core.site.Site.verbose_client_info_message' : _("""Set this to True if actions should send debug messages to the client.
 These will be shown in the client's Javascript console only."""),
@@ -1736,10 +1736,10 @@ testing library."""),
 fields that refer to
 this list."""),
     'lino_xl.lib.humanlinks.models.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
-    'lino.modlib.notifier.models.Notifications.model' : _("""alias of Notification"""),
+    'lino.modlib.notify.models.Notifications.model' : _("""alias of Notification"""),
     'lino.core.site.LanguageInfo.suffix' : _("""Alias for field number 3"""),
     'lino.modlib.importfilters.Plugin' : _("""See Introduction to plugins."""),
-    'lino.modlib.contacts.models.Persons.model' : _("""alias of Person"""),
+    'lino_xl.lib.contacts.models.Persons.model' : _("""alias of Person"""),
     'lino_xl.lib.reception.models.CheckinVisitor' : _("""The "Checkin" action on a Guest."""),
     'lino.core.site.Site.is_local_project_dir' : _("""Contains True if this is a "local" project.  For local projects,
 Lino checks for local fixtures and config directories and adds
@@ -1771,7 +1771,7 @@ Plain HTML adds a "%"."""),
     'lino.core.site.Site.alt_date_formats_extjs' : _("""Alternative date entry formats accepted by ExtJS Date widgets."""),
     'lino.core.tables.AbstractTable.custom_groups' : _("""Used internally to store groups defined by this Table."""),
     'lino_xl.lib.appypod.choicelists.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
-    'lino.modlib.contacts.models.RolesByPerson.model' : _("""alias of Role"""),
+    'lino_xl.lib.contacts.models.RolesByPerson.model' : _("""alias of Role"""),
     'lino.modlib.users.models.ChangePassword' : _("""Dialog action to change the password of a user."""),
     'lino.utils.dates.DatePeriodValue' : _("""A named tuple with the following fields:"""),
     'lino.utils.pythontest.TestCase' : _("""An extended atelier.test.TestCase to be run using

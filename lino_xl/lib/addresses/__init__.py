@@ -17,7 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 """Adds functionality and models to handle multiple addresses per
-:class:`lino.modlib.contacts.models.Partner`. When this module is
+:class:`lino_xl.lib.contacts.models.Partner`. When this module is
 installed, your application usually has a "Manage addresses" button
 per partner.
 

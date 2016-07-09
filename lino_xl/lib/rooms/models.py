@@ -34,7 +34,7 @@ from lino import mixins
 
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.mixins import Reservation
-from lino.modlib.contacts.mixins import ContactRelated
+from lino_xl.lib.contacts.mixins import ContactRelated
 
 
 class BookingStates(dd.Workflow):

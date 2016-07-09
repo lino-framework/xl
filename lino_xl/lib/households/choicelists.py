@@ -21,7 +21,7 @@
 """
 
 from lino.api import dd, _
-from lino.modlib.contacts.roles import ContactsStaff
+from lino_xl.lib.contacts.roles import ContactsStaff
 
 
 class MemberRoles(dd.ChoiceList):
