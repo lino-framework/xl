@@ -30,7 +30,7 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino_xl',
-    version='1.0.0',
+    version='1.7.3',
     install_requires=['lino', 'appy', 'fuzzy', ],
     tests_require=[],
     description="Lino Extensions Library",
