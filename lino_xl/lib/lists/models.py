@@ -108,10 +108,9 @@ class Member(mixins.Sequenced):
 
     list = dd.ForeignKey('lists.List')
     partner = dd.ForeignKey(
-        'contacts.Partner',
+        dd.plugins.lists.partner_model,
         related_name="list_memberships")
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
-
 
 class Members(dd.Table):
     required_roles = dd.required(OfficeUser)

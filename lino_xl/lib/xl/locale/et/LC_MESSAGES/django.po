@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-02 01:45+0300\n"
+"POT-Creation-Date: 2016-07-12 14:46+0300\n"
 "PO-Revision-Date: 2015-04-06 10:26+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: et\n"
@@ -109,7 +109,8 @@ msgstr ""
 msgid "{0}:{1}->{2}"
 msgstr ""
 
-#: lino_xl/lib/addresses/models.py:64 lino_xl/lib/outbox/models.py:68
+#: lino_xl/lib/addresses/models.py:64 lino_xl/lib/contacts/models.py:244
+#: lino_xl/lib/countries/mixins.py:258 lino_xl/lib/outbox/models.py:68
 msgid "Address"
 msgstr "Aadres"
 
@@ -117,7 +118,9 @@ msgstr "Aadres"
 #: lino_xl/lib/cal/models.py:925 lino_xl/lib/cv/models.py:497
 #: lino_xl/lib/cv/models.py:523 lino_xl/lib/excerpts/models.py:126
 #: lino_xl/lib/lists/models.py:113 lino_xl/lib/notes/models.py:62
-#: lino_xl/lib/notes/models.py:99 lino_xl/lib/thirds/models.py:41
+#: lino_xl/lib/notes/models.py:99 lino_xl/lib/polls/models.py:650
+#: lino_xl/lib/polls/models.py:655 lino_xl/lib/polls/models.py:796
+#: lino_xl/lib/thirds/models.py:41
 msgid "Remark"
 msgstr "Märkus"
 
@@ -235,11 +238,13 @@ msgstr ""
 msgid "%s has been saved."
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:244
+#: lino_xl/lib/beid/mixins.py:244 lino_xl/lib/polls/fixtures/std.py:34
+#: lino_xl/lib/polls/fixtures/std.py:36
 msgid "Yes"
 msgstr "Jah"
 
-#: lino_xl/lib/beid/mixins.py:245
+#: lino_xl/lib/beid/mixins.py:245 lino_xl/lib/polls/fixtures/std.py:34
+#: lino_xl/lib/polls/fixtures/std.py:36
 msgid "No"
 msgstr "Ei"
 
@@ -387,7 +392,8 @@ msgstr ""
 msgid "Blog Entries"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:87
+#: lino_xl/lib/blogs/models.py:87 lino_xl/lib/polls/models.py:108
+#: lino_xl/lib/polls/models.py:241
 msgid "Heading"
 msgstr ""
 
@@ -625,61 +631,62 @@ msgstr "Sündmuste arv"
 msgid "Times"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:707 lino_xl/lib/cal/models.py:764
-#: lino_xl/lib/cal/models.py:771
+#: lino_xl/lib/cal/mixins.py:709 lino_xl/lib/cal/models.py:764
+#: lino_xl/lib/cal/models.py:771 lino_xl/lib/events/models.py:114
 msgid "When"
 msgstr "Millal"
 
-#: lino_xl/lib/cal/mixins.py:711
+#: lino_xl/lib/cal/mixins.py:713
 msgid "From {0} until {1}"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:713
+#: lino_xl/lib/cal/mixins.py:715
 msgid "On {0}"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:723
+#: lino_xl/lib/cal/mixins.py:725
 #, fuzzy
 msgid "day"
 msgstr "Täna"
 
-#: lino_xl/lib/cal/mixins.py:725
+#: lino_xl/lib/cal/mixins.py:727
 msgid "month"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:727
+#: lino_xl/lib/cal/mixins.py:729
 #, fuzzy
 msgid "year"
 msgstr "Märkus"
 
-#: lino_xl/lib/cal/mixins.py:731
+#: lino_xl/lib/cal/mixins.py:733
 #, python-format
 msgid "Every %s"
 msgstr "Iga %s"
 
-#: lino_xl/lib/cal/mixins.py:732
+#: lino_xl/lib/cal/mixins.py:734
 #, python-format
 msgid "Every %snd %s"
 msgstr "Iga %s. %s"
 
-#: lino_xl/lib/cal/mixins.py:813
+#: lino_xl/lib/cal/mixins.py:815
 msgid "Generate events until"
 msgstr "Genereeri sündmusi kuni"
 
-#: lino_xl/lib/cal/mixins.py:868
+#: lino_xl/lib/cal/mixins.py:870
 msgid "Whether this is private, public or between."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:870
+#: lino_xl/lib/cal/mixins.py:872
 #, fuzzy
 msgid "Revision"
 msgstr "Maakond"
 
-#: lino_xl/lib/cal/mixins.py:871
+#: lino_xl/lib/cal/mixins.py:873 lino_xl/lib/countries/mixins.py:195
+#: lino_xl/lib/polls/models.py:234
 msgid "No."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:906
+#: lino_xl/lib/cal/mixins.py:908
 msgid " at "
 msgstr ""
 
@@ -1071,11 +1078,11 @@ msgid ""
 "    "
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:600
+#: lino_xl/lib/cal/ui.py:600 lino_xl/lib/contacts/choicelists.py:13
 msgid "Observed event"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:601
+#: lino_xl/lib/cal/ui.py:601 lino_xl/lib/contacts/choicelists.py:14
 msgid "Observed events"
 msgstr ""
 
@@ -1148,6 +1155,7 @@ msgid "Overdue appointments"
 msgstr "Kokku leppitud ajad"
 
 #: lino_xl/lib/cal/fixtures/std.py:50 lino_xl/lib/excerpts/models.py:703
+#: lino_xl/lib/polls/models.py:187 lino_xl/lib/polls/models.py:374
 #: lino_xl/lib/rooms/models.py:168
 msgid "General"
 msgstr "Üld"
@@ -1241,12 +1249,13 @@ msgstr "Ettepanek"
 msgid "Automatically suggested. Default state of an automatic event."
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:113 lino_xl/lib/rooms/models.py:44
+#: lino_xl/lib/cal/workflows/__init__.py:113 lino_xl/lib/polls/utils.py:26
+#: lino_xl/lib/polls/utils.py:53 lino_xl/lib/rooms/models.py:44
 msgid "Draft"
 msgstr "Kavand"
 
 #: lino_xl/lib/cal/workflows/__init__.py:116
-#: lino_xl/lib/cal/workflows/feedback.py:41
+#: lino_xl/lib/cal/workflows/feedback.py:41 lino_xl/lib/polls/utils.py:27
 msgid "Published"
 msgstr ""
 
@@ -1280,7 +1289,7 @@ msgstr ""
 msgid "Invited"
 msgstr "Kutsutud"
 
-#: lino_xl/lib/cal/workflows/__init__.py:166
+#: lino_xl/lib/cal/workflows/__init__.py:166 lino_xl/lib/polls/utils.py:35
 msgid "Reopen"
 msgstr ""
 
@@ -1375,6 +1384,509 @@ msgstr ""
 #: lino_xl/lib/reception/models.py:253 lino_xl/lib/reception/models.py:304
 msgid "Are you sure?"
 msgstr "Kas oled kindel?"
+
+#: lino_xl/lib/concepts/__init__.py:10 lino_xl/lib/concepts/models.py:41
+#, fuzzy
+msgid "Concepts"
+msgstr "Telefon"
+
+#: lino_xl/lib/concepts/models.py:26
+msgid "Link Type"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:27
+#, fuzzy
+msgid "Link Types"
+msgstr "Firmaliik"
+
+#: lino_xl/lib/concepts/models.py:31
+msgid "Jargon"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:32
+msgid "Obsoletes"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:40
+#, fuzzy
+msgid "Concept"
+msgstr "Telefon"
+
+#: lino_xl/lib/concepts/models.py:43 lino_xl/lib/contacts/models.py:376
+#, fuzzy
+msgid "Abbreviation"
+msgstr "Nimetus"
+
+#: lino_xl/lib/concepts/models.py:44
+msgid "Wikipedia"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:46
+#, fuzzy
+msgid "Definition"
+msgstr "Nimetus"
+
+#: lino_xl/lib/concepts/models.py:48
+msgid "Jargon domain"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:49
+msgid "Whether this concept designates a domain of specialized vocabulary."
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:72
+msgid "Top-level concepts"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:79
+msgid "Link"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:80
+msgid "Links"
+msgstr ""
+
+#: lino_xl/lib/concepts/models.py:97
+#, fuzzy
+msgid "Parents"
+msgstr "Sündmused"
+
+#: lino_xl/lib/concepts/models.py:102
+msgid "Children"
+msgstr ""
+
+#: lino_xl/lib/contacts/__init__.py:41
+#, fuzzy
+msgid "Contacts"
+msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/contacts/__init__.py:57 lino_xl/lib/countries/choicelists.py:50
+msgid "Region"
+msgstr ""
+
+#: lino_xl/lib/contacts/mixins.py:70 lino_xl/lib/contacts/mixins.py:267
+#, fuzzy
+msgid "Company"
+msgstr "Firma"
+
+#: lino_xl/lib/contacts/mixins.py:77 lino_xl/lib/contacts/mixins.py:274
+msgid "represented by"
+msgstr ""
+
+#: lino_xl/lib/contacts/mixins.py:83
+#, fuzzy
+msgid "represented as"
+msgstr "Minu kohalolekud"
+
+#: lino_xl/lib/contacts/models.py:106 lino_xl/lib/households/choicelists.py:39
+#: lino_xl/lib/households/models.py:420
+msgid "Partner"
+msgstr "Partner"
+
+#: lino_xl/lib/contacts/models.py:107
+#, fuzzy
+msgid "Partners"
+msgstr "Partner"
+
+#: lino_xl/lib/contacts/models.py:109 lino_xl/lib/contacts/models.py:167
+#: lino_xl/lib/outbox/models.py:69
+msgid "Name"
+msgstr "Nimi"
+
+#: lino_xl/lib/contacts/models.py:113
+msgid "E-Mail"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:114
+msgid "URL"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:115
+#, fuzzy
+msgid "Phone"
+msgstr "Telefon"
+
+#: lino_xl/lib/contacts/models.py:116
+msgid "GSM"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:117
+msgid "Fax"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:119 lino_xl/lib/cv/models.py:147
+#: lino_xl/lib/cv/models.py:571 lino_xl/lib/lists/models.py:76
+msgid "Remarks"
+msgstr "Märkused"
+
+#: lino_xl/lib/contacts/models.py:185
+msgid "See as "
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:207
+msgid "Extended filter criteria"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:252
+msgid "Contact"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:307
+#, fuzzy
+msgid "Person"
+msgstr "Inimene"
+
+#: lino_xl/lib/contacts/models.py:308
+msgid "Persons"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:373
+msgid "Organization type"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:374
+#, fuzzy
+msgid "Organization types"
+msgstr "Organisatsiooniliiged"
+
+#: lino_xl/lib/contacts/models.py:400
+#, fuzzy
+msgid "Organization"
+msgstr "Saaja (Firma)"
+
+#: lino_xl/lib/contacts/models.py:401
+msgid "Organizations"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:404
+msgid "Name prefix"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:479
+#, fuzzy
+msgid "Function"
+msgstr "Aktioonid"
+
+#: lino_xl/lib/contacts/models.py:480
+#, fuzzy
+msgid "Functions"
+msgstr "Aktioonid"
+
+#: lino_xl/lib/contacts/models.py:512
+#, fuzzy
+msgid "Contact Person"
+msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/contacts/models.py:513
+#, fuzzy
+msgid "Contact Persons"
+msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/contacts/models.py:518
+#, fuzzy
+msgid "Contact Role"
+msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/contacts/models.py:562
+#, fuzzy
+msgid "Contact persons"
+msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/contacts/models.py:572
+#, fuzzy
+msgid "Contact for"
+msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/contacts/models.py:584
+msgid "Next partner id"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:585
+msgid "The next automatic id for any new partner."
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:593
+msgid "Site owner"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:595
+msgid ""
+"The organisation who runs this site.\n"
+"        This is used e.g. as sender in documents.\n"
+"        Or, newly created partners inherit the country of the site owner."
+"\n"
+"        "
+msgstr ""
+
+#: lino_xl/lib/countries/__init__.py:26 lino_xl/lib/countries/models.py:107
+#, fuzzy
+msgid "Places"
+msgstr "Leidis aset"
+
+#: lino_xl/lib/countries/__init__.py:31 lino_xl/lib/countries/choicelists.py:55
+#, fuzzy
+msgid "County"
+msgstr "Riik"
+
+#: lino_xl/lib/countries/choicelists.py:43
+#, fuzzy
+msgid "Place Type"
+msgstr "Firmaliik"
+
+#: lino_xl/lib/countries/choicelists.py:48
+#, fuzzy
+msgid "Member State"
+msgstr "Listi tellimused"
+
+#: lino_xl/lib/countries/choicelists.py:49
+#, fuzzy
+msgid "Division"
+msgstr "Maakond"
+
+#: lino_xl/lib/countries/choicelists.py:51
+#, fuzzy
+msgid "Community"
+msgstr "Firma"
+
+#: lino_xl/lib/countries/choicelists.py:52
+msgid "Territory"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:56
+#, fuzzy
+msgid "Province"
+msgstr "Telefon"
+
+#: lino_xl/lib/countries/choicelists.py:57
+msgid "Shire"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:58
+msgid "Subregion"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:59
+#, fuzzy
+msgid "Department"
+msgstr "Registreerimine"
+
+#: lino_xl/lib/countries/choicelists.py:60
+msgid "Arrondissement"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:61
+#, fuzzy
+msgid "Prefecture"
+msgstr "Loo"
+
+#: lino_xl/lib/countries/choicelists.py:62
+#, fuzzy
+msgid "District"
+msgstr "Maakond"
+
+#: lino_xl/lib/countries/choicelists.py:63
+#, fuzzy
+msgid "Sector"
+msgstr "Kontaktisik"
+
+#: lino_xl/lib/countries/choicelists.py:65 lino_xl/lib/countries/mixins.py:51
+msgid "City"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:66
+#, fuzzy
+msgid "Town"
+msgstr "Optioon"
+
+#: lino_xl/lib/countries/choicelists.py:67
+msgid "Municipality"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:68
+msgid "Parish"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:69
+msgid "Township"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:70
+#, fuzzy
+msgid "Quarter"
+msgstr "Partner"
+
+#: lino_xl/lib/countries/choicelists.py:72
+msgid "Borough"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:73
+msgid "Small borough"
+msgstr ""
+
+#: lino_xl/lib/countries/choicelists.py:75
+msgid "Village"
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:53
+msgid "Zip code"
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:181 lino_xl/lib/countries/mixins.py:183
+msgid "Address line before street"
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:186
+msgid "Street prefix"
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:187
+msgid "Text to print before name of street, but to ignore for sorting."
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:191
+#, fuzzy
+msgid "Street"
+msgstr "Kohal"
+
+#: lino_xl/lib/countries/mixins.py:192
+msgid "Name of street, without house number."
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:196
+msgid "House number."
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:199
+msgid "Box"
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:200
+msgid "Text to print after street nuber on the same line."
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:203
+msgid "Address line after street"
+msgstr ""
+
+#: lino_xl/lib/countries/mixins.py:205
+msgid "Address line to print below street line."
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:38
+#, fuzzy
+msgid "Country"
+msgstr "Riik"
+
+#: lino_xl/lib/countries/models.py:39
+msgid "Countries"
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:44
+msgid "ISO code"
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:45
+msgid ""
+"        The two-letter code for this country as defined by ISO 3166-1.\n"
+"        For countries that no longer exist it may be a 4-letter code."
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:53
+msgid "Short code"
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:54
+msgid "A short abbreviation for regional usage. Obsolete."
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:58
+msgid "ISO-3 code"
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:59
+msgid "The three-letter code for this country as defined by ISO 3166-1."
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:80
+msgid ""
+"\n"
+"    A country is a geographic entity considered a \"nation\".\n"
+"    "
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:106
+#, fuzzy
+msgid "Place"
+msgstr "Leidis aset"
+
+#: lino_xl/lib/countries/models.py:188
+msgid "Part of"
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:189
+msgid "The superordinate geographic place of which this place is a part."
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:194
+msgid ""
+"\n"
+"    The table of known geographical places.\n"
+"    A geographical place can be a city, a town, a suburb,\n"
+"    a province, a lake... any named geographic entity,\n"
+"    except for countries because these have their own table.\n"
+"    "
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:213
+#, fuzzy
+msgid "Subdivisions"
+msgstr "Maakond"
+
+#: lino_xl/lib/countries/models.py:222
+#, python-format
+msgid "%(details)s in %(master)s"
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:232
+msgid "Check plausibility of geographical places."
+msgstr ""
+
+#: lino_xl/lib/countries/models.py:236
+msgid "Name contains only digits."
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:24
+msgid "Estonia"
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:25
+msgid "Belgium"
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:26
+msgid "Germany"
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:27
+#, fuzzy
+msgid "France"
+msgstr "Kohalolekud"
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:28
+msgid "Netherlands"
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:29
+msgid "Maroc"
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:30
+msgid "Russia"
+msgstr ""
+
+#: lino_xl/lib/countries/fixtures/few_countries.py:31
+msgid "Congo (Democratic Republic)"
+msgstr ""
 
 #: lino_xl/lib/cv/__init__.py:36
 #, fuzzy
@@ -1489,11 +2001,6 @@ msgstr ""
 #: lino_xl/lib/cv/models.py:142
 msgid "Establishment"
 msgstr ""
-
-#: lino_xl/lib/cv/models.py:147 lino_xl/lib/cv/models.py:571
-#: lino_xl/lib/lists/models.py:76
-msgid "Remarks"
-msgstr "Märkused"
 
 #: lino_xl/lib/cv/models.py:157 lino_xl/lib/cv/models.py:351
 msgid "Study"
@@ -1715,6 +2222,24 @@ msgstr ""
 #, fuzzy
 msgid "Similar partners"
 msgstr "Kontaktiliigid"
+
+#: lino_xl/lib/events/__init__.py:30
+#, fuzzy
+msgid "Events"
+msgstr "Sündmused"
+
+#: lino_xl/lib/events/models.py:72 lino_xl/lib/notes/models.py:142
+#: lino_xl/lib/outbox/models.py:224 lino_xl/lib/polls/models.py:338
+msgid "Date"
+msgstr "Kuupäev"
+
+#: lino_xl/lib/events/models.py:124
+msgid "Where"
+msgstr ""
+
+#: lino_xl/lib/events/models.py:131
+msgid "What"
+msgstr ""
 
 #: lino_xl/lib/excerpts/__init__.py:58 lino_xl/lib/excerpts/models.py:459
 msgid "Excerpts"
@@ -1989,11 +2514,6 @@ msgstr ""
 #, fuzzy
 msgid "Spouse"
 msgstr "Isikud"
-
-#: lino_xl/lib/households/choicelists.py:39
-#: lino_xl/lib/households/models.py:420
-msgid "Partner"
-msgstr "Partner"
 
 #: lino_xl/lib/households/choicelists.py:40
 msgid "Cohabitant"
@@ -2441,10 +2961,6 @@ msgstr "Sündmuse liigid"
 msgid "Note"
 msgstr "Märkus"
 
-#: lino_xl/lib/notes/models.py:142 lino_xl/lib/outbox/models.py:224
-msgid "Date"
-msgstr "Kuupäev"
-
 #: lino_xl/lib/notes/models.py:145
 msgid "Time"
 msgstr ""
@@ -2560,10 +3076,6 @@ msgstr ""
 msgid "Recipients"
 msgstr ""
 
-#: lino_xl/lib/outbox/models.py:69
-msgid "Name"
-msgstr "Nimi"
-
 #: lino_xl/lib/outbox/models.py:120
 msgid "Send email"
 msgstr ""
@@ -2634,6 +3146,232 @@ msgstr ""
 msgid "Home"
 msgstr ""
 
+#: lino_xl/lib/polls/__init__.py:27 lino_xl/lib/polls/models.py:105
+msgid "Polls"
+msgstr ""
+
+#: lino_xl/lib/polls/choicelists.py:13
+#, fuzzy
+msgid "Polls user"
+msgstr "Isikud"
+
+#: lino_xl/lib/polls/models.py:55
+msgid "Choice Set"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:56
+msgid "Choice Sets"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:72
+#, fuzzy
+msgid "Choice"
+msgstr "Telefon"
+
+#: lino_xl/lib/polls/models.py:73
+msgid "Choices"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:104
+msgid "Poll"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:110 lino_xl/lib/polls/models.py:236
+#, fuzzy
+msgid "Details"
+msgstr "Täna"
+
+#: lino_xl/lib/polls/models.py:116
+msgid "Default Choiceset"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:119 lino_xl/lib/polls/models.py:240
+msgid "Allow multiple choices"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:122
+msgid "Questions to add"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:123
+msgid ""
+"Paste text for questions to add. Every non-empty line will create one "
+"question."
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:164
+#, fuzzy
+msgid "Result"
+msgstr "Kohal"
+
+#: lino_xl/lib/polls/models.py:194
+msgid "Results"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:227 lino_xl/lib/polls/models.py:615
+#: lino_xl/lib/polls/models.py:727
+#, fuzzy
+msgid "Question"
+msgstr "Nimetus"
+
+#: lino_xl/lib/polls/models.py:228
+#, fuzzy
+msgid "Questions"
+msgstr "Nimetus"
+
+#: lino_xl/lib/polls/models.py:235
+#, fuzzy
+msgctxt "polls"
+msgid "Title"
+msgstr "Prefiks"
+
+#: lino_xl/lib/polls/models.py:333 lino_xl/lib/polls/models.py:792
+msgid "Response"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:334
+#, fuzzy
+msgid "Responses"
+msgstr "Kohalolekud"
+
+#: lino_xl/lib/polls/models.py:340
+msgid "My general remark"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:351
+#, python-format
+msgid "%(user)s's response to %(poll)s"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:353
+msgid "{poll} {partner} {date}"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:378
+#, fuzzy
+msgid "More"
+msgstr "Veel"
+
+#: lino_xl/lib/polls/models.py:450
+msgid "Answer Choice"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:451
+msgid "Answer Choices"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:458 lino_xl/lib/polls/models.py:670
+msgid "My answer"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:476
+msgid "Answer Remark"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:477
+msgid "Answer Remarks"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:482 lino_xl/lib/polls/models.py:551
+#, fuzzy
+msgid "My remark"
+msgstr "Märkus"
+
+#: lino_xl/lib/polls/models.py:540 lino_xl/lib/polls/models.py:769
+msgid "N/A"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:576 lino_xl/lib/polls/models.py:778
+msgid "Answers"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:800
+#, fuzzy
+msgid "Answer"
+msgstr "Partner"
+
+#: lino_xl/lib/polls/models.py:822
+msgid "#Answers"
+msgstr ""
+
+#: lino_xl/lib/polls/models.py:827
+msgid "A1"
+msgstr ""
+
+#: lino_xl/lib/polls/roles.py:35 lino_xl/lib/xl/roles.py:41
+msgid "Anonymous"
+msgstr "Anonüümne"
+
+#: lino_xl/lib/polls/roles.py:36 lino_xl/lib/stars/models.py:67
+#: lino_xl/lib/xl/roles.py:42
+msgid "User"
+msgstr "Kasutaja"
+
+#: lino_xl/lib/polls/roles.py:37 lino_xl/lib/xl/roles.py:43
+msgid "Administrator"
+msgstr "Administraator"
+
+#: lino_xl/lib/polls/utils.py:21
+msgid "Poll States"
+msgstr ""
+
+#: lino_xl/lib/polls/utils.py:28
+#, fuzzy
+msgid "Closed"
+msgstr "Tänav"
+
+#: lino_xl/lib/polls/utils.py:31
+msgid "Publish"
+msgstr ""
+
+#: lino_xl/lib/polls/utils.py:33
+#, fuzzy
+msgid "Close"
+msgstr "Telefon"
+
+#: lino_xl/lib/polls/utils.py:48
+msgid "Response States"
+msgstr ""
+
+#: lino_xl/lib/polls/utils.py:54 lino_xl/lib/rooms/models.py:46
+msgid "Registered"
+msgstr "Registreeritud"
+
+#: lino_xl/lib/polls/utils.py:58
+#, fuzzy
+msgid "Register"
+msgstr "Registreeritud"
+
+#: lino_xl/lib/polls/utils.py:60
+#, fuzzy
+msgid "Deregister"
+msgstr "Registreeritud"
+
+#: lino_xl/lib/polls/fixtures/std.py:34
+msgid "Yes/No"
+msgstr ""
+
+#: lino_xl/lib/polls/fixtures/std.py:36
+msgid "Yes/Maybe/No"
+msgstr ""
+
+#: lino_xl/lib/polls/fixtures/std.py:36
+msgid "Maybe"
+msgstr ""
+
+#: lino_xl/lib/polls/fixtures/std.py:44
+msgid "Acquired"
+msgstr ""
+
+#: lino_xl/lib/polls/fixtures/std.py:44
+msgid "In progress"
+msgstr ""
+
+#: lino_xl/lib/polls/fixtures/std.py:44
+#, fuzzy
+msgid "Not acquired"
+msgstr "Hind"
+
 #: lino_xl/lib/postings/__init__.py:37 lino_xl/lib/postings/models.py:84
 msgid "Postings"
 msgstr ""
@@ -2696,16 +3434,24 @@ msgstr ""
 msgid "Products"
 msgstr "Tooted"
 
-#: lino_xl/lib/products/choicelists.py:33
+#: lino_xl/lib/products/choicelists.py:30
+msgid "Delivery unit"
+msgstr ""
+
+#: lino_xl/lib/products/choicelists.py:31
+msgid "Delivery units"
+msgstr ""
+
+#: lino_xl/lib/products/choicelists.py:35
 msgid "Hour"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:34
+#: lino_xl/lib/products/choicelists.py:36
 #, fuzzy
 msgid "Piece"
 msgstr "Telefon"
 
-#: lino_xl/lib/products/choicelists.py:35
+#: lino_xl/lib/products/choicelists.py:37
 msgid "Kg"
 msgstr ""
 
@@ -2991,10 +3737,6 @@ msgstr ""
 msgid "Option"
 msgstr "Optioon"
 
-#: lino_xl/lib/rooms/models.py:46
-msgid "Registered"
-msgstr "Registreeritud"
-
 #: lino_xl/lib/rooms/models.py:68
 msgid "Optionally booked. Ask customer before any decision."
 msgstr ""
@@ -3035,10 +3777,6 @@ msgstr "nimi"
 msgid "Star"
 msgstr "Tänav"
 
-#: lino_xl/lib/stars/models.py:67 lino_xl/lib/xl/roles.py:42
-msgid "User"
-msgstr "Kasutaja"
-
 #: lino_xl/lib/stars/models.py:68
 msgid "Starred object"
 msgstr ""
@@ -3067,6 +3805,29 @@ msgstr ""
 #, fuzzy
 msgid "Your stars are "
 msgstr "Üritusdomeen"
+
+#: lino_xl/lib/statbel/countries/models.py:38
+#: lino_xl/lib/statbel/countries/models.py:68
+msgid "INS code"
+msgstr ""
+
+#: lino_xl/lib/statbel/countries/models.py:40
+msgid "The official code for this country used by statbel.fgov.be"
+msgstr ""
+
+#: lino_xl/lib/statbel/countries/models.py:44
+msgid "Actual country"
+msgstr ""
+
+#: lino_xl/lib/statbel/countries/models.py:46
+msgid ""
+"Select the actual country if this row represents a refugee status or a "
+"former country."
+msgstr ""
+
+#: lino_xl/lib/statbel/countries/models.py:70
+msgid "The official code for this place used by statbel.fgov.be"
+msgstr ""
 
 #: lino_xl/lib/teams/__init__.py:42
 msgid "User teams"
@@ -3441,7 +4202,7 @@ msgid ""
 "This is typically either the company or\n"
 "contact_person (if one of these fields is\n"
 "non-empty). It may also be a\n"
-"lino.modlib.contacts.models.Role object."
+"lino_xl.lib.contacts.models.Role object."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:109 lino_xl/lib/xl/help_texts.py:181
@@ -4251,7 +5012,7 @@ msgstr ""
 #: lino_xl/lib/xl/help_texts.py:389
 msgid ""
 "Overrides\n"
-"lino.modlib.contacts.models.Partner.get_full_name()."
+"lino_xl.lib.contacts.models.Partner.get_full_name()."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:391
@@ -4309,7 +5070,7 @@ msgid ""
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:411
-msgid "Pointer to lino.modlib.contacts.models.Company."
+msgid "Pointer to lino_xl.lib.contacts.models.Company."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:412
@@ -5737,7 +6498,7 @@ msgstr ""
 msgid ""
 "The 2-letter ISO code of the country where the site owner is\n"
 "located.  This may not be empty, and there must be a country with\n"
-"that ISO code in lino.modlib.countries.models.Country."
+"that ISO code in lino_xl.lib.countries.models.Country."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:915
@@ -6418,7 +7179,7 @@ msgid "Shows all roles of a person."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1163
-msgid "Pointer to lino.modlib.contacts.models.Person."
+msgid "Pointer to lino_xl.lib.contacts.models.Person."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1165
@@ -6563,7 +7324,7 @@ msgstr ""
 msgid ""
 "The \"official\" URL used by \"normal\" users when accessing this Lino\n"
 "site. This is used by templates such as the email sent by\n"
-"lino.modlib.notifier.Notification"
+"lino.modlib.notify.Notification"
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1216
@@ -7213,8 +7974,8 @@ msgstr ""
 #: lino_xl/lib/xl/help_texts.py:1448
 msgid ""
 "Inherits fields from\n"
-"lino.modlib.countries.CountryRegionCity (country, region,\n"
-"city. zip_code) and lino.modlib.contacts.AddresssLocation\n"
+"lino_xl.lib.countries.CountryRegionCity (country, region,\n"
+"city. zip_code) and lino_xl.lib.contacts.AddresssLocation\n"
 "(street, street_no, ...)"
 msgstr ""
 
@@ -7237,7 +7998,7 @@ msgstr ""
 msgid ""
 "A string referring to the model which represents a human in your\n"
 "application.  Default value is 'contacts.Person' (referring to\n"
-"lino.modlib.contacts.Person)."
+"lino_xl.lib.contacts.Person)."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1459
@@ -7489,7 +8250,7 @@ msgstr ""
 msgid ""
 "A string referring to the model which represents a human in your\n"
 "application.  Default value is 'contacts.Person' (referring to\n"
-"lino.modlib.contacts.models.Person)."
+"lino_xl.lib.contacts.models.Person)."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1556
@@ -7905,7 +8666,7 @@ msgstr ""
 #: lino_xl/lib/xl/help_texts.py:1708
 msgid ""
 "The name of a geographical place\n"
-"(lino.modlib.countries.models.Place.name) should not\n"
+"(lino_xl.lib.countries.models.Place.name) should not\n"
 "consist of only digits."
 msgstr ""
 
@@ -8133,14 +8894,6 @@ msgid ""
 "The language distribution used on this site.  It has its own\n"
 "chapter The languages of a Site in the Developers Guide."
 msgstr ""
-
-#: lino_xl/lib/xl/roles.py:41
-msgid "Anonymous"
-msgstr "Anonüümne"
-
-#: lino_xl/lib/xl/roles.py:43
-msgid "Administrator"
-msgstr "Administraator"
 
 #~ msgid "Welcome"
 #~ msgstr "Tere tulemast"
@@ -11412,4 +12165,62 @@ msgstr "Administraator"
 
 #~ msgid "Participants"
 #~ msgstr "Osavõtja"
+
+#~ msgid ""
+#~ "(Virtual field) The Addressable object to use when\n"
+#~ "printing a postal address for this.\n"
+#~ "This is typically either the company or\n"
+#~ "contact_person (if one of these fields is\n"
+#~ "non-empty). It may also be a\n"
+#~ "lino.modlib.contacts.models.Role object."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Overrides\n"
+#~ "lino.modlib.contacts.models.Partner.get_full_name()."
+#~ msgstr ""
+
+#~ msgid "Pointer to lino.modlib.contacts.models.Company."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The 2-letter ISO code of the country where the site owner is\n"
+#~ "located.  This may not be empty, and there must be a country with\n"
+#~ "that ISO code in lino.modlib.countries.models.Country."
+#~ msgstr ""
+
+#~ msgid "Pointer to lino.modlib.contacts.models.Person."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The \"official\" URL used by \"normal\""
+#~ " users when accessing this Lino\n"
+#~ "site. This is used by templates such as the email sent by\n"
+#~ "lino.modlib.notifier.Notification"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "Inherits fields from\n"
+#~ "lino.modlib.countries.CountryRegionCity (country, region,\n"
+#~ "city. zip_code) and lino.modlib.contacts.AddresssLocation\n"
+#~ "(street, street_no, ...)"
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A string referring to the model which represents a human in your\n"
+#~ "application.  Default value is 'contacts.Person' (referring to\n"
+#~ "lino.modlib.contacts.Person)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "A string referring to the model which represents a human in your\n"
+#~ "application.  Default value is 'contacts.Person' (referring to\n"
+#~ "lino.modlib.contacts.models.Person)."
+#~ msgstr ""
+
+#~ msgid ""
+#~ "The name of a geographical place\n"
+#~ "(lino.modlib.countries.models.Place.name) should not\n"
+#~ "consist of only digits."
+#~ msgstr ""
 

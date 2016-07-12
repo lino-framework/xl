@@ -60,9 +60,9 @@ class Recipient(dd.Model):
         verbose_name = _("Recipient")
         verbose_name_plural = _("Recipients")
     mail = models.ForeignKey('outbox.Mail')
-    partner = models.ForeignKey('contacts.Partner',
-                                #~ verbose_name=_("Recipient"),
-                                blank=True, null=True)
+    partner = dd.ForeignKey('contacts.Partner',
+                            #~ verbose_name=_("Recipient"),
+                            blank=True, null=True)
     type = RecipientTypes.field(
         default=RecipientTypes.to.as_callable)
     address = models.EmailField(_("Address"), blank=True)
