@@ -37,7 +37,7 @@ class TopicGroup(BabelNamed):
         verbose_name_plural = _("Topic groups")
         abstract = dd.is_abstract_model(__name__, 'TopicGroup')
 
-    description = models.TextField(blank=True)
+    description = models.TextField(_("Description"), blank=True)
 
 
 class TopicGroups(dd.Table):
@@ -66,8 +66,9 @@ given topic.
         related_name='interests_by_topic')
 
     partner = dd.ForeignKey(
-        'contacts.Partner',
+        dd.plugins.topics.partner_model,
         related_name='interests_by_partner')
+
 
 # dd.update_field(Interest, 'user', verbose_name=_("User"))
 
@@ -108,6 +109,7 @@ class Topics(dd.Table):
     detail_layout = """
     id ref name topic_group
     description
+    topics.InterestsByTopic
     """
 
 

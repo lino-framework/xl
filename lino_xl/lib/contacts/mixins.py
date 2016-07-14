@@ -13,6 +13,17 @@ from lino.api import dd, rt
 from lino.utils.xmlgen.html import E, lines2p
 
 
+class Contactable(dd.Model):
+
+    class Meta(object):
+        abstract = True
+
+    url = models.URLField(_('URL'), blank=True)
+    phone = models.CharField(_('Phone'), max_length=200, blank=True)
+    gsm = models.CharField(_('GSM'), max_length=200, blank=True)
+    fax = models.CharField(_('Fax'), max_length=200, blank=True)
+
+
 class ContactRelated(dd.Model):
     """Model mixin for things that relate to **either** a private person
     **or** a company, the latter potentially represented by a contact
@@ -64,19 +75,19 @@ class ContactRelated(dd.Model):
     class Meta(object):
         abstract = True
 
-    company = models.ForeignKey(
+    company = dd.ForeignKey(
         "contacts.Company",
         related_name="%(app_label)s_%(class)s_set_by_company",
         verbose_name=_("Company"),
         blank=True, null=True)
 
-    contact_person = models.ForeignKey(
+    contact_person = dd.ForeignKey(
         "contacts.Person",
         related_name="%(app_label)s_%(class)s_set_by_contact_person",
         blank=True, null=True,
         verbose_name=_("represented by"))
 
-    contact_role = models.ForeignKey(
+    contact_role = dd.ForeignKey(
         "contacts.RoleType",
         related_name="%(app_label)s_%(class)s_set_by_contact_role",
         blank=True, null=True,
@@ -201,11 +212,11 @@ class PartnerDocument(dd.Model):
     class Meta(object):
         abstract = True
 
-    company = models.ForeignKey("contacts.Company",
-                                blank=True, null=True)
+    company = dd.ForeignKey("contacts.Company",
+                            blank=True, null=True)
 
-    person = models.ForeignKey("contacts.Person", blank=True, null=True)
-
+    person = dd.ForeignKey("contacts.Person", blank=True, null=True)
+    
     def get_partner(self):
         if self.company is not None:
             return self.company
@@ -261,13 +272,13 @@ class OldCompanyContact(dd.Model):
     class Meta(object):
         abstract = True
 
-    company = models.ForeignKey(
+    company = dd.ForeignKey(
         "contacts.Company",
         related_name="%(app_label)s_%(class)s_set_by_company",
         verbose_name=_("Company"),
         blank=True, null=True)
 
-    contact = models.ForeignKey(
+    contact = dd.ForeignKey(
         "contacts.Role",
         related_name="%(app_label)s_%(class)s_set_by_contact",
         blank=True, null=True,

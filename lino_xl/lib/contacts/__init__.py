@@ -43,31 +43,9 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.countries', 'lino.modlib.system']
 
     ## settings
-    hide_region = False
-    """Whether to hide the `region` field in postal addresses.  Set this
-    to `True` if you live in a country like Belgium.  Belgium is
-    --despite their constant language disputes-- obviously a very
-    united country since they don't need a `region` field when
-    entering a postal address.  In Belgium, when you write a letter,
-    you just say the zip code and name of the city.  In many other
-    countries there is a mandatory intermediate field.
-
-    """
 
     region_label = _('Region')
     """The `verbose_name` of the `region` field."""
-
-    def before_analyze(self):
-        super(Plugin, self).before_analyze()
-        contacts = self.site.modules.contacts
-        if self.hide_region:
-            for m in (contacts.Person, contacts.Company):
-                m.hide_elements('region')
-    
-        if False:  # see tickets/90
-            from lino.api import dd
-            for m in (contacts.Person, contacts.Company):
-                m.define_action(merge_row=dd.MergeAction(m))
 
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
