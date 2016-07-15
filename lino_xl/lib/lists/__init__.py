@@ -29,6 +29,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.Plugin`."
     verbose_name = _("Lists")
     partner_model = 'contacts.Partner'
+    menu_group = 'contacts'
 
     def setup_main_menu(self, site, profile, m):
         # mg = site.plugins.contacts
