@@ -781,7 +781,7 @@ class EventsByDay(Events):
     """
     required_roles = dd.required((OfficeUser, OfficeOperator))
     label = _("Appointments today")
-    column_names = 'start_time end_time room event_type summary owner workflow_buttons *'
+    column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
 

@@ -149,7 +149,7 @@ class Started(dd.Model):
 
 
 class Ended(dd.Model):
-
+    """Models inheriing from Ended must also inherit from Started"""
     class Meta:
         abstract = True
     end_date = models.DateField(
@@ -160,27 +160,20 @@ class Ended(dd.Model):
         verbose_name=_("End Time"))
     #~ end = dd.FieldSet(_("End"),'end_date end_time')
 
-
-class StartedEnded(Started, Ended):
-    """Model mixin for things that have both a start_time and an end_time.
-
-    """
-    class Meta:
-        abstract = True
-
-    def save(self, *args, **kw):
-        """
-        Fills default value end_date
-        """
-        if self.end_time and not self.end_date:
-            self.end_date = self.start_date
-        super(Ended, self).save(*args, **kw)
-
     def get_duration(self):
-        st = self.get_datetime('start')
-        et = self.get_datetime('end')
-        if st is None or et is None:
+
+        if not self.start_date:
             return None
+        if not self.start_time:
+            return None
+        if not self.end_time:
+            return None
+
+        ed = self.end_date or self.start_date
+
+        st = datetime.datetime.combine(self.start_date, self.start_time)
+        et = datetime.datetime.combine(ed, self.end_time)
+
         if et < st:
             return None  # negative duration not supported
         # print 20151127, repr(et), repr(st)
@@ -190,39 +183,55 @@ class StartedEnded(Started, Ended):
     def duration(self, ar):
         return self.get_duration()
 
+
+# class StartedEnded(Started, Ended):
+#     """Model mixin for things that have both a start_time and an end_time.
+
+#     """
+#     class Meta:
+#         abstract = True
+
+    # def save(self, *args, **kw):
+    #     """
+    #     Fills default value end_date
+    #     """
+    #     if self.end_time and not self.end_date:
+    #         self.end_date = self.start_date
+    #     super(Ended, self).save(*args, **kw)
+
     # @dd.virtualfield(models.TimeField(_("Duration")))
     # def duration(self, ar):
     #     return datetime.time(self.get_duration())
 
 
-@dd.python_2_unicode_compatible
-class StartedSummaryDescription(Started):
+# @dd.python_2_unicode_compatible
+# class StartedSummaryDescription(Started):
 
-    """
-    """
+#     """
+#     """
 
-    class Meta:
-        abstract = True
+#     class Meta:
+#         abstract = True
 
-    # iCal:SUMMARY
-    summary = models.CharField(_("Summary"), max_length=200, blank=True)
-    description = dd.RichTextField(
-        _("Description"),
-        blank=True,
-        format='plain')
-        # format='html')
+#     # iCal:SUMMARY
+#     summary = models.CharField(_("Summary"), max_length=200, blank=True)
+#     description = dd.RichTextField(
+#         _("Description"),
+#         blank=True,
+#         format='plain')
+#         # format='html')
 
-    def __str__(self):
-        return self._meta.verbose_name + " #" + str(self.pk)
+#     def __str__(self):
+#         return self._meta.verbose_name + " #" + str(self.pk)
 
-    def summary_row(self, ar, **kw):
-        elems = list(super(StartedSummaryDescription, self)
-                     .summary_row(ar, **kw))
+#     def summary_row(self, ar, **kw):
+#         elems = list(super(StartedSummaryDescription, self)
+#                      .summary_row(ar, **kw))
 
-        if self.summary:
-            elems.append(': %s' % self.summary)
-        elems += [_(" on "), dd.dtos(self.start_date)]
-        return elems
+#         if self.summary:
+#             elems.append(': %s' % self.summary)
+#         elems += [_(" on "), dd.dtos(self.start_date)]
+#         return elems
 
 
 class MoveEventNext(dd.MultipleRowAction):
@@ -844,7 +853,7 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable):
             #~ self.update_reminders(ar)
 
 
-class Component(StartedSummaryDescription,
+class Component(Started,
                 mixins.ProjectRelated,
                 UserAuthored,
                 Controllable,
@@ -866,6 +875,13 @@ class Component(StartedSummaryDescription,
 
     class Meta:
         abstract = True
+
+    summary = models.CharField(_("Summary"), max_length=200, blank=True)
+    description = dd.RichTextField(
+        _("Description"),
+        blank=True,
+        format='plain')
+        # format='html')
 
     access_class = AccessClasses.field(blank=True, help_text=_("""\
 Whether this is private, public or between."""))  # iCal:CLASS
