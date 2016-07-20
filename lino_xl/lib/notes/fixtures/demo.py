@@ -1,5 +1,5 @@
 # coding: utf-8
-# Copyright 2009-2015 Luc Saffre
+# Copyright 2009-2016 Luc Saffre
 #
 # This file is part of Lino XL.
 #
@@ -26,7 +26,7 @@ from django.conf import settings
 from lino.utils.instantiator import Instantiator
 from lino.utils import Cycler
 
-from lino.api import rt, _
+from lino.api import _, dd, rt
 
 SUBJECTS = Cycler((
     _("Get acquaintaned"),
@@ -67,3 +67,9 @@ def objects():
         if settings.SITE.project_model is not None:
             kw.update(project=PROJECTS.pop())
         yield Note(**kw)
+
+    EventType = rt.models.notes.EventType
+    system_note = EventType(**dd.str2kw('name', _("System note")))
+    yield system_note
+    settings.SITE.site_config.system_note_type = system_note
+    yield settings.SITE.site_config

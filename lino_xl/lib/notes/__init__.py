@@ -40,6 +40,8 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Notes")
 
+    needs_plugins = ['lino.modlib.notify']
+
     def setup_main_menu(config, site, profile, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)

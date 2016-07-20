@@ -43,11 +43,16 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from .choicelists import SpecialTypes
+from .mixins import Notable
 
 
 class NoteType(mixins.BabelNamed, PrintableType, MailableType):
     """
+    .. attribute:: name
+    .. attribute:: important
+    .. attribute:: remark
     .. attribute:: special_type
+
     """
     templates_group = 'notes/Note'
 
@@ -91,6 +96,10 @@ class EventType(mixins.BabelNamed):
 
     """
     A possible choice for :attr:`Note.event_type`.
+
+    .. attribute:: remark
+    .. attribute:: body
+
     """
     class Meta:
         app_label = 'notes'
@@ -127,6 +136,15 @@ class Note(TypedPrintable,
     """A **note** is a dated and timed document written by its author (a
     user). For example a report of a meeting or a phone call, or just
     some observation. Notes are usually meant for internal use.
+
+    .. attribute:: date
+    .. attribute:: time
+    .. attribute:: type
+    .. attribute:: event_type
+    .. attribute:: subject
+    .. attribute:: body
+    .. attribute:: language
+
 
     """
 
@@ -248,38 +266,15 @@ class NotesByPerson(NotesByX):
     column_names = "date time event_type type subject user *"
 
 
-def add_system_note(request, owner, subject, body, **kw):
-    """Create a system note."""
-    nt = owner.get_system_note_type(request)
-    if not nt:
-        return
-    prj = owner.get_related_project()
-    if prj:
-        kw.update(project=prj)
-    note = rt.modules.notes.Note(
-        event_type=nt, owner=owner,
-        subject=subject, body=body, user=request.user, **kw)
-    #~ owner.update_system_note(note)
-    note.save()
+# system = dd.resolve_app('system')
 
-
-system = dd.resolve_app('system')
-
-
-def customize_siteconfig():
-    """
-    Injects application-specific fields to :class:`SiteConfig <lino.modlib.system.SiteConfig>`.
-    """
-    dd.inject_field(
-        'system.SiteConfig',
-        'system_note_type',
-        dd.ForeignKey(
-            'notes.EventType',
-            blank=True, null=True,
-            verbose_name=_("Default system note type"),
-            help_text=_("""\
+dd.inject_field(
+    'system.SiteConfig',
+    'system_note_type',
+    dd.ForeignKey(
+        'notes.EventType',
+        blank=True, null=True,
+        verbose_name=_("Default system note type"),
+        help_text=_("""\
 Note Type used by system notes.
 If this is empty, then system notes won't create any entry to the Notes table.""")))
-
-
-customize_siteconfig()

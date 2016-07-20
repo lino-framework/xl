@@ -719,8 +719,10 @@ class RecurrenceSet(Started, Ended):
     def weekdays_text(self, ar):
         if self.every_unit == Recurrencies.once:
             if self.end_date:
-                return _("From {0} until {1}").format(
-                    dd.fdf(self.start_date), dd.fdf(self.end_date))
+                return _("{0}-{1}").format(
+                    dd.fds(self.start_date), dd.fds(self.end_date))
+                # return _("From {0} until {1}").format(
+                #     dd.fdf(self.start_date), dd.fdf(self.end_date))
             return _("On {0}").format(dd.fdf(self.start_date))
         elif self.every_unit == Recurrencies.weekly:
             weekdays = []

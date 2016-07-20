@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2010 Luc Saffre
+# Copyright 2008-2016 Luc Saffre
 #
 # This file is part of Lino XL.
 #
@@ -16,17 +16,22 @@
 # You should have received a copy of the GNU Affero General Public
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
+"""Adds a note type "Default", an event type "System event". The
+latter is also registered as :attr:`SiteConfig.system_note_type`.
+
+"""
 
 
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
-from lino.utils.instantiator import Instantiator, i2d
-from lino.core.utils import resolve_model
+from lino.api import rt, dd
 
 
 def objects():
 
-    noteType = Instantiator('notes.NoteType', "name").build
-    yield noteType(
-        _("Default"), build_method='appyodt', template='Default.odt')
-    #~ yield noteType((u"Test (rtf)"),build_method='rtf',template='test.rtf')
+    NoteType = rt.models.notes.NoteType
+    yield NoteType(**dd.str2kw('name', _("Default")))
+    # yield noteType(
+    #     _("Default"), build_method='appyodt', template='Default.odt')
+
