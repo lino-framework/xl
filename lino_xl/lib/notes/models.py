@@ -197,8 +197,8 @@ dd.update_field(Note, 'company', verbose_name=_("Recipient (Organization)"))
 dd.update_field(Note, 'contact_person', verbose_name=_("Recipient (Person)"))
 
 
-def html_text(s):
-    return '<div class="htmlText">' + s + '</div>'
+# def html_text(s):
+#     return '<div class="htmlText">' + s + '</div>'
 
 
 class NoteDetail(dd.FormLayout):

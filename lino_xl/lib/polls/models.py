@@ -668,7 +668,8 @@ class AnswersByResponse(dd.VirtualTable):
                 cells.append(E.p(*items))
             ht.add_body_row(*cells, **cellattrs)
 
-        return E.div(ht.as_element(), class_="htmlText")
+        return ar.html_text(ht.as_element())
+        # return E.div(ht.as_element(), class_="htmlText")
 
     @dd.displayfield(_("My answer"))
     def answer_buttons(self, obj, ar):

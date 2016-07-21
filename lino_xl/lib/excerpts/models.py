@@ -608,9 +608,12 @@ class Excerpt(TypedPrintable, UserAuthored,
 
     @dd.virtualfield(dd.HtmlBox(_("Preview")))
     def preview(self, ar):
+        if ar is None:
+            return ''
         with translation.override(self.get_print_language()):
             ctx = self.get_printable_context(ar)
-            return '<div class="htmlText">%s</div>' % ctx['body']
+            return ar.html_text(ctx['body'])
+            # return '<div class="htmlText">%s</div>' % ctx['body']
 
     def get_printable_context(self, ar=None, **kw):
         """Adds a series of names to the context used when rendering printable

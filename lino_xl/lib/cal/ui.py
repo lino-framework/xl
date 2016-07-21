@@ -426,8 +426,8 @@ if settings.SITE.is_installed('contacts'):
                     lbl = "{0}{1}".format(lbl, guest.state.button_text)
                 elems.append(ar.obj2html(guest.event, lbl))
             elems = join_elems(elems, sep=', ')
-            return E.div(class_="htmlText", *elems)
-
+            return ar.html_text(E.div(*elems))
+            # return E.div(class_="htmlText", *elems)
 
     class MyPresences(Guests):
         required_roles = dd.required(OfficeUser)
