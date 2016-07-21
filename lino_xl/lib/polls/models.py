@@ -449,7 +449,10 @@ class AnswerChoice(dd.Model):
         app_label = 'polls'
         verbose_name = _("Answer Choice")
         verbose_name_plural = _("Answer Choices")
-        ordering = ['question__seqno']
+        # ordering = ['question__seqno']
+
+        # ordering removed 20160721 because it probably caused random
+        # results when serializing.
 
     response = models.ForeignKey('polls.Response')
     question = models.ForeignKey('polls.Question')
