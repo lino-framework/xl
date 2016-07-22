@@ -449,7 +449,10 @@ class AnswerChoice(dd.Model):
         app_label = 'polls'
         verbose_name = _("Answer Choice")
         verbose_name_plural = _("Answer Choices")
-        ordering = ['question__seqno']
+        # ordering = ['question__seqno']
+
+        # ordering removed 20160721 because it probably caused random
+        # results when serializing.
 
     response = models.ForeignKey('polls.Response')
     question = models.ForeignKey('polls.Question')
@@ -665,7 +668,8 @@ class AnswersByResponse(dd.VirtualTable):
                 cells.append(E.p(*items))
             ht.add_body_row(*cells, **cellattrs)
 
-        return E.div(ht.as_element(), class_="htmlText")
+        return ar.html_text(ht.as_element())
+        # return E.div(ht.as_element(), class_="htmlText")
 
     @dd.displayfield(_("My answer"))
     def answer_buttons(self, obj, ar):

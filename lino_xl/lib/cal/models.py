@@ -47,6 +47,7 @@ from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.users.mixins import UserAuthored
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
+from lino_xl.lib.notes.mixins import Notable
 from lino.modlib.office.roles import OfficeStaff
 from .workflows import (TaskStates, EventStates, GuestStates)
 
@@ -458,7 +459,7 @@ class ExtAllDayField(dd.VirtualField):
 
 
 @dd.python_2_unicode_compatible
-class Event(Component, Ended, TypedPrintable, Mailable, Postable):
+class Event(Component, Ended, TypedPrintable, Mailable, Postable, Notable):
     """A calendar event is a lapse of time to be visualized in a calendar.
 
     .. attribute:: user
@@ -752,14 +753,12 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     # def get_mailable_body(self,ar):
         # return self.description
 
-    def get_system_note_recipients(self, request, silent):
+    def get_notify_observers(self):
         if self.user != request.user:
-            yield "%s <%s>" % (unicode(self.user), self.user.email)
-        if silent:
-            return
+            yield self.user
         for g in self.guest_set.all():
             if g.partner.email:
-                yield "%s <%s>" % (unicode(g.partner), g.partner.email)
+                yield g.partner
 
     @dd.displayfield(_("When"))
     def when_text(self, ar):

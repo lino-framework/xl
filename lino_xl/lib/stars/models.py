@@ -168,17 +168,3 @@ def welcome_messages(ar):
 
 dd.add_welcome_handler(welcome_messages)
 
-# from lino.modlib.changes.models import Change
-# from django.db.models.signals import post_save
-
-
-# @dd.receiver(post_save, sender=Change)
-# def notify_handler(sender, instance=None, **kwargs):
-#     self = instance  # a Change object
-#     notify = rt.modules.notify.Notification.notify
-#     others = rt.modules.stars.Star.for_obj(self.master).exclude(user=self.user)
-#     ar = BaseRequest(user=self.user)
-#     for star in others:
-#         msg = "{obj} was modified by %s" % self.user
-#         notify(ar, self.master, star.user, msg)
-

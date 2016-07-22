@@ -66,6 +66,7 @@ cal = dd.resolve_app('cal')
 system = dd.resolve_app('system')
 
 from lino_xl.lib.cal.workflows import GuestStates, EventStates
+from lino_xl.lib.notes.actions import NotifyingAction
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 
 # lino_xl.lib.reception requires the `feedback` workflow. Before
@@ -155,7 +156,7 @@ def create_prompt_event(
     return event
 
 
-class CheckinVisitor(dd.NotifyingAction):
+class CheckinVisitor(NotifyingAction):
     """The "Checkin" action on a :class:`Guest
     <lino_xl.lib.cal.models_guest.Guest>`.
 
@@ -179,6 +180,9 @@ class CheckinVisitor(dd.NotifyingAction):
             event=obj,
             user=obj.event.user,
             partner=obj.partner)
+
+    def get_notify_owner(self, obj):
+        return obj.client
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]  # a cal.Guest instance
