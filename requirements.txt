@@ -1,1 +1,3 @@
 git+https://github.com/lsaffre/lino.git
+appy
+fuzzy
