@@ -273,7 +273,7 @@ lino_xl.lib.countries.CountryRegionCity (country, region,
 city. zip_code) and lino_xl.lib.contacts.AddresssLocation
 (street, street_no, ...)"""),
     'lino_xl.lib.humanlinks.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
-    'lino_xl.lib.polls.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.polls.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.cal.models.Guest.state' : _("""The state of this presence."""),
     'lino_xl.lib.households.choicelists.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
     'lino_xl.lib.contacts.models.Partner' : _("""A Partner is any physical or moral person for which you want to
@@ -351,10 +351,10 @@ invoices or contracts."""),
 (lino_xl.lib.countries.models.Place.name) should not
 consist of only digits."""),
     'lino_xl.lib.excerpts.models.CreateExcerpt' : _("""Action to create an excerpt in order to print this data record."""),
-    'lino_xl.lib.concepts.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.models.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
-    'lino_xl.lib.countries.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.beid.mixins.FindByBeIdAction' : _("""Read an eID card without being on a precise holder. Either show the
 holder or ask to create a new holder."""),
     'lino_xl.lib.cal.ui.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
@@ -370,7 +370,7 @@ method, ..."""),
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.polls.models.AnswersByQuestion.master' : _("""alias of Question"""),
     'lino_xl.lib.contacts.models.Person' : _("""A physical person and an individual human being.
-See also About Humans."""),
+See also lino.tutorial.human."""),
     'lino_xl.lib.cal.ui.MyEventsToday.model' : _("""alias of Event"""),
     'lino_xl.lib.outbox.mixins.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
 being typed by this MailableType. Example:"""),
@@ -391,7 +391,7 @@ One field for every language."""),
     'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
     'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
 (and optionally wants to get reminded about it)."""),
-    'lino_xl.lib.events.Plugin' : _("""See Introduction to plugins."""),
+    'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
     'lino_xl.lib.cal.models.Guest.partner' : _("""The partner to which this presence applies."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
