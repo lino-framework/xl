@@ -20,20 +20,25 @@
 printable documents using LibreOffice.
 
 These build methods require a running LibreOffice server (see
-:ref:`admin.oood`).  Compared to the built-in :class:`PisaBuildMethod
-<lino.modlib.printing.choicelists.PisaBuildMethod>`.  This has the
+:ref:`admin.oood`).  Compared to the built-in methods
+:class:`WeasyBuildMethod
+<lino.modlib.weasyprint.choicelists.WeasyBuildMethod>` and the (now
+deprecated) :class:`PisaBuildMethod
+<lino.modlib.printing.choicelists.PisaBuildMethod>`, this has the
 disadvantage of requiring more effort to get started, but it has
 several advantages:
 
 - Can be used to produce editable files (`.rtf` or `.odt`) from the
   same `.odt` template.
 - Features like automatic hyphenation, sophisticated fonts and layouts
-  are beyond the scope of pisa.
+  are beyond the scope of pisa or weasyprint.
 - Templates are `.odt` files (not `.html`), meaning that end-users
   dare to edit them more easily.
 
 This plugin also adds a generic button to "print" *any* table into PDF
 using LibreOffice.
+
+Usage see :ref:`lino.admin.appypod`.
 
 .. autosummary::
    :toctree:

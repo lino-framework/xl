@@ -103,7 +103,7 @@ class Member(mixins.Sequenced):
     class Meta:
         app_label = 'lists'
         abstract = dd.is_abstract_model(__name__, 'Member')
-        verbose_name = _("List memberships")
+        verbose_name = _("List membership")
         verbose_name_plural = _("List memberships")
 
     list = dd.ForeignKey('lists.List')
@@ -111,6 +111,7 @@ class Member(mixins.Sequenced):
         dd.plugins.lists.partner_model,
         related_name="list_memberships")
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
+
 
 class Members(dd.Table):
     required_roles = dd.required(OfficeUser)
