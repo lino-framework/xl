@@ -40,7 +40,8 @@ from lino.utils.xmlgen.html import E
 
 from lino.mixins import Referrable
 
-from lino.modlib.users.mixins import ByUser, UserAuthored
+# from lino.modlib.users.mixins import ByUser, UserAuthored
+from lino.modlib.users.mixins import My, UserAuthored
 
 from .utils import ResponseStates, PollStates
 from .roles import PollsUser, PollsStaff
@@ -207,11 +208,13 @@ class Polls(dd.Table):
 
 
 class AllPolls(Polls):
+    """Show all polls of all users."""
     required_roles = dd.required(PollsStaff)
     column_names = 'id ref title user state *'
 
 
-class MyPolls(ByUser, Polls):
+class MyPolls(My, Polls):
+    """Show all polls whose author I am."""
     column_names = 'ref title state *'
 
 
@@ -220,6 +223,8 @@ class Question(mixins.Sequenced):
     """A question of a poll.
 
     .. attribute:: number
+
+       The number of this question within this poll.
 
     """
     class Meta(object):
@@ -392,7 +397,7 @@ class AllResponses(Responses):
     required_roles = dd.required(PollsStaff)
 
 
-class MyResponses(ByUser, Responses):
+class MyResponses(My, Responses):
     column_names = 'date poll state remark *'
 
 

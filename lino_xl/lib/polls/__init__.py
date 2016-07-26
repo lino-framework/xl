@@ -25,6 +25,7 @@ class Plugin(ad.Plugin):
     "See :doc:`/dev/plugins`."
 
     verbose_name = _("Polls")
+    needs_plugins = ['lino_xl.lib.xl']
 
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)

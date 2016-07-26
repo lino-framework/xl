@@ -21,7 +21,6 @@
 :class:`appy.pod.renderer.Renderer`, not of
 :class:`lino.core.renderer.Renderer`).
 
-
 See also :ref:`lino.admin.appy_templates`.
 
 """
@@ -134,9 +133,11 @@ class AppyRenderer(OriginalAppyRenderer):
     def jinja_func(self, template_name, **kwargs):
 
         #saved_renderer = self.ar.renderer
+        assert template_name.endswith('.html'), "20160726"
         try:
-            if not '.' in template_name:
-                template_name += '.html'
+            # if '.' not in template_name:
+            #     template_name += '.html'
+
             #~ printable = self.contentParser.env.context.get('this',None)
             #~ print 20130910, settings.SITE.jinja_env
             env = settings.SITE.plugins.jinja.renderer.jinja_env
