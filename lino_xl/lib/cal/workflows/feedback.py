@@ -33,7 +33,7 @@ logger = logging.getLogger(__name__)
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 
-from lino_xl.lib.notes.actions import NotifyingAction
+from lino.modlib.notify.actions import NotifyingAction
 from lino.api import dd
 
 from ..workflows import EventStates, GuestStates
@@ -53,6 +53,12 @@ add('60', _("Excused"), 'excused', afterwards=True)
 
 
 class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
+
+    def get_notify_owner(self, obj):
+        return obj.event
+
+    def get_notify_recipients(self, ar, owner):
+        yield owner.user
 
     def get_action_permission(self, ar, obj, state):
         if obj.partner_id is None:

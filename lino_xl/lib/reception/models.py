@@ -66,7 +66,7 @@ cal = dd.resolve_app('cal')
 system = dd.resolve_app('system')
 
 from lino_xl.lib.cal.workflows import GuestStates, EventStates
-from lino_xl.lib.notes.actions import NotifyingAction
+from lino.modlib.notify.actions import NotifyingAction
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 
 # lino_xl.lib.reception requires the `feedback` workflow. Before
@@ -181,8 +181,11 @@ class CheckinVisitor(NotifyingAction):
             user=obj.event.user,
             partner=obj.partner)
 
-    def get_notify_owner(self, obj):
-        return obj.client
+    def get_notify_recipients(self, ar, owner):
+        """Yield a list of users to be notified.
+
+        """
+        yield owner.event.user
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]  # a cal.Guest instance
@@ -192,7 +195,7 @@ class CheckinVisitor(NotifyingAction):
             obj.state = GuestStates.waiting
             obj.busy_since = None
             obj.save()
-            ar2.success()
+            # ar2.success()
             super(CheckinVisitor, self).run_from_ui(ar2, **kw)
 
         if obj.event.assigned_to is not None:
