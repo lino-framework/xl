@@ -45,11 +45,11 @@ class NotableAction(NotifyingAction):
         """
         return settings.SITE.site_config.system_note_type
 
-    def emit_notification(self, ar, **kw):
+    def emit_notification(self, ar, owner, **kw):
         nt = self.get_system_note_type(ar)
         if nt:
-            obj = ar.selected_rows[0]
-            owner = self.get_notify_owner(obj)
+            # obj = ar.selected_rows[0]
+            # owner = self.get_notify_owner(obj)
             prj = owner.get_related_project()
             if prj:
                 kw.update(project=prj)
@@ -60,5 +60,5 @@ class NotableAction(NotifyingAction):
                 user=ar.user, **kw)
             note.save()
 
-        super(NotableAction, self).emit_notification(ar, **kw)
+        super(NotableAction, self).emit_notification(ar, owner, **kw)
 
