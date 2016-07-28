@@ -26,91 +26,39 @@ Database models for `lino_xl.lib.notes`.
 import logging
 logger = logging.getLogger(__name__)
 
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
-from lino.api import dd, rt
-from lino.core import layouts
-from lino.core import fields
-from lino.core import actions
-from lino.core.workflows import ChangeStateAction
+from lino.api import rt
+
+from lino.modlib.notify.actions import NotifyingAction
 
 
-class NotifyingAction(actions.Action):
-    """An action with a generic dialog window of three fields "Summary",
-    "Description" and a checkbox "Don't send email notification".
+class NotableAction(NotifyingAction):
 
-    Screenshot of a notifying action:
+    def get_system_note_type(self, ar):
+        """Expected to return either `None` (the default) or an existing
+        :class:`NoteType <lino_xl.lib.notes.models.NoteType>`
+        instance. If this is not `None`, then a notification will
+        still be emitted, but the system not will not be stored in the
+        database as a :class:`lino_xl.lib.notes.models.Note`.
 
-    .. image:: /images/screenshots/reception.CheckinVisitor.png
-        :scale: 50
-
-    Dialog fields:
-
-    .. attribute:: subject
-    .. attribute:: body
-    .. attribute:: silent
-
-    """
-    custom_handler = True
-
-    parameters = dict(
-        notify_subject=models.CharField(
-            _("Summary"), blank=True, max_length=200),
-        notify_body=fields.RichTextField(_("Description"), blank=True),
-        notify_silent=models.BooleanField(
-            _("Don't send email notification"), default=False),
-    )
-
-    params_layout = layouts.Panel("""
-    notify_subject
-    notify_body
-    notify_silent
-    """, window_size=(50, 15))
-
-    def get_notify_owner(self, obj):
-        return obj
-
-    def get_notify_subject(self, ar, obj):
         """
-        Return the default value of the `notify_subject` field.
-        """
-        return None
+        return settings.SITE.site_config.system_note_type
 
-    def get_notify_body(self, ar, obj):
-        """
-        Return the default value of the `notify_body` field.
-        """
-        return None
+    def emit_notification(self, ar, **kw):
+        nt = self.get_system_note_type(ar)
+        if nt:
+            obj = ar.selected_rows[0]
+            owner = self.get_notify_owner(obj)
+            prj = owner.get_related_project()
+            if prj:
+                kw.update(project=prj)
+            note = rt.models.notes.Note(
+                event_type=nt, owner=owner,
+                subject=ar.action_param_values.notify_subject,
+                body=ar.action_param_values.notify_body,
+                user=ar.user, **kw)
+            note.save()
 
-    def action_param_defaults(self, ar, obj, **kw):
-        kw = super(NotifyingAction, self).action_param_defaults(ar, obj, **kw)
-        if obj is not None:
-            s = self.get_notify_subject(ar, obj)
-            if s is not None:
-                kw.update(notify_subject=s)
-            s = self.get_notify_body(ar, obj)
-            if s is not None:
-                kw.update(notify_body=s)
-        return kw
+        super(NotableAction, self).emit_notification(ar, **kw)
 
-    def run_from_ui(self, ar, **kw):
-        obj = ar.selected_rows[0]
-        obj = self.get_notify_owner(obj)
-        ar.set_response(message=ar.action_param_values.notify_subject)
-        ar.set_response(refresh=True)
-        ar.set_response(success=True)
-        self.add_system_note(ar, obj)
-
-    def add_system_note(self, ar, owner, **kw):
-        # body = _("""%(user)s executed the following action:\n%(body)s
-        # """) % dict(user=ar.get_user(),body=body)
-        owner.add_system_note(
-            ar, owner,
-            ar.action_param_values.notify_subject,
-            ar.action_param_values.notify_body,
-            ar.action_param_values.notify_silent, **kw)
-
-
-# class NotifyingChangeStateAction(ChangeStateAction, NotifyingAction):
-#     pass

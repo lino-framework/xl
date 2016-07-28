@@ -43,7 +43,6 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from .choicelists import SpecialTypes
-from .mixins import Notable
 
 
 class NoteType(mixins.BabelNamed, PrintableType, MailableType):
