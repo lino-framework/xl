@@ -54,7 +54,7 @@ add('60', _("Excused"), 'excused', afterwards=True)
 
 class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
 
-    def get_notify_owner(self, obj):
+    def get_notify_owner(self, ar, obj):
         return obj.event
 
     def get_notify_recipients(self, ar, owner):
