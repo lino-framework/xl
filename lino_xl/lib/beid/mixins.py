@@ -410,6 +410,14 @@ class BeIdCardHolder(dd.Model):
     class Meta:
         abstract = True
 
+    validate_national_id = False
+    """Whether to validate the :attr:`national_id` immediately before
+    saving a record.  If this is `False`, the :attr:`national_id`
+    might contain invalid values which would then cause plausibility
+    problems.
+
+    """
+
     national_id = dd.NullCharField(
         max_length=200,
         unique=True,
@@ -466,6 +474,11 @@ class BeIdCardHolder(dd.Model):
             return False
         return True
 
+    def full_clean(self):
+        if self.validate_national_id and self.national_id:
+            self.national_id = ssin.parse_ssin(self.national_id)
+        super(BeIdCardHolder, self).full_clean()
+    
     @dd.displayfield(_("eID card"), default='<br/><br/><br/><br/>')
     def eid_info(self, ar):
         "Display some information about the eID card."
@@ -578,7 +591,7 @@ class BeIdCardHolderChecker(Checker):
     """
     model = BeIdCardHolder
     verbose_name = _("Check for invalid SSINs")
-    
+
     def get_plausibility_problems(self, obj, fix=False):
         if obj.national_id:
             try:
