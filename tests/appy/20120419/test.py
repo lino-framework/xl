@@ -4,7 +4,7 @@ import os.path
 import sys
 
 #~ from appy.pod.renderer import Renderer
-from lino.utils.appy_pod import Renderer
+from lino_xl.lib.appypod.appy_renderer import Renderer
 #~ from appy.pod.pod_parser import OdInsert
 
 

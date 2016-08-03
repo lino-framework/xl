@@ -225,7 +225,10 @@ update_events on Event."""),
     'lino_xl.lib.excerpts.models.ExcerptsByOwner.model' : _("""alias of Excerpt"""),
     'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
-    'lino_xl.lib.reception.models.ExpectedGuests.model' : _("""alias of Guest"""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolder.validate_national_id' : _("""Whether to validate the national_id immediately before
+saving a record.  If this is False, the national_id
+might contain invalid values which would then cause plausibility
+problems."""),
     'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
     'lino_xl.lib.properties.models.PropType' : _("""The type of the values that a property accepts.
 Each PropType may (or may not) imply a list of choices."""),
@@ -310,6 +313,7 @@ located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.properties.models.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
 certain value."""),
+    'lino_xl.lib.reception.models.ExpectedGuests.model' : _("""alias of Guest"""),
     'lino_xl.lib.topics.models.TopicGroup' : _("""A group of topics is the default way to group topics."""),
     'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field.
 Example content:"""),
