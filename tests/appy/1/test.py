@@ -18,7 +18,7 @@ ACTIVE_TESTS = [ 15 ] # run only specified tests
 #~ APPY_PARAMS.update(ooPort=8100)
 #~ APPY_PARAMS.update(pythonWithUnoPath=r'C:\PROGRA~1\LIBREO~1\program\python.exe')
 
-from lino.utils.appy_pod import setup_renderer
+from lino_xl.lib.appypod import setup_renderer
 
 #~ try:
   #~ from lino.utils.restify import install_restify

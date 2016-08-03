@@ -31,7 +31,7 @@ from __future__ import unicode_literals
 SETUP_INFO = dict(
     name='lino_xl',
     version='1.7.4',
-    install_requires=['lino', 'appy', 'fuzzy', ],
+    install_requires=['lino', 'appy' ],
     tests_require=[],
     description="Lino Extensions Library",
     license='BSD License',
@@ -119,6 +119,7 @@ lino_xl.lib.outbox
 lino_xl.lib.outbox.fixtures
 lino_xl.lib.pages
 lino_xl.lib.pages.fixtures
+lino_xl.lib.pisa
 lino_xl.lib.polls
 lino_xl.lib.polls.fixtures
 lino_xl.lib.postings
