@@ -633,14 +633,15 @@ class Excerpt(TypedPrintable, UserAuthored,
 
             tplname = self.get_body_template_name()
             if tplname and ar is not None:
-                # sar = copy(ar)
-                # sar.renderer = settings.SITE.kernel.html_renderer
-                env = settings.SITE.plugins.jinja.renderer.jinja_env
-                template = env.get_template(tplname)
-                # logger.info("body template %s (%s)", tplname, template)
-                body = ar.render_jinja(template, **kw)
-                # logger.info("20160311 body template %s (%s) -> %s",
-                #             tplname, template, body)
+                body = settings.SITE.plugins.jinja.render_jinja(
+                    ar, tplname, kw)
+            
+                # env = settings.SITE.plugins.jinja.renderer.jinja_env
+                # template = env.get_template(tplname)
+                # # logger.info("body template %s (%s)", tplname, template)
+                # body = ar.render_jinja(template, **kw)
+                # # logger.info("20160311 body template %s (%s) -> %s",
+                # #             tplname, template, body)
 
         kw.update(body=body)
         return kw

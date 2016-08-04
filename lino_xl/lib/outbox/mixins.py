@@ -167,10 +167,12 @@ class Mailable(dd.Model):
         for group in self.get_template_groups():
             filename = rt.find_config_file(name, group)
             if filename:
-                env = settings.SITE.plugins.jinja.renderer.jinja_env
-                tpl = env.get_template(group+"/"+name)
                 context = self.get_printable_context(ar)
-                return ar.render_jinja(tpl, **context)
+                return settings.SITE.plugins.jinja.render_jinja(
+                    ar, group + "/" + name, context)
+                # env = settings.SITE.plugins.jinja.renderer.jinja_env
+                # tpl = env.get_template(group + "/" + name)
+                # return ar.render_jinja(tpl, **context)
 
     def get_mailable_subject(self):
         """Return the content of the `subject` field for the email to be
