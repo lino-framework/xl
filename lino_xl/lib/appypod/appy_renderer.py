@@ -107,6 +107,7 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ context.update(appy_renderer=self)
         context.update(restify=self.restify_func)
         context.update(html=self.html_func)
+        context.update(E=E)
         context.update(jinja=self.jinja_func)
         context.update(table=self.insert_table)
         context.update(as_odt=self.as_odt)
@@ -134,24 +135,24 @@ class AppyRenderer(OriginalAppyRenderer):
 
         #saved_renderer = self.ar.renderer
         assert template_name.endswith('.html'), "20160726"
-        try:
-            # if '.' not in template_name:
-            #     template_name += '.html'
+        # if '.' not in template_name:
+        #     template_name += '.html'
 
-            #~ printable = self.contentParser.env.context.get('this',None)
-            #~ print 20130910, settings.SITE.jinja_env
-            env = settings.SITE.plugins.jinja.renderer.jinja_env
-            template = env.get_template(template_name)
-            #~ print 20130910, template, dir(self)
-            html = template.render(self.contentParser.env.context)
-            #self.ar.renderer = saved_renderer
-            return self.html_func(html)
-            #~ print 20130910, html
-            #~ return self.renderXhtml(html,**kw)
-        except Exception as e:
-            #self.ar.renderer = saved_renderer
-            import traceback
-            traceback.print_exc(e)
+        #~ printable = self.contentParser.env.context.get('this',None)
+        #~ print 20130910, settings.SITE.jinja_env
+        env = settings.SITE.plugins.jinja.renderer.jinja_env
+        template = env.get_template(template_name)
+        #~ print 20130910, template, dir(self)
+        html = template.render(self.contentParser.env.context)
+        #self.ar.renderer = saved_renderer
+        return self.html_func(html)
+        #~ print 20130910, html
+        #~ return self.renderXhtml(html,**kw)
+        # context.update(html=self.html_func)
+        # except Exception as e:
+        #     #self.ar.renderer = saved_renderer
+        #     import traceback
+        #     traceback.print_exc(e)
 
     def restify_func(self, unicode_string, **kw):
         """
