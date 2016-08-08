@@ -64,8 +64,9 @@ class AppyBuildMethod(SimpleBuildMethod):
             # 20150721 context.update(ar=ar)
 
             # backwards compat for existing .odt templates.  Cannot
-            # set this earlier because that would cause "render() got
-            # multiple values for keyword argument 'self'" exception
+            # set this earlier because that would raise an exception
+            # "render() got multiple values for keyword argument
+            # 'self'".
             context.update(self=context['this'])
             try:
                 AppyRenderer(ar, tpl, context, target,
