@@ -142,7 +142,7 @@ Posting."""),
 returns simply the name field, ignoring any parameters, but
 e.g. Human overrides this."""),
     'lino_xl.lib.cal.choicelists.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
-    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker.model' : _("""alias of Event"""),
     'lino_xl.lib.notes.choicelists.SpecialType' : _("""Represents a special note type."""),
     'lino_xl.lib.reception.models.GoneVisitors' : _("""Show gone visitors (for any user)."""),
     'lino_xl.lib.cal.models.Guest.role' : _("""The role of this partner in this presence."""),
@@ -336,6 +336,7 @@ occurs."""),
     'lino_xl.lib.appypod.choicelists.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
     'lino_xl.lib.contacts.models.RolesByPerson' : _("""Shows all roles of a person."""),
     'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),
+    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
     'lino_xl.lib.properties.models.PropGroup' : _("""A Property Group defines a list of Properties that fit together
 under a common name.  Examples of Property Groups: Skills, Soft
 Skills, Obstacles There will be one menu entry per Group."""),
@@ -428,6 +429,7 @@ contact_person (if one of these fields is
 non-empty). It may also be a
 lino_xl.lib.contacts.models.Role object."""),
     'lino_xl.lib.polls.models.PollResult.model' : _("""alias of Question"""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether event_type of this should be updated."""),
     'lino_xl.lib.cal.ui.EventsByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date."""),
     'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
