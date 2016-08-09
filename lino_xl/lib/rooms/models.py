@@ -98,7 +98,7 @@ class Booking(ContactRelated, Reservation):
     def update_cal_until(self):
         return self.end_date
 
-    def update_cal_calendar(self):
+    def update_cal_event_type(self):
         return self.event_type
 
     def update_cal_summary(self, i):
