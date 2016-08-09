@@ -874,7 +874,7 @@ class ObsoleteEventTypeChecker(Checker):
     configuration.
 
     """
-    verbose_name = _("Check for conflicting events")
+    verbose_name = _("Update event types of generated events")
     model = Event
 
     def get_plausibility_problems(self, obj, fix=False):
