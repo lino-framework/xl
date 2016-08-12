@@ -35,6 +35,8 @@ import os
 from copy import copy
 import six
 
+# from decimal import Decimal
+
 # from builtins import str
 
 from appy.pod.renderer import Renderer as OriginalAppyRenderer
@@ -107,6 +109,8 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ context.update(appy_renderer=self)
         context.update(restify=self.restify_func)
         context.update(html=self.html_func)
+        # context.update(E=E)
+        # context.update(Decimal=Decimal)
         context.update(jinja=self.jinja_func)
         context.update(table=self.insert_table)
         context.update(as_odt=self.as_odt)
@@ -134,24 +138,24 @@ class AppyRenderer(OriginalAppyRenderer):
 
         #saved_renderer = self.ar.renderer
         assert template_name.endswith('.html'), "20160726"
-        try:
-            # if '.' not in template_name:
-            #     template_name += '.html'
+        # if '.' not in template_name:
+        #     template_name += '.html'
 
-            #~ printable = self.contentParser.env.context.get('this',None)
-            #~ print 20130910, settings.SITE.jinja_env
-            env = settings.SITE.plugins.jinja.renderer.jinja_env
-            template = env.get_template(template_name)
-            #~ print 20130910, template, dir(self)
-            html = template.render(self.contentParser.env.context)
-            #self.ar.renderer = saved_renderer
-            return self.html_func(html)
-            #~ print 20130910, html
-            #~ return self.renderXhtml(html,**kw)
-        except Exception as e:
-            #self.ar.renderer = saved_renderer
-            import traceback
-            traceback.print_exc(e)
+        # logger.info("20160808 %s", self.contentParser.env.context['Decimal'])
+        #~ print 20130910, settings.SITE.jinja_env
+        env = settings.SITE.plugins.jinja.renderer.jinja_env
+        template = env.get_template(template_name)
+        #~ print 20130910, template, dir(self)
+        html = template.render(self.contentParser.env.context)
+        #self.ar.renderer = saved_renderer
+        return self.html_func(html)
+        #~ print 20130910, html
+        #~ return self.renderXhtml(html,**kw)
+        # context.update(html=self.html_func)
+        # except Exception as e:
+        #     #self.ar.renderer = saved_renderer
+        #     import traceback
+        #     traceback.print_exc(e)
 
     def restify_func(self, unicode_string, **kw):
         """
@@ -173,7 +177,8 @@ class AppyRenderer(OriginalAppyRenderer):
 
     def html_func(self, html, **kw):
         """
-        Render a string that is in HTML (not XHTML).
+        Insert a chunk of HTML (not XHTML).
+        This might be provided as a string or as an etree element.
         """
 
         if html is None or html == '':

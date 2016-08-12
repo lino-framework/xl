@@ -341,7 +341,7 @@ class EventGenerator(UserAuthored):
 
         return None
 
-    def update_cal_calendar(self):
+    def update_cal_event_type(self):
         """Return the event_type for the events to generate.  Returning None
     means: don't generate any events.
 
@@ -478,7 +478,7 @@ class EventGenerator(UserAuthored):
 
         """
         wanted = dict()
-        event_type = self.update_cal_calendar()
+        event_type = self.update_cal_event_type()
         if event_type is None:
             ar.info("No event_type")
             return wanted

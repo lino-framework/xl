@@ -378,7 +378,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
     def update_cal_from(self, ar):
         return self.start_date
 
-    def update_cal_calendar(self):
+    def update_cal_event_type(self):
         return self.event_type
 
     def update_cal_summary(self, i):
@@ -864,6 +864,33 @@ class ConflictingEventsChecker(Checker):
         yield (False, msg)
 
 ConflictingEventsChecker.activate()
+
+
+class ObsoleteEventTypeChecker(Checker):
+    """Check whether :attr:`event_type` of this should be updated.
+
+    This can happen when the configuration has changed and there are
+    automatic events which had been generated using the old
+    configuration.
+
+    """
+    verbose_name = _("Update event types of generated events")
+    model = Event
+
+    def get_plausibility_problems(self, obj, fix=False):
+        if not obj.auto_type:
+            return
+        et = obj.owner.update_cal_event_type()
+        if obj.event_type != et:
+            msg = _("Event type but {0} (should be {1}).").format(
+                obj.event_type, et)
+            yield (False, msg)
+            if fix:
+                obj.event_type = et
+                obj.full_clean()
+                obj.save()
+
+ObsoleteEventTypeChecker.activate()
 
 
 @dd.python_2_unicode_compatible
