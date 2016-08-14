@@ -112,16 +112,21 @@ class Topics(dd.Table):
     topics.InterestsByTopic
     """
 
+class AllTopics(Topics):
+    required_roles = dd.required(dd.SiteStaff)
 
 class TopicsByGroup(Topics):
     master_key = 'topic_group'
+    required_roles = dd.required(dd.SiteStaff)
 
 
 class Interests(dd.Table):
     model = 'topics.Interest'
     column_names = "partner topic *"
 
-
+class AllInterests(Interests):
+    required_roles = dd.required(dd.SiteStaff)
+    
 class InterestsByPartner(Interests):
     master_key = 'partner'
     order_by = ["topic"]

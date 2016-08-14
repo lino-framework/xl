@@ -82,6 +82,8 @@ class Stars(dd.Table):
     model = 'stars.Star'
     column_names = "id owner user nickname *"
 
+class AllStars(Stars):
+    required_roles = dd.required(dd.SiteStaff)
 
 class MyStars(Stars, ByUser):
     column_names = "owner nickname *"
