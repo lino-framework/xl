@@ -194,11 +194,6 @@ repair this by adding the suggested guests."""),
 the Event.state field. By default it contains the
 following values (which can be redefined in
 lino.core.site.Site.setup_choicelists()):"""),
-    'lino_xl.lib.cal.workflows.take.TakeEvent' : _("""This action means that you declare to become the fully responsible
-user for this event.  Accordingly, this action is available only
-when you are not already fully responsible. You are fully
-responsible when (1) Event.user is set to you
-and (2) Event.assigned_to is not empty."""),
     'lino_xl.lib.households.models.Member.end_date' : _("""Until when this membership exists."""),
     'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
     'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
@@ -380,10 +375,7 @@ See also lino.tutorial.human."""),
     'lino_xl.lib.outbox.mixins.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
 being typed by this MailableType. Example:"""),
     'lino_xl.lib.reception.models.GoneVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.models.Event.assigned_to' : _("""This field is usually empty.  Setting it to another user means "I
-am not fully responsible for this event".  This will cause the
-other user to see this event in his MyAssignedEvents
-table."""),
+    'lino_xl.lib.cal.models.Event.assigned_to' : _("""See lino.modlib.users.mixins.Assignable.assigned_to"""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder.card_issuer' : _("""The administration who issued this ID card."""),
     'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a

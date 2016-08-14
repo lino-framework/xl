@@ -44,7 +44,7 @@ from .utils import setkw, dt2kw, when_text
 
 from lino.modlib.plausibility.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino.modlib.office.roles import OfficeStaff
@@ -458,7 +458,7 @@ class ExtAllDayField(dd.VirtualField):
 
 
 @dd.python_2_unicode_compatible
-class Event(Component, Ended, TypedPrintable, Mailable, Postable):
+class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     """A calendar event is a lapse of time to be visualized in a calendar.
 
     .. attribute:: user
@@ -467,13 +467,7 @@ class Event(Component, Ended, TypedPrintable, Mailable, Postable):
 
     .. attribute:: assigned_to
 
-        This field is usually empty.  Setting it to another user means "I
-        am not fully responsible for this event".  This will cause the
-        other user to see this event in his :class:`MyAssignedEvents`
-        table.
-
-        This field is cleared when somebody calls :class:`TakeEvent` on
-        the event.
+        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`
 
     .. attribute:: event_type
 
@@ -514,12 +508,6 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     state = EventStates.field(
         default=EventStates.suggested.as_callable)  # iCal:STATUS
     all_day = ExtAllDayField(_("all day"))
-
-    assigned_to = dd.ForeignKey(
-        settings.SITE.user_model,
-        verbose_name=_("Assigned to"),
-        related_name="cal_events_assigned",
-        blank=True, null=True)
 
     move_next = MoveEventNext()
 
