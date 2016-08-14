@@ -53,11 +53,11 @@ class Plugin(ad.Plugin):
         p = self.get_menu_group()
         # p = self.site.plugins.contacts
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('topics.Topics')
+        m.add_action('topics.AllTopics')
         m.add_action('topics.TopicGroups')
 
     def setup_explorer_menu(self, site, profile, m):
         p = self.get_menu_group()
         # p = self.site.plugins.contacts
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('topics.Interests')
+        m.add_action('topics.AllInterests')

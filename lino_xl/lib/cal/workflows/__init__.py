@@ -24,7 +24,6 @@
    :toctree:
 
     feedback
-    take
     voga
 
 """
