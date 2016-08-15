@@ -934,6 +934,8 @@ class Guest(dd.Model):
         # used to apply `owner` requirement in GuestState
         return self.event.user
     user = property(get_user)
+    author_field_name = 'user'  # Because we want to use
+                                # `lino.modlib.users.mixins.My`
 
     def __str__(self):
         return u'%s #%s (%s)' % (

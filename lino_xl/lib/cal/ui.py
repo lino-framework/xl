@@ -362,25 +362,26 @@ class Guests(dd.Table):
     def get_title_tags(self, ar):
         for t in super(Guests, self).get_title_tags(ar):
             yield t
-        if ar.param_values.start_date or ar.param_values.end_date:
+        pv = ar.param_values
+        if pv.start_date or pv.end_date:
             yield unicode(_("Dates %(min)s to %(max)s") % dict(
-                min=ar.param_values.start_date or'...',
-                max=ar.param_values.end_date or '...'))
+                min=pv.start_date or'...',
+                max=pv.end_date or '...'))
 
-        if ar.param_values.event_state:
-            yield unicode(ar.param_values.event_state)
+        if pv.event_state:
+            yield unicode(pv.event_state)
 
-        if ar.param_values.partner:
-            yield unicode(ar.param_values.partner)
+        if pv.partner:
+            yield unicode(pv.partner)
 
-        if ar.param_values.guest_state:
-            yield unicode(ar.param_values.guest_state)
+        if pv.guest_state:
+            yield unicode(pv.guest_state)
 
-        # if ar.param_values.user:
-        #     yield unicode(ar.param_values.user)
+        # if pv.user:
+        #     yield unicode(pv.user)
 
-        if settings.SITE.project_model is not None and ar.param_values.project:
-            yield unicode(ar.param_values.project)
+        if settings.SITE.project_model is not None and pv.project:
+            yield unicode(pv.project)
 
 
 class GuestsByEvent(Guests):
