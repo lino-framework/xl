@@ -28,6 +28,7 @@ from lino.api import dd, rt, _
 from lino.core.gfks import gfk2lookup
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored, ByUser
+from lino.modlib.office.roles import OfficeUser
 from lino.core.requests import BaseRequest
 
 
@@ -86,6 +87,7 @@ class AllStars(Stars):
     required_roles = dd.required(dd.SiteStaff)
 
 class MyStars(Stars, ByUser):
+    required_roles = dd.required(OfficeUser)
     column_names = "owner nickname *"
     order_by = ['nickname', 'id']
 
@@ -103,7 +105,7 @@ class StarObject(dd.Action):
     help_text = _("Star this database object.")
     show_in_workflow = True
     show_in_bbar = False
-    required_roles = dd.login_required()
+    required_roles = dd.required(OfficeUser)
 
     def get_action_permission(self, ar, obj, state):
         star = get_favourite(obj, ar.get_user())
