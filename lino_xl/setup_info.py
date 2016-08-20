@@ -30,13 +30,11 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino_xl',
-    version='1.7.4',
+    version='1.7.5',
     install_requires=['lino', 'appy' ],
     tests_require=[],
     description="Lino Extensions Library",
     license='BSD License',
-    include_package_data=True,
-    zip_safe=False,
     author='Luc Saffre',
     author_email='luc.saffre@gmail.com',
     url="http://www.lino-framework.org",
@@ -149,23 +147,24 @@ SETUP_INFO.update(message_extractors={
     ],
 })
 
-SETUP_INFO.update(package_data=dict())
+# SETUP_INFO.update(package_data=dict())
+SETUP_INFO.update(include_package_data=True, zip_safe=False)
 
 
-def add_package_data(package, *patterns):
-    package = str(package)
-    l = SETUP_INFO['package_data'].setdefault(package, [])
-    l.extend(patterns)
-    return l
+# def add_package_data(package, *patterns):
+#     package = str(package)
+#     l = SETUP_INFO['package_data'].setdefault(package, [])
+#     l.extend(patterns)
+#     return l
 
 
-add_package_data('lino_xl', 'config/*.odt')
-add_package_data('lino_xl.lib.cal', 'config/*.odt')
-add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
+# add_package_data('lino_xl', 'config/*.odt')
 # add_package_data('lino_xl.lib.cal', 'config/*.odt')
-# add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
 # add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
+# # add_package_data('lino_xl.lib.cal', 'config/*.odt')
+# # add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
+# # add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
 
-# l = add_package_data('lino_xl.lib.lino_startup')
-# for lng in 'de fr et nl'.split():
-#     l.append('lino/modlib/lino_startup/locale/%s/LC_MESSAGES/*.mo' % lng)
+# # l = add_package_data('lino_xl.lib.lino_startup')
+# # for lng in 'de fr et nl'.split():
+# #     l.append('lino/modlib/lino_startup/locale/%s/LC_MESSAGES/*.mo' % lng)
