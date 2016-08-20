@@ -1,2 +1,2 @@
-git+https://github.com/oubiwann/metaphone.git
-git+https://github.com/khchine5/lino.git
+git+https://github.com/oubiwann/metaphone.git#egg=metafone
+git+https://github.com/lsaffre/lino.git#egg=lino
