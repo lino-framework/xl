@@ -19,12 +19,6 @@
 """
 Database models for `lino_xl.lib.appypod`.
 
-This installs printing actions into all tables.
-
-If `contacts` is installed, it installs a 
-PrintLabelsAction
-
-
 """
 
 from lino.api import dd, rt
