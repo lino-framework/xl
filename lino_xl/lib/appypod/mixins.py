@@ -119,7 +119,7 @@ class PrintLabelsAction(PrintTableAction):
     """
     label = _("Labels")
     help_text = _('Generate mailing labels for these recipients')
-    template_name = "Labels.odt"
+    template_name = "appypod/Labels.odt"
     sort_index = -8
 
     def get_context(self, ar):
@@ -131,7 +131,7 @@ class PrintLabelsAction(PrintTableAction):
         """
         This is here so you can override it. For example::
 
-            class MyLabelsAction(dd.PrintLabelsAction)
+            class MyLabelsAction(PrintLabelsAction)
                 # silently ignore all recipients with empty 'street' field
                 def get_recipients(self,ar):
                     for obj in ar:

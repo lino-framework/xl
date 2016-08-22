@@ -38,7 +38,24 @@ several advantages:
 This plugin also adds a generic button to "print" *any* table into PDF
 using LibreOffice.
 
-Usage see :ref:`lino.admin.appypod`.
+If `contacts` is installed, it also installs a
+:class:`PrintLabelsAction
+<lino_xl.lib.appypod.mixins.PrintLabelsAction>`.
+
+.. xfile:: appypod/Table.odt
+
+    Template used to print a table in landscape orientation.
+
+.. xfile:: appypod/Table-portrait.odt
+
+    Template used to print a table in portrait orientation.
+
+.. xfile:: appypod/Labels.odt
+
+    Template used to print address labels.
+
+
+Usage see also :ref:`lino.admin.appypod`.
 
 .. autosummary::
    :toctree:
