@@ -30,13 +30,11 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino_xl',
-    version='1.7.4',
-    install_requires=['lino', 'appy'],
+    version='1.7.5',
+    install_requires=['lino', 'appy' ],
     tests_require=[],
     description="Lino Extensions Library",
     license='BSD License',
-    include_package_data=True,
-    zip_safe=False,
     author='Luc Saffre',
     author_email='luc.saffre@gmail.com',
     url="http://www.lino-framework.org",
@@ -65,7 +63,6 @@ SETUP_INFO.update(long_description="""
 
 The **Lino Extensions Library** is a collection of plugins used by
 many Lino projects.
-
 This package is written and maintained by the same author, but not
 part of the Lino core because it adds a given set of solutions for
 "Enterprise" style applications.  It is documented together with the
@@ -75,16 +72,12 @@ core at http://www.lino-framework.org
     :alt: Documentation Status
     :scale: 100%
     :target: http://lino.readthedocs.io/en/latest/?badge=latest
-
 .. |coverage| image:: https://coveralls.io/repos/github/lino-framework/book/badge.svg?branch=master
     :target: https://coveralls.io/github/lino-framework/book?branch=master
-
 .. |build| image:: https://travis-ci.org/lino-framework/book.svg?branch=master
     :target: https://travis-ci.org/lino-framework/book?branch=master
-
 .. |pypi_v| image:: https://img.shields.io/pypi/v/lino.svg
     :target: https://pypi.python.org/pypi/lino/
-
 .. |pypi_license| image:: https://img.shields.io/pypi/l/lino.svg
     :target: https://pypi.python.org/pypi/lino/
 
@@ -137,6 +130,7 @@ lino_xl.lib.outbox
 lino_xl.lib.outbox.fixtures
 lino_xl.lib.pages
 lino_xl.lib.pages.fixtures
+lino_xl.lib.pisa
 lino_xl.lib.polls
 lino_xl.lib.polls.fixtures
 lino_xl.lib.postings
@@ -166,23 +160,24 @@ SETUP_INFO.update(message_extractors={
     ],
 })
 
-SETUP_INFO.update(package_data=dict())
+# SETUP_INFO.update(package_data=dict())
+SETUP_INFO.update(include_package_data=True, zip_safe=False)
 
 
-def add_package_data(package, *patterns):
-    package = str(package)
-    l = SETUP_INFO['package_data'].setdefault(package, [])
-    l.extend(patterns)
-    return l
+# def add_package_data(package, *patterns):
+#     package = str(package)
+#     l = SETUP_INFO['package_data'].setdefault(package, [])
+#     l.extend(patterns)
+#     return l
 
 
-add_package_data('lino_xl', 'config/*.odt')
-add_package_data('lino_xl.lib.cal', 'config/*.odt')
-add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
+# add_package_data('lino_xl', 'config/*.odt')
 # add_package_data('lino_xl.lib.cal', 'config/*.odt')
-# add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
 # add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
+# # add_package_data('lino_xl.lib.cal', 'config/*.odt')
+# # add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
+# # add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
 
-# l = add_package_data('lino_xl.lib.lino_startup')
-# for lng in 'de fr et nl'.split():
-#     l.append('lino/modlib/lino_startup/locale/%s/LC_MESSAGES/*.mo' % lng)
+# # l = add_package_data('lino_xl.lib.lino_startup')
+# # for lng in 'de fr et nl'.split():
+# #     l.append('lino/modlib/lino_startup/locale/%s/LC_MESSAGES/*.mo' % lng)
