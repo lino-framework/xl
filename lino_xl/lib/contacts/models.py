@@ -48,7 +48,7 @@ from lino.mixins.periods import ObservedPeriod
 
 from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
 from .mixins import Contactable
-from .roles import ContactsUser, ContactsStaff
+from .roles import SimpleContactsUser, ContactsStaff
 from .choicelists import PartnerEvents
 
 from lino.mixins.human import name2kw, Human, Born
@@ -257,7 +257,7 @@ class PartnerDetail(dd.DetailLayout):
 
 
 class Partners(dd.Table):
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.required(SimpleContactsUser)
     model = 'contacts.Partner'
     column_names = "name email * id"
     order_by = ['name', 'id']
@@ -346,7 +346,7 @@ class Persons(Partners):
     """
     List of all Persons.
     """
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.required(SimpleContactsUser)
     model = "contacts.Person"
     order_by = ["last_name", "first_name", "id"]
     column_names = (
@@ -428,7 +428,7 @@ class CompanyDetail(PartnerDetail):
 
 
 class Companies(Partners):
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.required(SimpleContactsUser)
     model = "contacts.Company"
     order_by = ["name"]
     column_names = (
@@ -553,7 +553,7 @@ class Roles(dd.Table):
 
 
 class RolesByCompany(Roles):
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.required(SimpleContactsUser)
     auto_fit_column_widths = True
     #~ required_user_level = None
     label = _("Contact persons")
@@ -564,7 +564,7 @@ class RolesByCompany(Roles):
 
 class RolesByPerson(Roles):
     """Shows all roles of a person."""
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.required(SimpleContactsUser)
     #~ required_user_level = None
     label = _("Contact for")
     master_key = 'person'
