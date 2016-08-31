@@ -1,5 +1,5 @@
 =======================
-The ``lino_xl`` package
+The ``lino-xl`` package
 =======================
 
 
