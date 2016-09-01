@@ -880,9 +880,11 @@ if settings.SITE.project_model:
 
 
 class OneEvent(Events):
+    """Show a single calendar event."""
     show_detail_navigator = False
     use_as_default_table = False
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.required((OfficeUser, OfficeOperator))
+    # required_roles = dd.required(OfficeUser)
 
 
 class MyEvents(Events):
