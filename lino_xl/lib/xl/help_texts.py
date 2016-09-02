@@ -32,6 +32,7 @@ is (or has been) part of a given household."""),
     'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.polls.models.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
 question in a given response."""),
+    'lino_xl.lib.contacts.roles.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
     'lino_xl.lib.reception.models.BusyVisitors.model' : _("""alias of Guest"""),
     'lino_xl.lib.reception.models.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
     'lino_xl.lib.cal.ui.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
@@ -54,7 +55,7 @@ and if yes, call suggest_guests() to instantiate them."""),
     'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
     'lino_xl.lib.projects.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to contacts functionality."""),
+    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to full contacts functionality."""),
     'lino_xl.lib.cal.mixins.Started' : _("""Mixin for models with two fields start_date and
 start_time"""),
     'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether events of this type should be considered
