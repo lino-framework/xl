@@ -40,7 +40,7 @@ from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import is_aware
 from django.contrib.contenttypes.models import ContentType
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 
 from lino import mixins
 from lino.api import dd, rt
@@ -428,7 +428,7 @@ class EventGenerator(UserAuthored):
 
     def compare_auto_event(self, obj, ae):
         original_state = dict(obj.__dict__)
-        summary = force_unicode(ae.summary)
+        summary = force_text(ae.summary)
         if obj.summary != summary:
             obj.summary = summary
         if obj.user != ae.user:
@@ -926,10 +926,10 @@ Whether this is private, public or between."""))  # iCal:CLASS
             html += [_(" at "),
                      dd.strftime(self.start_time)]
         if self.state:
-            html += [' [%s]' % force_unicode(self.state)]
+            html += [' [%s]' % force_text(self.state)]
         if self.summary:
-            html += [': %s' % force_unicode(self.summary)]
-            #~ html += ui.href_to(self,force_unicode(self.summary))
+            html += [': %s' % force_text(self.summary)]
+            #~ html += ui.href_to(self,force_text(self.summary))
         #~ html += _(" on ") + dbutils.dtos(self.start_date)
         #~ if self.owner and not self.owner.__class__.__name__ in ('Person','Company'):
             #~ html += " (%s)" % reports.summary_row(self.owner,ui,rr)
