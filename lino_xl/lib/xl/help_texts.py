@@ -79,6 +79,7 @@ the Guest.state field."""),
 given topic."""),
     'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
     'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
     'lino_xl.lib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino_xl.lib.contacts.models.Company."""),
     'lino_xl.lib.properties.models.PropType.multiple_choices' : _("""not yet supported"""),
     'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
@@ -207,7 +208,7 @@ united country since they don't need a region field when
 entering a postal address.  In Belgium, when you write a letter,
 you just say the zip code and name of the city.  In many other
 countries there is a mandatory intermediate field."""),
-    'lino_xl.lib.properties.models.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
+    'lino_xl.lib.excerpts.models.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
     'lino_xl.lib.outbox.mixins.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
 must also inherit from mixins.Printable or some subclass
 thereof."""),
@@ -293,7 +294,7 @@ EventGenerator."""),
     'lino_xl.lib.polls.models.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
 instances."""),
     'lino_xl.lib.cal.models.Event' : _("""A calendar event is a lapse of time to be visualized in a calendar."""),
-    'lino_xl.lib.excerpts.models.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
+    'lino_xl.lib.cal.ui.OneEvent.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
 future."""),
     'lino_xl.lib.humanlinks.choicelists.LinkTypes.stepparent' : _("""Someone that your mother or father marries after the marriage
@@ -309,6 +310,7 @@ located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.properties.models.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
 certain value."""),
+    'lino_xl.lib.properties.models.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
     'lino_xl.lib.reception.models.ExpectedGuests.model' : _("""alias of Guest"""),
     'lino_xl.lib.topics.models.TopicGroup' : _("""A group of topics is the default way to group topics."""),
     'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field.
@@ -456,7 +458,7 @@ a virtual display field with actions for quickly managing, from a
 given database object, the excerpt for this object of a given type."""),
     'lino_xl.lib.products.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.humanlinks.models.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
-    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
+    'lino_xl.lib.cal.ui.OneEvent' : _("""Show a single calendar event."""),
     'lino_xl.lib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino_xl.lib.cal.models.Room' : _("""A location where calendar events can happen.  For a given Room you
 can see the EventsByRoom that happened (or will happen)

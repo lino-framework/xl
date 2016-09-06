@@ -17,8 +17,7 @@
 # License along with Lino XL.  If not, see
 # <http://www.gnu.org/licenses/>.
 
-"""
-Defines the :class:`Page` model, the base of Lino's out-of-the-box CMS.
+"""Defines the :class:`Page` model.
 
 """
 

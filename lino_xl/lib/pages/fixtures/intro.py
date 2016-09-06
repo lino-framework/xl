@@ -36,7 +36,7 @@ from __future__ import unicode_literals
 from lino_xl.lib.pages.builder import page, objects
 
 page('index', 'en', '', """
-Welcome to the **{{site.title}}** site.
+Welcome to the **{{site.verbose_name}}** site.
 {% if site.verbose_name %}
 This is an online demo of `{{site.verbose_name}} <{{site.url}}>`__
 version {{site.version}}.
@@ -56,7 +56,7 @@ you should go to the `Admin <{{site.admin_prefix}}/>`__ section.
 
 
 page('index', 'fr', '', """
-Bienvenue sur **{{site.title}}**.
+Bienvenue sur **{{site.verbose_name}}**.
 {% if site.verbose_name %}
 Ce site est une démonstration en ligne de
 `{{site.verbose_name}} <{{site.url}}>`__
@@ -76,7 +76,7 @@ dans la `section administrative <{{site.admin_prefix}}/>`__.
 """)
 
 page('index', 'de', '', """
-Willkommen auf {{site.title}}.
+Willkommen auf {{site.verbose_name}}.
 {% if site.verbose_name %}
 Diese Site ist eine Online-Demo von
 `{{site.verbose_name}} <{{site.url}}>`__
@@ -95,7 +95,7 @@ in den `Verwaltungsbereich <{{site.admin_prefix}}/>`__ gehen.
 """)
 
 page('index', 'et', '', """
-Tere tulemast saidil {{site.title}}.
+Tere tulemast saidil {{site.verbose_name}}.
 {% if site.verbose_name %}
 Siin jookseb
 `{{site.verbose_name}} <{{site.url}}>`__
