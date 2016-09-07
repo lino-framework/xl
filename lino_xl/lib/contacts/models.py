@@ -581,19 +581,6 @@ dd.inject_field(
         verbose_name=_("Next partner id"),
         help_text=_("The next automatic id for any new partner.")))
 
-dd.inject_field(
-    'system.SiteConfig',
-    'site_company',
-    models.ForeignKey(
-        "contacts.Company",
-        blank=True, null=True,
-        verbose_name=_("Site owner"),
-        related_name='site_company_sites',
-        help_text=_("""The organisation who runs this site.
-        This is used e.g. as sender in documents.
-        Or, newly created partners inherit the country of the site owner.
-        """)))
-
 
 def site_setup(site):
 
