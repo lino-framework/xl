@@ -4,203 +4,265 @@ from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 help_texts = {
     'lino_xl.lib.addresses.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the "addressee" of any address."""),
+    'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
+    'lino_xl.lib.addresses.mixins.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
+    'lino_xl.lib.addresses.models.Address' : _("""Inherits fields from
+lino_xl.lib.countries.CountryRegionCity (country, region,
+city. zip_code) and lino_xl.lib.contacts.AddresssLocation
+(street, street_no, ...)"""),
+    'lino_xl.lib.addresses.models.Address.data_source' : _("""Pointer to choicelists.DataSources."""),
+    'lino_xl.lib.addresses.models.Address.primary' : _("""Whether this address is the primary address of its owner.
+Setting this field will automatically uncheck any previousl
+primary addresses and update the owner's address fields."""),
+    'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.appypod.choicelists.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
+for appy.pod."""),
+    'lino_xl.lib.appypod.choicelists.AppyOdtBuildMethod' : _("""Generates .odt files from .odt templates."""),
+    'lino_xl.lib.appypod.choicelists.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
+    'lino_xl.lib.appypod.choicelists.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
+    'lino_xl.lib.appypod.choicelists.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
+    'lino_xl.lib.appypod.mixins.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
+model which implements
+Addressable."""),
+    'lino_xl.lib.beid.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.beid.Plugin.data_collector_dir' : _("""When this is a non-empty string containing a directory name on the
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes.adoptive_parent' : _("""A person who adopts a child of other parents as his or her own child."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.build_method' : _("""See lino.modlib.printing.mixins.PrintableType.build_method."""),
-    'lino_xl.lib.cal.ui.EventsByController' : _("""Shows the events linked to this database object."""),
-    'lino_xl.lib.polls.models.AnswerRemarkField' : _("""An editable virtual field."""),
-    'lino_xl.lib.excerpts.models.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
-this."""),
-    'lino_xl.lib.countries.models.Country' : _("""A "country" or "nation"."""),
-    'lino_xl.lib.polls.models.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
-    'lino_xl.lib.excerpts.models.Excerpt' : _("""A printable document that describes some aspect of the current
-situation."""),
-    'lino_xl.lib.cal.ui.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
-    'lino_xl.lib.reception.models.Visitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.postings.mixins.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
-The Postable gives the list of recipients, and there will 
-be one Posting for each recipient."""),
-    'lino_xl.lib.contacts.models.RolesByPerson.master' : _("""alias of Person"""),
-    'lino_xl.lib.appypod.choicelists.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
-for appy.pod."""),
-    'lino_xl.lib.reception.models.ExpectedGuests' : _("""General table of all expected guests."""),
-    'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.households.models.Member' : _("""A household membership represents the fact that a given person
-is (or has been) part of a given household."""),
-    'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.polls.models.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
-question in a given response."""),
-    'lino_xl.lib.contacts.roles.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
-    'lino_xl.lib.reception.models.BusyVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
-    'lino_xl.lib.cal.ui.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
-    'lino_xl.lib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
+    'lino_xl.lib.beid.choicelists.BeIdCardTypes' : _("""List of Belgian identity card types:"""),
+    'lino_xl.lib.beid.mixins.BaseBeIdReadCardAction' : _("""Common base for all "Read eID card" actions
+(:class:FindByBeIdAction and BeIdReadCardAction)."""),
+    'lino_xl.lib.beid.mixins.FindByBeIdAction' : _("""Read an eID card without being on a precise holder. Either show the
+holder or ask to create a new holder."""),
+    'lino_xl.lib.beid.mixins.BeIdReadCardAction' : _("""Read eId card and store the data on the selected holder."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
 Currently only Belgian eid cards are tested.
 Concrete subclasses must also inherit from lino.mixins.Born."""),
-    'lino_xl.lib.cal.models.UpdateGuests' : _("""Decide whether it is time to add Guest instances for this event,
-and if yes, call suggest_guests() to instantiate them."""),
-    'lino_xl.lib.countries.models.Countries.model' : _("""alias of Country"""),
-    'lino_xl.lib.outbox.models.SentByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.polls.models.ResponsesByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.excerpts.mixins.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
-    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this event conflicts with other event(s)."""),
-    'lino_xl.lib.notes.choicelists.SpecialTypes.item_class' : _("""alias of SpecialType"""),
-    'lino_xl.lib.notes.models.EventTypes' : _("""List of all Event Types."""),
-    'lino_xl.lib.humanlinks.models.LinksByHuman.master' : _("""alias of Person"""),
-    'lino_xl.lib.reception.models.MyBusyVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.products.models.ProductCat' : _("""A product category is a way to group products."""),
-    'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
-    'lino_xl.lib.projects.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to full contacts functionality."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
+is not validated directly because that would cause problems
+with legacy data where SSINs need manual control. See also
+BeIdCardHolderChecker."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
+countries.Country which should
+contain also entries for refugee statuses."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolder.validate_national_id' : _("""Whether to validate the national_id immediately before
+saving a record.  If this is False, the national_id
+might contain invalid values which would then cause plausibility
+problems."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolder.card_issuer' : _("""The administration who issued this ID card."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
+(see BeIdCardHolder.national_id), but this checker reports
+them."""),
+    'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
+    'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
+lino_welfare.modlib.aids.mixins.Confirmation."""),
+    'lino_xl.lib.boards.models.Member' : _("""A Member is when a given ml.contacts.Person
+belongs to a given Board."""),
+    'lino_xl.lib.cal.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date.  Set this to None if you want
+no limit.
+Default value is "7 days before server startup"."""),
+    'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
+Default value is 5 years after today."""),
+    'lino_xl.lib.cal.choicelists.Weekdays' : _("""A choicelist with the seven days of a week."""),
+    'lino_xl.lib.cal.choicelists.DurationUnit' : _("""Base class for the choices in the DurationUnits
+choicelist."""),
+    'lino_xl.lib.cal.choicelists.DurationUnits' : _("""A list of possible values for the duration_unit field of an
+Event."""),
+    'lino_xl.lib.cal.choicelists.DurationUnits.item_class' : _("""alias of DurationUnit"""),
+    'lino_xl.lib.cal.choicelists.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
+    'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
+data of that year."""),
+    'lino_xl.lib.cal.choicelists.Recurrencies.item_class' : _("""alias of DurationUnit"""),
     'lino_xl.lib.cal.mixins.Started' : _("""Mixin for models with two fields start_date and
 start_time"""),
+    'lino_xl.lib.cal.mixins.Ended' : _("""Models inheriing from Ended must also inherit from Started"""),
+    'lino_xl.lib.cal.mixins.UpdateEvents' : _("""This is installed as update_events on
+EventGenerator."""),
+    'lino_xl.lib.cal.mixins.UpdateEventsByEvent' : _("""Update all events of this series. This is installed as
+update_events on Event."""),
+    'lino_xl.lib.cal.mixins.EventGenerator' : _("""Base class for things that generate a suite of events."""),
+    'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Abstract base for models that express a set of recurrency
+rules. This might be combined with EventGenerator into a
+same model as done by Reservation."""),
+    'lino_xl.lib.cal.mixins.RecurrenceSet.weekdays_text' : _("""A textual formulation of the weekdays where the recurrence
+occurs."""),
+    'lino_xl.lib.cal.mixins.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
+lino.modlib.courses.models.Course."""),
+    'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
+    'lino_xl.lib.cal.mixins.Component.auto_type' : _("""Contains the sequence number if this is an automatically
+generated component. Otherwise this field is empty."""),
+    'lino_xl.lib.cal.models.RemoteCalendar' : _("""Remote calendars will be synchronized by
+lino_xl.lib.cal.management.commands.watch_calendars,
+and local modifications will be sent back to the remote calendar."""),
+    'lino_xl.lib.cal.models.Room' : _("""A location where calendar events can happen.  For a given Room you
+can see the EventsByRoom that happened (or will happen)
+there.  A Room is BabelNamed (has a multilingual name)."""),
+    'lino_xl.lib.cal.models.Priority' : _("""The priority of a Task or Event."""),
+    'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field.
+Example content:"""),
     'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether events of this type should be considered
 "appointments" (i.e. whose time and place have been agreed
 upon with other users or external parties)."""),
-    'lino_xl.lib.stars.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.reception.models.Visitors' : _("""Common base class for the following tables:"""),
-    'lino_xl.lib.contacts.models.Role.type' : _("""The role of this person in this company."""),
-    'lino_xl.lib.polls.models.MyPolls' : _("""Show all polls whose author I am."""),
-    'lino_xl.lib.polls.models.Poll' : _("""A series of questions."""),
-    'lino_xl.lib.polls.models.AllPolls.model' : _("""alias of Poll"""),
-    'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
-    'lino_xl.lib.humanlinks.models.Link.type' : _("""The type of link.  Pointer to LinkTypes."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
+    'lino_xl.lib.cal.models.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
+It corresponds to what the extensible CalendarPanel calls "Calendars" """),
+    'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
+(and optionally wants to get reminded about it)."""),
+    'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates"""),
+    'lino_xl.lib.cal.models.RecurrentEvent' : _("""A rule designed to generate a series of recurrent events."""),
+    'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
     'lino_xl.lib.cal.models.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit"""),
-    'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
-the Guest.state field."""),
-    'lino_xl.lib.humanlinks.models.LinksByHuman.model' : _("""alias of Link"""),
+    'lino_xl.lib.cal.models.UpdateGuests' : _("""Decide whether it is time to add Guest instances for this event,
+and if yes, call suggest_guests() to instantiate them."""),
+    'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
+communication with the Ext.ensible CalendarPanel
+because we consider the "all day" checkbox
+equivalent to "empty start and end time fields"."""),
+    'lino_xl.lib.cal.models.Event' : _("""A calendar event is a lapse of time to be visualized in a calendar."""),
+    'lino_xl.lib.cal.models.Event.user' : _("""The responsible user."""),
+    'lino_xl.lib.cal.models.Event.assigned_to' : _("""See lino.modlib.users.mixins.Assignable.assigned_to"""),
+    'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this event. Every calendar event should have this
+field pointing to a given EventType, which holds
+extended configurable information about this event."""),
+    'lino_xl.lib.cal.models.Event.when_html' : _("""Shows the date and time of the event with a link that opens
+all events on that day (EventsByDay)."""),
+    'lino_xl.lib.cal.models.Event.show_conflicting' : _("""A ShowSlaveTable
+button which opens the ConflictingEvents table for this event."""),
+    'lino_xl.lib.cal.models.EventGuestChecker' : _("""Check whether this event has No participants although NNN
+suggestions exist. -- This is probably due to some bug, so we
+repair this by adding the suggested guests."""),
+    'lino_xl.lib.cal.models.EventGuestChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this event conflicts with other event(s)."""),
+    'lino_xl.lib.cal.models.ConflictingEventsChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether event_type of this should be updated."""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a
+given event."""),
+    'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),
+    'lino_xl.lib.cal.models.Guest.partner' : _("""The partner to which this presence applies."""),
+    'lino_xl.lib.cal.models.Guest.role' : _("""The role of this partner in this presence."""),
+    'lino_xl.lib.cal.models.Guest.state' : _("""The state of this presence."""),
+    'lino_xl.lib.cal.ui.TasksByUser' : _("""Shows the list of tasks for this user."""),
+    'lino_xl.lib.cal.ui.TasksByUser.master' : _("""alias of User"""),
+    'lino_xl.lib.cal.ui.TasksByUser.model' : _("""alias of Task"""),
+    'lino_xl.lib.cal.ui.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
+future."""),
+    'lino_xl.lib.cal.ui.MyTasks.default_end_date_offset' : _("""Number of days to go into the future. The default value for
+end_date will be today + that number of days."""),
+    'lino_xl.lib.cal.ui.MyTasks.model' : _("""alias of Task"""),
+    'lino_xl.lib.cal.ui.Guests' : _("""The default table for Guest."""),
+    'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
+    'lino_xl.lib.cal.ui.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
+    'lino_xl.lib.cal.ui.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
+    'lino_xl.lib.cal.ui.Events' : _("""Table which shows all calendar events."""),
+    'lino_xl.lib.cal.ui.Events.show_appointments' : _("""Whether only appointments should be
+shown.  "Yes" means only appointments, "No"
+means no appointments and leaving it to blank shows both types
+of events."""),
+    'lino_xl.lib.cal.ui.Events.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
+    'lino_xl.lib.cal.ui.ConflictingEvents.master' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.ConflictingEvents.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.EventsByDay' : _("""This table is usually labelled "Appointments today". It has no
+"date" column because it shows events of a given date."""),
+    'lino_xl.lib.cal.ui.EventsByDay.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.EventsByRoom' : _("""Displays the Events at a given Room."""),
-    'lino_xl.lib.topics.models.Interest' : _("""An interest is the fact that a given partner is interested in a
-given topic."""),
-    'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
-    'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino_xl.lib.contacts.models.Company."""),
-    'lino_xl.lib.properties.models.PropType.multiple_choices' : _("""not yet supported"""),
-    'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
-but is stored as a Couple instance."""),
-    'lino_xl.lib.contacts.models.CompanyType' : _("""A type of organization. Used by Company.type field."""),
-    'lino_xl.lib.notes.models.NoteTypes' : _("""Displays all rows of NoteType."""),
-    'lino_xl.lib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
-    'lino_xl.lib.topics.models.Topic' : _("""A topic is something somebody can be interested in."""),
-    'lino_xl.lib.outbox.models.SendMail' : _("""Sends an outbox.Mail as an email."""),
-    'lino_xl.lib.excerpts.models.Excerpt.recipient' : _("""The recipient of this excerpt.  See
-ContactRelated.recipient"""),
-    'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
-lino_welfare.modlib.aids.mixins.Confirmation."""),
-    'lino_xl.lib.lists.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.beid.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.excerpts.models.Excerpt.contact_person' : _("""The optional contact person of the recipient of this
-excerpt.  See ContactRelated.contact_person."""),
-    'lino_xl.lib.excerpts.Plugin.responsible_user' : _("""The username of the user responsible for monitoring the excerpts
-system. This is currently used only by
-lino_xl.lib.excerpts.fixtures.demo2."""),
-    'lino_xl.lib.humanlinks.models.Link.parent' : _("""Pointer to the person who is "parent"."""),
-    'lino_xl.lib.households.Plugin.person_model' : _("""A string referring to the model which represents a human in your
-application.  Default value is 'contacts.Person' (referring to
-lino_xl.lib.contacts.models.Person)."""),
-    'lino_xl.lib.cal.mixins.EventGenerator' : _("""Base class for things that generate a suite of events."""),
-    'lino_xl.lib.excerpts.models.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
-Excerpt.excerpt_type which points to an ExcerptType
-instance."""),
-    'lino_xl.lib.contacts.models.Role.company' : _("""The company where this person has a role."""),
-    'lino_xl.lib.contacts.models.Company.full_name' : _("""Deserves more documentation."""),
+    'lino_xl.lib.cal.ui.EventsByRoom.master' : _("""alias of Room"""),
+    'lino_xl.lib.cal.ui.EventsByRoom.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.EventsByController' : _("""Shows the events linked to this database object."""),
+    'lino_xl.lib.cal.ui.EventsByController.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.OneEvent' : _("""Show a single calendar event."""),
+    'lino_xl.lib.cal.ui.OneEvent.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.MyEvents' : _("""Table which shows today's and all future appointments of the
 requesting user.  The default filter parameters are set to show
 only appointments."""),
-    'lino_xl.lib.cal.choicelists.DurationUnits.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.cal.ui.EventsByRoom.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.Events.model' : _("""alias of Event"""),
-    'lino_xl.lib.households.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
-    'lino_xl.lib.cal.models.Priority' : _("""The priority of a Task or Event."""),
-    'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
-Concrete examples are cal.EventType, cal.GuestRole,
-notes.NoteType."""),
-    'lino_xl.lib.notes.models.EventType' : _("""A possible choice for Note.event_type."""),
-    'lino_xl.lib.contacts.models.RolesByPerson.model' : _("""alias of Role"""),
-    'lino_xl.lib.households.models.Type' : _("""Type of a household.
-http://www.belgium.be/fr/famille/couple/cohabitation/"""),
-    'lino_xl.lib.contacts.models.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
-formatting characters in phone numbers when searching.  For
-example, if you enter "087/12.34.56" as a phone number, then a
-search for phone number containing "1234" will not find it."""),
-    'lino_xl.lib.excerpts.mixins.ClearPrinted' : _("""Action to clear the print cache (i.e. the generated printable
-document)."""),
-    'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.notes.models.EventTypes.model' : _("""alias of EventType"""),
-    'lino_xl.lib.postings.models.PostingStates' : _("""List of possible values for the state field of a 
-Posting."""),
-    'lino_xl.lib.properties.models.ChoicesByType.model' : _("""alias of PropChoice"""),
-    'lino_xl.lib.cal.choicelists.Weekdays' : _("""A choicelist with the seven days of a week."""),
-    'lino_xl.lib.cal.ui.EventsByRoom.master' : _("""alias of Room"""),
-    'lino_xl.lib.contacts.models.Partner.email' : _("""The primary email address."""),
-    'lino_xl.lib.contacts.models.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
-returns simply the name field, ignoring any parameters, but
-e.g. Human overrides this."""),
-    'lino_xl.lib.cal.choicelists.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.notes.choicelists.SpecialType' : _("""Represents a special note type."""),
-    'lino_xl.lib.reception.models.GoneVisitors' : _("""Show gone visitors (for any user)."""),
-    'lino_xl.lib.cal.models.Guest.role' : _("""The role of this partner in this presence."""),
-    'lino_xl.lib.humanlinks.Plugin.person_model' : _("""A string referring to the model which represents a human in your
-application.  Default value is 'contacts.Person' (referring to
-lino_xl.lib.contacts.Person)."""),
-    'lino_xl.lib.polls.models.AllPolls' : _("""Show all polls of all users."""),
-    'lino_xl.lib.households.models.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
+    'lino_xl.lib.cal.ui.MyEvents.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.MyEventsToday' : _("""Like MyEvents, but only today."""),
+    'lino_xl.lib.cal.ui.MyEventsToday.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.MyAssignedEvents' : _("""The table of events which are assigned to me. That is, whose
+Event.assigned_to field refers to the requesting user."""),
+    'lino_xl.lib.cal.ui.MyAssignedEvents.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
+over but who are still in a nonstable state."""),
+    'lino_xl.lib.cal.ui.OverdueAppointments.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
 lino.core.site.Site.setup_choicelists()):"""),
-    'lino_xl.lib.properties.models.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
-in combo boxes."""),
-    'lino_xl.lib.contacts.models.RoleType' : _("""A RoleType is "what a given Person can be for a
-given Company"."""),
-    'lino_xl.lib.excerpts.mixins.Certifiable.printed' : _("""Displays information about when this certifiable has been printed.
-Clicking on it will display the excerpt pointed to by
-printed_by."""),
-    'lino_xl.lib.properties.models.HowWell' : _("""A list of possible answers to questions of type "How well ...?":
-"not at all", "a bit", "moderate", "quite well" and "very well" """),
-    'lino_xl.lib.excerpts.models.ExcerptType.content_type' : _("""The database model for which this excerpt type is to be used."""),
-    'lino_xl.lib.cal.ui.ConflictingEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.reception.models.MyWaitingVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.households.models.SiblingsByPerson.master' : _("""alias of Person"""),
-    'lino_xl.lib.appypod.choicelists.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
-    'lino_xl.lib.reception.models.WaitingVisitors' : _("""Show waiting visitors (for any user)."""),
-    'lino_xl.lib.households.models.SiblingsByPerson.model' : _("""alias of Member"""),
-    'lino_xl.lib.notes.models.NoteTypes.model' : _("""alias of NoteType"""),
-    'lino_xl.lib.contacts.models.Persons' : _("""List of all Persons."""),
-    'lino_xl.lib.humanlinks.models.Link.child' : _("""Pointer to the person who is "child"."""),
-    'lino_xl.lib.polls.models.Question' : _("""A question of a poll."""),
-    'lino_xl.lib.countries.choicelists.PlaceTypes' : _("""A choicelist of possible place types."""),
-    'lino_xl.lib.contacts.choicelists.PartnerEvents' : _("""A choicelist of observable partner events."""),
-    'lino_xl.lib.cal.ui.EventsByDay.model' : _("""alias of Event"""),
-    'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
-    'lino_xl.lib.reception.models.MyGoneVisitors' : _("""Show my visitors who have gone."""),
-    'lino_xl.lib.households.models.SiblingsByPerson' : _("""Displays the siblings of a given person in that person's active
-household."""),
-    'lino_xl.lib.cal.choicelists.DurationUnit' : _("""Base class for the choices in the DurationUnits
-choicelist."""),
-    'lino_xl.lib.cal.models.EventGuestChecker' : _("""Check whether this event has No participants although NNN
-suggestions exist. -- This is probably due to some bug, so we
-repair this by adding the suggested guests."""),
-    'lino_xl.lib.cal.ui.EventsByController.model' : _("""alias of Event"""),
-    'lino_xl.lib.excerpts.models.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
-    'lino_xl.lib.reception.models.MyGoneVisitors.model' : _("""alias of Guest"""),
     'lino_xl.lib.cal.workflows.EventStates' : _("""Possible values for the state of a task. The list of choices for
 the Event.state field. By default it contains the
 following values (which can be redefined in
 lino.core.site.Site.setup_choicelists()):"""),
-    'lino_xl.lib.households.models.Member.end_date' : _("""Until when this membership exists."""),
-    'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
-    'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.cal.mixins.Component.auto_type' : _("""Contains the sequence number if this is an automatically
-generated component. Otherwise this field is empty."""),
+    'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
+the Guest.state field."""),
+    'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""To close a meeting means that the meeting is over and the guests go
+home."""),
+    'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
+    'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.contacts.choicelists.PartnerEvents' : _("""A choicelist of observable partner events."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
+or a company, the latter potentially represented by a contact
+person having a given role in that company.  Typical usages are
+invoices or contracts."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino_xl.lib.contacts.models.Company."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.contact_person' : _("""Pointer to lino_xl.lib.contacts.models.Person."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.contact_role' : _("""The optional Role
+of the contact_person within company."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
+company, except when that field is empty, in which
+case partner contains the contact_person.  If both
+fields are empty, then partner contains None."""),
+    'lino_xl.lib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
+printing a postal address for this.
+This is typically either the company or
+contact_person (if one of these fields is
+non-empty). It may also be a
+lino_xl.lib.contacts.models.Role object."""),
+    'lino_xl.lib.contacts.mixins.PartnerDocument' : _("""Adds two fields 'partner' and 'person' to this model, making it
+something that refers to a "partner".  person means a "contact
+person" for the partner."""),
+    'lino_xl.lib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
+    'lino_xl.lib.contacts.models.Partner' : _("""A Partner is any physical or moral person for which you want to
+keep contact data (address, phone numbers, ...)."""),
+    'lino_xl.lib.contacts.models.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
+Subclasses may hide this field and fill it automatically,
+e.g. saving a Person will automatically set her
+name field to "last_name, first_name"."""),
+    'lino_xl.lib.contacts.models.Partner.email' : _("""The primary email address."""),
+    'lino_xl.lib.contacts.models.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
+formatting characters in phone numbers when searching.  For
+example, if you enter "087/12.34.56" as a phone number, then a
+search for phone number containing "1234" will not find it."""),
+    'lino_xl.lib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
+    'lino_xl.lib.contacts.models.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.models.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
+returns simply the name field, ignoring any parameters, but
+e.g. Human overrides this."""),
+    'lino_xl.lib.contacts.models.Person' : _("""A physical person and an individual human being.
+See also lino.tutorial.human."""),
+    'lino_xl.lib.contacts.models.Persons' : _("""List of all Persons."""),
+    'lino_xl.lib.contacts.models.Persons.model' : _("""alias of Person"""),
+    'lino_xl.lib.contacts.models.CompanyType' : _("""A type of organization. Used by Company.type field."""),
+    'lino_xl.lib.contacts.models.Company.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.models.Company.full_name' : _("""Deserves more documentation."""),
+    'lino_xl.lib.contacts.models.RoleType' : _("""A RoleType is "what a given Person can be for a
+given Company"."""),
+    'lino_xl.lib.contacts.models.Role' : _("""A Contact (historical model name Role) is a
+Person who has a given role (ContactType) in a
+given Company."""),
+    'lino_xl.lib.contacts.models.Role.company' : _("""The company where this person has a role."""),
+    'lino_xl.lib.contacts.models.Role.type' : _("""The role of this person in this company."""),
+    'lino_xl.lib.contacts.models.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.models.RolesByPerson' : _("""Shows all roles of a person."""),
+    'lino_xl.lib.contacts.models.RolesByPerson.master' : _("""alias of Person"""),
+    'lino_xl.lib.contacts.models.RolesByPerson.model' : _("""alias of Role"""),
+    'lino_xl.lib.contacts.models.Organisation' : _("""alias of Company"""),
+    'lino_xl.lib.contacts.roles.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
+    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to full contacts functionality."""),
+    'lino_xl.lib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
+    'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
 to True if you live in a country like Belgium.  Belgium is
 --despite their constant language disputes-- obviously a very
@@ -208,326 +270,264 @@ united country since they don't need a region field when
 entering a postal address.  In Belgium, when you write a letter,
 you just say the zip code and name of the city.  In many other
 countries there is a mandatory intermediate field."""),
-    'lino_xl.lib.excerpts.models.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
-    'lino_xl.lib.outbox.mixins.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
-must also inherit from mixins.Printable or some subclass
-thereof."""),
-    'lino_xl.lib.cal.ui.TasksByUser' : _("""Shows the list of tasks for this user."""),
-    'lino_xl.lib.cal.ui.OverdueAppointments.model' : _("""alias of Event"""),
-    'lino_xl.lib.reception.models.MyWaitingVisitors' : _("""Show visitors waiting for me."""),
-    'lino_xl.lib.cal.mixins.UpdateEventsByEvent' : _("""Update all events of this series. This is installed as
-update_events on Event."""),
-    'lino_xl.lib.polls.models.PollResult.master' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.models.PollResult' : _("""Shows a summay of responses to this poll."""),
-    'lino_xl.lib.excerpts.models.ExcerptsByOwner.model' : _("""alias of Excerpt"""),
-    'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
-data of that year."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.validate_national_id' : _("""Whether to validate the national_id immediately before
-saving a record.  If this is False, the national_id
-might contain invalid values which would then cause plausibility
-problems."""),
-    'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
-    'lino_xl.lib.properties.models.PropType' : _("""The type of the values that a property accepts.
-Each PropType may (or may not) imply a list of choices."""),
-    'lino_xl.lib.contacts.models.Role' : _("""A Contact (historical model name Role) is a
-Person who has a given role (ContactType) in a
-given Company."""),
-    'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.cal.choicelists.DurationUnits' : _("""A list of possible values for the duration_unit field of an
-Event."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes.foster_parent' : _("""A man (woman) who looks after or brings up a child or children
-as a father (mother), in place of the natural or adoptive
-father (mother). [thefreedictionary]"""),
-    'lino_xl.lib.polls.models.ResponsesByPartner.model' : _("""alias of Response"""),
-    'lino_xl.lib.contacts.models.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
-Subclasses may hide this field and fill it automatically,
-e.g. saving a Person will automatically set her
-name field to "last_name, first_name"."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
-is not validated directly because that would cause problems
-with legacy data where SSINs need manual control. See also
-BeIdCardHolderChecker."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.shortcut' : _("""Optional pointer to a shortcut field.  If this is not empty, then
-the given shortcut field will manage excerpts of this type."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
-(see BeIdCardHolder.national_id), but this checker reports
-them."""),
-    'lino_xl.lib.cal.models.ConflictingEventsChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.ConflictingEvents.master' : _("""alias of Event"""),
-    'lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
-One field for every language.
-If this is empty, then name is used."""),
-    'lino_xl.lib.cal.ui.Events.show_appointments' : _("""Whether only appointments should be
-shown.  "Yes" means only appointments, "No"
-means no appointments and leaving it to blank shows both types
-of events."""),
-    'lino_xl.lib.cal.models.Event.when_html' : _("""Shows the date and time of the event with a link that opens
-all events on that day (EventsByDay)."""),
-    'lino_xl.lib.cal.ui.MyEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.excerpts.models.ExcerptType.body_template' : _("""The body template to use when printing an excerpt of this type."""),
-    'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the "addressee" of any address."""),
-    'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
-Default value is 5 years after today."""),
-    'lino_xl.lib.addresses.models.Address' : _("""Inherits fields from
-lino_xl.lib.countries.CountryRegionCity (country, region,
-city. zip_code) and lino_xl.lib.contacts.AddresssLocation
-(street, street_no, ...)"""),
-    'lino_xl.lib.humanlinks.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
-    'lino_xl.lib.polls.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.cal.models.Guest.state' : _("""The state of this presence."""),
-    'lino_xl.lib.households.choicelists.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
-    'lino_xl.lib.contacts.models.Partner' : _("""A Partner is any physical or moral person for which you want to
-keep contact data (address, phone numbers, ...)."""),
-    'lino_xl.lib.humanlinks.models.Link' : _("""A link between two persons."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes' : _("""The global list of human link types.  This is used as choicelist
-for the type
-field of a human link."""),
-    'lino_xl.lib.excerpts.models.Excerpt.company' : _("""The optional company of the recipient of this
-excerpt.  See ContactRelated.company."""),
-    'lino_xl.lib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
-one-line string."""),
-    'lino_xl.lib.excerpts.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.cal.ui.MyAssignedEvents' : _("""The table of events which are assigned to me. That is, whose
-Event.assigned_to field refers to the requesting user."""),
-    'lino_xl.lib.cal.mixins.UpdateEvents' : _("""This is installed as update_events on
-EventGenerator."""),
-    'lino_xl.lib.polls.models.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
-instances."""),
-    'lino_xl.lib.cal.models.Event' : _("""A calendar event is a lapse of time to be visualized in a calendar."""),
-    'lino_xl.lib.cal.ui.OneEvent.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
-future."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes.stepparent' : _("""Someone that your mother or father marries after the marriage
-to or relationship with your other parent has ended"""),
-    'lino_xl.lib.cal.ui.Guests' : _("""The default table for Guest."""),
-    'lino_xl.lib.outbox.models.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
-    'lino_xl.lib.outbox.models.SentByPartner.model' : _("""alias of Mail"""),
-    'lino_xl.lib.postings.models.Posting' : _("""A Posting is the fact that a letter or other item 
-has been sent using snail mail."""),
-    'lino_xl.lib.contacts.models.Persons.model' : _("""alias of Person"""),
     'lino_xl.lib.countries.Plugin.country_code' : _("""The 2-letter ISO code of the country where the site owner is
 located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
-    'lino_xl.lib.properties.models.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
-certain value."""),
-    'lino_xl.lib.properties.models.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
-    'lino_xl.lib.reception.models.ExpectedGuests.model' : _("""alias of Guest"""),
-    'lino_xl.lib.topics.models.TopicGroup' : _("""A group of topics is the default way to group topics."""),
-    'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field.
-Example content:"""),
-    'lino_xl.lib.cal.ui.TasksByUser.model' : _("""alias of Task"""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Abstract base for models that express a set of recurrency
-rules. This might be combined with EventGenerator into a
-same model as done by Reservation."""),
-    'lino_xl.lib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
-    'lino_xl.lib.beid.mixins.BaseBeIdReadCardAction' : _("""Common base for all "Read eID card" actions
-(:class:FindByBeIdAction and BeIdReadCardAction)."""),
-    'lino_xl.lib.cal.ui.TasksByUser.master' : _("""alias of User"""),
-    'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
-communication with the Ext.ensible CalendarPanel
-because we consider the "all day" checkbox
-equivalent to "empty start and end time fields"."""),
-    'lino_xl.lib.boards.models.Member' : _("""A Member is when a given ml.contacts.Person
-belongs to a given Board."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet.weekdays_text' : _("""A textual formulation of the weekdays where the recurrence
-occurs."""),
-    'lino_xl.lib.appypod.choicelists.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
-    'lino_xl.lib.contacts.models.RolesByPerson' : _("""Shows all roles of a person."""),
-    'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),
-    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
-    'lino_xl.lib.properties.models.PropGroup' : _("""A Property Group defines a list of Properties that fit together
-under a common name.  Examples of Property Groups: Skills, Soft
-Skills, Obstacles There will be one menu entry per Group."""),
-    'lino_xl.lib.reception.models.WaitingVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.outbox.models.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.contact_role' : _("""The optional Role
-of the contact_person within company."""),
-    'lino_xl.lib.cal.choicelists.Recurrencies.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to Place."""),
-    'lino_xl.lib.notes.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
-or a company, the latter potentially represented by a contact
-person having a given role in that company.  Typical usages are
-invoices or contracts."""),
-    'lino_xl.lib.countries.models.PlaceChecker' : _("""The name of a geographical place
-(lino_xl.lib.countries.models.Place.name) should not
-consist of only digits."""),
-    'lino_xl.lib.excerpts.models.CreateExcerpt' : _("""Action to create an excerpt in order to print this data record."""),
-    'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.countries.models.Place' : _("""Any kind of named geographic region (except those who have an entry
-in Country."""),
-    'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.beid.mixins.FindByBeIdAction' : _("""Read an eID card without being on a precise holder. Either show the
-holder or ask to create a new holder."""),
-    'lino_xl.lib.cal.ui.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
-    'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
-    'lino_xl.lib.polls.models.Question.number' : _("""The number of this question within this poll."""),
-    'lino_xl.lib.addresses.models.Address.data_source' : _("""Pointer to choicelists.DataSources."""),
+    'lino_xl.lib.countries.choicelists.PlaceTypes' : _("""A choicelist of possible place types."""),
     'lino_xl.lib.countries.mixins.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
 method, ..."""),
-    'lino_xl.lib.reception.models.AppointmentsByPartner.model' : _("""alias of Guest"""),
-    'lino_xl.lib.properties.models.ChoicesByType.master' : _("""alias of PropType"""),
-    'lino_xl.lib.cal.models.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
-It corresponds to what the extensible CalendarPanel calls "Calendars" """),
-    'lino_xl.lib.polls.models.AnswersByQuestion.master' : _("""alias of Question"""),
-    'lino_xl.lib.contacts.models.Person' : _("""A physical person and an individual human being.
-See also lino.tutorial.human."""),
-    'lino_xl.lib.cal.ui.MyEventsToday.model' : _("""alias of Event"""),
-    'lino_xl.lib.outbox.mixins.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
-being typed by this MailableType. Example:"""),
-    'lino_xl.lib.reception.models.GoneVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.models.Event.assigned_to' : _("""See lino.modlib.users.mixins.Assignable.assigned_to"""),
+    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to Place."""),
+    'lino_xl.lib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
+    'lino_xl.lib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
+    'lino_xl.lib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
+one-line string."""),
+    'lino_xl.lib.countries.models.Country' : _("""A "country" or "nation"."""),
+    'lino_xl.lib.countries.models.Countries' : _("""The table of all countries."""),
+    'lino_xl.lib.countries.models.Countries.model' : _("""alias of Country"""),
+    'lino_xl.lib.countries.models.Place' : _("""Any kind of named geographic region (except those who have an entry
+in Country."""),
+    'lino_xl.lib.countries.models.PlaceChecker' : _("""The name of a geographical place
+(lino_xl.lib.countries.models.Place.name) should not
+consist of only digits."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.card_issuer' : _("""The administration who issued this ID card."""),
-    'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a
-given event."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.name' : _("""The designation of this excerpt type.
-One field for every language."""),
-    'lino_xl.lib.extensible.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
-    'lino_xl.lib.cal.models.EventGuestChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.excerpts.models.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
-    'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
-(and optionally wants to get reminded about it)."""),
+    'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
+    'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
-    'lino_xl.lib.cal.models.Guest.partner' : _("""The partner to which this presence applies."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
-countries.Country which should
-contain also entries for refugee statuses."""),
-    'lino_xl.lib.cal.models.RecurrentEvent' : _("""A rule designed to generate a series of recurrent events."""),
-    'lino_xl.lib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll. Default is:"""),
-    'lino_xl.lib.cal.models.RemoteCalendar' : _("""Remote calendars will be synchronized by
-lino_xl.lib.cal.management.commands.watch_calendars,
-and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.beid.mixins.BeIdReadCardAction' : _("""Read eId card and store the data on the selected holder."""),
-    'lino_xl.lib.polls.models.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
-volatile AnswersByResponseRow instances."""),
-    'lino_xl.lib.polls.models.MyPolls.model' : _("""alias of Poll"""),
-    'lino_xl.lib.reception.models.MyBusyVisitors' : _("""Show the visitors with whom I am busy."""),
-    'lino_xl.lib.contacts.mixins.PartnerDocument' : _("""Adds two fields 'partner' and 'person' to this model, making it
-something that refers to a "partner".  person means a "contact
-person" for the partner."""),
-    'lino_xl.lib.addresses.models.Address.primary' : _("""Whether this address is the primary address of its owner.
-Setting this field will automatically uncheck any previousl
-primary addresses and update the owner's address fields."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.contact_person' : _("""Pointer to lino_xl.lib.contacts.models.Person."""),
-    'lino_xl.lib.polls.models.AnswersByResponse.master' : _("""alias of Response"""),
-    'lino_xl.lib.cal.models.Event.show_conflicting' : _("""A ShowSlaveTable
-button which opens the ConflictingEvents table for this event."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
-printing a postal address for this.
-This is typically either the company or
-contact_person (if one of these fields is
-non-empty). It may also be a
-lino_xl.lib.contacts.models.Role object."""),
-    'lino_xl.lib.polls.models.PollResult.model' : _("""alias of Question"""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether event_type of this should be updated."""),
-    'lino_xl.lib.cal.ui.EventsByDay' : _("""This table is usually labelled "Appointments today". It has no
-"date" column because it shows events of a given date."""),
-    'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.cal.ui.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
-over but who are still in a nonstable state."""),
-    'lino_xl.lib.beid.choicelists.BeIdCardTypes' : _("""List of Belgian identity card types:"""),
-    'lino_xl.lib.reception.models.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
-partner."""),
-    'lino_xl.lib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
-    'lino_xl.lib.excerpts.models.Excerpt.owner' : _("""The object being printed by this excerpt.
-See Controllable.owner."""),
-    'lino_xl.lib.contacts.models.Partner.language' : _("""The language to use when communicating with this partner."""),
-    'lino_xl.lib.polls.models.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
-this question, eventually (if editing is permitted) together with
-buttons to modify the selection."""),
-    'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date.  Set this to None if you want
-no limit.
-Default value is "7 days before server startup"."""),
-    'lino_xl.lib.reception.models.BusyVisitors' : _("""Show busy visitors (with any user)."""),
-    'lino_xl.lib.excerpts.models.ExcerptTypes.model' : _("""alias of ExcerptType"""),
-    'lino_xl.lib.cal.ui.MyEventsToday' : _("""Like MyEvents, but only today."""),
-    'lino_xl.lib.appypod.choicelists.AppyOdtBuildMethod' : _("""Generates .odt files from .odt templates."""),
-    'lino_xl.lib.contacts.models.Company.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.reception.models.AppointmentsByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.households.models.Household.full_name' : _("""Overrides
-lino_xl.lib.contacts.models.Partner.get_full_name()."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.email_template' : _("""The template to use when sending this an excerpt of this type
-by email."""),
+    'lino_xl.lib.excerpts.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.excerpts.Plugin.responsible_user' : _("""The username of the user responsible for monitoring the excerpts
+system. This is currently used only by
+lino_xl.lib.excerpts.fixtures.demo2."""),
     'lino_xl.lib.excerpts.choicelists.Shortcuts' : _("""The list of excerpt shortcut fields.  An excerpt shortcut field is
 a virtual display field with actions for quickly managing, from a
 given database object, the excerpt for this object of a given type."""),
-    'lino_xl.lib.products.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.humanlinks.models.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
-    'lino_xl.lib.cal.ui.OneEvent' : _("""Show a single calendar event."""),
-    'lino_xl.lib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
-    'lino_xl.lib.cal.models.Room' : _("""A location where calendar events can happen.  For a given Room you
-can see the EventsByRoom that happened (or will happen)
-there.  A Room is BabelNamed (has a multilingual name)."""),
-    'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""To close a meeting means that the meeting is over and the guests go
-home."""),
-    'lino_xl.lib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
-    'lino_xl.lib.notes.models.Note' : _("""A note is a dated and timed document written by its author (a
-user). For example a report of a meeting or a phone call, or just
-some observation. Notes are usually meant for internal use."""),
-    'lino_xl.lib.contacts.models.Role.person' : _("""The person having this role in this company."""),
-    'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.properties.models.PropType.default_value' : _("""The default value to set when creating a PropertyOccurence.
-This is currently used only in some fixture..."""),
-    'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
-    'lino_xl.lib.notes.choicelists.SpecialTypes' : _("""The list of special note types which have been declared on this
-Site."""),
-    'lino_xl.lib.polls.models.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
-    'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates"""),
-    'lino_xl.lib.stars.models.Star' : _("""Represents the fact that a given database object is starred by a
-given User."""),
-    'lino_xl.lib.reception.models.CheckinVisitor' : _("""The "Checkin" action on a Guest."""),
-    'lino_xl.lib.cal.ui.Events' : _("""Table which shows all calendar events."""),
-    'lino_xl.lib.cal.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.addresses.mixins.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
-    'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this event. Every calendar event should have this
-field pointing to a given EventType, which holds
-extended configurable information about this event."""),
-    'lino_xl.lib.properties.models.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
-like ...?"."""),
-    'lino_xl.lib.reception.models.CheckoutVisitor' : _("""The "Checkout" action on a Guest."""),
-    'lino_xl.lib.cal.ui.MyAssignedEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyTasks.default_end_date_offset' : _("""Number of days to go into the future. The default value for
-end_date will be today + that number of days."""),
-    'lino_xl.lib.excerpts.models.Excerpts.model' : _("""alias of Excerpt"""),
-    'lino_xl.lib.properties.models.PropType.limit_to_choices' : _("""not yet supported"""),
-    'lino_xl.lib.postings.mixins.Postable' : _("""Mixin for models that provide a "Post" button."""),
-    'lino_xl.lib.cal.ui.MyTasks.model' : _("""alias of Task"""),
-    'lino_xl.lib.polls.models.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
-get_slave_summary()."""),
-    'lino_xl.lib.cal.mixins.Ended' : _("""Models inheriing from Ended must also inherit from Started"""),
+    'lino_xl.lib.excerpts.mixins.ClearPrinted' : _("""Action to clear the print cache (i.e. the generated printable
+document)."""),
+    'lino_xl.lib.excerpts.mixins.Certifiable' : _("""Any model which inherits from this mixin becomes "certifiable".
+That is:"""),
+    'lino_xl.lib.excerpts.mixins.Certifiable.printed' : _("""Displays information about when this certifiable has been printed.
+Clicking on it will display the excerpt pointed to by
+printed_by."""),
+    'lino_xl.lib.excerpts.mixins.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
     'lino_xl.lib.excerpts.mixins.ExcerptTitle' : _("""Mixin for models like
 lino_welfare.modlib.aids.models.AidType and
 lino_cosi.lib.courses.models.Line."""),
-    'lino_xl.lib.cal.models.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.excerpts.models.Excerpt.language' : _("""The language used for printing this excerpt."""),
-    'lino_xl.lib.excerpts.mixins.Certifiable' : _("""Any model which inherits from this mixin becomes "certifiable".
-That is:"""),
-    'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.excerpts.models.Excerpts' : _("""Base class for all tables on Excerpt."""),
-    'lino_xl.lib.contacts.models.Organisation' : _("""alias of Company"""),
-    'lino_xl.lib.outbox.mixins.CreateMail' : _("""Creates an outbox mail and displays it."""),
-    'lino_xl.lib.products.models.Product' : _("""A product is something you can sell or buy."""),
-    'lino_xl.lib.appypod.choicelists.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
-    'lino_xl.lib.appypod.mixins.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
-model which implements
-Addressable."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
-company, except when that field is empty, in which
-case partner contains the contact_person.  If both
-fields are empty, then partner contains None."""),
-    'lino_xl.lib.countries.models.Countries' : _("""The table of all countries."""),
-    'lino_xl.lib.cal.mixins.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
-lino.modlib.courses.models.Course."""),
     'lino_xl.lib.excerpts.mixins.ExcerptTitle.name' : _("""The designation of this row as seen by the user e.g. when
 selecting an instance of this model."""),
-    'lino_xl.lib.outbox.choicelists.RecipientTypes' : _("""A list of possible values for the type field of a
-Recipient."""),
+    'lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
+One field for every language.
+If this is empty, then name is used."""),
+    'lino_xl.lib.excerpts.models.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
+Excerpt.excerpt_type which points to an ExcerptType
+instance."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.name' : _("""The designation of this excerpt type.
+One field for every language."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.content_type' : _("""The database model for which this excerpt type is to be used."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.build_method' : _("""See lino.modlib.printing.mixins.PrintableType.build_method."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.body_template' : _("""The body template to use when printing an excerpt of this type."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.email_template' : _("""The template to use when sending this an excerpt of this type
+by email."""),
+    'lino_xl.lib.excerpts.models.ExcerptType.shortcut' : _("""Optional pointer to a shortcut field.  If this is not empty, then
+the given shortcut field will manage excerpts of this type."""),
+    'lino_xl.lib.excerpts.models.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
+    'lino_xl.lib.excerpts.models.ExcerptTypes.model' : _("""alias of ExcerptType"""),
+    'lino_xl.lib.excerpts.models.CreateExcerpt' : _("""Action to create an excerpt in order to print this data record."""),
+    'lino_xl.lib.excerpts.models.Excerpt' : _("""A printable document that describes some aspect of the current
+situation."""),
+    'lino_xl.lib.excerpts.models.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
+    'lino_xl.lib.excerpts.models.Excerpt.owner' : _("""The object being printed by this excerpt.
+See Controllable.owner."""),
+    'lino_xl.lib.excerpts.models.Excerpt.company' : _("""The optional company of the recipient of this
+excerpt.  See ContactRelated.company."""),
+    'lino_xl.lib.excerpts.models.Excerpt.contact_person' : _("""The optional contact person of the recipient of this
+excerpt.  See ContactRelated.contact_person."""),
+    'lino_xl.lib.excerpts.models.Excerpt.recipient' : _("""The recipient of this excerpt.  See
+ContactRelated.recipient"""),
+    'lino_xl.lib.excerpts.models.Excerpt.language' : _("""The language used for printing this excerpt."""),
+    'lino_xl.lib.excerpts.models.Excerpts' : _("""Base class for all tables on Excerpt."""),
+    'lino_xl.lib.excerpts.models.Excerpts.model' : _("""alias of Excerpt"""),
+    'lino_xl.lib.excerpts.models.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
+this."""),
+    'lino_xl.lib.excerpts.models.ExcerptsByOwner.model' : _("""alias of Excerpt"""),
+    'lino_xl.lib.extensible.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
+    'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
+    'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
+    'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
+but is stored as a Couple instance."""),
+    'lino_xl.lib.households.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
+    'lino_xl.lib.households.Plugin.person_model' : _("""A string referring to the model which represents a human in your
+application.  Default value is 'contacts.Person' (referring to
+lino_xl.lib.contacts.models.Person)."""),
+    'lino_xl.lib.households.choicelists.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
+    'lino_xl.lib.households.models.Type' : _("""Type of a household.
+http://www.belgium.be/fr/famille/couple/cohabitation/"""),
     'lino_xl.lib.households.models.Household' : _("""A Household is a Partner who represents several Persons living together.
 A Household has a list of members."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
+    'lino_xl.lib.households.models.Household.full_name' : _("""Overrides
+lino_xl.lib.contacts.models.Partner.get_full_name()."""),
+    'lino_xl.lib.households.models.Member' : _("""A household membership represents the fact that a given person
+is (or has been) part of a given household."""),
+    'lino_xl.lib.households.models.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
+    'lino_xl.lib.households.models.Member.end_date' : _("""Until when this membership exists."""),
+    'lino_xl.lib.households.models.SiblingsByPerson' : _("""Displays the siblings of a given person in that person's active
+household."""),
+    'lino_xl.lib.households.models.SiblingsByPerson.master' : _("""alias of Person"""),
+    'lino_xl.lib.households.models.SiblingsByPerson.model' : _("""alias of Member"""),
+    'lino_xl.lib.humanlinks.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
+    'lino_xl.lib.humanlinks.Plugin.person_model' : _("""A string referring to the model which represents a human in your
+application.  Default value is 'contacts.Person' (referring to
+lino_xl.lib.contacts.Person)."""),
+    'lino_xl.lib.humanlinks.choicelists.LinkTypes' : _("""The global list of human link types.  This is used as choicelist
+for the type
+field of a human link."""),
+    'lino_xl.lib.humanlinks.choicelists.LinkTypes.adoptive_parent' : _("""A person who adopts a child of other parents as his or her own child."""),
+    'lino_xl.lib.humanlinks.choicelists.LinkTypes.stepparent' : _("""Someone that your mother or father marries after the marriage
+to or relationship with your other parent has ended"""),
+    'lino_xl.lib.humanlinks.choicelists.LinkTypes.foster_parent' : _("""A man (woman) who looks after or brings up a child or children
+as a father (mother), in place of the natural or adoptive
+father (mother). [thefreedictionary]"""),
+    'lino_xl.lib.humanlinks.models.Link' : _("""A link between two persons."""),
+    'lino_xl.lib.humanlinks.models.Link.parent' : _("""Pointer to the person who is "parent"."""),
+    'lino_xl.lib.humanlinks.models.Link.child' : _("""Pointer to the person who is "child"."""),
+    'lino_xl.lib.humanlinks.models.Link.type' : _("""The type of link.  Pointer to LinkTypes."""),
+    'lino_xl.lib.humanlinks.models.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
+    'lino_xl.lib.humanlinks.models.LinksByHuman.master' : _("""alias of Person"""),
+    'lino_xl.lib.humanlinks.models.LinksByHuman.model' : _("""alias of Link"""),
+    'lino_xl.lib.lists.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.notes.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.notes.choicelists.SpecialType' : _("""Represents a special note type."""),
+    'lino_xl.lib.notes.choicelists.SpecialTypes' : _("""The list of special note types which have been declared on this
+Site."""),
+    'lino_xl.lib.notes.choicelists.SpecialTypes.item_class' : _("""alias of SpecialType"""),
+    'lino_xl.lib.notes.models.NoteTypes' : _("""Displays all rows of NoteType."""),
+    'lino_xl.lib.notes.models.NoteTypes.model' : _("""alias of NoteType"""),
+    'lino_xl.lib.notes.models.EventType' : _("""A possible choice for Note.event_type."""),
+    'lino_xl.lib.notes.models.EventTypes' : _("""List of all Event Types."""),
+    'lino_xl.lib.notes.models.EventTypes.model' : _("""alias of EventType"""),
+    'lino_xl.lib.notes.models.Note' : _("""A note is a dated and timed document written by its author (a
+user). For example a report of a meeting or a phone call, or just
+some observation. Notes are usually meant for internal use."""),
+    'lino_xl.lib.outbox.choicelists.RecipientTypes' : _("""A list of possible values for the type field of a
+Recipient."""),
+    'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
+Concrete examples are cal.EventType, cal.GuestRole,
+notes.NoteType."""),
+    'lino_xl.lib.outbox.mixins.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
+being typed by this MailableType. Example:"""),
+    'lino_xl.lib.outbox.mixins.CreateMail' : _("""Creates an outbox mail and displays it."""),
+    'lino_xl.lib.outbox.mixins.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
+must also inherit from mixins.Printable or some subclass
+thereof."""),
+    'lino_xl.lib.outbox.models.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
+    'lino_xl.lib.outbox.models.SendMail' : _("""Sends an outbox.Mail as an email."""),
+    'lino_xl.lib.outbox.models.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
+    'lino_xl.lib.outbox.models.SentByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.outbox.models.SentByPartner.model' : _("""alias of Mail"""),
+    'lino_xl.lib.polls.Plugin' : _("""See /dev/plugins."""),
+    'lino_xl.lib.polls.models.Poll' : _("""A series of questions."""),
+    'lino_xl.lib.polls.models.AllPolls' : _("""Show all polls of all users."""),
+    'lino_xl.lib.polls.models.AllPolls.model' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.models.MyPolls' : _("""Show all polls whose author I am."""),
+    'lino_xl.lib.polls.models.MyPolls.model' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.models.Question' : _("""A question of a poll."""),
+    'lino_xl.lib.polls.models.Question.number' : _("""The number of this question within this poll."""),
+    'lino_xl.lib.polls.models.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
+    'lino_xl.lib.polls.models.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
+get_slave_summary()."""),
+    'lino_xl.lib.polls.models.ResponsesByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.polls.models.ResponsesByPartner.model' : _("""alias of Response"""),
+    'lino_xl.lib.polls.models.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
+question in a given response."""),
+    'lino_xl.lib.polls.models.AnswerRemarkField' : _("""An editable virtual field."""),
+    'lino_xl.lib.polls.models.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
+volatile AnswersByResponseRow instances."""),
+    'lino_xl.lib.polls.models.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
+this question, eventually (if editing is permitted) together with
+buttons to modify the selection."""),
+    'lino_xl.lib.polls.models.AnswersByResponse.master' : _("""alias of Response"""),
+    'lino_xl.lib.polls.models.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
+    'lino_xl.lib.polls.models.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
+instances."""),
+    'lino_xl.lib.polls.models.AnswersByQuestion.master' : _("""alias of Question"""),
+    'lino_xl.lib.polls.models.PollResult' : _("""Shows a summay of responses to this poll."""),
+    'lino_xl.lib.polls.models.PollResult.master' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.models.PollResult.model' : _("""alias of Question"""),
+    'lino_xl.lib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
+    'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
+    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
+    'lino_xl.lib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll. Default is:"""),
+    'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.postings.mixins.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
+The Postable gives the list of recipients, and there will 
+be one Posting for each recipient."""),
+    'lino_xl.lib.postings.mixins.Postable' : _("""Mixin for models that provide a "Post" button."""),
+    'lino_xl.lib.postings.models.PostingStates' : _("""List of possible values for the state field of a 
+Posting."""),
+    'lino_xl.lib.postings.models.Posting' : _("""A Posting is the fact that a letter or other item 
+has been sent using snail mail."""),
+    'lino_xl.lib.products.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.products.models.ProductCat' : _("""A product category is a way to group products."""),
+    'lino_xl.lib.products.models.Product' : _("""A product is something you can sell or buy."""),
+    'lino_xl.lib.projects.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.properties.models.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
+like ...?"."""),
+    'lino_xl.lib.properties.models.HowWell' : _("""A list of possible answers to questions of type "How well ...?":
+"not at all", "a bit", "moderate", "quite well" and "very well" """),
+    'lino_xl.lib.properties.models.PropType' : _("""The type of the values that a property accepts.
+Each PropType may (or may not) imply a list of choices."""),
+    'lino_xl.lib.properties.models.PropType.default_value' : _("""The default value to set when creating a PropertyOccurence.
+This is currently used only in some fixture..."""),
+    'lino_xl.lib.properties.models.PropType.limit_to_choices' : _("""not yet supported"""),
+    'lino_xl.lib.properties.models.PropType.multiple_choices' : _("""not yet supported"""),
+    'lino_xl.lib.properties.models.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
+in combo boxes."""),
+    'lino_xl.lib.properties.models.PropGroup' : _("""A Property Group defines a list of Properties that fit together
+under a common name.  Examples of Property Groups: Skills, Soft
+Skills, Obstacles There will be one menu entry per Group."""),
+    'lino_xl.lib.properties.models.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
+certain value."""),
+    'lino_xl.lib.properties.models.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
+    'lino_xl.lib.properties.models.ChoicesByType.master' : _("""alias of PropType"""),
+    'lino_xl.lib.properties.models.ChoicesByType.model' : _("""alias of PropChoice"""),
+    'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
+    'lino_xl.lib.reception.models.CheckinVisitor' : _("""The "Checkin" action on a Guest."""),
+    'lino_xl.lib.reception.models.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
+    'lino_xl.lib.reception.models.CheckoutVisitor' : _("""The "Checkout" action on a Guest."""),
+    'lino_xl.lib.reception.models.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
+partner."""),
+    'lino_xl.lib.reception.models.AppointmentsByPartner.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.AppointmentsByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.reception.models.ExpectedGuests' : _("""General table of all expected guests."""),
+    'lino_xl.lib.reception.models.ExpectedGuests.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.Visitors' : _("""Common base class for the following tables:"""),
+    'lino_xl.lib.reception.models.Visitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.BusyVisitors' : _("""Show busy visitors (with any user)."""),
+    'lino_xl.lib.reception.models.BusyVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.WaitingVisitors' : _("""Show waiting visitors (for any user)."""),
+    'lino_xl.lib.reception.models.WaitingVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.GoneVisitors' : _("""Show gone visitors (for any user)."""),
+    'lino_xl.lib.reception.models.GoneVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.MyWaitingVisitors' : _("""Show visitors waiting for me."""),
+    'lino_xl.lib.reception.models.MyWaitingVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.MyBusyVisitors' : _("""Show the visitors with whom I am busy."""),
+    'lino_xl.lib.reception.models.MyBusyVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.models.MyGoneVisitors' : _("""Show my visitors who have gone."""),
+    'lino_xl.lib.reception.models.MyGoneVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.stars.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.stars.models.Star' : _("""Represents the fact that a given database object is starred by a
+given User."""),
+    'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
+    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
+    'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.topics.models.TopicGroup' : _("""A group of topics is the default way to group topics."""),
+    'lino_xl.lib.topics.models.Interest' : _("""An interest is the fact that a given partner is interested in a
+given topic."""),
+    'lino_xl.lib.topics.models.Topic' : _("""A topic is something somebody can be interested in."""),
 }
