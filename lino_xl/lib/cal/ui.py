@@ -634,7 +634,7 @@ class Events(dd.Table):
     # end_date end_time
     # """
 
-    order_by = ["start_date", "start_time"]
+    order_by = ["start_date", "start_time", "id"]
 
     detail_layout = EventDetail()
     insert_layout = EventInsert()
