@@ -41,7 +41,7 @@ import six
 
 from appy.pod.renderer import Renderer as OriginalAppyRenderer
 
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 from django.conf import settings
 
 import odf
@@ -478,8 +478,8 @@ class AppyRenderer(OriginalAppyRenderer):
             tc = TableCell(stylename=cell_style)
             tc.addElement(text.P(
                 stylename="Table Column Header",
-                #~ text=force_unicode(fld.field.verbose_name or fld.name)))
-                text=force_unicode(h)))
+                #~ text=force_text(fld.field.verbose_name or fld.name)))
+                text=force_text(h)))
             hr.addElement(tc)
 
         sums = [fld.zero for fld in columns]
