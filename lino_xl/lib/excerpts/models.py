@@ -23,6 +23,7 @@ Database models for `lino_xl.lib.excerpts`.
 
 from __future__ import unicode_literals
 from __future__ import print_function
+import six
 
 import logging
 logger = logging.getLogger(__name__)
@@ -512,7 +513,7 @@ class Excerpt(TypedPrintable, UserAuthored,
         return self.excerpt_type
 
     def get_mailable_subject(self):
-        return unicode(self.owner)  # .get_mailable_subject()
+        return six.text_type(self.owner)  # .get_mailable_subject()
 
     def get_template_groups(self):
         ptype = self.get_printable_type()
@@ -845,7 +846,7 @@ class ExcerptsByOwner(Excerpts):
 
     @classmethod
     def format_excerpt(self, ex):
-        return unicode(ex.excerpt_type)
+        return six.text_type(ex.excerpt_type)
 
 
 if settings.SITE.project_model is not None:
@@ -858,8 +859,8 @@ if settings.SITE.project_model is not None:
         @classmethod
         def format_excerpt(self, ex):
             if ex.owner == ex.project:
-                return unicode(ex.excerpt_type)
-            return unicode(ex.owner)
+                return six.text_type(ex.excerpt_type)
+            return six.text_type(ex.owner)
 
 
 @dd.receiver(dd.pre_analyze)
@@ -890,7 +891,7 @@ def set_excerpts_actions(sender, **kw):
                                # models that existed before but have
                                # been removed
                 an = atype.get_action_name()
-                m.define_action(**{an: CreateExcerpt(atype, unicode(atype))})
+                m.define_action(**{an: CreateExcerpt(atype, six.text_type(atype))})
                 # dd.logger.info("Added print action to %s", m)
 
                 # if atype.certifying and not issubclass(m, Certifiable):

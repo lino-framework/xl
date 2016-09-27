@@ -31,7 +31,7 @@ from django.conf import settings
 #~ from django.contrib.auth import models as auth
 #~ from django.contrib.sessions import models as sessions
 from django.contrib.contenttypes import models as contenttypes
-from django.utils.encoding import force_unicode
+from django.utils.encoding import force_text
 
 #~ from django import forms
 from django.db import models

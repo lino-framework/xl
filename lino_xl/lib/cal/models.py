@@ -22,6 +22,7 @@
 """
 
 from __future__ import unicode_literals
+import six
 
 import logging
 logger = logging.getLogger(__name__)
@@ -382,7 +383,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
         return self.event_type
 
     def update_cal_summary(self, i):
-        return unicode(self)
+        return six.text_type(self)
 
     def care_about_conflicts(self, we):
         """Recurrent events don't care about conflicts. A holiday won't move
