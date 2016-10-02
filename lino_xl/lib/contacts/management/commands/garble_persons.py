@@ -87,9 +87,10 @@ class EstonianDistribution(Distribution):
             t = PlaceTypes.township
             try:
                 p = Place.objects.get(type=t, name__iexact=linnaosa)
+                yield p, streetname
             except Place.DoesNotExist:
-                raise Exception("Unknown %s %r" % (t, linnaosa))
-            yield p, streetname
+                pass
+                # raise Exception("Unknown %s %r" % (t, linnaosa))
 
     def before_save(self, obj):
         if obj.country and obj.country.isocode == 'BE':
