@@ -511,7 +511,7 @@ class EventGenerator(UserAuthored):
         Event = settings.SITE.modules.cal.Event
         ar.info("Generating events between %s and %s.", date, until)
         with translation.override(self.get_events_language()):
-            while i < max_events:
+            while max_events is None or i < max_events:
                 if date > until:
                     ar.info("Reached upper date limit %s", until)
                     break

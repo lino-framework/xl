@@ -21,6 +21,7 @@
 """
 
 from __future__ import unicode_literals
+import six
 
 import logging
 logger = logging.getLogger(__name__)
@@ -105,7 +106,7 @@ class Household(contacts.Partner):
     def __str__(self):
         # if self.type:
         #     return u"%s %s" % (self.type, self.get_full_name())
-        return unicode(self.get_full_name())
+        return six.text_type(self.get_full_name())
 
     def get_name_elems(self, ar):
         elems = []

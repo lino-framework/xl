@@ -21,4 +21,5 @@ docs/api/lino_xl.*
 
 docs/warnings_html.txt
 .coverage
+.coverage.*
 .eggs

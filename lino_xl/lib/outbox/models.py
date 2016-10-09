@@ -38,7 +38,7 @@ from lino import mixins
 from lino.api import dd
 from lino.core import actions
 
-from lino.utils.html2text import html2text
+from lino.core.site import html2text
 from django.core.mail import EmailMultiAlternatives
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored

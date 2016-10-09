@@ -28,10 +28,21 @@
 
 from __future__ import unicode_literals
 
+import sys
+PY2 = sys.version_info[0] == 2
+PY3 = sys.version_info[0] == 3
+
+install_requires = ['lino']
+
+if PY2:
+    install_requires.append('appy')
+else:
+    install_requires.append('appypod')
+
 SETUP_INFO = dict(
     name='lino-xl',
     version='1.7.5',
-    install_requires=['lino', 'appy' ],
+    install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",
     license='BSD License',
@@ -39,24 +50,7 @@ SETUP_INFO = dict(
     author_email='luc.saffre@gmail.com',
     url="http://www.lino-framework.org",
     # ~ test_suite = 'lino_xl.test_apps',
-    test_suite='tests',
-    classifiers="""\
-  Programming Language :: Python
-  Programming Language :: Python :: 2
-  Development Status :: 5 - Production/Stable
-  Environment :: Web Environment
-  Framework :: Django
-  Intended Audience :: Developers
-  Intended Audience :: System Administrators
-  License :: OSI Approved :: BSD License
-  Natural Language :: English
-  Natural Language :: French
-  Natural Language :: German
-  Operating System :: OS Independent
-  Topic :: Database :: Front-Ends
-  Topic :: Home Automation
-  Topic :: Office/Business
-  Topic :: Software Development :: Libraries :: Application Frameworks""".splitlines())
+    test_suite='tests')
 
 SETUP_INFO.update(long_description="""
 
@@ -162,6 +156,24 @@ lino_xl.lib.topics
 lino_xl.lib.workflows
 lino_xl.lib.xl
 """.splitlines() if n])
+
+SETUP_INFO.update(classifiers="""\
+  Programming Language :: Python
+  Programming Language :: Python :: 2
+  Development Status :: 5 - Production/Stable
+  Environment :: Web Environment
+  Framework :: Django
+  Intended Audience :: Developers
+  Intended Audience :: System Administrators
+  License :: OSI Approved :: BSD License
+  Natural Language :: English
+  Natural Language :: French
+  Natural Language :: German
+  Operating System :: OS Independent
+  Topic :: Database :: Front-Ends
+  Topic :: Home Automation
+  Topic :: Office/Business
+  Topic :: Software Development :: Libraries :: Application Frameworks""".splitlines())
 
 SETUP_INFO.update(message_extractors={
     'lino_xl': [
