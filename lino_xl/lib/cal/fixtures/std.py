@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2016 Luc Saffre
-#
 # License: BSD (see file COPYING for details)
 
 """Installs standard values for :mod:`lino_xl.lib.cal`, including a
@@ -35,8 +34,12 @@ def objects():
     calendar = Instantiator('cal.Calendar').build
     general = calendar(**dd.str2kw('name', _("General")))
     yield general
-    settings.SITE.site_config.site_calendar = general
-    yield settings.SITE.site_config
+    # settings.SITE.site_config.site_calendar = general
+    settings.SITE.site_config.update(
+        site_calendar=general,
+        hide_events_before=dd.demo_date().replace(month=4, day=1))
+    
+    # yield settings.SITE.site_config
 
     event_type = Instantiator('cal.EventType').build
     holidays = event_type(
