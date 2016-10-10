@@ -734,6 +734,12 @@ class Events(dd.Table):
         if row.start_date == settings.SITE.today():
             td.attrib.update(bgcolor="#bbbbbb")
 
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(Events, self).param_defaults(ar, **kw)
+        kw.update(start_date=settings.SITE.site_config.hide_events_before)
+        return kw
+
 
 class EventsByType(Events):
     master_key = 'event_type'

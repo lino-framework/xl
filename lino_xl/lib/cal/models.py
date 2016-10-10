@@ -999,13 +999,15 @@ dd.inject_field(settings.SITE.user_model,
         help_text=_("""The default event type for your calendar events.""")
                 ))
 
-dd.inject_field('system.SiteConfig',
-                'default_event_type',
-                models.ForeignKey('cal.EventType',
-                                  blank=True, null=True,
-                                  verbose_name=_("Default Event Type"),
+dd.inject_field(
+    'system.SiteConfig',
+    'default_event_type',
+    models.ForeignKey(
+        'cal.EventType',
+        blank=True, null=True,
+        verbose_name=_("Default Event Type"),
         help_text=_("""The default type of events on this site.""")
-                ))
+    ))
 
 dd.inject_field(
     'system.SiteConfig',
@@ -1025,6 +1027,16 @@ dd.inject_field(
         blank=True, null=True,
         help_text=_(
             """Maximum number of automatic events to be generated.""")
+    ))
+
+dd.inject_field(
+    'system.SiteConfig',
+    'hide_events_before',
+    models.DateField(
+        _("Hide events before"),
+        blank=True, null=True,
+        help_text=_("""If this is specified, certain tables show only 
+events after the given date.""")
     ))
 
 
