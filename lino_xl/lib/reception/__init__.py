@@ -36,8 +36,8 @@ class Plugin(ad.Plugin):
     This is overridden by Lino Welfare to include "coaching".
 
     This way of configuring permissions is an example for why it would
-    be useful to replace user groups by a UserProfile class (and to
-    populate UserProfiles with subclasses of it).
+    be useful to replace user groups by a UserType class (and to
+    populate UserTypes with subclasses of it).
 
     """
 
