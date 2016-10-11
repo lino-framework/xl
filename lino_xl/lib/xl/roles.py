@@ -4,7 +4,7 @@
 
 """Defines a default set of user roles for Lino XL applications.
 
-See also :attr:`lino.core.site.Site.user_profiles_module`.
+See also :attr:`lino.core.site.Site.user_types_module`.
 
 """
 
@@ -21,9 +21,9 @@ class SiteAdmin(SiteAdmin, OfficeStaff):
 
 
 from django.utils.translation import ugettext_lazy as _
-from lino.modlib.users.choicelists import UserProfiles
-UserProfiles.clear()
-add = UserProfiles.add_item
+from lino.modlib.users.choicelists import UserTypes
+UserTypes.clear()
+add = UserTypes.add_item
 add('000', _("Anonymous"), UserRole, name='anonymous', readonly=True)
 add('100', _("User"), SiteUser, name='user')
 add('900', _("Administrator"), SiteAdmin, name='admin')
