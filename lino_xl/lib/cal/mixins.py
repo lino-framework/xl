@@ -498,9 +498,6 @@ class EventGenerator(UserAuthored):
         ar.info("Generating events between %s and %s.", date, until)
         with translation.override(self.get_events_language()):
             while max_events is None or i < max_events:
-                if date > until:
-                    ar.info("Reached upper date limit %s", until)
-                    break
                 i += 1
                 if dd.plugins.cal.ignore_dates_before is None or \
                    date >= dd.plugins.cal.ignore_dates_before:
@@ -518,6 +515,9 @@ class EventGenerator(UserAuthored):
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
                         return wanted
+                    if date > until:
+                        ar.info("Reached upper date limit %s", until)
+                        break
                     wanted[i] = we
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
@@ -563,10 +563,11 @@ class EventGenerator(UserAuthored):
         return True
 
     def resolve_conflicts(self, we, ar, rset, until):
-        """
-        Check whether given event conflicts with other events and move it
-        to a new date if necessary. Returns the new date, or None if
-        no alternative could be found.
+        """Check whether given event conflicts with other events and move it
+        to a new date if necessary. Returns (a) the event's start_date
+        if there is no conflict, (b) the next available alternative
+        date, or (c) None if no alternative could be found.
+
         """
     
         date = we.start_date
