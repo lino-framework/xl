@@ -368,14 +368,14 @@ class EventGenerator(UserAuthored):
         qs = self.get_existing_auto_events()
         qs = qs.order_by('start_date', 'start_time', 'auto_type')
         wanted = self.get_wanted_auto_events(ar)
-        # dd.logger.info("20160518 get_wanted_auto_events() returned %s", wanted)
+        # dd.logger.info("20161015 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
         # current = 0
 
-        #~ msg = dd.obj2str(self)
-        #~ msg += ", qs=" + str([e.auto_type for e in qs])
-        #~ msg += ", wanted=" + str([dbutils.dtos(e.start_date) for e in wanted.values()])
-        #~ logger.info('20130528 ' + msg)
+        msg = dd.obj2str(self)
+        msg += ", qs=" + str([e.auto_type for e in qs])
+        msg += ", wanted=" + str([dd.fds(e.start_date) for e in wanted.values()])
+        dd.logger.info('20161015 ' + msg)
 
         for e in qs:
             ae = wanted.pop(e.auto_type, None)
@@ -567,7 +567,9 @@ class EventGenerator(UserAuthored):
         """Check whether given event conflicts with other events and move it
         to a new date if necessary. Returns (a) the event's start_date
         if there is no conflict, (b) the next available alternative
-        date, or (c) None if no alternative could be found.
+        date if the event conflicts with other existing events and
+        should be moved, or (c) None if there are conflicts but no
+        alternative date could be found.
 
         """
     
