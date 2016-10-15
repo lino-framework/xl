@@ -374,7 +374,9 @@ class EventGenerator(UserAuthored):
 
         msg = dd.obj2str(self)
         msg += ", qs=" + str([e.auto_type for e in qs])
-        msg += ", wanted=" + str([dd.fds(e.start_date) for e in wanted.values()])
+        msg += ", wanted=" + ', '.join([
+            "{}:{}".format(e.auto_type, dd.fds(e.start_date))
+            for e in wanted.values()])
         dd.logger.info('20161015 ' + msg)
 
         for e in qs:
