@@ -368,14 +368,16 @@ class EventGenerator(UserAuthored):
         qs = self.get_existing_auto_events()
         qs = qs.order_by('start_date', 'start_time', 'auto_type')
         wanted = self.get_wanted_auto_events(ar)
-        # dd.logger.info("20160518 get_wanted_auto_events() returned %s", wanted)
+        # dd.logger.info("20161015 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
         # current = 0
 
-        #~ msg = dd.obj2str(self)
-        #~ msg += ", qs=" + str([e.auto_type for e in qs])
-        #~ msg += ", wanted=" + str([dbutils.dtos(e.start_date) for e in wanted.values()])
-        #~ logger.info('20130528 ' + msg)
+        # msg = dd.obj2str(self)
+        # msg += ", qs=" + str([e.auto_type for e in qs])
+        # msg += ", wanted=" + ', '.join([
+        #     "{}:{}".format(e.auto_type, dd.fds(e.start_date))
+        #     for e in wanted.values()])
+        # dd.logger.info('20161015 ' + msg)
 
         for e in qs:
             ae = wanted.pop(e.auto_type, None)
@@ -495,9 +497,13 @@ class EventGenerator(UserAuthored):
         max_events = rset.max_events or \
             settings.SITE.site_config.max_auto_events
         Event = settings.SITE.modules.cal.Event
-        ar.info("Generating events between %s and %s.", date, until)
+        ar.info("Generating events between %s and %s (max. %s).",
+                date, until, max_events)
         with translation.override(self.get_events_language()):
             while max_events is None or i < max_events:
+                if date > until:
+                    ar.info("Reached upper date limit %s", until)
+                    break
                 i += 1
                 if dd.plugins.cal.ignore_dates_before is None or \
                    date >= dd.plugins.cal.ignore_dates_before:
@@ -515,9 +521,6 @@ class EventGenerator(UserAuthored):
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
                         return wanted
-                    if date > until:
-                        ar.info("Reached upper date limit %s", until)
-                        break
                     wanted[i] = we
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
@@ -563,10 +566,15 @@ class EventGenerator(UserAuthored):
         return True
 
     def resolve_conflicts(self, we, ar, rset, until):
-        """Check whether given event conflicts with other events and move it
-        to a new date if necessary. Returns (a) the event's start_date
-        if there is no conflict, (b) the next available alternative
-        date, or (c) None if no alternative could be found.
+        """Check whether given event `we` conflicts with other events and move
+        it to a new date if necessary. Returns (a) the event's
+        start_date if there is no conflict, (b) the next available
+        alternative date if the event conflicts with other existing
+        events and should be moved, or (c) None if there are conflicts
+        but no alternative date could be found.
+
+        `ar` is the action request who asks for this.
+        `rset` is the `RecurrenceSet`.
 
         """
     
