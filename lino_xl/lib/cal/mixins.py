@@ -372,12 +372,12 @@ class EventGenerator(UserAuthored):
         count = len(wanted)
         # current = 0
 
-        msg = dd.obj2str(self)
-        msg += ", qs=" + str([e.auto_type for e in qs])
-        msg += ", wanted=" + ', '.join([
-            "{}:{}".format(e.auto_type, dd.fds(e.start_date))
-            for e in wanted.values()])
-        dd.logger.info('20161015 ' + msg)
+        # msg = dd.obj2str(self)
+        # msg += ", qs=" + str([e.auto_type for e in qs])
+        # msg += ", wanted=" + ', '.join([
+        #     "{}:{}".format(e.auto_type, dd.fds(e.start_date))
+        #     for e in wanted.values()])
+        # dd.logger.info('20161015 ' + msg)
 
         for e in qs:
             ae = wanted.pop(e.auto_type, None)
@@ -566,12 +566,15 @@ class EventGenerator(UserAuthored):
         return True
 
     def resolve_conflicts(self, we, ar, rset, until):
-        """Check whether given event conflicts with other events and move it
-        to a new date if necessary. Returns (a) the event's start_date
-        if there is no conflict, (b) the next available alternative
-        date if the event conflicts with other existing events and
-        should be moved, or (c) None if there are conflicts but no
-        alternative date could be found.
+        """Check whether given event `we` conflicts with other events and move
+        it to a new date if necessary. Returns (a) the event's
+        start_date if there is no conflict, (b) the next available
+        alternative date if the event conflicts with other existing
+        events and should be moved, or (c) None if there are conflicts
+        but no alternative date could be found.
+
+        `ar` is the action request who asks for this.
+        `rset` is the `RecurrenceSet`.
 
         """
     
