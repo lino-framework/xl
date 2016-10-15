@@ -495,9 +495,13 @@ class EventGenerator(UserAuthored):
         max_events = rset.max_events or \
             settings.SITE.site_config.max_auto_events
         Event = settings.SITE.modules.cal.Event
-        ar.info("Generating events between %s and %s.", date, until)
+        ar.info("Generating events between %s and %s (max. %s).",
+                date, until, max_events)
         with translation.override(self.get_events_language()):
             while max_events is None or i < max_events:
+                if date > until:
+                    ar.info("Reached upper date limit %s", until)
+                    break
                 i += 1
                 if dd.plugins.cal.ignore_dates_before is None or \
                    date >= dd.plugins.cal.ignore_dates_before:
@@ -515,9 +519,6 @@ class EventGenerator(UserAuthored):
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
                         return wanted
-                    if date > until:
-                        ar.info("Reached upper date limit %s", until)
-                        break
                     wanted[i] = we
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
