@@ -367,7 +367,18 @@ class EventGenerator(UserAuthored):
             return 0
         qs = self.get_existing_auto_events()
         qs = qs.order_by('start_date', 'start_time', 'auto_type')
-        wanted = self.get_wanted_auto_events(ar)
+        
+        # find the event before the first unmodified event
+        event_no = 0
+        date = None
+        for e in qs:
+            if e.is_user_modified():
+                date = e.start_date
+                event_no = e.auto_type
+            else:
+                break
+                
+        wanted = self.get_wanted_auto_events(ar, date, event_no)
         # dd.logger.info("20161015 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
         # current = 0
@@ -379,7 +390,7 @@ class EventGenerator(UserAuthored):
         #     for e in wanted.values()])
         # dd.logger.info('20161015 ' + msg)
 
-        for e in qs:
+        for e in qs.filter(auto_type__gt=event_no):
             ae = wanted.pop(e.auto_type, None)
             if ae is None:
                 # there is an unwanted event in the database
@@ -460,7 +471,7 @@ class EventGenerator(UserAuthored):
         """
         pass
 
-    def get_wanted_auto_events(self, ar):
+    def get_wanted_auto_events(self, ar, date=None, event_no=0):
         """Return a dict which maps sequence number to AttrDict instances
         which hold the wanted event.
 
@@ -479,10 +490,11 @@ class EventGenerator(UserAuthored):
         if not rset.every_unit:
             ar.info("No every_unit")
             return wanted
-        date = self.update_cal_from(ar)
-        if not date:
-            ar.info("No start date")
-            return wanted
+        if date is None:
+            date = self.update_cal_from(ar)
+            if not date:
+                ar.info("No start date")
+                return wanted
         # ar.debug("20140310a %s", date)
         date = rset.find_start_date(date)
         # ar.debug("20140310b %s", date)
@@ -493,26 +505,25 @@ class EventGenerator(UserAuthored):
             or dd.plugins.cal.ignore_dates_after
         if until is None:
             raise Exception("ignore_dates_after may not be None")
-        i = 0
         max_events = rset.max_events or \
             settings.SITE.site_config.max_auto_events
         Event = settings.SITE.modules.cal.Event
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
         with translation.override(self.get_events_language()):
-            while max_events is None or i < max_events:
+            while max_events is None or event_no < max_events:
                 if date > until:
                     ar.info("Reached upper date limit %s", until)
                     break
-                i += 1
+                event_no += 1
                 if dd.plugins.cal.ignore_dates_before is None or \
                    date >= dd.plugins.cal.ignore_dates_before:
                     we = Event(
-                        auto_type=i,
+                        auto_type=event_no,
                         user=self.user,
                         start_date=date,
-                        summary=self.update_cal_summary(i),
-                        room=self.update_cal_room(i),
+                        summary=self.update_cal_summary(event_no),
+                        room=self.update_cal_room(event_no),
                         owner=self,
                         event_type=event_type,
                         start_time=rset.start_time,
@@ -521,7 +532,7 @@ class EventGenerator(UserAuthored):
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
                         return wanted
-                    wanted[i] = we
+                    wanted[event_no] = we
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
                 if date is None:
