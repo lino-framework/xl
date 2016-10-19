@@ -14,12 +14,6 @@ Model mixins for `lino_xl.lib.cal`.
 from __future__ import unicode_literals
 from builtins import str
 
-import datetime
-try:
-    import pytz
-except ImportError:
-    pytz = None
-
 from django.conf import settings
 from django.db import models
 from django.utils import translation
@@ -33,15 +27,16 @@ from lino.api import dd, rt
 from lino.utils import ONE_DAY
 from lino.utils.quantities import Duration
 from lino.utils.xmlgen.html import E
+from lino.mixins.periods import Started, Ended
 
-from .choicelists import Recurrencies, Weekdays, AccessClasses
-
-from .workflows import EventStates
 from lino.modlib.office.roles import OfficeStaff
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
 
+from .choicelists import Recurrencies, Weekdays, AccessClasses
+
+from .workflows import EventStates
 
 def format_time(t):
     if t is None:
@@ -58,166 +53,6 @@ def daterange_text(a, b):
     if b:
         d.update(max=b.strftime(settings.SITE.date_format_strftime))
     return _("Dates %(min)s to %(max)s") % d
-
-
-class Started(dd.Model):
-    """Mixin for models with two fields :attr:`start_date` and
-    :attr:`start_time`
-
-    .. attribute:: start_date
-    .. attribute:: start_time
-
-    """
-    class Meta:
-        abstract = True
-
-    start_date = models.DateField(
-        blank=True, null=True,
-        verbose_name=_("Start date"))  # iCal:DTSTART
-    start_time = models.TimeField(
-        blank=True, null=True,
-        verbose_name=_("Start time"))  # iCal:DTSTART
-    #~ start = dd.FieldSet(_("Start"),'start_date start_time')
-
-    def save(self, *args, **kw):
-        """
-        Fills default value "today" to start_date
-        """
-        if not self.start_date:
-            self.start_date = settings.SITE.today()
-        super(Started, self).save(*args, **kw)
-
-    def get_timezone(self):
-        """May get overridden to return the author's timezone."""
-        return settings.TIME_ZONE
-
-    def set_datetime(self, name, value):
-        """
-        Given a datetime `value`, update the two corresponding fields
-        `FOO_date` and `FOO_time` (where FOO is specified in `name` which
-        must be either "start" or "end").
-        """
-        if settings.USE_TZ and is_aware(value):
-            tz = pytz.timezone(self.get_timezone())
-            # dd.logger.info("20151128 set_datetime(%r, %r)", value, tz)
-            value = value.astimezone(tz)
-            # value = tz.localize(value)
-        setattr(self, name + '_date', value.date())
-        t = value.time()
-        if not t:
-            t = None
-        setattr(self, name + '_time', t)
-
-    def get_datetime(self, name, altname=None):
-        """
-        Return a `datetime` value from the two corresponding
-        date and time fields.
-
-        `name` can be 'start' or 'end'.
-        """
-        d = getattr(self, name + '_date')
-        t = getattr(self, name + '_time')
-        if not d and altname is not None:
-            d = getattr(self, altname + '_date')
-            if not t and altname is not None:
-                t = getattr(self, altname + '_time')
-        if not d:
-            return None
-        if t:
-            dt = datetime.datetime.combine(d, t)
-        else:
-            dt = datetime.datetime(d.year, d.month, d.day)
-        if settings.USE_TZ:
-            tz = pytz.timezone(self.get_timezone())
-            # dd.logger.info("20151128 get_datetime() %r %r", dt, tz)
-            dt = tz.localize(dt)
-        return dt
-
-
-class Ended(dd.Model):
-    """Models inheriing from Ended must also inherit from Started"""
-    class Meta:
-        abstract = True
-    end_date = models.DateField(
-        blank=True, null=True,
-        verbose_name=_("End Date"))
-    end_time = models.TimeField(
-        blank=True, null=True,
-        verbose_name=_("End Time"))
-    #~ end = dd.FieldSet(_("End"),'end_date end_time')
-
-    def get_duration(self):
-
-        if not self.start_date:
-            return None
-        if not self.start_time:
-            return None
-        if not self.end_time:
-            return None
-
-        ed = self.end_date or self.start_date
-
-        st = datetime.datetime.combine(self.start_date, self.start_time)
-        et = datetime.datetime.combine(ed, self.end_time)
-
-        if et < st:
-            return None  # negative duration not supported
-        # print 20151127, repr(et), repr(st)
-        return Duration(et - st)
-
-    @dd.virtualfield(dd.QuantityField(_("Duration")))
-    def duration(self, ar):
-        return self.get_duration()
-
-
-# class StartedEnded(Started, Ended):
-#     """Model mixin for things that have both a start_time and an end_time.
-
-#     """
-#     class Meta:
-#         abstract = True
-
-    # def save(self, *args, **kw):
-    #     """
-    #     Fills default value end_date
-    #     """
-    #     if self.end_time and not self.end_date:
-    #         self.end_date = self.start_date
-    #     super(Ended, self).save(*args, **kw)
-
-    # @dd.virtualfield(models.TimeField(_("Duration")))
-    # def duration(self, ar):
-    #     return datetime.time(self.get_duration())
-
-
-# @dd.python_2_unicode_compatible
-# class StartedSummaryDescription(Started):
-
-#     """
-#     """
-
-#     class Meta:
-#         abstract = True
-
-#     # iCal:SUMMARY
-#     summary = models.CharField(_("Summary"), max_length=200, blank=True)
-#     description = dd.RichTextField(
-#         _("Description"),
-#         blank=True,
-#         format='plain')
-#         # format='html')
-
-#     def __str__(self):
-#         return self._meta.verbose_name + " #" + str(self.pk)
-
-#     def summary_row(self, ar, **kw):
-#         elems = list(super(StartedSummaryDescription, self)
-#                      .summary_row(ar, **kw))
-
-#         if self.summary:
-#             elems.append(': %s' % self.summary)
-#         elems += [_(" on "), dd.dtos(self.start_date)]
-#         return elems
 
 
 class MoveEventNext(dd.MultipleRowAction):

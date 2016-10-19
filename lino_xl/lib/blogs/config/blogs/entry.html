@@ -1,0 +1,14 @@
+<h2>{{obj.title}}</h2>
+
+{{ar.parse_memo(obj.body)}}
+
+<p><small><small>
+{{fdf(obj.pub_date)}} by {{obj.user}}
+{% set sep = joiner(", ") %}
+{% if obj.tags_by_entry.count() %}
+Topics:
+{% for t in obj.tags_by_entry.all() -%}
+{{ sep() }}<a href="#">{{t.topic}}</a>
+{%- endfor %}
+{% endif %}
+</small></small></p>
