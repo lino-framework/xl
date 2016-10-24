@@ -76,9 +76,6 @@ Event."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.mixins.Started' : _("""Mixin for models with two fields start_date and
-start_time"""),
-    'lino_xl.lib.cal.mixins.Ended' : _("""Models inheriing from Ended must also inherit from Started"""),
     'lino_xl.lib.cal.mixins.UpdateEvents' : _("""This is installed as update_events on
 EventGenerator."""),
     'lino_xl.lib.cal.mixins.UpdateEventsByEvent' : _("""Update all events of this series. This is installed as

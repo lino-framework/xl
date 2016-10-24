@@ -2,17 +2,21 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""This plugin installs a series of build methods for generating
-printable documents using LibreOffice.
+"""This plugin adds a series of build methods for generating printable
+documents using LibreOffice.
 
-These build methods require a running LibreOffice server (see
+It also adds a generic button to "print" *any* table into PDF using
+LibreOffice.  If :mod:`lino_xl.lib.contacts` (or a child thereof) is
+installed, it adds a :class:`PrintLabelsAction
+<lino_xl.lib.appypod.mixins.PrintLabelsAction>`.
+
+Using these build methods requires a running LibreOffice server (see
 :ref:`admin.oood`).  Compared to the built-in methods
 :class:`WeasyBuildMethod
 <lino.modlib.weasyprint.choicelists.WeasyBuildMethod>` and the (now
 deprecated) :class:`PisaBuildMethod
-<lino.modlib.printing.choicelists.PisaBuildMethod>`, this has the
-disadvantage of requiring more effort to get started, but it has
-several advantages:
+<lino.modlib.printing.choicelists.PisaBuildMethod>`, this has several
+advantages:
 
 - Can be used to produce editable files (`.rtf` or `.odt`) from the
   same `.odt` template.
@@ -21,12 +25,9 @@ several advantages:
 - Templates are `.odt` files (not `.html`), meaning that end-users
   dare to edit them more easily.
 
-This plugin also adds a generic button to "print" *any* table into PDF
-using LibreOffice.
+See also :ref:`lino.admin.appypod`.
 
-If `contacts` is installed, it also installs a
-:class:`PrintLabelsAction
-<lino_xl.lib.appypod.mixins.PrintLabelsAction>`.
+.. rubric:: Templates
 
 .. xfile:: appypod/Table.odt
 
@@ -40,8 +41,31 @@ If `contacts` is installed, it also installs a
 
     Template used to print address labels.
 
+.. rubric:: Glossary
 
-Usage see also :ref:`lino.admin.appypod`.
+.. glossary::
+  :sorted:
+  
+  ODFPy
+    A Python library for manipulating OpenDocument documents 
+    (.odt, .ods, .odp, ...): 
+    read existing files, modify, create new files from scratch.
+    Read more on `PyPI <http://pypi.python.org/pypi/odfpy>`_.
+    Project home page https://joinup.ec.europa.eu/software/odfpy
+
+  appy.pod 
+
+    A nice tool for generating pdf and other formats, including .odt
+    or .doc) from .odt templates.  See
+    http://appyframework.org/pod.html
+  
+  appypod
+
+    As long as :term:`appy.pod` does not support Python 3, we use
+    `Stefan Klug's Python 3 port
+    <https://libraries.io/github/stefanklug/appypod>`_.
+
+.. rubric:: Modules in this package
 
 .. autosummary::
    :toctree:
