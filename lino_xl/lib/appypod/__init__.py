@@ -53,14 +53,12 @@ See also :ref:`lino.admin.appypod`.
     Read more on `PyPI <http://pypi.python.org/pypi/odfpy>`_.
     Project home page https://joinup.ec.europa.eu/software/odfpy
 
-  appy.pod 
-
+  appy.pod
     A nice tool for generating pdf and other formats, including .odt
     or .doc) from .odt templates.  See
     http://appyframework.org/pod.html
   
   appypod
-
     As long as :term:`appy.pod` does not support Python 3, we use
     `Stefan Klug's Python 3 port
     <https://libraries.io/github/stefanklug/appypod>`_.
