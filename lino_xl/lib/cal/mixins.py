@@ -190,30 +190,13 @@ class EventGenerator(UserAuthored):
         return self.update_auto_events(ar)
 
     def update_auto_events(self, ar):
-        """
-        Generate automatic calendar events owned by this contract.
-
-        If one event has been manually rescheduled, all following
-        events adapt to the new rythm.
+        """Generate automatic calendar events owned by this contract.
 
         """
         if settings.SITE.loading_from_dump:
             #~ print "20111014 loading_from_dump"
             return 0
-        qs = self.get_existing_auto_events()
-        qs = qs.order_by('start_date', 'start_time', 'auto_type')
-        
-        # find the event before the first unmodified event
-        event_no = 0
-        date = None
-        for e in qs:
-            if e.is_user_modified():
-                date = e.start_date
-                event_no = e.auto_type
-            else:
-                break
-                
-        wanted = self.get_wanted_auto_events(ar, date, event_no)
+        wanted, unwanted = self.get_wanted_auto_events(ar)
         # dd.logger.info("20161015 get_wanted_auto_events() returned %s", wanted)
         count = len(wanted)
         # current = 0
@@ -225,38 +208,16 @@ class EventGenerator(UserAuthored):
         #     for e in wanted.values()])
         # dd.logger.info('20161015 ' + msg)
 
-        for e in qs.filter(auto_type__gt=event_no):
-            ae = wanted.pop(e.auto_type, None)
-            if ae is None:
-                # there is an unwanted event in the database
-                if not e.is_user_modified():
-                    e.delete()
-                #~ else:
-                    #~ e.auto_type = None
-                    #~ e.save()
-            elif e.is_user_modified():
-                if e.start_date != ae.start_date:
-                    subsequent = ', '.join([str(x.auto_type)
-                                           for x in wanted.values()])
-                    delta = e.start_date - ae.start_date
-                    ar.debug(
-                        "%d has been moved from %s to %s: "
-                        "move subsequent dates (%s) by %s"
-                        % (
-                            e.auto_type, ae.start_date,
-                            e.start_date, subsequent, delta))
-                    for se in wanted.values():
-                        # ov = se.start_date
-                        se.start_date += delta
-                        # ar.debug("%d : %s -> %s" % (
-                        #     se.auto_type, ov, se.start_date))
-            else:
-                self.compare_auto_event(e, ae)
+        for ee in unwanted.values():
+            if not ee.is_user_modified():
+                ee.delete()
+                count += 1
+
         # create new Events for remaining wanted
-        for ae in wanted.values():
-            self.before_auto_event_save(ae)
-            ae.save()
-            ae.after_ui_create(ar)
+        for we in wanted.values():
+            self.before_auto_event_save(we)
+            we.save()
+            we.after_ui_create(ar)
         #~ logger.info("20130528 update_auto_events done")
         return count
 
@@ -306,36 +267,97 @@ class EventGenerator(UserAuthored):
         """
         pass
 
-    def get_wanted_auto_events(self, ar, date=None, event_no=0):
-        """Return a dict which maps sequence number to AttrDict instances
-        which hold the wanted event.
+    def get_wanted_auto_events(self, ar):
+        """Return a tuple of two dicts of "wanted" and "unwanted" events.
 
+        Both dicts map a sequence number to an Event instances.
+        `wanted` holds events to be saved,
+        `unwanted` holds events to be deleted.
+
+        If an event has been manually moved to another date, all
+        subsequent events adapt to the new rythm (except those which
+        have themselves been manually modified).
+                        
         """
+
         wanted = dict()
+        unwanted = dict()
         event_type = self.update_cal_event_type()
         if event_type is None:
             ar.info("No event_type")
-            return wanted
+            return wanted, unwanted
         rset = self.update_cal_rset()
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
         if rset is None:
             ar.info("No recurrency set")
-            return wanted
+            return wanted, unwanted
         if not rset.every_unit:
             ar.info("No every_unit")
-            return wanted
+            return wanted, unwanted
+        
+        qs = self.get_existing_auto_events()
+        qs = qs.order_by('start_date', 'start_time', 'auto_type')
+        
+        # Find the existing event before the first unmodified
+        # event. This is where the algorithm will start.
+        event_no = 0
+        date = None
+        for ee in qs:
+            if ee.is_user_modified():
+                date = ee.start_date
+                event_no = ee.auto_type
+            else:
+                break
+        if event_no is not None:
+            qs = qs.filter(auto_type__gt=event_no)
+
         if date is None:
             date = self.update_cal_from(ar)
             if not date:
                 ar.info("No start date")
-                return wanted
+                return wanted, unwanted
+
+        # Loop over existing events to fill the unwanted dict. In the
+        # beginning all existing events are unwanted. Afterwards we
+        # will pop wanted events from this dict.
+        
+        for ee in qs:
+            unwanted[ee.auto_type] = ee
+            
+            # we = wanted.pop(ee.auto_type, None)
+            # if we is None:
+            #     # there is an unwanted event in the database
+            #     if not ee.is_user_modified():
+            #         unwanted.add(ee)
+            #     #~ else:
+            #         #~ e.auto_type = None
+            #         #~ e.save()
+            # elif ee.is_user_modified():
+            #     if ee.start_date != we.start_date:
+            #         subsequent = ', '.join([str(x.auto_type)
+            #                                for x in wanted.values()])
+            #         delta = ee.start_date - we.start_date
+            #         ar.debug(
+            #             "%d has been moved from %s to %s: "
+            #             "move subsequent dates (%s) by %s"
+            #             % (
+            #                 ee.auto_type, we.start_date,
+            #                 ee.start_date, subsequent, delta))
+            #         for se in wanted.values():
+            #             # ov = se.start_date
+            #             se.start_date += delta
+            #             # ar.debug("%d : %s -> %s" % (
+            #             #     se.auto_type, ov, se.start_date))
+            # else:
+            #     self.compare_auto_event(ee, we)
+
         # ar.debug("20140310a %s", date)
         date = rset.find_start_date(date)
         # ar.debug("20140310b %s", date)
         if date is None:
             ar.info("No available start date.")
-            return wanted
+            return wanted, unwanted
         until = self.update_cal_until() \
             or dd.plugins.cal.ignore_dates_after
         if until is None:
@@ -345,14 +367,14 @@ class EventGenerator(UserAuthored):
         Event = settings.SITE.modules.cal.Event
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
+        ignore_before = dd.plugins.cal.ignore_dates_before
         with translation.override(self.get_events_language()):
             while max_events is None or event_no < max_events:
                 if date > until:
                     ar.info("Reached upper date limit %s", until)
                     break
                 event_no += 1
-                if dd.plugins.cal.ignore_dates_before is None or \
-                   date >= dd.plugins.cal.ignore_dates_before:
+                if ignore_before is None or date >= ignore_before:
                     we = Event(
                         auto_type=event_no,
                         user=self.user,
@@ -366,14 +388,24 @@ class EventGenerator(UserAuthored):
                     self.setup_auto_event(we)
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
-                        return wanted
-                    wanted[event_no] = we
+                        return wanted, unwanted
+                    ee = unwanted.pop(event_no, None)
+                    if ee is None:
+                        wanted[event_no] = we
+                    elif ee.is_user_modified():
+                        ar.debug(
+                            "%s has been moved from %s to %s."
+                            % (ee.summary, date, ee.start_date))
+                        date = ee.start_date
+
+                    else:
+                        self.compare_auto_event(ee, we)
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
                 if date is None:
                     ar.info("Could not find next date.")
                     break
-        return wanted
+        return wanted, unwanted
 
     def move_event_next(self, we, ar):
         """Move the specified event to the next date in this series."""
@@ -432,7 +464,7 @@ class EventGenerator(UserAuthored):
             qs = we.get_conflicting_events()
             date = rset.get_next_alt_date(ar, date)
             ar.debug("%s wants %s but conflicts with %s, moving to %s. ",
-                     we, we.start_date, we.get_conflicting_events(), date)
+                     we.summary, we.start_date, we.get_conflicting_events(), date)
             if date is None or date > until:
                 ar.debug(
                     "Failed to get next date for %s (%s > %s).",
