@@ -55,8 +55,7 @@ from lino_xl.lib.cal.workflows import GuestStates, EventStates
 from lino.modlib.notify.actions import NotifyingAction
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 
-# lino_xl.lib.reception requires the `feedback` workflow. Before
-# adding new GuestStates, make sure that
+# Before adding new GuestStates, make sure that
 # `lino_xl.lib.cal.workflows.feedback` has been imported because this
 # will clear GuestStates
 
@@ -66,6 +65,13 @@ add = GuestStates.add_item
 add('44', _("Waiting"), 'waiting')
 add('45', _("Busy"), 'busy')
 add('46', _("Gone"), 'gone')
+
+# GuestStates.excused.add_transition(
+#     required_states='invited accepted absent gone')
+# GuestStates.absent.add_transition(
+#     required_states='invited accepted excused gone')
+# GuestStates.present.add_transition(
+#     required_states='invited accepted gone')
 
 
 #~ add = GuestStates.add_item
@@ -297,20 +303,29 @@ class CheckoutVisitor(MyVisitorAction):
         ar.confirm(ok, msg, _("Are you sure?"))
 
 
-@dd.receiver(dd.pre_analyze)
-def my_guest_workflows(sender=None, **kw):
-    Guest = rt.modules.cal.Guest
+# dd.update_model(
+#     'cal.Guest',
 
-    Guest.checkin = CheckinVisitor(sort_index=100)
-    Guest.receive = ReceiveVisitor(sort_index=101)
-    Guest.checkout = CheckoutVisitor(sort_index=102)
+dd.inject_action(
+    'cal.Guest',
+    checkin=CheckinVisitor(sort_index=100),
+    receive=ReceiveVisitor(sort_index=101),
+    checkout=CheckoutVisitor(sort_index=102))
 
-    GuestStates.excused.add_transition(
-        required_states='invited accepted absent')
-    GuestStates.absent.add_transition(
-        required_states='accepted excused')
-    GuestStates.present.add_transition(
-        required_states='invited accepted')
+# @dd.receiver(dd.pre_analyze)
+# def my_guest_workflows(sender=None, **kw):
+#     Guest = rt.modules.cal.Guest
+
+#     Guest.checkin = CheckinVisitor(sort_index=100)
+#     Guest.receive = ReceiveVisitor(sort_index=101)
+#     Guest.checkout = CheckoutVisitor(sort_index=102)
+
+#     GuestStates.excused.add_transition(
+#         required_states='invited accepted absent')
+#     GuestStates.absent.add_transition(
+#         required_states='accepted excused')
+#     GuestStates.present.add_transition(
+#         required_states='invited accepted')
 
 
 class AppointmentsByPartner(dd.Table):

@@ -25,7 +25,7 @@ from lino.api import dd
 from ..workflows import EventStates, GuestStates
 
 add = EventStates.add_item
-add('40', _("Published"), 'published', edit_guests=True)
+add('40', _("Notified"), 'published', edit_guests=True)
 
 
 GuestStates.clear()
@@ -36,7 +36,6 @@ add('30', _("Rejected"), 'rejected')
 add('40', _("Present"), 'present', afterwards=True)
 add('50', _("Absent"), 'absent', afterwards=True)
 add('60', _("Excused"), 'excused', afterwards=True)
-
 
 class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
 
@@ -78,8 +77,8 @@ class AcceptInvitation(InvitationFeedback):
 
 class MarkPresent(dd.ChangeStateAction):
     label = _("Present")
-    help_text = _("Mark this guest as present.")
-    required_states = 'invited accepted'
+    help_text = _("Mark this participant as present.")
+    # required_states = 'invited accepted'
 
     def get_action_permission(self, ar, obj, state):
         if not super(MarkPresent, self).get_action_permission(ar, obj, state):
@@ -89,18 +88,13 @@ class MarkPresent(dd.ChangeStateAction):
 
 class MarkAbsent(MarkPresent):
     label = _("Absent")
-    help_text = _("Mark this guest as absent.")
+    help_text = _("Mark this participant as absent.")
+
+class MarkExcused(MarkPresent):
+    label = _("Excused")
+    help_text = _("Mark this participant as excused.")
 
 
-@dd.receiver(dd.pre_analyze)
-def gueststates_workflow(sender=None, **kw):
-    """
-    A Guest can be marked absent or present only for events that took place
-    """
-    GuestStates.accepted.add_transition(AcceptInvitation)
-    GuestStates.rejected.add_transition(RejectInvitation)
-    GuestStates.rejected.add_transition(MarkPresent)
-    GuestStates.rejected.add_transition(MarkAbsent)
 
 
 class ResetEvent(dd.ChangeStateAction):
@@ -126,18 +120,21 @@ class CloseMeeting(dd.ChangeStateAction):
         return super(CloseMeeting,
                      self).get_action_permission(ar, obj, state)
 
+GuestStates.accepted.add_transition(AcceptInvitation)
+GuestStates.rejected.add_transition(RejectInvitation)
+GuestStates.present.add_transition(MarkPresent)
+GuestStates.absent.add_transition(MarkAbsent)
+GuestStates.excused.add_transition(MarkExcused)
 
-@dd.receiver(dd.pre_analyze)
-def my_event_workflows(sender=None, **kw):
 
-    EventStates.published.add_transition(  # _("Confirm"),
-        required_states='suggested draft',
-        icon_name='accept',
-        help_text=_("Mark this as published. "
-                    "All participants have been informed."))
-    EventStates.took_place.add_transition(CloseMeeting, name='close_meeting')
-    EventStates.cancelled.add_transition(
-        pgettext("calendar event action", "Cancel"),
-        required_states='published draft',
-        icon_name='cross')
-    EventStates.draft.add_transition(ResetEvent)
+EventStates.published.add_transition(  # _("Confirm"),
+    required_states='suggested draft',
+    icon_name='accept',
+    help_text=_("Mark this as published. "
+                "All participants have been informed."))
+EventStates.took_place.add_transition(CloseMeeting, name='close_meeting')
+EventStates.cancelled.add_transition(
+    pgettext("calendar event action", "Cancel"),
+    required_states='published draft',
+    icon_name='cross')
+EventStates.draft.add_transition(ResetEvent)
