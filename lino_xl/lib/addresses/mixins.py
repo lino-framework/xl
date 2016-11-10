@@ -14,7 +14,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from lino.api import rt, dd
 from lino.utils.xmlgen.html import E
-from lino.core.utils import ChangeWatcher
+from lino.core.diff import ChangeWatcher
 from lino.modlib.plausibility.choicelists import Checker
 
 from .choicelists import AddressTypes

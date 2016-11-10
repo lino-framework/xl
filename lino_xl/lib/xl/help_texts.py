@@ -515,6 +515,8 @@ partner."""),
     'lino_xl.lib.reception.models.MyBusyVisitors.model' : _("""alias of Guest"""),
     'lino_xl.lib.reception.models.MyGoneVisitors' : _("""Show my visitors who have gone."""),
     'lino_xl.lib.reception.models.MyGoneVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.workflows.CloseMeeting' : _("""Close the meeting (mark it as "took place") and check out all
+guests. Ask confirmation naming the guests who need to check out."""),
     'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.stars.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.stars.models.Star' : _("""Represents the fact that a given database object is starred by a
