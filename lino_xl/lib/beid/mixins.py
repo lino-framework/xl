@@ -27,7 +27,7 @@ from django.core.exceptions import ValidationError
 
 from lino.core.utils import get_field
 
-from lino.core.utils import ChangeWatcher
+from lino.core.diff import ChangeWatcher
 
 from lino.utils.xmlgen.html import E
 from lino.utils import AttrDict
