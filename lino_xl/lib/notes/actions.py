@@ -15,11 +15,11 @@ class NotableAction(NotifyingAction):
     note and a notification.
 
     """
-    def emit_notification(self, ar, owner, **kw):
+    def emit_message(self, ar, owner, **kw):
         kw.update(
             subject=ar.action_param_values.notify_subject,
             body=ar.action_param_values.notify_body)
         owner.emit_system_note(ar, **kw)
-        super(NotableAction, self).emit_notification(ar, owner, **kw)
+        super(NotableAction, self).emit_message(ar, owner, **kw)
 
 
