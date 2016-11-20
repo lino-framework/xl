@@ -162,19 +162,19 @@ class Poll(UserAuthored, mixins.CreatedModified, Referrable):
 
         super(Poll, self).after_ui_save(ar, cw)
 
-    @dd.virtualfield(dd.HtmlBox(_("Result")))
-    def result(self, ar):
-        return E.div(*tuple(get_poll_result(self)))
+#     @dd.virtualfield(dd.HtmlBox(_("Result")))
+#     def result(self, ar):
+#         return E.div(*tuple(get_poll_result(self)))
 
 
-def get_poll_result(self):
-    #~ yield E.h1(self.title)
-    for cs in ChoiceSet.objects.all():
-        questions = self.questions.filter(choiceset=cs)
-        if questions.count() > 0:
-            yield E.h2(str(cs))
-            for question in questions:
-                yield E.p(question.text)
+# def get_poll_result(self):
+#     #~ yield E.h1(self.title)
+#     for cs in ChoiceSet.objects.all():
+#         questions = self.questions.filter(choiceset=cs)
+#         if questions.count() > 0:
+#             yield E.h2(str(cs))
+#             for question in questions:
+#                 yield E.p(question.text)
 
 
 class PollDetail(dd.DetailLayout):
