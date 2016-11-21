@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2016-11-10 21:34+0200\n"
-"PO-Revision-Date: 2016-11-10 21:36+0200\n"
+"POT-Creation-Date: 2016-11-21 05:12+0100\n"
+"PO-Revision-Date: 2016-11-21 05:13+0100\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -1148,9 +1148,8 @@ msgid "Appointments today"
 msgstr "Rendez-vous aujourd'hui"
 
 #: lino_xl/lib/cal/ui.py:814 lino_xl/lib/excerpts/models.py:826
-#, fuzzy
 msgid "Today"
-msgstr "Lundi"
+msgstr "Aujourd'hui"
 
 #: lino_xl/lib/cal/ui.py:815
 #, fuzzy
@@ -1187,6 +1186,10 @@ msgstr "Enregistrement %s a été mis à jour."
 #: lino_xl/lib/cal/ui.py:965
 msgid "Overdue appointments"
 msgstr "Rendez-vous dépassés"
+
+#: lino_xl/lib/cal/ui.py:987
+msgid "Unconfirmed appointments"
+msgstr "Rendez-vous à confirmer"
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:694
 #: lino_xl/lib/polls/models.py:188 lino_xl/lib/polls/models.py:379
@@ -3190,10 +3193,6 @@ msgid ""
 "Paste text for questions to add. Every non-empty line will create one question."
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:165
-msgid "Result"
-msgstr "Résultat"
-
 #: lino_xl/lib/polls/models.py:195
 msgid "Results"
 msgstr "Résultats"
@@ -3898,8 +3897,8 @@ msgstr ""
 #: lino_xl/lib/xl/help_texts.py:396 lino_xl/lib/xl/help_texts.py:397
 #: lino_xl/lib/xl/help_texts.py:459 lino_xl/lib/xl/help_texts.py:468
 #: lino_xl/lib/xl/help_texts.py:471 lino_xl/lib/xl/help_texts.py:472
-#: lino_xl/lib/xl/help_texts.py:493 lino_xl/lib/xl/help_texts.py:518
-#: lino_xl/lib/xl/help_texts.py:524
+#: lino_xl/lib/xl/help_texts.py:493 lino_xl/lib/xl/help_texts.py:520
+#: lino_xl/lib/xl/help_texts.py:526
 msgid "See lino.core.Plugin."
 msgstr ""
 
@@ -4439,7 +4438,7 @@ msgid "See /dev/plugins."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:200 lino_xl/lib/xl/help_texts.py:293
-#: lino_xl/lib/xl/help_texts.py:519 lino_xl/lib/xl/help_texts.py:525
+#: lino_xl/lib/xl/help_texts.py:521 lino_xl/lib/xl/help_texts.py:527
 msgid "See lino.core.plugin.Plugin."
 msgstr ""
 
@@ -5322,31 +5321,37 @@ msgstr ""
 msgid "Show my visitors who have gone."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:520
+#: lino_xl/lib/xl/help_texts.py:518
+msgid ""
+"Close the meeting (mark it as \"took place\") and check out all\n"
+"guests. Ask confirmation naming the guests who need to check out."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:522
 msgid ""
 "Represents the fact that a given database object is starred by a\n"
 "given User."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:522
+#: lino_xl/lib/xl/help_texts.py:524
 msgid "The starred database object"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:523
+#: lino_xl/lib/xl/help_texts.py:525
 msgid "The starring user (pointer to :class:lino.modlib.users.models.User`"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:526
+#: lino_xl/lib/xl/help_texts.py:528
 msgid "A group of topics is the default way to group topics."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:527
+#: lino_xl/lib/xl/help_texts.py:529
 msgid ""
 "An interest is the fact that a given partner is interested in a\n"
 "given topic."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:529
+#: lino_xl/lib/xl/help_texts.py:531
 msgid "A topic is something somebody can be interested in."
 msgstr ""
 
@@ -5397,3 +5402,6 @@ msgstr ""
 
 #~ msgid "The end date"
 #~ msgstr "Date de fin"
+
+#~ msgid "Result"
+#~ msgstr "Résultat"

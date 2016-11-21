@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
+# Copyright 2011-2016 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -972,6 +972,30 @@ class OverdueAppointments(Events):
         kw = super(OverdueAppointments, self).param_defaults(ar, **kw)
         kw.update(observed_event=EventEvents.pending)
         kw.update(end_date=settings.SITE.today())
+        kw.update(show_appointments=dd.YesNo.yes)
+        return kw
+
+class MyUnconfirmedAppointments(MyEvents):
+    """Shows appointments in the near future which are still in draft
+    state.
+
+    :attr:`show_appointments` is set to "Yes", :attr:`state`
+    is set to "Draft", :attr:`start_date` is set to today.
+
+    """
+    required_roles = dd.required(OfficeUser)
+    label = _("Unconfirmed appointments")
+    column_names = 'when_html project summary workflow_buttons *'
+    auto_fit_column_widths = True
+    params_panel_hidden = False
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyUnconfirmedAppointments, self).param_defaults(ar, **kw)
+        kw.update(observed_event=EventEvents.pending)
+        kw.update(state=EventStates.draft)
+        kw.update(start_date=settings.SITE.today())
+        kw.update(end_date=settings.SITE.today(14))
         kw.update(show_appointments=dd.YesNo.yes)
         return kw
 
