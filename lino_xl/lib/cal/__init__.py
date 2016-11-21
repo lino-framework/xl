@@ -110,6 +110,7 @@ class Plugin(ad.Plugin):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.MyEvents')  # string spec to allow overriding
         m.add_action('cal.OverdueAppointments')
+        m.add_action('cal.MyUnconfirmedAppointments')
 
         # m.add_separator('-')
         # m  = m.add_menu("tasks",_("Tasks"))
