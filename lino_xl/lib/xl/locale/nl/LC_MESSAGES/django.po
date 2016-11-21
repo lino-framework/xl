@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-10 21:34+0200\n"
+"POT-Creation-Date: 2016-11-21 05:12+0100\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -1205,6 +1205,11 @@ msgstr "%s wurde aktualisiert."
 #: lino_xl/lib/cal/ui.py:965
 #, fuzzy
 msgid "Overdue appointments"
+msgstr "Benutzer-Level"
+
+#: lino_xl/lib/cal/ui.py:987
+#, fuzzy
+msgid "Unconfirmed appointments"
 msgstr "Benutzer-Level"
 
 #: lino_xl/lib/cal/fixtures/std.py:35 lino_xl/lib/excerpts/models.py:694
@@ -3302,11 +3307,6 @@ msgid ""
 "question."
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:165
-#, fuzzy
-msgid "Result"
-msgstr "Drucken"
-
 #: lino_xl/lib/polls/models.py:195
 msgid "Results"
 msgstr ""
@@ -4022,8 +4022,8 @@ msgstr ""
 #: lino_xl/lib/xl/help_texts.py:396 lino_xl/lib/xl/help_texts.py:397
 #: lino_xl/lib/xl/help_texts.py:459 lino_xl/lib/xl/help_texts.py:468
 #: lino_xl/lib/xl/help_texts.py:471 lino_xl/lib/xl/help_texts.py:472
-#: lino_xl/lib/xl/help_texts.py:493 lino_xl/lib/xl/help_texts.py:518
-#: lino_xl/lib/xl/help_texts.py:524
+#: lino_xl/lib/xl/help_texts.py:493 lino_xl/lib/xl/help_texts.py:520
+#: lino_xl/lib/xl/help_texts.py:526
 msgid "See lino.core.Plugin."
 msgstr ""
 
@@ -4555,7 +4555,7 @@ msgid "See /dev/plugins."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:200 lino_xl/lib/xl/help_texts.py:293
-#: lino_xl/lib/xl/help_texts.py:519 lino_xl/lib/xl/help_texts.py:525
+#: lino_xl/lib/xl/help_texts.py:521 lino_xl/lib/xl/help_texts.py:527
 msgid "See lino.core.plugin.Plugin."
 msgstr ""
 
@@ -5431,32 +5431,38 @@ msgstr ""
 msgid "Show my visitors who have gone."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:520
+#: lino_xl/lib/xl/help_texts.py:518
+msgid ""
+"Close the meeting (mark it as \"took place\") and check out all\n"
+"guests. Ask confirmation naming the guests who need to check out."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:522
 msgid ""
 "Represents the fact that a given database object is starred by a\n"
 "given User."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:522
+#: lino_xl/lib/xl/help_texts.py:524
 #, fuzzy
 msgid "The starred database object"
 msgstr "Datenbankfeld"
 
-#: lino_xl/lib/xl/help_texts.py:523
+#: lino_xl/lib/xl/help_texts.py:525
 msgid "The starring user (pointer to :class:lino.modlib.users.models.User`"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:526
+#: lino_xl/lib/xl/help_texts.py:528
 msgid "A group of topics is the default way to group topics."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:527
+#: lino_xl/lib/xl/help_texts.py:529
 msgid ""
 "An interest is the fact that a given partner is interested in a\n"
 "given topic."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:529
+#: lino_xl/lib/xl/help_texts.py:531
 msgid "A topic is something somebody can be interested in."
 msgstr ""
 
@@ -9220,93 +9226,13 @@ msgstr ""
 #~ msgid "Take responsibility for this event."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The organisation who runs this site.\n"
-#~ "        This is used e.g. as sender in documents.\n"
-#~ "        Or, newly created partners "
-#~ "inherit the country of the site "
-#~ "owner.\n"
-#~ "        "
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When some exception occurs during\n"
-#~ "lino.core.kernel.Kernel.make_cache_file(), Lino usually\n"
-#~ "removes the partly generated file to make sure that it will try to\n"
-#~ "generate it again (and report the same error message) for every\n"
-#~ "subsequent next request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True to prevent Lino from generating useless\n"
-#~ "JavaScript if this is just an abstract base class to be inherited\n"
-#~ "by other actors."
-#~ msgstr ""
-
 #~ msgid "An HTML renderer that uses the ExtJS Javascript toolkit."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for all user roles. Even anonymous users have this\n"
-#~ "role."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The path on server to store webdav files.\n"
-#~ "Default is cache_dir + ´/media/webdav'."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Adds a row action \"Duplicate\" which duplicates (creates a clone\n"
-#~ "of) the object it was called on."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for objects that have view permissions control.\n"
-#~ "Inherited by lino.core.actions.Action,\n"
-#~ "lino.utils.jsgen.VisibleComponent and\n"
-#~ "lino.core.actors.Actor (though the latter is a special\n"
-#~ "case since actors never get instantiated)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used internally.  Whether this action should be displayed as the\n"
-#~ "workflow_buttons\n"
-#~ "column. If this is True, then Lino will automatically set\n"
-#~ "custom_handler to True."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "HACK: Django by default stores a copy of our list when the\n"
-#~ "choices of a field are evaluated for the first time. We\n"
-#~ "don't want that because ChoiceLists may change afterwards."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An Authority is when a User gives"
-#~ " another User the right to "
-#~ "\"represent him\" "
 #~ msgstr ""
 
 #~ msgid "alias of Change"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Mixin for models whose instances have a \"print\" action (i.e. for\n"
-#~ "which Lino can generate a printable document)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is always True.\n"
-#~ "See also lino.modlib.users.utils.AnonymousUser.authenticated."
-#~ msgstr ""
-
 #~ msgid "Display a clickable list of all MTI parents, i.e. base models"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A notification object represents the fact that a given user has\n"
-#~ "been notified about a given database object."
 #~ msgstr ""
 
 #~ msgid "alias of State"
@@ -9315,48 +9241,7 @@ msgstr ""
 #~ msgid "See Parametrizable.parameters."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Format (in strftime syntax) to use for displaying dates to the user.\n"
-#~ "If you change this setting, you also need to override parse_time()."
-#~ msgstr ""
-
 #~ msgid "The component that generates the JS of a grid column."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A layout panel which does not exist in the current configuration\n"
-#~ "but might exist as a real panel in some other configuration."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Indicator class object.\n"
-#~ "Fixture may yield a FlushDeferredObjects\n"
-#~ "to indicate that all deferred objects should get saved before going on."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A field whose value is a list of Choice instances.\n"
-#~ "Stored in the database as a CharField using a delimiter character."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The verbose name of this plugin, as shown to the user.  This can be\n"
-#~ "a lazily translated string."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Internally used to store the lino.core.actors.Actor who\n"
-#~ "defined this action."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An AbstractTable that works on an volatile (non\n"
-#~ "persistent) list of rows."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Like Django's models.TextField, but you can specify a keyword\n"
-#~ "argument textfield_format."
 #~ msgstr ""
 
 #~ msgid "Suppress surrounding DIV tag. Used by restify()."
@@ -9374,27 +9259,10 @@ msgstr ""
 #~ msgid "Defines the Clear cache button on a Printable record."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Update plausibility problems, repairing those which are\n"
-#~ "automatically fixable."
-#~ msgstr ""
-
 #~ msgid "alias of SiteConfig"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Use this instead of models.PositiveIntegerField for fields that\n"
-#~ "are part of a GFK and you want Lino to render them using a\n"
-#~ "Combobox."
-#~ msgstr ""
-
 #~ msgid "The user profile(s) for which we want a screenshot of this table."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "True to specify that the message is rather important\n"
-#~ "and should alert and should be presented in a dialog box to be\n"
-#~ "confirmed by the user."
 #~ msgstr ""
 
 #~ msgid "The template used to build the subject lino of notification emails."
@@ -9403,33 +9271,11 @@ msgstr ""
 #~ msgid "See Introduction to plugins."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The text to appear e.g. as window title when the actor's default\n"
-#~ "action has been called.  If this is not set, Lino will use the\n"
-#~ "label as title."
-#~ msgstr ""
-
 #~ msgid "return the filename on the server"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The message text. This is a concatenation of all messages that\n"
-#~ "were yeld by the checker."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether last name of persons should (by default) be printed with\n"
-#~ "uppercase letters.  See lino.test_apps.human"
 #~ msgstr ""
 
 #~ msgid "deprecated"
 #~ msgstr "Erstellt"
-
-#~ msgid ""
-#~ "The message to display. This should be a plain string which\n"
-#~ "will be formatted (using standard string format) using the\n"
-#~ "following context:"
-#~ msgstr ""
 
 #~ msgid "The third row of toolbar buttons when editing in own window."
 #~ msgstr ""
@@ -9449,29 +9295,10 @@ msgstr ""
 #~ msgid "alias of Upload"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Whether the internal field names should be visible.  ExtUI\n"
-#~ "implements this by prepending them to the tooltip, which means\n"
-#~ "that use_quicktips must also be True.  Default is\n"
-#~ "True."
-#~ msgstr ""
-
 #~ msgid "A string that py2js will represent as is, not between quotes."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Returned by resolve_field() if the specified field doesn't exist.\n"
-#~ "This case happens when sphinx autodoc tries to import a module.\n"
-#~ "See ticket docs/tickets/4."
-#~ msgstr ""
-
 #~ msgid "A DateField that uses a MonthPicker instead of a normal DateWidget"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Generates .pdf files from .html templates.\n"
-#~ "Requires pisa.\n"
-#~ "Usage example see Printing using Pisa."
 #~ msgstr ""
 
 #~ msgid "Whether invalid values in a ChoiceList should raise an exception."
@@ -9480,43 +9307,13 @@ msgstr ""
 #~ msgid "Represents a detected plausibility problem."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Renders the input template and returns the unmodified output as\n"
-#~ "plain HTML."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A list of field names that define the groups of rows in this table.\n"
-#~ "Each group can have her own header and/or total lines."
-#~ msgstr ""
-
 #~ msgid "Instantiated by restore.py."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This action means that you declare to become the fully responsible\n"
-#~ "user for this event.  Accordingly, this action is available only\n"
-#~ "when you are not already fully responsible. You are fully\n"
-#~ "responsible when (1) Event.user is set to you\n"
-#~ "and (2) Event.assigned_to is not empty."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if you are "
-#~ "sure that the users of your site"
-#~ " won't try to\n"
-#~ "misuse Jinja's capabilities."
 #~ msgstr ""
 
 #~ msgid "alias of Shortcut"
 #~ msgstr ""
 
 #~ msgid "Called when user edited a cell of a phantom record in a grid."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "lino.core.param_panel.ParameterPanel with two fields\n"
-#~ "start_date and end_date which default to empty."
 #~ msgstr ""
 
 #~ msgid "The reference."
@@ -9526,12 +9323,6 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Shows only my Uploads (i.e. those whose author is current user)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Middleware automatically installed by \n"
-#~ "get_middleware_classes\n"
-#~ "when"
 #~ msgstr ""
 
 #~ msgid "A field that accepts Quantity, Percentage and Duration values."
@@ -9549,34 +9340,6 @@ msgstr ""
 #~ msgid "Represents an uploadable file."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Base class for the table of phonetic words of a given dupable\n"
-#~ "model. For every (non-abstract) dupable model there must be a\n"
-#~ "subclass of PhoneticWordBase.\n"
-#~ "The subclass must define a field\n"
-#~ "owner which points to the Dupable, and the Dupable's\n"
-#~ "dupable_word_model must point to its subclass\n"
-#~ "of PhoneticWordBase."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Setting this to True turns this site in a readonly site.  This\n"
-#~ "means that DATABASES must point to the\n"
-#~ "DATABASES of some other (non-readonly) site, and that\n"
-#~ "initdb will do nothing."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The primary key of the one and only\n"
-#~ "SiteConfig instance\n"
-#~ "of this Site. Default value is 1."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A field to be rendered like a normal read-only form field, but with\n"
-#~ "plain HTML instead of an <input> tag."
-#~ msgstr ""
-
 #~ msgid "The default build method to use when rendering printable documents."
 #~ msgstr ""
 
@@ -9586,17 +9349,7 @@ msgstr ""
 #~ msgid "Open the detail window on a row of this table."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Mixin for things that have a unique ref field and a\n"
-#~ "get_by_ref method."
-#~ msgstr ""
-
 #~ msgid "The toolbar buttons when editing a field inside a detail form."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Format (in ExtJS syntax) to use for displaying dates to the user.\n"
-#~ "If you change this setting, you also need to override parse_date()."
 #~ msgstr ""
 
 #~ msgid "Used by lino.mixins.printable.AppyBuildMethod."
@@ -9608,151 +9361,25 @@ msgstr ""
 #~ msgid "Using Django's templating engine."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A print action which uses a cache for the generated printable\n"
-#~ "document and builds is only when it doesn't yet exist."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The role of users having this profile. This is an instance of\n"
-#~ "<lino.core.roles.UserRole> or some subclass thereof."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A pythonic representation of a <table> with <head>,\n"
-#~ "<foot> and <body>."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The renderer used by this plugin. "
-#~ "See Introduction to User Interface "
-#~ "Renderers."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The user reponsible\n"
-#~ "for fixing this problem."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if you want each row to get the height that it\n"
-#~ "needs."
-#~ msgstr ""
-
 #~ msgid "Model mixin to easily declare \"imported fields\"."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The list of things you can observe on a\n"
-#~ "lino.mixins.periods.DatePeriod."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The panel used to display a slave table whose slave_grid_format\n"
-#~ "is 'summary'."
 #~ msgstr ""
 
 #~ msgid "The class of the lino.utils.diag.analyzer object."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Represents a Lino.GridPanel, i.e. the widget used to represent a\n"
-#~ "table or a slave table."
-#~ msgstr ""
-
 #~ msgid "Shows all Uploads"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The default preferred width (in characters) of widgets that\n"
-#~ "display a ForeignKey to this model."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A nickname for this project. This is used to set cache_dir\n"
-#~ "and therefore should be unique for all Lino projects on a given\n"
-#~ "machine."
 #~ msgstr ""
 
 #~ msgid "Base class for all \"summary data\" models."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A volatile object which represents what is going to happen after\n"
-#~ "the user confirms to merge two objects."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If lino.modlib.users is installed, this holds a reference to\n"
-#~ "the model class which represents a user of the system. Default\n"
-#~ "value is None, meaning that this application has no user\n"
-#~ "management.  See also set_user_model()"
-#~ msgstr ""
-
 #~ msgid "See lino.core.permissions.Permittable.required_roles"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Path to the Jasmine root directory.  Only used on a development\n"
-#~ "server if the media directory has no symbolic link to the\n"
-#~ "Jasmine root directory and only if use_jasmine is True."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Like DisplayField, but to be rendered as a panel rather\n"
-#~ "than as a form field."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to include functionality to read Belgian id cards using\n"
-#~ "the official eid-applet.\n"
-#~ "This option is experimental and doesn't yet work.  See\n"
-#~ "/blog/2012/1105."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of the header (set by the web server) that Lino should\n"
-#~ "consult for finding the user of a request.  The default value\n"
-#~ "None means that http authentication is not used.  Apache's\n"
-#~ "default value is \"REMOTE_USER\"."
 #~ msgstr ""
 
 #~ msgid "Shortcut to lino.core.site.Site.plugins"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Generates .pdf files from .tex templates.\n"
-#~ "Not actively used."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to use a status bar to display certain messages to the user.\n"
-#~ "Default is False since currently this is not really useful."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Represents a virtual field. Virtual fields are not stored in the\n"
-#~ "database, but computed each time they are read. Django doesn't see\n"
-#~ "them."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The list of upload shortcut fields which have been declared on this\n"
-#~ "Site.  See add_shortcut()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base clase for actors which open a window but, but this window is\n"
-#~ "neither a database table nor a detail form."
-#~ msgstr ""
-
 #~ msgid "The timezone."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "True means that Lino shoud issue a warning if a subclass\n"
-#~ "defines any attribute that did not exist in the base class.\n"
-#~ "Usually such a warning means that there is something wrong."
 #~ msgstr ""
 
 #~ msgid "The optional Panel for parameters of an Action."
@@ -9764,76 +9391,13 @@ msgstr ""
 #~ msgid "The default table for Change."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A utility class to make python fixtures more compact. See\n"
-#~ "Introducing the Instantiator class."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The optional Panel for parameters of a Table.\n"
-#~ "JS part stored in Lino.GridPanel.params_panel."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if you want to remove rows which contain no\n"
-#~ "values when rendering this table as plain HTML.  This is ignored\n"
-#~ "when rendered as ExtJS."
-#~ msgstr ""
-
 #~ msgid "The \"Save\" button of a detail window."
 #~ msgstr ""
 
 #~ msgid "A user who has access to contacts functionality."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "This attribute is available only after site startup.  See\n"
-#~ "lino.utils.config."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When an action returns a record_id, it asks the user interface to\n"
-#~ "jump to the given record."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is always False.\n"
-#~ "See also lino.modlib.users.models.User.authenticated."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A site-wide option to disable everything that needs Java.  Note that\n"
-#~ "it is up to the apps which include Java applications to respect this\n"
-#~ "setting. Usage example is lino_xl.lib.beid."
-#~ msgstr ""
-
 #~ msgid "Used only for testing."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Handler for uploaded files.\n"
-#~ "Same remarks as for lino.core.actors.Actor.disabled_fields."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Represents a field that doesn't exist in the current configuration\n"
-#~ "but might exist in other configurations. The \"value\" of a\n"
-#~ "DummyField is always None."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The initial width of the window to use when editing in own\n"
-#~ "window."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Deprecated. This is (and always was) being ignored. Use\n"
-#~ "update_controller() instead."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A virtual field which defines buttons for switching between the\n"
-#~ "different views."
 #~ msgstr ""
 
 #~ msgid "used e.g. to render /lino/lino/config/500.html"
@@ -9842,38 +9406,7 @@ msgstr ""
 #~ msgid "Base class for all Widgets on some filed-like data element."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "This is available in lino.api.dd.  To be used when a panel\n"
-#~ "is more complex than what can be expressed using a simple template\n"
-#~ "string."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this explicitly to True or False to make the whole table\n"
-#~ "editable or not.  Otherwise Lino will guess what you want during\n"
-#~ "startup and set it to False if the actor is a Table and has a\n"
-#~ "get_data_rows method (which usually means that it is a virtual\n"
-#~ "table), otherwise to True."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Format (in ExtJS syntax) to use for displaying dates to the user.\n"
-#~ "If you change this setting, you also need to override parse_time()."
-#~ msgstr ""
-
 #~ msgid "The URL from where to include the ExtJS library files."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if you want your table to start at the\n"
-#~ "bottom.  Unlike reverse ordering, the rows remain in their\n"
-#~ "natural order, but when we open a grid on this table, we want it\n"
-#~ "to start on the last page."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of a CharField on this model which holds the full-text\n"
-#~ "description that is being tested for duplicates."
 #~ msgstr ""
 
 #~ msgid "Old name for models.  Deprecated."
@@ -9885,97 +9418,16 @@ msgstr ""
 #~ msgid "The last name, also known as family name."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A singleton class whose instance will be assigned to the\n"
-#~ "user attribute of anonymous incoming requests, similar to\n"
-#~ "Django's approach."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base for ActionRequest, but also used directly by\n"
-#~ "lino.core.kernel.Kernel.run_callback()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A tuple in the format expected by Django's choices\n"
-#~ "attribute, used e.g. by LanguageField. It's content is\n"
-#~ "automatically populated from languages and application\n"
-#~ "code should not change it's value."
-#~ msgstr ""
-
 #~ msgid "Base table which fills the master instance from the web request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Optional pointer to a virtual upload shortcut field.  If\n"
-#~ "this is not empty, then the given shortcut field will manage\n"
-#~ "uploads of this type.  See also Shortcuts."
 #~ msgstr ""
 
 #~ msgid "Base class for RemoteField and DisplayField."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A string with a space-separated list of logger names to be\n"
-#~ "automatically configured. See lino.utils.log."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Like SimpleOdsReader, but each row is converted to \n"
-#~ "an lino.utils.AttrDict. This requires you to specifiy, \n"
-#~ "besides the SimpleOdsReader.headers attrribute, \n"
-#~ "another list of pure ASCII strings which must be valid Python \n"
-#~ "attribute names."
-#~ msgstr ""
-
 #~ msgid "User-defined choice lists must inherit from this base class."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Used by lino_xl.lib.extensible and\n"
-#~ "lino.modlib.awesome_uploader."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The format template to use when rendering a ForeignKey as plain\n"
-#~ "text."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Middleware automatically installed by\n"
-#~ "get_middleware_classes when\n"
-#~ "remote_user_header is None and user_model\n"
-#~ "not."
-#~ msgstr ""
-
 #~ msgid "The first year for which summaries should be computed."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A string to be used as attribute name on the choicelist for\n"
-#~ "referring to this choice from application code."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used to define tests that are to be run directly in the demo\n"
-#~ "database, without using the Django test runner (i.e. without\n"
-#~ "creating a temporary test database)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Virtual tables must define this method, normal (model-based)\n"
-#~ "tables may define it."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The incoming Django HttpRequest object which caused this action\n"
-#~ "request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Either None (default) or a non-empty string with the name of the\n"
-#~ "subdirectory of your media directory which is expected to\n"
-#~ "contain media files for this app."
 #~ msgstr ""
 
 #~ msgid "alias of Dupable"
@@ -9984,49 +9436,13 @@ msgstr ""
 #~ msgid "Model mixin for things that have both a start_time and an end_time."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Used internally if opens_a_window to say whether the\n"
-#~ "window has a top toolbar."
-#~ msgstr ""
-
 #~ msgid "a string with a message to be shown to the user."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A dictionary which maps model class names to the plugin which\n"
-#~ "overrides them."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The author of this object.\n"
-#~ "A pointer to lino.modlib.users.models.User."
 #~ msgstr ""
 
 #~ msgid "The last year for which summaries should be computed."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Like the standard lino.core.actions.SubmitInsert, but adds\n"
-#~ "a confirmation if there is a possible duplicate record."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A StoreField for \n"
-#~ "AutoField"
-#~ msgstr ""
-
 #~ msgid "Used by lino_xl.lib.properties."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A request to the HealthInsurance BCSS service.\n"
-#~ "Net yet used in practice."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Middleware automatically installed by\n"
-#~ "lino.core.site.Site.get_middleware_classes() when\n"
-#~ "lino.core.site.Site.user_model is None."
 #~ msgstr ""
 
 #~ msgid "The maximum length of the ref field."
@@ -10041,72 +9457,16 @@ msgstr ""
 #~ msgid "Used to collaborate with a restful Ext.data.Store."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Move current row one downwards. This action is available on any\n"
-#~ "Sequenced object as Sequenced.move_down."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Display information about this web site.  This defines the window\n"
-#~ "which opens via the menu command Site ‣ About."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Common methods for ForeignKeyStoreField and\n"
-#~ "OneToOneField."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, this is the default value for\n"
-#~ "hidden_elements\n"
-#~ "of every Table on this model."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The URL prefix for webdav files.  In a normal production\n"
-#~ "configuration you should leave this to None, Lino will set a\n"
-#~ "default value \"/media/webdav/\", supposing that your Apache is\n"
-#~ "configured as described in WebDAV."
-#~ msgstr ""
-
 #~ msgid "Default values to be used when creating the site_config."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A set of the full Python paths of all imported plugin modules. Not\n"
-#~ "just the plugin modules themselves but also those they inherit\n"
-#~ "from. This is used internally by is_abstract_model().  Don't\n"
-#~ "modify."
 #~ msgstr ""
 
 #~ msgid "Converter for ManyToMany fields."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A hard-coded constant date to be used as reference by today()\n"
-#~ "and demo_date(). For example many demo databases have this\n"
-#~ "set because certain tests rely on a constant reference date."
-#~ msgstr ""
-
 #~ msgid "Displays buttons for certain actions on this row:"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Called when user edited a cell of a non-phantom record in a grid.\n"
-#~ "Installed as update_action on every Actor."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Shows all database objects (model instances) who have a broken\n"
-#~ "GeneriForeignKey field."
-#~ msgstr ""
-
 #~ msgid "An ObservedPeriod which defaults to the current month."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The object returned by resolve_model() if the specified model\n"
-#~ "is not installed."
 #~ msgstr ""
 
 #~ msgid "An atomizer for all kinds of fields which use a ComboBox."
@@ -10124,126 +9484,25 @@ msgstr ""
 #~ msgid "Remote URL base for media files."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Lino usually catches any exception during startup (in\n"
-#~ "create_layout_element) to report errors of\n"
-#~ "style \"Unknown element \"postings.PostingsByController\n"
-#~ "('postings')\" referred in layout <PageDetail on pages.Pages>.\" "
-#~ msgstr ""
-
 #~ msgid "Represents a single DBF file."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Slave Table showing the direct changes related to the current\n"
-#~ "object."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An AttrDict object with one entry for each installed\n"
-#~ "app, mapping the app_label of every plugin to the\n"
-#~ "corresponding lino.core.plugin.Plugin instance."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An XML namespace.  Base class for\n"
-#~ "lino.utils.xmlgen.html.HtmlNamespace and the namespaces\n"
-#~ "defined in lino.utils.xmlgen.intervat."
 #~ msgstr ""
 
 #~ msgid "A Layout description for a table parameter panel."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A list of field names that are \"active\".\n"
-#~ "Value and inheritance as for hidden_columns."
-#~ msgstr ""
-
 #~ msgid "Used internally to say whether this action opens a window."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Internally used to store the name of this action within the\n"
-#~ "defining Actor's namespace."
 #~ msgstr ""
 
 #~ msgid "Whether this action is readonly, i.e. does not change any data."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Updates the table of plausibility problems for a given database\n"
-#~ "object, also removing those messages which no longer exist. This\n"
-#~ "action does not change anything else in the database."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The text to appear on buttons for this action. If this is not\n"
-#~ "defined, the label is used."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Optionally set this to the <applabel.ModelName> of a model used as\n"
-#~ "\"central project\" in your application.  Which concretely means that\n"
-#~ "certain other models like notes.Note, outbox.Mail, ... have an\n"
-#~ "additional ForeignKey to this model."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The default value for the\n"
-#~ "auto_fit_column_widths\n"
-#~ "of tables in this application."
-#~ msgstr ""
-
 #~ msgid "The list of user profiles available on this site."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If this is set on a Model, then it will be used as default value\n"
-#~ "for lino.core.table.Table.workflow_owner_field on all\n"
-#~ "tables based on this Model."
 #~ msgstr ""
 
 #~ msgid "The start date"
 #~ msgstr "Erste Seite"
 
-#~ msgid ""
-#~ "Slave Table showing the changes related to the current object,\n"
-#~ "including those applied to \"child\" objects."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used internally if opens_a_window to say whether the\n"
-#~ "window has a navigator."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of the detail handler to be used.  Application code should\n"
-#~ "not need to use this.  It is automatically set by\n"
-#~ "ActorRequest.goto_instance()."
-#~ msgstr ""
-
 #~ msgid "A user who manages configuration of office functionality."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This view is being used when remote_user_header is\n"
-#~ "empty (and user_model not).\n"
-#~ "lino.core.auth.SessionUserMiddleware"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if Lino should not open a newly created record in\n"
-#~ "a detail window."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Holds information about an indivitual web request and provides\n"
-#~ "methods like"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Log a summary of the SQL statements made to the console.\n"
-#~ "Intended for use with the django development server."
 #~ msgstr ""
 
 #~ msgid "The class of items of this list."
@@ -10252,42 +9511,7 @@ msgstr ""
 #~ msgid "Whether the process is currently loading data from a Python dump."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Lino adds a series of features to Django's Model\n"
-#~ "class.  If a Lino application includes plain Django Model\n"
-#~ "classes, Lino will \"extend\" these by adding the attributes and\n"
-#~ "methods defined here to these classes."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "(a string) The value to use e.g. when this choice is being\n"
-#~ "stored in a database."
-#~ msgstr ""
-
 #~ msgid "For every table we create one \"handle\" per renderer."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Represents a menu. A menu is conceptually a MenuItem\n"
-#~ "which contains other menu items."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The prefix to use for Django admin URLs.\n"
-#~ "Leave this unchanged as long as docs/tickets/70 is not solved."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of the field that contains the workflow state of an\n"
-#~ "object.  Subclasses may override this."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Middleware automatically installed by "
-#~ "get_middleware_classes when both\n"
-#~ "remote_user_header and\n"
-#~ "user_model are not\n"
-#~ "empty."
 #~ msgstr ""
 
 #~ msgid "Base class for integers, decimals, RequestField,..."
@@ -10296,35 +9520,13 @@ msgstr ""
 #~ msgid "Number of text rows per data row."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A virtual read-only field which "
-#~ "returns the Person MTI child "
-#~ "corresponding\n"
-#~ "to the partner (if it exists) and otherwise None."
-#~ msgstr ""
-
 #~ msgid "A property which calls get_address()."
 #~ msgstr ""
 
 #~ msgid "A Layout description for an action parameter panel."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "An Action which is bound to an Actor.  If an Actor has subclasses,\n"
-#~ "each subclass \"inherits\" its actions."
-#~ msgstr ""
-
 #~ msgid "alias of UserAuthored"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The text to appear on buttons of a ShowSlaveTable action for this\n"
-#~ "actor."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If set to True, avoid lonely menu items by lifting them up one level.\n"
-#~ "This is not done for top-level menus"
 #~ msgstr ""
 
 #~ msgid "A top-level Menu."
@@ -10342,40 +9544,10 @@ msgstr ""
 #~ msgid "Base class for both Actors and Actions."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The maximum number of rows to fetch when this table is being\n"
-#~ "displayed in \"preview mode\", i.e. (1) as a slave table in a detail\n"
-#~ "window or (2) as an item of the admin_main.html returned\n"
-#~ "by lino.core.site.Site.get_admin_main_items()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A request to the PerformInvestigation BCSS service.\n"
-#~ "Net yet used in practice."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "True (default) to use ExtJS CellSelectionModel, False to use\n"
-#~ "RowSelectionModel.  When True, the users cannot select multiple\n"
-#~ "rows.  When False, the users cannot edit individual cells using\n"
-#~ "the F2 key.."
-#~ msgstr ""
-
 #~ msgid "The sequence number of this item with its parent."
 #~ msgstr ""
 
 #~ msgid "Temporary setting, see Polymorphism."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The index of the column which should hold the text to display on\n"
-#~ "the totals row (returned by get_sum_text())."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if your action has parameters but you\n"
-#~ "do not want it to open a window where the user can edit these\n"
-#~ "parameters before calling the action."
 #~ msgstr ""
 
 #~ msgid "Default preferred with for ChoiceList fields to this list."
@@ -10384,68 +9556,16 @@ msgstr ""
 #~ msgid "The first row of toolbar buttons when editing in own window."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Format (in strftime syntax) to use for displaying dates to the user.\n"
-#~ "If you change this setting, you also need to override parse_date()."
-#~ msgstr ""
-
 #~ msgid "Represents a field in a DBF file."
 #~ msgstr ""
 
 #~ msgid "Base class of all action requests."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A DateField that uses a DatePicker instead of a normal DateWidget.\n"
-#~ "Doesn't yet work."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The list of possible choices for the type field\n"
-#~ "of a Change."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A help text that shortly explains what this action does.\n"
-#~ "lino.modlib.extjs shows this as tooltip text."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Edit the print template, i.e. the file specified by\n"
-#~ "Printable.get_print_templates()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Number of seconds to wait between two refreshes when autorefresh is\n"
-#~ "activated. Default is 60. Set this to 0 in order to deactivate\n"
-#~ "the autorefresh button."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Abstract base class. For each .ods file you are probably creating a\n"
-#~ "subclass of this."
-#~ msgstr ""
-
 #~ msgid "Base class for the fields of a Store."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A CSV writer which will write rows to CSV file \"f\",\n"
-#~ "which is encoded in the given encoding."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Currently implemented by lino.modlib.extjs,\n"
-#~ "lino.modlib.bootstrap3."
-#~ msgstr ""
-
 #~ msgid "Exchange the seqno of this item and the previous item."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, this is the default value for\n"
-#~ "active_fields\n"
-#~ "of every Table on this model."
 #~ msgstr ""
 
 #~ msgid "Mixin for models which have a field created"
@@ -10460,40 +9580,10 @@ msgstr ""
 #~ msgid "A user who can configure site-wide functionality."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Whether the Javascript cache files should be built on startup for\n"
-#~ "all user profiles and languages."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Mixin for models that have a field seqno containing a\n"
-#~ "\"sequence number\"."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Volatile object which wraps a given action to be run on a given\n"
-#~ "model instance."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A user who manages office functionality for other users (but not\n"
-#~ "for himself)."
-#~ msgstr ""
-
 #~ msgid "Base class for models that can be \"dupable\"."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The WebServiceConnector namespace used for "
-#~ "wrapping \"classical\" CBSS services."
-#~ msgstr ""
-
 #~ msgid "alias of Problem"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A chooser holds information about the possible choices of a\n"
-#~ "field."
 #~ msgstr ""
 
 #~ msgid "Renders as a simple table."
@@ -10505,23 +9595,6 @@ msgstr ""
 #~ msgid "Show the plausibility problems by checker."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The template to be used for rendering a row of this actor as a\n"
-#~ "detail html page."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is the class used when generating automatic \"state\n"
-#~ "actions\". For each possible value of the Actor's\n"
-#~ "workflow_state_field there will be an automatic action\n"
-#~ "called mark_XXX"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The sort_index to be\n"
-#~ "used when this table is being used by a ShowSlaveTable."
-#~ msgstr ""
-
 #~ msgid "alias of Model"
 #~ msgstr ""
 
@@ -10531,22 +9604,7 @@ msgstr ""
 #~ msgid "A user who can see plausibility problems."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A utility class for defining reusable definitions for\n"
-#~ "parameters."
-#~ msgstr ""
-
 #~ msgid "The Django deserializer for The Python serializer."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A short \"abstract\" of your comment. This should not be more\n"
-#~ "than one paragraph."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The DJANGO_SETTINGS_MODULE to set for each subprocess\n"
-#~ "launched by this test case."
 #~ msgstr ""
 
 #~ msgid "The middleware class definition."
@@ -10555,46 +9613,16 @@ msgstr ""
 #~ msgid "A choicelist with two values \"Yes\" and \"No\"."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "If this is set on a Model, then it will be used as default value\n"
-#~ "for\n"
-#~ "workflow_state_field\n"
-#~ "of all tables based on this Model."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Log all SQL statements to the console.\n"
-#~ "Intended for use with the django development server."
-#~ msgstr ""
-
 #~ msgid "The first name, also known as given name."
 #~ msgstr ""
 
 #~ msgid "alias of UserProfile"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A tuple (width, height) that specifies the size of the window to\n"
-#~ "be used for this layout."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A dupable model has its\n"
-#~ "submit_insert action\n"
-#~ "overridden by CheckedSubmitInsert, a extended variant of\n"
-#~ "the action which checks for duplicate rows and asks a user\n"
-#~ "confirmation when necessary."
-#~ msgstr ""
-
 #~ msgid "Whether users with this profile get only write-proteced access."
 #~ msgstr ""
 
 #~ msgid "ExtJS element to be used for DisplayFields."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A common base for BooleanDisplayElement and\n"
-#~ "BooleanFieldElement."
 #~ msgstr ""
 
 #~ msgid "A dict with options to be used by as_js()."
@@ -10615,38 +9643,13 @@ msgstr ""
 #~ msgid "Counts the number of code lines in a given Python source file."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The template to be used for rendering a collection of rows of this\n"
-#~ "actor as a table html page."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base for build methods which use Lino's templating system\n"
-#~ "(find_config_file)."
-#~ msgstr ""
-
 #~ msgid "Local path where third-party media files are installed."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The class name of an icon to be used for this action when rendered\n"
-#~ "as toolbar button."
 #~ msgstr ""
 
 #~ msgid "Base class for layout descriptions of detail and insert windows."
 #~ msgstr ""
 
 #~ msgid "HTTP method to use when this action is called using an AJAX call."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Override the global\n"
-#~ "lino.core.site.Site.textfield_format setting."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A constant user-defined date to be substituted as current\n"
-#~ "system date."
 #~ msgstr ""
 
 #~ msgid "Replaced by lino.modlib.tinymce.Plugin.media_base_url."
@@ -10658,63 +9661,16 @@ msgstr ""
 #~ msgid "Widget for lino.core.fields.IncompleteDate fields."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Looks for a file \"index.rst\" in your project_dir and (if it exists)\n"
-#~ "runs doctest on it."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether this action is implemented as Javascript function call.\n"
-#~ "This is necessary if you want your action to be callable using an\n"
-#~ "\"action link\" (html button)."
-#~ msgstr ""
-
 #~ msgid "List of js snippets to be injected into the lino_*.js file."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of another action to which to \"attach\" this action.\n"
-#~ "Both actions will then be rendered as a single combobutton."
 #~ msgstr ""
 
 #~ msgid "The base class for all plugins."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Whether Lino should log every incoming request for non\n"
-#~ "readonly actions."
-#~ msgstr ""
-
 #~ msgid "See also blog entries 20100803, 20111003, 20120901"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Default value for the\n"
-#~ "preview_limit\n"
-#~ "parameter of all tables who don't specify their own one.  Default\n"
-#~ "value is 15."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A callback is a question that rose during an AJAX action.\n"
-#~ "The original action is pending until we get a request\n"
-#~ "that answers the question."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If you have an existing Django management command, just rename\n"
-#~ "it's handle method to handle_daemon and inherit from this\n"
-#~ "instead of django.core.management.base.BaseCommand."
-#~ msgstr ""
-
 #~ msgid "because checkboxes are not submitted when they are off"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The abbreviated name of this plugin, shown to the user in places\n"
-#~ "where shortness is important, e.g. as the label of the tabs of a\n"
-#~ "detail layout.  This can be a lazily translated string. Defaults\n"
-#~ "to verbose_name."
 #~ msgstr ""
 
 #~ msgid "An atomizer used for all ForeignKey fields."
@@ -10723,40 +9679,7 @@ msgstr ""
 #~ msgid "Render a list of records."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The user profile to be assigned to the anonymous user\n"
-#~ "(AnonymousUser)."
-#~ msgstr ""
-
 #~ msgid "The table with all existing upload types."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The initial height of the window to use when editing in own\n"
-#~ "window."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The text to appear e.g. on a button that will call the default\n"
-#~ "action of an actor.  This attribute is not inherited to\n"
-#~ "subclasses.  For Actor subclasses that don't have a\n"
-#~ "label, Lino will call get_actor_label()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A physical person and an individual human being.\n"
-#~ "See also About Humans."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Every subclass of ChoiceList will be automatically registered.\n"
-#~ "Define this if your class's name clashes with the name of an\n"
-#~ "existing ChoiceList."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The database object which acts as master. This is None for master\n"
-#~ "requests."
 #~ msgstr ""
 
 #~ msgid "Converter for ForeignKey fields."
@@ -10768,47 +9691,10 @@ msgstr ""
 #~ msgid "A translatable string containing the text to show to the user."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Full path to your local project directory.  Local subclasses should\n"
-#~ "not override this variable."
-#~ msgstr ""
-
 #~ msgid "Base class for the individual services."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The name of the field that contains the user who is considered to\n"
-#~ "own an object when Rule.owned_only is checked."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether a Detail Window should have navigation buttons, a \"New\"\n"
-#~ "and a \"Delete\" buttons.  In ExtJS UI also influences the title of\n"
-#~ "a Detail Window to specify only the current element without\n"
-#~ "prefixing the Tables's title."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An AbstractTable that works\n"
-#~ "on a Django Model using a QuerySet."
-#~ msgstr ""
-
 #~ msgid "Decimal group separator for decfmt()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The action used to delete the selected row(s). Automatically\n"
-#~ "installed on every editable actor."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When specifying an insert_layout using a simple a multline\n"
-#~ "string, then Lino will instantiate a FormPanel with this width."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Explicitly specify the fields to be included in queries with a\n"
-#~ "quick search value."
 #~ msgstr ""
 
 #~ msgid "Virtual field displaying the age in years."
@@ -10823,66 +9709,13 @@ msgstr ""
 #~ msgid "Mixin for models that are \"controllable\" by another database object."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The action used to print this object.\n"
-#~ "This is an instance of\n"
-#~ "DirectPrintAction or CachedPrintAction by\n"
-#~ "default.  And if lino_xl.lib.excerpts is installed,\n"
-#~ "then set_excerpts_actions possibly replaces\n"
-#~ "do_print by a\n"
-#~ "lino_xl.lib.excerpts.CreateExcerpt instance."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A list of tuples (model, fk), one item for each FK field in\n"
-#~ "the application which points to this model."
-#~ msgstr ""
-
 #~ msgid "See Introduction to User Interface Renderers."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The full Python name of the plugin which is to be used as default\n"
-#~ "user interface on this Site."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if you don't want Lino to display sums in a table\n"
-#~ "view."
 #~ msgstr ""
 
 #~ msgid "Used internally."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "If specified, this must be a models.Q object (not a dict of\n"
-#~ "(fieldname -> value) pairs) which will be passed to Django's\n"
-#~ "filter\n"
-#~ "method."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A variant of Users showing only active users and\n"
-#~ "only some fields.  This is used on demo sites in\n"
-#~ "admin_main.html to display the list of available users."
-#~ msgstr ""
-
 #~ msgid "The renderer used when rendering to .rst files and console output."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Abstract base class that adds a birth_date\n"
-#~ "field and a virtual field \"Age\"."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A string with a space-separated list of django codes of languages\n"
-#~ "that should be hidden."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The default format for text fields.\n"
-#~ "Valid choices are currently 'plain' and 'html'."
 #~ msgstr ""
 
 #~ msgid "A user with all permissions."
@@ -10891,27 +9724,7 @@ msgstr ""
 #~ msgid "A set of names of layoutelements which are hidden by default."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "An AttrDict containing the\n"
-#~ "actions available on this actor."
-#~ msgstr ""
-
 #~ msgid "Represents a shortcut field."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "How to display this table when it is a slave in a detail\n"
-#~ "window. Must be one of the following values:"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Checks for missing cache files on all objects which inherit\n"
-#~ "CachedPrintable."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A user who has access to office functionality like calendar, notes\n"
-#~ "and uploads."
 #~ msgstr ""
 
 #~ msgid "An extension around Django's models.CharField."
@@ -10920,17 +9733,7 @@ msgstr ""
 #~ msgid "Every authenticated user has this role."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The widget used to render a SingleRelatedObjectDescriptor,\n"
-#~ "i.e. the other side of a OneToOneField."
-#~ msgstr ""
-
 #~ msgid "Adds some extensions to the Django TestCase."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Not yet sure whether this is needed. Maybe when generating\n"
-#~ "documentation."
 #~ msgstr ""
 
 #~ msgid "Default value for templates_group is the model's full name."
@@ -10942,63 +9745,19 @@ msgstr ""
 #~ msgid "A visible component"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "If this table has parameters, set this to True if the parameters\n"
-#~ "panel should be initially hidden when this table is being\n"
-#~ "displayed."
-#~ msgstr ""
-
 #~ msgid "The base table for Problem objects."
 #~ msgstr ""
 
 #~ msgid "Represents a counter. Usage see"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A set of names of ForeignKey or GenericForeignKey fields of\n"
-#~ "this model that allow for cascaded delete."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Site-wide default parameters for CSV generation.  This must be a\n"
-#~ "dictionary that will be used as keyword parameters to Python\n"
-#~ "csv.writer()"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "loaddata requires DeserializedObject instances, \n"
-#~ "but this Deserializer does not bypass pre_save/save methods."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "In a default configuration (when allow_duplicate_cities is\n"
-#~ "False), Lino declares a UNIQUE clause"
-#~ " for Places to make sure that "
-#~ "your\n"
-#~ "database never contains duplicate cities.  This behaviour mighr\n"
-#~ "disturb e.g. when importing legacy data that did not have this\n"
-#~ "restriction.  Set it to True to remove the UNIQUE clause."
-#~ msgstr ""
-
 #~ msgid "Element that renders to a Lino.HtmlBoxPanel."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This field is usually empty.  Setting it to another user means \"I\n"
-#~ "am not fully responsible for this event\".  This will cause the\n"
-#~ "other user to see this event in his MyAssignedEvents\n"
-#~ "table."
 #~ msgstr ""
 
 #~ msgid "A user who has permission to act as another user."
 #~ msgstr ""
 
 #~ msgid "The database object which has been modified."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Mixin for models with two fields start_date and\n"
-#~ "start_time"
 #~ msgstr ""
 
 #~ msgid "Shortcut to lino.core.site.Site.models"
@@ -11010,76 +9769,10 @@ msgstr ""
 #~ msgid "Base class for all \"Print\" actions."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Model mixin for database objects that have a user field which\n"
-#~ "points to the \"author\" of this object. The default user is\n"
-#~ "automatically set to the requesting user."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If not None, this should be a "
-#~ "list of loggers (logging.Logger instances)"
-#~ "\n"
-#~ "whose file handles should not get closed."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An AbstractTable is the definition of a tabular data view, usually\n"
-#~ "displayed in a Grid (but it's up to the user interface to decide\n"
-#~ "how to implement this)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, this is the default value for\n"
-#~ "hidden_columns\n"
-#~ "of every Table on this model."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Number of rows to display per page.  Used to control the height of\n"
-#~ "a combobox of a ForeignKey pointing to this model"
-#~ msgstr ""
-
 #~ msgid "Render a single record."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Default value for the\n"
-#~ "hidden_languages of newly\n"
-#~ "attached choice item."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The username\n"
-#~ "of the main plausibility responsible, i.e. a designated\n"
-#~ "user who will be attributed to plausibility problems for which\n"
-#~ "no specific responible could be designated (returned by the\n"
-#~ "checker's get_responsible_user\n"
-#~ "method)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Generates one directory of screenshots images and their index.rst\n"
-#~ "file."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A field that stores a value to be selected from a\n"
-#~ "ChoiceList."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Format (in ExtJS syntax) to use for formatting timestamps in AJAX\n"
-#~ "calls.  If you change this setting, you also need to override\n"
-#~ "parse_datetime()."
-#~ msgstr ""
-
 #~ msgid "If this is False, then then Actor won't have no insert_action."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If you maintain a data migrator module for your application,\n"
-#~ "specify its name here."
 #~ msgstr ""
 
 #~ msgid "Base class for the choices of Checkers."
@@ -11088,67 +9781,7 @@ msgstr ""
 #~ msgid "Alias for field number 4"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Returns a one-line string composed of salutation, title,\n"
-#~ "first_name and last_name."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Define the form layout to use for the detail window.  Actors with\n"
-#~ "detail_layout will automatocally get a show_detail\n"
-#~ "action."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An optional name prefix like \"Dr.\" or \"PhD\", used to specify a\n"
-#~ "professional position or academic qualification."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A subset of languages which\n"
-#~ "should be hidden in this user profile.  Default value is\n"
-#~ "hidden_languages.  This is\n"
-#~ "used on multilingual sites with more than 4 or 5 languages."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for Layout Elements that "
-#~ "can contain other Layout Elements:\n"
-#~ "Panel,\n"
-#~ "TabPanel,\n"
-#~ "FormPanel,\n"
-#~ "GridPanel"
-#~ msgstr ""
-
 #~ msgid "A duration, expressed in hours:minutes."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This property holds a cached version of the one and only\n"
-#~ "ml.system.SiteConfig row that holds site-wide\n"
-#~ "database-stored and web-editable Site configuration parameters."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to False if this Table should not become the\n"
-#~ "Model's default table."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The layout to be used for the parameter panel.\n"
-#~ "If this table or action has parameters, specify here how they\n"
-#~ "should be laid out in the parameters panel."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is the action represented by the \"Create\" button of an Insert\n"
-#~ "window. See lino.modlib.dedupe for an example of how to\n"
-#~ "override it."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Move current row one upwards. This action is available on any\n"
-#~ "Sequenced object as Sequenced.move_up."
 #~ msgstr ""
 
 #~ msgid "The string to prefix to every URL of the Lino web interface."
@@ -11163,85 +9796,22 @@ msgstr ""
 #~ msgid "Base class for all models that represent a human."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The base class for all actors.  "
-#~ "Subclassed by AbstractTable, Table, ChoiceList"
-#~ " and Frame."
-#~ msgstr ""
-
 #~ msgid "Print using a hard-coded template and without cache."
 #~ msgstr ""
 
 #~ msgid "Shows the gobal list of all notifications."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "An action with a generic dialog window of three fields \"Summary\",\n"
-#~ "\"Description\" and a checkbox \"Don't send email notification\". The\n"
-#~ "default implementation calls the request's add_system_note method."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The label of this action. A short descriptive text in user\n"
-#~ "language."
-#~ msgstr ""
-
 #~ msgid "A string that describes the list of columns of this table."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A LayoutHandle analyzes some subclass of BaseLayout and\n"
-#~ "stores the resulting layout elements provided by the renderer."
 #~ msgstr ""
 
 #~ msgid "The model on which this table iterates."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A field that behaves like a DateField, but accepts\n"
-#~ "incomplete dates represented using\n"
-#~ "lino.utils.format_date.IncompleteDate."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is a reference to the globals() dictionary of your\n"
-#~ "settings.py file (the one you provided when instantiating\n"
-#~ "the Site object)."
-#~ msgstr ""
-
 #~ msgid "A display field which returns the parsed message."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The table used to present the SiteConfig row in a Detail form.\n"
-#~ "See also lino.Lino.get_site_config().\n"
-#~ "Deserves more documentation."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Defines the two possible choices \"male\" and \"female\"\n"
-#~ "for the gender of a person."
-#~ msgstr ""
-
 #~ msgid "Deprecated alias for kernel."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, this must be dict which will be passed to Django's\n"
-#~ "exclude\n"
-#~ "method on the queryset."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The \"official\" URL used by \"normal\""
-#~ " users when accessing this Lino\n"
-#~ "site. This is used by templates such as the email sent by\n"
-#~ "lino.modlib.notify.Notification"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Tell Sphinx to switch to the specified project until the end of\n"
-#~ "this document."
 #~ msgstr ""
 
 #~ msgid "Default table for django.contrib.ContentType."
@@ -11250,52 +9820,10 @@ msgstr ""
 #~ msgid "Usage example see lino_xl.lib.humanlinks.fixtures."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Set this to False if you don't want this Site to automatically\n"
-#~ "create missing directories when needed (but to raise an exception\n"
-#~ "in these cases, asking you to create it yourself)"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This model should have exactly one instance,\n"
-#~ "used to store persistent global site parameters.\n"
-#~ "Application code sees this instance as settings.SITE.site_config."
-#~ msgstr ""
-
 #~ msgid "Abstract base class for all actions."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A constant value whose unicode representation depends on the\n"
-#~ "current language at runtime.  Every item of a ChoiceList\n"
-#~ "must be an instance of Choice or a subclass thereof."
-#~ msgstr ""
-
 #~ msgid "The renderer to use when processing this request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Open the Insert window filled with a row of blank or default\n"
-#~ "values.  The new row will be actually created only when this\n"
-#~ "window gets submitted."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An action which opens a window showing the table specified when\n"
-#~ "instantiating the action."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to use VinylFox extensions for HtmlEditor.\n"
-#~ "This feature was experimental and "
-#~ "doesn't yet work (and maybe never "
-#~ "will).\n"
-#~ "See /blog/2011/0523."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A ParameterPanel\n"
-#~ "with a field today which defaults to today."
 #~ msgstr ""
 
 #~ msgid "The list of plausibility problem types known by this application."
@@ -11304,142 +9832,16 @@ msgstr ""
 #~ msgid "A Store is the collection of StoreFields for a given actor."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Tell Sphinx to switch to the specified language until the end of\n"
-#~ "this document."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Path to the ExtJS root directory.  Only used when\n"
-#~ "media_base_url is None, and when the media directory has\n"
-#~ "no symbolic link named extjs pointing to the ExtJS root\n"
-#~ "directory."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Define a variable number of clones of the \"master\" field,\n"
-#~ "one for each language .\n"
-#~ "See Multilingual database content."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class to anything that may be"
-#~ " \"registered\" and \"deregistered\"\n"
-#~ "(e.g. Invoices, Vouchers, Declarations, Reservations,...).\n"
-#~ "\"Registered\" in general means \"this "
-#~ "object has been taken account of\".\n"
-#~ ""
-#~ "Registered objects are not editable."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Rendered as a checkbox that indicates whether an mti child of the\n"
-#~ "given model exists."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Pointer to the Partner instance related to\n"
-#~ "this user."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used internally. This is True for window actions whose window use\n"
-#~ "the parameter panel: grid and emptytable (but not showdetail)"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A vertical Panel is vflex if and only if at least one of its\n"
-#~ "children is vflex.  A horizontal Panel is vflex if and only if\n"
-#~ "all its children are vflex (if vflex and non-vflex elements are\n"
-#~ "together in a hbox, then the vflex elements will get the height of\n"
-#~ "the highest non-vflex element)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "User-definable parameter fields for this actor or action.\n"
-#~ "Set this to a dict of name = models.XyzField() pairs."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An e-mail address where users can get help. This is included in\n"
-#~ "admin_main.html."
-#~ msgstr ""
-
 #~ msgid "Exchange the seqno of this item and the next item."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Shows a simplistic \"inspector\" which once helped me for debugging.\n"
-#~ "Needs more work to become seriously useful..."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An AttrDict which maps every\n"
-#~ "installed app_label to the corresponding models.py\n"
-#~ "module object."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A Converter for ForeignKey and ManyToManyField. \n"
-#~ "If the lookup_field is a BabelField, "
-#~ "then it tries all available languages."
 #~ msgstr ""
 
 #~ msgid "Naive representation of a potentially incomplete gregorian date."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Whether to include functionality to read Estonian id cards.\n"
-#~ "This option is experimental and doesn't yet work."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is set to True e.h. in home pages\n"
-#~ "(e.g. lino_welfare.modlib.pcsw.models.Home)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "What to do when this action is being called while the user is on a\n"
-#~ "dirty record."
-#~ msgstr ""
-
 #~ msgid "Mixin for database models which have a timezone field."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "These are the allowed keyword arguments"
-#~ " for ar.set_response, and the action "
-#~ "responses supported by\n"
-#~ "Lino.handle_action_result() (defined in linolib.js)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This should be a string with the domain name and DNS (separated by a\n"
-#~ "space) of the LDAP server to be used for authentication.  Example:"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Mixin for models that have a babel field name (labelled\n"
-#~ "\"Description\" by default) for each language."
-#~ msgstr ""
-
 #~ msgid "The class of the \"master\" for this actor."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A pointer to an item of\n"
-#~ "lino.modlib.printing.choicelists.BuildMethods."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If given, this is specifies the data elements that should be\n"
-#~ "hidden by default when rendering this table.  Example:"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if you want to have the column widths adjusted\n"
-#~ "to always fill the available width.  This implies that there will\n"
-#~ "be no horizontal scrollbar."
 #~ msgstr ""
 
 #~ msgid "Base class for actions that update something on every selected row."
@@ -11454,25 +9856,10 @@ msgstr ""
 #~ msgid "Lightweight volatile object to watch changes on a database object."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A StoreField for\n"
-#~ "BooleanField."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Stored as plain text in database, but not displayed in user\n"
-#~ "interface."
-#~ msgstr ""
-
 #~ msgid "A Django HTTP request which isn't really one."
 #~ msgstr ""
 
 #~ msgid "The version number."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The full Python path of the user profiles module to be used on\n"
-#~ "this site."
 #~ msgstr ""
 
 #~ msgid "A dict of fieldname -> value pairs that specify \"known values\"."
@@ -11484,94 +9871,16 @@ msgstr ""
 #~ msgid "A layout for describing the columns of a table."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Like WeasyBuildMethod, but the rendered HTML is then\n"
-#~ "passed through weasyprint which converts from HTML to PDF."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If not None, then it is the Plugin instance which caused this\n"
-#~ "plugin to automatically install."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The list of fixtures to be loaded by the initdb_demo\n"
-#~ "command."
-#~ msgstr ""
-
 #~ msgid "Base class for choices of \"observed event\"-style choicelists."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The Media type\n"
-#~ "of the file.  See also this thread\n"
-#~ "about length of MIME type field."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is usually None. Otherwise it is the name of a Javascript\n"
-#~ "callable to be called without arguments. That callable must have\n"
-#~ "been defined in a "
-#~ "lino.core.plugin.Plugin.site_js_snippets of the "
-#~ "plugin."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A list of unicode strings, one for each column in the file.  The\n"
-#~ "headers specified here must match exactly those found in the .ods\n"
-#~ "file."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Called when the OK button of an Insert Window was clicked.\n"
-#~ "Installed as submit_insert on every dd.Model <lino.core.model.Model>."
 #~ msgstr ""
 
 #~ msgid "The files to be tested."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A field whose value is the result of the get_row_permission\n"
-#~ "method on that row.\n"
-#~ "New feature since /blog/2011/0830"
-#~ msgstr ""
-
 #~ msgid "See lino.core.utils.Parametrizable.parameters."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The lino.core.actions.Action.icon_name to be used for a\n"
-#~ "lino.core.actions.ShowSlaveTable action on this actor."
-#~ msgstr ""
-
 #~ msgid "Mixin to create a custom field."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Timestamp of the built target file. Contains None\n"
-#~ "if no build hasn't been called yet."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Format (in strftime syntax) to use for formatting timestamps in\n"
-#~ "AJAX responses.  If you change this setting, you also need to\n"
-#~ "override parse_datetime()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to use AwesomeUploader.\n"
-#~ "This option was experimental and doesn't"
-#~ " yet work (and maybe never will)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if the user interface should include the value\n"
-#~ "attribute of each choice."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A helper object used to find out whether a known object can be\n"
-#~ "deleted or not."
 #~ msgstr ""
 
 #~ msgid "Add verbose_name and help_text to Django's GFK."
@@ -11580,31 +9889,10 @@ msgstr ""
 #~ msgid "Represents a DBT block file"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A CSV reader which will iterate over lines in the CSV file \"f\",\n"
-#~ "which is encoded in the given encoding."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Override used Authorisation middlewares with supplied tuple of\n"
-#~ "middleware class names."
-#~ msgstr ""
-
 #~ msgid "Represents an FPT block file"
 #~ msgstr ""
 
 #~ msgid "A registered change in the database."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A VirtualField whose values are table action requests to\n"
-#~ "be rendered as a clickable integer containing the number of rows.\n"
-#~ "Clicking on it will open a window with the table."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Represents a file on the server below MEDIA_ROOT with\n"
-#~ "two properties name and url."
 #~ msgstr ""
 
 #~ msgid "The SSDN namespace used for wrapping \"classical\" CBSS services."
@@ -11616,18 +9904,7 @@ msgstr ""
 #~ msgid "A field on a related object."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Name of a Javascript function to be invoked on the web client when\n"
-#~ "this action is called."
-#~ msgstr ""
-
 #~ msgid "A set of names of filter parameters which are handled automatically."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, this must be a tuple or list of field names which\n"
-#~ "will be passed to Django's order_by\n"
-#~ "method in order to sort the rows of the queryset."
 #~ msgstr ""
 
 #~ msgid "Deprecated. See /blog/2012/0327."
@@ -11636,91 +9913,16 @@ msgstr ""
 #~ msgid "Set this on"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Like ChoicesFieldElement, but we use the fact that\n"
-#~ "choicelists are actors to define them once and refer to them.\n"
-#~ "Special case are choicelist fields with blank=True: these must\n"
-#~ "dynamicaly add a blank choice to the the choicelist."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of this application, to be displayed to end-users at\n"
-#~ "different places."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used by custom fixtures that import data from some legacy\n"
-#~ "database."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The title of this web site to appear in the browser window.  If\n"
-#~ "this is None, Lino will use verbose_name as default value."
-#~ msgstr ""
-
 #~ msgid "Shows the other objects who are similar to this one."
 #~ msgstr ""
 
 #~ msgid "The end date"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "This attribute is available only after startup().\n"
-#~ "See lino.core.kernel."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The Checker which reported\n"
-#~ "this problem."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Define a variable number of CharField database fields, one for\n"
-#~ "each language of your lino.core.site.Site.languages.  See\n"
-#~ "Multilingual database content."
-#~ msgstr ""
-
 #~ msgid "Adds two timestamp fields created and modified."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Lino currently includes three versions of TinyMCE, but for\n"
-#~ "production sites we still use the eldest version 3.4.8."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The model to be checked. This may be an abstract model.  It can\n"
-#~ "also be None, but then you must define your own\n"
-#~ "get_checkable_models() method."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether primary key fields should be disabled when using this\n"
-#~ "action. This is True for all actions except InsertRow."
-#~ msgstr ""
-
 #~ msgid "An IncompleteDateField."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Generates .rtf files from .rtf templates.\n"
-#~ "Not actively used."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The owning model (i.e. m._lino_ddh.model is m is True for\n"
-#~ "every model)"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Full name of the model used to hold dupable words for instances of\n"
-#~ "this model.  Applications can specify a string which will be\n"
-#~ "resolved at startup to the model's class object."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When this is True, then this site runs in \"demo\" mode.  \"Demo\n"
-#~ "mode\" means:"
 #~ msgstr ""
 
 #~ msgid "An extended django.test.TestCase."
@@ -11735,157 +9937,16 @@ msgstr ""
 #~ msgid "A DisplayElement specially adapted to a GFK field."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Mixin for Models that generate a unique external file at a\n"
-#~ "determined place when being printed."
-#~ msgstr ""
-
 #~ msgid "A space-separated list of all middle names."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The list of required roles for getting permission to edit other\n"
-#~ "users' work."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Username of the user to be used for all incoming requests.  Setting\n"
-#~ "this to a nonempty value will disable authentication on this site.\n"
-#~ "The special value 'anonymous' will cause anonymous requests\n"
-#~ "(whose user attribute is the AnonymousUser instance)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Returns a one-line string representing this Partner.\n"
-#~ "The default returns simply the name field, ignoring any parameters,\n"
-#~ "but e.g. Human overrides this."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for all build methods.  A build method encapsulates the\n"
-#~ "process of generating a \"printable document\" that inserts data\n"
-#~ "from the database into a template, using a given combination of a\n"
-#~ "template parser and post-processor."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A mixin for tables that have a series of automatically generated\n"
-#~ "columns"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A virtual field that displays the workflow buttons for this\n"
-#~ "row and the given action request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The directory where Lino will create temporary data for this\n"
-#~ "project, including the media directory and the\n"
-#~ "default.db file."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, a list of model names for which this app provides a\n"
-#~ "subclass."
 #~ msgstr ""
 
 #~ msgid "return the url that points to file on the server"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A comment is a short text which some user writes about some\n"
-#~ "other database object."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether the parameter window should keep its values between\n"
-#~ "different calls. If this is True, Lino does not fill any default\n"
-#~ "values and leaves those from a previous call."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The time when this Site has been instantiated,\n"
-#~ "in other words the startup time of this Django process.\n"
-#~ "Don't modify this."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A menu item. Note that this is subclassed by Menu: a menu\n"
-#~ "is also a menu item."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A State is a specialized Choice that adds the\n"
-#~ "add_transition() method."
-#~ msgstr ""
-
 #~ msgid "Open a window with a grid editor on this table as main item."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "An ObservedPeriod for which start_date defaults to Jan\n"
-#~ "1st and end_date to Dec 31 of the current year."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A thin wrapper around Django's DecimalField\n"
-#~ "which adds default values for decimal_places, max_length and\n"
-#~ "max_digits."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The database field (a subclass of\n"
-#~ "django.db.models.fields.Field)"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Must be unique.\n"
-#~ "Leaving this empty means that the user cannot log in."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The name of a ForeignKey field of this table's model that\n"
-#~ "points to it's master.  The master_key is\n"
-#~ "automatically added to hidden_columns."
-#~ msgstr ""
-
 #~ msgid "The SITE's Migrator class is instantiated by install_migrations."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Mixin to encapsulate the generating of"
-#~ " \"traditional\" (\"snail\") mail\n"
-#~ "addresses."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Same as quick_search_fields, but this list is used when the\n"
-#~ "search text contains only digits (and does not start with '0')."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Abstract model mixin for things that have a \"parent\" and\n"
-#~ "\"siblings\"."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A Workflow is a specialized ChoiceList used for defining the\n"
-#~ "states of a workflow."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A Component is a Variable whose value is a dict of otpions.\n"
-#~ "Deserves more documentation."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A CachedPrintable that uses a \"Type\" for deciding which\n"
-#~ "template to use on a given instance."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The URL of the website that describes this application.\n"
-#~ "Used e.g. in a Site ‣ About dialog box."
 #~ msgstr ""
 
 #~ msgid "Whether to log Permission debug messages for this action."
@@ -11900,51 +9961,13 @@ msgstr ""
 #~ msgid "A named tuple with four fields:"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Set this to either '.' or ',' to define wether to use\n"
-#~ "comma or dot as decimal point separator when entering a\n"
-#~ "DecimalField."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The ChoiceList of the state field must have at least two items\n"
-#~ "named \"draft\" and \"registered\".\n"
-#~ "There may be additional states.\n"
-#~ "Every state must have an extra attribute \"editable\"."
-#~ msgstr ""
-
 #~ msgid "True if this action needs an object to act on."
 #~ msgstr ""
 
 #~ msgid "The root user of this system."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The HTML namespace.\n"
-#~ "This is instantiated as E."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "If specified, this is a dict of Site\n"
-#~ "attributes to override before running the test."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to a tuple of (height, width) to have this actor\n"
-#~ "display in a modal non-maximized window."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "(No longer used; see docs/tickets/44).  Whether multi-line text\n"
-#~ "fields in Grid views should be expanded in by default or not."
-#~ msgstr ""
-
 #~ msgid "The full path name of the .ods file to be read."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A field that lets the user select a language from the available\n"
-#~ "lino.core.site.Site.languages."
 #~ msgstr ""
 
 #~ msgid "The object returned by register()."
@@ -11953,48 +9976,13 @@ msgstr ""
 #~ msgid "The model instance which has been changed and caused the signal."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Define the form layout to use for the insert window.  If there's a\n"
-#~ "detail_layout but no insert_layout, Lino will use\n"
-#~ "detail_layout for the insert window."
-#~ msgstr ""
-
 #~ msgid "A specialized ActionRequest whose actor is a table."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When serving static files from a different subdomain, TinyMCE needs\n"
-#~ "to know about this. Typical usage is to specify this in your\n"
-#~ "djangosite_local.py file (The djangosite_local module):"
 #~ msgstr ""
 
 #~ msgid "A directory that may contain configuration files."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Set this to True if you want that Lino never (re)builds the site\n"
-#~ "cache, even when asked.  This can be useful on a development\n"
-#~ "server when you are debugging directly on the generated\n"
-#~ "lino*.js.  Or for certain unit test cases."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The value to be attribute to ROOT_URLCONF when this\n"
-#~ "Site instantiates."
-#~ msgstr ""
-
 #~ msgid "Necessary to compute Store.pk_index."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to make use of Ext.QuickTips for\n"
-#~ "displaying Help Texts and internal field names (if\n"
-#~ "show_internal_field_names)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Common base class for RemoteUserMiddleware,\n"
-#~ "SessionUserMiddleware and NoUserMiddleware."
 #~ msgstr ""
 
 #~ msgid "Converter for GenericForeignKey fields."
@@ -12003,39 +9991,10 @@ msgstr ""
 #~ msgid "Imitates DeserializedObject required by loaddata."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Action which merges the selected object into another object of same\n"
-#~ "class. It has an automatically generated parameters window."
-#~ msgstr ""
-
 #~ msgid "The text to appear on any button representing this state."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Mixin for Models that are automatically related to a \"project\".  A\n"
-#~ "project means here \"the central most important thing that is used\n"
-#~ "to classify most other things\"."
-#~ msgstr ""
-
 #~ msgid "The list of top-level menu items. See setup_menu()."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Certain requests are expected to return the detailed information\n"
-#~ "about a single data record. That's done in data_record\n"
-#~ "which must itself be a dict with the following keys:"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "For internal use. Automatically set to the field descriptor of the\n"
-#~ "master_key."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A universal identifier for this Site.  This is needed when\n"
-#~ "synchronizing with CalDAV server.  Locally created calendar\n"
-#~ "components in remote calendars will get a UID based on this\n"
-#~ "parameter, using \"%s@%s\" % (self.pk, settings.SITE.kernel)."
 #~ msgstr ""
 
 #~ msgid "The timestame when this object was created."
@@ -12047,55 +10006,10 @@ msgstr ""
 #~ msgid "A Collector that does not delete the MTI parents."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The base class for a Lino application.  This class is designed to\n"
-#~ "be overridden by both application developers and local site\n"
-#~ "administrators.  Your SITE setting is expected to\n"
-#~ "contain an instance of a subclass of this."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A pythonic representation of a <body> with a <title> and\n"
-#~ "some <head> tags for stylesheets."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for all Layouts (FormLayout, ColumnsLayout\n"
-#~ "and  ParamsLayout)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Format (in Javascript regex syntax) to use for displaying dates to\n"
-#~ "the user.  If you change this setting, you also need to override\n"
-#~ "parse_date()."
-#~ msgstr ""
-
 #~ msgid "The choicelist of build methods offered on this site."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The url prefix under which this app should ask to\n"
-#~ "install its url patterns."
-#~ msgstr ""
-
 #~ msgid "Defines the lino2rst directive."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "See /blog/2011/0630.\n"
-#~ "This option was experimental and doesn't"
-#~ " yet work (and maybe never will)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Set this to True if actions should send debug messages to the client.\n"
-#~ "These will be shown in the client's Javascript console only."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used to simplify doctest strings because it inserts default values\n"
-#~ "for the two first arguments that are mandatory but not used in our\n"
-#~ "examples:"
 #~ msgstr ""
 
 #~ msgid "Replaced by lino.modlib.tinymce."
@@ -12104,73 +10018,7 @@ msgstr ""
 #~ msgid "Will be filled during lino.core.table.Table.do_setup()."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "A VirtualTable with only one column and whose rows are\n"
-#~ "action buttons.  Subclasses must implement get_data_rows to\n"
-#~ "yield action buttons."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Mixin for models that use Multiple Table Inheritance to implement\n"
-#~ "polymorphism."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Determins the sort order in which the actions will be presented to\n"
-#~ "the user."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to use the Jasmine\n"
-#~ "testing library."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Preferred width (in characters) used by\n"
-#~ "fields that refer to\n"
-#~ "this list."
-#~ msgstr ""
-
 #~ msgid "alias of Notification"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Contains True if this is a \"local\" project.  For local projects,\n"
-#~ "Lino checks for local fixtures and config directories and adds\n"
-#~ "them to the default settings."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Rebuild the site cache.\n"
-#~ "This action is available on About."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Duplicate the selected row. This will call\n"
-#~ "lino.core.model.Model.on_duplicate() on the new object and\n"
-#~ "on related objects."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A model mixin for models which represent a period whose start and\n"
-#~ "end are date fields."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used by lino.modlib.plain.\n"
-#~ "Width of the sidebar in 1/12 of total screen width.\n"
-#~ "Meaningful values are 0 (no sidebar), 2 or 3."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether the ENTER key (or CTRL+ENTER when in a\n"
-#~ "textarea field) should submit the form."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A field to express a percentage.\n"
-#~ "The database stores this like a DecimalField.\n"
-#~ "Plain HTML adds a \"%\"."
 #~ msgstr ""
 
 #~ msgid "Alternative date entry formats accepted by ExtJS Date widgets."
@@ -12185,32 +10033,6 @@ msgstr ""
 #~ msgid "A named tuple with the following fields:"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "An extended atelier.test.TestCase to be run using\n"
-#~ "setup.py in the root of a project which may contain\n"
-#~ "several Django projects."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for models that specify the\n"
-#~ "TypedPrintable.type."
-#~ msgstr ""
-
 #~ msgid "Represents a combination of keystrokes."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether this action should be displayed as a button in the toolbar\n"
-#~ "and the context menu."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to make use of CSS tooltips\n"
-#~ "when displaying help texts defined in lino.models.HelpText."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The language distribution used on this site.  It has its own\n"
-#~ "chapter The languages of a Site in the Developers Guide."
 #~ msgstr ""
 
