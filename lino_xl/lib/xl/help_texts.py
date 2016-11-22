@@ -184,6 +184,9 @@ Event.assigned_to field refers to the requesting user."""),
     'lino_xl.lib.cal.ui.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
 over but who are still in a nonstable state."""),
     'lino_xl.lib.cal.ui.OverdueAppointments.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.MyUnconfirmedAppointments' : _("""Shows appointments in the near future which are still in draft
+state."""),
+    'lino_xl.lib.cal.ui.MyUnconfirmedAppointments.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
