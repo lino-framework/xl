@@ -17,7 +17,7 @@ install:
 script:
   - export LINO_CACHE_ROOT=$TRAVIS_BUILD_DIR/lino_cache
   - mkdir $LINO_CACHE_ROOT
-  - inv initdb test
+  - inv prep test
 
 after_success:
   # - coveralls
