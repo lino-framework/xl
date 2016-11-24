@@ -149,12 +149,13 @@ def create_prompt_event(
 
 
 class CheckinVisitor(NotifyingAction):
-    """The "Checkin" action on a :class:`Guest
-    <lino_xl.lib.cal.models_guest.Guest>`.
+    """Mark this visitor as arrived.
+
+    To be called on a :class:`Guest
+    <lino_xl.lib.cal.models_guest.Guest>` object.
 
     """
     label = _("Checkin")
-    help_text = _("Mark this visitor as arrived")
     show_in_workflow = True
     show_in_bbar = False
 
@@ -173,11 +174,11 @@ class CheckinVisitor(NotifyingAction):
             user=obj.event.user,
             partner=obj.partner)
 
-    def get_notify_recipients(self, ar, owner):
+    def get_notify_recipients(self, ar, obj):
         """Yield a list of users to be notified.
 
         """
-        yield owner.event.user
+        yield obj.event.user
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]  # a cal.Guest instance

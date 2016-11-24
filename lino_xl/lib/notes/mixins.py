@@ -9,7 +9,7 @@ from lino.api import dd, rt
 
 
 class Notable(dd.Model):
-
+    """Base class for models which can emit system notes."""
     class Meta(object):
         abstract = True
 
