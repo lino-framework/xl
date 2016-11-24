@@ -406,6 +406,11 @@ class StudiesByPerson(HistoryByPerson, Studies):
     column_names = 'type content start_date end_date school country \
     state education_level *'
     auto_fit_column_widths = True
+    
+    insert_layout = """
+    start_date end_date
+    type content
+    """
 
 
 # Work Experiences
@@ -598,6 +603,10 @@ class ExperiencesByPerson(HistoryByPerson, Experiences):
     auto_fit_column_widths = True
     column_names = "company country start_date end_date function \
     status duration termination_reason remarks *"
+    insert_layout = """
+    start_date end_date
+    company function
+    """
 
 
 class ExperiencesByStatus(Experiences):

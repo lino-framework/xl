@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2016 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -38,12 +38,14 @@ add('50', _("Absent"), 'absent', afterwards=True)
 add('60', _("Excused"), 'excused', afterwards=True)
 
 class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
+    """Base class for actions that give feedback to an invitation.
 
+    """
     def get_notify_owner(self, ar, obj):
         return obj.event
 
-    def get_notify_recipients(self, ar, owner):
-        yield owner.user
+    def get_notify_recipients(self, ar, obj):
+        yield obj.user
 
     def get_action_permission(self, ar, obj, state):
         if obj.partner_id is None:
@@ -56,6 +58,7 @@ class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
     def get_notify_subject(self, ar, obj):
         return self.notify_subject % dict(
             guest=obj.partner,
+            event_type=obj.event.event_type,
             day=dd.fds(obj.event.start_date),
             time=str(obj.event.start_time))
 
@@ -63,21 +66,27 @@ class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
 class RejectInvitation(InvitationFeedback):
     label = _("Reject")
     help_text = _("Reject this invitation.")
-    required_states = 'invited accepted'  # ,owner=False)
+    required_states = 'invited accepted'
     notify_subject = _(
-        "%(guest)s cannot accept invitation %(day)s at %(time)s")
+        "%(guest)s cannot accept invitation "
+        "to %(event_type)s on %(day)s at %(time)s")
 
 
 class AcceptInvitation(InvitationFeedback):
+    """Accept this invitation.
+    """
     label = _("Accept")
-    help_text = _("Accept this invitation.")
-    required_states = 'invited rejected'  # ,owner=False)
-    notify_subject = _("%(guest)s confirmed invitation %(day)s at %(time)s")
+    required_states = 'invited rejected'
+    notify_subject = _("%(guest)s has accepted the invitation "
+                       "to %(event_type)s on %(day)s at %(time)s")
 
 
 class MarkPresent(dd.ChangeStateAction):
+    """Mark this participant as present at the event.
+
+    """
+    
     label = _("Present")
-    help_text = _("Mark this participant as present.")
     # required_states = 'invited accepted'
 
     def get_action_permission(self, ar, obj, state):
@@ -87,12 +96,17 @@ class MarkPresent(dd.ChangeStateAction):
 
 
 class MarkAbsent(MarkPresent):
+    """Mark this participant as absent at the event (without explanation).
+
+    """    
     label = _("Absent")
-    help_text = _("Mark this participant as absent.")
 
 class MarkExcused(MarkPresent):
+    """Mark this participant as absent at the event (with acceptable
+    explanation).
+
+    """    
     label = _("Excused")
-    help_text = _("Mark this participant as excused.")
 
 
 
