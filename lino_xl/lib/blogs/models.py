@@ -187,6 +187,7 @@ class EntriesByController(Entries):
 
 
 class LatestEntries(Entries):
+    """Show the most recent blog entries."""
     label = _("Latest blog entries")
     column_names = "pub_date title user *"
     order_by = ["-pub_date"]
