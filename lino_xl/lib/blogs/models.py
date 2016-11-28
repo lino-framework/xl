@@ -19,6 +19,7 @@ from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import My, UserAuthored
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
+from lino.core.requests import BaseRequest
 
 
 @dd.python_2_unicode_compatible
@@ -95,19 +96,19 @@ class Entry(UserAuthored, Controllable, CombinedDateTime):
             self.language = ar.get_user().language
         super(Entry, self).on_create(ar)
 
-    @classmethod
-    def latest_entries(cls, ar, max_num=10, **context):
-        context = ar.get_printable_context(**context)
-        qs = cls.objects.filter(pub_date__isnull=False)
-        qs = qs.order_by("-pub_date")
-        s = ''
-        render = dd.plugins.jinja.render_jinja
-        for num, e in enumerate(qs):
-            if num >= max_num:
-                break
-            context.update(obj=e)
-            s += render(ar, 'blogs/entry.html', context)
-        return s
+    # @classmethod
+    # def latest_entries(cls, ar, max_num=10, **context):
+    #     context = ar.get_printable_context(**context)
+    #     qs = cls.objects.filter(pub_date__isnull=False)
+    #     qs = qs.order_by("-pub_date")
+    #     s = ''
+    #     render = dd.plugins.jinja.render_jinja
+    #     for num, e in enumerate(qs):
+    #         if num >= max_num:
+    #             break
+    #         context.update(obj=e)
+    #         s += render(ar, 'blogs/entry.html', context)
+    #     return s
     
 
 class Tagging(dd.Model):
@@ -186,9 +187,27 @@ class EntriesByController(Entries):
 
 
 class LatestEntries(Entries):
+    label = _("Latest blog entries")
     column_names = "pub_date title user *"
     order_by = ["-pub_date"]
     filter = models.Q(pub_date__isnull=False)
+    slave_grid_format = 'summary'
+
+    @classmethod
+    def get_slave_summary(cls, obj, ar, max_num=10, **context):
+        
+        context = ar.get_printable_context(**context)
+        qs = rt.models.blogs.Entry.objects.filter(pub_date__isnull=False)
+        qs = qs.order_by("-pub_date")
+        s = ''
+        render = dd.plugins.jinja.render_jinja
+        for num, e in enumerate(qs):
+            if num >= max_num:
+                break
+            context.update(obj=e)
+            s += render(ar, 'blogs/entry.html', context)
+        return s
+    
     
 class Taggings(dd.Table):
     model = 'blogs.Tagging'

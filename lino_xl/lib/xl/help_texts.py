@@ -197,6 +197,12 @@ following values (which can be redefined in
 lino.core.site.Site.setup_choicelists()):"""),
     'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
 the Guest.state field."""),
+    'lino_xl.lib.cal.workflows.feedback.InvitationFeedback' : _("""Base class for actions that give feedback to an invitation."""),
+    'lino_xl.lib.cal.workflows.feedback.AcceptInvitation' : _("""Accept this invitation."""),
+    'lino_xl.lib.cal.workflows.feedback.MarkPresent' : _("""Mark this participant as present at the event."""),
+    'lino_xl.lib.cal.workflows.feedback.MarkAbsent' : _("""Mark this participant as absent at the event (without explanation)."""),
+    'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent at the event (with acceptable
+explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""To close a meeting means that the meeting is over and the guests go
 home."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
@@ -495,7 +501,7 @@ certain value."""),
     'lino_xl.lib.properties.models.ChoicesByType.model' : _("""alias of PropChoice"""),
     'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
-    'lino_xl.lib.reception.models.CheckinVisitor' : _("""The "Checkin" action on a Guest."""),
+    'lino_xl.lib.reception.models.CheckinVisitor' : _("""Mark this visitor as arrived."""),
     'lino_xl.lib.reception.models.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
     'lino_xl.lib.reception.models.CheckoutVisitor' : _("""The "Checkout" action on a Guest."""),
     'lino_xl.lib.reception.models.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
