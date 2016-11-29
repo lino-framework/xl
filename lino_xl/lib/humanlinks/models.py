@@ -184,11 +184,9 @@ class LinksByHuman(Links):
                     i = (lnk.type.as_parent(obj), lnk.child)
                 links.append(i)
 
-        def by_age(a, b):
-            return cmp(b[1].birth_date.as_date(), a[1].birth_date.as_date())
-
         try:
-            links.sort(by_age)
+            links.sort(
+                key=lambda a: a[1].birth_date.as_date(), reverse=True)
         # except AttributeError:
         except (AttributeError, ValueError):
             # AttributeError: 'str' object has no attribute 'as_date'
