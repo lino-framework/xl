@@ -55,6 +55,10 @@ problems."""),
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
+    'lino_xl.lib.blogs.models.Entry' : _("""A blog entry is a short article with a title, published on a given
+date and time by a given user."""),
+    'lino_xl.lib.blogs.models.Tagging' : _("""A tag is the fact that a given entry mentions a given topic."""),
+    'lino_xl.lib.blogs.models.LatestEntries' : _("""Show the most recent blog entries."""),
     'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
 lino_welfare.modlib.aids.mixins.Confirmation."""),
