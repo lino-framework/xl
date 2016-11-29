@@ -2,6 +2,14 @@
 # Copyright 2013-2016 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
+"""
+.. autosummary::
+   :toctree:
+
+    models
+
+
+"""
 
 from lino.ad import Plugin
 from django.utils.translation import ugettext_lazy as _

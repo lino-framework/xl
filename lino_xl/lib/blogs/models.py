@@ -3,7 +3,7 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.blogs`.
+"""Database models for this plugin.
 
 """
 
