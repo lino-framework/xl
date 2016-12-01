@@ -27,7 +27,8 @@ else:
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='1.7.5',
+    version='2016.12.0',
+    # version='1.7.5',
     install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",

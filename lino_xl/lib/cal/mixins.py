@@ -305,8 +305,9 @@ class EventGenerator(UserAuthored):
         date = None
         for ee in qs:
             if ee.is_user_modified():
-                date = ee.start_date
                 event_no = ee.auto_type
+                # date = ee.start_date
+                date = rset.get_next_suggested_date(ar, ee.start_date)
             else:
                 break
         if event_no is not None:
