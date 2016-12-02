@@ -1,8 +1,8 @@
 """Database models for this plugin.
 
 """
-from future import standard_library
-standard_library.install_aliases()
+# from future import standard_library
+# standard_library.install_aliases()
 
 import logging
 import os

@@ -708,10 +708,13 @@ else:
         owner build_time
         outbox.MailsByController
         """
-dd.update_field(Excerpt, 'company',
-                verbose_name=_("Recipient (Organization)"))
-dd.update_field(Excerpt, 'contact_person',
-                verbose_name=_("Recipient (Person)"))
+
+if dd.is_installed('contacts'):
+
+    dd.update_field(Excerpt, 'company',
+                    verbose_name=_("Recipient (Organization)"))
+    dd.update_field(Excerpt, 'contact_person',
+                    verbose_name=_("Recipient (Person)"))
 
 
 class Excerpts(dd.Table):

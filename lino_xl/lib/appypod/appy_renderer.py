@@ -189,7 +189,7 @@ class AppyRenderer(OriginalAppyRenderer):
         try:
             return self.renderXhtml(html, **kw)
         except Exception as e:
-            if not isinstance(html, six.text_type):
+            if not isinstance(html, six.string_types):
                 raise
             # some sax parsers refuse unicode strings.
             # appy.pod always expects utf-8 encoding.
