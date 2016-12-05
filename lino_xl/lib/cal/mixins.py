@@ -472,7 +472,7 @@ class EventGenerator(UserAuthored):
                     we, date, until)
                 conflicts = [E.tostring(ar.obj2html(o)) for o in qs]
                 msg = ', '.join(conflicts)
-                ar.warning("%s conflicts with %s. ", we, msg)
+                ar.debug("%s conflicts with %s. ", we, msg)
                 return None
         
             rset.move_event_to(we, date)
