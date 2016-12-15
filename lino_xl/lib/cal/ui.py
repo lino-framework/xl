@@ -963,7 +963,7 @@ class OverdueAppointments(Events):
     """
     required_roles = dd.required(OfficeStaff)
     label = _("Overdue appointments")
-    column_names = 'when_html project owner event_type summary workflow_buttons *'
+    column_names = 'when_html user project owner event_type summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
 

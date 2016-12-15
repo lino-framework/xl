@@ -25,7 +25,20 @@ from lino.api import dd
 from ..workflows import EventStates, GuestStates
 
 add = EventStates.add_item
-add('40', _("Notified"), 'published', edit_guests=True)
+# add('40', _("Notified"), 'published', edit_guests=True,
+add('40', _("Published"), 'published', edit_guests=True,
+    fixed=True, button_text="☼")   # WHITE SUN WITH RAYS (U+263C)
+
+# EventStates.new.button_text ="⛶"  # SQUARE FOUR CORNERS (U+26F6)
+# EventStates.talk.button_text ="⚔"  # CROSSED SWORDS (U+2694)	
+# EventStates.opened.button_text = "☉"  # SUN (U+2609)	
+# # EventStates.started.button_text="☭"  # HAMMER AND SICKLE (U+262D)
+# EventStates.started.button_text = "⚒"  # HAMMER AND PICK (U+2692
+# EventStates.sticky.button_text="♥"  # BLACK HEART SUIT (U+2665)
+# EventStates.sleeping.button_text = "☾"  # LAST QUARTER MOON (U+263E)
+# EventStates.ready.button_text = "☐"  # BALLOT BOX \u2610
+# EventStates.closed.button_text = "☑"  # BALLOT BOX WITH CHECK \u2611
+# EventStates.cancelled.button_text="☒"  # BALLOT BOX WITH X (U+2612)
 
 
 GuestStates.clear()
@@ -113,19 +126,43 @@ class MarkExcused(MarkPresent):
 
 class ResetEvent(dd.ChangeStateAction):
     label = _("Reset")
-    icon_name = 'cancel'
+    # icon_name = 'cancel'
     required_states = 'published took_place'
+
+class CancelEvent(dd.ChangeStateAction):
+    label = pgettext("calendar event action", "Cancel")
+    required_states = 'suggested published draft'
+    # icon_name = 'cross'
+
+
+class PublishEvent(dd.ChangeStateAction):
+    """Mark this event as published.  All participants have been informed.
+
+    You cannot publish a meeting which lies in the past.
+
+    """
+    label = _("Publish")
+    required_states = 'suggested draft'
+    # icon_name = 'accept'
+    
+    def get_action_permission(self, ar, obj, state):
+        d = obj.end_date or obj.start_date
+        if d < dd.today():
+            return False
+        return super(PublishEvent,
+                     self).get_action_permission(ar, obj, state)
 
 
 class CloseMeeting(dd.ChangeStateAction):
-    """To close a meeting means that the meeting is over and the guests go
-    home.
+    """The meeting is over and the guests go home.
+
+    You cannot close a meeting which lies in the future.
 
     """
     label = _("Close meeting")
-    help_text = _("The event took place.")
-    icon_name = 'emoticon_smile'
-    required_states = 'published draft'
+    # help_text = _("The event took place.")
+    # icon_name = 'emoticon_smile'
+    required_states = 'suggested published draft'
 
     def get_action_permission(self, ar, obj, state):
         d = obj.end_date or obj.start_date
@@ -141,14 +178,12 @@ GuestStates.absent.add_transition(MarkAbsent)
 GuestStates.excused.add_transition(MarkExcused)
 
 
-EventStates.published.add_transition(  # _("Confirm"),
-    required_states='suggested draft',
-    icon_name='accept',
-    help_text=_("Mark this as published. "
-                "All participants have been informed."))
+EventStates.published.add_transition(PublishEvent)
+# EventStates.published.add_transition(  # _("Confirm"),
+#     required_states='suggested draft',
+#     icon_name='accept',
+#     help_text=_("Mark this as published. "
+#                 "All participants have been informed."))
 EventStates.took_place.add_transition(CloseMeeting, name='close_meeting')
-EventStates.cancelled.add_transition(
-    pgettext("calendar event action", "Cancel"),
-    required_states='published draft',
-    icon_name='cross')
+EventStates.cancelled.add_transition(CancelEvent)
 EventStates.draft.add_transition(ResetEvent)

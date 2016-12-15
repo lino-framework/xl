@@ -207,8 +207,8 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.MarkAbsent' : _("""Mark this participant as absent at the event (without explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent at the event (with acceptable
 explanation)."""),
-    'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""To close a meeting means that the meeting is over and the guests go
-home."""),
+    'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
+    'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.contacts.choicelists.PartnerEvents' : _("""A choicelist of observable partner events."""),
