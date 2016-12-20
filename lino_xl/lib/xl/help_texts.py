@@ -107,6 +107,7 @@ Example content:"""),
     'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether events of this type should be considered
 "appointments" (i.e. whose time and place have been agreed
 upon with other users or external parties)."""),
+    'lino_xl.lib.cal.models.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
     'lino_xl.lib.cal.models.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
@@ -137,8 +138,10 @@ repair this by adding the suggested guests."""),
     'lino_xl.lib.cal.models.EventGuestChecker.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this event conflicts with other event(s)."""),
     'lino_xl.lib.cal.models.ConflictingEventsChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether event_type of this should be updated."""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether the event_type of this event should be updated."""),
     'lino_xl.lib.cal.models.ObsoleteEventTypeChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.models.EventChecker' : _("""Check for unprobable data in this event."""),
+    'lino_xl.lib.cal.models.EventChecker.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a
 given event."""),
     'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),

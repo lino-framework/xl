@@ -501,7 +501,7 @@ class EventTypes(dd.Table):
     name
     event_label
     # description
-    start_date id
+    start_date max_days id
     # type url_template username password
     #build_method #template email_template attach_to_email
     is_appointment all_rooms locks_user max_conflicting

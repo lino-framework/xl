@@ -91,12 +91,9 @@ class EventStates(dd.Workflow):
 add = EventStates.add_item
 add('10', _("Suggested"), 'suggested',
     edit_guests=True,
-    button_text="?",
-    # button_text="♍",  # Virgo
-    help_text=_("Automatically suggested. "
-                "Default state of an automatic event."))
+    button_text="?")
 add('20', _("Draft"), 'draft', edit_guests=True,
-    button_text="\u2610")  # BALLOT BOX
+    button_text="☐")  # BALLOT BOX (2610)
 if False:
     add('40', _("Published"), 'published')
     # add('30', _("Notified"),'notified')
@@ -104,12 +101,16 @@ if False:
     add('60', _("Rescheduled"), 'rescheduled', fixed=True)
 add('50', _("Took place"), 'took_place',
     fixed=True, edit_guests=True,
-    button_text="\u2611")  # BALLOT BOX WITH CHECK
+    button_text="☑")  # BALLOT BOX WITH CHECK (2611)
 
 add('70', _("Cancelled"), 'cancelled', fixed=True, transparent=True,
-    button_text="\u2609", noauto=True)  # SUN
-add('75', _("Omitted"), 'omitted', fixed=True, transparent=True,
-    button_text="\u2612")  # BALLOT BOX WITH X
+    # button_text="\u2609", noauto=True)  # SUN
+    button_text="☒", noauto=True)  # BALLOT BOX WITH X (\u2612)
+
+if False:
+    add('75', _("Omitted"), 'omitted', fixed=True, transparent=True,
+        button_text="☒")  # BALLOT BOX WITH X (\u2612)
+        # button_text="☹")  # 2639
 # add('80', _("Absent"), 'absent')
 
 

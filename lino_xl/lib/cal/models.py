@@ -159,6 +159,10 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         `is_appointment` field checked.  See :attr:`show_appointments
         <lino_xl.lib.cal.ui.Events.show_appointments>`.
 
+    .. attribute:: max_days
+
+        The maximal number of days allowed as duration.
+
     """
     templates_group = 'cal/Event'
 
@@ -195,6 +199,9 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         _("Simultaneous events"),
         help_text=_("How many conflicting events should be tolerated."),
         default=1)
+
+    max_days = models.PositiveIntegerField(
+        _("Maximum days"), default=1)
 
     def __str__(self):
         # when selecting an Event.event_type it is more natural to
@@ -347,7 +354,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
         _("Description"), blank=True, format='html')
 
     def before_auto_event_save(self, obj):
-        if self.end_date and self.end_date != self.start_date:
+        if self.end_date:  # and self.end_date != self.start_date:
             duration = self.end_date - self.start_date
             obj.end_date = obj.start_date + duration
         super(RecurrentEvent, self).before_auto_event_save(obj)
@@ -842,7 +849,7 @@ ConflictingEventsChecker.activate()
 
 
 class ObsoleteEventTypeChecker(Checker):
-    """Check whether :attr:`event_type` of this should be updated.
+    """Check whether the `event_type` of this event should be updated.
 
     This can happen when the configuration has changed and there are
     automatic events which had been generated using the old
@@ -866,6 +873,32 @@ class ObsoleteEventTypeChecker(Checker):
                 obj.save()
 
 ObsoleteEventTypeChecker.activate()
+
+
+class EventChecker(Checker):
+    """Check for unprobable data in this event.
+
+    """
+    verbose_name = _("Check for strange events")
+    model = Event
+
+    def get_plausibility_problems(self, obj, fix=False):
+        if obj.end_date is None:
+            return
+        et = obj.event_type
+        if et is None:
+            return
+        duration = obj.end_date - obj.start_date
+        if duration.days > et.max_days:
+            msg = _("Event lasts {0} days (but only {1} are allowed).").format(
+                duration.days, et.max_days)
+            yield (True, msg)
+            if fix:
+                obj.end_date = None
+                obj.full_clean()
+                obj.save()
+
+EventChecker.activate()
 
 
 @dd.python_2_unicode_compatible
