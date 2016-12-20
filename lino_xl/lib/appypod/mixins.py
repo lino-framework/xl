@@ -6,8 +6,6 @@
 Defines :class:`PrintTableAction` and
 :class:`PrintLabelsAction`
 """
-import logging
-logger = logging.getLogger(__name__)
 
 import os
 
@@ -15,7 +13,7 @@ from django.conf import settings
 from lino.utils import format_date
 from lino.utils.media import TmpMediaFile
 from lino.core import actions
-from lino.api import rt, _
+from lino.api import dd, rt, _
 
 from .appy_renderer import AppyRenderer
 
@@ -67,8 +65,8 @@ class PrintTableAction(actions.Action):
         context = self.get_context(ar)
         if os.path.exists(target_file):
             os.remove(target_file)
-        logger.debug(u"appy.pod render %s -> %s (params=%s",
-                     tplfile, target_file, settings.SITE.appy_params)
+        dd.logger.debug(u"appy.pod render %s -> %s (params=%s",
+                        tplfile, target_file, settings.SITE.appy_params)
         renderer = AppyRenderer(
             ar, tplfile, context, target_file, **settings.SITE.appy_params)
         renderer.run()

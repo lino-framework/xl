@@ -108,7 +108,7 @@ def check_subscription(user, calendar):
         sub.save()
 
 
-class UserDetailMixin(dd.Panel):
+class UserDetailMixin(dd.DetailLayout):
 
     cal_left = """
     event_type access_class

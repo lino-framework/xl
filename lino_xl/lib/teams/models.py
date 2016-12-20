@@ -8,15 +8,14 @@
 
 from __future__ import unicode_literals
 
-import logging
-logger = logging.getLogger(__name__)
+# import logging
+# logger = logging.getLogger(__name__)
 
 
-from lino.api import dd
+from lino.api import dd, _
 from lino import mixins
-from django.utils.translation import ugettext_lazy as _
 
-users = dd.resolve_app('users')
+# users = dd.resolve_app('users')
 
 
 class Team(mixins.BabelNamed):
@@ -45,9 +44,11 @@ class Teams(dd.Table):
 
 
 dd.inject_field(
-    users.User, 'team',
+    'users.User', 'team',
     dd.ForeignKey('teams.Team', blank=True, null=True))
 
 
-class UsersByTeam(users.Users):
+from lino.modlib.users.desktop import Users
+
+class UsersByTeam(Users):
     master_key = 'team'
