@@ -217,7 +217,7 @@ class EventGenerator(UserAuthored):
         for we in wanted.values():
             self.before_auto_event_save(we)
             we.save()
-            we.after_ui_create(ar)
+            we.after_ui_save(ar, None)
         #~ logger.info("20130528 update_auto_events done")
         return count
 

@@ -58,7 +58,7 @@ class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
         return obj.event
 
     def get_notify_recipients(self, ar, obj):
-        yield obj.user
+        yield (obj.user, obj.user.mail_mode)
 
     def get_action_permission(self, ar, obj, state):
         if obj.partner_id is None:

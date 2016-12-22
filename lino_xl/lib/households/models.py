@@ -117,7 +117,6 @@ class Household(contacts.Partner):
             hh.add_member(head, MemberRoles.head)
         if partner is not None:
             hh.add_member(partner, MemberRoles.partner)
-        hh.after_ui_create(ar)
         hh.after_ui_save(ar, None)
         return hh
 

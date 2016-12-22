@@ -630,10 +630,6 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     def is_user_modified(self):
         return self.state != EventStates.suggested
 
-    def after_ui_create(self, ar):
-        super(Event, self).after_ui_create(ar)
-        self.update_guests.run_from_code(ar)
-
     def after_ui_save(self, ar, cw):
         super(Event, self).after_ui_save(ar, cw)
         self.update_guests.run_from_code(ar)
