@@ -810,11 +810,13 @@ class EventChecker(Checker):
     
 class EventGuestChecker(EventChecker):
     """Check whether this event has :message:`No participants although NNN
-    suggestions exist.` -- This is probably due to some bug, so we
-    repair this by adding the suggested guests.
+    suggestions exist.`
+
+    This is probably due to some problem in the past, so we repair
+    this by adding the suggested guests.
 
     """
-    verbose_name = _("Missing participants")
+    verbose_name = _("Events without participants")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.state.edit_guests:
@@ -879,7 +881,8 @@ ObsoleteEventTypeChecker.activate()
 
 
 class LongEventChecker(EventChecker):
-    """Check for too long-lasting events.
+    """Check for events which last longer than the maximum number of days
+    allowed by their type.
 
     """
     verbose_name = _("Too long-lasting events")
