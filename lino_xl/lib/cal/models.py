@@ -3,15 +3,12 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.cal`.
+"""Database models for this plugin.
 
 """
 
 from __future__ import unicode_literals
 import six
-
-import logging
-logger = logging.getLogger(__name__)
 
 import datetime
 
@@ -120,7 +117,7 @@ class RemoteCalendar(mixins.Sequenced):
 class Room(mixins.BabelNamed):
     """A location where calendar events can happen.  For a given Room you
     can see the :class:`EventsByRoom` that happened (or will happen)
-    there.  A Room is BabelNamed (has a multilingual name).
+    there.  A Room has a multilingual name.
 
     """
     class Meta:
@@ -131,7 +128,6 @@ class Room(mixins.BabelNamed):
 
 
 class Priority(mixins.BabelNamed):
-
     "The priority of a Task or Event."
     class Meta:
         app_label = 'cal'
@@ -143,11 +139,6 @@ class Priority(mixins.BabelNamed):
 @dd.python_2_unicode_compatible
 class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
     """The possible value of the :attr:`Event.type` field.
-    Example content:
-
-    .. lino2rst::
-
-       rt.show(cal.EventTypes, limit=5)
 
     .. attribute:: is_appointment
 
@@ -280,7 +271,7 @@ class Task(Component):
 
     .. attribute:: state
      
-        The state of this Task. one of :class:`TaskStates`
+        The state of this Task. one of :class:`TaskStates`.
 
 
     """
@@ -335,7 +326,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
     .. attribute:: every_unit
 
         Inherited from :attr:`RecurrentSet.every_unit
-        <lino_xl.lib.cal.models.RecurrentSet.every_unit>`
+        <lino_xl.lib.cal.models.RecurrentSet.every_unit>`.
 
     .. attribute:: event_type
 
@@ -453,7 +444,8 @@ class ExtAllDayField(dd.VirtualField):
 
 @dd.python_2_unicode_compatible
 class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
-    """A calendar event is a lapse of time to be visualized in a calendar.
+    """A **calendar entry** is a lapse of time to be visualized in a
+    calendar.
 
     .. attribute:: user
 
@@ -461,7 +453,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     .. attribute:: assigned_to
 
-        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`
+        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`.
 
     .. attribute:: event_type
 
@@ -486,8 +478,10 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Event')
         # abstract = True
-        verbose_name = pgettext("cal", "Event")
-        verbose_name_plural = pgettext("cal", "Events")
+        verbose_name = _("Calendar entry")
+        verbose_name_plural = _("Calendar entries")
+        # verbose_name = pgettext("cal", "Event")
+        # verbose_name_plural = pgettext("cal", "Events")
 
     update_guests = UpdateGuests()
     update_events = UpdateEventsByEvent()
@@ -809,9 +803,9 @@ class EventChecker(Checker):
             EventChecker, self).get_responsible_user(obj)
     
 class EventGuestChecker(EventChecker):
-    """Check whether this event has :message:`No participants although NNN
-    suggestions exist.`
+    """Check for calendar entries without participants.
 
+    :message:`No participants although N suggestions exist.` --
     This is probably due to some problem in the past, so we repair
     this by adding the suggested guests.
 
@@ -835,7 +829,7 @@ EventGuestChecker.activate()
 
 
 class ConflictingEventsChecker(EventChecker):
-    """Check whether this event conflicts with other event(s).
+    """Check whether this event conflicts with other events.
 
     """
     verbose_name = _("Check for conflicting events")
@@ -855,7 +849,7 @@ ConflictingEventsChecker.activate()
 
 
 class ObsoleteEventTypeChecker(EventChecker):
-    """Check whether the `event_type` of this event should be updated.
+    """Check whether the type of this event should be updated.
 
     This can happen when the configuration has changed and there are
     automatic events which had been generated using the old
@@ -1103,11 +1097,11 @@ if False:  # removed 20160610 because it is probably not used
 
         def run_from_ui(self, ar, **kw):
             user = ar.selected_rows[0]
-            logger.info("Updating reminders for %s", unicode(user))
+            dd.logger.info("Updating reminders for %s", unicode(user))
             n = update_reminders_for_user(user, ar)
             msg = _("%(num)d reminders for %(user)s have been updated."
                     ) % dict(user=user, num=n)
-            logger.info(msg)
+            dd.logger.info(msg)
             ar.success(msg, **kw)
 
     @dd.receiver(dd.pre_analyze, dispatch_uid="add_update_reminders")

@@ -100,10 +100,9 @@ lino_xl.lib.cal.management.commands.watch_calendars,
 and local modifications will be sent back to the remote calendar."""),
     'lino_xl.lib.cal.models.Room' : _("""A location where calendar events can happen.  For a given Room you
 can see the EventsByRoom that happened (or will happen)
-there.  A Room is BabelNamed (has a multilingual name)."""),
+there.  A Room has a multilingual name."""),
     'lino_xl.lib.cal.models.Priority' : _("""The priority of a Task or Event."""),
-    'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field.
-Example content:"""),
+    'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field."""),
     'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether events of this type should be considered
 "appointments" (i.e. whose time and place have been agreed
 upon with other users or external parties)."""),
@@ -112,19 +111,20 @@ upon with other users or external parties)."""),
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
 (and optionally wants to get reminded about it)."""),
-    'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates"""),
+    'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates."""),
     'lino_xl.lib.cal.models.RecurrentEvent' : _("""A rule designed to generate a series of recurrent events."""),
     'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
-    'lino_xl.lib.cal.models.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit"""),
+    'lino_xl.lib.cal.models.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
     'lino_xl.lib.cal.models.UpdateGuests' : _("""Decide whether it is time to add Guest instances for this event,
 and if yes, call suggest_guests() to instantiate them."""),
     'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
 communication with the Ext.ensible CalendarPanel
 because we consider the "all day" checkbox
 equivalent to "empty start and end time fields"."""),
-    'lino_xl.lib.cal.models.Event' : _("""A calendar event is a lapse of time to be visualized in a calendar."""),
+    'lino_xl.lib.cal.models.Event' : _("""A calendar entry is a lapse of time to be visualized in a
+calendar."""),
     'lino_xl.lib.cal.models.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.cal.models.Event.assigned_to' : _("""See lino.modlib.users.mixins.Assignable.assigned_to"""),
+    'lino_xl.lib.cal.models.Event.assigned_to' : _("""See lino.modlib.users.mixins.Assignable.assigned_to."""),
     'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this event. Every calendar event should have this
 field pointing to a given EventType, which holds
 extended configurable information about this event."""),
@@ -132,16 +132,12 @@ extended configurable information about this event."""),
 all events on that day (EventsByDay)."""),
     'lino_xl.lib.cal.models.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
-    'lino_xl.lib.cal.models.EventGuestChecker' : _("""Check whether this event has No participants although NNN
-suggestions exist. -- This is probably due to some bug, so we
-repair this by adding the suggested guests."""),
-    'lino_xl.lib.cal.models.EventGuestChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this event conflicts with other event(s)."""),
-    'lino_xl.lib.cal.models.ConflictingEventsChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether the event_type of this event should be updated."""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.models.EventChecker' : _("""Check for unprobable data in this event."""),
-    'lino_xl.lib.cal.models.EventChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.models.EventGuestChecker' : _("""Check for calendar entries without participants."""),
+    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this event conflicts with other events."""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether the type of this event should be updated."""),
+    'lino_xl.lib.cal.models.LongEventChecker' : _("""Check for events which last longer than the maximum number of days
+allowed by their type."""),
+    'lino_xl.lib.cal.models.LongEventChecker.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a
 given event."""),
     'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),

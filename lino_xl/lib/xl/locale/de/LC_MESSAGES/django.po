@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-22 05:08+0200\n"
-"PO-Revision-Date: 2016-12-20 15:59+0200\n"
+"POT-Creation-Date: 2016-12-22 06:42+0200\n"
+"PO-Revision-Date: 2016-12-22 06:41+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -115,7 +115,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: lino_xl/lib/addresses/models.py:62 lino_xl/lib/blogs/models.py:39
-#: lino_xl/lib/cal/models.py:959 lino_xl/lib/cv/models.py:488
+#: lino_xl/lib/cal/models.py:961 lino_xl/lib/cv/models.py:488
 #: lino_xl/lib/cv/models.py:514 lino_xl/lib/excerpts/models.py:113
 #: lino_xl/lib/lists/models.py:99 lino_xl/lib/notes/models.py:52
 #: lino_xl/lib/notes/models.py:93 lino_xl/lib/polls/models.py:658
@@ -630,8 +630,8 @@ msgstr "Beschreibung"
 msgid "Times"
 msgstr "Uhrzeiten"
 
-#: lino_xl/lib/cal/mixins.py:592 lino_xl/lib/cal/models.py:737
-#: lino_xl/lib/cal/models.py:744 lino_xl/lib/events/models.py:114
+#: lino_xl/lib/cal/mixins.py:592 lino_xl/lib/cal/models.py:739
+#: lino_xl/lib/cal/models.py:746 lino_xl/lib/events/models.py:114
 msgid "When"
 msgstr "Wann"
 
@@ -862,160 +862,156 @@ msgid "Populate or update the list of guests for this event."
 msgstr ""
 
 #: lino_xl/lib/cal/models.py:489
-msgctxt "cal"
-msgid "Event"
-msgstr "Termin"
+msgid "Calendar entry"
+msgstr "Kalendereintrag"
 
 #: lino_xl/lib/cal/models.py:490
-msgctxt "cal"
-msgid "Events"
-msgstr "Termine"
+msgid "Calendar entries"
+msgstr "Kalendereinträge"
 
-#: lino_xl/lib/cal/models.py:498 lino_xl/lib/cal/workflows/__init__.py:78
+#: lino_xl/lib/cal/models.py:500 lino_xl/lib/cal/workflows/__init__.py:78
 msgid "Transparent"
 msgstr "nicht blockierend"
 
-#: lino_xl/lib/cal/models.py:498
+#: lino_xl/lib/cal/models.py:500
 msgid "Indicates that this Event shouldn't prevent other Events at the same time."
 msgstr "Dieser Termin lässt auch andere Termine zur gleichen Zeit zu."
 
-#: lino_xl/lib/cal/models.py:504
+#: lino_xl/lib/cal/models.py:506
 msgid "all day"
 msgstr "ganztags"
 
-#: lino_xl/lib/cal/models.py:525
+#: lino_xl/lib/cal/models.py:527
 #, python-format
 msgid "Unsaved %s"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:668 lino_xl/lib/reception/models.py:66
+#: lino_xl/lib/cal/models.py:670 lino_xl/lib/reception/models.py:66
 msgid "Busy"
 msgstr "Beschäftigt"
 
-#: lino_xl/lib/cal/models.py:672
+#: lino_xl/lib/cal/models.py:674
 msgid "with"
 msgstr "mit"
 
-#: lino_xl/lib/cal/models.py:753
+#: lino_xl/lib/cal/models.py:755
 msgid "Link URL"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:757
+#: lino_xl/lib/cal/models.py:759
 msgid "Reminder"
 msgstr "Erinnerung"
 
-#: lino_xl/lib/cal/models.py:802 lino_xl/lib/cal/ui.py:295
+#: lino_xl/lib/cal/models.py:804 lino_xl/lib/cal/ui.py:295
 msgid "Responsible user"
 msgstr "Verantwortlicher"
 
-#: lino_xl/lib/cal/models.py:819
-#, fuzzy
+#: lino_xl/lib/cal/models.py:821
 msgid "Events without participants"
-msgstr "Teilnehmer bearbeiten"
+msgstr "Termine ohne Teilnehmer"
 
-#: lino_xl/lib/cal/models.py:828
+#: lino_xl/lib/cal/models.py:830
 msgid "No participants although {0} suggestions exist."
-msgstr ""
+msgstr "Keine Teilnehmer obwohl {0} Vorschläge da sind."
 
-#: lino_xl/lib/cal/models.py:841
+#: lino_xl/lib/cal/models.py:843
 msgid "Check for conflicting events"
 msgstr "Auf Terminüberschneidungen prüfen"
 
-#: lino_xl/lib/cal/models.py:849
+#: lino_xl/lib/cal/models.py:851
 msgid "Event conflicts with {0}."
 msgstr "Terminüberschneidung mit {0}."
 
-#: lino_xl/lib/cal/models.py:851
+#: lino_xl/lib/cal/models.py:853
 msgid "Event conflicts with {0} other events."
 msgstr "Überschneidung mit {0} anderen Terminen."
 
-#: lino_xl/lib/cal/models.py:865
+#: lino_xl/lib/cal/models.py:867
 msgid "Obsolete event type of generated events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:872
+#: lino_xl/lib/cal/models.py:874
 msgid "Event type but {0} (should be {1})."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:888
-#, fuzzy
+#: lino_xl/lib/cal/models.py:890
 msgid "Too long-lasting events"
-msgstr "Auf Terminüberschneidungen prüfen"
+msgstr "Dauer überschreitende Kalendereinträge"
 
-#: lino_xl/lib/cal/models.py:901
+#: lino_xl/lib/cal/models.py:903
 msgid "Event lasts {0} days but only {1} are allowed."
-msgstr ""
+msgstr "Dauert {0} Tage obwohl maximal {1} erlaubt sind."
 
-#: lino_xl/lib/cal/models.py:945
+#: lino_xl/lib/cal/models.py:947
 msgid "Presence"
 msgstr "Anwesenheit"
 
-#: lino_xl/lib/cal/models.py:946 lino_xl/lib/cal/ui.py:390
+#: lino_xl/lib/cal/models.py:948 lino_xl/lib/cal/ui.py:390
 msgid "Presences"
 msgstr "Anwesenheiten"
 
-#: lino_xl/lib/cal/models.py:953 lino_xl/lib/households/choicelists.py:19
+#: lino_xl/lib/cal/models.py:955 lino_xl/lib/households/choicelists.py:19
 msgid "Role"
 msgstr "Rolle"
 
-#: lino_xl/lib/cal/models.py:981
+#: lino_xl/lib/cal/models.py:983
 msgid "Event"
 msgstr "Termin"
 
-#: lino_xl/lib/cal/models.py:1014
+#: lino_xl/lib/cal/models.py:1016
 msgid "due date reached"
 msgstr "Fälligkeitsdatum erreicht"
 
-#: lino_xl/lib/cal/models.py:1031
+#: lino_xl/lib/cal/models.py:1033
 msgid "Default access class"
 msgstr "Standardmäßige Zugriffsklasse"
 
-#: lino_xl/lib/cal/models.py:1032
+#: lino_xl/lib/cal/models.py:1034
 msgid "The default access class for your calendar events and tasks."
 msgstr "Die standardmäßige Zugriffsklasse für Ihre Termine und Aufgaben"
 
-#: lino_xl/lib/cal/models.py:1039 lino_xl/lib/cal/models.py:1049
+#: lino_xl/lib/cal/models.py:1041 lino_xl/lib/cal/models.py:1051
 #, fuzzy
 msgid "Default Event Type"
 msgstr "Standardwert"
 
-#: lino_xl/lib/cal/models.py:1040
+#: lino_xl/lib/cal/models.py:1042
 #, fuzzy
 msgid "The default event type for your calendar events."
 msgstr "Die standardmäßige Zugriffsklasse für Ihre Termine und Aufgaben"
 
-#: lino_xl/lib/cal/models.py:1050
+#: lino_xl/lib/cal/models.py:1052
 msgid "The default type of events on this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1060
+#: lino_xl/lib/cal/models.py:1062
 #, fuzzy
 msgid "Site Calendar"
 msgstr "Standard-Kalender"
 
-#: lino_xl/lib/cal/models.py:1061
+#: lino_xl/lib/cal/models.py:1063
 msgid "The default calendar of this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1067
+#: lino_xl/lib/cal/models.py:1069
 msgid "Max automatic events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1069
+#: lino_xl/lib/cal/models.py:1071
 msgid "Maximum number of automatic events to be generated."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1077
+#: lino_xl/lib/cal/models.py:1079
 msgid "Hide events before"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1079
+#: lino_xl/lib/cal/models.py:1081
 msgid ""
 "If this is specified, certain tables show only \n"
 "events after the given date."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1108
+#: lino_xl/lib/cal/models.py:1110
 #, python-format
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
@@ -5850,21 +5846,14 @@ msgstr ""
 #~ msgid "Check for strange events"
 #~ msgstr "Auf Terminüberschneidungen prüfen"
 
-#~ msgid "Event lasts {0} days (but only {1} are allowed)."
-#~ msgstr ""
-
-#~ msgid "Automatically suggested. Default state of an automatic event."
-#~ msgstr ""
-
-#~ msgid "Check whether event_type of this should be updated."
-#~ msgstr ""
-
-#~ msgid "Check for missing participants"
-#~ msgstr ""
-
-#~ msgid "Update event types of generated events"
-#~ msgstr ""
-
 #~ msgid "Missing participants"
 #~ msgstr "Teilnehmer bearbeiten"
+
+#~ msgctxt "cal"
+#~ msgid "Event"
+#~ msgstr "Termin"
+
+#~ msgctxt "cal"
+#~ msgid "Events"
+#~ msgstr "Termine"
 

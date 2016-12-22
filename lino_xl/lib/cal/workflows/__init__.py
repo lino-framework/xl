@@ -10,7 +10,6 @@
    :toctree:
 
     feedback
-    voga
 
 """
 

@@ -4,14 +4,11 @@
 # License: BSD (see file COPYING for details)
 
 """
-Tables for `lino_xl.lib.cal`.
+Tables for this plugin.
 
 """
 
 from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.conf import settings
 
