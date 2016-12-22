@@ -802,14 +802,19 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 
 
-class EventGuestChecker(Checker):
+class EventChecker(Checker):
+    model = Event
+    def get_responsible_user(self, obj):
+        return obj.user or super(
+            EventChecker, self).get_responsible_user(obj)
+    
+class EventGuestChecker(EventChecker):
     """Check whether this event has :message:`No participants although NNN
     suggestions exist.` -- This is probably due to some bug, so we
     repair this by adding the suggested guests.
 
     """
-    verbose_name = _("Check for missing participants")
-    model = Event
+    verbose_name = _("Missing participants")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.state.edit_guests:
@@ -827,12 +832,11 @@ class EventGuestChecker(Checker):
 EventGuestChecker.activate()
 
 
-class ConflictingEventsChecker(Checker):
+class ConflictingEventsChecker(EventChecker):
     """Check whether this event conflicts with other event(s).
 
     """
     verbose_name = _("Check for conflicting events")
-    model = Event
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.has_conflicting_events():
@@ -848,7 +852,7 @@ class ConflictingEventsChecker(Checker):
 ConflictingEventsChecker.activate()
 
 
-class ObsoleteEventTypeChecker(Checker):
+class ObsoleteEventTypeChecker(EventChecker):
     """Check whether the `event_type` of this event should be updated.
 
     This can happen when the configuration has changed and there are
@@ -856,8 +860,7 @@ class ObsoleteEventTypeChecker(Checker):
     configuration.
 
     """
-    verbose_name = _("Update event types of generated events")
-    model = Event
+    verbose_name = _("Obsolete event type of generated events")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.auto_type:
@@ -875,11 +878,11 @@ class ObsoleteEventTypeChecker(Checker):
 ObsoleteEventTypeChecker.activate()
 
 
-class EventChecker(Checker):
-    """Check for unprobable data in this event.
+class LongEventChecker(EventChecker):
+    """Check for too long-lasting events.
 
     """
-    verbose_name = _("Check for strange events")
+    verbose_name = _("Too long-lasting events")
     model = Event
 
     def get_plausibility_problems(self, obj, fix=False):
@@ -889,8 +892,10 @@ class EventChecker(Checker):
         if et is None:
             return
         duration = obj.end_date - obj.start_date
+        
+        # print (20161222, duration.days, et.max_days)
         if duration.days > et.max_days:
-            msg = _("Event lasts {0} days (but only {1} are allowed).").format(
+            msg = _("Event lasts {0} days but only {1} are allowed.").format(
                 duration.days, et.max_days)
             yield (True, msg)
             if fix:
@@ -898,7 +903,7 @@ class EventChecker(Checker):
                 obj.full_clean()
                 obj.save()
 
-EventChecker.activate()
+LongEventChecker.activate()
 
 
 @dd.python_2_unicode_compatible

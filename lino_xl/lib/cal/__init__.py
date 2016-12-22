@@ -137,6 +137,7 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
+        m.add_action('cal.Events')
         m.add_action('cal.Tasks')
         m.add_action('cal.Guests')
         m.add_action('cal.Subscriptions')
