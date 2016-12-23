@@ -3,9 +3,7 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""Adds feedback-based workflow to :mod:`lino_xl.lib.cal`. You
-"activate" this by simply importing it from within a
-:xfile:`models.py` module used by your application.
+"""Adds feedback-based workflow to :mod:`lino_xl.lib.cal`.
 
 Used e.g. by :ref:`welfare`.
 

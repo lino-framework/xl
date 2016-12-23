@@ -123,11 +123,19 @@ because we consider the "all day" checkbox
 equivalent to "empty start and end time fields"."""),
     'lino_xl.lib.cal.models.Event' : _("""A calendar entry is a lapse of time to be visualized in a
 calendar."""),
+    'lino_xl.lib.cal.models.Event.end_time' : _("""These four fields define the duration of this entry.
+Only start_date is mandatory."""),
+    'lino_xl.lib.cal.models.Event.summary' : _("""A one-line descriptive text."""),
+    'lino_xl.lib.cal.models.Event.description' : _("""A longer descriptive text."""),
     'lino_xl.lib.cal.models.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.cal.models.Event.assigned_to' : _("""See lino.modlib.users.mixins.Assignable.assigned_to."""),
+    'lino_xl.lib.cal.models.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
+event."""),
     'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this event. Every calendar event should have this
 field pointing to a given EventType, which holds
 extended configurable information about this event."""),
+    'lino_xl.lib.cal.models.Event.state' : _("""The state of this entry. The state can change according to
+rules defined by the workflow, that's why we sometimes refer
+to it as the life cycle."""),
     'lino_xl.lib.cal.models.Event.when_html' : _("""Shows the date and time of the event with a link that opens
 all events on that day (EventsByDay)."""),
     'lino_xl.lib.cal.models.Event.show_conflicting' : _("""A ShowSlaveTable
@@ -194,10 +202,7 @@ state."""),
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
 lino.core.site.Site.setup_choicelists()):"""),
-    'lino_xl.lib.cal.workflows.EventStates' : _("""Possible values for the state of a task. The list of choices for
-the Event.state field. By default it contains the
-following values (which can be redefined in
-lino.core.site.Site.setup_choicelists()):"""),
+    'lino_xl.lib.cal.workflows.EventStates' : _("""The list of choices for the state field of a calendar entry."""),
     'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
 the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.InvitationFeedback' : _("""Base class for actions that give feedback to an invitation."""),

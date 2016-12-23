@@ -447,11 +447,33 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     """A **calendar entry** is a lapse of time to be visualized in a
     calendar.
 
+    .. attribute:: start_date
+    .. attribute:: start_time
+    .. attribute:: end_date
+    .. attribute:: end_time
+
+        These four fields define the duration of this entry.
+        Only :attr:`start_date` is mandatory.
+
+        If :attr:`end_date` is the same as :attr:`start_date`, then it
+        is preferrable to leave it empty.
+
+    .. attribute:: summary
+
+         A one-line descriptive text.
+
+    .. attribute:: description
+
+         A longer descriptive text.
+
     .. attribute:: user
 
          The responsible user.
 
     .. attribute:: assigned_to
+
+        Another user who is expected to take responsibility for this
+        event.
 
         See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`.
 
@@ -460,6 +482,12 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
          The type of this event. Every calendar event should have this
          field pointing to a given :class:`EventType`, which holds
          extended configurable information about this event.
+
+    .. attribute:: state
+
+        The state of this entry. The state can change according to
+        rules defined by the workflow, that's why we sometimes refer
+        to it as the life cycle.
 
     .. attribute:: when_html
 

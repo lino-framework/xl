@@ -57,14 +57,8 @@ class EventState(dd.State):
 
 
 class EventStates(dd.Workflow):
-    """Possible values for the state of a task. The list of choices for
-    the :attr:`Event.state` field. By default it contains the
-    following values (which can be redefined in
-    :meth:`lino.core.site.Site.setup_choicelists`):
-
-    .. django2rst::
-
-            rt.show(cal.EventStates)
+    """The list of choices for the :attr:`state
+    <lino_xl.lib.cal.models.Event.state>` field of a calendar entry.
 
     """
     verbose_name_plural = _("Event states")
