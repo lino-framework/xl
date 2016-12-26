@@ -178,7 +178,7 @@ class CheckinVisitor(NotifyingAction):
         """Yield a list of users to be notified.
 
         """
-        yield obj.event.user
+        yield (obj.event.user, obj.event.user.mail_mode)
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]  # a cal.Guest instance

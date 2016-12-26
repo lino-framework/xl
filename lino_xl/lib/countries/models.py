@@ -74,15 +74,11 @@ Country.set_widget_options('isocode', width=10)
 
 
 class Countries(dd.Table):
-
     """The table of all countries."""
 
-    help_text = _("""
-    A country is a geographic entity considered a "nation".
-    """)
     #~ label = _("Countries")
     model = 'countries.Country'
-    required_roles = dd.login_required(ContactsUser)
+    required_roles = dd.login_required(ContactsStaff)
     order_by = ["name", "isocode"]
     column_names = "name isocode *"
     detail_layout = """

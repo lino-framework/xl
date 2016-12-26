@@ -4,7 +4,7 @@
 # License: BSD (see file COPYING for details)
 
 """
-Choicelists for lino_xl.lib.cal
+Choicelists for this plugin.
 
 Functional specs see :ref:`book.specs.cal`.
 
@@ -96,11 +96,8 @@ class DurationUnit(dd.Choice):
 class DurationUnits(dd.ChoiceList):
 
     """A list of possible values for the `duration_unit` field of an
-:class:`Event`.
+    :class:`Event`.
 
-    .. django2rst::
-
-            rt.show(cal.DurationUnits)
 
     """
     verbose_name = _("Duration Unit")

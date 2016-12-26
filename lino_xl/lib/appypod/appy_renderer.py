@@ -14,8 +14,8 @@ See also :ref:`lino.admin.appy_templates`.
 from __future__ import unicode_literals
 from __future__ import print_function
 
-import logging
-logger = logging.getLogger(__name__)
+# import logging
+# logger = logging.getLogger(__name__)
 
 import os
 from copy import copy
@@ -283,8 +283,8 @@ class AppyRenderer(OriginalAppyRenderer):
             try:
                 s = self.insert_table_(*args, **kw)
             except Exception as e:
-                logger.warning("Exception during insert_table(%s):" % args[0])
-                logger.exception(e)
+                dd.logger.warning("Exception during insert_table(%s):" % args[0])
+                dd.logger.exception(e)
                 raise
             s = s.decode('utf-8')
             #~ logger.info("""\
@@ -448,8 +448,8 @@ class AppyRenderer(OriginalAppyRenderer):
             try:
                 tc.addElement(p)
             except Exception as e:
-                logger.warning("20120614 addElement %s %s %r : %s",
-                               i, fld, val, e)
+                dd.logger.warning("20120614 addElement %s %s %r : %s",
+                                  i, fld, val, e)
                 #~ print 20120614, i, fld, val, e
 
             #~ yield P(stylename=tablecontents,text=text)

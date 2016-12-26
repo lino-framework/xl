@@ -18,14 +18,12 @@ from django.conf import settings
 from django.db import models
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
-from django.utils.timezone import is_aware
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_text
 
 from lino import mixins
 from lino.api import dd, rt
 from lino.utils import ONE_DAY
-from lino.utils.quantities import Duration
 from lino.utils.xmlgen.html import E
 from lino.mixins.periods import Started, Ended
 
@@ -217,7 +215,7 @@ class EventGenerator(UserAuthored):
         for we in wanted.values():
             self.before_auto_event_save(we)
             we.save()
-            we.after_ui_create(ar)
+            we.after_ui_save(ar, None)
         #~ logger.info("20130528 update_auto_events done")
         return count
 

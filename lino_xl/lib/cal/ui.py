@@ -4,14 +4,11 @@
 # License: BSD (see file COPYING for details)
 
 """
-Tables for `lino_xl.lib.cal`.
+Tables for this plugin.
 
 """
 
 from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.conf import settings
 
@@ -108,7 +105,7 @@ def check_subscription(user, calendar):
         sub.save()
 
 
-class UserDetailMixin(dd.Panel):
+class UserDetailMixin(dd.DetailLayout):
 
     cal_left = """
     event_type access_class
@@ -501,7 +498,7 @@ class EventTypes(dd.Table):
     name
     event_label
     # description
-    start_date id
+    start_date max_days id
     # type url_template username password
     #build_method #template email_template attach_to_email
     is_appointment all_rooms locks_user max_conflicting
@@ -610,7 +607,7 @@ class Events(dd.Table):
     help_text = _("A List of calendar entries. Each entry is called an event.")
     model = 'cal.Event'
     required_roles = dd.required(OfficeStaff)
-    column_names = 'when_text:20 user summary event_type *'
+    column_names = 'when_text:20 user summary event_type id *'
 
     # hidden_columns = """
     # priority access_class transparent
@@ -963,7 +960,7 @@ class OverdueAppointments(Events):
     """
     required_roles = dd.required(OfficeStaff)
     label = _("Overdue appointments")
-    column_names = 'when_html project owner event_type summary workflow_buttons *'
+    column_names = 'when_html user project owner event_type summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
 

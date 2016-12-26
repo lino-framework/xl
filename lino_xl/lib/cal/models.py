@@ -3,15 +3,12 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.cal`.
+"""Database models for this plugin.
 
 """
 
 from __future__ import unicode_literals
 import six
-
-import logging
-logger = logging.getLogger(__name__)
 
 import datetime
 
@@ -120,7 +117,7 @@ class RemoteCalendar(mixins.Sequenced):
 class Room(mixins.BabelNamed):
     """A location where calendar events can happen.  For a given Room you
     can see the :class:`EventsByRoom` that happened (or will happen)
-    there.  A Room is BabelNamed (has a multilingual name).
+    there.  A Room has a multilingual name.
 
     """
     class Meta:
@@ -131,7 +128,6 @@ class Room(mixins.BabelNamed):
 
 
 class Priority(mixins.BabelNamed):
-
     "The priority of a Task or Event."
     class Meta:
         app_label = 'cal'
@@ -143,11 +139,6 @@ class Priority(mixins.BabelNamed):
 @dd.python_2_unicode_compatible
 class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
     """The possible value of the :attr:`Event.type` field.
-    Example content:
-
-    .. lino2rst::
-
-       rt.show(cal.EventTypes, limit=5)
 
     .. attribute:: is_appointment
 
@@ -158,6 +149,10 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         Certain tables show only events whose type has the
         `is_appointment` field checked.  See :attr:`show_appointments
         <lino_xl.lib.cal.ui.Events.show_appointments>`.
+
+    .. attribute:: max_days
+
+        The maximal number of days allowed as duration.
 
     """
     templates_group = 'cal/Event'
@@ -195,6 +190,9 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         _("Simultaneous events"),
         help_text=_("How many conflicting events should be tolerated."),
         default=1)
+
+    max_days = models.PositiveIntegerField(
+        _("Maximum days"), default=1)
 
     def __str__(self):
         # when selecting an Event.event_type it is more natural to
@@ -273,7 +271,7 @@ class Task(Component):
 
     .. attribute:: state
      
-        The state of this Task. one of :class:`TaskStates`
+        The state of this Task. one of :class:`TaskStates`.
 
 
     """
@@ -328,7 +326,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
     .. attribute:: every_unit
 
         Inherited from :attr:`RecurrentSet.every_unit
-        <lino_xl.lib.cal.models.RecurrentSet.every_unit>`
+        <lino_xl.lib.cal.models.RecurrentSet.every_unit>`.
 
     .. attribute:: event_type
 
@@ -347,7 +345,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
         _("Description"), blank=True, format='html')
 
     def before_auto_event_save(self, obj):
-        if self.end_date and self.end_date != self.start_date:
+        if self.end_date:  # and self.end_date != self.start_date:
             duration = self.end_date - self.start_date
             obj.end_date = obj.start_date + duration
         super(RecurrentEvent, self).before_auto_event_save(obj)
@@ -446,7 +444,27 @@ class ExtAllDayField(dd.VirtualField):
 
 @dd.python_2_unicode_compatible
 class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
-    """A calendar event is a lapse of time to be visualized in a calendar.
+    """A **calendar entry** is a lapse of time to be visualized in a
+    calendar.
+
+    .. attribute:: start_date
+    .. attribute:: start_time
+    .. attribute:: end_date
+    .. attribute:: end_time
+
+        These four fields define the duration of this entry.
+        Only :attr:`start_date` is mandatory.
+
+        If :attr:`end_date` is the same as :attr:`start_date`, then it
+        is preferrable to leave it empty.
+
+    .. attribute:: summary
+
+         A one-line descriptive text.
+
+    .. attribute:: description
+
+         A longer descriptive text.
 
     .. attribute:: user
 
@@ -454,13 +472,22 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     .. attribute:: assigned_to
 
-        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`
+        Another user who is expected to take responsibility for this
+        event.
+
+        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`.
 
     .. attribute:: event_type
 
          The type of this event. Every calendar event should have this
          field pointing to a given :class:`EventType`, which holds
          extended configurable information about this event.
+
+    .. attribute:: state
+
+        The state of this entry. The state can change according to
+        rules defined by the workflow, that's why we sometimes refer
+        to it as the life cycle.
 
     .. attribute:: when_html
 
@@ -479,8 +506,10 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Event')
         # abstract = True
-        verbose_name = pgettext("cal", "Event")
-        verbose_name_plural = pgettext("cal", "Events")
+        verbose_name = _("Calendar entry")
+        verbose_name_plural = _("Calendar entries")
+        # verbose_name = pgettext("cal", "Event")
+        # verbose_name_plural = pgettext("cal", "Events")
 
     update_guests = UpdateGuests()
     update_events = UpdateEventsByEvent()
@@ -628,10 +657,6 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 
     def is_user_modified(self):
         return self.state != EventStates.suggested
-
-    def after_ui_create(self, ar):
-        super(Event, self).after_ui_create(ar)
-        self.update_guests.run_from_code(ar)
 
     def after_ui_save(self, ar, cw):
         super(Event, self).after_ui_save(ar, cw)
@@ -795,14 +820,21 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 
 
-class EventGuestChecker(Checker):
-    """Check whether this event has :message:`No participants although NNN
-    suggestions exist.` -- This is probably due to some bug, so we
-    repair this by adding the suggested guests.
+class EventChecker(Checker):
+    model = Event
+    def get_responsible_user(self, obj):
+        return obj.user or super(
+            EventChecker, self).get_responsible_user(obj)
+    
+class EventGuestChecker(EventChecker):
+    """Check for calendar entries without participants.
+
+    :message:`No participants although N suggestions exist.` --
+    This is probably due to some problem in the past, so we repair
+    this by adding the suggested guests.
 
     """
-    verbose_name = _("Check for missing participants")
-    model = Event
+    verbose_name = _("Events without participants")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.state.edit_guests:
@@ -820,12 +852,11 @@ class EventGuestChecker(Checker):
 EventGuestChecker.activate()
 
 
-class ConflictingEventsChecker(Checker):
-    """Check whether this event conflicts with other event(s).
+class ConflictingEventsChecker(EventChecker):
+    """Check whether this event conflicts with other events.
 
     """
     verbose_name = _("Check for conflicting events")
-    model = Event
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.has_conflicting_events():
@@ -841,16 +872,15 @@ class ConflictingEventsChecker(Checker):
 ConflictingEventsChecker.activate()
 
 
-class ObsoleteEventTypeChecker(Checker):
-    """Check whether :attr:`event_type` of this should be updated.
+class ObsoleteEventTypeChecker(EventChecker):
+    """Check whether the type of this event should be updated.
 
     This can happen when the configuration has changed and there are
     automatic events which had been generated using the old
     configuration.
 
     """
-    verbose_name = _("Update event types of generated events")
-    model = Event
+    verbose_name = _("Obsolete event type of generated events")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.auto_type:
@@ -866,6 +896,35 @@ class ObsoleteEventTypeChecker(Checker):
                 obj.save()
 
 ObsoleteEventTypeChecker.activate()
+
+
+class LongEventChecker(EventChecker):
+    """Check for events which last longer than the maximum number of days
+    allowed by their type.
+
+    """
+    verbose_name = _("Too long-lasting events")
+    model = Event
+
+    def get_plausibility_problems(self, obj, fix=False):
+        if obj.end_date is None:
+            return
+        et = obj.event_type
+        if et is None:
+            return
+        duration = obj.end_date - obj.start_date
+        
+        # print (20161222, duration.days, et.max_days)
+        if duration.days > et.max_days:
+            msg = _("Event lasts {0} days but only {1} are allowed.").format(
+                duration.days, et.max_days)
+            yield (True, msg)
+            if fix:
+                obj.end_date = None
+                obj.full_clean()
+                obj.save()
+
+LongEventChecker.activate()
 
 
 @dd.python_2_unicode_compatible
@@ -1062,11 +1121,11 @@ if False:  # removed 20160610 because it is probably not used
 
         def run_from_ui(self, ar, **kw):
             user = ar.selected_rows[0]
-            logger.info("Updating reminders for %s", unicode(user))
+            dd.logger.info("Updating reminders for %s", unicode(user))
             n = update_reminders_for_user(user, ar)
             msg = _("%(num)d reminders for %(user)s have been updated."
                     ) % dict(user=user, num=n)
-            logger.info(msg)
+            dd.logger.info(msg)
             ar.success(msg, **kw)
 
     @dd.receiver(dd.pre_analyze, dispatch_uid="add_update_reminders")
