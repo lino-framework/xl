@@ -3,7 +3,7 @@
 #
 # License: BSD (see file COPYING for details)
 """
-Database models for `lino_xl.lib.excerpts`.
+Database models for this plugin.
 
 """
 
@@ -29,8 +29,6 @@ from django.db.models.signals import post_init
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils import timezone
-
-
 from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
@@ -51,10 +49,11 @@ from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.outbox.mixins import Mailable, MailableType
 
-from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
+from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 
 from .mixins import Certifiable
 from .choicelists import Shortcuts
+from .roles import ExcerptsUser, ExcerptsStaff
 
 
 class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
@@ -288,7 +287,7 @@ class ExcerptTypes(dd.Table):
     Displays all rows of :class:`ExcerptType`.
     """
     model = 'excerpts.ExcerptType'
-    required_roles = dd.required(SiteAdmin, OfficeUser)
+    required_roles = dd.required(ExcerptsStaff)
     column_names = ("content_type_display primary certifying name "
                     "build_method  template body_template *")
     order_by = ["content_type__app_label", "content_type__model", "name"]
@@ -721,7 +720,7 @@ class Excerpts(dd.Table):
     """Base class for all tables on :class:`Excerpt`."""
     # label = _("Excerpts history")
     icon_name = 'script'
-    required_roles = dd.required((OfficeUser, OfficeOperator))
+    required_roles = dd.required((ExcerptsUser, OfficeOperator))
 
     model = 'excerpts.Excerpt'
     detail_layout = ExcerptDetail()
@@ -770,7 +769,7 @@ class Excerpts(dd.Table):
 
 
 class AllExcerpts(Excerpts):
-    required_roles = dd.required(SiteAdmin, OfficeStaff)
+    required_roles = dd.required(ExcerptsStaff)
     column_names = ("id excerpt_type owner project "
                     "company language build_time *")
 

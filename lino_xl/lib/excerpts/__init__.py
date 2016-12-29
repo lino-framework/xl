@@ -12,8 +12,8 @@ Lino does not automatically add an action per model to make the
 excerpt history visible from a model. If you want this, add yourself
 your preferred variant.
 
-This can be either using a :class:`lino.core.actions.ShowSlaveTable`
-button in the toolbar::
+This can be either using a :class:`ShowSlaveTable
+<lino.core.actions.ShowSlaveTable>` button in the toolbar::
 
     show_excerpts = dd.ShowSlaveTable('excerpts.ExcerptsByOwner')
     show_excerpts = dd.ShowSlaveTable('excerpts.ExcerptsByProject')
@@ -29,6 +29,7 @@ your own subclass of one of them) to the :attr:`detail_layout
    models
    mixins
    choicelists
+   roles
    fixtures.std
    fixtures.demo2
 
