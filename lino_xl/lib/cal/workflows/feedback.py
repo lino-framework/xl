@@ -16,6 +16,7 @@ logger = logging.getLogger(__name__)
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
+from django.conf import settings
 
 from lino.modlib.notify.actions import NotifyingAction
 from lino.api import dd
@@ -121,16 +122,17 @@ class MarkExcused(MarkPresent):
 
 
 
-
 class ResetEvent(dd.ChangeStateAction):
     label = _("Reset")
-    # icon_name = 'cancel'
+    if settings.SITE.use_silk_icons:
+        icon_name = 'cancel'
     required_states = 'published took_place'
 
 class CancelEvent(dd.ChangeStateAction):
     label = pgettext("calendar event action", "Cancel")
     required_states = 'suggested published draft'
-    # icon_name = 'cross'
+    if settings.SITE.use_silk_icons:
+        icon_name = 'cross'
 
 
 class PublishEvent(dd.ChangeStateAction):
@@ -141,7 +143,8 @@ class PublishEvent(dd.ChangeStateAction):
     """
     label = _("Publish")
     required_states = 'suggested draft'
-    # icon_name = 'accept'
+    if settings.SITE.use_silk_icons:
+        icon_name = 'accept'
     
     def get_action_permission(self, ar, obj, state):
         d = obj.end_date or obj.start_date
@@ -159,7 +162,8 @@ class CloseMeeting(dd.ChangeStateAction):
     """
     label = _("Close meeting")
     # help_text = _("The event took place.")
-    # icon_name = 'emoticon_smile'
+    if settings.SITE.use_silk_icons:
+        icon_name = 'emoticon_smile'
     required_states = 'suggested published draft'
 
     def get_action_permission(self, ar, obj, state):
