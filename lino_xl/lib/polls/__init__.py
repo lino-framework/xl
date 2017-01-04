@@ -1,4 +1,4 @@
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Provides database models and functionality for managing polls.
@@ -11,7 +11,6 @@ This is the main plugin for :ref:`polly`.  It is also used in
 
     roles
     models
-    choicelists
     utils
     fixtures.bible
     fixtures.feedback
