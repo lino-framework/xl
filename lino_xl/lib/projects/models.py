@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -15,7 +15,7 @@ from django.db import models
 
 from lino.api import dd, _
 from lino import mixins
-from lino.modlib.users.mixins import ByUser, UserAuthored
+from lino.modlib.users.mixins import My, UserAuthored
 from lino.modlib.printing.mixins import CachedPrintable
 
 
@@ -72,7 +72,7 @@ class Projects(dd.Table):
     """
 
 
-class MyProjects(Projects, ByUser):
+class MyProjects(My, Projects):
     pass
 
 

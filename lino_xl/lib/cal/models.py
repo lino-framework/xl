@@ -976,12 +976,13 @@ class Guest(dd.Model):
     remark = models.CharField(
         _("Remark"), max_length=200, blank=True)
 
+    # Define a `user` property because we want to use
+    # `lino.modlib.users.mixins.My`
     def get_user(self):
         # used to apply `owner` requirement in GuestState
         return self.event.user
     user = property(get_user)
-    author_field_name = 'user'  # Because we want to use
-                                # `lino.modlib.users.mixins.My`
+    # author_field_name = 'user'
 
     def __str__(self):
         return u'%s #%s (%s)' % (

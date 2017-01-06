@@ -40,7 +40,6 @@ from lino.utils.xmlgen.html import E
 
 from lino.mixins import Referrable
 
-# from lino.modlib.users.mixins import ByUser, UserAuthored
 from lino.modlib.users.mixins import My, UserAuthored
 
 from .utils import ResponseStates, PollStates

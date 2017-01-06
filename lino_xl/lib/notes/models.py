@@ -23,7 +23,7 @@ from django.conf import settings
 
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import ByUser, UserAuthored
+from lino.modlib.users.mixins import My, UserAuthored
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
@@ -208,7 +208,7 @@ class AllNotes(Notes):
     required_roles = dd.required(OfficeStaff)
 
 
-class MyNotes(ByUser, Notes):
+class MyNotes(My, Notes):
     column_names = "date time event_type type subject project body *"
     order_by = ["date", "time"]
 
