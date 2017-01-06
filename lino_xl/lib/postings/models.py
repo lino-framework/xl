@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
+# Copyright 2012-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -18,7 +18,7 @@ from lino import mixins
 from lino.api import dd
 
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import ByUser, UserAuthored
+from lino.modlib.users.mixins import My, UserAuthored
 
 from lino.modlib.office.roles import OfficeUser
 
@@ -113,7 +113,7 @@ class Postings(dd.Table):
         #~ return r
 
 
-class MyPostings(Postings, ByUser):
+class MyPostings(My, Postings):
     required_roles = dd.required(OfficeUser)
     column_names = 'date partner state workflow_buttons *'
 

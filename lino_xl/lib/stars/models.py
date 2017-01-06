@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -13,7 +13,7 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino.core.gfks import gfk2lookup
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import UserAuthored, ByUser
+from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.office.roles import OfficeUser
 from lino.core.requests import BaseRequest
 
@@ -72,7 +72,7 @@ class Stars(dd.Table):
 class AllStars(Stars):
     required_roles = dd.required(dd.SiteStaff)
 
-class MyStars(Stars, ByUser):
+class MyStars(My, Stars):
     required_roles = dd.required(OfficeUser)
     column_names = "owner nickname *"
     order_by = ['nickname', 'id']

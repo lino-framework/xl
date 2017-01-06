@@ -156,9 +156,9 @@ class LinksByHuman(Links):
     @classmethod
     def get_request_queryset(self, ar):
         mi = ar.master_instance  # a Person
-        if mi is None:
-            return
         Link = rt.modules.humanlinks.Link
+        if mi is None:
+            return Link.objects.none()
         flt = Q(parent=mi) | Q(child=mi)
         return Link.objects.filter(flt).order_by(
             'child__birth_date', 'parent__birth_date')
@@ -169,6 +169,8 @@ class LinksByHuman(Links):
         for :class:`LinksByHuman`.
 
         """
+        if obj is None:
+            return ''
         # if obj.pk is None:
         #     return ''
         #     raise Exception("20150218")
