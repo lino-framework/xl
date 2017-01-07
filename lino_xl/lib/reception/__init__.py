@@ -53,7 +53,7 @@ class Plugin(ad.Plugin):
         m.add_action('reception.GoneVisitors')
 
         # MyWaitingVisitors is maybe not needed as a menu entry since it
-        # is also a get_admin_main_items. if i remove it then i must edit
+        # is also a get_dashboard_items. if i remove it then i must edit
         # `pcsw_tests.py`.  Waiting for user feedback before doing this.
         m.add_action('reception.MyWaitingVisitors')
 

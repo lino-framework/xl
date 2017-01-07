@@ -147,4 +147,6 @@ class Plugin(ad.Plugin):
         m.add_action('cal.TaskStates')
         # m.add_action(RecurrenceSets)
 
+    def get_dashboard_items(self, user):
+        yield self.site.actors.cal.MyEvents
 
