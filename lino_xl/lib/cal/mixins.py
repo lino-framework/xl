@@ -105,6 +105,7 @@ class UpdateEventsByEvent(UpdateEvents):
 
 
 class EventGenerator(UserAuthored):
+    # TODO : why do we inherit UserAuthored?!
     """
     Base class for things that generate a suite of events.
 
