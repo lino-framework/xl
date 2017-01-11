@@ -169,14 +169,8 @@ class Partner(Contactable, mixins.Polymorphic, AddressLocation, Addressable):
     def get_partner_instance(self):
         return self  # compatibility with lino.modlib.partners
 
-    @dd.displayfield()
-    def overview(self, ar):
-        return E.div(*self.get_overview_elems(ar))
-
     def get_overview_elems(self, ar):
         elems = []
-        if ar is None:
-            return elems
         buttons = self.get_mti_buttons(ar)
         # buttons = join_elems(buttons, ', ')
         elems.append(E.p(str(_("See as ")), *buttons,
