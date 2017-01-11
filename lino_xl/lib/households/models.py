@@ -433,7 +433,7 @@ dd.inject_action(
 
 
 class MembersByPerson(Members):
-    required_roles = dd.required(ContactsStaff)
+    required_roles = dd.required(ContactsUser)
     label = _("Household memberships")
     master_key = 'person'
     column_names = 'household role primary start_date end_date *'

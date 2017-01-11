@@ -107,15 +107,14 @@ class MarkPresent(dd.ChangeStateAction):
         return obj.event_id and (obj.event.state == EventStates.took_place)
 
 
-class MarkAbsent(MarkPresent):
-    """Mark this participant as absent at the event (without explanation).
+class MarkAbsent(dd.ChangeStateAction):
+    """Mark this participant as absent (without explanation).
 
     """    
     label = _("Absent")
 
-class MarkExcused(MarkPresent):
-    """Mark this participant as absent at the event (with acceptable
-    explanation).
+class MarkExcused(dd.ChangeStateAction):
+    """Mark this participant as absent (with acceptable explanation).
 
     """    
     label = _("Excused")
