@@ -1,4 +1,4 @@
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Defines models and choicelists for managing geographic places.
@@ -24,7 +24,7 @@ class Plugin(ad.Plugin):
     "See :doc:`/dev/plugins`."
 
     verbose_name = _("Places")
-    needs_plugins = ['lino.modlib.office']
+    needs_plugins = ['lino.modlib.office', 'lino_xl.lib.xl']
 
     # settings:
 

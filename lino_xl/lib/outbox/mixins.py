@@ -118,8 +118,7 @@ class CreateMail(dd.Action):
         if as_attachment:
             a = rt.modules.outbox.Attachment(mail=m, owner=elem)
             a.save()
-        js = ar.renderer.instance_handler(ar, m)
-        kw.update(eval_js=js)
+        ar.goto_instance(m)
         ar.success(**kw)
 
 
