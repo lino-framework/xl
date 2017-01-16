@@ -131,7 +131,7 @@ class Tagging(dd.Model):
         related_name='tags_by_entry')
 
 
-class EntryDetail(dd.FormLayout):
+class EntryDetail(dd.DetailLayout):
     main = """
     title entry_type:12 id 
     # summary

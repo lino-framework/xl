@@ -274,13 +274,13 @@ class Mails(dd.Table):
     column_names = "sent recipients subject * body"
     hidden_columns = 'body'
     order_by = ["sent"]
-    detail_layout = dd.FormLayout("""
+    detail_layout = dd.DetailLayout("""
     subject project date
     user sent #build_time id owner
     RecipientsByMail:50x5 AttachmentsByMail:20x5 uploads.UploadsByController:20x5
     body:90x10
     """)
-    insert_layout = dd.FormLayout("""
+    insert_layout = dd.InsertLayout("""
     project
     subject
     body

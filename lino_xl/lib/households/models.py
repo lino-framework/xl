@@ -121,7 +121,7 @@ class Household(contacts.Partner):
         return hh
 
 
-class HouseholdDetail(dd.FormLayout):
+class HouseholdDetail(dd.DetailLayout):
 
     main = """
     type name language:10 id

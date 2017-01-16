@@ -680,7 +680,7 @@ def post_init_excerpt(sender, instance=None, **kwargs):
 
 if has_davlink:
 
-    class ExcerptDetail(dd.FormLayout):
+    class ExcerptDetail(dd.DetailLayout):
         window_size = (80, 20)
         main = "general config"
         general = dd.Panel(
@@ -698,7 +698,7 @@ if has_davlink:
 
 else:
 
-    class ExcerptDetail(dd.FormLayout):
+    class ExcerptDetail(dd.DetailLayout):
         window_size = (80, 20)
         main = """
         id excerpt_type:25 project

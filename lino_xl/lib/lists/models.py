@@ -70,13 +70,13 @@ class Lists(dd.Table):
     column_names = 'ref name list_type *'
     order_by = ['ref']
 
-    insert_layout = dd.FormLayout("""
+    insert_layout = dd.InsertLayout("""
     ref list_type
     name
     remarks
     """, window_size=(60, 12))
 
-    detail_layout = dd.FormLayout("""
+    detail_layout = dd.DetailLayout("""
     ref list_type id
     name
     remarks

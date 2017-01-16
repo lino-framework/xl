@@ -143,7 +143,7 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
     #~ outbox.MailsByController
     #~ postings.PostingsByController
     #~ """
-class PageDetail(dd.FormLayout):
+class PageDetail(dd.DetailLayout):
     main = """
     ref parent seqno
     title

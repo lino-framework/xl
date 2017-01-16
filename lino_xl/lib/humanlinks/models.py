@@ -114,7 +114,7 @@ class Links(dd.Table):
     model = 'humanlinks.Link'
     required_roles = dd.required(ContactsStaff)
     stay_in_grid = True
-    detail_layout = dd.FormLayout("""
+    detail_layout = dd.DetailLayout("""
     parent
     child
     type

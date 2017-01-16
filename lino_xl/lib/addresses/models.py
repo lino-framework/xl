@@ -116,7 +116,7 @@ class Addresses(dd.Table):
     street street_no street_box
     address_type remark
     """
-    detail_layout = dd.FormLayout("""
+    detail_layout = dd.DetailLayout("""
     country city zip_code
     addr1
     street street_no street_box
