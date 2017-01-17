@@ -34,8 +34,8 @@ class CreatePostings(dd.Action):
     help_text = _('Create classical mail postings from this')
     icon_name = 'script_add'
 
-    callable_from = (actions.GridEdit,
-                     actions.ShowDetailAction)  # but not from InsertRow
+    callable_from = (actions.ShowTable,
+                     actions.ShowDetail)  # but not from ShowInsert
 
     def run_from_ui(self, ar, **kw):
 
