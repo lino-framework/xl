@@ -73,8 +73,8 @@ class CreateMail(dd.Action):
     help_text = _('Create an email from this')
     label = _('Create email')
 
-    callable_from = (actions.GridEdit,
-                     actions.ShowDetailAction)  # but not from InsertRow
+    callable_from = (actions.ShowTable,
+                     actions.ShowDetail)  # but not from ShowInsert
 
     def get_action_permission(self, ar, obj, state):
         """This action is not available:

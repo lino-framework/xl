@@ -37,7 +37,7 @@ class PrintTableAction(actions.Action):
     combo_group = 'pdf'
 
     def is_callable_from(self, caller):
-        return isinstance(caller, actions.GridEdit)
+        return isinstance(caller, actions.ShowTable)
 
     def run_from_ui(self, ar, **kw):
         #~ print 20130912

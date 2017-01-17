@@ -186,7 +186,7 @@ dd.update_field(Note, 'contact_person', verbose_name=_("Recipient (Person)"))
 #     return '<div class="htmlText">' + s + '</div>'
 
 
-class NoteDetail(dd.FormLayout):
+class NoteDetail(dd.DetailLayout):
     main = """
     date:10 time event_type:25 type:25
     subject project

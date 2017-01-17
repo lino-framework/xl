@@ -137,7 +137,7 @@ class Tasks(dd.Table):
     description #notes.NotesByTask
     """
 
-    insert_layout = dd.FormLayout("""
+    insert_layout = dd.InsertLayout("""
     summary
     user project
     """, window_size=(50, 'auto'))
@@ -281,7 +281,7 @@ class Guests(dd.Table):
     state remark workflow_buttons
     # outbox.MailsByController
     """
-    insert_layout = dd.FormLayout("""
+    insert_layout = dd.InsertLayout("""
     event
     partner
     role
@@ -505,7 +505,7 @@ class EventTypes(dd.Table):
     EventsByType
     """
 
-    insert_layout = dd.FormLayout("""
+    insert_layout = dd.InsertLayout("""
     name
     event_label
     """, window_size=(60, 'auto'))
@@ -559,7 +559,7 @@ class RecurrentEvents(dd.Table):
         # return True
 
 
-class EventDetail(dd.FormLayout):
+class EventDetail(dd.DetailLayout):
     start = "start_date start_time"
     end = "end_date end_time"
     main = """
@@ -572,7 +572,9 @@ class EventDetail(dd.FormLayout):
     """
 
 
-class EventInsert(EventDetail):
+class EventInsert(dd.InsertLayout):
+    start = "start_date start_time"
+    end = "end_date end_time"
     main = """
     event_type summary
     start end

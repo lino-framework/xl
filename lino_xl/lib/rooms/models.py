@@ -138,7 +138,7 @@ dd.update_field(Booking, 'every_unit',
 dd.update_field(Booking, 'every', default=1)
 
 
-class BookingDetail(dd.FormLayout):
+class BookingDetail(dd.DetailLayout):
     #~ start = "start_date start_time"
     #~ end = "end_date end_time"
     #~ freq = "every every_unit"
