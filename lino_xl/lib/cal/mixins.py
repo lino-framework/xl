@@ -464,14 +464,14 @@ class EventGenerator(UserAuthored):
             qs = we.get_conflicting_events()
             date = rset.get_next_alt_date(ar, date)
             ar.debug("%s wants %s but conflicts with %s, moving to %s. ",
-                     we.summary, we.start_date, we.get_conflicting_events(), date)
+                     we.summary, we.start_date, qs, date)
             if date is None or date > until:
                 ar.debug(
                     "Failed to get next date for %s (%s > %s).",
                     we, date, until)
                 conflicts = [E.tostring(ar.obj2html(o)) for o in qs]
                 msg = ', '.join(conflicts)
-                ar.debug("%s conflicts with %s. ", we, msg)
+                ar.warning("%s conflicts with %s. ", we, msg)
                 return None
         
             rset.move_event_to(we, date)
