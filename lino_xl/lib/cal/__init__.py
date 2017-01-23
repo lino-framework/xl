@@ -85,6 +85,8 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino.modlib.gfks', 'lino.modlib.printing',
                      'lino_xl.lib.xl']
 
+    partner_model = 'contacts.Partner'
+    
     ignore_dates_before = None
     """
     Ignore dates before the given date.  Set this to `None` if you want
@@ -106,6 +108,10 @@ class Plugin(ad.Plugin):
         # above code should not fail on February 29 of a leap year.
         self.ignore_dates_after = tod + relativedelta(years=5)
 
+    def on_site_startup(self, site):
+        self.partner_model = site.models.resolve(self.partner_model)
+        super(Plugin, self).on_site_startup(site)
+        
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.MyEvents')  # string spec to allow overriding

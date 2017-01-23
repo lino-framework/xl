@@ -681,7 +681,8 @@ def post_init_excerpt(sender, instance=None, **kwargs):
 if has_davlink:
 
     class ExcerptDetail(dd.DetailLayout):
-        window_size = (80, 20)
+        # window_size = (80, 20)
+        window_size = (80, 'auto')
         main = "general config"
         general = dd.Panel(
             """
@@ -689,7 +690,7 @@ if has_davlink:
             user:10 build_method
             company contact_person language
             owner build_time
-            outbox.MailsByController
+            # outbox.MailsByController
             """, label=_("General"))
         config = dd.Panel(
             "body_template_content",
@@ -699,13 +700,14 @@ if has_davlink:
 else:
 
     class ExcerptDetail(dd.DetailLayout):
-        window_size = (80, 20)
+        # window_size = (80, 20)
+        window_size = (80, 'auto')
         main = """
         id excerpt_type:25 project
         user:10 build_method
         company contact_person language
         owner build_time
-        outbox.MailsByController
+        # outbox.MailsByController
         """
 
 if dd.is_installed('contacts'):

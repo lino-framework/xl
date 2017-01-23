@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """
@@ -177,9 +177,12 @@ class Note(TypedPrintable,
     def get_print_language(self):
         return self.language
 
-
-dd.update_field(Note, 'company', verbose_name=_("Recipient (Organization)"))
-dd.update_field(Note, 'contact_person', verbose_name=_("Recipient (Person)"))
+if dd.is_installed('contacts'):
+    
+    dd.update_field(
+        Note, 'company', verbose_name=_("Recipient (Organization)"))
+    dd.update_field(
+        Note, 'contact_person', verbose_name=_("Recipient (Person)"))
 
 
 # def html_text(s):
@@ -192,7 +195,7 @@ class NoteDetail(dd.DetailLayout):
     subject project
     company contact_person contact_role
     id user:10 language:8 build_time
-    body:40 outbox.MailsByController:40
+    body:40 #outbox.MailsByController:40
     """
 
 

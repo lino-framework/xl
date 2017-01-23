@@ -294,8 +294,9 @@ class Guests(dd.Table):
                            help_text=_("Only rows managed by this user.")),
         project=dd.ForeignKey(settings.SITE.project_model,
                               blank=True, null=True),
-        partner=dd.ForeignKey('contacts.Partner',
+        partner=dd.ForeignKey(dd.plugins.cal.partner_model,
                               blank=True, null=True),
+
         event_state=EventStates.field(
             blank=True,
             verbose_name=_("Event state"),
@@ -381,108 +382,109 @@ class GuestsByRole(Guests):
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
 
-if settings.SITE.is_installed('contacts'):
 
-    class GuestsByPartner(Guests):
-        label = _("Presences")
-        master_key = 'partner'
-        required_roles = dd.required(OfficeUser)
-        column_names = 'event__when_text workflow_buttons'
-        auto_fit_column_widths = True
+class GuestsByPartner(Guests):
+    label = _("Presences")
+    master_key = 'partner'
+    required_roles = dd.required(OfficeUser)
+    column_names = 'event__when_text workflow_buttons'
+    auto_fit_column_widths = True
 
-        slave_grid_format = "summary"
+    slave_grid_format = "summary"
 
-        @classmethod
-        def get_slave_summary(self, obj, ar):
-            """The summary view for this table.
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+        """The summary view for this table.
 
-            See :meth:`lino.core.actors.Actor.get_slave_summary`.
+        See :meth:`lino.core.actors.Actor.get_slave_summary`.
 
-            """
-            if ar is None:
-                return ''
-            sar = self.request_from(ar, master_instance=obj)
+        """
+        if ar is None:
+            return ''
+        sar = self.request_from(ar, master_instance=obj)
 
-            elems = []
-            for guest in sar:
-                lbl = dd.fds(guest.event.start_date)
-                if guest.state.button_text:
-                    lbl = "{0}{1}".format(lbl, guest.state.button_text)
-                elems.append(ar.obj2html(guest.event, lbl))
-            elems = join_elems(elems, sep=', ')
-            return ar.html_text(E.div(*elems))
-            # return E.div(class_="htmlText", *elems)
+        elems = []
+        for guest in sar:
+            lbl = dd.fds(guest.event.start_date)
+            if guest.state.button_text:
+                lbl = "{0}{1}".format(lbl, guest.state.button_text)
+            elems.append(ar.obj2html(guest.event, lbl))
+        elems = join_elems(elems, sep=', ')
+        return ar.html_text(E.div(*elems))
+        # return E.div(class_="htmlText", *elems)
 
-    class MyPresences(Guests):
-        required_roles = dd.required(OfficeUser)
-        order_by = ['event__start_date', 'event__start_time']
-        label = _("My presences")
-        help_text = _(
-            """Shows all my presences in calendar events, independently of their state.""")
-        column_names = 'event__start_date event__start_time event_summary role workflow_buttons remark *'
-        params_panel_hidden = True
+class MyPresences(Guests):
+    """Shows all my presences in calendar events, independently of their
+    state.
 
-        @classmethod
-        def get_request_queryset(self, ar):
-            # logger.info("20130809 MyPresences")
-            if ar.get_user().partner is None:
-                raise Warning("Action not available for users without partner")
-            return super(MyPresences, self).get_request_queryset(ar)
+    """
+    required_roles = dd.required(OfficeUser)
+    order_by = ['event__start_date', 'event__start_time']
+    label = _("My presences")
+    column_names = 'event__start_date event__start_time event_summary role workflow_buttons remark *'
+    params_panel_hidden = True
 
-        @classmethod
-        def get_row_permission(cls, obj, ar, state, ba):
-            if ar.get_user().partner is None:
-                return False
-            return super(MyPresences, cls).get_row_permission(
-                obj, ar, state, ba)
+    @classmethod
+    def get_request_queryset(self, ar):
+        # logger.info("20130809 MyPresences")
+        if ar.get_user().partner is None:
+            raise Warning("Action not available for users without partner")
+        return super(MyPresences, self).get_request_queryset(ar)
 
-        @classmethod
-        def param_defaults(self, ar, **kw):
-            kw = super(MyPresences, self).param_defaults(ar, **kw)
-            u = ar.get_user()
-            if u is not None:
-                kw.update(partner=u.partner)
-            # kw.update(guest_state=GuestStates.invited)
-            # kw.update(start_date=settings.SITE.today())
-            return kw
+    @classmethod
+    def get_row_permission(cls, obj, ar, state, ba):
+        if ar.get_user().partner is None:
+            return False
+        return super(MyPresences, cls).get_row_permission(
+            obj, ar, state, ba)
 
-        # @classmethod
-        # def get_request_queryset(self,ar):
-            # ar.master_instance = ar.get_user().partner
-            # return super(MyPresences,self).get_request_queryset(ar)
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyPresences, self).param_defaults(ar, **kw)
+        u = ar.get_user()
+        if u is not None:
+            kw.update(partner=u.partner)
+        # kw.update(guest_state=GuestStates.invited)
+        # kw.update(start_date=settings.SITE.today())
+        return kw
 
-    # class MyPendingInvitations(Guests):
-    class MyPendingPresences(MyPresences):
-        label = _("My pending invitations")
-        help_text = _(
-            """Received invitations which I must accept or reject.""")
-        # filter = models.Q(state=GuestStates.invited)
-        column_names = 'event__when_text role workflow_buttons remark'
-        params_panel_hidden = True
+    # @classmethod
+    # def get_request_queryset(self,ar):
+        # ar.master_instance = ar.get_user().partner
+        # return super(MyPresences,self).get_request_queryset(ar)
 
-        @classmethod
-        def param_defaults(self, ar, **kw):
-            kw = super(MyPendingPresences, self).param_defaults(ar, **kw)
-            # kw.update(partner=ar.get_user().partner)
-            # kw.update(user=None)
-            kw.update(guest_state=GuestStates.invited)
-            kw.update(start_date=settings.SITE.today())
-            return kw
+# class MyPendingInvitations(Guests):
+class MyPendingPresences(MyPresences):
+    label = _("My pending invitations")
+    help_text = _(
+        """Received invitations which I must accept or reject.""")
+    # filter = models.Q(state=GuestStates.invited)
+    column_names = 'event__when_text role workflow_buttons remark'
+    params_panel_hidden = True
 
-    class MyGuests(Guests):
-        label = _("My guests")
-        required_roles = dd.required(OfficeUser)
-        order_by = ['event__start_date', 'event__start_time']
-        column_names = ("event__start_date event__start_time "
-                        "event_summary role workflow_buttons remark *")
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyPendingPresences, self).param_defaults(ar, **kw)
+        # kw.update(partner=ar.get_user().partner)
+        # kw.update(user=None)
+        kw.update(guest_state=GuestStates.invited)
+        kw.update(start_date=settings.SITE.today())
+        return kw
 
-        @classmethod
-        def param_defaults(self, ar, **kw):
-            kw = super(MyGuests, self).param_defaults(ar, **kw)
-            kw.update(user=ar.get_user())
-            kw.update(guest_state=GuestStates.invited)
-            kw.update(start_date=settings.SITE.today())
-            return kw
+class MyGuests(Guests):
+    label = _("My guests")
+    required_roles = dd.required(OfficeUser)
+    order_by = ['event__start_date', 'event__start_time']
+    column_names = ("event__start_date event__start_time "
+                    "event_summary role workflow_buttons remark *")
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyGuests, self).param_defaults(ar, **kw)
+        kw.update(user=ar.get_user())
+        kw.update(guest_state=GuestStates.invited)
+        kw.update(start_date=settings.SITE.today())
+        return kw
 
 
 class EventTypes(dd.Table):

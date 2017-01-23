@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """Defines actions for reading electronic ID smartcards.
@@ -34,20 +34,60 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):  # was: use_eidreader
-    "See :class:`lino.core.Plugin`."
+    """See :class:`lino.core.Plugin`.
+
+    .. attribute:: holder_model
+
+        The one and only model on this site which implements
+        :class:`BeIdCardHolder`.
+
+        This is available only after site startup.
+
+    .. attribute:: data_collector_dir
+
+        When this is a non-empty string containing a directory name on the
+        server, then Lino writes the raw data of every eid card into a
+        text file in this directory.
+
+    .. attribute:: read_only_simulate
+
+        Whether to just simulate.
+
+    """
 
     site_js_snippets = ['beid/eidreader.js']
     media_name = 'eidreader'
-
     data_collector_dir = None
-    """
-    When this is a non-empty string containing a directory name on the
-    server, then Lino writes the raw data of every eid card into a
-    text file in this directory.
-    """
-
     read_only_simulate = False
 
+    def on_site_startup(self, kernel):
+        
+        from lino_xl.lib.beid.mixins import BeIdCardHolder
+        from lino.core.utils import models_by_base
+
+        super(Plugin, self).on_site_startup(kernel)
+        
+        cmc = list(models_by_base(BeIdCardHolder, toplevel_only=True))
+        if len(cmc) == 1:
+            self.holder_model = cmc[0]
+            return
+        if len(cmc) == 0:
+            self.site.logger.warning(
+                "You have lino_xl.lib.beid installed, "
+                "but there is no implementation of BeIdCardHolder.")
+            return
+        msg = "There must be exactly one BeIdCardHolder model " \
+              "in your Site! You have {}. ".format(cmc)
+        # from django.apps import apps
+        # msg += "\nYour models are:\n {}".format(
+        #     '\n'.join([str(m) for m in apps.get_models()]))
+        # from django.conf import settings
+        # msg += "\nYour plugins are:\n {}".format(settings.INSTALLED_APPS)
+        # [p.app_label
+        #       for p in self.site.installed_plugins]))
+        raise Exception(msg)
+
+        
     def get_body_lines(self, site, request):
         if not site.use_java:
             return

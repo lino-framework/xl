@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Model mixins for `lino_xl.lib.contacts`.
 """
@@ -11,17 +11,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd, rt
 from lino.utils.xmlgen.html import E, lines2p
-
-
-class Contactable(dd.Model):
-
-    class Meta(object):
-        abstract = True
-
-    url = models.URLField(_('URL'), blank=True)
-    phone = models.CharField(_('Phone'), max_length=200, blank=True)
-    gsm = models.CharField(_('GSM'), max_length=200, blank=True)
-    fax = models.CharField(_('Fax'), max_length=200, blank=True)
 
 
 class ContactRelated(dd.Model):

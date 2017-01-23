@@ -196,7 +196,7 @@ class Certifiable(dd.Model):
 class ExcerptTitle(BabelNamed):
     """Mixin for models like
     :class:`lino_welfare.modlib.aids.models.AidType` and
-    :class:`lino_cosi.lib.courses.models.Line`.
+    :class:`lino_xl.lib.courses.models.Line`.
 
     .. attribute:: name
 

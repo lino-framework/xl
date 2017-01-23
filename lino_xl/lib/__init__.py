@@ -26,7 +26,6 @@ Groupware
     teams
     topics
     lists
-    projects
 
 Calendar & Co
 ====================
@@ -38,6 +37,7 @@ Calendar & Co
     extensible
     reception
     rooms
+    courses
 
 
 Office
