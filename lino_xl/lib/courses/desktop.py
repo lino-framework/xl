@@ -273,7 +273,7 @@ class CoursesByTeacher(Activities):
 class CoursesByLine(Activities):
     """Show the courses per course line."""
     master_key = "line"
-    column_names = "info weekdays_text room times_text teacher *"
+    column_names = "overview weekdays_text room times_text teacher *"
     order_by = ['room__name', '-start_date']
 
 
@@ -311,7 +311,7 @@ class CoursesBySlot(Activities):
 
 class DraftCourses(Activities):
     label = _("Draft activities")
-    column_names = 'info teacher room *'
+    column_names = 'overview room *'
     hide_sums = True
 
     @classmethod
@@ -326,7 +326,7 @@ class DraftCourses(Activities):
 class ActiveCourses(Activities):
 
     label = _("Current activities")
-    column_names = 'info enrolments:8 free_places teacher room *'
+    column_names = 'overview enrolments:8 free_places teacher room *'
     hide_sums = True
 
     @classmethod
@@ -340,7 +340,7 @@ class ActiveCourses(Activities):
 class InactiveCourses(Activities):
 
     label = _("Inactive courses")
-    column_names = 'info enrolments:8 free_places teacher room *'
+    column_names = 'overview enrolments:8 free_places room *'
     hide_sums = True
 
     @classmethod
@@ -353,7 +353,7 @@ class InactiveCourses(Activities):
 class ClosedCourses(Activities):
 
     label = _("Closed courses")
-    column_names = 'info enrolments:8 teacher room *'
+    column_names = 'overview enrolments:8 room *'
     hide_sums = True
 
     @classmethod

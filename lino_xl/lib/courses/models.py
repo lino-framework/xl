@@ -419,11 +419,19 @@ class Course(Reservation, Duplicable):
             event.start_time = self.start_time
             event.end_time = self.end_time
 
-    @dd.displayfield(_("Info"))
-    def info(self, ar):
-        if ar is None:
-            return ''
-        return ar.obj2html(self)
+    # @dd.displayfield(_("Info"))
+    # def info(self, ar):
+    #     if ar is None:
+    #         return ''
+    #     return ar.obj2html(self)
+
+    def get_overview_elems(self, ar):
+        elems = []
+        elems.append(ar.obj2html(self))
+        if self.teacher_id:
+            elems.append(" / ")
+            elems.append(ar.obj2html(self.teacher))
+        return elems
 
     #~ @dd.displayfield(_("Where"))
     #~ def where_text(self,ar):

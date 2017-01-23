@@ -27,6 +27,8 @@
 
 from __future__ import unicode_literals
 
+from builtins import str
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
@@ -101,6 +103,22 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     column_names = "language native spoken written cef_level"
     required_roles = dd.required(CareerUser)
     auto_fit_column_widths = True
+    slave_grid_format = "summary"
+
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+        for this table.
+
+        """
+        sar = self.request_from(ar, master_instance=obj)
+
+        text = ', '.join([str(o) for o in sar])
+
+        return ar.html_text(text)
+
+
+    
 
 
 class KnowledgesByLanguage(LanguageKnowledges):

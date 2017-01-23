@@ -236,7 +236,7 @@ class PanelEvents(Events):
         return obj
 
 
-def setup_quicklinks(site, ar, m):
+def setup_quicklinks(site, user, m):
     m.add_action('extensible.CalendarPanel')
 
 
