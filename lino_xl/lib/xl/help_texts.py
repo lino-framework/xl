@@ -227,6 +227,32 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent (with acceptable explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
+    'lino_xl.lib.coachings.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.coachings.choicelists.ClientEvents' : _("""A choicelist of observable client events."""),
+    'lino_xl.lib.coachings.choicelists.ClientCreated' : _("""The choice for ClientEvents which
+selects clients whose record has been created during the observed
+period."""),
+    'lino_xl.lib.coachings.choicelists.ClientModified' : _("""The choice for ClientEvents which selects clients whose
+main record has been modified during the observed period."""),
+    'lino_xl.lib.coachings.desktop.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
+    'lino_xl.lib.coachings.mixins.unused_ClientRelated' : _("""Base class for things that are related to one and only one client."""),
+    'lino_xl.lib.coachings.mixins.unused_ClientRelated.client' : _("""Pointer to the client."""),
+    'lino_xl.lib.coachings.mixins.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
+    'lino_xl.lib.coachings.models.CoachingType' : _("""Whether coachings of this type are to be considered as
+integration work. This is used when generating calendar events
+for evaluation meetings (see
+lino_welfare.modlib.isip.mixins.ContractBase.setup_auto_event())"""),
+    'lino_xl.lib.coachings.models.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French) is
+when a given client is being coached by a given user during a
+given period."""),
+    'lino_xl.lib.coachings.models.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
+should have active coachings"""),
+    'lino_xl.lib.coachings.models.ClientContactType' : _("""A client contact type is the type or "role" which must be
+specified for a given ClientContact."""),
+    'lino_xl.lib.coachings.models.ClientContact' : _("""A client contact is when a given partner has a given role for
+a given client."""),
+    'lino_xl.lib.coachings.roles.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
+    'lino_xl.lib.coachings.roles.CoachingsStaff' : _("""A user who can configure coaching functionality."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.contacts.choicelists.PartnerEvents' : _("""A choicelist of observable partner events."""),

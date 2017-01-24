@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -91,6 +91,8 @@ lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management
 lino_xl.lib.cal.management.commands
 lino_xl.lib.cal.workflows
+lino_xl.lib.coachings
+lino_xl.lib.coachings.fixtures
 lino_xl.lib.concepts
 lino_xl.lib.contacts
 lino_xl.lib.contacts.fixtures
