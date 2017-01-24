@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-01-22 01:44+0200\n"
+"POT-Creation-Date: 2017-01-24 03:09+0200\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -122,9 +122,9 @@ msgid "Address"
 msgstr "Adresse"
 
 #: lino_xl/lib/addresses/models.py:62 lino_xl/lib/blogs/models.py:39
-#: lino_xl/lib/cal/models.py:977 lino_xl/lib/courses/models.py:277
-#: lino_xl/lib/courses/models.py:604 lino_xl/lib/cv/models.py:488
-#: lino_xl/lib/cv/models.py:514 lino_xl/lib/excerpts/models.py:112
+#: lino_xl/lib/cal/models.py:977 lino_xl/lib/courses/models.py:279
+#: lino_xl/lib/courses/models.py:614 lino_xl/lib/cv/models.py:509
+#: lino_xl/lib/cv/models.py:535 lino_xl/lib/excerpts/models.py:112
 #: lino_xl/lib/lists/models.py:99 lino_xl/lib/notes/models.py:52
 #: lino_xl/lib/notes/models.py:93 lino_xl/lib/polls/models.py:657
 #: lino_xl/lib/polls/models.py:662 lino_xl/lib/polls/models.py:804
@@ -169,87 +169,92 @@ msgid "Generate mailing labels for these recipients"
 msgstr ""
 
 #: lino_xl/lib/beid/actions.py:52
+#, fuzzy
+msgid "Simulation"
+msgstr "Omschrijving"
+
+#: lino_xl/lib/beid/actions.py:61
 msgid "Read eID card"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:56
+#: lino_xl/lib/beid/actions.py:65
 #, python-format
 msgid "Sorry, I cannot handle that case: %s"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:183
+#: lino_xl/lib/beid/actions.py:192
 #, python-format
 msgid "Client %s is up-to-date"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:185
+#: lino_xl/lib/beid/actions.py:194
 #, python-format
 msgid "Click OK to apply the following changes for %s"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:191
+#: lino_xl/lib/beid/actions.py:200
 #, fuzzy, python-format
 msgid "%s has been saved."
 msgstr "%s wurde aktualisiert."
 
-#: lino_xl/lib/beid/actions.py:204 lino_xl/lib/polls/fixtures/std.py:34
+#: lino_xl/lib/beid/actions.py:213 lino_xl/lib/polls/fixtures/std.py:34
 #: lino_xl/lib/polls/fixtures/std.py:36
 msgid "Yes"
 msgstr "Ja"
 
-#: lino_xl/lib/beid/actions.py:205 lino_xl/lib/polls/fixtures/std.py:34
+#: lino_xl/lib/beid/actions.py:214 lino_xl/lib/polls/fixtures/std.py:34
 #: lino_xl/lib/polls/fixtures/std.py:36
 msgid "No"
 msgstr "Nein"
 
-#: lino_xl/lib/beid/actions.py:215 lino_xl/lib/cv/mixins.py:25
+#: lino_xl/lib/beid/actions.py:224 lino_xl/lib/cv/mixins.py:25
 msgid "Success"
 msgstr "Erfolgreich abgeschlossen"
 
-#: lino_xl/lib/beid/actions.py:230
+#: lino_xl/lib/beid/actions.py:239
 msgid "Find or create card holder from eID card"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:243
+#: lino_xl/lib/beid/actions.py:252
 #, python-format
 msgid ""
 "There is more than one client with national id %(national_id)s in our "
 "database."
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:273 lino_xl/lib/beid/actions.py:285
+#: lino_xl/lib/beid/actions.py:282 lino_xl/lib/beid/actions.py:294
 #, fuzzy, python-format
 msgid "New client %s has been created"
 msgstr "%s wurde erstellt."
 
-#: lino_xl/lib/beid/actions.py:287
+#: lino_xl/lib/beid/actions.py:296
 #, python-format
 msgid "Create new client %s : Are you sure?"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:292
+#: lino_xl/lib/beid/actions.py:301
 #, python-format
 msgid ""
 "Cannot create new client because there is already a person named %s in "
 "our database."
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:296 lino_xl/lib/beid/actions.py:303
+#: lino_xl/lib/beid/actions.py:305 lino_xl/lib/beid/actions.py:312
 msgid "Oops!"
 msgstr "Oeps!"
 
-#: lino_xl/lib/beid/actions.py:299
+#: lino_xl/lib/beid/actions.py:308
 #, python-format
 msgid ""
 "Cannot create new client because there is more than one person named %s "
 "in our database."
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:322
+#: lino_xl/lib/beid/actions.py:331
 msgid "Update card holder data from eID card"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:339
+#: lino_xl/lib/beid/actions.py:348
 #, python-format
 msgid "National IDs %s and %s don't match "
 msgstr ""
@@ -366,76 +371,71 @@ msgstr ""
 msgid "Foreigner card F+"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:71
-#, fuzzy
-msgid "Simulation"
-msgstr "Omschrijving"
-
-#: lino_xl/lib/beid/mixins.py:117
+#: lino_xl/lib/beid/mixins.py:96
 msgid "National ID"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:125
+#: lino_xl/lib/beid/mixins.py:104
 msgid "Nationality"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:128
+#: lino_xl/lib/beid/mixins.py:107
 msgid "eID card number"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:131
+#: lino_xl/lib/beid/mixins.py:110
 msgid "ID card valid from"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:134 lino_xl/lib/beid/mixins.py:193
+#: lino_xl/lib/beid/mixins.py:113 lino_xl/lib/beid/mixins.py:172
 msgid "until"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:140
+#: lino_xl/lib/beid/mixins.py:119
 msgid "eID card issuer"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:149
+#: lino_xl/lib/beid/mixins.py:128
 msgid "noble condition"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:150
+#: lino_xl/lib/beid/mixins.py:129
 msgid "The eventual noble condition of this person."
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:175
+#: lino_xl/lib/beid/mixins.py:154
 msgid "eID card"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:185
+#: lino_xl/lib/beid/mixins.py:164
 msgid "Card no."
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:188
+#: lino_xl/lib/beid/mixins.py:167
 msgid "issued by"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:192
+#: lino_xl/lib/beid/mixins.py:171
 msgid "valid from"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:206
+#: lino_xl/lib/beid/mixins.py:185
 msgid "Must read eID card!"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:286
+#: lino_xl/lib/beid/mixins.py:265
 msgid "Check for invalid SSINs"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:293
+#: lino_xl/lib/beid/mixins.py:272
 msgid "Cannot fix invalid SSIN ({0})"
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:297
+#: lino_xl/lib/beid/mixins.py:276
 msgid "Malformed SSIN '{got}' must be '{expected}'."
 msgstr ""
 
-#: lino_xl/lib/beid/mixins.py:305
+#: lino_xl/lib/beid/mixins.py:284
 msgid "Failed to fix malformed SSIN '{got}' of '{obj}'."
 msgstr ""
 
@@ -602,7 +602,7 @@ msgid "years"
 msgstr "Jahre"
 
 #: lino_xl/lib/cal/choicelists.py:134 lino_xl/lib/cal/mixins.py:525
-#: lino_xl/lib/courses/models.py:156
+#: lino_xl/lib/courses/models.py:158
 msgid "Recurrency"
 msgstr ""
 
@@ -690,7 +690,7 @@ msgstr ""
 msgid "Recurrence Sets"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:528 lino_xl/lib/courses/models.py:159
+#: lino_xl/lib/cal/mixins.py:528 lino_xl/lib/courses/models.py:161
 msgid "Repeat every"
 msgstr ""
 
@@ -700,8 +700,8 @@ msgstr ""
 
 #: lino_xl/lib/cal/mixins.py:580 lino_xl/lib/cal/mixins.py:756
 #: lino_xl/lib/cal/models.py:168 lino_xl/lib/cal/models.py:230
-#: lino_xl/lib/cal/models.py:345 lino_xl/lib/courses/models.py:153
-#: lino_xl/lib/courses/models.py:276 lino_xl/lib/topics/models.py:26
+#: lino_xl/lib/cal/models.py:345 lino_xl/lib/courses/models.py:155
+#: lino_xl/lib/courses/models.py:278 lino_xl/lib/topics/models.py:26
 msgid "Description"
 msgstr "Omschrijving"
 
@@ -1050,7 +1050,7 @@ msgid "Presence"
 msgstr "Drucken"
 
 #: lino_xl/lib/cal/models.py:964 lino_xl/lib/cal/ui.py:387
-#: lino_xl/lib/courses/models.py:492
+#: lino_xl/lib/courses/models.py:502
 #, fuzzy
 msgid "Presences"
 msgstr "Drucken"
@@ -1606,12 +1606,12 @@ msgid "Partners"
 msgstr "Aktualisierung"
 
 #: lino_xl/lib/contacts/models.py:111 lino_xl/lib/contacts/models.py:161
-#: lino_xl/lib/courses/models.py:91 lino_xl/lib/outbox/models.py:55
+#: lino_xl/lib/courses/models.py:93 lino_xl/lib/outbox/models.py:55
 msgid "Name"
 msgstr ""
 
-#: lino_xl/lib/contacts/models.py:113 lino_xl/lib/cv/models.py:133
-#: lino_xl/lib/cv/models.py:562 lino_xl/lib/lists/models.py:62
+#: lino_xl/lib/contacts/models.py:113 lino_xl/lib/cv/models.py:154
+#: lino_xl/lib/cv/models.py:583 lino_xl/lib/lists/models.py:62
 msgid "Remarks"
 msgstr ""
 
@@ -1956,7 +1956,7 @@ msgstr ""
 msgid "Congo (Democratic Republic)"
 msgstr ""
 
-#: lino_xl/lib/courses/__init__.py:37 lino_xl/lib/courses/models.py:265
+#: lino_xl/lib/courses/__init__.py:37 lino_xl/lib/courses/models.py:267
 msgid "Activities"
 msgstr ""
 
@@ -1988,12 +1988,12 @@ msgstr "Thema"
 msgid "Uses a place"
 msgstr ""
 
-#: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/courses/models.py:467
+#: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/courses/models.py:477
 #, fuzzy
 msgid "Requested"
 msgstr "Drucken"
 
-#: lino_xl/lib/courses/choicelists.py:55 lino_xl/lib/courses/models.py:475
+#: lino_xl/lib/courses/choicelists.py:55 lino_xl/lib/courses/models.py:485
 #, fuzzy
 msgid "Confirmed"
 msgstr "Konfigurierung"
@@ -2015,7 +2015,7 @@ msgstr "Drucken"
 msgid "Shows events of activities led by this teacher"
 msgstr ""
 
-#: lino_xl/lib/courses/desktop.py:149 lino_xl/lib/courses/models.py:430
+#: lino_xl/lib/courses/desktop.py:149 lino_xl/lib/courses/models.py:440
 #: lino_xl/lib/events/__init__.py:30
 #, fuzzy
 msgid "Events"
@@ -2087,149 +2087,145 @@ msgstr "Benutzer-Level"
 msgid "Enrolments using this option"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:72
+#: lino_xl/lib/courses/models.py:74
 #, fuzzy
 msgid "Start Time"
 msgstr "Drucken"
 
-#: lino_xl/lib/courses/models.py:75
+#: lino_xl/lib/courses/models.py:77
 #, fuzzy
 msgid "End Time"
 msgstr "Druckdatum"
 
-#: lino_xl/lib/courses/models.py:86
+#: lino_xl/lib/courses/models.py:88
 msgid "Timetable Slot"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:87
+#: lino_xl/lib/courses/models.py:89
 msgid "Timetable Slots"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:101 lino_xl/lib/topics/models.py:73
+#: lino_xl/lib/courses/models.py:103 lino_xl/lib/topics/models.py:73
 msgid "Topic"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:102 lino_xl/lib/topics/__init__.py:25
+#: lino_xl/lib/courses/models.py:104 lino_xl/lib/topics/__init__.py:25
 #: lino_xl/lib/topics/models.py:74
 msgid "Topics"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:145
+#: lino_xl/lib/courses/models.py:147
 msgctxt "singular form"
 msgid "Activity line"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:146
+#: lino_xl/lib/courses/models.py:148
 msgctxt "plural form"
 msgid "Activity lines"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:163
+#: lino_xl/lib/courses/models.py:165
 msgid ""
 "The type of calendar events to be generated. If this is empty, no "
 "calendar events will be generated."
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:170
+#: lino_xl/lib/courses/models.py:172
 msgid "Participation fee"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:175
+#: lino_xl/lib/courses/models.py:177
 #, fuzzy
 msgid "Manage presences as"
 msgstr "Drucken"
 
-#: lino_xl/lib/courses/models.py:176
+#: lino_xl/lib/courses/models.py:178
 msgid ""
 "The default guest role for particpants of events for courses in this "
 "series. Leave empty if you don't want any presence management."
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:183
+#: lino_xl/lib/courses/models.py:185
 msgid "Options category"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:189
+#: lino_xl/lib/courses/models.py:191
 msgid "Fees category"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:195 lino_xl/lib/excerpts/models.py:116
+#: lino_xl/lib/courses/models.py:197 lino_xl/lib/excerpts/models.py:116
 #: lino_xl/lib/excerpts/models.py:449
 #, fuzzy
 msgid "Body template"
 msgstr "Vorlage"
 
-#: lino_xl/lib/courses/models.py:264
+#: lino_xl/lib/courses/models.py:266
 msgid "Activity"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:271
+#: lino_xl/lib/courses/models.py:273
 #, fuzzy
 msgid "Instructor"
 msgstr "Vorige"
 
-#: lino_xl/lib/courses/models.py:285
+#: lino_xl/lib/courses/models.py:287
 msgctxt "in a course"
 msgid "Available places"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:289 lino_xl/lib/properties/models.py:180
+#: lino_xl/lib/courses/models.py:291 lino_xl/lib/properties/models.py:180
 msgid "Designation"
 msgstr "Omschrijving"
 
-#: lino_xl/lib/courses/models.py:291
+#: lino_xl/lib/courses/models.py:293
 #, fuzzy
 msgid "Enrolments until"
 msgstr "Drucken"
 
-#: lino_xl/lib/courses/models.py:420
-msgid "Info"
-msgstr ""
-
-#: lino_xl/lib/courses/models.py:461
+#: lino_xl/lib/courses/models.py:471
 #, fuzzy
 msgid "Free places"
 msgstr "Referenz"
 
-#: lino_xl/lib/courses/models.py:464
+#: lino_xl/lib/courses/models.py:474
 msgid "Unlimited"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:483 lino_xl/lib/courses/models.py:579
+#: lino_xl/lib/courses/models.py:493 lino_xl/lib/courses/models.py:589
 #, fuzzy
 msgid "Enrolments"
 msgstr "Drucken"
 
-#: lino_xl/lib/courses/models.py:578
+#: lino_xl/lib/courses/models.py:588
 #, fuzzy
 msgid "Enrolment"
 msgstr "Drucken"
 
-#: lino_xl/lib/courses/models.py:591
+#: lino_xl/lib/courses/models.py:601
 #, fuzzy
 msgid "Date of request"
 msgstr "Empfänger"
 
-#: lino_xl/lib/courses/models.py:595
+#: lino_xl/lib/courses/models.py:605
 msgctxt "in a course"
 msgid "Places used"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:600 lino_xl/lib/rooms/models.py:31
+#: lino_xl/lib/courses/models.py:610 lino_xl/lib/rooms/models.py:31
 #, fuzzy
 msgid "Option"
 msgstr "Omschrijving"
 
-#: lino_xl/lib/courses/models.py:606
+#: lino_xl/lib/courses/models.py:616
 msgid "Confirmation details"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:664
+#: lino_xl/lib/courses/models.py:674
 #, python-format
 msgid "No places left in %s"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:695
+#: lino_xl/lib/courses/models.py:705
 #, fuzzy
 msgid "Participant"
 msgstr "Bestätigung"
@@ -2327,168 +2323,172 @@ msgstr ""
 msgid "proficient use of language"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:61
+#: lino_xl/lib/cv/models.py:63
 msgid "language knowledge"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:62
+#: lino_xl/lib/cv/models.py:64
 msgid "language knowledges"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:68
+#: lino_xl/lib/cv/models.py:71
 msgid "Spoken"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:69
+#: lino_xl/lib/cv/models.py:72
 #, fuzzy
 msgid "Written"
 msgstr "Drucken"
 
-#: lino_xl/lib/cv/models.py:70
+#: lino_xl/lib/cv/models.py:73
 msgid "Spoken (passively)"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:72
+#: lino_xl/lib/cv/models.py:75
 msgid "Written (passively)"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:74
-#, fuzzy
-msgid "native language"
-msgstr "Sprache"
+#: lino_xl/lib/cv/models.py:77
+msgid "Mother tongue"
+msgstr ""
 
-#: lino_xl/lib/cv/models.py:83
+#: lino_xl/lib/cv/models.py:84
+#, fuzzy, python-format
+msgid "%s (MT)"
+msgstr "Auswahlmöglichkeiten für %s"
+
+#: lino_xl/lib/cv/models.py:88
 #, fuzzy, python-format
 msgid "%s (s/w)"
 msgstr "Auswahlmöglichkeiten für %s"
 
-#: lino_xl/lib/cv/models.py:85
+#: lino_xl/lib/cv/models.py:90
 #, fuzzy, python-format
 msgid "%s (s)"
 msgstr "Auswahlmöglichkeiten für %s"
 
-#: lino_xl/lib/cv/models.py:87
+#: lino_xl/lib/cv/models.py:92
 #, python-format
 msgid "%s (w)"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:128
+#: lino_xl/lib/cv/models.py:149
 msgid "Establishment"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:143 lino_xl/lib/cv/models.py:337
+#: lino_xl/lib/cv/models.py:164 lino_xl/lib/cv/models.py:358
 msgid "Study"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:144 lino_xl/lib/cv/models.py:256
-#: lino_xl/lib/cv/models.py:560
+#: lino_xl/lib/cv/models.py:165 lino_xl/lib/cv/models.py:277
+#: lino_xl/lib/cv/models.py:581
 msgid "Training"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:151
+#: lino_xl/lib/cv/models.py:172
 msgid "Education Level"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:152
+#: lino_xl/lib/cv/models.py:173
 msgid "Education Levels"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:191
+#: lino_xl/lib/cv/models.py:212
 #, fuzzy
 msgid "Education Type"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/cv/models.py:192
+#: lino_xl/lib/cv/models.py:213
 #, fuzzy
 msgid "Education Types"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/cv/models.py:257
+#: lino_xl/lib/cv/models.py:278
 msgid "Trainings"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:262
+#: lino_xl/lib/cv/models.py:283
 #, fuzzy
 msgid "Training content"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/cv/models.py:267
+#: lino_xl/lib/cv/models.py:288
 msgid "Certificates"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:338
+#: lino_xl/lib/cv/models.py:359
 msgid "Studies"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:347
+#: lino_xl/lib/cv/models.py:368
 msgid "Study content"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:423
+#: lino_xl/lib/cv/models.py:444
 #, fuzzy
 msgctxt "work experience"
 msgid "Status"
 msgstr "Zustand"
 
-#: lino_xl/lib/cv/models.py:424
+#: lino_xl/lib/cv/models.py:445
 #, fuzzy
 msgctxt "work experience"
 msgid "Statuses"
 msgstr "Zustand"
 
-#: lino_xl/lib/cv/models.py:444
+#: lino_xl/lib/cv/models.py:465
 msgid "Work Regime"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:445
+#: lino_xl/lib/cv/models.py:466
 msgid "Work Regimes"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:463
+#: lino_xl/lib/cv/models.py:484
 msgid "Contract Duration"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:464
+#: lino_xl/lib/cv/models.py:485
 msgid "Contract Durations"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:483
+#: lino_xl/lib/cv/models.py:504
 #, fuzzy
 msgid "Job Sector"
 msgstr "Benutzer"
 
-#: lino_xl/lib/cv/models.py:484
+#: lino_xl/lib/cv/models.py:505
 msgid "Job Sectors"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:509
+#: lino_xl/lib/cv/models.py:530
 msgid "Job Function"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:510
+#: lino_xl/lib/cv/models.py:531
 #, fuzzy
 msgid "Job Functions"
 msgstr "Omschrijving"
 
-#: lino_xl/lib/cv/models.py:549
+#: lino_xl/lib/cv/models.py:570
 #, fuzzy
 msgid "Job Experience"
 msgstr "Referenz"
 
-#: lino_xl/lib/cv/models.py:550
+#: lino_xl/lib/cv/models.py:571
 #, fuzzy
 msgid "Job Experiences"
 msgstr "Referenz"
 
-#: lino_xl/lib/cv/models.py:553
+#: lino_xl/lib/cv/models.py:574
 msgid "company"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:556
+#: lino_xl/lib/cv/models.py:577
 msgid "job title"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:567
+#: lino_xl/lib/cv/models.py:588
 #, fuzzy
 msgid "Termination reason"
 msgstr "Omschrijving"
@@ -4254,25 +4254,6 @@ msgstr ""
 #: lino_xl/lib/topics/models.py:48
 msgid "Interests"
 msgstr ""
-
-#: lino_xl/lib/unused_projects/__init__.py:22
-#: lino_xl/lib/unused_projects/models.py:44
-#, fuzzy
-msgid "Projects"
-msgstr "(Objekt)"
-
-#: lino_xl/lib/unused_projects/models.py:26
-msgid "Project Type"
-msgstr ""
-
-#: lino_xl/lib/unused_projects/models.py:27
-msgid "Project Types"
-msgstr ""
-
-#: lino_xl/lib/unused_projects/models.py:43
-#, fuzzy
-msgid "Project"
-msgstr "(Objekt)"
 
 #: lino_xl/lib/workflows/models.py:42
 #, fuzzy
@@ -10654,30 +10635,24 @@ msgstr ""
 #~ msgid "Mark this participant as absent at the event (without explanation)."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Shows all my presences in calendar "
-#~ "events, independently of their state."
-#~ msgstr ""
-
 #~ msgid "List of Belgian identity card types:"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Common base for all \"Read eID card\" actions\n"
-#~ "(:class:FindByBeIdAction and BeIdReadCardAction)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Read an eID card without being on a precise holder. Either show the\n"
-#~ "holder or ask to create a new holder."
 #~ msgstr ""
 
 #~ msgid "Read eId card and store the data on the selected holder."
 #~ msgstr ""
 
-#~ msgid ""
-#~ "Mixin for models like\n"
-#~ "lino_welfare.modlib.aids.models.AidType and\n"
-#~ "lino_cosi.lib.courses.models.Line."
+#~ msgid "native language"
+#~ msgstr "Sprache"
+
+#~ msgid "Projects"
+#~ msgstr "(Objekt)"
+
+#~ msgid "Project Type"
 #~ msgstr ""
+
+#~ msgid "Project Types"
+#~ msgstr ""
+
+#~ msgid "Project"
+#~ msgstr "(Objekt)"
 

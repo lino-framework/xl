@@ -41,7 +41,7 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(config, site, profile, m):
         m = m.add_menu(config.app_label, config.verbose_name)
-        m.add_action('cv.LanguageKnowledges')
+        m.add_action('cv.AllLanguageKnowledges')
         m.add_action('cv.AllTrainings')
         m.add_action('cv.Studies')
         m.add_action('cv.Experiences')
