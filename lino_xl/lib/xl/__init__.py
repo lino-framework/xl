@@ -10,5 +10,6 @@ but a :xfile:`locale` directory with translation messages for Django.
    :toctree:
 
     roles
+    mixins
 
 """

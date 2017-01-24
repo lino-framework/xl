@@ -98,6 +98,7 @@ lino_xl.lib.contacts.management
 lino_xl.lib.contacts.management.commands
 lino_xl.lib.countries
 lino_xl.lib.countries.fixtures
+lino_xl.lib.courses
 lino_xl.lib.cv
 lino_xl.lib.cv.fixtures
 lino_xl.lib.dupable_partners
@@ -129,7 +130,6 @@ lino_xl.lib.polls.fixtures
 lino_xl.lib.postings
 lino_xl.lib.products
 lino_xl.lib.products.fixtures
-lino_xl.lib.projects
 lino_xl.lib.properties
 lino_xl.lib.properties.fixtures
 lino_xl.lib.reception

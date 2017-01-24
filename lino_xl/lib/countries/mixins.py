@@ -21,6 +21,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
+from lino.utils.addressable import Addressable
 
 from .choicelists import CountryDrivers, PlaceTypes
 from .utils import get_address_formatter
@@ -158,7 +159,7 @@ class CountryRegionCity(CountryCity):
         #~ return cls.city.field.rel.model.objects.order_by('name')
 
 
-class AddressLocation(CountryRegionCity):
+class AddressLocation(CountryRegionCity, Addressable):
     """A mixin for models which contain a postal address location.
 
     .. attribute:: addr1

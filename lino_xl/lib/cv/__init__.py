@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -24,6 +24,10 @@ class Plugin(ad.Plugin):
 
     person_model = 'contacts.Person'
 
+    def on_site_startup(self, site):
+        self.person_model = site.models.resolve(self.person_model)
+        super(Plugin, self).on_site_startup(site)
+        
     def setup_config_menu(config, site, profile, m):
         m = m.add_menu(config.app_label, config.verbose_name)
         # m.add_action('cv.TrainingTypes')
@@ -37,7 +41,7 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(config, site, profile, m):
         m = m.add_menu(config.app_label, config.verbose_name)
-        m.add_action('cv.LanguageKnowledges')
+        m.add_action('cv.AllLanguageKnowledges')
         m.add_action('cv.AllTrainings')
         m.add_action('cv.Studies')
         m.add_action('cv.Experiences')

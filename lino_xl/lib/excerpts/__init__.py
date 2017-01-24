@@ -46,7 +46,8 @@ class Plugin(ad.Plugin):
 
     needs_plugins = [
         'lino.modlib.gfks', 'lino.modlib.printing',
-        'lino_xl.lib.outbox', 'lino.modlib.office', 'lino_xl.lib.xl']
+        # 'lino_xl.lib.outbox',
+        'lino.modlib.office', 'lino_xl.lib.xl']
 
     # _default_template_handlers = {}
 

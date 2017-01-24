@@ -26,15 +26,27 @@ for appy.pod."""),
 model which implements
 Addressable."""),
     'lino_xl.lib.beid.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.beid.Plugin.holder_model' : _("""The one and only model on this site which implements
+BeIdCardHolder."""),
     'lino_xl.lib.beid.Plugin.data_collector_dir' : _("""When this is a non-empty string containing a directory name on the
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
-    'lino_xl.lib.beid.choicelists.BeIdCardTypes' : _("""List of Belgian identity card types:"""),
-    'lino_xl.lib.beid.mixins.BaseBeIdReadCardAction' : _("""Common base for all "Read eID card" actions
-(:class:FindByBeIdAction and BeIdReadCardAction)."""),
-    'lino_xl.lib.beid.mixins.FindByBeIdAction' : _("""Read an eID card without being on a precise holder. Either show the
-holder or ask to create a new holder."""),
-    'lino_xl.lib.beid.mixins.BeIdReadCardAction' : _("""Read eId card and store the data on the selected holder."""),
+    'lino_xl.lib.beid.Plugin.read_only_simulate' : _("""Whether to just simulate."""),
+    'lino_xl.lib.beid.choicelists.CivilStates' : _("""The global list of civil states that a client can have.  This
+is the list of choices for the civil_state field of a
+Client."""),
+    'lino_xl.lib.beid.choicelists.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
+officiellement lié"""),
+    'lino_xl.lib.beid.choicelists.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
+    'lino_xl.lib.beid.choicelists.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
+votre partenaire est décédé"""),
+    'lino_xl.lib.beid.choicelists.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
+    'lino_xl.lib.beid.choicelists.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
+    'lino_xl.lib.beid.choicelists.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
+corps et de biens, Getrennt von Tisch und Bett)"""),
+    'lino_xl.lib.beid.choicelists.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
+    'lino_xl.lib.beid.choicelists.ResidenceTypes' : _("""Types of registries for the Belgian residence."""),
+    'lino_xl.lib.beid.choicelists.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
 Currently only Belgian eid cards are tested.
 Concrete subclasses must also inherit from lino.mixins.Born."""),
@@ -162,6 +174,9 @@ end_date will be today + that number of days."""),
     'lino_xl.lib.cal.ui.MyTasks.model' : _("""alias of Task"""),
     'lino_xl.lib.cal.ui.Guests' : _("""The default table for Guest."""),
     'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
+    'lino_xl.lib.cal.ui.MyPresences' : _("""Shows all my presences in calendar events, independently of their
+state."""),
+    'lino_xl.lib.cal.ui.MyPresences.model' : _("""alias of Guest"""),
     'lino_xl.lib.cal.ui.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
     'lino_xl.lib.cal.ui.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
     'lino_xl.lib.cal.ui.Events' : _("""Table which shows all calendar events."""),
@@ -305,6 +320,57 @@ in Country."""),
 consist of only digits."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
+    'lino_xl.lib.courses.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.courses.choicelists.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
+    'lino_xl.lib.courses.desktop.CourseDetail' : _("""The detail layout of a Course."""),
+    'lino_xl.lib.courses.desktop.Activities' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.desktop.Activities.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.desktop.CoursesByLine' : _("""Show the courses per course line."""),
+    'lino_xl.lib.courses.desktop.CoursesByLine.master' : _("""alias of Line"""),
+    'lino_xl.lib.courses.desktop.CoursesByLine.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.desktop.CoursesByTopic' : _("""Shows the courses of a given topic."""),
+    'lino_xl.lib.courses.desktop.CoursesByTopic.master' : _("""alias of Topic"""),
+    'lino_xl.lib.courses.desktop.CoursesByTopic.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.desktop.Enrolments' : _("""Base class for all enrolment tables."""),
+    'lino_xl.lib.courses.desktop.Enrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.desktop.AllEnrolments' : _("""Show global list of all enrolments."""),
+    'lino_xl.lib.courses.desktop.AllEnrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.desktop.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
+    'lino_xl.lib.courses.desktop.PendingRequestedEnrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.desktop.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
+    'lino_xl.lib.courses.desktop.PendingConfirmedEnrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.desktop.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
+    'lino_xl.lib.courses.desktop.EnrolmentsByPupil.master' : _("""alias of Person"""),
+    'lino_xl.lib.courses.desktop.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.models.Line' : _("""An activity line (or series) groups courses into a
+configurable list of categories."""),
+    'lino_xl.lib.courses.models.Line.name' : _("""The designation of this activity line as seen by the user
+e.g. when selecting the line."""),
+    'lino_xl.lib.courses.models.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
+    'lino_xl.lib.courses.models.Line.body_template' : _("""The body template to use when printing an activity of this
+line.  Leave empty to use the site's default (defined by
+body_template on the
+lino_xl.lib.excerpts.models.ExcerptType for
+Course)"""),
+    'lino_xl.lib.courses.models.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+application defines several variants of
+EnrolmentsByPupil."""),
+    'lino_xl.lib.courses.models.Course' : _("""A Course is a group of pupils that regularily meet with a given
+teacher in a given room to speak about a given subject."""),
+    'lino_xl.lib.courses.models.Course.max_places' : _("""Available places. The maximum number of participants to allow
+in this course."""),
+    'lino_xl.lib.courses.models.Course.free_places' : _("""Number of free places."""),
+    'lino_xl.lib.courses.models.Course.requested' : _("""Number of requested places."""),
+    'lino_xl.lib.courses.models.Course.confirmed' : _("""Number of confirmed places."""),
+    'lino_xl.lib.courses.models.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
+given course."""),
+    'lino_xl.lib.courses.models.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
+    'lino_xl.lib.courses.models.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
+participant."""),
+    'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment. Sets the state to confirmed after
+calling get_confirm_veto to
+verify whether it is valid (e.g. whether there are enough free
+places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
@@ -325,7 +391,7 @@ printed_by."""),
     'lino_xl.lib.excerpts.mixins.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
     'lino_xl.lib.excerpts.mixins.ExcerptTitle' : _("""Mixin for models like
 lino_welfare.modlib.aids.models.AidType and
-lino_cosi.lib.courses.models.Line."""),
+lino_xl.lib.courses.models.Line."""),
     'lino_xl.lib.excerpts.mixins.ExcerptTitle.name' : _("""The designation of this row as seen by the user e.g. when
 selecting an instance of this model."""),
     'lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
@@ -484,7 +550,6 @@ has been sent using snail mail."""),
     'lino_xl.lib.products.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.products.models.ProductCat' : _("""A product category is a way to group products."""),
     'lino_xl.lib.products.models.Product' : _("""A product is something you can sell or buy."""),
-    'lino_xl.lib.projects.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.properties.models.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
 like ...?"."""),

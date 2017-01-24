@@ -47,7 +47,7 @@ from lino.mixins.periods import ObservedPeriod
 
 
 from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
-from .mixins import Contactable
+from lino.mixins import Contactable, Phonable
 from .roles import SimpleContactsUser, ContactsStaff
 from .choicelists import PartnerEvents
 
@@ -58,7 +58,8 @@ PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
 
 @dd.python_2_unicode_compatible
-class Partner(Contactable, mixins.Polymorphic, AddressLocation, Addressable):
+class Partner(Contactable, Phonable, mixins.Polymorphic,
+              AddressLocation):
     """A Partner is any physical or moral person for which you want to
     keep contact data (address, phone numbers, ...).
 
@@ -108,10 +109,6 @@ class Partner(Contactable, mixins.Polymorphic, AddressLocation, Addressable):
         verbose_name_plural = _("Partners")
 
     name = models.CharField(max_length=200, verbose_name=_('Name'))
-
-    language = dd.LanguageField()
-
-    email = models.EmailField(_('E-Mail'), blank=True)  # ,null=True)
 
     remarks = models.TextField(_("Remarks"), blank=True)  # ,null=True)
 
@@ -163,7 +160,6 @@ class Partner(Contactable, mixins.Polymorphic, AddressLocation, Addressable):
 
     @dd.displayfield(_("Name"))
     def name_column(self, request):
-        #~ return join_words(self.last_name.upper(),self.first_name)
         return str(self)
 
     def get_partner_instance(self):

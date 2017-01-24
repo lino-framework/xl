@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -27,12 +27,16 @@
 
 from __future__ import unicode_literals
 
+from builtins import str
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 
 from lino.api import dd, rt
 from lino import mixins
+from lino.utils import join_elems
+from lino.utils.xmlgen.html import E
 from lino_xl.lib.countries.mixins import CountryCity
 from lino.modlib.system.choicelists import PeriodEvents
 
@@ -53,13 +57,14 @@ config = dd.plugins.cv
 
 @dd.python_2_unicode_compatible
 class LanguageKnowledge(dd.Model):
-    """
-    Specifies how well a certain Person knows a certain Language.
+    """Specifies how well a given person knows a given language.
+
     """
     class Meta:
         app_label = 'cv'
         verbose_name = _("language knowledge")
         verbose_name_plural = _("language knowledges")
+        unique_together = ['person', 'language']
 
     allow_cascaded_delete = ['person']
 
@@ -71,12 +76,14 @@ class LanguageKnowledge(dd.Model):
                                      blank=True)
     written_passively = HowWell.field(_("Written (passively)"),
                                       blank=True)
-    native = models.BooleanField(_("native language"), default=False)
+    native = models.BooleanField(_("Mother tongue"), default=False)
     cef_level = CefLevel.field(blank=True)  # ,null=True)
 
     def __str__(self):
         if self.language_id is None:
             return ''
+        if self.native:
+            return _("%s (MT)") % (self.language)
         if self.cef_level:
             return u"%s (%s)" % (self.language, self.cef_level)
         if self.spoken > '1' and self.written > '1':
@@ -91,16 +98,64 @@ class LanguageKnowledge(dd.Model):
 
 class LanguageKnowledges(dd.Table):
     model = 'cv.LanguageKnowledge'
-    required_roles = dd.required(CareerStaff)
+    stay_in_grid = True
 
+class AllLanguageKnowledges(LanguageKnowledges):
+    required_roles = dd.required(CareerStaff)
 
 class LanguageKnowledgesByPerson(LanguageKnowledges):
     master_key = 'person'
-    #~ label = _("Language knowledge")
-    #~ button_label = _("Languages")
     column_names = "language native spoken written cef_level"
     required_roles = dd.required(CareerUser)
     auto_fit_column_widths = True
+    slave_grid_format = "summary"
+    detail_layout = dd.DetailLayout("""
+    language
+    native
+    cef_level
+    spoken_passively spoken written
+    """, window_size=(50, 'auto'))
+
+    @classmethod
+    def do_setup(self):
+        super(LanguageKnowledgesByPerson, self).do_setup()
+        self.detail_action.action.hide_top_toolbar = True
+
+    @classmethod
+    def get_detail_title(self, ar, obj):
+        """Overrides the default behaviour.
+
+        """
+        return u"{} / {}".format(obj.person, obj.language)
+        # return str(obj.language)
+
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+        for this table.
+
+        """
+        sar = self.request_from(ar, master_instance=obj)
+
+        html = []
+        items = [sar.obj2html(o) for o in sar]
+
+        sar = self.insert_action.request_from(sar)
+        if sar.get_permission():
+            btn = sar.ar2button()
+            items.append(btn)
+            
+        if len(items) > 0:
+            html += join_elems(items, sep=', ')
+            
+        return E.p(*html)        
+
+        # text = ', '.join([str(o) for o in sar])
+
+        # return ar.html_text(text)
+
+
+    
 
 
 class KnowledgesByLanguage(LanguageKnowledges):

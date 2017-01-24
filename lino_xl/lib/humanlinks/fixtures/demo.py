@@ -23,7 +23,7 @@ from lino.api import dd, rt
 
 def objects():
 
-    Person = dd.resolve_model(dd.apps.humanlinks.person_model)
+    Person = dd.resolve_model(dd.plugins.humanlinks.person_model)
     Link = rt.modules.humanlinks.Link
     LinkTypes = rt.modules.humanlinks.LinkTypes
     ar = rt.login()

@@ -730,7 +730,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     def get_postable_recipients(self):
         """return or yield a list of Partners"""
         if self.project:
-            if isinstance(self.project, rt.modules.contacts.Partner):
+            if isinstance(self.project, dd.plugins.cal.partner_model):
                 yield self.project
         for g in self.guest_set.all():
             yield g.partner
@@ -742,7 +742,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 
     def get_mailable_recipients(self):
         if self.project:
-            if isinstance(self.project, rt.modules.contacts.Partner):
+            if isinstance(self.project, dd.plugins.cal.partner_model):
                 yield ('to', self.project)
         for g in self.guest_set.all():
             yield ('to', g.partner)
@@ -965,7 +965,7 @@ class Guest(dd.Model):
 
     event = models.ForeignKey('cal.Event')
 
-    partner = dd.ForeignKey('contacts.Partner')
+    partner = dd.ForeignKey(dd.plugins.cal.partner_model)
 
     role = models.ForeignKey('cal.GuestRole',
                              verbose_name=_("Role"),
@@ -1134,3 +1134,4 @@ if False:  # removed 20160610 because it is probably not used
         sender.user_model.define_action(update_reminders=UpdateUserReminders())
 
 
+from .ui import *
