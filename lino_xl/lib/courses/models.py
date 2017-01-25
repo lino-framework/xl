@@ -468,11 +468,12 @@ class Course(Reservation, Duplicable):
         states = EnrolmentStates.filter(uses_a_place=True)
         return self.get_places_sum(today, state__in=states)
 
-    @dd.displayfield(_("Free places"), max_length=5)
+    # @dd.displayfield(_("Free places"), max_length=5)
+    @dd.virtualfield(models.IntegerField(_("Free places")))
     def free_places(self, ar=None):
         if not self.max_places:
-            return _("Unlimited")
-        return str(self.get_free_places())
+            return None  # _("Unlimited")
+        return self.get_free_places()
 
     @dd.virtualfield(models.IntegerField(_("Requested")))
     def requested(self, ar):

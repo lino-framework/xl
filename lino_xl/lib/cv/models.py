@@ -104,6 +104,7 @@ class AllLanguageKnowledges(LanguageKnowledges):
     required_roles = dd.required(CareerStaff)
 
 class LanguageKnowledgesByPerson(LanguageKnowledges):
+    """Shows the languages known by this person."""
     master_key = 'person'
     column_names = "language native spoken written cef_level"
     required_roles = dd.required(CareerUser)

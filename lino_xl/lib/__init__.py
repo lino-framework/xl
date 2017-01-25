@@ -69,6 +69,7 @@ Miscellaneous
     beid
     polls
     products
+    coachings
 
 Content management
 ==================
