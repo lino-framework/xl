@@ -29,6 +29,8 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
     verbose_name = _("Coachings")
 
+    needs_plugins = ['lino_xl.lib.contacts']
+    
     client_model = 'contacts.Person'
 
     def on_site_startup(self, site):
