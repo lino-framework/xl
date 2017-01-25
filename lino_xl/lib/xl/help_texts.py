@@ -466,6 +466,8 @@ but is stored as a Couple instance."""),
     'lino_xl.lib.households.Plugin.person_model' : _("""A string referring to the model which represents a human in your
 application.  Default value is 'contacts.Person' (referring to
 lino_xl.lib.contacts.models.Person)."""),
+    'lino_xl.lib.households.Plugin.adult_age' : _("""The age (in years) a person needs to have in order to be considered
+adult."""),
     'lino_xl.lib.households.choicelists.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
     'lino_xl.lib.households.models.Type' : _("""Type of a household.
 http://www.belgium.be/fr/famille/couple/cohabitation/"""),

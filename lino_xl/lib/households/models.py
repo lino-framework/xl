@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
+# Copyright 2012-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """Database models for `lino_xl.lib.households`.
@@ -13,6 +13,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from django.db import models
+from django.conf import settings
 
 from lino.api import dd, rt, _
 from lino import mixins
@@ -21,12 +22,13 @@ from lino.utils import join_words, join_elems
 from lino.utils.xmlgen.html import E
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
-from .choicelists import MemberRoles
+from .choicelists import MemberRoles, MemberDependencies
 
 contacts = dd.resolve_app('contacts')
 
 config = dd.plugins.households
 
+from .choicelists import child_roles, parent_roles
 
 class Type(mixins.BabelNamed):
     """
@@ -49,6 +51,57 @@ class Types(dd.Table):
     """
 
 
+class PopulateMembers(dd.Action):
+    # populate household members from data in humanlinks
+    # show_in_bbar = False
+    custom_handler = True
+    label = _("Populate")
+    icon_name = 'lightning'
+
+    def run_from_ui(self, ar, **kw):
+        if not dd.is_installed('humanlinks'):
+            return
+        today = dd.today()
+        n = 0
+        Member = rt.models.households.Member
+        for hh in ar.selected_rows:
+            known_children = set()
+            for mbr in hh.member_set.filter(role__in=child_roles):
+                if mbr.person:
+                    known_children.add(mbr.person.id)
+
+            new_children = dict()
+            for parent in hh.member_set.filter(role__in=parent_roles):
+                for childlnk in parent.person.humanlinks_children.all():
+                    child = childlnk.child
+                    if not child.id in known_children:
+                        age = child.get_age(today)
+                        if age is None or age <= dd.plugins.households.adult_age:
+                            childmbr = new_children.get(child.id, None)
+                            if childmbr is None:
+                                cr = MemberRoles.child
+                                # if parent.role == MemberRoles.head:
+                                #     cr = MemberRoles.child_of_head
+                                # else:
+                                #     cr = MemberRoles.child_of_partner
+                                childmbr = Member(
+                                    household=hh,
+                                    person=child,
+                                    dependency=MemberDependencies.full,
+                                    role=cr)
+                                new_children[child.id] = childmbr
+                                n += 1
+                            else:
+                                childmbr.role = MemberRoles.child
+                            # if parent.role == MemberRoles.head:
+                            #     childmbr.dependency = MemberDependencies.full
+                            childmbr.full_clean()
+                            childmbr.save()
+
+        ar.success(
+            _("Added %d children.") % n, refresh_all=True)
+
+
 @dd.python_2_unicode_compatible
 class Household(contacts.Partner):
     """
@@ -65,9 +118,15 @@ class Household(contacts.Partner):
     type = models.ForeignKey(Type, blank=True, null=True)
     # head = dd.ForeignKey('contacts.Person', verbose_name=_("Chef")),
 
+    populate_members = PopulateMembers()
+
     #~ dummy = models.CharField(max_length=1,blank=True)
     # workaround for https://code.djangoproject.com/ticket/13864
 
+    def after_ui_save(self, ar, cw):
+        super(Household, self).after_ui_save(ar, cw)
+        self.populate_members.run_from_code(ar)
+        
     def add_member(self, person, role=None):
         mbr = rt.modules.households.Member(
             household=self, person=person, role=role)
@@ -194,7 +253,7 @@ class HouseholdsByType(Households):
 
 
 @dd.python_2_unicode_compatible
-class Member(mixins.DatePeriod):
+class Member(mixins.DatePeriod, mixins.Human, mixins.Born):
     """A **household membership** represents the fact that a given person
     is (or has been) part of a given household.
 
@@ -220,9 +279,12 @@ class Member(mixins.DatePeriod):
     role = MemberRoles.field(
         default=MemberRoles.child.as_callable, blank=True, null=True)
     person = models.ForeignKey(
-        config.person_model,
+        config.person_model, null=True, blank=True,
         related_name='household_members')
     household = models.ForeignKey('households.Household')
+    dependency = MemberDependencies.field(
+        default=MemberDependencies.none.as_callable)
+
     primary = models.BooleanField(
         _("Primary"),
         default=False,
@@ -230,6 +292,58 @@ class Member(mixins.DatePeriod):
             "Whether this is the primary household of this person. "
             "Checking this field will automatically disable any "
             "other primary memberships."))
+
+    def full_clean(self):
+        """Copy data fields from child"""
+        if self.person_id:
+            for k in person_fields:
+                setattr(self, k, getattr(self.person, k))
+        elif not settings.SITE.loading_from_dump:
+            # create Person row if all fields are filled
+            has_all_fields = True
+            kw = dict()
+            for k in person_fields:
+                if getattr(self, k):
+                    kw[k] = getattr(self, k)
+                else:
+                    has_all_fields = False
+            if has_all_fields:
+                # M = rt.modules.pcsw.Client
+                M = config.person_model
+                try:
+                    obj = M.objects.get(**kw)
+                except M.DoesNotExist:
+                    obj = M(**kw)
+                    obj.full_clean()
+                    obj.save()
+                self.person = obj
+    
+        super(Member, self).full_clean()
+
+        if not settings.SITE.loading_from_dump:
+            # Auto-create human links between this member and other
+            # household members.
+            if self.person_id and self.role and self.household_id:
+                if dd.is_installed('humanlinks'):
+                    Link = rt.models.humanlinks.Link
+                    ConcreteMember = rt.models.households.Member
+                    if self.role in child_roles:
+                        for pm in ConcreteMember.objects.filter(
+                                household=self.household,
+                                role__in=parent_roles):
+                            Link.check_autocreate(pm.person, self.person)
+                    elif self.role in parent_roles:
+                        for cm in ConcreteMember.objects.filter(
+                                household=self.household,
+                                role__in=child_roles):
+                            Link.check_autocreate(self.person, cm.person)
+
+    def disabled_fields(self, ar):
+        rv = super(Member, self).disabled_fields(ar)
+        if self.person_id:
+            rv = rv | person_fields
+        #~ logger.info("20130808 pcsw %s", rv)
+        return rv
 
     def after_ui_save(self, ar, cw):
         super(Member, self).after_ui_save(ar, cw)
@@ -274,6 +388,8 @@ class Member(mixins.DatePeriod):
         self.after_ui_save(ar, None)
         ar.success(refresh=True)
 
+person_fields = dd.fields_list(
+    Member, 'first_name last_name gender birth_date')
 
 class Members(dd.Table):
     model = 'households.Member'
@@ -285,7 +401,10 @@ class MembersByHousehold(Members):
     required_roles = dd.required(ContactsUser)
     label = _("Household Members")
     master_key = 'household'
-    column_names = 'person role start_date end_date *'
+    column_names = "age:10 role dependency person \
+    first_name last_name birth_date gender *"
+    order_by = ['birth_date']
+    auto_fit_column_widths = True
 
 
 class SiblingsByPerson(Members):
@@ -306,7 +425,10 @@ class SiblingsByPerson(Members):
     label = _("Household composition")
     required_roles = dd.required(ContactsUser)
     master = config.person_model
-    column_names = 'person role start_date end_date *'
+    column_names = "age:10 role dependency person \
+    first_name last_name birth_date gender *"
+    # column_names = 'person role start_date end_date *'
+    order_by = ['birth_date']
     auto_fit_column_widths = True
     # slave_grid_format = 'summary'
     window_size = (100, 20)

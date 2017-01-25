@@ -35,6 +35,15 @@ class Plugin(ad.Plugin):
 
     """
 
+    adult_age = 18
+    """The age (in years) a person needs to have in order to be considered
+    adult."""
+    # adult_age = datetime.timedelta(days=18*365)
+    
+    def on_site_startup(self, site):
+        self.person_model = site.models.resolve(self.person_model)
+        super(Plugin, self).on_site_startup(site)
+        
     def setup_main_menu(config, site, profile, m):
         mnugrp = site.plugins.contacts
         m = m.add_menu(mnugrp.app_label, mnugrp.verbose_name)

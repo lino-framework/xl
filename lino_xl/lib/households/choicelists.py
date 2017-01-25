@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2015 Luc Saffre
+# Copyright 2012-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """Database models for `lino_xl.lib.households`.
@@ -8,6 +8,18 @@
 
 from lino.api import dd, _
 from lino_xl.lib.contacts.roles import ContactsStaff
+
+
+class MemberDependencies(dd.ChoiceList):
+    """The list of allowed choices for the `charge` of a household member.
+    """
+    verbose_name = _("Dependency")
+    verbose_name_plural = _("Household Member Dependencies")
+
+add = MemberDependencies.add_item
+add('01', _("At full charge"), 'full')
+add('02', _("Not at charge"), 'none')
+add('03', _("At shared charge"), 'shared')
 
 
 class MemberRoles(dd.ChoiceList):
