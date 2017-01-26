@@ -51,12 +51,12 @@ class Link(dd.Model):
     type = LinkTypes.field(default=LinkTypes.parent.as_callable)
     parent = dd.ForeignKey(
         config.person_model,
-        verbose_name=_("Parent"),
+        verbose_name=_("Who is..."),
         related_name='humanlinks_children')
     child = dd.ForeignKey(
         config.person_model,
         blank=True, null=True,
-        verbose_name=_("Child"),
+        verbose_name=_("To whom..."),
         related_name='humanlinks_parents')
 
     @dd.displayfield(_("Type"))
@@ -81,12 +81,15 @@ class Link(dd.Model):
             parent=self.parent,
             type=self.type.as_child(self.child))
 
-    parent_link_types = (LinkTypes.parent, LinkTypes.adoptive_parent)
+    parent_link_types = (LinkTypes.parent, LinkTypes.adoptive_parent,
+                         LinkTypes.foster_parent)
 
     @classmethod
     def check_autocreate(cls, parent, child):
         """Check whether there is a human link of type "parent" between the
-        given persons. Create one if not.
+        given persons. Create one if not. If the child has already
+        another parent of same sex, then it becomes a foster child,
+        otherwise a natural child.
 
         This is called from
         :class:`lino_welfare.modlib.households.models.Member` to
@@ -102,7 +105,14 @@ class Link(dd.Model):
         qs = cls.objects.filter(
             parent=parent, child=child, type__in=cls.parent_link_types)
         if qs.count() == 0:
-            obj = cls(parent=parent, child=child, type=LinkTypes.parent)
+            qs = cls.objects.filter(
+                child=child, type__in=cls.parent_link_types)
+            qs = qs.exclude(parent__gender=parent.gender)
+            if qs.count() == 0:
+                auto_type = LinkTypes.parent
+            else:
+                auto_type = LinkTypes.foster_parent
+            obj = cls(parent=parent, child=child, type=auto_type)
             obj.full_clean()
             obj.save()
             # dd.logger.info("20141018 autocreated %s", obj)
@@ -116,8 +126,8 @@ class Links(dd.Table):
     stay_in_grid = True
     detail_layout = dd.DetailLayout("""
     parent
-    child
     type
+    child
     """, window_size=(40, 'auto'))
 
 
