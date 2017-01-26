@@ -468,6 +468,7 @@ application.  Default value is 'contacts.Person' (referring to
 lino_xl.lib.contacts.models.Person)."""),
     'lino_xl.lib.households.Plugin.adult_age' : _("""The age (in years) a person needs to have in order to be considered
 adult."""),
+    'lino_xl.lib.households.choicelists.MemberDependencies' : _("""The list of allowed choices for the charge of a household member."""),
     'lino_xl.lib.households.choicelists.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
     'lino_xl.lib.households.models.Type' : _("""Type of a household.
 http://www.belgium.be/fr/famille/couple/cohabitation/"""),

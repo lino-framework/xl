@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-01-25 23:53+0200\n"
-"PO-Revision-Date: 2017-01-25 23:58+0200\n"
+"PO-Revision-Date: 2017-01-26 06:08+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -2972,7 +2972,7 @@ msgstr "Partiellement à charge"
 
 #: lino_xl/lib/households/choicelists.py:32
 msgid "Household member roles"
-msgstr "Roles de membres de ménage"
+msgstr "Rôles de membres de ménage"
 
 #: lino_xl/lib/households/choicelists.py:35 lino_xl/lib/households/models.py:526
 msgid "Head of household"
@@ -3119,7 +3119,7 @@ msgstr "Types de parenté"
 
 #: lino_xl/lib/humanlinks/choicelists.py:81
 msgid "Parency types"
-msgstr "Type de parenté"
+msgstr "Types de parenté"
 
 #: lino_xl/lib/humanlinks/choicelists.py:87
 msgid "Son"
@@ -3241,10 +3241,9 @@ msgstr "Sœur"
 
 #: lino_xl/lib/humanlinks/choicelists.py:134
 #: lino_xl/lib/humanlinks/choicelists.py:135
-#, fuzzy
 msgctxt "male"
 msgid "Cousin"
-msgstr "Comptabilité"
+msgstr "Cousin"
 
 #: lino_xl/lib/humanlinks/choicelists.py:134
 #: lino_xl/lib/humanlinks/choicelists.py:135
@@ -3262,7 +3261,7 @@ msgstr "Tante"
 
 #: lino_xl/lib/humanlinks/choicelists.py:141
 msgid "Nephew"
-msgstr ""
+msgstr "Neveu"
 
 #: lino_xl/lib/humanlinks/choicelists.py:141
 msgid "Niece"
@@ -3294,19 +3293,19 @@ msgstr "Autre"
 
 #: lino_xl/lib/humanlinks/models.py:48
 msgid "Personal Link"
-msgstr ""
+msgstr "Lien de parenté"
 
 #: lino_xl/lib/humanlinks/models.py:49
 msgid "Personal Links"
-msgstr ""
+msgstr "Liens de parenté"
 
 #: lino_xl/lib/humanlinks/models.py:54
 msgid "Who is..."
-msgstr ""
+msgstr "Qui est..."
 
 #: lino_xl/lib/humanlinks/models.py:59
 msgid "To whom..."
-msgstr ""
+msgstr "de qui"
 
 #: lino_xl/lib/humanlinks/models.py:75
 #, python-format
