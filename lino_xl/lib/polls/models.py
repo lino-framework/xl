@@ -685,17 +685,21 @@ class AnswersByResponse(dd.VirtualTable):
         elems = []
         pv = dict(question=obj.question)
 
-        ba = Responses.actions.toggle_choice
-        if ba is None:
-            raise Exception("No toggle_choice on {0}?".format(ar.actor))
-        sar = ba.request_from(ar)
+        # ia = obj.response.toggle_choice
+        sar = obj.response.toggle_choice.request_from(ar)
+        if False:  # since 20170129
+            ba = Responses.actions.toggle_choice
+            if ba is None:
+                raise Exception("No toggle_choice on {0}?".format(ar.actor))
+            sar = ba.request_from(ar)
 
-        # print("20150203 answer_buttons({0})".format(sar))
+            # print("20150203 answer_buttons({0})".format(sar))
 
-        # if the response is registered, just display the choice, no
-        # toggle buttons since answer cannot be toggled:
-        # 20151211
-        sar.selected_rows = [obj.response]
+            # if the response is registered, just display the choice, no
+            # toggle buttons since answer cannot be toggled:
+            # 20151211
+            sar.selected_rows = [obj.response]
+            
         if not sar.get_permission():
             return str(obj)
 

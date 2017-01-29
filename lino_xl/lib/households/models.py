@@ -599,6 +599,7 @@ class MembersByPerson(Members):
             for t in Type.objects.all():
                 apv = dict(type=t, head=obj)
                 sar = ar.spawn(ba,  # master_instance=obj,
+                               selected_rows=[obj],
                                action_param_values=apv)
                 buttons.append(ar.href_to_request(sar, unicode(t)))
             elems += join_elems(buttons, sep=' / ')
