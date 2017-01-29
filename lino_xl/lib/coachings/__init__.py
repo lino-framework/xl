@@ -2,10 +2,10 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
+"""Adds the concept of coachings.
 
-The :mod:`lino_welfare.modlib.pcsw` package provides data definitions
-for PCSW specific objects.
+A **coaching** is when a given person (a client) is being coached by a
+given user during a given period.
 
 .. autosummary::
    :toctree:
@@ -17,7 +17,6 @@ for PCSW specific objects.
     desktop
     fixtures
     utils
-
 
 """
 

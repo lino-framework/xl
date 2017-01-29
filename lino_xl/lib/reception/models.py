@@ -170,7 +170,6 @@ class CheckinVisitor(NotifyingAction):
 
     def get_notify_subject(self, ar, obj):
         return _("%(partner)s has started waiting for %(user)s") % dict(
-            event=obj,
             user=obj.event.user,
             partner=obj.partner)
 
