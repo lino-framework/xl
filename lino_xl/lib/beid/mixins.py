@@ -98,6 +98,11 @@ class BeIdCardHolder(dd.Model):
         # ~ ,validators=[ssin.ssin_validator] # 20121108
     )
 
+    birth_country = dd.ForeignKey(
+        "countries.Country",
+        blank=True, null=True,
+        verbose_name=_("Birth country"), related_name='by_birth_place')
+
     birth_place = models.CharField(_("Birth place"),
                                    max_length=200,
                                    blank=True,
