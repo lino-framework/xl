@@ -89,8 +89,6 @@ class BaseBeIdReadCardAction(dd.Action):
         stored in the card holder.
 
         """
-        countries = dd.resolve_app('countries', strict=True)
-
         kw = dict()
         raw_data = data['card_data']
         if not '\n' in raw_data:
@@ -147,10 +145,10 @@ class BaseBeIdReadCardAction(dd.Action):
 
         msg1 = "BeIdReadCardToClientAction %s" % kw.get('national_id')
 
-        country = countries.Country.objects.get(isocode=pk)
+        country = rt.models.countries.Country.objects.get(isocode=pk)
         kw.update(country=country)
         if data.municipality:
-            kw.update(city=countries.Place.lookup_or_create(
+            kw.update(city=rt.models.countries.Place.lookup_or_create(
                 'name', data.municipality, country=country))
 
         def sex2gender(sex):
@@ -183,14 +181,15 @@ class BaseBeIdReadCardAction(dd.Action):
         `obj` using the data read from the eid card (given in `attr`).
 
         """
-        oldobj = obj
-        watcher = ChangeWatcher(obj)
         objects, diffs = obj.get_beid_diffs(attrs)
 
         if len(diffs) == 0:
             return self.goto_client_response(
                 ar, obj, _("Client %s is up-to-date") % unicode(obj))
 
+        oldobj = obj
+        watcher = ChangeWatcher(obj)
+        
         msg = _("Click OK to apply the following changes for %s") % obj
         msg = simulate_wrap(msg)
         msg += ' :<br/>'
@@ -274,8 +273,8 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
             # (automatically) create a new Client from eid card.
 
             #~ fkw.update(national_id__isnull=True)
-            contacts = rt.modules.contacts
-            pqs = contacts.Person.objects.filter(**fkw)
+            Person = rt.models.contacts.Person
+            pqs = Person.objects.filter(**fkw)
             if pqs.count() == 0:
                 def yes(ar2):
                     obj = holder_model(**attrs)

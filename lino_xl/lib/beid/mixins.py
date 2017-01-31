@@ -98,6 +98,16 @@ class BeIdCardHolder(dd.Model):
         # ~ ,validators=[ssin.ssin_validator] # 20121108
     )
 
+    birth_country = dd.ForeignKey(
+        "countries.Country",
+        blank=True, null=True,
+        verbose_name=_("Birth country"), related_name='by_birth_place')
+
+    birth_place = models.CharField(_("Birth place"),
+                                   max_length=200,
+                                   blank=True,
+                                   #~ null=True
+                                   )
     nationality = dd.ForeignKey('countries.Country',
                                 blank=True, null=True,
                                 related_name='by_nationality',
@@ -193,7 +203,7 @@ class BeIdCardHolder(dd.Model):
             attrs.update(class_="lino-info-red")
         return E.div(*elems, **attrs)
 
-    def get_beid_diffs(obj, attrs):
+    def get_beid_diffs(self, attrs):
         """Return two lists, one with the objects to save, and another with
         text lines to build a confirmation message explaining which
         changes are going to be applied after confirmation.
@@ -203,20 +213,18 @@ class BeIdCardHolder(dd.Model):
         within the same database row.
 
         """
-        raise Exception("not tested")
         diffs = []
-        objects = []
-        # model = holder_model()
-        model = obj.__class__  # the holder
+        objects = [self]
+        model = self.__class__  # the holder
         for fldname, new in attrs.items():
             fld = get_field(model, fldname)
-            old = getattr(obj, fldname)
+            old = getattr(self, fldname)
             if old != new:
                 diffs.append(
                     "%s : %s -> %s" % (
                         unicode(fld.verbose_name), dd.obj2str(old),
                         dd.obj2str(new)))
-                setattr(obj, fld.name, new)
+                setattr(self, fld.name, new)
         return objects, diffs
 
     @dd.htmlbox()
