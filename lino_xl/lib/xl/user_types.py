@@ -1,4 +1,4 @@
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -8,15 +8,17 @@ See also :attr:`lino.core.site.Site.user_types_module`.
 
 """
 
-from lino.core.roles import UserRole, SiteAdmin
+from lino.core.roles import UserRole
 from lino.modlib.office.roles import OfficeStaff, OfficeUser
+from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
+from lino_xl.lib.polls.roles import PollsUser, PollsAdmin
 
 
-class SiteUser(OfficeUser):
+class SiteUser(OfficeUser, ContactsUser, PollsUser):
     pass
 
 
-class SiteAdmin(SiteAdmin, OfficeStaff):
+class SiteAdmin(PollsAdmin, OfficeStaff, ContactsStaff):
     pass
 
 

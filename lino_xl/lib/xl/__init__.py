@@ -1,4 +1,4 @@
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -9,7 +9,7 @@ but a :xfile:`locale` directory with translation messages for Django.
 .. autosummary::
    :toctree:
 
-    roles
+    user_types
     mixins
 
 """
