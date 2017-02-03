@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -26,7 +26,7 @@ from lino.core import constants
 
 from lino.modlib.office.roles import OfficeUser
 
-from ..cal.models import Subscription, Calendars, Events
+from lino_xl.lib.cal.models import Calendars, Events
 
 
 def parsedate(s):
@@ -118,12 +118,12 @@ class PanelCalendars(Calendars):
     @classmethod
     def get_request_queryset(self, ar):
         qs = super(PanelCalendars, self).get_request_queryset(ar)
-        subs = Subscription.objects.filter(
+        subs = rt.models.cal.Subscription.objects.filter(
             user=ar.get_user()).values_list('calendar__id', flat=True)
         return qs.filter(id__in=subs)
 
         #~ return qs.filter(user=ar.get_user())
-        #~ for sub in Subscription.objects.filter(user=ar.get_user()):
+        #~ for sub in rt.models.cal.Subscription.objects.filter(user=ar.get_user()):
             #~ qs = sub.add_events_filter(qs,ar)
         #~ return qs
         #~ return user_calendars(qs,ar.get_user())

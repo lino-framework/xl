@@ -28,7 +28,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
     verbose_name = _("Coachings")
 
-    needs_plugins = ['lino_xl.lib.contacts']
+    needs_plugins = ['lino_xl.lib.contacts', 'lino_xl.lib.extensible']
     
     client_model = 'contacts.Person'
 

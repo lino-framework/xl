@@ -235,8 +235,7 @@ period."""),
     'lino_xl.lib.coachings.choicelists.ClientModified' : _("""The choice for ClientEvents which selects clients whose
 main record has been modified during the observed period."""),
     'lino_xl.lib.coachings.desktop.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
-    'lino_xl.lib.coachings.mixins.unused_ClientRelated' : _("""Base class for things that are related to one and only one client."""),
-    'lino_xl.lib.coachings.mixins.unused_ClientRelated.client' : _("""Pointer to the client."""),
+    'lino_xl.lib.coachings.mixins.Coachable' : _("""Base class for coachable client."""),
     'lino_xl.lib.coachings.mixins.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
     'lino_xl.lib.coachings.models.CoachingType' : _("""Whether coachings of this type are to be considered as
 integration work. This is used when generating calendar events
