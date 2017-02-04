@@ -323,15 +323,32 @@ class ClientContact(ClientContactBase):
 dd.update_field(ClientContact, 'contact_person',
                 verbose_name=_("Contact person"))
 
-contacts = dd.resolve_app('contacts')
+
+dd.inject_field(
+    'users.User', 'coaching_type',
+    dd.ForeignKey(
+        'coachings.CoachingType',
+        blank=True, null=True,
+        help_text=_(
+            "The coaching type used for new coachings with this user.")))
+
+dd.inject_field(
+    'users.User', 'coaching_supervisor',
+    models.BooleanField(
+        _("Coaching supervisor"),
+        default=False,
+        help_text=_("Notify me when a coach has been assigned")))
 
 dd.inject_field(
     'contacts.Partner', 'client_contact_type',
     dd.ForeignKey(
         'coachings.ClientContactType', blank=True, null=True))
 
+# contacts = dd.resolve_app('contacts')
 
-class PartnersByClientContactType(contacts.Partners):
+from lino_xl.lib.contacts.models import Partners
+
+class PartnersByClientContactType(Partners):
     master_key = 'client_contact_type'
     column_names = "name address_column phone gsm email *"
     auto_fit_column_widths = True

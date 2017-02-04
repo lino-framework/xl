@@ -36,6 +36,10 @@ class Rooms(dd.Table):
     id name
     cal.EventsByRoom
     """
+    insert_layout = """
+    id
+    name
+    """
 
 
 class Priorities(dd.Table):
@@ -574,16 +578,6 @@ class EventDetail(dd.DetailLayout):
     """
 
 
-class EventInsert(dd.InsertLayout):
-    start = "start_date start_time"
-    end = "end_date end_time"
-    main = """
-    event_type summary
-    start end
-    room priority access_class transparent
-    """
-
-
 class EventEvents(dd.ChoiceList):
     verbose_name = _("Observed event")
     verbose_name_plural = _("Observed events")
@@ -624,7 +618,11 @@ class Events(dd.Table):
     order_by = ["start_date", "start_time", "id"]
 
     detail_layout = EventDetail()
-    insert_layout = EventInsert()
+    insert_layout = """
+    start_date start_time end_date end_time
+    summary
+    # room priority access_class transparent
+    """
 
     params_panel_hidden = True
 
@@ -868,6 +866,7 @@ if settings.SITE.project_model:
         required_roles = dd.required(OfficeUser)
         master_key = 'project'
         auto_fit_column_widths = True
+        stay_in_grid = True
         column_names = 'when_html user summary workflow_buttons'
         # column_names = 'when_text user summary workflow_buttons'
 
