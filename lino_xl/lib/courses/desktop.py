@@ -536,9 +536,9 @@ class EnrolmentsByPupil(Enrolments):
     auto_fit_column_widths = True
 
     insert_layout = """
-    course_area
+    # course_area
     course
-    places option
+    # places option
     remark
     request_date user
     """

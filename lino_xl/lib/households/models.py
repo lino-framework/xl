@@ -207,7 +207,7 @@ class HouseholdDetail(dd.DetailLayout):
 
     address_box = "box3 box4"
 
-    bottom_box = "remarks households.MembersByHousehold"
+    bottom_box = "#remarks households.MembersByHousehold"
 
 
 class Households(contacts.Partners):

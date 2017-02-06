@@ -455,9 +455,11 @@ class Course(Reservation, Duplicable):
         PeriodEvents = rt.modules.system.PeriodEvents
         qs = Enrolment.objects.filter(course=self, **flt)
         # see voga.projects.roger.tests.test_max_places
-        # rng = DatePeriodValue(today or dd.today(), None)
-        # qs = PeriodEvents.active.add_filter(qs, rng)
-        qs = PeriodEvents.active.add_filter(qs, today or dd.today())
+        if today is None:
+            rng = DatePeriodValue(dd.today(), None)
+            qs = PeriodEvents.active.add_filter(qs, rng)
+        else:
+            qs = PeriodEvents.active.add_filter(qs, today)
         # logger.info("20160502 %s", qs.query)
         res = qs.aggregate(models.Sum('places'))
         # logger.info("20140819 %s", res)
