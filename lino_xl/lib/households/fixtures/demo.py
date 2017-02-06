@@ -31,14 +31,15 @@ def objects():
 
     men = Person.objects.filter(gender=dd.Genders.male).order_by('-id')
     women = Person.objects.filter(gender=dd.Genders.female).order_by('-id')
-    # avoid interference with persons created by humanlinks demo
-    # because these have already their households:
-    men = men.filter(household_members__isnull=True)
-    men = men.filter(humanlinks_children__isnull=True)
-    men = men.filter(humanlinks_parents__isnull=True)
-    women = women.filter(humanlinks_children__isnull=True)
-    women = women.filter(humanlinks_parents__isnull=True)
-    women = women.filter(household_members__isnull=True)
+    if dd.is_installed('humanlinks'):
+        # avoid interference with persons created by humanlinks demo
+        # because these have already their households:
+        men = men.filter(household_members__isnull=True)
+        men = men.filter(humanlinks_children__isnull=True)
+        men = men.filter(humanlinks_parents__isnull=True)
+        women = women.filter(humanlinks_children__isnull=True)
+        women = women.filter(humanlinks_parents__isnull=True)
+        women = women.filter(household_members__isnull=True)
     
     MEN = Cycler(men)
     WOMEN = Cycler(women)
