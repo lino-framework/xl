@@ -97,7 +97,6 @@ Experimental and not much used
     concepts
     eid_jslib
     thirds
-    workflows
     events
     families
     properties
