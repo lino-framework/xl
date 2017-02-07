@@ -1,4 +1,4 @@
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -12,6 +12,7 @@
     utils
     models
     choicelists
+    actions
     ui
     workflows
     fixtures.std

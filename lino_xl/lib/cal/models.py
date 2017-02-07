@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -41,7 +41,9 @@ from .mixins import Component
 from .mixins import EventGenerator, RecurrenceSet, Reservation
 from .mixins import Ended
 from .mixins import MoveEventNext, UpdateEvents, UpdateEventsByEvent
-from .ui import *
+from .actions import ShowEventsByDay
+
+from .ui import ConflictingEvents
 
 DEMO_START_YEAR = 2013
 
@@ -513,6 +515,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     update_guests = UpdateGuests()
     update_events = UpdateEventsByEvent()
+    show_today = ShowEventsByDay('start_date')
 
     event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
 
@@ -541,15 +544,17 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
             return d
 
     def __str__(self):
-        if self.pk:
+        if self.summary:
+            s = self.summary
+        elif self.event_type:
+            s = str(self.event_type)
+        elif self.pk:
             s = self._meta.verbose_name + " #" + str(self.pk)
         else:
             s = _("Unsaved %s") % self._meta.verbose_name
-        if self.summary:
-            s += " " + self.summary
         when = self.strftime()
         if when:
-            s += " (%s)" % when
+            s = "{} ({})".format(s, when)
         return s
 
     def has_conflicting_events(self):
@@ -1101,7 +1106,6 @@ events after the given date.""")
 
 
 Reservation.show_today = ShowEventsByDay('start_date')
-Event.show_today = ShowEventsByDay('start_date')
 
 if False:  # removed 20160610 because it is probably not used
 
@@ -1135,3 +1139,4 @@ if False:  # removed 20160610 because it is probably not used
 
 
 from .ui import *
+
