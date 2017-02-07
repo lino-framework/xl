@@ -67,7 +67,8 @@ class AddressOwner(dd.Model):
         self.save()
 
     def get_overview_elems(self, ar):
-        elems = super(AddressOwner, self).get_overview_elems(ar)
+        # elems = super(AddressOwner, self).get_overview_elems(ar)
+        elems = []
         sar = ar.spawn('addresses.AddressesByPartner',
                        master_instance=self)
         # btn = sar.as_button(_("Manage addresses"), icon_name="wrench")
