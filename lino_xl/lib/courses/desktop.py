@@ -33,12 +33,13 @@ from lino import mixins
 
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
+from lino.utils.mti import get_child
 
 from lino.modlib.system.choicelists import PeriodEvents
 
 from .choicelists import EnrolmentStates, CourseStates, CourseAreas
 
-from .roles import CoursesUser
+from .roles import CoursesUser, CoursesTeacher
 
 cal = dd.resolve_app('cal')
 
@@ -156,7 +157,7 @@ class Activities(dd.Table):
     """Base table for all activities.
     """
     _course_area = None
-    required_roles = dd.required(CoursesUser)
+    required_roles = dd.required((CoursesUser, CoursesTeacher))
     model = 'courses.Course'
     detail_layout = CourseDetail()
     insert_layout = """
@@ -268,6 +269,26 @@ class CoursesByTeacher(Activities):
     master_key = "teacher"
     column_names = "start_date start_time end_time line room *"
     order_by = ['-start_date']
+
+
+class MyCoursesGiven(Activities):
+    """Show the courses given by me (i.e. where I am the teacher).
+
+    This requires the :attr:`partner` field in my user settings to
+    point to me as a teacher.
+
+    """
+    label = _("My courses given")
+    required_roles = dd.login_required(CoursesTeacher)
+    master_key = "teacher"
+    column_names = "overview weekdays_text times_text room workflow_buttons *"
+
+    @classmethod
+    def setup_request(self, ar):
+        u = ar.get_user()
+        ar.master_instance = get_child(u.partner, teacher_model)
+        super(MyCoursesGiven, self).setup_request(ar)
+    
 
 
 class CoursesByLine(Activities):
@@ -552,7 +573,8 @@ class EnrolmentsByPupil(Enrolments):
 
 class EnrolmentsByCourse(Enrolments):
     params_panel_hidden = True
-    required_roles = dd.required(CoursesUser)
+    required_roles = dd.required((CoursesUser, CoursesTeacher))
+    # required_roles = dd.required(CoursesUser)
     master_key = "course"
     column_names = 'request_date pupil places option ' \
                    'remark workflow_buttons *'

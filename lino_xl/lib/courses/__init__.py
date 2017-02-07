@@ -69,6 +69,7 @@ class Plugin(ad.Plugin):
         m.add_action('courses.Lines')
         m.add_action('courses.PendingRequestedEnrolments')
         m.add_action('courses.PendingConfirmedEnrolments')
+        m.add_action('courses.MyCoursesGiven')
 
     def setup_config_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
@@ -82,3 +83,7 @@ class Plugin(ad.Plugin):
         m.add_action('courses.EnrolmentStates')
         # m.add_action('courses.CourseAreas')
 
+    def get_dashboard_items(self, user):
+        for x in super(Plugin, self).get_dashboard_items(user):
+            yield x
+        yield self.site.actors.courses.MyCoursesGiven
