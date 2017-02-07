@@ -809,27 +809,6 @@ class EventsByDay(Events):
         return ar.href_to_request(target, txt)
 
 
-class ShowEventsByDay(dd.Action):
-    label = _("Today")
-    help_text = _("Show all calendar events of the same day.")
-    show_in_bbar = True
-    sort_index = 60
-    icon_name = 'calendar'
-
-    def __init__(self, date_field, **kw):
-        self.date_field = date_field
-        super(ShowEventsByDay, self).__init__(**kw)
-
-    def run_from_ui(self, ar, **kw):
-        obj = ar.selected_rows[0]
-        today = getattr(obj, self.date_field)
-        pv = dict(start_date=today)
-        pv.update(end_date=today)
-        sar = ar.spawn(EventsByDay, param_values=pv)
-        js = ar.renderer.request_handler(sar)
-        ar.set_response(eval_js=js)
-
-
 # class EventsByType(Events):
     # master_key = 'type'
 
@@ -888,7 +867,7 @@ class MyEvents(Events):
     label = _("My appointments")
     help_text = _("Table of my appointments.")
     required_roles = dd.login_required(OfficeUser)
-    column_names = 'when_text project event_type summary workflow_buttons *'
+    column_names = 'overview project #event_type #summary workflow_buttons *'
     auto_fit_column_widths = True
 
     @classmethod
