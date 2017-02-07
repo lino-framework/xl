@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -23,7 +23,7 @@ from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
-from lino.modlib.office.roles import OfficeStaff, OfficeUser
+from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from lino_xl.lib.appypod.mixins import PrintLabelsAction
 
 from lino.api import dd
@@ -45,7 +45,7 @@ class ListType(mixins.BabelNamed):
 
 
 class ListTypes(dd.Table):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.required(ContactsStaff)
     model = 'lists.ListType'
     column_names = 'name *'
 
@@ -65,7 +65,7 @@ class List(mixins.BabelNamed, mixins.Referrable):
 
 
 class Lists(dd.Table):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.required(ContactsUser)
     model = 'lists.List'
     column_names = 'ref name list_type *'
     order_by = ['ref']
@@ -100,7 +100,7 @@ class Member(mixins.Sequenced):
 
 
 class Members(dd.Table):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.required(ContactsUser)
     model = 'lists.Member'
 
 
@@ -118,6 +118,6 @@ class MembersByPartner(Members):
 
 
 class AllMembers(Members):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.required(ContactsStaff)
 
 

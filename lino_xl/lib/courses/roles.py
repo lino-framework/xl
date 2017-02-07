@@ -9,6 +9,6 @@ from lino.core.roles import SiteUser
 class CoursesTeacher(SiteUser):
     pass
 
-class CoursesUser(CoursesTeacher):
+class CoursesUser(SiteUser):
     pass
 
