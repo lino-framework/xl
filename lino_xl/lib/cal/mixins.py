@@ -181,6 +181,15 @@ class EventGenerator(UserAuthored):
     def update_cal_room(self, i):
         return None
 
+    def gen_event_user(self):
+        """Returns the user who is responsible for generated events.
+
+        In :mod.`lino_avanti` this is not the course manager (author)
+        but the teacher.
+
+        """
+        return self.user
+
     def update_cal_summary(self, i):
         raise NotImplementedError()
         #~ return _("Evaluation %d") % i
@@ -247,21 +256,20 @@ class EventGenerator(UserAuthored):
         pass
 
     def before_auto_event_save(self, obj):
-        """
-        Called for automatically generated events after their automatic
-        fields have been set and before the event is saved.
-        This allows for application-specific "additional-automatic" fields.
-        E.g. the room field in `lino.modlib.courses`.
+        """Called for automatically generated events after their automatic
+        fields have been set and before the event is saved.  This
+        allows for additional application-specific automatic fields.
 
-        **Automatic event fields**:
+        E.g. the :attr:`room` field in :mod:`lino_xl.lib.courses`.
+
         :class:`EventGenerator`
-        by default manages the following fields:
+        by default manages the following **automatic event fields**:
 
-        - auto_type
-        - user
-        - summary
-        - start_date, start_time
-        - end_date, end_time
+        - :attr:`auto_type``
+        - :attr:`user`
+        - :attr:`summary`
+        - :attr:`start_date`, :attr:`start_time`
+        - :attr:`end_date`, :attr:`end_time`
 
         """
         pass
@@ -368,6 +376,7 @@ class EventGenerator(UserAuthored):
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
         ignore_before = dd.plugins.cal.ignore_dates_before
+        user = self.gen_event_user()
         with translation.override(self.get_events_language()):
             while max_events is None or event_no < max_events:
                 if date > until:
@@ -377,7 +386,7 @@ class EventGenerator(UserAuthored):
                 if ignore_before is None or date >= ignore_before:
                     we = Event(
                         auto_type=event_no,
-                        user=self.user,
+                        user=user,
                         start_date=date,
                         summary=self.update_cal_summary(event_no),
                         room=self.update_cal_room(event_no),
