@@ -47,10 +47,10 @@ class AddressOwner(dd.Model):
         except Address.DoesNotExist:
             pass
 
-    def sync_primary_address(self, request):
+    def sync_primary_address(self, ar):
         watcher = ChangeWatcher(self)
         self.sync_primary_address_()
-        watcher.send_update(request)
+        watcher.send_update(ar)
 
     def sync_primary_address_(self):
         Address = rt.modules.addresses.Address
