@@ -142,7 +142,6 @@ lino_xl.lib.statbel.countries
 lino_xl.lib.statbel.countries.fixtures
 lino_xl.lib.thirds
 lino_xl.lib.topics
-lino_xl.lib.workflows
 lino_xl.lib.xl
 """.splitlines() if n])
 

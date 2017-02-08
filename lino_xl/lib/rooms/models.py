@@ -93,10 +93,11 @@ class Booking(ContactRelated, Reservation):
         return "%s %s" % (dd.babelattr(self.event_type, 'event_label'), i)
 
     def before_auto_event_save(self, event):
-        """
-        Sets room and start_time for automatic events.
-        This is a usage example for :meth:`EventGenerator.before_auto_event_save 
+        """Sets room and start_time for automatic events.
+
+        See also :meth:`EventGenerator.before_auto_event_save
         <lino_xl.lib.cal.models.EventGenerator.before_auto_event_save>`.
+
         """
         #~ logger.info("20131008 before_auto_event_save")
         assert not settings.SITE.loading_from_dump
