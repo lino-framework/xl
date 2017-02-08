@@ -201,7 +201,7 @@ class BaseBeIdReadCardAction(dd.Action):
                 for o in objects:
                     o.full_clean()
                     o.save()
-                watcher.send_update(ar2.request)
+                watcher.send_update(ar2)
             msg = simulate_wrap(msg)
             return self.goto_client_response(ar2, obj, msg)
 
