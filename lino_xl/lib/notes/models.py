@@ -24,6 +24,7 @@ from django.conf import settings
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import My, UserAuthored
+from lino.modlib.notify.mixins import ChangeObservable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
@@ -117,6 +118,7 @@ class Note(TypedPrintable,
            Controllable,
            ContactRelated,
            mixins.ProjectRelated,
+           ChangeObservable,
            Mailable):
     """A **note** is a dated and timed document written by its author (a
     user). For example a report of a meeting or a phone call, or just
@@ -176,6 +178,15 @@ class Note(TypedPrintable,
 
     def get_print_language(self):
         return self.language
+
+    def get_change_observers(self):
+        # in lino_welfare the project is pcsw.Client
+        prj = self.project
+        if isinstance(prj, ChangeObservable):
+            for u in prj.get_change_observers():
+                yield u
+
+    
 
 if dd.is_installed('contacts'):
     
