@@ -28,6 +28,12 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ['lino.modlib.notify']
 
+    def post_site_startup(self, site):
+        super(Plugin, self).post_site_startup(site)
+        site.kernel.memo_parser.register_django_model(
+            'note', site.models.notes.Note,
+            title=lambda obj: obj.subject)
+    
     def setup_main_menu(config, site, profile, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)

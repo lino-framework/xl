@@ -12,6 +12,7 @@ Database models for `lino_xl.lib.notes`.
 import logging
 logger = logging.getLogger(__name__)
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy
@@ -19,8 +20,8 @@ from django.utils import timezone
 
 from lino.api import dd, rt
 from lino import mixins
-from django.conf import settings
 
+from lino.utils.xmlgen.html import E
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import My, UserAuthored
@@ -186,6 +187,11 @@ class Note(TypedPrintable,
             for u in prj.get_change_observers():
                 yield u
 
+    def get_change_info(self, ar, cw):
+        yield E.p(
+            _("Subject"), ': ', self.subject,
+            E.br(), _("Client"), ': ', ar.obj2memo(self.project))
+        
     
 
 if dd.is_installed('contacts'):
@@ -277,3 +283,5 @@ dd.inject_field(
         help_text=_("""\
 Note Type used by system notes.
 If this is empty, then system notes won't create any entry to the Notes table.""")))
+
+
