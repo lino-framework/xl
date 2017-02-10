@@ -287,7 +287,7 @@ class ExcerptTypes(dd.Table):
     Displays all rows of :class:`ExcerptType`.
     """
     model = 'excerpts.ExcerptType'
-    required_roles = dd.required(ExcerptsStaff)
+    required_roles = dd.login_required(ExcerptsStaff)
     column_names = ("content_type_display primary certifying name "
                     "build_method  template body_template *")
     order_by = ["content_type__app_label", "content_type__model", "name"]
@@ -695,7 +695,7 @@ if has_davlink:
         config = dd.Panel(
             "body_template_content",
             label=_("Configure"),
-            required_roles=dd.required(SiteAdmin))
+            required_roles=dd.login_required(SiteAdmin))
 
 else:
 
@@ -722,7 +722,7 @@ class Excerpts(dd.Table):
     """Base class for all tables on :class:`Excerpt`."""
     # label = _("Excerpts history")
     icon_name = 'script'
-    required_roles = dd.required((ExcerptsUser, OfficeOperator))
+    required_roles = dd.login_required((ExcerptsUser, OfficeOperator))
 
     model = 'excerpts.Excerpt'
     detail_layout = ExcerptDetail()
@@ -771,7 +771,7 @@ class Excerpts(dd.Table):
 
 
 class AllExcerpts(Excerpts):
-    required_roles = dd.required(ExcerptsStaff)
+    required_roles = dd.login_required(ExcerptsStaff)
     column_names = ("id excerpt_type owner project "
                     "company language build_time *")
 

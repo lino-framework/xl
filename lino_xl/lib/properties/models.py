@@ -280,7 +280,7 @@ class PropertyOccurence(dd.Model):
 
 
 class PropGroups(dd.Table):
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     model = PropGroup
     detail_layout = """
     id name 
@@ -289,7 +289,7 @@ class PropGroups(dd.Table):
 
 
 class PropTypes(dd.Table):
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     model = PropType
     detail_layout = """
     id name choicelist default_value
@@ -299,7 +299,7 @@ class PropTypes(dd.Table):
 
 
 class Properties(dd.Table):
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     model = Property
     order_by = ['name']
     #~ column_names = "id name"

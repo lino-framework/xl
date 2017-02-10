@@ -59,7 +59,7 @@ class BaseBeIdReadCardAction(dd.Action):
 
     """
     label = _("Read eID card")
-    required_roles = dd.required(BeIdUser)
+    required_roles = dd.login_required(BeIdUser)
     preprocessor = 'Lino.beid_read_card_processor'
     http_method = 'POST'
     sorry_msg = _("Sorry, I cannot handle that case: %s")

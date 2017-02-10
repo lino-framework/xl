@@ -101,13 +101,13 @@ class LanguageKnowledges(dd.Table):
     stay_in_grid = True
 
 class AllLanguageKnowledges(LanguageKnowledges):
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
 
 class LanguageKnowledgesByPerson(LanguageKnowledges):
     """Shows the languages known by this person."""
     master_key = 'person'
     column_names = "language native spoken written cef_level"
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
     slave_grid_format = "summary"
     detail_layout = dd.DetailLayout("""
@@ -162,7 +162,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
 class KnowledgesByLanguage(LanguageKnowledges):
     master_key = 'language'
     column_names = "person native spoken written cef_level"
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
 
 
 #
@@ -212,7 +212,7 @@ class EducationLevels(dd.Table):
     """The default table showing all :class:`EducationLevel` instances.
     """
 
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.EducationLevel'
     column_names = 'name is_study is_training *'
     order_by = ['name']
@@ -255,7 +255,7 @@ class StudyType(StudyOrTraining, mixins.BabelNamed):
 class StudyTypes(dd.Table):
     """The default table showing all :class:`StudyType` instances.
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = StudyType
     order_by = ["name"]
     detail_layout = """
@@ -359,22 +359,22 @@ class AllTrainings(Trainings):
     """The explorer table showing all :class:`Trainings` instances.
 
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
 
 
 class TrainingsByCountry(Trainings):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'country'
 
 
 class TrainingsByType(Trainings):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'type'
 
 
 class TrainingsByPerson(HistoryByPerson, Trainings):
     """Show the trainings of a given person."""
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     column_names = 'type sector function remarks start_date end_date \
     school country state certificates *'
     auto_fit_column_widths = True
@@ -416,7 +416,7 @@ class Studies(PeriodTable):
     """The default table showing all :class:`Study` instances.
     """
 
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.Study'
     order_by = "country city type content".split()
     column_names = "person start_date end_date type content education_level state *"
@@ -430,12 +430,12 @@ class Studies(PeriodTable):
 
 
 class StudiesByCountry(Studies):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'country'
 
 
 class StudiesByLevel(Studies):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'education_level'
 
 
@@ -444,21 +444,21 @@ class StudiesByPlace(Studies):
     Lists all Studies in a given Place.
     Used as slave grid in Places detail.
     """
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'city'
     column_names = 'school type person content start_date end_date \
     state language remarks *'
 
 
 class StudiesByType(Studies):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'type'
     column_names = 'school person content start_date end_date \
     state language remarks *'
 
 
 class StudiesByPerson(HistoryByPerson, Studies):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     column_names = 'type content start_date end_date school country \
     state education_level *'
     auto_fit_column_widths = True
@@ -483,7 +483,7 @@ class Status(mixins.BabelNamed):
 class Statuses(dd.Table):
     """The default table showing all :class:`Status` instances.
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.Status'
     order_by = ['name']
 
@@ -504,7 +504,7 @@ class Regime(mixins.BabelNamed):
 class Regimes(dd.Table):
     """The default table showing all :class:`Regime` instances.
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.Regime'
     order_by = ['name']
     detail_layout = """
@@ -523,7 +523,7 @@ class Duration(mixins.BabelNamed):
 class Durations(dd.Table):
     """The default table showing all :class:`Duration` instances.
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.Duration'
     order_by = ['name']
     detail_layout = """
@@ -547,7 +547,7 @@ class Sector(mixins.BabelNamed):
 class Sectors(dd.Table):
     """The default table showing all :class:`Sector` instances.
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = Sector
     order_by = ['name']
     detail_layout = """
@@ -579,7 +579,7 @@ class Functions(dd.Table):
     """The default table showing all :class:`Function` instances.
     """
     #~ debug_permissions = 20130704
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.Function'
     column_names = 'name sector *'
     order_by = ['name']
@@ -629,7 +629,7 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
 class Experiences(PeriodTable):
     """The default table showing all :class:`Experience` instances.
     """
-    required_roles = dd.required(CareerStaff)
+    required_roles = dd.login_required(CareerStaff)
     model = 'cv.Experience'
     # stay_in_grid = True
     column_names = "person start_date end_date sector function title company *"
@@ -643,19 +643,19 @@ class Experiences(PeriodTable):
 
 
 class ExperiencesBySector(Experiences):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'sector'
     order_by = ["start_date"]
 
 
 class ExperiencesByFunction(Experiences):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     master_key = 'function'
     order_by = ["start_date"]
 
 
 class ExperiencesByPerson(HistoryByPerson, Experiences):
-    required_roles = dd.required(CareerUser)
+    required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
     column_names = "company country start_date end_date function \
     status duration termination_reason remarks *"

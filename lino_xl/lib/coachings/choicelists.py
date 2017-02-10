@@ -149,7 +149,7 @@ ClientEvents.add_item_instance(ClientHasNote("note"))
 
 
 class ClientStates(dd.Workflow):
-    required_roles = dd.required(CoachingsStaff)
+    required_roles = dd.login_required(CoachingsStaff)
     verbose_name_plural = _("Client states")
 
 add = ClientStates.add_item

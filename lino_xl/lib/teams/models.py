@@ -29,7 +29,7 @@ class Team(mixins.BabelNamed):
 
 class Teams(dd.Table):
     model = 'teams.Team'
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     column_names = 'name *'
     order_by = ["name"]
 

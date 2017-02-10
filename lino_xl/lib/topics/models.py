@@ -28,7 +28,7 @@ class TopicGroup(BabelNamed):
 
 class TopicGroups(dd.Table):
     model = 'topics.TopicGroup'
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     order_by = ["id"]
     detail_layout = """
     id name
@@ -99,11 +99,11 @@ class Topics(dd.Table):
     """
 
 class AllTopics(Topics):
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
 
 class TopicsByGroup(Topics):
     master_key = 'topic_group'
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
 
 
 class Interests(dd.Table):
@@ -111,7 +111,7 @@ class Interests(dd.Table):
     column_names = "partner topic *"
 
 class AllInterests(Interests):
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     
 class InterestsByPartner(Interests):
     master_key = 'partner'

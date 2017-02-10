@@ -159,7 +159,7 @@ class CheckinVisitor(NotifyingAction):
     show_in_workflow = True
     show_in_bbar = False
 
-    required_roles = dd.required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     required_states = 'invited accepted present'
 
     def get_action_permission(self, ar, obj, state):
@@ -373,7 +373,7 @@ class ExpectedGuests(cal.Guests):
     waiting_since busy_since'
     hidden_columns = 'waiting_since busy_since'
     #~ checkin = CheckinGuest()
-    required_roles = dd.required(OfficeOperator)
+    required_roles = dd.login_required(OfficeOperator)
 
     @classmethod
     def get_queryset(self, ar):
@@ -401,7 +401,7 @@ if False:
         workflow_buttons'
         order_by = ['waiting_since']
         #~ checkout = CheckoutGuest()
-        required_roles = dd.required(OfficeUser)
+        required_roles = dd.login_required(OfficeUser)
         auto_fit_column_widths = True
 
         @dd.displayfield(_('Since'))
@@ -430,7 +430,7 @@ class Visitors(cal.Guests):
     """
     # debug_permissions = 20150227
 
-    required_roles = dd.required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     editable = False
     abstract = True
     column_names = 'since partner event__user event__summary workflow_buttons'
@@ -508,7 +508,7 @@ class GoneVisitors(Visitors):
 
 class MyWaitingVisitors(My, WaitingVisitors):
     """Show visitors waiting for me."""
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     label = _("Visitors waiting for me")
     column_names = ('since partner position '
                     'event__summary workflow_buttons')
@@ -516,13 +516,13 @@ class MyWaitingVisitors(My, WaitingVisitors):
 
 class MyBusyVisitors(My, BusyVisitors):
     """Show the visitors with whom I am busy."""
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     label = _("Visitors busy with me")
 
 
 class MyGoneVisitors(My, GoneVisitors):
     """Show my visitors who have gone."""
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     label = _("My gone visitors")
 
 

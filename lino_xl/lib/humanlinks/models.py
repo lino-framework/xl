@@ -122,7 +122,7 @@ class Link(dd.Model):
 
 class Links(dd.Table):
     model = 'humanlinks.Link'
-    required_roles = dd.required(ContactsStaff)
+    required_roles = dd.login_required(ContactsStaff)
     stay_in_grid = True
     detail_layout = dd.DetailLayout("""
     parent
@@ -147,7 +147,7 @@ class LinksByHuman(Links):
 
     """
     label = _("Human Links")
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.login_required(ContactsUser)
     master = config.person_model
     column_names = 'parent type_as_parent:10 child'
     slave_grid_format = 'summary'

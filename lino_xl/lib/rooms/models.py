@@ -24,7 +24,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 
 
 class BookingStates(dd.Workflow):
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
 
 add = BookingStates.add_item
 add('10', _("Draft"), 'draft', editable=True)
