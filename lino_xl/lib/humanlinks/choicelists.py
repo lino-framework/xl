@@ -76,7 +76,7 @@ class LinkTypes(dd.ChoiceList):
         <http://www.thefreedictionary.com/foster+father>`_]
 
     """
-    required_roles = dd.required(ContactsStaff)
+    required_roles = dd.login_required(ContactsStaff)
     verbose_name = _("Parency type")
     verbose_name_plural = _("Parency types")
     item_class = LinkType

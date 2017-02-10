@@ -34,7 +34,7 @@ class ProductCat(mixins.BabelNamed):
 
 class ProductCats(dd.Table):
     model = 'products.ProductCat'
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     order_by = ["id"]
     detail_layout = """
     id name

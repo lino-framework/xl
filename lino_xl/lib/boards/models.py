@@ -43,7 +43,7 @@ dd.update_field(Board, 'end_date', verbose_name=_("Worked until"))
 
 class Boards(dd.Table):
     model = 'boards.Board'
-    required_roles = dd.required(dd.SiteStaff, OfficeUser)
+    required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     column_names = 'name *'
     order_by = ["name"]
 
@@ -87,7 +87,7 @@ class Member(dd.Model):
 
 class Members(dd.Table):
     model = 'boards.Member'
-    required_roles = dd.required(dd.SiteStaff, OfficeUser)
+    required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
 
 
 class MembersByBoard(Members):

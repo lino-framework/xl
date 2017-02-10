@@ -81,14 +81,14 @@ class Recipient(dd.Model):
 
 
 class Recipients(dd.Table):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = Recipient
     #~ column_names = 'mail  type *'
     #~ order_by = ["address"]
 
 
 class RecipientsByMail(Recipients):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'mail'
     column_names = 'partner:20 address:20 name:20 type:10 *'
     #~ column_names = 'type owner_type owner_id'
@@ -268,8 +268,8 @@ class Mail(UserAuthored, Printable,
     #~ """
 
 class Mails(dd.Table):
-    #~ read_access = dd.required(user_level='manager')
-    required_roles = dd.required(OfficeStaff)
+    #~ read_access = dd.login_required(user_level='manager')
+    required_roles = dd.login_required(OfficeStaff)
     model = Mail
     column_names = "sent recipients subject * body"
     hidden_columns = 'body'
@@ -291,7 +291,7 @@ if not settings.SITE.project_model:
 
 
 class MyOutbox(Mails):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
 
     label = _("My Outbox")
     master_key = 'user'
@@ -305,7 +305,7 @@ class MyOutbox(Mails):
 
 
 class MailsByController(Mails):
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     master_key = 'owner'
     auto_fit_column_widths = True
     #~ label = _("Postings")
@@ -313,7 +313,7 @@ class MailsByController(Mails):
 
 
 class MailsByUser(Mails):
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     label = _("Outbox")
     column_names = 'sent subject recipients'
     #~ order_by = ['sent']
@@ -323,7 +323,7 @@ class MailsByUser(Mails):
 if settings.SITE.project_model is not None:
 
     class MailsByProject(Mails):
-        required_roles = dd.required()
+        required_roles = dd.login_required()
         label = _("Outbox")
         column_names = 'date subject recipients user *'
         #~ order_by = ['sent']
@@ -334,7 +334,7 @@ if settings.SITE.project_model is not None:
 class SentByPartner(Mails):
     """Shows the Mails that have been sent to a given Partner.
     """
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     master = 'contacts.Partner'
     label = _("Outbox")
     column_names = 'sent subject user'
@@ -380,7 +380,7 @@ class Attachment(Controllable):
 
 
 class Attachments(dd.Table):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = Attachment
     #~ window_size = (400,500)
     #~ detail_layout = """
@@ -389,7 +389,7 @@ class Attachments(dd.Table):
 
 
 class AttachmentsByMail(Attachments):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'mail'
     slave_grid_format = 'summary'
 

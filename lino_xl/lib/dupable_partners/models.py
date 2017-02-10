@@ -24,7 +24,7 @@ class Word(PhoneticWordBase):
 
 class Words(dd.Table):
     model = 'dupable_partners.Word'
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
 
 
 class SimilarPartners(SimilarObjects):

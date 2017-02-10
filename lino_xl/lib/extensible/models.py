@@ -100,7 +100,7 @@ class CalendarPanel(dd.Frame):
 
     help_text = _("""Displays your events in a "calendar view" \
     with the possibility to switch between daily, weekly, monthly view.""")
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     label = _("Calendar")
 
     @classmethod
@@ -110,7 +110,7 @@ class CalendarPanel(dd.Frame):
 
 class PanelCalendars(Calendars):
     use_as_default_table = False
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     #~ column_names = 'id name description color is_hidden'
     #~ column_names = 'id babel_name description color is_hidden'
     column_names = 'id summary description color is_hidden'
@@ -150,7 +150,7 @@ class PanelEvents(Events):
     """
     The table used for Ext.ensible CalendarPanel.
     """
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     use_as_default_table = False
     #~ parameters = dict(team_view=models.BooleanField(_("Team View")))
 

@@ -24,12 +24,12 @@ contacts = dd.resolve_app('contacts')
 class CoachingTypes(dd.Table):
     model = 'coachings.CoachingType'
     column_names = 'name does_integ does_gss eval_guestrole *'
-    required_roles = dd.required(CoachingsStaff)
+    required_roles = dd.login_required(CoachingsStaff)
 
 
 class CoachingEndings(dd.Table):
     help_text = _("A list of reasons expressing why a coaching was ended")
-    required_roles = dd.required(CoachingsStaff)
+    required_roles = dd.login_required(CoachingsStaff)
     model = 'coachings.CoachingEnding'
     column_names = 'seqno name type *'
     order_by = ['seqno']
@@ -39,7 +39,7 @@ class CoachingEndings(dd.Table):
     """
 
 class Coachings(dd.Table):
-    required_roles = dd.required(CoachingsStaff)
+    required_roles = dd.login_required(CoachingsStaff)
     help_text = _("Liste des accompagnements.")
     model = 'coachings.Coaching'
 
@@ -146,7 +146,7 @@ class CoachingsByClient(Coachings):
     """
     The :class:`Coachings` table in a :class:`Clients` detail.
     """
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     #~ debug_permissions = 20121016
     master_key = 'client'
     order_by = ['start_date']
@@ -160,7 +160,7 @@ class CoachingsByEnding(Coachings):
 
 
 class CoachingsByUser(Coachings):
-    required_roles = dd.required(CoachingsUser)
+    required_roles = dd.login_required(CoachingsUser)
     master_key = 'user'
     column_names = 'start_date end_date client type primary id'
 
@@ -180,7 +180,7 @@ class MyCoachings(My, CoachingsByUser):
 class ClientContactTypes(dd.Table):
     help_text = _("Liste des types de contacts client.")
     model = 'coachings.ClientContactType'
-    required_roles = dd.required(CoachingsStaff)
+    required_roles = dd.login_required(CoachingsStaff)
 
     # TODO: `can_refund` is injected in aids, `is_bailiff` in debts
     # NOTE: this is being overridden by lino_welfare.projects.eupen
@@ -196,13 +196,13 @@ class ClientContactTypes(dd.Table):
 
 
 class ClientContacts(dd.Table):
-    required_roles = dd.required(CoachingsStaff)
+    required_roles = dd.login_required(CoachingsStaff)
     help_text = _("Liste des contacts clients.")
     model = 'coachings.ClientContact'
 
 
 class ContactsByClient(ClientContacts):
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     master_key = 'client'
     column_names = 'type company contact_person remark *'
     label = _("Contacts")
@@ -210,7 +210,7 @@ class ContactsByClient(ClientContacts):
 
 
 class ClientContactsByType(ClientContacts):
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     master_key = 'type'
     column_names = 'company contact_person client remark *'
     label = _("Contacts")

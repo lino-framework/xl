@@ -81,7 +81,7 @@ class CivilStates(dd.ChoiceList):
     `wikipedia.org <https://en.wikipedia.org/wiki/Cohabitation>`__
 
     """
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     verbose_name = _("Civil state")
     verbose_name_plural = _("Civil states")
 
@@ -199,7 +199,7 @@ class BeIdCardTypes(dd.ChoiceList):
     
     """
 
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     verbose_name = _("eID card type")
     verbose_name_plural = _("eID card types")
 

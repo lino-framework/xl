@@ -107,7 +107,7 @@ def clear_partner_on_delete(sender=None, request=None, **kw):
 
 class Addresses(dd.Table):
     model = 'addresses.Address'
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     column_names = (
         "partner address_type:10 remark:10 "
         "address_column:30 primary data_source *")
@@ -127,7 +127,7 @@ class Addresses(dd.Table):
 
 
 class AddressesByPartner(Addresses):
-    required_roles = dd.required()
+    required_roles = dd.login_required()
     master_key = 'partner'
     column_names = 'address_type:10 remark:10 address_column:30 primary:5'
     label = _("Addresses")

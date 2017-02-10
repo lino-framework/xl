@@ -57,7 +57,7 @@ class ChoiceSet(mixins.BabelNamed):
 
 
 class ChoiceSets(dd.Table):
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
     model = 'polls.ChoiceSet'
     detail_layout = """
     name
@@ -87,12 +87,12 @@ class Choice(mixins.BabelNamed, mixins.Sequenced):
 
 class Choices(dd.Table):
     model = 'polls.Choice'
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
 
 
 class ChoicesBySet(Choices):
     master_key = 'choiceset'
-    required_roles = dd.required()
+    required_roles = dd.login_required()
 
 
 @dd.python_2_unicode_compatible
@@ -195,7 +195,7 @@ class PollDetail(dd.DetailLayout):
 
 
 class Polls(dd.Table):
-    required_roles = dd.required(PollsUser)
+    required_roles = dd.login_required(PollsUser)
     model = 'polls.Poll'
     column_names = 'ref title user state *'
     detail_layout = PollDetail()
@@ -208,7 +208,7 @@ class Polls(dd.Table):
 
 class AllPolls(Polls):
     """Show all polls of all users."""
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
     column_names = 'id ref title user state *'
 
 
@@ -274,7 +274,7 @@ Question.set_widget_options('number', width=5)
 
 
 class Questions(dd.Table):
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
     model = 'polls.Question'
     column_names = "seqno poll number title choiceset is_heading *"
     detail_layout = """
@@ -287,7 +287,7 @@ class Questions(dd.Table):
 
 
 class QuestionsByPoll(Questions):
-    required_roles = dd.required(PollsUser)
+    required_roles = dd.login_required(PollsUser)
     master_key = 'poll'
     column_names = 'seqno number title:50 is_heading *'
     auto_fit_column_widths = True
@@ -383,7 +383,7 @@ class ResponseDetail(dd.DetailLayout):
 
 
 class Responses(dd.Table):
-    required_roles = dd.required(PollsUser)
+    required_roles = dd.login_required(PollsUser)
     model = 'polls.Response'
     detail_layout = ResponseDetail()
     insert_layout = """
@@ -393,7 +393,7 @@ class Responses(dd.Table):
 
 
 class AllResponses(Responses):
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
 
 
 class MyResponses(My, Responses):
@@ -471,7 +471,7 @@ class AnswerChoice(dd.Model):
 
 
 class AnswerChoices(dd.Table):
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
     model = 'polls.AnswerChoice'
 
 
@@ -494,7 +494,7 @@ class AnswerRemark(dd.Model):
 
 
 class AnswerRemarks(dd.Table):
-    required_roles = dd.required(PollsUser)
+    required_roles = dd.login_required(PollsUser)
     model = 'polls.AnswerRemark'
     detail_layout = dd.DetailLayout("""
     remark
@@ -510,7 +510,7 @@ class AnswerRemarksByAnswer(AnswerRemarks):
 
 
 class AllAnswerRemarks(AnswerRemarks):
-    required_roles = dd.required(PollsStaff)
+    required_roles = dd.login_required(PollsStaff)
 
 
 @dd.python_2_unicode_compatible

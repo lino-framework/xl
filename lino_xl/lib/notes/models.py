@@ -60,7 +60,7 @@ class NoteTypes(dd.Table):
     Displays all rows of :class:`NoteType`.
     """
     model = 'notes.NoteType'
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     #~ label = _("Note types")
     column_names = 'name build_method template special_type *'
     order_by = ["name"]
@@ -101,7 +101,7 @@ class EventTypes(dd.Table):
     List of all Event Types.
     """
     model = 'notes.EventType'
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     column_names = 'name *'
     order_by = ["name"]
 
@@ -211,7 +211,7 @@ class NoteDetail(dd.DetailLayout):
 
 
 class Notes(dd.Table):
-    required_roles = dd.required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     model = 'notes.Note'
     detail_layout = NoteDetail()
     column_names = "date time id user event_type type project subject * body"
@@ -219,7 +219,7 @@ class Notes(dd.Table):
 
 
 class AllNotes(Notes):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
 
 
 class MyNotes(My, Notes):

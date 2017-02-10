@@ -57,7 +57,7 @@ FILL_EVENT_GUESTS = False
 
 class Slots(dd.Table):
     model = 'courses.Slot'
-    required_roles = dd.required(dd.SiteAdmin)
+    required_roles = dd.login_required(dd.SiteAdmin)
     insert_layout = """
     start_time end_time
     name
@@ -70,7 +70,7 @@ class Slots(dd.Table):
 
 class Topics(dd.Table):
     model = 'courses.Topic'
-    required_roles = dd.required(dd.SiteAdmin)
+    required_roles = dd.login_required(dd.SiteAdmin)
     detail_layout = """
     id name
     courses.LinesByTopic
@@ -84,7 +84,7 @@ class Topics(dd.Table):
 
 class Lines(dd.Table):
     model = 'courses.Line'
-    required_roles = dd.required(CoursesUser)
+    required_roles = dd.login_required(CoursesUser)
     column_names = ("ref name topic course_area "
                     "event_type guest_role every_unit every *")
     order_by = ['ref', 'name']
@@ -157,7 +157,7 @@ class Activities(dd.Table):
     """Base table for all activities.
     """
     _course_area = None
-    required_roles = dd.required((CoursesUser, CoursesTeacher))
+    required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     model = 'courses.Course'
     detail_layout = CourseDetail()
     insert_layout = """
@@ -490,7 +490,7 @@ class Enrolments(dd.Table):
 
 class AllEnrolments(Enrolments):
     """Show global list of all enrolments."""
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     order_by = ['-id']
     column_names = 'id request_date start_date end_date user course pupil pupil__birth_date pupil__age pupil__country pupil__city pupil__gender *'
 
@@ -518,7 +518,7 @@ class ConfirmAllEnrolments(dd.Action):
 class PendingRequestedEnrolments(Enrolments):
     "Show all requested enrolments."
     label = _("Pending requested enrolments")
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     auto_fit_column_widths = True
     params_panel_hidden = True
     column_names = 'request_date course pupil remark user workflow_buttons'
@@ -536,7 +536,7 @@ class PendingRequestedEnrolments(Enrolments):
 class PendingConfirmedEnrolments(Enrolments):
     "Show all confirmed enrolments."
     label = _("Pending confirmed enrolments")
-    required_roles = dd.required(dd.SiteStaff)
+    required_roles = dd.login_required(dd.SiteStaff)
     auto_fit_column_widths = True
     params_panel_hidden = True
 
@@ -551,7 +551,7 @@ class PendingConfirmedEnrolments(Enrolments):
 class EnrolmentsByPupil(Enrolments):
     """Show all enrolments of a given pupil."""
     params_panel_hidden = True
-    required_roles = dd.required(CoursesUser)
+    required_roles = dd.login_required(CoursesUser)
     master_key = "pupil"
     column_names = 'request_date course user:10 remark workflow_buttons *'
     auto_fit_column_widths = True
@@ -573,8 +573,8 @@ class EnrolmentsByPupil(Enrolments):
 
 class EnrolmentsByCourse(Enrolments):
     params_panel_hidden = True
-    required_roles = dd.required((CoursesUser, CoursesTeacher))
-    # required_roles = dd.required(CoursesUser)
+    required_roles = dd.login_required((CoursesUser, CoursesTeacher))
+    # required_roles = dd.login_required(CoursesUser)
     master_key = "course"
     column_names = 'request_date pupil places option ' \
                    'remark workflow_buttons *'
@@ -598,7 +598,7 @@ class EnrolmentsByOption(Enrolments):
     
 
 # class EventsByCourse(cal.Events):
-#     required = dd.required(user_groups='office')
+#     required = dd.login_required(user_groups='office')
 #     master_key = 'course'
 #     column_names = 'when_text:20 when_html summary workflow_buttons *'
 #     auto_fit_column_widths = True

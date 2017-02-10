@@ -42,7 +42,7 @@ class Type(mixins.BabelNamed):
 
 
 class Types(dd.Table):
-    required_roles = dd.required(ContactsStaff)
+    required_roles = dd.login_required(ContactsStaff)
     model = 'households.Type'
     column_names = "id name *"
     detail_layout = """
@@ -212,7 +212,7 @@ class HouseholdDetail(dd.DetailLayout):
 
 class Households(contacts.Partners):
     model = 'households.Household'
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.login_required(ContactsUser)
     order_by = ["name"]
     detail_layout = HouseholdDetail()
 
@@ -243,7 +243,7 @@ class HouseholdsByType(Households):
 
 # class Roles(dd.Table):
 #     model = Role
-#     required = dd.required(user_level='admin')
+#     required = dd.login_required(user_level='admin')
 #     detail_layout = """
 #     name name_giving
 #     #male
@@ -393,12 +393,12 @@ person_fields = dd.fields_list(
 
 class Members(dd.Table):
     model = 'households.Member'
-    required_roles = dd.required(ContactsStaff)
+    required_roles = dd.login_required(ContactsStaff)
     order_by = ['start_date', 'end_date']
 
 
 class MembersByHousehold(Members):
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.login_required(ContactsUser)
     label = _("Household Members")
     master_key = 'household'
     column_names = "age:10 role dependency person \
@@ -423,7 +423,7 @@ class SiblingsByPerson(Members):
 
     """
     label = _("Household composition")
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.login_required(ContactsUser)
     master = config.person_model
     column_names = "age:10 role dependency person \
     first_name last_name birth_date gender *"
@@ -555,7 +555,7 @@ dd.inject_action(
 
 
 class MembersByPerson(Members):
-    required_roles = dd.required(ContactsUser)
+    required_roles = dd.login_required(ContactsUser)
     label = _("Household memberships")
     master_key = 'person'
     column_names = 'household role primary start_date end_date *'

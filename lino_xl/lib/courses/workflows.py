@@ -32,7 +32,7 @@ class PrintAndChangeStateAction(dd.ChangeStateAction):
         ar.confirm(ok, msg, _("Are you sure?"))
 
 #~ class ConfirmEnrolment(PrintAndChangeStateAction):
-    #~ required = dd.required(states='requested')
+    #~ required = dd.login_required(states='requested')
     #~ label = _("Confirm")
     #~
     #~ def get_confirmation_message(self,obj,ar):

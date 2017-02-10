@@ -98,7 +98,7 @@ class Posting(UserAuthored, mixins.ProjectRelated, Controllable):
 
 
 class Postings(dd.Table):
-    required_roles = dd.required(dd.SiteStaff, OfficeUser)
+    required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     model = Posting
     column_names = 'date user owner partner *'
     order_by = ['date']
@@ -114,12 +114,12 @@ class Postings(dd.Table):
 
 
 class MyPostings(My, Postings):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     column_names = 'date partner state workflow_buttons *'
 
 
 class PostingsByState(Postings):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     column_names = 'date user partner workflow_buttons *'
 
 
@@ -147,20 +147,20 @@ class PostingsSent(PostingsByState):
 
 
 class PostingsByController(Postings):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'date partner workflow_buttons'
     auto_fit_column_widths = True
 
 
 class PostingsByPartner(Postings):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'partner'
     column_names = 'date owner state workflow_buttons *'
 
 
 class PostingsByProject(Postings):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'project'
     column_names = 'date partner state workflow_buttons *'
 

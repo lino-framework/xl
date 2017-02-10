@@ -27,7 +27,7 @@ class MemberRoles(dd.ChoiceList):
     <lino_xl.lib.households.models.Member.role>` of a household member.
 
     """
-    required_roles = dd.required(ContactsStaff)
+    required_roles = dd.login_required(ContactsStaff)
     verbose_name = _("Role")
     verbose_name_plural = _("Household member roles")
 

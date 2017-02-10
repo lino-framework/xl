@@ -25,12 +25,12 @@ from .utils import when_text
 
 class RemoteCalendars(dd.Table):
     model = 'cal.RemoteCalendar'
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
 
 
 class Rooms(dd.Table):
     help_text = _("List of rooms where calendar events can happen.")
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Room'
     detail_layout = """
     id name
@@ -44,13 +44,13 @@ class Rooms(dd.Table):
 
 class Priorities(dd.Table):
     help_text = _("List of possible priorities of calendar events.")
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Priority'
     column_names = 'name *'
 
 
 class Calendars(dd.Table):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Calendar'
 
     insert_layout = """
@@ -64,7 +64,7 @@ class Calendars(dd.Table):
 
 
 class Subscriptions(dd.Table):
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Subscription'
     order_by = ['calendar__name']
     # insert_layout = """
@@ -85,13 +85,13 @@ class Subscriptions(dd.Table):
 
 
 class SubscriptionsByUser(Subscriptions):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'user'
     auto_fit_column_widths = True
 
 
 class SubscriptionsByCalendar(Subscriptions):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'calendar'
     auto_fit_column_widths = True
 
@@ -123,13 +123,13 @@ class UserDetailMixin(dd.DetailLayout):
         cal_left:30 cal.TasksByUser:60
         """,
         label=dd.plugins.cal.verbose_name,
-        required_roles=dd.required(OfficeUser))
+        required_roles=dd.login_required(OfficeUser))
 
     
 class Tasks(dd.Table):
     help_text = _("""A calendar task is something you need to do.""")
     model = 'cal.Task'
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     column_names = 'start_date summary workflow_buttons *'
     order_by = ["start_date", "start_time"]
 
@@ -212,7 +212,7 @@ class Tasks(dd.Table):
 
 class TasksByController(Tasks):
     master_key = 'owner'
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     column_names = 'start_date summary workflow_buttons id'
     # hidden_columns = set('owner_id owner_type'.split())
     auto_fit_column_widths = True
@@ -223,7 +223,7 @@ class TasksByUser(Tasks):
     Shows the list of tasks for this user.
     """
     master_key = 'user'
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
 
 
 class MyTasks(Tasks):
@@ -232,7 +232,7 @@ class MyTasks(Tasks):
 
     """
     label = _("My tasks")
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     help_text = _("Table of all my tasks.")
     column_names = 'start_date summary workflow_buttons project'
     params_panel_hidden = True
@@ -257,7 +257,7 @@ class MyTasks(Tasks):
 #if settings.SITE.project_model:
 
 class TasksByProject(Tasks):
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'project'
     column_names = 'start_date user summary workflow_buttons *'
 
@@ -266,7 +266,7 @@ class GuestRoles(dd.Table):
     help_text = _("The role of a guest expresses what the "
                   "partner is going to do there.")
     model = 'cal.GuestRole'
-    required_roles = dd.required(dd.SiteStaff, OfficeUser)
+    required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     detail_layout = """
     id name
     #build_method #template #email_template #attach_to_email
@@ -278,7 +278,7 @@ class Guests(dd.Table):
     "The default table for :class:`Guest`."
     help_text = _("""A guest is a partner invited to an event. """)
     model = 'cal.Guest'
-    required_roles = dd.required(dd.SiteStaff, OfficeUser)
+    required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     column_names = 'partner role workflow_buttons remark event *'
     detail_layout = """
     event partner role
@@ -374,14 +374,14 @@ class Guests(dd.Table):
 
 class GuestsByEvent(Guests):
     master_key = 'event'
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     auto_fit_column_widths = True
     column_names = 'partner role workflow_buttons'
 
 
 class GuestsByRole(Guests):
     master_key = 'role'
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
 
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
@@ -390,7 +390,7 @@ from lino.utils.xmlgen.html import E
 class GuestsByPartner(Guests):
     label = _("Presences")
     master_key = 'partner'
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
 
@@ -422,7 +422,7 @@ class MyPresences(Guests):
     state.
 
     """
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     order_by = ['event__start_date', 'event__start_time']
     label = _("My presences")
     column_names = 'event__start_date event__start_time event_summary role workflow_buttons remark *'
@@ -477,7 +477,7 @@ class MyPendingPresences(MyPresences):
 
 class MyGuests(Guests):
     label = _("My guests")
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     order_by = ['event__start_date', 'event__start_time']
     column_names = ("event__start_date event__start_time "
                     "event_summary role workflow_buttons remark *")
@@ -496,7 +496,7 @@ class EventTypes(dd.Table):
     An EventType is a list of events which have certain things in common,
     especially they are displayed in the same colour in the calendar panel.
     """)
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     model = 'cal.EventType'
     column_names = "name *"
 
@@ -522,7 +522,7 @@ class RecurrentEvents(dd.Table):
 
     """
     model = 'cal.RecurrentEvent'
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     column_names = "start_date end_date name every_unit event_type *"
     auto_fit_column_widths = True
     order_by = ['start_date']
@@ -604,7 +604,7 @@ class Events(dd.Table):
 
     help_text = _("A List of calendar entries. Each entry is called an event.")
     model = 'cal.Event'
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     column_names = 'when_text:20 user summary event_type id *'
 
     # hidden_columns = """
@@ -771,7 +771,7 @@ class EventsByDay(Events):
     :term:`appointments <appointment>`.
 
     """
-    required_roles = dd.required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Appointments today")
     column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
     auto_fit_column_widths = True
@@ -813,7 +813,7 @@ class EventsByDay(Events):
     # master_key = 'type'
 
 # class EventsByPartner(Events):
-    # required = dd.required(user_groups='office')
+    # required = dd.login_required(user_groups='office')
     # master_key = 'user'
 
 
@@ -833,7 +833,7 @@ class EventsByController(Events):
     especially the events which were automatically generated.
 
     """
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_html summary workflow_buttons *'
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
@@ -842,7 +842,7 @@ class EventsByController(Events):
 if settings.SITE.project_model:
 
     class EventsByProject(Events):
-        required_roles = dd.required(OfficeUser)
+        required_roles = dd.login_required(OfficeUser)
         master_key = 'project'
         auto_fit_column_widths = True
         stay_in_grid = True
@@ -854,8 +854,8 @@ class OneEvent(Events):
     """Show a single calendar event."""
     show_detail_navigator = False
     use_as_default_table = False
-    required_roles = dd.required((OfficeUser, OfficeOperator))
-    # required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required(OfficeUser)
 
 
 class MyEvents(Events):
@@ -912,7 +912,7 @@ class MyAssignedEvents(MyEvents):
     label = _("Events assigned to me")
     help_text = _("Table of events assigned to me.")
     # master_key = 'assigned_to'
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     # column_names = 'when_text:20 project summary workflow_buttons *'
     # known_values = dict(assigned_to=EventStates.assigned)
 
@@ -940,7 +940,7 @@ class OverdueAppointments(Events):
     is set to "Unstable", :attr:`end_date` is set to today.
 
     """
-    required_roles = dd.required(OfficeStaff)
+    required_roles = dd.login_required(OfficeStaff)
     label = _("Overdue appointments")
     column_names = 'when_html user project owner event_type summary workflow_buttons *'
     auto_fit_column_widths = True
@@ -962,7 +962,7 @@ class MyUnconfirmedAppointments(MyEvents):
     is set to "Draft", :attr:`start_date` is set to today.
 
     """
-    required_roles = dd.required(OfficeUser)
+    required_roles = dd.login_required(OfficeUser)
     label = _("Unconfirmed appointments")
     column_names = 'when_html project summary workflow_buttons *'
     auto_fit_column_widths = True
