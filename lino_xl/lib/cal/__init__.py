@@ -125,6 +125,7 @@ class Plugin(ad.Plugin):
         # m.add_action(MyTasksToDo)
         m.add_action('cal.MyGuests')
         m.add_action('cal.MyPresences')
+        m.add_action('cal.MyOverdueAppointments')
 
     def setup_config_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
@@ -156,4 +157,4 @@ class Plugin(ad.Plugin):
 
     def get_dashboard_items(self, user):
         yield self.site.actors.cal.MyEvents
-
+        yield self.site.actors.cal.MyOverdueAppointments

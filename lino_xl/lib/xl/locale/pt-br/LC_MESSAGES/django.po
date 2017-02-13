@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-10 19:43+0200\n"
+"POT-Creation-Date: 2017-02-13 12:12+0200\n"
 "PO-Revision-Date: 2013-06-15 18:57-0300\n"
 "Last-Translator: Flavio Gondin <flvgondin@gmail.com>\n"
 "Language: pt_BR\n"
@@ -688,8 +688,8 @@ msgstr "Montrer \"occupé\""
 msgid "Public"
 msgstr "Public"
 
-#: lino_xl/lib/cal/mixins.py:53 lino_xl/lib/cal/ui.py:191
-#: lino_xl/lib/cal/ui.py:355
+#: lino_xl/lib/cal/mixins.py:53 lino_xl/lib/cal/ui.py:192
+#: lino_xl/lib/cal/ui.py:356
 #, python-format
 msgid "Dates %(min)s to %(max)s"
 msgstr "Dates du %(min)s au %(max)s"
@@ -1038,7 +1038,7 @@ msgstr ""
 msgid "Reminder"
 msgstr "Rappel"
 
-#: lino_xl/lib/cal/models.py:825 lino_xl/lib/cal/ui.py:296
+#: lino_xl/lib/cal/models.py:825 lino_xl/lib/cal/ui.py:297
 msgid "Responsible user"
 msgstr ""
 
@@ -1084,7 +1084,7 @@ msgstr ""
 msgid "Presence"
 msgstr "Mes présences"
 
-#: lino_xl/lib/cal/models.py:969 lino_xl/lib/cal/ui.py:391
+#: lino_xl/lib/cal/models.py:969 lino_xl/lib/cal/ui.py:392
 #: lino_xl/lib/courses/models.py:507
 #, fuzzy
 msgid "Presences"
@@ -1158,85 +1158,85 @@ msgstr ""
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:32
+#: lino_xl/lib/cal/ui.py:33
 msgid "List of rooms where calendar events can happen."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:46
+#: lino_xl/lib/cal/ui.py:47
 msgid "List of possible priorities of calendar events."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:130
+#: lino_xl/lib/cal/ui.py:131
 msgid "A calendar task is something you need to do."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:153 lino_xl/lib/cal/ui.py:631
+#: lino_xl/lib/cal/ui.py:154 lino_xl/lib/cal/ui.py:632
 msgid "Managed by"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:155 lino_xl/lib/cal/ui.py:298
-#: lino_xl/lib/cal/ui.py:633
+#: lino_xl/lib/cal/ui.py:156 lino_xl/lib/cal/ui.py:299
+#: lino_xl/lib/cal/ui.py:634
 #, fuzzy
 msgid "Only rows managed by this user."
 msgstr "%d rendez-vous vous ont été attribués"
 
-#: lino_xl/lib/cal/ui.py:159 lino_xl/lib/cal/ui.py:644
+#: lino_xl/lib/cal/ui.py:160 lino_xl/lib/cal/ui.py:645
 msgid "Only rows having this state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:234
+#: lino_xl/lib/cal/ui.py:235
 #, fuzzy
 msgid "My tasks"
 msgstr "Tâches"
 
-#: lino_xl/lib/cal/ui.py:236
+#: lino_xl/lib/cal/ui.py:237
 msgid "Table of all my tasks."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:266
+#: lino_xl/lib/cal/ui.py:267
 msgid "The role of a guest expresses what the partner is going to do there."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:279
+#: lino_xl/lib/cal/ui.py:280
 msgid "A guest is a partner invited to an event. "
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:306
+#: lino_xl/lib/cal/ui.py:307
 #, fuzzy
 msgid "Event state"
 msgstr "Mes rendez-vous aujourd'hui"
 
-#: lino_xl/lib/cal/ui.py:307
+#: lino_xl/lib/cal/ui.py:308
 msgid "Only rows having this event state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:310
+#: lino_xl/lib/cal/ui.py:311
 #, fuzzy
 msgid "Guest state"
 msgstr "heures"
 
-#: lino_xl/lib/cal/ui.py:311
+#: lino_xl/lib/cal/ui.py:312
 msgid "Only rows having this guest state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:427
+#: lino_xl/lib/cal/ui.py:428
 msgid "My presences"
 msgstr "Mes présences"
 
-#: lino_xl/lib/cal/ui.py:462
+#: lino_xl/lib/cal/ui.py:463
 msgid "My pending invitations"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:463
+#: lino_xl/lib/cal/ui.py:464
 msgid "Received invitations which I must accept or reject."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:479
+#: lino_xl/lib/cal/ui.py:480
 #, fuzzy
 msgid "My guests"
 msgstr "Participants"
 
-#: lino_xl/lib/cal/ui.py:495
+#: lino_xl/lib/cal/ui.py:496
 msgid ""
 "The list of Event Types defined on this system.\n"
 "    An EventType is a list of events which have certain things in common,"
@@ -1246,86 +1246,91 @@ msgid ""
 "    "
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:582 lino_xl/lib/coachings/choicelists.py:28
+#: lino_xl/lib/cal/ui.py:583 lino_xl/lib/coachings/choicelists.py:28
 #: lino_xl/lib/contacts/choicelists.py:13
 #, fuzzy
 msgid "Observed event"
 msgstr "Mes rendez-vous à clarifier"
 
-#: lino_xl/lib/cal/ui.py:583 lino_xl/lib/coachings/choicelists.py:29
+#: lino_xl/lib/cal/ui.py:584 lino_xl/lib/coachings/choicelists.py:29
 #: lino_xl/lib/contacts/choicelists.py:14
 #, fuzzy
 msgid "Observed events"
 msgstr "Mes rendez-vous à clarifier"
 
-#: lino_xl/lib/cal/ui.py:585 lino_xl/lib/cal/workflows/__init__.py:70
+#: lino_xl/lib/cal/ui.py:586 lino_xl/lib/cal/workflows/__init__.py:70
 #, fuzzy
 msgid "Stable"
 msgstr "Pièce jointe"
 
-#: lino_xl/lib/cal/ui.py:586
+#: lino_xl/lib/cal/ui.py:587
 #, fuzzy
 msgid "Unstable"
 msgstr "au "
 
-#: lino_xl/lib/cal/ui.py:605
+#: lino_xl/lib/cal/ui.py:606
 msgid "A List of calendar entries. Each entry is called an event."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:639
+#: lino_xl/lib/cal/ui.py:640
 msgid "Assigned to"
 msgstr "Attribué à"
 
-#: lino_xl/lib/cal/ui.py:641
+#: lino_xl/lib/cal/ui.py:642
 #, fuzzy
 msgid "Only events assigned to this user."
 msgstr "%d rendez-vous vous ont été attribués"
 
-#: lino_xl/lib/cal/ui.py:647 lino_xl/lib/reception/models.py:339
+#: lino_xl/lib/cal/ui.py:648 lino_xl/lib/reception/models.py:339
 msgid "Appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:752
+#: lino_xl/lib/cal/ui.py:753
 msgid "Show events conflicting with this one."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:775
+#: lino_xl/lib/cal/ui.py:776
 msgid "Appointments today"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:867
+#: lino_xl/lib/cal/ui.py:868
 msgid "My appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:868
+#: lino_xl/lib/cal/ui.py:869
 msgid "Table of my appointments."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:892
+#: lino_xl/lib/cal/ui.py:893
 msgid "My appointments today"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:912
+#: lino_xl/lib/cal/ui.py:913
 #, fuzzy
 msgid "Events assigned to me"
 msgstr "%d rendez-vous vous ont été attribués"
 
-#: lino_xl/lib/cal/ui.py:913
+#: lino_xl/lib/cal/ui.py:914
 #, fuzzy
 msgid "Table of events assigned to me."
 msgstr "Tableau de tous les rendez-vous proposés."
 
-#: lino_xl/lib/cal/ui.py:931
+#: lino_xl/lib/cal/ui.py:932
 #, fuzzy, python-format
 msgid "%d events have been assigned to you."
 msgstr "Enregistrement %s a été mis à jour."
 
-#: lino_xl/lib/cal/ui.py:944
+#: lino_xl/lib/cal/ui.py:945
 #, fuzzy
 msgid "Overdue appointments"
 msgstr "Mes rendez-vous à clarifier"
 
-#: lino_xl/lib/cal/ui.py:966
+#: lino_xl/lib/cal/ui.py:962
+#, fuzzy
+msgid "My overdue appointments"
+msgstr "Mes rendez-vous à clarifier"
+
+#: lino_xl/lib/cal/ui.py:975
 #, fuzzy
 msgid "Unconfirmed appointments"
 msgstr "Mes rendez-vous à clarifier"

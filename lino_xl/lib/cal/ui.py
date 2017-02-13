@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -14,6 +14,7 @@ from django.conf import settings
 
 from lino.api import dd, rt, _
 from lino import mixins
+from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from .workflows import TaskStates
@@ -953,6 +954,14 @@ class OverdueAppointments(Events):
         kw.update(end_date=settings.SITE.today())
         kw.update(show_appointments=dd.YesNo.yes)
         return kw
+
+class MyOverdueAppointments(My, OverdueAppointments):
+    """Like OverdueAppointments, but only for myself.
+
+    """
+    label = _("My overdue appointments")
+    required_roles = dd.login_required(OfficeUser)
+    column_names = 'overview project owner event_type workflow_buttons *'
 
 class MyUnconfirmedAppointments(MyEvents):
     """Shows appointments in the near future which are still in draft
