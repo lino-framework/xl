@@ -52,6 +52,7 @@ def objects():
     def s2time(s):
         h, m = map(int, s.split(':'))
         return datetime.time(h, m)
+    USERS = Cycler(settings.SITE.user_model.objects.exclude(email=''))
     TIMES = Cycler([s2time(s)
                    for s in ('08:30', '09:40', '10:20', '11:10', '13:30')])
     #~ DURATIONS = Cycler([s2duration(s) for s in ('00:30','00:40','1:00','1:30','2:00','3:00')])
@@ -74,26 +75,26 @@ def objects():
     #~ for i in range(20):
 
     date = settings.SITE.demo_date(-20)
-    for u in settings.SITE.user_model.objects.exclude(email=''):
-        for i in range(12):
-            if i % 3:
-                date += ONE_DAY  # relativedelta(days=1)
-            s = SUMMARIES.pop().get(
-                u.language, None) or SUMMARIES.pop().get('en')
-            st = TIMES.pop()
-            kw = dict(user=u,
-                      start_date=date,
-                      event_type=ETYPES.pop(),
-                      start_time=st,
-                      summary=s)
-            kw.update(access_class=ACL.pop())
-            kw.update(state=STATES.pop())
-            #~ if settings.SITE.project_model:
-                #~ kw.update(project=PROJECTS.pop())
-            e = Event(**kw)
-            e.set_datetime('end', e.get_datetime('start')
-                           + DURATIONS.pop())
-            yield e
+    for i in range(60):
+        u = USERS.pop()
+        if i % 3:
+            date += ONE_DAY  # relativedelta(days=1)
+        s = SUMMARIES.pop().get(
+            u.language, None) or SUMMARIES.pop().get('en')
+        st = TIMES.pop()
+        kw = dict(user=u,
+                  start_date=date,
+                  event_type=ETYPES.pop(),
+                  start_time=st,
+                  summary=s)
+        kw.update(access_class=ACL.pop())
+        kw.update(state=STATES.pop())
+        #~ if settings.SITE.project_model:
+            #~ kw.update(project=PROJECTS.pop())
+        e = Event(**kw)
+        e.set_datetime('end', e.get_datetime('start')
+                       + DURATIONS.pop())
+        yield e
 
     # # some conflicting events
     # USERS = Cycler(rt.users.User.objects.all())
