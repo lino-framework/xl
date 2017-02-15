@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-02-13 12:12+0200\n"
-"PO-Revision-Date: 2017-02-13 12:13+0200\n"
+"PO-Revision-Date: 2017-02-15 08:47+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -1572,19 +1572,16 @@ msgid "Contacts"
 msgstr "Contacts"
 
 #: lino_xl/lib/coachings/mixins.py:56
-#, fuzzy
 msgid "Primary coach"
-msgstr "Dossiers titulaires"
+msgstr "Intervenant primaire"
 
 #: lino_xl/lib/coachings/mixins.py:62
-#, fuzzy
 msgid "Coaches"
-msgstr "Accompagné"
+msgstr "Accompagne"
 
 #: lino_xl/lib/coachings/mixins.py:79
-#, fuzzy
 msgid "Find appointment"
-msgstr "Mes rendez-vous"
+msgstr "Trouver rendez-vous"
 
 #: lino_xl/lib/coachings/models.py:37
 msgid "Integration"
