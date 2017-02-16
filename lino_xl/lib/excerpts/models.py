@@ -839,8 +839,14 @@ class ExcerptsByOwner(Excerpts):
         return six.text_type(ex.excerpt_type)
 
 
-if settings.SITE.project_model is not None:
+if settings.SITE.project_model is None:
 
+    class ExcerptsByProject(object):
+        pass
+        # needed for building blog
+        
+else:
+    
     class ExcerptsByProject(ExcerptsByOwner):
         master_key = 'project'
         column_names = "build_time excerpt_type user owner *"
