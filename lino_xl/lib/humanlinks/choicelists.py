@@ -33,7 +33,8 @@ class LinkType(dd.Choice):
         self.fctext = fctext
         # text = string_concat(
         #     mptext, ' (', fptext, ') / ', mctext, ' (', fctext, ')')
-        text = string_concat(mctext, ' (', fctext, ')')
+        # text = string_concat(mctext, ' (', fctext, ')')
+        text = string_concat(mptext, ' (', fptext, ')')
         # text = "%s (%s) / %s (%s)" % (mptext, fptext, mctext, fctext)
         super(LinkType, self).__init__(value, text, name, **kw)
 
