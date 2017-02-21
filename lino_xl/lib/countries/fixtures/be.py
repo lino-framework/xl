@@ -192,7 +192,7 @@ belgian_cities = u"""
 4920 Aywaille 
 9890 Baaigem 
 3128 Baal 
-# 9310 Baardegem 
+# 9310 Baardegem
 2387 Baarle-Hertog 
 9200 Baasrode 
 9800 Bachte-Maria-Leerne 

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2014 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
 Adds an arbitrary selection of a few demo cities.
@@ -128,7 +128,7 @@ def objects():
     yield aalst
     yield be_city('9308', name="Gijzegem",
                   parent=aalst, type=PlaceTypes.village)
-    yield be_city('9310', name="Baardegem ",
+    yield be_city('9310', name="Baardegem",
                   parent=aalst, type=PlaceTypes.village)
     yield be_city('9320', name="Erembodegem",
                   parent=aalst, type=PlaceTypes.village)
