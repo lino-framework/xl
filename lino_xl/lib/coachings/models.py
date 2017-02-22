@@ -175,6 +175,9 @@ class Coaching(UserAuthored, mixins.DatePeriod, dd.ImportedFields, ChangeObserva
         #~ return _("Coaching of %(client)s by %(user)s") % dict(client=self.client,user=self.user)
         #~ return self.user.username+' / '+self.client.first_name+' '+self.client.last_name[0]
         cl = self.client
+        if self.user_id is None:
+            return "{} {}".format(
+                self.__class__._meta.verbose_name, cl)
         if cl.first_name:
             return self.user.username + ' / ' + cl.last_name + ' ' + cl.first_name[0]
         return self.user.username + ' / ' + cl.last_name
