@@ -52,6 +52,7 @@ class EnrolmentStates(dd.Workflow):
 
 add = EnrolmentStates.add_item
 add('10', _("Requested"), 'requested', invoiceable=False, uses_a_place=False)
+add('11', _("Trying"), 'trying', invoiceable=False, uses_a_place=True)
 add('20', _("Confirmed"), 'confirmed', invoiceable=True, uses_a_place=True)
 add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 # add('40', _("Certified"), 'certified', invoiceable=True, uses_a_place=True)
