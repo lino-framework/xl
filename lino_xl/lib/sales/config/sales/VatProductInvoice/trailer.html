@@ -1,0 +1,15 @@
+<div>
+{% block payment %}
+<p class="Default">
+{{_("Date of payment")}} : {{fds(obj.due_date)}}
+<br/>
+{% if obj.payment_term %}
+{% if obj.payment_term.printed_text %}
+{{parse(obj.payment_term.printed_text)}}
+{% else %}
+{{_("Payment terms")}} : {{obj.payment_term}}
+{% endif %}
+{% endif %}
+</p>
+{% endblock %}
+</div>

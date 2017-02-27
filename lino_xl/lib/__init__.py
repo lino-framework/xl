@@ -1,4 +1,4 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -79,6 +79,23 @@ Content management
 
     blogs
     pages
+
+Accounting stuff
+================
+
+.. autosummary::
+   :toctree:
+
+    accounts
+    sales
+    ledger
+    finan
+    vat
+    vatless
+    finan
+    tim2lino
+    sepa
+    invoicing
 
 Differentiator packages
 =======================

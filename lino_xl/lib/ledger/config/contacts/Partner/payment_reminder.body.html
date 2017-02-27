@@ -1,0 +1,29 @@
+<p class="OurRef">
+{{tr(de="U. Zeichen",fr="Notre réf.")}}: {{ar.get_user().initials}}/{{this.id}}
+</p>
+
+<h1>{{this.type}}</h1>
+
+<p>{{tr(de="Wir erinnern Sie an folgende ausstehenden Zahlungen.",
+     fr="Nous vous rappelons que les factures suivantes sont ouvertes.")}}</p>
+
+<p class="EnhancedPar">
+{{obj.get_full_name(nominative=True)}}
+<br>
+{{', '.join(obj.address_location_lines())}}
+</p>
+
+
+<p>{{ar.renderer.__class__.__name__}}</p>
+<p>{{ar.show(site.modules.ledger.DebtsByPartner, obj)}}</p>
+
+<p></p>
+<p></p>
+<p></p>
+<p>{{this.user}}</p>
+
+
+
+
+
+
