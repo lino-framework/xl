@@ -143,6 +143,24 @@ lino_xl.lib.statbel.countries.fixtures
 lino_xl.lib.thirds
 lino_xl.lib.topics
 lino_xl.lib.xl
+lino_xl.lib.accounts
+lino_xl.lib.finan
+lino_xl.lib.finan.fixtures
+lino_xl.lib.ledger
+lino_xl.lib.ledger.fixtures
+lino_xl.lib.ledger.management
+lino_xl.lib.ledger.management.commands
+lino_xl.lib.sales
+lino_xl.lib.sales.fixtures
+lino_xl.lib.sepa
+lino_xl.lib.invoicing
+lino_xl.lib.invoicing.fixtures
+lino_xl.lib.sepa.fixtures
+lino_xl.lib.tim2lino
+lino_xl.lib.tim2lino.fixtures
+lino_xl.lib.vat
+lino_xl.lib.vat.fixtures
+lino_xl.lib.vatless
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\

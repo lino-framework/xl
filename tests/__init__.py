@@ -16,6 +16,10 @@ class PackagesTests(LinoTestCase):
         self.run_packages_test(SETUP_INFO['packages'])
 
 
+class CodeTests(TestCase):
+    def test_sample_ibans(self):
+        self.run_simple_doctests('lino_xl/lib/sepa/fixtures/sample_ibans.py')
+    
 class LibTests(LinoTestCase):
 
     # def test_users(self):
@@ -29,7 +33,6 @@ class UtilsTests(LinoTestCase):
 
     def test_contacts_utils(self):
         self.run_simple_doctests('lino_xl/lib/contacts/utils.py')
-
 
 
 from . import test_appy_pod

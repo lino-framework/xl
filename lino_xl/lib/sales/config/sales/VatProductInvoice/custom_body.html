@@ -1,0 +1,12 @@
+<div>
+{% block body %}
+<table>
+{% for row in obj.items.all() %}
+<tr>
+<td>{{row.title}}</td>
+<td>{{row.qty}}</td>
+</tr>
+{% endfor %}
+</table>
+{% endblock %}
+</div>
