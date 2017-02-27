@@ -16,6 +16,7 @@ from lino.api import dd
 from lino import mixins
 
 from .choicelists import DeliveryUnit
+from .roles import ProductsUser, ProductsStaff
 
 vat = dd.resolve_app('vat')
 
@@ -34,7 +35,7 @@ class ProductCat(mixins.BabelNamed):
 
 class ProductCats(dd.Table):
     model = 'products.ProductCat'
-    required_roles = dd.login_required(dd.SiteStaff)
+    required_roles = dd.login_required(ProductsStaff)
     order_by = ["id"]
     detail_layout = """
     id name
@@ -77,6 +78,7 @@ class Product(mixins.BabelNamed):
 
 
 class Products(dd.Table):
+    required_roles = dd.login_required(ProductsUser)
     model = 'products.Product'
     order_by = ["id"]
     column_names = "id name cat vat_class *"

@@ -45,6 +45,7 @@ from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
 from lino.mixins.bleached import Bleached
+from lino_xl.lib.ledger.roles import LedgerStaff, LedgerUser
 
 
 TradeTypes.sales.update(
@@ -130,6 +131,7 @@ class PaperType(BabelNamed):
 
 class PaperTypes(dd.Table):
     model = 'sales.PaperType'
+    required_roles = dd.login_required(LedgerStaff)
     column_names = 'name template *'
 
 
@@ -342,6 +344,7 @@ class InvoiceDetail(dd.DetailLayout):
 
 class Invoices(SalesDocuments):
     model = 'sales.VatProductInvoice'
+    required_roles = dd.login_required(LedgerUser)
     order_by = ["-id"]
     # order_by = ["journal", "accounting_period__year", "number"]
     column_names = "id voucher_date partner total_incl user *"
@@ -481,6 +484,7 @@ class InvoiceItem(ProductDocItem, SequencedVoucherItem):
 class InvoiceItems(dd.Table):
     """Shows all sales invoice items."""
     model = 'sales.InvoiceItem'
+    required_roles = dd.login_required(LedgerStaff)
     auto_fit_column_widths = True
     column_names = "product title discount unit_price qty total_incl *"
     # hidden_columns = "seqno description total_base total_vat"
@@ -503,6 +507,7 @@ class ItemsByInvoice(InvoiceItems):
     label = _("Content")
     master_key = 'voucher'
     order_by = ["seqno"]
+    required_roles = dd.login_required(LedgerUser)
 
 
 

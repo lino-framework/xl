@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -21,10 +21,10 @@ from lino import mixins
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.contacts.mixins import ContactRelated
-
+from lino.modlib.office.roles import OfficeUser, OfficeStaff
 
 class BookingStates(dd.Workflow):
-    required_roles = dd.login_required(dd.SiteStaff)
+    required_roles = dd.login_required(OfficeStaff)
 
 add = BookingStates.add_item
 add('10', _("Draft"), 'draft', editable=True)
@@ -161,6 +161,7 @@ class BookingDetail(dd.DetailLayout):
 
 
 class Bookings(dd.Table):
+    required_roles = dd.login_required(OfficeStaff)
     model = 'rooms.Booking'
     #~ order_by = ['date','start_time']
     detail_layout = BookingDetail()

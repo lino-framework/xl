@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-02-27 09:43+0200\n"
-"PO-Revision-Date: 2017-02-27 09:44+0200\n"
+"PO-Revision-Date: 2017-02-27 15:28+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -2234,7 +2234,7 @@ msgstr "Angefragt"
 
 #: lino_xl/lib/courses/choicelists.py:55
 msgid "Trying"
-msgstr "Probe"
+msgstr "Test"
 
 #: lino_xl/lib/courses/choicelists.py:56 lino_xl/lib/courses/models.py:490
 msgid "Confirmed"
