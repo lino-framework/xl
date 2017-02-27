@@ -253,6 +253,10 @@ class Course(Reservation, Duplicable):
 
         Number of requested places.
 
+    .. attribute:: trying
+
+        Number of trying places.
+
     .. attribute:: confirmed
 
         Number of confirmed places.
@@ -495,6 +499,10 @@ class Course(Reservation, Duplicable):
         # return rt.actors.courses.EnrolmentsByCourse.request(
         #     self, param_values=pv)
 
+    @dd.virtualfield(models.IntegerField(_("Trying")))
+    def trying(self, ar):
+        return self.get_places_sum(state=EnrolmentStates.trying)
+    
     @dd.requestfield(_("Enrolments"))
     def enrolments(self, ar):
         return self.get_enrolments(start_date=dd.today())
