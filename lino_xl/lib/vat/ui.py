@@ -31,6 +31,7 @@ from .mixins import VatDocument
 
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
 from lino_xl.lib.ledger.choicelists import VoucherTypes
+from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 
 from .models import VatAccountInvoice
 
@@ -39,6 +40,7 @@ class VatRules(dd.Table):
     """The table of all :class:`lino_xl.lib.vat.models.VatRule` objects."""
 
     model = 'vat.VatRule'
+    required_roles = dd.login_required(LedgerStaff)
     column_names = "seqno country vat_class vat_regime \
     start_date end_date rate can_edit *"
     hide_sums = True
@@ -76,6 +78,7 @@ class Invoices(PartnerVouchers):
     objects.
 
     """
+    required_roles = dd.login_required(LedgerUser)
     model = 'vat.VatAccountInvoice'
     order_by = ["-id"]
     column_names = "voucher_date id number partner total_incl user *"
@@ -109,6 +112,7 @@ VoucherTypes.add_item(VatAccountInvoice, InvoicesByJournal)
 
 
 class ItemsByInvoice(dd.Table):
+    required_roles = dd.login_required(LedgerUser)
     model = 'vat.InvoiceItem'
     column_names = "account title vat_class total_base total_vat total_incl"
     master_key = 'voucher'
@@ -122,6 +126,7 @@ class VouchersByPartner(dd.VirtualTable):
     customized slave summary.
 
     """
+    required_roles = dd.login_required(LedgerUser)
     label = _("VAT vouchers")
     order_by = ["-voucher_date", '-id']
     master = 'contacts.Partner'

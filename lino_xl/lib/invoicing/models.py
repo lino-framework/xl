@@ -40,7 +40,7 @@ from lino.modlib.users.mixins import UserAuthored, My
 # from lino_xl.lib.ledger.choicelists import VoucherTypes
 
 from lino.api import dd, rt, _
-from lino_xl.lib.ledger.roles import LedgerStaff
+from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from .mixins import Invoiceable
 from .actions import (UpdatePlan, ToggleSelection, StartInvoicing,
                       StartInvoicingForJournal,
@@ -300,6 +300,7 @@ class Item(dd.Model):
 
 
 class Plans(dd.Table):
+    required_roles = dd.login_required(LedgerUser)
     model = "invoicing.Plan"
     detail_layout = """user journal today max_date partner
     invoicing.ItemsByPlan
@@ -307,7 +308,7 @@ class Plans(dd.Table):
 
 
 class MyPlans(My, Plans):
-    required_roles = dd.login_required(LedgerStaff)
+    pass
 
 
 class AllPlans(Plans):
@@ -315,6 +316,7 @@ class AllPlans(Plans):
 
 
 class Items(dd.Table):
+    required_roles = dd.login_required(LedgerUser)
     model = "invoicing.Item"
 
 
@@ -326,6 +328,7 @@ class ItemsByPlan(Items):
 
 
 class InvoicingsByInvoiceable(dd.Table):
+    required_roles = dd.login_required(LedgerUser)
     model = dd.plugins.invoicing.item_model
     label = _("Invoicings")
     master_key = 'invoiceable'

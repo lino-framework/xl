@@ -151,7 +151,7 @@ class CourseDetail(dd.DetailLayout):
     # enrolments = dd.Panel("""
     # OptionsByCourse:20 EnrolmentsByCourse:40
     # """, label=_("Enrolments"))
-
+    
 
 class Activities(dd.Table):
     """Base table for all activities.
@@ -258,11 +258,13 @@ class Activities(dd.Table):
 
 
 class Courses(Activities):
+    # required_roles = dd.login_required(CoursesUser)
     _course_area = CourseAreas.default.as_callable()
 
 
 class AllActivities(Activities):
     _course_area = None
+    required_roles = dd.login_required(CoursesUser)
 
 
 class CoursesByTeacher(Activities):

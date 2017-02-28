@@ -25,6 +25,7 @@ from __future__ import unicode_literals
 from __future__ import print_function
 
 from lino.api import dd, _
+from lino_xl.lib.ledger.roles import LedgerStaff
 
 
 class VatClasses(dd.ChoiceList):
@@ -47,6 +48,7 @@ class VatClasses(dd.ChoiceList):
     """
     verbose_name = _("VAT Class")
     verbose_name_plural = _("VAT Classes")
+    required_roles = dd.login_required(LedgerStaff)
 
 add = VatClasses.add_item
 add('0', _("Exempt"), 'exempt')    # post stamps, ...
@@ -70,6 +72,7 @@ class VatRegimes(dd.ChoiceList):
     verbose_name = _("VAT regime")
     verbose_name_plural = _("VAT regimes")
     item_class = VatRegime
+    required_roles = dd.login_required(LedgerStaff)
     help_text = _(
         "Determines how the VAT is being handled, \
         i.e. whether and how it is to be paid.")

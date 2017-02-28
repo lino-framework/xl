@@ -1,4 +1,5 @@
 # Copyright 2008-2016 Luc Saffre
+# License: BSD (see file COPYING for details)
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
