@@ -39,7 +39,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
     verbose_name = _("Accounting")
 
-    needs_plugins = ['lino_cosi.lib.cosi']  # translations
+    needs_plugins = ['lino_xl.lib.xl']  # translations
 
     ref_length = 20
     """The `max_length` of the `Reference` field of an account.

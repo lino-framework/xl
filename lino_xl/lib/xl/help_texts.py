@@ -424,6 +424,7 @@ teacher in a given room to speak about a given subject."""),
 in this course."""),
     'lino_xl.lib.courses.models.Course.free_places' : _("""Number of free places."""),
     'lino_xl.lib.courses.models.Course.requested' : _("""Number of requested places."""),
+    'lino_xl.lib.courses.models.Course.trying' : _("""Number of trying places."""),
     'lino_xl.lib.courses.models.Course.confirmed' : _("""Number of confirmed places."""),
     'lino_xl.lib.courses.models.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
 given course."""),
