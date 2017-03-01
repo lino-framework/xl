@@ -34,6 +34,11 @@ from lino.mixins import Sequenced
 
 # FKMATCH = False
 
+if dd.is_installed('ledger'):
+    project_model = dd.plugins.ledger.project_model
+else:
+    project_model = None
+    
 
 class ProjectRelated(dd.Model):
     """Model mixin for objects that are related to a :attr:`project`.
@@ -50,7 +55,7 @@ class ProjectRelated(dd.Model):
         abstract = True
 
     project = dd.ForeignKey(
-        dd.plugins.ledger.project_model,
+        project_model,
         blank=True, null=True,
         related_name="%(app_label)s_%(class)s_set_by_project")
 
@@ -58,7 +63,7 @@ class ProjectRelated(dd.Model):
     def get_registrable_fields(cls, site):
         for f in super(ProjectRelated, cls).get_registrable_fields(site):
             yield f
-        if dd.plugins.ledger.project_model:
+        if project_model:
             yield 'project'
 
 
