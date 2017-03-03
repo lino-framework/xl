@@ -104,7 +104,7 @@ class UpdateEventsByEvent(UpdateEvents):
         return obj.owner.update_reminders(ar)
 
 
-class EventGenerator(UserAuthored):
+class EventGenerator(dd.Model):
     # TODO : why do we inherit UserAuthored?!
     """
     Base class for things that generate a suite of events.
@@ -173,10 +173,10 @@ class EventGenerator(UserAuthored):
         generated.
 
         """
-
-        if self.user is None:
+        user = self.gen_event_user()
+        if user is None:
             return settings.SITE.get_default_language()
-        return self.user.language
+        return user.language
 
     def update_cal_room(self, i):
         return None
@@ -688,7 +688,8 @@ class RecurrenceSet(Started, Ended):
 dd.update_field(RecurrenceSet, 'start_date', default=dd.today)
 
 
-class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable):
+class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
+                  UserAuthored):
     """Base class for :class:`lino_xl.lib.rooms.models.Booking` and
     :class:`lino.modlib.courses.models.Course`.
 

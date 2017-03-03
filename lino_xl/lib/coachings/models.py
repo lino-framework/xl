@@ -40,12 +40,17 @@ GSS_LABEL = _("GSS")  # General Social Service
 
 class CoachingType(mixins.BabelNamed):
 
-    """.. attribute:: does_integ
+    """The **type** of a coaching can be used for expressing different
+    types of responsibilities. For example in :ref:`welfare` they
+    differentiate between "General Social Service" and "Integration
+    Service".
+
+    .. attribute:: does_integ
 
         Whether coachings of this type are to be considered as
         integration work. This is used when generating calendar events
         for evaluation meetings (see
-        :meth:`lino_welfare.modlib.isip.mixins.ContractBase.setup_auto_event`)
+        :meth:`lino_xl.lib.coaching.Coachable.setup_auto_event`)
 
     """
     class Meta:
