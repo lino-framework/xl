@@ -53,6 +53,27 @@ class Coachable(ChangeObservable):
         # logger.info("20140725 qs is %s", qs)
         return None
 
+    def setup_auto_event(self, evt):
+        """
+        This implements the rule that suggested evaluation events should be
+        for the *currently responsible* coach if the contract's author
+        no longer coaches that client.  This is relevant if coach
+        changes while contract is active (see :doc:`/specs/integ`).
+
+        The **currently responsible coach** is the user for which
+        there is a coaching which has :attr:`does_integ
+        <lino_xl.lib.coaching.models.CoachingType.does_integ>`
+        set to `True`..
+
+        """
+        d = evt.start_date
+        coachings = self.get_coachings(
+            (d, d), type__does_integ=True, user=evt.user)
+        if not coachings.exists():
+            coachings = self.get_coachings((d, d), type__does_integ=True)
+            if coachings.count() == 1:
+                evt.user = coachings[0].user
+
     @dd.displayfield(_('Primary coach'))
     def primary_coach(self, ar=None):
         return self.get_primary_coach()

@@ -319,7 +319,8 @@ class Task(Component):
         # ~ return "#" + str(self.pk)
 
 
-class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator):
+class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
+                     UserAuthored):
     """A rule designed to generate a series of recurrent events.
     
     .. attribute:: name
