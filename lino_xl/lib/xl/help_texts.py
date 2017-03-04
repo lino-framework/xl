@@ -157,11 +157,14 @@ It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
 (and optionally wants to get reminded about it)."""),
     'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates."""),
+    'lino_xl.lib.cal.models.EventPolicy' : _("""An event policy is mostly a rule used for generating automatic
+events."""),
     'lino_xl.lib.cal.models.RecurrentEvent' : _("""A rule designed to generate a series of recurrent events."""),
     'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
     'lino_xl.lib.cal.models.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
-    'lino_xl.lib.cal.models.UpdateGuests' : _("""Decide whether it is time to add Guest instances for this event,
-and if yes, call suggest_guests() to instantiate them."""),
+    'lino_xl.lib.cal.models.UpdateGuests' : _("""Updates the list of participants for this event according to the
+suggestions. Calls suggest_guests() to
+instantiate them."""),
     'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
 communication with the Ext.ensible CalendarPanel
 because we consider the "all day" checkbox
@@ -272,10 +275,14 @@ main record has been modified during the observed period."""),
     'lino_xl.lib.coachings.desktop.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
     'lino_xl.lib.coachings.mixins.Coachable' : _("""Base class for coachable client."""),
     'lino_xl.lib.coachings.mixins.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
-    'lino_xl.lib.coachings.models.CoachingType' : _("""Whether coachings of this type are to be considered as
+    'lino_xl.lib.coachings.models.CoachingType' : _("""The type of a coaching can be used for expressing different
+types of responsibilities. For example in welfare they
+differentiate between "General Social Service" and "Integration
+Service"."""),
+    'lino_xl.lib.coachings.models.CoachingType.does_integ' : _("""Whether coachings of this type are to be considered as
 integration work. This is used when generating calendar events
 for evaluation meetings (see
-lino_welfare.modlib.isip.mixins.ContractBase.setup_auto_event())"""),
+lino_xl.lib.coaching.Coachable.setup_auto_event())"""),
     'lino_xl.lib.coachings.models.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French) is
 when a given client is being coached by a given user during a
 given period."""),
@@ -405,6 +412,7 @@ consist of only digits."""),
     'lino_xl.lib.courses.desktop.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
     'lino_xl.lib.courses.desktop.EnrolmentsByPupil.master' : _("""alias of Person"""),
     'lino_xl.lib.courses.desktop.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.desktop.StatusReport' : _("""Gives an overview about what's up today ."""),
     'lino_xl.lib.courses.models.Line' : _("""An activity line (or series) groups courses into a
 configurable list of categories."""),
     'lino_xl.lib.courses.models.Line.name' : _("""The designation of this activity line as seen by the user

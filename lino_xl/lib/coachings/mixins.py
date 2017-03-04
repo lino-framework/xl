@@ -60,11 +60,10 @@ class Coachable(ChangeObservable):
             return obj.user
 
     def setup_auto_event(self, evt):
-        """
-        This implements the rule that suggested evaluation events should be
-        for the *currently responsible* coach if the contract's author
-        no longer coaches that client.  This is relevant if coach
-        changes while contract is active (see :doc:`/specs/integ`).
+        """This implements the rule that suggested evaluation events should
+        be for the *currently responsible* coach if the contract's
+        author no longer coaches that client.  This is relevant if
+        coach changes while contract is active.
 
         The **currently responsible coach** is the user for which
         there is a coaching which has :attr:`does_integ
