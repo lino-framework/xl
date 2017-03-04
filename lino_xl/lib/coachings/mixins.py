@@ -42,16 +42,22 @@ class Coachable(ChangeObservable):
             qs = qs.filter(only_active_coachings_filter(period))
         return qs
 
+    def get_primary_coaching(self):
+        # qs = self.coachings_by_client.filter(primary=True).distinct()
+        # 20170303 : wondering why i added distinct() here...
+        qs = self.coachings_by_client.filter(primary=True)
+        # logger.info("20140725 qs is %s", qs)
+        if qs.count() == 1:
+            return qs[0]
+        
     def get_primary_coach(self):
         """Return the one and only primary coach of this client (or `None` if
         there's less or more than one).
 
         """
-        qs = self.coachings_by_client.filter(primary=True).distinct()
-        if qs.count() == 1:
-            return qs[0].user
-        # logger.info("20140725 qs is %s", qs)
-        return None
+        obj = self.get_primary_coaching()
+        if obj is not None:
+            return obj.user
 
     def setup_auto_event(self, evt):
         """
@@ -76,7 +82,12 @@ class Coachable(ChangeObservable):
 
     @dd.displayfield(_('Primary coach'))
     def primary_coach(self, ar=None):
-        return self.get_primary_coach()
+        if ar is None:
+            return ''
+        pc = self.get_primary_coach()
+        if pc is None:
+            return ''
+        return ar.obj2html(pc)
 
     # primary_coach = property(get_primary_coach)
 

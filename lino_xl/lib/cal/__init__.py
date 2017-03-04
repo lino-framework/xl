@@ -141,6 +141,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.GuestRoles')
         # m.add_action(GuestStatuses)
         m.add_action('cal.EventTypes')
+        m.add_action('cal.EventPolicies')
         m.add_action('cal.RemoteCalendars')
 
     def setup_explorer_menu(self, site, profile, m):

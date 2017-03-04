@@ -217,6 +217,14 @@ class ClientContactsByType(ClientContacts):
     auto_fit_column_widths = True
 
 
+class ClientContactsByCompany(ClientContacts):
+    required_roles = dd.login_required()
+    master_key = 'company'
+    column_names = 'client contact_person remark *'
+    label = _("Clients contacts")
+    auto_fit_column_widths = True
+
+
 class PartnersByClientContactType(contacts.Partners):
     master_key = 'client_contact_type'
     column_names = 'name id mti_navigator *'

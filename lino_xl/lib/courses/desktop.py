@@ -26,14 +26,14 @@ ONE = Decimal(1)
 from django.db import models
 from django.db.models import Q
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
 
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 from lino import mixins
 
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
 from lino.utils.mti import get_child
+from lino.utils.report import Report
 
 from lino.modlib.system.choicelists import PeriodEvents
 
@@ -614,5 +614,24 @@ class EnrolmentsByOption(Enrolments):
 #         blank=True, null=True,
 #         help_text=_("Fill in only if this event is a session of a course."),
 #         related_name="events_by_course"))
+
+
+
+
+
+class StatusReport(Report):
+    """Gives an overview about what's up today .
+
+    """
+
+    label = _("Status Report")
+    required_roles = dd.login_required(CoursesUser)
+
+    @classmethod
+    def get_story(cls, self, ar):
+        for topic in rt.models.courses.Topic.objects.all():
+            yield E.h3(str(topic))
+            yield ar.spawn(
+                rt.actors.courses.CoursesByTopic, master_instance=topic)
 
 

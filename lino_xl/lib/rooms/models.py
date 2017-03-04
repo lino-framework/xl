@@ -87,10 +87,10 @@ class Booking(ContactRelated, Reservation):
     def update_cal_event_type(self):
         return self.event_type
 
-    def update_cal_summary(self, i):
+    def update_cal_summary(self, et, i):
         if self.every_unit == Recurrencies.once:
-            return dd.babelattr(self.event_type, 'event_label')
-        return "%s %s" % (dd.babelattr(self.event_type, 'event_label'), i)
+            return dd.babelattr(et, 'event_label')
+        return "%s %s" % (dd.babelattr(et, 'event_label'), i)
 
     def before_auto_event_save(self, event):
         """Sets room and start_time for automatic events.

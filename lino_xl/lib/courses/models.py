@@ -352,9 +352,14 @@ class Course(Reservation, Duplicable):
     def update_cal_event_type(self):
         return self.line.event_type
 
-    def update_cal_summary(self, i):
-        label = dd.babelattr(self.line.event_type, 'event_label')
-        return "%s %d" % (label, i)
+    def get_events_user(self):
+        """The user of generated events is not the course manager (author) but
+        the teacher.
+
+        """
+        if self.teacher:
+            return self.teacher.get_as_user() or self.user
+        return self.user
 
     def suggest_cal_guests(self, event):
         """Look up enrolments of this course and suggest them as guests."""
