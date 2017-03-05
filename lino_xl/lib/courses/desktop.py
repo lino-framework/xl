@@ -9,6 +9,7 @@
 
 from __future__ import unicode_literals
 from __future__ import print_function
+from builtins import str
 
 """Database models for :mod:`lino_xl.lib.courses`.
 
