@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -17,9 +17,11 @@ from __future__ import unicode_literals
 
 
 from django.db import models
+from django.conf import settings
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
+
 
 from lino.api import dd
 
@@ -48,6 +50,12 @@ add('30', _("Done"), 'done')
 # add('40', _("Sleeping"),'sleeping')
 add('50', _("Cancelled"), 'cancelled')
 
+
+if not settings.SITE.use_silk_icons:
+    TaskStates.todo.button_text = "☐"  # BALLOT BOX \u2610
+    TaskStates.started.button_text = "☉"  # SUN (U+2609)	
+    TaskStates.done.button_text = "☑"  # BALLOT BOX WITH CHECK \u2611
+    TaskStates.cancelled.button_text = "☒"  # BALLOT BOX WITH X (U+2612)
 
 class EventState(dd.State):
     fixed = False
@@ -140,10 +148,14 @@ add('10', _("Invited"), 'invited')
 
 @dd.receiver(dd.pre_analyze)
 def setup_task_workflows(sender=None, **kw):
-
+    def f(name):
+        if settings.SITE.use_silk_icons:
+            return name
+        
     TaskStates.todo.add_transition(
         _("Reopen"), required_states='done cancelled')
+    
     TaskStates.done.add_transition(
-        required_states='todo started', icon_name='accept')
+        required_states='todo started', icon_name=f('accept'))
     TaskStates.cancelled.add_transition(
-        required_states='todo started', icon_name='cancel')
+        required_states='todo started', icon_name=f('cancel'))
