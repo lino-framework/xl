@@ -74,7 +74,9 @@ class MoveEventNext(dd.MultipleRowAction):
 
 
 class UpdateEvents(dd.MultipleRowAction):
-    """This is installed as :attr:`update_events` on
+    """Generate or update the automatic events controlled by this object.
+
+    This action is installed as :attr:`update_events` on
     :class:`EventGenerator`.
 
     """
@@ -108,19 +110,8 @@ class EventGenerator(dd.Model):
     """
     Base class for things that generate a suite of events.
 
-    The generated events are "controlled" by their generator (their
-    `owner` field points to the generator) and have a non-empty
-    `auto_type` field.
+    See :ref:`specs.cal.automatic_events`.
 
-    Examples:
-
-    - :class:`Reservation` (subclassed by
-      :class:`lino.modlib.courses.Course`)
-
-    - :class:`lino_welfare.modlib.isip.models.Contract` and
-      :class:`lino_welfare.modlib.jobs.models.Contract` are event generators
-      with a separate
-    
     """
 
     class Meta:
@@ -518,16 +509,31 @@ class EventGenerator(dd.Model):
 
 class RecurrenceSet(Started, Ended):
 
-    """Abstract base for models that express a set of recurrency
-    rules. This might be combined with :class:`EventGenerator` into a
-    same model as done by :class:`Reservation`.
+    """Mixin for models that express a set of repeating calendar events.
+    See :ref:`specs.cal.automatic_events`.
 
-    Thanks to http://www.kanzaki.com/docs/ical/rdate.html
+    .. attribute:: start_date
+    .. attribute:: start_time
+    .. attribute:: end_date
+    .. attribute:: end_time
+
+    .. attribute:: every
+    .. attribute:: every_unit
+    .. attribute:: max_events
+
+    .. attribute:: monday
+    .. attribute:: tuesday
+    .. attribute:: wednesday
+    .. attribute:: thursday
+    .. attribute:: friday
+    .. attribute:: saturday
+    .. attribute:: sunday
+
 
     .. attribute:: weekdays_text
 
-        A textual formulation of the weekdays where the recurrence
-        occurs.
+        A virtual field returning the textual formulation of the
+        weekdays where the recurrence occurs.
     
         Usage examples see :ref:`book.specs.cal`.
 

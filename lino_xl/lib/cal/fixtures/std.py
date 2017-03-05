@@ -36,9 +36,13 @@ def objects():
     general = calendar(**dd.str2kw('name', _("General")))
     yield general
     # settings.SITE.site_config.site_calendar = general
+    d = dd.demo_date()
+    if d.month > 4:
+        d = d.replace(month=4, day=1)
+    else:
+        d = d.replace(month=4, day=1, year=d.year-1)
     settings.SITE.site_config.update(
-        site_calendar=general,
-        hide_events_before=dd.demo_date(-300).replace(month=4, day=1))
+        site_calendar=general, hide_events_before=d)
     
     
     # yield settings.SITE.site_config
