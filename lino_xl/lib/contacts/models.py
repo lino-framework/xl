@@ -33,7 +33,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
-from lino.api import dd, _, pgettext
+from lino.api import dd, rt, _
 from lino import mixins
 
 from lino.utils import join_words
@@ -215,6 +215,18 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
             yield unicode(pv.observed_event)
 
 
+    def get_as_user(self):
+        """Return the user object representing this partner.
+
+        """
+        User = rt.models.users.User
+        try:
+            return User.objects.get(partner=self)
+        except User.DoesNotExist:
+            pass
+        except User.MultipleObjectsReturned:
+            pass
+        
 class PartnerDetail(dd.DetailLayout):
 
     main = """

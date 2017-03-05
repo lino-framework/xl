@@ -42,9 +42,12 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.cal']
 
     def on_site_startup(self, site):
+        from lino.mixins import Contactable
         from lino.core.fields import fields_list
         self.pupil_model = site.models.resolve(self.pupil_model)
         self.teacher_model = site.models.resolve(self.teacher_model)
+        if not issubclass(self.teacher_model, Contactable):
+            raise Exception("teacher_model must be contactable")
         # self.pupil_name_fields = set(self.pupil_name_fields.split())
         self.pupil_name_fields = fields_list(
             site.models.courses.Enrolment, self.pupil_name_fields)
@@ -87,3 +90,4 @@ class Plugin(ad.Plugin):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
         yield self.site.actors.courses.MyCoursesGiven
+        yield self.site.actors.courses.StatusReport

@@ -89,10 +89,13 @@ class Plugin(ad.Plugin):
     partner_model = 'contacts.Partner'
     
     ignore_dates_before = None
-    """
-    Ignore dates before the given date.  Set this to `None` if you want
-    no limit.
-    Default value is "7 days before server startup".
+    """Ignore dates before the given date.  
+
+    Default value is `None`, meaning "no limit".
+
+    Unlike :attr:`hide_events_before
+    <lino.modlib.lino_startup.models.SiteConfig.hide_events_before>`
+    this is not editable through the web interface.
 
     """
 
@@ -141,6 +144,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.GuestRoles')
         # m.add_action(GuestStatuses)
         m.add_action('cal.EventTypes')
+        m.add_action('cal.EventPolicies')
         m.add_action('cal.RemoteCalendars')
 
     def setup_explorer_menu(self, site, profile, m):

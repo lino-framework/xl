@@ -987,3 +987,16 @@ class MyUnconfirmedAppointments(MyEvents):
         kw.update(show_appointments=dd.YesNo.yes)
         return kw
 
+
+
+class EventPolicies(dd.Table):
+    required_roles = dd.login_required(OfficeStaff)
+    model = 'cal.EventPolicy'
+    column_names = 'name  event_type max_events every every_unit monday tuesday wednesday thursday friday saturday sunday *'
+    # detail_layout = """
+    # id name
+    # max_events every every_unit event_type
+    # monday tuesday wednesday thursday friday saturday sunday
+    # """
+
+    

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Installs standard values for :mod:`lino_xl.lib.cal`, including a
@@ -19,6 +19,7 @@ from dateutil.easter import easter
 from django.conf import settings
 
 from lino.utils.instantiator import Instantiator
+from lino_xl.lib.cal.choicelists import DurationUnits, Recurrencies, WORKDAYS
 
 from lino.api import dd, rt, _
 
@@ -35,9 +36,14 @@ def objects():
     general = calendar(**dd.str2kw('name', _("General")))
     yield general
     # settings.SITE.site_config.site_calendar = general
+    d = dd.demo_date()
+    if d.month > 4:
+        d = d.replace(month=4, day=1)
+    else:
+        d = d.replace(month=4, day=1, year=d.year-1)
     settings.SITE.site_config.update(
-        site_calendar=general,
-        hide_events_before=dd.demo_date().replace(month=4, day=1))
+        site_calendar=general, hide_events_before=d)
+    
     
     # yield settings.SITE.site_config
 
@@ -46,7 +52,8 @@ def objects():
         is_appointment=False,
         all_rooms=True, **dd.str2kw('name', _("Holidays")))
     yield holidays
-    yield event_type(**dd.str2kw('name', _("Meeting")))
+    meeting = event_type(**dd.str2kw('name', _("Meeting")))
+    yield meeting    
 
     RecurrentEvent = rt.modules.cal.RecurrentEvent
     add = Instantiator(RecurrentEvent, event_type=holidays).build
@@ -55,7 +62,7 @@ def objects():
         if et is None:
             et = en
         return add(
-            every_unit=cal.Recurrencies.yearly,
+            every_unit=Recurrencies.yearly,
             monday=True, tuesday=True, wednesday=True, thursday=True,
             friday=True, saturday=True, sunday=True,
             every=1,
@@ -76,7 +83,7 @@ def objects():
 
     def relative_holiday(offset, name):
         return add(
-            every_unit=cal.Recurrencies.easter, every=1,
+            every_unit=Recurrencies.easter, every=1,
             start_date=easter1+relativedelta(days=offset),
             **dd.str2kw('name', name))
 
@@ -92,3 +99,41 @@ def objects():
     for obj in RecurrentEvent.objects.all():
         if not obj.update_reminders(ar):
             raise Exception("Oops, %s generated no events" % obj)
+
+
+    # event policies
+
+    kw = dict()
+    for wd in WORKDAYS:
+        kw[wd.name] = True
+    kw.update(event_type=meeting)
+    exam_policy = Instantiator(
+        'cal.EventPolicy', 'every',
+        every_unit=DurationUnits.months, **kw).build
+    yield exam_policy(
+        1, start_time="9:00",
+        **dd.str2kw('name', _("Every month")))
+    yield exam_policy(
+        2, start_time="9:00",
+        **dd.str2kw('name', _("Every 2 months")))
+    yield exam_policy(
+        3, **dd.str2kw('name', _("Every 3 months")))
+
+    exam_policy = Instantiator(
+        'cal.EventPolicy', 'every',
+        every_unit=DurationUnits.weeks, **kw).build
+    yield exam_policy(
+        2, start_time="9:00",
+        **dd.str2kw('name', _("Every 2 weeks")))
+
+    exam_policy = Instantiator(
+        'cal.EventPolicy', 'every',
+        every_unit=DurationUnits.days, **kw).build
+    yield exam_policy(
+        10, max_events=1, start_time="9:00",
+        **dd.str2kw('name', _("Once after 10 days")))
+
+    exam_policy = Instantiator('cal.EventPolicy').build
+    yield exam_policy(**dd.str2kw('name', _("Other")))
+
+        

@@ -318,6 +318,22 @@ class Task(Component):
     # def __unicode__(self):
         # ~ return "#" + str(self.pk)
 
+class EventPolicy(mixins.BabelNamed, RecurrenceSet):
+    """An **event policy** is mostly a rule used for generating automatic
+    events.
+
+    """
+    class Meta:
+        app_label = 'cal'
+        verbose_name = _("Event Policy")
+        verbose_name_plural = _('Event Policies')
+        abstract = dd.is_abstract_model(__name__, 'EventPolicy')
+
+    event_type = dd.ForeignKey(
+        'cal.EventType', null=True, blank=True,
+        help_text=_("""Generated events will receive this type."""))
+
+
 
 class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
                      UserAuthored):
@@ -343,6 +359,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
         app_label = 'cal'
         verbose_name = _("Recurrent event rule")
         verbose_name_plural = _("Recurrent event rules")
+        abstract = dd.is_abstract_model(__name__, 'RecurrentEvent')
 
     event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
     description = dd.RichTextField(
@@ -370,7 +387,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
     def update_cal_event_type(self):
         return self.event_type
 
-    def update_cal_summary(self, i):
+    def update_cal_summary(self, et, i):
         return six.text_type(self)
 
     def care_about_conflicts(self, we):
@@ -386,12 +403,16 @@ dd.update_field(
 
 
 class UpdateGuests(dd.MultipleRowAction):
-    """Decide whether it is time to add Guest instances for this event,
-    and if yes, call :meth:`suggest_guests` to instantiate them.
+    """Updates the list of participants for this event according to the
+    suggestions. Calls :meth:`suggest_guests` to
+    instantiate them.
 
-    - No guests must be added when loading from dump
-    - The Event must be in a state which allows editing the guests
-    - If there are already at least one guest, no guests will be added
+    - No guests are added when loading from dump
+
+    - The event must be in a state which allows editing the guests
+
+    - Deletes existing guests in state invited that are no longer
+      suggested
 
     """
 
@@ -406,12 +427,18 @@ class UpdateGuests(dd.MultipleRowAction):
         if not obj.state.edit_guests:
             ar.info("not state.edit_guests")
             return 0
-        existing = set([g.partner.pk for g in obj.guest_set.all()])
+        # existing = set([g.partner.pk for g in obj.guest_set.all()])
+        existing = {g.partner.pk : g for g in obj.guest_set.all()}
         n = 0
-        for g in obj.suggest_guests():
-            if g.partner.pk not in existing:
-                g.save()
+        for sg in obj.suggest_guests():
+            eg = existing.pop(sg.partner.pk, None)
+            if eg is None:
+                sg.save()
                 n += 1
+        # remove unwanted participants
+        for pk, g in existing.items():
+            if g.state == GuestStates.invited:
+                g.delete()
         return n
 
 
@@ -822,7 +849,8 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     def auto_type_changed(self, ar):
         """When the number has changed, we must update the summary."""
         if self.auto_type:
-            self.summary = self.owner.update_cal_summary(self.auto_type)
+            self.summary = self.owner.update_cal_summary(
+                self.event_type, self.auto_type)
 
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 

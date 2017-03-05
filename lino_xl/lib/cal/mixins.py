@@ -74,7 +74,9 @@ class MoveEventNext(dd.MultipleRowAction):
 
 
 class UpdateEvents(dd.MultipleRowAction):
-    """This is installed as :attr:`update_events` on
+    """Generate or update the automatic events controlled by this object.
+
+    This action is installed as :attr:`update_events` on
     :class:`EventGenerator`.
 
     """
@@ -105,23 +107,11 @@ class UpdateEventsByEvent(UpdateEvents):
 
 
 class EventGenerator(dd.Model):
-    # TODO : why do we inherit UserAuthored?!
     """
     Base class for things that generate a suite of events.
 
-    The generated events are "controlled" by their generator (their
-    `owner` field points to the generator) and have a non-empty
-    `auto_type` field.
+    See :ref:`specs.cal.automatic_events`.
 
-    Examples:
-
-    - :class:`Reservation` (subclassed by
-      :class:`lino.modlib.courses.Course`)
-
-    - :class:`lino_welfare.modlib.isip.models.Contract` and
-      :class:`lino_welfare.modlib.jobs.models.Contract` are event generators
-      with a separate
-    
     """
 
     class Meta:
@@ -149,7 +139,8 @@ class EventGenerator(dd.Model):
         Return None if no Events should be generated.
 
         """
-        raise NotImplementedError()
+        return dd.today()
+        # raise NotImplementedError()
         #~ return self.applies_from
 
     def update_cal_until(self):
@@ -173,7 +164,7 @@ class EventGenerator(dd.Model):
         generated.
 
         """
-        user = self.gen_event_user()
+        user = self.get_events_user()
         if user is None:
             return settings.SITE.get_default_language()
         return user.language
@@ -181,18 +172,25 @@ class EventGenerator(dd.Model):
     def update_cal_room(self, i):
         return None
 
-    def gen_event_user(self):
+    def get_events_user(self):
         """Returns the user who is responsible for generated events.
 
-        In :mod.`lino_avanti` this is not the course manager (author)
-        but the teacher.
+        In :mod.`lino_avanti` this is not the author of the course but
+        the teacher.
 
         """
         return self.user
 
-    def update_cal_summary(self, i):
-        raise NotImplementedError()
-        #~ return _("Evaluation %d") % i
+    # def update_cal_summary(self, i):
+    #     ep = self.exam_policy
+    #     if ep is not None and ep.event_type is not None:
+    #         if ep.event_type.event_label:
+    #             return ep.event_type.event_label + " " + str(i)
+    #     return _("Evaluation %d") % i
+
+    def update_cal_summary(self, event_type, i):
+        label = dd.babelattr(event_type, 'event_label')
+        return _("{} {}").format(label, i)
 
     def update_reminders(self, ar):
         return self.update_auto_events(ar)
@@ -289,16 +287,17 @@ class EventGenerator(dd.Model):
 
         wanted = dict()
         unwanted = dict()
+        rset = self.update_cal_rset()
+        if rset is None:
+            ar.info("No recurrency set")
+            return wanted, unwanted
+        
         event_type = self.update_cal_event_type()
         if event_type is None:
             ar.info("No event_type")
             return wanted, unwanted
-        rset = self.update_cal_rset()
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
-        if rset is None:
-            ar.info("No recurrency set")
-            return wanted, unwanted
         if not rset.every_unit:
             ar.info("No every_unit")
             return wanted, unwanted
@@ -376,7 +375,7 @@ class EventGenerator(dd.Model):
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
         ignore_before = dd.plugins.cal.ignore_dates_before
-        user = self.gen_event_user()
+        user = self.get_events_user()
         with translation.override(self.get_events_language()):
             while max_events is None or event_no < max_events:
                 if date > until:
@@ -388,7 +387,8 @@ class EventGenerator(dd.Model):
                         auto_type=event_no,
                         user=user,
                         start_date=date,
-                        summary=self.update_cal_summary(event_no),
+                        summary=self.update_cal_summary(
+                            event_type, event_no),
                         room=self.update_cal_room(event_no),
                         owner=self,
                         event_type=event_type,
@@ -509,16 +509,31 @@ class EventGenerator(dd.Model):
 
 class RecurrenceSet(Started, Ended):
 
-    """Abstract base for models that express a set of recurrency
-    rules. This might be combined with :class:`EventGenerator` into a
-    same model as done by :class:`Reservation`.
+    """Mixin for models that express a set of repeating calendar events.
+    See :ref:`specs.cal.automatic_events`.
 
-    Thanks to http://www.kanzaki.com/docs/ical/rdate.html
+    .. attribute:: start_date
+    .. attribute:: start_time
+    .. attribute:: end_date
+    .. attribute:: end_time
+
+    .. attribute:: every
+    .. attribute:: every_unit
+    .. attribute:: max_events
+
+    .. attribute:: monday
+    .. attribute:: tuesday
+    .. attribute:: wednesday
+    .. attribute:: thursday
+    .. attribute:: friday
+    .. attribute:: saturday
+    .. attribute:: sunday
+
 
     .. attribute:: weekdays_text
 
-        A textual formulation of the weekdays where the recurrence
-        occurs.
+        A virtual field returning the textual formulation of the
+        weekdays where the recurrence occurs.
     
         Usage examples see :ref:`book.specs.cal`.
 
