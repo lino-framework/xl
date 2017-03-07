@@ -179,7 +179,7 @@ class EventGenerator(dd.Model):
         the teacher.
 
         """
-        return self.user
+        return self.get_author()
 
     # def update_cal_summary(self, i):
     #     ep = self.exam_policy
