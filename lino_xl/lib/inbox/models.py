@@ -28,7 +28,10 @@ class comment_email():
         return f
     @classmethod
     def parse_subject(self, subject_str):
-        comment, user = subject_str.split(":")
+        try:
+            comment, user = subject_str.split(":")
+        except ValueError:
+            return None, None
         #would like to return rows
         try:
             comment = rt.models.comments.Comment.objects.get(pk=comment)
@@ -71,32 +74,32 @@ class comment_email():
             for key in m.iterkeys():
                 try:
                     message = m[key]
-                except email.errors.MessageParseError:
-                    continue  # The message is malformed. Just leave it.
-
-                comment, user = cls.parse_subject(message.get("subject"))
-                if comment is None or user is None:
-                    key = fail.add(message)
-                    fail.flush()
+                    comment, user = cls.parse_subject(message.get("subject"))
+                    if comment is None or user is None:
+                        key = fail.add(message)
+                        fail.flush()
+                        m.discard(key)
+                        m.flush()
+                        logger.info("Failed to add comment-reply-email {subject} key:{key} added to ".format(subject=message.get("subject"), key=key) + fail._file.name)
+                        continue
+                    new_comment = rt.models.comments.Comment()
+                    new_comment.owner = comment.owner
+                    new_comment.reply_to = comment
+                    new_comment.user = user
+                    new_comment.short_text = message.get_payload()
+                    new_comment.full_clean()
+                    new_comment.save()
+                    key = processed.add(message)
+                    logger.info("New comment {} via email key: {}".format(new_comment.id,key))
+                    processed.flush()
                     m.discard(key)
                     m.flush()
-                    logger.info("Failed to add comment-reply-email {subject} key:{key} added to ".format(subject=message.get("subject"), key=key) + fail._file.name)
-                    continue
-                new_comment = rt.models.comments.Comment()
-                new_comment.owner = comment.owner
-                new_comment.reply_to = comment
-                new_comment.user = user
-                new_comment.short_text = message.get_payload()
-                new_comment.full_clean()
-                new_comment.save()
-                key = processed.add(message)
-                logger.info("New comment {} via email key: {}".format(new_comment.id,key))
-                processed.flush()
-                m.discard(key)
-                m.flush()
-        except Exception as e:
-            logger.exception("Failed to load comment reply email")
-            raise e
+                except Exception as e:
+                    key = fail.add(message)
+                    fail.flush()
+                    logger.exception("Failed to add comment-reply-email {subject} key:{key} added to ".format(subject=message.get("subject"), key=key) + fail._file.name)
+                    m.discard(key)
+                    m.flush()
 
         finally:
             for b in (m, fail, processed):
