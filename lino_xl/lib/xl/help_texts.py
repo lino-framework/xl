@@ -110,9 +110,7 @@ lino_welfare.modlib.aids.mixins.Confirmation."""),
     'lino_xl.lib.boards.models.Member' : _("""A Member is when a given ml.contacts.Person
 belongs to a given Board."""),
     'lino_xl.lib.cal.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date.  Set this to None if you want
-no limit.
-Default value is "7 days before server startup"."""),
+    'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
 Default value is 5 years after today."""),
     'lino_xl.lib.cal.choicelists.Weekdays' : _("""A choicelist with the seven days of a week."""),
@@ -125,16 +123,14 @@ Event."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.mixins.UpdateEvents' : _("""This is installed as update_events on
-EventGenerator."""),
+    'lino_xl.lib.cal.mixins.UpdateEvents' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.mixins.UpdateEventsByEvent' : _("""Update all events of this series. This is installed as
 update_events on Event."""),
     'lino_xl.lib.cal.mixins.EventGenerator' : _("""Base class for things that generate a suite of events."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Abstract base for models that express a set of recurrency
-rules. This might be combined with EventGenerator into a
-same model as done by Reservation."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet.weekdays_text' : _("""A textual formulation of the weekdays where the recurrence
-occurs."""),
+    'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
+See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.mixins.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
+weekdays where the recurrence occurs."""),
     'lino_xl.lib.cal.mixins.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
 lino.modlib.courses.models.Course."""),
     'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
