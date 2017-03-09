@@ -124,6 +124,7 @@ class Payable(PartnerRelated):
                     self.voucher_date)
 
         super(Payable, self).full_clean()
+        
 
     @classmethod
     def get_registrable_fields(cls, site):
