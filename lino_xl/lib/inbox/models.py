@@ -100,7 +100,8 @@ class comment_email():
                     logger.exception("Failed to add comment-reply-email {subject} key:{key} added to ".format(subject=message.get("subject"), key=key) + fail._file.name)
                     m.discard(key)
                     m.flush()
-
+        except Exception as e:
+            raise e
         finally:
             for b in (m, fail, processed):
                 b.flush()
