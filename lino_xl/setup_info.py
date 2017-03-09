@@ -18,7 +18,7 @@ import sys
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
-install_requires = ['lino', 'odfpy>1.3']
+install_requires = ['lino', 'odfpy>1.3', 'bleach']
 
 if PY2:
     install_requires.append('appy')
