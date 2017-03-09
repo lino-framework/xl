@@ -153,16 +153,16 @@ class DueMovement(object):
         else:
             self.has_unsatisfied_movement = True
 
+        voucher = mvt.voucher.get_mti_leaf()
+        due_date = voucher.get_due_date()
+        if self.due_date is None or due_date < self.due_date:
+            self.due_date = due_date
+            
         if self.trade_type is None:
-            voucher = mvt.voucher.get_mti_leaf()
             self.trade_type = voucher.get_trade_type()
         if mvt.dc == self.dc:
             self.debts.append(mvt)
             self.balance += mvt.amount
-            voucher = mvt.voucher.get_mti_leaf()
-            due_date = voucher.get_due_date()
-            if self.due_date is None or due_date < self.due_date:
-                self.due_date = due_date
             bank_account = voucher.get_bank_account()
             if bank_account is not None:
                 if self.bank_account != bank_account:

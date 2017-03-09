@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
+# Copyright 2012-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -49,12 +49,17 @@ MORE_THAN_A_MONTH = datetime.timedelta(days=40)
 def objects():
 
     Journal = rt.models.ledger.Journal
+    PaymentTerm = rt.models.ledger.PaymentTerm
+    
     Company = rt.models.contacts.Company
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
 
     PROVIDERS = Cycler(Company.objects.filter(
         sepa_accounts__iban__isnull=False).order_by('id'))
+
+    if len(PROVIDERS) == 0:
+        raise Exception("No providers.")
 
     JOURNAL_P = Journal.objects.get(ref="PRC")
     ACCOUNTS = Cycler(JOURNAL_P.get_allowed_accounts())
@@ -83,6 +88,12 @@ def objects():
     end_date = settings.SITE.demo_date(-10)  # + delta(years=-2)
     # end_date = datetime.date(START_YEAR+1, 5, 1)
     # print(20151216, START_YEAR, settings.SITE.demo_date(), end_date - date)
+
+    PAYMENT_TERMS = Cycler(PaymentTerm.objects.all())
+    if len(PAYMENT_TERMS) == 0:
+        raise Exception("No PAYMENT_TERMS.")
+
+    
     while date < end_date:
 
         for story in PURCHASE_STORIES:
@@ -90,7 +101,7 @@ def objects():
             invoice = vat.VatAccountInvoice(
                 journal=JOURNAL_P, partner=story[0], user=USERS.pop(),
                 voucher_date=vd,
-                # payment_term=PAYMENT_TERMS.pop(),
+                payment_term=PAYMENT_TERMS.pop(),
                 entry_date=vd + delta(days=1))
             yield invoice
             for account, amount in story[1]:
