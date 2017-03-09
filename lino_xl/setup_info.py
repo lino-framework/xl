@@ -153,6 +153,7 @@ lino_xl.lib.ledger.management.commands
 lino_xl.lib.sales
 lino_xl.lib.sales.fixtures
 lino_xl.lib.sepa
+lino_xl.lib.inbox
 lino_xl.lib.invoicing
 lino_xl.lib.invoicing.fixtures
 lino_xl.lib.sepa.fixtures
