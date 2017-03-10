@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -16,7 +16,9 @@ import datetime
 from dateutil.easter import easter
 
 from lino.api import dd, _
+from lino.utils.format_date import fds
 
+from .utils import day_and_month
 
 class Weekdays(dd.ChoiceList):
     """A choicelist with the seven days of a week.
@@ -36,6 +38,8 @@ WORKDAYS = frozenset([
     Weekdays.get_by_name(k)
     for k in 'monday tuesday wednesday thursday friday'.split()])
 "The five workdays of the week (Monday to Friday)."
+
+
 
 
 class DurationUnit(dd.Choice):
@@ -92,6 +96,10 @@ class DurationUnit(dd.Choice):
                 else:
                     raise
 
+    def get_date_formatter(self):
+        if self.value in 'YEM':
+            return fds
+        return day_and_month
 
 class DurationUnits(dd.ChoiceList):
 

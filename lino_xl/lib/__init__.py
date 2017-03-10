@@ -70,6 +70,7 @@ Miscellaneous
     polls
     products
     coachings
+    trends
 
 Content management
 ==================

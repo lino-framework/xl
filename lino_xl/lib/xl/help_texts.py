@@ -1065,6 +1065,7 @@ parameter. No default value."""),
     'lino_xl.lib.topics.models.Interest' : _("""An interest is the fact that a given partner is interested in a
 given topic."""),
     'lino_xl.lib.topics.models.Topic' : _("""A topic is something somebody can be interested in."""),
+    'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
     'lino_xl.lib.vat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vat.Plugin.vat_quarterly' : _("""Set this to True to support quarterly VAT declarations.
 Used by lino_cosi.lib.declarations."""),

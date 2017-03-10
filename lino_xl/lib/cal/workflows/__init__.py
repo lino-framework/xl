@@ -146,16 +146,14 @@ add('10', _("Invited"), 'invited')
 # `invited`
 
 
-@dd.receiver(dd.pre_analyze)
-def setup_task_workflows(sender=None, **kw):
-    def f(name):
-        if settings.SITE.use_silk_icons:
-            return name
-        
-    TaskStates.todo.add_transition(
-        _("Reopen"), required_states='done cancelled')
-    
-    TaskStates.done.add_transition(
-        required_states='todo started', icon_name=f('accept'))
-    TaskStates.cancelled.add_transition(
-        required_states='todo started', icon_name=f('cancel'))
+def f(name):
+    if settings.SITE.use_silk_icons:
+        return name
+
+TaskStates.todo.add_transition(
+    _("Reopen"), required_states='done cancelled')
+
+TaskStates.done.add_transition(
+    required_states='todo started', icon_name=f('accept'))
+TaskStates.cancelled.add_transition(
+    required_states='todo started', icon_name=f('cancel'))

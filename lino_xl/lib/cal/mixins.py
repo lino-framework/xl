@@ -35,6 +35,7 @@ from lino.modlib.gfks.mixins import Controllable
 from .choicelists import Recurrencies, Weekdays, AccessClasses
 
 from .workflows import EventStates
+from .utils import day_and_month
 
 def format_time(t):
     if t is None:
@@ -506,6 +507,11 @@ class EventGenerator(dd.Model):
 
         return []
 
+    def get_date_formatter(self):
+        rset = self.update_cal_rset()
+        if rset and rset.every_unit:
+            return rset.every_unit.get_date_formatter()
+        return day_and_month
 
 class RecurrenceSet(Started, Ended):
 

@@ -44,6 +44,7 @@ from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import Printable
 from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.cal.choicelists import Recurrencies
+from lino_xl.lib.cal.utils import day_and_month
 
 from lino.utils.dates import DatePeriodValue
 
@@ -449,7 +450,7 @@ class Course(Reservation, Duplicable):
     @dd.displayfield(_("Events"))
     def events_text(self, ar=None):
         return ', '.join([
-            dd.plugins.courses.day_and_month(e.start_date)
+            day_and_month(e.start_date)
             for e in self.events_by_course.order_by('start_date')])
 
     @property

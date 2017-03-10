@@ -293,12 +293,13 @@ class Task(Component):
     # ~ done = models.BooleanField(_("Done"),default=False) # iCal:COMPLETED
     # iCal:PERCENT
     percent = models.IntegerField(_("Duration value"), null=True, blank=True)
-    state = TaskStates.field(default=TaskStates.todo.as_callable)  # iCal:STATUS
+    state = TaskStates.field(
+        default=TaskStates.todo.as_callable)  # iCal:STATUS
 
-    def before_ui_save(self, ar, **kw):
-        if self.state == TaskStates.todo:
-            self.state = TaskStates.started
-        return super(Task, self).before_ui_save(ar, **kw)
+    # def before_ui_save(self, ar, **kw):
+    #     if self.state == TaskStates.todo:
+    #         self.state = TaskStates.started
+    #     return super(Task, self).before_ui_save(ar, **kw)
 
     # def on_user_change(self,request):
         # if not self.state:

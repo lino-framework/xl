@@ -53,11 +53,6 @@ class Plugin(ad.Plugin):
             site.models.courses.Enrolment, self.pupil_name_fields)
         super(Plugin, self).on_site_startup(site)
         
-    def day_and_month(self, d):
-        if d is None:
-            return "-"
-        return d.strftime("%d.%m.")
-
     def setup_main_menu(self, site, profile, main):
         m = main.add_menu(self.app_label, self.verbose_name)
         for ca in site.models.courses.CourseAreas.objects():
