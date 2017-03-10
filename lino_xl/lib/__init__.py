@@ -49,6 +49,7 @@ Office
     notes
     outbox
     postings
+    mailbox
 
 System extensions
 =================
