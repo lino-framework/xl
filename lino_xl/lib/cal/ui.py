@@ -572,7 +572,7 @@ class EventDetail(dd.DetailLayout):
     main = """
     event_type summary user assigned_to
     start end #all_day #duration state
-    room owner #priority #access_class #transparent #rset
+    room project owner #priority #access_class #transparent #rset
     # owner created:20 modified:20
     # description
     GuestsByEvent #outbox.MailsByController

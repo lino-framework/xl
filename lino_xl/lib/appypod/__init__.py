@@ -81,3 +81,14 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.Plugin`."
     verbose_name = _("Appy POD")
 
+
+    def get_used_libs(self, html=None):
+        try:
+            #~ import appy
+            from appy import version
+            version = version.verbose
+        except ImportError:
+            version = self.site.not_found_msg
+        yield ("Appy", version, "http://appyframework.org/pod.html")
+
+    
