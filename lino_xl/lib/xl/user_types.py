@@ -10,15 +10,16 @@ See also :attr:`lino.core.site.Site.user_types_module`.
 
 from lino.core.roles import UserRole
 from lino.modlib.office.roles import OfficeStaff, OfficeUser
+from lino.modlib.comments.roles import CommentsUser, CommentsStaff
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 from lino_xl.lib.polls.roles import PollsUser, PollsAdmin
 
 
-class SiteUser(OfficeUser, ContactsUser, PollsUser):
+class SiteUser(OfficeUser, ContactsUser, PollsUser, CommentsUser):
     pass
 
 
-class SiteAdmin(PollsAdmin, OfficeStaff, ContactsStaff):
+class SiteAdmin(PollsAdmin, OfficeStaff, ContactsStaff, CommentsStaff):
     pass
 
 
