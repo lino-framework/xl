@@ -120,6 +120,7 @@ lino_xl.lib.humanlinks
 lino_xl.lib.humanlinks.fixtures
 lino_xl.lib.lists
 lino_xl.lib.lists.fixtures
+lino_xl.lib.mailbox
 lino_xl.lib.notes
 lino_xl.lib.notes.fixtures
 lino_xl.lib.outbox
@@ -159,6 +160,7 @@ lino_xl.lib.invoicing.fixtures
 lino_xl.lib.sepa.fixtures
 lino_xl.lib.tim2lino
 lino_xl.lib.tim2lino.fixtures
+lino_xl.lib.trends
 lino_xl.lib.vat
 lino_xl.lib.vat.fixtures
 lino_xl.lib.vatless

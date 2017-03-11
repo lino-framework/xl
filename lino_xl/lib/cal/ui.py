@@ -572,7 +572,7 @@ class EventDetail(dd.DetailLayout):
     main = """
     event_type summary user assigned_to
     start end #all_day #duration state
-    room owner #priority #access_class #transparent #rset
+    room project owner #priority #access_class #transparent #rset
     # owner created:20 modified:20
     # description
     GuestsByEvent #outbox.MailsByController
@@ -839,6 +839,42 @@ class EventsByController(Events):
     column_names = 'when_html summary workflow_buttons *'
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
+    slave_grid_format = "summary"
+
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+        """The summary view for this table.
+
+        See :meth:`lino.core.actors.Actor.get_slave_summary`.
+
+        """
+        if ar is None:
+            return ''
+        sar = self.request_from(ar, master_instance=obj)
+
+        fmt = obj.get_date_formatter()
+
+        elems = []
+        for evt in sar:
+            # if len(elems) > 0:
+            #     elems.append(', ')
+            elems.append(' ')
+            if evt.auto_type:
+                # elems.append("({}) ".format(evt.auto_type))
+                elems.append("{}: ".format(evt.auto_type))
+
+            lbl = fmt(evt.start_date)
+            if evt.state.button_text:
+                lbl = "{0}{1}".format(lbl, evt.state.button_text)
+            elems.append(ar.obj2html(evt, lbl))
+        # elems = join_elems(elems, sep=', ')
+        sar = obj.do_update_events.request_from(sar)
+        if sar.get_permission():
+            btn = sar.ar2button(obj)
+            elems.append(E.p(btn))
+
+        return ar.html_text(E.div(*elems))
+    
 
 if settings.SITE.project_model:
 

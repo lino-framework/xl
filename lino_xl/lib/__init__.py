@@ -49,6 +49,7 @@ Office
     notes
     outbox
     postings
+    mailbox
 
 System extensions
 =================
@@ -70,6 +71,7 @@ Miscellaneous
     polls
     products
     coachings
+    trends
 
 Content management
 ==================

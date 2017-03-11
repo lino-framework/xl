@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -178,4 +178,9 @@ def update_reminder(type, owner, user, orig, msg, num, unit):
         unit.add_duration(orig, -num),
         msg,
         owner)
+
+def day_and_month(d):
+    if d is None:
+        return "-"
+    return d.strftime("%d.%m.")
 

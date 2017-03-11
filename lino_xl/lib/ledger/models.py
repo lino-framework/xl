@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -1012,6 +1012,7 @@ class Movement(ProjectRelated):
             return s + "= " + str(bal)
         return ''
         if False:
+            from lino_xl.lib.cal.utils import day_and_month
             mvts = []
             for dm in get_due_movements(CREDIT, partner=self.pupil):
                 s = dm.match
