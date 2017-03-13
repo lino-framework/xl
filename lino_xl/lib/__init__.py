@@ -19,13 +19,15 @@ Contacts management
 
 Groupware
 =========
+
 .. autosummary::
    :toctree:
 
     boards
     teams
-    topics
     lists
+    groups
+    topics
 
 Calendar & Co
 ====================
