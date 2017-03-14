@@ -19,7 +19,22 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ["django_mailbox"]
 
-    MODULE_LABEL = _("Mailbox")
+    def setup_main_menu(self, site, profile, m):
+        p = self.get_menu_group()
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('mailbox.UnassignedMessages')
+
+    def setup_config_menu(self, site, profile, m):
+        p = self.get_menu_group()
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('mailbox.Mailboxes')
+        # m.add_action('mailbox.Mailboxes')
+
+    def setup_explorer_menu(self, site, profile, m):
+        p = self.get_menu_group()
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('mailbox.Messages')
+
 
 
     #list of mboxes that are to be handeled.
