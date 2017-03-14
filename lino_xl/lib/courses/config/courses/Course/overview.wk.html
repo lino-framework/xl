@@ -1,0 +1,55 @@
+{% extends "courses/Course/base.wk.html" %}
+
+{%- block intro %}
+{{ super() }}
+
+<p>Termine: 
+{% set events = obj.events_by_course.order_by('start_date') %}
+{% for e in  events %}
+{{dd.plugins.courses.day_and_month(e.start_date)}}</td>
+{% endfor %}
+</p>
+
+{%- endblock %}
+{%- block main %}
+{{ super() }}
+<table border="1" width="100%">
+<tr>
+<td>Name</td>
+<td>Bemerkung</td>
+<td>State</td>
+<td>Places</td>
+<td>Betrag</td>
+</tr>
+
+{% set sums = SumCollector() %}
+{% set sums_by_state = SumCollector() %}
+
+{% for enrolment in obj.enrolments %}
+<tr>
+<td>{{enrolment.pupil}}</td>
+<td>{{enrolment.remark}}
+<td>{{enrolment.state}}
+</td>
+<td>{{enrolment.places}}</td>
+<td>{{enrolment.amount}}</td>
+</tr>
+{{ sums_by_state.collect(enrolment.state, 1) or ''}}
+{{ sums.collect('places', enrolment.places) or '' }}
+{{ sums.collect('amount', enrolment.amount) or '' }}
+{% endfor %}
+
+<tr>
+<td>Total</td>
+<td>
+{% for k, v in sums_by_state.items() %}
+{{ k }} = {{ v }}
+{% endfor %}
+</td>
+<td></td>
+<td>{{sums.places}}</td>
+<td>{{sums.amount}}</td>
+</tr>
+
+</table>
+{%- endblock %}

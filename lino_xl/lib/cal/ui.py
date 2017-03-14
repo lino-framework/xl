@@ -14,6 +14,7 @@ from django.conf import settings
 
 from lino.api import dd, rt, _
 from lino import mixins
+from lino.core.roles import Explorer
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
@@ -131,6 +132,7 @@ class Tasks(dd.Table):
     help_text = _("""A calendar task is something you need to do.""")
     model = 'cal.Task'
     required_roles = dd.login_required(OfficeStaff)
+    stay_in_grid = True
     column_names = 'start_date summary workflow_buttons *'
     order_by = ["start_date", "start_time"]
 
@@ -281,6 +283,7 @@ class Guests(dd.Table):
     model = 'cal.Guest'
     required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     column_names = 'partner role workflow_buttons remark event *'
+    stay_in_grid = True
     detail_layout = """
     event partner role
     state remark workflow_buttons
@@ -372,6 +375,8 @@ class Guests(dd.Table):
         if settings.SITE.project_model is not None and pv.project:
             yield unicode(pv.project)
 
+class AllGuests(Guests):
+    required_roles = dd.login_required(Explorer)
 
 class GuestsByEvent(Guests):
     master_key = 'event'
@@ -570,9 +575,9 @@ class EventDetail(dd.DetailLayout):
     start = "start_date start_time"
     end = "end_date end_time"
     main = """
-    event_type summary user assigned_to
-    start end #all_day #duration state
-    room project owner #priority #access_class #transparent #rset
+    event_type summary user
+    start end #all_day assigned_to #duration #state
+    room project owner workflow_buttons
     # owner created:20 modified:20
     # description
     GuestsByEvent #outbox.MailsByController
@@ -740,6 +745,9 @@ class Events(dd.Table):
         kw.update(start_date=settings.SITE.site_config.hide_events_before)
         return kw
 
+    
+class AllEvents(Events):
+    required_roles = dd.login_required(Explorer)
 
 class EventsByType(Events):
     master_key = 'event_type'
@@ -948,10 +956,7 @@ class MyAssignedEvents(MyEvents):
     """
     label = _("Events assigned to me")
     help_text = _("Table of events assigned to me.")
-    # master_key = 'assigned_to'
     required_roles = dd.login_required(OfficeUser)
-    # column_names = 'when_text:20 project summary workflow_buttons *'
-    # known_values = dict(assigned_to=EventStates.assigned)
 
     @classmethod
     def param_defaults(self, ar, **kw):

@@ -20,17 +20,28 @@ from django.utils.translation import pgettext_lazy as pgettext
 from ..workflows import GuestStates, EventStates
 
 
-class ResetEvent(dd.Action):
-    """
-    """
+class MarkEventTookPlace(dd.ChangeStateAction):
+    required_states = 'suggested draft cancelled'
+    
+    def before_execute(self, ar, obj):
+        qs = obj.guest_set.filter(state=GuestStates.invited)
+        count = qs.count()
+        if count > 0:
+            msg = _("Cannot mark as {state} because {count} "
+                    "participants are invited.")
+            raise Warning(msg.format(
+                count=count, state=self.target_state))
+
+class ResetEvent(dd.ChangeStateAction):
+    """Reset this event to 'suggested' state."""
     button_text = EventStates.suggested.button_text
     label = _("Reset")
-    show_in_workflow = True
-    show_in_bbar = False
-    required_states = 'draft took_place cancelled'
-    readonly = False
+    # show_in_workflow = True
+    # show_in_bbar = False
+    # required_states = 'draft took_place cancelled'
+    required_states = 'suggested took_place cancelled'
+    # readonly = False
 
-    help_text = _("Reset this event to 'suggested' state.")
 
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
@@ -53,7 +64,8 @@ class ResetEvent(dd.Action):
 
 GuestStates.clear()
 add = GuestStates.add_item
-add('10', _("Invited"), 'invited', button_text="☐")
+# add('10', _("Invited"), 'invited', button_text="☐")
+add('10', _("Invited"), 'invited', button_text="?")
 add('40', _("Present"), 'present', afterwards=True, button_text="☑")
 add('50', _("Absent"), 'absent', afterwards=True, button_text="☉")
 add('60', _("Excused"), 'excused', button_text="⚕")
@@ -95,13 +107,14 @@ GuestStates.invited.add_transition(
 # help_text=_("Set to suggested state."))
 
 EventStates.draft.add_transition(
+    ResetEvent, name='reset_event')
     # "\u2610",  # BALLOT BOX
-    required_states='suggested took_place cancelled')
+    # required_states='suggested took_place cancelled')
     # help_text=_("Set to draft state."))
 
-EventStates.took_place.add_transition(
+EventStates.took_place.add_transition(MarkEventTookPlace)
     # "\u2611",  # BALLOT BOX WITH CHECK
-    required_states='suggested draft cancelled')
+    # required_states='suggested draft cancelled')
     # help_text=_("Event took place."))
     #icon_name='emoticon_smile')
 #~ EventStates.absent.add_transition(states='published',icon_file='emoticon_unhappy.png')
@@ -123,6 +136,6 @@ EventStates.cancelled.add_transition(
 #     required_states='draft took_place cancelled',
 #     help_text=_("Reset to 'suggested' state."))
 
-from lino.api import rt
-rt.models.cal.Event.define_action(reset_event=ResetEvent())
+# from lino.api import rt
+# rt.models.cal.Event.define_action(reset_event=ResetEvent())
 

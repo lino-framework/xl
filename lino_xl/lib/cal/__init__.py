@@ -149,9 +149,9 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('cal.Events')
+        m.add_action('cal.AllEvents')
         m.add_action('cal.Tasks')
-        m.add_action('cal.Guests')
+        m.add_action('cal.AllGuests')
         m.add_action('cal.Subscriptions')
         # m.add_action(Memberships)
         m.add_action('cal.EventStates')
@@ -160,5 +160,6 @@ class Plugin(ad.Plugin):
         # m.add_action(RecurrenceSets)
 
     def get_dashboard_items(self, user):
+        yield self.site.actors.cal.MyTasks
         yield self.site.actors.cal.MyEvents
         yield self.site.actors.cal.MyOverdueAppointments

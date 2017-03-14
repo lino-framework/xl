@@ -3,12 +3,13 @@
 # License: BSD (see file COPYING for details)
 
 
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole
 
 
-class CoursesTeacher(SiteUser):
+class CoursesTeacher(UserRole):
     pass
 
-class CoursesUser(SiteUser):
+class CoursesUser(UserRole):
+    # TODO: rename to CoursesStaff
     pass
 

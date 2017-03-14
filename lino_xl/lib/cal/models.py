@@ -746,9 +746,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
             settings.SITE.site_config.default_event_type
         self.start_date = settings.SITE.today()
         self.start_time = timezone.now().time()
-        # 20130722 e.g. CreateClientEvent sets it explicitly
-        if self.assigned_to is None:
-            self.assigned_to = ar.subst_user
+        # see also Assignable.on_create()
         super(Event, self).on_create(ar)
 
     # def on_create(self,ar):
@@ -988,7 +986,6 @@ class Guest(dd.Model):
 
     """
     workflow_state_field = 'state'
-
     allow_cascaded_delete = ['event']
 
     class Meta:
@@ -998,19 +995,14 @@ class Guest(dd.Model):
         # verbose_name_plural = _("Participants")
         verbose_name = _("Presence")
         verbose_name_plural = _("Presences")
+        unique_together = ['event', 'partner']
 
     event = models.ForeignKey('cal.Event')
-
     partner = dd.ForeignKey(dd.plugins.cal.partner_model)
-
-    role = models.ForeignKey('cal.GuestRole',
-                             verbose_name=_("Role"),
-                             blank=True, null=True)
-
+    role = models.ForeignKey(
+        'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
     state = GuestStates.field(default=GuestStates.invited.as_callable)
-
-    remark = models.CharField(
-        _("Remark"), max_length=200, blank=True)
+    remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     # Define a `user` property because we want to use
     # `lino.modlib.users.mixins.My`
