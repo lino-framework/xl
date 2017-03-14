@@ -85,7 +85,8 @@ class TrendEvent(UserAuthored):
         related_name="trend_events")
     event_date = models.DateField(_("Date"), default=dd.today)
     trend_area = dd.ForeignKey('trends.TrendArea')
-    trend_stage = dd.ForeignKey('trends.TrendStage')
+    trend_stage = dd.ForeignKey(
+        'trends.TrendStage', blank=True, null=True)
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     @dd.chooser()

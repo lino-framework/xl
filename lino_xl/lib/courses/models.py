@@ -29,6 +29,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
+from django.utils.translation import string_concat
 
 from lino.api import dd, rt
 from lino import mixins
@@ -42,6 +43,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.excerpts.mixins import ExcerptTitle
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import Printable
+from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.utils import day_and_month
@@ -49,6 +51,7 @@ from lino_xl.lib.cal.utils import day_and_month
 from lino.utils.dates import DatePeriodValue
 
 from .choicelists import EnrolmentStates, CourseStates, CourseAreas
+from .actions import PrintPresenceSheet
 
 cal = dd.resolve_app('cal')
 
@@ -223,7 +226,7 @@ class Line(Referrable, Duplicable, ExcerptTitle):
 
 
 @dd.python_2_unicode_compatible
-class Course(Reservation, Duplicable):
+class Course(Reservation, Duplicable, PrintableObject):
     """A Course is a group of pupils that regularily meet with a given
     teacher in a given room to speak about a given subject.
 
@@ -296,6 +299,22 @@ class Course(Reservation, Duplicable):
     name = models.CharField(_("Designation"), max_length=100, blank=True)
     enrolments_until = models.DateField(
         _("Enrolments until"), blank=True, null=True)
+
+    print_presence_sheet = PrintPresenceSheet()
+    print_presence_sheet_html = PrintPresenceSheet(
+        build_method='weasy2html',
+        label=string_concat(_("Presence sheet"), _(" (HTML)")))
+
+    @dd.displayfield(_("Print"))
+    def print_actions(self, ar):
+        if ar is None:
+            return ''
+        elems = []
+        elems.append(ar.instance_action_button(
+            self.print_presence_sheet))
+        elems.append(ar.instance_action_button(
+            self.print_presence_sheet_html))
+        return E.p(*join_elems(elems, sep=", "))
 
     def on_duplicate(self, ar, master):
         self.state = CourseStates.draft
