@@ -35,6 +35,14 @@ class Plugin(ad.Plugin):
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('mailbox.Messages')
 
+    def get_used_libs(self, html=None):
+        try:
+            #~ import appy
+            from django_mailbox import __version__ as version
+        except ImportError:
+            version = self.site.not_found_msg
+        yield ("django_mailbox", version, "https://github.com/CylonOven/django-mailbox")
+
 
 
     #list of mboxes that are to be handeled.

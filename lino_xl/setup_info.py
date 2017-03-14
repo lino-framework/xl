@@ -166,6 +166,7 @@ lino_xl.lib.trends
 lino_xl.lib.vat
 lino_xl.lib.vat.fixtures
 lino_xl.lib.vatless
+lino_xl.lib.mailbox
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\
