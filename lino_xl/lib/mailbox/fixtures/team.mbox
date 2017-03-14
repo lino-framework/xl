@@ -1,0 +1,187 @@
+From - Mon Mar 13 12:47:04 2017
+X-Account-Key: account1
+X-UIDL: 0LfYO5-1cTwl73k0P-00p3Ve
+X-Mozilla-Status: 0011
+X-Mozilla-Status2: 00000000
+X-Mozilla-Keys:                                                                                 
+Return-Path: <tanel.saimre@example.com>
+Received: from mail-vk0-f54.google.com ([209.85.213.54]) by mx-ha.example.com
+ (mxgmx108 [212.227.17.5]) with ESMTPS (Nemesis) id 0LfYO5-1cTwl73k0P-00p3Ve
+ for <luc.saffre@example.com>; Mon, 13 Mar 2017 11:40:17 +0100
+Received: by mail-vk0-f54.google.com with SMTP id x75so32836577vke.2
+        for <luc.saffre@example.com>; Mon, 13 Mar 2017 03:40:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=example.com; s=20161025;
+        h=mime-version:in-reply-to:references:from:date:message-id:subject:to
+         :cc;
+        bh=2M70O4ekJBB3AlMnn03U7o781y8ayBYH6F9Ck1Lzrok=;
+        b=ZRcwRV1QF3PeUdG10l7gwe+l34qvqhPS8iAT2C9Se/y0aP2bqjiUYGefPTArRA0Y0B
+         sr2XV+sSySzRmPJM4gMXSpS7O6D5ZyTXxnqZA5A8hlJHzUMVBeH7JQ4NeBGN/F4uH/2R
+         3vuDkvDyKRR8DHUDA31yLIi7TiMSI25XuMw5ma4+wcHP7axJRA4XDM1dFyW08ZUfspIq
+         X61rqMjG5ovHptiZAgK1y57WrK8ngxECPNGa1OPrchVlgOM5kB7d751GZ6H1gr/EKc2R
+         hmyrqCnSJGkAqP4NPqaiwrjFKT2Tq+MLKckZEI2sx6J0AqawCiHaSNb4YGAIxJ2e3S6P
+         nwAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20161025;
+        h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+         :message-id:subject:to:cc;
+        bh=2M70O4ekJBB3AlMnn03U7o781y8ayBYH6F9Ck1Lzrok=;
+        b=Kolb9T8zQRJqzuF7w6zRHq8t80pcH7Chb4a7d9izMo7DFmCFN9ofPSRmaV68UKjAWc
+         nrelqcHnxj6uBFNd34hgJ7/E+yk3FPQ4Epyra8xd4lIEaVi5jfaMHxzBNz/az+XS+Qqc
+         WPcryjAyoKiB6C5pUWboQ5hPWuxaW1w7nZhwILW8NH5/T4UAG8ECrLhLM82cdJQ6QB3R
+         iEht1mqLYwI3EFydidEEGRkS0uaxnYMzaQEqmqDUJMkEX5OsWWb8RCVoSo9PyGDertAU
+         +DXLNi36HZv7lHl9PVgZmapUPDLcryh2X1GG1zRaYtQrCm/yDblHSFHAnnBzm/U4t6Iw
+         FvUQ==
+X-Gm-Message-State: AFeK/H14JooA31cH4ZHhenkM1RwY3Ri0VNjx1OKIgrU5EvDMkZ2+rDySbDqIj9CW+xgFlRvt9DvtKxDEGdOK3w==
+X-Received: by 10.31.165.66 with SMTP id o63mr6636177vke.85.1489401616376;
+ Mon, 13 Mar 2017 03:40:16 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.176.67.161 with HTTP; Mon, 13 Mar 2017 03:40:16 -0700 (PDT)
+In-Reply-To: <a06e5cd6-95da-0c2f-c4f2-cb9b125aa32e@example.com>
+References: <a06e5cd6-95da-0c2f-c4f2-cb9b125aa32e@example.com>
+From: Tanel Saimre <tanel.saimre@example.com>
+Date: Mon, 13 Mar 2017 12:40:16 +0200
+Message-ID: <CA++9vvgPUfAOsdVZZ8rHGEvy1a+D+TqEU1oU_q=RPrW68v75mg@mail.example.com>
+Subject: Re: Tonis in Vigala
+To: Luc Saffre <luc.saffre@example.com>
+Cc: Tonis Piip <tonis.piip@example.com>
+Content-Type: text/plain; charset=UTF-8
+Envelope-To: <luc.saffre@example.com>
+X-GMX-Antispam: 0 (Mail was not recognized as spam); Detail=V3;
+X-GMX-Antivirus: 0 (no virus found)
+X-UI-Filterresults: notjunk:1;V01:K0:2rWWIZRXhgA=:NAtOWo3RSy9nHlquoom8kARlTT
+ swIgSeleKPgzHtR0G8WNA6n2N9gy+sfB/MN55FWZyFsU5gTLxTR6IIfFlIYonGHoOJYS0i9CC
+ fgLcQevD71hY9mYs3QxrWxfW7p0N7SWzrPZvEGC6dzw/MswmT7+DwGnpPDw50euo4rxRNsced
+ HVZcCxb2smkIt5GYSYIzCM0yceUk6lYt1hA1ipgTQwH/mmI1rKmT5e4TxvIgwQC4iZAEKt53N
+ i2F1lgci6afzcQCTug7Stm0Jiq7VpzNYpZSenSuTv9A7taZ0ucgoAcTiTVDGRA+/VkzoxXG+8
+ Fo6AgmJA3H5Fqz2DQwEptp4uHozVE/wMWl0im4QPJbY/bCQOriOrvklchb8/Rws9lTjao9mpt
+ r1EXgYxYqtBfPU8oLd+8gfnceFKLPy7b3UALkPEmzw9pWipbF0gmvv34Ss0yTWYQtQX2nlVwe
+ coVlyHd8/ZCpL2Gyi3pC2djyNKaD8qRox8kDSVO8S+OFr8aBNr156SzrybKtGZHAC7RRBCFHn
+ RdFUzkqDyINxzsKQMpWLUgp3B6lRfYMMFyTkkgbbCJ3vGn/IGpOSHdXHHRiMOoRIKww11lVWa
+ H1gtRQNHWVCz2gB3LXl8EFdajFroSh4LRRhY18J14ObxiVgLUm9ovgxSRYjd4JNSGXEU/FrFo
+ 8A+zfPBHv7VsZ111cwR436rvZeAvy1faEbNMEtmtqyo5vBwyGpx/mgr3FRhNWJu7jWCSb3kYT
+ 5tdyzp7dFEjCP0hNILJRN/lIr3l5H4JcSMO9WFpYVRCSOvwOA0/Vd+pD/lYs0w75KhzIeIsMP
+ iqixzm/Z/KRSuTWw4VCRWdUSftZyNxhcjI7MmNYuL9fxEiXVqMX0CvyIbu93qpX4QdVk//P+u
+ VM//BKhziagHAnvyBQLX3Rs6MYllYJnakl7nY6ZUBk70/YTsZClzOnu1Icg878r0gzGheMHfz
+ IbidLLlxzOW/1nNKVodJdVF4au8PxejFWmIyL+5lThq0JJEjAN1QD81G5DpXNyd5IVvwTkWga
+ RGLKsM6oMaUbIByZtaQZUiZUiGzvGRDrGSoRUH7fc88cnTAmp3bu0o2w3bZgwUHlz2zW5bOqy
+ aikvmf6T6UfDqov0vThH726pP7KWRq9YgmViN7sOvT+/iKZEcEo4WgXjbC4iUFgBLc2EXhj6y
+ +WZxMaYy/gj/6zfYh0lMtXVfDaOg66/BMKmeRFGz+IKFIbrC7POAvtTlkl9gDM1FaoFkgIrwS
+ +Sk6IMTrGy0wFc4sPzSJtZVOMkP2bEbKBIM/+dFT7wU6+kKmtKo8LHlGE1ewbAS/nFQQTUbE6
+ Ew20sOdDQCEK3cBkWySq8T9GjSkmGf+IQH6K7VIYzPC2F6s1bzMApu+FzQRVevfV6MBx
+
+Hi! Great to know, see you in the evening.
+
+t.
+
+
+On Sun, Mar 12, 2017 at 6:27 AM, Luc Saffre <luc.saffre@example.com> wrote:
+> Tanel,
+>
+> Tonis plans to come to Vigala from Monday to Tuesday. We want to work
+> much, and in the evening we plan a sauna. If it suits you, then come and
+> join us. Let's say around 19:00 (call me before starting to move). Ly is
+> in Tallinn, so the only woman will be Iiris.
+>
+> Luc
+>
+>
+>
+
+From - Sun Mar 12 06:27:43 2017
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00800000
+X-Mozilla-Keys:                                                                                 
+To: Tanel Saimre <tanel.saimre@example.com>
+Cc: Tonis Piip <tonis.piip@example.com>
+From: Luc Saffre <luc.saffre@example.com>
+Subject: Tonis in Vigala
+Message-ID: <a06e5cd6-95da-0c2f-c4f2-cb9b125aa32e@example.com>
+Disposition-Notification-To: Luc Saffre <luc.saffre@example.com>
+Date: Sun, 12 Mar 2017 06:27:42 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Tanel,
+
+Tonis plans to come to Vigala from Monday to Tuesday. We want to work
+much, and in the evening we plan a sauna. If it suits you, then come and
+join us. Let's say around 19:00 (call me before starting to move). Ly is
+in Tallinn, so the only woman will be Iiris.
+
+Luc
+
+
+
+From - Sun Mar 12 21:35:32 2017
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00800000
+X-Mozilla-Keys:                                                                                 
+To: Tonis Piip <tonis.piip@example.com>
+From: Luc Saffre <luc.saffre@example.com>
+Subject: parameters crash course by example
+Message-ID: <ff5e42b3-2f9c-13bf-b3aa-5047f9657617@example.com>
+Disposition-Notification-To: Luc Saffre <luc.saffre@example.com>
+Date: Sun, 12 Mar 2017 21:35:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+  class Messages(dd.Table):
+
+      parameters = dict(
+         non_assigned=models.BooleanField(
+            _("show only non assigned"),
+            default=False))
+ 
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        qs = super(Messages, self).get_request_queryset(ar)
+        pv = ar.param_values
+
+        if pv.non_assigned:
+            qs = qs.filter(pointers__isnull=False)
+
+        return qs           
+
+class UnassignedMessages(Messages):
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(Messages, self).param_defaults(ar, **kw)
+        kw.update(non_assigned=True)
+        return kw
+
+
+MessagePointer:
+   message = ForeignKey('django_mailboxes.Message', related_name='pointers')
+
+From - Thu Mar 09 09:44:33 2017
+X-Mozilla-Status: 0001
+X-Mozilla-Status2: 00800000
+X-Mozilla-Keys:                                                                                 
+To: Khchine Hamza <hamzakhchine@example.com>
+From: Luc Saffre <luc.saffre@example.com>
+Subject: Next hangout
+Message-ID: <3fc04b48-d976-da7b-4292-10c30f53b71f@example.com>
+Disposition-Notification-To: Luc Saffre <luc.saffre@example.com>
+Date: Thu, 9 Mar 2017 09:44:32 +0200
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:45.0) Gecko/20100101
+ Thunderbird/45.7.0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+
+Hi Hamza,
+
+when can we have a HO meeting? For me it is possible today before 15h30
+or after 18 (Estonian time).
+
+Luc
+

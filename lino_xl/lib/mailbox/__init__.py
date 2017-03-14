@@ -11,6 +11,7 @@
 
 from lino import ad
 from django.utils.translation import ugettext_lazy as _
+from unipath import Path
 
 
 class Plugin(ad.Plugin):
@@ -18,6 +19,15 @@ class Plugin(ad.Plugin):
     verbose_name = _("Mailbox")
 
     needs_plugins = ["django_mailbox"]
+
+    mailbox_templates = []
+
+    def add_mailbox(self, protocol, name, origin):
+        origin = Path(origin).resolve()
+        # print(origin.stat())
+        if not origin.exists():
+            raise Exception("No such file: {}".format(origin))
+        self.mailbox_templates.append((protocol, name, origin))
 
     def setup_main_menu(self, site, profile, m):
         p = self.get_menu_group()
