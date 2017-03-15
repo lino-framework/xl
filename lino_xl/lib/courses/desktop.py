@@ -600,7 +600,6 @@ class EnrolmentsByCourse(Enrolments):
 
     insert_layout = """
     pupil
-    places option
     remark
     request_date user
     """

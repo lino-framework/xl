@@ -31,17 +31,19 @@ class RemoteCalendars(dd.Table):
 
 
 class Rooms(dd.Table):
-    help_text = _("List of rooms where calendar events can happen.")
+    """List of rooms where calendar events can happen.
+
+    """
     required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Room'
-    detail_layout = """
-    id name
-    cal.EventsByRoom
-    """
-    insert_layout = """
-    id
-    name
-    """
+    # detail_layout = """
+    # id name
+    # cal.EventsByRoom
+    # """
+    # insert_layout = """
+    # id
+    # name
+    # """
 
 
 class Priorities(dd.Table):
