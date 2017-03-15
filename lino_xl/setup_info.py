@@ -18,7 +18,7 @@ import sys
 PY2 = sys.version_info[0] == 2
 PY3 = sys.version_info[0] == 3
 
-install_requires = ['lino', 'odfpy>1.3', 'bleach']
+install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint']
 
 if PY2:
     install_requires.append('appy')
@@ -123,6 +123,7 @@ lino_xl.lib.humanlinks.fixtures
 lino_xl.lib.lists
 lino_xl.lib.lists.fixtures
 lino_xl.lib.mailbox
+lino_xl.lib.mailbox.fixtures
 lino_xl.lib.notes
 lino_xl.lib.notes.fixtures
 lino_xl.lib.outbox

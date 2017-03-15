@@ -11,6 +11,7 @@
 
 from lino import ad
 from django.utils.translation import ugettext_lazy as _
+from unipath import Path
 
 
 class Plugin(ad.Plugin):
@@ -19,7 +20,39 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ["django_mailbox"]
 
-    MODULE_LABEL = _("Mailbox")
+    mailbox_templates = []
+
+    def add_mailbox(self, protocol, name, origin):
+        origin = Path(origin).resolve()
+        # print(origin.stat())
+        if not origin.exists():
+            raise Exception("No such file: {}".format(origin))
+        self.mailbox_templates.append((protocol, name, origin))
+
+    def setup_main_menu(self, site, profile, m):
+        p = self.get_menu_group()
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('mailbox.UnassignedMessages')
+
+    def setup_config_menu(self, site, profile, m):
+        p = self.get_menu_group()
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('mailbox.Mailboxes')
+        # m.add_action('mailbox.Mailboxes')
+
+    def setup_explorer_menu(self, site, profile, m):
+        p = self.get_menu_group()
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('mailbox.Messages')
+
+    def get_used_libs(self, html=None):
+        try:
+            #~ import appy
+            from django_mailbox import __version__ as version
+        except ImportError:
+            version = self.site.not_found_msg
+        yield ("django_mailbox", version, "https://github.com/CylonOven/django-mailbox")
+
 
 
     #list of mboxes that are to be handeled.

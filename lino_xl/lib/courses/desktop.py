@@ -31,6 +31,7 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from lino import mixins
 
+from lino.core.roles import Explorer
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
 from lino.utils.mti import get_child
@@ -137,22 +138,28 @@ class CourseDetail(dd.DetailLayout):
     # end = "end_date end_time"
     # freq = "every every_unit"
     # start end freq
-    main = "general events courses.EnrolmentsByCourse"
+    main = "general events enrolments"
+    
     general = dd.Panel("""
     line teacher start_date end_date start_time end_time
-    enrolments_until room #slot workflow_buttons id:8 user
+    room #slot workflow_buttons id:8 user
     name
     description
     """, label=_("General"))
+    
     events = dd.Panel("""
-    max_places max_events max_date every_unit every
+    max_events max_date every_unit every
     monday tuesday wednesday thursday friday saturday sunday
     cal.EventsByController
     """, label=_("Events"))
-    # enrolments = dd.Panel("""
-    # OptionsByCourse:20 EnrolmentsByCourse:40
-    # """, label=_("Enrolments"))
-    
+
+    enrolments_top = 'enrolments_until max_places:10 confirmed free_places:10 print_actions:15'
+
+    enrolments = dd.Panel("""
+    enrolments_top
+    EnrolmentsByCourse
+    """, label=_("Enrolments"))
+
 
 class Activities(dd.Table):
     """Base table for all activities.
@@ -265,7 +272,7 @@ class Courses(Activities):
 
 class AllActivities(Activities):
     _course_area = None
-    required_roles = dd.login_required(CoursesUser)
+    required_roles = dd.login_required(Explorer)
     column_names = "line:20 start_date:8 teacher user " \
                    "weekdays_text:10 times_text:10"
 
@@ -310,8 +317,12 @@ class CoursesByTopic(Activities):
     
     master = 'courses.Topic'
     order_by = ['-start_date']
-    column_names = "start_date:8 line:20 room:10 " \
-                   "weekdays_text:10 times_text:10"
+    column_names = "overview weekdays_text:10 times_text:10 "\
+                   "max_places:8 confirmed "\
+                   "free_places requested trying *"
+    # column_names = "start_date:8 line:20 room:10 " \
+    #                "weekdays_text:10 times_text:10"
+    
     params_layout = """line teacher user state can_enroll:10"""
 
     allow_create = False  # because we cannot set a line for a new
@@ -495,7 +506,7 @@ class Enrolments(dd.Table):
 
 class AllEnrolments(Enrolments):
     """Show global list of all enrolments."""
-    required_roles = dd.login_required(dd.SiteStaff)
+    required_roles = dd.login_required(Explorer)
     order_by = ['-id']
     column_names = 'id request_date start_date end_date user course pupil pupil__birth_date pupil__age pupil__country pupil__city pupil__gender *'
 
@@ -589,7 +600,6 @@ class EnrolmentsByCourse(Enrolments):
 
     insert_layout = """
     pupil
-    places option
     remark
     request_date user
     """
