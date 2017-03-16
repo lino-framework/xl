@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """
@@ -221,25 +221,26 @@ class LinksByHuman(Links):
             elems.append(_("No relationships."))
 
         # Buttons for creating relationships:
-        sar = self.insert_action.request_from(ar)
-        if sar.get_permission():
-            actions = []
-            for lt in self.addable_link_types:
-                sar.known_values.update(type=lt, parent=obj)
-                sar.known_values.pop('child', None)
-                #sar = ar.spawn(self, known_values=dict(type=lt, parent=obj))
-                btn = sar.ar2button(None, lt.as_parent(obj), icon_name=None)
-                actions.append(btn)
-                if not lt.symmetric:
-                    actions.append('/')
-                    sar.known_values.update(type=lt, child=obj)
-                    sar.known_values.pop('parent', None)
-                    btn = sar.ar2button(None, lt.as_child(obj), icon_name=None)
+        if self.insert_action is not None:
+            sar = self.insert_action.request_from(ar)
+            if sar.get_permission():
+                actions = []
+                for lt in self.addable_link_types:
+                    sar.known_values.update(type=lt, parent=obj)
+                    sar.known_values.pop('child', None)
+                    #sar = ar.spawn(self, known_values=dict(type=lt, parent=obj))
+                    btn = sar.ar2button(None, lt.as_parent(obj), icon_name=None)
                     actions.append(btn)
-                actions.append(' ')
+                    if not lt.symmetric:
+                        actions.append('/')
+                        sar.known_values.update(type=lt, child=obj)
+                        sar.known_values.pop('parent', None)
+                        btn = sar.ar2button(None, lt.as_child(obj), icon_name=None)
+                        actions.append(btn)
+                    actions.append(' ')
 
-            if len(actions) > 0:
-                elems += [E.br(), _("Create relationship as ")] + actions
+                if len(actions) > 0:
+                    elems += [E.br(), _("Create relationship as ")] + actions
         return E.div(*elems)
 
 
