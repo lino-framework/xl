@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Database models for `lino_xl.lib.polls`.
 
@@ -500,6 +500,10 @@ class AnswerRemarks(dd.Table):
     remark
     response question
     """, window_size=(60, 10))
+    insert_layout = dd.InsertLayout("""
+    remark
+    response question
+    """, window_size=(60, 10))
     hidden_elements = dd.fields_list(AnswerRemark, 'response question')
     stay_in_grid = True
 
@@ -634,12 +638,11 @@ class AnswersByResponse(dd.VirtualTable):
         sar = Responses.update_action.request_from(ar)
         sar.selected_rows = [response]
         editable = sar.get_permission()
-
+        # editable = insert.get_permission(response)
         kv = dict(response=response)
         insert = AnswerRemarks.insert_action.request_from(
             ar, known_values=kv)
         detail = AnswerRemarks.detail_action.request_from(ar)
-        # editable = insert.get_permission(response)
         for answer in self.get_data_rows(ar):
             cells = [self.question.value_from_object(answer, ar)]
             for r in all_responses:
