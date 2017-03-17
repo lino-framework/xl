@@ -1,4 +1,4 @@
-# Copyright 2013-2016 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Provides database models and functionality for managing polls.
@@ -21,7 +21,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    # See :doc:`/dev/plugins`
 
     verbose_name = _("Polls")
     needs_plugins = ['lino_xl.lib.xl']
