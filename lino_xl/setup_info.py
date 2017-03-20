@@ -147,6 +147,7 @@ lino_xl.lib.statbel.countries.fixtures
 lino_xl.lib.thirds
 lino_xl.lib.topics
 lino_xl.lib.xl
+
 lino_xl.lib.accounts
 lino_xl.lib.finan
 lino_xl.lib.finan.fixtures
@@ -167,6 +168,16 @@ lino_xl.lib.trends
 lino_xl.lib.vat
 lino_xl.lib.vat.fixtures
 lino_xl.lib.vatless
+
+lino_xl.lib.deploy
+lino_xl.lib.deploy.fixtures
+lino_xl.lib.tickets
+lino_xl.lib.tickets.fixtures
+lino_xl.lib.faculties
+lino_xl.lib.clocking
+lino_xl.lib.clocking.fixtures
+lino_xl.lib.votes
+lino_xl.lib.votes.fixtures
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\
