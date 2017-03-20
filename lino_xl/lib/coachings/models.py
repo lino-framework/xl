@@ -27,6 +27,7 @@ from lino.modlib.plausibility.choicelists import Checker
 
 from .mixins import ClientContactBase
 from .choicelists import ClientEvents, ClientStates
+from .roles import CoachingsStaff
 
 
 try:
@@ -112,6 +113,7 @@ class Coaching(UserAuthored, mixins.DatePeriod, dd.ImportedFields, ChangeObserva
 
     allow_cascaded_delete = ['client']
     workflow_state_field = 'state'
+    manager_roles_required = dd.login_required(CoachingsStaff)
 
     client = dd.ForeignKey(
         client_model, related_name="coachings_by_client")

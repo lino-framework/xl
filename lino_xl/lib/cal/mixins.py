@@ -27,7 +27,7 @@ from lino.utils import ONE_DAY
 from lino.utils.xmlgen.html import E
 from lino.mixins.periods import Started, Ended
 
-from lino.modlib.office.roles import OfficeStaff
+from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
@@ -777,7 +777,8 @@ class Component(Started,
 
     """
     workflow_state_field = 'state'
-    manager_roles_required = dd.login_required(OfficeStaff)
+    manager_roles_required = dd.login_required(
+        (OfficeStaff, OfficeOperator))
 
     class Meta:
         abstract = True
