@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-03-20 17:54+0200\n"
-"PO-Revision-Date: 2017-03-20 17:59+0200\n"
+"PO-Revision-Date: 2017-03-20 20:50+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: et\n"
 "Language-Team: et\n"
@@ -1704,16 +1704,15 @@ msgstr ""
 
 #: lino_xl/lib/clocking/models.py:118
 msgid "Break Time"
-msgstr ""
+msgstr "Paus"
 
 #: lino_xl/lib/clocking/models.py:197 lino_xl/lib/cv/fixtures/std.py:121
-#, fuzzy
 msgid "Worker"
-msgstr "Veel"
+msgstr "Töötaja"
 
 #: lino_xl/lib/clocking/models.py:212
 msgid "You are busy with "
-msgstr "Sa oled ametis piletiga"
+msgstr "Sa oled ametis lipikuga"
 
 #: lino_xl/lib/clocking/ui.py:40 lino_xl/lib/clocking/ui.py:59
 msgid "Has been worked on"
@@ -3348,11 +3347,11 @@ msgstr "Oskused"
 
 #: lino_xl/lib/faculties/models.py:27
 msgid "Skill type"
-msgstr "Piletiliik"
+msgstr "Oskuseliik"
 
 #: lino_xl/lib/faculties/models.py:28
 msgid "Skill types"
-msgstr "Piletiliigid"
+msgstr "Oskuseliigid"
 
 #: lino_xl/lib/faculties/models.py:41
 msgid "Skill"
@@ -5741,9 +5740,8 @@ msgid "Projects"
 msgstr ""
 
 #: lino_xl/lib/tickets/choicelists.py:124
-#, fuzzy
 msgid "Ticket states"
-msgstr "Piletitüübid\t"
+msgstr "Lipikuliiged"
 
 #: lino_xl/lib/tickets/choicelists.py:139
 msgid "New"
@@ -5816,11 +5814,11 @@ msgstr ""
 
 #: lino_xl/lib/tickets/models.py:72
 msgid "Ticket type"
-msgstr "\t"
+msgstr "Lipikuliik"
 
 #: lino_xl/lib/tickets/models.py:73
 msgid "Ticket types"
-msgstr "Piletitüübid\t"
+msgstr "Lipikuliiged"
 
 #: lino_xl/lib/tickets/models.py:88
 msgid "Project"
@@ -5886,11 +5884,11 @@ msgstr ""
 
 #: lino_xl/lib/tickets/models.py:347
 msgid "Ticket"
-msgstr ""
+msgstr "Lipik"
 
 #: lino_xl/lib/tickets/models.py:348
 msgid "Tickets"
-msgstr "Piletid"
+msgstr "Lipikud"
 
 #: lino_xl/lib/tickets/models.py:357
 msgctxt "Ticket"
@@ -6039,7 +6037,7 @@ msgstr ""
 
 #: lino_xl/lib/tickets/ui.py:655
 msgid "All tickets"
-msgstr ""
+msgstr "Kõik lipikud"
 
 #: lino_xl/lib/tickets/ui.py:664
 msgid "Duplicates"
@@ -6055,7 +6053,7 @@ msgstr ""
 
 #: lino_xl/lib/tickets/ui.py:754
 msgid "Public tickets"
-msgstr "Avalikud piletid"
+msgstr "Avalikud lipikud"
 
 #: lino_xl/lib/tickets/ui.py:777
 msgid "Tickets to triage"
