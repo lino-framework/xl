@@ -263,6 +263,40 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent (with acceptable explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
+    'lino_xl.lib.clocking.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.clocking.Plugin.ticket_model' : _("""The model that is to be used as the "workable"."""),
+    'lino_xl.lib.clocking.actions.EndSession' : _("""Close a given session, i.e. stop working on that ticket for this
+time.  Common base for EndThisSession and
+EndTicketSession."""),
+    'lino_xl.lib.clocking.actions.EndThisSession' : _("""Close this session, i.e. stop working on that ticket for this time."""),
+    'lino_xl.lib.clocking.actions.EndTicketSession' : _("""End your running session on this ticket."""),
+    'lino_xl.lib.clocking.actions.StartTicketSession' : _("""Start a session on this ticket."""),
+    'lino_xl.lib.clocking.actions.PrintActivityReport' : _("""Print an activity report."""),
+    'lino_xl.lib.clocking.mixins.Workable' : _("""Base class for things that workers can work on."""),
+    'lino_xl.lib.clocking.models.SessionType' : _("""The type of a Session."""),
+    'lino_xl.lib.clocking.models.Session' : _("""A Session is when a user works during a given lapse of time on
+a given Ticket."""),
+    'lino_xl.lib.clocking.models.Session.start_date' : _("""The date when you started to work."""),
+    'lino_xl.lib.clocking.models.Session.start_time' : _("""The time (in hh:mm) when you started working on this
+session."""),
+    'lino_xl.lib.clocking.models.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
+    'lino_xl.lib.clocking.models.Session.end_time' : _("""The time (in hh:mm) when you stopped to work. This is empty
+as long as you are busy with this session."""),
+    'lino_xl.lib.clocking.models.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
+from the difference between start_time and
+end_time."""),
+    'lino_xl.lib.clocking.models.Session.faculty' : _("""The faculty that has been used during this session. On a new
+session this defaults to the needed faculty currently specified
+on the ticket."""),
+    'lino_xl.lib.clocking.roles.Worker' : _("""A user who is candidate for working on a ticket."""),
+    'lino_xl.lib.clocking.ui.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.clocking.ui.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.clocking.ui.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
+    'lino_xl.lib.clocking.ui.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
+    'lino_xl.lib.clocking.ui.SessionsByTicket.master' : _("""alias of Partner"""),
+    'lino_xl.lib.clocking.ui.SessionsByTicket.model' : _("""alias of Session"""),
     'lino_xl.lib.coachings.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.coachings.choicelists.ClientEvents' : _("""A choicelist of observable client events."""),
     'lino_xl.lib.coachings.choicelists.ClientCreated' : _("""The choice for ClientEvents which
@@ -442,6 +476,15 @@ calling get_confirm_veto to
 verify whether it is valid (e.g. whether there are enough free
 places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.deploy.desktop.Milestones.model' : _("""alias of Milestone"""),
+    'lino_xl.lib.deploy.models.Milestone' : _("""A Milestone is a named step of evolution on a given Site.  For
+software projects we usually call them a "release" and they are
+named by a version number."""),
+    'lino_xl.lib.deploy.models.Milestone.closed' : _("""Closed milestones are hidden in most lists."""),
+    'lino_xl.lib.deploy.models.Deployment' : _("""A deployment is the fact that a given ticket is being fixed (or
+installed or activated) by a given milestone (to a given site)."""),
+    'lino_xl.lib.deploy.models.Deployment.milestone' : _("""The milestone (and site) of this deployment."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.excerpts.Plugin' : _("""See lino.core.Plugin."""),
@@ -503,6 +546,15 @@ this."""),
     'lino_xl.lib.extensible.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
     'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
+    'lino_xl.lib.faculties.Plugin' : _("""The model of objects to be used as demander of skill
+demands."""),
+    'lino_xl.lib.faculties.models.Faculty' : _("""A skill is a knowledge or ability which can be
+required in order to work e.g. on some ticket, and which
+individual users can have (offer) or not."""),
+    'lino_xl.lib.faculties.models.Competence' : _("""A skill offer is when a given user is declared to have a
+given skill."""),
+    'lino_xl.lib.faculties.models.Demand' : _("""A Skill demand is when a given end user declares to need a
+given skill."""),
     'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
 but is stored as a Couple instance."""),
@@ -899,7 +951,6 @@ thereof."""),
     'lino_xl.lib.outbox.models.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino_xl.lib.outbox.models.SentByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.outbox.models.SentByPartner.model' : _("""alias of Mail"""),
-    'lino_xl.lib.polls.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.polls.models.Poll' : _("""A series of questions."""),
     'lino_xl.lib.polls.models.AllPolls' : _("""Show all polls of all users."""),
     'lino_xl.lib.polls.models.AllPolls.model' : _("""alias of Poll"""),
@@ -1055,6 +1106,36 @@ given User."""),
     'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
     'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.tickets.roles.TicketsUser' : _("""A user who can create new tickets."""),
+    'lino_xl.lib.tickets.roles.Searcher' : _("""A user who can see all tickets."""),
+    'lino_xl.lib.tickets.roles.Triager' : _("""A user who is responsible for triaging new tickets."""),
+    'lino_xl.lib.tickets.roles.TicketsStaff' : _("""Can configure tickets functionality."""),
+    'lino_xl.lib.tickets.ui.Tickets' : _("""Global list of all tickets."""),
+    'lino_xl.lib.tickets.ui.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
+    'lino_xl.lib.tickets.ui.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
+    'lino_xl.lib.tickets.ui.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
+or ToDo)."""),
+    'lino_xl.lib.tickets.ui.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
+or ToDo)."""),
+    'lino_xl.lib.tickets.ui.Tickets.show_assigned' : _("""Show only (or hide) tickets which are assigned to somebody."""),
+    'lino_xl.lib.tickets.ui.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
+    'lino_xl.lib.tickets.ui.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
+    'lino_xl.lib.tickets.ui.Tickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
+(i.e. whose duplicate_of field points to this ticket."""),
+    'lino_xl.lib.tickets.ui.DuplicatesByTicket.master' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.DuplicatesByTicket.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
+which I am competent."""),
+    'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
+    'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.TicketsToTriage' : _("""List of tickets that need to be triaged.  Currently this is
+equivalent to those having their state set to new."""),
+    'lino_xl.lib.tickets.ui.TicketsToTriage.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.ActiveTickets' : _("""Show all tickets that are in an active state."""),
+    'lino_xl.lib.tickets.ui.ActiveTickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.MyTickets' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.ui.MyTickets.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tim2lino.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.tim2lino.Plugin.languages' : _("""The language distribution used in the database to import. Mandatory
 parameter. No default value."""),
@@ -1156,4 +1237,91 @@ want to have a project column per item."""),
 Journal.voucher_type must be
 lino_xl.lib.sales.models.AccountInvoice)."""),
     'lino_xl.lib.vatless.ui.VouchersByPartner' : _("""Shows all ledger vouchers of a given partner."""),
+    'lino_xl.lib.votes.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.votes.Plugin.votable_model' : _("""The things we are voting about. A string referring to the model
+which represents a votable in your application.  Default value is
+'tickets.Ticket' (referring to
+lino_xl.lib.tickets.models.Ticket)."""),
+    'lino_xl.lib.votes.actions.CreateVote' : _("""Define your vote about this object."""),
+    'lino_xl.lib.votes.actions.VotableEditVote' : _("""Edit your vote about this object."""),
+    'lino_xl.lib.votes.choicelists.VoteState' : _("""The state of a vote."""),
+    'lino_xl.lib.votes.choicelists.VoteState.vote_name' : _("""Translatable text. How a vote is called when in this state."""),
+    'lino_xl.lib.votes.choicelists.VoteStates' : _("""The list of possible states of a vote.  This is used as choicelist
+for the state
+field of a vote."""),
+    'lino_xl.lib.votes.choicelists.VoteStates.author' : _("""Reserved for the author's vote.  Lino automatically creates an
+author vote for every author of a ticket (see
+get_vote_raters)."""),
+    'lino_xl.lib.votes.choicelists.VoteStates.item_class' : _("""alias of VoteState"""),
+    'lino_xl.lib.votes.mixins.Votable' : _("""Base class for models that can be used as
+lino_xl.lib.votes.Plugin.votable_model."""),
+    'lino_xl.lib.votes.models.Vote' : _("""A vote is when a user has an opinion or interest about a given
+ticket (or any other votable)."""),
+    'lino_xl.lib.votes.models.Vote.votable' : _("""The ticket (or other votable) being voted."""),
+    'lino_xl.lib.votes.models.Vote.user' : _("""The user who is voting."""),
+    'lino_xl.lib.votes.models.Vote.state' : _("""The state of this vote.  Pointer to VoteStates."""),
+    'lino_xl.lib.votes.models.Vote.priority' : _("""My personal priority for this ticket."""),
+    'lino_xl.lib.votes.models.Vote.rating' : _("""How the ticket author rates my help on this ticket."""),
+    'lino_xl.lib.votes.models.Vote.remark' : _("""Why I am interested in this ticket."""),
+    'lino_xl.lib.votes.models.Vote.nickname' : _("""My nickname for this ticket. Optional."""),
+    'lino_xl.lib.votes.models.Votes' : _("""Table parameters:"""),
+    'lino_xl.lib.votes.models.Votes.observed_event' : _("""There are two class attributes for defining a filter conditions
+which canot be removed by the user:"""),
+    'lino_xl.lib.votes.models.Votes.filter_vote_states' : _("""A set of vote states to require (i.e. to filter upon).  This
+must resolve using resolve_states."""),
+    'lino_xl.lib.votes.models.Votes.exclude_vote_states' : _("""A set of vote states to exclude.  This must
+resolve using resolve_states."""),
+    'lino_xl.lib.votes.models.Votes.filter_ticket_states' : _("""A set of ticket states to require (i.e. to filter upon). This
+must resolve using resolve_states."""),
+    'lino_xl.lib.votes.models.Votes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.models.MyVotes' : _("""Show your votes in all states"""),
+    'lino_xl.lib.votes.models.MyVotes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.models.MyOffers' : _("""Show the tickets for which you are candidate"""),
+    'lino_xl.lib.votes.models.MyOffers.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.models.MyTasks' : _("""Show your votes in states assigned and done"""),
+    'lino_xl.lib.votes.models.MyTasks.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.models.MyWatched' : _("""Show your votes in states watching"""),
+    'lino_xl.lib.votes.models.MyWatched.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.models.VotesByVotable' : _("""Show the votes about this object."""),
+    'lino_xl.lib.votes.models.VotesByVotable.master' : _("""alias of Ticket"""),
+    'lino_xl.lib.votes.models.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.tickets.models.Project' : _("""A project is something on which several users work together."""),
+    'lino_xl.lib.tickets.models.Project.assign_to' : _("""The user to whom new tickets will be assigned.
+See Ticket.assigned_to."""),
+    'lino_xl.lib.tickets.models.ProjectType' : _("""The type of a Project."""),
+    'lino_xl.lib.tickets.models.TimeInvestment' : _("""Model mixin for things which represent a time investment.  This
+currently just defines a group of three fields:"""),
+    'lino_xl.lib.tickets.models.TimeInvestment.closed' : _("""Whether this investment is closed, i.e. certain things should
+not change anymore."""),
+    'lino_xl.lib.tickets.models.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
+publicly visible anywhere."""),
+    'lino_xl.lib.tickets.models.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
+    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is a concrete question or problem formulated by a
+user."""),
+    'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for
+managing it."""),
+    'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
+    'lino_xl.lib.tickets.Ticket.assigned_to' : _("""No longer used. The user who is working on this ticket."""),
+    'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates"""),
+    'lino_xl.lib.tickets.Ticket.waiting_for' : _("""What to do next. An unformatted one-line text which describes
+what this ticket is waiting for."""),
+    'lino_xl.lib.tickets.Ticket.upgrade_notes' : _("""A formatted text field meant for writing instructions for the
+hoster's site administrator when doing an upgrade where this
+ticket is being deployed."""),
+    'lino_xl.lib.tickets.Ticket.description' : _("""A complete and concise description of the ticket. This should
+describe in more detail what this ticket is about. If the
+ticket has evolved during time, it should reflect the latest
+version."""),
+    'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to the ticket which is the cause of this ticket."""),
+    'lino_xl.lib.tickets.Ticket.deadline' : _("""Specify that the ticket must be done for a given date."""),
+    'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is. This should be a value between 0
+and 100."""),
+    'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
+    'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
+project.  See ReportingTypes."""),
+    'lino_xl.lib.tickets.LinkTypes' : _("""The possible values of a lino_xl.lib.tickets.Link."""),
+    'lino_xl.lib.tickets.LinkTypes.requires' : _("""The parent ticket requires the child ticket."""),
+    'lino_xl.lib.tickets.LinkTypes.triggers' : _("""The parent ticket triggers the child ticket."""),
+    'lino_xl.lib.tickets.LinkTypes.deploys' : _("""The parent ticket is a deployment which deploys the child ticket."""),
+    'lino_xl.lib.tickets.Plugin' : _("""See also lino.core.plugin.Plugin"""),
 }

@@ -5,18 +5,19 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:  \n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-03-16 16:45+0200\n"
-"PO-Revision-Date: 2017-02-27 09:36+0200\n"
+"POT-Creation-Date: 2017-03-20 07:44+0200\n"
+"PO-Revision-Date: 2017-03-20 09:43+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: et\n"
 "Language-Team: et\n"
-"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.3.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: lino_xl/lib/accounts/__init__.py:40
 msgid "Accounting"
@@ -34,8 +35,7 @@ msgstr ""
 msgid "Profit & Loss statement"
 msgstr ""
 
-#: lino_xl/lib/accounts/choicelists.py:90
-#: lino_xl/lib/accounts/choicelists.py:96
+#: lino_xl/lib/accounts/choicelists.py:90 lino_xl/lib/accounts/choicelists.py:96
 msgid "Cash flow statement"
 msgstr "Rahavoogude aruanne"
 
@@ -220,17 +220,19 @@ msgstr "Aadres"
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:79
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:38
 #: lino_xl/lib/courses/models.py:287 lino_xl/lib/courses/models.py:652
-#: lino_xl/lib/cv/models.py:544 lino_xl/lib/cv/models.py:570
+#: lino_xl/lib/cv/models.py:544 lino_xl/lib/cv/models.py:570 lino_xl/lib/deploy/models.py:83
 #: lino_xl/lib/excerpts/models.py:112 lino_xl/lib/groups/models.py:116
 #: lino_xl/lib/ledger/models.py:319 lino_xl/lib/lists/models.py:99
 #: lino_xl/lib/notes/models.py:54 lino_xl/lib/notes/models.py:95
 #: lino_xl/lib/polls/models.py:660 lino_xl/lib/polls/models.py:665
 #: lino_xl/lib/polls/models.py:811 lino_xl/lib/sepa/models.py:73
-#: lino_xl/lib/thirds/models.py:27 lino_xl/lib/trends/models.py:90
+#: lino_xl/lib/thirds/models.py:27 lino_xl/lib/tickets/models.py:153
+#: lino_xl/lib/tickets/models.py:170 lino_xl/lib/tickets/models.py:219
+#: lino_xl/lib/trends/models.py:90
 msgid "Remark"
 msgstr "Märkus"
 
-#: lino_xl/lib/addresses/models.py:65 lino_xl/lib/coachings/models.py:120
+#: lino_xl/lib/addresses/models.py:65 lino_xl/lib/coachings/models.py:122
 #: lino_xl/lib/excerpts/models.py:130 lino_xl/lib/excerpts/models.py:158
 #: lino_xl/lib/households/models.py:289 lino_xl/lib/sepa/models.py:76
 msgid "Primary"
@@ -238,8 +240,8 @@ msgstr ""
 
 #: lino_xl/lib/addresses/models.py:67
 msgid ""
-"Checking this field will automatically uncheck any previous primary "
-"addresses and update the partner's address data fields."
+"Checking this field will automatically uncheck any previous primary addresses and update "
+"the partner's address data fields."
 msgstr ""
 
 #: lino_xl/lib/appypod/__init__.py:82
@@ -315,9 +317,7 @@ msgstr ""
 
 #: lino_xl/lib/beid/actions.py:251
 #, python-format
-msgid ""
-"There is more than one client with national id %(national_id)s in our "
-"database."
+msgid "There is more than one client with national id %(national_id)s in our database."
 msgstr ""
 
 #: lino_xl/lib/beid/actions.py:281 lino_xl/lib/beid/actions.py:293
@@ -332,9 +332,7 @@ msgstr ""
 
 #: lino_xl/lib/beid/actions.py:300
 #, python-format
-msgid ""
-"Cannot create new client because there is already a person named %s in "
-"our database."
+msgid "Cannot create new client because there is already a person named %s in our database."
 msgstr ""
 
 #: lino_xl/lib/beid/actions.py:304 lino_xl/lib/beid/actions.py:311
@@ -344,8 +342,7 @@ msgstr ""
 #: lino_xl/lib/beid/actions.py:307
 #, python-format
 msgid ""
-"Cannot create new client because there is more than one person named %s "
-"in our database."
+"Cannot create new client because there is more than one person named %s in our database."
 msgstr ""
 
 #: lino_xl/lib/beid/actions.py:330
@@ -493,7 +490,7 @@ msgid "ID card valid from"
 msgstr ""
 
 #: lino_xl/lib/beid/mixins.py:123 lino_xl/lib/beid/mixins.py:182
-#: lino_xl/lib/coachings/models.py:239
+#: lino_xl/lib/coachings/models.py:241
 msgid "until"
 msgstr ""
 
@@ -571,7 +568,6 @@ msgstr ""
 
 #: lino_xl/lib/blogs/models.py:74 lino_xl/lib/polls/models.py:108
 #: lino_xl/lib/polls/models.py:245 lino_xl/lib/sales/models.py:478
-#, fuzzy
 msgid "Heading"
 msgstr ""
 
@@ -747,7 +743,7 @@ msgstr ""
 msgid "Access Class"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:162
+#: lino_xl/lib/cal/choicelists.py:162 lino_xl/lib/tickets/ui.py:518
 msgid "Private"
 msgstr ""
 
@@ -759,8 +755,7 @@ msgstr ""
 msgid "Public"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:54 lino_xl/lib/cal/ui.py:196
-#: lino_xl/lib/cal/ui.py:361
+#: lino_xl/lib/cal/mixins.py:54 lino_xl/lib/cal/ui.py:196 lino_xl/lib/cal/ui.py:361
 #, python-format
 msgid "Dates %(min)s to %(max)s"
 msgstr ""
@@ -805,17 +800,19 @@ msgstr "Korda iga"
 msgid "Number of events"
 msgstr "Sündmuste arv"
 
-#: lino_xl/lib/cal/mixins.py:610 lino_xl/lib/cal/mixins.py:787
-#: lino_xl/lib/cal/models.py:171 lino_xl/lib/cal/models.py:233
-#: lino_xl/lib/cal/models.py:367 lino_xl/lib/courses/models.py:159
-#: lino_xl/lib/courses/models.py:286 lino_xl/lib/groups/models.py:36
-#: lino_xl/lib/ledger/ui.py:466 lino_xl/lib/ledger/ui.py:823
-#: lino_xl/lib/ledger/ui.py:882 lino_xl/lib/ledger/ui.py:935
-#: lino_xl/lib/ledger/ui.py:981 lino_xl/lib/ledger/ui.py:1026
+#: lino_xl/lib/cal/mixins.py:610 lino_xl/lib/cal/mixins.py:788 lino_xl/lib/cal/models.py:171
+#: lino_xl/lib/cal/models.py:233 lino_xl/lib/cal/models.py:367
+#: lino_xl/lib/clocking/models.py:114 lino_xl/lib/courses/models.py:159
+#: lino_xl/lib/courses/models.py:286 lino_xl/lib/deploy/models.py:43
+#: lino_xl/lib/faculties/models.py:100 lino_xl/lib/groups/models.py:36
+#: lino_xl/lib/ledger/ui.py:466 lino_xl/lib/ledger/ui.py:823 lino_xl/lib/ledger/ui.py:882
+#: lino_xl/lib/ledger/ui.py:935 lino_xl/lib/ledger/ui.py:981 lino_xl/lib/ledger/ui.py:1026
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:31
 #: lino_xl/lib/sales/models.py:420 lino_xl/lib/sales/models.py:525
-#: lino_xl/lib/topics/models.py:26 lino_xl/lib/vat/models.py:159
-#: lino_xl/lib/vatless/models.py:128
+#: lino_xl/lib/tickets/models.py:100 lino_xl/lib/tickets/models.py:220
+#: lino_xl/lib/tickets/models.py:360 lino_xl/lib/topics/models.py:26
+#: lino_xl/lib/vat/models.py:159 lino_xl/lib/vatless/models.py:128
+#: lino_xl/lib/votes/models.py:173
 msgid "Description"
 msgstr "Kirjeldus"
 
@@ -823,8 +820,8 @@ msgstr "Kirjeldus"
 msgid "Times"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:621 lino_xl/lib/cal/models.py:788
-#: lino_xl/lib/cal/models.py:795 lino_xl/lib/events/models.py:114
+#: lino_xl/lib/cal/mixins.py:621 lino_xl/lib/cal/models.py:788 lino_xl/lib/cal/models.py:795
+#: lino_xl/lib/events/models.py:114
 msgid "When"
 msgstr "Millal"
 
@@ -864,20 +861,21 @@ msgstr "Iga %s. %s"
 msgid "Generate events until"
 msgstr "Genereeri sündmusi kuni"
 
-#: lino_xl/lib/cal/mixins.py:785 lino_xl/lib/extensible/models.py:163
+#: lino_xl/lib/cal/mixins.py:786 lino_xl/lib/clocking/models.py:112
+#: lino_xl/lib/extensible/models.py:163
 msgid "Summary"
 msgstr "Kokkuvõte"
 
-#: lino_xl/lib/cal/mixins.py:792
+#: lino_xl/lib/cal/mixins.py:793
 msgid "Whether this is private, public or between."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:794
+#: lino_xl/lib/cal/mixins.py:795
 #, fuzzy
 msgid "Revision"
 msgstr "Maakond"
 
-#: lino_xl/lib/cal/mixins.py:795 lino_xl/lib/countries/mixins.py:196
+#: lino_xl/lib/cal/mixins.py:796 lino_xl/lib/countries/mixins.py:196
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:68
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
 #: lino_xl/lib/ledger/models.py:528 lino_xl/lib/ledger/models.py:547
@@ -885,7 +883,7 @@ msgstr "Maakond"
 msgid "No."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:830
+#: lino_xl/lib/cal/mixins.py:831
 msgid " at "
 msgstr ""
 
@@ -898,7 +896,8 @@ msgid "Remote Calendars"
 msgstr ""
 
 #: lino_xl/lib/cal/models.py:96 lino_xl/lib/humanlinks/models.py:62
-#: lino_xl/lib/humanlinks/models.py:67
+#: lino_xl/lib/humanlinks/models.py:67 lino_xl/lib/tickets/models.py:603
+#: lino_xl/lib/tickets/models.py:608
 msgid "Type"
 msgstr ""
 
@@ -926,7 +925,8 @@ msgstr "Ruum"
 msgid "Rooms"
 msgstr "Ruumid"
 
-#: lino_xl/lib/cal/models.py:137
+#: lino_xl/lib/cal/models.py:137 lino_xl/lib/tickets/models.py:41
+#: lino_xl/lib/votes/models.py:82
 msgid "Priority"
 msgstr ""
 
@@ -958,8 +958,8 @@ msgstr ""
 
 #: lino_xl/lib/cal/models.py:177
 msgid ""
-"Whether events of this type make the user unavailable for other locking "
-"events at the same time."
+"Whether events of this type make the user unavailable for other locking events at the "
+"same time."
 msgstr ""
 
 #: lino_xl/lib/cal/models.py:183
@@ -1034,8 +1034,7 @@ msgstr ""
 msgid "Tasks"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:289 lino_xl/lib/ledger/ui.py:279
-#: lino_xl/lib/ledger/ui.py:632
+#: lino_xl/lib/cal/models.py:289 lino_xl/lib/ledger/ui.py:279 lino_xl/lib/ledger/ui.py:632
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:75
 #: lino_xl/lib/sepa/mixins.py:115
 msgid "Due date"
@@ -1170,8 +1169,7 @@ msgstr ""
 msgid "Presence"
 msgstr "Kohalolekud"
 
-#: lino_xl/lib/cal/models.py:997 lino_xl/lib/cal/ui.py:399
-#: lino_xl/lib/courses/models.py:540
+#: lino_xl/lib/cal/models.py:997 lino_xl/lib/cal/ui.py:399 lino_xl/lib/courses/models.py:540
 msgid "Presences"
 msgstr "Kohalolekud"
 
@@ -1250,16 +1248,16 @@ msgstr ""
 msgid "Managed by"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:160 lino_xl/lib/cal/ui.py:304
-#: lino_xl/lib/cal/ui.py:641
+#: lino_xl/lib/cal/ui.py:160 lino_xl/lib/cal/ui.py:304 lino_xl/lib/cal/ui.py:641
 msgid "Only rows managed by this user."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:164 lino_xl/lib/cal/ui.py:652
+#: lino_xl/lib/cal/ui.py:164 lino_xl/lib/cal/ui.py:652 lino_xl/lib/tickets/ui.py:509
+#: lino_xl/lib/votes/models.py:158
 msgid "Only rows having this state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:239
+#: lino_xl/lib/cal/ui.py:239 lino_xl/lib/votes/models.py:369
 msgid "My tasks"
 msgstr ""
 
@@ -1310,20 +1308,20 @@ msgstr ""
 #: lino_xl/lib/cal/ui.py:503
 msgid ""
 "The list of Event Types defined on this system.\n"
-"    An EventType is a list of events which have certain things in common,"
-"\n"
-"    especially they are displayed in the same colour in the calendar "
-"panel.\n"
+"    An EventType is a list of events which have certain things in common,\n"
+"    especially they are displayed in the same colour in the calendar panel.\n"
 "    "
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:590 lino_xl/lib/coachings/choicelists.py:28
-#: lino_xl/lib/contacts/choicelists.py:13
+#: lino_xl/lib/contacts/choicelists.py:13 lino_xl/lib/tickets/choicelists.py:26
+#: lino_xl/lib/tickets/choicelists.py:58 lino_xl/lib/votes/choicelists.py:100
 msgid "Observed event"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:591 lino_xl/lib/coachings/choicelists.py:29
-#: lino_xl/lib/contacts/choicelists.py:14
+#: lino_xl/lib/contacts/choicelists.py:14 lino_xl/lib/tickets/choicelists.py:27
+#: lino_xl/lib/tickets/choicelists.py:59 lino_xl/lib/votes/choicelists.py:101
 msgid "Observed events"
 msgstr ""
 
@@ -1406,8 +1404,8 @@ msgstr "Kokku leppitud ajad"
 #: lino_xl/lib/finan/models.py:269 lino_xl/lib/finan/models.py:276
 #: lino_xl/lib/polls/models.py:187 lino_xl/lib/polls/models.py:378
 #: lino_xl/lib/rooms/models.py:155 lino_xl/lib/sales/models.py:332
-#: lino_xl/lib/vat/ui.py:67 lino_xl/lib/vatless/ui.py:70
-#: lino_xl/lib/vatless/ui.py:85
+#: lino_xl/lib/tickets/ui.py:65 lino_xl/lib/tickets/ui.py:398 lino_xl/lib/vat/ui.py:67
+#: lino_xl/lib/vatless/ui.py:70 lino_xl/lib/vatless/ui.py:85
 msgid "General"
 msgstr "Üld"
 
@@ -1474,7 +1472,8 @@ msgstr ""
 msgid "Task states"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:47
+#: lino_xl/lib/cal/workflows/__init__.py:47 lino_xl/lib/deploy/models.py:100
+#: lino_xl/lib/tickets/choicelists.py:128 lino_xl/lib/tickets/ui.py:516
 msgid "To do"
 msgstr ""
 
@@ -1484,15 +1483,15 @@ msgctxt "cal"
 msgid "Started"
 msgstr "Tänav"
 
-#: lino_xl/lib/cal/workflows/__init__.py:49
+#: lino_xl/lib/cal/workflows/__init__.py:49 lino_xl/lib/votes/choicelists.py:75
 #, fuzzy
 msgid "Done"
 msgstr "Telefon"
 
-#: lino_xl/lib/cal/workflows/__init__.py:51
-#: lino_xl/lib/cal/workflows/__init__.py:107
+#: lino_xl/lib/cal/workflows/__init__.py:51 lino_xl/lib/cal/workflows/__init__.py:107
 #: lino_xl/lib/courses/choicelists.py:57 lino_xl/lib/ledger/choicelists.py:483
 #: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/rooms/models.py:33
+#: lino_xl/lib/tickets/choicelists.py:147 lino_xl/lib/votes/choicelists.py:77
 msgid "Cancelled"
 msgstr "Tühistatud"
 
@@ -1517,15 +1516,14 @@ msgstr ""
 msgid "Suggested"
 msgstr "Ettepanek"
 
-#: lino_xl/lib/cal/workflows/__init__.py:96
-#: lino_xl/lib/courses/choicelists.py:28 lino_xl/lib/ledger/choicelists.py:480
-#: lino_xl/lib/polls/utils.py:26 lino_xl/lib/polls/utils.py:53
-#: lino_xl/lib/rooms/models.py:30
+#: lino_xl/lib/cal/workflows/__init__.py:96 lino_xl/lib/courses/choicelists.py:28
+#: lino_xl/lib/ledger/choicelists.py:480 lino_xl/lib/polls/utils.py:26
+#: lino_xl/lib/polls/utils.py:53 lino_xl/lib/rooms/models.py:30
 msgid "Draft"
 msgstr "Kavand"
 
-#: lino_xl/lib/cal/workflows/__init__.py:99
-#: lino_xl/lib/cal/workflows/feedback.py:28 lino_xl/lib/polls/utils.py:27
+#: lino_xl/lib/cal/workflows/__init__.py:99 lino_xl/lib/cal/workflows/feedback.py:28
+#: lino_xl/lib/polls/utils.py:27
 msgid "Published"
 msgstr ""
 
@@ -1554,8 +1552,7 @@ msgstr ""
 msgid "Afterwards"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:142
-#: lino_xl/lib/cal/workflows/feedback.py:45
+#: lino_xl/lib/cal/workflows/__init__.py:142 lino_xl/lib/cal/workflows/feedback.py:45
 #: lino_xl/lib/cal/workflows/voga.py:68
 msgid "Invited"
 msgstr "Kutsutud"
@@ -1572,20 +1569,17 @@ msgstr ""
 msgid "Rejected"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/feedback.py:48
-#: lino_xl/lib/cal/workflows/feedback.py:101
+#: lino_xl/lib/cal/workflows/feedback.py:48 lino_xl/lib/cal/workflows/feedback.py:101
 #: lino_xl/lib/cal/workflows/voga.py:69
 msgid "Present"
 msgstr "Kohal"
 
-#: lino_xl/lib/cal/workflows/feedback.py:49
-#: lino_xl/lib/cal/workflows/feedback.py:114
+#: lino_xl/lib/cal/workflows/feedback.py:49 lino_xl/lib/cal/workflows/feedback.py:114
 #: lino_xl/lib/cal/workflows/voga.py:70
 msgid "Absent"
 msgstr "Puudus"
 
-#: lino_xl/lib/cal/workflows/feedback.py:50
-#: lino_xl/lib/cal/workflows/feedback.py:120
+#: lino_xl/lib/cal/workflows/feedback.py:50 lino_xl/lib/cal/workflows/feedback.py:120
 #: lino_xl/lib/cal/workflows/voga.py:71
 #, fuzzy
 msgid "Excused"
@@ -1601,9 +1595,7 @@ msgstr ""
 
 #: lino_xl/lib/cal/workflows/feedback.py:82
 #, python-format
-msgid ""
-"%(guest)s cannot accept invitation to %(event_type)s on %(day)s at "
-"%(time)s"
+msgid "%(guest)s cannot accept invitation to %(event_type)s on %(day)s at %(time)s"
 msgstr ""
 
 #: lino_xl/lib/cal/workflows/feedback.py:90
@@ -1612,13 +1604,10 @@ msgstr ""
 
 #: lino_xl/lib/cal/workflows/feedback.py:92
 #, python-format
-msgid ""
-"%(guest)s has accepted the invitation to %(event_type)s on %(day)s at "
-"%(time)s"
+msgid "%(guest)s has accepted the invitation to %(event_type)s on %(day)s at %(time)s"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/feedback.py:125
-#: lino_xl/lib/cal/workflows/voga.py:38
+#: lino_xl/lib/cal/workflows/feedback.py:125 lino_xl/lib/cal/workflows/voga.py:38
 #, fuzzy
 msgid "Reset"
 msgstr "Tänav"
@@ -1644,26 +1633,120 @@ msgstr ""
 msgid "Any manual changes to your event will get lost upon next update "
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/voga.py:63 lino_xl/lib/courses/desktop.py:531
-#: lino_xl/lib/courses/workflows.py:32 lino_xl/lib/reception/models.py:206
-#: lino_xl/lib/reception/models.py:252 lino_xl/lib/reception/models.py:303
+#: lino_xl/lib/cal/workflows/voga.py:63 lino_xl/lib/clocking/actions.py:66
+#: lino_xl/lib/courses/desktop.py:531 lino_xl/lib/courses/workflows.py:32
+#: lino_xl/lib/reception/models.py:206 lino_xl/lib/reception/models.py:252
+#: lino_xl/lib/reception/models.py:303
 msgid "Are you sure?"
 msgstr "Kas oled kindel?"
 
-#: lino_xl/lib/coachings/__init__.py:29 lino_xl/lib/coachings/models.py:105
+#: lino_xl/lib/clocking/__init__.py:26
+msgid "Working time"
+msgstr "Tööaeg"
+
+#: lino_xl/lib/clocking/actions.py:65
+msgid "Close {0} sessions."
+msgstr ""
+
+#: lino_xl/lib/clocking/actions.py:160
+msgid "Activity report"
+msgstr ""
+
+#: lino_xl/lib/clocking/actions.py:166 lino_xl/lib/courses/actions.py:27
+#, fuzzy
+msgid "Show remarks"
+msgstr "Märkus"
+
+#: lino_xl/lib/clocking/actions.py:168 lino_xl/lib/courses/actions.py:29
+#, fuzzy
+msgid "Show states"
+msgstr "Rahavoogude aruanne"
+
+#: lino_xl/lib/clocking/choicelists.py:9
+msgid "Reporting type"
+msgstr ""
+
+#: lino_xl/lib/clocking/choicelists.py:10
+msgid "Reporting types"
+msgstr ""
+
+#: lino_xl/lib/clocking/choicelists.py:15
+msgid "Regular"
+msgstr ""
+
+#: lino_xl/lib/clocking/choicelists.py:16
+msgid "Extra"
+msgstr ""
+
+#: lino_xl/lib/clocking/choicelists.py:17
+msgid "Free"
+msgstr ""
+
+#: lino_xl/lib/clocking/models.py:34
+msgid "Session Type"
+msgstr "Istungiliik"
+
+#: lino_xl/lib/clocking/models.py:35
+msgid "Session Types"
+msgstr "Istungiliigid"
+
+#: lino_xl/lib/clocking/models.py:101
+msgid "Session"
+msgstr "Istung"
+
+#: lino_xl/lib/clocking/models.py:102
+msgid "Sessions"
+msgstr "Istungid"
+
+#: lino_xl/lib/clocking/models.py:113
+msgid "Summary of the session."
+msgstr ""
+
+#: lino_xl/lib/clocking/models.py:118
+msgid "Break Time"
+msgstr ""
+
+#: lino_xl/lib/clocking/models.py:197 lino_xl/lib/cv/fixtures/std.py:121
+#, fuzzy
+msgid "Worker"
+msgstr "Veel"
+
+#: lino_xl/lib/clocking/models.py:212
+msgid "You are busy with "
+msgstr "Sa oled ametis piletiga"
+
+#: lino_xl/lib/clocking/ui.py:40 lino_xl/lib/clocking/ui.py:59
+msgid "Has been worked on"
+msgstr ""
+
+#: lino_xl/lib/clocking/ui.py:184
+#, python-format
+msgid "Total %s hours."
+msgstr "Kokku %s tundi."
+
+#: lino_xl/lib/clocking/ui.py:188
+msgid "Active sessions"
+msgstr ""
+
+#: lino_xl/lib/clocking/ui.py:215
+msgid "My sessions by date"
+msgstr ""
+
+#: lino_xl/lib/coachings/__init__.py:29 lino_xl/lib/coachings/models.py:106
 msgid "Coachings"
 msgstr ""
 
-#: lino_xl/lib/coachings/choicelists.py:45 lino_xl/lib/coachings/models.py:104
+#: lino_xl/lib/coachings/choicelists.py:45 lino_xl/lib/coachings/models.py:105
 msgid "Coaching"
 msgstr ""
 
-#: lino_xl/lib/coachings/choicelists.py:60
+#: lino_xl/lib/coachings/choicelists.py:60 lino_xl/lib/tickets/choicelists.py:31
+#: lino_xl/lib/votes/choicelists.py:105
 #, fuzzy
 msgid "Created"
 msgstr "Loo"
 
-#: lino_xl/lib/coachings/choicelists.py:77
+#: lino_xl/lib/coachings/choicelists.py:77 lino_xl/lib/tickets/choicelists.py:44
 msgid "Modified"
 msgstr ""
 
@@ -1750,123 +1833,123 @@ msgstr "Leidis aset"
 msgid "Find appointment"
 msgstr "Kokku leppitud ajad"
 
-#: lino_xl/lib/coachings/models.py:37
+#: lino_xl/lib/coachings/models.py:38
 #, fuzzy
 msgid "Integration"
 msgstr "Nimetus"
 
-#: lino_xl/lib/coachings/models.py:38
+#: lino_xl/lib/coachings/models.py:39
 msgid "GSS"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:58
+#: lino_xl/lib/coachings/models.py:59
 msgid "Coaching type"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:59
+#: lino_xl/lib/coachings/models.py:60
 msgid "Coaching types"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:63
+#: lino_xl/lib/coachings/models.py:64
 msgid "Whether this coaching type does integration."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:67
+#: lino_xl/lib/coachings/models.py:68
 msgid "Whether this coaching type does general social work."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:71
+#: lino_xl/lib/coachings/models.py:72
 msgid "Role in evaluations"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:72
+#: lino_xl/lib/coachings/models.py:73
 msgid "Role when participating in evaluation meetings."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:80
+#: lino_xl/lib/coachings/models.py:81
 msgid "Reason of termination"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:81
+#: lino_xl/lib/coachings/models.py:82
 #, fuzzy
 msgid "Coaching termination reasons"
 msgstr "Nimetus"
 
-#: lino_xl/lib/coachings/models.py:87
+#: lino_xl/lib/coachings/models.py:88
 msgid "If not empty, allow this ending only on coachings of specified type."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:122
+#: lino_xl/lib/coachings/models.py:124
 msgid ""
-"There's at most one primary coach per client.         Enabling this field"
-" will automatically make the other         coachings non-primary."
+"There's at most one primary coach per client.         Enabling this field will "
+"automatically make the other         coachings non-primary."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:163
+#: lino_xl/lib/coachings/models.py:165
 msgid "Cannot delete companies and persons imported from TIM"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:238
+#: lino_xl/lib/coachings/models.py:240
 msgid "Coached from"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:241
+#: lino_xl/lib/coachings/models.py:243
 msgid "Coach"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:259
+#: lino_xl/lib/coachings/models.py:261
 msgid "Check coachings"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:264
+#: lino_xl/lib/coachings/models.py:266
 msgid "Both coached and obsolete."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:270
+#: lino_xl/lib/coachings/models.py:272
 msgid "Not coached, but with active coachings."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:287
+#: lino_xl/lib/coachings/models.py:289
 msgid "Client Contact type"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:288
+#: lino_xl/lib/coachings/models.py:290
 msgid "Client Contact types"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:318
+#: lino_xl/lib/coachings/models.py:320
 msgid "Client Contact"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:319
+#: lino_xl/lib/coachings/models.py:321
 #, fuzzy
 msgid "Client Contacts"
 msgstr "Kontaktiliigid"
 
-#: lino_xl/lib/coachings/models.py:322 lino_xl/lib/contacts/models.py:113
+#: lino_xl/lib/coachings/models.py:324 lino_xl/lib/contacts/models.py:113
 #: lino_xl/lib/cv/models.py:189 lino_xl/lib/cv/models.py:618
-#: lino_xl/lib/lists/models.py:62
+#: lino_xl/lib/faculties/models.py:55 lino_xl/lib/lists/models.py:62
 msgid "Remarks"
 msgstr "Märkused"
 
-#: lino_xl/lib/coachings/models.py:327
+#: lino_xl/lib/coachings/models.py:329
 msgid "Must fill at least one field."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:332 lino_xl/lib/rooms/models.py:135
+#: lino_xl/lib/coachings/models.py:334 lino_xl/lib/rooms/models.py:135
 #, fuzzy
 msgid "Contact person"
 msgstr "Kontaktiliigid"
 
-#: lino_xl/lib/coachings/models.py:340
+#: lino_xl/lib/coachings/models.py:342
 msgid "The coaching type used for new coachings with this user."
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:346
+#: lino_xl/lib/coachings/models.py:348
 msgid "Coaching supervisor"
 msgstr ""
 
-#: lino_xl/lib/coachings/models.py:348
+#: lino_xl/lib/coachings/models.py:350
 msgid "Notify me when a coach has been assigned"
 msgstr ""
 
@@ -1888,7 +1971,7 @@ msgstr "Firmaliik"
 msgid "Jargon"
 msgstr ""
 
-#: lino_xl/lib/concepts/models.py:32
+#: lino_xl/lib/concepts/models.py:32 lino_xl/lib/tickets/choicelists.py:205
 msgid "Obsoletes"
 msgstr ""
 
@@ -1970,6 +2053,7 @@ msgstr "Partner"
 
 #: lino_xl/lib/contacts/models.py:111 lino_xl/lib/contacts/models.py:161
 #: lino_xl/lib/courses/models.py:97 lino_xl/lib/outbox/models.py:55
+#: lino_xl/lib/tickets/models.py:91
 msgid "Name"
 msgstr "Nimi"
 
@@ -1982,7 +2066,6 @@ msgid "Extended filter criteria"
 msgstr ""
 
 #: lino_xl/lib/contacts/models.py:251
-#, fuzzy
 msgid "Contact"
 msgstr ""
 
@@ -2061,24 +2144,20 @@ msgid "The next automatic id for any new partner."
 msgstr ""
 
 #: lino_xl/lib/countries/__init__.py:26 lino_xl/lib/countries/models.py:103
-#, fuzzy
 msgid "Places"
-msgstr "Leidis aset"
+msgstr "Asumid"
 
 #: lino_xl/lib/countries/__init__.py:42 lino_xl/lib/countries/choicelists.py:55
-#, fuzzy
 msgid "County"
-msgstr "Riik"
+msgstr "Maakond"
 
 #: lino_xl/lib/countries/choicelists.py:43
-#, fuzzy
 msgid "Place Type"
-msgstr "Firmaliik"
+msgstr "Asumiliik"
 
 #: lino_xl/lib/countries/choicelists.py:48
-#, fuzzy
 msgid "Member State"
-msgstr "Listi tellimused"
+msgstr "Liikmeriik"
 
 #: lino_xl/lib/countries/choicelists.py:49
 #, fuzzy
@@ -2095,9 +2174,8 @@ msgid "Territory"
 msgstr ""
 
 #: lino_xl/lib/countries/choicelists.py:56
-#, fuzzy
 msgid "Province"
-msgstr "Telefon"
+msgstr "Provints"
 
 #: lino_xl/lib/countries/choicelists.py:57
 msgid "Shire"
@@ -2133,16 +2211,15 @@ msgstr "Kontaktisik"
 
 #: lino_xl/lib/countries/choicelists.py:65 lino_xl/lib/countries/mixins.py:52
 msgid "City"
-msgstr ""
+msgstr "Linn"
 
 #: lino_xl/lib/countries/choicelists.py:66
-#, fuzzy
 msgid "Town"
-msgstr "Optioon"
+msgstr "Linn"
 
 #: lino_xl/lib/countries/choicelists.py:67
 msgid "Municipality"
-msgstr ""
+msgstr "Vald"
 
 #: lino_xl/lib/countries/choicelists.py:68
 msgid "Parish"
@@ -2150,24 +2227,23 @@ msgstr ""
 
 #: lino_xl/lib/countries/choicelists.py:69
 msgid "Township"
-msgstr ""
+msgstr "Linnaosa"
 
 #: lino_xl/lib/countries/choicelists.py:70
-#, fuzzy
 msgid "Quarter"
-msgstr "Partner"
+msgstr "Linnaosa"
 
 #: lino_xl/lib/countries/choicelists.py:72
 msgid "Borough"
-msgstr ""
+msgstr "Alevik"
 
 #: lino_xl/lib/countries/choicelists.py:73
 msgid "Small borough"
-msgstr ""
+msgstr "Alevik"
 
 #: lino_xl/lib/countries/choicelists.py:75
 msgid "Village"
-msgstr ""
+msgstr "Küla"
 
 #: lino_xl/lib/countries/mixins.py:54
 msgid "Zip code"
@@ -2215,13 +2291,12 @@ msgid "Address line to print below street line."
 msgstr ""
 
 #: lino_xl/lib/countries/models.py:38
-#, fuzzy
 msgid "Country"
 msgstr "Riik"
 
 #: lino_xl/lib/countries/models.py:39
 msgid "Countries"
-msgstr ""
+msgstr "Riigid"
 
 #: lino_xl/lib/countries/models.py:44
 msgid "ISO code"
@@ -2250,9 +2325,8 @@ msgid "The three-letter code for this country as defined by ISO 3166-1."
 msgstr ""
 
 #: lino_xl/lib/countries/models.py:102
-#, fuzzy
 msgid "Place"
-msgstr "Leidis aset"
+msgstr "Asum"
 
 #: lino_xl/lib/countries/models.py:184
 msgid "Part of"
@@ -2292,62 +2366,50 @@ msgstr ""
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:24
 msgid "Estonia"
-msgstr ""
+msgstr "Eesti"
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:25
 msgid "Belgium"
-msgstr ""
+msgstr "Belgia"
 
-#: lino_xl/lib/countries/fixtures/few_countries.py:26
-#: lino_xl/lib/vat/choicelists.py:88
+#: lino_xl/lib/countries/fixtures/few_countries.py:26 lino_xl/lib/vat/choicelists.py:88
 msgid "Germany"
-msgstr ""
+msgstr "Saksamaa"
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:27
-#, fuzzy
 msgid "France"
-msgstr "Kohalolekud"
+msgstr "Prantsusmaa"
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:28
 msgid "Netherlands"
-msgstr ""
+msgstr "Madalmaad"
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:29
 msgid "Maroc"
-msgstr ""
+msgstr "Marokko"
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:30
 msgid "Russia"
-msgstr ""
+msgstr "Venemaa"
 
 #: lino_xl/lib/countries/fixtures/few_countries.py:31
 msgid "Congo (Democratic Republic)"
-msgstr ""
+msgstr "Kongo vabariik"
 
 #: lino_xl/lib/courses/__init__.py:37 lino_xl/lib/courses/models.py:275
 msgid "Activities"
 msgstr ""
 
 #: lino_xl/lib/courses/actions.py:20 lino_xl/lib/courses/models.py:306
-#, fuzzy
 msgid "Presence sheet"
-msgstr "Kohalolekud"
-
-#: lino_xl/lib/courses/actions.py:27
-#, fuzzy
-msgid "Show remarks"
-msgstr "Märkus"
-
-#: lino_xl/lib/courses/actions.py:29
-#, fuzzy
-msgid "Show states"
-msgstr "Rahavoogude aruanne"
+msgstr "Kohalolekuteleht"
 
 #: lino_xl/lib/courses/choicelists.py:25 lino_xl/lib/courses/choicelists.py:50
 msgid "invoiceable"
 msgstr ""
 
-#: lino_xl/lib/courses/choicelists.py:30
+#: lino_xl/lib/courses/choicelists.py:30 lino_xl/lib/tickets/choicelists.py:127
+#: lino_xl/lib/tickets/ui.py:514
 #, fuzzy
 msgid "Active"
 msgstr "Kuupäev"
@@ -2356,8 +2418,9 @@ msgstr "Kuupäev"
 msgid "Inactive"
 msgstr ""
 
-#: lino_xl/lib/courses/choicelists.py:32 lino_xl/lib/ledger/choicelists.py:127
-#: lino_xl/lib/polls/utils.py:28
+#: lino_xl/lib/courses/choicelists.py:32 lino_xl/lib/deploy/models.py:48
+#: lino_xl/lib/ledger/choicelists.py:127 lino_xl/lib/polls/utils.py:28
+#: lino_xl/lib/tickets/choicelists.py:146 lino_xl/lib/tickets/models.py:48
 #, fuzzy
 msgid "Closed"
 msgstr "Tänav"
@@ -2371,19 +2434,16 @@ msgid "Uses a place"
 msgstr ""
 
 #: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/courses/models.py:511
-#, fuzzy
 msgid "Requested"
-msgstr "Ettepanek"
+msgstr "Taotlus"
 
 #: lino_xl/lib/courses/choicelists.py:55 lino_xl/lib/courses/models.py:527
-#, fuzzy
 msgid "Trying"
-msgstr "Tsertifitseeriv"
+msgstr "Katseaeg"
 
 #: lino_xl/lib/courses/choicelists.py:56 lino_xl/lib/courses/models.py:519
-#, fuzzy
 msgid "Confirmed"
-msgstr "Seaded"
+msgstr "Kinnitatud"
 
 #: lino_xl/lib/courses/choicelists.py:76
 msgid "Layout"
@@ -2445,9 +2505,7 @@ msgid "Participants only"
 msgstr "Osavõtja"
 
 #: lino_xl/lib/courses/desktop.py:419
-msgid ""
-"Hide cancelled enrolments. Ignored if you specify an explicit enrolment "
-"state."
+msgid "Hide cancelled enrolments. Ignored if you specify an explicit enrolment state."
 msgstr ""
 
 #: lino_xl/lib/courses/desktop.py:498
@@ -2518,8 +2576,8 @@ msgstr ""
 
 #: lino_xl/lib/courses/models.py:169
 msgid ""
-"The type of calendar events to be generated. If this is empty, no "
-"calendar events will be generated."
+"The type of calendar events to be generated. If this is empty, no calendar events will be "
+"generated."
 msgstr ""
 
 #: lino_xl/lib/courses/models.py:176
@@ -2533,8 +2591,8 @@ msgstr "Minu kohalolekud"
 
 #: lino_xl/lib/courses/models.py:182
 msgid ""
-"The default guest role for particpants of events for courses in this "
-"series. Leave empty if you don't want any presence management."
+"The default guest role for particpants of events for courses in this series. Leave empty "
+"if you don't want any presence management."
 msgstr ""
 
 #: lino_xl/lib/courses/models.py:189
@@ -2567,6 +2625,7 @@ msgid "Available places"
 msgstr ""
 
 #: lino_xl/lib/courses/models.py:299 lino_xl/lib/properties/models.py:180
+#: lino_xl/lib/tickets/models.py:152
 msgid "Designation"
 msgstr "Nimetus"
 
@@ -2719,18 +2778,15 @@ msgstr ""
 msgid "CEF levels"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:70 lino_xl/lib/cv/mixins.py:71
-#: lino_xl/lib/cv/mixins.py:72
+#: lino_xl/lib/cv/mixins.py:70 lino_xl/lib/cv/mixins.py:71 lino_xl/lib/cv/mixins.py:72
 msgid "basic language skills"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:73 lino_xl/lib/cv/mixins.py:74
-#: lino_xl/lib/cv/mixins.py:75
+#: lino_xl/lib/cv/mixins.py:73 lino_xl/lib/cv/mixins.py:74 lino_xl/lib/cv/mixins.py:75
 msgid "independent use of language"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:76 lino_xl/lib/cv/mixins.py:77
-#: lino_xl/lib/cv/mixins.py:78
+#: lino_xl/lib/cv/mixins.py:76 lino_xl/lib/cv/mixins.py:77 lino_xl/lib/cv/mixins.py:78
 msgid "proficient use of language"
 msgstr ""
 
@@ -2791,8 +2847,7 @@ msgstr ""
 msgid "Study"
 msgstr ""
 
-#: lino_xl/lib/cv/models.py:200 lino_xl/lib/cv/models.py:312
-#: lino_xl/lib/cv/models.py:616
+#: lino_xl/lib/cv/models.py:200 lino_xl/lib/cv/models.py:312 lino_xl/lib/cv/models.py:616
 #, fuzzy
 msgid "Training"
 msgstr "Hoiatus"
@@ -2954,11 +3009,6 @@ msgstr "Registreerimine"
 msgid "Interim"
 msgstr "Registreeru"
 
-#: lino_xl/lib/cv/fixtures/std.py:121
-#, fuzzy
-msgid "Worker"
-msgstr "Veel"
-
 #: lino_xl/lib/cv/fixtures/std.py:122
 msgid "Employee"
 msgstr ""
@@ -2990,6 +3040,58 @@ msgstr ""
 #, fuzzy
 msgid "Part-time"
 msgstr "Algab (aeg)"
+
+#: lino_xl/lib/deploy/__init__.py:20
+msgid "Deploy"
+msgstr ""
+
+#: lino_xl/lib/deploy/desktop.py:37
+msgid "Show milestons which are closed."
+msgstr ""
+
+#: lino_xl/lib/deploy/desktop.py:63
+msgid "Show deployments on closed milestones."
+msgstr ""
+
+#: lino_xl/lib/deploy/desktop.py:79
+msgid "Deployed tickets"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:31
+msgid "Milestone"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:32
+msgid "Milestones"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:40
+msgid "Label"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:41
+msgid "Expected for"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:42
+msgid "Reached"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:45
+msgid "Changes since"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:46
+msgid "In printed document include a list of other changes since this date"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:77
+msgid "Deployment"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:78
+msgid "Deployments"
+msgstr ""
 
 #: lino_xl/lib/dupable_partners/__init__.py:34
 msgid "Dupable partners"
@@ -3041,8 +3143,8 @@ msgstr ""
 
 #: lino_xl/lib/excerpts/mixins.py:30
 msgid ""
-"Mark this object as not printed. A subsequent call to print will generate"
-" a new cache file."
+"Mark this object as not printed. A subsequent call to print will generate a new cache "
+"file."
 msgstr ""
 
 #: lino_xl/lib/excerpts/mixins.py:42
@@ -3099,9 +3201,8 @@ msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:132
 msgid ""
-"Whether this is the default type to use for this model. There's at most "
-"one primary type per model. Enabling this field will automatically make "
-"the other types non-primary."
+"Whether this is the default type to use for this model. There's at most one primary type "
+"per model. Enabling this field will automatically make the other types non-primary."
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:139
@@ -3109,9 +3210,7 @@ msgid "Backward compatible"
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:141
-msgid ""
-"Check this to have `this` in template context point to owner instead of "
-"excerpt."
+msgid "Check this to have `this` in template context point to owner instead of excerpt."
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:145
@@ -3226,8 +3325,8 @@ msgstr "Sugu"
 
 #: lino_xl/lib/extensible/models.py:101
 msgid ""
-"Displays your events in a \"calendar view\"     with the possibility to "
-"switch between daily, weekly, monthly view."
+"Displays your events in a \"calendar view\"     with the possibility to switch between "
+"daily, weekly, monthly view."
 msgstr ""
 
 #: lino_xl/lib/extensible/models.py:136
@@ -3241,6 +3340,105 @@ msgstr "Tänav"
 
 #: lino_xl/lib/extensible/models.py:161
 msgid "End"
+msgstr ""
+
+#: lino_xl/lib/faculties/__init__.py:31 lino_xl/lib/faculties/models.py:42
+msgid "Skills"
+msgstr "Oskused"
+
+#: lino_xl/lib/faculties/models.py:27
+msgid "Skill type"
+msgstr "Piletiliik"
+
+#: lino_xl/lib/faculties/models.py:28
+msgid "Skill types"
+msgstr "Piletiliigid"
+
+#: lino_xl/lib/faculties/models.py:41
+msgid "Skill"
+msgstr "Oskus"
+
+#: lino_xl/lib/faculties/models.py:46 lino_xl/lib/faculties/models.py:95
+msgid "Affinity"
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:47
+msgid ""
+"How much workers enjoy to get a new ticket requiring this skill.A number between -{0} and "
+"+{0}."
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:64
+msgid "Parent skill"
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:81
+msgid "Skill offer"
+msgstr "Oskuse pakkumine"
+
+#: lino_xl/lib/faculties/models.py:82
+msgid "Skill offers"
+msgstr "Oskuse pakkumised"
+
+#: lino_xl/lib/faculties/models.py:88 lino_xl/lib/tickets/models.py:392
+#: lino_xl/lib/tickets/ui.py:480
+msgid "End user"
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:96
+msgid ""
+"How much this user likes to get a new ticket in this faculty.A number between -{0} and "
+"+{0}."
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:128
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:17
+#: lino_xl/lib/stars/models.py:54 lino_xl/lib/xl/user_types.py:31
+msgid "User"
+msgstr "Kasutaja"
+
+#: lino_xl/lib/faculties/models.py:144
+msgid "Skill demand"
+msgstr "Oskuse vajadus"
+
+#: lino_xl/lib/faculties/models.py:145 lino_xl/lib/faculties/ui.py:123
+msgid "Skill demands"
+msgstr "Oskuste vajadused"
+
+#: lino_xl/lib/faculties/models.py:152
+msgid "Demander"
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:155
+msgid "Importance"
+msgstr ""
+
+#: lino_xl/lib/faculties/models.py:156
+msgid "How important this skill is for this demand. A number between -{0} and +{0}."
+msgstr ""
+
+#: lino_xl/lib/faculties/ui.py:47
+msgid "Skills (all)"
+msgstr "Oskused (kõik)"
+
+#: lino_xl/lib/faculties/ui.py:54
+msgid "Skills (tree)"
+msgstr "Oskused (puu)"
+
+#: lino_xl/lib/faculties/ui.py:63
+msgid "Child skills"
+msgstr ""
+
+#: lino_xl/lib/faculties/ui.py:103
+msgid "Skills managed by me"
+msgstr ""
+
+#: lino_xl/lib/faculties/ui.py:130
+msgid "Wanted skills"
+msgstr ""
+
+#: lino_xl/lib/faculties/ui.py:226
+msgid "Assignable workers"
 msgstr ""
 
 #: lino_xl/lib/families/__init__.py:22
@@ -3311,8 +3509,7 @@ msgstr ""
 msgid "Payment Order"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:116
-#: lino_xl/lib/ledger/fixtures/minimal_ledger.py:218
+#: lino_xl/lib/finan/models.py:116 lino_xl/lib/ledger/fixtures/minimal_ledger.py:218
 msgid "Payment Orders"
 msgstr ""
 
@@ -3379,8 +3576,7 @@ msgid "Payment Order items"
 msgstr "Maksetingimused"
 
 #: lino_xl/lib/finan/models.py:262 lino_xl/lib/ledger/__init__.py:49
-#: lino_xl/lib/sales/models.py:342 lino_xl/lib/vat/ui.py:72
-#: lino_xl/lib/vatless/ui.py:75
+#: lino_xl/lib/sales/models.py:342 lino_xl/lib/vat/ui.py:72 lino_xl/lib/vatless/ui.py:75
 msgid "Ledger"
 msgstr "Raamatupidamine"
 
@@ -3458,7 +3654,7 @@ msgstr ""
 msgid "Households"
 msgstr ""
 
-#: lino_xl/lib/households/choicelists.py:16
+#: lino_xl/lib/households/choicelists.py:16 lino_xl/lib/tickets/models.py:588
 msgid "Dependency"
 msgstr ""
 
@@ -3482,8 +3678,7 @@ msgstr ""
 msgid "Household member roles"
 msgstr ""
 
-#: lino_xl/lib/households/choicelists.py:35
-#: lino_xl/lib/households/models.py:526
+#: lino_xl/lib/households/choicelists.py:35 lino_xl/lib/households/models.py:526
 msgid "Head of household"
 msgstr ""
 
@@ -3496,7 +3691,7 @@ msgstr "Isikud"
 msgid "Cohabitant"
 msgstr ""
 
-#: lino_xl/lib/households/choicelists.py:39
+#: lino_xl/lib/households/choicelists.py:39 lino_xl/lib/tickets/models.py:600
 msgid "Child"
 msgstr ""
 
@@ -3539,8 +3734,8 @@ msgstr ""
 
 #: lino_xl/lib/households/models.py:291
 msgid ""
-"Whether this is the primary household of this person. Checking this field"
-" will automatically disable any other primary memberships."
+"Whether this is the primary household of this person. Checking this field will "
+"automatically disable any other primary memberships."
 msgstr ""
 
 #: lino_xl/lib/households/models.py:383
@@ -3594,13 +3789,11 @@ msgstr ""
 msgid "Create a household"
 msgstr ""
 
-#: lino_xl/lib/households/fixtures/std.py:21
-#: lino_xl/lib/humanlinks/fixtures/demo.py:34
+#: lino_xl/lib/households/fixtures/std.py:21 lino_xl/lib/humanlinks/fixtures/demo.py:34
 msgid "Married couple"
 msgstr ""
 
-#: lino_xl/lib/households/fixtures/std.py:24
-#: lino_xl/lib/humanlinks/fixtures/demo.py:36
+#: lino_xl/lib/households/fixtures/std.py:24 lino_xl/lib/humanlinks/fixtures/demo.py:36
 msgid "Divorced couple"
 msgstr ""
 
@@ -3671,36 +3864,30 @@ msgstr ""
 msgid "Granddaughter"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:102
-#: lino_xl/lib/humanlinks/choicelists.py:103
+#: lino_xl/lib/humanlinks/choicelists.py:102 lino_xl/lib/humanlinks/choicelists.py:103
 msgid "Husband"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:102
-#: lino_xl/lib/humanlinks/choicelists.py:103
+#: lino_xl/lib/humanlinks/choicelists.py:102 lino_xl/lib/humanlinks/choicelists.py:103
 msgid "Wife"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:107
-#: lino_xl/lib/humanlinks/choicelists.py:108
+#: lino_xl/lib/humanlinks/choicelists.py:107 lino_xl/lib/humanlinks/choicelists.py:108
 msgctxt "male"
 msgid "Friend"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:107
-#: lino_xl/lib/humanlinks/choicelists.py:108
+#: lino_xl/lib/humanlinks/choicelists.py:107 lino_xl/lib/humanlinks/choicelists.py:108
 msgctxt "female"
 msgid "Friend"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:113
-#: lino_xl/lib/humanlinks/choicelists.py:114
+#: lino_xl/lib/humanlinks/choicelists.py:113 lino_xl/lib/humanlinks/choicelists.py:114
 msgctxt "male"
 msgid "Partner"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:113
-#: lino_xl/lib/humanlinks/choicelists.py:114
+#: lino_xl/lib/humanlinks/choicelists.py:113 lino_xl/lib/humanlinks/choicelists.py:114
 msgctxt "female"
 msgid "Partner"
 msgstr ""
@@ -3739,28 +3926,24 @@ msgstr "Inimene"
 msgid "Foster daughter"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:129
-#: lino_xl/lib/humanlinks/choicelists.py:130
+#: lino_xl/lib/humanlinks/choicelists.py:129 lino_xl/lib/humanlinks/choicelists.py:130
 msgctxt "male"
 msgid "Brother"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:129
-#: lino_xl/lib/humanlinks/choicelists.py:130
+#: lino_xl/lib/humanlinks/choicelists.py:129 lino_xl/lib/humanlinks/choicelists.py:130
 #, fuzzy
 msgctxt "female"
 msgid "Sister"
 msgstr "Registreeru"
 
-#: lino_xl/lib/humanlinks/choicelists.py:135
-#: lino_xl/lib/humanlinks/choicelists.py:136
+#: lino_xl/lib/humanlinks/choicelists.py:135 lino_xl/lib/humanlinks/choicelists.py:136
 #, fuzzy
 msgctxt "male"
 msgid "Cousin"
 msgstr "Raamatupidamine"
 
-#: lino_xl/lib/humanlinks/choicelists.py:135
-#: lino_xl/lib/humanlinks/choicelists.py:136
+#: lino_xl/lib/humanlinks/choicelists.py:135 lino_xl/lib/humanlinks/choicelists.py:136
 #, fuzzy
 msgctxt "female"
 msgid "Cousin"
@@ -3785,26 +3968,22 @@ msgstr ""
 msgid "Niece"
 msgstr "Telefon"
 
-#: lino_xl/lib/humanlinks/choicelists.py:146
-#: lino_xl/lib/humanlinks/choicelists.py:147
+#: lino_xl/lib/humanlinks/choicelists.py:146 lino_xl/lib/humanlinks/choicelists.py:147
 msgctxt "male"
 msgid "Relative"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:146
-#: lino_xl/lib/humanlinks/choicelists.py:147
+#: lino_xl/lib/humanlinks/choicelists.py:146 lino_xl/lib/humanlinks/choicelists.py:147
 msgctxt "female"
 msgid "Relative"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:152
-#: lino_xl/lib/humanlinks/choicelists.py:153
+#: lino_xl/lib/humanlinks/choicelists.py:152 lino_xl/lib/humanlinks/choicelists.py:153
 msgctxt "male"
 msgid "Other"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/choicelists.py:152
-#: lino_xl/lib/humanlinks/choicelists.py:153
+#: lino_xl/lib/humanlinks/choicelists.py:152 lino_xl/lib/humanlinks/choicelists.py:153
 msgctxt "female"
 msgid "Other"
 msgstr ""
@@ -3825,12 +4004,12 @@ msgstr ""
 msgid "To whom..."
 msgstr ""
 
-#: lino_xl/lib/humanlinks/models.py:75
+#: lino_xl/lib/humanlinks/models.py:75 lino_xl/lib/tickets/models.py:616
 #, python-format
 msgid "%(child)s is %(what)s"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/models.py:80
+#: lino_xl/lib/humanlinks/models.py:80 lino_xl/lib/tickets/models.py:621
 #, python-format
 msgid "%(type)s of %(parent)s"
 msgstr ""
@@ -3866,9 +4045,7 @@ msgid "Build a new list of suggestions. This will remove all current suggestions
 msgstr ""
 
 #: lino_xl/lib/invoicing/actions.py:99
-msgid ""
-"Execute this invoicing plan. Create an invoice for each selected "
-"suggestion."
+msgid "Execute this invoicing plan. Create an invoice for each selected suggestion."
 msgstr ""
 
 #: lino_xl/lib/invoicing/actions.py:113
@@ -3930,8 +4107,7 @@ msgstr ""
 msgid "Selected"
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:248
-#: lino_xl/lib/ledger/fixtures/minimal_ledger.py:201
+#: lino_xl/lib/invoicing/models.py:248 lino_xl/lib/ledger/fixtures/minimal_ledger.py:201
 #: lino_xl/lib/vat/models.py:146 lino_xl/lib/vatless/models.py:55
 msgid "Invoice"
 msgstr "Arve"
@@ -4065,8 +4241,8 @@ msgstr "Hoiatus"
 
 #: lino_xl/lib/ledger/models.py:147
 msgid ""
-"Automatically update the cleared status of involved transactions when "
-"(de)registering a voucher of this journal"
+"Automatically update the cleared status of involved transactions when (de)registering a "
+"voucher of this journal"
 msgstr ""
 
 #: lino_xl/lib/ledger/models.py:151
@@ -4590,8 +4766,7 @@ msgstr ""
 #: lino_xl/lib/notes/models.py:283
 msgid ""
 "Note Type used by system notes.\n"
-"If this is empty, then system notes won't create any entry to the Notes "
-"table."
+"If this is empty, then system notes won't create any entry to the Notes table."
 msgstr ""
 
 #: lino_xl/lib/notes/fixtures/demo.py:18
@@ -4666,8 +4841,8 @@ msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:56
 msgid ""
-"The name of the file to be used as template when creating an email from a"
-" mailable of this type."
+"The name of the file to be used as template when creating an email from a mailable of "
+"this type."
 msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:73
@@ -4803,9 +4978,7 @@ msgid "Questions to add"
 msgstr ""
 
 #: lino_xl/lib/polls/models.py:123
-msgid ""
-"Paste text for questions to add. Every non-empty line will create one "
-"question."
+msgid "Paste text for questions to add. Every non-empty line will create one question."
 msgstr ""
 
 #: lino_xl/lib/polls/models.py:194
@@ -4852,6 +5025,7 @@ msgid "{poll} {partner} {date}"
 msgstr ""
 
 #: lino_xl/lib/polls/models.py:382 lino_xl/lib/sales/models.py:337
+#: lino_xl/lib/tickets/ui.py:73 lino_xl/lib/tickets/ui.py:413
 #, fuzzy
 msgid "More"
 msgstr "Veel"
@@ -4957,7 +5131,7 @@ msgstr ""
 msgid "Going to create %(num)d postings for %(elem)s"
 msgstr ""
 
-#: lino_xl/lib/postings/models.py:37
+#: lino_xl/lib/postings/models.py:37 lino_xl/lib/tickets/choicelists.py:145
 msgid "Ready"
 msgstr ""
 
@@ -5407,11 +5581,6 @@ msgstr ""
 msgid "Going to sign %d documents as user %s. Are you sure?"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:17
-#: lino_xl/lib/stars/models.py:54 lino_xl/lib/xl/user_types.py:31
-msgid "User"
-msgstr "Kasutaja"
-
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:32
 #: lino_xl/lib/vat/mixins.py:439
 msgid "Unit price"
@@ -5472,8 +5641,8 @@ msgstr ""
 
 #: lino_xl/lib/sepa/models.py:78
 msgid ""
-"Enabling this field will automatically disable any previous primary "
-"account and update the partner's IBAN and BIC"
+"Enabling this field will automatically disable any previous primary account and update "
+"the partner's IBAN and BIC"
 msgstr ""
 
 #: lino_xl/lib/sepa/models.py:116
@@ -5486,7 +5655,7 @@ msgstr "Konto väljavõted"
 msgid "Stars"
 msgstr "Tänav"
 
-#: lino_xl/lib/stars/models.py:39
+#: lino_xl/lib/stars/models.py:39 lino_xl/lib/votes/models.py:85
 #, fuzzy
 msgid "Nickname"
 msgstr "nimi"
@@ -5525,8 +5694,7 @@ msgstr ""
 msgid "Your stars are "
 msgstr "Üritusdomeen"
 
-#: lino_xl/lib/statbel/countries/models.py:38
-#: lino_xl/lib/statbel/countries/models.py:68
+#: lino_xl/lib/statbel/countries/models.py:38 lino_xl/lib/statbel/countries/models.py:68
 msgid "INS code"
 msgstr ""
 
@@ -5540,8 +5708,7 @@ msgstr ""
 
 #: lino_xl/lib/statbel/countries/models.py:46
 msgid ""
-"Select the actual country if this row represents a refugee status or a "
-"former country."
+"Select the actual country if this row represents a refugee status or a former country."
 msgstr ""
 
 #: lino_xl/lib/statbel/countries/models.py:70
@@ -5567,6 +5734,359 @@ msgstr ""
 
 #: lino_xl/lib/thirds/models.py:25
 msgid "Third Parties"
+msgstr ""
+
+#: lino_xl/lib/tickets/__init__.py:23 lino_xl/lib/tickets/models.py:89
+msgid "Projects"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:124
+#, fuzzy
+msgid "Ticket states"
+msgstr "Piletitüübid\t"
+
+#: lino_xl/lib/tickets/choicelists.py:139
+msgid "New"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:140
+msgid "Talk"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:141
+msgctxt "ticket state"
+msgid "Open"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:143
+msgid "Started"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:144
+msgid "Sleeping"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:197
+msgid "Dependency type"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:198
+msgid "Dependency types"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:202
+msgid "Requires"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:202
+msgid "Required by"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:203
+msgid "Triggers"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:203
+msgid "Triggered by"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:204
+msgid "Suggests"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:204
+msgid "Suggested by"
+msgstr ""
+
+#: lino_xl/lib/tickets/choicelists.py:205
+msgid "Obsoleted by"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:52
+msgid "Planned time"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:63
+msgid "Project Type"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:64
+msgid "Project Types"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:72
+msgid "Ticket type"
+msgstr "\t"
+
+#: lino_xl/lib/tickets/models.py:73
+msgid "Ticket types"
+msgstr "Piletitüübid\t"
+
+#: lino_xl/lib/tickets/models.py:88
+msgid "Project"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:96
+msgid "Assign tickets to"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:98
+msgid "The user to whom new tickets will be assigned."
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:113
+msgid "Activity overview"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:145
+msgctxt "Ticketing"
+msgid "Site"
+msgstr "Koht"
+
+#: lino_xl/lib/tickets/models.py:146
+msgctxt "Ticketing"
+msgid "Sites"
+msgstr "Kohad"
+
+#: lino_xl/lib/tickets/models.py:163
+msgctxt "Ticketing"
+msgid "Competence"
+msgstr "Pädevus"
+
+#: lino_xl/lib/tickets/models.py:164
+msgctxt "Ticketing"
+msgid "Competences"
+msgstr "Pädevused"
+
+#: lino_xl/lib/tickets/models.py:178
+msgid "Tickets overview"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:212
+msgctxt "Ticketing"
+msgid "Wish"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:213
+msgctxt "Ticketing"
+msgid "Wishes"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:312
+msgid "Spawn a new child ticket {0} this one."
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:322
+msgid "New ticket {0} #{1}"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:333
+msgid "New ticket {0} has been spawned as child of {1}."
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:347
+msgid "Ticket"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:348
+msgid "Tickets"
+msgstr "Piletid"
+
+#: lino_xl/lib/tickets/models.py:357
+msgctxt "Ticket"
+msgid "Summary"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:359
+msgid "Short summary of the problem."
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:362 lino_xl/lib/tickets/models.py:421
+msgid "Resolution"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:365 lino_xl/lib/tickets/models.py:424
+msgid "Duplicate of"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:372
+msgid "Milestone for which this ticket has been reported."
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:378
+msgid "The milestone for which this ticket has been fixed."
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:389
+msgid "Reporter"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:398
+msgid "Deadline"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:403
+msgid "Waiting for"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:405
+msgid "Feedback"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:406
+msgid "Standby"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:409
+msgid "Spawn triggered ticket"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:496
+msgid " by "
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:498
+msgid "for"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:536
+msgid "Suppliers"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:562
+msgid "Needed skills"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:589 lino_xl/lib/tickets/ui.py:294
+msgid "Dependencies"
+msgstr ""
+
+#: lino_xl/lib/tickets/models.py:595
+msgid "Parent"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:85 lino_xl/lib/tickets/ui.py:501
+msgid "Interesting for"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:87
+msgid "Only projects interesting for this partner."
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:140
+msgid "Subprojects"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:145
+msgid "Projects (tree)"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:188
+msgid "My projects"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:388
+msgid "Create dependency as "
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:402
+msgid "History"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:482
+msgid "Only rows concerning this end user."
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:486
+msgid "Voted by"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:488
+msgid "Only tickets having a vote by this user."
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:492
+msgid "Not voted by"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:494
+msgid "Only tickets having no vote by this user."
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:498
+msgid "Feasable by"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:503
+msgid "Only tickets interesting for this partner."
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:511 lino_xl/lib/votes/choicelists.py:74
+msgid "Assigned"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:512
+msgid "Whether to show assigned tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:515
+msgid "Whether to show active tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:517
+msgid "Has project"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:655
+msgid "All tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:664
+msgid "Duplicates"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:675
+msgid "Where I can help"
+msgstr "Kus ma saan aidata"
+
+#: lino_xl/lib/tickets/ui.py:700
+msgid "Unassigned Tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:754
+msgid "Public tickets"
+msgstr "Avalikud piletid"
+
+#: lino_xl/lib/tickets/ui.py:777
+msgid "Tickets to triage"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:778
+msgid "Triage"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:794
+msgid "Tickets to talk"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:835
+msgid "Active tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:885
+msgid "Fixed tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:892
+msgid "Reported tickets"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:899
+msgid "Reported tickets "
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:934
+msgid "Known problems"
 msgstr ""
 
 #: lino_xl/lib/tim2lino/__init__.py:38
@@ -5655,8 +6175,7 @@ msgstr "Kategooriad"
 
 #: lino_xl/lib/vat/choicelists.py:76
 msgid ""
-"Determines how the VAT is being handled,         i.e. whether and how it "
-"is to be paid."
+"Determines how the VAT is being handled,         i.e. whether and how it is to be paid."
 msgstr ""
 
 #: lino_xl/lib/vat/choicelists.py:81
@@ -5781,6 +6300,127 @@ msgstr "Loo arve"
 #, fuzzy
 msgid "Partner vouchers"
 msgstr "KM dokumendid"
+
+#: lino_xl/lib/votes/__init__.py:23 lino_xl/lib/votes/models.py:72
+#: lino_xl/lib/votes/models.py:393
+msgid "Votes"
+msgstr "Sõnavõtud"
+
+#: lino_xl/lib/votes/choicelists.py:59
+msgid "Vote states"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:71 lino_xl/lib/votes/models.py:145
+msgid "Author"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:72
+msgid "Watching"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:73
+msgid "Candidate"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:76
+msgid "Rated"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:82
+msgid "Rating"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:83
+msgid "Ratings"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:87
+msgid "Very good"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:88
+msgid "Good"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:89
+msgid "Satisfying"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:90
+msgid "Deficient"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:91
+msgid "Insufficient"
+msgstr ""
+
+#: lino_xl/lib/votes/choicelists.py:92
+msgid "Unratable"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:71
+msgid "Vote"
+msgstr "Sõnavõtt"
+
+#: lino_xl/lib/votes/models.py:119 lino_xl/lib/votes/models.py:125
+msgid "{user}'s {vote} on {votable}"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:147
+msgid "Only rows on votables whose author is this user."
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:151
+msgid "Exclude author"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:153
+msgid "Only rows on votables whose author is not this user."
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:160
+msgid "Only rows having this mail mode."
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:163
+msgid "Only rows whose {model} has this state."
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:166
+msgid "{model} state"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:189
+msgid "Voter"
+msgstr "Sõnavõtja"
+
+#: lino_xl/lib/votes/models.py:274
+msgid "My vote about #{}"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:276
+msgid "{}'s vote about #{}"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:326
+msgid "All votes"
+msgstr "Kõik Sõnavõtud"
+
+#: lino_xl/lib/votes/models.py:346
+msgid "My votes"
+msgstr "Minu Sõnavõtud"
+
+#: lino_xl/lib/votes/models.py:361
+msgid "My candidatures"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:377
+msgid "My watchlist"
+msgstr ""
+
+#: lino_xl/lib/votes/models.py:487
+msgid "Your favourite {0} are "
+msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:6 lino_xl/lib/xl/help_texts.py:266
 #: lino_xl/lib/xl/help_texts.py:296 lino_xl/lib/xl/help_texts.py:388
@@ -9061,6897 +9701,3 @@ msgstr "Anonüümne"
 #: lino_xl/lib/xl/user_types.py:32
 msgid "Administrator"
 msgstr "Administraator"
-
-#~ msgid "Welcome"
-#~ msgstr "Tere tulemast"
-
-#~ msgid "Company type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "%s has been built."
-#~ msgstr ""
-
-#~ msgid "Reused %s from cache."
-#~ msgstr ""
-
-#~ msgid "No excerpts."
-#~ msgstr "Väljavõtet pole"
-
-#~ msgid "%d adults"
-#~ msgstr ""
-
-#~ msgid "%d adults and %d children"
-#~ msgstr ""
-
-#~ msgid "Guests"
-#~ msgstr ""
-
-#~ msgid "Organisation type"
-#~ msgstr ""
-
-#~ msgid "Organisation types"
-#~ msgstr ""
-
-#~ msgid "The next automatic id for Person or Organisation"
-#~ msgstr ""
-
-#~ msgid "The partner that runs this site"
-#~ msgstr ""
-
-#~ msgid "The partner to be used as sender in documents."
-#~ msgstr ""
-
-#~ msgid "As %s you have no permission to run this action."
-#~ msgstr ""
-
-#~ msgid "Status "
-#~ msgstr ""
-
-#~ msgid "Presence"
-#~ msgstr "Kohalolekud"
-
-#~ msgid "My pending presences"
-#~ msgstr ""
-
-#~ msgid "Participation"
-#~ msgstr "Osavõtumaks"
-
-#~ msgid "Participations"
-#~ msgstr "Osavõtumaks"
-
-#~ msgid "study or education"
-#~ msgstr ""
-
-#~ msgid "Studies & education"
-#~ msgstr ""
-
-#~ msgid "~Blog"
-#~ msgstr ""
-
-#~ msgid "Table of my tasks marked 'to do'."
-#~ msgstr ""
-
-#~ msgid "To-do list"
-#~ msgstr ""
-
-#~ msgid "Automatically suggested.     Default state of an automatic event."
-#~ msgstr ""
-
-#~ msgctxt "cal"
-#~ msgid "Started"
-#~ msgstr "Tänav"
-
-#~ msgid "Ended"
-#~ msgstr "Lõpetatud"
-
-#~ msgid "Find or create client from eID card"
-#~ msgstr ""
-
-#~ msgid "Update of this client from eID card"
-#~ msgstr ""
-
-#~ msgid "Code Changes"
-#~ msgstr ""
-
-#~ msgid "Optimizations"
-#~ msgstr ""
-
-#~ msgid "Module"
-#~ msgstr ""
-
-#~ msgid "VAT rate"
-#~ msgstr "Algab (päev)"
-
-#~ msgid "VAT rates"
-#~ msgstr "Algab (päev)"
-
-#~ msgid "+"
-#~ msgstr ""
-
-#~ msgid "-"
-#~ msgstr ""
-
-#~ msgid "is Person"
-#~ msgstr "on Isik"
-
-#~ msgid "Whether this Partner is a Person."
-#~ msgstr ""
-
-#~ msgid "is Company"
-#~ msgstr "on Firma"
-
-#~ msgid "Whether this Partner is a Company."
-#~ msgstr ""
-
-#~ msgid "is Household"
-#~ msgstr ""
-
-#~ msgid "Short summary of the session."
-#~ msgstr ""
-
-#~ msgid "is private"
-#~ msgstr ""
-
-#~ msgid "Working"
-#~ msgstr ""
-
-#~ msgid "Ticket has been assigned to somebody who is working on it."
-#~ msgstr ""
-
-#~ msgid "My events"
-#~ msgstr "Minu sündmused"
-
-#~ msgid "Table of all my calendar events."
-#~ msgstr ""
-
-#~ msgid "response to %(poll)s"
-#~ msgstr ""
-
-#~ msgid "%(user)s's %(what)s"
-#~ msgstr ""
-
-#~ msgid "Stale Controllables"
-#~ msgstr ""
-
-#~ msgid "Primary key"
-#~ msgstr ""
-
-#~ msgid "Controlling model"
-#~ msgstr ""
-
-#~ msgctxt "date range"
-#~ msgid "from"
-#~ msgstr ""
-
-#~ msgid "Appointment"
-#~ msgstr "Kokku leppitud aeg"
-
-#~ msgid "There are %d %s with similar name:"
-#~ msgstr ""
-
-#~ msgid "Must update dupable words."
-#~ msgstr ""
-
-#~ msgid "eID sheet"
-#~ msgstr ""
-
-#~ msgid "Cannot repair invalid SSIN ({0})"
-#~ msgstr ""
-
-#~ msgid "Repairable"
-#~ msgstr ""
-
-#~ msgid "My open tickets"
-#~ msgstr "Isik"
-
-#~ msgid "Non-empty address fields, but no address record."
-#~ msgstr ""
-
-#~ msgid "Training Type"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Training Types"
-#~ msgstr "Organisatsiooniliiged"
-
-#~ msgid "Study Type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Study Types"
-#~ msgstr "Listiliigid"
-
-#~ msgid "Fixable"
-#~ msgstr ""
-
-#~ msgid "Running {0} plausibility checkers on {1} {2}..."
-#~ msgstr ""
-
-#~ msgid "Found {0} and fixed {1} plausibility problems in {2}."
-#~ msgstr ""
-
-#~ msgid "No plausibility problems found in {0}."
-#~ msgstr ""
-
-#~ msgid "Event Type"
-#~ msgstr "Sündmuse liik"
-
-#~ msgid "Calendar entry"
-#~ msgstr "Kalender"
-
-#~ msgid "Bootstrap"
-#~ msgstr ""
-
-#~ msgid "You are busy in "
-#~ msgstr ""
-
-#~ msgid "{label} #{id}"
-#~ msgstr ""
-
-#~ msgid "{label} with {project}"
-#~ msgstr ""
-
-#~ msgid "Save changes to text ?"
-#~ msgstr ""
-
-#~ msgid "Edit text in own window"
-#~ msgstr ""
-
-#~ msgid "Sub-projects"
-#~ msgstr ""
-
-#~ msgid "Vote"
-#~ msgstr ""
-
-#~ msgid "Votes"
-#~ msgstr "Arved"
-
-#~ msgid "Closed since"
-#~ msgstr ""
-
-#~ msgid "Tickets Reported"
-#~ msgstr ""
-
-#~ msgid "Tickets assigned to me"
-#~ msgstr ""
-
-#~ msgid "Assigned"
-#~ msgstr "Alla kirjutatud"
-
-#~ msgid "Ticket has been assigned to somebody who is assigned on it."
-#~ msgstr ""
-
-#~ msgid "Active"
-#~ msgstr "Kuupäev"
-
-#~ msgid "Wait for feedback"
-#~ msgstr ""
-
-#~ msgid "Has been fixed. Waiting for test results."
-#~ msgstr ""
-
-#~ msgid "Has been tested. Waiting to be closed."
-#~ msgstr ""
-
-#~ msgid "Definitively closed. Cannot be undone."
-#~ msgstr ""
-
-#~ msgid "Has been cancelled for some reason."
-#~ msgstr ""
-
-#~ msgid "Mark this as %s"
-#~ msgstr ""
-
-#~ msgid "Waiting for feedback from partner."
-#~ msgstr ""
-
-#~ msgid "Has been fixed. Waiting to be tested."
-#~ msgstr ""
-
-#~ msgid "Tested"
-#~ msgstr "Tänav"
-
-#~ msgid "Has been fixed and tested."
-#~ msgstr ""
-
-#~ msgid "See also"
-#~ msgstr "Näita kui "
-
-#~ msgid "Referred by"
-#~ msgstr ""
-
-#~ msgid "Waiting for feedback"
-#~ msgstr ""
-
-#~ msgid "Opened"
-#~ msgstr "Telefon"
-
-#~ msgid "Mark this as {0}"
-#~ msgstr ""
-
-#~ msgid "Cannot delete %(self)s because %(count)d %(refs)s refer to it."
-#~ msgstr ""
-
-#~ msgid "Up"
-#~ msgstr "Ülesse"
-
-#~ msgid "Down"
-#~ msgstr "Alla"
-
-#~ msgid "all"
-#~ msgstr ""
-
-#~ msgid "nobody"
-#~ msgstr ""
-
-#~ msgid "all except %s"
-#~ msgstr ""
-
-#~ msgid "Your favourite tickets are:"
-#~ msgstr ""
-
-#~ msgid "Course Line"
-#~ msgstr "Ürituste sari"
-
-#~ msgid "Course Lines"
-#~ msgstr "Ürituste sarjad"
-
-#~ msgid "Submitted"
-#~ msgstr "Saadetud"
-
-#~ msgid "Submit"
-#~ msgstr "Saada"
-
-#~ msgid "Oops."
-#~ msgstr ""
-
-#~ msgid "Paid"
-#~ msgstr "Makstud"
-
-#~ msgid "Signed"
-#~ msgstr "Alla kirjutatud"
-
-#~ msgid "User Level"
-#~ msgstr ""
-
-#~ msgid "User Levels"
-#~ msgstr ""
-
-#~ msgid "Short name"
-#~ msgstr "Lühinimi"
-
-#~ msgid "Used when defining UserProfiles"
-#~ msgstr ""
-
-#~ msgid "Guest"
-#~ msgstr "Külaline"
-
-#~ msgid "Manager"
-#~ msgstr ""
-
-#~ msgid "User Group"
-#~ msgstr ""
-
-#~ msgid "User Groups"
-#~ msgstr ""
-
-#~ msgid ""
-#~ msgstr ""
-
-#~ msgid "Hours worked"
-#~ msgstr ""
-
-#~ msgid "The matched movement."
-#~ msgstr ""
-
-#~ msgid "Roles"
-#~ msgstr ""
-
-#~ msgid "Trade Type"
-#~ msgstr ""
-
-#~ msgid "Receivables"
-#~ msgstr "Tasulised teenused"
-
-#~ msgid "Customers"
-#~ msgstr "Tulud"
-
-#~ msgid "Suppliers"
-#~ msgstr "Hankijad (konto)"
-
-#~ msgid "Financial institutes"
-#~ msgstr ""
-
-#~ msgid "Current transactions"
-#~ msgstr "Korduvad sündmused"
-
-#~ msgid "Eingliederungseinkommen"
-#~ msgstr ""
-
-#~ msgid "Allgemeine Beihilfen"
-#~ msgstr ""
-
-#~ msgid "Fonds Gas und Elektrizität"
-#~ msgstr ""
-
-#~ msgid "Heizkosten- u. Energiebeihilfe"
-#~ msgstr ""
-
-#~ msgid "Beihilfe für Ausländer"
-#~ msgstr ""
-
-#~ msgid "Sozialhilfe"
-#~ msgstr ""
-
-#~ msgid "Mietbeihilfe"
-#~ msgstr ""
-
-#~ msgid "Mietkaution"
-#~ msgstr "Nimetus"
-
-#~ msgid "Vorschuss auf Vergütungen o.ä."
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Pensionen"
-#~ msgstr ""
-
-#~ msgid "Vorsch. Entsch. Arbeitsunfälle"
-#~ msgstr ""
-
-#~ msgid "Vor. Kranken- u. Invalidengeld"
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Familienzulage"
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Arbeitslosengeld"
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Behindertenzulag"
-#~ msgstr ""
-
-#~ msgid "Abhebung von pers. Guthaben"
-#~ msgstr ""
-
-#~ msgid "Einn. Dritter: Weiterleitung"
-#~ msgstr ""
-
-#~ msgid "Unber. erh. Beträge + Erstatt."
-#~ msgstr ""
-
-#~ msgid "Gesundheitsbeihilfe"
-#~ msgstr ""
-
-#~ msgid "Revenues"
-#~ msgstr "Kohalolekud"
-
-#~ msgid "KBC"
-#~ msgstr ""
-
-#~ msgid "PO KBC"
-#~ msgstr ""
-
-#~ msgid "Invested time"
-#~ msgstr ""
-
-#~ msgid "Only rows authored by this user."
-#~ msgstr ""
-
-#~ msgid "Only tickets interesting for this user."
-#~ msgstr ""
-
-#~ msgid "Deployment"
-#~ msgstr "Registreerimine"
-
-#~ msgid "Senior Developer"
-#~ msgstr ""
-
-#~ msgid "Datasource"
-#~ msgstr ""
-
-#~ msgid "Viewable for"
-#~ msgstr "Teenus"
-
-#~ msgid "Accounting"
-#~ msgstr "Raamatupidamine"
-
-#~ msgid "Account Chart"
-#~ msgstr "Kontoplaan"
-
-#~ msgid "Account Charts"
-#~ msgstr "Kontoplaanid"
-
-#~ msgid "Financial statement"
-#~ msgstr ""
-
-#~ msgid "Balance sheet"
-#~ msgstr ""
-
-#~ msgid "Profit & Loss statement"
-#~ msgstr ""
-
-#~ msgid "Cash flow statement"
-#~ msgstr "Rahavoogude aruanne"
-
-#~ msgid "Assets"
-#~ msgstr ""
-
-#~ msgid "Liabilities"
-#~ msgstr ""
-
-#~ msgid "Capital"
-#~ msgstr "Kapitaal"
-
-#~ msgid "Incomes"
-#~ msgstr "Tulud"
-
-#~ msgid "Expenses"
-#~ msgstr "Kulud"
-
-#~ msgid "Bank accounts"
-#~ msgstr "Pamgakontod"
-
-#~ msgid "Account Type"
-#~ msgstr "Kontoliik"
-
-#~ msgid "D/C"
-#~ msgstr ""
-
-#~ msgid "Sheet"
-#~ msgstr "Kus"
-
-#~ msgid "Debit"
-#~ msgstr "Deebet"
-
-#~ msgid "Credit"
-#~ msgstr "Krediit"
-
-#~ msgid "Debit (checked) or Credit (not checked)"
-#~ msgstr ""
-
-#~ msgid "Account Group"
-#~ msgstr "Kontorühm"
-
-#~ msgid "Account Groups"
-#~ msgstr "Kontorühmad"
-
-#~ msgid "Account"
-#~ msgstr "Konto"
-
-#~ msgid "Accounts"
-#~ msgstr "Kontod"
-
-#~ msgid "Invoicing Mode"
-#~ msgstr "Arvete esitamise viis"
-
-#~ msgid "Invoicing Modes"
-#~ msgstr "Arvete esitamise viisid"
-
-#~ msgid "Additional fee charged when using this invoicing mode."
-#~ msgstr ""
-
-#~ msgid "No invoiceables found for %s."
-#~ msgstr ""
-
-#~ msgid "Create invoice"
-#~ msgstr "Loo arve"
-
-#~ msgid "%d invoices have been created."
-#~ msgstr ""
-
-#~ msgid "This will create %d invoices."
-#~ msgstr ""
-
-#~ msgid "Create invoice from invoiceables for this partner"
-#~ msgstr ""
-
-#~ msgid "Invoiceable"
-#~ msgstr "Teenus"
-
-#~ msgid "Voucher item"
-#~ msgstr "Dokumendi rida"
-
-#~ msgid "Voucher items"
-#~ msgstr "Dokumendi read"
-
-#~ msgid "Invoicings"
-#~ msgstr ""
-
-#~ msgid "This will create and print %d invoice(s)."
-#~ msgstr ""
-
-#~ msgid "Invoices to create"
-#~ msgstr "Esitamata arved"
-
-#~ msgid "Table of all partners who should receive an invoice."
-#~ msgstr ""
-
-#~ msgid "First date"
-#~ msgstr ""
-
-#~ msgid "Last date"
-#~ msgstr ""
-
-#~ msgid "Amount"
-#~ msgstr "Summa"
-
-#~ msgid "Invoiceables"
-#~ msgstr "Tasulised teenused"
-
-#~ msgid "Actions"
-#~ msgstr "Aktioonid"
-
-#~ msgid "List of invoiceable items for this partner"
-#~ msgstr ""
-
-#~ msgid "Clocking"
-#~ msgstr "Broneerimine"
-
-#~ msgid "Session Type"
-#~ msgstr ""
-
-#~ msgid "Session Types"
-#~ msgstr ""
-
-#~ msgid "End session"
-#~ msgstr "Maakond"
-
-#~ msgid "Stop time-tracking this session."
-#~ msgstr ""
-
-#~ msgid "Close {0} sessions."
-#~ msgstr ""
-
-#~ msgid "End the active session on this ticket."
-#~ msgstr ""
-
-#~ msgid "Start a session on this ticket."
-#~ msgstr ""
-
-#~ msgid "Open session on new ticket"
-#~ msgstr ""
-
-#~ msgid "Session"
-#~ msgstr "Maakond"
-
-#~ msgid "Sessions"
-#~ msgstr "Isikud"
-
-#~ msgid "Summary of the session."
-#~ msgstr ""
-
-#~ msgid "Break Time"
-#~ msgstr ""
-
-#~ msgid "You are busy with "
-#~ msgstr ""
-
-#~ msgid "Service Report"
-#~ msgstr ""
-
-#~ msgid "Service Reports"
-#~ msgstr "Teenused"
-
-#~ msgid "Interesting for"
-#~ msgstr "Algajate foorum"
-
-#~ msgid "Only tickets interesting for this site."
-#~ msgstr ""
-
-#~ msgid "Only tickets in this state."
-#~ msgstr ""
-
-#~ msgid "Has been worked on"
-#~ msgstr ""
-
-#~ msgid "My sessions by date"
-#~ msgstr ""
-
-#~ msgid "Worked hours"
-#~ msgstr ""
-
-#~ msgid "Total"
-#~ msgstr "Kokku"
-
-#~ msgid "site-specific"
-#~ msgstr ""
-
-#~ msgid "Reporter"
-#~ msgstr "Aruanded"
-
-#~ msgid "Tickets"
-#~ msgstr ""
-
-#~ msgid "Courses"
-#~ msgstr "Üritused"
-
-#~ msgid "Enrolment states"
-#~ msgstr ""
-
-#~ msgid "invoiceable"
-#~ msgstr ""
-
-#~ msgid "Uses a place"
-#~ msgstr ""
-
-#~ msgid "Requested"
-#~ msgstr "Taotletud"
-
-#~ msgid "Confirmed"
-#~ msgstr "Kinnitatud"
-
-#~ msgid "Course area"
-#~ msgstr "Üritusdomeen"
-
-#~ msgid "Start Time"
-#~ msgstr ""
-
-#~ msgid "Timetable Slot"
-#~ msgstr ""
-
-#~ msgid "Timetable Slots"
-#~ msgstr ""
-
-#~ msgid "Topic"
-#~ msgstr "Teema"
-
-#~ msgid "Topics"
-#~ msgstr "Teemad"
-
-#~ msgctxt "plural form"
-#~ msgid "Course series"
-#~ msgstr "Üritusdomeenid"
-
-#~ msgid "Participation fee"
-#~ msgstr "Osavõtumaks"
-
-#~ msgid "Default guest role for particpants of events."
-#~ msgstr ""
-
-#~ msgid "Options category"
-#~ msgstr ""
-
-#~ msgid "Fees category"
-#~ msgstr "Osavõtumaksu kategooria"
-
-#~ msgid "Shows events of courses of this teacher"
-#~ msgstr ""
-
-#~ msgid "Course"
-#~ msgstr "Üritus"
-
-#~ msgid "Instructor"
-#~ msgstr "Õpetaja"
-
-#~ msgctxt "in a course"
-#~ msgid "Places"
-#~ msgstr "Kohtade arv"
-
-#~ msgid "Enrolments until"
-#~ msgstr "Registreerimine kuni"
-
-#~ msgid "Info"
-#~ msgstr ""
-
-#~ msgctxt "in a course"
-#~ msgid "Available places"
-#~ msgstr "Kohtade arv"
-
-#~ msgid "Unlimited"
-#~ msgstr ""
-
-#~ msgid "Enrolments"
-#~ msgstr "Registreerimised"
-
-#~ msgid "in %s"
-#~ msgstr "Minu %s"
-
-#~ msgid "Draft courses"
-#~ msgstr "Üritused ettevalmistamisel"
-
-#~ msgid "Active courses"
-#~ msgstr "Toimuvad üritused"
-
-#~ msgid "Enrolment option"
-#~ msgstr "Registreerimisoptioon"
-
-#~ msgid "Enrolment options"
-#~ msgstr "Registreerimisoptioonid"
-
-#~ msgid "Enrolment"
-#~ msgstr "Registreerimine"
-
-#~ msgid "Date of request"
-#~ msgstr "Taotluse kuupäev"
-
-#~ msgid "Confirmation details"
-#~ msgstr "Kinnituse täpsustused"
-
-#~ msgid "No places left in %s"
-#~ msgstr ""
-
-#~ msgid "Course state"
-#~ msgstr ""
-
-#~ msgid "Participants only"
-#~ msgstr ""
-
-#~ msgid "Also "
-#~ msgstr "Isik"
-
-#~ msgid "Confirm all"
-#~ msgstr ""
-
-#~ msgid "This will confirm all %d enrolments in this list."
-#~ msgstr ""
-
-#~ msgid "Pending requested enrolments"
-#~ msgstr "Ootel registreerimesed"
-
-#~ msgid "Pending confirmed enrolments"
-#~ msgstr "Kinnitatud registreerimesed"
-
-#~ msgid "Suggested courses"
-#~ msgstr "Soovitud üüritused"
-
-#~ msgid "%(details)s for %(master)s"
-#~ msgstr ""
-
-#~ msgid "Enrol"
-#~ msgstr "Registreeru"
-
-#~ msgid "Show enrolment"
-#~ msgstr "Rahavoogude aruanne"
-
-#~ msgid "Certify"
-#~ msgstr ""
-
-#~ msgid "Print certificate for <b>%(pupil)s</b>."
-#~ msgstr ""
-
-#~ msgid "Confirm"
-#~ msgstr "Kinnita"
-
-#~ msgid "Check for possible problems."
-#~ msgstr ""
-
-#~ msgid "Cannot confirm %(pupil)s : %(message)s"
-#~ msgstr "Ei saa kinnitada %(pupil)s : %(message)s"
-
-#~ msgid "Sales base"
-#~ msgstr "Põhikonto Müük"
-
-#~ msgid "Sales VAT"
-#~ msgstr "Käibemaksukonto Müük"
-
-#~ msgid "Purchases base"
-#~ msgstr "Põhikonto Ost"
-
-#~ msgid "Purchases VAT"
-#~ msgstr "Käibemaksukonto Ost"
-
-#~ msgid "Investments"
-#~ msgstr "Investeeringud"
-
-#~ msgid "Ware"
-#~ msgstr "Vara"
-
-#~ msgid "Services"
-#~ msgstr "Teenused"
-
-#~ msgid "VAT Period"
-#~ msgstr "KMD periood"
-
-#~ msgid "VAT Periods"
-#~ msgstr "KMD perioodid"
-
-#~ msgid "First Quarter (January-March)"
-#~ msgstr ""
-
-#~ msgid "Second Quarter (April-June)"
-#~ msgstr ""
-
-#~ msgid "Third Quarter (July-August)"
-#~ msgstr ""
-
-#~ msgid "Fourth Quarter (September-December)"
-#~ msgstr ""
-
-#~ msgid "January"
-#~ msgstr ""
-
-#~ msgid "February"
-#~ msgstr ""
-
-#~ msgid "March"
-#~ msgstr ""
-
-#~ msgid "April"
-#~ msgstr ""
-
-#~ msgid "May"
-#~ msgstr "Firma"
-
-#~ msgid "June"
-#~ msgstr ""
-
-#~ msgid "July"
-#~ msgstr ""
-
-#~ msgid "August"
-#~ msgstr ""
-
-#~ msgid "September"
-#~ msgstr ""
-
-#~ msgid "October"
-#~ msgstr ""
-
-#~ msgid "November"
-#~ msgstr ""
-
-#~ msgid "December"
-#~ msgstr ""
-
-#~ msgid "VAT declaration"
-#~ msgstr "Käibemaksu deklaratsioon"
-
-#~ msgid "VAT declarations"
-#~ msgstr "Käibemaksu deklaratsioonid"
-
-#~ msgid "Financial"
-#~ msgstr "Finants"
-
-#~ msgid "Item"
-#~ msgstr "Rida"
-
-#~ msgid "Items"
-#~ msgstr "Read"
-
-#~ msgid "Could not determine the general account"
-#~ msgstr ""
-
-#~ msgid "Could not determine the partner account"
-#~ msgstr ""
-
-#~ msgid "There is already an open grouper for {0}"
-#~ msgstr ""
-
-#~ msgid "Grouper"
-#~ msgstr ""
-
-#~ msgid "Groupers"
-#~ msgstr "Dokumendid"
-
-#~ msgid "Journal Entry"
-#~ msgstr ""
-
-#~ msgid "Journal Entries"
-#~ msgstr ""
-
-#~ msgid "Payment Order"
-#~ msgstr ""
-
-#~ msgid "Payment Orders"
-#~ msgstr ""
-
-#~ msgid "Execution date"
-#~ msgstr ""
-
-#~ msgid "Bank Statement"
-#~ msgstr "Konto väljavõte"
-
-#~ msgid "Bank Statements"
-#~ msgstr "Konto väljavõted"
-
-#~ msgid "Old balance"
-#~ msgstr "Algsaldo"
-
-#~ msgid "New balance"
-#~ msgstr "Lõppsaldo"
-
-#~ msgid "Income"
-#~ msgstr "Sisse"
-
-#~ msgid "Expense"
-#~ msgstr "Välja"
-
-#~ msgid "Ledger"
-#~ msgstr "Raamatupidamine"
-
-#~ msgid "Fill"
-#~ msgstr ""
-
-#~ msgid "%d items have been added to %s."
-#~ msgstr ""
-
-#~ msgid "Suggestions"
-#~ msgstr "Ettepanekud"
-
-#~ msgid "IBAN"
-#~ msgstr ""
-
-#~ msgid "BIC"
-#~ msgstr ""
-
-#~ msgid "Your reference"
-#~ msgstr "Teie viide"
-
-#~ msgid "Sales"
-#~ msgstr "Müük"
-
-#~ msgid "Purchases"
-#~ msgstr "Ost"
-
-#~ msgid "Wages"
-#~ msgstr "Palgad"
-
-#~ msgid "Fiscal Year"
-#~ msgstr "Aruandeaasta"
-
-#~ msgid "Fiscal Years"
-#~ msgstr "Aruandeaastad"
-
-#~ msgid "Voucher type"
-#~ msgstr "Dokumendi rida"
-
-#~ msgid "Voucher types"
-#~ msgstr "Dokumendi read"
-
-#~ msgid "Trade type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Trade types"
-#~ msgstr "Märkuseliigid"
-
-#~ msgid "The type of trade: usually either `sales` or `purchases`."
-#~ msgstr ""
-
-#~ msgid "Clearings"
-#~ msgstr "Hoiatus"
-
-#~ msgid "The movement to be matched."
-#~ msgstr ""
-
-#~ msgid "Match"
-#~ msgstr ""
-
-#~ msgid "Journal"
-#~ msgstr "Žurnaal"
-
-#~ msgid "Journals"
-#~ msgstr "Žurnaalid"
-
-#~ msgid "Force chronological sequence"
-#~ msgstr ""
-
-#~ msgid "%s is not the last voucher in journal"
-#~ msgstr "%s pole viimane dokument oma žurnaalis"
-
-#~ msgid "Payment Term"
-#~ msgstr "Maksetingimus"
-
-#~ msgid "Payment Terms"
-#~ msgstr "Maksetingimused"
-
-#~ msgid "Voucher"
-#~ msgstr "Dokument"
-
-#~ msgid "Vouchers"
-#~ msgstr "Dokumendid"
-
-#~ msgid "Narration"
-#~ msgstr ""
-
-#~ msgid "Movement"
-#~ msgstr "Tehing"
-
-#~ msgid "Movements"
-#~ msgstr "Tehingud"
-
-#~ msgid "The movement matched by this one."
-#~ msgstr ""
-
-#~ msgid "Satisfied"
-#~ msgstr "Rahuldatud"
-
-#~ msgid "Match rule"
-#~ msgstr ""
-
-#~ msgid "Match rules"
-#~ msgstr ""
-
-#~ msgid "Clearable"
-#~ msgstr ""
-
-#~ msgid "Debts"
-#~ msgstr "Võlad"
-
-#~ msgid "Date until"
-#~ msgstr "Isik"
-
-#~ msgid "Due date of the eldest debt in this match group"
-#~ msgstr ""
-
-#~ msgid "List of invoices in this match group"
-#~ msgstr ""
-
-#~ msgid "Payments"
-#~ msgstr "Laekumised"
-
-#~ msgid "List of payments in this match group"
-#~ msgstr ""
-
-#~ msgid "Balance"
-#~ msgstr "Saldo"
-
-#~ msgid "General Accounts Balances"
-#~ msgstr "Üldkontode saldod"
-
-#~ msgid "Ref"
-#~ msgstr ""
-
-#~ msgid "Client Accounts Balances"
-#~ msgstr "Ostjate saldod"
-
-#~ msgid "Supplier Accounts Balances"
-#~ msgstr "Hankijate saldod"
-
-#~ msgid "Debtors"
-#~ msgstr ""
-
-#~ msgid "List of partners (usually clients)     who are in debt towards us."
-#~ msgstr ""
-
-#~ msgid "Creditors"
-#~ msgstr ""
-
-#~ msgid "List of partners (usually suppliers)     who are giving credit to us."
-#~ msgstr ""
-
-#~ msgid "Situation"
-#~ msgstr "Nimetus"
-
-#~ msgid "Overview of the financial situation on a given date."
-#~ msgstr ""
-
-#~ msgid "Activity Report"
-#~ msgstr "Tegevusaruanne"
-
-#~ msgid "Overview of the financial activity during a given period."
-#~ msgstr ""
-
-#~ msgid "Show cleared movements"
-#~ msgstr ""
-
-#~ msgid "Sales invoices"
-#~ msgstr "Müügiarved"
-
-#~ msgid "Purchase invoices"
-#~ msgstr "Ostuarved"
-
-#~ msgid "Bestbank"
-#~ msgstr ""
-
-#~ msgid "Cash"
-#~ msgstr "Kassa"
-
-#~ msgid "Miscellaneous Journal Entries"
-#~ msgstr "Muud operatsioonid"
-
-#~ msgid "using one of these names."
-#~ msgstr "kasutades üks järgnevates nimedest."
-
-#~ msgid "Sales price"
-#~ msgstr ""
-
-#~ msgid "Sales Base account"
-#~ msgstr ""
-
-#~ msgid "Sales VAT account"
-#~ msgstr ""
-
-#~ msgid "Clients account"
-#~ msgstr ""
-
-#~ msgid "Wages account"
-#~ msgstr "Pamgakontod"
-
-#~ msgid "Clearings account"
-#~ msgstr "Pamgakontod"
-
-#~ msgid "Invoicing address"
-#~ msgstr "Arve saaja"
-
-#~ msgid "Shipping Mode"
-#~ msgstr "Hankimisviis"
-
-#~ msgid "Shipping Modes"
-#~ msgstr "Hankimisviisid"
-
-#~ msgid "Subject line"
-#~ msgstr "Teema"
-
-#~ msgid "Invoice"
-#~ msgstr "Arve"
-
-#~ msgid "Invoices"
-#~ msgstr "Arved"
-
-#~ msgid "Going to sign %d documents as user %s. Are you sure?"
-#~ msgstr ""
-
-#~ msgid "Date of payment"
-#~ msgstr "Makse tähtaeg"
-
-#~ msgid "Payment terms"
-#~ msgstr "Maksetingimused"
-
-#~ msgid "SEPA"
-#~ msgstr ""
-
-#~ msgid "Talk"
-#~ msgstr "Kokku"
-
-#~ msgid "Sticky"
-#~ msgstr ""
-
-#~ msgid "Refused"
-#~ msgstr "Taotletud"
-
-#~ msgid "It has been decided that we won't fix this ticket."
-#~ msgstr ""
-
-#~ msgid "Dependency type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Dependency types"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Requires"
-#~ msgstr ""
-
-#~ msgid "Required by"
-#~ msgstr ""
-
-#~ msgid "Triggers"
-#~ msgstr ""
-
-#~ msgid "Triggered by"
-#~ msgstr ""
-
-#~ msgid "Deploys"
-#~ msgstr ""
-
-#~ msgid "Deployed by"
-#~ msgstr ""
-
-#~ msgid "Planned time"
-#~ msgstr "Lõpeb (aeg)"
-
-#~ msgid "Ticket type"
-#~ msgstr "Märkuseliik"
-
-#~ msgid "Ticket types"
-#~ msgstr "Märkuseliigid"
-
-#~ msgid "Assign tickets to"
-#~ msgstr ""
-
-#~ msgid "The user to whom new tickets will be assigned."
-#~ msgstr ""
-
-#~ msgid "Sites"
-#~ msgstr "Maakond"
-
-#~ msgid "Milestone"
-#~ msgstr ""
-
-#~ msgid "Milestones"
-#~ msgstr ""
-
-#~ msgid "Expected for"
-#~ msgstr ""
-
-#~ msgid "Reached"
-#~ msgstr ""
-
-#~ msgid "Dependency"
-#~ msgstr ""
-
-#~ msgid "Dependencies"
-#~ msgstr ""
-
-#~ msgid "Spawn a new child ticket from this one."
-#~ msgstr ""
-
-#~ msgid "New ticket {0} has been spawned as child of {1}."
-#~ msgstr ""
-
-#~ msgid "Ticket"
-#~ msgstr ""
-
-#~ msgid "Nickname"
-#~ msgstr "nimi"
-
-#~ msgctxt "Ticket"
-#~ msgid "Summary"
-#~ msgstr "Kokkuvõte"
-
-#~ msgid "Short summary of the problem."
-#~ msgstr ""
-
-#~ msgid "Duplicate of"
-#~ msgstr ""
-
-#~ msgid "Milestone for which this ticket has been reported."
-#~ msgstr ""
-
-#~ msgid "The milestone for which this ticket has been fixed."
-#~ msgstr ""
-
-#~ msgid "The user who works on this ticket."
-#~ msgstr ""
-
-#~ msgid "The user who reported this ticket."
-#~ msgstr ""
-
-#~ msgid "Feedback"
-#~ msgstr ""
-
-#~ msgid "Ticket is waiting for feedback from somebody else."
-#~ msgstr ""
-
-#~ msgid "Standby"
-#~ msgstr ""
-
-#~ msgid "Deadline"
-#~ msgstr ""
-
-#~ msgid "Value between 0 and 100."
-#~ msgstr ""
-
-#~ msgid "Overview"
-#~ msgstr "Eelvaade"
-
-#~ msgid "Interest"
-#~ msgstr ""
-
-#~ msgid "Interests"
-#~ msgstr ""
-
-#~ msgid "Current project"
-#~ msgstr "Korduv sündmus"
-
-#~ msgid "Timeline"
-#~ msgstr ""
-
-#~ msgid "Only project interesting for this site."
-#~ msgstr ""
-
-#~ msgid "Subprojects"
-#~ msgstr "Tooted"
-
-#~ msgid "No dependencies."
-#~ msgstr ""
-
-#~ msgid "Create dependency as "
-#~ msgstr ""
-
-#~ msgid "Planning"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Only rows reporter by this user."
-#~ msgstr ""
-
-#~ msgid "Only tickets assigned to this user."
-#~ msgstr ""
-
-#~ msgid "Show tickets which are assigned to somebody."
-#~ msgstr ""
-
-#~ msgid "Show tickets which are closed."
-#~ msgstr ""
-
-#~ msgid "Show tickets with project assigned."
-#~ msgstr ""
-
-#~ msgid "Show tickets which are in standby mode."
-#~ msgstr ""
-
-#~ msgid "Show tickets which are private."
-#~ msgstr ""
-
-#~ msgid "Duplicates"
-#~ msgstr ""
-
-#~ msgid "Unassigned tickets"
-#~ msgstr "Isik"
-
-#~ msgid "Tickets to triage"
-#~ msgstr ""
-
-#~ msgid "Triage"
-#~ msgstr "Küla"
-
-#~ msgid "{0} new tickets."
-#~ msgstr "Isik"
-
-#~ msgid "Tickets to talk"
-#~ msgstr ""
-
-#~ msgid "Tickets to do"
-#~ msgstr ""
-
-#~ msgid "Active tickets are those which are neither closed nor in standby mode."
-#~ msgstr ""
-
-#~ msgid "Active tickets"
-#~ msgstr "Isik"
-
-#~ msgid "Interesting tickets"
-#~ msgstr "Isik"
-
-#~ msgid "Tickets Fixed"
-#~ msgstr ""
-
-#~ msgid "Reported tickets"
-#~ msgstr "Isik"
-
-#~ msgid "Reported tickets "
-#~ msgstr "Isik"
-
-#~ msgid "Callback"
-#~ msgstr ""
-
-#~ msgid "Bugfix"
-#~ msgstr ""
-
-#~ msgid "Enhancement"
-#~ msgstr "Registreerimine"
-
-#~ msgid "Upgrade"
-#~ msgstr ""
-
-#~ msgid "VAT"
-#~ msgstr "KM"
-
-#~ msgid "VAT Class"
-#~ msgstr ""
-
-#~ msgid "VAT Classes"
-#~ msgstr ""
-
-#~ msgid "Exempt"
-#~ msgstr ""
-
-#~ msgid "Reduced"
-#~ msgstr ""
-
-#~ msgid "Normal"
-#~ msgstr ""
-
-#~ msgid "VAT regime"
-#~ msgstr "Käibemaksurežiim"
-
-#~ msgid "VAT regimes"
-#~ msgstr "Kategooriad"
-
-#~ msgid "Private person"
-#~ msgstr "Eraisik"
-
-#~ msgid "Subject to VAT"
-#~ msgstr ""
-
-#~ msgid "Co-contractor"
-#~ msgstr "Kontaktisik"
-
-#~ msgid "Intra-community"
-#~ msgstr ""
-
-#~ msgid "Outside EU"
-#~ msgstr ""
-
-#~ msgid "Total incl. VAT"
-#~ msgstr "Kokku käibemaksuga"
-
-#~ msgid "Total excl. VAT"
-#~ msgstr "Kokku käibemaksuta"
-
-#~ msgid "Unit price"
-#~ msgstr "Hind"
-
-#~ msgid "Quantity"
-#~ msgstr "Kogus"
-
-#~ msgid "Purchases Base account"
-#~ msgstr "Ostude baas (konto)"
-
-#~ msgid "Purchases VAT account"
-#~ msgstr "Ostude km (konto)"
-
-#~ msgid "Suppliers account"
-#~ msgstr "Hankijad (konto)"
-
-#~ msgid "VAT rule"
-#~ msgstr ""
-
-#~ msgid "VAT rules"
-#~ msgstr ""
-
-#~ msgid "Editable amount"
-#~ msgstr ""
-
-#~ msgid "Found {num} VAT rules for %{context}!)"
-#~ msgstr ""
-
-#~ msgid "The default VAT regime for         sales and purchases of this partner."
-#~ msgstr ""
-
-#~ msgid "The default payment term for sales invoices to this customer."
-#~ msgstr ""
-
-#~ msgid "VAT vouchers"
-#~ msgstr "KM dokumendid"
-
-#~ msgid "Create voucher in journal "
-#~ msgstr "Loo dokument žurnaalis"
-
-#~ msgid "VAT-less invoicing"
-#~ msgstr "Müügiarved"
-
-#~ msgid "Partner vouchers"
-#~ msgstr "KM dokumendid"
-
-#~ msgid "Project vouchers"
-#~ msgstr "KM dokumendid"
-
-#~ msgid "Consultant"
-#~ msgstr ""
-
-#~ msgid "Hoster"
-#~ msgstr "Registreeru"
-
-#~ msgid "Developer"
-#~ msgstr ""
-
-#~ msgid "Senior"
-#~ msgstr "Kasutaja"
-
-#~ msgid "isikukood"
-#~ msgstr ""
-
-#~ msgid "Text"
-#~ msgstr "Tänav"
-
-#~ msgid " by "
-#~ msgstr ""
-
-#~ msgid "Orders"
-#~ msgstr "Veel"
-
-#~ msgid "Inactive"
-#~ msgstr ""
-
-#~ msgid "Order"
-#~ msgstr "Veel"
-
-#~ msgid "Discount"
-#~ msgstr "Allahindlus"
-
-#~ msgid "Totals"
-#~ msgstr "Summad"
-
-#~ msgid "Header"
-#~ msgstr ""
-
-#~ msgid " [show]"
-#~ msgstr ""
-
-#~ msgid "Duplicate"
-#~ msgstr ""
-
-#~ msgid "Married"
-#~ msgstr ""
-
-#~ msgid "Recurrent Event"
-#~ msgstr "Korduv sündmus"
-
-#~ msgid "Detail"
-#~ msgstr ""
-
-#~ msgid "Open a detail window on this record"
-#~ msgstr ""
-
-#~ msgid "New"
-#~ msgstr ""
-
-#~ msgid "Insert a new record"
-#~ msgstr ""
-
-#~ msgid "Insert into %s"
-#~ msgstr ""
-
-#~ msgid "%s has been updated."
-#~ msgstr ""
-
-#~ msgid "%s : nothing to save."
-#~ msgstr ""
-
-#~ msgid "Save changes in this form"
-#~ msgstr ""
-
-#~ msgid "Save"
-#~ msgstr "Salvesta"
-
-#~ msgid "%s has been created."
-#~ msgstr ""
-
-#~ msgid "Create the record and open a detail window on it"
-#~ msgstr ""
-
-#~ msgid "Don't send email notification"
-#~ msgstr ""
-
-#~ msgid "%d row(s) have been updated."
-#~ msgstr ""
-
-#~ msgid "Delete this record"
-#~ msgstr ""
-
-#~ msgid "Delete"
-#~ msgstr "Kustuta"
-
-#~ msgid "Are you sure ?"
-#~ msgstr "Kas oled kindel?"
-
-#~ msgid "%(details)s of %(master)s"
-#~ msgstr "%(master)s'i %(details)s"
-
-#~ msgid "Total (%d rows)"
-#~ msgstr ""
-
-#~ msgid "value"
-#~ msgstr ""
-
-#~ msgid "text"
-#~ msgstr ""
-
-#~ msgid "name"
-#~ msgstr "nimi"
-
-#~ msgid "%(value)r (invalid choice for %(list)s)"
-#~ msgstr ""
-
-#~ msgid "You have no permission to delete this row."
-#~ msgstr ""
-
-#~ msgid "Quantity (Decimal or Duration)"
-#~ msgstr ""
-
-#~ msgid "Invalid date"
-#~ msgstr "Lõpeb (päev)"
-
-#~ msgid "Confirmation"
-#~ msgstr ""
-
-#~ msgid "User abandoned"
-#~ msgstr ""
-
-#~ msgid "Cannot merge an instance to itself."
-#~ msgstr ""
-
-#~ msgid "Merge %(origin)s into %(target)s"
-#~ msgstr ""
-
-#~ msgid "will be deleted."
-#~ msgstr ""
-
-#~ msgid "will get reassigned."
-#~ msgstr ""
-
-#~ msgid "%s will be deleted"
-#~ msgstr ""
-
-#~ msgid "Are you sure you want to merge %(this)s into %(merge_to)s?"
-#~ msgstr ""
-
-#~ msgid "Merged %(this)s into %(merge_to)s. Updated %(updated)d related rows."
-#~ msgstr ""
-
-#~ msgid "Merge this object into another object of same class."
-#~ msgstr ""
-
-#~ msgid "Merge"
-#~ msgstr ""
-
-#~ msgid "into..."
-#~ msgstr ""
-
-#~ msgid "Reason"
-#~ msgstr "Isik"
-
-#~ msgid "Also reassign volatile related objects"
-#~ msgstr ""
-
-#~ msgid "Workflow"
-#~ msgstr ""
-
-#~ msgid "Show Last"
-#~ msgstr ""
-
-#~ msgid "Show the last record in a detail window"
-#~ msgstr ""
-
-#~ msgid "Show All"
-#~ msgstr ""
-
-#~ msgid "Show all records in a table window"
-#~ msgstr ""
-
-#~ msgid "Error"
-#~ msgstr ""
-
-#~ msgid "Aborted"
-#~ msgstr ""
-
-#~ msgid "the documentation"
-#~ msgstr ""
-
-#~ msgid "No data to display"
-#~ msgstr "(tühi)"
-
-#~ msgid "Master"
-#~ msgstr ""
-
-#~ msgid "Reports"
-#~ msgstr "Aruanded"
-
-#~ msgid "Explorer"
-#~ msgstr ""
-
-#~ msgid "Site"
-#~ msgstr ""
-
-#~ msgid "English"
-#~ msgstr ""
-
-#~ msgid "This is "
-#~ msgstr "See on "
-
-#~ msgid " using "
-#~ msgstr " kasutades "
-
-#~ msgid "%(place)s, %(date)s"
-#~ msgstr ""
-
-#~ msgid "Existing primary key value %r may not be modified."
-#~ msgstr ""
-
-#~ msgid "%r (invalid choice)"
-#~ msgstr ""
-
-#~ msgid "Invalid value for this field (%s)."
-#~ msgstr ""
-
-#~ msgid "Button"
-#~ msgstr ""
-
-#~ msgid "Row %(rowid)d of %(rowcount)d"
-#~ msgstr "Rida %(rowid)d / %(rowcount)d"
-
-#~ msgid "No navigation"
-#~ msgstr ""
-
-#~ msgid "States"
-#~ msgstr ""
-
-#~ msgid "Mark this as"
-#~ msgstr ""
-
-#~ msgid "Modified"
-#~ msgstr "Muudatud"
-
-#~ msgid "Created"
-#~ msgstr "Loodud"
-
-#~ msgid "Reference"
-#~ msgstr ""
-
-#~ msgid "There are %d similar %s:"
-#~ msgstr ""
-
-#~ msgid "Are you sure you want to create a new %(model)s named %(name)s?"
-#~ msgstr ""
-
-#~ msgid "Must update phonetic words."
-#~ msgstr ""
-
-#~ msgid "Check for missing phonetic words"
-#~ msgstr ""
-
-#~ msgid "Similar record"
-#~ msgstr "Kontaktiliigid"
-
-#~ msgid "Phonetic words: {0}"
-#~ msgstr ""
-
-#~ msgid "Duplicate this row."
-#~ msgstr ""
-
-#~ msgid "Duplicated %(old)s to %(new)s."
-#~ msgstr ""
-
-#~ msgid "Cannot find first and last name in \"{0}\""
-#~ msgstr ""
-
-#~ msgid "Mrs"
-#~ msgstr "Pr"
-
-#~ msgctxt "indirect salutation"
-#~ msgid "Mr"
-#~ msgstr "Hr"
-
-#~ msgctxt "polls"
-#~ msgid "Title"
-#~ msgstr "Prefiks"
-
-#~ msgid "First name"
-#~ msgstr "Eesnimi"
-
-#~ msgid "First or given name."
-#~ msgstr ""
-
-#~ msgid "Middle name"
-#~ msgstr ""
-
-#~ msgid "Space-separated list of all middle names."
-#~ msgstr ""
-
-#~ msgid "Last name"
-#~ msgstr "Perenimi"
-
-#~ msgid "Last name (family name)."
-#~ msgstr ""
-
-#~ msgid "Birth date"
-#~ msgstr "Sünnipäev"
-
-#~ msgid "Age"
-#~ msgstr "Vanus"
-
-#~ msgid "unknown"
-#~ msgstr "tundmatu"
-
-#~ msgid "%d years"
-#~ msgstr "%d aastat"
-
-#~ msgid "End date"
-#~ msgstr "Tehing"
-
-#~ msgid "Date period ends before it started."
-#~ msgstr ""
-
-#~ msgctxt "date"
-#~ msgid "on %s"
-#~ msgstr "Minu %s"
-
-#~ msgctxt "date range"
-#~ msgid "between %(a)s and %(b)s"
-#~ msgstr ""
-
-#~ msgctxt "date range"
-#~ msgid "from %s"
-#~ msgstr "Minu %s"
-
-#~ msgctxt "date range"
-#~ msgid "until %s"
-#~ msgstr "Isik"
-
-#~ msgid "Period from"
-#~ msgstr ""
-
-#~ msgid "Start date of observed period"
-#~ msgstr ""
-
-#~ msgid "End date of observed period"
-#~ msgstr ""
-
-#~ msgid "Situation on"
-#~ msgstr "Nimetus"
-
-#~ msgid "Date of observation"
-#~ msgstr ""
-
-#~ msgid "➕"
-#~ msgstr ""
-
-#~ msgid "❌"
-#~ msgstr ""
-
-#~ msgid "See as "
-#~ msgstr "Näita kui "
-
-#~ msgid "Move this row one row upwards"
-#~ msgstr ""
-
-#~ msgid "Moved up."
-#~ msgstr ""
-
-#~ msgid "Move this row one row downwards"
-#~ msgstr ""
-
-#~ msgid "Moved down."
-#~ msgstr ""
-
-#~ msgid "Seq.No."
-#~ msgstr ""
-
-#~ msgid "Row # %s"
-#~ msgstr ""
-
-#~ msgid "Move"
-#~ msgstr ""
-
-#~ msgid "File"
-#~ msgstr ""
-
-#~ msgid "MIME type"
-#~ msgstr ""
-
-#~ msgid "Models"
-#~ msgstr ""
-
-#~ msgid "app_label"
-#~ msgstr ""
-
-#~ msgid "docstring"
-#~ msgstr ""
-
-#~ msgid "Rows"
-#~ msgstr ""
-
-#~ msgid "Fields"
-#~ msgstr ""
-
-#~ msgid "verbose name"
-#~ msgstr ""
-
-#~ msgid "help text"
-#~ msgstr ""
-
-#~ msgid "Inspector"
-#~ msgstr ""
-
-#~ msgid "Inspected object"
-#~ msgstr ""
-
-#~ msgid "show callables"
-#~ msgstr ""
-
-#~ msgid "About"
-#~ msgstr ""
-
-#~ msgid "Show information about this site."
-#~ msgstr ""
-
-#~ msgid "%(date)s at %(time)s"
-#~ msgstr ""
-
-#~ msgid "Server uptime"
-#~ msgstr ""
-
-#~ msgid "This is a Lino demo site."
-#~ msgstr "Tere tulemast selle Lino demo saidile."
-
-#~ msgid "We are running with simulated date set to {0}."
-#~ msgstr ""
-
-#~ msgid "Source timestamps:"
-#~ msgstr ""
-
-#~ msgid "Server status"
-#~ msgstr ""
-
-#~ msgid "%s pending threads"
-#~ msgstr ""
-
-#~ msgid "Source files"
-#~ msgstr ""
-
-#~ msgid "Code"
-#~ msgstr ""
-
-#~ msgid "doc"
-#~ msgstr ""
-
-#~ msgid "module name"
-#~ msgstr ""
-
-#~ msgid "List contains more than %d rows"
-#~ msgstr ""
-
-#~ msgid "Open an window for multiple file uploads."
-#~ msgstr ""
-
-#~ msgid "Uploader"
-#~ msgstr ""
-
-#~ msgid "HTML"
-#~ msgstr ""
-
-#~ msgid "Show this table in Bootstrap3 interface"
-#~ msgstr ""
-
-#~ msgid "First page"
-#~ msgstr ""
-
-#~ msgid "Previous page"
-#~ msgstr ""
-
-#~ msgid "Next page"
-#~ msgstr ""
-
-#~ msgid "Last page"
-#~ msgstr ""
-
-#~ msgid "Changes"
-#~ msgstr ""
-
-#~ msgid "Change Type"
-#~ msgstr ""
-
-#~ msgid "Change Types"
-#~ msgstr ""
-
-#~ msgid "Update"
-#~ msgstr ""
-
-#~ msgid "Remove child"
-#~ msgstr ""
-
-#~ msgid "Add child"
-#~ msgstr ""
-
-#~ msgid "Change"
-#~ msgstr ""
-
-#~ msgid "Object type"
-#~ msgstr ""
-
-#~ msgid "Object"
-#~ msgstr ""
-
-#~ msgid "Master type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Only changes from"
-#~ msgstr ""
-
-#~ msgid "Comments"
-#~ msgstr ""
-
-#~ msgid "Comment"
-#~ msgstr ""
-
-#~ msgid "Short text"
-#~ msgstr ""
-
-#~ msgid "More text"
-#~ msgstr ""
-
-#~ msgid "{0} by {1}"
-#~ msgstr ""
-
-#~ msgid "Write comment"
-#~ msgstr ""
-
-#~ msgid "Concepts"
-#~ msgstr "Kontaktid"
-
-#~ msgid "Link Type"
-#~ msgstr ""
-
-#~ msgid "Link Types"
-#~ msgstr ""
-
-#~ msgid "Jargon"
-#~ msgstr ""
-
-#~ msgid "Obsoletes"
-#~ msgstr ""
-
-#~ msgid "Concept"
-#~ msgstr ""
-
-#~ msgid "Abbreviation"
-#~ msgstr "Lühend"
-
-#~ msgid "Wikipedia"
-#~ msgstr ""
-
-#~ msgid "Definition"
-#~ msgstr ""
-
-#~ msgid "Jargon domain"
-#~ msgstr ""
-
-#~ msgid "Whether this concept designates a domain of specialized vocabulary."
-#~ msgstr ""
-
-#~ msgid "Top-level concepts"
-#~ msgstr ""
-
-#~ msgid "Link"
-#~ msgstr ""
-
-#~ msgid "Links"
-#~ msgstr ""
-
-#~ msgid "Parents"
-#~ msgstr ""
-
-#~ msgid "Children"
-#~ msgstr ""
-
-#~ msgid "Contacts"
-#~ msgstr "Kontaktid"
-
-#~ msgid "Region"
-#~ msgstr "Regioon"
-
-#~ msgid "Company"
-#~ msgstr "Firma"
-
-#~ msgid "represented by"
-#~ msgstr ""
-
-#~ msgid "represented as"
-#~ msgstr ""
-
-#~ msgid "Partners"
-#~ msgstr "Partnerid"
-
-#~ msgid "E-Mail"
-#~ msgstr ""
-
-#~ msgid "URL"
-#~ msgstr ""
-
-#~ msgid "Phone"
-#~ msgstr "Telefon"
-
-#~ msgid "GSM"
-#~ msgstr "Mobiil"
-
-#~ msgid "Fax"
-#~ msgstr "Faks"
-
-#~ msgid "Organization type"
-#~ msgstr "Organisatsiooniliik"
-
-#~ msgid "Organization types"
-#~ msgstr "Organisatsiooniliiged"
-
-#~ msgid "Organization"
-#~ msgstr "Organisatsioon"
-
-#~ msgid "Organizations"
-#~ msgstr "Organisatsioonid"
-
-#~ msgid "Name prefix"
-#~ msgstr "Tänavanime prefiks"
-
-#~ msgid "Function"
-#~ msgstr ""
-
-#~ msgid "Functions"
-#~ msgstr ""
-
-#~ msgid "Contact Person"
-#~ msgstr "Kontaktisik"
-
-#~ msgid "Contact Persons"
-#~ msgstr "Kontaktisikud"
-
-#~ msgid "Contact Role"
-#~ msgstr "Kontaktisiku liik"
-
-#~ msgid "Contact persons"
-#~ msgstr "Kontaktisikud"
-
-#~ msgid "Contact for"
-#~ msgstr "Kontaktisik"
-
-#~ msgid "Next partner id"
-#~ msgstr ""
-
-#~ msgid "The next automatic id for any new partner."
-#~ msgstr ""
-
-#~ msgid "Site owner"
-#~ msgstr ""
-
-#~ msgid "County"
-#~ msgstr "Maakond"
-
-#~ msgid "Place Type"
-#~ msgstr "Asumiliik"
-
-#~ msgid "Member State"
-#~ msgstr ""
-
-#~ msgid "Division"
-#~ msgstr ""
-
-#~ msgid "Community"
-#~ msgstr ""
-
-#~ msgid "Territory"
-#~ msgstr ""
-
-#~ msgid "Province"
-#~ msgstr "Provints"
-
-#~ msgid "Shire"
-#~ msgstr ""
-
-#~ msgid "Subregion"
-#~ msgstr ""
-
-#~ msgid "Department"
-#~ msgstr ""
-
-#~ msgid "Arrondissement"
-#~ msgstr ""
-
-#~ msgid "Prefecture"
-#~ msgstr ""
-
-#~ msgid "District"
-#~ msgstr ""
-
-#~ msgid "Sector"
-#~ msgstr ""
-
-#~ msgid "City"
-#~ msgstr "Linn"
-
-#~ msgid "Town"
-#~ msgstr "Linn"
-
-#~ msgid "Municipality"
-#~ msgstr "Vald"
-
-#~ msgid "Parish"
-#~ msgstr ""
-
-#~ msgid "Township"
-#~ msgstr "Linnaosa"
-
-#~ msgid "Quarter"
-#~ msgstr ""
-
-#~ msgid "Borough"
-#~ msgstr "Alev"
-
-#~ msgid "Small borough"
-#~ msgstr "Alevik"
-
-#~ msgid "Village"
-#~ msgstr "Küla"
-
-#~ msgid "Zip code"
-#~ msgstr "Postiindeks"
-
-#~ msgid "Address line before street"
-#~ msgstr "Addressi lisatext enne tänav"
-
-#~ msgid "Street prefix"
-#~ msgstr "Tänavanime prefiks"
-
-#~ msgid "Text to print before name of street, but to ignore for sorting."
-#~ msgstr ""
-
-#~ msgid "Street"
-#~ msgstr "Tänav"
-
-#~ msgid "Name of street, without house number."
-#~ msgstr ""
-
-#~ msgid "No."
-#~ msgstr "Nr."
-
-#~ msgid "House number."
-#~ msgstr "Sisestage majanumber"
-
-#~ msgid "Box"
-#~ msgstr "PK/krt"
-
-#~ msgid "Text to print after street nuber on the same line."
-#~ msgstr ""
-
-#~ msgid "Address line after street"
-#~ msgstr "Aadressi lisateks pärast tänav"
-
-#~ msgid "Address line to print below street line."
-#~ msgstr "Addressi lisatext enne tänav"
-
-#~ msgid "Country"
-#~ msgstr "Riik"
-
-#~ msgid "Countries"
-#~ msgstr "Riigid"
-
-#~ msgid "ISO code"
-#~ msgstr ""
-
-#~ msgid "Short code"
-#~ msgstr ""
-
-#~ msgid "A short abbreviation for regional usage. Obsolete."
-#~ msgstr ""
-
-#~ msgid "ISO-3 code"
-#~ msgstr ""
-
-#~ msgid "The three-letter code for this country as defined by ISO 3166-1."
-#~ msgstr ""
-
-#~ msgid "Place"
-#~ msgstr "Asum"
-
-#~ msgid "Part of"
-#~ msgstr "Osa asumist"
-
-#~ msgid "The superordinate geographic place of which this place is a part."
-#~ msgstr ""
-
-#~ msgid "Subdivisions"
-#~ msgstr ""
-
-#~ msgid "%(details)s in %(master)s"
-#~ msgstr ""
-
-#~ msgid "Check plausibility of geographical places."
-#~ msgstr ""
-
-#~ msgid "Name contains only digits."
-#~ msgstr ""
-
-#~ msgid "Estonia"
-#~ msgstr "Eesti"
-
-#~ msgid "Belgium"
-#~ msgstr "Belgia"
-
-#~ msgid "Germany"
-#~ msgstr "Saksamaa"
-
-#~ msgid "France"
-#~ msgstr "Telefon"
-
-#~ msgid "Netherlands"
-#~ msgstr ""
-
-#~ msgid "Maroc"
-#~ msgstr ""
-
-#~ msgid "Russia"
-#~ msgstr ""
-
-#~ msgid "Congo (Democratic Republic)"
-#~ msgstr ""
-
-#~ msgid "Reset DavLink"
-#~ msgstr ""
-
-#~ msgid "Events"
-#~ msgstr "Sündmused"
-
-#~ msgid "Where"
-#~ msgstr "Kus"
-
-#~ msgid "What"
-#~ msgstr "Mis"
-
-#~ msgid "Export to Excel xls format"
-#~ msgstr ""
-
-#~ msgid "Export to .xls"
-#~ msgstr ""
-
-#~ msgid "Export this table as an .xls document"
-#~ msgstr ""
-
-#~ msgid "Admin"
-#~ msgstr ""
-
-#~ msgid "Select a %s..."
-#~ msgstr "Vali mõni %s..."
-
-#~ msgid "show"
-#~ msgstr ""
-
-#~ msgid "Insert"
-#~ msgstr ""
-
-#~ msgid "Manage"
-#~ msgstr "Keel"
-
-#~ msgid "as"
-#~ msgstr ""
-
-#~ msgid "My settings"
-#~ msgstr "Minu seaded"
-
-#~ msgid "Myself"
-#~ msgstr ""
-
-#~ msgid "Act as..."
-#~ msgstr "Tööta teise kasutajana"
-
-#~ msgid "Log out"
-#~ msgstr "Logi välja"
-
-#~ msgid "Change password"
-#~ msgstr "Muuda salasõna"
-
-#~ msgid "Forgot password"
-#~ msgstr ""
-
-#~ msgid "Log in"
-#~ msgstr "Logi sisse"
-
-#~ msgid "No data to display."
-#~ msgstr ""
-
-#~ msgid "Show or hide the table parameters panel"
-#~ msgstr ""
-
-#~ msgid "Please wait..."
-#~ msgstr "Oota palun..."
-
-#~ msgid "This field is disabled"
-#~ msgstr ""
-
-#~ msgid "Enter a date in format YYYY-MM-DD (use zeroes for unknown parts)."
-#~ msgstr ""
-
-#~ msgid "Show this panel in own window"
-#~ msgstr ""
-
-#~ msgid "Warning"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Alert"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Action not available on phantom record."
-#~ msgstr ""
-
-#~ msgid "Cannot show detail for empty foreign key."
-#~ msgstr ""
-
-#~ msgid "Go to record"
-#~ msgstr ""
-
-#~ msgid "First"
-#~ msgstr ""
-
-#~ msgid "Previous"
-#~ msgstr ""
-
-#~ msgid "Next"
-#~ msgstr ""
-
-#~ msgid "Reload current record"
-#~ msgstr ""
-
-#~ msgid "Save changes to current record ?"
-#~ msgstr ""
-
-#~ msgid "No more records to display. Detail window has been closed."
-#~ msgstr ""
-
-#~ msgid "Quick Search"
-#~ msgstr "Kiirotsing"
-
-#~ msgid "Enter a text to use as quick search filter"
-#~ msgstr ""
-
-#~ msgid "View"
-#~ msgstr ""
-
-#~ msgid "Select another view of this report"
-#~ msgstr ""
-
-#~ msgid "Page"
-#~ msgstr "Lehekülg"
-
-#~ msgid "of {0}"
-#~ msgstr " / {0}"
-
-#~ msgid "Displaying {0} - {1} of {2}"
-#~ msgstr "Read  {0} - {1}  ({2}st)"
-
-#~ msgid "This record is disabled"
-#~ msgstr ""
-
-#~ msgid "Edit help texts for fields on this model."
-#~ msgstr ""
-
-#~ msgid "Cannot show MTI child if checkbox is off."
-#~ msgstr ""
-
-#~ msgid "Failed to delete %(record)s : %(error)s."
-#~ msgstr ""
-
-#~ msgid "Error while saving GC for %(table)s: %(error)s"
-#~ msgstr ""
-
-#~ msgid "Controlled by"
-#~ msgstr ""
-
-#~ msgid "(type)"
-#~ msgstr ""
-
-#~ msgid "(object)"
-#~ msgstr ""
-
-#~ msgid "Base classes"
-#~ msgstr ""
-
-#~ msgid "Help Text"
-#~ msgstr ""
-
-#~ msgid "Help Texts"
-#~ msgstr ""
-
-#~ msgid "Field"
-#~ msgstr ""
-
-#~ msgid "HelpText"
-#~ msgstr ""
-
-#~ msgid "Verbose name"
-#~ msgstr ""
-
-#~ msgid "database field"
-#~ msgstr ""
-
-#~ msgid "Broken GFKs"
-#~ msgstr ""
-
-#~ msgid "Database object"
-#~ msgstr ""
-
-#~ msgid "Message"
-#~ msgstr ""
-
-#~ msgid "Database model"
-#~ msgstr ""
-
-#~ msgid "content type"
-#~ msgstr "Märkuseliik"
-
-#~ msgid "content types"
-#~ msgstr "Märkuseliigid"
-
-#~ msgid "Import filters"
-#~ msgstr ""
-
-#~ msgid "Field separator"
-#~ msgstr ""
-
-#~ msgid "Import Filter Item"
-#~ msgstr ""
-
-#~ msgid "Import Filter Items"
-#~ msgstr ""
-
-#~ msgid "Column"
-#~ msgstr ""
-
-#~ msgid "Data to import"
-#~ msgstr ""
-
-#~ msgid "obj2unicode"
-#~ msgstr ""
-
-#~ msgid "Jinja templates"
-#~ msgstr ""
-
-#~ msgid "Language"
-#~ msgstr "Keel"
-
-#~ msgid "Languages"
-#~ msgstr "Keeled"
-
-#~ msgid "German"
-#~ msgstr ""
-
-#~ msgid "French"
-#~ msgstr ""
-
-#~ msgid "Dutch"
-#~ msgstr ""
-
-#~ msgid "Estonian"
-#~ msgstr "Isikud"
-
-#~ msgid "Permission denied"
-#~ msgstr ""
-
-#~ msgid "You have no permission to see this resource."
-#~ msgstr ""
-
-#~ msgid "Page not found"
-#~ msgstr ""
-
-#~ msgid "The requested page could not be found."
-#~ msgstr ""
-
-#~ msgid "Server error (500)"
-#~ msgstr ""
-
-#~ msgid "Server Error <em>(500)</em>"
-#~ msgstr ""
-
-#~ msgid "Congratulations, you found an error in our system."
-#~ msgstr ""
-
-#~ msgid "We apologize for the inconvenience."
-#~ msgstr ""
-
-#~ msgid "If you can reproduce this message, please tell us how you did that."
-#~ msgstr ""
-
-#~ msgid "Quick links:"
-#~ msgstr "Kiirviited"
-
-#~ msgid "Hi, %(first_name)s!"
-#~ msgstr "Tere, %(first_name)s!"
-
-#~ msgid "You have entered the <b>admin</b> section."
-#~ msgstr ""
-
-#~ msgid "Welcome to the <b>%s</b> site."
-#~ msgstr ""
-
-#~ msgid "We are running %(name)s version %(version)s"
-#~ msgstr ""
-
-#~ msgid "You will now probably want to"
-#~ msgstr "Arvatavasti tahad sa nüüd"
-
-#~ msgid "log in"
-#~ msgstr "sisse logida"
-
-#~ msgid "using the <b>Log in</b> button in the upper right corner."
-#~ msgstr ""
-
-#~ msgid "This demo site has %d users:"
-#~ msgstr "Sellel saidil on %d kasutajat:"
-
-#~ msgid "The password is the same for all of them: \"1234\"."
-#~ msgstr "Parooliks on neil kõikidel \"1234\"."
-
-#~ msgid "Notifications"
-#~ msgstr "Teenused"
-
-#~ msgid "Notification"
-#~ msgstr "Nimetus"
-
-#~ msgid "seen"
-#~ msgstr "Puudus"
-
-#~ msgid "About {0}"
-#~ msgstr " / {0}"
-
-#~ msgid "You have %d unseen notifications: "
-#~ msgstr ""
-
-#~ msgid "Office"
-#~ msgstr "Büroo"
-
-#~ msgid "Plausibility"
-#~ msgstr ""
-
-#~ msgid "Plausibility feedback"
-#~ msgstr ""
-
-#~ msgid "Ignorable"
-#~ msgstr "Teenus"
-
-#~ msgid "Serious"
-#~ msgstr ""
-
-#~ msgid "Severity"
-#~ msgstr ""
-
-#~ msgid "Plausibility problem severities"
-#~ msgstr ""
-
-#~ msgid "Plausibility checker"
-#~ msgstr ""
-
-#~ msgid "Plausibility checkers"
-#~ msgstr ""
-
-#~ msgid "Check plausibility"
-#~ msgstr ""
-
-#~ msgid "Fix plausibility problems"
-#~ msgstr ""
-
-#~ msgid "Plausibility problem"
-#~ msgstr ""
-
-#~ msgid "Plausibility problems"
-#~ msgstr ""
-
-#~ msgid "Responsible"
-#~ msgstr "Isikud"
-
-#~ msgid "Only problems for this responsible."
-#~ msgstr ""
-
-#~ msgid "Only problems by this checker."
-#~ msgstr ""
-
-#~ msgid "Plausibility problems assigned to me"
-#~ msgstr ""
-
-#~ msgid "There are {0} plausibility problems assigned to you."
-#~ msgstr ""
-
-#~ msgid "Polls"
-#~ msgstr ""
-
-#~ msgid "Polls user"
-#~ msgstr "Isikud"
-
-#~ msgid "Choice Set"
-#~ msgstr ""
-
-#~ msgid "Choice Sets"
-#~ msgstr ""
-
-#~ msgid "Choice"
-#~ msgstr ""
-
-#~ msgid "Choices"
-#~ msgstr ""
-
-#~ msgid "Poll"
-#~ msgstr ""
-
-#~ msgid "Details"
-#~ msgstr ""
-
-#~ msgid "Default Choiceset"
-#~ msgstr ""
-
-#~ msgid "Allow multiple choices"
-#~ msgstr ""
-
-#~ msgid "Questions to add"
-#~ msgstr ""
-
-#~ msgid "Result"
-#~ msgstr "Isik"
-
-#~ msgid "Results"
-#~ msgstr ""
-
-#~ msgid "Question"
-#~ msgstr "Isikud"
-
-#~ msgid "Questions"
-#~ msgstr "Isikud"
-
-#~ msgid "Response"
-#~ msgstr "Isikud"
-
-#~ msgid "Responses"
-#~ msgstr "Isik"
-
-#~ msgid "My general remark"
-#~ msgstr ""
-
-#~ msgid "%(user)s's response to %(poll)s"
-#~ msgstr ""
-
-#~ msgid "{poll} {partner} {date}"
-#~ msgstr ""
-
-#~ msgid "Answer Choice"
-#~ msgstr ""
-
-#~ msgid "Answer Choices"
-#~ msgstr ""
-
-#~ msgid "My answer"
-#~ msgstr ""
-
-#~ msgid "Answer Remark"
-#~ msgstr "Märkused"
-
-#~ msgid "Answer Remarks"
-#~ msgstr "Märkused"
-
-#~ msgid "My remark"
-#~ msgstr "Märkused"
-
-#~ msgid "N/A"
-#~ msgstr ""
-
-#~ msgid "Answers"
-#~ msgstr ""
-
-#~ msgid "Answer"
-#~ msgstr "Partner"
-
-#~ msgid "#Answers"
-#~ msgstr ""
-
-#~ msgid "A1"
-#~ msgstr ""
-
-#~ msgid "Poll States"
-#~ msgstr ""
-
-#~ msgid "Closed"
-#~ msgstr ""
-
-#~ msgid "Publish"
-#~ msgstr ""
-
-#~ msgid "Close"
-#~ msgstr "Telefon"
-
-#~ msgid "Response States"
-#~ msgstr ""
-
-#~ msgid "Register"
-#~ msgstr "Registreeru"
-
-#~ msgid "Deregister"
-#~ msgstr "Tühista"
-
-#~ msgid "Yes/No"
-#~ msgstr ""
-
-#~ msgid "Yes/Maybe/No"
-#~ msgstr ""
-
-#~ msgid "Maybe"
-#~ msgstr ""
-
-#~ msgid "Acquired"
-#~ msgstr ""
-
-#~ msgid "In progress"
-#~ msgstr ""
-
-#~ msgid "Not acquired"
-#~ msgstr ""
-
-#~ msgid "Print table using Pisa"
-#~ msgstr ""
-
-#~ msgid "Printing"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Build method"
-#~ msgstr ""
-
-#~ msgid "This will print %d rows."
-#~ msgstr ""
-
-#~ msgid "Edit Print Template"
-#~ msgstr ""
-
-#~ msgid "Clear cache"
-#~ msgstr ""
-
-#~ msgid "%s printable cache has been cleared."
-#~ msgstr ""
-
-#~ msgid "This will discard all changes in the generated file."
-#~ msgstr ""
-
-#~ msgid "Template"
-#~ msgstr ""
-
-#~ msgid "build time"
-#~ msgstr ""
-
-#~ msgid "Mail server"
-#~ msgstr ""
-
-#~ msgid "INS code"
-#~ msgstr ""
-
-#~ msgid "The official code for this country used by statbel.fgov.be"
-#~ msgstr ""
-
-#~ msgid "Actual country"
-#~ msgstr ""
-
-#~ msgid "The official code for this place used by statbel.fgov.be"
-#~ msgstr ""
-
-#~ msgid "Summaries"
-#~ msgstr "Kokkuvõte"
-
-#~ msgid "Compute results"
-#~ msgstr ""
-
-#~ msgid "Update summary"
-#~ msgstr ""
-
-#~ msgid "Update summary data for this object"
-#~ msgstr ""
-
-#~ msgid "Year"
-#~ msgstr "%d aastat"
-
-#~ msgid "Month"
-#~ msgstr ""
-
-#~ msgid "Update all summary data"
-#~ msgstr ""
-
-#~ msgid "System"
-#~ msgstr "Süsteem"
-
-#~ msgid "Yes or no"
-#~ msgstr ""
-
-#~ msgid "Gender"
-#~ msgstr "Sugu"
-
-#~ msgid "Male"
-#~ msgstr "Mees"
-
-#~ msgid "Female"
-#~ msgstr "Naine"
-
-#~ msgid "Starts"
-#~ msgstr "Tänav"
-
-#~ msgid "Is active"
-#~ msgstr "Aktiivne"
-
-#~ msgid "Ends"
-#~ msgstr "Telefon"
-
-#~ msgid "Rebuild site cache"
-#~ msgstr ""
-
-#~ msgid "Site configuration"
-#~ msgstr ""
-
-#~ msgid "Default build method"
-#~ msgstr ""
-
-#~ msgid "Site Parameters"
-#~ msgstr ""
-
-#~ msgid "Text Field Template"
-#~ msgstr ""
-
-#~ msgid "Text Field Templates"
-#~ msgstr ""
-
-#~ msgid "Template Text"
-#~ msgstr ""
-
-#~ msgid "Uploads"
-#~ msgstr ""
-
-#~ msgid "Upload shortcut"
-#~ msgstr ""
-
-#~ msgid "Upload shortcuts"
-#~ msgstr ""
-
-#~ msgid "Upload Area"
-#~ msgstr ""
-
-#~ msgid "Upload Areas"
-#~ msgstr ""
-
-#~ msgid "Upload"
-#~ msgstr ""
-
-#~ msgid "Upload a file from your PC to the server."
-#~ msgstr ""
-
-#~ msgid "Open the uploaded file in a new browser window"
-#~ msgstr ""
-
-#~ msgid "Edit"
-#~ msgstr "Muuda"
-
-#~ msgid "Edit metadata of the uploaded file."
-#~ msgstr ""
-
-#~ msgctxt "uploaded file"
-#~ msgid "Last"
-#~ msgstr "Palgad"
-
-#~ msgid "All {0} files"
-#~ msgstr ""
-
-#~ msgid "Upload Type"
-#~ msgstr ""
-
-#~ msgid "Upload Types"
-#~ msgstr ""
-
-#~ msgid "Max. number"
-#~ msgstr ""
-
-#~ msgid "No need to upload more uploads than N of this type."
-#~ msgstr ""
-
-#~ msgid "-1 means no limit."
-#~ msgstr ""
-
-#~ msgid "Wanted"
-#~ msgstr "Tänav"
-
-#~ msgid "Add a (+) button when there is no upload of this type."
-#~ msgstr ""
-
-#~ msgid "Uploaded by"
-#~ msgstr ""
-
-#~ msgid "Users"
-#~ msgstr ""
-
-#~ msgid "User Profile"
-#~ msgstr "Kasutajaprofiil"
-
-#~ msgid "User Profiles"
-#~ msgstr "Kasutajaprofiilid"
-
-#~ msgid "Time zone"
-#~ msgstr ""
-
-#~ msgid "Author"
-#~ msgstr "Autor"
-
-#~ msgid "My %s"
-#~ msgstr "Minu %s"
-
-#~ msgid "%(details)s"
-#~ msgstr ""
-
-#~ msgid "Current password"
-#~ msgstr ""
-
-#~ msgid "New password"
-#~ msgstr ""
-
-#~ msgid "New password again"
-#~ msgstr ""
-
-#~ msgid "New password has been set for %d users."
-#~ msgstr ""
-
-#~ msgid "Required. Must be unique."
-#~ msgstr ""
-
-#~ msgid "Initials"
-#~ msgstr ""
-
-#~ msgid "e-mail address"
-#~ msgstr ""
-
-#~ msgid "Shows the list of all users on this site."
-#~ msgstr ""
-
-#~ msgid "Authority"
-#~ msgstr ""
-
-#~ msgid "Authorities"
-#~ msgstr ""
-
-#~ msgid "The user who gets authority to act in your name."
-#~ msgstr ""
-
-#~ msgid "Authorities given"
-#~ msgstr ""
-
-#~ msgid "Authorities taken"
-#~ msgstr ""
-
-#~ msgid "wkHtmlToPdf"
-#~ msgstr ""
-
-#~ msgid "Categories"
-#~ msgstr "Kategooriad"
-
-#~ msgid "Hardware"
-#~ msgstr ""
-
-#~ msgid "Service"
-#~ msgstr ""
-
-#~ msgid "Accessories"
-#~ msgstr ""
-
-#~ msgid "Software"
-#~ msgstr ""
-
-#~ msgid "Price"
-#~ msgstr "Hind"
-
-#~ msgid "Under construction"
-#~ msgstr ""
-
-#~ msgid "Belgian Reference"
-#~ msgstr ""
-
-#~ msgid "Estonian Reference"
-#~ msgstr ""
-
-#~ msgid "a Lino application to make surveys and polls."
-#~ msgstr ""
-
-#~ msgid "%(classref)s to %(model)s"
-#~ msgstr ""
-
-#~ msgid "... and %s"
-#~ msgstr ""
-
-#~ msgid " (Menu %s)"
-#~ msgstr ""
-
-#~ msgid "%(field)s (field in %(model)s)"
-#~ msgstr ""
-
-#~ msgid "%s (field)"
-#~ msgstr ""
-
-#~ msgid "%s (app)"
-#~ msgstr ""
-
-#~ msgid "%(model)s (model in %(app)s)"
-#~ msgstr ""
-
-#~ msgid "%s (model)"
-#~ msgstr ""
-
-#~ msgid "Views on %s"
-#~ msgstr ""
-
-#~ msgid "Fields in %s"
-#~ msgstr ""
-
-#~ msgid "Actions on %s"
-#~ msgstr "Nimetus"
-
-#~ msgid "Tables referring to %s"
-#~ msgstr ""
-
-#~ msgid "%(actor)s (view in %(app)s)"
-#~ msgstr ""
-
-#~ msgid "%s (view)"
-#~ msgstr ""
-
-#~ msgid "Problem while inserting %(child)s child of %(parent)s: %(message)s"
-#~ msgstr ""
-
-#~ msgid "Created: {obj}"
-#~ msgstr ""
-
-#~ msgid "Updated: {obj}"
-#~ msgstr ""
-
-#~ msgid "Deleted: {obj}"
-#~ msgstr ""
-
-#~ msgid "Invalid SSIN %s : "
-#~ msgstr ""
-
-#~ msgid "A raw SSIN must have 11 positions"
-#~ msgstr ""
-
-#~ msgid "Could not recognize checkdigit"
-#~ msgstr ""
-
-#~ msgid "A formatted SSIN must have 13 positions"
-#~ msgstr ""
-
-#~ msgid "Invalid SSIN %s :"
-#~ msgstr ""
-
-#~ msgid "Check digit is %(found)d but should be %(expected)d"
-#~ msgstr ""
-
-#~ msgid "Okay"
-#~ msgstr ""
-
-#~ msgid "Pending"
-#~ msgstr "Ootel"
-
-#~ msgid "Edit guests list"
-#~ msgstr ""
-
-#~ msgid "Fixed"
-#~ msgstr ""
-
-#~ msgid "Overdue events"
-#~ msgstr "Sündmuste arv"
-
-#~ msgid "Event took place."
-#~ msgstr ""
-
-#~ msgid "Reset to initial state."
-#~ msgstr ""
-
-#~ msgid "Label"
-#~ msgstr ""
-
-#~ msgid "Died date"
-#~ msgstr ""
-
-#~ msgid "School"
-#~ msgstr ""
-
-#~ msgid "More"
-#~ msgstr "Veel"
-
-#~ msgid "The regular school where this child goes."
-#~ msgstr ""
-
-#~ msgid "Contact"
-#~ msgstr "Kontakt"
-
-#~ msgid "Miscellaneous"
-#~ msgstr ""
-
-#~ msgid "Person"
-#~ msgstr "Inimene"
-
-#~ msgid "Persons"
-#~ msgstr "Inimesed"
-
-#~ msgid "Organisation"
-#~ msgstr ""
-
-#~ msgid "Organisations"
-#~ msgstr ""
-
-#~ msgid "VAT id"
-#~ msgstr "KMKR nr"
-
-#~ msgid "Participant"
-#~ msgstr "Osavõtja"
-
-#~ msgid "Participants"
-#~ msgstr "Osavõtja"
-
-#~ msgid "Pointer to lino.modlib.contacts.models.Company."
-#~ msgstr ""
-
-#~ msgid "Pointer to lino.modlib.contacts.models.Person."
-#~ msgstr ""
-
-#~ msgid " on "
-#~ msgstr ""
-
-#~ msgid "Start time"
-#~ msgstr "Algab (aeg)"
-
-#~ msgid "End Date"
-#~ msgstr "Lõpeb (päev)"
-
-#~ msgid "End Time"
-#~ msgstr "Lõpeb (aeg)"
-
-#~ msgid "Duration"
-#~ msgstr "Nimetus"
-
-#~ msgid "From {0} until {1}"
-#~ msgstr ""
-
-#~ msgid "Mark this guest as present."
-#~ msgstr ""
-
-#~ msgid "Mark this guest as absent."
-#~ msgstr ""
-
-#~ msgid "Take"
-#~ msgstr ""
-
-#~ msgid "Take responsibility for this event."
-#~ msgstr ""
-
-#~ msgid "An HTML renderer that uses the ExtJS Javascript toolkit."
-#~ msgstr ""
-
-#~ msgid "alias of Change"
-#~ msgstr ""
-
-#~ msgid "Display a clickable list of all MTI parents, i.e. base models"
-#~ msgstr ""
-
-#~ msgid "alias of State"
-#~ msgstr ""
-
-#~ msgid "See Parametrizable.parameters."
-#~ msgstr ""
-
-#~ msgid "The component that generates the JS of a grid column."
-#~ msgstr ""
-
-#~ msgid "Suppress surrounding DIV tag. Used by restify()."
-#~ msgstr ""
-
-#~ msgid "A  HTML render that uses Bootstrap3."
-#~ msgstr ""
-
-#~ msgid "Render the main page."
-#~ msgstr ""
-
-#~ msgid "Alias for field number 2"
-#~ msgstr ""
-
-#~ msgid "Defines the Clear cache button on a Printable record."
-#~ msgstr ""
-
-#~ msgid "alias of SiteConfig"
-#~ msgstr ""
-
-#~ msgid "The user profile(s) for which we want a screenshot of this table."
-#~ msgstr ""
-
-#~ msgid "The template used to build the subject lino of notification emails."
-#~ msgstr ""
-
-#~ msgid "See Introduction to plugins."
-#~ msgstr ""
-
-#~ msgid "return the filename on the server"
-#~ msgstr ""
-
-#~ msgid "deprecated"
-#~ msgstr "Loo"
-
-#~ msgid "The third row of toolbar buttons when editing in own window."
-#~ msgstr ""
-
-#~ msgid "The second row of toolbar buttons when editing in own window."
-#~ msgstr ""
-
-#~ msgid "Examples:"
-#~ msgstr ""
-
-#~ msgid "A request for identifying a person or validating a person's identity"
-#~ msgstr ""
-
-#~ msgid "The database object which acts as \"master\"."
-#~ msgstr ""
-
-#~ msgid "alias of Upload"
-#~ msgstr ""
-
-#~ msgid "A string that py2js will represent as is, not between quotes."
-#~ msgstr ""
-
-#~ msgid "A DateField that uses a MonthPicker instead of a normal DateWidget"
-#~ msgstr ""
-
-#~ msgid "Whether invalid values in a ChoiceList should raise an exception."
-#~ msgstr ""
-
-#~ msgid "Represents a detected plausibility problem."
-#~ msgstr ""
-
-#~ msgid "Instantiated by restore.py."
-#~ msgstr ""
-
-#~ msgid "alias of Shortcut"
-#~ msgstr ""
-
-#~ msgid "Called when user edited a cell of a phantom record in a grid."
-#~ msgstr ""
-
-#~ msgid "The reference."
-#~ msgstr ""
-
-#~ msgid "Whether to include \"experimental features\"."
-#~ msgstr ""
-
-#~ msgid "Shows only my Uploads (i.e. those whose author is current user)."
-#~ msgstr ""
-
-#~ msgid "A field that accepts Quantity, Percentage and Duration values."
-#~ msgstr ""
-
-#~ msgid "A list of names of plugins on which this plugin depends."
-#~ msgstr ""
-
-#~ msgid "Alias for field number 3"
-#~ msgstr ""
-
-#~ msgid "Whether a Detail view on a row of this table should have a navigator."
-#~ msgstr ""
-
-#~ msgid "Represents an uploadable file."
-#~ msgstr ""
-
-#~ msgid "The default build method to use when rendering printable documents."
-#~ msgstr ""
-
-#~ msgid "a dict containing (fieldname --> value) before the change."
-#~ msgstr ""
-
-#~ msgid "Open the detail window on a row of this table."
-#~ msgstr ""
-
-#~ msgid "The toolbar buttons when editing a field inside a detail form."
-#~ msgstr ""
-
-#~ msgid "Used by lino.mixins.printable.AppyBuildMethod."
-#~ msgstr ""
-
-#~ msgid "Alias for field number 0"
-#~ msgstr ""
-
-#~ msgid "Using Django's templating engine."
-#~ msgstr ""
-
-#~ msgid "Model mixin to easily declare \"imported fields\"."
-#~ msgstr ""
-
-#~ msgid "The class of the lino.utils.diag.analyzer object."
-#~ msgstr ""
-
-#~ msgid "Shows all Uploads"
-#~ msgstr ""
-
-#~ msgid "Base class for all \"summary data\" models."
-#~ msgstr ""
-
-#~ msgid "See lino.core.permissions.Permittable.required_roles"
-#~ msgstr ""
-
-#~ msgid "Shortcut to lino.core.site.Site.plugins"
-#~ msgstr ""
-
-#~ msgid "The timezone."
-#~ msgstr ""
-
-#~ msgid "The optional Panel for parameters of an Action."
-#~ msgstr ""
-
-#~ msgid "Alias for field number 1"
-#~ msgstr ""
-
-#~ msgid "The default table for Change."
-#~ msgstr ""
-
-#~ msgid "The \"Save\" button of a detail window."
-#~ msgstr ""
-
-#~ msgid "A user who has access to contacts functionality."
-#~ msgstr ""
-
-#~ msgid "Used only for testing."
-#~ msgstr ""
-
-#~ msgid "used e.g. to render /lino/lino/config/500.html"
-#~ msgstr ""
-
-#~ msgid "Base class for all Widgets on some filed-like data element."
-#~ msgstr ""
-
-#~ msgid "The URL from where to include the ExtJS library files."
-#~ msgstr ""
-
-#~ msgid "Old name for models.  Deprecated."
-#~ msgstr ""
-
-#~ msgid "A property which calls get_address_html()."
-#~ msgstr ""
-
-#~ msgid "The last name, also known as family name."
-#~ msgstr ""
-
-#~ msgid "Base table which fills the master instance from the web request."
-#~ msgstr ""
-
-#~ msgid "Base class for RemoteField and DisplayField."
-#~ msgstr ""
-
-#~ msgid "User-defined choice lists must inherit from this base class."
-#~ msgstr ""
-
-#~ msgid "The first year for which summaries should be computed."
-#~ msgstr ""
-
-#~ msgid "alias of Dupable"
-#~ msgstr ""
-
-#~ msgid "Model mixin for things that have both a start_time and an end_time."
-#~ msgstr ""
-
-#~ msgid "a string with a message to be shown to the user."
-#~ msgstr ""
-
-#~ msgid "The last year for which summaries should be computed."
-#~ msgstr ""
-
-#~ msgid "Used by lino_xl.lib.properties."
-#~ msgstr ""
-
-#~ msgid "The maximum length of the ref field."
-#~ msgstr ""
-
-#~ msgid "Represents a user of this site."
-#~ msgstr ""
-
-#~ msgid "The type of an upload."
-#~ msgstr ""
-
-#~ msgid "Used to collaborate with a restful Ext.data.Store."
-#~ msgstr ""
-
-#~ msgid "Default values to be used when creating the site_config."
-#~ msgstr ""
-
-#~ msgid "Converter for ManyToMany fields."
-#~ msgstr ""
-
-#~ msgid "Displays buttons for certain actions on this row:"
-#~ msgstr ""
-
-#~ msgid "An ObservedPeriod which defaults to the current month."
-#~ msgstr ""
-
-#~ msgid "An atomizer for all kinds of fields which use a ComboBox."
-#~ msgstr ""
-
-#~ msgid "Log all SQL statements direct to the console."
-#~ msgstr ""
-
-#~ msgid "This is the class of the object stored in Site.kernel."
-#~ msgstr ""
-
-#~ msgid "Checks for the following repairable problem:"
-#~ msgstr ""
-
-#~ msgid "Remote URL base for media files."
-#~ msgstr ""
-
-#~ msgid "Represents a single DBF file."
-#~ msgstr ""
-
-#~ msgid "A Layout description for a table parameter panel."
-#~ msgstr ""
-
-#~ msgid "Used internally to say whether this action opens a window."
-#~ msgstr ""
-
-#~ msgid "Whether this action is readonly, i.e. does not change any data."
-#~ msgstr ""
-
-#~ msgid "The list of user profiles available on this site."
-#~ msgstr ""
-
-#~ msgid "The start date"
-#~ msgstr "Algab (päev)"
-
-#~ msgid "A user who manages configuration of office functionality."
-#~ msgstr ""
-
-#~ msgid "The class of items of this list."
-#~ msgstr ""
-
-#~ msgid "Whether the process is currently loading data from a Python dump."
-#~ msgstr ""
-
-#~ msgid "For every table we create one \"handle\" per renderer."
-#~ msgstr ""
-
-#~ msgid "Base class for integers, decimals, RequestField,..."
-#~ msgstr ""
-
-#~ msgid "Number of text rows per data row."
-#~ msgstr ""
-
-#~ msgid "A property which calls get_address()."
-#~ msgstr ""
-
-#~ msgid "A Layout description for an action parameter panel."
-#~ msgstr ""
-
-#~ msgid "alias of UserAuthored"
-#~ msgstr ""
-
-#~ msgid "A top-level Menu."
-#~ msgstr ""
-
-#~ msgid "Internally used by watch_changes()"
-#~ msgstr ""
-
-#~ msgid "For example CourseToXls."
-#~ msgstr ""
-
-#~ msgid "alias of Checker"
-#~ msgstr ""
-
-#~ msgid "Base class for both Actors and Actions."
-#~ msgstr ""
-
-#~ msgid "The sequence number of this item with its parent."
-#~ msgstr ""
-
-#~ msgid "Temporary setting, see Polymorphism."
-#~ msgstr ""
-
-#~ msgid "Default preferred with for ChoiceList fields to this list."
-#~ msgstr ""
-
-#~ msgid "The first row of toolbar buttons when editing in own window."
-#~ msgstr ""
-
-#~ msgid "Represents a field in a DBF file."
-#~ msgstr ""
-
-#~ msgid "Base class of all action requests."
-#~ msgstr ""
-
-#~ msgid "Base class for the fields of a Store."
-#~ msgstr ""
-
-#~ msgid "Exchange the seqno of this item and the previous item."
-#~ msgstr ""
-
-#~ msgid "Mixin for models which have a field created"
-#~ msgstr ""
-
-#~ msgid "Base class for all user profiles."
-#~ msgstr ""
-
-#~ msgid "Iterator that reads an encoded stream and reencodes the input to UTF-8"
-#~ msgstr ""
-
-#~ msgid "A user who can configure site-wide functionality."
-#~ msgstr ""
-
-#~ msgid "Base class for models that can be \"dupable\"."
-#~ msgstr ""
-
-#~ msgid "alias of Problem"
-#~ msgstr ""
-
-#~ msgid "Renders as a simple table."
-#~ msgstr ""
-
-#~ msgid "Serializes a QuerySet to a py stream."
-#~ msgstr ""
-
-#~ msgid "Show the plausibility problems by checker."
-#~ msgstr ""
-
-#~ msgid "alias of Model"
-#~ msgstr ""
-
-#~ msgid "A custom help text to be displayed for a given field."
-#~ msgstr ""
-
-#~ msgid "A user who can see plausibility problems."
-#~ msgstr ""
-
-#~ msgid "The Django deserializer for The Python serializer."
-#~ msgstr ""
-
-#~ msgid "The middleware class definition."
-#~ msgstr ""
-
-#~ msgid "A choicelist with two values \"Yes\" and \"No\"."
-#~ msgstr ""
-
-#~ msgid "The first name, also known as given name."
-#~ msgstr ""
-
-#~ msgid "alias of UserProfile"
-#~ msgstr ""
-
-#~ msgid "Whether users with this profile get only write-proteced access."
-#~ msgstr ""
-
-#~ msgid "ExtJS element to be used for DisplayFields."
-#~ msgstr ""
-
-#~ msgid "A dict with options to be used by as_js()."
-#~ msgstr ""
-
-#~ msgid "Converter for ChoiceListField."
-#~ msgstr ""
-
-#~ msgid "The sex of this person (male or female)."
-#~ msgstr ""
-
-#~ msgid "The profile of a user is what defines her or his permissions."
-#~ msgstr ""
-
-#~ msgid "Table mixin for tables on UserAuthored."
-#~ msgstr ""
-
-#~ msgid "Counts the number of code lines in a given Python source file."
-#~ msgstr ""
-
-#~ msgid "Local path where third-party media files are installed."
-#~ msgstr ""
-
-#~ msgid "Base class for layout descriptions of detail and insert windows."
-#~ msgstr ""
-
-#~ msgid "HTTP method to use when this action is called using an AJAX call."
-#~ msgstr ""
-
-#~ msgid "Replaced by lino.modlib.tinymce.Plugin.media_base_url."
-#~ msgstr ""
-
-#~ msgid "A set of user roles required to view this actor or action."
-#~ msgstr ""
-
-#~ msgid "Widget for lino.core.fields.IncompleteDate fields."
-#~ msgstr ""
-
-#~ msgid "List of js snippets to be injected into the lino_*.js file."
-#~ msgstr ""
-
-#~ msgid "The base class for all plugins."
-#~ msgstr ""
-
-#~ msgid "See also blog entries 20100803, 20111003, 20120901"
-#~ msgstr ""
-
-#~ msgid "because checkboxes are not submitted when they are off"
-#~ msgstr ""
-
-#~ msgid "An atomizer used for all ForeignKey fields."
-#~ msgstr ""
-
-#~ msgid "Render a list of records."
-#~ msgstr ""
-
-#~ msgid "The table with all existing upload types."
-#~ msgstr ""
-
-#~ msgid "Converter for ForeignKey fields."
-#~ msgstr ""
-
-#~ msgid "The name of the file to be used as template."
-#~ msgstr ""
-
-#~ msgid "A translatable string containing the text to show to the user."
-#~ msgstr ""
-
-#~ msgid "Base class for the individual services."
-#~ msgstr ""
-
-#~ msgid "Decimal group separator for decfmt()."
-#~ msgstr ""
-
-#~ msgid "Virtual field displaying the age in years."
-#~ msgstr ""
-
-#~ msgid "alias of CachedPrintable"
-#~ msgstr ""
-
-#~ msgid "alias of UploadType"
-#~ msgstr ""
-
-#~ msgid "Mixin for models that are \"controllable\" by another database object."
-#~ msgstr ""
-
-#~ msgid "See Introduction to User Interface Renderers."
-#~ msgstr ""
-
-#~ msgid "Used internally."
-#~ msgstr ""
-
-#~ msgid "The renderer used when rendering to .rst files and console output."
-#~ msgstr ""
-
-#~ msgid "A user with all permissions."
-#~ msgstr ""
-
-#~ msgid "A set of names of layoutelements which are hidden by default."
-#~ msgstr ""
-
-#~ msgid "Represents a shortcut field."
-#~ msgstr ""
-
-#~ msgid "An extension around Django's models.CharField."
-#~ msgstr ""
-
-#~ msgid "Every authenticated user has this role."
-#~ msgstr ""
-
-#~ msgid "Adds some extensions to the Django TestCase."
-#~ msgstr ""
-
-#~ msgid "Default value for templates_group is the model's full name."
-#~ msgstr ""
-
-#~ msgid "Used when lino.core.site.Site.default_user is non-empty."
-#~ msgstr ""
-
-#~ msgid "A visible component"
-#~ msgstr ""
-
-#~ msgid "The base table for Problem objects."
-#~ msgstr ""
-
-#~ msgid "Represents a counter. Usage see"
-#~ msgstr ""
-
-#~ msgid "Element that renders to a Lino.HtmlBoxPanel."
-#~ msgstr ""
-
-#~ msgid "A user who has permission to act as another user."
-#~ msgstr ""
-
-#~ msgid "The database object which has been modified."
-#~ msgstr ""
-
-#~ msgid "Shortcut to lino.core.site.Site.models"
-#~ msgstr ""
-
-#~ msgid "Show all plausibility problems."
-#~ msgstr ""
-
-#~ msgid "Base class for all \"Print\" actions."
-#~ msgstr ""
-
-#~ msgid "Render a single record."
-#~ msgstr ""
-
-#~ msgid "If this is False, then then Actor won't have no insert_action."
-#~ msgstr ""
-
-#~ msgid "Base class for the choices of Checkers."
-#~ msgstr ""
-
-#~ msgid "Alias for field number 4"
-#~ msgstr ""
-
-#~ msgid "A duration, expressed in hours:minutes."
-#~ msgstr ""
-
-#~ msgid "The string to prefix to every URL of the Lino web interface."
-#~ msgstr ""
-
-#~ msgid "A dictionary of sums to be collected using an arbitrary key."
-#~ msgstr ""
-
-#~ msgid "StoreField for lino.core.fields.RequestField."
-#~ msgstr ""
-
-#~ msgid "Base class for all models that represent a human."
-#~ msgstr ""
-
-#~ msgid "Print using a hard-coded template and without cache."
-#~ msgstr ""
-
-#~ msgid "Shows the gobal list of all notifications."
-#~ msgstr ""
-
-#~ msgid "A string that describes the list of columns of this table."
-#~ msgstr ""
-
-#~ msgid "The model on which this table iterates."
-#~ msgstr ""
-
-#~ msgid "A display field which returns the parsed message."
-#~ msgstr ""
-
-#~ msgid "Deprecated alias for kernel."
-#~ msgstr ""
-
-#~ msgid "Default table for django.contrib.ContentType."
-#~ msgstr ""
-
-#~ msgid "Usage example see lino_xl.lib.humanlinks.fixtures."
-#~ msgstr ""
-
-#~ msgid "Abstract base class for all actions."
-#~ msgstr ""
-
-#~ msgid "The renderer to use when processing this request."
-#~ msgstr ""
-
-#~ msgid "The list of plausibility problem types known by this application."
-#~ msgstr ""
-
-#~ msgid "A Store is the collection of StoreFields for a given actor."
-#~ msgstr ""
-
-#~ msgid "Exchange the seqno of this item and the next item."
-#~ msgstr ""
-
-#~ msgid "Naive representation of a potentially incomplete gregorian date."
-#~ msgstr ""
-
-#~ msgid "Mixin for database models which have a timezone field."
-#~ msgstr ""
-
-#~ msgid "The class of the \"master\" for this actor."
-#~ msgstr ""
-
-#~ msgid "Base class for actions that update something on every selected row."
-#~ msgstr ""
-
-#~ msgid "Designed to be just imported. No subclassing needed."
-#~ msgstr ""
-
-#~ msgid "The hotkey to associate to this action in a user interface."
-#~ msgstr ""
-
-#~ msgid "Lightweight volatile object to watch changes on a database object."
-#~ msgstr ""
-
-#~ msgid "A Django HTTP request which isn't really one."
-#~ msgstr ""
-
-#~ msgid "The version number."
-#~ msgstr ""
-
-#~ msgid "A dict of fieldname -> value pairs that specify \"known values\"."
-#~ msgstr ""
-
-#~ msgid "Shows the plausibility problems assigned to this user."
-#~ msgstr ""
-
-#~ msgid "A layout for describing the columns of a table."
-#~ msgstr ""
-
-#~ msgid "Base class for choices of \"observed event\"-style choicelists."
-#~ msgstr ""
-
-#~ msgid "The files to be tested."
-#~ msgstr ""
-
-#~ msgid "See lino.core.utils.Parametrizable.parameters."
-#~ msgstr ""
-
-#~ msgid "Mixin to create a custom field."
-#~ msgstr ""
-
-#~ msgid "Add verbose_name and help_text to Django's GFK."
-#~ msgstr ""
-
-#~ msgid "Represents a DBT block file"
-#~ msgstr ""
-
-#~ msgid "Represents an FPT block file"
-#~ msgstr ""
-
-#~ msgid "A registered change in the database."
-#~ msgstr ""
-
-#~ msgid "The SSDN namespace used for wrapping \"classical\" CBSS services."
-#~ msgstr ""
-
-#~ msgid "Represents an uploaded file."
-#~ msgstr ""
-
-#~ msgid "A field on a related object."
-#~ msgstr ""
-
-#~ msgid "A set of names of filter parameters which are handled automatically."
-#~ msgstr ""
-
-#~ msgid "Deprecated. See /blog/2012/0327."
-#~ msgstr ""
-
-#~ msgid "Set this on"
-#~ msgstr ""
-
-#~ msgid "Shows the other objects who are similar to this one."
-#~ msgstr ""
-
-#~ msgid "The end date"
-#~ msgstr "Lõpeb (päev)"
-
-#~ msgid "Adds two timestamp fields created and modified."
-#~ msgstr ""
-
-#~ msgid "An IncompleteDateField."
-#~ msgstr ""
-
-#~ msgid "An extended django.test.TestCase."
-#~ msgstr ""
-
-#~ msgid "When you decorate your subclass of TestCase, you must also specify:"
-#~ msgstr ""
-
-#~ msgid "Specify this if you want to \"override\" an existing actor."
-#~ msgstr ""
-
-#~ msgid "A DisplayElement specially adapted to a GFK field."
-#~ msgstr ""
-
-#~ msgid "A space-separated list of all middle names."
-#~ msgstr ""
-
-#~ msgid "return the url that points to file on the server"
-#~ msgstr ""
-
-#~ msgid "Open a window with a grid editor on this table as main item."
-#~ msgstr ""
-
-#~ msgid "The SITE's Migrator class is instantiated by install_migrations."
-#~ msgstr ""
-
-#~ msgid "Whether to log Permission debug messages for this action."
-#~ msgstr ""
-
-#~ msgid "Pointer to the file itself (a Django FileField)."
-#~ msgstr ""
-
-#~ msgid "Similar to PlainIndex"
-#~ msgstr ""
-
-#~ msgid "A named tuple with four fields:"
-#~ msgstr ""
-
-#~ msgid "True if this action needs an object to act on."
-#~ msgstr ""
-
-#~ msgid "The root user of this system."
-#~ msgstr ""
-
-#~ msgid "The full path name of the .ods file to be read."
-#~ msgstr ""
-
-#~ msgid "The object returned by register()."
-#~ msgstr ""
-
-#~ msgid "The model instance which has been changed and caused the signal."
-#~ msgstr ""
-
-#~ msgid "A specialized ActionRequest whose actor is a table."
-#~ msgstr ""
-
-#~ msgid "A directory that may contain configuration files."
-#~ msgstr ""
-
-#~ msgid "Necessary to compute Store.pk_index."
-#~ msgstr ""
-
-#~ msgid "Converter for GenericForeignKey fields."
-#~ msgstr ""
-
-#~ msgid "Imitates DeserializedObject required by loaddata."
-#~ msgstr ""
-
-#~ msgid "The text to appear on any button representing this state."
-#~ msgstr ""
-
-#~ msgid "The list of top-level menu items. See setup_menu()."
-#~ msgstr ""
-
-#~ msgid "The timestame when this object was created."
-#~ msgstr ""
-
-#~ msgid "The base class for both build methods."
-#~ msgstr ""
-
-#~ msgid "A Collector that does not delete the MTI parents."
-#~ msgstr ""
-
-#~ msgid "The choicelist of build methods offered on this site."
-#~ msgstr ""
-
-#~ msgid "Defines the lino2rst directive."
-#~ msgstr ""
-
-#~ msgid "Replaced by lino.modlib.tinymce."
-#~ msgstr ""
-
-#~ msgid "Will be filled during lino.core.table.Table.do_setup()."
-#~ msgstr ""
-
-#~ msgid "alias of Notification"
-#~ msgstr ""
-
-#~ msgid "Alternative date entry formats accepted by ExtJS Date widgets."
-#~ msgstr ""
-
-#~ msgid "Used internally to store groups defined by this Table."
-#~ msgstr ""
-
-#~ msgid "Dialog action to change the password of a user."
-#~ msgstr ""
-
-#~ msgid "A named tuple with the following fields:"
-#~ msgstr ""
-
-#~ msgid "Represents a combination of keystrokes."
-#~ msgstr ""
-
-#~ msgid "Notified"
-#~ msgstr "Hind"
-
-#~ msgid "%(guest)s cannot accept invitation %(day)s at %(time)s"
-#~ msgstr ""
-
-#~ msgid "%(guest)s confirmed invitation %(day)s at %(time)s"
-#~ msgstr ""
-
-#~ msgid "Mark this participant as present."
-#~ msgstr ""
-
-#~ msgid "Mark this participant as absent."
-#~ msgstr ""
-
-#~ msgid "Mark this participant as excused."
-#~ msgstr ""
-
-#~ msgid "The event took place."
-#~ msgstr ""
-
-#~ msgid "Mark this as published. All participants have been informed."
-#~ msgstr ""
-
-#~ msgid "Mark this visitor as arrived"
-#~ msgstr ""
-
-#~ msgid "The \"Checkin\" action on a Guest."
-#~ msgstr ""
-
-#~ msgid "Check for strange events"
-#~ msgstr ""
-
-#~ msgid "Event lasts {0} days (but only {1} are allowed)."
-#~ msgstr ""
-
-#~ msgid "Automatically suggested. Default state of an automatic event."
-#~ msgstr ""
-
-#~ msgid "Check whether event_type of this should be updated."
-#~ msgstr ""
-
-#~ msgid "Check for missing participants"
-#~ msgstr ""
-
-#~ msgid "Update event types of generated events"
-#~ msgstr ""
-
-#~ msgid "Check for too long-lasting events"
-#~ msgstr ""
-
-#~ msgid "Missing participants"
-#~ msgstr "Osavõtja"
-
-#~ msgid "Event"
-#~ msgstr ""
-
-#~ msgid "The state of this Task. one of TaskStates"
-#~ msgstr ""
-
-#~ msgid "Inherited from RecurrentSet.every_unit"
-#~ msgstr ""
-
-#~ msgid "A calendar event is a lapse of time to be visualized in a calendar."
-#~ msgstr ""
-
-#~ msgid "See lino.modlib.users.mixins.Assignable.assigned_to"
-#~ msgstr ""
-
-#~ msgid "Check whether this event conflicts with other event(s)."
-#~ msgstr ""
-
-#~ msgid "Check whether the event_type of this event should be updated."
-#~ msgstr ""
-
-#~ msgid "Check for unprobable data in this event."
-#~ msgstr ""
-
-#~ msgid "Mark this participant as absent at the event (without explanation)."
-#~ msgstr ""
-
-#~ msgid "List of Belgian identity card types:"
-#~ msgstr ""
-
-#~ msgid "Read eId card and store the data on the selected holder."
-#~ msgstr ""
-
-#~ msgid "native language"
-#~ msgstr "Keel"
-
-#~ msgid "Projects"
-#~ msgstr "Tooted"
-
-#~ msgid "Project Type"
-#~ msgstr ""
-
-#~ msgid "Project Types"
-#~ msgstr ""
-
-#~ msgid "Project"
-#~ msgstr ""
-
-#~ msgid "Parent"
-#~ msgstr ""
-
-#~ msgid "Workflows"
-#~ msgstr ""
-
-#~ msgid "Actor"
-#~ msgstr "Kontaktisik"
-
-#~ msgid "Action"
-#~ msgstr ""
-
-#~ msgid "owned only"
-#~ msgstr ""
-
-#~ msgid "Base class for things that are related to one and only one client."
-#~ msgstr ""
-
-#~ msgid "Pointer to the client."
-#~ msgstr ""
-
-#~ msgid "Create"
-#~ msgstr "Loo"
-
-#~ msgid "Yes"
-#~ msgstr "Jah"
-
-#~ msgid "No"
-#~ msgstr "Ei"
-
-#~ msgid "Configure"
-#~ msgstr "Seaded"
-
-#~ msgid "State"
-#~ msgstr "Staatus"
-
-#~ msgid "Start date"
-#~ msgstr "Algab (päev)"
-
-#~ msgid "until"
-#~ msgstr ""
-
-#~ msgid "Value"
-#~ msgstr ""
-
-#~ msgid "Type"
-#~ msgstr ""
-
-#~ msgid "Addresses"
-#~ msgstr "Aadressid"
-
-#~ msgid "living at"
-#~ msgstr ""
-
-#~ msgid "Address type"
-#~ msgstr "Aadressiliik"
-
-#~ msgid "Address types"
-#~ msgstr "Aadressiliike"
-
-#~ msgid "Official address"
-#~ msgstr ""
-
-#~ msgid "Unverified address"
-#~ msgstr ""
-
-#~ msgid "Declared address"
-#~ msgstr ""
-
-#~ msgid "Reference address"
-#~ msgstr ""
-
-#~ msgid "Obsolete"
-#~ msgstr ""
-
-#~ msgctxt "female"
-#~ msgid "Other"
-#~ msgstr ""
-
-#~ msgid "Data source"
-#~ msgstr ""
-
-#~ msgid "Data sources"
-#~ msgstr ""
-
-#~ msgid "Manually entered"
-#~ msgstr ""
-
-#~ msgid "Read from eID"
-#~ msgstr ""
-
-#~ msgid "Manage addresses"
-#~ msgstr ""
-
-#~ msgid "Check for missing or non-primary address records"
-#~ msgstr ""
-
-#~ msgid "Owner with address, but no address record."
-#~ msgstr ""
-
-#~ msgid "Unique address is not marked primary."
-#~ msgstr ""
-
-#~ msgid "Multiple addresses, but none is primary."
-#~ msgstr ""
-
-#~ msgid "Multiple primary addresses."
-#~ msgstr ""
-
-#~ msgid "Primary address differs from owner address ({0})."
-#~ msgstr ""
-
-#~ msgid "{0}:{1}->{2}"
-#~ msgstr ""
-
-#~ msgid "Address"
-#~ msgstr "Aadres"
-
-#~ msgid "Appy POD"
-#~ msgstr ""
-
-#~ msgid "Table (landscape)"
-#~ msgstr ""
-
-#~ msgid "Show this table as a pdf document"
-#~ msgstr ""
-
-#~ msgid "Table (portrait)"
-#~ msgstr ""
-
-#~ msgid "Labels"
-#~ msgstr ""
-
-#~ msgid "Generate mailing labels for these recipients"
-#~ msgstr ""
-
-#~ msgid "eID card type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "eID card types"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Belgian citizen"
-#~ msgstr ""
-
-#~ msgid "Kids card (< 12 year)"
-#~ msgstr ""
-
-#~ msgid "Foreigner card A"
-#~ msgstr ""
-
-#~ msgid "Foreigner card B"
-#~ msgstr ""
-
-#~ msgid "Foreigner card C"
-#~ msgstr ""
-
-#~ msgid "Foreigner card D"
-#~ msgstr ""
-
-#~ msgid "Foreigner card E"
-#~ msgstr ""
-
-#~ msgid "Foreigner card E+"
-#~ msgstr ""
-
-#~ msgid "Foreigner card F"
-#~ msgstr ""
-
-#~ msgid "Foreigner card F+"
-#~ msgstr ""
-
-#~ msgid "Simulation"
-#~ msgstr "Nimetus"
-
-#~ msgid "Read eID card"
-#~ msgstr ""
-
-#~ msgid "Sorry, I cannot handle that case: %s"
-#~ msgstr ""
-
-#~ msgid "Client %s is up-to-date"
-#~ msgstr ""
-
-#~ msgid "Click OK to apply the following changes for %s"
-#~ msgstr ""
-
-#~ msgid "%s has been saved."
-#~ msgstr ""
-
-#~ msgid "Find or create card holder from eID card"
-#~ msgstr ""
-
-#~ msgid "New client %s has been created"
-#~ msgstr ""
-
-#~ msgid "Create new client %s : Are you sure?"
-#~ msgstr ""
-
-#~ msgid "Oops!"
-#~ msgstr ""
-
-#~ msgid "Update card holder data from eID card"
-#~ msgstr ""
-
-#~ msgid "National IDs %s and %s don't match "
-#~ msgstr ""
-
-#~ msgid "National ID"
-#~ msgstr "Isikukood"
-
-#~ msgid "Nationality"
-#~ msgstr "Kodakondsus"
-
-#~ msgid "eID card number"
-#~ msgstr ""
-
-#~ msgid "ID card valid from"
-#~ msgstr ""
-
-#~ msgid "eID card issuer"
-#~ msgstr ""
-
-#~ msgid "noble condition"
-#~ msgstr ""
-
-#~ msgid "The eventual noble condition of this person."
-#~ msgstr ""
-
-#~ msgid "eID card"
-#~ msgstr "id-kaart"
-
-#~ msgid "Card no."
-#~ msgstr ""
-
-#~ msgid "issued by"
-#~ msgstr ""
-
-#~ msgid "valid from"
-#~ msgstr ""
-
-#~ msgid "Must read eID card!"
-#~ msgstr ""
-
-#~ msgid "Check for invalid SSINs"
-#~ msgstr ""
-
-#~ msgid "Cannot fix invalid SSIN ({0})"
-#~ msgstr ""
-
-#~ msgid "Malformed SSIN '{got}' must be '{expected}'."
-#~ msgstr ""
-
-#~ msgid "Failed to fix malformed SSIN '{got}' of '{obj}'."
-#~ msgstr ""
-
-#~ msgid "Blog"
-#~ msgstr ""
-
-#~ msgid "Blog Entry Type"
-#~ msgstr ""
-
-#~ msgid "Blog Entry Types"
-#~ msgstr ""
-
-#~ msgid "important"
-#~ msgstr ""
-
-#~ msgid "Blog Entry"
-#~ msgstr ""
-
-#~ msgid "Blog Entries"
-#~ msgstr ""
-
-#~ msgid "Heading"
-#~ msgstr ""
-
-#~ msgid "Body"
-#~ msgstr ""
-
-#~ msgid "Boards"
-#~ msgstr ""
-
-#~ msgid "Decided"
-#~ msgstr ""
-
-#~ msgid "Board"
-#~ msgstr ""
-
-#~ msgid "Works since"
-#~ msgstr ""
-
-#~ msgid "Worked until"
-#~ msgstr "Isik"
-
-#~ msgid "Board member"
-#~ msgstr ""
-
-#~ msgid "Board members"
-#~ msgstr ""
-
-#~ msgid "Home"
-#~ msgstr ""
-
-#~ msgid "Calendar"
-#~ msgstr "Kalender"
-
-#~ msgid "Dates %(min)s to %(max)s"
-#~ msgstr ""
-
-#~ msgid "Move down"
-#~ msgstr ""
-
-#~ msgid "Update Events"
-#~ msgstr "Genereeri sündmusi"
-
-#~ msgid "Recurrence Set"
-#~ msgstr ""
-
-#~ msgid "Recurrence Sets"
-#~ msgstr ""
-
-#~ msgid "Number of events"
-#~ msgstr "Sündmuste arv"
-
-#~ msgid "Times"
-#~ msgstr ""
-
-#~ msgid "When"
-#~ msgstr "Millal"
-
-#~ msgid "Every %s"
-#~ msgstr "Iga %s"
-
-#~ msgid "Every %snd %s"
-#~ msgstr "Iga %s. %s"
-
-#~ msgid "Generate events until"
-#~ msgstr "Genereeri sündmusi kuni"
-
-#~ msgid "Whether this is private, public or between."
-#~ msgstr ""
-
-#~ msgid "Revision"
-#~ msgstr "Maakond"
-
-#~ msgid " at "
-#~ msgstr ""
-
-#~ msgid "Remote Calendar"
-#~ msgstr ""
-
-#~ msgid "Remote Calendars"
-#~ msgstr ""
-
-#~ msgid "URL template"
-#~ msgstr ""
-
-#~ msgid "Username"
-#~ msgstr "Kasutajanimi"
-
-#~ msgid "Password"
-#~ msgstr ""
-
-#~ msgid "read-only"
-#~ msgstr ""
-
-#~ msgid "Room"
-#~ msgstr "Ruum"
-
-#~ msgid "Rooms"
-#~ msgstr "Ruumid"
-
-#~ msgid "Priority"
-#~ msgstr ""
-
-#~ msgid "Priorities"
-#~ msgstr ""
-
-#~ msgid "Calendar Event Type"
-#~ msgstr "Kalender"
-
-#~ msgid "Calendar Event Types"
-#~ msgstr "Kalender"
-
-#~ msgid "Event is an appointment"
-#~ msgstr ""
-
-#~ msgid "Locks all rooms"
-#~ msgstr ""
-
-#~ msgid "Locks the user"
-#~ msgstr ""
-
-#~ msgid "Event label"
-#~ msgstr ""
-
-#~ msgid "Simultaneous events"
-#~ msgstr ""
-
-#~ msgid "How many conflicting events should be tolerated."
-#~ msgstr ""
-
-#~ msgid "Guest Role"
-#~ msgstr ""
-
-#~ msgid "Guest Roles"
-#~ msgstr ""
-
-#~ msgid "Calendars"
-#~ msgstr ""
-
-#~ msgid "color"
-#~ msgstr ""
-
-#~ msgid "Subscription"
-#~ msgstr "Nimetus"
-
-#~ msgid "Subscriptions"
-#~ msgstr "Nimetus"
-
-#~ msgid "The calendar you want to subscribe to."
-#~ msgstr ""
-
-#~ msgid "hidden"
-#~ msgstr ""
-
-#~ msgid "Task"
-#~ msgstr ""
-
-#~ msgid "Tasks"
-#~ msgstr ""
-
-#~ msgid "Due time"
-#~ msgstr ""
-
-#~ msgid "Duration value"
-#~ msgstr ""
-
-#~ msgid "Recurrent Events"
-#~ msgstr "Korduvad sündmused"
-
-#~ msgid "Update Guests"
-#~ msgstr "Isik"
-
-#~ msgid "Transparent"
-#~ msgstr ""
-
-#~ msgid "all day"
-#~ msgstr ""
-
-#~ msgid "Assigned to"
-#~ msgstr ""
-
-#~ msgid "Unsaved %s"
-#~ msgstr ""
-
-#~ msgid "Busy"
-#~ msgstr ""
-
-#~ msgid "with"
-#~ msgstr ""
-
-#~ msgid "Link URL"
-#~ msgstr ""
-
-#~ msgid "Reminder"
-#~ msgstr ""
-
-#~ msgid "Responsible user"
-#~ msgstr ""
-
-#~ msgid "No participants although {0} suggestions exist."
-#~ msgstr ""
-
-#~ msgid "Role"
-#~ msgstr ""
-
-#~ msgid "due date reached"
-#~ msgstr ""
-
-#~ msgid "Default access class"
-#~ msgstr ""
-
-#~ msgid "The default access class for your calendar events and tasks."
-#~ msgstr ""
-
-#~ msgid "Default Event Type"
-#~ msgstr ""
-
-#~ msgid "The default event type for your calendar events."
-#~ msgstr ""
-
-#~ msgid "The default type of events on this site."
-#~ msgstr ""
-
-#~ msgid "Site Calendar"
-#~ msgstr ""
-
-#~ msgid "The default calendar of this site."
-#~ msgstr ""
-
-#~ msgid "Max automatic events"
-#~ msgstr ""
-
-#~ msgid "Maximum number of automatic events to be generated."
-#~ msgstr ""
-
-#~ msgid "%(num)d reminders for %(user)s have been updated."
-#~ msgstr ""
-
-#~ msgid "List of rooms where calendar events can happen."
-#~ msgstr ""
-
-#~ msgid "List of possible priorities of calendar events."
-#~ msgstr ""
-
-#~ msgid "A calendar task is something you need to do."
-#~ msgstr ""
-
-#~ msgid "Managed by"
-#~ msgstr ""
-
-#~ msgid "Only rows managed by this user."
-#~ msgstr ""
-
-#~ msgid "Only rows having this state."
-#~ msgstr ""
-
-#~ msgid "My tasks"
-#~ msgstr ""
-
-#~ msgid "Table of all my tasks."
-#~ msgstr ""
-
-#~ msgid "The role of a guest expresses what the partner is going to do there."
-#~ msgstr ""
-
-#~ msgid "A guest is a partner invited to an event. "
-#~ msgstr ""
-
-#~ msgid "Event state"
-#~ msgstr ""
-
-#~ msgid "Only rows having this event state."
-#~ msgstr ""
-
-#~ msgid "Guest state"
-#~ msgstr ""
-
-#~ msgid "Only rows having this guest state."
-#~ msgstr ""
-
-#~ msgid "Presences"
-#~ msgstr ""
-
-#~ msgid "My presences"
-#~ msgstr "Minu kohalolekud"
-
-#~ msgid "My pending invitations"
-#~ msgstr ""
-
-#~ msgid "Received invitations which I must accept or reject."
-#~ msgstr ""
-
-#~ msgid "My guests"
-#~ msgstr ""
-
-#~ msgid "Observed event"
-#~ msgstr ""
-
-#~ msgid "Observed events"
-#~ msgstr ""
-
-#~ msgid "A List of calendar entries. Each entry is called an event."
-#~ msgstr ""
-
-#~ msgid "Only events assigned to this user."
-#~ msgstr ""
-
-#~ msgid "Appointments"
-#~ msgstr "Kokku leppitud ajad"
-
-#~ msgid "Appointments today"
-#~ msgstr "Kokku leppitud ajad täna"
-
-#~ msgid "Today"
-#~ msgstr "Täna"
-
-#~ msgid "Show all calendar events of the same day."
-#~ msgstr ""
-
-#~ msgid "My appointments"
-#~ msgstr "Kokku leppitud ajad"
-
-#~ msgid "Table of my appointments."
-#~ msgstr ""
-
-#~ msgid "Events assigned to me"
-#~ msgstr ""
-
-#~ msgid "Table of events assigned to me."
-#~ msgstr ""
-
-#~ msgid "%d events have been assigned to you."
-#~ msgstr ""
-
-#~ msgid "Weekday"
-#~ msgstr ""
-
-#~ msgid "Monday"
-#~ msgstr ""
-
-#~ msgid "Tuesday"
-#~ msgstr ""
-
-#~ msgid "Wednesday"
-#~ msgstr ""
-
-#~ msgid "Thursday"
-#~ msgstr ""
-
-#~ msgid "Friday"
-#~ msgstr ""
-
-#~ msgid "Saturday"
-#~ msgstr ""
-
-#~ msgid "Sunday"
-#~ msgstr ""
-
-#~ msgid "Duration Unit"
-#~ msgstr ""
-
-#~ msgid "seconds"
-#~ msgstr ""
-
-#~ msgid "minutes"
-#~ msgstr ""
-
-#~ msgid "hours"
-#~ msgstr ""
-
-#~ msgid "days"
-#~ msgstr ""
-
-#~ msgid "weeks"
-#~ msgstr ""
-
-#~ msgid "months"
-#~ msgstr ""
-
-#~ msgid "years"
-#~ msgstr ""
-
-#~ msgid "once"
-#~ msgstr "Telefon"
-
-#~ msgid "daily"
-#~ msgstr ""
-
-#~ msgid "weekly"
-#~ msgstr ""
-
-#~ msgid "monthly"
-#~ msgstr ""
-
-#~ msgid "yearly"
-#~ msgstr ""
-
-#~ msgid "per weekday"
-#~ msgstr ""
-
-#~ msgid "Access Class"
-#~ msgstr ""
-
-#~ msgid "Private"
-#~ msgstr ""
-
-#~ msgid "Show busy"
-#~ msgstr ""
-
-#~ msgid "Public"
-#~ msgstr ""
-
-#~ msgid "Holidays"
-#~ msgstr "Täna"
-
-#~ msgid "Meeting"
-#~ msgstr ""
-
-#~ msgid "Task states"
-#~ msgstr ""
-
-#~ msgid "To do"
-#~ msgstr ""
-
-#~ msgid "Done"
-#~ msgstr "Telefon"
-
-#~ msgid "Event states"
-#~ msgstr ""
-
-#~ msgid "The possible states of a calendar event."
-#~ msgstr ""
-
-#~ msgid "Suggested"
-#~ msgstr "Ettepanek"
-
-#~ msgid "Published"
-#~ msgstr ""
-
-#~ msgid "Visit"
-#~ msgstr "Maakond"
-
-#~ msgid "Rescheduled"
-#~ msgstr ""
-
-#~ msgid "Took place"
-#~ msgstr "Leidis aset"
-
-#~ msgid "Omitted"
-#~ msgstr ""
-
-#~ msgid "Guest states"
-#~ msgstr ""
-
-#~ msgid "Afterwards"
-#~ msgstr ""
-
-#~ msgid "Invited"
-#~ msgstr "Kutsutud"
-
-#~ msgid "Reopen"
-#~ msgstr ""
-
-#~ msgid "Present"
-#~ msgstr "Kohal"
-
-#~ msgid "Absent"
-#~ msgstr "Puudus"
-
-#~ msgid "Excused"
-#~ msgstr "Tänav"
-
-#~ msgctxt "calendar event action"
-#~ msgid "Cancel"
-#~ msgstr ""
-
-#~ msgid "Reset"
-#~ msgstr "Tänav"
-
-#~ msgid "Accepted"
-#~ msgstr ""
-
-#~ msgid "Rejected"
-#~ msgstr ""
-
-#~ msgid "Reject"
-#~ msgstr ""
-
-#~ msgid "Reject this invitation."
-#~ msgstr ""
-
-#~ msgid "Accept"
-#~ msgstr ""
-
-#~ msgid "Accept this invitation."
-#~ msgstr ""
-
-#~ msgid "Close meeting"
-#~ msgstr ""
-
-#~ msgid "Worker"
-#~ msgstr "Veel"
-
-#~ msgid "Time"
-#~ msgstr ""
-
-#~ msgid "Product"
-#~ msgstr "Toode"
-
-#~ msgctxt "female"
-#~ msgid "Partner"
-#~ msgstr ""
-
-#~ msgid "Remarks"
-#~ msgstr "Märkused"
-
-#~ msgid "Model"
-#~ msgstr ""
-
-#~ msgid "Career"
-#~ msgstr "Partner"
-
-#~ msgid "Failure"
-#~ msgstr "Seaded"
-
-#~ msgid "Ongoing"
-#~ msgstr "Broneerimine"
-
-#~ msgid "How well?"
-#~ msgstr ""
-
-#~ msgid "not at all"
-#~ msgstr ""
-
-#~ msgid "a bit"
-#~ msgstr ""
-
-#~ msgid "moderate"
-#~ msgstr ""
-
-#~ msgid "quite well"
-#~ msgstr ""
-
-#~ msgid "very well"
-#~ msgstr ""
-
-#~ msgid "CEF level"
-#~ msgstr ""
-
-#~ msgid "CEF levels"
-#~ msgstr ""
-
-#~ msgid "basic language skills"
-#~ msgstr ""
-
-#~ msgid "independent use of language"
-#~ msgstr ""
-
-#~ msgid "proficient use of language"
-#~ msgstr ""
-
-#~ msgid "language knowledge"
-#~ msgstr ""
-
-#~ msgid "language knowledges"
-#~ msgstr ""
-
-#~ msgid "Spoken"
-#~ msgstr ""
-
-#~ msgid "Written"
-#~ msgstr ""
-
-#~ msgid "Spoken (passively)"
-#~ msgstr ""
-
-#~ msgid "Written (passively)"
-#~ msgstr ""
-
-#~ msgid "%s (s/w)"
-#~ msgstr ""
-
-#~ msgid "%s (s)"
-#~ msgstr ""
-
-#~ msgid "%s (w)"
-#~ msgstr ""
-
-#~ msgid "Establishment"
-#~ msgstr ""
-
-#~ msgid "Study"
-#~ msgstr ""
-
-#~ msgid "Training"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Education Level"
-#~ msgstr ""
-
-#~ msgid "Education Levels"
-#~ msgstr ""
-
-#~ msgid "Education Type"
-#~ msgstr "Organisatsiooniliik"
-
-#~ msgid "Education Types"
-#~ msgstr "Organisatsiooniliiged"
-
-#~ msgid "Trainings"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Training content"
-#~ msgstr "Hoiatus"
-
-#~ msgid "Certificates"
-#~ msgstr "Teenused"
-
-#~ msgid "Studies"
-#~ msgstr ""
-
-#~ msgid "Study content"
-#~ msgstr ""
-
-#~ msgctxt "work experience"
-#~ msgid "Status"
-#~ msgstr "Staatus"
-
-#~ msgctxt "work experience"
-#~ msgid "Statuses"
-#~ msgstr "Staatus"
-
-#~ msgid "Work Regime"
-#~ msgstr ""
-
-#~ msgid "Work Regimes"
-#~ msgstr ""
-
-#~ msgid "Contract Duration"
-#~ msgstr "Kontaktiliigid"
-
-#~ msgid "Contract Durations"
-#~ msgstr "Kontaktisikud"
-
-#~ msgid "Job Sector"
-#~ msgstr ""
-
-#~ msgid "Job Sectors"
-#~ msgstr ""
-
-#~ msgid "Job Function"
-#~ msgstr ""
-
-#~ msgid "Job Functions"
-#~ msgstr "Aktioonid"
-
-#~ msgid "Job Experience"
-#~ msgstr "Teie viide"
-
-#~ msgid "Job Experiences"
-#~ msgstr "Teie viide"
-
-#~ msgid "company"
-#~ msgstr "Firma"
-
-#~ msgid "job title"
-#~ msgstr ""
-
-#~ msgid "Termination reason"
-#~ msgstr "Nimetus"
-
-#~ msgid "CV user"
-#~ msgstr ""
-
-#~ msgid "CV staff"
-#~ msgstr ""
-
-#~ msgid "Prequalifying"
-#~ msgstr "Tsertifitseeriv"
-
-#~ msgid "Qualifying"
-#~ msgstr "Tsertifitseeriv"
-
-#~ msgid "Alpha"
-#~ msgstr ""
-
-#~ msgid "Unlimited duration"
-#~ msgstr ""
-
-#~ msgid "Limited duration"
-#~ msgstr "Nimetus"
-
-#~ msgid "Clearly defined job"
-#~ msgstr ""
-
-#~ msgid "Replacement"
-#~ msgstr "Registreerimine"
-
-#~ msgid "Interim"
-#~ msgstr "Registreeru"
-
-#~ msgid "Employee"
-#~ msgstr ""
-
-#~ msgid "Freelancer"
-#~ msgstr "Kohalolekud"
-
-#~ msgid "Voluntary"
-#~ msgstr "Riik"
-
-#~ msgid "Student"
-#~ msgstr "Puudus"
-
-#~ msgid "Laboratory"
-#~ msgstr ""
-
-#~ msgid "Full-time"
-#~ msgstr ""
-
-#~ msgid "Part-time"
-#~ msgstr "Algab (aeg)"
-
-#~ msgid "Dupable partners"
-#~ msgstr ""
-
-#~ msgid "Phonetic word"
-#~ msgstr ""
-
-#~ msgid "Phonetic words"
-#~ msgstr ""
-
-#~ msgid "Similar partners"
-#~ msgstr "Kontaktiliigid"
-
-#~ msgid "Excerpts"
-#~ msgstr "Väljavõted"
-
-#~ msgid "Excerpt shortcut"
-#~ msgstr ""
-
-#~ msgid "Excerpt shortcuts"
-#~ msgstr ""
-
-#~ msgid "Clear print cache"
-#~ msgstr ""
-
-#~ msgid "Oops, the print cache was already cleared."
-#~ msgstr ""
-
-#~ msgid "Print cache file has been cleared."
-#~ msgstr ""
-
-#~ msgid "Going to clear the print cache file of %s"
-#~ msgstr ""
-
-#~ msgid "Printed"
-#~ msgstr "Trükitud"
-
-#~ msgid "Excerpt title"
-#~ msgstr "Väljavõteliik"
-
-#~ msgid "The title to be used when printing an excerpt."
-#~ msgstr ""
-
-#~ msgid "Excerpt Type"
-#~ msgstr "Väljavõteliik"
-
-#~ msgid "Excerpt Types"
-#~ msgstr "Väljavõteliigid"
-
-#~ msgid "Certifying"
-#~ msgstr "Tsertifitseeriv"
-
-#~ msgid "Whether an excerpt of this type is a unique printout."
-#~ msgstr ""
-
-#~ msgid "The model that can issue printouts of this type."
-#~ msgstr ""
-
-#~ msgid "Backward compatible"
-#~ msgstr ""
-
-#~ msgid "Print recipient"
-#~ msgstr ""
-
-#~ msgid "Whether to print a recipient field in document."
-#~ msgstr ""
-
-#~ msgid "Print directly"
-#~ msgstr ""
-
-#~ msgid "Cannot set %(c)s without %(p)s"
-#~ msgstr ""
-
-#~ msgid "Cannot set %(c)s for non.certifiable model %(m)s"
-#~ msgstr ""
-
-#~ msgid "Print"
-#~ msgstr "Trüki"
-
-#~ msgid "Create an excerpt in order to print this data record."
-#~ msgstr ""
-
-#~ msgid "Excerpt type \"%s\" has no body_template"
-#~ msgstr ""
-
-#~ msgid "Excerpt"
-#~ msgstr "Väljavõte"
-
-#~ msgid "Unprinted %s #%s"
-#~ msgstr "Trükimata %s #%d"
-
-#~ msgid "Preview"
-#~ msgstr "Eelvaade"
-
-#~ msgid "Recipient (Organization)"
-#~ msgstr "Saaja (Firma)"
-
-#~ msgid "Recipient (Person)"
-#~ msgstr "Saaja (Isik)"
-
-#~ msgid "Certifying excerpts"
-#~ msgstr "Tehtud väljavõted"
-
-#~ msgid "History of excerpts based on this data record."
-#~ msgstr ""
-
-#~ msgid "Existing excerpts"
-#~ msgstr "Tehtud väljavõted"
-
-#~ msgid "not printed"
-#~ msgstr "Hind"
-
-#~ msgid "Last week"
-#~ msgstr ""
-
-#~ msgid "Older"
-#~ msgstr "Hoiatus"
-
-#~ msgid "All"
-#~ msgstr ""
-
-#~ msgid "Please see the attached file."
-#~ msgstr ""
-
-#~ msgid "Subject:"
-#~ msgstr "Teema"
-
-#~ msgid "Sender:"
-#~ msgstr "Sugu"
-
-#~ msgid "Hidden"
-#~ msgstr ""
-
-#~ msgid "Start"
-#~ msgstr "Tänav"
-
-#~ msgid "End"
-#~ msgstr ""
-
-#~ msgid "Families"
-#~ msgstr "Müük"
-
-#~ msgid "Married in"
-#~ msgstr ""
-
-#~ msgid "Divorced"
-#~ msgstr ""
-
-#~ msgid "Father"
-#~ msgstr ""
-
-#~ msgid "Mother"
-#~ msgstr ""
-
-#~ msgid "Family"
-#~ msgstr ""
-
-#~ msgid "Households"
-#~ msgstr ""
-
-#~ msgid "Household member roles"
-#~ msgstr ""
-
-#~ msgid "Head of household"
-#~ msgstr ""
-
-#~ msgid "Spouse"
-#~ msgstr "Isikud"
-
-#~ msgid "Cohabitant"
-#~ msgstr ""
-
-#~ msgid "Child"
-#~ msgstr ""
-
-#~ msgctxt "female"
-#~ msgid "Relative"
-#~ msgstr ""
-
-#~ msgid "Adopted child"
-#~ msgstr ""
-
-#~ msgid "Household Type"
-#~ msgstr ""
-
-#~ msgid "Household Types"
-#~ msgstr ""
-
-#~ msgid "Household"
-#~ msgstr ""
-
-#~ msgid "Household Member"
-#~ msgstr ""
-
-#~ msgid "Household Members"
-#~ msgstr ""
-
-#~ msgid "Make this the primary household."
-#~ msgstr ""
-
-#~ msgid "Household composition"
-#~ msgstr ""
-
-#~ msgid "%s is not member of any household"
-#~ msgstr ""
-
-#~ msgid "%s is member of multiple households"
-#~ msgstr ""
-
-#~ msgid " and "
-#~ msgstr ""
-
-#~ msgid " of "
-#~ msgstr ""
-
-#~ msgid "Create Household"
-#~ msgstr ""
-
-#~ msgid "Household has been created"
-#~ msgstr ""
-
-#~ msgid "Household memberships"
-#~ msgstr ""
-
-#~ msgid " in "
-#~ msgstr ""
-
-#~ msgid "%s is"
-#~ msgstr ""
-
-#~ msgid "Create a household"
-#~ msgstr ""
-
-#~ msgid "Factual household"
-#~ msgstr ""
-
-#~ msgid "Legal cohabitation"
-#~ msgstr ""
-
-#~ msgid "Isolated"
-#~ msgstr ""
-
-#~ msgid "Parency links"
-#~ msgstr ""
-
-#~ msgid "Parency type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Parency types"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Son"
-#~ msgstr "Isik"
-
-#~ msgid "Daughter"
-#~ msgstr ""
-
-#~ msgid "Adoptive father"
-#~ msgstr ""
-
-#~ msgid "Adoptive mother"
-#~ msgstr ""
-
-#~ msgid "Adopted son"
-#~ msgstr ""
-
-#~ msgid "Adopted daughter"
-#~ msgstr ""
-
-#~ msgid "Grandfather"
-#~ msgstr ""
-
-#~ msgid "Grandmother"
-#~ msgstr ""
-
-#~ msgid "Grandson"
-#~ msgstr ""
-
-#~ msgid "Granddaughter"
-#~ msgstr ""
-
-#~ msgid "Husband"
-#~ msgstr ""
-
-#~ msgid "Wife"
-#~ msgstr ""
-
-#~ msgctxt "female"
-#~ msgid "Friend"
-#~ msgstr ""
-
-#~ msgid "Stepfather"
-#~ msgstr ""
-
-#~ msgid "Stepmother"
-#~ msgstr ""
-
-#~ msgid "Stepson"
-#~ msgstr "on Isik"
-
-#~ msgid "Stepdaughter"
-#~ msgstr ""
-
-#~ msgctxt "male"
-#~ msgid "Brother"
-#~ msgstr ""
-
-#~ msgctxt "female"
-#~ msgid "Sister"
-#~ msgstr "Registreeru"
-
-#~ msgctxt "female"
-#~ msgid "Cousin"
-#~ msgstr "Raamatupidamine"
-
-#~ msgid "Uncle"
-#~ msgstr "Telefon"
-
-#~ msgid "Aunt"
-#~ msgstr "Tänav"
-
-#~ msgid "Nephew"
-#~ msgstr ""
-
-#~ msgid "Niece"
-#~ msgstr "Telefon"
-
-#~ msgid "Personal Link"
-#~ msgstr ""
-
-#~ msgid "Personal Links"
-#~ msgstr ""
-
-#~ msgid "%(child)s is %(what)s"
-#~ msgstr ""
-
-#~ msgid "%(type)s of %(parent)s"
-#~ msgstr ""
-
-#~ msgid "Human Links"
-#~ msgstr ""
-
-#~ msgid "No relationships."
-#~ msgstr ""
-
-#~ msgid "Create relationship as "
-#~ msgstr ""
-
-#~ msgid "Lists"
-#~ msgstr "Listid"
-
-#~ msgid "List Type"
-#~ msgstr "Listiliik"
-
-#~ msgid "List Types"
-#~ msgstr "Listiliigid"
-
-#~ msgid "Partner Lists"
-#~ msgstr "Partnerite nimekirjad"
-
-#~ msgid "List memberships"
-#~ msgstr "Listi tellimused"
-
-#~ msgid "Mailing list"
-#~ msgstr "Infokiri"
-
-#~ msgid "Discussion group"
-#~ msgstr "Arutelugrupp"
-
-#~ msgid "Flags"
-#~ msgstr "Palgad"
-
-#~ msgid "Announcements"
-#~ msgstr "Kuulutused"
-
-#~ msgid "Weekly newsletter"
-#~ msgstr "Nädaline infokiri"
-
-#~ msgid "General discussion"
-#~ msgstr "Üldine arutelu"
-
-#~ msgid "Beginners forum"
-#~ msgstr "Algajate foorum"
-
-#~ msgid "Developers forum"
-#~ msgstr ""
-
-#~ msgid "PyCon 2014"
-#~ msgstr ""
-
-#~ msgid "Free Software Day 2014"
-#~ msgstr ""
-
-#~ msgid "Schools"
-#~ msgstr "Koolid"
-
-#~ msgid "Notes"
-#~ msgstr "Märkused"
-
-#~ msgid "Special note type"
-#~ msgstr "Märkuseliik"
-
-#~ msgid "Special note types"
-#~ msgstr "Märkuseliigid"
-
-#~ msgid "Note Type"
-#~ msgstr "Märkuseliik"
-
-#~ msgid "Note Types"
-#~ msgstr "Märkuseliigid"
-
-#~ msgid "Event Types"
-#~ msgstr "Sündmuse liigid"
-
-#~ msgid "Note"
-#~ msgstr "Märkus"
-
-#~ msgid "Note Type (Content)"
-#~ msgstr "Märkuseliik (sisu)"
-
-#~ msgid "Event Type (Form)"
-#~ msgstr ""
-
-#~ msgid "Subject"
-#~ msgstr "Teema"
-
-#~ msgid "Default system note type"
-#~ msgstr ""
-
-#~ msgid "Outbox"
-#~ msgstr ""
-
-#~ msgid "Recipient Type"
-#~ msgstr ""
-
-#~ msgid "to"
-#~ msgstr ""
-
-#~ msgid "cc"
-#~ msgstr ""
-
-#~ msgid "bcc"
-#~ msgstr ""
-
-#~ msgid "Attach to email"
-#~ msgstr ""
-
-#~ msgid "Email template"
-#~ msgstr ""
-
-#~ msgid "Create an email from this"
-#~ msgstr ""
-
-#~ msgid "Create email"
-#~ msgstr ""
-
-#~ msgid "Recipient"
-#~ msgstr ""
-
-#~ msgid "Recipients"
-#~ msgstr ""
-
-#~ msgid "Send email"
-#~ msgstr ""
-
-#~ msgid "No recipients found."
-#~ msgstr ""
-
-#~ msgid "There are recipients without address: "
-#~ msgstr ""
-
-#~ msgid "Couldn't find target file of %s"
-#~ msgstr ""
-
-#~ msgid "Email %(id)s from %(sender)s has been sent to %(num)d recipients."
-#~ msgstr ""
-
-#~ msgid "Outgoing Mail"
-#~ msgstr ""
-
-#~ msgid "Outgoing Mails"
-#~ msgstr ""
-
-#~ msgid "My Outbox"
-#~ msgstr ""
-
-#~ msgid "Attachment"
-#~ msgstr ""
-
-#~ msgid "Attachments"
-#~ msgstr ""
-
-#~ msgid "Sender"
-#~ msgstr ""
-
-#~ msgid "Pages"
-#~ msgstr ""
-
-#~ msgid "Node"
-#~ msgstr ""
-
-#~ msgid "Nodes"
-#~ msgstr ""
-
-#~ msgid "raw html"
-#~ msgstr ""
-
-#~ msgid "Postings"
-#~ msgstr ""
-
-#~ msgid "Create posting"
-#~ msgstr ""
-
-#~ msgid "Create classical mail postings from this"
-#~ msgstr ""
-
-#~ msgid "Going to create %(num)d postings for %(elem)s"
-#~ msgstr ""
-
-#~ msgid "Open"
-#~ msgstr ""
-
-#~ msgid "Ready"
-#~ msgstr ""
-
-#~ msgid "Sent"
-#~ msgstr ""
-
-#~ msgid "Returned"
-#~ msgstr ""
-
-#~ msgid "Print this posting"
-#~ msgstr ""
-
-#~ msgid "Posting"
-#~ msgstr ""
-
-#~ msgid "Postings ready to print"
-#~ msgstr ""
-
-#~ msgid "%d postings are ready to print."
-#~ msgstr ""
-
-#~ msgid "Postings printed"
-#~ msgstr ""
-
-#~ msgid "Postings sent"
-#~ msgstr ""
-
-#~ msgid "Products"
-#~ msgstr "Tooted"
-
-#~ msgid "Product Category"
-#~ msgstr "Tootekategooria"
-
-#~ msgid "Product Categories"
-#~ msgstr "Tootekategooriad"
-
-#~ msgid "Long description"
-#~ msgstr "Nimetus"
-
-#~ msgid "Category"
-#~ msgstr "Tootekategooria"
-
-#~ msgid "Properties"
-#~ msgstr ""
-
-#~ msgid "Do you like?"
-#~ msgstr ""
-
-#~ msgid "certainly not"
-#~ msgstr ""
-
-#~ msgid "rather not"
-#~ msgstr ""
-
-#~ msgid "normally"
-#~ msgstr ""
-
-#~ msgid "quite much"
-#~ msgstr ""
-
-#~ msgid "very much"
-#~ msgstr ""
-
-#~ msgid "Property Type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Property Types"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Choices List"
-#~ msgstr ""
-
-#~ msgid "default value"
-#~ msgstr ""
-
-#~ msgid "Limit to choices"
-#~ msgstr ""
-
-#~ msgid "Multiple choices"
-#~ msgstr ""
-
-#~ msgid "Property Choice"
-#~ msgstr ""
-
-#~ msgid "Property Choices"
-#~ msgstr ""
-
-#~ msgid "Designation"
-#~ msgstr "Kirjeldus"
-
-#~ msgid "Property Group"
-#~ msgstr ""
-
-#~ msgid "Property Groups"
-#~ msgstr ""
-
-#~ msgid "Property"
-#~ msgstr ""
-
-#~ msgid "Reception"
-#~ msgstr ""
-
-#~ msgid "Waiting"
-#~ msgstr ""
-
-#~ msgid "Gone"
-#~ msgstr "Telefon"
-
-#~ msgid "Waiting since"
-#~ msgstr ""
-
-#~ msgid "Time when the visitor arrived (checked in)."
-#~ msgstr ""
-
-#~ msgid "Waiting until"
-#~ msgstr ""
-
-#~ msgid "Time when the visitor was received by agent."
-#~ msgstr ""
-
-#~ msgid "Present until"
-#~ msgstr "Isik"
-
-#~ msgid "Time when the visitor left (checked out)."
-#~ msgstr ""
-
-#~ msgid "Default type for prompt events"
-#~ msgstr ""
-
-#~ msgid "The event type for prompt events may not invite client!"
-#~ msgstr ""
-
-#~ msgid "Checkin"
-#~ msgstr ""
-
-#~ msgid "%(partner)s has started waiting for %(user)s"
-#~ msgstr ""
-
-#~ msgid "Checkin in will reassign the event from %(old)s to %(new)s."
-#~ msgstr ""
-
-#~ msgid "Receive"
-#~ msgstr ""
-
-#~ msgid "Visitor was received by agent"
-#~ msgstr ""
-
-#~ msgid "%(guest)s begins consultation with %(user)s."
-#~ msgstr ""
-
-#~ msgid "Checkout"
-#~ msgstr ""
-
-#~ msgid "Visitor left the centre"
-#~ msgstr ""
-
-#~ msgid "%(guest)s leaves after meeting with %(user)s."
-#~ msgstr ""
-
-#~ msgid "Expected Guests"
-#~ msgstr ""
-
-#~ msgid "Received Visitors"
-#~ msgstr ""
-
-#~ msgid "Shows the visitors being received."
-#~ msgstr ""
-
-#~ msgid "Since"
-#~ msgstr ""
-
-#~ msgid "Busy visitors"
-#~ msgstr ""
-
-#~ msgid "Shows the visitors who are busy with some agent."
-#~ msgstr ""
-
-#~ msgid "Waiting visitors"
-#~ msgstr ""
-
-#~ msgid "Shows the visitors in the waiting room."
-#~ msgstr ""
-
-#~ msgid "Position"
-#~ msgstr "Nimetus"
-
-#~ msgid "Position in waiting queue (per agent)"
-#~ msgstr ""
-
-#~ msgid "Gone visitors"
-#~ msgstr ""
-
-#~ msgid "Shows the visitors who have gone."
-#~ msgstr ""
-
-#~ msgid "Visitors waiting for me"
-#~ msgstr ""
-
-#~ msgid "Visitors busy with me"
-#~ msgstr ""
-
-#~ msgid "My gone visitors"
-#~ msgstr ""
-
-#~ msgid "Optionally booked. Ask customer before any decision."
-#~ msgstr ""
-
-#~ msgid "Booking"
-#~ msgstr "Broneerimine"
-
-#~ msgid "Bookings"
-#~ msgstr "Broneerimised"
-
-#~ msgid "The Event Type to which events will be generated."
-#~ msgstr ""
-
-#~ msgid "Contact person"
-#~ msgstr "Kontaktiliigid"
-
-#~ msgid "Organizer"
-#~ msgstr ""
-
-#~ msgid "Stars"
-#~ msgstr "Tänav"
-
-#~ msgid "Star"
-#~ msgstr "Tänav"
-
-#~ msgid "Star this database object."
-#~ msgstr ""
-
-#~ msgid "{0} is now starred."
-#~ msgstr ""
-
-#~ msgid "Unstar this database object."
-#~ msgstr ""
-
-#~ msgid "{0} is no longer starred."
-#~ msgstr ""
-
-#~ msgid "Your stars are "
-#~ msgstr "Üritusdomeen"
-
-#~ msgid "Third Party"
-#~ msgstr ""
-
-#~ msgid "Third Parties"
-#~ msgstr ""
-
-#~ msgid "Import Date"
-#~ msgstr "Sünnipäev"
-
-#~ msgid "Real end balance"
-#~ msgstr "Algsaldo"
-
-#~ msgid "Sequence number"
-#~ msgstr "Sisestage majanumber"
-
-#~ msgid "Unique import ID"
-#~ msgstr ""
-
-#~ msgid "Movement date"
-#~ msgstr "Tehing"
-
-#~ msgid "ref:"
-#~ msgstr ""
-
-#~ msgid "TT:"
-#~ msgstr ""
-
-#~ msgid "Last movement"
-#~ msgstr "Tehing"
-
-#~ msgid "Default"
-#~ msgstr "Isik"
-
-#~ msgid "Partners mismatch"
-#~ msgstr "Partnerite nimekiri"
-
-#~ msgid "only open"
-#~ msgstr ""
-
-#~ msgid "Are you sure you want to register voucher {0}?"
-#~ msgstr ""
-
-#~ msgid "No items found for %s."
-#~ msgstr ""
-
-#~ msgid "Date"
-#~ msgstr "Kuupäev"
-
-#~ msgid "Oops, not implemented."
-#~ msgstr ""
-
-#~ msgid "Balance {1} ({0} rows)"
-#~ msgstr ""
-
-#~ msgid "Base table for all courses."
-#~ msgstr ""
-
-#~ msgid "Base class for a Lino Così application."
-#~ msgstr ""
-
-#~ msgid "The recipient of invoices (invoicing address)."
-#~ msgstr ""
-
-#~ msgid "The base for all Estonian Lino Cosi Sites."
-#~ msgstr ""
-
-#~ msgid "alias of basestring"
-#~ msgstr ""
-
-#~ msgid "The list of possible states of an enrolment."
-#~ msgstr ""
-
-#~ msgid "The detail layout of a Course."
-#~ msgstr ""
-
-#~ msgid "Base table for all activities."
-#~ msgstr ""
-
-#~ msgid "alias of Course"
-#~ msgstr "Üritused ettevalmistamisel"
-
-#~ msgid "Show the courses per course line."
-#~ msgstr ""
-
-#~ msgid "alias of Line"
-#~ msgstr ""
-
-#~ msgid "Shows the courses of a given topic."
-#~ msgstr ""
-
-#~ msgid "alias of Topic"
-#~ msgstr ""
-
-#~ msgid "Base class for all enrolment tables."
-#~ msgstr ""
-
-#~ msgid "alias of Enrolment"
-#~ msgstr "Rahavoogude aruanne"
-
-#~ msgid "Show global list of all enrolments."
-#~ msgstr ""
-
-#~ msgid "Show all requested enrolments."
-#~ msgstr "Ootel registreerimesed"
-
-#~ msgid "Show all confirmed enrolments."
-#~ msgstr "Kinnitatud registreerimesed"
-
-#~ msgid "Show all enrolments of a given pupil."
-#~ msgstr ""
-
-#~ msgid "alias of Person"
-#~ msgstr "Üritused ettevalmistamisel"
-
-#~ msgid "The text to print as title in enrolments."
-#~ msgstr ""
-
-#~ msgid "Number of free places."
-#~ msgstr ""
-
-#~ msgid "Number of requested places."
-#~ msgstr ""
-
-#~ msgid "Number of confirmed places."
-#~ msgstr ""
-
-#~ msgid "One of lino_cosi.lib.courses.choicelists.EnrolmentStates."
-#~ msgstr ""
-
-#~ msgid "Activities"
-#~ msgstr "Kuupäev"
-
-#~ msgid "Layout"
-#~ msgstr ""
-
-#~ msgid "Course layouts"
-#~ msgstr "Üritusdomeenid"
-
-#~ msgid "Shows events of activities led by this teacher"
-#~ msgstr ""
-
-#~ msgid "Draft activities"
-#~ msgstr ""
-
-#~ msgid "Current activities"
-#~ msgstr ""
-
-#~ msgid "Inactive courses"
-#~ msgstr "Toimuvad üritused"
-
-#~ msgid "Closed courses"
-#~ msgstr "Toimuvad üritused"
-
-#~ msgid "Are you sure?"
-#~ msgstr "Kas oled kindel?"
-
-#~ msgid "Enrolments using this option"
-#~ msgstr "Registreerimisoptioon"
-
-#~ msgid "Name"
-#~ msgstr "Nimi"
-
-#~ msgctxt "singular form"
-#~ msgid "Activity line"
-#~ msgstr "Tegevusaruanne"
-
-#~ msgctxt "plural form"
-#~ msgid "Activity lines"
-#~ msgstr "Tegevusaruanne"
-
-#~ msgid "Recurrency"
-#~ msgstr "Korduvus"
-
-#~ msgid "Repeat every"
-#~ msgstr "Korda iga"
-
-#~ msgid "Manage presences as"
-#~ msgstr ""
-
-#~ msgid "Body template"
-#~ msgstr ""
-
-#~ msgid "Activity"
-#~ msgstr "Kogus"
-
-#~ msgid "Free places"
-#~ msgstr ""
-
-#~ msgctxt "in a course"
-#~ msgid "Places used"
-#~ msgstr ""
-
-#~ msgid "Option"
-#~ msgstr "Optioon"
-
-#~ msgid "A normal authentified user."
-#~ msgstr ""
-
-#~ msgid "SEPA import"
-#~ msgstr ""
-
-#~ msgid "Individual transfer order"
-#~ msgstr ""
-
-#~ msgid "Individual transfer order initiated by the bank"
-#~ msgstr ""
-
-#~ msgid "Standing order"
-#~ msgstr ""
-
-#~ msgid "Payment of wages, etc."
-#~ msgstr ""
-
-#~ msgid "Collective transfer"
-#~ msgstr ""
-
-#~ msgid "Transfer from your account"
-#~ msgstr ""
-
-#~ msgid "Financial centralisation"
-#~ msgstr ""
-
-#~ msgid "Costs"
-#~ msgstr "Kontod"
-
-#~ msgid "Your issue circular cheque"
-#~ msgstr ""
-
-#~ msgid "Codes proper to each bank"
-#~ msgstr ""
-
-#~ msgid "Cancellation or correction"
-#~ msgstr ""
-
-#~ msgid "Transfer in your favour"
-#~ msgstr ""
-
-#~ msgid "Transfer in your favour - initiated by the bank"
-#~ msgstr ""
-
-#~ msgid "Payment in your favour"
-#~ msgstr ""
-
-#~ msgid "Unexecutable transfer order"
-#~ msgstr ""
-
-#~ msgid "Non-presented circular cheque"
-#~ msgstr ""
-
-#~ msgid "Unpaid postal order"
-#~ msgstr ""
-
-#~ msgid "Transfer to your account"
-#~ msgstr ""
-
-#~ msgid "Financial centralization"
-#~ msgstr ""
-
-#~ msgid "Reimbursement of costs"
-#~ msgstr ""
-
-#~ msgid "Payment of your cheque"
-#~ msgstr ""
-
-#~ msgid "Payment of voucher"
-#~ msgstr "Maksetingimus"
-
-#~ msgid "Unpaid voucher"
-#~ msgstr "KM dokumendid"
-
-#~ msgid "Department store cheque"
-#~ msgstr ""
-
-#~ msgid "Your purchase bank cheque"
-#~ msgstr ""
-
-#~ msgid "Your certified cheque"
-#~ msgstr ""
-
-#~ msgid "Cheque-related costs"
-#~ msgstr ""
-
-#~ msgid "Provisionally unpaid"
-#~ msgstr ""
-
-#~ msgid "Remittance of cheques, vouchers, etc. credit after collection"
-#~ msgstr ""
-
-#~ msgid "Reversal of voucher"
-#~ msgstr "KM dokumendid"
-
-#~ msgid "Reversal of cheque"
-#~ msgstr ""
-
-#~ msgid "Second credit of unpaid cheque"
-#~ msgstr ""
-
-#~ msgid "Remittance of cheque by your branch-credit under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Reimbursement of cheque-related costs"
-#~ msgstr ""
-
-#~ msgid "Loading a GSM card"
-#~ msgstr ""
-
-#~ msgid "Payment by means of a payment card within the Eurozone"
-#~ msgstr ""
-
-#~ msgid "Settlement credit cards"
-#~ msgstr ""
-
-#~ msgid "Cash withdrawal from an ATM"
-#~ msgstr ""
-
-#~ msgid "Loading Proton"
-#~ msgstr ""
-
-#~ msgid "Payment with tank card"
-#~ msgstr ""
-
-#~ msgid "Payment by GSM"
-#~ msgstr "Laekumised"
-
-#~ msgid "Payment by means of a payment card outside the Eurozone"
-#~ msgstr ""
-
-#~ msgid "Credit after a payment at a terminal"
-#~ msgstr ""
-
-#~ msgid "Unloading Proton"
-#~ msgstr ""
-
-#~ msgid "Loading GSM cards"
-#~ msgstr ""
-
-#~ msgid "Cash deposit at an ATM"
-#~ msgstr ""
-
-#~ msgid "Income from payments by GSM"
-#~ msgstr ""
-
-#~ msgid "Credit after Proton payments"
-#~ msgstr ""
-
-#~ msgid "Payment"
-#~ msgstr "Laekumised"
-
-#~ msgid "Unpaid debt"
-#~ msgstr ""
-
-#~ msgid "Reimbursement"
-#~ msgstr ""
-
-#~ msgid "Codes proper to each institution"
-#~ msgstr ""
-
-#~ msgid "Credit after collection"
-#~ msgstr ""
-
-#~ msgid "Credit under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Unexecutable reimbursement"
-#~ msgstr ""
-
-#~ msgid "Reversal"
-#~ msgstr "Üld"
-
-#~ msgid "Payment commercial paper"
-#~ msgstr ""
-
-#~ msgid "Commercial paper claimed back"
-#~ msgstr ""
-
-#~ msgid "Extension of maturity date"
-#~ msgstr ""
-
-#~ msgid "Unpaid commercial paper"
-#~ msgstr ""
-
-#~ msgid "Agio on supplier's bill"
-#~ msgstr ""
-
-#~ msgid "Costs related to commercial paper"
-#~ msgstr ""
-
-#~ msgid "Return of an irregular bill of exchange"
-#~ msgstr ""
-
-#~ msgid "Remittance of commercial paper-credit after collection"
-#~ msgstr ""
-
-#~ msgid "Remittance of commercial paper-credit under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Remittance of commercial paper for discount"
-#~ msgstr ""
-
-#~ msgid "Remittance of supplier's bill with guarantee"
-#~ msgstr ""
-
-#~ msgid "Remittance of supplier's bill without guarantee"
-#~ msgstr ""
-
-#~ msgid "Cash withdrawal"
-#~ msgstr ""
-
-#~ msgid "Purchase of foreign bank notes"
-#~ msgstr ""
-
-#~ msgid "Purchase of gold/pieces"
-#~ msgstr "Ostuarved"
-
-#~ msgid "Purchase of petrol coupons"
-#~ msgstr ""
-
-#~ msgid "Cash withdrawal by your branch or agents"
-#~ msgstr ""
-
-#~ msgid "Purchase of fiscal stamps"
-#~ msgstr ""
-
-#~ msgid "Difference in payment"
-#~ msgstr ""
-
-#~ msgid "Purchase of traveller's cheque"
-#~ msgstr ""
-
-#~ msgid "Payment night safe"
-#~ msgstr ""
-
-#~ msgid "Payment by your branch/agents"
-#~ msgstr ""
-
-#~ msgid "Sale of foreign bank notes"
-#~ msgstr ""
-
-#~ msgid "Sale of gold/pieces under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Sale of traveller's cheque"
-#~ msgstr ""
-
-#~ msgid "Purchase of securities"
-#~ msgstr "Üritusdomeenid"
-
-#~ msgid "Tenders"
-#~ msgstr "Perenimi"
-
-#~ msgid "Subscription to securities"
-#~ msgstr ""
-
-#~ msgid "Issues"
-#~ msgstr ""
-
-#~ msgid "Partial payment subscription"
-#~ msgstr ""
-
-#~ msgid "Share option plan -- exercising an option"
-#~ msgstr ""
-
-#~ msgid "Settlement of securities"
-#~ msgstr ""
-
-#~ msgid "Payable coupons/repayable securities"
-#~ msgstr ""
-
-#~ msgid "Your repurchase of issue"
-#~ msgstr ""
-
-#~ msgid "Interim interest on subscription"
-#~ msgstr ""
-
-#~ msgid "Management fee"
-#~ msgstr ""
-
-#~ msgid "Regularisation costs"
-#~ msgstr ""
-
-#~ msgid "Sale of securities"
-#~ msgstr ""
-
-#~ msgid "Tender"
-#~ msgstr "Raamatupidamine"
-
-#~ msgid "Your issue"
-#~ msgstr "Üritus"
-
-#~ msgid "Retrocession of issue commission"
-#~ msgstr ""
-
-#~ msgid "Compensation for missing coupon"
-#~ msgstr ""
-
-#~ msgid "Short-term loan"
-#~ msgstr ""
-
-#~ msgid "Long-term loan"
-#~ msgstr ""
-
-#~ msgid "Settlement of fixed advance"
-#~ msgstr ""
-
-#~ msgid "Your repayment instalment credits"
-#~ msgstr ""
-
-#~ msgid "Your repayment mortgage loan"
-#~ msgstr ""
-
-#~ msgid "Settlement of bank acceptances"
-#~ msgstr ""
-
-#~ msgid "Your repayment hire-purchase and similar claims"
-#~ msgstr ""
-
-#~ msgid "Documentary import credits"
-#~ msgstr ""
-
-#~ msgid "Other credit applications"
-#~ msgstr ""
-
-#~ msgid "Credit-related costs"
-#~ msgstr ""
-
-#~ msgid "Settlement of instalment credit"
-#~ msgstr ""
-
-#~ msgid "Fixed advance -- capital and interest"
-#~ msgstr ""
-
-#~ msgid "Fixed advance -- interest only"
-#~ msgstr ""
-
-#~ msgid "Subsidy"
-#~ msgstr ""
-
-#~ msgid "Settlement of mortgage loan"
-#~ msgstr ""
-
-#~ msgid "Term loan"
-#~ msgstr ""
-
-#~ msgid "Documentary export credits"
-#~ msgstr ""
-
-#~ msgid "Settlement of discount bank acceptance"
-#~ msgstr ""
-
-#~ msgid "Spot purchase of foreign exchange"
-#~ msgstr ""
-
-#~ msgid "Forward purchase of foreign exchange"
-#~ msgstr ""
-
-#~ msgid "Capital and/or interest term investment"
-#~ msgstr ""
-
-#~ msgid "Value (date) correction"
-#~ msgstr ""
-
-#~ msgid "Undefined transaction"
-#~ msgstr ""
-
-#~ msgid "Spot sale of foreign exchange"
-#~ msgstr ""
-
-#~ msgid "Forward sale of foreign exchange"
-#~ msgstr ""
-
-#~ msgid "Interest term investment"
-#~ msgstr ""
-
-#~ msgid "Closing"
-#~ msgstr ""
-
-#~ msgid "Transfer"
-#~ msgstr "Firmaliik"
-
-#~ msgid "Collective payments of wages"
-#~ msgstr ""
-
-#~ msgid "Collective transfers"
-#~ msgstr ""
-
-#~ msgid "Financial centralisation (debit)"
-#~ msgstr ""
-
-#~ msgid "Costs relating to outgoing foreign transfers and non-SEPA transfers"
-#~ msgstr ""
-
-#~ msgid "Costs relating to incoming foreign and non-SEPA transfers"
-#~ msgstr ""
-
-#~ msgid "Financial centralisation (credit)"
-#~ msgstr ""
-
-#~ msgid "Payment of a foreign cheque"
-#~ msgstr ""
-
-#~ msgid "Unpaid foreign cheque"
-#~ msgstr ""
-
-#~ msgid "Purchase of an international bank cheque"
-#~ msgstr ""
-
-#~ msgid "Costs relating to payment of foreign cheques"
-#~ msgstr ""
-
-#~ msgid "Remittance of foreign cheque credit under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Remittance of foreign cheque credit after collection"
-#~ msgstr ""
-
-#~ msgid "Reversal of cheques"
-#~ msgstr ""
-
-#~ msgid "Payment of foreign bill"
-#~ msgstr ""
-
-#~ msgid "Bill claimed back"
-#~ msgstr ""
-
-#~ msgid "Extension"
-#~ msgstr ""
-
-#~ msgid "Unpaid foreign bill"
-#~ msgstr ""
-
-#~ msgid "Payment documents abroad"
-#~ msgstr ""
-
-#~ msgid "Discount foreign supplier's bills"
-#~ msgstr ""
-
-#~ msgid "Warrant fallen due"
-#~ msgstr ""
-
-#~ msgid "Costs relating to the payment of a foreign bill"
-#~ msgstr ""
-
-#~ msgid "Remittance of foreign bill credit after collection"
-#~ msgstr ""
-
-#~ msgid "Remittance of foreign bill credit under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Discount abroad"
-#~ msgstr "Allahindlus"
-
-#~ msgid "Remittance of guaranteed foreign supplier's bill"
-#~ msgstr ""
-
-#~ msgid "Idem without guarantee"
-#~ msgstr ""
-
-#~ msgid "Remittance of documents abroad - credit under usual reserve"
-#~ msgstr ""
-
-#~ msgid "Remittance of documents abroad - credit after collection"
-#~ msgstr ""
-
-#~ msgid "Warrant"
-#~ msgstr ""
-
-#~ msgid "Costs relating to electronic output"
-#~ msgstr ""
-
-#~ msgid "Costs for holding a documentary cash credit"
-#~ msgstr ""
-
-#~ msgid "Damage relating to bills and cheques"
-#~ msgstr ""
-
-#~ msgid "Insurance costs"
-#~ msgstr ""
-
-#~ msgid "Registering compensation for savings accounts"
-#~ msgstr ""
-
-#~ msgid "Postage"
-#~ msgstr ""
-
-#~ msgid "Purchase of Smartcard"
-#~ msgstr ""
-
-#~ msgid "Fees and commissions charged separately"
-#~ msgstr ""
-
-#~ msgid "Costs for opening a bank guarantee"
-#~ msgstr ""
-
-#~ msgid "Renting of safes"
-#~ msgstr ""
-
-#~ msgid "Handling costs instalment credit"
-#~ msgstr ""
-
-#~ msgid "Night safe"
-#~ msgstr ""
-
-#~ msgid "Bank confirmation to revisor or accountant"
-#~ msgstr ""
-
-#~ msgid "Charge for safe custody"
-#~ msgstr ""
-
-#~ msgid "Trade information"
-#~ msgstr ""
-
-#~ msgid "Special charge for safe custody"
-#~ msgstr ""
-
-#~ msgid "Drawing up a certificate"
-#~ msgstr ""
-
-#~ msgid "Pay-packet charges"
-#~ msgstr ""
-
-#~ msgid "Management/custody"
-#~ msgstr ""
-
-#~ msgid "Research costs"
-#~ msgstr ""
-
-#~ msgid "Participation in and management of interest refund system"
-#~ msgstr ""
-
-#~ msgid "Renting of direct debit box"
-#~ msgstr ""
-
-#~ msgid "Travel insurance premium"
-#~ msgstr ""
-
-#~ msgid "Subscription fee"
-#~ msgstr "Osavõtumaks"
-
-#~ msgid "Information charges"
-#~ msgstr "Kinnituse täpsustused"
-
-#~ msgid "Writ service fee"
-#~ msgstr ""
-
-#~ msgid "Miscellaneous fees and commissions"
-#~ msgstr ""
-
-#~ msgid "Access right to database"
-#~ msgstr ""
-
-#~ msgid "Surety fee"
-#~ msgstr ""
-
-#~ msgid "Printing of forms"
-#~ msgstr ""
-
-#~ msgid "Documentary credit charges"
-#~ msgstr ""
-
-#~ msgid "Charging fees for transactions"
-#~ msgstr ""
-
-#~ msgid "Import SEPA"
-#~ msgstr ""
-
-#~ msgid "Imported bank account"
-#~ msgstr "Pamgakontod"
-
-#~ msgid "Imported bank accounts"
-#~ msgstr "Pamgakontod"
-
-#~ msgid "Account name"
-#~ msgstr "Kontoliik"
-
-#~ msgid "Owner name"
-#~ msgstr "Perenimi"
-
-#~ msgid "Last transaction"
-#~ msgstr ""
-
-#~ msgid "Statement"
-#~ msgstr "Konto väljavõte"
-
-#~ msgid "Statement number"
-#~ msgstr "Sisestage majanumber"
-
-#~ msgid "Initial amount"
-#~ msgstr ""
-
-#~ msgid "Final amount"
-#~ msgstr ""
-
-#~ msgid "Currency"
-#~ msgstr "Korduvus"
-
-#~ msgid "Transaction"
-#~ msgstr "Nimetus"
-
-#~ msgid "Transactions"
-#~ msgstr "Aktioonid"
-
-#~ msgid "The sequence number of this transaction in the statement."
-#~ msgstr ""
-
-#~ msgid "End to end reference"
-#~ msgstr "Teie viide"
-
-#~ msgid "Remote owner"
-#~ msgstr ""
-
-#~ msgid "Remote owner adress"
-#~ msgstr ""
-
-#~ msgid "Remote owner city"
-#~ msgstr ""
-
-#~ msgid "Remote owner postal code"
-#~ msgstr ""
-
-#~ msgid "Remote owner country code"
-#~ msgstr ""
-
-#~ msgid "Transfer type"
-#~ msgstr "Firmaliik"
-
-#~ msgid "TxCd issuer"
-#~ msgstr ""
-
-#~ msgid "Remote account"
-#~ msgstr "Pamgakontod"
-
-#~ msgid "eref:"
-#~ msgstr ""
-
-#~ msgid "Booking date"
-#~ msgstr "Tehing"
-
-#~ msgid "BkTxCd"
-#~ msgstr ""
-
-#~ msgid "Has open movements"
-#~ msgstr ""
-
-#~ msgid "Debit balance"
-#~ msgstr "Algsaldo"
-
-#~ msgid "A path wildcard pointing to xml files which need to get imported."
-#~ msgstr ""
-
-#~ msgid "Single transaction that is part of a bank statement."
-#~ msgstr ""
-
-#~ msgid "A bank statement groups data about several bank transactions."
-#~ msgstr ""
-
-#~ msgid "Parser for camt bank statement import files."
-#~ msgstr ""
-
-#~ msgid "A bank statement."
-#~ msgstr "Konto väljavõte"
-
-#~ msgid "A transaction within a bank statement."
-#~ msgstr ""
-
-#~ msgid "The actual historic name of the txcd."
-#~ msgstr ""
-
-#~ msgid "The issuer or the txcd."
-#~ msgstr ""
-
-#~ msgid "alias of JournalEntry"
-#~ msgstr ""
-
-#~ msgid "alias of PaymentOrder"
-#~ msgstr "Laekumised"
-
-#~ msgid "alias of SuggestionsByPaymentOrder"
-#~ msgstr ""
-
-#~ msgid "alias of BankStatement"
-#~ msgstr "Rahavoogude aruanne"
-
-#~ msgid "alias of SuggestionsByBankStatement"
-#~ msgstr ""
-
-#~ msgid "alias of BankStatementItem"
-#~ msgstr "Konto väljavõte"
-
-#~ msgid "alias of PaymentOrderItem"
-#~ msgstr "Maksetingimus"
-
-#~ msgid "See lino_cosi.lib.ledger.mixins.PartnerRelated.payment_term"
-#~ msgstr ""
-
-#~ msgid "The table of all lino_cosi.lib.vat.models.VatRule objects."
-#~ msgstr ""
-
-#~ msgid "alias of AccountInvoice"
-#~ msgstr "Dokumendi rida"
-
-#~ msgid "Base class for a cosi application."
-#~ msgstr ""
-
-#~ msgid "A special variant used to build the docs."
-#~ msgstr ""
-
-#~ msgid "Delivery"
-#~ msgstr ""
-
-#~ msgid "Reset this event to 'suggested' state."
-#~ msgstr ""
-

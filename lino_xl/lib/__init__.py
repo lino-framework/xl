@@ -28,6 +28,12 @@ Groupware
     lists
     groups
     topics
+    deploy
+    tickets
+    faculties
+    clocking
+    votes
+
 
 Calendar & Co
 ====================
