@@ -23,10 +23,11 @@ class Milestones(dd.Table):
     # order_by = ['label', '-id']
     model = 'deploy.Milestone'
     detail_layout = """
-    site id label expected reached changes_since printed closed
+    site project id label 
+    expected reached changes_since printed closed
     description
     #TicketsFixed
-    tickets.TicketsReported DeploymentsByMilestone
+    #tickets.TicketsReported DeploymentsByMilestone
     #clocking.OtherTicketsByMilestone
     """
     insert_layout = dd.InsertLayout("""
@@ -57,6 +58,22 @@ class MilestonesBySite(Milestones):
     master_key = 'site'
     column_names = "label expected reached closed id *"
 
+class MilestonesByProject(Milestones):
+    order_by = ['-label', '-id']
+    master_key = 'project'
+    column_names = "label expected reached closed id *"
+
+
+class MilestonesByCompetence(MilestonesByProject):
+    master = 'tickets.Competence'
+    master_key = None
+
+    @classmethod
+    def get_filter_kw(self, ar, **kw):
+        if ar.master_instance is not None:
+            kw.update(project=ar.master_instance.project)
+        return kw
+    
 
 class Deployments(dd.Table):
     model = 'deploy.Deployment'
@@ -96,37 +113,37 @@ class DeploymentsByMilestone(Deployments):
     """
 
 
-class DeploymentsByProject(DeploymentsByMilestone):
-    master = 'tickets.Project'
-    master_key = None
-    slave_grid_format = "html"
+# class DeploymentsByProject(DeploymentsByMilestone):
+#     master = 'tickets.Project'
+#     master_key = None
+#     slave_grid_format = "html"
 
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        # print("20170316 {}".format(ar.master_instance))
-        # kw.update(votes_by_ticket__project=ar.master_instance.project)
-        if ar.master_instance and ar.master_instance.milestone:
-            kw.update(milestone=ar.master_instance.milestone)
-        return kw
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         # print("20170316 {}".format(ar.master_instance))
+#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
+#         if ar.master_instance:
+#             kw.update(milestone__project=ar.master_instance)
+#         return kw
     
 
-class DeploymentsByCompetence(DeploymentsByProject):
-    master = 'tickets.Competence'
-    master_key = None
-    slave_grid_format = "html"
+# class DeploymentsByCompetence(DeploymentsByProject):
+#     master = 'tickets.Competence'
+#     master_key = None
+#     slave_grid_format = "html"
 
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        # print("20170316 {}".format(ar.master_instance))
-        # kw.update(votes_by_ticket__project=ar.master_instance.project)
-        mi = ar.master_instance
-        if mi and mi.project and mi.project.milestone:
-            kw.update(milestone=mi.project.milestone)
-        return kw
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         # print("20170316 {}".format(ar.master_instance))
+#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
+#         mi = ar.master_instance
+#         if mi and mi.project:
+#             kw.update(milestone__project=mi.project)
+#         return kw
     
 
 class DeploymentsByTicket(Deployments):
-    order_by = ['-milestone__seqno']
+    order_by = ['-milestone__label']
     master_key = 'ticket'
     # column_names = "milestone__reached milestone  remark *"
     column_names = "milestone remark *"

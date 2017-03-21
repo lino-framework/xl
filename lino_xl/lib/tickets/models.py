@@ -106,9 +106,9 @@ class Project(mixins.DatePeriod, TimeInvestment,
         reporting_type = ReportingTypes.field(blank=True)
     else:
         reporting_type = dd.DummyField()
-    milestone = dd.ForeignKey(
-        'deploy.Milestone',
-        related_name='projects_by_milestone', blank=True, null=True)
+    # milestone = dd.ForeignKey(
+    #     'deploy.Milestone',
+    #     related_name='projects_by_milestone', blank=True, null=True)
 
     def __str__(self):
         return self.ref or self.name

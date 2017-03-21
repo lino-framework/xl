@@ -57,10 +57,10 @@ class TicketTypes(dd.Table):
 
 
 class ProjectDetail(dd.DetailLayout):
-    main = "general deploy.DeploymentsByProject TicketsByProject more"
+    main = "general #deploy.DeploymentsByProject TicketsByProject more"
 
     general = dd.Panel("""
-    ref name milestone
+    ref name
     description CompetencesByProject
     """, label=_("General"))
 
@@ -68,7 +68,7 @@ class ProjectDetail(dd.DetailLayout):
     parent type reporting_type
     company assign_to #contact_person #contact_role private closed
     start_date end_date srcref_url_template changeset_url_template
-    ProjectsByParent
+    ProjectsByParent deploy.MilestonesByProject
     # cal.EventsByProject
     """, label=_("More"))
 
@@ -173,7 +173,7 @@ class Competences(dd.Table):
     detail_layout = """
     project user priority 
     remark
-    TicketsByCompetence deploy.DeploymentsByCompetence
+    #TicketsByCompetence deploy.MilestonesByCompetence #deploy.DeploymentsByCompetence 
     """
 
     # detail_layout = dd.DetailLayout("""
@@ -513,6 +513,10 @@ class Tickets(dd.Table):
         show_assigned=dd.YesNo.field(
             _("Assigned"), blank=True,
             help_text=_("Whether to show assigned tickets")),
+        show_deployed=dd.YesNo.field(
+            _("Deployed"), blank=True,
+            help_text=_("Whether to show tickets with at "
+                        "least one deployment")),
         show_active=dd.YesNo.field(
             _("Active"), blank=True,
             help_text=_("Whether to show active tickets")),
@@ -521,8 +525,8 @@ class Tickets(dd.Table):
         show_private=dd.YesNo.field(_("Private"), blank=True))
 
     params_layout = """
-    user end_user assigned_to not_assigned_to interesting_for site project state has_project deployed_to
-    show_assigned show_active show_todo #show_standby show_private \
+    user end_user assigned_to not_assigned_to interesting_for site project state deployed_to
+    has_project show_assigned show_active show_deployed show_todo show_private
     start_date end_date observed_event topic feasable_by"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
@@ -588,12 +592,12 @@ class Tickets(dd.Table):
             qs = qs.filter(
                 votes_by_ticket__user=pv.assigned_to).distinct()
             
-        if pv.assigned_to:
+        if pv.deployed_to:
             # qs = qs.filter(
             #     Q(votes_by_ticket__user=pv.assigned_to) |
             #     Q(votes_by_ticket__end_user=pv.assigned_to)).distinct()
             qs = qs.filter(
-                votes_by_ticket__user=pv.assigned_to).distinct()
+                deployments_by_ticket__milestone=pv.deployed_to).distinct()
             
         if pv.not_assigned_to:
             # print(20170318, self, qs.model, pv.not_assigned_to)
@@ -607,6 +611,11 @@ class Tickets(dd.Table):
             qs = qs.filter(vote__isnull=False).distinct()
         elif pv.show_assigned == dd.YesNo.yes:
             qs = qs.filter(vote__isnull=True).distinct()
+
+        if pv.show_deployed == dd.YesNo.no:
+            qs = qs.exclude(deployments_by_ticket__isnull=False)
+        elif pv.show_deployed == dd.YesNo.yes:
+            qs = qs.filter(deployments_by_ticket__isnull=False)
 
         active_states = TicketStates.filter(active=True)
         if pv.show_active == dd.YesNo.no:
@@ -960,33 +969,33 @@ class TicketsByProject(Tickets):
     order_by = ["-priority", "-id"]
 
 
-class TicketsByCompetence(TicketsByProject):
-    master = 'tickets.Competence'
-    master_key = None
-    # required_roles = dd.login_required(Triager)
-    # column_names = ("overview:50 workflow_buttons upgrade_notes *")
-    slave_grid_format = "html"
+# class TicketsByCompetence(TicketsByProject):
+#     master = 'tickets.Competence'
+#     master_key = None
+#     # required_roles = dd.login_required(Triager)
+#     # column_names = ("overview:50 workflow_buttons upgrade_notes *")
+#     slave_grid_format = "html"
 
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        # print("20170316 {}".format(ar.master_instance))
-        # kw.update(votes_by_ticket__project=ar.master_instance.project)
-        if ar.master_instance is not None:
-            kw.update(project=ar.master_instance.project)
-        return kw
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         # print("20170316 {}".format(ar.master_instance))
+#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
+#         if ar.master_instance is not None:
+#             kw.update(project=ar.master_instance.project)
+#         return kw
     
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(TicketsByCompetence, self).param_defaults(ar, **kw)
-        mi = ar.master_instance
-        if mi is None or mi.project is None or mi.project.milestone is None:
-            return kw
-        # print("20170318 master instance is", mi)
-        # kw.update(not_assigned_to=mi)
-        kw.update(deployed_to=mi.project.milestone)
-        # kw.update(show_assigned=dd.YesNo.no)
-        # kw.update(show_active=dd.YesNo.yes)
-        return kw
+#     @classmethod
+#     def param_defaults(self, ar, **kw):
+#         kw = super(TicketsByCompetence, self).param_defaults(ar, **kw)
+#         mi = ar.master_instance
+#         if mi is None or mi.project is None:
+#             return kw
+#         # print("20170318 master instance is", mi)
+#         # kw.update(not_assigned_to=mi)
+#         kw.update(deployed_to=mi.project)
+#         # kw.update(show_assigned=dd.YesNo.no)
+#         # kw.update(show_active=dd.YesNo.yes)
+#         return kw
 
 # class MyKnownProblems(Tickets):
 #     """For users whose `user_site` is set, show the known problems on

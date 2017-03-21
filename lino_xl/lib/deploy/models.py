@@ -34,9 +34,9 @@ class Milestone(Certifiable):  # mixins.Referrable):
         verbose_name = _("Milestone")
         verbose_name_plural = _('Milestones')
 
-    # project = dd.ForeignKey(
-    #     'tickets.Project',
-    #     related_name='milestones_by_project')
+    project = dd.ForeignKey(
+        'tickets.Project',
+        related_name='milestones_by_project', blank=True, null=True)
     site = dd.ForeignKey(
         'tickets.Site',
         related_name='milestones_by_site', blank=True, null=True)
@@ -60,7 +60,7 @@ class Milestone(Certifiable):  # mixins.Referrable):
                 label = self.reached.isoformat()
             else:
                 label = "#{0}".format(self.id)
-        return "{0}@{1}".format(label, self.site)
+        return "{0}@{1}".format(label, self.project or self.site)
 
 
 
@@ -81,7 +81,8 @@ class Deployment(Sequenced):
         verbose_name = _("Deployment")
         verbose_name_plural = _('Deployments')
 
-    ticket = dd.ForeignKey('tickets.Ticket')
+    ticket = dd.ForeignKey(
+        'tickets.Ticket', related_name="deployments_by_ticket")
     milestone = dd.ForeignKey('deploy.Milestone')
     # remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     remark = models.CharField(_("Remark"), blank=True, max_length=250)
