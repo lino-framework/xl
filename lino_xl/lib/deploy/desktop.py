@@ -1,15 +1,18 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Desktop UI for this plugin.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from lino import mixins
-from lino.api import dd, rt, _
 
+from lino.utils.xmlgen.html import E
+from lino.utils import join_elems
+from lino.api import dd, rt, _
 
 
 class Milestones(dd.Table):
@@ -63,6 +66,13 @@ class Deployments(dd.Table):
             help_text=_("Show deployments on closed milestones.")))
 
     params_layout = "start_date end_date show_closed"
+    stay_in_grid = True
+    detail_layout = dd.DetailLayout("""
+    milestone
+    ticket
+    remark
+    """, window_size=(50, 'auto'))
+
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -77,13 +87,75 @@ class Deployments(dd.Table):
 
 class DeploymentsByMilestone(Deployments):
     label = _("Deployed tickets")
-    order_by = ['-ticket__id']
+    order_by = ['seqno']
     master_key = 'milestone'
-    column_names = "ticket:30 ticket__state:10 remark:30 *"
+    column_names = "seqno ticket:30 ticket__state:10 remark:30 move_buttons:8 *"
+    insert_layout = """
+    ticket
+    remark
+    """
 
+
+class DeploymentsByProject(DeploymentsByMilestone):
+    master = 'tickets.Project'
+    master_key = None
+    slave_grid_format = "html"
+
+    @classmethod
+    def get_filter_kw(self, ar, **kw):
+        # print("20170316 {}".format(ar.master_instance))
+        # kw.update(votes_by_ticket__project=ar.master_instance.project)
+        if ar.master_instance and ar.master_instance.milestone:
+            kw.update(milestone=ar.master_instance.milestone)
+        return kw
+    
+
+class DeploymentsByCompetence(DeploymentsByProject):
+    master = 'tickets.Competence'
+    master_key = None
+    slave_grid_format = "html"
+
+    @classmethod
+    def get_filter_kw(self, ar, **kw):
+        # print("20170316 {}".format(ar.master_instance))
+        # kw.update(votes_by_ticket__project=ar.master_instance.project)
+        mi = ar.master_instance
+        if mi and mi.project and mi.project.milestone:
+            kw.update(milestone=mi.project.milestone)
+        return kw
+    
 
 class DeploymentsByTicket(Deployments):
-    order_by = ['-milestone__reached']
+    order_by = ['-milestone__seqno']
     master_key = 'ticket'
     # column_names = "milestone__reached milestone  remark *"
     column_names = "milestone remark *"
+    insert_layout = """
+    milestone
+    remark
+    """
+    
+    slave_grid_format = 'summary'
+    stay_in_grid = True
+
+    @classmethod
+    def get_slave_summary(cls, obj, ar):
+        """Customized :meth:`summary view
+        <lino.core.actors.Actor.get_slave_summary>` for this table.
+
+        """
+        sar = cls.request_from(ar, master_instance=obj)
+        html = []
+        items = [ar.obj2html(o, str(o.milestone)) for o in sar]
+        sar = cls.insert_action.request_from(sar)
+        if sar.get_permission():
+            btn = sar.ar2button()
+            items.append(btn)
+
+        if len(items) > 0:
+            html += join_elems(items, sep=', ')
+            
+        return E.p(*html)
+
+
+    

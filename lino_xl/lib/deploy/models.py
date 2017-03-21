@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Database models for this plugin.
 
@@ -13,9 +13,12 @@ from django.db import models
 
 from lino.api import dd, rt, _
 
+from lino.mixins import Sequenced
+
 from lino_xl.lib.excerpts.mixins import Certifiable
 
 
+@dd.python_2_unicode_compatible
 class Milestone(Certifiable):  # mixins.Referrable):
     """A **Milestone** is a named step of evolution on a given Site.  For
     software projects we usually call them a "release" and they are
@@ -50,18 +53,19 @@ class Milestone(Certifiable):  # mixins.Referrable):
     #~ def __unicode__(self):
         #~ return self.label
 
-    def __unicode__(self):
+    def __str__(self):
         label = self.label
         if not label:
             if self.reached:
                 label = self.reached.isoformat()
             else:
                 label = "#{0}".format(self.id)
-        return "{0}:{1}".format(self.site, label)
+        return "{0}@{1}".format(label, self.site)
 
 
 
-class Deployment(dd.Model):
+@dd.python_2_unicode_compatible
+class Deployment(Sequenced):
     """A **deployment** is the fact that a given ticket is being fixed (or
     installed or activated) by a given milestone (to a given site).
 
@@ -82,6 +86,12 @@ class Deployment(dd.Model):
     # remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     remark = models.CharField(_("Remark"), blank=True, max_length=250)
 
+    def get_siblings(self):
+        "Overrides :meth:`lino.mixins.Sequenced.get_siblings`"
+        qs = self.__class__.objects.filter(
+                milestone=self.milestone).order_by('seqno')
+        # print(20170321, qs)
+        return qs
     @dd.chooser()
     def milestone_choices(cls, ticket):
         # if not ticket:
@@ -90,6 +100,8 @@ class Deployment(dd.Model):
         #     return ticket.site.milestones_by_site.all()
         return rt.models.deploy.Milestone.objects.order_by('label')
 
+    def __str__(self):
+        return "{}@{}".format(self.seqno, self.milestone)
 
 
 from lino.modlib.system.choicelists import (ObservedEvent)

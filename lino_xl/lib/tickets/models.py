@@ -106,6 +106,9 @@ class Project(mixins.DatePeriod, TimeInvestment,
         reporting_type = ReportingTypes.field(blank=True)
     else:
         reporting_type = dd.DummyField()
+    milestone = dd.ForeignKey(
+        'deploy.Milestone',
+        related_name='projects_by_milestone', blank=True, null=True)
 
     def __str__(self):
         return self.ref or self.name
@@ -160,8 +163,8 @@ class Competence(UserAuthored, Prioritized):
 
     class Meta:
         app_label = 'tickets'
-        verbose_name = pgettext("Ticketing", "Competence")
-        verbose_name_plural = pgettext("Ticketing", "Competences")
+        verbose_name = _("Project membership")
+        verbose_name_plural = _("Project memberships")
         unique_together = ['user', 'project']
 
     project = dd.ForeignKey(
