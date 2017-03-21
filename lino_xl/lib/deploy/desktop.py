@@ -22,6 +22,7 @@ class Milestones(dd.Table):
     order_by = ['-id']
     # order_by = ['label', '-id']
     model = 'deploy.Milestone'
+    stay_in_grid = True
     detail_layout = """
     site project id label 
     expected reached changes_since printed closed
