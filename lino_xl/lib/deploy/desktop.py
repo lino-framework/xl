@@ -61,7 +61,7 @@ class MilestonesBySite(Milestones):
 class MilestonesByProject(Milestones):
     order_by = ['-label', '-id']
     master_key = 'project'
-    column_names = "label expected reached closed id *"
+    column_names = "label expected reached closed *"
 
 
 class MilestonesByCompetence(MilestonesByProject):

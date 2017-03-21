@@ -173,7 +173,7 @@ class Competences(dd.Table):
     detail_layout = """
     project user priority 
     remark
-    #TicketsByCompetence deploy.MilestonesByCompetence #deploy.DeploymentsByCompetence 
+    TicketsByCompetence deploy.MilestonesByCompetence #deploy.DeploymentsByCompetence 
     """
 
     # detail_layout = dd.DetailLayout("""
@@ -969,20 +969,20 @@ class TicketsByProject(Tickets):
     order_by = ["-priority", "-id"]
 
 
-# class TicketsByCompetence(TicketsByProject):
-#     master = 'tickets.Competence'
-#     master_key = None
-#     # required_roles = dd.login_required(Triager)
-#     # column_names = ("overview:50 workflow_buttons upgrade_notes *")
-#     slave_grid_format = "html"
+class TicketsByCompetence(TicketsByProject):
+    master = 'tickets.Competence'
+    master_key = None
+    # required_roles = dd.login_required(Triager)
+    # column_names = ("overview:50 workflow_buttons upgrade_notes *")
+    slave_grid_format = "html"
 
-#     @classmethod
-#     def get_filter_kw(self, ar, **kw):
-#         # print("20170316 {}".format(ar.master_instance))
-#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
-#         if ar.master_instance is not None:
-#             kw.update(project=ar.master_instance.project)
-#         return kw
+    @classmethod
+    def get_filter_kw(self, ar, **kw):
+        # print("20170316 {}".format(ar.master_instance))
+        # kw.update(votes_by_ticket__project=ar.master_instance.project)
+        if ar.master_instance is not None:
+            kw.update(project=ar.master_instance.project)
+        return kw
     
 #     @classmethod
 #     def param_defaults(self, ar, **kw):
