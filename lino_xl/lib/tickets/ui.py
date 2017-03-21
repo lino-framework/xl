@@ -78,6 +78,7 @@ class Projects(dd.Table):
     model = 'tickets.Project'
     detail_layout = ProjectDetail()
     column_names = "ref name parent company private *"
+    order_by = ["ref"]
     parameters = mixins.ObservedPeriod(
         observed_event=ProjectEvents.field(blank=True),
         interesting_for=dd.ForeignKey(
@@ -144,7 +145,6 @@ class ProjectsByParent(Projects):
 class TopLevelProjects(Projects):
     label = _("Projects (tree)")
     required_roles = dd.login_required(TicketsStaff)
-    order_by = ["ref"]
     column_names = 'ref name parent children_summary *'
     filter = Q(parent__isnull=True)
     variable_row_height = True
