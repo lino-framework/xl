@@ -175,8 +175,10 @@ class Competence(UserAuthored, Prioritized):
     # description = dd.RichTextField(_("Description"), blank=True)
 
     def __str__(self):
-        return "{}/{}".format(
-            self.user.username, self.project.ref)
+        if self.project and self.user:
+            return "{}/{}".format(
+                self.user.username, self.project.ref)
+        return "{} #{}".format(self._meta.verbose_name, self.pk)
 
     @dd.displayfield(_("Tickets overview"))
     def tickets_overview(self, ar):

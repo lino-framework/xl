@@ -66,10 +66,9 @@ class Milestone(Certifiable):  # mixins.Referrable):
 
 @dd.python_2_unicode_compatible
 class Deployment(Sequenced):
-    """A **deployment** is the fact that a given ticket is being fixed (or
-    installed or activated) by a given milestone (to a given site).
-
-    Deployments are visible to the user either by ticket or by milestone.
+    """A **wish** (formerly deployment) is the fact that a given ticket is
+    being fixed (or installed or activated) by a given milestone (to a
+    given site).
 
     .. attribute:: milestone
 
@@ -78,8 +77,8 @@ class Deployment(Sequenced):
     """
     class Meta:
         app_label = 'deploy'
-        verbose_name = _("Deployment")
-        verbose_name_plural = _('Deployments')
+        verbose_name = _("Wish")
+        verbose_name_plural = _('Wishes')
 
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
