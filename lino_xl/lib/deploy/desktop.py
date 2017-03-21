@@ -14,7 +14,18 @@ from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from lino.api import dd, rt, _
 
-
+class MilestoneDetail(dd.DetailLayout):
+    main = """
+    left_box description
+    DeploymentsByMilestone
+    """
+    left_box = """
+    site project 
+    id label 
+    expected reached closed
+    changes_since printed
+    """
+    
 class Milestones(dd.Table):
     """
     .. attribute:: show_closed
@@ -23,14 +34,7 @@ class Milestones(dd.Table):
     # order_by = ['label', '-id']
     model = 'deploy.Milestone'
     stay_in_grid = True
-    detail_layout = """
-    site project id label 
-    expected reached changes_since printed closed
-    description
-    #TicketsFixed
-    #tickets.TicketsReported DeploymentsByMilestone
-    #clocking.OtherTicketsByMilestone
-    """
+    detail_layout = MilestoneDetail()
     insert_layout = dd.InsertLayout("""
     site label
     description
@@ -107,7 +111,7 @@ class DeploymentsByMilestone(Deployments):
     label = _("Deployed tickets")
     order_by = ['seqno']
     master_key = 'milestone'
-    column_names = "seqno ticket:30 ticket__state:10 remark:30 move_buttons:8 *"
+    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 remark:30  *"
     insert_layout = """
     ticket
     remark
