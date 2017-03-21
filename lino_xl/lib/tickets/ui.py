@@ -173,7 +173,7 @@ class Competences(dd.Table):
     detail_layout = """
     project user priority 
     remark
-    TicketsByCompetence deploy.MilestonesByCompetence #deploy.DeploymentsByCompetence 
+    TicketsByCompetence:40 deploy.MilestonesByCompetence:20 #deploy.DeploymentsByCompetence 
     """
 
     # detail_layout = dd.DetailLayout("""
