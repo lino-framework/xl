@@ -83,8 +83,8 @@ class Deployment(Sequenced):
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
     milestone = dd.ForeignKey('deploy.Milestone')
-    # remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
-    remark = models.CharField(_("Remark"), blank=True, max_length=250)
+    remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
+    # remark = models.CharField(_("Remark"), blank=True, max_length=250)
 
     def get_siblings(self):
         "Overrides :meth:`lino.mixins.Sequenced.get_siblings`"
