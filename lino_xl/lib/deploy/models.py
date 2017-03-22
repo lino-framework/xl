@@ -92,6 +92,7 @@ class Deployment(Sequenced):
                 milestone=self.milestone).order_by('seqno')
         # print(20170321, qs)
         return qs
+    
     @dd.chooser()
     def milestone_choices(cls, ticket):
         # if not ticket:

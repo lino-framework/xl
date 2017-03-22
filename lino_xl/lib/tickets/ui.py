@@ -957,9 +957,10 @@ class TicketsBySite(Tickets):
     def param_defaults(self, ar, **kw):
         mi = ar.master_instance
         kw = super(TicketsBySite, self).param_defaults(ar, **kw)
-        kw.update(interesting_for=mi.partner)
-        kw.update(end_date=dd.today())
-        kw.update(observed_event=TicketEvents.todo)
+        kw.update(show_active=dd.YesNo.yes)
+        # kw.update(interesting_for=mi.partner)
+        # kw.update(end_date=dd.today())
+        # kw.update(observed_event=TicketEvents.todo)
         return kw
 
 class TicketsByProject(Tickets):

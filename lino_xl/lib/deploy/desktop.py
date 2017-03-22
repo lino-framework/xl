@@ -46,6 +46,8 @@ class Milestones(dd.Table):
             help_text=_("Show milestons which are closed.")))
 
     params_layout = "start_date end_date show_closed"
+    order_by = ['id']
+    column_names = "label project expected reached closed *"
 
     @classmethod
     def get_request_queryset(self, ar):
