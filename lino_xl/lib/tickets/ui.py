@@ -969,6 +969,19 @@ class TicketsByProject(Tickets):
     order_by = ["-priority", "-id"]
 
 
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(TicketsByProject, self).param_defaults(ar, **kw)
+        # mi = ar.master_instance
+        # if mi is None or mi.project is None:
+        #     return kw
+        # print("20170318 master instance is", mi)
+        # kw.update(not_assigned_to=mi)
+        # kw.update(deployed_to=mi.project)
+        # kw.update(show_assigned=dd.YesNo.no)
+        kw.update(show_active=dd.YesNo.yes)
+        return kw
+    
 class TicketsByCompetence(TicketsByProject):
     master = 'tickets.Competence'
     master_key = None
@@ -984,18 +997,6 @@ class TicketsByCompetence(TicketsByProject):
             kw.update(project=ar.master_instance.project)
         return kw
     
-#     @classmethod
-#     def param_defaults(self, ar, **kw):
-#         kw = super(TicketsByCompetence, self).param_defaults(ar, **kw)
-#         mi = ar.master_instance
-#         if mi is None or mi.project is None:
-#             return kw
-#         # print("20170318 master instance is", mi)
-#         # kw.update(not_assigned_to=mi)
-#         kw.update(deployed_to=mi.project)
-#         # kw.update(show_assigned=dd.YesNo.no)
-#         # kw.update(show_active=dd.YesNo.yes)
-#         return kw
 
 # class MyKnownProblems(Tickets):
 #     """For users whose `user_site` is set, show the known problems on

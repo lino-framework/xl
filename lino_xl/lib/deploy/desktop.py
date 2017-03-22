@@ -112,10 +112,11 @@ class DeploymentsByMilestone(Deployments):
     order_by = ['seqno']
     master_key = 'milestone'
     column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 remark:30  *"
-    insert_layout = """
+    insert_layout = dd.InsertLayout("""
     ticket
     remark
-    """
+    """, window_size=(60, 10))
+    
 
 
 # class DeploymentsByProject(DeploymentsByMilestone):
@@ -152,10 +153,10 @@ class DeploymentsByTicket(Deployments):
     master_key = 'ticket'
     # column_names = "milestone__reached milestone  remark *"
     column_names = "milestone remark *"
-    insert_layout = """
+    insert_layout = dd.InsertLayout("""
     milestone
     remark
-    """
+    """, window_size=(60, 10))
     
     slave_grid_format = 'summary'
     stay_in_grid = True
