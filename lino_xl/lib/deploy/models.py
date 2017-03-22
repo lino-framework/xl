@@ -62,6 +62,20 @@ class Milestone(Certifiable):  # mixins.Referrable):
                 label = "#{0}".format(self.id)
         return "{0}@{1}".format(label, self.project or self.site)
 
+    @classmethod
+    def quick_search_filter(cls, search_text, prefix=''):
+        """Overrides the default behaviour defined in
+        :meth:`lino.core.model.Model.quick_search_filter`. For
+        milestones, when quick-searching for a text containing only
+        digits, the user usually means the :attr:`label` and *not* the
+        primary key.
+
+        """
+        if search_text.isdigit():
+            return models.Q(**{prefix+'label__contains': search_text})
+        return super(Deployment, cls).quick_search_filter(search_text, prefix)
+
+    
 
 
 @dd.python_2_unicode_compatible
@@ -104,20 +118,6 @@ class Deployment(Sequenced):
     def __str__(self):
         return "{}@{}".format(self.seqno, self.milestone)
 
-    @classmethod
-    def quick_search_filter(cls, search_text, prefix=''):
-        """Overrides the default behaviour defined in
-        :meth:`lino.core.model.Model.quick_search_filter`. For
-        Deployment objects, when quick-searching for a text containing
-        only digits, the user usually means the :attr:`label` and *not*
-        the primary key.
-
-        """
-        if search_text.isdigit():
-            return models.Q(**{prefix+'label__contains': search_text})
-        return super(Deployment, cls).quick_search_filter(search_text, prefix)
-
-    
 
 
 from lino.modlib.system.choicelists import (ObservedEvent)
