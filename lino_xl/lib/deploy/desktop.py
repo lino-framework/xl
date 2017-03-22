@@ -1,17 +1,31 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Desktop UI for this plugin.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from lino import mixins
+
+from lino.utils.xmlgen.html import E
+from lino.utils import join_elems
 from lino.api import dd, rt, _
 
-
-
+class MilestoneDetail(dd.DetailLayout):
+    main = """
+    left_box description
+    DeploymentsByMilestone
+    """
+    left_box = """
+    site project 
+    id label 
+    expected reached closed
+    changes_since printed
+    """
+    
 class Milestones(dd.Table):
     """
     .. attribute:: show_closed
@@ -19,13 +33,8 @@ class Milestones(dd.Table):
     order_by = ['-id']
     # order_by = ['label', '-id']
     model = 'deploy.Milestone'
-    detail_layout = """
-    site id label expected reached changes_since printed closed
-    description
-    #TicketsFixed
-    tickets.TicketsReported DeploymentsByMilestone
-    #clocking.OtherTicketsByMilestone
-    """
+    stay_in_grid = True
+    detail_layout = MilestoneDetail()
     insert_layout = dd.InsertLayout("""
     site label
     description
@@ -37,6 +46,8 @@ class Milestones(dd.Table):
             help_text=_("Show milestons which are closed.")))
 
     params_layout = "start_date end_date show_closed"
+    order_by = ['id']
+    column_names = "label project expected reached closed *"
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -54,6 +65,22 @@ class MilestonesBySite(Milestones):
     master_key = 'site'
     column_names = "label expected reached closed id *"
 
+class MilestonesByProject(Milestones):
+    order_by = ['-label', '-id']
+    master_key = 'project'
+    column_names = "label expected reached closed *"
+
+
+class MilestonesByCompetence(MilestonesByProject):
+    master = 'tickets.Competence'
+    master_key = None
+
+    @classmethod
+    def get_filter_kw(self, ar, **kw):
+        if ar.master_instance is not None:
+            kw.update(project=ar.master_instance.project)
+        return kw
+    
 
 class Deployments(dd.Table):
     model = 'deploy.Deployment'
@@ -63,6 +90,13 @@ class Deployments(dd.Table):
             help_text=_("Show deployments on closed milestones.")))
 
     params_layout = "start_date end_date show_closed"
+    stay_in_grid = True
+    detail_layout = dd.DetailLayout("""
+    milestone
+    ticket
+    remark
+    """, window_size=(50, 'auto'))
+
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -77,13 +111,76 @@ class Deployments(dd.Table):
 
 class DeploymentsByMilestone(Deployments):
     label = _("Deployed tickets")
-    order_by = ['-ticket__id']
+    order_by = ['seqno']
     master_key = 'milestone'
-    column_names = "ticket:30 ticket__state:10 remark:30 *"
+    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 remark:30  *"
+    insert_layout = dd.InsertLayout("""
+    ticket
+    remark
+    """, window_size=(60, 10))
+    
 
+
+# class DeploymentsByProject(DeploymentsByMilestone):
+#     master = 'tickets.Project'
+#     master_key = None
+#     slave_grid_format = "html"
+
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         # print("20170316 {}".format(ar.master_instance))
+#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
+#         if ar.master_instance:
+#             kw.update(milestone__project=ar.master_instance)
+#         return kw
+    
+
+# class DeploymentsByCompetence(DeploymentsByProject):
+#     master = 'tickets.Competence'
+#     master_key = None
+#     slave_grid_format = "html"
+
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         # print("20170316 {}".format(ar.master_instance))
+#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
+#         mi = ar.master_instance
+#         if mi and mi.project:
+#             kw.update(milestone__project=mi.project)
+#         return kw
+    
 
 class DeploymentsByTicket(Deployments):
-    order_by = ['-milestone__reached']
+    order_by = ['-milestone__label']
     master_key = 'ticket'
     # column_names = "milestone__reached milestone  remark *"
     column_names = "milestone remark *"
+    insert_layout = dd.InsertLayout("""
+    milestone
+    remark
+    """, window_size=(60, 10))
+    
+    slave_grid_format = 'summary'
+    stay_in_grid = True
+
+    @classmethod
+    def get_slave_summary(cls, obj, ar):
+        """Customized :meth:`summary view
+        <lino.core.actors.Actor.get_slave_summary>` for this table.
+
+        """
+        sar = cls.request_from(ar, master_instance=obj)
+        html = []
+        items = [ar.obj2html(o, str(o.milestone)) for o in sar]
+        sar = cls.insert_action.request_from(sar)
+        if sar.get_permission():
+            btn = sar.ar2button()
+            items.append(btn)
+
+        if len(items) > 0:
+            html += join_elems(items, sep=', ')
+            
+        return E.p(*html)
+
+
+    

@@ -57,10 +57,10 @@ class TicketTypes(dd.Table):
 
 
 class ProjectDetail(dd.DetailLayout):
-    main = "general TicketsByProject more"
+    main = "general #deploy.DeploymentsByProject TicketsByProject more"
 
     general = dd.Panel("""
-    ref name 
+    ref name
     description CompetencesByProject
     """, label=_("General"))
 
@@ -68,7 +68,7 @@ class ProjectDetail(dd.DetailLayout):
     parent type reporting_type
     company assign_to #contact_person #contact_role private closed
     start_date end_date srcref_url_template changeset_url_template
-    ProjectsByParent
+    ProjectsByParent deploy.MilestonesByProject
     # cal.EventsByProject
     """, label=_("More"))
 
@@ -78,6 +78,7 @@ class Projects(dd.Table):
     model = 'tickets.Project'
     detail_layout = ProjectDetail()
     column_names = "ref name parent company private *"
+    order_by = ["ref"]
     parameters = mixins.ObservedPeriod(
         observed_event=ProjectEvents.field(blank=True),
         interesting_for=dd.ForeignKey(
@@ -144,7 +145,6 @@ class ProjectsByParent(Projects):
 class TopLevelProjects(Projects):
     label = _("Projects (tree)")
     required_roles = dd.login_required(TicketsStaff)
-    order_by = ["ref"]
     column_names = 'ref name parent children_summary *'
     filter = Q(parent__isnull=True)
     variable_row_height = True
@@ -173,7 +173,7 @@ class Competences(dd.Table):
     detail_layout = """
     project user priority 
     remark
-    TicketsByCompetence
+    TicketsByCompetence:40 deploy.MilestonesByCompetence:20 #deploy.DeploymentsByCompetence 
     """
 
     # detail_layout = dd.DetailLayout("""
@@ -186,7 +186,7 @@ class AllCompetences(Competences):
     
 class MyCompetences(My, Competences):
     label = _("My projects")
-    column_names = 'priority project remark *'
+    column_names = 'priority overview #project remark *'
     # column_names = 'priority project tickets_overview *'
     params_panel_hidden = True
     # editable = False
@@ -501,6 +501,9 @@ class Tickets(dd.Table):
             verbose_name=_("Interesting for"),
             blank=True, null=True,
             help_text=_("Only tickets interesting for this partner.")),
+        deployed_to=dd.ForeignKey(
+            'deploy.Milestone',
+            blank=True, null=True),
         project=dd.ForeignKey(
             'tickets.Project',
             blank=True, null=True),
@@ -510,6 +513,10 @@ class Tickets(dd.Table):
         show_assigned=dd.YesNo.field(
             _("Assigned"), blank=True,
             help_text=_("Whether to show assigned tickets")),
+        show_deployed=dd.YesNo.field(
+            _("Deployed"), blank=True,
+            help_text=_("Whether to show tickets with at "
+                        "least one deployment")),
         show_active=dd.YesNo.field(
             _("Active"), blank=True,
             help_text=_("Whether to show active tickets")),
@@ -518,8 +525,8 @@ class Tickets(dd.Table):
         show_private=dd.YesNo.field(_("Private"), blank=True))
 
     params_layout = """
-    user end_user assigned_to not_assigned_to interesting_for site project state has_project
-    show_assigned show_active show_todo #show_standby show_private \
+    user end_user assigned_to not_assigned_to interesting_for site project state deployed_to
+    has_project show_assigned show_active show_deployed show_todo show_private
     start_date end_date observed_event topic feasable_by"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
@@ -585,6 +592,13 @@ class Tickets(dd.Table):
             qs = qs.filter(
                 votes_by_ticket__user=pv.assigned_to).distinct()
             
+        if pv.deployed_to:
+            # qs = qs.filter(
+            #     Q(votes_by_ticket__user=pv.assigned_to) |
+            #     Q(votes_by_ticket__end_user=pv.assigned_to)).distinct()
+            qs = qs.filter(
+                deployments_by_ticket__milestone=pv.deployed_to).distinct()
+            
         if pv.not_assigned_to:
             # print(20170318, self, qs.model, pv.not_assigned_to)
             # qs = qs.exclude(
@@ -597,6 +611,11 @@ class Tickets(dd.Table):
             qs = qs.filter(vote__isnull=False).distinct()
         elif pv.show_assigned == dd.YesNo.yes:
             qs = qs.filter(vote__isnull=True).distinct()
+
+        if pv.show_deployed == dd.YesNo.no:
+            qs = qs.exclude(deployments_by_ticket__isnull=False)
+        elif pv.show_deployed == dd.YesNo.yes:
+            qs = qs.filter(deployments_by_ticket__isnull=False)
 
         active_states = TicketStates.filter(active=True)
         if pv.show_active == dd.YesNo.no:
@@ -938,9 +957,10 @@ class TicketsBySite(Tickets):
     def param_defaults(self, ar, **kw):
         mi = ar.master_instance
         kw = super(TicketsBySite, self).param_defaults(ar, **kw)
-        kw.update(interesting_for=mi.partner)
-        kw.update(end_date=dd.today())
-        kw.update(observed_event=TicketEvents.todo)
+        kw.update(show_active=dd.YesNo.yes)
+        # kw.update(interesting_for=mi.partner)
+        # kw.update(end_date=dd.today())
+        # kw.update(observed_event=TicketEvents.todo)
         return kw
 
 class TicketsByProject(Tickets):
@@ -950,6 +970,19 @@ class TicketsByProject(Tickets):
     order_by = ["-priority", "-id"]
 
 
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(TicketsByProject, self).param_defaults(ar, **kw)
+        # mi = ar.master_instance
+        # if mi is None or mi.project is None:
+        #     return kw
+        # print("20170318 master instance is", mi)
+        # kw.update(not_assigned_to=mi)
+        # kw.update(deployed_to=mi.project)
+        # kw.update(show_assigned=dd.YesNo.no)
+        kw.update(show_active=dd.YesNo.yes)
+        return kw
+    
 class TicketsByCompetence(TicketsByProject):
     master = 'tickets.Competence'
     master_key = None
