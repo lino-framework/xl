@@ -73,7 +73,7 @@ class Milestone(Certifiable):  # mixins.Referrable):
         """
         if search_text.isdigit():
             return models.Q(**{prefix+'label__contains': search_text})
-        return super(Deployment, cls).quick_search_filter(search_text, prefix)
+        return super(Milestone, cls).quick_search_filter(search_text, prefix)
 
     
 
