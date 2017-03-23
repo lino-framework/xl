@@ -41,7 +41,11 @@ class Plugin(ad.Plugin):
     demander_model = 'contacts.Partner'
     # supplier_model = 'contacts.Partner'
 
+    # end_user_model = 'users.User'
+    end_user_model = 'contacts.Partner'
+
     def on_site_startup(self, site):
+        self.end_user_model = site.models.resolve(self.end_user_model)
         self.demander_model = site.models.resolve(self.demander_model)
         # self.supplier_model = site.models.resolve(self.supplier_model)
         super(Plugin, self).on_site_startup(site)

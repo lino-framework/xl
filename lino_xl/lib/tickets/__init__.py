@@ -30,13 +30,6 @@ class Plugin(ad.Plugin):
         # 'lino.modlib.changes',
         'lino_noi.lib.noi']
 
-    # end_user_model = 'users.User'
-    end_user_model = 'contacts.Partner'
-
-    def on_site_startup(self, site):
-        self.end_user_model = site.models.resolve(self.end_user_model)
-        super(Plugin, self).on_site_startup(site)
-        
     def setup_main_menu(self, site, profile, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)

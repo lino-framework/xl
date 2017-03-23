@@ -30,11 +30,7 @@ class TaskStates(dd.Workflow):
     """Possible values for the state of a :class:`Task`. The list of
     choices for the :attr:`Task.state` field. By default it contains
     the following values (which can be redefined in
-    :meth:`lino.core.site.Site.setup_choicelists`):
-
-    .. django2rst::
-
-            rt.show(cal.TaskStates)
+    :attr:`workflows_module <lino.core.site.Site.workflows_module>`):
 
     """
     verbose_name_plural = _("Task states")

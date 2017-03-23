@@ -252,7 +252,7 @@ state."""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
-lino.core.site.Site.setup_choicelists()):"""),
+workflows_module):"""),
     'lino_xl.lib.cal.workflows.EventStates' : _("""The list of choices for the state field of a calendar entry."""),
     'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
 the Guest.state field."""),
@@ -482,8 +482,9 @@ places)."""),
 software projects we usually call them a "release" and they are
 named by a version number."""),
     'lino_xl.lib.deploy.models.Milestone.closed' : _("""Closed milestones are hidden in most lists."""),
-    'lino_xl.lib.deploy.models.Deployment' : _("""A deployment is the fact that a given ticket is being fixed (or
-installed or activated) by a given milestone (to a given site)."""),
+    'lino_xl.lib.deploy.models.Deployment' : _("""A wish (formerly deployment) is the fact that a given ticket is
+being fixed (or installed or activated) by a given milestone (to a
+given site)."""),
     'lino_xl.lib.deploy.models.Deployment.milestone' : _("""The milestone (and site) of this deployment."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
@@ -1296,8 +1297,8 @@ not change anymore."""),
     'lino_xl.lib.tickets.models.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
 publicly visible anywhere."""),
     'lino_xl.lib.tickets.models.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
-    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is a concrete question or problem formulated by a
-user."""),
+    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work. It is a concrete
+question or problem handled formulated by a user."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for
 managing it."""),
     'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
