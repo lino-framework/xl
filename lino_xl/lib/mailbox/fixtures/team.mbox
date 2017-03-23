@@ -185,3 +185,33 @@ or after 18 (Estonian time).
 
 Luc
 
+From tonis@Pluto.starman.ee  Thu Mar 23 15:24:07 2017
+Return-Path: <tonis@Pluto.starman.ee>
+X-Original-To: team@localhost
+Delivered-To: team@localhost
+Received: by Pluto.starman.ee (Postfix, from userid 1000)
+	id 6EA0F580042; Thu, 23 Mar 2017 15:24:07 +0200 (EET)
+Date: Thu, 23 Mar 2017 15:24:07 +0200
+From: tonis <tonis@Pluto>
+To: team@localhost
+Subject: with attachments
+Message-ID: <20170323132407.GA374@Pluto>
+MIME-Version: 1.0
+Content-Type: multipart/mixed; boundary="DocE+STaALJfprDB"
+Content-Disposition: inline
+User-Agent: Mutt/1.5.24 (2015-08-30)
+
+
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+
+--DocE+STaALJfprDB
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: attachment; filename="attachment.txt"
+
+This is an attachment.
+
+--DocE+STaALJfprDB--
+
