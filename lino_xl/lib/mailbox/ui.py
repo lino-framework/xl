@@ -27,9 +27,10 @@ class Mailboxes(dd.Table):
 
 class Messages(dd.Table):
     model = "django_mailbox.Message"
-    detail_layout = """from_header
+    detail_layout = """from_header to_header subject
     preview
-    PointersByMessage"""
+    PointersByMessage MessageAttachmentsByMessage"""
+    editable = False
     parameters = dict(
         not_assigned=dd.models.BooleanField(
             _("show only non assigned"),
@@ -68,3 +69,15 @@ class MessagesByTicket(MessagePointers):
 class PointersByMessage(MessagePointers):
     column_names = "ticket ticket__summary"
     master_key = 'message'
+
+
+class MessageAttachments(dd.Table):
+    model = "django_mailbox.MessageAttachment"
+    detail_layout = """document
+                    headers """
+    editable = False
+
+
+class MessageAttachmentsByMessage(MessageAttachments):
+    master_key = 'message'
+    column_names = """headers document"""
