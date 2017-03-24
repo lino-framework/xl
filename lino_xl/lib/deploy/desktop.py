@@ -95,7 +95,7 @@ class Deployments(dd.Table):
     milestone
     ticket
     remark
-    """, window_size=(50, 'auto'))
+    """, window_size=(50, 15))
 
 
     @classmethod
@@ -117,7 +117,7 @@ class DeploymentsByMilestone(Deployments):
     insert_layout = dd.InsertLayout("""
     ticket
     remark
-    """, window_size=(60, 10))
+    """, window_size=(60, 15))
     
 
 
@@ -158,7 +158,7 @@ class DeploymentsByTicket(Deployments):
     insert_layout = dd.InsertLayout("""
     milestone
     remark
-    """, window_size=(60, 10))
+    """, window_size=(60, 15))
     
     slave_grid_format = 'summary'
     stay_in_grid = True

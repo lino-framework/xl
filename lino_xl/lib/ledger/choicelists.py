@@ -84,7 +84,7 @@ class FiscalYears(dd.ChoiceList):
     If the fiscal year of your company is the same as the calendar
     year, then the default entries in this should do.  Otherwise you
     can override this in your
-    :meth:`lino.core.site.Site.setup_choicelists`.
+    :attr:`workflows_module <lino.core.site.Site.workflows_module>`.
 
     """
     required_roles = dd.login_required(LedgerStaff)

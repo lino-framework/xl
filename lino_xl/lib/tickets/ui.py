@@ -476,25 +476,25 @@ class Tickets(dd.Table):
         topic=dd.ForeignKey('topics.Topic', blank=True, ),
         site=dd.ForeignKey('tickets.Site', blank=True, ),
         end_user=dd.ForeignKey(
-            dd.plugins.tickets.end_user_model,
+            dd.plugins.faculties.end_user_model,
             verbose_name=_("End user"),
             blank=True, null=True,
             help_text=_("Only rows concerning this end user.")),
         assigned_to=dd.ForeignKey(
-            dd.plugins.tickets.end_user_model,
+            dd.plugins.faculties.end_user_model,
             # settings.SITE.user_model,
             verbose_name=_("Voted by"),
             blank=True, null=True,
             help_text=_("Only tickets having a vote by this user.")),
         not_assigned_to=dd.ForeignKey(
-            dd.plugins.tickets.end_user_model,
+            dd.plugins.faculties.end_user_model,
             # settings.SITE.user_model,
             verbose_name=_("Not voted by"),
             blank=True, null=True,
             help_text=_("Only tickets having no vote by this user.")),
         feasable_by=dd.ForeignKey(
             # settings.SITE.user_model,
-            dd.plugins.tickets.end_user_model,
+            dd.plugins.faculties.end_user_model,
             verbose_name=_("Feasable by"), blank=True, null=True),
         interesting_for=dd.ForeignKey(
             'contacts.Partner',
@@ -690,7 +690,7 @@ class SuggestedTicketsByEndUser(Tickets):
     which I am competent.
 
     """
-    master = dd.plugins.tickets.end_user_model
+    master = dd.plugins.faculties.end_user_model
     label = _("Where I can help")
     required_roles = dd.login_required(TicketsUser)
     column_names = 'overview:50 needed_skills ' \

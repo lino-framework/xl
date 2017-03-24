@@ -83,8 +83,8 @@ class Competence(UserAuthored, Sequenced):
         unique_together = ['end_user', 'faculty']
 
     faculty = dd.ForeignKey('faculties.Faculty')
-    end_user=dd.ForeignKey(
-        dd.plugins.tickets.end_user_model,
+    end_user = dd.ForeignKey(
+        dd.plugins.faculties.end_user_model,
         verbose_name=_("End user"),
         blank=True, null=True)
     # supplier = dd.ForeignKey(

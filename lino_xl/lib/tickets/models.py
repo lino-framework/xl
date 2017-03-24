@@ -393,7 +393,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         blank=True, null=True,
         verbose_name=_("Reporter"))
     end_user = dd.ForeignKey(
-        dd.plugins.tickets.end_user_model,
+        dd.plugins.faculties.end_user_model,
         verbose_name=_("End user"),
         blank=True, null=True,
         related_name="reported_tickets")
@@ -525,7 +525,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         if self.user:
             yield self.user
         if issubclass(
-                dd.plugins.tickets.end_user_model,
+                dd.plugins.faculties.end_user_model,
                 settings.SITE.user_model):
             if self.end_user:
                 yield self.end_user
