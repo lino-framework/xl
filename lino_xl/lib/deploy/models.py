@@ -31,8 +31,10 @@ class Milestone(UserAuthored, DatePeriod, Certifiable):
     """
     class Meta:
         app_label = 'deploy'
-        verbose_name = _("Milestone")
-        verbose_name_plural = _('Milestones')
+        verbose_name = _("Sprint")
+        verbose_name_plural = _('Sprints')
+        # verbose_name = _("Milestone")
+        # verbose_name_plural = _('Milestones')
 
     project = dd.ForeignKey(
         'tickets.Project',
