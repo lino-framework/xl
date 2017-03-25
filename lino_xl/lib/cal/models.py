@@ -32,6 +32,7 @@ from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
+from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
 from .workflows import (TaskStates, EventStates, GuestStates)
 
@@ -117,7 +118,7 @@ class RemoteCalendar(mixins.Sequenced):
         super(RemoteCalendar, self).save(*args, **kw)
 
 
-class Room(mixins.BabelNamed):
+class Room(mixins.BabelNamed, ContactRelated):
     """A location where calendar events can happen.  For a given Room you
     can see the :class:`EventsByRoom` that happened (or will happen)
     there.  A Room has a multilingual name.

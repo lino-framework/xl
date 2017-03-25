@@ -18,6 +18,8 @@ from lino.mixins import Sequenced, DatePeriod
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored
 
+from lino_xl.lib.tickets.models import site_model
+
 
 @dd.python_2_unicode_compatible
 class Milestone(UserAuthored, DatePeriod, Certifiable):
@@ -40,7 +42,7 @@ class Milestone(UserAuthored, DatePeriod, Certifiable):
         'tickets.Project',
         related_name='milestones_by_project', blank=True, null=True)
     site = dd.ForeignKey(
-        'tickets.Site',
+        site_model,
         related_name='milestones_by_site', blank=True, null=True)
     label = models.CharField(_("Label"), max_length=20, blank=True)
     expected = models.DateField(_("Expected for"), blank=True, null=True)
