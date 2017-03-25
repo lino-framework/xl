@@ -12,6 +12,7 @@ from lino import mixins
 
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
+from lino.modlib.users.mixins import My
 from lino.api import dd, rt, _
 
 class MilestoneDetail(dd.DetailLayout):
@@ -21,9 +22,8 @@ class MilestoneDetail(dd.DetailLayout):
     """
     left_box = """
     site project 
-    id label 
-    expected reached closed
-    changes_since printed
+    id label closed
+    # expected reached changes_since printed
     """
     
 class Milestones(dd.Table):
@@ -45,9 +45,9 @@ class Milestones(dd.Table):
             blank=True, default=dd.YesNo.no.as_callable,
             help_text=_("Show milestons which are closed.")))
 
-    params_layout = "start_date end_date show_closed"
-    order_by = ['id']
-    column_names = "label project expected reached closed *"
+    params_layout = "user start_date end_date show_closed"
+    order_by = ['start_date', 'id']
+    column_names = "start_date site label user closed *"
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -59,16 +59,20 @@ class Milestones(dd.Table):
             qs = qs.filter(closed=True)
         return qs
 
+class MyMilestones(My, Milestones):
+    column_names = "start_date overview closed *"
+    pass
+
 
 class MilestonesBySite(Milestones):
-    order_by = ['-label', '-id']
+    order_by = ['-start_date', '-label', '-id']
     master_key = 'site'
-    column_names = "label expected reached closed id *"
+    column_names = "start_date label user expected reached closed id *"
 
 class MilestonesByProject(Milestones):
-    order_by = ['-label', '-id']
+    order_by = ['-start_date', '-label', '-id']
     master_key = 'project'
-    column_names = "label expected reached closed *"
+    column_names = "start_date label user expected reached closed *"
 
 
 class MilestonesByCompetence(MilestonesByProject):

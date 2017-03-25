@@ -13,16 +13,16 @@ from django.db import models
 
 from lino.api import dd, rt, _
 
-from lino.mixins import Sequenced
+from lino.mixins import Sequenced, DatePeriod
 
 from lino_xl.lib.excerpts.mixins import Certifiable
+from lino.modlib.users.mixins import UserAuthored
 
 
 @dd.python_2_unicode_compatible
-class Milestone(Certifiable):  # mixins.Referrable):
-    """A **Milestone** is a named step of evolution on a given Site.  For
-    software projects we usually call them a "release" and they are
-    named by a version number.
+class Milestone(UserAuthored, DatePeriod, Certifiable):
+    """A **Milestone** is a named step of evolution on a given Site.  In
+    Scrum they are called sprints.
 
     .. attribute:: closed
 
@@ -43,7 +43,8 @@ class Milestone(Certifiable):  # mixins.Referrable):
     label = models.CharField(_("Label"), max_length=20, blank=True)
     expected = models.DateField(_("Expected for"), blank=True, null=True)
     reached = models.DateField(_("Reached"), blank=True, null=True)
-    description = dd.RichTextField(_("Description"), blank=True)
+    description = dd.RichTextField(
+        _("Description"), blank=True, format="plain")
     changes_since = models.DateField(
         _("Changes since"), blank=True, null=True,
         help_text=_("In printed document include a list of "
