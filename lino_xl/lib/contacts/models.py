@@ -221,7 +221,7 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
         """
         User = rt.models.users.User
         try:
-            return User.objects.get(partner=self)
+            return User.objects.get(partner_ptr=self)
         except User.DoesNotExist:
             pass
         except User.MultipleObjectsReturned:
