@@ -375,7 +375,7 @@ class Course(Reservation, Duplicable, PrintableObject):
 
     def update_cal_summary(self, et, i):
         if self.every_unit == Recurrencies.once:
-            return str(self.line)
+            return self.name or str(self.line)
         return "%s %s" % (dd.babelattr(et, 'event_label'), i)
 
     def get_events_user(self):
