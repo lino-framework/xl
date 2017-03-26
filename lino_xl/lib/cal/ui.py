@@ -36,14 +36,17 @@ class Rooms(dd.Table):
     """
     required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Room'
-    # detail_layout = """
-    # id name
-    # cal.EventsByRoom
-    # """
-    # insert_layout = """
-    # id
-    # name
-    # """
+    detail_layout = """
+    id name
+    company contact_person
+    description
+    cal.EventsByRoom
+    """
+    insert_layout = """
+    id name
+    company
+    contact_person
+    """
 
 
 class Priorities(dd.Table):

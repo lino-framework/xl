@@ -130,6 +130,12 @@ class Room(mixins.BabelNamed, ContactRelated):
         verbose_name = _("Room")
         verbose_name_plural = _("Rooms")
 
+    description = dd.RichTextField(_("Description"), blank=True)
+
+dd.update_field(
+    Room, 'company', verbose_name=_("Responsible"))    
+dd.update_field(
+    Room, 'contact_person', verbose_name=_("Contact person"))    
 
 class Priority(mixins.BabelNamed):
     "The priority of a Task or Event."
