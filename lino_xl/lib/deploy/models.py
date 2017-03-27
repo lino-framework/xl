@@ -118,7 +118,9 @@ class Deployment(Sequenced):
         #     return []
         # if ticket.site:
         #     return ticket.site.milestones_by_site.all()
-        return rt.models.deploy.Milestone.objects.order_by('label')
+        qs = rt.models.deploy.Milestone.objects.filter(closed=False)
+        qs = qs.order_by('label')
+        return qs
 
     def __str__(self):
         return "{}@{}".format(self.seqno, self.milestone)

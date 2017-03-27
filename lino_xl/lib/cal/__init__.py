@@ -160,6 +160,9 @@ class Plugin(ad.Plugin):
         # m.add_action(RecurrenceSets)
 
     def get_dashboard_items(self, user):
-        yield self.site.actors.cal.MyTasks
-        yield self.site.actors.cal.MyEvents
-        yield self.site.actors.cal.MyOverdueAppointments
+        if user.authenticated:
+            yield self.site.actors.cal.MyTasks
+            yield self.site.actors.cal.MyEvents
+            yield self.site.actors.cal.MyOverdueAppointments
+        else:
+            yield self.site.actors.cal.PublicEvents

@@ -24,6 +24,8 @@ from .workflows import EventStates
 from .mixins import daterange_text
 from .utils import when_text
 
+from .roles import CalendarReader
+
 
 class RemoteCalendars(dd.Table):
     model = 'cal.RemoteCalendar'
@@ -34,7 +36,7 @@ class Rooms(dd.Table):
     """List of rooms where calendar events can happen.
 
     """
-    required_roles = dd.login_required(OfficeStaff)
+    required_roles = dd.login_required((OfficeStaff, CalendarReader))
     model = 'cal.Room'
     detail_layout = """
     id name
@@ -774,6 +776,21 @@ class ConflictingEvents(Events):
         if qs is None:
             return rt.modules.cal.Event.objects.none()
         return qs
+    
+
+class PublicEvents(Events):
+    required_roles = dd.login_required(CalendarReader)
+    
+    column_names = 'overview room event_type  *'
+    
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(PublicEvents, self).param_defaults(ar, **kw)
+        # kw.update(show_appointments=dd.YesNo.yes)
+        kw.update(start_date=settings.SITE.today())
+        # kw.update(end_date=settings.SITE.today())
+        return kw
+
 
 
 class EventsByDay(Events):
@@ -948,6 +965,7 @@ class MyEventsToday(MyEvents):
         kw = super(MyEventsToday, self).param_defaults(ar, **kw)
         kw.update(end_date=dd.today())
         return kw
+
 
 
 class MyAssignedEvents(MyEvents):
