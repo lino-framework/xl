@@ -35,6 +35,12 @@ from lino.utils import join_elems
 from .choicelists import TicketEvents, TicketStates, LinkTypes
 from .roles import Triager
 
+if dd.is_installed('tickets'):
+    site_model = dd.plugins.tickets.site_model
+else:
+    site_model = None
+    
+
 class Prioritized(dd.Model):
     class Meta:
         abstract = True
@@ -355,7 +361,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
     project = dd.ForeignKey(
         'tickets.Project', blank=True, null=True,
         related_name="tickets_by_project")
-    site = dd.ForeignKey('tickets.Site', blank=True, null=True)
+    site = dd.ForeignKey(site_model, blank=True, null=True)
     topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
     summary = models.CharField(

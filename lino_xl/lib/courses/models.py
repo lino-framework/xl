@@ -47,6 +47,7 @@ from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.utils import day_and_month
+from lino_xl.lib.contacts.mixins import ContactRelated
 
 from lino.utils.dates import DatePeriodValue
 
@@ -109,7 +110,7 @@ class Topic(mixins.BabelNamed, Printable, Duplicable):
 
 
 @dd.python_2_unicode_compatible
-class Line(Referrable, Duplicable, ExcerptTitle):
+class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
     """An **activity line** (or **series**) groups courses into a
     configurable list of categories.
 
@@ -372,6 +373,11 @@ class Course(Reservation, Duplicable, PrintableObject):
     def update_cal_event_type(self):
         return self.line.event_type
 
+    def update_cal_summary(self, et, i):
+        if self.every_unit == Recurrencies.once:
+            return self.name or str(self.line)
+        return "%s %s" % (dd.babelattr(et, 'event_label'), i)
+
     def get_events_user(self):
         """The user of generated events is not the course manager (author) but
         the teacher.
@@ -414,6 +420,8 @@ class Course(Reservation, Duplicable, PrintableObject):
                 self.every_unit = self.line.every_unit
             if self.every is None:
                 self.every = self.line.every
+            # if self.room is None:
+            #     self.room = self.line.room
         # if self.enrolments_until is None:
         #     self.enrolments_until = self.start_date
         # if self.id is not None:

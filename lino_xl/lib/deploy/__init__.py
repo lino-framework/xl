@@ -1,4 +1,4 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
 Adds functionality for managing "milestones" and "deployments".
@@ -21,10 +21,11 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ['lino_xl.lib.tickets']
 
-    # def setup_main_menu(self, site, profile, m):
-    #     p = self.get_menu_group()
-    #     m = m.add_menu(p.app_label, p.verbose_name)
-    #     # m.add_action('tickets.Tickets')
+    def setup_main_menu(self, site, profile, m):
+        # p = self.get_menu_group()
+        p = site.plugins.tickets
+        m = m.add_menu(p.app_label, p.verbose_name)
+        m.add_action('deploy.MyMilestones')
 
     # def setup_config_menu(self, site, profile, m):
     #     p = self.get_menu_group()
@@ -32,7 +33,12 @@ class Plugin(ad.Plugin):
     #     # m.add_action('tickets.Projects')
 
     def setup_explorer_menu(self, site, profile, m):
-        p = self.get_menu_group()
+        # p = self.get_menu_group()
+        p = site.plugins.tickets
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('deploy.Milestones')
         m.add_action('deploy.Deployments')
+        
+    def get_dashboard_items(self, user):
+        if user.authenticated:
+            yield self.site.actors.deploy.MyMilestones

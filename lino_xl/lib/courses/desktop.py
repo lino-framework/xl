@@ -92,11 +92,12 @@ class Lines(dd.Table):
     order_by = ['ref', 'name']
     detail_layout = """
     id name ref
+    company contact_person
     course_area topic fees_cat fee options_cat body_template
     event_type guest_role every_unit every
-    description
     excerpt_title
-    courses.CoursesByLine
+    description
+    # courses.CoursesByLine
     """
     insert_layout = dd.InsertLayout("""
     name
@@ -269,6 +270,8 @@ class Courses(Activities):
     # required_roles = dd.login_required(CoursesUser)
     _course_area = CourseAreas.default.as_callable()
 
+    # courses_by_line = dd.ShowSlaveTable('courses.CoursesByLine')
+
 
 class AllActivities(Activities):
     _course_area = None
@@ -301,7 +304,6 @@ class MyCoursesGiven(Activities):
         ar.master_instance = get_child(u.partner, teacher_model)
         super(MyCoursesGiven, self).setup_request(ar)
     
-
 
 class CoursesByLine(Activities):
     """Show the courses per course line."""

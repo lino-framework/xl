@@ -37,6 +37,11 @@ from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes
 
 from .roles import TicketsUser, Searcher, Triager, TicketsStaff
 
+if dd.is_installed('tickets'):
+    site_model = dd.plugins.tickets.site_model
+else:
+    site_model = None
+    
 
 class ProjectTypes(dd.Table):
     required_roles = dd.login_required(TicketsStaff)
@@ -474,7 +479,7 @@ class Tickets(dd.Table):
     parameters = mixins.ObservedPeriod(
         observed_event=TicketEvents.field(blank=True),
         topic=dd.ForeignKey('topics.Topic', blank=True, ),
-        site=dd.ForeignKey('tickets.Site', blank=True, ),
+        site=dd.ForeignKey(site_model, blank=True),
         end_user=dd.ForeignKey(
             dd.plugins.faculties.end_user_model,
             verbose_name=_("End user"),

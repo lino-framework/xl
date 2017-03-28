@@ -467,6 +467,8 @@ class EventGenerator(dd.Model):
         """
     
         date = we.start_date
+        if rset == Recurrencies.once:
+            return date
         if not self.care_about_conflicts(we):
             return date
         # ar.debug("20140310 resolve_conflicts %s", we.start_date)

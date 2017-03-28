@@ -13,16 +13,18 @@ from django.db import models
 
 from lino.api import dd, rt, _
 
-from lino.mixins import Sequenced
+from lino.mixins import Sequenced, DatePeriod
 
 from lino_xl.lib.excerpts.mixins import Certifiable
+from lino.modlib.users.mixins import UserAuthored
+
+from lino_xl.lib.tickets.models import site_model
 
 
 @dd.python_2_unicode_compatible
-class Milestone(Certifiable):  # mixins.Referrable):
-    """A **Milestone** is a named step of evolution on a given Site.  For
-    software projects we usually call them a "release" and they are
-    named by a version number.
+class Milestone(UserAuthored, DatePeriod, Certifiable):
+    """A **Milestone** is a named step of evolution on a given Site.  In
+    Scrum they are called sprints.
 
     .. attribute:: closed
 
@@ -31,6 +33,8 @@ class Milestone(Certifiable):  # mixins.Referrable):
     """
     class Meta:
         app_label = 'deploy'
+        # verbose_name = _("Sprint")
+        # verbose_name_plural = _('Sprints')
         verbose_name = _("Milestone")
         verbose_name_plural = _('Milestones')
 
@@ -38,12 +42,13 @@ class Milestone(Certifiable):  # mixins.Referrable):
         'tickets.Project',
         related_name='milestones_by_project', blank=True, null=True)
     site = dd.ForeignKey(
-        'tickets.Site',
+        site_model,
         related_name='milestones_by_site', blank=True, null=True)
     label = models.CharField(_("Label"), max_length=20, blank=True)
     expected = models.DateField(_("Expected for"), blank=True, null=True)
     reached = models.DateField(_("Reached"), blank=True, null=True)
-    description = dd.RichTextField(_("Description"), blank=True)
+    description = dd.RichTextField(
+        _("Description"), blank=True, format="plain")
     changes_since = models.DateField(
         _("Changes since"), blank=True, null=True,
         help_text=_("In printed document include a list of "
@@ -60,7 +65,8 @@ class Milestone(Certifiable):  # mixins.Referrable):
                 label = self.reached.isoformat()
             else:
                 label = "#{0}".format(self.id)
-        return "{0}@{1}".format(label, self.project or self.site)
+        # return "{0}@{1}".format(label, self.project or self.site)
+        return "{0}@{1}".format(label, self.site)
 
     @classmethod
     def quick_search_filter(cls, search_text, prefix=''):
@@ -113,7 +119,9 @@ class Deployment(Sequenced):
         #     return []
         # if ticket.site:
         #     return ticket.site.milestones_by_site.all()
-        return rt.models.deploy.Milestone.objects.order_by('label')
+        qs = rt.models.deploy.Milestone.objects.filter(closed=False)
+        qs = qs.order_by('label')
+        return qs
 
     def __str__(self):
         return "{}@{}".format(self.seqno, self.milestone)
