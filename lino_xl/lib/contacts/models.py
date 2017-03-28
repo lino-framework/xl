@@ -216,12 +216,18 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
 
 
     def get_as_user(self):
-        """Return the user object representing this partner.
+        """Return the user object that corresponds to this partner.
+
+        If the application's User model inherits from Partner, then
+        
 
         """
         User = rt.models.users.User
         try:
-            return User.objects.get(partner_ptr=self)
+            if issubclass(User, self.__class__):
+                return User.objects.get(partner_ptr=self)
+            else:
+                return User.objects.get(partner=self)
         except User.DoesNotExist:
             pass
         except User.MultipleObjectsReturned:

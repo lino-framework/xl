@@ -65,7 +65,8 @@ class Milestone(UserAuthored, DatePeriod, Certifiable):
                 label = self.reached.isoformat()
             else:
                 label = "#{0}".format(self.id)
-        return "{0}@{1}".format(label, self.project or self.site)
+        # return "{0}@{1}".format(label, self.project or self.site)
+        return "{0}@{1}".format(label, self.site)
 
     @classmethod
     def quick_search_filter(cls, search_text, prefix=''):
