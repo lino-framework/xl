@@ -149,8 +149,8 @@ class Household(contacts.Partner):
     full_name = property(get_full_name)
 
     def __str__(self):
-        # if self.type:
-        #     return u"%s %s" % (self.type, self.get_full_name())
+        if self.type:
+            return "{} ({})".format(self.get_full_name(), self.type)
         return six.text_type(self.get_full_name())
 
     def get_name_elems(self, ar):
@@ -183,7 +183,7 @@ class Household(contacts.Partner):
 class HouseholdDetail(dd.DetailLayout):
 
     main = """
-    type name language:10 id
+    type prefix name language:10 id
     address_box
     bottom_box
     """
@@ -542,12 +542,12 @@ class CreateHousehold(dd.Action):
 
     def run_from_ui(self, ar, **kw):
         pv = ar.action_param_values
-        hh = rt.modules.households.Household.create_household(
+        rt.modules.households.Household.create_household(
             ar, pv.head, pv.partner, pv.type)
         ar.success(
             _("Household has been created"),
             close_window=True, refresh_all=True)
-        ar.goto_instance(hh)
+        # ar.goto_instance(hh)
 
 dd.inject_action(
     config.person_model,
@@ -562,6 +562,7 @@ class MembersByPerson(Members):
     # auto_fit_column_widths = True
     # hide_columns = 'id'
     slave_grid_format = 'summary'
+    stay_in_grid = True
 
     @classmethod
     def get_slave_summary(self, obj, ar):

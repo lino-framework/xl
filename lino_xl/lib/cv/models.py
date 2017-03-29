@@ -110,6 +110,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
     slave_grid_format = "summary"
+    window_size  = (70, 15)
     detail_layout = dd.DetailLayout("""
     language
     native
@@ -136,6 +137,9 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
         for this table.
 
         """
+        if True:  # new format since 20170329
+            return obj.get_language_knowledge()
+        
         sar = self.request_from(ar, master_instance=obj)
 
         html = []

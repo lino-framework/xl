@@ -41,6 +41,7 @@ class TaskStates(dd.Workflow):
 add = TaskStates.add_item
 
 add('10', _("To do"), 'todo')
+add('15', _("Important"), 'important')
 add('20', pgettext(u"cal", u"Started"), 'started')
 add('30', _("Done"), 'done')
 # add('40', _("Sleeping"),'sleeping')
@@ -52,6 +53,7 @@ if not settings.SITE.use_silk_icons:
     TaskStates.started.button_text = "☉"  # SUN (U+2609)	
     TaskStates.done.button_text = "☑"  # BALLOT BOX WITH CHECK \u2611
     TaskStates.cancelled.button_text = "☒"  # BALLOT BOX WITH X (U+2612)
+    TaskStates.important.button_text = "⚠"  # U+26A0
 
 class EventState(dd.State):
     fixed = False
@@ -147,9 +149,11 @@ def f(name):
         return name
 
 TaskStates.todo.add_transition(
-    _("Reopen"), required_states='done cancelled')
+    _("Reopen"), required_states='done cancelled important')
 
 TaskStates.done.add_transition(
-    required_states='todo started', icon_name=f('accept'))
+    required_states='todo started important', icon_name=f('accept'))
 TaskStates.cancelled.add_transition(
-    required_states='todo started', icon_name=f('cancel'))
+    required_states='todo started important', icon_name=f('cancel'))
+TaskStates.important.add_transition(
+    required_states='todo started', icon_name=f('lightning'))

@@ -39,6 +39,10 @@ class TrendAreas(dd.Table):
     required_roles = dd.login_required(TrendsStaff)
     model = 'trends.TrendArea'
     column_names = 'name *'
+    detail_layout = """
+    id name
+    StagesByArea
+    """
 
 
 class TrendStage(mixins.BabelNamed, mixins.Referrable):
@@ -69,6 +73,10 @@ class TrendStages(dd.Table):
     name
     EventsByStage
     """)
+
+class StagesByArea(TrendStages):
+    master_key = 'trend_area'
+    column_names = "ref name *"
 
 
 class TrendEvent(UserAuthored):
