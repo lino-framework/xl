@@ -17,9 +17,13 @@ from lino.utils.xmlgen.html import E, join_elems
 from lino.mixins.periods import DatePeriod
 
 class BiographyOwner(dd.Model):
+    
     class Meta:
         abstract = True
 
+    _cef_levels = None
+    _mother_tongues = None
+    
     def load_language_knowledge(self):
         if self._mother_tongues is not None:
             return

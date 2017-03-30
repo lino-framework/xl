@@ -478,9 +478,8 @@ places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.deploy.desktop.Milestones.model' : _("""alias of Milestone"""),
-    'lino_xl.lib.deploy.models.Milestone' : _("""A Milestone is a named step of evolution on a given Site.  For
-software projects we usually call them a "release" and they are
-named by a version number."""),
+    'lino_xl.lib.deploy.models.Milestone' : _("""A Milestone is a named step of evolution on a given Site.  In
+Scrum they are called sprints."""),
     'lino_xl.lib.deploy.models.Milestone.closed' : _("""Closed milestones are hidden in most lists."""),
     'lino_xl.lib.deploy.models.Deployment' : _("""A wish (formerly deployment) is the fact that a given ticket is
 being fixed (or installed or activated) by a given milestone (to a
