@@ -19,7 +19,7 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Deploy")
 
-    needs_plugins = ['lino_xl.lib.tickets']
+    # needs_plugins = ['lino_xl.lib.tickets']
 
     def setup_main_menu(self, site, profile, m):
         # p = self.get_menu_group()

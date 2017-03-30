@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -7,12 +7,78 @@
 See :mod:`ml.cv`.
 """
 
+from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd, rt
+from lino.utils.xmlgen.html import E, join_elems
 
 from lino.mixins.periods import DatePeriod
+
+class BiographyOwner(dd.Model):
+    
+    class Meta:
+        abstract = True
+
+    _cef_levels = None
+    _mother_tongues = None
+    
+    def load_language_knowledge(self):
+        if self._mother_tongues is not None:
+            return
+        LanguageKnowledge = rt.models.cv.LanguageKnowledge
+        self._cef_levels = dict()
+        self._mother_tongues = []
+        for lk in LanguageKnowledge.objects.filter(
+                person=self).order_by('id'):
+            if lk.native:
+                self._mother_tongues.append(lk.language)
+            # if lk.language.iso2 in ("de", "fr", "en"):
+            if lk.cef_level is not None:
+                self._cef_levels[lk.language.iso2] = lk.cef_level
+        
+    @dd.htmlbox(_("Language knowledge"))
+    def language_knowledge(self, ar):
+        return self.get_language_knowledge()
+    
+    def get_language_knowledge(self):
+        self.load_language_knowledge()
+        lst = []
+        for lng in settings.SITE.languages:
+            cl = self._cef_levels.get(lng.django_code)
+            if cl is None:
+                lst.append("{}: {}".format(lng.name, "---"))
+            else:
+                lst.append("{}: {}".format(lng.name, cl.value))
+        lst.append("{}: {}".format(
+            _("Mother tongues"), self.mother_tongues))
+        lst = join_elems(lst, E.br)
+        return E.p(*lst)
+                
+    
+    @dd.displayfield(_("Mother tongues"))
+    def mother_tongues(self, ar):
+        self.load_language_knowledge()
+        return ' '.join([str(lng) for lng in self._mother_tongues])
+
+    # @dd.displayfield(_("CEF level (de)"))
+    @dd.displayfield()
+    def cef_level_de(self, ar):
+        self.load_language_knowledge()
+        return self._cef_levels.get('de')
+
+    # @dd.displayfield(_("CEF level (fr)"))
+    @dd.displayfield()
+    def cef_level_fr(self, ar):
+        self.load_language_knowledge()
+        return self._cef_levels.get('fr')
+
+    # @dd.displayfield(_("CEF level (en)"))
+    @dd.displayfield()
+    def cef_level_en(self, ar):
+        self.load_language_knowledge()
+        return self._cef_levels.get('en')
 
 
 class EducationEntryStates(dd.ChoiceList):

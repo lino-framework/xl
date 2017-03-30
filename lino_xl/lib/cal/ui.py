@@ -50,6 +50,9 @@ class Rooms(dd.Table):
     contact_person
     """
 
+class AllRooms(Rooms):    
+    required_roles = dd.login_required(OfficeStaff)
+
 
 class Priorities(dd.Table):
     help_text = _("List of possible priorities of calendar events.")

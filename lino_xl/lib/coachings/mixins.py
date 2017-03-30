@@ -140,7 +140,9 @@ class ClientContactBase(ContactRelated):
         return qs
 
     @dd.chooser()
-    def contact_person_choices(self, type):
+    def contact_person_choices(self, company, type):
+        if company:
+            return self.contact_person_choices_queryset(company)
         qs = rt.modules.contacts.Persons.request().data_iterator
         if type is not None:
             qs = qs.filter(client_contact_type=type)
