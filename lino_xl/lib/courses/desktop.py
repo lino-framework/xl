@@ -288,6 +288,7 @@ class CoursesByTeacher(Activities):
 
 
 class MyActivities(My, Activities):
+    column_names = "start_date:8 room name line workflow_buttons *"
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyActivities, self).param_defaults(ar, **kw)

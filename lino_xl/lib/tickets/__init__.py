@@ -8,7 +8,6 @@ See :doc:`/specs/noi/tickets`.
 .. autosummary::
    :toctree:
 
-    models
     roles
     ui
 
