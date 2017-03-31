@@ -191,12 +191,15 @@ class Activities(dd.Table):
         user=models.ForeignKey(
             settings.SITE.user_model,
             blank=True, null=True),
+        show_active=dd.YesNo.field(
+            _("Active"), blank=True,
+            help_text=_("Whether to show rows in some active state")),
         state=CourseStates.field(blank=True),
         can_enroll=dd.YesNo.field(blank=True),
     )
 
-    params_layout = """topic line user teacher state can_enroll:10 \
-    start_date end_date"""
+    params_layout = """topic line user teacher state 
+    can_enroll:10 start_date end_date show_active"""
 
     # simple_parameters = 'line teacher state user'.split()
 
@@ -244,6 +247,15 @@ class Activities(dd.Table):
         elif pv.can_enroll == dd.YesNo.no:
             qs = qs.exclude(flt)
         qs = PeriodEvents.active.add_filter(qs, pv)
+
+
+        active_states = CourseStates.filter(active=True)
+        if pv.show_active == dd.YesNo.no:
+            qs = qs.exclude(state__in=active_states)
+        elif pv.show_active == dd.YesNo.yes:
+            qs = qs.filter(state__in=active_states)
+
+        
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
         #     qs = PeriodEvents.started.add_filter(qs, pv)
@@ -292,8 +304,8 @@ class MyActivities(My, Activities):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyActivities, self).param_defaults(ar, **kw)
-        kw.update(state=CourseStates.active)
-        # kw.update(can_enroll=dd.YesNo.yes)
+        # kw.update(state=CourseStates.active)
+        kw.update(show_active=dd.YesNo.yes)
         return kw
 
 
