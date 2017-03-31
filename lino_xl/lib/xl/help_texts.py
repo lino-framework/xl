@@ -477,10 +477,6 @@ verify whether it is valid (e.g. whether there are enough free
 places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.deploy.desktop.Milestones.model' : _("""alias of Milestone"""),
-    'lino_xl.lib.deploy.models.Milestone' : _("""A Milestone is a named step of evolution on a given Site.  In
-Scrum they are called sprints."""),
-    'lino_xl.lib.deploy.models.Milestone.closed' : _("""Closed milestones are hidden in most lists."""),
     'lino_xl.lib.deploy.models.Deployment' : _("""A wish (formerly deployment) is the fact that a given ticket is
 being fixed (or installed or activated) by a given milestone (to a
 given site)."""),
@@ -1324,4 +1320,7 @@ project.  See ReportingTypes."""),
     'lino_xl.lib.tickets.LinkTypes.triggers' : _("""The parent ticket triggers the child ticket."""),
     'lino_xl.lib.tickets.LinkTypes.deploys' : _("""The parent ticket is a deployment which deploys the child ticket."""),
     'lino_xl.lib.tickets.Plugin' : _("""See also lino.core.plugin.Plugin"""),
+    'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
+20170331 this was hard-coded to deploy.Milestone. Now Lino
+Noi uses courses.Course."""),
 }

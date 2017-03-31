@@ -20,66 +20,81 @@ from lino.modlib.users.mixins import UserAuthored
 
 from lino_xl.lib.tickets.models import site_model
 
+class WishTypes(dd.ChoiceList):
+    required_roles = dd.login_required(dd.SiteStaff)
+    verbose_name = _("Wish type")
+    verbose_name_plural = _("Wish types")
 
-@dd.python_2_unicode_compatible
-class Milestone(UserAuthored, DatePeriod, Certifiable):
-    """A **Milestone** is a named step of evolution on a given Site.  In
-    Scrum they are called sprints.
+add = WishTypes.add_item
+add('10', _("Requirement"), "requirement")
+add('20', _("Gimmick"), "gimmick")
+add('30', _("Side effect"), "side_effect")
+add('40', _("Surprise"), "surprise")
+# add('30', _("Observed"), "observed")
 
-    .. attribute:: closed
 
-       Closed milestones are hidden in most lists.
 
-    """
-    class Meta:
-        app_label = 'deploy'
-        # verbose_name = _("Sprint")
-        # verbose_name_plural = _('Sprints')
-        verbose_name = _("Milestone")
-        verbose_name_plural = _('Milestones')
+# @dd.python_2_unicode_compatible
+# class Milestone(UserAuthored, DatePeriod, Certifiable):
+#     """A **Milestone** is a named step of evolution on a given Site.  In
+#     Scrum they are called sprints.
 
-    project = dd.ForeignKey(
-        'tickets.Project',
-        related_name='milestones_by_project', blank=True, null=True)
-    site = dd.ForeignKey(
-        site_model,
-        related_name='milestones_by_site', blank=True, null=True)
-    label = models.CharField(_("Label"), max_length=20, blank=True)
-    expected = models.DateField(_("Expected for"), blank=True, null=True)
-    reached = models.DateField(_("Reached"), blank=True, null=True)
-    description = dd.RichTextField(
-        _("Description"), blank=True, format="plain")
-    changes_since = models.DateField(
-        _("Changes since"), blank=True, null=True,
-        help_text=_("In printed document include a list of "
-                    "other changes since this date"))
-    closed = models.BooleanField(_("Closed"), default=False)
+#     .. attribute:: closed
 
-    #~ def __unicode__(self):
-        #~ return self.label
+#        Closed milestones are hidden in most lists.
 
-    def __str__(self):
-        label = self.label
-        if not label:
-            if self.reached:
-                label = self.reached.isoformat()
-            else:
-                label = "#{0}".format(self.id)
-        # return "{0}@{1}".format(label, self.project or self.site)
-        return "{0}@{1}".format(label, self.site)
+#     """
+#     class Meta:
+#         app_label = 'deploy'
+#         # verbose_name = _("Sprint")
+#         # verbose_name_plural = _('Sprints')
+#         verbose_name = _("Milestone")
+#         verbose_name_plural = _('Milestones')
 
-    @classmethod
-    def quick_search_filter(cls, search_text, prefix=''):
-        """Overrides the default behaviour defined in
-        :meth:`lino.core.model.Model.quick_search_filter`. For
-        milestones, when quick-searching for a text containing only
-        digits, the user usually means the :attr:`label` and *not* the
-        primary key.
+#     site_field_name = 'site'
+    
+#     project = dd.ForeignKey(
+#         'tickets.Project',
+#         related_name='milestones_by_project', blank=True, null=True)
+#     site = dd.ForeignKey(
+#         site_model,
+#         related_name='milestones_by_site', blank=True, null=True)
+#     label = models.CharField(_("Label"), max_length=20, blank=True)
+#     expected = models.DateField(_("Expected for"), blank=True, null=True)
+#     reached = models.DateField(_("Reached"), blank=True, null=True)
+#     description = dd.RichTextField(
+#         _("Description"), blank=True, format="plain")
+#     changes_since = models.DateField(
+#         _("Changes since"), blank=True, null=True,
+#         help_text=_("In printed document include a list of "
+#                     "other changes since this date"))
+#     closed = models.BooleanField(_("Closed"), default=False)
 
-        """
-        if search_text.isdigit():
-            return models.Q(**{prefix+'label__contains': search_text})
-        return super(Milestone, cls).quick_search_filter(search_text, prefix)
+#     #~ def __unicode__(self):
+#         #~ return self.label
+
+#     def __str__(self):
+#         label = self.label
+#         if not label:
+#             if self.reached:
+#                 label = self.reached.isoformat()
+#             else:
+#                 label = "#{0}".format(self.id)
+#         # return "{0}@{1}".format(label, self.project or self.site)
+#         return "{0}@{1}".format(label, self.site)
+
+#     @classmethod
+#     def quick_search_filter(cls, search_text, prefix=''):
+#         """Overrides the default behaviour defined in
+#         :meth:`lino.core.model.Model.quick_search_filter`. For
+#         milestones, when quick-searching for a text containing only
+#         digits, the user usually means the :attr:`label` and *not* the
+#         primary key.
+
+#         """
+#         if search_text.isdigit():
+#             return models.Q(**{prefix+'label__contains': search_text})
+#         return super(Milestone, cls).quick_search_filter(search_text, prefix)
 
     
 
@@ -102,9 +117,10 @@ class Deployment(Sequenced):
 
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
-    milestone = dd.ForeignKey('deploy.Milestone')
+    milestone = dd.ForeignKey(dd.plugins.tickets.milestone_model)
     remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
+    wish_type = WishTypes.field(blank=True, null=True)
 
     def get_siblings(self):
         "Overrides :meth:`lino.mixins.Sequenced.get_siblings`"
@@ -114,7 +130,7 @@ class Deployment(Sequenced):
         return qs
     
     @dd.chooser()
-    def milestone_choices(cls, ticket):
+    def unused_milestone_choices(cls, ticket):
         # if not ticket:
         #     return []
         # if ticket.site:
@@ -140,7 +156,7 @@ class TicketEventToDo(ObservedEvent):
             pass
         if pv.end_date:
             qs = qs.exclude(
-                deployment__milestone__reached__lte=combine(
+                deployment__milestone__end_date__lte=combine(
                     pv.end_date, T24))
         return qs
 

@@ -15,75 +15,76 @@ from lino.utils import join_elems
 from lino.modlib.users.mixins import My
 from lino.api import dd, rt, _
 
-class MilestoneDetail(dd.DetailLayout):
-    main = """
-    left_box description
-    DeploymentsByMilestone
-    """
-    left_box = """
-    site project 
-    id label closed
-    # expected reached changes_since printed
-    """
+# class MilestoneDetail(dd.DetailLayout):
+#     main = """
+#     left_box description
+#     DeploymentsByMilestone
+#     """
+#     left_box = """
+#     site project 
+#     id label closed
+#     # expected reached changes_since printed
+#     """
     
-class Milestones(dd.Table):
-    """
-    .. attribute:: show_closed
-    """
-    order_by = ['-id']
-    # order_by = ['label', '-id']
-    model = 'deploy.Milestone'
-    stay_in_grid = True
-    detail_layout = MilestoneDetail()
-    insert_layout = dd.InsertLayout("""
-    site label
-    description
-    """, window_size=(50, 15))
+# class Milestones(dd.Table):
+#     """
+#     .. attribute:: show_closed
+#     """
+#     order_by = ['-id']
+#     # order_by = ['label', '-id']
+#     model = 'deploy.Milestone'
+#     stay_in_grid = True
+#     detail_layout = MilestoneDetail()
+#     insert_layout = dd.InsertLayout("""
+#     site label
+#     description
+#     """, window_size=(50, 15))
 
-    parameters = mixins.ObservedPeriod(
-        show_closed=dd.YesNo.field(
-            blank=True, default=dd.YesNo.no.as_callable,
-            help_text=_("Show milestons which are closed.")))
+#     parameters = mixins.ObservedPeriod(
+#         show_closed=dd.YesNo.field(
+#             blank=True, default=dd.YesNo.no.as_callable,
+#             help_text=_("Show milestons which are closed.")))
 
-    params_layout = "user start_date end_date show_closed"
-    order_by = ['start_date', 'id']
-    column_names = "start_date site label user closed *"
+#     params_layout = "user start_date end_date show_closed"
+#     order_by = ['start_date', 'id']
+#     column_names = "start_date site label user closed *"
 
-    @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Milestones, self).get_request_queryset(ar)
-        pv = ar.param_values
-        if pv.show_closed == dd.YesNo.no:
-            qs = qs.filter(closed=False)
-        elif pv.show_closed == dd.YesNo.yes:
-            qs = qs.filter(closed=True)
-        return qs
+#     @classmethod
+#     def get_request_queryset(self, ar):
+#         qs = super(Milestones, self).get_request_queryset(ar)
+#         pv = ar.param_values
+#         if pv.show_closed == dd.YesNo.no:
+#             qs = qs.filter(closed=False)
+#         elif pv.show_closed == dd.YesNo.yes:
+#             qs = qs.filter(closed=True)
+#         return qs
 
-class MyMilestones(My, Milestones):
-    column_names = "start_date overview closed *"
-    pass
-
-
-class MilestonesBySite(Milestones):
-    order_by = ['-start_date', '-label', '-id']
-    master_key = 'site'
-    column_names = "start_date label user expected reached closed id *"
-
-class MilestonesByProject(Milestones):
-    order_by = ['-start_date', '-label', '-id']
-    master_key = 'project'
-    column_names = "start_date label user expected reached closed *"
+# class MyMilestones(My, Milestones):
+#     column_names = "start_date overview closed *"
+#     pass
 
 
-class MilestonesByCompetence(MilestonesByProject):
-    master = 'tickets.Competence'
-    master_key = None
+# class MilestonesBySite(Milestones):
+#     order_by = ['-start_date', '-label', '-id']
+#     master_key = 'site'
+#     # master_key = dd.plugins.tickets.milestone_model.site_field_name
+#     column_names = "start_date label user expected reached closed id *"
 
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        if ar.master_instance is not None:
-            kw.update(project=ar.master_instance.project)
-        return kw
+# class MilestonesByProject(Milestones):
+#     order_by = ['-start_date', '-label', '-id']
+#     master_key = 'project'
+#     column_names = "start_date label user expected reached closed *"
+
+
+# class MilestonesByCompetence(MilestonesByProject):
+#     master = 'tickets.Competence'
+#     master_key = None
+
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         if ar.master_instance is not None:
+#             kw.update(project=ar.master_instance.project)
+#         return kw
     
 
 class Deployments(dd.Table):
@@ -103,21 +104,25 @@ class Deployments(dd.Table):
 
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def unused_get_request_queryset(self, ar):
         qs = super(Deployments, self).get_request_queryset(ar)
         pv = ar.param_values
+        cls = dd.plugins.tickets.milestone_model.workflow_state_field.choicelist
+        closed = cls.filter(invoiceable=True)
         if pv.show_closed == dd.YesNo.no:
-            qs = qs.filter(milestone__closed=False)
+            qs = qs.filter(milestone__state__in=closed)
+            # qs = qs.filter(milestone__closed=False)
         elif pv.show_closed == dd.YesNo.yes:
-            qs = qs.filter(milestone__closed=True)
+            qs = qs.exclude(milestone__state__in=closed)
+            # qs = qs.filter(milestone__closed=True)
         return qs
 
 
 class DeploymentsByMilestone(Deployments):
-    label = _("Deployed tickets")
+    # label = _("Deployed tickets")
     order_by = ['seqno']
     master_key = 'milestone'
-    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 remark:30  *"
+    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 wish_type remark:30  *"
     insert_layout = dd.InsertLayout("""
     ticket
     remark
@@ -155,7 +160,7 @@ class DeploymentsByMilestone(Deployments):
     
 
 class DeploymentsByTicket(Deployments):
-    order_by = ['-milestone__label']
+    order_by = ['-milestone__end_date']
     master_key = 'ticket'
     # column_names = "milestone__reached milestone  remark *"
     column_names = "milestone remark *"

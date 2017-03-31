@@ -9,6 +9,7 @@
 
 from __future__ import unicode_literals
 from __future__ import print_function
+from builtins import str
 
 """Database models for :mod:`lino_xl.lib.courses`.
 
@@ -275,6 +276,10 @@ class Course(Reservation, Duplicable, PrintableObject):
         verbose_name = _("Activity")
         verbose_name_plural = _('Activities')
 
+
+    site_field_name = 'room'
+
+    # line = models.ForeignKey('courses.Line', null=True, blank=True)
     line = models.ForeignKey('courses.Line')
 
     teacher = models.ForeignKey(

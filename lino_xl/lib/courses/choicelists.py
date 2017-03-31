@@ -25,11 +25,14 @@ class CourseStates(dd.Workflow):
     invoiceable = models.BooleanField(_("invoiceable"), default=True)
 
 add = CourseStates.add_item
-add('10', _("Draft"), 'draft', editable=True, invoiceable=False)
-# add('20', _("Registered"), 'registered', editable=False, invoiceable=True)
-add('20', _("Active"), 'active', editable=False, invoiceable=True)
-add('30', _("Inactive"), 'inactive', editable=False, invoiceable=False)
-add('40', _("Closed"), 'closed', editable=False, invoiceable=False)
+add('10', _("Draft"), 'draft',
+    editable=True, invoiceable=False, active=True)
+add('20', _("Active"), 'active',
+    editable=False, invoiceable=True, active=True)
+add('30', _("Inactive"), 'inactive',
+    editable=False, invoiceable=False, active=False)
+add('40', _("Closed"), 'closed',
+    editable=False, invoiceable=False, active=False)
 
 # #~ ACTIVE_COURSE_STATES = set((CourseStates.published,CourseStates.started))
 # ACTIVE_COURSE_STATES = set((CourseStates.registered, CourseStates.started))
@@ -78,7 +81,7 @@ class CourseAreas(dd.ChoiceList):
     item_class = CourseArea
 
 add = CourseAreas.add_item
-add('C', _("Courses"), 'default')
+add('C', dd.plugins.courses.verbose_name, 'default')
 # add('J', _("Journeys"), 'journeys')
 
 

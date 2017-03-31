@@ -55,6 +55,7 @@ class Plugin(ad.Plugin):
         
     def setup_main_menu(self, site, profile, main):
         m = main.add_menu(self.app_label, self.verbose_name)
+        m.add_action('courses.MyActivities')
         for ca in site.models.courses.CourseAreas.objects():
             m.add_action(ca.courses_table)
         # m.add_action('courses.BasicCourses')
@@ -84,5 +85,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
-        yield self.site.actors.courses.MyCoursesGiven
+        if user.authenticated:
+            yield self.site.actors.courses.MyCoursesGiven
+            yield self.site.actors.courses.MyActivities
         yield self.site.actors.courses.StatusReport

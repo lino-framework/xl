@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015-2016 Luc Saffre
+# Copyright 2015-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
 Installs a primary certifiable ExcerptType for Milestone.
@@ -9,9 +9,9 @@ Installs a primary certifiable ExcerptType for Milestone.
 from lino.api import rt, dd
 
 
-def objects():
-    Milestone = rt.models.deploy.Milestone
-    ExcerptType = rt.modules.excerpts.ExcerptType
+def unused_objects():
+    Milestone = dd.plugins.tickets.milestone_model
+    ExcerptType = rt.models.excerpts.ExcerptType
 
     kw = dict(
         body_template='default.body.html',

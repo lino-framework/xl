@@ -35,10 +35,15 @@ from lino.utils import join_elems
 from .choicelists import TicketEvents, TicketStates, LinkTypes
 from .roles import Triager
 
-if dd.is_installed('tickets'):
-    site_model = dd.plugins.tickets.site_model
-else:
-    site_model = None
+site_model = dd.plugins.tickets.site_model
+milestone_model = dd.plugins.tickets.milestone_model
+
+# if dd.is_installed('tickets'):
+#     site_model = dd.plugins.tickets.site_model
+#     milestone_model = dd.plugins.tickets.milestone_model
+# else:
+#     site_model = None
+#     milestone_model = None
     
 
 class Prioritized(dd.Model):
@@ -147,71 +152,71 @@ class Project(mixins.DatePeriod, TimeInvestment,
     #     super(Project, self).save(*args, **kwargs)
 
 
-@dd.python_2_unicode_compatible
-class Site(dd.Model):
-    class Meta:
-        app_label = 'tickets'
-        verbose_name = pgettext("Ticketing", "Site")
-        verbose_name_plural = pgettext("Ticketing", "Sites")
+# @dd.python_2_unicode_compatible
+# class Site(dd.Model):
+#     class Meta:
+#         app_label = 'tickets'
+#         verbose_name = pgettext("Ticketing", "Site")
+#         verbose_name_plural = pgettext("Ticketing", "Sites")
 
-    partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
-    # responsible_user = dd.ForeignKey(
-    #     'users.User', verbose_name=_("Responsible"),
-    #     blank=True, null=True)
-    name = models.CharField(_("Designation"), max_length=200)
-    remark = models.CharField(_("Remark"), max_length=200, blank=True)
+#     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
+#     # responsible_user = dd.ForeignKey(
+#     #     'users.User', verbose_name=_("Responsible"),
+#     #     blank=True, null=True)
+#     name = models.CharField(_("Designation"), max_length=200)
+#     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
-@dd.python_2_unicode_compatible
-class Competence(UserAuthored, Prioritized):
+# @dd.python_2_unicode_compatible
+# class Competence(UserAuthored, Prioritized):
 
-    class Meta:
-        app_label = 'tickets'
-        verbose_name = _("Project membership")
-        verbose_name_plural = _("Project memberships")
-        unique_together = ['user', 'project']
+#     class Meta:
+#         app_label = 'tickets'
+#         verbose_name = _("Project membership")
+#         verbose_name_plural = _("Project memberships")
+#         unique_together = ['user', 'project']
 
-    project = dd.ForeignKey(
-        'tickets.Project', blank=True, null=True,
-        related_name="duties_by_project")
-    remark = models.CharField(_("Remark"), max_length=200, blank=True)
-    description = dd.DummyField()
-    # description = dd.RichTextField(_("Description"), blank=True)
+#     project = dd.ForeignKey(
+#         'tickets.Project', blank=True, null=True,
+#         related_name="duties_by_project")
+#     remark = models.CharField(_("Remark"), max_length=200, blank=True)
+#     description = dd.DummyField()
+#     # description = dd.RichTextField(_("Description"), blank=True)
 
-    def __str__(self):
-        if self.project and self.user:
-            return "{}/{}".format(
-                self.user.username, self.project.ref)
-        return "{} #{}".format(self._meta.verbose_name, self.pk)
+#     def __str__(self):
+#         if self.project and self.user:
+#             return "{}/{}".format(
+#                 self.user.username, self.project.ref)
+#         return "{} #{}".format(self._meta.verbose_name, self.pk)
 
-    @dd.displayfield(_("Tickets overview"))
-    def tickets_overview(self, ar):
-        if ar is None:
-            return ''
-        me = ar.get_user()
-        Ticket = rt.models.tickets.Ticket
-        Vote = rt.models.votes.Vote
-        elems = []
+#     @dd.displayfield(_("Tickets overview"))
+#     def tickets_overview(self, ar):
+#         if ar is None:
+#             return ''
+#         me = ar.get_user()
+#         Ticket = rt.models.tickets.Ticket
+#         Vote = rt.models.votes.Vote
+#         elems = []
 
-        tickets_by_state = OrderedDict()
-        for st in TicketStates.objects():
-            tickets_by_state[st] = set()
-        for t in Ticket.objects.filter(project=self.project):
-            # t = vote.votable
-            tickets_by_state[t.state].add(t)
+#         tickets_by_state = OrderedDict()
+#         for st in TicketStates.objects():
+#             tickets_by_state[st] = set()
+#         for t in Ticket.objects.filter(project=self.project):
+#             # t = vote.votable
+#             tickets_by_state[t.state].add(t)
             
-        items = []
-        for st, tickets in tickets_by_state.items():
-            if len(tickets) > 0:
-                tickets = reversed(sorted(tickets))
-                items.append(E.li(
-                    E.span("{} : ".format(st.button_text), title=str(st)),
-                    *join_elems([x.obj2href(ar) for x in tickets], ', ')
-                ))
-        elems.append(E.ul(*items))
-        return E.p(*elems)
+#         items = []
+#         for st, tickets in tickets_by_state.items():
+#             if len(tickets) > 0:
+#                 tickets = reversed(sorted(tickets))
+#                 items.append(E.li(
+#                     E.span("{} : ".format(st.button_text), title=str(st)),
+#                     *join_elems([x.obj2href(ar) for x in tickets], ', ')
+#                 ))
+#         elems.append(E.ul(*items))
+#         return E.p(*elems)
 
 
 if False:
@@ -376,13 +381,13 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
     reported_for = dd.ForeignKey(
-        'deploy.Milestone',
+        milestone_model,
         related_name='tickets_reported',
         verbose_name='Reported for',
         blank=True, null=True,
         help_text=_("Milestone for which this ticket has been reported."))
     fixed_for = dd.ForeignKey(  # no longer used since 20150814
-        'deploy.Milestone',
+        milestone_model,
         related_name='tickets_fixed',
         verbose_name='Fixed for',
         blank=True, null=True,

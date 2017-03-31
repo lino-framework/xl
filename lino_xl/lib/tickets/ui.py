@@ -37,10 +37,13 @@ from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes
 
 from .roles import TicketsUser, Searcher, Triager, TicketsStaff
 
-if dd.is_installed('tickets'):
-    site_model = dd.plugins.tickets.site_model
-else:
-    site_model = None
+site_model = dd.plugins.tickets.site_model
+milestone_model = dd.plugins.tickets.milestone_model
+
+# if dd.is_installed('tickets'):
+#     site_model = dd.plugins.tickets.site_model
+# else:
+#     site_model = None
     
 
 class ProjectTypes(dd.Table):
@@ -66,14 +69,14 @@ class ProjectDetail(dd.DetailLayout):
 
     general = dd.Panel("""
     ref name
-    description CompetencesByProject
+    description #CompetencesByProject
     """, label=_("General"))
 
     more = dd.Panel("""
     parent type reporting_type
     company assign_to #contact_person #contact_role private closed
     start_date end_date srcref_url_template changeset_url_template
-    ProjectsByParent deploy.MilestonesByProject
+    ProjectsByParent #deploy.MilestonesByProject
     # cal.EventsByProject
     """, label=_("More"))
 
@@ -170,49 +173,49 @@ class ProjectsByPerson(Projects):
     column_names = "ref name *"
 
 
-class Competences(dd.Table):
-    required_roles = dd.login_required(TicketsUser)
-    model = 'tickets.Competence'
-    order_by = ['-priority', 'project__ref']
+# class Competences(dd.Table):
+#     required_roles = dd.login_required(TicketsUser)
+#     model = 'tickets.Competence'
+#     order_by = ['-priority', 'project__ref']
 
-    detail_layout = """
-    project user priority 
-    remark
-    TicketsByCompetence:40 deploy.MilestonesByCompetence:20 #deploy.DeploymentsByCompetence 
-    """
+#     detail_layout = """
+#     project user priority 
+#     remark
+#     TicketsByCompetence:40 deploy.MilestonesByCompetence:20 #deploy.DeploymentsByCompetence 
+#     """
 
     # detail_layout = dd.DetailLayout("""
     # project user priority 
     # TicketsByCompetence
     # """, window_size=(40, 'auto'))
 
-class AllCompetences(Competences):
-    required_roles = dd.login_required(TicketsStaff)
+# class AllCompetences(Competences):
+#     required_roles = dd.login_required(TicketsStaff)
     
-class MyCompetences(My, Competences):
-    label = _("My projects")
-    column_names = 'priority overview #project remark *'
-    # column_names = 'priority project tickets_overview *'
-    params_panel_hidden = True
-    # editable = False
-    slave_grid_format = "html"  # (doesn't work) TODO #1594 
+# class MyCompetences(My, Competences):
+#     label = _("My projects")
+#     column_names = 'priority overview #project remark *'
+#     # column_names = 'priority project tickets_overview *'
+#     params_panel_hidden = True
+#     # editable = False
+#     slave_grid_format = "html"  # (doesn't work) TODO #1594 
     
-    insert_layout = """
-    project 
-    priority 
-    remark
-    """
+#     insert_layout = """
+#     project 
+#     priority 
+#     remark
+#     """
 
-class CompetencesByProject(Competences):
-    master_key = 'project'
-    order_by = ["user__username"]
-    column_names = 'user workflow_buttons:30 *'
+# class CompetencesByProject(Competences):
+#     master_key = 'project'
+#     order_by = ["user__username"]
+#     column_names = 'user workflow_buttons:30 *'
     
-    insert_layout = """
-    user
-    priority 
-    remark
-    """
+#     insert_layout = """
+#     user
+#     priority 
+#     remark
+#     """
 
 if False:
     
@@ -507,7 +510,7 @@ class Tickets(dd.Table):
             blank=True, null=True,
             help_text=_("Only tickets interesting for this partner.")),
         deployed_to=dd.ForeignKey(
-            'deploy.Milestone',
+            milestone_model,
             blank=True, null=True),
         project=dd.ForeignKey(
             'tickets.Project',
@@ -925,33 +928,33 @@ class TicketsByReporter(Tickets):
     column_names = "id summary:60 workflow_buttons:20 *"
 
     
-class Sites(dd.Table):
-    # required_roles = set()  # also for anonymous
-    required_roles = dd.login_required(TicketsUser)
-    model = 'tickets.Site'
-    column_names = "name partner remark id *"
-    order_by = ['name']
-    detail_html_template = "tickets/Site/detail.html"
+# class Sites(dd.Table):
+#     # required_roles = set()  # also for anonymous
+#     required_roles = dd.login_required(TicketsUser)
+#     model = 'tickets.Site'
+#     column_names = "name partner remark id *"
+#     order_by = ['name']
+#     detail_html_template = "tickets/Site/detail.html"
 
-    insert_layout = """
-    name
-    remark
-    """
+#     insert_layout = """
+#     name
+#     remark
+#     """
 
-    detail_layout = """
-    id name partner #responsible_user
-    remark
-    TicketsBySite
-    """
-
-
-class AllSites(Sites):
-    required_roles = dd.login_required(TicketsStaff)
+#     detail_layout = """
+#     id name partner #responsible_user
+#     remark
+#     TicketsBySite
+#     """
 
 
-class SitesByPartner(Sites):
-    master_key = 'partner'
-    column_names = "name remark *"
+# class AllSites(Sites):
+#     required_roles = dd.login_required(TicketsStaff)
+
+
+# class SitesByPartner(Sites):
+#     master_key = 'partner'
+#     column_names = "name remark *"
 
 
 class TicketsBySite(Tickets):
@@ -988,20 +991,20 @@ class TicketsByProject(Tickets):
         kw.update(show_active=dd.YesNo.yes)
         return kw
     
-class TicketsByCompetence(TicketsByProject):
-    master = 'tickets.Competence'
-    master_key = None
-    # required_roles = dd.login_required(Triager)
-    # column_names = ("overview:50 workflow_buttons upgrade_notes *")
-    slave_grid_format = "html"
+# class TicketsByCompetence(TicketsByProject):
+#     master = 'tickets.Competence'
+#     master_key = None
+#     # required_roles = dd.login_required(Triager)
+#     # column_names = ("overview:50 workflow_buttons upgrade_notes *")
+#     slave_grid_format = "html"
 
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        # print("20170316 {}".format(ar.master_instance))
-        # kw.update(votes_by_ticket__project=ar.master_instance.project)
-        if ar.master_instance is not None:
-            kw.update(project=ar.master_instance.project)
-        return kw
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         # print("20170316 {}".format(ar.master_instance))
+#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
+#         if ar.master_instance is not None:
+#             kw.update(project=ar.master_instance.project)
+#         return kw
     
 
 # class MyKnownProblems(Tickets):

@@ -3,7 +3,7 @@
 """
 Adds functionality for managing tickets.
 
-See :ref:`noi.specs.tickets`.
+See :doc:`/specs/noi/tickets`.
 
 .. autosummary::
    :toctree:
@@ -30,16 +30,18 @@ class Plugin(ad.Plugin):
         # 'lino.modlib.changes',
         'lino_noi.lib.noi']
 
-    site_model = 'tickets.Site'
+    site_model = 'cal.Room'
+    milestone_model = 'courses.Course'
     
     def on_site_startup(self, site):
         self.site_model = site.models.resolve(self.site_model)
+        self.milestone_model = site.models.resolve(self.milestone_model)
         super(Plugin, self).on_site_startup(site)
         
     def setup_main_menu(self, site, profile, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('tickets.MyCompetences')
+        # m.add_action('tickets.MyCompetences')
         m.add_action('tickets.MyTickets')
         m.add_action('tickets.SuggestedTicketsByEndUser')
         # m.add_action('tickets.TicketsToDo')
@@ -58,7 +60,7 @@ class Plugin(ad.Plugin):
         m.add_action('tickets.TopLevelProjects')
         m.add_action('tickets.ProjectTypes')
         m.add_action('tickets.TicketTypes')
-        m.add_action('tickets.AllSites')
+        # m.add_action('tickets.AllSites')
 
     def setup_explorer_menu(self, site, profile, m):
         p = self.get_menu_group()
@@ -66,7 +68,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.Projects')
         m.add_action('tickets.Links')
         m.add_action('tickets.TicketStates')
-        m.add_action('tickets.AllCompetences')
+        # m.add_action('tickets.AllCompetences')
         # m.add_action('tickets.AllWishes')
         
     def get_dashboard_items(self, user):
