@@ -38,6 +38,7 @@ from lino.utils.mti import get_child
 from lino.utils.report import Report
 
 from lino.modlib.system.choicelists import PeriodEvents
+from lino.modlib.users.mixins import My
 
 from .choicelists import EnrolmentStates, CourseStates, CourseAreas
 
@@ -185,7 +186,7 @@ class Activities(dd.Table):
         line=models.ForeignKey('courses.Line', blank=True, null=True),
         topic=models.ForeignKey('courses.Topic', blank=True, null=True),
         teacher=models.ForeignKey(
-            teacher_model,
+            teacher_model, verbose_name=_("Instructor"),
             blank=True, null=True),
         user=models.ForeignKey(
             settings.SITE.user_model,
@@ -194,7 +195,7 @@ class Activities(dd.Table):
         can_enroll=dd.YesNo.field(blank=True),
     )
 
-    params_layout = """topic line teacher state can_enroll:10 \
+    params_layout = """topic line user teacher state can_enroll:10 \
     start_date end_date"""
 
     # simple_parameters = 'line teacher state user'.split()
@@ -284,6 +285,15 @@ class CoursesByTeacher(Activities):
     master_key = "teacher"
     column_names = "start_date start_time end_time line room *"
     order_by = ['-start_date']
+
+
+class MyActivities(My, Activities):
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyActivities, self).param_defaults(ar, **kw)
+        kw.update(state=CourseStates.active)
+        # kw.update(can_enroll=dd.YesNo.yes)
+        return kw
 
 
 class MyCoursesGiven(Activities):

@@ -78,7 +78,7 @@ class CourseAreas(dd.ChoiceList):
     item_class = CourseArea
 
 add = CourseAreas.add_item
-add('C', _("Courses"), 'default')
+add('C', dd.plugins.courses.verbose_name, 'default')
 # add('J', _("Journeys"), 'journeys')
 
 
