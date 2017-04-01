@@ -97,8 +97,10 @@ class Project(mixins.DatePeriod, TimeInvestment,
               ContactRelated):
     class Meta:
         app_label = 'tickets'
-        verbose_name = _("Project")
-        verbose_name_plural = _('Projects')
+        # verbose_name = _("Project")
+        # verbose_name_plural = _('Projects')
+        verbose_name = _("Mission")
+        verbose_name_plural = _('Missions')
 
     name = models.CharField(_("Name"), max_length=200)
     # parent = models.ForeignKey(

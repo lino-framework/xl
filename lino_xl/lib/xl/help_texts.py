@@ -123,8 +123,8 @@ Event."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
     'lino_xl.lib.cal.choicelists.Recurrencies.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.mixins.UpdateEvents' : _("""Generate or update the automatic events controlled by this object."""),
-    'lino_xl.lib.cal.mixins.UpdateEventsByEvent' : _("""Update all events of this series. This is installed as
+    'lino_xl.lib.cal.mixins.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
+    'lino_xl.lib.cal.mixins.UpdateEntriesByEvent' : _("""Update all events of this series. This is installed as
 update_events on Event."""),
     'lino_xl.lib.cal.mixins.EventGenerator' : _("""Base class for things that generate a suite of events."""),
     'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
@@ -139,28 +139,33 @@ generated component. Otherwise this field is empty."""),
     'lino_xl.lib.cal.models.RemoteCalendar' : _("""Remote calendars will be synchronized by
 lino_xl.lib.cal.management.commands.watch_calendars,
 and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.cal.models.Room' : _("""A location where calendar events can happen.  For a given Room you
-can see the EventsByRoom that happened (or will happen)
+    'lino_xl.lib.cal.models.Room' : _("""A location where calendar entries can happen.  For a given Room you
+can see the EntriesByRoom that happened (or will happen)
 there.  A Room has a multilingual name."""),
-    'lino_xl.lib.cal.models.Priority' : _("""The priority of a Task or Event."""),
+    'lino_xl.lib.cal.models.Priority' : _("""The priority of a task or entry."""),
     'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field."""),
-    'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether events of this type should be considered
+    'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether entries of this type should be considered
 "appointments" (i.e. whose time and place have been agreed
 upon with other users or external parties)."""),
     'lino_xl.lib.cal.models.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
+    'lino_xl.lib.cal.models.EventType.locks_user' : _("""Whether calendar entries of this type make the user
+unavailable for other locking events at the same time."""),
+    'lino_xl.lib.cal.models.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
+    'lino_xl.lib.cal.models.EventType.event_label' : _("""Default text for summary of new entries."""),
     'lino_xl.lib.cal.models.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
 (and optionally wants to get reminded about it)."""),
     'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates."""),
-    'lino_xl.lib.cal.models.EventPolicy' : _("""An event policy is mostly a rule used for generating automatic
-events."""),
-    'lino_xl.lib.cal.models.RecurrentEvent' : _("""A rule designed to generate a series of recurrent events."""),
+    'lino_xl.lib.cal.models.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
+calendar entries."""),
+    'lino_xl.lib.cal.models.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
+    'lino_xl.lib.cal.models.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
+entries."""),
     'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
     'lino_xl.lib.cal.models.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
-    'lino_xl.lib.cal.models.UpdateGuests' : _("""Updates the list of participants for this event according to the
-suggestions. Calls suggest_guests() to
-instantiate them."""),
+    'lino_xl.lib.cal.models.UpdateGuests' : _("""Populate or update the list of participants for this entry
+according to the suggestions."""),
     'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
 communication with the Ext.ensible CalendarPanel
 because we consider the "all day" checkbox
@@ -173,23 +178,25 @@ Only start_date is mandatory."""),
     'lino_xl.lib.cal.models.Event.description' : _("""A longer descriptive text."""),
     'lino_xl.lib.cal.models.Event.user' : _("""The responsible user."""),
     'lino_xl.lib.cal.models.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
-event."""),
-    'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this event. Every calendar event should have this
+entry."""),
+    'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
 field pointing to a given EventType, which holds
-extended configurable information about this event."""),
+extended configurable information about this entry."""),
     'lino_xl.lib.cal.models.Event.state' : _("""The state of this entry. The state can change according to
 rules defined by the workflow, that's why we sometimes refer
 to it as the life cycle."""),
-    'lino_xl.lib.cal.models.Event.when_html' : _("""Shows the date and time of the event with a link that opens
-all events on that day (EventsByDay)."""),
+    'lino_xl.lib.cal.models.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
+the same time."""),
+    'lino_xl.lib.cal.models.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
+all entries on that day (EntriesByDay)."""),
     'lino_xl.lib.cal.models.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
     'lino_xl.lib.cal.models.EventGuestChecker' : _("""Check for calendar entries without participants."""),
-    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this event conflicts with other events."""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether the type of this event should be updated."""),
-    'lino_xl.lib.cal.models.LongEventChecker' : _("""Check for events which last longer than the maximum number of days
+    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
+    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
+    'lino_xl.lib.cal.models.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of days
 allowed by their type."""),
-    'lino_xl.lib.cal.models.LongEventChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.models.LongEntryChecker.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a
 given event."""),
     'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),
@@ -222,22 +229,22 @@ of events."""),
     'lino_xl.lib.cal.ui.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
     'lino_xl.lib.cal.ui.ConflictingEvents.master' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.ConflictingEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.EventsByDay' : _("""This table is usually labelled "Appointments today". It has no
+    'lino_xl.lib.cal.ui.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date."""),
-    'lino_xl.lib.cal.ui.EventsByDay.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.EventsByRoom' : _("""Displays the Events at a given Room."""),
-    'lino_xl.lib.cal.ui.EventsByRoom.master' : _("""alias of Room"""),
-    'lino_xl.lib.cal.ui.EventsByRoom.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.EventsByController' : _("""Shows the events linked to this database object."""),
-    'lino_xl.lib.cal.ui.EventsByController.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.EntriesByDay.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.EntriesByRoom' : _("""Displays the Events at a given Room."""),
+    'lino_xl.lib.cal.ui.EntriesByRoom.master' : _("""alias of Room"""),
+    'lino_xl.lib.cal.ui.EntriesByRoom.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.EntriesByController' : _("""Shows the events linked to this database object."""),
+    'lino_xl.lib.cal.ui.EntriesByController.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.OneEvent' : _("""Show a single calendar event."""),
     'lino_xl.lib.cal.ui.OneEvent.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyEvents' : _("""Table which shows today's and all future appointments of the
+    'lino_xl.lib.cal.ui.MyEntries' : _("""Table which shows today's and all future appointments of the
 requesting user.  The default filter parameters are set to show
 only appointments."""),
-    'lino_xl.lib.cal.ui.MyEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyEventsToday' : _("""Like MyEvents, but only today."""),
-    'lino_xl.lib.cal.ui.MyEventsToday.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.MyEntries.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ui.MyEntriesToday' : _("""Like MyEntries, but only today."""),
+    'lino_xl.lib.cal.ui.MyEntriesToday.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.MyAssignedEvents' : _("""The table of events which are assigned to me. That is, whose
 Event.assigned_to field refers to the requesting user."""),
     'lino_xl.lib.cal.ui.MyAssignedEvents.model' : _("""alias of Event"""),
@@ -253,7 +260,7 @@ state."""),
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
 workflows_module):"""),
-    'lino_xl.lib.cal.workflows.EventStates' : _("""The list of choices for the state field of a calendar entry."""),
+    'lino_xl.lib.cal.workflows.EntryStates' : _("""The list of choices for the state field of a calendar entry."""),
     'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
 the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.InvitationFeedback' : _("""Base class for actions that give feedback to an invitation."""),

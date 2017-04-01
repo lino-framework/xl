@@ -27,7 +27,7 @@ Glossary
 
 .. glossary::
 
-  event
+  calendar entry
 
     Something that happens at a given date and (optionally) time.
     A planned ("scheduled") lapse of time where something happens.
@@ -36,17 +36,15 @@ Glossary
   appointment
 
     An appointment (french "Rendez-vous", german "Termin") is an
-    :term:`event` whose :class:`type <EventType>` has the
+    :term:`calendar entry` whose :class:`type <EventType>` has the
     :attr:`EventType.is_appointment` field checked.
 
 
-
-
-There is no "Calendar" field per Event
+There is no "Calendar" field per entry
 ======================================
 
 Note that the default implementation has no "Calendar" field per
-Event. The `Event` model instead has a `get_calendar` method.
+calendar entry. The `Event` model instead has a `get_calendar` method.
 
 You might extend Event in your plugin as follows::
 
@@ -118,7 +116,7 @@ class Plugin(ad.Plugin):
         
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('cal.MyEvents')  # string spec to allow overriding
+        m.add_action('cal.MyEntries')  # string spec to allow overriding
         m.add_action('cal.OverdueAppointments')
         m.add_action('cal.MyUnconfirmedAppointments')
 
@@ -149,12 +147,12 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('cal.AllEvents')
+        m.add_action('cal.AllEntries')
         m.add_action('cal.Tasks')
         m.add_action('cal.AllGuests')
         m.add_action('cal.Subscriptions')
         # m.add_action(Memberships)
-        m.add_action('cal.EventStates')
+        m.add_action('cal.EntryStates')
         m.add_action('cal.GuestStates')
         m.add_action('cal.TaskStates')
         # m.add_action(RecurrenceSets)
@@ -162,7 +160,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         if user.authenticated:
             yield self.site.actors.cal.MyTasks
-            yield self.site.actors.cal.MyEvents
+            yield self.site.actors.cal.MyEntries
             yield self.site.actors.cal.MyOverdueAppointments
         else:
-            yield self.site.actors.cal.PublicEvents
+            yield self.site.actors.cal.PublicEntries

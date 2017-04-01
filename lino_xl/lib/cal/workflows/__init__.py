@@ -55,14 +55,14 @@ if not settings.SITE.use_silk_icons:
     TaskStates.cancelled.button_text = "☒"  # BALLOT BOX WITH X (U+2612)
     TaskStates.important.button_text = "⚠"  # U+26A0
 
-class EventState(dd.State):
+class EntryState(dd.State):
     fixed = False
     edit_guests = False
     transparent = False
     noauto = False
 
 
-class EventStates(dd.Workflow):
+class EntryStates(dd.Workflow):
     """The list of choices for the :attr:`state
     <lino_xl.lib.cal.models.Event.state>` field of a calendar entry.
 
@@ -71,7 +71,7 @@ class EventStates(dd.Workflow):
     required_roles = dd.login_required(dd.SiteStaff)
     help_text = _("""The possible states of a calendar event.""")
     app_label = 'cal'
-    item_class = EventState
+    item_class = EntryState
     edit_guests = models.BooleanField(_("Edit participants"), default=False)
     fixed = models.BooleanField(_("Stable"), default=False)
     transparent = models.BooleanField(_("Transparent"), default=False)
@@ -87,7 +87,7 @@ class EventStates(dd.Workflow):
     def get_column_names(self, ar):
         return 'value name text button_text edit_guests fixed transparent noauto'
 
-add = EventStates.add_item
+add = EntryStates.add_item
 add('10', _("Suggested"), 'suggested',
     edit_guests=True,
     button_text="?")
