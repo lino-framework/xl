@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 
 """Database models for `lino_xl.lib.mailbox`.
 
@@ -11,7 +12,6 @@ from django.utils.translation import ugettext_lazy as _
 import django.db.models
 #
 from lino.api import dd, rt
-from django.db.models import BooleanField
 
 #
 #
@@ -63,3 +63,21 @@ def get_new_mail():
                 mail.save()
         if mails:
             logger.info("got {} from mailbox: {}".format(mails,mb))
+
+
+class DeleteSpam(dd.Action):
+
+    show_in_bbar = True
+    readonly = False
+    # required_roles = dd.login_required(Worker)
+    label = u"X"
+
+
+    def run_from_ui(self, ar, **kw):
+        spams = rt.models.django_mailbox.Message.objects.filter(spam = True)
+        logger.info("Deleting Spam Messages [%s]"%spams)
+        for obj in spams:
+            obj.delete()
+        ar.set_response(refresh=True)
+
+dd.inject_action("django_mailbox.Message", DeleteSpam=DeleteSpam())

@@ -27,10 +27,10 @@ class Mailboxes(dd.Table):
 
 class Messages(dd.Table):
     model = "django_mailbox.Message"
-    detail_layout = """from_header to_header subject spam
+    detail_layout = """from_header to_header subject
     preview
     PointersByMessage MessageAttachmentsByMessage"""
-    editable = False
+    # editable = False
     parameters = dict(
         not_assigned=dd.models.BooleanField(
             _("show only non assigned"),
@@ -49,6 +49,8 @@ class MessagesByMailbox(Messages):
     master_key = "mailbox"
 
 class UnassignedMessages(Messages):
+
+    # cell_edit = False
 
     @classmethod
     def param_defaults(self, ar, **kw):
