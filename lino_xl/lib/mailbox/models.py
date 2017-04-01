@@ -11,12 +11,22 @@ from django.utils.translation import ugettext_lazy as _
 import django.db.models
 #
 from lino.api import dd, rt
-#
+from django.db.models import BooleanField
+
 #
 #
 
 def preview(obj, ar):
     return obj.html or obj.text
+
+def spam(obj):
+    """Checks if the message is spam or not
+    """
+    if obj.subject.startswith("*****SPAM*****"):
+        return True
+    else:
+        return False
+
 
 dd.inject_field('django_mailbox.Message', 'preview',
                 dd.VirtualField(dd.HtmlBox(_("Preview")), preview))
@@ -46,5 +56,10 @@ from .ui import *
 def get_new_mail():
     for mb in rt.models.django_mailbox.Mailbox.objects.filter(active=True):
         mails = mb.get_new_mail()
+        for mail in mails:
+            if spam(mail):
+                mail.spam = True
+                mail.full_clean()
+                mail.save()
         if mails:
             logger.info("got {} from mailbox: {}".format(mails,mb))

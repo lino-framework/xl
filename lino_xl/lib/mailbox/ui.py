@@ -27,7 +27,7 @@ class Mailboxes(dd.Table):
 
 class Messages(dd.Table):
     model = "django_mailbox.Message"
-    detail_layout = """from_header to_header subject
+    detail_layout = """from_header to_header subject spam
     preview
     PointersByMessage MessageAttachmentsByMessage"""
     editable = False

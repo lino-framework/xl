@@ -1,6 +1,6 @@
 from unipath import Path
 from lino.api import dd, rt
-
+from lino_xl.lib.mailbox.models import get_new_mail
 def objects():
     Mailbox = rt.models.django_mailbox.Mailbox
     mp = rt.settings.SITE.cache_dir.child("media", "mailbox")
@@ -20,5 +20,4 @@ def objects():
     origin.copy(filename)
     mbx = Mailbox(name=name, uri="mbox://" + filename)
     yield mbx
-    mbx.get_new_mail()
-
+    get_new_mail()
