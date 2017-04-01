@@ -355,6 +355,14 @@ class MyVotes(My, Votes):
     """, window_size=(40, 'auto'), hidden_elements='user')
     
     
+class MyInvitations(My, Votes):
+    """Show your votes in state invited """
+    label = _("My vote invitations")
+    column_names = "votable_overview workflow_buttons priority *"
+    order_by = ['-priority', '-id']
+    filter_vote_states = "invited"
+    # filter_ticket_states = "opened started talk"
+    
     
 class MyOffers(My, Votes):
     """Show the tickets for which you are candidate"""

@@ -69,7 +69,10 @@ add = VoteStates.add_item
 # add('50', _("Rated"), _("Job rated"), 'rated')
 # add('60', _("Cancelled"), _("Cancelled offer"), 'cancelled')  # Absage
 add('00', _("Author"), 'author')
+add('05', _("Invited"), 'invited')
 add('10', _("Watching"), 'watching')
+add('15', _("Pro"), 'pro')
+add('16', _("Con"), 'con')
 add('20', _("Candidate"), 'candidate', show_in_todo=True)
 add('30', _("Assigned"), 'assigned', show_in_todo=True)
 add('40', _("Done"), 'done')

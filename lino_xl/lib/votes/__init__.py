@@ -41,10 +41,11 @@ class Plugin(ad.Plugin):
         # mg = site.plugins[self.votable_model._meta.app_label]
         # mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('votes.MyInvitations')
         m.add_action('votes.MyTasks')
-        m.add_action('votes.MyWatched')
         m.add_action('votes.MyOffers')
-        m.add_action('votes.MyVotes')
+        m.add_action('votes.MyWatched')
+        # m.add_action('votes.MyVotes')
 
     def setup_explorer_menu(self, site, profile, m):
         mg = self.get_menu_group()
@@ -55,6 +56,7 @@ class Plugin(ad.Plugin):
 
     def get_dashboard_items(self, user):
         if user.authenticated:
+            yield self.site.actors.votes.MyInvitations
             yield self.site.actors.votes.MyTasks
             # yield self.site.actors.votes.MyOffers
             yield self.site.actors.votes.MyWatched

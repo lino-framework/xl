@@ -144,7 +144,7 @@ add('22', _("Started"), 'started', active=True, show_in_todo=True)
 add('30', _("Sleeping"), 'sleeping')
 add('40', _("Ready"), 'ready', active=True)
 add('50', _("Closed"), 'closed')
-add('60', _("Cancelled"), 'cancelled')
+add('60', _("Refused"), 'cancelled')
 # TicketStates.default_value = 'new'
 
 if settings.SITE.use_new_unicode_symbols:

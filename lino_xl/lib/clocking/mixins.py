@@ -42,3 +42,11 @@ class Workable(dd.Model):
 
         """
         return True
+
+    def on_worked(self, session):
+        """This is automatically called when a work session has been created
+        or modified.
+
+        """
+        pass
+    

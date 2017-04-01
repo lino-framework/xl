@@ -117,7 +117,9 @@ class Deployment(Sequenced):
 
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
-    milestone = dd.ForeignKey(dd.plugins.tickets.milestone_model)
+    milestone = dd.ForeignKey(
+        dd.plugins.tickets.milestone_model,
+        related_name="wishes_by_milestone")
     remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
     wish_type = WishTypes.field(blank=True, null=True)

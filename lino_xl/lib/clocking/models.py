@@ -146,6 +146,8 @@ class Session(UserAuthored, Started, Ended):
                 self.start_date = dd.today()
             # if self.ticket_id is not None and self.faculty_id is None:
             #     self.faculty = self.ticket.faculty
+            if self.ticket_id:
+                self.ticket.on_worked(self)
         super(Session, self).full_clean(*args, **kwargs)
 
     def unused_save(self, *args, **kwargs):
@@ -163,6 +165,11 @@ class Session(UserAuthored, Started, Ended):
             if self.ticket.project.reporting_type:
                 return self.ticket.project.reporting_type
         return dd.plugins.clocking.default_reporting_type
+
+    # def after_ui_save(self, ar, cw):
+    #     super(Session, self).after_ui_save(ar, cw)
+    #     if self.ticket_id:
+    #         self.ticket.on_worked(self, ar, cw)
         
     def get_root_project(self):
         """Return the root project for this session (or None if session has no

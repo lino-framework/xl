@@ -28,6 +28,7 @@ from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino.modlib.comments.mixins import Commentable
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.votes.mixins import Votable
+from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.clocking.mixins import Workable
 from lino_xl.lib.clocking.choicelists import ReportingTypes
 from lino.utils import join_elems
@@ -452,6 +453,10 @@ class Ticket(UserAuthored, mixins.CreatedModified,
             if not self.project.private:
                 self.private = False
 
+    def on_worked(self, session):
+        super(Ticket, self).on_worked(session)
+        self.set_auto_vote(session.user, VoteStates.invited)
+        
     # def get_project_for_vote(self, vote):
     #     if self.project:
     #         return self.project
