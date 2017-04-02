@@ -112,7 +112,7 @@ class LinesByTopic(Lines):
     master_key = "topic"
 
 
-class EventsByTeacher(cal.Events):
+class EntriesByTeacher(cal.Events):
     help_text = _("Shows events of activities led by this teacher")
     master = teacher_model
     column_names = 'when_text:20 owner room state'
@@ -127,7 +127,7 @@ class EventsByTeacher(cal.Events):
         if True:
             return []
         # TODO: build a list of courses, then show events by course
-        qs = super(EventsByTeacher, self).get_request_queryset(ar)
+        qs = super(EntriesByTeacher, self).get_request_queryset(ar)
         # mycourses = rt.modules.Course.objects.filter(teacher=teacher)
         qs = qs.filter(course__in=teacher.course_set.all())
         return qs
@@ -152,7 +152,7 @@ class CourseDetail(dd.DetailLayout):
     events = dd.Panel("""
     max_events max_date every_unit every
     monday tuesday wednesday thursday friday saturday sunday
-    cal.EventsByController
+    cal.EntriesByController
     """, label=_("Events"))
 
     enrolments_top = 'enrolments_until max_places:10 confirmed free_places:10 print_actions:15'
@@ -188,9 +188,9 @@ class Activities(dd.Table):
         teacher=models.ForeignKey(
             teacher_model, verbose_name=_("Instructor"),
             blank=True, null=True),
-        user=models.ForeignKey(
-            settings.SITE.user_model,
-            blank=True, null=True),
+        # user=models.ForeignKey(
+        #     settings.SITE.user_model,
+        #     blank=True, null=True),
         show_active=dd.YesNo.field(
             _("Active"), blank=True,
             help_text=_("Whether to show rows in some active state")),
@@ -199,7 +199,7 @@ class Activities(dd.Table):
     )
 
     params_layout = """topic line user teacher state 
-    can_enroll:10 start_date end_date show_active"""
+    room can_enroll:10 start_date end_date show_active"""
 
     # simple_parameters = 'line teacher state user'.split()
 
@@ -223,7 +223,7 @@ class Activities(dd.Table):
         s.add('line')
         s.add('teacher')
         s.add('state')
-        s.add('user')
+        # s.add('user')
         return s
 
     @classmethod
@@ -301,6 +301,8 @@ class CoursesByTeacher(Activities):
 
 class MyActivities(My, Activities):
     column_names = "start_date:8 room name line workflow_buttons *"
+    order_by = ['start_date']
+    
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyActivities, self).param_defaults(ar, **kw)
@@ -637,7 +639,7 @@ class EnrolmentsByOption(Enrolments):
     order_by = ['request_date']
     
 
-# class EventsByCourse(cal.Events):
+# class EntriesByCourse(cal.Events):
 #     required = dd.login_required(user_groups='office')
 #     master_key = 'course'
 #     column_names = 'when_text:20 when_html summary workflow_buttons *'

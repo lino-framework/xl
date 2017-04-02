@@ -34,7 +34,7 @@ from lino.modlib.gfks.mixins import Controllable
 
 from .choicelists import Recurrencies, Weekdays, AccessClasses
 
-from .workflows import EventStates
+from .workflows import EntryStates
 from .utils import day_and_month
 
 def format_time(t):
@@ -54,7 +54,7 @@ def daterange_text(a, b):
     return _("Dates %(min)s to %(max)s") % d
 
 
-class MoveEventNext(dd.MultipleRowAction):
+class MoveEntryNext(dd.MultipleRowAction):
     label = _('Move down')
     button_text = _('▽')  # 25BD White down-pointing triangle
     custom_handler = True
@@ -66,7 +66,7 @@ class MoveEventNext(dd.MultipleRowAction):
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
             return False
-        return super(MoveEventNext, self).get_action_permission(
+        return super(MoveEntryNext, self).get_action_permission(
             ar, obj, state)
 
     def run_on_row(self, obj, ar):
@@ -74,7 +74,7 @@ class MoveEventNext(dd.MultipleRowAction):
         return 1
 
 
-class UpdateEvents(dd.MultipleRowAction):
+class UpdateEntries(dd.MultipleRowAction):
     """Generate or update the automatic events controlled by this object.
 
     This action is installed as :attr:`update_events` on
@@ -92,7 +92,7 @@ class UpdateEvents(dd.MultipleRowAction):
         return obj.update_reminders(ar)
 
 
-class UpdateEventsByEvent(UpdateEvents):
+class UpdateEntriesByEvent(UpdateEntries):
     """Update all events of this series. This is installed as
     :attr:`update_events` on :class:`Event`.
 
@@ -100,7 +100,7 @@ class UpdateEventsByEvent(UpdateEvents):
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
             return False
-        return super(UpdateEventsByEvent, self).get_action_permission(
+        return super(UpdateEntriesByEvent, self).get_action_permission(
             ar, obj, state)
 
     def run_on_row(self, obj, ar):
@@ -118,7 +118,7 @@ class EventGenerator(dd.Model):
     class Meta:
         abstract = True
 
-    do_update_events = UpdateEvents()
+    do_update_events = UpdateEntries()
 
     @classmethod
     def get_registrable_fields(cls, site):
@@ -426,8 +426,8 @@ class EventGenerator(dd.Model):
             raise Exception(
                 "%s cannot move event controlled by %s" % (
                     self, we.owner))
-        if we.state == EventStates.suggested:
-            we.state = EventStates.draft
+        if we.state == EntryStates.suggested:
+            we.state = EntryStates.draft
         rset = self.update_cal_rset()
         date = rset.get_next_alt_date(ar, we.start_date)
         if date is None:
@@ -494,7 +494,7 @@ class EventGenerator(dd.Model):
         qs = rt.models.cal.Event.objects.filter(
             owner_type=ot, owner_id=self.pk,
             auto_type__isnull=False)
-        # noauto_states = set([x for x in EventStates.objects() if x.noauto])
+        # noauto_states = set([x for x in EntryStates.objects() if x.noauto])
         # if noauto_states:
         #     qs = qs.exclude(state__in=noauto_states)
         return qs
@@ -730,6 +730,22 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
     max_date = models.DateField(
         blank=True, null=True,
         verbose_name=_("Generate events until"))
+
+    @classmethod
+    def get_parameter_fields(cls, **fields):
+        """Adds the :attr:`room` filter parameter field."""
+        fld = cls._meta.get_field('room')
+        fields.setdefault(
+            'room', models.ForeignKey(
+                'cal.Room', verbose_name=fld.verbose_name,
+                blank=True, null=True))
+        return super(Reservation, cls).get_parameter_fields(**fields)
+
+    @classmethod
+    def get_simple_parameters(cls):
+        s = super(Reservation, cls).get_simple_parameters()
+        s.add('room')
+        return s
 
     def update_cal_until(self):
         return self.max_date

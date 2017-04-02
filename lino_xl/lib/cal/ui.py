@@ -20,7 +20,7 @@ from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from .workflows import TaskStates
 from .workflows import GuestStates
-from .workflows import EventStates
+from .workflows import EntryStates
 from .mixins import daterange_text
 from .utils import when_text
 
@@ -42,7 +42,7 @@ class Rooms(dd.Table):
     id name
     company contact_person
     description
-    cal.EventsByRoom
+    cal.EntriesByRoom
     """
     insert_layout = """
     id name
@@ -315,7 +315,7 @@ class Guests(dd.Table):
         partner=dd.ForeignKey(dd.plugins.cal.partner_model,
                               blank=True, null=True),
 
-        event_state=EventStates.field(
+        event_state=EntryStates.field(
             blank=True,
             verbose_name=_("Event state"),
             help_text=_("Only rows having this event state.")),
@@ -524,7 +524,7 @@ class EventTypes(dd.Table):
     # type url_template username password
     #build_method #template email_template attach_to_email
     is_appointment all_rooms locks_user max_conflicting
-    EventsByType
+    EntriesByType
     """
 
     insert_layout = dd.InsertLayout("""
@@ -555,7 +555,7 @@ class RecurrentEvents(dd.Table):
     start_date start_time  end_date end_time
     every_unit every max_events
     monday tuesday wednesday thursday friday saturday sunday
-    description cal.EventsByController
+    description cal.EntriesByController
     """
 
 
@@ -656,7 +656,7 @@ class Events(dd.Table):
                                   blank=True, null=True,
                                   help_text=_(
                                       "Only events assigned to this user.")),
-        state=EventStates.field(blank=True,
+        state=EntryStates.field(blank=True,
                                 help_text=_("Only rows having this state.")),
         # unclear = models.BooleanField(_("Unclear events"))
         observed_event=EventEvents.field(blank=True),
@@ -669,9 +669,9 @@ class Events(dd.Table):
     """
     # ~ next = NextDateAction() # doesn't yet work. 20121203
 
-    fixed_states = set(EventStates.filter(fixed=True))
-    # pending_states = set([es for es in EventStates if not es.fixed])
-    pending_states = set(EventStates.filter(fixed=False))
+    fixed_states = set(EntryStates.filter(fixed=True))
+    # pending_states = set([es for es in EntryStates if not es.fixed])
+    pending_states = set(EntryStates.filter(fixed=False))
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -756,10 +756,10 @@ class Events(dd.Table):
         return kw
 
     
-class AllEvents(Events):
+class AllEntries(Events):
     required_roles = dd.login_required(Explorer)
 
-class EventsByType(Events):
+class EntriesByType(Events):
     master_key = 'event_type'
 
 
@@ -781,14 +781,14 @@ class ConflictingEvents(Events):
         return qs
     
 
-class PublicEvents(Events):
+class PublicEntries(Events):
     required_roles = dd.login_required(CalendarReader)
     
     column_names = 'overview room event_type  *'
     
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(PublicEvents, self).param_defaults(ar, **kw)
+        kw = super(PublicEntries, self).param_defaults(ar, **kw)
         # kw.update(show_appointments=dd.YesNo.yes)
         kw.update(start_date=settings.SITE.today())
         # kw.update(end_date=settings.SITE.today())
@@ -796,7 +796,7 @@ class PublicEvents(Events):
 
 
 
-class EventsByDay(Events):
+class EntriesByDay(Events):
     """
     This table is usually labelled "Appointments today". It has no
     "date" column because it shows events of a given date.
@@ -813,7 +813,7 @@ class EventsByDay(Events):
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(EventsByDay, self).param_defaults(ar, **kw)
+        kw = super(EntriesByDay, self).param_defaults(ar, **kw)
         kw.update(show_appointments=dd.YesNo.yes)
         kw.update(start_date=settings.SITE.today())
         kw.update(end_date=settings.SITE.today())
@@ -822,7 +822,7 @@ class EventsByDay(Events):
     @classmethod
     def create_instance(self, ar, **kw):
         kw.update(start_date=ar.param_values.start_date)
-        return super(EventsByDay, self).create_instance(ar, **kw)
+        return super(EntriesByDay, self).create_instance(ar, **kw)
 
     @classmethod
     def get_title_base(self, ar):
@@ -843,15 +843,15 @@ class EventsByDay(Events):
         return ar.href_to_request(target, txt)
 
 
-# class EventsByType(Events):
+# class EntriesByType(Events):
     # master_key = 'type'
 
-# class EventsByPartner(Events):
+# class EntriesByPartner(Events):
     # required = dd.login_required(user_groups='office')
     # master_key = 'user'
 
 
-class EventsByRoom(Events):
+class EntriesByRoom(Events):
 
     """
     Displays the :class:`Events <Event>` at a given :class:`Room`.
@@ -859,7 +859,7 @@ class EventsByRoom(Events):
     master_key = 'room'
 
 
-class EventsByController(Events):
+class EntriesByController(Events):
     """Shows the events linked to this database object.
 
     If the master is an :class:`EventGenerator
@@ -911,7 +911,7 @@ class EventsByController(Events):
 
 if settings.SITE.project_model:
 
-    class EventsByProject(Events):
+    class EntriesByProject(Events):
         required_roles = dd.login_required(OfficeUser)
         master_key = 'project'
         auto_fit_column_widths = True
@@ -928,7 +928,7 @@ class OneEvent(Events):
     # required_roles = dd.login_required(OfficeUser)
 
 
-class MyEvents(Events):
+class MyEntries(Events):
     """Table which shows today's and all future appointments of the
     requesting user.  The default filter parameters are set to show
     only :term:`appointments <appointment>`.
@@ -942,7 +942,7 @@ class MyEvents(Events):
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(MyEvents, self).param_defaults(ar, **kw)
+        kw = super(MyEntries, self).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         kw.update(show_appointments=dd.YesNo.yes)
         # kw.update(assigned_to=ar.get_user())
@@ -954,24 +954,24 @@ class MyEvents(Events):
     @classmethod
     def create_instance(self, ar, **kw):
         kw.update(start_date=ar.param_values.start_date)
-        return super(MyEvents, self).create_instance(ar, **kw)
+        return super(MyEntries, self).create_instance(ar, **kw)
 
 
-class MyEventsToday(MyEvents):
-    """Like :class:`MyEvents`, but only today."""
+class MyEntriesToday(MyEntries):
+    """Like :class:`MyEntries`, but only today."""
     label = _("My appointments today")
     column_names = 'start_time end_time project event_type '\
                    'summary workflow_buttons *'
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(MyEventsToday, self).param_defaults(ar, **kw)
+        kw = super(MyEntriesToday, self).param_defaults(ar, **kw)
         kw.update(end_date=dd.today())
         return kw
 
 
 
-class MyAssignedEvents(MyEvents):
+class MyAssignedEvents(MyEntries):
     """
     The table of events which are *assigned* to me. That is, whose
     :attr:`Event.assigned_to` field refers to the requesting user.
@@ -1030,7 +1030,7 @@ class MyOverdueAppointments(My, OverdueAppointments):
     required_roles = dd.login_required(OfficeUser)
     column_names = 'overview project owner event_type workflow_buttons *'
 
-class MyUnconfirmedAppointments(MyEvents):
+class MyUnconfirmedAppointments(MyEntries):
     """Shows appointments in the near future which are still in draft
     state.
 
@@ -1048,7 +1048,7 @@ class MyUnconfirmedAppointments(MyEvents):
     def param_defaults(self, ar, **kw):
         kw = super(MyUnconfirmedAppointments, self).param_defaults(ar, **kw)
         kw.update(observed_event=EventEvents.pending)
-        kw.update(state=EventStates.draft)
+        kw.update(state=EntryStates.draft)
         kw.update(start_date=settings.SITE.today())
         kw.update(end_date=settings.SITE.today(14))
         kw.update(show_appointments=dd.YesNo.yes)

@@ -51,7 +51,7 @@ from lino.api import dd, rt
 cal = dd.resolve_app('cal')
 system = dd.resolve_app('system')
 
-from lino_xl.lib.cal.workflows import GuestStates, EventStates
+from lino_xl.lib.cal.workflows import GuestStates, EntryStates
 from lino.modlib.notify.actions import NotifyingAction
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 
@@ -127,7 +127,7 @@ def create_prompt_event(
     ekw.update(start_date=today)
     ekw.update(end_date=today)
     ekw.update(event_type=settings.SITE.site_config.prompt_calendar)
-    ekw.update(state=EventStates.published)
+    ekw.update(state=EntryStates.published)
     ekw.update(user=user)
     if summary:
         ekw.update(summary=summary)

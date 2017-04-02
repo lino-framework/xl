@@ -21,23 +21,23 @@ from django.conf import settings
 from lino.modlib.notify.actions import NotifyingAction
 from lino.api import dd
 
-from ..workflows import EventStates, GuestStates
+from ..workflows import EntryStates, GuestStates
 
-add = EventStates.add_item
+add = EntryStates.add_item
 # add('40', _("Notified"), 'published', edit_guests=True,
 add('40', _("Published"), 'published', edit_guests=True,
     fixed=True, button_text="☼")   # WHITE SUN WITH RAYS (U+263C)
 
-# EventStates.new.button_text ="⛶"  # SQUARE FOUR CORNERS (U+26F6)
-# EventStates.talk.button_text ="⚔"  # CROSSED SWORDS (U+2694)	
-# EventStates.opened.button_text = "☉"  # SUN (U+2609)	
-# # EventStates.started.button_text="☭"  # HAMMER AND SICKLE (U+262D)
-# EventStates.started.button_text = "⚒"  # HAMMER AND PICK (U+2692
-# EventStates.sticky.button_text="♥"  # BLACK HEART SUIT (U+2665)
-# EventStates.sleeping.button_text = "☾"  # LAST QUARTER MOON (U+263E)
-# EventStates.ready.button_text = "☐"  # BALLOT BOX \u2610
-# EventStates.closed.button_text = "☑"  # BALLOT BOX WITH CHECK \u2611
-# EventStates.cancelled.button_text="☒"  # BALLOT BOX WITH X (U+2612)
+# EntryStates.new.button_text ="⛶"  # SQUARE FOUR CORNERS (U+26F6)
+# EntryStates.talk.button_text ="⚔"  # CROSSED SWORDS (U+2694)	
+# EntryStates.opened.button_text = "☉"  # SUN (U+2609)	
+# # EntryStates.started.button_text="☭"  # HAMMER AND SICKLE (U+262D)
+# EntryStates.started.button_text = "⚒"  # HAMMER AND PICK (U+2692
+# EntryStates.sticky.button_text="♥"  # BLACK HEART SUIT (U+2665)
+# EntryStates.sleeping.button_text = "☾"  # LAST QUARTER MOON (U+263E)
+# EntryStates.ready.button_text = "☐"  # BALLOT BOX \u2610
+# EntryStates.closed.button_text = "☑"  # BALLOT BOX WITH CHECK \u2611
+# EntryStates.cancelled.button_text="☒"  # BALLOT BOX WITH X (U+2612)
 
 
 GuestStates.clear()
@@ -62,7 +62,7 @@ class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
     def get_action_permission(self, ar, obj, state):
         if obj.partner_id is None:
             return False
-        if obj.event.state != EventStates.published:
+        if obj.event.state != EntryStates.published:
             return False
         return super(InvitationFeedback,
                      self).get_action_permission(ar, obj, state)
@@ -104,7 +104,7 @@ class MarkPresent(dd.ChangeStateAction):
     def get_action_permission(self, ar, obj, state):
         if not super(MarkPresent, self).get_action_permission(ar, obj, state):
             return False
-        return obj.event_id and (obj.event.state == EventStates.took_place)
+        return obj.event_id and (obj.event.state == EntryStates.took_place)
 
 
 class MarkAbsent(dd.ChangeStateAction):
@@ -179,13 +179,13 @@ GuestStates.absent.add_transition(MarkAbsent)
 GuestStates.excused.add_transition(MarkExcused)
 
 
-EventStates.published.add_transition(PublishEvent)
-# EventStates.published.add_transition(  # _("Confirm"),
+EntryStates.published.add_transition(PublishEvent)
+# EntryStates.published.add_transition(  # _("Confirm"),
 #     required_states='suggested draft',
 #     icon_name='accept',
 #     help_text=_("Mark this as published. "
 #                 "All participants have been informed."))
-EventStates.took_place.add_transition(CloseMeeting, name='close_meeting')
-EventStates.cancelled.add_transition(CancelEvent)
-# EventStates.omitted.add_transition(required_states="suggested draft published")
-EventStates.draft.add_transition(ResetEvent)
+EntryStates.took_place.add_transition(CloseMeeting, name='close_meeting')
+EntryStates.cancelled.add_transition(CancelEvent)
+# EntryStates.omitted.add_transition(required_states="suggested draft published")
+EntryStates.draft.add_transition(ResetEvent)

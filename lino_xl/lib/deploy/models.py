@@ -19,6 +19,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored
 
 from lino_xl.lib.tickets.models import site_model
+from lino_xl.lib.clocking.mixins import Workable
 
 class WishTypes(dd.ChoiceList):
     required_roles = dd.login_required(dd.SiteStaff)
@@ -100,7 +101,7 @@ add('40', _("Surprise"), "surprise")
 
 
 @dd.python_2_unicode_compatible
-class Deployment(Sequenced):
+class Deployment(Sequenced, Workable):
     """A **wish** (formerly deployment) is the fact that a given ticket is
     being fixed (or installed or activated) by a given milestone (to a
     given site).
@@ -117,11 +118,16 @@ class Deployment(Sequenced):
 
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
-    milestone = dd.ForeignKey(dd.plugins.tickets.milestone_model)
+    milestone = dd.ForeignKey(
+        dd.plugins.tickets.milestone_model,
+        related_name="wishes_by_milestone")
     remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
     wish_type = WishTypes.field(blank=True, null=True)
 
+    def get_ticket(self):
+        return self.ticket
+    
     def get_siblings(self):
         "Overrides :meth:`lino.mixins.Sequenced.get_siblings`"
         qs = self.__class__.objects.filter(

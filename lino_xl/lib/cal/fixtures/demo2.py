@@ -60,7 +60,7 @@ def objects():
         s2duration(s) for s in (
             '01:00', '01:15', '1:30', '1:45', '2:00', '2:30', '3:00')])
     ACL = Cycler(cal.AccessClasses.items())
-    STATES = Cycler(cal.EventStates.items())
+    STATES = Cycler(cal.EntryStates.items())
     SUMMARIES = Cycler((
         dict(en='Lunch', de=u"Mittagessen", fr=u"Diner"),
         dict(en='Dinner', de=u"Abendessen", fr=u"Souper"),

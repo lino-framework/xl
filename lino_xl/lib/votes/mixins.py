@@ -57,18 +57,34 @@ vote exists.
             yield (vote.user, vote.mail_mode or vote.user.mail_mode)
 
     def set_author_votes(self):
-        """Verifies that every vote rater has a vote."""
+        """Verify that every vote rater has a vote.
+
+        The raters of a vote are returned by :meth:`get_vote_raters`.
+
+        """
+        # wanted_votes = dict()
+        # def collect(user, state):
+        #     if user in wanted_votes:
+        #         return
         for user in self.get_vote_raters():
-            vote = self.get_favourite(user)
-            if vote is None:
-                create_row(
-                    rt.models.votes.Vote, user=user, votable=self,
-                    state=VoteStates.author)
-            # elif vote.state != VoteStates.author:
-            #     vote.state = VoteStates.author
-            #     vote.full_clean()
-            #     vote.save()
+            self.set_auto_vote(user, VoteStates.author)
+        # for user, state in wanted_votes.items():
+        #     self.set_auto_vote(user, state)
+            
+    def on_commented(self, comment, ar, cw):
+        super(Votable, self).on_commented(comment, ar, cw)
+        self.set_auto_vote(comment.user, VoteStates.invited)
+        
+    def set_auto_vote(self, user, state):
+        vote = self.get_favourite(user)
+        if vote is None:
+            create_row(
+                rt.models.votes.Vote, user=user,
+                votable=self, state=state)
                 
     def after_ui_save(self, ar, cw):
-        self.set_author_votes()
+        """Automatically call :meth:`set_author_votes` after saving.
+
+        """
         super(Votable, self).after_ui_save(ar, cw)
+        self.set_author_votes()

@@ -122,7 +122,7 @@ class DeploymentsByMilestone(Deployments):
     # label = _("Deployed tickets")
     order_by = ['seqno']
     master_key = 'milestone'
-    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 wish_type remark:30  *"
+    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 wish_type remark:30 workflow_buttons *"
     insert_layout = dd.InsertLayout("""
     ticket
     remark
@@ -180,7 +180,8 @@ class DeploymentsByTicket(Deployments):
         """
         sar = cls.request_from(ar, master_instance=obj)
         html = []
-        items = [ar.obj2html(o, str(o.milestone)) for o in sar]
+        # items = [ar.obj2html(o, str(o.milestone)) for o in sar]
+        items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)
         if sar.get_permission():
             btn = sar.ar2button()

@@ -231,7 +231,7 @@ class PanelEvents(Events):
         if ar.current_project is not None:
             obj.project = settings.SITE.project_model.objects.get(
                 pk=ar.current_project)
-            #~ obj.state = EventStates.published
+            #~ obj.state = EntryStates.published
         # logger.info('20140402 create_instance %s ', obj)
         return obj
 

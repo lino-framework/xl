@@ -17,7 +17,7 @@ from lino_xl.lib.cal.workflows import *
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 
-from ..workflows import GuestStates, EventStates
+from ..workflows import GuestStates, EntryStates
 
 
 class MarkEventTookPlace(dd.ChangeStateAction):
@@ -34,7 +34,7 @@ class MarkEventTookPlace(dd.ChangeStateAction):
 
 class ResetEvent(dd.ChangeStateAction):
     """Reset this event to 'suggested' state."""
-    button_text = EventStates.suggested.button_text
+    button_text = EntryStates.suggested.button_text
     label = _("Reset")
     # show_in_workflow = True
     # show_in_bbar = False
@@ -53,7 +53,7 @@ class ResetEvent(dd.ChangeStateAction):
         obj = ar.selected_rows[0]
 
         def ok(ar):
-            obj.state = EventStates.suggested
+            obj.state = EntryStates.suggested
             obj.save()
             ar.set_response(refresh=True)
 
@@ -100,38 +100,38 @@ GuestStates.invited.add_transition(
 
 # sender.modules.cal.Event.find_next_date = FindNextDate()
 
-# EventStates.suggested.add_transition(
+# EntryStates.suggested.add_transition(
 # "?",
 # _("Reset"),
 # required_states='draft took_place cancelled')
 # help_text=_("Set to suggested state."))
 
-EventStates.draft.add_transition(
+EntryStates.draft.add_transition(
     ResetEvent, name='reset_event')
     # "\u2610",  # BALLOT BOX
     # required_states='suggested took_place cancelled')
     # help_text=_("Set to draft state."))
 
-EventStates.took_place.add_transition(MarkEventTookPlace)
+EntryStates.took_place.add_transition(MarkEventTookPlace)
     # "\u2611",  # BALLOT BOX WITH CHECK
     # required_states='suggested draft cancelled')
     # help_text=_("Event took place."))
     #icon_name='emoticon_smile')
-#~ EventStates.absent.add_transition(states='published',icon_file='emoticon_unhappy.png')
-#~ EventStates.rescheduled.add_transition(_("Reschedule"),
+#~ EntryStates.absent.add_transition(states='published',icon_file='emoticon_unhappy.png')
+#~ EntryStates.rescheduled.add_transition(_("Reschedule"),
     #~ states='published',icon_file='date_edit.png')
-EventStates.cancelled.add_transition(
+EntryStates.cancelled.add_transition(
     # "\u2609",  # SUN
     # pgettext("calendar event action", "Cancel"),
     #~ owner=True,
     # help_text=_("Event was cancelled."),
     required_states='suggested draft took_place')
     # icon_name='cross')
-# EventStates.omitted.add_transition(
+# EntryStates.omitted.add_transition(
 #     pgettext("calendar event action", "Omit"),
 #     states='suggested draft took_place',
 #     icon_name='date_delete')
-# EventStates.suggested.add_transition(
+# EntryStates.suggested.add_transition(
 #     _("Reset"),
 #     required_states='draft took_place cancelled',
 #     help_text=_("Reset to 'suggested' state."))

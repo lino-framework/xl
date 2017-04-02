@@ -85,7 +85,7 @@ class Sessions(dd.Table):
     required_roles = dd.login_required(Worker)
     model = 'clocking.Session'
     column_names = 'ticket user start_date start_time end_date end_time '\
-                   'break_time summary duration  *'
+                   'break_time summary duration ticket_no  *'
 
     detail_layout = """
     ticket:40 user:20 faculty:20
@@ -138,7 +138,12 @@ class Sessions(dd.Table):
             qs = qs.filter(ticket__project__in=pv.project.whole_clan())
 
         if pv.company:
-            qs = qs.filter(ticket__project__company=pv.company)
+            if dd.is_installed('deploy'):
+                qs = qs.filter(
+                    ticket__deployments_by_ticket__milestone__room__company=pv.company)
+            else:
+                qs = qs.filter(ticket__project__company=pv.company)
+
 
         return qs
 
@@ -201,7 +206,7 @@ class SessionsByTicket(Sessions):
 
 class MySessions(Sessions):
     column_names = 'start_date start_time end_time '\
-                   'break_time duration ticket summary *'
+                   'break_time duration ticket_no summary *'
 
     @classmethod
     def param_defaults(self, ar, **kw):

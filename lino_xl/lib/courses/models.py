@@ -273,8 +273,10 @@ class Course(Reservation, Duplicable, PrintableObject):
     class Meta:
         app_label = 'courses'
         abstract = dd.is_abstract_model(__name__, 'Course')
-        verbose_name = _("Activity")
-        verbose_name_plural = _('Activities')
+        # verbose_name = _("Activity")
+        # verbose_name_plural = _('Activities')
+        verbose_name = _("Event")
+        verbose_name_plural = _('Events')
 
 
     site_field_name = 'room'

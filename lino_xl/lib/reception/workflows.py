@@ -23,7 +23,7 @@ from django.utils.translation import ugettext_lazy as _
 # from django.utils.translation import pgettext_lazy as pgettext
 
 from .models import GuestStates
-from .models import EventStates
+from .models import EntryStates
 
 
 class CloseMeeting(feedback.CloseMeeting):
@@ -54,4 +54,4 @@ class CloseMeeting(feedback.CloseMeeting):
         return rv
 
 
-EventStates.override_transition(close_meeting=CloseMeeting)
+EntryStates.override_transition(close_meeting=CloseMeeting)
