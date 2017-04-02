@@ -188,9 +188,9 @@ class Activities(dd.Table):
         teacher=models.ForeignKey(
             teacher_model, verbose_name=_("Instructor"),
             blank=True, null=True),
-        user=models.ForeignKey(
-            settings.SITE.user_model,
-            blank=True, null=True),
+        # user=models.ForeignKey(
+        #     settings.SITE.user_model,
+        #     blank=True, null=True),
         show_active=dd.YesNo.field(
             _("Active"), blank=True,
             help_text=_("Whether to show rows in some active state")),
@@ -199,7 +199,7 @@ class Activities(dd.Table):
     )
 
     params_layout = """topic line user teacher state 
-    can_enroll:10 start_date end_date show_active"""
+    room can_enroll:10 start_date end_date show_active"""
 
     # simple_parameters = 'line teacher state user'.split()
 
@@ -223,7 +223,7 @@ class Activities(dd.Table):
         s.add('line')
         s.add('teacher')
         s.add('state')
-        s.add('user')
+        # s.add('user')
         return s
 
     @classmethod
@@ -301,6 +301,8 @@ class CoursesByTeacher(Activities):
 
 class MyActivities(My, Activities):
     column_names = "start_date:8 room name line workflow_buttons *"
+    order_by = ['start_date']
+    
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyActivities, self).param_defaults(ar, **kw)

@@ -731,6 +731,22 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
         blank=True, null=True,
         verbose_name=_("Generate events until"))
 
+    @classmethod
+    def get_parameter_fields(cls, **fields):
+        """Adds the :attr:`room` filter parameter field."""
+        fld = cls._meta.get_field('room')
+        fields.setdefault(
+            'room', models.ForeignKey(
+                'cal.Room', verbose_name=fld.verbose_name,
+                blank=True, null=True))
+        return super(Reservation, cls).get_parameter_fields(**fields)
+
+    @classmethod
+    def get_simple_parameters(cls):
+        s = super(Reservation, cls).get_simple_parameters()
+        s.add('room')
+        return s
+
     def update_cal_until(self):
         return self.max_date
 

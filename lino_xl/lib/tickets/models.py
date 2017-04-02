@@ -383,18 +383,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
     duplicate_of = models.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
-    reported_for = dd.ForeignKey(
-        milestone_model,
-        related_name='tickets_reported',
-        verbose_name='Reported for',
-        blank=True, null=True,
-        help_text=_("Milestone for which this ticket has been reported."))
-    fixed_for = dd.ForeignKey(  # no longer used since 20150814
-        milestone_model,
-        related_name='tickets_fixed',
-        verbose_name='Fixed for',
-        blank=True, null=True,
-        help_text=_("The milestone for which this ticket has been fixed."))
     # assigned_to = dd.ForeignKey(
     #     settings.SITE.user_model,
     #     verbose_name=_("Assigned to"),
@@ -402,10 +390,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
     #     blank=True, null=True,
     #     help_text=_("The user who works on this ticket."))
 
-    reporter = dd.ForeignKey(
-        settings.SITE.user_model,
-        blank=True, null=True,
-        verbose_name=_("Reporter"))
     end_user = dd.ForeignKey(
         dd.plugins.faculties.end_user_model,
         verbose_name=_("End user"),
@@ -418,6 +402,22 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         blank=True, null=True)
 
     # deprecated fields:
+    reported_for = dd.ForeignKey(
+        milestone_model,
+        related_name='tickets_reported',
+        verbose_name='Reported for',
+        blank=True, null=True,
+        help_text=_("Milestone for which this ticket has been reported."))
+    fixed_for = dd.ForeignKey(  # no longer used since 20150814
+        milestone_model,
+        related_name='tickets_fixed',
+        verbose_name='Fixed for',
+        blank=True, null=True,
+        help_text=_("The milestone for which this ticket has been fixed."))
+    reporter = dd.ForeignKey(
+        settings.SITE.user_model,
+        blank=True, null=True,
+        verbose_name=_("Reporter"))
     waiting_for = models.CharField(
         _("Waiting for"), max_length=200, blank=True)
     feedback = models.BooleanField(
@@ -456,8 +456,12 @@ class Ticket(UserAuthored, mixins.CreatedModified,
                 self.private = False
 
     def on_worked(self, session):
-        super(Ticket, self).on_worked(session)
+        """This is automatically called when a work session has been created
+        or modified.
+
+        """
         self.set_auto_vote(session.user, VoteStates.invited)
+        self.touch()
         
     # def get_project_for_vote(self, vote):
     #     if self.project:
@@ -515,6 +519,8 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         """Overrides :meth:`lino.core.model.Model.get_overview_elems`.
         """
         elems = [ ar.obj2html(self) ]  # show full summary
+        # elems += [' ({})'.format(self.state.button_text)]
+        elems += [' ', self.state.button_text]
         if self.user and self.user != ar.get_user():
             elems += [ _(" by "), self.user.obj2href(ar)]
         if self.end_user_id:

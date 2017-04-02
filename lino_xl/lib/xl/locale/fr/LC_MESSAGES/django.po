@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-04-01 11:44+0300\n"
-"PO-Revision-Date: 2017-04-01 15:26+0300\n"
+"PO-Revision-Date: 2017-04-01 21:54+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -894,14 +894,12 @@ msgid " at "
 msgstr " à "
 
 #: lino_xl/lib/cal/models.py:93
-#, fuzzy
 msgid "Remote Calendar"
-msgstr "Calendrier par défaut"
+msgstr "Calendrier externe"
 
 #: lino_xl/lib/cal/models.py:94
-#, fuzzy
 msgid "Remote Calendars"
-msgstr "Calendrier par défaut"
+msgstr "Calendriers externes"
 
 #: lino_xl/lib/cal/models.py:97 lino_xl/lib/humanlinks/models.py:62
 #: lino_xl/lib/humanlinks/models.py:67 lino_xl/lib/tickets/models.py:626
@@ -934,7 +932,6 @@ msgid "Rooms"
 msgstr "Locaux"
 
 #: lino_xl/lib/cal/models.py:136
-#, fuzzy
 msgid "Responsible"
 msgstr "Utilisateur responsable"
 
@@ -953,17 +950,14 @@ msgid "Priorities"
 msgstr "Priorités"
 
 #: lino_xl/lib/cal/models.py:186
-#, fuzzy
 msgid "Calendar entry type"
 msgstr "Type d'entrée calendrier"
 
 #: lino_xl/lib/cal/models.py:187
-#, fuzzy
 msgid "Calendar entry types"
 msgstr "Types d'entrée calendrier"
 
 #: lino_xl/lib/cal/models.py:192
-#, fuzzy
 msgid "Appointment"
 msgstr "Rendez-vous"
 

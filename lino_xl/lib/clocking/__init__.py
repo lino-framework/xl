@@ -32,23 +32,24 @@ class Plugin(ad.Plugin):
     
     # ticket_model = 'tickets.Ticket'
     ticket_model = 'contacts.Partner'
-    """The model that is to be used as the "workable".
+    """The model that is to be used as the "ticket".
 
-    This must be a subclass of
-    :class:`lino_xl.lib.clocking.mixins.Workable`
+    This must be no longer a subclass of
+    :class:`lino_xl.lib.clocking.mixins.Workable`,
+    it must jusst have a method `on_worked`.
 
     """
 
     default_reporting_type = 'regular'
 
     def on_site_startup(self, site):
-        from .mixins import Workable
+        # from .mixins import Workable
         self.ticket_model = site.models.resolve(self.ticket_model)
-        if not issubclass(self.ticket_model, Workable):
-            msg = "Your plugins.clocking.ticket_model ({}) is not workable"
-            msg = msg.format(self.ticket_model)
-            # raise Exception(msg)
-            site.logger.warning(msg)
+        # if not issubclass(self.ticket_model, Workable):
+        #     msg = "Your plugins.clocking.ticket_model ({}) is not workable"
+        #     msg = msg.format(self.ticket_model)
+        #     # raise Exception(msg)
+        #     site.logger.warning(msg)
 
         if isinstance(self.default_reporting_type, six.string_types):
             x = site.models.clocking.ReportingTypes.get_by_name(

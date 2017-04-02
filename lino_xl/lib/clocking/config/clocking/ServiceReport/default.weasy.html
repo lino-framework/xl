@@ -12,6 +12,7 @@ to {{fdl(obj.end_date)}}
 
 {{ar.show(rt.models.clocking.SessionsByReport, obj, header_level=2)}}
 {{ar.show(rt.models.clocking.TicketsByReport, obj, header_level=2)}}
-{{ar.show(rt.models.clocking.ProjectsByReport, obj, header_level=2)}}
+{#ar.show(rt.models.clocking.ProjectsByReport, obj, header_level=2)#}
+{{ar.show(rt.models.clocking.CoursesByReport, obj, header_level=2)}}
 
 {%- endblock %}

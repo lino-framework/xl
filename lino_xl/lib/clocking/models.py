@@ -23,6 +23,7 @@ from lino.modlib.users.mixins import UserAuthored
 
 from .actions import EndThisSession, PrintActivityReport, EndTicketSession
 from .choicelists import ReportingTypes
+from .mixins import Workable
 
 
 class SessionType(mixins.BabelNamed):
@@ -36,7 +37,7 @@ class SessionType(mixins.BabelNamed):
 
 
 @dd.python_2_unicode_compatible
-class Session(UserAuthored, Started, Ended):
+class Session(UserAuthored, Started, Ended, Workable):
     """A **Session** is when a user works during a given lapse of time on
     a given Ticket.
 
@@ -133,6 +134,9 @@ class Session(UserAuthored, Started, Ended):
                 self.end_time.strftime(settings.SITE.time_format_strftime))
         return "%s # %s" % (self._meta.verbose_name, self.pk)
 
+    def get_ticket(self):
+        return self.ticket
+    
     def full_clean(self, *args, **kwargs):
         if not settings.SITE.loading_from_dump:
             if self.start_time is None:
@@ -200,8 +204,17 @@ class Session(UserAuthored, Started, Ended):
         #         diff -= self.break_time
         # return Duration(diff)
 
+    @dd.displayfield(_("Ticket #"))
+    def ticket_no(self, ar):
+        if ar is None:
+            return self.ticket_id
+        return self.ticket.obj2href(ar)  # self.ticket_id)
+
 dd.update_field(
     Session, 'user', blank=False, null=False, verbose_name=_("Worker"))
+
+Session.set_widget_options('ticket__id', label=_("Ticket #"))
+Session.set_widget_options('ticket_no', width=8)
 
 
 def welcome_messages(ar):
