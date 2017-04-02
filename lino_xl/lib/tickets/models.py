@@ -498,9 +498,8 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         if False and self.state.button_text:
             return "#{0} ({1} {2})".format(
                 self.id, self.state.button_text, self.summary)
-        
-        return "#{0} ({1})".format(self.id, self.summary)
-    
+        return "#{0} ({1} {2})".format(
+            self.id, self.summary, self.state.button_text)
 
     @dd.chooser()
     def reported_for_choices(cls, site):
@@ -520,7 +519,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         """
         elems = [ ar.obj2html(self) ]  # show full summary
         # elems += [' ({})'.format(self.state.button_text)]
-        elems += [' ', self.state.button_text]
+        # elems += [' ', self.state.button_text, ' ']
         if self.user and self.user != ar.get_user():
             elems += [ _(" by "), self.user.obj2href(ar)]
         if self.end_user_id:

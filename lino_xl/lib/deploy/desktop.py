@@ -180,7 +180,8 @@ class DeploymentsByTicket(Deployments):
         """
         sar = cls.request_from(ar, master_instance=obj)
         html = []
-        items = [ar.obj2html(o, str(o.milestone)) for o in sar]
+        # items = [ar.obj2html(o, str(o.milestone)) for o in sar]
+        items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)
         if sar.get_permission():
             btn = sar.ar2button()
