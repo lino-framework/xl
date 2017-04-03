@@ -486,7 +486,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
             rv.add('private')
         if not ar.get_user().profile.has_required_roles([Triager]):
             rv.add('user')
-            rv.add('end_user')
         return rv
 
     # def get_choices_text(self, request, actor, field):
@@ -499,7 +498,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
             return "#{0} ({1} {2})".format(
                 self.id, self.state.button_text, self.summary)
         return "#{0} ({1} {2})".format(
-            self.id, self.summary, self.state.button_text)
+            self.id, self.state.button_text, self.summary)
 
     @dd.chooser()
     def reported_for_choices(cls, site):
