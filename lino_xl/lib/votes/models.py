@@ -22,6 +22,8 @@ from lino.mixins import Created, ObservedPeriod
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.choicelists import MailModes
 from lino_xl.lib.cal.mixins import daterange_text
+from lino_xl.lib.clocking.mixins import Workable
+
 from .roles import VotesUser, VotesStaff
 from .choicelists import VoteStates, VoteEvents  # , VoteViews
 from .choicelists import Ratings
@@ -30,7 +32,7 @@ from .actions import EditVote
 config = dd.plugins.votes
 
 @dd.python_2_unicode_compatible
-class Vote(UserAuthored, Created):
+class Vote(UserAuthored, Created, Workable):
     """A **vote** is when a user has an opinion or interest about a given
     ticket (or any other votable).
 
@@ -128,6 +130,9 @@ class Vote(UserAuthored, Created):
             vote=self._meta.verbose_name,
             votable=None)
 
+    def get_ticket(self):
+        return self.votable
+    
     def disabled_fields(self, ar):
         df = super(Vote, self).disabled_fields(ar)
         if self.votable_id:

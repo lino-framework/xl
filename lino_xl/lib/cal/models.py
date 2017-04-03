@@ -34,7 +34,7 @@ from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
-from .workflows import (TaskStates, EventStates, GuestStates)
+from .workflows import (TaskStates, EntryStates, GuestStates)
 
 # removed from default config because you cannot easily unload it again
 # from .workflows import take
@@ -42,8 +42,8 @@ from .workflows import (TaskStates, EventStates, GuestStates)
 from .mixins import Component
 from .mixins import EventGenerator, RecurrenceSet, Reservation
 from .mixins import Ended
-from .mixins import MoveEventNext, UpdateEvents, UpdateEventsByEvent
-from .actions import ShowEventsByDay
+from .mixins import MoveEntryNext, UpdateEntries, UpdateEntriesByEvent
+from .actions import ShowEntriesByDay
 
 from .ui import ConflictingEvents
 
@@ -119,8 +119,8 @@ class RemoteCalendar(mixins.Sequenced):
 
 
 class Room(mixins.BabelNamed, ContactRelated):
-    """A location where calendar events can happen.  For a given Room you
-    can see the :class:`EventsByRoom` that happened (or will happen)
+    """A location where calendar entries can happen.  For a given Room you
+    can see the :class:`EntriesByRoom` that happened (or will happen)
     there.  A Room has a multilingual name.
 
     """
@@ -138,7 +138,7 @@ dd.update_field(
     Room, 'contact_person', verbose_name=_("Contact person"))    
 
 class Priority(mixins.BabelNamed):
-    "The priority of a Task or Event."
+    "The priority of a task or entry."
     class Meta:
         app_label = 'cal'
         verbose_name = _("Priority")
@@ -152,17 +152,30 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
 
     .. attribute:: is_appointment
 
-        Whether events of this type should be considered
+        Whether entries of this type should be considered
         "appointments" (i.e. whose time and place have been agreed
         upon with other users or external parties).
 
-        Certain tables show only events whose type has the
+        Certain tables show only entries whose type has the
         `is_appointment` field checked.  See :attr:`show_appointments
-        <lino_xl.lib.cal.ui.Events.show_appointments>`.
+        <lino_xl.lib.cal.ui.Entries.show_appointments>`.
 
     .. attribute:: max_days
 
         The maximal number of days allowed as duration.
+
+    .. attribute:: locks_user
+
+        Whether calendar entries of this type make the user
+        unavailable for other locking events at the same time.
+
+    .. attribute:: max_conflicting
+
+        How many conflicting events should be tolerated.
+
+    .. attribute:: event_label
+
+        Default text for summary of new entries.
 
     """
     templates_group = 'cal/Event'
@@ -170,37 +183,26 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'EventType')
-        verbose_name = _("Calendar Event Type")
-        verbose_name_plural = _("Calendar Event Types")
+        verbose_name = _("Calendar entry type")
+        verbose_name_plural = _("Calendar entry types")
         ordering = ['seqno']
 
     description = dd.RichTextField(
         _("Description"), blank=True, format='html')
-    is_appointment = models.BooleanField(
-        _("Event is an appointment"), default=True)
+    is_appointment = models.BooleanField(_("Appointment"), default=True)
     all_rooms = models.BooleanField(_("Locks all rooms"), default=False)
-    locks_user = models.BooleanField(
-        _("Locks the user"),
-        help_text=_(
-            "Whether events of this type make the user unavailable "
-            "for other locking events at the same time."),
-        default=False)
+    locks_user = models.BooleanField(_("Locks the user"), default=False)
 
     start_date = models.DateField(
         verbose_name=_("Start date"),
         blank=True, null=True)
     event_label = dd.BabelCharField(
-        _("Event label"),
-        max_length=200, blank=True,
-        help_text=_("Default text for summary of new events."))
+        _("Entry label"), max_length=200, blank=True)
     # , default=_("Calendar entry"))
     # default values for a Babelfield don't work as expected
 
     max_conflicting = models.PositiveIntegerField(
-        _("Simultaneous events"),
-        help_text=_("How many conflicting events should be tolerated."),
-        default=1)
-
+        _("Simultaneous entries"), default=1)
     max_days = models.PositiveIntegerField(
         _("Maximum days"), default=1)
 
@@ -327,25 +329,29 @@ class Task(Component):
         # ~ return "#" + str(self.pk)
 
 class EventPolicy(mixins.BabelNamed, RecurrenceSet):
-    """An **event policy** is mostly a rule used for generating automatic
-    events.
+    """A **recurrency policy** is a rule used for generating automatic
+    calendar entries.
+
+    .. attribute:: event_type
+
+        Generated calendar entries will have this type.
 
     """
     class Meta:
         app_label = 'cal'
-        verbose_name = _("Event Policy")
-        verbose_name_plural = _('Event Policies')
+        verbose_name = _("Recurrency policy")
+        verbose_name_plural = _('Recurrency policies')
         abstract = dd.is_abstract_model(__name__, 'EventPolicy')
 
     event_type = dd.ForeignKey(
-        'cal.EventType', null=True, blank=True,
-        help_text=_("""Generated events will receive this type."""))
+        'cal.EventType', null=True, blank=True)
 
 
 
 class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
                      UserAuthored):
-    """A rule designed to generate a series of recurrent events.
+    """A **recurring event** describes a series of recurrent calendar
+    entries.
     
     .. attribute:: name
 
@@ -365,8 +371,8 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
     """
     class Meta:
         app_label = 'cal'
-        verbose_name = _("Recurrent event rule")
-        verbose_name_plural = _("Recurrent event rules")
+        verbose_name = _("Recurring event")
+        verbose_name_plural = _("Recurring events")
         abstract = dd.is_abstract_model(__name__, 'RecurrentEvent')
 
     event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
@@ -411,13 +417,15 @@ dd.update_field(
 
 
 class UpdateGuests(dd.MultipleRowAction):
-    """Updates the list of participants for this event according to the
-    suggestions. Calls :meth:`suggest_guests` to
-    instantiate them.
+    """Populate or update the list of participants for this entry
+    according to the suggestions. 
+
+
+    Calls :meth:`suggest_guests` to instantiate them.
 
     - No guests are added when loading from dump
 
-    - The event must be in a state which allows editing the guests
+    - The entry must be in a state which allows editing the guests
 
     - Deletes existing guests in state invited that are no longer
       suggested
@@ -427,7 +435,6 @@ class UpdateGuests(dd.MultipleRowAction):
     label = _('Update Guests')
     # icon_name = 'lightning'
     button_text = ' ☷ '  # 2637
-    help_text = _("Populate or update the list of guests for this event.")
 
     def run_on_row(self, obj, ar):
         if settings.SITE.loading_from_dump:
@@ -512,15 +519,15 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     .. attribute:: assigned_to
 
         Another user who is expected to take responsibility for this
-        event.
+        entry.
 
         See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`.
 
     .. attribute:: event_type
 
-         The type of this event. Every calendar event should have this
+         The type of this entry. Every calendar entry should have this
          field pointing to a given :class:`EventType`, which holds
-         extended configurable information about this event.
+         extended configurable information about this entry.
 
     .. attribute:: state
 
@@ -528,11 +535,16 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         rules defined by the workflow, that's why we sometimes refer
         to it as the life cycle.
 
+    .. attribute:: transparent
+
+        Indicates that this entry shouldn't prevent other entries at
+        the same time.
+
     .. attribute:: when_html
 
-         Shows the date and time of the event with a link that opens
-         all events on that day (:class:`EventsByDay
-         <lino_xl.lib.cal.ui.EventsByDay>`).
+         Shows the date and time of the entry with a link that opens
+         all entries on that day (:class:`EntriesByDay
+         <lino_xl.lib.cal.ui.EntriesByDay>`).
 
     .. attribute:: show_conflicting
 
@@ -551,21 +563,19 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         # verbose_name_plural = pgettext("cal", "Events")
 
     update_guests = UpdateGuests()
-    update_events = UpdateEventsByEvent()
-    show_today = ShowEventsByDay('start_date')
+    update_events = UpdateEntriesByEvent()
+    show_today = ShowEntriesByDay('start_date')
 
     event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
 
-    transparent = models.BooleanField(
-        _("Transparent"), default=False, help_text=_("""\
-Indicates that this Event shouldn't prevent other Events at the same time."""))
-    room = dd.ForeignKey('cal.Room', null=True, blank=True)  # iCal:LOCATION
+    transparent = models.BooleanField(_("Transparent"), default=False)
+    room = dd.ForeignKey('cal.Room', null=True, blank=True)
     priority = models.ForeignKey(Priority, null=True, blank=True)
-    state = EventStates.field(
-        default=EventStates.suggested.as_callable)  # iCal:STATUS
+    state = EntryStates.field(
+        default=EntryStates.suggested.as_callable)
     all_day = ExtAllDayField(_("all day"))
 
-    move_next = MoveEventNext()
+    move_next = MoveEntryNext()
 
     show_conflicting = dd.ShowSlaveTable(ConflictingEvents)
 
@@ -665,7 +675,7 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
         # course lesson should not tolerate another lesson on the same
         # date).
         qs = qs.filter(
-            Q(state__in=EventStates.filter(transparent=False)) | Q(
+            Q(state__in=EntryStates.filter(transparent=False)) | Q(
                 owner_id=self.owner_id, owner_type=self.owner_type))
 
         if self.room is None:
@@ -695,10 +705,10 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 
     def is_fixed_state(self):
         return self.state.fixed
-        # return self.state in EventStates.editable_states
+        # return self.state in EntryStates.editable_states
 
     def is_user_modified(self):
-        return self.state != EventStates.suggested
+        return self.state != EntryStates.suggested
 
     def after_ui_save(self, ar, cw):
         super(Event, self).after_ui_save(ar, cw)
@@ -744,8 +754,8 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 
         """
         # logger.info("20130528 before_ui_save")
-        if self.state is EventStates.suggested:
-            self.state = EventStates.draft
+        if self.state is EntryStates.suggested:
+            self.state = EntryStates.draft
         return super(Event, self).before_ui_save(ar, **kw)
 
     def on_create(self, ar):
@@ -804,9 +814,9 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
     def when_html(self, ar):
         if ar is None:
             return ''
-        EventsByDay = settings.SITE.modules.cal.EventsByDay
+        EntriesByDay = settings.SITE.modules.cal.EntriesByDay
         txt = when_text(self.start_date, self.start_time)
-        return EventsByDay.as_link(ar, self.start_date, txt)
+        return EntriesByDay.as_link(ar, self.start_date, txt)
 
     @dd.displayfield(_("Link URL"))
     def url(self, ar):
@@ -861,13 +871,13 @@ Indicates that this Event shouldn't prevent other Events at the same time."""))
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 
 
-class EventChecker(Checker):
+class EntryChecker(Checker):
     model = Event
     def get_responsible_user(self, obj):
         return obj.user or super(
-            EventChecker, self).get_responsible_user(obj)
+            EntryChecker, self).get_responsible_user(obj)
     
-class EventGuestChecker(EventChecker):
+class EventGuestChecker(EntryChecker):
     """Check for calendar entries without participants.
 
     :message:`No participants although N suggestions exist.` --
@@ -875,7 +885,7 @@ class EventGuestChecker(EventChecker):
     this by adding the suggested guests.
 
     """
-    verbose_name = _("Events without participants")
+    verbose_name = _("Entries without participants")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.state.edit_guests:
@@ -893,11 +903,11 @@ class EventGuestChecker(EventChecker):
 EventGuestChecker.activate()
 
 
-class ConflictingEventsChecker(EventChecker):
-    """Check whether this event conflicts with other events.
+class ConflictingEventsChecker(EntryChecker):
+    """Check whether this entry conflicts with other events.
 
     """
-    verbose_name = _("Check for conflicting events")
+    verbose_name = _("Check for conflicting calendar entries")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.has_conflicting_events():
@@ -913,15 +923,15 @@ class ConflictingEventsChecker(EventChecker):
 ConflictingEventsChecker.activate()
 
 
-class ObsoleteEventTypeChecker(EventChecker):
-    """Check whether the type of this event should be updated.
+class ObsoleteEventTypeChecker(EntryChecker):
+    """Check whether the type of this calendar entry should be updated.
 
     This can happen when the configuration has changed and there are
-    automatic events which had been generated using the old
+    automatic entries which had been generated using the old
     configuration.
 
     """
-    verbose_name = _("Obsolete event type of generated events")
+    verbose_name = _("Obsolete event type of generated entries")
 
     def get_plausibility_problems(self, obj, fix=False):
         if not obj.auto_type:
@@ -939,12 +949,12 @@ class ObsoleteEventTypeChecker(EventChecker):
 ObsoleteEventTypeChecker.activate()
 
 
-class LongEventChecker(EventChecker):
-    """Check for events which last longer than the maximum number of days
+class LongEntryChecker(EntryChecker):
+    """Check for entries which last longer than the maximum number of days
     allowed by their type.
 
     """
-    verbose_name = _("Too long-lasting events")
+    verbose_name = _("Too long-lasting calendar entries")
     model = Event
 
     def get_plausibility_problems(self, obj, fix=False):
@@ -965,7 +975,7 @@ class LongEventChecker(EventChecker):
                 obj.full_clean()
                 obj.save()
 
-LongEventChecker.activate()
+LongEntryChecker.activate()
 
 
 @dd.python_2_unicode_compatible
@@ -1135,7 +1145,7 @@ events after the given date.""")
     ))
 
 
-Reservation.show_today = ShowEventsByDay('start_date')
+Reservation.show_today = ShowEntriesByDay('start_date')
 
 if False:  # removed 20160610 because it is probably not used
 
@@ -1148,7 +1158,7 @@ if False:  # removed 20160610 because it is probably not used
                 n += 1
         return n
 
-    class UpdateUserReminders(UpdateEvents):
+    class UpdateUserReminders(UpdateEntries):
 
         """
         Users can invoke this to re-generate their automatic tasks.

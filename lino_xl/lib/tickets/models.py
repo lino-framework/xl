@@ -97,8 +97,10 @@ class Project(mixins.DatePeriod, TimeInvestment,
               ContactRelated):
     class Meta:
         app_label = 'tickets'
-        verbose_name = _("Project")
-        verbose_name_plural = _('Projects')
+        # verbose_name = _("Project")
+        # verbose_name_plural = _('Projects')
+        verbose_name = _("Mission")
+        verbose_name_plural = _('Missions')
 
     name = models.CharField(_("Name"), max_length=200)
     # parent = models.ForeignKey(
@@ -381,18 +383,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
     duplicate_of = models.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
-    reported_for = dd.ForeignKey(
-        milestone_model,
-        related_name='tickets_reported',
-        verbose_name='Reported for',
-        blank=True, null=True,
-        help_text=_("Milestone for which this ticket has been reported."))
-    fixed_for = dd.ForeignKey(  # no longer used since 20150814
-        milestone_model,
-        related_name='tickets_fixed',
-        verbose_name='Fixed for',
-        blank=True, null=True,
-        help_text=_("The milestone for which this ticket has been fixed."))
     # assigned_to = dd.ForeignKey(
     #     settings.SITE.user_model,
     #     verbose_name=_("Assigned to"),
@@ -400,10 +390,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
     #     blank=True, null=True,
     #     help_text=_("The user who works on this ticket."))
 
-    reporter = dd.ForeignKey(
-        settings.SITE.user_model,
-        blank=True, null=True,
-        verbose_name=_("Reporter"))
     end_user = dd.ForeignKey(
         dd.plugins.faculties.end_user_model,
         verbose_name=_("End user"),
@@ -416,6 +402,22 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         blank=True, null=True)
 
     # deprecated fields:
+    reported_for = dd.ForeignKey(
+        milestone_model,
+        related_name='tickets_reported',
+        verbose_name='Reported for',
+        blank=True, null=True,
+        help_text=_("Milestone for which this ticket has been reported."))
+    fixed_for = dd.ForeignKey(  # no longer used since 20150814
+        milestone_model,
+        related_name='tickets_fixed',
+        verbose_name='Fixed for',
+        blank=True, null=True,
+        help_text=_("The milestone for which this ticket has been fixed."))
+    reporter = dd.ForeignKey(
+        settings.SITE.user_model,
+        blank=True, null=True,
+        verbose_name=_("Reporter"))
     waiting_for = models.CharField(
         _("Waiting for"), max_length=200, blank=True)
     feedback = models.BooleanField(
@@ -454,8 +456,12 @@ class Ticket(UserAuthored, mixins.CreatedModified,
                 self.private = False
 
     def on_worked(self, session):
-        super(Ticket, self).on_worked(session)
+        """This is automatically called when a work session has been created
+        or modified.
+
+        """
         self.set_auto_vote(session.user, VoteStates.invited)
+        self.touch()
         
     # def get_project_for_vote(self, vote):
     #     if self.project:
@@ -480,7 +486,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
             rv.add('private')
         if not ar.get_user().profile.has_required_roles([Triager]):
             rv.add('user')
-            rv.add('end_user')
         return rv
 
     # def get_choices_text(self, request, actor, field):
@@ -492,9 +497,8 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         if False and self.state.button_text:
             return "#{0} ({1} {2})".format(
                 self.id, self.state.button_text, self.summary)
-        
-        return "#{0} ({1})".format(self.id, self.summary)
-    
+        return "#{0} ({1} {2})".format(
+            self.id, self.state.button_text, self.summary)
 
     @dd.chooser()
     def reported_for_choices(cls, site):
@@ -513,6 +517,8 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         """Overrides :meth:`lino.core.model.Model.get_overview_elems`.
         """
         elems = [ ar.obj2html(self) ]  # show full summary
+        # elems += [' ({})'.format(self.state.button_text)]
+        # elems += [' ', self.state.button_text, ' ']
         if self.user and self.user != ar.get_user():
             elems += [ _(" by "), self.user.obj2href(ar)]
         if self.end_user_id:

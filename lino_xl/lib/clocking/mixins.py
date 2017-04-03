@@ -32,9 +32,11 @@ class Workable(dd.Model):
     class Meta:
         abstract = True
 
-    if dd.is_installed('clocking'):
-        start_session = StartTicketSession()
-        end_session = EndTicketSession()
+    start_session = StartTicketSession()
+    end_session = EndTicketSession()
+
+    def get_ticket(self):
+        return self
 
     def is_workable_for(self, user):
         """Return True if the given user can start a working session on this
@@ -43,10 +45,10 @@ class Workable(dd.Model):
         """
         return True
 
-    def on_worked(self, session):
-        """This is automatically called when a work session has been created
-        or modified.
+    # def on_worked(self, session):
+    #     """This is automatically called when a work session has been created
+    #     or modified.
 
-        """
-        pass
+    #     """
+    #     pass
     

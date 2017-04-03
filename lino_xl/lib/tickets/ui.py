@@ -77,7 +77,7 @@ class ProjectDetail(dd.DetailLayout):
     company assign_to #contact_person #contact_role private closed
     start_date end_date srcref_url_template changeset_url_template
     ProjectsByParent #deploy.MilestonesByProject
-    # cal.EventsByProject
+    # cal.EntriesByProject
     """, label=_("More"))
 
 

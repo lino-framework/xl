@@ -151,7 +151,7 @@ class BookingDetail(dd.DetailLayout):
     max_events max_date every_unit every 
     monday tuesday wednesday thursday friday saturday sunday
     company contact_person user id:8
-    cal.EventsByController
+    cal.EntriesByController
     """, label=_("General"))
 
     #~ def setup_handle(self,dh):

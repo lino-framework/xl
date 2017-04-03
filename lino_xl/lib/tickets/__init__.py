@@ -19,8 +19,8 @@ from lino.api import ad, _
 
 class Plugin(ad.Plugin):
 
-    # verbose_name = _("Tickets")
-    verbose_name = _("Projects")
+    verbose_name = _("Tickets")
+    # verbose_name = _("Projects")
 
     needs_plugins = [
         # 'lino_xl.lib.stars',

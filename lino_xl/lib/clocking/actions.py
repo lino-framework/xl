@@ -21,8 +21,8 @@ class WorkerAction(dd.Action):
     readonly = False
     required_roles = dd.login_required(Worker)
 
-    def get_workables(self, ar):
-        return ar.selected_rows
+    # def get_workables(self, ar):
+    #     return ar.selected_rows
 
 class EndSession(WorkerAction):
     """Close a given session, i.e. stop working on that ticket for this
@@ -54,10 +54,11 @@ class EndThisSession(EndSession):
                 obj.set_datetime('end', now)
                 # obj.end_date = dd.today()
                 # obj.end_time = now.time()
+                obj.full_clean()
                 obj.save()
-                obj.ticket.touch()
-                obj.ticket.save()
-                ar2.set_response(refresh=True)
+                # obj.ticket.touch()
+                # obj.ticket.save()
+            ar2.set_response(refresh=True)
 
         if True:
             ok(ar)
@@ -82,16 +83,17 @@ class EndTicketSession(EndSession):
             
         Session = rt.modules.clocking.Session
         qs = Session.objects.filter(
-            user=user, ticket=obj, end_time__isnull=True)
+            user=user, ticket=obj.get_ticket(), end_time__isnull=True)
         if qs.count() == 0:
             return False
         return True
 
     def run_from_ui(self, ar, **kw):
         Session = rt.modules.clocking.Session
-        for ticket in self.get_workables(ar):
+        # for ticket in self.get_workables(ar):
+        for obj in ar.selected_rows:
             ses = Session.objects.get(
-                user=ar.get_user(), ticket=ticket,
+                user=ar.get_user(), ticket=obj.get_ticket(),
                 end_time__isnull=True)
             ses.set_datetime('end', timezone.now())
             ses.full_clean()
@@ -124,27 +126,28 @@ class StartTicketSession(WorkerAction):
             return False
         Session = rt.modules.clocking.Session
         qs = Session.objects.filter(
-            user=user, ticket=obj, end_time__isnull=True)
+            user=user, ticket=obj.get_ticket(), end_time__isnull=True)
         if qs.count():
             return False
         return True
 
     def run_from_ui(self, ar, **kw):
         me = ar.get_user()
-        for obj in self.get_workables(ar):
-            ses = rt.modules.clocking.Session(ticket=obj, user=me)
+        for obj in ar.selected_rows:
+            ses = rt.modules.clocking.Session(
+                ticket=obj.get_ticket(), user=me)
             ses.full_clean()
             ses.save()
         ar.set_response(refresh=True)
 
 
-if dd.is_installed('clocking'):  # Sphinx autodoc
-    dd.inject_action(
-        dd.plugins.clocking.ticket_model,
-        start_session=StartTicketSession())
-    dd.inject_action(
-        dd.plugins.clocking.ticket_model,
-        end_session=EndTicketSession())
+# if dd.is_installed('clocking'):  # Sphinx autodoc
+#     dd.inject_action(
+#         dd.plugins.clocking.ticket_model,
+#         start_session=StartTicketSession())
+#     dd.inject_action(
+#         dd.plugins.clocking.ticket_model,
+#         end_session=EndTicketSession())
 
 
 class PrintActivityReport(DirectPrintAction):

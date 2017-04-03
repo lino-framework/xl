@@ -46,7 +46,7 @@ class Plugin(ad.Plugin):
         app = site.plugins.reception
         m = m.add_menu(app.app_name, app.verbose_name)
 
-        m.add_action('cal.EventsByDay')
+        m.add_action('cal.EntriesByDay')
 
         m.add_action('reception.WaitingVisitors')
         m.add_action('reception.BusyVisitors')
