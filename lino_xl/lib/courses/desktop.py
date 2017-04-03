@@ -140,7 +140,8 @@ class CourseDetail(dd.DetailLayout):
     # end = "end_date end_time"
     # freq = "every every_unit"
     # start end freq
-    main = "general events enrolments"
+    
+    main = "general cal_tab enrolments"
     
     general = dd.Panel("""
     line teacher start_date end_date start_time end_time
@@ -149,11 +150,11 @@ class CourseDetail(dd.DetailLayout):
     description
     """, label=_("General"))
     
-    events = dd.Panel("""
+    cal_tab = dd.Panel("""
     max_events max_date every_unit every
     monday tuesday wednesday thursday friday saturday sunday
     cal.EntriesByController
-    """, label=_("Events"))
+    """, label=_("Calendar"))
 
     enrolments_top = 'enrolments_until max_places:10 confirmed free_places:10 print_actions:15'
 
