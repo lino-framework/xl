@@ -49,9 +49,6 @@ class Messages(dd.Table):
         qs = super(Messages, self).get_request_queryset(ar)
         pv = ar.param_values
 
-        if pv.show_assigned is None:
-            print("2015")
-            
         if pv.show_assigned == dd.YesNo.no:
             qs = qs.filter(ticket__isnull=True)
         elif pv.show_assigned == dd.YesNo.yes:
