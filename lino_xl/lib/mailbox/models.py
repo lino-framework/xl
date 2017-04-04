@@ -30,24 +30,10 @@ def spam(obj):
 
 dd.inject_field('django_mailbox.Message', 'preview',
                 dd.VirtualField(dd.HtmlBox(_("Preview")), preview))
+dd.inject_field('django_mailbox.Message', 'ticket',
+                dd.ForeignKey('tickets.Ticket', blank=True, null=True))
 
-class MessagePointer(dd.Model):
-
-    class Meta:
-        app_label ='mailbox'
-        verbose_name =_("Message pointer")
-        verbose_name_plural =_("Message pointers")
-
-    @dd.htmlbox(_("Preview"))
-    def preview(self, ar):
-        if ar is None:
-            return ""
-        return self.message.html or self.message.text
-
-    message = dd.ForeignKey("django_mailbox.Message", related_name="pointer")
-
-    ticket = dd.ForeignKey('tickets.Ticket')
-
+dd.update_field('django_mailbox.Message', 'from_header', format="plain")
 
 
 from .ui import *
@@ -75,9 +61,9 @@ class DeleteSpam(dd.Action):
 
     def run_from_ui(self, ar, **kw):
         spams = rt.models.django_mailbox.Message.objects.filter(spam = True)
-        logger.info("Deleting Spam Messages [%s]"%spams)
+        logger.info("Deleting spam messages [%s]", spams)
         for obj in spams:
             obj.delete()
         ar.set_response(refresh=True)
 
-dd.inject_action("django_mailbox.Message", DeleteSpam=DeleteSpam())
+dd.inject_action("django_mailbox.Message", delete_spam=DeleteSpam())

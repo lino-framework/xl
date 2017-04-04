@@ -1,13 +1,16 @@
-# Copyright 2013-2016 Luc Saffre
+# Copyright 2017 Tonis Piip, Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
-"""Adds a radical maildev server to the lino-application.
+"""Adds a radicale caldav server to the application.
 
-    Requires radical to be installed
+Requires radicale to be installed.
+
 
 .. autosummary::
-   :toctree:
+    :toctree:
+
+    views
 
 """
 

@@ -1,5 +1,4 @@
 # Copyright 2008-2017 Luc Saffre
-#
 # License: BSD (see file COPYING for details)
 
 """These are the plugins included with Lino XL.
@@ -58,6 +57,7 @@ Office
     outbox
     postings
     mailbox
+    caldav
 
 System extensions
 =================

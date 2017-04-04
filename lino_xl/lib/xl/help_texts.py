@@ -1120,7 +1120,7 @@ given User."""),
 or ToDo)."""),
     'lino_xl.lib.tickets.ui.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
 or ToDo)."""),
-    'lino_xl.lib.tickets.ui.Tickets.show_assigned' : _("""Show only (or hide) tickets which are assigned to somebody."""),
+    'lino_xl.lib.tickets.ui.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
     'lino_xl.lib.tickets.ui.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
     'lino_xl.lib.tickets.ui.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
     'lino_xl.lib.tickets.ui.Tickets.model' : _("""alias of Ticket"""),

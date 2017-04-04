@@ -450,7 +450,7 @@ class Tickets(dd.Table):
 
     .. attribute:: show_assigned
 
-        Show only (or hide) tickets which are assigned to somebody.
+        Show only (or hide) tickets that are assigned to somebody.
 
     .. attribute:: has_project
 
@@ -518,9 +518,7 @@ class Tickets(dd.Table):
         state=TicketStates.field(
             blank=True,
             help_text=_("Only rows having this state.")),
-        show_assigned=dd.YesNo.field(
-            _("Assigned"), blank=True,
-            help_text=_("Whether to show assigned tickets")),
+        show_assigned=dd.YesNo.field(_("Assigned"), blank=True),
         show_deployed=dd.YesNo.field(
             _("Deployed"), blank=True,
             help_text=_("Whether to show tickets with at "
