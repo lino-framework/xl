@@ -1,24 +1,12 @@
-# Copyright (C) 2014 Okami, okami@fuzetsu.info
-
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 3
-# of the License, or (at your option) any later version.
-
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-# GNU General Public License for more details.
-
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# Modified copy of https://github.com/kyokenn/djradicale/blob/master/djradicale/views.py
+# The original is Copyright (C) 2014 Okami, okami@fuzetsu.info and published using GPL.
+# Our modifications are Copyright 2017 Luc Saffre, Tonis Piip
 
 import base64
 import copy
 
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
+# from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -65,10 +53,10 @@ class DjRadicaleView(Application, View):
     def dispatch(self, request, *args, **kwargs):
         if not request.method.lower() in self.http_method_names:
             return self.http_method_not_allowed(request, *args, **kwargs)
-        print "1z"
+        print "20170403 1z"
         response = ApplicationResponse()
         answer = self(request.META, response.start_response)
-        print "2"
+        print "20170403"
         for i in answer:
             response.write(i)
         return response

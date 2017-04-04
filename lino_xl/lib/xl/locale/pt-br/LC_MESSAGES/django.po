@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-03 04:31+0300\n"
+"POT-Creation-Date: 2017-04-04 10:11+0300\n"
 "PO-Revision-Date: 2013-06-15 18:57-0300\n"
 "Last-Translator: Flavio Gondin <flvgondin@gmail.com>\n"
 "Language: pt_BR\n"
@@ -850,7 +850,7 @@ msgstr ""
 msgid "Number of events"
 msgstr "Mes rendez-vous à clarifier"
 
-#: lino_xl/lib/cal/mixins.py:612 lino_xl/lib/cal/mixins.py:806
+#: lino_xl/lib/cal/mixins.py:612 lino_xl/lib/cal/mixins.py:807
 #: lino_xl/lib/cal/models.py:133 lino_xl/lib/cal/models.py:191
 #: lino_xl/lib/cal/models.py:242 lino_xl/lib/cal/models.py:380
 #: lino_xl/lib/clocking/models.py:115 lino_xl/lib/courses/models.py:161
@@ -917,20 +917,20 @@ msgstr ""
 msgid "Generate events until"
 msgstr "Présent"
 
-#: lino_xl/lib/cal/mixins.py:804 lino_xl/lib/clocking/models.py:113
-#: lino_xl/lib/extensible/models.py:163
-msgid "Summary"
-msgstr "Résumé"
+#: lino_xl/lib/cal/mixins.py:805
+#, fuzzy
+msgid "Short description"
+msgstr "Description"
 
-#: lino_xl/lib/cal/mixins.py:811
+#: lino_xl/lib/cal/mixins.py:812
 msgid "Whether this is private, public or between."
 msgstr "Public, privé ou \"marquer occupé\"."
 
-#: lino_xl/lib/cal/mixins.py:813
+#: lino_xl/lib/cal/mixins.py:814
 msgid "Revision"
 msgstr "Version"
 
-#: lino_xl/lib/cal/mixins.py:814 lino_xl/lib/countries/mixins.py:196
+#: lino_xl/lib/cal/mixins.py:815 lino_xl/lib/countries/mixins.py:196
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:68
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
 #: lino_xl/lib/ledger/models.py:528 lino_xl/lib/ledger/models.py:547
@@ -938,7 +938,7 @@ msgstr "Version"
 msgid "No."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:849
+#: lino_xl/lib/cal/mixins.py:850
 msgid " at "
 msgstr " à "
 
@@ -1802,6 +1802,10 @@ msgstr "Version"
 #, fuzzy
 msgid "Sessions"
 msgstr "Abonnements"
+
+#: lino_xl/lib/clocking/models.py:113 lino_xl/lib/extensible/models.py:163
+msgid "Summary"
+msgstr "Résumé"
 
 #: lino_xl/lib/clocking/models.py:114
 msgid "Summary of the session."
@@ -3417,7 +3421,7 @@ msgid "Unprinted %s #%s"
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:595 lino_xl/lib/invoicing/models.py:244
-#: lino_xl/lib/mailbox/models.py:22 lino_xl/lib/mailbox/models.py:31
+#: lino_xl/lib/mailbox/models.py:32 lino_xl/lib/mailbox/models.py:41
 msgid "Preview"
 msgstr ""
 
@@ -4933,16 +4937,20 @@ msgstr ""
 msgid "Mailbox"
 msgstr ""
 
-#: lino_xl/lib/mailbox/models.py:28
+#: lino_xl/lib/mailbox/models.py:38
 msgid "Message pointer"
 msgstr ""
 
-#: lino_xl/lib/mailbox/models.py:29
+#: lino_xl/lib/mailbox/models.py:39
 msgid "Message pointers"
 msgstr ""
 
 #: lino_xl/lib/mailbox/ui.py:36
 msgid "show only non assigned"
+msgstr ""
+
+#: lino_xl/lib/maildev/__init__.py:54 lino_xl/lib/maildev/__init__.py:58
+msgid "MailDev"
 msgstr ""
 
 #: lino_xl/lib/notes/__init__.py:27 lino_xl/lib/notes/models.py:145
@@ -15694,5 +15702,11 @@ msgstr "Administrador"
 #~ msgstr ""
 
 #~ msgid "Like MyEvents, but only today."
+#~ msgstr ""
+
+#~ msgid "News channel"
+#~ msgstr ""
+
+#~ msgid "News channels"
 #~ msgstr ""
 

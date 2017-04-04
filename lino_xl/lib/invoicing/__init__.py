@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -20,7 +20,7 @@
 """Adds functionality and database models for **invoicing**,
 i.e. automatically generating invoices from data in the database.
 
-See :ref:`cosi.specs.invoicing` for a functional specification.
+See :doc:`/specs/cosi/invoicing` for a functional specification.
 
 .. autosummary::
     :toctree:
