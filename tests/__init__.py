@@ -15,11 +15,7 @@ class PackagesTests(LinoTestCase):
     def test_01(self):
         self.run_packages_test(SETUP_INFO['packages'])
 
-
-class CodeTests(TestCase):
-    def test_sample_ibans(self):
-        self.run_simple_doctests('lino_xl/lib/sepa/fixtures/sample_ibans.py')
-    
+   
 class LibTests(LinoTestCase):
 
     # def test_users(self):

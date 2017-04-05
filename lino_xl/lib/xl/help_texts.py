@@ -271,7 +271,7 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
     'lino_xl.lib.clocking.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.clocking.Plugin.ticket_model' : _("""The model that is to be used as the "workable"."""),
+    'lino_xl.lib.clocking.Plugin.ticket_model' : _("""The model that is to be used as the "ticket"."""),
     'lino_xl.lib.clocking.actions.EndSession' : _("""Close a given session, i.e. stop working on that ticket for this
 time.  Common base for EndThisSession and
 EndTicketSession."""),
@@ -1120,7 +1120,7 @@ given User."""),
 or ToDo)."""),
     'lino_xl.lib.tickets.ui.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
 or ToDo)."""),
-    'lino_xl.lib.tickets.ui.Tickets.show_assigned' : _("""Show only (or hide) tickets which are assigned to somebody."""),
+    'lino_xl.lib.tickets.ui.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
     'lino_xl.lib.tickets.ui.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
     'lino_xl.lib.tickets.ui.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
     'lino_xl.lib.tickets.ui.Tickets.model' : _("""alias of Ticket"""),
@@ -1147,7 +1147,7 @@ parameter. No default value."""),
     'lino_xl.lib.tim2lino.Plugin.dbf_table_ext' : _("""The file extension of TIM tables. Meaningful values are '.DBF' or
 .FOX."""),
     'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.topics.models.TopicGroup' : _("""A group of topics is the default way to group topics."""),
+    'lino_xl.lib.topics.models.TopicGroup' : _("""Currently not used."""),
     'lino_xl.lib.topics.models.Interest' : _("""An interest is the fact that a given partner is interested in a
 given topic."""),
     'lino_xl.lib.topics.models.Topic' : _("""A topic is something somebody can be interested in."""),

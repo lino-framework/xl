@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -18,6 +18,7 @@
 
 
 """This is Lino's standard plugin for General Ledger.
+See :doc:`/specs/cosi/ledger`.
 
 .. autosummary::
     :toctree:

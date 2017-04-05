@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -15,7 +15,7 @@ from lino.mixins import BabelNamed, Referrable
 
 
 class TopicGroup(BabelNamed):
-    """A **group of topics** is the default way to group topics."""
+    """Currently not used. """
 
     class Meta:
         app_label = 'topics'
@@ -39,7 +39,7 @@ class TopicGroups(dd.Table):
 
 class Interest(dd.Model):
     """An **interest** is the fact that a given partner is interested in a
-given topic.
+    given topic.
 
     """
     class Meta:

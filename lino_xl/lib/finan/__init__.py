@@ -17,8 +17,8 @@
 # <http://www.gnu.org/licenses/>.
 
 
-"""Adds functionality for managing financial vouchers.  See
-:doc:`/specs/finan`.
+"""Adds functionality for managing financial vouchers.  
+See :doc:`/specs/cosi/finan`.
 
 .. autosummary::
    :toctree:

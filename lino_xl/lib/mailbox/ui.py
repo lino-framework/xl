@@ -25,50 +25,52 @@ class Mailboxes(dd.Table):
     MessagesByMailbox
     """
 
+class MessageDetail(dd.DetailLayout):
+    main = "general preview"
+    
+    general = dd.Panel("""
+    from_header subject ticket
+    to_header
+    MessageAttachmentsByMessage
+    """, label=_("General"))
+
 class Messages(dd.Table):
     model = "django_mailbox.Message"
-    detail_layout = """from_header to_header subject
-    preview
-    PointersByMessage MessageAttachmentsByMessage"""
-    editable = False
+    detail_layout = MessageDetail()
+    # editable = False
     parameters = dict(
-        not_assigned=dd.models.BooleanField(
-            _("show only non assigned"),
-            default=False))
+        show_assigned=dd.YesNo.field(_("Assigned"), blank=True))
+        # not_assigned=dd.models.BooleanField(
+        #     _("show only non assigned"),
+        #     default=False))
 
     @classmethod
     def get_request_queryset(self, ar):
         qs = super(Messages, self).get_request_queryset(ar)
         pv = ar.param_values
 
-        if pv.not_assigned:
-            qs = qs.filter(pointer=None)
+        if pv.show_assigned == dd.YesNo.no:
+            qs = qs.filter(ticket__isnull=True)
+        elif pv.show_assigned == dd.YesNo.yes:
+            qs = qs.filter(ticket__isnull=False)
+
+        # if pv.not_assigned:
+        #     qs = qs.filter(ticket__isnull=True)
         return qs
 
 class MessagesByMailbox(Messages):
     master_key = "mailbox"
 
 class UnassignedMessages(Messages):
+    column_names = "processed subject from_header spam ticket *"
+    # cell_edit = False
 
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(UnassignedMessages, self).param_defaults(ar, **kw)
-        kw.update(not_assigned=True)
+        # kw.update(not_assigned=True)
+        kw.update(show_assigned=dd.YesNo.no)
         return kw
-
-class MessagePointers(dd.Table):
-    model = "mailbox.MessagePointer"
-    insert_layout = """message
-    ticket"""
-    detail_layout = """preview"""
-    pass
-
-class MessagesByTicket(MessagePointers):
-    master_key = 'ticket'
-
-class PointersByMessage(MessagePointers):
-    column_names = "ticket ticket__summary"
-    master_key = 'message'
 
 
 class MessageAttachments(dd.Table):
