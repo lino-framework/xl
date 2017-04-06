@@ -104,7 +104,8 @@ class Coachable(ChangeObservable):
         today = dd.today()
         period = (today, today)
         for obj in self.get_coachings(period):
-            yield (obj.user, obj.user.mail_mode)
+            if obj.user_id:
+                yield (obj.user, obj.user.mail_mode)
 
 
     @dd.displayfield(_("Find appointment"))

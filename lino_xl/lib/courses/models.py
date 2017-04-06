@@ -169,8 +169,8 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
     event_type = dd.ForeignKey(
         'cal.EventType', null=True, blank=True,
         help_text=_(
-            "The type of calendar events to be generated. "
-            "If this is empty, no calendar events will be generated."))
+            "The type of calendar entries to be generated. "
+            "If this is empty, no calendar entries will be generated."))
 
     fee = dd.ForeignKey(
         'products.Product',
@@ -182,9 +182,9 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
         "cal.GuestRole", blank=True, null=True,
         verbose_name=_("Manage presences as"),
         help_text=_(
-            "The default guest role for particpants of events for "
-            "courses in this series. "
-            "Leave empty if you don't want any presence management."))
+            "The default guest role for particpants of "
+            "calendar entries for activities in this series. "
+            "Leave empty if you don't want any presences management."))
 
     options_cat = dd.ForeignKey(
         'products.ProductCat',
@@ -234,9 +234,9 @@ class Course(Reservation, Duplicable, PrintableObject):
 
     The subject of a course is expressed by the :class:`Line`.
 
-    Notes about automatic event generation:
+    Notes about automatic calendar entry generation:
     
-    - When an automatically generated event is to be moved to another
+    - When an automatically generated entry is to be moved to another
       date, e.g. because it falls into a vacation period, then you
       simply change it's date.  Lino will automatically adapt all
       subsequent events.
@@ -273,10 +273,10 @@ class Course(Reservation, Duplicable, PrintableObject):
     class Meta:
         app_label = 'courses'
         abstract = dd.is_abstract_model(__name__, 'Course')
-        # verbose_name = _("Activity")
-        # verbose_name_plural = _('Activities')
-        verbose_name = _("Event")
-        verbose_name_plural = _('Events')
+        verbose_name = _("Activity")
+        verbose_name_plural = _('Activities')
+        # verbose_name = _("Event")
+        # verbose_name_plural = _('Events')
 
 
     site_field_name = 'room'
@@ -327,6 +327,21 @@ class Course(Reservation, Duplicable, PrintableObject):
     def on_duplicate(self, ar, master):
         self.state = CourseStates.draft
         super(Course, self).on_duplicate(ar, master)
+
+
+    @classmethod
+    def add_param_filter(
+            cls, qs, lookup_prefix='', show_active=None, **kwargs):
+        qs = super(Course, cls).add_param_filter(qs, **kwargs)
+        active_states = CourseStates.filter(active=True)
+        fkw = dict()
+        fkw[lookup_prefix + 'state__in'] = active_states
+        if show_active == dd.YesNo.no:
+            qs = qs.exclude(**fkw)
+        elif show_active == dd.YesNo.yes:
+            qs = qs.filter(**fkw)
+        return qs
+        
 
     @classmethod
     def get_registrable_fields(cls, site):
@@ -481,7 +496,7 @@ class Course(Reservation, Duplicable, PrintableObject):
     #~ def where_text(self,ar):
         # ~ return unicode(self.room) # .company.city or self.company)
 
-    @dd.displayfield(_("Events"))
+    @dd.displayfield(_("Calendar entries"))
     def events_text(self, ar=None):
         return ', '.join([
             day_and_month(e.start_date)

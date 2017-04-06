@@ -113,7 +113,8 @@ class LinesByTopic(Lines):
 
 
 class EntriesByTeacher(cal.Events):
-    help_text = _("Shows events of activities led by this teacher")
+    "Show calendar entries of activities led by this teacher"
+    
     master = teacher_model
     column_names = 'when_text:20 owner room state'
     # column_names = 'when_text:20 course__line room state'
@@ -126,7 +127,7 @@ class EntriesByTeacher(cal.Events):
             return []
         if True:
             return []
-        # TODO: build a list of courses, then show events by course
+        # TODO: build a list of courses, then show entries by course
         qs = super(EntriesByTeacher, self).get_request_queryset(ar)
         # mycourses = rt.modules.Course.objects.filter(teacher=teacher)
         qs = qs.filter(course__in=teacher.course_set.all())
@@ -249,13 +250,8 @@ class Activities(dd.Table):
             qs = qs.exclude(flt)
         qs = PeriodEvents.active.add_filter(qs, pv)
 
-
-        active_states = CourseStates.filter(active=True)
-        if pv.show_active == dd.YesNo.no:
-            qs = qs.exclude(state__in=active_states)
-        elif pv.show_active == dd.YesNo.yes:
-            qs = qs.filter(state__in=active_states)
-
+        qs = self.model.add_param_filter(
+            qs, show_active=pv.show_active)
         
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
