@@ -3,11 +3,7 @@
 """
 Adds functionality for managing "milestones" and "deployments".
 
-.. autosummary::
-   :toctree:
-
-    models
-    desktop
+See :doc:`/specs/noi/deploy`.
 
 """
 

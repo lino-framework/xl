@@ -25,5 +25,4 @@ class Milestone(dd.Model):
         for wish in self.wishes_by_milestone.all():
             for user in participants:
                 wish.ticket.set_auto_vote(user, VoteStates.invited)
-        
-    
+                

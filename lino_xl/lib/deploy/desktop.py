@@ -163,7 +163,7 @@ class DeploymentsByTicket(Deployments):
     order_by = ['-milestone__end_date']
     master_key = 'ticket'
     # column_names = "milestone__reached milestone  remark *"
-    column_names = "milestone remark *"
+    column_names = "milestone wish_type remark *"
     insert_layout = dd.InsertLayout("""
     milestone
     remark
@@ -181,7 +181,12 @@ class DeploymentsByTicket(Deployments):
         sar = cls.request_from(ar, master_instance=obj)
         html = []
         # items = [ar.obj2html(o, str(o.milestone)) for o in sar]
-        items = [o.milestone.obj2href(ar) for o in sar]
+        qs = cls.model.objects.filter(ticket=obj)
+        qs = dd.plugins.tickets.milestone_model.add_param_filter(
+            qs, lookup_prefix='milestone__',
+            show_active=dd.YesNo.yes)
+        items = [o.milestone.obj2href(ar) for o in qs]
+        # items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)
         if sar.get_permission():
             btn = sar.ar2button()

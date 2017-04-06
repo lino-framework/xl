@@ -3,8 +3,6 @@
 # License: BSD (see file COPYING for details)
 """Database models for this plugin.
 
-
-
 """
 
 from __future__ import unicode_literals
@@ -27,10 +25,13 @@ class WishTypes(dd.ChoiceList):
     verbose_name_plural = _("Wish types")
 
 add = WishTypes.add_item
-add('10', _("Requirement"), "requirement")
-add('20', _("Gimmick"), "gimmick")
-add('30', _("Side effect"), "side_effect")
-add('40', _("Surprise"), "surprise")
+add('10', _("Agenda item"), "talk") # Tagesordnungspunkt
+add('20', _("Requirement"), "requirement")  # Anforderung
+add('30', _("Gimmick"), "gimmick")  # ungefragtes Gimmick
+add('40', _("Side effect"), "side_effect")  # Nebeneffekt
+add('50', _("Resolution"), "todo")  # Vorsatz
+add('60', _("Aftermath"), "aftermath")  # Nachwehe
+
 # add('30', _("Observed"), "observed")
 
 
@@ -102,15 +103,6 @@ add('40', _("Surprise"), "surprise")
 
 @dd.python_2_unicode_compatible
 class Deployment(Sequenced, Workable):
-    """A **wish** (formerly deployment) is the fact that a given ticket is
-    being fixed (or installed or activated) by a given milestone (to a
-    given site).
-
-    .. attribute:: milestone
-
-       The milestone (and site) of this deployment.
-
-    """
     class Meta:
         app_label = 'deploy'
         verbose_name = _("Wish")

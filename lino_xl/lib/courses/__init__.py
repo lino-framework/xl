@@ -34,7 +34,7 @@ from lino.api import ad, _
 
 class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
-    verbose_name = _("Events")
+    verbose_name = _("Activities")
     teacher_model = 'contacts.Person'
     pupil_model = 'contacts.Person'
     pupil_name_fields = "pupil__name"

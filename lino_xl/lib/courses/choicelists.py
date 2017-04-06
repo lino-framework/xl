@@ -27,7 +27,7 @@ class CourseStates(dd.Workflow):
 add = CourseStates.add_item
 add('10', _("Draft"), 'draft',
     editable=True, invoiceable=False, active=True)
-add('20', _("Active"), 'active',
+add('20', _("Started"), 'active',
     editable=False, invoiceable=True, active=True)
 add('30', _("Inactive"), 'inactive',
     editable=False, invoiceable=False, active=False)
