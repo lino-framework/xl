@@ -43,12 +43,11 @@ vote exists.
         There should be either 0 or 1 vote per user and votable.
 
         """
-        if user.authenticated:
-            qs = rt.models.votes.Vote.objects.filter(
-                votable=self, user=user)
-            if qs.count() == 0:
-                return None
-            return qs[0]
+        qs = rt.models.votes.Vote.objects.filter(
+            votable=self, user=user)
+        if qs.count() == 0:
+            return None
+        return qs[0]
 
     def get_change_observers(self):
         for x in super(Votable, self).get_change_observers():
@@ -76,6 +75,7 @@ vote exists.
         self.set_auto_vote(comment.user, VoteStates.invited)
         
     def set_auto_vote(self, user, state):
+        # dd.logger.info("20170406 set_auto_vote %s %s", user, state)
         vote = self.get_favourite(user)
         if vote is None:
             create_row(

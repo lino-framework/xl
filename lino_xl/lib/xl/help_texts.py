@@ -428,6 +428,9 @@ consist of only digits."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
     'lino_xl.lib.courses.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.courses.choicelists.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
+    'lino_xl.lib.courses.desktop.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
+    'lino_xl.lib.courses.desktop.EntriesByTeacher.master' : _("""alias of Person"""),
+    'lino_xl.lib.courses.desktop.EntriesByTeacher.model' : _("""alias of Event"""),
     'lino_xl.lib.courses.desktop.CourseDetail' : _("""The detail layout of a Course."""),
     'lino_xl.lib.courses.desktop.Activities' : _("""Base table for all activities."""),
     'lino_xl.lib.courses.desktop.Activities.model' : _("""alias of Course"""),
@@ -484,10 +487,6 @@ verify whether it is valid (e.g. whether there are enough free
 places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.deploy.models.Deployment' : _("""A wish (formerly deployment) is the fact that a given ticket is
-being fixed (or installed or activated) by a given milestone (to a
-given site)."""),
-    'lino_xl.lib.deploy.models.Deployment.milestone' : _("""The milestone (and site) of this deployment."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.excerpts.Plugin' : _("""See lino.core.Plugin."""),
@@ -1290,6 +1289,14 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.models.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.models.VotesByVotable.master' : _("""alias of Ticket"""),
     'lino_xl.lib.votes.models.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
+is being fixed (or installed or activated) by a given milestone
+(to a given site)."""),
+    'lino_xl.lib.deploy.Deployment.milestone' : _("""The milestone (activity) containing this wish."""),
+    'lino_xl.lib.deploy.WishTypes' : _("""When a ticket occurs in a milestone, then we might want to qualify
+how or why it occured. We call it the "type" of that "wish"."""),
+    'lino_xl.lib.deploy.WishTypes.resolution' : _("""a new ticket was created as the result of this milestone"""),
+    'lino_xl.lib.deploy.DeploymentsByTicket' : _("""Show the milestones where this ticket occurs as a wish."""),
     'lino_xl.lib.tickets.models.Project' : _("""A project is something on which several users work together."""),
     'lino_xl.lib.tickets.models.Project.assign_to' : _("""The user to whom new tickets will be assigned.
 See Ticket.assigned_to."""),
