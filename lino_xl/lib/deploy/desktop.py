@@ -165,7 +165,7 @@ class DeploymentsByTicket(Deployments):
     # column_names = "milestone__reached milestone  remark *"
     column_names = "milestone wish_type remark *"
     insert_layout = dd.InsertLayout("""
-    milestone
+    milestone wish_type
     remark
     """, window_size=(60, 15))
     
