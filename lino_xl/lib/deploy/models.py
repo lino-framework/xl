@@ -28,6 +28,7 @@ add = WishTypes.add_item
 add('10', _("Agenda item"), "talk") # Tagesordnungspunkt
 # add('20', _("Requirement"), "requirement")  # Anforderung
 add('20', _("New feature"), "new_feature")
+add('22', _("Optimization"), "optimization")
 add('25', _("Bugfix"), "bugfix")
 add('30', _("Gimmick"), "gimmick")  # ungefragtes Gimmick
 add('40', _("Side effect"), "side_effect")  # Nebeneffekt
