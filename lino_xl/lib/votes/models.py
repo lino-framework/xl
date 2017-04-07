@@ -77,7 +77,8 @@ class Vote(UserAuthored, Created, Workable):
 
     allow_cascaded_delete = 'votable'
 
-    state = VoteStates.field(default=VoteStates.as_callable('watching'))
+    state = VoteStates.field(
+        default=VoteStates.as_callable('invited'))
     votable = dd.ForeignKey(
         dd.plugins.votes.votable_model,
         related_name="votes_by_ticket")
@@ -185,6 +186,19 @@ class Vote(UserAuthored, Created, Workable):
         # #     self._meta.verbose_name), ' ']
         # elems += self.get_workflow_buttons(ar)
         return E.div(*elems)
+
+    def on_create(self, ar):
+        """Set the default vote state,
+
+        """
+        if not self.state:
+            if ar.get_user() == self.user:
+                self.state = VoteStates.watching
+            else:
+                self.state = VoteStates.invited
+        super(Vote, self).on_create(ar)
+
+        
 
     # def get_author(self):
     def get_row_permission(self, ar, state, ba):

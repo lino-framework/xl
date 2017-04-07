@@ -28,8 +28,8 @@ class Coachable(ChangeObservable):
 
     workflow_state_field = 'client_state'
 
-    client_state = ClientStates.field(
-        default=ClientStates.newcomer.as_callable)
+    client_state = ClientStates.field()
+        # default=ClientStates.newcomer.as_callable)
 
     def get_coachings(self, period=None, *args, **flt):
         """"Return a queryset with the coachings of this client. If `period`

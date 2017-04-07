@@ -165,8 +165,7 @@ add('3', _("Waiting for registry"))    # Warteregister
 
 
 class BeIdCardTypes(dd.ChoiceList):
-    """
-    A list of Belgian identity card types.
+    """A list of Belgian identity card types.
 
     Didn't yet find any official reference document.
     
@@ -180,23 +179,26 @@ class BeIdCardTypes(dd.ChoiceList):
     "foreigner_f", 16 becomes "foreigner_e_plus",...
     
     Sources:
-    | [1] https://securehomes.esat.kuleuven.be/~decockd/wiki/bin/view.cgi/EidForums/ForumEidCards0073
-    | [2] `Enum be.fedict.commons.eid.consumer.DocumentType <http://code.google.com/p/eid-applet/source/browse/trunk/eid-applet-service/src/main/java/be/fedict/eid/applet/service/DocumentType.java>`_
+
+    - [1] `kuleuven.be <https://securehomes.esat.kuleuven.be/~decockd/wiki/bin/view.cgi/EidForums/ForumEidCards0073>`__
+    - [2] The `be.fedict.commons.eid.consumer.DocumentType <http://code.google.com/p/eid-applet/source/browse/trunk/eid-applet-service/src/main/java/be/fedict/eid/applet/service/DocumentType.java>`__ enum.
+
+    - http://www.adde.be/joomdoc/guides/les-titres-de-sejours-en-belgique-guide-pratique-dec12-g-aussems-pdf/download
 
 
     Excerpts from [1]:
     
-    - Johan: A document type of 7 is used for bootstrap cards ? What
+    - Johan: A document type of 7 is used for bootstrap cards -- What
       is a bootstrap card (maybe some kind of test card?)  Danny: A
       bootstrap card was an eID card that was used in the early start
       of the eID card introduction to bootstrap the computers at the
       administration. This type is no longer issued.
     
     - Johan: A document type of 8 is used for a
-      "habilitation/machtigings" card ? Is this for refugees or asylum
-      seekers? Danny: A habilitation/machtigings card was aimed at
-      civil servants. This type is also no longer used.
-    
+      "habilitation/machtigings" card -- Is this for refugees or
+      asylum seekers? Danny: A habilitation/machtigings card was aimed
+      at civil servants. This type is also no longer used.
+
     """
 
     required_roles = dd.login_required(dd.SiteStaff)
@@ -240,3 +242,8 @@ add('17', _("Foreigner card F"), "foreigner_f")
         #~ de=u"Aufenthaltskarte für Familienangehörige eines Unionsbürgers",
 add('18', _("Foreigner card F+"), "foreigner_f_plus")
 
+# This is not an electronic card, but it makes sense to add it to this
+# list e.g. for Lino Avanti:
+# FR: Attestation d’immatriculation (Carte orange)
+# DE: Eintragungsbescheinigung (Orange Karte)
+add('99', _("Registration certificate (Orange card)"), "orange_card")
