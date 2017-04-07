@@ -244,6 +244,6 @@ add('18', _("Foreigner card F+"), "foreigner_f_plus")
 
 # This is not an electronic card, but it makes sense to add it to this
 # list e.g. for Lino Avanti:
-# FR: attestation d’immatriculation (carte orange)
+# FR: Attestation d’immatriculation (Carte orange)
 # DE: Eintragungsbescheinigung (Orange Karte)
 add('99', _("Registration certificate (Orange card)"), "orange_card")
