@@ -547,8 +547,8 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         if self.user:
             yield self.user
         if issubclass(
-                dd.plugins.faculties.end_user_model,
-                settings.SITE.user_model):
+                settings.SITE.user_model,
+                dd.plugins.faculties.end_user_model):
             if self.end_user:
                 yield self.end_user
        

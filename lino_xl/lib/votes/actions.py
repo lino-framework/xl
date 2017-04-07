@@ -69,6 +69,7 @@ class EditVote(VoteAction):
     button_text = u"★"  # 2605
     show_in_workflow = True
     show_in_bbar = False
+    required_roles = dd.login_required(SimpleVotesUser)
 
     def run_from_ui(self, ar, **kw):
         self.goto_vote(ar.selected_rows[0], ar)
