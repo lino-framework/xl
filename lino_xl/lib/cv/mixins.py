@@ -133,7 +133,9 @@ class CefLevel(dd.ChoiceList):
         #~ return lazy(fn,unicode)(bc)
 
 add = CefLevel.add_item
+add('A0', _("basic language skills"))
 add('A1', _("basic language skills"))
+add('A1+', _("basic language skills"))
 add('A2', _("basic language skills"))
 add('A2+', _("basic language skills"))
 add('B1', _("independent use of language"))

@@ -151,6 +151,8 @@ ClientEvents.add_item_instance(ClientHasNote("note"))
 class ClientStates(dd.Workflow):
     required_roles = dd.login_required(CoachingsStaff)
     verbose_name_plural = _("Client states")
+    default_value = 'newcomer'
+    
 
 add = ClientStates.add_item
 add('10', _("Newcomer"), 'newcomer')  # "first contact" in Avanti

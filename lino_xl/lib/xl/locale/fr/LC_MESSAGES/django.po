@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-04-07 10:59+0300\n"
-"PO-Revision-Date: 2017-04-07 11:02+0300\n"
+"PO-Revision-Date: 2017-04-07 15:39+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -419,7 +419,7 @@ msgstr "Type de carte eID"
 
 #: lino_xl/lib/beid/choicelists.py:206
 msgid "eID card types"
-msgstr "Type de carte eID"
+msgstr "Types de carte eID"
 
 #: lino_xl/lib/beid/choicelists.py:209
 msgid "Belgian citizen"
