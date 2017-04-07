@@ -183,6 +183,8 @@ class BeIdCardTypes(dd.ChoiceList):
     - [1] `kuleuven.be <https://securehomes.esat.kuleuven.be/~decockd/wiki/bin/view.cgi/EidForums/ForumEidCards0073>`__
     - [2] The `be.fedict.commons.eid.consumer.DocumentType <http://code.google.com/p/eid-applet/source/browse/trunk/eid-applet-service/src/main/java/be/fedict/eid/applet/service/DocumentType.java>`__ enum.
 
+    - http://www.adde.be/joomdoc/guides/les-titres-de-sejours-en-belgique-guide-pratique-dec12-g-aussems-pdf/download
+
 
     Excerpts from [1]:
     
@@ -240,3 +242,8 @@ add('17', _("Foreigner card F"), "foreigner_f")
         #~ de=u"Aufenthaltskarte für Familienangehörige eines Unionsbürgers",
 add('18', _("Foreigner card F+"), "foreigner_f_plus")
 
+# This is not an electronic card, but it makes sense to add it to this
+# list e.g. for Lino Avanti:
+# FR: attestation d’immatriculation (carte orange)
+# DE: Eintragungsbescheinigung (Orange Karte)
+add('99', _("Registration certificate (Orange card)"), "orange_card")
