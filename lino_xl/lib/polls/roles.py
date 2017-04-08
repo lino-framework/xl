@@ -4,10 +4,10 @@
 
 """
 
-from lino.core.roles import SiteUser, SiteAdmin
+from lino.core.roles import UserRole, SiteUser, SiteAdmin
 
 
-class PollsUser(SiteUser):
+class PollsUser(UserRole):
     """A user who has access to polls functionality.
 
     """

@@ -452,7 +452,7 @@ class VotesByVotable(Votes):
         html = []
 
         items = [
-            ar.obj2html(o, o.user.username or str(o.user))
+            ar.obj2html(o, o.user.initials or str(o.user))
             for o in sar]
 
         # items = [

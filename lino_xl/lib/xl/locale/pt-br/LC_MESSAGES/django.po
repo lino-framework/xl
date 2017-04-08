@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-04-07 10:59+0300\n"
+"POT-Creation-Date: 2017-04-08 05:10+0300\n"
 "PO-Revision-Date: 2013-06-15 18:57-0300\n"
 "Last-Translator: Flavio Gondin <flvgondin@gmail.com>\n"
 "Language: pt_BR\n"
@@ -325,7 +325,7 @@ msgstr "Oui"
 msgid "No"
 msgstr "Non"
 
-#: lino_xl/lib/beid/actions.py:223 lino_xl/lib/cv/mixins.py:91
+#: lino_xl/lib/beid/actions.py:223 lino_xl/lib/cv/mixins.py:94
 msgid "Success"
 msgstr "Succès"
 
@@ -1885,21 +1885,21 @@ msgstr "mois"
 msgid "Client states"
 msgstr "Mes rendez-vous aujourd'hui"
 
-#: lino_xl/lib/coachings/choicelists.py:156
+#: lino_xl/lib/coachings/choicelists.py:158
 msgid "Newcomer"
 msgstr ""
 
-#: lino_xl/lib/coachings/choicelists.py:157
+#: lino_xl/lib/coachings/choicelists.py:159
 #: lino_xl/lib/tickets/choicelists.py:147
 #, fuzzy
 msgid "Refused"
 msgstr "Proposé"
 
-#: lino_xl/lib/coachings/choicelists.py:158
+#: lino_xl/lib/coachings/choicelists.py:160
 msgid "Coached"
 msgstr ""
 
-#: lino_xl/lib/coachings/choicelists.py:159
+#: lino_xl/lib/coachings/choicelists.py:161
 #, fuzzy
 msgid "Former"
 msgstr "Início"
@@ -2883,79 +2883,85 @@ msgstr ""
 msgid "Career"
 msgstr "Partenaire"
 
-#: lino_xl/lib/cv/mixins.py:41
+#: lino_xl/lib/cv/mixins.py:43
 msgid "Language knowledge"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:55 lino_xl/lib/cv/mixins.py:60
+#: lino_xl/lib/cv/mixins.py:58 lino_xl/lib/cv/mixins.py:63
 #, fuzzy
 msgid "Mother tongues"
 msgstr "Personne"
 
-#: lino_xl/lib/cv/mixins.py:88
+#: lino_xl/lib/cv/mixins.py:91
 #, fuzzy
 msgid "State"
 msgstr "Site"
 
-#: lino_xl/lib/cv/mixins.py:92
+#: lino_xl/lib/cv/mixins.py:95
 #, fuzzy
 msgid "Failure"
 msgstr "Valeur"
 
-#: lino_xl/lib/cv/mixins.py:93
+#: lino_xl/lib/cv/mixins.py:96
 #, fuzzy
 msgid "Ongoing"
 msgstr "Envois postaux"
 
-#: lino_xl/lib/cv/mixins.py:105 lino_xl/lib/properties/models.py:62
+#: lino_xl/lib/cv/mixins.py:108 lino_xl/lib/properties/models.py:62
 #, fuzzy
 msgid "How well?"
 msgstr "Montrer tous"
 
-#: lino_xl/lib/cv/mixins.py:108 lino_xl/lib/properties/models.py:65
+#: lino_xl/lib/cv/mixins.py:111 lino_xl/lib/properties/models.py:65
 msgid "not at all"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:109 lino_xl/lib/properties/models.py:66
+#: lino_xl/lib/cv/mixins.py:112 lino_xl/lib/properties/models.py:66
 msgid "a bit"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:110 lino_xl/lib/properties/models.py:67
+#: lino_xl/lib/cv/mixins.py:113 lino_xl/lib/properties/models.py:67
 msgid "moderate"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:111 lino_xl/lib/properties/models.py:68
+#: lino_xl/lib/cv/mixins.py:114 lino_xl/lib/properties/models.py:68
 msgid "quite well"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:112 lino_xl/lib/properties/models.py:69
+#: lino_xl/lib/cv/mixins.py:115 lino_xl/lib/properties/models.py:69
 msgid "very well"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:125
+#: lino_xl/lib/cv/mixins.py:128
 #, fuzzy
 msgid "CEF level"
 msgstr "utilisateur"
 
-#: lino_xl/lib/cv/mixins.py:126
+#: lino_xl/lib/cv/mixins.py:129
 #, fuzzy
 msgid "CEF levels"
 msgstr "utilisateur"
 
-#: lino_xl/lib/cv/mixins.py:136 lino_xl/lib/cv/mixins.py:137
-#: lino_xl/lib/cv/mixins.py:138
+#: lino_xl/lib/cv/mixins.py:139 lino_xl/lib/cv/mixins.py:140
+#: lino_xl/lib/cv/mixins.py:141 lino_xl/lib/cv/mixins.py:142
+#: lino_xl/lib/cv/mixins.py:143
 msgid "basic language skills"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:139 lino_xl/lib/cv/mixins.py:140
-#: lino_xl/lib/cv/mixins.py:141
+#: lino_xl/lib/cv/mixins.py:144 lino_xl/lib/cv/mixins.py:145
+#: lino_xl/lib/cv/mixins.py:146
 msgid "independent use of language"
 msgstr ""
 
-#: lino_xl/lib/cv/mixins.py:142 lino_xl/lib/cv/mixins.py:143
-#: lino_xl/lib/cv/mixins.py:144
+#: lino_xl/lib/cv/mixins.py:147 lino_xl/lib/cv/mixins.py:148
+#: lino_xl/lib/cv/mixins.py:149
 msgid "proficient use of language"
 msgstr ""
+
+#: lino_xl/lib/cv/mixins.py:178
+#, fuzzy
+msgid "Duration"
+msgstr "Envoi postal"
 
 #: lino_xl/lib/cv/models.py:65
 msgid "language knowledge"
@@ -15743,19 +15749,6 @@ msgstr "Administrador"
 #~ msgid "Shows events of activities led by this teacher"
 #~ msgstr ""
 
-#~ msgid ""
-#~ "The type of calendar events to be"
-#~ " generated. If this is empty, no "
-#~ "calendar events will be generated."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The default guest role for particpants"
-#~ " of events for courses in this "
-#~ "series. Leave empty if you don't "
-#~ "want any presence management."
-#~ msgstr ""
-
 #~ msgid "Requirement"
 #~ msgstr ""
 
@@ -15775,12 +15768,6 @@ msgstr "Administrador"
 #~ msgstr ""
 
 #~ msgid "The model that is to be used as the \"workable\"."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A wish (formerly deployment) is the fact that a given ticket is\n"
-#~ "being fixed (or installed or activated) by a given milestone (to a\n"
-#~ "given site)."
 #~ msgstr ""
 
 #~ msgid "The milestone (and site) of this deployment."

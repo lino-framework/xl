@@ -6,6 +6,8 @@
 """
 See :mod:`ml.cv`.
 """
+from __future__ import unicode_literals
+from builtins import str
 
 from django.conf import settings
 from django.db import models
@@ -36,7 +38,7 @@ class BiographyOwner(dd.Model):
                 self._mother_tongues.append(lk.language)
             # if lk.language.iso2 in ("de", "fr", "en"):
             if lk.cef_level is not None:
-                self._cef_levels[lk.language.iso2] = lk.cef_level
+                self._cef_levels[lk.language.iso2] = lk.cef_level.value
         
     @dd.htmlbox(_("Language knowledge"))
     def language_knowledge(self, ar):
@@ -46,11 +48,12 @@ class BiographyOwner(dd.Model):
         self.load_language_knowledge()
         lst = []
         for lng in settings.SITE.languages:
-            cl = self._cef_levels.get(lng.django_code)
-            if cl is None:
-                lst.append("{}: {}".format(lng.name, "---"))
-            else:
-                lst.append("{}: {}".format(lng.name, cl.value))
+            cl = self._cef_levels.get(lng.django_code, "---")
+            lst.append("{}: {}".format(lng.name, cl))
+            # if cl is None:
+            #     lst.append("{}: {}".format(lng.name, ))
+            # else:
+            #     lst.append("{}: {}".format(lng.name, cl))
         lst.append("{}: {}".format(
             _("Mother tongues"), self.mother_tongues))
         lst = join_elems(lst, E.br)
@@ -171,6 +174,9 @@ class PersonHistoryEntry(DatePeriod):
         abstract = True
 
     person = models.ForeignKey(dd.plugins.cv.person_model)
+    duration_text = models.CharField(
+        _("Duration"), max_length=200, blank=True)
+
 
 
 class HistoryByPerson(dd.Table):
