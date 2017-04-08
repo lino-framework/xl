@@ -174,6 +174,9 @@ class PersonHistoryEntry(DatePeriod):
         abstract = True
 
     person = models.ForeignKey(dd.plugins.cv.person_model)
+    duration_text = models.CharField(
+        _("Duration"), max_length=200, blank=True)
+
 
 
 class HistoryByPerson(dd.Table):
