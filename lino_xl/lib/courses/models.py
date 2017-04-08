@@ -649,6 +649,7 @@ class Enrolment(UserAuthored, Certifiable, DatePeriod):
     """
     invoiceable_date_field = 'request_date'
     workflow_state_field = 'state'
+    allow_cascaded_copy = 'course'
 
     class Meta:
         app_label = 'courses'

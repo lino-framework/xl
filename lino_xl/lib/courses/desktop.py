@@ -173,11 +173,10 @@ class Activities(dd.Table):
     model = 'courses.Course'
     detail_layout = CourseDetail()
     insert_layout = """
-    start_date
     line teacher
+    name start_date
     """
-    column_names = "start_date enrolments_until line teacher " \
-                   "room workflow_buttons *"
+    column_names = "start_date name line teacher room workflow_buttons *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
     # order_by = ['name']
