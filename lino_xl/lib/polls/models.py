@@ -63,6 +63,7 @@ class ChoiceSets(dd.Table):
     name
     ChoicesBySet
     """
+    insert_layout = None
 
 
 class Choice(mixins.BabelNamed, mixins.Sequenced):
