@@ -450,10 +450,18 @@ class VotesByVotable(Votes):
         sar = self.request_from(ar, master_instance=obj)
 
         html = []
+        states = {}
+        for s, d in VoteStates.choices:
+            states[s] = []
 
-        items = [
-            ar.obj2html(o, o.user.initials or str(o.user), title=o.state)
-            for o in sar]
+        for o in sar:
+            states[o.state].append(ar.obj2html(o, o.user.initials or str(o.user), title=o.state))
+
+        html += E.ul(
+            *[E.li(*([str(s.text),  ": "] + join_elems(states[s], sep=", "))) for s, c in VoteStates.choices
+              # if states[s]
+              ]
+        )
 
         # items = [
         #     ar.obj2html(o, o.user.username or str(o.user))
@@ -467,12 +475,10 @@ class VotesByVotable(Votes):
             # btn = sar.ar2button(None, u"⏍", icon_name=None)  # 23CD SQUARE FOOT
             # btn = sar.ar2button(None, u"⊞", icon_name=None) # 229e SQUARED PLUS
             
-            items.append(btn)
+            html.append(E.div(btn))
+
             
-        if len(items) > 0:
-            html += join_elems(items, sep=', ')
-            
-        return E.p(*html)
+        return E.div(*html)
 
 
     
