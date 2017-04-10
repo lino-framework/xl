@@ -394,7 +394,7 @@ class MyOffers(My, Votes):
 class MyTasks(My, Votes):
     """Show your votes in states assigned and done"""
     label = _("My tasks")
-    column_names = "votable_overview workflow_buttons priority *"
+    column_names = "votable_overview workflow_buttons *"
     order_by = ['-priority', '-id']
     filter_vote_states = "assigned done"
     filter_ticket_states = "opened started talk"
