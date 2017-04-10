@@ -14,6 +14,7 @@ This is the main plugin for :ref:`polly`.  It is also used in
     utils
     fixtures.bible
     fixtures.feedback
+    fixtures.compass
 
 """
 

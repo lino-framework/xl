@@ -69,8 +69,8 @@ His mother Mary was engaged to Joseph, but, before the marriage took place, she 
 [1:25] He made Mary his wife, but they did not sleep together before the birth of her son; and to this son he gave the name Jesus.
 """)
 
-    for p in polls.Poll.objects.exclude(questions_to_add=''):
-        p.after_ui_save(None, None)
-        #~ p.save()
+    # for p in polls.Poll.objects.exclude(questions_to_add=''):
+    #     p.after_ui_save(None, None)
+    #     #~ p.save()
 
-    yield polls.Response(poll=p, user=USERS.pop())
+    # yield polls.Response(poll=p, user=USERS.pop())
