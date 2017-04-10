@@ -111,6 +111,8 @@ class Deployment(Sequenced, Workable):
         verbose_name = _("Wish")
         verbose_name_plural = _('Wishes')
 
+    allow_cascaded_copy = 'milestone'
+    
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
     milestone = dd.ForeignKey(

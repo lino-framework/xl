@@ -59,10 +59,10 @@ class ChoiceSet(mixins.BabelNamed):
 class ChoiceSets(dd.Table):
     required_roles = dd.login_required(PollsStaff)
     model = 'polls.ChoiceSet'
-    detail_layout = """
-    name
-    ChoicesBySet
-    """
+    # detail_layout = """
+    # name
+    # ChoicesBySet
+    # """
 
 
 class Choice(mixins.BabelNamed, mixins.Sequenced):

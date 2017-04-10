@@ -523,9 +523,7 @@ class Tickets(dd.Table):
             _("Deployed"), blank=True,
             help_text=_("Whether to show tickets with at "
                         "least one deployment")),
-        show_active=dd.YesNo.field(
-            _("Active"), blank=True,
-            help_text=_("Whether to show active tickets")),
+        show_active=dd.YesNo.field(_("Active"), blank=True),
         show_todo=dd.YesNo.field(_("To do"), blank=True),
         has_project=dd.YesNo.field(_("Has project"), blank=True),
         show_private=dd.YesNo.field(_("Private"), blank=True))

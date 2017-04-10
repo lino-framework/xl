@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 from lino.api import dd, rt, _
@@ -46,3 +46,8 @@ def objects():
     yield choiceset("1...5", "1", "2", "3", "4", "5")
     yield choiceset("1...10",
                     "1", "2", "3", "4", "5", "6", "7", "8", "9", "10")
+
+    yield choiceset(
+        _("Agree-Disagree"),
+        "Strongly disagree", "Disagree", "Agree", "Strongly agree")
+    
