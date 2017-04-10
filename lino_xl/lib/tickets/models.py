@@ -550,7 +550,9 @@ class Ticket(UserAuthored, mixins.CreatedModified,
                 settings.SITE.user_model,
                 dd.plugins.faculties.end_user_model):
             if self.end_user:
-                yield self.end_user
+                u = self.end_user.get_as_user()
+                if u is not None:
+                    yield u
        
     def is_workable_for(self, user):
         if self.standby or self.closed:
