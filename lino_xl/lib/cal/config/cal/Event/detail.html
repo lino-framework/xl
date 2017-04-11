@@ -1,0 +1,30 @@
+{% extends "bootstrap3/base.html" %}
+{% set active_page = "" %}
+{% block title %}{{title}}{% endblock %}
+{% block main %}
+<div class="row-fluid">
+<h1>{{obj.summary}}</h1>
+{{E.tostring(navigator)}}
+{% if True or obj.access_class == rt.actors.cal.AccessClasses.public %}
+<p style="background-color:#eeeeee; padding:6pt;">
+ 
+<b>{{_("Date")}} :</b> {{obj.start_date}}
+{% if obj.end_date %} - {{obj.end_date}}{% endif %}
+{% if obj.start_time %}
+<br/><b>{{_("Time")}} : {{obj.start_time}}-{{obj.end_time}}
+{% endif %}
+  
+{% if obj.room %}
+<br/><b>{{_("Room")}} :</b> {{E.tostring(obj.room.obj2href(ar))}}
+{% endif %}
+{% if obj.type %}
+<br/><b>Type:</b> {{obj.type}}
+{% endif %}
+</p>
+<div>
+{{memo(obj.description)}}
+</div>
+{% endif %}
+</div>
+{% endblock %}
+

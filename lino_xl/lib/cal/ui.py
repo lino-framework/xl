@@ -18,6 +18,9 @@ from lino.core.roles import Explorer
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
+from lino.utils import join_elems
+from lino.utils.xmlgen.html import E
+
 from .workflows import TaskStates
 from .workflows import GuestStates
 from .workflows import EntryStates
@@ -399,9 +402,6 @@ class GuestsByRole(Guests):
     master_key = 'role'
     required_roles = dd.login_required(OfficeUser)
 
-from lino.utils import join_elems
-from lino.utils.xmlgen.html import E
-
 
 class GuestsByPartner(Guests):
     label = _("Presences")
@@ -618,7 +618,6 @@ class Events(dd.Table):
 
     """
 
-    help_text = _("A List of calendar entries. Each entry is called an event.")
     model = 'cal.Event'
     required_roles = dd.login_required(OfficeStaff)
     column_names = 'when_text:20 user summary event_type id *'
@@ -639,6 +638,9 @@ class Events(dd.Table):
     summary
     # room priority access_class transparent
     """
+
+    detail_html_template = "cal/Event/detail.html"
+
 
     params_panel_hidden = True
 
@@ -901,10 +903,20 @@ class EntriesByController(Events):
                 lbl = "{0}{1}".format(lbl, evt.state.button_text)
             elems.append(ar.obj2html(evt, lbl))
         # elems = join_elems(elems, sep=', ')
-        sar = obj.do_update_events.request_from(sar)
-        if sar.get_permission():
-            btn = sar.ar2button(obj)
-            elems.append(E.p(btn))
+        toolbar = []
+        ar1 = obj.do_update_events.request_from(sar)
+        if ar1.get_permission():
+            btn = ar1.ar2button(obj)
+            toolbar.append(btn)
+
+        ar2 = self.insert_action.request_from(sar)
+        if ar2.get_permission():
+            btn = ar2.ar2button()
+            toolbar.append(btn)
+
+        if len(toolbar):
+            toolbar = join_elems(toolbar, sep=' ')
+            elems.append(E.p(*toolbar))
 
         return ar.html_text(E.div(*elems))
     

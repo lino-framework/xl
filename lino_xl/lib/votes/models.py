@@ -394,7 +394,7 @@ class MyOffers(My, Votes):
 class MyTasks(My, Votes):
     """Show your votes in states assigned and done"""
     label = _("My tasks")
-    column_names = "votable_overview workflow_buttons priority *"
+    column_names = "votable_overview workflow_buttons *"
     order_by = ['-priority', '-id']
     filter_vote_states = "assigned done"
     filter_ticket_states = "opened started talk"
@@ -450,16 +450,24 @@ class VotesByVotable(Votes):
         sar = self.request_from(ar, master_instance=obj)
 
         html = []
+        states = {}
+        for s, d in VoteStates.choices:
+            states[s] = []
 
-        items = [
-            ar.obj2html(o, o.user.initials or str(o.user))
-            for o in sar]
+        for o in sar:
+            states[o.state].append(ar.obj2html(o, o.user.initials or str(o.user), title=o.state))
 
+        html.append(E.ul(
+            *[E.li(*([str(s.text),  ": "] + join_elems(states[s], sep=", "))) for s, c in VoteStates.choices
+              if states[s]
+              ]
+        ))
+        # print(E.tostring(html))
         # items = [
         #     ar.obj2html(o, o.user.username or str(o.user))
         #     for o in rt.models.votes.Vote.objects.filter(
         #             votable=obj).order_by('-id')]
-
+        # sar.get_user() == v.user
         sar = self.insert_action.request_from(sar)
         if sar.get_permission():
             # btn = sar.ar2button(None, _("Add voter"), icon_name=None)
@@ -467,13 +475,10 @@ class VotesByVotable(Votes):
             # btn = sar.ar2button(None, u"⏍", icon_name=None)  # 23CD SQUARE FOOT
             # btn = sar.ar2button(None, u"⊞", icon_name=None) # 229e SQUARED PLUS
             
-            items.append(btn)
-            
-        if len(items) > 0:
-            html += join_elems(items, sep=', ')
-            
-        return E.p(*html)
+            html.append(E.div(btn))
 
+            
+        return ar.html_text(E.div(*html))
 
     
 
