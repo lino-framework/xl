@@ -618,7 +618,6 @@ class Events(dd.Table):
 
     """
 
-    help_text = _("A List of calendar entries. Each entry is called an event.")
     model = 'cal.Event'
     required_roles = dd.login_required(OfficeStaff)
     column_names = 'when_text:20 user summary event_type id *'
