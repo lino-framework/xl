@@ -18,6 +18,9 @@ from lino.core.roles import Explorer
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
+from lino.utils import join_elems
+from lino.utils.xmlgen.html import E
+
 from .workflows import TaskStates
 from .workflows import GuestStates
 from .workflows import EntryStates
@@ -399,9 +402,6 @@ class GuestsByRole(Guests):
     master_key = 'role'
     required_roles = dd.login_required(OfficeUser)
 
-from lino.utils import join_elems
-from lino.utils.xmlgen.html import E
-
 
 class GuestsByPartner(Guests):
     label = _("Presences")
@@ -639,6 +639,9 @@ class Events(dd.Table):
     summary
     # room priority access_class transparent
     """
+
+    detail_html_template = "cal/Event/detail.html"
+
 
     params_panel_hidden = True
 

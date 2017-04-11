@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
 """Database models for this plugin.
 
 """
+
+from builtins import str
 
 from django.conf import settings
 from django.db import models
@@ -20,6 +22,9 @@ from lino.modlib.users.mixins import My, UserAuthored
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
 from lino.core.requests import BaseRequest
+
+from lino.utils import join_elems
+from lino.utils.xmlgen.html import E
 
 
 @dd.python_2_unicode_compatible
@@ -84,6 +89,8 @@ class Entry(UserAuthored, Controllable, CombinedDateTime):
     language = dd.LanguageField()
     
     def __str__(self):
+        if self.pub_date:
+            return _("{} by {}").format(self.pub_date, self.user)
         return u'%s #%s' % (self._meta.verbose_name, self.pk)
 
     def on_create(self, ar):
@@ -182,8 +189,40 @@ class EntriesByType(Entries):
 class EntriesByController(Entries):
     master_key = 'owner'
     column_names = "pub_date title user *"
-    order_by = ["pub_date-"]
-    #~ label = _("Notes by person")
+    order_by = ["-pub_date"]
+    slave_grid_format = "summary"
+
+    @classmethod
+    def get_slave_summary(self, mi, ar):
+        if ar is None:
+            return ''
+        sar = self.request_from(ar, master_instance=mi)
+
+        def fmt(obj):
+            return str(obj)
+
+        elems = []
+        for obj in sar:
+            # if len(elems) > 0:
+            #     elems.append(', ')
+
+            lbl = fmt(obj)
+            # if obj.state.button_text:
+            #     lbl = "{0}{1}".format(lbl, obj.state.button_text)
+            elems.append(ar.obj2html(obj, lbl))
+        elems = join_elems(elems, sep=', ')
+        toolbar = []
+        ar2 = self.insert_action.request_from(sar)
+        if ar2.get_permission():
+            btn = ar2.ar2button()
+            toolbar.append(btn)
+
+        if len(toolbar):
+            toolbar = join_elems(toolbar, sep=' ')
+            elems.append(E.p(*toolbar))
+
+        return ar.html_text(E.div(*elems))
+    
 
 
 class LatestEntries(Entries):

@@ -67,7 +67,7 @@ class ContactRelated(dd.Model):
     company = dd.ForeignKey(
         "contacts.Company",
         related_name="%(app_label)s_%(class)s_set_by_company",
-        verbose_name=_("Company"),
+        verbose_name=_("Organization"),
         blank=True, null=True)
 
     contact_person = dd.ForeignKey(
