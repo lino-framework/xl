@@ -42,6 +42,7 @@ class Rooms(dd.Table):
 
     """
     required_roles = dd.login_required((OfficeStaff, CalendarReader))
+    
     model = 'cal.Room'
     detail_layout = """
     id name
@@ -54,6 +55,8 @@ class Rooms(dd.Table):
     company
     contact_person
     """
+
+    detail_html_template = "cal/Room/detail.html"
 
 class AllRooms(Rooms):    
     required_roles = dd.login_required(OfficeStaff)
@@ -642,7 +645,6 @@ class Events(dd.Table):
     """
 
     detail_html_template = "cal/Event/detail.html"
-
 
     params_panel_hidden = True
 

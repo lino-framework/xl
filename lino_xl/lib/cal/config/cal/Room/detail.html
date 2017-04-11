@@ -3,7 +3,7 @@
 {% block title %}{{title}}{% endblock %}
 {% block main %}
 <div class="row-fluid">
-<h1>({{obj}})</h1>
+<h1>{{obj}}</h1>
 {{E.tostring(navigator)}}
 <p style="background-color:#eeeeee; padding:6pt;">
 {% if obj.contact_person %}
@@ -17,6 +17,11 @@
 <div>
 {{memo(obj.description)}}
 </div>
+
+
+<div>{{ar.show(rt.actors.cal.EntriesByRoom, obj, header_level=2)}}</div>
+
+
 </div>
 {% endblock %}
 
