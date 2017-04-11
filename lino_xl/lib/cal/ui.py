@@ -901,10 +901,20 @@ class EntriesByController(Events):
                 lbl = "{0}{1}".format(lbl, evt.state.button_text)
             elems.append(ar.obj2html(evt, lbl))
         # elems = join_elems(elems, sep=', ')
-        sar = obj.do_update_events.request_from(sar)
-        if sar.get_permission():
-            btn = sar.ar2button(obj)
-            elems.append(E.p(btn))
+        toolbar = []
+        ar1 = obj.do_update_events.request_from(sar)
+        if ar1.get_permission():
+            btn = ar1.ar2button(obj)
+            toolbar.append(btn)
+
+        ar2 = self.insert_action.request_from(sar)
+        if ar2.get_permission():
+            btn = ar2.ar2button()
+            toolbar.append(btn)
+
+        if len(toolbar):
+            toolbar = join_elems(toolbar, sep=' ')
+            elems.append(E.p(*toolbar))
 
         return ar.html_text(E.div(*elems))
     
