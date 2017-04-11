@@ -145,6 +145,13 @@ class Deployment(Sequenced, Workable):
     def __str__(self):
         return "{}@{}".format(self.seqno, self.milestone)
 
+    def after_ui_save(self, ar, cw):
+        """
+        Automatically invite every participant to vote on every wish when adding deplyment.
+        """
+        super(Deployment, self).after_ui_save(ar, cw)
+        self.milestone.after_ui_save(ar, cw)
+
 
 
 from lino.modlib.system.choicelists import (ObservedEvent)
