@@ -147,7 +147,7 @@ class Deployment(Sequenced, Workable):
 
     def after_ui_save(self, ar, cw):
         """
-        Automatically invite every participant to vote on every wish when adding deplyment.
+        Automatically invite every participant to vote on every wish when adding deployment.
         """
         super(Deployment, self).after_ui_save(ar, cw)
         self.milestone.after_ui_save(ar, cw)
