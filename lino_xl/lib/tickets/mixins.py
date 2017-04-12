@@ -21,7 +21,7 @@ class Milestone(dd.Model):
 
         """
         super(Milestone, self).after_ui_save(ar, cw)
-        participants = self.get_milestone_users()
+        participants = list(self.get_milestone_users())
         for wish in self.wishes_by_milestone.all():
             for user in participants:
                 wish.ticket.set_auto_vote(user, VoteStates.invited)

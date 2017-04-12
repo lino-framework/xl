@@ -11,6 +11,7 @@ Tables for this plugin.
 from __future__ import unicode_literals
 
 from django.conf import settings
+from django.db import models
 
 from lino.api import dd, rt, _
 from lino import mixins
@@ -24,6 +25,7 @@ from lino.utils.xmlgen.html import E
 from .workflows import TaskStates
 from .workflows import GuestStates
 from .workflows import EntryStates
+from .choicelists import AccessClasses
 from .mixins import daterange_text
 from .utils import when_text
 
@@ -40,6 +42,7 @@ class Rooms(dd.Table):
 
     """
     required_roles = dd.login_required((OfficeStaff, CalendarReader))
+    
     model = 'cal.Room'
     detail_layout = """
     id name
@@ -52,6 +55,8 @@ class Rooms(dd.Table):
     company
     contact_person
     """
+
+    detail_html_template = "cal/Room/detail.html"
 
 class AllRooms(Rooms):    
     required_roles = dd.login_required(OfficeStaff)
@@ -641,7 +646,6 @@ class Events(dd.Table):
 
     detail_html_template = "cal/Event/detail.html"
 
-
     params_panel_hidden = True
 
     parameters = mixins.ObservedPeriod(
@@ -787,6 +791,7 @@ class PublicEntries(Events):
     required_roles = dd.login_required(CalendarReader)
     
     column_names = 'overview room event_type  *'
+    filter = models.Q(access_class=AccessClasses.public)
     
     @classmethod
     def param_defaults(self, ar, **kw):
