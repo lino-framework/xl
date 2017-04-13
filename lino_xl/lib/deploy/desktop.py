@@ -123,6 +123,7 @@ class DeploymentsByMilestone(Deployments):
     order_by = ['seqno']
     master_key = 'milestone'
     column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 wish_type remark:30 deferred_to workflow_buttons *"
+    preview_limit = 0
     insert_layout = dd.InsertLayout("""
     ticket
     remark
@@ -185,17 +186,19 @@ class DeploymentsByTicket(Deployments):
         qs = dd.plugins.tickets.milestone_model.add_param_filter(
             qs, lookup_prefix='milestone__',
             show_active=dd.YesNo.yes)
-        items = [o.milestone.obj2href(ar) for o in qs]
+        items = E.ul()
+        for o in qs:
+            items.append(
+                E.li(o.obj2href(ar, text=getattr(o.wish_type,'text', _("Item"))), " in ", o.milestone.obj2href(ar), " : ", o.remark)
+            )
+        html.append(items)
         # items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)
         if sar.get_permission():
             btn = sar.ar2button()
-            items.append(btn)
+            html.append(E.div(btn))
 
-        if len(items) > 0:
-            html += join_elems(items, sep=', ')
-            
-        return E.p(*html)
+        return ar.html_text(ar.parse_memo(E.tostring(html)))
 
 
     
