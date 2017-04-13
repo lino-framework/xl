@@ -189,14 +189,15 @@ class DeploymentsByTicket(Deployments):
         items = E.ul()
         for o in qs:
             items.append(
-                E.li(o.obj2href(ar, text=getattr(o.wish_type,'text', _("Item"))), " in ", o.milestone.obj2href(ar), " : ", o.remark)
+                E.li(o.obj2href(ar, text=getattr(o.wish_type,'text', _("Wish"))), " in ", o.milestone.obj2href(ar), " : ", o.remark)
             )
-        html.append(items)
+        if items:
+            html.append(E.tostring(items))
         # items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)
         if sar.get_permission():
             btn = sar.ar2button()
-            html.append(E.div(btn))
+            html.append(btn)
 
         return ar.html_text(ar.parse_memo(E.tostring(html)))
 
