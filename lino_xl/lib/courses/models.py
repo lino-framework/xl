@@ -783,3 +783,36 @@ class Enrolment(UserAuthored, Certifiable, DatePeriod):
             sep=', ')
         return E.p(*elems)
 
+
+@dd.receiver(dd.post_startup)
+def setup_memo_commands(sender=None, **kwargs):
+    # See :doc:`/specs/memo`
+
+    Course = sender.models.courses.Course
+
+    def cmd(parser, s):
+
+        pk = s
+        txt = None
+
+        ar = parser.context['ar']
+        kw = dict()
+        # dd.logger.info("20161019 %s", ar.renderer)
+        pk = int(pk)
+        obj = Course.objects.get(pk=pk)
+        # try:
+        # except model.DoesNotExist:
+        #     return "[{} {}]".format(name, s)
+        if txt is None:
+            txt = "{0}".format(obj.name)
+            kw.update(title=obj.name)
+        e = ar.obj2html(obj, txt, **kw)
+        # return str(ar)
+        return E.tostring(e)
+
+    sender.kernel.memo_parser.register_django_model(
+        'course', Course,
+        cmd=cmd,
+        # title=lambda obj: obj.name
+    )
+
