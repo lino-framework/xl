@@ -361,7 +361,7 @@ class AllVotes(Votes):
 
 
 class MyVotes(My, Votes):
-    """Show your votes in all states"""
+    """Show all my votes."""
     label = _("My votes")
     column_names = "votable_overview workflow_buttons *"
     # hide_top_toolbar = True
@@ -375,16 +375,16 @@ class MyVotes(My, Votes):
     
     
 class MyInvitations(My, Votes):
-    """Show your votes in state invited """
+    """Show my votes in state invited. """
     label = _("My vote invitations")
-    column_names = "votable_overview workflow_buttons priority *"
+    column_names = "votable_overview workflow_buttons *"
     order_by = ['-priority', '-id']
     filter_vote_states = "invited"
     # filter_ticket_states = "opened started talk"
     
     
 class MyOffers(My, Votes):
-    """Show the tickets for which you are candidate"""
+    """Show the tickets for which I am candidate"""
     label = _("My candidatures")
     column_names = "votable_overview workflow_buttons *"
     filter_vote_states = "candidate"
@@ -392,7 +392,7 @@ class MyOffers(My, Votes):
     
 
 class MyTasks(My, Votes):
-    """Show your votes in states assigned and done"""
+    """Show my votes in states assigned and done"""
     label = _("My tasks")
     column_names = "votable_overview workflow_buttons *"
     order_by = ['-priority', '-id']
@@ -400,7 +400,7 @@ class MyTasks(My, Votes):
     filter_ticket_states = "opened started talk"
     
 class MyWatched(My, Votes):
-    """Show your votes in states watching"""
+    """Show my votes in state watching"""
     label = _("My watchlist")
     column_names = "votable_overview workflow_buttons *"
     filter_vote_states = "watching"
