@@ -98,6 +98,7 @@ class Deployments(dd.Table):
     stay_in_grid = True
     detail_layout = dd.DetailLayout("""
     milestone
+    wish_type
     ticket
     remark
     """, window_size=(50, 15))
