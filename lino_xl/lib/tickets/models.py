@@ -520,9 +520,19 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         # elems += [' ({})'.format(self.state.button_text)]
         # elems += [' ', self.state.button_text, ' ']
         if self.user and self.user != ar.get_user():
-            elems += [ _(" by "), self.user.obj2href(ar)]
+            elems += [ ' ', _(" by "), self.user.obj2href(ar)]
         if self.end_user_id:
             elems += [' ', _("for"), ' ', self.end_user.obj2href(ar)]
+
+        qs = rt.models.votes.Vote.objects.filter(
+            votable=self, state=VoteStates.assigned)
+        if qs.count() > 0:
+            elems += [', ', _("assigned to"), ' ']
+            elems += join_elems(
+                [vote.user.obj2href(ar) for vote in qs], sep=', ')
+        return E.p(*elems)
+        # return E.p(*join_elems(elems, sep=', '))
+            
         # if ar.actor.model is self.__class__:
         #     elems += [E.br(), _("{} state:").format(
         #         self._meta.verbose_name), ' ']

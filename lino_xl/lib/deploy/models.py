@@ -12,12 +12,15 @@ from django.db import models
 from lino.api import dd, rt, _
 
 from lino.mixins import Sequenced, DatePeriod
+from lino.utils import join_elems
+from lino.utils.instantiator import create_row
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored
 
 from lino_xl.lib.tickets.models import site_model
 from lino_xl.lib.clocking.mixins import Workable
+from lino_xl.lib.votes.choicelists import VoteStates
 
 class WishTypes(dd.ChoiceList):
     required_roles = dd.login_required(dd.SiteStaff)
@@ -121,6 +124,11 @@ class Deployment(Sequenced, Workable):
     remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
     wish_type = WishTypes.field(blank=True, null=True)
+    deferred_to = dd.ForeignKey(
+        dd.plugins.tickets.milestone_model,
+        verbose_name=_("Deferred to"),
+        blank=True, null=True,
+        related_name="wishes_by_deferred")
 
     def get_ticket(self):
         return self.ticket
@@ -145,6 +153,20 @@ class Deployment(Sequenced, Workable):
     def __str__(self):
         return "{}@{}".format(self.seqno, self.milestone)
 
+    def full_clean(self):
+        super(Deployment, self).full_clean()
+        if self.deferred_to:
+            if self.milestone == self.deferred_to:
+                raise Warning(_("Cannot defer to myself"))
+            qs = rt.models.deploy.Deployment.objects.filter(
+                milestone=self.deferred_to, ticket=self.ticket)
+            if qs.count() == 0:
+                create_row(
+                    Deployment, milestone=self.deferred_to,
+                    ticket=self.ticket, wish_type=self.wish_type,
+                    remark=self.remark)
+                
+        
     def after_ui_save(self, ar, cw):
         """
         Automatically invite every participant to vote on every wish when adding deployment.
@@ -152,6 +174,14 @@ class Deployment(Sequenced, Workable):
         super(Deployment, self).after_ui_save(ar, cw)
         self.milestone.after_ui_save(ar, cw)
 
+    # @dd.displayfield(_("Assigned"))
+    # def assigned_voters(self, ar):
+    #     if ar is None:
+    #         return None
+    #     qs = rt.models.votes.Vote.objects.filter(
+    #         votable=self.ticket, state=VoteStates.assigned)
+    #     elems = [vote.user.obj2href(ar) for vote in qs]
+    #     return E.p(*join_elems(elems, sep=', '))
 
 
 from lino.modlib.system.choicelists import (ObservedEvent)
