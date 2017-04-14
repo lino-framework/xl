@@ -192,7 +192,7 @@ class DeploymentsByTicket(Deployments):
             items.append(
                 E.li(o.obj2href(ar, text=getattr(o.wish_type,'text', _("Wish"))), " in ", o.milestone.obj2href(ar), " : ", o.remark)
             )
-        if items:
+        if len(items) > 0:
             html.append(E.tostring(items))
         # items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)

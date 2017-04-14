@@ -82,6 +82,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Calendar")
 
     needs_plugins = ['lino.modlib.gfks', 'lino.modlib.printing',
+                     'lino.modlib.notify',
                      'lino_xl.lib.xl']
 
     partner_model = 'contacts.Partner'
