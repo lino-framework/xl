@@ -9,6 +9,7 @@ Database models for this plugin.
 
 from __future__ import unicode_literals
 from __future__ import print_function
+from builtins import six
 import six
 
 from django.db import models
