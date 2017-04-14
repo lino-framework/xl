@@ -180,12 +180,15 @@ class Note(TypedPrintable,
     def get_print_language(self):
         return self.language
 
-    def get_change_observers(self):
-        # in lino_welfare the project is pcsw.Client
-        prj = self.project
-        if isinstance(prj, ChangeObservable):
-            for u in prj.get_change_observers():
-                yield u
+    def get_change_owner(self):
+        return self.project
+    
+    # def get_change_observers(self):
+    #     # in lino_welfare the project is pcsw.Client
+    #     prj = self.project
+    #     if isinstance(prj, ChangeObservable):
+    #         for u in prj.get_change_observers():
+    #             yield u
 
     def get_change_info(self, ar, cw):
         yield E.p(

@@ -224,11 +224,11 @@ class Coaching(UserAuthored, mixins.DatePeriod, dd.ImportedFields, ChangeObserva
     # def get_related_project(self):
     #     return self.client
 
-    def get_change_owner(self, ar):
+    def get_change_owner(self):
         return self.client
 
-    def get_change_observers(self):
-        return self.client.get_change_observers()
+    # def get_change_observers(self):
+    #     return self.client.get_change_observers()
 
     # def get_notify_observers(self):
     #     yield self.user

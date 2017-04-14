@@ -31,6 +31,7 @@ from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
+from lino.modlib.notify.mixins import ChangeObservable
 
 from .choicelists import Recurrencies, Weekdays, AccessClasses
 
@@ -781,6 +782,7 @@ class Component(Started,
                 mixins.ProjectRelated,
                 UserAuthored,
                 Controllable,
+                ChangeObservable,
                 mixins.CreatedModified):
 
     """Abstract base class for :class:`Event` and :class:`Task`.
@@ -863,6 +865,21 @@ Whether this is private, public or between."""))  # iCal:CLASS
             #~ html += " (%s)" % self.project.summary_row(ui)
         return html
         #~ return super(Event,self).summary_row(ui,rr,**kw)
+
+    def get_change_owner(self):
+        return self.project
+
+    def get_change_observers(self):
+        # implements ChangeObservable
+        if not self.is_user_modified():
+            return
+        for x in super(Component, self).get_change_observers():
+            yield x
+        for u in (self.user, self.assigned_to):
+            if u is not None:
+                yield (u, u.mail_mode)
+    
+        
 
 #~ Component.owner.verbose_name = _("Automatically created by")
 

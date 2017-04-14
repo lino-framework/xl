@@ -98,6 +98,9 @@ class Coachable(ChangeObservable):
         return ', '.join(items)
 
     def get_change_observers(self):
+        # implements ChangeObservable
+        for x in super(Coachable, self).get_change_observers():
+            yield x
         for u in settings.SITE.user_model.objects.filter(
                 coaching_supervisor=True):
             yield (u, u.mail_mode)

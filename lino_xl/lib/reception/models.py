@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -132,6 +132,7 @@ def create_prompt_event(
     if summary:
         ekw.update(summary=summary)
     event = rt.modules.cal.Event(**ekw)
+    event.full_clean()
     event.save()
     if now is None:
         now = timezone.now()

@@ -45,8 +45,10 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeObservable,
         return super(Group, cls).get_parameter_fields(**fields)
 
     def get_change_observers(self):
+        for x in super(Group, self).get_change_observers():
+            yield x
         for mbr in self.members.all():
-            yield (mbr.user, None)
+            yield (mbr.user, mbr.user.mail_mode)
     
     @dd.displayfield(_("Recent comments"))
     def recent_comments(self, ar):
