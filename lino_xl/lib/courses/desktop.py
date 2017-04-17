@@ -447,7 +447,7 @@ class Enrolments(dd.Table):
     params_layout = """start_date end_date author state \
     course_state participants_only"""
     order_by = ['request_date']
-    column_names = 'request_date course pupil workflow_buttons user *'
+    column_names = 'request_date course course__state pupil workflow_buttons user *'
     # hidden_columns = 'id state'
     insert_layout = """
     request_date user
