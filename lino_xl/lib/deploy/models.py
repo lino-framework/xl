@@ -174,6 +174,21 @@ class Deployment(Sequenced, Workable):
         super(Deployment, self).after_ui_save(ar, cw)
         self.milestone.after_ui_save(ar, cw)
 
+    @dd.displayfield(_("Actions"))
+    def workflow_buttons(self, ar):
+        if ar is None:
+            return ''
+        l = super(Deployment, self).get_workflow_buttons(ar)
+
+        sar = rt.actors.comments.CommentsByRFC.insert_action.request_from(ar)
+        sar.known_values.update(
+            owner=self.ticket,
+            user=ar.get_user()
+        )
+        if sar.get_permission():
+            l.append(sar.ar2button())
+        return l
+
     # @dd.displayfield(_("Assigned"))
     # def assigned_voters(self, ar):
     #     if ar is None:
