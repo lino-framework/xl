@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """Utilities, choicelists, mixins used by :mod:`lino_xl.lib.polls`.
 
@@ -11,41 +11,32 @@ from django.utils.translation import ugettext_lazy as _
 
 class PollStates(dd.Workflow):
     """
-    The list of possible states of a :class:`Poll`. Default is:
-
-    .. django2rst::
-
-       rt.show(polls.PollStates)
+    The list of possible states of a :class:`Poll`.
 
     """
-    verbose_name_plural = _("Poll States")
+    verbose_name_plural = _("Poll states")
     required_roles = dd.login_required(dd.SiteStaff)
 
 
 add = PollStates.add_item
 add('10', _("Draft"), 'draft')
-add('20', _("Published"), 'published')
+add('20', _("Active"), 'active')
 add('30', _("Closed"), 'closed')
 
-PollStates.published.add_transition(
+PollStates.active.add_transition(
     _("Publish"), required_states='draft')
 PollStates.closed.add_transition(
-    _("Close"), required_states='draft published')
+    _("Close"), required_states='draft active')
 PollStates.draft.add_transition(
-    _("Reopen"), required_states='published closed')
+    _("Reopen"), required_states='active closed')
 
 
 class ResponseStates(dd.Workflow):
     """
-    The list of possible states of a :class:`Poll`. Default is:
-
-    .. django2rst::
-
-       rt.show(polls.ResponseStates)
-
+    The list of possible states of a :class:`Poll`. 
 
     """
-    verbose_name_plural = _("Response States")
+    verbose_name_plural = _("Response states")
     required_roles = dd.login_required(dd.SiteStaff)
 
 

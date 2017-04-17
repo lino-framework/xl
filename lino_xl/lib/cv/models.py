@@ -426,7 +426,7 @@ class Studies(PeriodTable):
     column_names = "person start_date end_date type content education_level state *"
 
     detail_layout = """
-    person start_date end_date
+    person start_date end_date duration_text
     type content education_level state #success
     school country city
     remarks
@@ -638,10 +638,10 @@ class Experiences(PeriodTable):
     # stay_in_grid = True
     column_names = "person start_date end_date sector function title company *"
     detail_layout = """
-    person start_date end_date termination_reason
-    company country city
+    person company country city
     sector function title
-    status duration regime is_training
+    status duration regime is_training 
+    start_date end_date duration_text termination_reason
     remarks
     """
 
