@@ -620,8 +620,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         """
         To skip mixins.Referrable quick_search_filter
         """
-        return dd.Model.quick_search_filter(search_text, prefix, cls.quick_search_fields_digit, cls.quick_search_fields)
-
+        return super(mixins.Referrable, cls).quick_search_filter(search_text, prefix)
 
 # dd.update_field(Ticket, 'user', verbose_name=_("Reporter"))
 
