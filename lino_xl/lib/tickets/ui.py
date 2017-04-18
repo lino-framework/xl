@@ -421,8 +421,8 @@ class TicketDetail(dd.DetailLayout):
     """, label=_("More"))
 
     more1 = """
-    #nickname:10 created modified reported_for #fixed_for ticket_type:10
-    state duplicate_of planned_time priority
+    #nickname:10     created modified reported_for #fixed_for ticket_type:10
+    state ref duplicate_of planned_time priority
     # standby feedback closed
     """
 
@@ -526,12 +526,14 @@ class Tickets(dd.Table):
         show_active=dd.YesNo.field(_("Active"), blank=True),
         show_todo=dd.YesNo.field(_("To do"), blank=True),
         has_project=dd.YesNo.field(_("Has project"), blank=True),
-        show_private=dd.YesNo.field(_("Private"), blank=True))
+        show_private=dd.YesNo.field(_("Private"), blank=True),
+        has_ref=dd.YesNo.field(_("Has reference"), blank=True)
+    )
 
     params_layout = """
     user end_user assigned_to not_assigned_to interesting_for site project state deployed_to
     has_project show_assigned show_active show_deployed show_todo show_private
-    start_date end_date observed_event topic feasable_by"""
+    start_date end_date observed_event topic feasable_by has_ref"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
 
@@ -652,6 +654,12 @@ class Tickets(dd.Table):
             qs = qs.filter(
                 Q(private=True) |
                 Q(project__private=True))
+
+        if pv.has_ref == dd.YesNo.yes:
+            qs = qs.filter(ref__isnull=False)
+        elif pv.has_ref == dd.YesNo.no:
+            qs = qs.filter(ref__isnull=True)
+
         # print 20150512, qs.query
         # 1253
         
@@ -717,6 +725,22 @@ class SuggestedTicketsByEndUser(Tickets):
         kw.update(show_active=dd.YesNo.yes)
         return kw
 
+class RefTickets(AllTickets):
+    """
+    Tickets that have a reference.
+    """
+    label = _("Reference Tickets")
+
+    column_names = 'id ref:20 summary:50 user:10 topic #faculty ' \
+                   'workflow_buttons:30 project:10 *'
+    order_by = ["ref"]
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(RefTickets, self).param_defaults(ar, **kw)
+        kw.update(
+            has_ref=dd.YesNo.yes
+        )
+        return kw
 
 class UnassignedTickets(Tickets):
     column_names = "summary project user votes_by_ticket *"
