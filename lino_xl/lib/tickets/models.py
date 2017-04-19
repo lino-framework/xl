@@ -355,9 +355,9 @@ class SpawnTicket(dd.Action):
 
 @dd.python_2_unicode_compatible
 class Ticket(UserAuthored, mixins.CreatedModified,
-             TimeInvestment, Votable, Workable, Prioritized):
-    
-    quick_search_fields = "summary description"
+             TimeInvestment, Votable, Workable, Prioritized, mixins.Referrable):
+
+    quick_search_fields = "summary description ref"
 
     workflow_state_field = 'state'
 
@@ -615,6 +615,12 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         elems = join_elems(elems, ', ')
         return E.p(*elems)
 
+    @classmethod
+    def quick_search_filter(cls, search_text, prefix=''):
+        """
+        To skip mixins.Referrable quick_search_filter
+        """
+        return super(mixins.Referrable, cls).quick_search_filter(search_text, prefix)
 
 # dd.update_field(Ticket, 'user', verbose_name=_("Reporter"))
 

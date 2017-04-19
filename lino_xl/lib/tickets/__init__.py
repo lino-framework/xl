@@ -52,6 +52,9 @@ class Plugin(ad.Plugin):
         m.add_action('tickets.UnassignedTickets')
         # m.add_action('tickets.ActiveProjects')
         # m.add_action('tickets.MyWishes')
+        m.add_action('tickets.RefTickets')
+
+
 
     def setup_config_menu(self, site, profile, m):
         p = self.get_menu_group()
