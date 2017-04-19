@@ -455,8 +455,21 @@ class VotesByVotable(Votes):
         for s, d in VoteStates.choices:
             states[s] = []
 
+        u = ar.get_user()
+
         for o in sar:
             states[o.state].append(ar.obj2html(o, o.user.initials or str(o.user), title=o.state))
+            if u == o.user:
+                html.insert(0, E.span(
+                    E.b(str(o.state)),
+                    u" \u2192 ",
+                    *join_elems([sar.action_button(ba, o) for ba in sar.actor.get_actions()
+                                 if ba.action.show_in_workflow and
+                                 sar.actor.get_row_permission(o, sar, o.state, ba) and
+                                 isinstance(ba.action, dd.ChangeStateAction)],
+                                " ")
+                ))
+
 
         html.append(E.ul(
             *[E.li(*([str(s.text),  ": "] + join_elems(states[s], sep=", "))) for s, c in VoteStates.choices

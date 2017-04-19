@@ -71,7 +71,7 @@ def objects():
             user=USERS.pop(),
             title=title.strip(),
             details=details.strip(),
-            state=polls.PollStates.published,
+            state=polls.PollStates.active,
             questions_to_add=questions,
             default_choiceset=choiceset)
 

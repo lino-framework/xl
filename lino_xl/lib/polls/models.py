@@ -59,9 +59,13 @@ class ChoiceSet(mixins.BabelNamed):
 class ChoiceSets(dd.Table):
     required_roles = dd.login_required(PollsStaff)
     model = 'polls.ChoiceSet'
-    # detail_layout = """
+    detail_layout = """
+    name
+    ChoicesBySet
+    """
+    # insert_layout = """
+    # id
     # name
-    # ChoicesBySet
     # """
 
 
@@ -92,7 +96,7 @@ class Choices(dd.Table):
 
 class ChoicesBySet(Choices):
     master_key = 'choiceset'
-    required_roles = dd.login_required()
+    # required_roles = dd.login_required()
 
 
 @dd.python_2_unicode_compatible
@@ -348,7 +352,7 @@ class Response(UserAuthored, mixins.Registrable):
 
     @dd.chooser()
     def poll_choices(cls):
-        return Poll.objects.filter(state=PollStates.published)
+        return Poll.objects.filter(state=PollStates.active)
 
     def __str__(self):
         if self.partner is None:
@@ -424,7 +428,7 @@ class ResponsesByPartner(Responses):
             return
 
         visible_polls = Poll.objects.filter(state__in=(
-            PollStates.published, PollStates.closed)).order_by('ref')
+            PollStates.active, PollStates.closed)).order_by('ref')
 
         qs = Response.objects.filter(partner=obj).order_by('date')
         polls_responses = {}
@@ -440,7 +444,7 @@ class ResponsesByPartner(Responses):
             elems += join_elems(
                 [ar.obj2html(r, dd.fds(r.date))
                  for r in responses], sep=', ')
-            if poll.state == PollStates.published:
+            if poll.state == PollStates.active:
                 elems += [' ', iar.ar2button()]
                 #elems += [' ', iar.insert_button()]
             items.append(E.li(*elems))
@@ -516,6 +520,33 @@ class AnswerRemarksByAnswer(AnswerRemarks):
 class AllAnswerRemarks(AnswerRemarks):
     required_roles = dd.login_required(PollsStaff)
 
+# class VirtualTableRow(object):
+
+#     def save_new_instance(elem, ar):
+#         pre_ui_save.send(sender=elem.__class__, instance=elem, ar=ar)
+#         elem.before_ui_save(ar)
+#         elem.save(force_insert=True)
+#         # yes, `on_ui_created` comes *after* save()
+#         on_ui_created.send(elem, request=ar.request)
+#         # elem.after_ui_create(ar)
+#         elem.after_ui_save(ar, None)
+
+#     def save_watched_instance(elem, ar, watcher):
+#         if watcher.is_dirty():
+#             pre_ui_save.send(sender=elem.__class__, instance=elem, ar=ar)
+#             elem.before_ui_save(ar)
+#             elem.save(force_update=True)
+#             watcher.send_update(ar)
+#             ar.success(_("%s has been updated.") % obj2unicode(elem))
+#         else:
+#             ar.success(_("%s : nothing to save.") % obj2unicode(elem))
+#         elem.after_ui_save(ar, watcher)
+
+    
+#     def delete_instance(self, ar):
+#         pre_ui_delete.send(sender=self, request=ar.request)
+#         self.delete()
+
 
 @dd.python_2_unicode_compatible
 class AnswersByResponseRow(object):
@@ -527,7 +558,7 @@ class AnswersByResponseRow(object):
 
     """
     FORWARD_TO_QUESTION = tuple(
-        "full_clean after_ui_save disable_delete".split())
+        "full_clean after_ui_save disable_delete save_new_instance save_watched_instance delete_instance".split())
 
     def __init__(self, response, question):
         self.response = response

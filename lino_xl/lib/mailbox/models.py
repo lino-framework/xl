@@ -62,8 +62,15 @@ class DeleteSpam(dd.Action):
     def run_from_ui(self, ar, **kw):
         spams = rt.models.django_mailbox.Message.objects.filter(spam = True)
         logger.info("Deleting spam messages [%s]", spams)
-        for obj in spams:
-            obj.delete()
-        ar.set_response(refresh=True)
+
+        def ok(ar):
+            for obj in spams:
+                obj.delete()
+            ar.set_response(refresh=True)
+
+        ar.confirm(
+            ok,
+            _("Delete {} messages.").format(spams.count()),
+            _("Are you sure?"))
 
 dd.inject_action("django_mailbox.Message", delete_spam=DeleteSpam())
