@@ -297,4 +297,9 @@ if False:  # works, but is not useful
 #     'tickets.Project',
 #     'reporting_type', ReportingTypes.field(blank=True))
 
+dd.inject_field(
+    "users.User", 'open_session_on_new_ticket',
+    models.BooleanField(_("Open session on new ticket"), default=False))
+
+
 from .ui import *

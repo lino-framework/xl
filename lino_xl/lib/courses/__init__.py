@@ -22,6 +22,7 @@ historic reasons.
    :toctree:
 
    models
+   mixins
    choicelists
    workflows
    desktop
