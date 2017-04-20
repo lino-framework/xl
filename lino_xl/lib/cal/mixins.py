@@ -866,8 +866,8 @@ Whether this is private, public or between."""))  # iCal:CLASS
         return html
         #~ return super(Event,self).summary_row(ui,rr,**kw)
 
-    def get_change_owner(self):
-        return self.project
+    # def get_change_owner(self):
+    #     return self.project
 
     def get_change_observers(self):
         # implements ChangeObservable
