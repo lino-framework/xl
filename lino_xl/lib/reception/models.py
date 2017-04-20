@@ -65,6 +65,10 @@ add = GuestStates.add_item
 add('44', _("Waiting"), 'waiting')
 add('45', _("Busy"), 'busy')
 add('46', _("Gone"), 'gone')
+GuestStates.present_states = set([
+    GuestStates.present,
+    GuestStates.waiting, GuestStates.busy, GuestStates.gone ])
+
 
 # GuestStates.excused.add_transition(
 #     required_states='invited accepted absent gone')
