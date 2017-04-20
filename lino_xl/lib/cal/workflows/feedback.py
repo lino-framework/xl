@@ -49,6 +49,8 @@ add('40', _("Present"), 'present', afterwards=True)
 add('50', _("Absent"), 'absent', afterwards=True)
 add('60', _("Excused"), 'excused', afterwards=True)
 
+GuestStates.present_states = set([GuestStates.present])
+
 class InvitationFeedback(dd.ChangeStateAction, NotifyingAction):
     """Base class for actions that give feedback to an invitation.
 

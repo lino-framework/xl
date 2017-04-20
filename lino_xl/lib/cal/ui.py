@@ -1064,11 +1064,11 @@ class MyUnconfirmedAppointments(MyEntries):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyUnconfirmedAppointments, self).param_defaults(ar, **kw)
-        kw.update(observed_event=EventEvents.pending)
+        # kw.update(observed_event=EventEvents.pending)
         kw.update(state=EntryStates.draft)
         kw.update(start_date=settings.SITE.today())
         kw.update(end_date=settings.SITE.today(14))
-        kw.update(show_appointments=dd.YesNo.yes)
+        # kw.update(show_appointments=dd.YesNo.yes)
         return kw
 
 

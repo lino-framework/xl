@@ -341,10 +341,10 @@ class Trainings(PeriodTable):
 
     model = 'cv.Training'
     order_by = "country city type".split()
-    column_names = "person start_date end_date type state sector function *"
+    column_names = "person start_date end_date duration_text type state sector function *"
 
     detail_layout = """
-    person start_date end_date
+    person start_date end_date duration_text
     type state #success certificates
     sector function
     school country city
@@ -379,7 +379,8 @@ class TrainingsByType(Trainings):
 class TrainingsByPerson(HistoryByPerson, Trainings):
     """Show the trainings of a given person."""
     required_roles = dd.login_required(CareerUser)
-    column_names = 'type sector function remarks start_date end_date \
+    column_names = 'type sector function remarks \
+    start_date end_date duration_text \
     school country state certificates *'
     auto_fit_column_widths = True
 
@@ -463,7 +464,7 @@ class StudiesByType(Studies):
 
 class StudiesByPerson(HistoryByPerson, Studies):
     required_roles = dd.login_required(CareerUser)
-    column_names = 'type content start_date end_date school country \
+    column_names = 'type content start_date end_date duration_text school country \
     state education_level *'
     auto_fit_column_widths = True
     
@@ -636,7 +637,7 @@ class Experiences(PeriodTable):
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.Experience'
     # stay_in_grid = True
-    column_names = "person start_date end_date sector function title company *"
+    column_names = "person start_date end_date duration_text sector function title company *"
     detail_layout = """
     person company country city
     sector function title
@@ -661,7 +662,7 @@ class ExperiencesByFunction(Experiences):
 class ExperiencesByPerson(HistoryByPerson, Experiences):
     required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
-    column_names = "company country start_date end_date function \
+    column_names = "company country start_date end_date duration_text function \
     status duration termination_reason remarks *"
     insert_layout = """
     start_date end_date
