@@ -51,4 +51,15 @@ class Workable(dd.Model):
 
     #     """
     #     pass
-    
+
+    def save_new_instance(elem, ar):
+        super(Workable, elem).save_new_instance(ar)
+
+        if rt.settings.SITE.loading_from_dump:
+            return
+        me = ar.get_user()
+        if me is not None and me.open_session_on_new_ticket:
+            ses = rt.modules.clocking.Session(ticket=elem, user=me)
+            ses.full_clean()
+            ses.save()
+
