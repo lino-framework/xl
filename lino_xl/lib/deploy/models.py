@@ -19,6 +19,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored
 
 from lino_xl.lib.tickets.models import site_model
+from lino_xl.lib.tickets.choicelists import TicketStates
 from lino_xl.lib.clocking.mixins import Workable
 from lino_xl.lib.votes.choicelists import VoteStates
 
@@ -124,6 +125,9 @@ class Deployment(Sequenced, Workable):
     remark = dd.RichTextField(_("Remark"), blank=True, format="plain")
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
     wish_type = WishTypes.field(blank=True, null=True)
+    old_ticket_state = TicketStates.field(
+        blank=True, null=True, verbose_name=_(""))
+    new_ticket_state = TicketStates.field(blank=True, null=True)
     deferred_to = dd.ForeignKey(
         dd.plugins.tickets.milestone_model,
         verbose_name=_("Deferred to"),
