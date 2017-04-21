@@ -42,7 +42,7 @@ from lino_xl.lib.cal.mixins import Reservation
 from lino.utils.dates import DatePeriodValue
 
 from .choicelists import MeetingStates
-import workflows
+
 
 @dd.python_2_unicode_compatible
 class Meeting(Milestone, Reservation, Duplicable, PrintableObject):

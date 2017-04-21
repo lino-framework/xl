@@ -43,6 +43,8 @@ from lino.utils.report import Report
 from lino.modlib.system.choicelists import PeriodEvents
 from lino.modlib.users.mixins import My
 
+from lino_xl.lib.lists.models import MembersByList
+
 from .choicelists import MeetingStates
 
 class MeetingDetail(dd.DetailLayout):
@@ -70,7 +72,7 @@ class MeetingDetail(dd.DetailLayout):
 
         more = dd.Panel("""
         more_left:30 blogs.EntriesByController:50
-        description lists.MembersByList
+        description MembersByMeeting
         """, label=_("More"))
 
 
@@ -190,3 +192,13 @@ class InactiveMeetings(Meetings):
 #         kw = super(ClosedCourses, self).param_defaults(ar, **kw)
 #         kw.update(state=CourseStates.closed)
 #         return kw
+
+class MembersByMeeting(MembersByList):
+    master = "meetings.Meeting"
+    master_key = None
+    @classmethod
+    def get_filter_kw(self, ar, **kw):
+        if ar.master_instance is None:
+            return
+        kw.update(list = ar.master_instance.list)
+        return kw
