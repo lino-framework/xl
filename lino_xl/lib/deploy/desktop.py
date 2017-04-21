@@ -186,7 +186,8 @@ class DeploymentsByTicket(Deployments):
         qs = cls.model.objects.filter(ticket=obj)
         qs = dd.plugins.tickets.milestone_model.add_param_filter(
             qs, lookup_prefix='milestone__',
-            show_active=dd.YesNo.yes)
+            # show_active=dd.YesNo.yes
+            )
         items = E.ul()
         for o in qs:
             items.append(
