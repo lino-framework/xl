@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -23,7 +23,8 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
 
     verbose_name = _("Topics")
-
+    
+    needs_plugins = ['lino_xl.lib.xl']
     # needs_plugins = ['lino_xl.lib.contacts']
 
     partner_model = 'contacts.Partner'

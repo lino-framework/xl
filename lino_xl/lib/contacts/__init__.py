@@ -51,8 +51,7 @@ class Plugin(ad.Plugin):
         m = m.add_menu(self.app_label, self.verbose_name)
         # We use the string representations and not the classes because
         # other installed applications may want to override these tables.
-        for a in ('contacts.Persons', 'contacts.Companies',
-                  'contacts.Partners'):
+        for a in ('contacts.Persons', 'contacts.Companies'):
             m.add_action(a)
 
     def setup_config_menu(self, site, profile, m):
@@ -63,6 +62,7 @@ class Plugin(ad.Plugin):
     def setup_explorer_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('contacts.Roles')
+        m.add_action('contacts.Partners')
 
 
 

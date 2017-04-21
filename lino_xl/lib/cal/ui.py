@@ -1045,7 +1045,7 @@ class MyOverdueAppointments(My, OverdueAppointments):
     """
     label = _("My overdue appointments")
     required_roles = dd.login_required(OfficeUser)
-    column_names = 'overview project owner event_type workflow_buttons *'
+    column_names = 'overview owner event_type workflow_buttons *'
 
 class MyUnconfirmedAppointments(MyEntries):
     """Shows appointments in the near future which are still in draft

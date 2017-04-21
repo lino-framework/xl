@@ -67,7 +67,8 @@ class List(mixins.BabelNamed, mixins.Referrable):
 class Lists(dd.Table):
     required_roles = dd.login_required(ContactsUser)
     model = 'lists.List'
-    column_names = 'ref name list_type *'
+    # column_names = 'ref name list_type *'
+    column_names = 'ref overview list_type *'
     order_by = ['ref']
 
     insert_layout = dd.InsertLayout("""
