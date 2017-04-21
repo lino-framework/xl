@@ -125,6 +125,7 @@ lino_xl.lib.lists.fixtures
 lino_xl.lib.caldav
 lino_xl.lib.mailbox
 lino_xl.lib.mailbox.fixtures
+lino_xl.lib.meetings
 lino_xl.lib.notes
 lino_xl.lib.notes.fixtures
 lino_xl.lib.outbox
