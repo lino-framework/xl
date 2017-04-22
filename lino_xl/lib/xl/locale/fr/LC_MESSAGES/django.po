@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-04-22 07:09+0300\n"
-"PO-Revision-Date: 2017-04-22 07:16+0300\n"
+"PO-Revision-Date: 2017-04-22 21:28+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -471,13 +471,12 @@ msgid "National ID"
 msgstr "NISS"
 
 #: lino_xl/lib/beid/mixins.py:104
-#, fuzzy
 msgid "Birth country"
-msgstr "Pays"
+msgstr "Pays de naissance"
 
 #: lino_xl/lib/beid/mixins.py:106
 msgid "Birth place"
-msgstr ""
+msgstr "Lieu de naissance"
 
 #: lino_xl/lib/beid/mixins.py:114
 msgid "Nationality"
