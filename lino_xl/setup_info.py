@@ -183,6 +183,7 @@ lino_xl.lib.online.users
 lino_xl.lib.online.users.fixtures
 lino_xl.lib.votes
 lino_xl.lib.votes.fixtures
+lino_xl.lib.uploads
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\

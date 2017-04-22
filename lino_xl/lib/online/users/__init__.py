@@ -1,7 +1,7 @@
 # Copyright 2015-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""
-Adds online registration feature to :mod:`lino.modlib.users`.
+"""An extension of :mod:`lino.modlib.users` which adds functionality
+for managing online registration.
 
 .. autosummary::
    :toctree:
