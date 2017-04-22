@@ -67,7 +67,8 @@ class List(mixins.BabelNamed, mixins.Referrable):
 class Lists(dd.Table):
     required_roles = dd.login_required(ContactsUser)
     model = 'lists.List'
-    column_names = 'ref name list_type *'
+    # column_names = 'ref name list_type *'
+    column_names = 'ref overview list_type *'
     order_by = ['ref']
 
     insert_layout = dd.InsertLayout("""
@@ -92,7 +93,7 @@ class Member(mixins.Sequenced):
         verbose_name = _("List membership")
         verbose_name_plural = _("List memberships")
 
-    list = dd.ForeignKey('lists.List')
+    list = dd.ForeignKey('lists.List', related_name="members")
     partner = dd.ForeignKey(
         dd.plugins.lists.partner_model,
         related_name="list_memberships")

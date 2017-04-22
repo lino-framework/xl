@@ -937,6 +937,19 @@ Site."""),
     'lino_xl.lib.notes.models.Note' : _("""A note is a dated and timed document written by its author (a
 user). For example a report of a meeting or a phone call, or just
 some observation. Notes are usually meant for internal use."""),
+    'lino_xl.lib.online.users.choicelists.UserStates' : _("""The list of possible choices for the state field
+of a User."""),
+    'lino_xl.lib.online.users.choicelists.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
+verifcation code, and that a username and password are set."""),
+    'lino_xl.lib.online.users.desktop.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
+    'lino_xl.lib.online.users.desktop.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
+    'lino_xl.lib.online.users.models.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
+checks certain things before accepting the new user."""),
+    'lino_xl.lib.online.users.models.VerifyUser' : _("""Enter your verification code."""),
+    'lino_xl.lib.online.users.models.User.callme_mode' : _("""Whether other users can see my contact data."""),
+    'lino_xl.lib.online.users.models.User.verification_code' : _("""A random string set for every new user. Used for
+online_registration."""),
+    'lino_xl.lib.online.users.models.User.user_state' : _("""The registration state of this user."""),
     'lino_xl.lib.outbox.choicelists.RecipientTypes' : _("""A list of possible values for the type field of a
 Recipient."""),
     'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
@@ -983,8 +996,8 @@ instances."""),
     'lino_xl.lib.polls.models.PollResult.model' : _("""alias of Question"""),
     'lino_xl.lib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
     'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
-    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll. Default is:"""),
-    'lino_xl.lib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll. Default is:"""),
+    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll."""),
+    'lino_xl.lib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.postings.mixins.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
@@ -1131,6 +1144,8 @@ or ToDo)."""),
 which I am competent."""),
     'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
     'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.RefTickets' : _("""Tickets that have a reference."""),
+    'lino_xl.lib.tickets.ui.RefTickets.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tickets.ui.TicketsToTriage' : _("""List of tickets that need to be triaged.  Currently this is
 equivalent to those having their state set to new."""),
     'lino_xl.lib.tickets.ui.TicketsToTriage.model' : _("""alias of Ticket"""),
@@ -1331,6 +1346,28 @@ and 100."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 project.  See ReportingTypes."""),
+    'lino_xl.lib.tickets.TicketStates' : _("""The state of a ticket (new, open, closed, ...)"""),
+    'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response so
+far.
+The ticket needs to be triaged."""),
+    'lino_xl.lib.tickets.TicketStates.talk' : _("""Some worker needs discussion with the author.  We don't yet
+know exactly what to do with it."""),
+    'lino_xl.lib.tickets.TicketStates.todo' : _("""The ticket is confirmed and we are working on it.
+It appears in the todo list of somebody (either the assigned
+worker, or our general todo list)"""),
+    'lino_xl.lib.tickets.TicketStates.testing' : _("""The ticket is theoretically done, but we want to confirm this
+somehow, and it is not clear who should do the next step. If
+it is clear that the author should do the testing, then you
+should rather set the ticket to talk. If it is clear
+that you (the assignee) must test it, then leave the ticket at
+todo."""),
+    'lino_xl.lib.tickets.TicketStates.sleeping' : _("""Waiting for some external event. We didn't decide what to do
+with it."""),
+    'lino_xl.lib.tickets.TicketStates.ready' : _("""The ticket is basically done, but some detail still
+needs to be done by the user (e.g. testing,
+confirmation, documentation,..)"""),
+    'lino_xl.lib.tickets.TicketStates.done' : _("""The ticket has been done."""),
+    'lino_xl.lib.tickets.TicketStates.cancelled' : _("""It has been decided that we won't fix this ticket."""),
     'lino_xl.lib.tickets.LinkTypes' : _("""The possible values of a lino_xl.lib.tickets.Link."""),
     'lino_xl.lib.tickets.LinkTypes.requires' : _("""The parent ticket requires the child ticket."""),
     'lino_xl.lib.tickets.LinkTypes.triggers' : _("""The parent ticket triggers the child ticket."""),

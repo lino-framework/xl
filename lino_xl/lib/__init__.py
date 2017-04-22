@@ -114,6 +114,7 @@ Differentiator packages
    :toctree:
 
     statbel
+    online
 
 Experimental and not much used
 ==============================

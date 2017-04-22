@@ -125,6 +125,7 @@ lino_xl.lib.lists.fixtures
 lino_xl.lib.caldav
 lino_xl.lib.mailbox
 lino_xl.lib.mailbox.fixtures
+lino_xl.lib.meetings
 lino_xl.lib.notes
 lino_xl.lib.notes.fixtures
 lino_xl.lib.outbox
@@ -177,8 +178,12 @@ lino_xl.lib.tickets.fixtures
 lino_xl.lib.faculties
 lino_xl.lib.clocking
 lino_xl.lib.clocking.fixtures
+lino_xl.lib.online
+lino_xl.lib.online.users
+lino_xl.lib.online.users.fixtures
 lino_xl.lib.votes
 lino_xl.lib.votes.fixtures
+lino_xl.lib.uploads
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\

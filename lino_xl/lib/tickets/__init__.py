@@ -31,8 +31,8 @@ class Plugin(ad.Plugin):
         'lino_noi.lib.noi']
 
     site_model = 'cal.Room'
-    milestone_model = 'courses.Course'
-    
+    milestone_model = 'meetings.Meeting'
+
     def on_site_startup(self, site):
         self.site_model = site.models.resolve(self.site_model)
         self.milestone_model = site.models.resolve(self.milestone_model)
