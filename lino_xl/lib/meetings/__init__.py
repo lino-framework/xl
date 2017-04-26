@@ -45,5 +45,5 @@ class Plugin(ad.Plugin):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
         if user.authenticated:
-            pass
+            yield self.site.actors.meetings.MyMeetings
             # yield self.site.actors.meetings.MyUpcommingMeetings

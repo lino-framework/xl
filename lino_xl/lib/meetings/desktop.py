@@ -122,11 +122,13 @@ class Meetings(dd.Table):
         qs = super(Meetings, self).get_request_queryset(ar)
         if isinstance(qs, list):
             return qs
-        # pv = ar.param_values
+        pv = ar.param_values
 
-        # qs = self.model.add_param_filter(
-        #     qs, show_active=pv.show_active)
+        qs = self.model.add_param_filter(
+            qs, show_active=pv.show_active)
 
+        if pv.state:
+            qs = qs.filter(state=pv.state)
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
         #     qs = PeriodEvents.started.add_filter(qs, pv)

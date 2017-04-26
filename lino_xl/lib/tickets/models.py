@@ -361,6 +361,9 @@ class Ticket(UserAuthored, mixins.CreatedModified,
 
     workflow_state_field = 'state'
 
+    create_session_on_create = True
+
+
     class Meta:
         app_label = 'tickets'
         verbose_name = _("Ticket")
