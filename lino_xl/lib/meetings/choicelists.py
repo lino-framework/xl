@@ -28,8 +28,9 @@ add('10', _("Draft"), 'draft',
     editable=True, active=True)
 add('20', _("Started"), 'active',
     editable=True, active=True)
+#Set to editable=True since you can't duplicate on a read-only
 add('30', _("Inactive"), 'inactive',
-    editable=False, active=False)
-add('40', _("Closed"), 'closed',
-    editable=False, active=False)
+    editable=True, active=False)
+add('40', _("Finished"), 'closed',
+    editable=True, active=False)
 

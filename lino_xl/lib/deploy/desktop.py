@@ -123,7 +123,8 @@ class DeploymentsByMilestone(Deployments):
     # label = _("Deployed tickets")
     order_by = ['seqno']
     master_key = 'milestone'
-    column_names = "seqno move_buttons:8 ticket:30 ticket__state:10 wish_type remark:30 deferred_to workflow_buttons *"
+    column_names = "seqno move_buttons:8 ticket:30 old_ticket_state " \
+                   "new_ticket_state wish_type remark:30 workflow_buttons *"
     preview_limit = 0
     insert_layout = dd.InsertLayout("""
     ticket

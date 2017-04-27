@@ -78,5 +78,7 @@ class Plugin(ad.Plugin):
         if user.authenticated:
             yield self.site.actors.tickets.MyTickets
             yield self.site.actors.tickets.SuggestedTicketsByEndUser
-        # else:
+            yield self.site.actors.tickets.TicketsToTriage
+            # else:
         #     yield self.site.actors.tickets.PublicTickets
+    

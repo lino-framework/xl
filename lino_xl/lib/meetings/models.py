@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 from lino.api import dd, rt, _
 from lino.utils.xmlgen.html import E, join_elems
+from django.db.models import Q
 from lino.mixins import Referrable
 
 from lino.mixins.duplicable import Duplicable
@@ -43,6 +44,7 @@ from lino_xl.lib.cal.mixins import Reservation
 from lino.utils.dates import DatePeriodValue
 
 from .choicelists import MeetingStates
+from lino_xl.lib.tickets.choicelists import TicketStates
 
 
 @dd.python_2_unicode_compatible
@@ -112,6 +114,18 @@ class Meeting(Milestone, Reservation, Duplicable):
 
     def on_duplicate(self, ar, master):
         # self.state = CourseStates.draft
+        # def OK(ar):
+        #todo Figure out a way to have the deplyments saved, at this point, or where to put this code afterthe duplicate
+        rt.models.deploy.Deployment.objects.filter(Q(milestone=self),
+                                               Q(new_ticket_state__in=TicketStates.filter(active=False)) | Q(ticket__state__in=TicketStates.filter(active=False))
+                                               ).delete()
+        rt.models.deploy.Deployment.objects.filter(milestone=self).update(
+        new_ticket_state=None,
+        old_ticket_state=None
+        )
+        self.state = MeetingStates.draft
+
+        # ar.confirm(OK,_("Remove inactive tickets on new meeting?"))
         super(Meeting, self).on_duplicate(ar, master)
 
     def __str__(self):

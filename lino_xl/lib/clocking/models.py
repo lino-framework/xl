@@ -219,6 +219,7 @@ Session.set_widget_options('ticket_no', width=8)
 
 def welcome_messages(ar):
     """Yield messages for the welcome page."""
+    #todo show all users active sessions
 
     Session = rt.modules.clocking.Session
     # Ticket = rt.modules.tickets.Ticket
