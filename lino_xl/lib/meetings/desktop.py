@@ -154,7 +154,7 @@ class MyMeetings(My,Meetings):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
-        kw.update(state=MeetingStates.active)
+        # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
         return kw
 
