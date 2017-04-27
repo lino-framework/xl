@@ -465,7 +465,10 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         """
         self.set_auto_vote(session.user, VoteStates.invited)
         self.touch()
-        
+
+    def on_commented(self, comment, ar, cw):
+        self.set_auto_vote(comment.user, VoteStates.watching)
+
     # def get_project_for_vote(self, vote):
     #     if self.project:
     #         return self.project
