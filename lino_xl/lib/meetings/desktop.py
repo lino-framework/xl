@@ -1,5 +1,4 @@
-# -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# -*- coding: UTF-8 -*-# Copyright 2012-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -93,6 +92,7 @@ class Meetings(dd.Table):
     order_by = ['-start_date', '-start_time']
     auto_fit_column_widths = True
 
+
     parameters = mixins.ObservedPeriod(
         user=models.ForeignKey(
             settings.SITE.user_model,
@@ -101,9 +101,11 @@ class Meetings(dd.Table):
             _("Active"), blank=True,
             help_text=_("Whether to show rows in some active state")),
         state=MeetingStates.field(blank=True),
+        member=dd.YesNo.field(
+            _("Member"), blank=True,
+            help_text=_("Whether to show rows that you are a member of")),
     )
-
-    params_layout = """user room state show_active
+    params_layout = """user room state show_active member
     start_date end_date """
 
     # simple_parameters = 'line teacher state user'.split()
@@ -129,6 +131,11 @@ class Meetings(dd.Table):
 
         if pv.state:
             qs = qs.filter(state=pv.state)
+
+        if pv.member == dd.YesNo.yes:
+            qs = qs.filter(list__members__in=list(ar.get_user().list_memberships.all()))
+        elif pv.member == dd.YesNo.no:
+            qs = qs.exclude(list__members__in=list(ar.get_user().list_memberships.all()))
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
         #     qs = PeriodEvents.started.add_filter(qs, pv)
@@ -145,9 +152,7 @@ class AllMeetings(Meetings):
     column_names = "start_date:8 room user name"
                    # "weekdays_text:10 times_text:10"
 
-
-
-class MyMeetings(My,Meetings):
+class MyMeetings(Meetings):
     column_names = "start_date:8 room name workflow_buttons *"
     order_by = ['start_date']
 
@@ -157,6 +162,7 @@ class MyMeetings(My,Meetings):
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
         return kw
+
 
 
 class ActiveMeetings(Meetings):
