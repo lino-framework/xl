@@ -15,9 +15,9 @@ class Plugin(ad.Plugin):
     menu_group = 'system'
     needs_plugins = ['lino.modlib.comments']
 
-    def on_plugins_loaded(self, site):
-        site.plugins.comments.configure(
-            commentable_model = 'groups.Group')
+    # def on_plugins_loaded(self, site):
+    #     site.plugins.comments.configure(
+    #         commentable_model = 'groups.Group')
         
     # def on_site_startup(self, site):
     #     self.member_model = site.models.resolve(self.member_model)
