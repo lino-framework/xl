@@ -157,10 +157,16 @@ class MyMeetings(Meetings):
     order_by = ['start_date']
 
     @classmethod
+    def get_actor_label(self):
+        return self._label or \
+            _("My %s") % self.model._meta.verbose_name_plural
+
+    @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
+        kw.update(member=dd.YesNo.yes)
         return kw
 
 
