@@ -57,7 +57,7 @@ class Address(AddressLocation):
     address_type = AddressTypes.field(
         default=AddressTypes.official.as_callable)
     partner = dd.ForeignKey(
-        'contacts.Partner',
+        dd.plugins.addresses.partner_model,
         related_name='addresses_by_partner')
     remark = dd.CharField(_("Remark"), max_length=50, blank=True)
 
