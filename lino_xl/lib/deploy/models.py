@@ -126,8 +126,9 @@ class Deployment(Sequenced, Workable):
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
     wish_type = WishTypes.field(blank=True, null=True)
     old_ticket_state = TicketStates.field(
-        blank=True, null=True, verbose_name=_(""))
-    new_ticket_state = TicketStates.field(blank=True, null=True)
+        blank=True, null=True, verbose_name=_("Ticket State"))
+    new_ticket_state = TicketStates.field(
+        blank=True, null=True, verbose_name=_("New Ticket State"))
     deferred_to = dd.ForeignKey(
         dd.plugins.tickets.milestone_model,
         verbose_name=_("Deferred to"),

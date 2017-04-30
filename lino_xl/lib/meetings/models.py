@@ -115,18 +115,19 @@ class Meeting(Milestone, Reservation, Duplicable):
     def on_duplicate(self, ar, master):
         # self.state = CourseStates.draft
         # def OK(ar):
-        #todo Figure out a way to have the deplyments saved, at this point, or where to put this code afterthe duplicate
+        self.state = MeetingStates.draft
+        # ar.confirm(OK,_("Remove inactive tickets on new meeting?"))
+        super(Meeting, self).on_duplicate(ar, master)
+
+    def after_duplicate(self, ar):
         rt.models.deploy.Deployment.objects.filter(Q(milestone=self),
                                                Q(new_ticket_state__in=TicketStates.filter(active=False)) | Q(ticket__state__in=TicketStates.filter(active=False))
                                                ).delete()
         rt.models.deploy.Deployment.objects.filter(milestone=self).update(
-        new_ticket_state=None,
-        old_ticket_state=None
+            new_ticket_state=None,
+            old_ticket_state=None,
+            remark="",
         )
-        self.state = MeetingStates.draft
-
-        # ar.confirm(OK,_("Remove inactive tickets on new meeting?"))
-        super(Meeting, self).on_duplicate(ar, master)
 
     def __str__(self):
         if self.name:
