@@ -272,7 +272,7 @@ class Partners(dd.Table):
     detail_layout = PartnerDetail()
     insert_layout = """
     name
-    language email
+    #language email
     """
 
     @classmethod
@@ -364,7 +364,7 @@ class Persons(Partners):
 
     insert_layout = """
     first_name last_name
-    gender language
+    gender email #language
     """
 
 
@@ -445,7 +445,7 @@ class Companies(Partners):
     detail_layout = CompanyDetail()
     insert_layout = """
     name
-    language:20 email:40
+    #language:20 email:40
     type id
     """
 
