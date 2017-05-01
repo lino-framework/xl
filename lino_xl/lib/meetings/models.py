@@ -180,6 +180,17 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable):
             qs = qs.filter(**fkw)
         return qs
 
+    @classmethod
+    def quick_search_filter(model, search_text, prefix=''):
+        q = Q()
+        if search_text.isdigit():
+            for fn in model.quick_search_fields:
+                kw = {prefix + fn + "__icontains": search_text}
+                q = q | Q(**kw)
+            return q
+        #Skip referable's method
+        return super(Referrable, model).quick_search_filter(search_text, prefix)
+
 
 @dd.receiver(dd.post_startup)
 def setup_memo_commands(sender=None, **kwargs):
