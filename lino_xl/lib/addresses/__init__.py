@@ -15,7 +15,8 @@ per partner.
     models
     fixtures.demo2
 
-Some unit test cases are :mod:`lino.projects.min2.tests.test_addresses`.
+Some unit test cases are
+:mod:`lino.projects.min2.tests.test_addresses`.
 
 """
 
@@ -34,8 +35,8 @@ class Plugin(ad.Plugin):
         from lino_xl.lib.addresses.mixins import AddressOwner
         self.partner_model = site.models.resolve(self.partner_model)
         
-        # TODO: activate the following test. Currently it causes
-        # failures in book
+        # TODO: raise an exception if the specified model does not
+        # implement AddressOwner. Currently it causes failures in book
         
         # if not issubclass(self.partner_model, AddressOwner):
         #     raise Exception("partner_model is not an AddressOwner")
