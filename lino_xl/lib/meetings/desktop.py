@@ -52,7 +52,7 @@ class MeetingDetail(dd.DetailLayout):
         main = "general #cal_tab more"
 
         general = dd.Panel("""
-        room workflow_buttons name #ref
+        room workflow_buttons name ref
         deploy.DeploymentsByMilestone
         """, label=_("General"))
 
@@ -82,10 +82,10 @@ class Meetings(dd.Table):
     model = 'meetings.Meeting'
     detail_layout = MeetingDetail()
     insert_layout = """
-    name start_date
+    name start_date ref
     list
     """
-    column_names = "start_date name #ref room workflow_buttons list *"
+    column_names = "start_date name ref room workflow_buttons list *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
     # order_by = ['name']
@@ -149,7 +149,7 @@ class Meetings(dd.Table):
 
 class AllMeetings(Meetings):
     required_roles = dd.login_required(Explorer)
-    column_names = "start_date:8 room user name"
+    column_names = "start_date:8 room user name ref *"
                    # "weekdays_text:10 times_text:10"
 
 class MyMeetings(Meetings):
