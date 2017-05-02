@@ -178,3 +178,24 @@ class PrintActivityReport(DirectPrintAction):
     keep_user_values = True
     # default_format = 'json'
     # http_method = 'POST'
+
+class ShowMySessionsByDay(dd.Action):
+    label = _("Day's work")
+    help_text = _("Show all sessions on the same day.")
+    show_in_bbar = True
+    sort_index = 60
+    icon_name = 'calendar'
+
+    def __init__(self, date_field, **kw):
+        self.date_field = date_field
+        super(ShowMySessionsByDay, self).__init__(**kw)
+
+    def run_from_ui(self, ar, **kw):
+        obj = ar.selected_rows[0]
+        today = getattr(obj, self.date_field)
+        pv = dict(start_date=today)
+        pv.update(end_date=today)
+        sar = ar.spawn(rt.actors.clocking.MySessionsByDate, param_values=pv)
+        js = ar.renderer.request_handler(sar)
+        ar.set_response(eval_js=js)
+

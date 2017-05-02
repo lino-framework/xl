@@ -21,7 +21,7 @@ from lino.utils.quantities import Duration
 from lino_xl.lib.cal.mixins import Started, Ended
 from lino.modlib.users.mixins import UserAuthored
 
-from .actions import EndThisSession, PrintActivityReport, EndTicketSession
+from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
 from .choicelists import ReportingTypes
 from .mixins import Workable
 
@@ -124,6 +124,7 @@ class Session(UserAuthored, Started, Ended, Workable):
     reporting_type = ReportingTypes.field(blank=True)
     
     end_session = EndThisSession()
+    show_today = ShowMySessionsByDay('start_date')
     # print_activity_report = PrintActivityReport()
 
     def __str__(self):
