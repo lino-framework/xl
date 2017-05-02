@@ -197,7 +197,6 @@ class Deployment(Sequenced, Workable):
             # owner=self.ticket,
             user=ar.get_user()
         )
-        print sar.known_values
         if sar.get_permission():
             l.append(sar.ar2button())
         return l
