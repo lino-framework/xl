@@ -18,7 +18,7 @@ from lino.utils.instantiator import create_row
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored
 
-from lino_xl.lib.tickets.models import site_model
+from lino_xl.lib.tickets.models import Ticket
 from lino_xl.lib.tickets.choicelists import TicketStates
 from lino_xl.lib.clocking.mixins import Workable
 from lino_xl.lib.votes.choicelists import VoteStates
@@ -107,8 +107,54 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 #             return models.Q(**{prefix+'label__contains': search_text})
 #         return super(Milestone, cls).quick_search_filter(search_text, prefix)
 
-    
 
+
+class SpawnTicket(dd.Action):
+    # label = _("Spawn new ticket")
+    # label = "\u2611" "☑"
+    # label = "⚇"  # "\u2687"
+    icon_name = 'calendar'
+    show_in_workflow = True
+    show_in_bbar = False
+
+    parameters = dict(
+        summary=Ticket._meta.get_field('summary'),
+        enduser=dd.ForeignKey(Ticket._meta.get_field('end_user').rel.to,
+                              blank=True),
+        # Rich Editor doesn't work all the time...
+        # Seems to work better with basic editor
+        description=Ticket._meta.get_field('description')
+    )
+
+    class SpawnTicketLayout(dd.ActionParamsLayout):
+        simple = dd.Panel("""summary
+                         enduser""")
+        main = """simple description"""
+
+    params_layout = SpawnTicketLayout()
+
+
+    def action_param_defaults(self,ar, obj, **kw):
+        return super(SpawnTicket, self).action_param_defaults(ar,obj,**kw)
+
+    def run_from_ui(self, ar, **kw):
+        wish = ar.selected_rows[0]
+        t = rt.modules.tickets.Ticket(
+            user=ar.get_user(),
+            summary=ar.action_param_values.summary,
+            description=ar.action_param_values.description)
+        t.full_clean()
+        t.save()
+        d = wish.duplicate.run_from_code(ar)
+        d.ticket = t
+        d.milestone = wish.milestone
+        d.wish_type = None
+        d.remark = ""
+        d.full_clean()
+        d.save()
+        # ar.success(
+        #     _("New ticket {0} has been spawned as child of {1}.").format(
+        #         t, p))
 
 @dd.python_2_unicode_compatible
 class Deployment(Sequenced, Workable):
@@ -117,8 +163,9 @@ class Deployment(Sequenced, Workable):
         verbose_name = _("Wish")
         verbose_name_plural = _('Wishes')
 
+    SpawnTicket = SpawnTicket()
+
     allow_cascaded_copy = 'milestone'
-    
     ticket = dd.ForeignKey(
         'tickets.Ticket', related_name="deployments_by_ticket")
     milestone = dd.ForeignKey(
