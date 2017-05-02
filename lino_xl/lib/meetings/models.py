@@ -41,6 +41,7 @@ from lino_xl.lib.cal.mixins import Reservation
 # from lino_xl.lib.cal.utils import day_and_month
 # from lino_xl.lib.contacts.mixins import ContactRelated
 
+from datetime import datetime
 from lino.utils.dates import DatePeriodValue
 
 from .choicelists import MeetingStates
@@ -48,7 +49,7 @@ from lino_xl.lib.tickets.choicelists import TicketStates
 
 
 @dd.python_2_unicode_compatible
-class Meeting(Milestone, Reservation, Duplicable):
+class Meeting(Referrable, Milestone, Reservation, Duplicable):
     # """A Course is a group of pupils that regularily meet with a given
     # teacher in a given room to speak about a given subject.
     #
@@ -104,7 +105,7 @@ class Meeting(Milestone, Reservation, Duplicable):
 
     remark = dd.RichTextField(_("Remark"), blank=True)
 
-    quick_search_fields = 'name description remark'
+    quick_search_fields = 'name description remark ref'
     site_field_name = 'room'
 
     state = MeetingStates.field(
@@ -117,7 +118,12 @@ class Meeting(Milestone, Reservation, Duplicable):
         # def OK(ar):
         self.state = MeetingStates.draft
         # ar.confirm(OK,_("Remove inactive tickets on new meeting?"))
-        super(Meeting, self).on_duplicate(ar, master)
+        old = ar.selected_rows[0]
+        if self.ref:
+            old.ref = datetime.now().strftime("%Y%m%d") + "@" + old.ref
+            old.full_clean()
+            old.save()
+        super(Referrable, self).on_duplicate(ar, master)
 
     def after_duplicate(self, ar):
         rt.models.deploy.Deployment.objects.filter(Q(milestone=self),
@@ -173,6 +179,17 @@ class Meeting(Milestone, Reservation, Duplicable):
         elif show_active == dd.YesNo.yes:
             qs = qs.filter(**fkw)
         return qs
+
+    @classmethod
+    def quick_search_filter(model, search_text, prefix=''):
+        q = Q()
+        if search_text.isdigit():
+            for fn in model.quick_search_fields:
+                kw = {prefix + fn + "__icontains": search_text}
+                q = q | Q(**kw)
+            return q
+        #Skip referable's method
+        return super(Referrable, model).quick_search_filter(search_text, prefix)
 
 
 @dd.receiver(dd.post_startup)
