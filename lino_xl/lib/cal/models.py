@@ -604,6 +604,17 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             s = "{} ({})".format(s, when)
         return s
 
+    def get_change_observers(self):
+        # implements ChangeObservable
+        if not self.is_user_modified():
+            return
+        for x in super(Event, self).get_change_observers():
+            yield x
+        for u in (self.user, self.assigned_to):
+            if u is not None:
+                yield (u, u.mail_mode)
+    
+        
     def has_conflicting_events(self):
         """Whether this event has any conflicting events.
         

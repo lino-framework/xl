@@ -736,7 +736,7 @@ def setup_memo_commands(sender=None, **kwargs):
             mod = inspect.getmodule(obj)
             url = srcref(mod)
         except Exception as e:
-            url = "Oops: {}".format(e)
+            url = "Unknown python code {}".format(e)
         # fn = inspect.getsourcefile(obj)
         if url:
             # lines = inspect.getsourcelines(s)
