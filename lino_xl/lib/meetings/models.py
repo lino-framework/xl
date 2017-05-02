@@ -23,6 +23,7 @@ logger = logging.getLogger(__name__)
 
 from lino.api import dd, rt, _
 from lino.utils.xmlgen.html import E, join_elems
+from django.db.models import Q
 from lino.mixins import Referrable
 
 from lino.mixins.duplicable import Duplicable
@@ -32,6 +33,7 @@ from lino_xl.lib.tickets.mixins import Milestone
 # from lino_xl.lib.excerpts.mixins import Certifiable
 # from lino_xl.lib.excerpts.mixins import ExcerptTitle
 # from lino.modlib.users.mixins import UserAuthored
+from django.utils.translation import string_concat
 # from lino.modlib.printing.mixins import Printable
 from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation
@@ -39,13 +41,15 @@ from lino_xl.lib.cal.mixins import Reservation
 # from lino_xl.lib.cal.utils import day_and_month
 # from lino_xl.lib.contacts.mixins import ContactRelated
 
+from datetime import datetime
 from lino.utils.dates import DatePeriodValue
 
 from .choicelists import MeetingStates
+from lino_xl.lib.tickets.choicelists import TicketStates
 
 
 @dd.python_2_unicode_compatible
-class Meeting(Milestone, Reservation, Duplicable, PrintableObject):
+class Meeting(Referrable, Milestone, Reservation, Duplicable):
     # """A Course is a group of pupils that regularily meet with a given
     # teacher in a given room to speak about a given subject.
     #
@@ -101,7 +105,7 @@ class Meeting(Milestone, Reservation, Duplicable, PrintableObject):
 
     remark = dd.RichTextField(_("Remark"), blank=True)
 
-    quick_search_fields = 'name description remark'
+    quick_search_fields = 'name description remark ref'
     site_field_name = 'room'
 
     state = MeetingStates.field(
@@ -111,7 +115,25 @@ class Meeting(Milestone, Reservation, Duplicable, PrintableObject):
 
     def on_duplicate(self, ar, master):
         # self.state = CourseStates.draft
-        super(Meeting, self).on_duplicate(ar, master)
+        # def OK(ar):
+        self.state = MeetingStates.draft
+        # ar.confirm(OK,_("Remove inactive tickets on new meeting?"))
+        old = ar.selected_rows[0]
+        if self.ref:
+            old.ref = datetime.now().strftime("%Y%m%d") + "@" + old.ref
+            old.full_clean()
+            old.save()
+        super(Referrable, self).on_duplicate(ar, master)
+
+    def after_duplicate(self, ar):
+        rt.models.deploy.Deployment.objects.filter(Q(milestone=self),
+                                               Q(new_ticket_state__in=TicketStates.filter(active=False)) | Q(ticket__state__in=TicketStates.filter(active=False))
+                                               ).delete()
+        rt.models.deploy.Deployment.objects.filter(milestone=self).update(
+            new_ticket_state=None,
+            old_ticket_state=None,
+            remark="",
+        )
 
     def __str__(self):
         if self.name:
@@ -157,6 +179,17 @@ class Meeting(Milestone, Reservation, Duplicable, PrintableObject):
         elif show_active == dd.YesNo.yes:
             qs = qs.filter(**fkw)
         return qs
+
+    @classmethod
+    def quick_search_filter(model, search_text, prefix=''):
+        q = Q()
+        if search_text.isdigit():
+            for fn in model.quick_search_fields:
+                kw = {prefix + fn + "__icontains": search_text}
+                q = q | Q(**kw)
+            return q
+        #Skip referable's method
+        return super(Referrable, model).quick_search_filter(search_text, prefix)
 
 
 @dd.receiver(dd.post_startup)

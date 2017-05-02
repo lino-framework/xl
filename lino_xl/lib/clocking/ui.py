@@ -18,6 +18,8 @@ from lino.utils.xmlgen.html import E, join_elems
 from lino.utils.quantities import Duration
 from lino.modlib.system.choicelists import ObservedEvent
 from lino.mixins.periods import ObservedPeriod
+from django.contrib.humanize.templatetags.humanize import naturaltime
+from datetime import datetime
 
 from lino_xl.lib.tickets.choicelists import (
     TicketEvents, ProjectEvents, ObservedEvent)
@@ -169,8 +171,16 @@ class SessionsByTicket(Sessions):
             return ''
         elems = []
 
+        # Button for starting a session from ticket
+        sar = obj.start_session.request_from(ar)
+        # if ar.renderer.is_interactive and sar.get_permission():
+        if sar.get_permission():
+            btn = sar.ar2button(obj)
+            elems += [E.p(btn)]
+
         # Active sessions:
         active_sessions = []
+        session_summaries = E.ul()
         qs = rt.modules.clocking.Session.objects.filter(ticket=obj)
         tot = Duration()
         for ses in qs:
@@ -184,6 +194,16 @@ class SessionsByTicket(Sessions):
                 if sar.get_permission():
                     lnk = E.span(lnk, " ", sar.ar2button(ses))
                 active_sessions.append(lnk)
+            if ses.summary:
+                session_summaries.insert(0,
+                    E.li(
+                        "%s %s: %s"%(ses.user,
+                                     naturaltime(datetime.combine(
+                                                 ses.start_date, ses.start_time))
+                                     ,ses.summary)
+                    )
+                )
+
 
         # elems.append(E.p(_("Total {0} hours.").format(tot)))
         elems.append(E.p(_("Total %s hours.") % tot))
@@ -192,16 +212,10 @@ class SessionsByTicket(Sessions):
             elems.append(E.p(
                 ensureUtf(_("Active sessions")), ": ",
                 *join_elems(active_sessions, ', ')))
+        if len(session_summaries) > 0:
+            elems.append(session_summaries)
 
-        # Button for starting a session from ticket
-
-        sar = obj.start_session.request_from(ar)
-        # if ar.renderer.is_interactive and sar.get_permission():
-        if sar.get_permission():
-            btn = sar.ar2button(obj)
-            elems += [E.p(btn)]
-        
-        return E.div(*elems)
+        return ar.html_text(E.div(*elems))
 
 
 class MySessions(Sessions):

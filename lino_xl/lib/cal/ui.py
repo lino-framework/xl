@@ -299,7 +299,8 @@ class Guests(dd.Table):
     "The default table for :class:`Guest`."
     help_text = _("""A guest is a partner invited to an event. """)
     model = 'cal.Guest'
-    required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
+    # required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     column_names = 'partner role workflow_buttons remark event *'
     stay_in_grid = True
     detail_layout = """

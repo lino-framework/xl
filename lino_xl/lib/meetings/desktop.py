@@ -1,5 +1,4 @@
-# -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# -*- coding: UTF-8 -*-# Copyright 2012-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -53,7 +52,7 @@ class MeetingDetail(dd.DetailLayout):
         main = "general #cal_tab more"
 
         general = dd.Panel("""
-        room workflow_buttons name #ref
+        room workflow_buttons name ref
         deploy.DeploymentsByMilestone
         """, label=_("General"))
 
@@ -83,15 +82,16 @@ class Meetings(dd.Table):
     model = 'meetings.Meeting'
     detail_layout = MeetingDetail()
     insert_layout = """
-    name start_date
+    name start_date ref
     list
     """
-    column_names = "start_date name #ref room workflow_buttons list *"
+    column_names = "start_date name ref room workflow_buttons list *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
     # order_by = ['name']
     order_by = ['-start_date', '-start_time']
     auto_fit_column_widths = True
+
 
     parameters = mixins.ObservedPeriod(
         user=models.ForeignKey(
@@ -101,9 +101,11 @@ class Meetings(dd.Table):
             _("Active"), blank=True,
             help_text=_("Whether to show rows in some active state")),
         state=MeetingStates.field(blank=True),
+        member=dd.YesNo.field(
+            _("Member"), blank=True,
+            help_text=_("Whether to show rows that you are a member of")),
     )
-
-    params_layout = """user room state show_active
+    params_layout = """user room state show_active member
     start_date end_date """
 
     # simple_parameters = 'line teacher state user'.split()
@@ -122,11 +124,18 @@ class Meetings(dd.Table):
         qs = super(Meetings, self).get_request_queryset(ar)
         if isinstance(qs, list):
             return qs
-        # pv = ar.param_values
+        pv = ar.param_values
 
-        # qs = self.model.add_param_filter(
-        #     qs, show_active=pv.show_active)
+        qs = self.model.add_param_filter(
+            qs, show_active=pv.show_active)
 
+        if pv.state:
+            qs = qs.filter(state=pv.state)
+
+        if pv.member == dd.YesNo.yes:
+            qs = qs.filter(list__members__in=list(ar.get_user().list_memberships.all()))
+        elif pv.member == dd.YesNo.no:
+            qs = qs.exclude(list__members__in=list(ar.get_user().list_memberships.all()))
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
         #     qs = PeriodEvents.started.add_filter(qs, pv)
@@ -140,21 +149,26 @@ class Meetings(dd.Table):
 
 class AllMeetings(Meetings):
     required_roles = dd.login_required(Explorer)
-    column_names = "start_date:8 room user name"
+    column_names = "start_date:8 room user name ref *"
                    # "weekdays_text:10 times_text:10"
 
-
-
-class MyMeetings(My,Meetings):
+class MyMeetings(Meetings):
     column_names = "start_date:8 room name workflow_buttons *"
     order_by = ['start_date']
 
     @classmethod
+    def get_actor_label(self):
+        return self._label or \
+            _("My %s") % self.model._meta.verbose_name_plural
+
+    @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
-        kw.update(state=MeetingStates.active)
+        # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
+        kw.update(member=dd.YesNo.yes)
         return kw
+
 
 
 class ActiveMeetings(Meetings):

@@ -21,7 +21,7 @@ from lino.utils.quantities import Duration
 from lino_xl.lib.cal.mixins import Started, Ended
 from lino.modlib.users.mixins import UserAuthored
 
-from .actions import EndThisSession, PrintActivityReport, EndTicketSession
+from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
 from .choicelists import ReportingTypes
 from .mixins import Workable
 
@@ -124,6 +124,7 @@ class Session(UserAuthored, Started, Ended, Workable):
     reporting_type = ReportingTypes.field(blank=True)
     
     end_session = EndThisSession()
+    show_today = ShowMySessionsByDay('start_date')
     # print_activity_report = PrintActivityReport()
 
     def __str__(self):
@@ -219,33 +220,45 @@ Session.set_widget_options('ticket_no', width=8)
 
 def welcome_messages(ar):
     """Yield messages for the welcome page."""
+    #todo show all users active sessions
 
     Session = rt.modules.clocking.Session
     # Ticket = rt.modules.tickets.Ticket
     # TicketStates = rt.modules.tickets.TicketStates
     me = ar.get_user()
 
-    busy_tickets = set()
     # your open sessions (i.e. those you are busy with)
-    qs = Session.objects.filter(user=me, end_time__isnull=True)
+    qs = Session.objects.filter(end_time__isnull=True)
+    working = {me:[E.b(unicode(_("You are busy with ")))]}
     if qs.count() > 0:
-        chunks = [E.b(unicode(_("You are busy with ")))]
-        sep = None
         for ses in qs:
-            if sep:
-                chunks.append(sep)
-            busy_tickets.add(ses.ticket.id)
+            if ses.user not in working:
+                working[ses.user] = [ar.obj2html(ses.user), _(" is working on: ")]
             txt = unicode(ses.ticket)
-            chunks.append(
+            working[ses.user].append(
                 ar.obj2html(ses.ticket, txt, title=ses.ticket.summary))
-            chunks += [
-                ' (',
-                ar.instance_action_button(
-                    ses.end_session, EndTicketSession.label),
-                ')']
-            sep = ', '
-        chunks.append('. ')
-        yield E.p(*chunks)
+
+            if ses.user == me:
+                working[ses.user] += [
+                    ' (',
+                    ar.instance_action_button(
+                        ses.end_session, EndTicketSession.label),
+                    ')']
+            working[ses.user].append(', ')
+
+        if len(working[me]) > 1:
+
+            working[me][-1] = working[me][-1].replace(", ", ".")
+            result = E.p(*working.pop(me))
+        else:
+            result = E.p()
+            working.pop(me)
+        for u, s in working.items():
+            if result:
+                result.append(E.br())
+            s[-1] = s[-1].replace(", ", ".")
+            result.append(E.span(*s))
+        yield result
 
 dd.add_welcome_handler(welcome_messages)
 

@@ -22,6 +22,8 @@ from lino_xl.lib.tickets.models import site_model
 from lino_xl.lib.tickets.choicelists import TicketStates
 from lino_xl.lib.clocking.mixins import Workable
 from lino_xl.lib.votes.choicelists import VoteStates
+from django.contrib.contenttypes.models import ContentType
+
 
 class WishTypes(dd.ChoiceList):
     required_roles = dd.login_required(dd.SiteStaff)
@@ -126,8 +128,9 @@ class Deployment(Sequenced, Workable):
     # remark = models.CharField(_("Remark"), blank=True, max_length=250)
     wish_type = WishTypes.field(blank=True, null=True)
     old_ticket_state = TicketStates.field(
-        blank=True, null=True, verbose_name=_(""))
-    new_ticket_state = TicketStates.field(blank=True, null=True)
+        blank=True, null=True, verbose_name=_("Ticket State"))
+    new_ticket_state = TicketStates.field(
+        blank=True, null=True, verbose_name=_("New Ticket State"))
     deferred_to = dd.ForeignKey(
         dd.plugins.tickets.milestone_model,
         verbose_name=_("Deferred to"),
@@ -185,10 +188,16 @@ class Deployment(Sequenced, Workable):
         l = super(Deployment, self).get_workflow_buttons(ar)
 
         sar = rt.actors.comments.CommentsByRFC.insert_action.request_from(ar)
+
+        owner = ContentType.objects.get(app_label='tickets', model="ticket")
+
         sar.known_values.update(
-            owner=self.ticket,
+            owner_id=self.ticket.id,
+            owner_type=owner,
+            # owner=self.ticket,
             user=ar.get_user()
         )
+        print sar.known_values
         if sar.get_permission():
             l.append(sar.ar2button())
         return l

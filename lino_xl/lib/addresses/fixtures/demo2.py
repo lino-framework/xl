@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015 Luc Saffre
+# Copyright 2015-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """Adds some additional non-primary addresses to some partners.
 
 """
 
-from lino.api import rt
+from lino.api import dd, rt
 
 from lino.utils import Cycler
 from lino.utils.demonames.bel import streets_of_eupen
@@ -15,7 +15,8 @@ from lino.utils.demonames.bel import streets_of_eupen
 def objects():
     AddressTypes = rt.modules.addresses.AddressTypes
     Address = rt.modules.addresses.Address
-    Partner = rt.modules.contacts.Partner
+    # Partner = rt.modules.contacts.Partner
+    Partner = dd.plugins.addresses.partner_model
     Place = rt.modules.countries.Place
     eupen = Place.objects.get(name__exact='Eupen')
     STREETS = Cycler(streets_of_eupen())
