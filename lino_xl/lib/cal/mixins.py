@@ -869,17 +869,6 @@ Whether this is private, public or between."""))  # iCal:CLASS
     # def get_change_owner(self):
     #     return self.project
 
-    def get_change_observers(self):
-        # implements ChangeObservable
-        if not self.is_user_modified():
-            return
-        for x in super(Component, self).get_change_observers():
-            yield x
-        for u in (self.user, self.assigned_to):
-            if u is not None:
-                yield (u, u.mail_mode)
-    
-        
 
 #~ Component.owner.verbose_name = _("Automatically created by")
 
