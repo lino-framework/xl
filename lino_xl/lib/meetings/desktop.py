@@ -101,9 +101,9 @@ class Meetings(dd.Table):
             _("Active"), blank=True,
             help_text=_("Whether to show rows in some active state")),
         state=MeetingStates.field(blank=True),
-        member=dd.YesNo.field(
+        member=dd.ForeignKey(dd.plugins.lists.partner_model,
             _("Member"), blank=True,
-            help_text=_("Whether to show rows that you are a member of")),
+            help_text=_("Show rows that this person is a member")),
     )
     params_layout = """user room state show_active member
     start_date end_date """
@@ -132,10 +132,8 @@ class Meetings(dd.Table):
         if pv.state:
             qs = qs.filter(state=pv.state)
 
-        if pv.member == dd.YesNo.yes:
-            qs = qs.filter(list__members__in=list(ar.get_user().list_memberships.all()))
-        elif pv.member == dd.YesNo.no:
-            qs = qs.exclude(list__members__in=list(ar.get_user().list_memberships.all()))
+        if pv.member:
+            qs = qs.filter(list__members__in=list(pv.member.list_memberships.all()))
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
         #     qs = PeriodEvents.started.add_filter(qs, pv)
@@ -166,7 +164,7 @@ class MyMeetings(Meetings):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
-        kw.update(member=dd.YesNo.yes)
+        kw.update(member=ar.get_user().user.get_partner_instance())
         return kw
 
 
