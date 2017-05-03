@@ -14,12 +14,13 @@ from lino.api import dd, rt, _
 from lino.mixins import Sequenced, DatePeriod
 from lino.utils import join_elems
 from lino.utils.instantiator import create_row
+from lino.utils.xmlgen.html import E
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored
 
-from lino_xl.lib.tickets.models import Ticket
-from lino_xl.lib.tickets.choicelists import TicketStates
+from lino_xl.lib.tickets.models import Ticket, SpawnTicket
+from lino_xl.lib.tickets.choicelists import TicketStates, LinkTypes
 from lino_xl.lib.clocking.mixins import Workable
 from lino_xl.lib.votes.choicelists import VoteStates
 from django.contrib.contenttypes.models import ContentType
@@ -109,16 +110,17 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 
 
 
-class SpawnTicket(dd.Action):
+class SpawnTicketFromWish(SpawnTicket):
     # label = _("Spawn new ticket")
     # label = "\u2611" "☑"
-    # label = "⚇"  # "\u2687"
-    icon_name = 'calendar'
+    # "\u2687"
+    # icon_name = 'calendar'
     show_in_workflow = True
     show_in_bbar = False
-
+    goto_new = False
     parameters = dict(
         summary=Ticket._meta.get_field('summary'),
+        # just get_field fails with choser error
         enduser=dd.ForeignKey(Ticket._meta.get_field('end_user').rel.to,
                               blank=True),
         # Rich Editor doesn't work all the time...
@@ -133,28 +135,33 @@ class SpawnTicket(dd.Action):
 
     params_layout = SpawnTicketLayout()
 
-
     def action_param_defaults(self,ar, obj, **kw):
-        return super(SpawnTicket, self).action_param_defaults(ar,obj,**kw)
+        kw = super(SpawnTicket, self).action_param_defaults(ar, obj, **kw)
+        return kw
 
-    def run_from_ui(self, ar, **kw):
+    def get_parent_ticket(self, ar):
         wish = ar.selected_rows[0]
+        return wish.ticket
+
+    def spawn_ticket(self, ar, p):
         t = rt.modules.tickets.Ticket(
             user=ar.get_user(),
             summary=ar.action_param_values.summary,
             description=ar.action_param_values.description)
-        t.full_clean()
-        t.save()
+        return t
+
+    def make_link(self, ar, new, old):
+        wish = ar.selected_rows[0]
+
         d = wish.duplicate.run_from_code(ar)
-        d.ticket = t
+        d.ticket = new
         d.milestone = wish.milestone
         d.wish_type = None
         d.remark = ""
         d.full_clean()
         d.save()
-        # ar.success(
-        #     _("New ticket {0} has been spawned as child of {1}.").format(
-        #         t, p))
+        super(SpawnTicketFromWish, self).make_link(ar, new, old)
+
 
 @dd.python_2_unicode_compatible
 class Deployment(Sequenced, Workable):
@@ -163,7 +170,7 @@ class Deployment(Sequenced, Workable):
         verbose_name = _("Wish")
         verbose_name_plural = _('Wishes')
 
-    SpawnTicket = SpawnTicket()
+    SpawnTicket = SpawnTicketFromWish(_("New Ticket"), LinkTypes.triggers)
 
     allow_cascaded_copy = 'milestone'
     ticket = dd.ForeignKey(
@@ -237,6 +244,8 @@ class Deployment(Sequenced, Workable):
         sar = rt.actors.comments.CommentsByRFC.insert_action.request_from(ar)
 
         owner = ContentType.objects.get(app_label='tickets', model="ticket")
+        # sar.bound_action.icon_name = None
+        # sar.bound_action.label = _(" New Comment")
 
         sar.known_values.update(
             owner_id=self.ticket.id,
@@ -245,7 +254,9 @@ class Deployment(Sequenced, Workable):
             user=ar.get_user()
         )
         if sar.get_permission():
-            l.append(sar.ar2button())
+            l.append(E.span(u", "))
+            l.append(sar.ar2button(icon_name=None, label=_("New Comment")))
+        # print self.E.tostring(l)
         return l
 
     # @dd.displayfield(_("Assigned"))
