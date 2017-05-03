@@ -52,7 +52,7 @@ class MeetingDetail(dd.DetailLayout):
         main = "general #cal_tab more"
 
         general = dd.Panel("""
-        room workflow_buttons name ref
+        room workflow_buttons #name ref
         deploy.DeploymentsByMilestone
         """, label=_("General"))
 
@@ -65,13 +65,14 @@ class MeetingDetail(dd.DetailLayout):
 
         more_left = """
         id:8
+        name
         user
         list
         """
 
         more = dd.Panel("""
         more_left:30 blogs.EntriesByController:50
-        description MembersByMeeting
+        description MembersByMeeting:30
         """, label=_("More"))
 
 

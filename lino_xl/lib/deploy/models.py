@@ -118,11 +118,12 @@ class SpawnTicketFromWish(SpawnTicket):
     show_in_workflow = True
     show_in_bbar = False
     goto_new = False
+
     parameters = dict(
         summary=Ticket._meta.get_field('summary'),
         # just get_field fails with choser error
         enduser=dd.ForeignKey(Ticket._meta.get_field('end_user').rel.to,
-                              blank=True),
+                              _("End user"), blank=True,),
         # Rich Editor doesn't work all the time...
         # Seems to work better with basic editor
         description=Ticket._meta.get_field('description')
@@ -130,9 +131,10 @@ class SpawnTicketFromWish(SpawnTicket):
 
     class SpawnTicketLayout(dd.ActionParamsLayout):
         simple = dd.Panel("""summary
-                         enduser""")
-        main = """simple description"""
-
+        enduser""")
+        main = dd.Panel("""simple
+        description""", height=50)
+        window_size = (50,30)
     params_layout = SpawnTicketLayout()
 
     def action_param_defaults(self,ar, obj, **kw):
