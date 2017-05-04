@@ -101,17 +101,15 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable):
 
     list = dd.ForeignKey('lists.List', verbose_name=_("Memebers"), blank=True, null=True)
 
-    description = dd.BabelTextField(_("Description"), blank=True)
+    description = dd.RichTextField(_("Description"), blank=True)
 
-    remark = dd.RichTextField(_("Remark"), blank=True)
-
-    quick_search_fields = 'name description remark ref'
+    quick_search_fields = 'name description ref'
     site_field_name = 'room'
 
     state = MeetingStates.field(
         default=MeetingStates.draft.as_callable)
 
-    name = dd.CharField(_("Designation"), max_length=100, blank=True)
+    name = dd.CharField(_("Title"), max_length=100, blank=True)
 
     def on_duplicate(self, ar, master):
         # self.state = CourseStates.draft
