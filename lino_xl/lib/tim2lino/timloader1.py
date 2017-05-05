@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2009-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# License: BSD (see file COPYING for details)
 
 """Import legacy data from TIM (basic version).
 
@@ -93,7 +79,8 @@ if True:
     sepa = dd.resolve_app('sepa')
     lists = dd.resolve_app('lists')
 
-VatRule = rt.modules.vat.VatRule
+if dd.is_installed('vat'):    
+    VatRule = rt.modules.vat.VatRule
 
 
 # def convert_username(name):
@@ -632,21 +619,26 @@ class TimLoader(TimLoader):
 
         self.store(kw, id=self.par_pk(row.idpar))
 
-        email = row.email.strip()
-        if email and is_valid_email(email):
-            self.store(kw, email=email)
+        cl = self.par_class(row)
+        
+        if cl in (Company, Person, Household):
+            email = row.email.strip()
+            if email and is_valid_email(email):
+                self.store(kw, email=email)
 
         if 'idreg' in row:
             self.store(kw, vat_regime=vat_regime(row.idreg.strip()))
-        cl = self.par_class(row)
+            
         if cl is Company:
             cl = Company
             self.store(
                 kw,
-                vat_id=row['notva'].strip(),
                 prefix=row['allo'].strip(),
                 name=row.firme,
             )
+            if dd.is_installed('vat'):
+                self.store(
+                    kw, vat_id=row['notva'].strip())
         elif cl is Person:
             # self.store(kw, prefix=row.allo)
             # kw.update(**name2kw(self.decode_string(row.firme)))
@@ -657,8 +649,10 @@ class TimLoader(TimLoader):
                 # birth_date=row['gebdat'],
                 title=row['allo'].strip(),
             )
-            if 'sex' in row:
-                sex = row.get('sex', None)
+            # if 'sex' in row:
+            if hasattr(row, 'sex'):
+                # sex = row.get('sex', None)
+                sex = row.sex
                 self.store(
                     kw, gender=convert_gender(sex))
         elif cl is Household:
@@ -750,6 +744,9 @@ class TimLoader(TimLoader):
             else:
                 kw.update(iban=s)
             return kw
+
+        if not dd.is_installed('sepa'):
+            return
         
         compte1 = row['compte1'].strip()
         if compte1:
@@ -822,7 +819,9 @@ class TimLoader(TimLoader):
     def create_users(self):
 
         self.ROOT = users.User(
-            username='tim', profile=users.UserTypes.admin)
+            username='tim', name="tim",
+            id=1,
+            profile=users.UserTypes.admin)
         self.ROOT.set_password("1234")
         yield self.ROOT
 

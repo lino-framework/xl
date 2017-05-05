@@ -63,13 +63,14 @@ class EntryState(dd.State):
 
 
 class EntryStates(dd.Workflow):
-    """The list of choices for the :attr:`state
-    <lino_xl.lib.cal.models.Event.state>` field of a calendar entry.
+    """The possible states of a calendar entry.
+
+    Stored in the :attr:`state
+    <lino_xl.lib.cal.models.Event.state>` field.
 
     """
     verbose_name_plural = _("Event states")
     required_roles = dd.login_required(dd.SiteStaff)
-    help_text = _("""The possible states of a calendar event.""")
     app_label = 'cal'
     item_class = EntryState
     edit_guests = models.BooleanField(_("Edit participants"), default=False)

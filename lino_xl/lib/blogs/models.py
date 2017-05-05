@@ -26,6 +26,7 @@ from lino.core.requests import BaseRequest
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
 
+from .roles import BlogsReader
 
 @dd.python_2_unicode_compatible
 class EntryType(mixins.BabelNamed):
@@ -148,7 +149,8 @@ class EntryDetail(dd.DetailLayout):
 
 
 class Entries(dd.Table):
-    required_roles = set()  # also for anonymous
+    required_roles = set([BlogsReader])  # also for anonymous
+    # required_roles = set()  # also for anonymous
     model = 'blogs.Entry'
     column_names = "id pub_date user entry_type title * body"
     order_by = ["id"]
@@ -160,7 +162,7 @@ class Entries(dd.Table):
 
 
 class MyEntries(My, Entries):
-    required_roles = dd.login_required()
+    required_roles = dd.login_required(BlogsReader)
     #~ master_key = 'user'
     column_names = "id pub_date entry_type title body *"
     # order_by = ["-modified"]

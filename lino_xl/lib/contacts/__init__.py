@@ -47,6 +47,11 @@ class Plugin(ad.Plugin):
     region_label = _('Region')
     """The `verbose_name` of the `region` field."""
 
+    def post_site_startup(self, site):
+        Person = site.models.contacts.Person
+    
+        site.kernel.memo_parser.register_django_model('person', Person)
+    
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         # We use the string representations and not the classes because

@@ -25,7 +25,7 @@ class Plugin(ad.Plugin):
     needs_plugins = [
         # 'lino_xl.lib.stars',
         'lino_xl.lib.excerpts',
-        'lino_xl.lib.deploy',
+        # 'lino_xl.lib.deploy',
         'lino.modlib.comments',
         # 'lino.modlib.changes',
         'lino_noi.lib.noi']
