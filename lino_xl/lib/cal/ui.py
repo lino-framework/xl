@@ -1049,11 +1049,14 @@ class MyOverdueAppointments(My, OverdueAppointments):
     column_names = 'overview owner event_type workflow_buttons *'
 
 class MyUnconfirmedAppointments(MyEntries):
-    """Shows appointments in the near future which are still in draft
-    state.
+    """Shows my appointments in the near future which are in suggested or
+    draft state.
 
-    :attr:`show_appointments` is set to "Yes", :attr:`state`
-    is set to "Draft", :attr:`start_date` is set to today.
+    Appointments before today are not shown.  The parameters
+    :attr:`end_date` and :attr:`start_date` can manually be modified
+    in the parameters panel.
+
+    The state filter (draft or suggested) cannot be removed.
 
     """
     required_roles = dd.login_required(OfficeUser)
@@ -1061,12 +1064,13 @@ class MyUnconfirmedAppointments(MyEntries):
     column_names = 'when_html project summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
+    filter = models.Q(state__in=(EntryStates.suggested, EntryStates.draft))
 
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyUnconfirmedAppointments, self).param_defaults(ar, **kw)
         # kw.update(observed_event=EventEvents.pending)
-        kw.update(state=EntryStates.draft)
+        # kw.update(state=EntryStates.draft)
         kw.update(start_date=settings.SITE.today())
         kw.update(end_date=settings.SITE.today(14))
         # kw.update(show_appointments=dd.YesNo.yes)
