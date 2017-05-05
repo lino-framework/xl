@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2015 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2009-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 """Import legacy data from TIM (basic version).
 """
@@ -142,8 +128,10 @@ class TimLoader(object):
         s = s.replace('\r\n', '\n')
         s = s.replace(u'\xec\n', '')
         # s = s.replace(u'\r\nì',' ')
-        if u'ì' in s:
-            raise Exception("20121121 %r" % s)
+        # if u'ì' in s:
+        #     raise Exception("20121121 %r contains \\xec" % s)
+        # it might be at the end of the string:
+        s = s.replace(u'ì','')
         return s.strip()
 
     def after_gen_load(self):
@@ -195,6 +183,7 @@ class TimLoader(object):
             else:
                 raise Exception("Invalid JNL->IdCtr '{0}'".format(row.idctr))
         elif row.alias == 'FIN':
+            vat = rt.modules.vat
             finan = rt.modules.finan
             ledger = rt.modules.ledger
             accounts = rt.modules.accounts
@@ -249,6 +238,7 @@ class TimLoader(object):
                     try:
                         yield row2obj(record)
                     except Exception as e:
+                        traceback.print_exc(e)
                         dd.logger.warning(
                             "Failed to load record %s from %s : %s",
                             record, tableName, e)

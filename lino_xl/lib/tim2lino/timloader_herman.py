@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -98,27 +98,28 @@ class TimLoader(TimLoader):
         yield obj
         cr.update(M=obj)
 
-        self.PROD_617010 = Product(
-            name="Edasimüük remondikulud",
-            id=40)
-        yield self.PROD_617010
+        # self.PROD_617010 = Product(
+        #     name="Edasimüük remondikulud",
+        #     id=40)
+        # yield self.PROD_617010
 
-        self.sales_gen2art['617010'] = self.PROD_617010
+        # self.sales_gen2art['617010'] = self.PROD_617010
 
         yield super(TimLoader, self).objects()
 
+        yield self.load_dbf('NEW')
+        
         yield self.load_dbf('PLS')
         yield self.load_dbf('MBR')
 
-        if False:  # and GET_THEM_ALL:
-            yield self.load_dbf('PIN')
-            yield self.load_dbf('DLS')
+        # yield self.load_dbf('PIN')
+        # yield self.load_dbf('DLS')
 
-    def after_gen_load(self):
-        super(TimLoader, self).after_gen_load()
-        self.PROD_617010.sales_account = Account.objects.get(
-            ref='617010')
-        self.PROD_617010.save()
+    # def after_gen_load(self):
+    #     super(TimLoader, self).after_gen_load()
+    #     self.PROD_617010.sales_account = Account.objects.get(
+    #         ref='617010')
+    #     self.PROD_617010.save()
 
     def load_par(self, row):
         for obj in super(TimLoader, self).load_par(row):
@@ -126,6 +127,12 @@ class TimLoader(TimLoader):
                 obj.isikukood = row['regkood'].strip()
                 obj.created = row['datcrea']
                 obj.modified = datetime.datetime.now()
+                bd = row['gebdat'].strip()
+                if len(bd) == 8:
+                    bd = bd.replace("?", "0")
+                    bd = bd.replace("x", "0")
+                    bd = bd[0:4] + '-' + bd[4:6] + '-' + bd[6:8]
+                    obj.birth_date = bd
             yield obj
 
     def load_pls(self, row, **kw):
@@ -133,8 +140,19 @@ class TimLoader(TimLoader):
         kw.update(name=row.name)
         return List(**kw)
 
-    def load_mbr(self, row, **kw):
+    def load_new(self, row, **kw):
+        kw.update(id=row.idnew.strip())
+        kw.update(pub_date=row.date)
+        kw.update(pub_time=row.time.strip() or None)
+        kw.update(title=row.title.strip())
+        kw.update(user=self.ROOT)
+        body = self.dbfmemo(
+            row.abstract.strip() + "\n\n" + row.body.strip())
+        body = body.replace("ref PAR:", "person ")
+        kw.update(body=body)
+        return rt.models.blogs.Entry(**kw)
 
+    def load_mbr(self, row, **kw):
         p1 = self.get_customer(row.idpar)
         if p1 is None:
             dd.logger.debug(
@@ -144,6 +162,14 @@ class TimLoader(TimLoader):
         p2 = self.get_customer(row.idpar2)
 
         if p2 is not None:
+            if row.idpls.strip() == 'M':
+                c1 = mti.get_child(p1, Company)
+                c2 = mti.get_child(p2, Company)
+                if c1 and c2:
+                    if c2.parent is None:
+                        c2.parent = c1
+                        return c2
+            
             contact_role = self.contact_roles.get(row.idpls.strip())
             if contact_role is not None:
                 kw = dict()

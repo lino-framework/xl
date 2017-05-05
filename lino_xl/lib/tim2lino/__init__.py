@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2015-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """Add functionality for importing lecacy data from a TIM database.
@@ -67,7 +53,11 @@ class Plugin(ad.Plugin):
     When this is True, you must run "pip install enum34 dbf" (note
     enum34, not enum) and then you must manually patch
     :file:`site-packages/dbf/ver_2.py` to support file names ending
-    with '.FOX'.
+    with '.FOX' by replacing two lines of code::
+
+            # if ext.lower() != '.dbf':
+            if ext.lower() not in ('.dbf', '.fox'):
+
 
     """
 
