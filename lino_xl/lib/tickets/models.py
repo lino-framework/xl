@@ -324,6 +324,7 @@ class SpawnTicket(dd.Action):
     # label = "⚇"  # "\u2687"
     show_in_workflow = False
     show_in_bbar = False
+    goto_new = True
 
     def __init__(self, label, link_type):
         self.label = label
@@ -333,25 +334,37 @@ class SpawnTicket(dd.Action):
             link_type.as_child())
         super(SpawnTicket, self).__init__()
 
-    def run_from_ui(self, ar, **kw):
-        p = ar.selected_rows[0]
+
+    def spawn_ticket(self, ar, p):
         c = rt.modules.tickets.Ticket(
             user=ar.get_user(),
             summary=_("New ticket {0} #{1}".format(
                 self.link_type.as_child(), p.id)))
-        for k in ('project', 'private'):
-            setattr(c, k, getattr(p, k))
-        c.full_clean()
-        c.save()
+        return c
+
+    def make_link(self, ar, new, old):
         d = rt.modules.tickets.Link(
-            parent=p, child=c,
+            parent=old, child=new,
             type=self.link_type)
         d.full_clean()
         d.save()
+
+    def get_parent_ticket(self, ar):
+        return ar.selected_rows[0]
+
+    def run_from_ui(self, ar, **kw):
+        old = self.get_parent_ticket(ar)
+        new = self.spawn_ticket(ar, old)
+        for k in ('project', 'private'):
+            setattr(new, k, getattr(old, k))
+        new.full_clean()
+        new.save()
+        self.make_link(ar, new, old)
         ar.success(
             _("New ticket {0} has been spawned as child of {1}.").format(
-                c, p))
-        ar.goto_instance(c)
+                new, old))
+        if self.goto_new:
+            ar.goto_instance(new)
 
 @dd.python_2_unicode_compatible
 class Ticket(UserAuthored, mixins.CreatedModified,
