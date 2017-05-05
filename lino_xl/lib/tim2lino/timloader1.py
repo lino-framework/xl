@@ -649,6 +649,7 @@ class TimLoader(TimLoader):
                 # birth_date=row['gebdat'],
                 title=row['allo'].strip(),
             )
+            # depends on which dbf module is being used:
             # if 'sex' in row:
             if hasattr(row, 'sex'):
                 # sex = row.get('sex', None)
