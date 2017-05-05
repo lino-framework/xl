@@ -649,8 +649,10 @@ class TimLoader(TimLoader):
                 # birth_date=row['gebdat'],
                 title=row['allo'].strip(),
             )
-            if 'sex' in row:
-                sex = row.get('sex', None)
+            # if 'sex' in row:
+            if hasattr(row, 'sex'):
+                # sex = row.get('sex', None)
+                sex = row.sex
                 self.store(
                     kw, gender=convert_gender(sex))
         elif cl is Household:
