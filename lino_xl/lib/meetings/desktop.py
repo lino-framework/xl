@@ -152,7 +152,7 @@ class AllMeetings(Meetings):
                    # "weekdays_text:10 times_text:10"
 
 class MyMeetings(Meetings):
-    column_names = "start_date:8 room name workflow_buttons *"
+    column_names = "start_date:8 overview room name ref workflow_buttons *"
     order_by = ['start_date']
 
     @classmethod
