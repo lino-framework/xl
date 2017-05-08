@@ -34,8 +34,9 @@ class Workable(dd.Model):
 
     create_session_on_create = False
 
-    start_session = StartTicketSession()
-    end_session = EndTicketSession()
+    if dd.is_installed('clocking'):
+        start_session = StartTicketSession()
+        end_session = EndTicketSession()
 
     def get_ticket(self):
         return self
@@ -60,7 +61,7 @@ class Workable(dd.Model):
         if rt.settings.SITE.loading_from_dump:
             return
         me = ar.get_user()
-        print elem.create_session_on_create
+        # print elem.create_session_on_create
         if elem.create_session_on_create and me is not None and me.open_session_on_new_ticket:
             ses = rt.modules.clocking.Session(ticket=elem, user=me)
             ses.full_clean()
