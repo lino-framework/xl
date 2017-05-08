@@ -18,10 +18,12 @@ from django.utils import timezone
 from lino.api import dd, rt
 from lino import mixins
 from lino.modlib.gfks.mixins import Controllable
+from lino_xl.lib.topics.models import AddInterestField
 from lino.modlib.users.mixins import My, UserAuthored
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
 from lino.core.requests import BaseRequest
+from lino.mixins.bleached import BleachedPreviewBody
 
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
@@ -64,9 +66,9 @@ class EntryTypes(dd.Table):
     blogs.EntriesByType
     """
 
-
 @dd.python_2_unicode_compatible
-class Entry(UserAuthored, Controllable, CombinedDateTime):
+class Entry(UserAuthored, Controllable, CombinedDateTime,
+            BleachedPreviewBody):
 
     """A blog entry is a short article with a title, published on a given
     date and time by a given user.
@@ -78,15 +80,11 @@ class Entry(UserAuthored, Controllable, CombinedDateTime):
         verbose_name_plural = _("Blog Entries")
 
     title = models.CharField(_("Heading"), max_length=200, blank=True)
-    body = dd.RichTextField(_("Body"), blank=True, format='html')
-
     pub_date = models.DateField(
         _("Publication date"), blank=True, null=True)
     pub_time = models.TimeField(
         _("Publication time"), blank=True, null=True)
-    
     entry_type = dd.ForeignKey('blogs.EntryType', blank=True, null=True)
-    
     language = dd.LanguageField()
     
     def __str__(self):
@@ -104,6 +102,9 @@ class Entry(UserAuthored, Controllable, CombinedDateTime):
             self.language = ar.get_user().language
         super(Entry, self).on_create(ar)
 
+
+    add_interest = AddInterestField()
+
     # @classmethod
     # def latest_entries(cls, ar, max_num=10, **context):
     #     context = ar.get_printable_context(**context)
@@ -119,32 +120,32 @@ class Entry(UserAuthored, Controllable, CombinedDateTime):
     #     return s
     
 
-class Tagging(dd.Model):
-    """A **tag** is the fact that a given entry mentions a given topic.
+# class Tagging(dd.Model):
+#     """A **tag** is the fact that a given entry mentions a given topic.
 
-    """
-    class Meta:
-        app_label = 'blogs'
-        verbose_name = _("Tagging")
-        verbose_name_plural = _('Taggings')
+#     """
+#     class Meta:
+#         app_label = 'blogs'
+#         verbose_name = _("Tagging")
+#         verbose_name_plural = _('Taggings')
 
-    allow_cascaded_delete = ['entry', 'topic']
+#     allow_cascaded_delete = ['entry', 'topic']
 
-    topic = dd.ForeignKey(
-        'topics.Topic',
-        related_name='tags_by_topic')
+#     topic = dd.ForeignKey(
+#         'topics.Topic',
+#         related_name='tags_by_topic')
 
-    entry = dd.ForeignKey(
-        'blogs.Entry',
-        related_name='tags_by_entry')
+#     entry = dd.ForeignKey(
+#         'blogs.Entry',
+#         related_name='tags_by_entry')
 
 
 class EntryDetail(dd.DetailLayout):
     main = """
     title entry_type:12 id 
     # summary
-    pub_date pub_time user:10 language:10 owner
-    body:60 TaggingsByEntry:20
+    pub_date pub_time user:10 language:10 owner add_interest
+    body:60 topics.InterestsByController:20 #TaggingsByEntry:20
     """
 
 
@@ -153,7 +154,7 @@ class Entries(dd.Table):
     # required_roles = set()  # also for anonymous
     model = 'blogs.Entry'
     column_names = "id pub_date user entry_type title * body"
-    order_by = ["id"]
+    order_by = ["-id"]
     insert_layout = """
     title
     entry_type
@@ -251,18 +252,18 @@ class LatestEntries(Entries):
         return s
     
     
-class Taggings(dd.Table):
-    model = 'blogs.Tagging'
+# class Taggings(dd.Table):
+#     model = 'blogs.Tagging'
 
-class AllTaggings(Taggings):
-    required_roles = dd.login_required(dd.SiteStaff)
+# class AllTaggings(Taggings):
+#     required_roles = dd.login_required(dd.SiteStaff)
 
-class TaggingsByEntry(Taggings):
-    master_key = 'entry'
-    column_names = 'topic *'
+# class TaggingsByEntry(Taggings):
+#     master_key = 'entry'
+#     column_names = 'topic *'
     
-class TaggingsByTopic(Taggings):
-    master_key = 'topic'
-    column_names = 'entry *'
+# class TaggingsByTopic(Taggings):
+#     master_key = 'topic'
+#     column_names = 'entry *'
     
     
