@@ -134,6 +134,8 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable):
         )
 
     def __str__(self):
+        if self.ref:
+            return self.ref
         if self.name:
             return self.name
         if self.room is None:
