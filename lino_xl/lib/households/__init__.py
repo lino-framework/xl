@@ -44,6 +44,10 @@ class Plugin(ad.Plugin):
         self.person_model = site.models.resolve(self.person_model)
         super(Plugin, self).on_site_startup(site)
         
+    def post_site_startup(self, site):
+        rdm = site.kernel.memo_parser.register_django_model
+        rdm('household', site.models.households.Household)
+    
     def setup_main_menu(config, site, profile, m):
         mnugrp = site.plugins.contacts
         m = m.add_menu(mnugrp.app_label, mnugrp.verbose_name)
