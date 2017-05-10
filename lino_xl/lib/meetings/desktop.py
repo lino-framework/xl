@@ -165,7 +165,7 @@ class MyMeetings(Meetings):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
-        kw.update(member=ar.get_user().user.get_partner_instance())
+        kw.update(member=ar.get_user().get_partner_instance())
         return kw
 
 

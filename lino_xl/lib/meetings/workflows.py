@@ -56,20 +56,25 @@ class FinishMeeting(dd.ChangeStateAction):
         # ~ problems = []
         sl = ar.selected_rows
 
-        def ok(ar):
-            for obj in sl:
-                qs = obj.wishes_by_milestone.exclude().select_related('ticket__state', 'ticket')
-                for de in qs:
-                    if de.new_ticket_state is not None:
-                        de.ticket.state = de.new_ticket_state
-                        de.ticket.full_clean()
-                        de.ticket.save()
-                        de.full_clean()
-                        de.save()
-            obj.state = MeetingStates.closed
-            obj.save()
-            ar.set_response(refresh_all=True)
-        ar.confirm(ok,_("Finish meeting and set all tickets to their new state?"))
+        must_update = []
+        for obj in sl:
+            qs = obj.wishes_by_milestone.exclude().select_related('ticket__state', 'ticket')
+            for de in qs:
+                if de.new_ticket_state is not None:
+                    if de.ticket.state != de.new_ticket_state:
+                        must_update.append((de.ticket, de.new_ticket_state))
+        obj.state = MeetingStates.closed
+        obj.save()
+        ar.set_response(refresh_all=True)
+            
+        def ok(ar2):
+            for (ticket, st) in must_update:
+                ticket.state = de.new_ticket_state
+                ticket.full_clean()
+                ticket.save()
+
+        if len(must_update) > 0:
+            ar.confirm(ok, _("Finish meeting and set all tickets to their new state?"))
 #
 # @dd.receiver(dd.pre_analyze)
 # def my_enrolment_workflows(sender=None, **kw):
