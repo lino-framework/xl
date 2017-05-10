@@ -40,6 +40,10 @@ from .roles import TicketsUser, Searcher, Triager, TicketsStaff
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
 
+
+end_user_model = dd.plugins.faculties.end_user_model if \
+    'faculties' in dd.plugins else 'contacts.Partner'
+
 # if dd.is_installed('tickets'):
 #     site_model = dd.plugins.tickets.site_model
 # else:
@@ -484,25 +488,25 @@ class Tickets(dd.Table):
         topic=dd.ForeignKey('topics.Topic', blank=True, ),
         site=dd.ForeignKey(site_model, blank=True),
         end_user=dd.ForeignKey(
-            dd.plugins.faculties.end_user_model,
+            end_user_model,
             verbose_name=_("End user"),
             blank=True, null=True,
             help_text=_("Only rows concerning this end user.")),
         assigned_to=dd.ForeignKey(
-            dd.plugins.faculties.end_user_model,
+            end_user_model,
             # settings.SITE.user_model,
             verbose_name=_("Voted by"),
             blank=True, null=True,
             help_text=_("Only tickets having a vote by this user.")),
         not_assigned_to=dd.ForeignKey(
-            dd.plugins.faculties.end_user_model,
+            end_user_model,
             # settings.SITE.user_model,
             verbose_name=_("Not voted by"),
             blank=True, null=True,
             help_text=_("Only tickets having no vote by this user.")),
         feasable_by=dd.ForeignKey(
             # settings.SITE.user_model,
-            dd.plugins.faculties.end_user_model,
+            end_user_model,
             verbose_name=_("Feasable by"), blank=True, null=True),
         interesting_for=dd.ForeignKey(
             'contacts.Partner',
@@ -697,33 +701,6 @@ class DuplicatesByTicket(Tickets):
     column_names = "id summary *"
 
 
-class SuggestedTicketsByEndUser(Tickets):
-    """Shows the tickets of other users which need help on a faculty for
-    which I am competent.
-
-    """
-    master = dd.plugins.faculties.end_user_model
-    label = _("Where I can help")
-    required_roles = dd.login_required(TicketsUser)
-    column_names = 'overview:50 needed_skills ' \
-                   'workflow_buttons:30 *'
-    params_panel_hidden = True
-    params_layout = """
-    end_user feasable_by site project state
-    show_assigned show_active topic"""
-
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(SuggestedTicketsByEndUser, self).param_defaults(ar, **kw)
-        mi = ar.master_instance
-        if mi is None:
-            mi = ar.get_user()
-        # print("20170318 master instance is", mi)
-        # kw.update(not_assigned_to=mi)
-        kw.update(feasable_by=mi)
-        # kw.update(show_assigned=dd.YesNo.no)
-        kw.update(show_active=dd.YesNo.yes)
-        return kw
 
 class RefTickets(AllTickets):
     """

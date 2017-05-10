@@ -10,6 +10,7 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino.modlib.users.mixins import My
 from lino.modlib.users.desktop import Users
+from lino_xl.lib.tickets.ui import Tickets
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from .roles import SkillsStaff
@@ -214,9 +215,10 @@ class OffersByDemander(Offers):
 
 
 if dd.is_installed('tickets'):
-    
-    from lino_xl.lib.tickets.roles import Triager
-    
+
+    from lino_xl.lib.tickets.roles import Triager, TicketsUser
+
+
     class AssignableWorkersByTicket(Users):
         # model = 'users.User'
         use_as_default_table = False
@@ -251,3 +253,31 @@ if dd.is_installed('tickets'):
             qs = qs.order_by('faculties_competence_set_by_user__affinity')
             return qs
 
+
+    class SuggestedTicketsByEndUser(Tickets):
+        """Shows the tickets of other users which need help on a faculty for
+        which I am competent.
+
+        """
+        master = dd.plugins.faculties.end_user_model
+        label = _("Where I can help")
+        required_roles = dd.login_required(TicketsUser)
+        column_names = 'overview:50 needed_skills ' \
+                       'workflow_buttons:30 *'
+        params_panel_hidden = True
+        params_layout = """
+        end_user feasable_by site project state
+        show_assigned show_active topic"""
+
+        @classmethod
+        def param_defaults(self, ar, **kw):
+            kw = super(SuggestedTicketsByEndUser, self).param_defaults(ar, **kw)
+            mi = ar.master_instance
+            if mi is None:
+                mi = ar.get_user()
+            # print("20170318 master instance is", mi)
+            # kw.update(not_assigned_to=mi)
+            kw.update(feasable_by=mi)
+            # kw.update(show_assigned=dd.YesNo.no)
+            kw.update(show_active=dd.YesNo.yes)
+            return kw

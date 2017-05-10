@@ -39,6 +39,10 @@ from .roles import Triager
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
 
+end_user_model = dd.plugins.faculties.end_user_model if \
+    'faculties' in dd.plugins else 'contacts.Partner'
+
+
 # if dd.is_installed('tickets'):
 #     site_model = dd.plugins.tickets.site_model
 #     milestone_model = dd.plugins.tickets.milestone_model
@@ -407,7 +411,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
     #     help_text=_("The user who works on this ticket."))
 
     end_user = dd.ForeignKey(
-        dd.plugins.faculties.end_user_model,
+        end_user_model,
         verbose_name=_("End user"),
         blank=True, null=True,
         related_name="reported_tickets")
@@ -577,7 +581,7 @@ class Ticket(UserAuthored, mixins.CreatedModified,
             yield self.user
         if issubclass(
                 settings.SITE.user_model,
-                dd.plugins.faculties.end_user_model):
+                dd.resolve_model(end_user_model)):
             if self.end_user:
                 u = self.end_user.get_as_user()
                 if u is not None:
@@ -591,48 +595,6 @@ class Ticket(UserAuthored, mixins.CreatedModified,
             return False
         return True
         
-    @dd.displayfield(_("Suppliers"))
-    def suppliers(self, ar):
-        """Displays a list of candidate suppliers.
-
-        This means: all suppliers who have at least one of the
-        skills required by this ticket.
-
-        """
-        if ar is None:
-            return ''
-
-        Offer = rt.models.faculties.Competence
-        Demand = rt.models.faculties.Demand
-        faculties = set()
-        for dem in Demand.objects.filter(demander=self):
-            faculties.add(dem.skill)
-            # faculties |= set(dem.skill.get_parental_line())
-
-        elems = []
-        for spl in Offer.objects.filter(faculty__in=faculties):
-            if spl.end_user is not None:
-                elems.append(spl.end_user.obj2href(ar))
-        elems = join_elems(elems, ', ')
-        return E.p(*elems)
-
-
-    @dd.displayfield(_("Needed skills"))
-    def needed_skills(self, ar):
-        """Displays a list of needed skills.
-
-        This means: all skill demands for this ticket.
-
-        """
-        if ar is None:
-            return ''
-
-        Demand = rt.models.faculties.Demand
-        elems = []
-        for dem in Demand.objects.filter(demander=self):
-            elems.append(dem.skill.obj2href(ar))
-        elems = join_elems(elems, ', ')
-        return E.p(*elems)
 
     @classmethod
     def quick_search_filter(cls, search_text, prefix=''):
