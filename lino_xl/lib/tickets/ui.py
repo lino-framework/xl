@@ -25,7 +25,7 @@ from django.db import models
 from django.db.models import Q
 
 from lino import mixins
-from lino.api import dd, rt, _, pgettext
+from lino.api import dd, rt, _
 
 from lino.utils.xmlgen.html import E
 
