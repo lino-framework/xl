@@ -48,9 +48,9 @@ class Plugin(ad.Plugin):
     """The `verbose_name` of the `region` field."""
 
     def post_site_startup(self, site):
-        Person = site.models.contacts.Person
-    
-        site.kernel.memo_parser.register_django_model('person', Person)
+        rdm = site.kernel.memo_parser.register_django_model
+        rdm('person', site.models.contacts.Person)
+        rdm('company', site.models.contacts.Company)
     
     def setup_main_menu(self, site, profile, m):
         m = m.add_menu(self.app_label, self.verbose_name)

@@ -27,8 +27,10 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.xl']
     # needs_plugins = ['lino_xl.lib.contacts']
 
+    
+    #deprecated:
     partner_model = 'contacts.Partner'
-    menu_group = 'contacts'
+    # menu_group = 'contacts'
     # partner_model = 'users.User'
 
     # def setup_main_menu(self, site, profile, m):

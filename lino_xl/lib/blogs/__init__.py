@@ -37,7 +37,7 @@ class Plugin(Plugin):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('blogs.AllEntries')
-        m.add_action('blogs.AllTaggings')
+        # m.add_action('blogs.AllTaggings')
         
     def get_dashboard_items(self, user):
         from lino.core.dashboard import ActorItem

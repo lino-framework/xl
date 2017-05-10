@@ -102,7 +102,6 @@ them."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
     'lino_xl.lib.blogs.models.Entry' : _("""A blog entry is a short article with a title, published on a given
 date and time by a given user."""),
-    'lino_xl.lib.blogs.models.Tagging' : _("""A tag is the fact that a given entry mentions a given topic."""),
     'lino_xl.lib.blogs.models.LatestEntries' : _("""Show the most recent blog entries."""),
     'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
@@ -253,14 +252,14 @@ over but who are still in a nonstable state."""),
     'lino_xl.lib.cal.ui.OverdueAppointments.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.ui.MyOverdueAppointments' : _("""Like OverdueAppointments, but only for myself."""),
     'lino_xl.lib.cal.ui.MyOverdueAppointments.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyUnconfirmedAppointments' : _("""Shows appointments in the near future which are still in draft
-state."""),
+    'lino_xl.lib.cal.ui.MyUnconfirmedAppointments' : _("""Shows my appointments in the near future which are in suggested or
+draft state."""),
     'lino_xl.lib.cal.ui.MyUnconfirmedAppointments.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
 workflows_module):"""),
-    'lino_xl.lib.cal.workflows.EntryStates' : _("""The list of choices for the state field of a calendar entry."""),
+    'lino_xl.lib.cal.workflows.EntryStates' : _("""The possible states of a calendar entry."""),
     'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
 the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.InvitationFeedback' : _("""Base class for actions that give feedback to an invitation."""),
@@ -1161,6 +1160,8 @@ parameter. No default value."""),
     'lino_xl.lib.tim2lino.Plugin.dbf_table_ext' : _("""The file extension of TIM tables. Meaningful values are '.DBF' or
 .FOX."""),
     'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.topics.models.AddInterestField' : _("""An editable virtual field used for adding an interest to the
+object."""),
     'lino_xl.lib.topics.models.TopicGroup' : _("""Currently not used."""),
     'lino_xl.lib.topics.models.Interest' : _("""An interest is the fact that a given partner is interested in a
 given topic."""),

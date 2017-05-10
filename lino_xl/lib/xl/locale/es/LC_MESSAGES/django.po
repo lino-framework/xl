@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino 1.6.14\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2017-04-22 07:09+0300\n"
+"POT-Creation-Date: 2017-05-09 08:48+0300\n"
 "PO-Revision-Date: 2014-06-06 11:29+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: es\n"
@@ -117,7 +117,7 @@ msgstr ""
 msgid "Credit"
 msgstr ""
 
-#: lino_xl/lib/addresses/__init__.py:27 lino_xl/lib/addresses/models.py:51
+#: lino_xl/lib/addresses/__init__.py:28 lino_xl/lib/addresses/models.py:51
 #: lino_xl/lib/addresses/models.py:133
 msgid "Addresses"
 msgstr ""
@@ -213,19 +213,19 @@ msgstr ""
 msgid "Address"
 msgstr ""
 
-#: lino_xl/lib/addresses/models.py:62 lino_xl/lib/blogs/models.py:44
-#: lino_xl/lib/cal/models.py:1022
+#: lino_xl/lib/addresses/models.py:62 lino_xl/lib/blogs/models.py:47
+#: lino_xl/lib/cal/models.py:1033
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:79
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:38
 #: lino_xl/lib/courses/models.py:295 lino_xl/lib/courses/models.py:684
 #: lino_xl/lib/cv/models.py:549 lino_xl/lib/cv/models.py:575
-#: lino_xl/lib/deploy/models.py:125 lino_xl/lib/excerpts/models.py:112
+#: lino_xl/lib/deploy/models.py:183 lino_xl/lib/excerpts/models.py:112
 #: lino_xl/lib/groups/models.py:118 lino_xl/lib/ledger/models.py:319
-#: lino_xl/lib/lists/models.py:100 lino_xl/lib/meetings/models.py:102
-#: lino_xl/lib/notes/models.py:54 lino_xl/lib/notes/models.py:95
-#: lino_xl/lib/polls/models.py:691 lino_xl/lib/polls/models.py:696
-#: lino_xl/lib/polls/models.py:842 lino_xl/lib/sepa/models.py:73
-#: lino_xl/lib/thirds/models.py:27 lino_xl/lib/tickets/models.py:238
+#: lino_xl/lib/lists/models.py:100 lino_xl/lib/notes/models.py:54
+#: lino_xl/lib/notes/models.py:95 lino_xl/lib/polls/models.py:691
+#: lino_xl/lib/polls/models.py:696 lino_xl/lib/polls/models.py:842
+#: lino_xl/lib/sepa/models.py:73 lino_xl/lib/thirds/models.py:27
+#: lino_xl/lib/tickets/models.py:238 lino_xl/lib/topics/models.py:96
 #: lino_xl/lib/trends/models.py:98 lino_xl/lib/uploads/models.py:84
 msgid "Remark"
 msgstr ""
@@ -545,58 +545,44 @@ msgstr ""
 msgid "Blog"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:37
+#: lino_xl/lib/blogs/models.py:40
 msgid "Blog Entry Type"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:38
+#: lino_xl/lib/blogs/models.py:41
 msgid "Blog Entry Types"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:42 lino_xl/lib/notes/models.py:52
+#: lino_xl/lib/blogs/models.py:45 lino_xl/lib/notes/models.py:52
 msgid "important"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:76
+#: lino_xl/lib/blogs/models.py:79
 msgid "Blog Entry"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:77
+#: lino_xl/lib/blogs/models.py:80
 msgid "Blog Entries"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:79 lino_xl/lib/polls/models.py:112
+#: lino_xl/lib/blogs/models.py:82 lino_xl/lib/polls/models.py:112
 #: lino_xl/lib/polls/models.py:249 lino_xl/lib/sales/models.py:478
 msgid "Heading"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:80 lino_xl/lib/notes/models.py:96
-#: lino_xl/lib/notes/models.py:162 lino_xl/lib/outbox/models.py:219
-#: lino_xl/lib/pages/models.py:72
-msgid "Body"
-msgstr ""
-
-#: lino_xl/lib/blogs/models.py:83
+#: lino_xl/lib/blogs/models.py:84
 msgid "Publication date"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:85
+#: lino_xl/lib/blogs/models.py:86
 msgid "Publication time"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:93
+#: lino_xl/lib/blogs/models.py:92
 msgid "{} by {}"
 msgstr ""
 
-#: lino_xl/lib/blogs/models.py:127
-msgid "Tagging"
-msgstr ""
-
-#: lino_xl/lib/blogs/models.py:128
-msgid "Taggings"
-msgstr ""
-
-#: lino_xl/lib/blogs/models.py:230
+#: lino_xl/lib/blogs/models.py:233
 msgid "Latest blog entries"
 msgstr ""
 
@@ -630,7 +616,7 @@ msgstr ""
 
 #: lino_xl/lib/cal/__init__.py:82 lino_xl/lib/cal/models.py:239
 #: lino_xl/lib/courses/desktop.py:158 lino_xl/lib/extensible/models.py:104
-#: lino_xl/lib/meetings/desktop.py:65
+#: lino_xl/lib/meetings/desktop.py:64
 msgid "Calendar"
 msgstr ""
 
@@ -756,7 +742,7 @@ msgid "Public"
 msgstr ""
 
 #: lino_xl/lib/cal/mixins.py:55 lino_xl/lib/cal/ui.py:212
-#: lino_xl/lib/cal/ui.py:377
+#: lino_xl/lib/cal/ui.py:378
 #, python-format
 msgid "Dates %(min)s to %(max)s"
 msgstr ""
@@ -809,11 +795,11 @@ msgstr ""
 #: lino_xl/lib/groups/models.py:36 lino_xl/lib/ledger/ui.py:466
 #: lino_xl/lib/ledger/ui.py:823 lino_xl/lib/ledger/ui.py:882
 #: lino_xl/lib/ledger/ui.py:935 lino_xl/lib/ledger/ui.py:981
-#: lino_xl/lib/ledger/ui.py:1026 lino_xl/lib/meetings/models.py:100
+#: lino_xl/lib/ledger/ui.py:1026 lino_xl/lib/meetings/models.py:104
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:31
 #: lino_xl/lib/sales/models.py:420 lino_xl/lib/sales/models.py:525
 #: lino_xl/lib/tickets/models.py:114 lino_xl/lib/tickets/models.py:239
-#: lino_xl/lib/tickets/models.py:379 lino_xl/lib/topics/models.py:26
+#: lino_xl/lib/tickets/models.py:395 lino_xl/lib/topics/models.py:67
 #: lino_xl/lib/vat/models.py:159 lino_xl/lib/vatless/models.py:128
 #: lino_xl/lib/votes/models.py:180
 msgid "Description"
@@ -823,8 +809,8 @@ msgstr ""
 msgid "Times"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:624 lino_xl/lib/cal/models.py:805
-#: lino_xl/lib/cal/models.py:812 lino_xl/lib/events/models.py:114
+#: lino_xl/lib/cal/mixins.py:624 lino_xl/lib/cal/models.py:816
+#: lino_xl/lib/cal/models.py:823 lino_xl/lib/events/models.py:114
 msgid "When"
 msgstr ""
 
@@ -895,8 +881,8 @@ msgid "Remote Calendars"
 msgstr ""
 
 #: lino_xl/lib/cal/models.py:97 lino_xl/lib/humanlinks/models.py:62
-#: lino_xl/lib/humanlinks/models.py:67 lino_xl/lib/tickets/models.py:648
-#: lino_xl/lib/tickets/models.py:653
+#: lino_xl/lib/humanlinks/models.py:67 lino_xl/lib/tickets/models.py:667
+#: lino_xl/lib/tickets/models.py:672
 msgid "Type"
 msgstr ""
 
@@ -1068,7 +1054,7 @@ msgstr ""
 msgid "Calendar entries"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:571 lino_xl/lib/cal/workflows/__init__.py:77
+#: lino_xl/lib/cal/models.py:571 lino_xl/lib/cal/workflows/__init__.py:78
 msgid "Transparent"
 msgstr ""
 
@@ -1081,130 +1067,130 @@ msgstr ""
 msgid "Unsaved %s"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:738 lino_xl/lib/reception/models.py:66
+#: lino_xl/lib/cal/models.py:749 lino_xl/lib/reception/models.py:66
 msgid "Busy"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:742
+#: lino_xl/lib/cal/models.py:753
 msgid "with"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:821
+#: lino_xl/lib/cal/models.py:832
 msgid "Link URL"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:825
+#: lino_xl/lib/cal/models.py:836
 msgid "Reminder"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:871 lino_xl/lib/cal/ui.py:318
+#: lino_xl/lib/cal/models.py:882 lino_xl/lib/cal/ui.py:319
 msgid "Responsible user"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:888
+#: lino_xl/lib/cal/models.py:899
 msgid "Entries without participants"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:897
+#: lino_xl/lib/cal/models.py:908
 msgid "No participants although {0} suggestions exist."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:910
+#: lino_xl/lib/cal/models.py:921
 msgid "Check for conflicting calendar entries"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:918
+#: lino_xl/lib/cal/models.py:929
 msgid "Event conflicts with {0}."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:920
+#: lino_xl/lib/cal/models.py:931
 msgid "Event conflicts with {0} other events."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:934
+#: lino_xl/lib/cal/models.py:945
 msgid "Obsolete event type of generated entries"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:941
+#: lino_xl/lib/cal/models.py:952
 msgid "Event type but {0} (should be {1})."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:957
+#: lino_xl/lib/cal/models.py:968
 msgid "Too long-lasting calendar entries"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:970
+#: lino_xl/lib/cal/models.py:981
 msgid "Event lasts {0} days but only {1} are allowed."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1013
+#: lino_xl/lib/cal/models.py:1024
 msgid "Presence"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1014 lino_xl/lib/cal/ui.py:412
+#: lino_xl/lib/cal/models.py:1025 lino_xl/lib/cal/ui.py:413
 #: lino_xl/lib/courses/models.py:570
 msgid "Presences"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1020 lino_xl/lib/households/choicelists.py:31
+#: lino_xl/lib/cal/models.py:1031 lino_xl/lib/households/choicelists.py:31
 msgid "Role"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1045
+#: lino_xl/lib/cal/models.py:1056
 msgid "Event"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1078
+#: lino_xl/lib/cal/models.py:1089
 msgid "due date reached"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1095
+#: lino_xl/lib/cal/models.py:1106
 msgid "Default access class"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1096
+#: lino_xl/lib/cal/models.py:1107
 msgid "The default access class for your calendar events and tasks."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1103 lino_xl/lib/cal/models.py:1113
+#: lino_xl/lib/cal/models.py:1114 lino_xl/lib/cal/models.py:1124
 msgid "Default Event Type"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1104
+#: lino_xl/lib/cal/models.py:1115
 msgid "The default event type for your calendar events."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1114
+#: lino_xl/lib/cal/models.py:1125
 msgid "The default type of events on this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1124
+#: lino_xl/lib/cal/models.py:1135
 msgid "Site Calendar"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1125
+#: lino_xl/lib/cal/models.py:1136
 msgid "The default calendar of this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1131
+#: lino_xl/lib/cal/models.py:1142
 msgid "Max automatic events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1133
+#: lino_xl/lib/cal/models.py:1144
 msgid "Maximum number of automatic events to be generated."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1141
+#: lino_xl/lib/cal/models.py:1152
 msgid "Hide events before"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1143
+#: lino_xl/lib/cal/models.py:1154
 msgid ""
 "If this is specified, certain tables show only \n"
 "events after the given date."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1171
+#: lino_xl/lib/cal/models.py:1182
 #, python-format
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr ""
@@ -1217,16 +1203,16 @@ msgstr ""
 msgid "A calendar task is something you need to do."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:174 lino_xl/lib/cal/ui.py:653
+#: lino_xl/lib/cal/ui.py:174 lino_xl/lib/cal/ui.py:654
 msgid "Managed by"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:176 lino_xl/lib/cal/ui.py:320
-#: lino_xl/lib/cal/ui.py:655
+#: lino_xl/lib/cal/ui.py:176 lino_xl/lib/cal/ui.py:321
+#: lino_xl/lib/cal/ui.py:656
 msgid "Only rows managed by this user."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:180 lino_xl/lib/cal/ui.py:666
+#: lino_xl/lib/cal/ui.py:180 lino_xl/lib/cal/ui.py:667
 #: lino_xl/lib/tickets/ui.py:520 lino_xl/lib/votes/models.py:165
 msgid "Only rows having this state."
 msgstr ""
@@ -1247,39 +1233,39 @@ msgstr ""
 msgid "A guest is a partner invited to an event. "
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:328
+#: lino_xl/lib/cal/ui.py:329
 msgid "Event state"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:329
+#: lino_xl/lib/cal/ui.py:330
 msgid "Only rows having this event state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:332
+#: lino_xl/lib/cal/ui.py:333
 msgid "Guest state"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:333
+#: lino_xl/lib/cal/ui.py:334
 msgid "Only rows having this guest state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:448
+#: lino_xl/lib/cal/ui.py:449
 msgid "My presences"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:483
+#: lino_xl/lib/cal/ui.py:484
 msgid "My pending invitations"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:484
+#: lino_xl/lib/cal/ui.py:485
 msgid "Received invitations which I must accept or reject."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:500
+#: lino_xl/lib/cal/ui.py:501
 msgid "My guests"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:516
+#: lino_xl/lib/cal/ui.py:517
 msgid ""
 "The list of Event Types defined on this system.\n"
 "    An EventType is a list of events which have certain things in common,"
@@ -1289,80 +1275,80 @@ msgid ""
 "    "
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:603 lino_xl/lib/coachings/choicelists.py:28
+#: lino_xl/lib/cal/ui.py:604 lino_xl/lib/coachings/choicelists.py:28
 #: lino_xl/lib/contacts/choicelists.py:13 lino_xl/lib/tickets/choicelists.py:26
 #: lino_xl/lib/tickets/choicelists.py:58 lino_xl/lib/votes/choicelists.py:103
 msgid "Observed event"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:604 lino_xl/lib/coachings/choicelists.py:29
+#: lino_xl/lib/cal/ui.py:605 lino_xl/lib/coachings/choicelists.py:29
 #: lino_xl/lib/contacts/choicelists.py:14 lino_xl/lib/tickets/choicelists.py:27
 #: lino_xl/lib/tickets/choicelists.py:59 lino_xl/lib/votes/choicelists.py:104
 msgid "Observed events"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:606 lino_xl/lib/cal/workflows/__init__.py:76
+#: lino_xl/lib/cal/ui.py:607 lino_xl/lib/cal/workflows/__init__.py:77
 msgid "Stable"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:607
+#: lino_xl/lib/cal/ui.py:608
 msgid "Unstable"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:661
+#: lino_xl/lib/cal/ui.py:662
 msgid "Assigned to"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:663
+#: lino_xl/lib/cal/ui.py:664
 msgid "Only events assigned to this user."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:669 lino_xl/lib/reception/models.py:344
+#: lino_xl/lib/cal/ui.py:670 lino_xl/lib/reception/models.py:344
 msgid "Appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:777
+#: lino_xl/lib/cal/ui.py:778
 msgid "Show events conflicting with this one."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:816
+#: lino_xl/lib/cal/ui.py:817
 msgid "Appointments today"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:954
+#: lino_xl/lib/cal/ui.py:955
 msgid "My appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:955
+#: lino_xl/lib/cal/ui.py:956
 msgid "Table of my appointments."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:979
+#: lino_xl/lib/cal/ui.py:980
 msgid "My appointments today"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:1000
+#: lino_xl/lib/cal/ui.py:1001
 msgid "Events assigned to me"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:1001
+#: lino_xl/lib/cal/ui.py:1002
 msgid "Table of events assigned to me."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:1016
+#: lino_xl/lib/cal/ui.py:1017
 #, python-format
 msgid "%d events have been assigned to you."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:1029
+#: lino_xl/lib/cal/ui.py:1030
 msgid "Overdue appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:1046
+#: lino_xl/lib/cal/ui.py:1047
 msgid "My overdue appointments"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:1059
+#: lino_xl/lib/cal/ui.py:1063
 msgid "Unconfirmed appointments"
 msgstr ""
 
@@ -1382,7 +1368,7 @@ msgstr ""
 #: lino_xl/lib/cal/fixtures/std.py:36 lino_xl/lib/courses/desktop.py:152
 #: lino_xl/lib/excerpts/models.py:694 lino_xl/lib/finan/models.py:257
 #: lino_xl/lib/finan/models.py:269 lino_xl/lib/finan/models.py:276
-#: lino_xl/lib/mailbox/ui.py:35 lino_xl/lib/meetings/desktop.py:58
+#: lino_xl/lib/mailbox/ui.py:35 lino_xl/lib/meetings/desktop.py:57
 #: lino_xl/lib/polls/models.py:191 lino_xl/lib/polls/models.py:382
 #: lino_xl/lib/rooms/models.py:155 lino_xl/lib/sales/models.py:332
 #: lino_xl/lib/tickets/ui.py:73 lino_xl/lib/tickets/ui.py:406
@@ -1395,7 +1381,7 @@ msgstr ""
 msgid "Holidays"
 msgstr ""
 
-#: lino_xl/lib/cal/fixtures/std.py:55 lino_xl/lib/meetings/models.py:93
+#: lino_xl/lib/cal/fixtures/std.py:55 lino_xl/lib/meetings/models.py:97
 msgid "Meeting"
 msgstr ""
 
@@ -1451,7 +1437,7 @@ msgstr ""
 msgid "Task states"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:43 lino_xl/lib/deploy/models.py:211
+#: lino_xl/lib/cal/workflows/__init__.py:43 lino_xl/lib/deploy/models.py:279
 #: lino_xl/lib/tickets/choicelists.py:78 lino_xl/lib/tickets/ui.py:527
 msgid "To do"
 msgstr ""
@@ -1470,76 +1456,72 @@ msgid "Done"
 msgstr ""
 
 #: lino_xl/lib/cal/workflows/__init__.py:48
-#: lino_xl/lib/cal/workflows/__init__.py:105
+#: lino_xl/lib/cal/workflows/__init__.py:106
 #: lino_xl/lib/courses/choicelists.py:60 lino_xl/lib/ledger/choicelists.py:483
 #: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/rooms/models.py:33
 #: lino_xl/lib/votes/choicelists.py:80
 msgid "Cancelled"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:70
+#: lino_xl/lib/cal/workflows/__init__.py:72
 msgid "Event states"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:72
-msgid "The possible states of a calendar event."
-msgstr ""
-
-#: lino_xl/lib/cal/workflows/__init__.py:75
+#: lino_xl/lib/cal/workflows/__init__.py:76
 msgid "Edit participants"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:78
+#: lino_xl/lib/cal/workflows/__init__.py:79
 msgid "No auto"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:91
+#: lino_xl/lib/cal/workflows/__init__.py:92
 msgid "Suggested"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:94
+#: lino_xl/lib/cal/workflows/__init__.py:95
 #: lino_xl/lib/courses/choicelists.py:28 lino_xl/lib/ledger/choicelists.py:480
 #: lino_xl/lib/meetings/choicelists.py:27 lino_xl/lib/polls/utils.py:22
 #: lino_xl/lib/polls/utils.py:44 lino_xl/lib/rooms/models.py:30
 msgid "Draft"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:97
+#: lino_xl/lib/cal/workflows/__init__.py:98
 #: lino_xl/lib/cal/workflows/feedback.py:28
 msgid "Published"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:99
+#: lino_xl/lib/cal/workflows/__init__.py:100
 msgid "Visit"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:100
+#: lino_xl/lib/cal/workflows/__init__.py:101
 msgid "Rescheduled"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:101
+#: lino_xl/lib/cal/workflows/__init__.py:102
 msgid "Took place"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:110
+#: lino_xl/lib/cal/workflows/__init__.py:111
 msgid "Omitted"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:128
+#: lino_xl/lib/cal/workflows/__init__.py:129
 msgid "Guest states"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:132
+#: lino_xl/lib/cal/workflows/__init__.py:133
 msgid "Afterwards"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:140
+#: lino_xl/lib/cal/workflows/__init__.py:141
 #: lino_xl/lib/cal/workflows/feedback.py:45
 #: lino_xl/lib/cal/workflows/voga.py:68 lino_xl/lib/votes/choicelists.py:72
 msgid "Invited"
 msgstr ""
 
-#: lino_xl/lib/cal/workflows/__init__.py:152 lino_xl/lib/polls/utils.py:31
+#: lino_xl/lib/cal/workflows/__init__.py:153 lino_xl/lib/polls/utils.py:31
 msgid "Reopen"
 msgstr ""
 
@@ -1653,6 +1635,14 @@ msgstr ""
 msgid "Show states"
 msgstr ""
 
+#: lino_xl/lib/clocking/actions.py:183
+msgid "Day's work"
+msgstr ""
+
+#: lino_xl/lib/clocking/actions.py:184
+msgid "Show all sessions on the same day."
+msgstr ""
+
 #: lino_xl/lib/clocking/choicelists.py:9
 msgid "Reporting type"
 msgstr ""
@@ -1701,11 +1691,11 @@ msgstr ""
 msgid "Break Time"
 msgstr ""
 
-#: lino_xl/lib/clocking/models.py:207 lino_xl/lib/clocking/models.py:216
+#: lino_xl/lib/clocking/models.py:208 lino_xl/lib/clocking/models.py:217
 msgid "Ticket #"
 msgstr ""
 
-#: lino_xl/lib/clocking/models.py:214 lino_xl/lib/cv/fixtures/std.py:121
+#: lino_xl/lib/clocking/models.py:215 lino_xl/lib/cv/fixtures/std.py:121
 msgid "Worker"
 msgstr ""
 
@@ -1713,24 +1703,28 @@ msgstr ""
 msgid "You are busy with "
 msgstr ""
 
-#: lino_xl/lib/clocking/models.py:302
+#: lino_xl/lib/clocking/models.py:236
+msgid " is working on: "
+msgstr ""
+
+#: lino_xl/lib/clocking/models.py:315
 msgid "Open session on new ticket"
 msgstr ""
 
-#: lino_xl/lib/clocking/ui.py:40 lino_xl/lib/clocking/ui.py:59
+#: lino_xl/lib/clocking/ui.py:42 lino_xl/lib/clocking/ui.py:61
 msgid "Has been worked on"
 msgstr ""
 
-#: lino_xl/lib/clocking/ui.py:189
+#: lino_xl/lib/clocking/ui.py:209
 #, python-format
 msgid "Total %s hours."
 msgstr ""
 
-#: lino_xl/lib/clocking/ui.py:193
+#: lino_xl/lib/clocking/ui.py:213
 msgid "Active sessions"
 msgstr ""
 
-#: lino_xl/lib/clocking/ui.py:220
+#: lino_xl/lib/clocking/ui.py:234
 msgid "My sessions by date"
 msgstr ""
 
@@ -2376,14 +2370,14 @@ msgstr ""
 msgid "Started"
 msgstr ""
 
-#: lino_xl/lib/courses/choicelists.py:32 lino_xl/lib/meetings/choicelists.py:31
+#: lino_xl/lib/courses/choicelists.py:32 lino_xl/lib/meetings/choicelists.py:32
 #: lino_xl/lib/online/users/choicelists.py:22
 msgid "Inactive"
 msgstr ""
 
 #: lino_xl/lib/courses/choicelists.py:34 lino_xl/lib/ledger/choicelists.py:127
-#: lino_xl/lib/meetings/choicelists.py:33 lino_xl/lib/polls/utils.py:24
-#: lino_xl/lib/tickets/choicelists.py:96 lino_xl/lib/tickets/models.py:60
+#: lino_xl/lib/polls/utils.py:24 lino_xl/lib/tickets/choicelists.py:96
+#: lino_xl/lib/tickets/models.py:60
 msgid "Closed"
 msgstr ""
 
@@ -2424,13 +2418,13 @@ msgstr ""
 msgid "Instructor"
 msgstr ""
 
-#: lino_xl/lib/courses/desktop.py:196 lino_xl/lib/meetings/desktop.py:101
+#: lino_xl/lib/courses/desktop.py:196 lino_xl/lib/meetings/desktop.py:102
 #: lino_xl/lib/online/users/choicelists.py:21 lino_xl/lib/polls/utils.py:23
 #: lino_xl/lib/tickets/choicelists.py:77 lino_xl/lib/tickets/ui.py:526
 msgid "Active"
 msgstr ""
 
-#: lino_xl/lib/courses/desktop.py:197 lino_xl/lib/meetings/desktop.py:102
+#: lino_xl/lib/courses/desktop.py:197 lino_xl/lib/meetings/desktop.py:103
 msgid "Whether to show rows in some active state"
 msgstr ""
 
@@ -2513,12 +2507,12 @@ msgstr ""
 msgid "Timetable Slots"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:109 lino_xl/lib/topics/models.py:73
+#: lino_xl/lib/courses/models.py:109 lino_xl/lib/topics/models.py:119
 msgid "Topic"
 msgstr ""
 
 #: lino_xl/lib/courses/models.py:110 lino_xl/lib/topics/__init__.py:25
-#: lino_xl/lib/topics/models.py:74
+#: lino_xl/lib/topics/models.py:120
 msgid "Topics"
 msgstr ""
 
@@ -2574,8 +2568,7 @@ msgctxt "in a course"
 msgid "Available places"
 msgstr ""
 
-#: lino_xl/lib/courses/models.py:307 lino_xl/lib/meetings/models.py:110
-#: lino_xl/lib/properties/models.py:180
+#: lino_xl/lib/courses/models.py:307 lino_xl/lib/properties/models.py:180
 msgid "Designation"
 msgstr ""
 
@@ -2979,65 +2972,86 @@ msgstr ""
 msgid "Show deployments on closed milestones."
 msgstr ""
 
-#: lino_xl/lib/deploy/desktop.py:194 lino_xl/lib/deploy/models.py:115
+#: lino_xl/lib/deploy/desktop.py:195 lino_xl/lib/deploy/models.py:172
 msgid "Wish"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:28
+#: lino_xl/lib/deploy/models.py:31
 msgid "Wish type"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:29
+#: lino_xl/lib/deploy/models.py:32
 msgid "Wish types"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:32
+#: lino_xl/lib/deploy/models.py:35
 msgid "Agenda item"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:34
+#: lino_xl/lib/deploy/models.py:37
 msgid "New feature"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:35
+#: lino_xl/lib/deploy/models.py:38
 msgid "Optimization"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:36
+#: lino_xl/lib/deploy/models.py:39
 msgid "Bugfix"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:37
+#: lino_xl/lib/deploy/models.py:40
 msgid "Gimmick"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:38
+#: lino_xl/lib/deploy/models.py:41
 msgid "Side effect"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:39 lino_xl/lib/tickets/models.py:381
-#: lino_xl/lib/tickets/models.py:440
+#: lino_xl/lib/deploy/models.py:42 lino_xl/lib/tickets/models.py:397
+#: lino_xl/lib/tickets/models.py:456
 msgid "Resolution"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:40
+#: lino_xl/lib/deploy/models.py:43
 msgid "Aftermath"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:116
+#: lino_xl/lib/deploy/models.py:126 lino_xl/lib/faculties/models.py:88
+#: lino_xl/lib/tickets/models.py:411 lino_xl/lib/tickets/ui.py:488
+msgid "End user"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:173
 msgid "Wishes"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:133
+#: lino_xl/lib/deploy/models.py:175
+msgid "New Ticket"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:187
+msgid "Ticket State"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:189
+msgid "New Ticket State"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:192
 msgid "Deferred to"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:164
+#: lino_xl/lib/deploy/models.py:223
 msgid "Cannot defer to myself"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:181
+#: lino_xl/lib/deploy/models.py:240
 msgid "Actions"
+msgstr ""
+
+#: lino_xl/lib/deploy/models.py:260
+msgid "New Comment"
 msgstr ""
 
 #: lino_xl/lib/dupable_partners/__init__.py:34
@@ -3319,11 +3333,6 @@ msgstr ""
 msgid "Skill offers"
 msgstr ""
 
-#: lino_xl/lib/faculties/models.py:88 lino_xl/lib/tickets/models.py:395
-#: lino_xl/lib/tickets/ui.py:488
-msgid "End user"
-msgstr ""
-
 #: lino_xl/lib/faculties/models.py:96
 msgid ""
 "How much this user likes to get a new ticket in this faculty.A number "
@@ -3583,7 +3592,7 @@ msgstr ""
 msgid "Households"
 msgstr ""
 
-#: lino_xl/lib/households/choicelists.py:16 lino_xl/lib/tickets/models.py:633
+#: lino_xl/lib/households/choicelists.py:16 lino_xl/lib/tickets/models.py:652
 msgid "Dependency"
 msgstr ""
 
@@ -3620,7 +3629,7 @@ msgstr ""
 msgid "Cohabitant"
 msgstr ""
 
-#: lino_xl/lib/households/choicelists.py:39 lino_xl/lib/tickets/models.py:645
+#: lino_xl/lib/households/choicelists.py:39 lino_xl/lib/tickets/models.py:664
 msgid "Child"
 msgstr ""
 
@@ -3938,12 +3947,12 @@ msgstr ""
 msgid "To whom..."
 msgstr ""
 
-#: lino_xl/lib/humanlinks/models.py:75 lino_xl/lib/tickets/models.py:661
+#: lino_xl/lib/humanlinks/models.py:75 lino_xl/lib/tickets/models.py:680
 #, python-format
 msgid "%(child)s is %(what)s"
 msgstr ""
 
-#: lino_xl/lib/humanlinks/models.py:80 lino_xl/lib/tickets/models.py:666
+#: lino_xl/lib/humanlinks/models.py:80 lino_xl/lib/tickets/models.py:685
 #, python-format
 msgid "%(type)s of %(parent)s"
 msgstr ""
@@ -4599,8 +4608,12 @@ msgstr ""
 msgid "Assigned"
 msgstr ""
 
-#: lino_xl/lib/meetings/__init__.py:30 lino_xl/lib/meetings/models.py:94
+#: lino_xl/lib/meetings/__init__.py:30 lino_xl/lib/meetings/models.py:98
 msgid "Meetings"
+msgstr ""
+
+#: lino_xl/lib/meetings/choicelists.py:34
+msgid "Finished"
 msgstr ""
 
 #: lino_xl/lib/meetings/desktop.py:76 lino_xl/lib/polls/models.py:386
@@ -4609,16 +4622,46 @@ msgstr ""
 msgid "More"
 msgstr ""
 
+#: lino_xl/lib/meetings/desktop.py:106
+msgid "Member"
+msgstr ""
+
+#: lino_xl/lib/meetings/desktop.py:107
+msgid "Show rows that this person is a member"
+msgstr ""
+
 #: lino_xl/lib/meetings/desktop.py:161
-msgid "Future Meetings"
+#, python-format
+msgid "My %s"
 msgstr ""
 
 #: lino_xl/lib/meetings/desktop.py:174
+msgid "Future Meetings"
+msgstr ""
+
+#: lino_xl/lib/meetings/desktop.py:187
 msgid "Inactive Meetings"
 msgstr ""
 
-#: lino_xl/lib/meetings/models.py:98
+#: lino_xl/lib/meetings/models.py:102
 msgid "Memebers"
+msgstr ""
+
+#: lino_xl/lib/meetings/models.py:112 lino_xl/lib/pages/models.py:71
+msgid "Title"
+msgstr ""
+
+#: lino_xl/lib/meetings/workflows.py:20 lino_xl/lib/meetings/workflows.py:36
+#: lino_xl/lib/meetings/workflows.py:53
+msgid "Record Ticket States and start the meeting."
+msgstr ""
+
+#: lino_xl/lib/meetings/workflows.py:49
+msgid "Remove wish's ticket States?"
+msgstr ""
+
+#: lino_xl/lib/meetings/workflows.py:72
+msgid "Finish meeting and set all tickets to their new state?"
 msgstr ""
 
 #: lino_xl/lib/notes/__init__.py:27 lino_xl/lib/notes/models.py:145
@@ -4643,6 +4686,11 @@ msgstr ""
 
 #: lino_xl/lib/notes/models.py:94
 msgid "Event Types"
+msgstr ""
+
+#: lino_xl/lib/notes/models.py:96 lino_xl/lib/notes/models.py:162
+#: lino_xl/lib/outbox/models.py:219 lino_xl/lib/pages/models.py:72
+msgid "Body"
 msgstr ""
 
 #: lino_xl/lib/notes/models.py:156
@@ -4885,10 +4933,6 @@ msgstr ""
 
 #: lino_xl/lib/pages/models.py:69
 msgid "Nodes"
-msgstr ""
-
-#: lino_xl/lib/pages/models.py:71
-msgid "Title"
 msgstr ""
 
 #: lino_xl/lib/pages/models.py:74
@@ -5163,7 +5207,7 @@ msgstr ""
 msgid "Product"
 msgstr ""
 
-#: lino_xl/lib/products/models.py:65 lino_xl/lib/topics/models.py:78
+#: lino_xl/lib/products/models.py:65 lino_xl/lib/topics/models.py:124
 msgid "Long description"
 msgstr ""
 
@@ -5670,7 +5714,7 @@ msgstr ""
 msgid "Third Parties"
 msgstr ""
 
-#: lino_xl/lib/tickets/__init__.py:22 lino_xl/lib/tickets/models.py:367
+#: lino_xl/lib/tickets/__init__.py:22 lino_xl/lib/tickets/models.py:383
 msgid "Tickets"
 msgstr ""
 
@@ -5777,92 +5821,92 @@ msgctxt "Ticketing"
 msgid "Wishes"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:331
+#: lino_xl/lib/tickets/models.py:332
 msgid "Spawn a new child ticket {0} this one."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:341
+#: lino_xl/lib/tickets/models.py:342
 msgid "New ticket {0} #{1}"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:352
+#: lino_xl/lib/tickets/models.py:364
 msgid "New ticket {0} has been spawned as child of {1}."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:366
+#: lino_xl/lib/tickets/models.py:382
 msgid "Ticket"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:376
+#: lino_xl/lib/tickets/models.py:392
 msgctxt "Ticket"
 msgid "Summary"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:378
+#: lino_xl/lib/tickets/models.py:394
 msgid "Short summary of the problem."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:384 lino_xl/lib/tickets/models.py:443
+#: lino_xl/lib/tickets/models.py:400 lino_xl/lib/tickets/models.py:459
 msgid "Duplicate of"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:401
+#: lino_xl/lib/tickets/models.py:417
 msgid "Deadline"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:410
+#: lino_xl/lib/tickets/models.py:426
 msgid "Milestone for which this ticket has been reported."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:416
+#: lino_xl/lib/tickets/models.py:432
 msgid "The milestone for which this ticket has been fixed."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:420
+#: lino_xl/lib/tickets/models.py:436
 msgid "Reporter"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:422
+#: lino_xl/lib/tickets/models.py:438
 msgid "Waiting for"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:424
+#: lino_xl/lib/tickets/models.py:440
 msgid "Feedback"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:425
+#: lino_xl/lib/tickets/models.py:441
 msgid "Standby"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:428
+#: lino_xl/lib/tickets/models.py:444
 msgid "Spawn triggered ticket"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:523
+#: lino_xl/lib/tickets/models.py:542
 msgid " by "
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:525
+#: lino_xl/lib/tickets/models.py:544
 msgid "for"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:530
+#: lino_xl/lib/tickets/models.py:549
 msgid "assigned to"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:575
+#: lino_xl/lib/tickets/models.py:594
 msgid "Suppliers"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:601
+#: lino_xl/lib/tickets/models.py:620
 msgid "Needed skills"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:634 lino_xl/lib/tickets/ui.py:302
+#: lino_xl/lib/tickets/models.py:653 lino_xl/lib/tickets/ui.py:302
 msgid "Dependencies"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:640
+#: lino_xl/lib/tickets/models.py:659
 msgid "Parent"
 msgstr ""
 
@@ -5990,23 +6034,27 @@ msgstr ""
 msgid "Known problems"
 msgstr ""
 
-#: lino_xl/lib/tim2lino/__init__.py:38
+#: lino_xl/lib/tim2lino/__init__.py:24
 msgid "Import from TIM"
 msgstr ""
 
-#: lino_xl/lib/topics/models.py:22
+#: lino_xl/lib/topics/models.py:34
+msgid "Add interest"
+msgstr ""
+
+#: lino_xl/lib/topics/models.py:63
 msgid "Topic group"
 msgstr ""
 
-#: lino_xl/lib/topics/models.py:23
+#: lino_xl/lib/topics/models.py:64
 msgid "Topic groups"
 msgstr ""
 
-#: lino_xl/lib/topics/models.py:47
+#: lino_xl/lib/topics/models.py:88
 msgid "Interest"
 msgstr ""
 
-#: lino_xl/lib/topics/models.py:48
+#: lino_xl/lib/topics/models.py:89
 msgid "Interests"
 msgstr ""
 
@@ -14832,5 +14880,14 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "The list of possible states of a Poll. Default is:"
+#~ msgstr ""
+
+#~ msgid "Tagging"
+#~ msgstr ""
+
+#~ msgid "Taggings"
+#~ msgstr ""
+
+#~ msgid "The possible states of a calendar event."
 #~ msgstr ""
 

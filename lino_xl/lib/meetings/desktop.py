@@ -152,7 +152,7 @@ class AllMeetings(Meetings):
                    # "weekdays_text:10 times_text:10"
 
 class MyMeetings(Meetings):
-    column_names = "start_date:8 room name workflow_buttons *"
+    column_names = "start_date:8 overview room name ref workflow_buttons *"
     order_by = ['start_date']
 
     @classmethod
@@ -165,7 +165,7 @@ class MyMeetings(Meetings):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
-        kw.update(member=ar.get_user().user.get_partner_instance())
+        kw.update(member=ar.get_user().get_partner_instance())
         return kw
 
 
