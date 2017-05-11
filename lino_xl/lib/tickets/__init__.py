@@ -32,10 +32,12 @@ class Plugin(ad.Plugin):
 
     site_model = 'cal.Room'
     milestone_model = 'meetings.Meeting'
+    end_user_model = 'contacts.Partner'
 
     def on_site_startup(self, site):
         self.site_model = site.models.resolve(self.site_model)
         self.milestone_model = site.models.resolve(self.milestone_model)
+        self.end_user_model = site.models.resolve(self.end_user_model)
         super(Plugin, self).on_site_startup(site)
         
     def setup_main_menu(self, site, profile, m):
@@ -44,7 +46,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.MyCompetences')
         m.add_action('tickets.MyTickets')
         if site.is_installed('faculties'):
-            m.add_action('tickets.SuggestedTicketsByEndUser')
+            m.add_action('faculties.SuggestedTicketsByEndUser')
         # m.add_action('tickets.TicketsToDo')
         # m.add_action('tickets.MyOwnedTickets')
         m.add_action('tickets.ActiveTickets')
@@ -78,9 +80,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         if user.authenticated:
             yield self.site.actors.tickets.MyTickets
-            if self.site.is_installed('faculties'):
-                yield self.site.actors.tickets.SuggestedTicketsByEndUser
             yield self.site.actors.tickets.TicketsToTriage
             # else:
-        #     yield self.site.actors.tickets.PublicTickets
+        #     yield self.site.actors.tickets.   PublicTickets
     

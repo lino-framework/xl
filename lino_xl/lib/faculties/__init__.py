@@ -76,3 +76,7 @@ class Plugin(ad.Plugin):
         # m.add_action('faculties.Competences')
         m.add_action('faculties.Offers')
         m.add_action('faculties.Demands')
+
+    def get_dashboard_items(self, user):
+        if user.authenticated:
+            yield self.site.actors.faculties.SuggestedTicketsByEndUser
