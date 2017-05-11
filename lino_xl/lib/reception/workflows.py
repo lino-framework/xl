@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -14,6 +14,7 @@ This can be used as :attr:`workflows_module
 from __future__ import unicode_literals
 
 import datetime
+from builtins import str
 
 from lino_xl.lib.cal.workflows import *
 from lino_xl.lib.cal.workflows import feedback
@@ -33,25 +34,23 @@ class CloseMeeting(feedback.CloseMeeting):
     """
     def execute(self, ar, obj):
 
+        guests = obj.guest_set.filter(gone_since__isnull=True,
+                                      waiting_since__isnull=False)
         def yes(ar):
             if not obj.end_time:
                 obj.end_time = datetime.datetime.now()
                 ar.info("event.end_time has been set by CloseMeeting")
+            for g in guests:
+                checkout_guest(g, ar)
             return super(CloseMeeting, self).execute(ar, obj)
 
-        guests = obj.guest_set.filter(gone_since__isnull=True,
-                                      waiting_since__isnull=False)
         num = len(guests)
         if num == 0:
             return yes(ar)  # no confirmation
-        msg = _("This will checkout {num} guests: {guests}".format(
+        msg = _("This will checkout {num} guests: {guests}.").format(
             num=num,
-            guests=', '.join([unicode(g.partner) for g in guests])))
-        rv = ar.confirm(yes, msg)
-        for g in guests:
-            checkout_guest(g, ar)
-
-        return rv
+            guests=', '.join([str(g.partner) for g in guests]))
+        return ar.confirm(yes, msg, _("Are you sure?"))
 
 
 EntryStates.override_transition(close_meeting=CloseMeeting)

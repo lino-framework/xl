@@ -27,6 +27,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino.modlib.comments.mixins import Commentable
 from lino_xl.lib.excerpts.mixins import Certifiable
+from lino_xl.lib.faculties.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.clocking.mixins import Workable
@@ -38,10 +39,7 @@ from .roles import Triager
 
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
-
-end_user_model = dd.plugins.faculties.end_user_model if \
-    'faculties' in dd.plugins else 'contacts.Partner'
-
+end_user_model = dd.plugins.tickets.end_user_model
 
 # if dd.is_installed('tickets'):
 #     site_model = dd.plugins.tickets.site_model
@@ -372,7 +370,7 @@ class SpawnTicket(dd.Action):
 
 @dd.python_2_unicode_compatible
 class Ticket(UserAuthored, mixins.CreatedModified,
-             TimeInvestment, Votable, Workable, Prioritized, mixins.Referrable):
+             TimeInvestment, Votable, Workable, Prioritized, Feasible, mixins.Referrable):
 
     quick_search_fields = "summary description ref"
 

@@ -25,7 +25,7 @@ from django.db import models
 from django.db.models import Q
 
 from lino import mixins
-from lino.api import dd, rt, _, pgettext
+from lino.api import dd, rt, _
 
 from lino.utils.xmlgen.html import E
 
@@ -41,9 +41,7 @@ site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
 
 
-end_user_model = dd.plugins.faculties.end_user_model if \
-    'faculties' in dd.plugins else 'contacts.Partner'
-
+end_user_model = dd.plugins.tickets.end_user_model
 # if dd.is_installed('tickets'):
 #     site_model = dd.plugins.tickets.site_model
 # else:
@@ -504,10 +502,6 @@ class Tickets(dd.Table):
             verbose_name=_("Not voted by"),
             blank=True, null=True,
             help_text=_("Only tickets having no vote by this user.")),
-        feasable_by=dd.ForeignKey(
-            # settings.SITE.user_model,
-            end_user_model,
-            verbose_name=_("Feasable by"), blank=True, null=True),
         interesting_for=dd.ForeignKey(
             'contacts.Partner',
             verbose_name=_("Interesting for"),
@@ -537,7 +531,7 @@ class Tickets(dd.Table):
     params_layout = """
     user end_user assigned_to not_assigned_to interesting_for site project state deployed_to
     has_project show_assigned show_active show_deployed show_todo show_private
-    start_date end_date observed_event topic feasable_by has_ref"""
+    start_date end_date observed_event topic has_ref"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
 
@@ -557,20 +551,6 @@ class Tickets(dd.Table):
 
         if pv.observed_event:
             qs = pv.observed_event.add_filter(qs, pv)
-
-        if pv.feasable_by:
-            # show only tickets which have at least one demand that
-            # matches a skill supply authored by the specified user.
-            faculties = set()
-            for fac in rt.models.faculties.Faculty.objects.filter(
-                    competence__end_user=pv.feasable_by):
-                faculties |= set(fac.get_parental_line())
-            # if True:  # TODO: test whether supplier_model inherits from User
-            #     for fac in rt.models.faculties.Faculty.objects.filter(
-            #             competence__user=pv.feasable_by):
-            #         faculties |= set(fac.get_parental_line())
-            qs = qs.filter(demand__skill__in=faculties)
-            qs = qs.distinct()
 
         if pv.interesting_for:
             qs = qs.filter(
@@ -878,7 +858,7 @@ class MyTickets(My, Tickets):
     column_names = 'overview:50 workflow_buttons:30 *'
     params_layout = """
     user end_user site project state
-    start_date end_date observed_event topic feasable_by show_active"""
+    start_date end_date observed_event topic show_active"""
     params_panel_hidden = True
 
     @classmethod
