@@ -485,7 +485,7 @@ class WaitingVisitors(Visitors):
 
     @dd.displayfield(_('Since'))
     def since(self, obj, ar):
-        return naturaltime(obj.waiting_since)
+        return obj.event.obj2href(ar, naturaltime(obj.waiting_since))
 
     @dd.displayfield(
         _('Position'), help_text=_("Position in waiting queue (per agent)"))
