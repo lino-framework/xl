@@ -58,7 +58,7 @@ class Workable(dd.Model):
     def save_new_instance(elem, ar):
         super(Workable, elem).save_new_instance(ar)
 
-        if rt.settings.SITE.loading_from_dump:
+        if rt.settings.SITE.loading_from_dump or not dd.is_installed('clocking'):
             return
         me = ar.get_user()
         # print elem.create_session_on_create
