@@ -556,6 +556,10 @@ individual users can have (offer) or not."""),
 given skill."""),
     'lino_xl.lib.faculties.models.Demand' : _("""A Skill demand is when a given end user declares to need a
 given skill."""),
+    'lino_xl.lib.faculties.ui.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
+which I am competent."""),
+    'lino_xl.lib.faculties.ui.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
+    'lino_xl.lib.faculties.ui.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
     'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
 but is stored as a Couple instance."""),
@@ -1139,10 +1143,6 @@ or ToDo)."""),
 (i.e. whose duplicate_of field points to this ticket."""),
     'lino_xl.lib.tickets.ui.DuplicatesByTicket.master' : _("""alias of Ticket"""),
     'lino_xl.lib.tickets.ui.DuplicatesByTicket.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
-which I am competent."""),
-    'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
-    'lino_xl.lib.tickets.ui.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tickets.ui.RefTickets' : _("""Tickets that have a reference."""),
     'lino_xl.lib.tickets.ui.RefTickets.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tickets.ui.TicketsToTriage' : _("""List of tickets that need to be triaged.  Currently this is
