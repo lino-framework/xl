@@ -103,6 +103,8 @@ class Project(mixins.DatePeriod, TimeInvestment,
         # verbose_name_plural = _('Projects')
         verbose_name = _("Mission")
         verbose_name_plural = _('Missions')
+        abstract = dd.is_abstract_model(__name__, 'Project')
+
 
     name = models.CharField(_("Name"), max_length=200)
     # parent = models.ForeignKey(
