@@ -31,6 +31,7 @@ from lino_xl.lib.faculties.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.clocking.mixins import Workable
+from lino_xl.lib.stars.mixins import Starrable
 from lino_xl.lib.clocking.choicelists import ReportingTypes
 from lino.utils import join_elems
 
@@ -371,8 +372,9 @@ class SpawnTicket(dd.Action):
             ar.goto_instance(new)
 
 @dd.python_2_unicode_compatible
-class Ticket(UserAuthored, mixins.CreatedModified,
-             TimeInvestment, Votable, Workable, Prioritized, Feasible, mixins.Referrable):
+class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
+             Votable, Workable, Prioritized, Feasible,
+             mixins.Referrable, Starrable):
 
     quick_search_fields = "summary description ref"
 
@@ -480,7 +482,8 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         or modified.
 
         """
-        self.set_auto_vote(session.user, VoteStates.invited)
+        if dd.is_installed('votes'):
+            self.set_auto_vote(session.user, VoteStates.invited)
         self.touch()
 
     def on_commented(self, comment, ar, cw):
@@ -547,12 +550,13 @@ class Ticket(UserAuthored, mixins.CreatedModified,
         if self.end_user_id:
             elems += [' ', _("for"), ' ', self.end_user.obj2href(ar)]
 
-        qs = rt.models.votes.Vote.objects.filter(
-            votable=self, state=VoteStates.assigned)
-        if qs.count() > 0:
-            elems += [', ', _("assigned to"), ' ']
-            elems += join_elems(
-                [vote.user.obj2href(ar) for vote in qs], sep=', ')
+        if dd.is_installed('votes'):
+            qs = rt.models.votes.Vote.objects.filter(
+                votable=self, state=VoteStates.assigned)
+            if qs.count() > 0:
+                elems += [', ', _("assigned to"), ' ']
+                elems += join_elems(
+                    [vote.user.obj2href(ar) for vote in qs], sep=', ')
         return E.p(*elems)
         # return E.p(*join_elems(elems, sep=', '))
             
