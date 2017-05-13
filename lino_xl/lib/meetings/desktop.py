@@ -67,12 +67,11 @@ class MeetingDetail(dd.DetailLayout):
         id:8
         name
         user
-        list
         """
 
         more = dd.Panel("""
         more_left:30 blogs.EntriesByController:50
-        description MembersByMeeting:30
+        description     stars.StarsByController:30
         """, label=_("More"))
 
 
@@ -84,9 +83,8 @@ class Meetings(dd.Table):
     detail_layout = MeetingDetail()
     insert_layout = """
     name start_date ref
-    list
     """
-    column_names = "start_date name ref room workflow_buttons list *"
+    column_names = "start_date name ref room workflow_buttons *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
     # order_by = ['name']
@@ -134,14 +132,16 @@ class Meetings(dd.Table):
             qs = qs.filter(state=pv.state)
 
         if pv.member:
-            qs = qs.filter(list__members__in=list(pv.member.list_memberships.all()))
-        # if pv.start_date:
-        #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
-        #     qs = PeriodEvents.started.add_filter(qs, pv)
-        #     # qs = qs.filter(start_date__gte=pv.start_date)
-        # if pv.end_date:
-        #     qs = PeriodEvents.ended.add_filter(qs, pv)
-        #     # qs = qs.filter(end_date__lte=pv.end_date)
+            pass
+            # qs = qs.filter(list__members__in=list(pv.member.list_memberships.all()))
+
+        if pv.start_date:
+            # dd.logger.info("20160512 start_date is %r", pv.start_date)
+            qs = PeriodEvents.started.add_filter(qs, pv)
+            # qs = qs.filter(start_date__gte=pv.start_date)
+        if pv.end_date:
+            qs = PeriodEvents.ended.add_filter(qs, pv)
+            # qs = qs.filter(end_date__lte=pv.end_date)
         # dd.logger.info("20160512 %s", qs.query)
         return qs
 
@@ -152,7 +152,7 @@ class AllMeetings(Meetings):
                    # "weekdays_text:10 times_text:10"
 
 class MyMeetings(Meetings):
-    column_names = "start_date:8 overview room name ref workflow_buttons *"
+    column_names = "start_date:8 overview room workflow_buttons *"
     order_by = ['start_date']
 
     @classmethod
@@ -165,7 +165,7 @@ class MyMeetings(Meetings):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
-        kw.update(member=ar.get_user().get_partner_instance())
+        # kw.update(member=ar.get_user().get_partner_instance())
         return kw
 
 
@@ -206,12 +206,12 @@ class InactiveMeetings(Meetings):
 #         kw.update(state=CourseStates.closed)
 #         return kw
 
-class MembersByMeeting(MembersByList):
-    master = "meetings.Meeting"
-    master_key = None
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        if ar.master_instance is None:
-            return
-        kw.update(list = ar.master_instance.list)
-        return kw
+# class MembersByMeeting(MembersByList):
+#     master = "meetings.Meeting"
+#     master_key = None
+#     @classmethod
+#     def get_filter_kw(self, ar, **kw):
+#         if ar.master_instance is None:
+#             return
+#         kw.update(list = ar.master_instance.list)
+#         return kw

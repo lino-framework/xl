@@ -493,15 +493,15 @@ class Tickets(dd.Table):
         assigned_to=dd.ForeignKey(
             end_user_model,
             # settings.SITE.user_model,
-            verbose_name=_("Voted by"),
+            verbose_name=_("Assigned_to"),
             blank=True, null=True,
-            help_text=_("Only tickets having a vote by this user.")),
+            help_text=_("Only tickets with this user assigned.")),
         not_assigned_to=dd.ForeignKey(
             end_user_model,
             # settings.SITE.user_model,
-            verbose_name=_("Not voted by"),
+            verbose_name=_("Not assigned to"),
             blank=True, null=True,
-            help_text=_("Only tickets having no vote by this user.")),
+            help_text=_("Only that this user is not assigned to.")),
         interesting_for=dd.ForeignKey(
             'contacts.Partner',
             verbose_name=_("Interesting for"),
@@ -882,6 +882,25 @@ class MyTickets(My, Tickets):
         # kw.update(show_closed=dd.YesNo.no)
         # kw.update(show_standby=dd.YesNo.no)
         return kw
+
+class MyTicketsToWork(Tickets):
+        """Show all active tickets reported by me."""
+        label = _("Tickets to work")
+        required_roles = dd.login_required(TicketsUser)
+        order_by = ["-id"]
+        column_names = 'overview:50 workflow_buttons:30 *'
+        params_layout = """
+        user end_user site project state
+        start_date end_date observed_event topic show_active"""
+        params_panel_hidden = True
+
+        @classmethod
+        def param_defaults(self, ar, **kw):
+            kw = super(MyTicketsToWork, self).param_defaults(ar, **kw)
+            kw.update(show_todo=dd.YesNo.yes)
+            kw.update(assigned_to=ar.get_user())
+            # kw.update(show_standby=dd.YesNo.no)
+            return kw
 
 
 # class InterestingTickets(ActiveTickets):

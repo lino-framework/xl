@@ -31,7 +31,7 @@ from lino_xl.lib.faculties.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.clocking.mixins import Workable
-from lino_xl.lib.stars.mixins import Starrable
+from lino_xl.lib.stars.mixins import Starrable, get_favourite
 from lino_xl.lib.clocking.choicelists import ReportingTypes
 from lino.utils import join_elems
 
@@ -487,7 +487,15 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         self.touch()
 
     def on_commented(self, comment, ar, cw):
-        self.set_auto_vote(comment.user, VoteStates.watching)
+        if dd.is_installed('votes'):
+            self.set_auto_vote(comment.user, VoteStates.watching)
+        elif dd.is_installed('stars'):
+            star = get_favourite(self, user=comment.user)
+            if star is None:
+                Star = rt.modules.stars.Star
+                star= Star(owner=self, user=comment.user)
+                star.save()
+
 
     # def get_project_for_vote(self, vote):
     #     if self.project:
@@ -557,6 +565,10 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                 elems += [', ', _("assigned to"), ' ']
                 elems += join_elems(
                     [vote.user.obj2href(ar) for vote in qs], sep=', ')
+        elif getattr(self, "assigned_to", None):
+            elems += [", ", _("assigned to"), " ", self.assigned_to.obj2href(ar)]
+
+
         return E.p(*elems)
         # return E.p(*join_elems(elems, sep=', '))
             

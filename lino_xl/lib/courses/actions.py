@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 -*-
+# Copyright 2016-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
+
 from __future__ import unicode_literals
 from __future__ import print_function
 
-from builtins import str
-
-from django.utils.translation import pgettext_lazy as pgettext
-from django.utils.translation import string_concat
 from django.db import models
 
 from lino.api import dd, rt, _

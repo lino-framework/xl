@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<pain.001.001.02>
+<GrpHdr>
+    <MsgId>{{obj.id}}/{{obj.journal.ref}} {{obj.number}}</MsgId>
+    <CreDtTm>{{now}}</CreDtTm>
+    <NbOfTxs>[=ntrim(DbfSum({oFnl()},"1",1,FIN->IdJnl+FIN->IdDoc))]</NbOfTxs>
+    <Grpg>MIXD</Grpg>
+    <InitgPty>
+        <Nm>[=trim(MemName1)]</Nm>
+        <Id><OrgId><PrtryId>
+            <Id>[=strtran(substr(MemNoTva,4),".","")]</Id>
+            <Issr>KBO-BCE</Issr>
+        </PrtryId></OrgId></Id>
+    </InitgPty>
+</GrpHdr>
+<PmtInf>
+<PmtInfId>[=FIN->IdJnl+FIN->IdDoc]</PmtInfId>
+<PmtMtd>TRF</PmtMtd>
+<PmtTpInf><SvcLvl><Cd>SEPA</Cd></SvcLvl></PmtTpInf>
+<ReqdExctnDt>[=dtocf(FIN->Date,"yyyy-mm-dd")]</ReqdExctnDt>
+<Dbtr><Nm>[=trim(MemName1)]</Nm><Id><OrgId><PrtryId><Id>[=strtran(substr(MemNoTva,4),".","")]</Id><Issr>KBO-BCE</Issr></PrtryId></OrgId></Id></Dbtr>
+<DbtrAcct><Id><IBAN>[=be2iban(DbfPeek(oJnl(),FIN->IdJnl,"JNL->Compte"))]</IBAN></Id></DbtrAcct>
+<DbtrAgt><FinInstnId><BIC>[=be2bic(DbfPeek(oJnl(),FIN->IdJnl,"JNL->Compte"))]</BIC></FinInstnId></DbtrAgt>
+[=setvar("i",0)]
+[etc loop transactions DbfScan({oFnl(),oPar()},1,\
+  FIN->IdJnl+FIN->IdDoc,\
+  "FNL->IdJnl+FNL->IdDoc=='"+FIN->IdJnl+FIN->IdDoc+"'",\
+  ".t.",\
+  xlEval)]
+[=DlgPlus("i",1)]
+[=ParExist(FNL->IdCpt)]
+[=setvar("ban",BanParse(PAR->Compte1))]
+[=getvar("ban")!=NIL.or.Confirm("Invalid BIC:IBAN for "+trim(PAR->Compte1),MsgContinue())]
+[=len(trim(getvar("ban")[2]))>6.or.Confirm("Could not find a BIC for NBAN "+trim(PAR->Compte1),MsgContinue())]
+<CdtTrfTxInf>
+<PmtId><EndToEndId>.</EndToEndId></PmtId>
+<Amt><InstdAmt Ccy="[=FIN->IdDev]">[=ltrim(FNL->Mont)]</InstdAmt></Amt>
+<CdtrAgt><FinInstnId><BIC>[=trim(getvar("ban")[2])]</BIC></FinInstnId></CdtrAgt>
+<Cdtr>
+ <Nm>[=trim(ParName())]</Nm>
+[etc if !empty(Nat2iso(PAR->Pays))]
+ <PstlAdr>
+ [etc if !empty(ParStreet())]
+ <AdrLine>[=ParStreet()]</AdrLine>
+ [etc endif]
+ [etc if !empty(ParCity())]
+ <AdrLine>[=ParCity()]</AdrLine>
+ [etc endif]
+ <Ctry>[=trim(Nat2iso(PAR->Pays))]</Ctry>
+ </PstlAdr>
+[etc endif]
+ </Cdtr>
+<CdtrAcct><Id><IBAN>[=getvar("ban")[3]]</IBAN></Id></CdtrAcct>
+[=ParExist(FNL->IdCpt)]
+<RmtInf><Ustrd>[=trim(FNL->Libell)]*[=trim(PAR->Firme)]*[=FNL->IdJnl+" "+FNL->IdDoc]</Ustrd></RmtInf>
+</CdtTrfTxInf>
+[etc endloop transactions]
+</PmtInf>
+</pain.001.001.02>
+</Document>

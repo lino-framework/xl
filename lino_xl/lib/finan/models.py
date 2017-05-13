@@ -26,18 +26,21 @@ logger = logging.getLogger(__name__)
 
 from django.db import models
 
+from lino.utils.xmlgen.html import E, join_elems
 from lino_xl.lib.accounts.utils import ZERO, DEBIT, CREDIT
 from lino_xl.lib.ledger.fields import DcAmountField
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from lino_xl.lib.ledger.mixins import ProjectRelated
 from lino_xl.lib.sepa.mixins import BankAccount
+from lino.modlib.printing.mixins import Printable
 
 from lino.api import dd, rt, _
 
 from .mixins import (FinancialVoucher, FinancialVoucherItem,
                      DatedFinancialVoucher, DatedFinancialVoucherItem)
 
+from .actions import WriteXML
 
 
 ledger = dd.resolve_app('ledger')
@@ -103,8 +106,7 @@ class JournalEntry(DatedFinancialVoucher, ProjectRelated):
             raise Exception("Missing amount %s in movements" % amount)
         return movements_and_items
 
-
-class PaymentOrder(FinancialVoucher):
+class PaymentOrder(FinancialVoucher, Printable):
     """A **payment order** is when a user instructs a bank to execute a
     series of outgoing transactions from a given bank account.
 
@@ -118,6 +120,18 @@ class PaymentOrder(FinancialVoucher):
     total = dd.PriceField(_("Total"), blank=True, null=True)
     execution_date = models.DateField(
         _("Execution date"), blank=True, null=True)
+
+    write_xml = WriteXML(tplname="pain_001")
+    #templates_group = ''
+
+    @dd.displayfield(_("Print"))
+    def print_actions(self, ar):
+        if ar is None:
+            return ''
+        elems = []
+        elems.append(ar.instance_action_button(
+            self.write_xml))
+        return E.p(*join_elems(elems, sep=", "))
 
     def get_wanted_movements(self):
         """Implements
