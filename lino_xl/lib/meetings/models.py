@@ -37,6 +37,7 @@ from django.utils.translation import string_concat
 # from lino.modlib.printing.mixins import Printable
 from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation
+from lino_xl.lib.stars.mixins import Starrable
 # from lino_xl.lib.cal.choicelists import Recurrencies
 # from lino_xl.lib.cal.utils import day_and_month
 # from lino_xl.lib.contacts.mixins import ContactRelated
@@ -49,7 +50,7 @@ from lino_xl.lib.tickets.choicelists import TicketStates
 
 
 @dd.python_2_unicode_compatible
-class Meeting(Referrable, Milestone, Reservation, Duplicable):
+class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
     # """A Course is a group of pupils that regularily meet with a given
     # teacher in a given room to speak about a given subject.
     #
@@ -98,8 +99,6 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable):
         verbose_name_plural = _('Meetings')
         # verbose_name = _("Event")
         # verbose_name_plural = _('Events')
-
-    list = dd.ForeignKey('lists.List', verbose_name=_("Memebers"), blank=True, null=True)
 
     description = dd.RichTextField(_("Description"), blank=True)
 
