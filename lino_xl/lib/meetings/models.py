@@ -129,11 +129,10 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
 
     def get_milestone_users(self):
         #todo
-        if False:#self.list:
-            for obj in self.list.members.all():
-                u = obj.partner.get_as_user()
-                if u is not None:
-                    yield u
+        for s in rt.models.stars.Star.for_obj(self):
+            # u = obj.partner.get_as_user()
+            # if u is not None:
+            yield s.user
 
     @classmethod
     def add_param_filter(
