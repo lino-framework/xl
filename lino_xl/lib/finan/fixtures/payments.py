@@ -1,33 +1,17 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2012-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """Creates fictive demo bookings to monthly payment orders and bank
 statements.  Bank statements of last month are not yet entered into
 database
 
+Used e.g. in :mod:`lino_book.projects.apc`.
+
 """
 
 from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
-
 
 import datetime
 from dateutil.relativedelta import relativedelta as delta
@@ -66,6 +50,8 @@ def objects(refs="PMO BNK"):
 
     START_YEAR = dd.plugins.ledger.start_year
     end_date = settings.SITE.demo_date(-30)
+
+    ses = rt.login('robin')
 
     for ref in refs.split():
         offset = OFFSETS.pop()
@@ -106,8 +92,11 @@ def objects(refs="PMO BNK"):
                 voucher.register(REQUEST)
                 voucher.save()
 
-            date += delta(months=1)
+            # For payment orders we also write the XML file
+            if ref == 'PMO':
+                voucher.write_xml.run_from_session(ses)
 
+            date += delta(months=1)
         # JOURNAL_BANK = Journal.objects.get(ref="BNK")
         # bs = JOURNAL_BANK.create_voucher(
         #     user=USERS.pop(),
