@@ -51,44 +51,12 @@ from lino_xl.lib.tickets.choicelists import TicketStates
 
 @dd.python_2_unicode_compatible
 class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
-    # """A Course is a group of pupils that regularily meet with a given
-    # teacher in a given room to speak about a given subject.
-    #
-    # The subject of a course is expressed by the :class:`Line`.
-    #
-    # Notes about automatic calendar entry generation:
-    #
-    # - When an automatically generated entry is to be moved to another
-    #   date, e.g. because it falls into a vacation period, then you
-    #   simply change it's date.  Lino will automatically adapt all
-    #   subsequent events.
-    #
-    # - Marking an automatically generated event as "Cancelled" will not
-    #   create a replacement event.
-    #
-    # .. attribute:: enrolments_until
-    #
+    """A Meetings is a list of tickets that are to be discussed with a group of people
+    """
     # .. attribute:: max_places
     #
     #     Available places. The maximum number of participants to allow
     #     in this course.
-    #
-    # .. attribute:: free_places
-    #
-    #     Number of free places.
-    #
-    # .. attribute:: requested
-    #
-    #     Number of requested places.
-    #
-    # .. attribute:: trying
-    #
-    #     Number of trying places.
-    #
-    # .. attribute:: confirmed
-    #
-    #     Number of confirmed places.
-    #
     #
     # """
     workflow_state_field = 'state'
@@ -160,11 +128,11 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
         super(Meeting, self).full_clean(*args, **kw)
 
     def get_milestone_users(self):
-        if self.list:
-            for obj in self.list.members.all():
-                u = obj.partner.get_as_user()
-                if u is not None:
-                    yield u
+        #todo
+        for s in rt.models.stars.Star.for_obj(self):
+            # u = obj.partner.get_as_user()
+            # if u is not None:
+            yield s.user
 
     @classmethod
     def add_param_filter(

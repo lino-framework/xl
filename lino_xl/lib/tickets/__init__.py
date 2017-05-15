@@ -45,7 +45,7 @@ class Plugin(ad.Plugin):
         m = m.add_menu(p.app_label, p.verbose_name)
         # m.add_action('tickets.MyCompetences')
         m.add_action('tickets.MyTickets')
-        m.add_action('tickets.MyTicketsToWork')
+        # m.add_action('tickets.MyTicketsToWork') #In noi
         if site.is_installed('faculties'):
             m.add_action('faculties.SuggestedTicketsByEndUser')
         # m.add_action('tickets.TicketsToDo')
@@ -81,7 +81,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         if user.authenticated:
             yield self.site.actors.tickets.MyTickets
-            yield self.site.actors.tickets.MyTicketsToWork
+            # yield self.site.actors.tickets.MyTicketsToWork #in noi
             yield self.site.actors.tickets.TicketsToTriage
             # else:
         #     yield self.site.actors.tickets.   PublicTickets

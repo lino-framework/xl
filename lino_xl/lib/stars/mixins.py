@@ -9,6 +9,8 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from lino.utils.xmlgen.html import E
 from lino.modlib.office.roles import OfficeUser
+from lino.modlib.notify.mixins import ChangeObservable
+
 
 
 def get_favourite(obj, user):
@@ -65,18 +67,18 @@ class UnstarObject(dd.Action):
             _("{0} is no longer starred.").format(obj), refresh_all=True)
 
 
-class Starrable(dd.Model):
+class Starrable(ChangeObservable):
 
     class Meta(object):
         abstract = True
 
-    star_object = StarObject()
-    unstar_object = UnstarObject()
+    if dd.is_installed("stars"):
 
-    def get_change_observers(self):
-        for o in super(Starrable, self).get_change_observers():
-            yield o
-        for star in rt.models.stars.Star.for_obj(self):
-            yield o.user
+        star_object = StarObject()
+        unstar_object = UnstarObject()
 
-
+        def get_change_observers(self):
+            for o in super(Starrable, self).get_change_observers():
+                yield o
+            for star in rt.models.stars.Star.for_obj(self):
+                yield (star.user, star.user.mail_mode)

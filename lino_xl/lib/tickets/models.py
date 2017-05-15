@@ -373,8 +373,8 @@ class SpawnTicket(dd.Action):
 
 @dd.python_2_unicode_compatible
 class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
-             Votable, Workable, Prioritized, Feasible,
-             mixins.Referrable, Starrable):
+             Votable, Starrable, Workable, Prioritized, Feasible,
+             mixins.Referrable):
 
     quick_search_fields = "summary description ref"
 
