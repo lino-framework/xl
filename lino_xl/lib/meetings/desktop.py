@@ -81,9 +81,10 @@ class Meetings(dd.Table):
     required_roles = dd.login_required((OfficeUser,))
     model = 'meetings.Meeting'
     detail_layout = MeetingDetail()
-    insert_layout = """
-    name start_date ref
-    """
+    insert_layout = dd.InsertLayout("""name
+    ref room
+    start_date
+    """, window_size = (40, 10,))
     column_names = "start_date name ref room workflow_buttons *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
@@ -100,7 +101,7 @@ class Meetings(dd.Table):
             _("Active"), blank=True,
             help_text=_("Whether to show rows in some active state")),
         state=MeetingStates.field(blank=True),
-        member=dd.ForeignKey(dd.plugins.lists.partner_model,
+        member=dd.ForeignKey(dd.resolve_model('contacts.Partner'),
             _("Member"), blank=True,
             help_text=_("Show rows that this person is a member")),
     )
