@@ -236,7 +236,8 @@ def welcome_messages(ar):
                 working[ses.user] = [ar.obj2html(ses.user), _(" is working on: ")]
             txt = unicode(ses.ticket)
             working[ses.user].append(
-                ar.obj2html(ses.ticket, txt, title=ses.ticket.summary))
+                ar.obj2html(ses.ticket, txt, title=getattr(ses.ticket,'summary',"") or
+                                                   getattr(ses.ticket,'name',"")))
 
             if ses.user == me:
                 working[ses.user] += [
