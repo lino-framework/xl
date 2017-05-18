@@ -48,12 +48,12 @@ class Workable(dd.Model):
         """
         return True
 
-    # def on_worked(self, session):
-    #     """This is automatically called when a work session has been created
-    #     or modified.
+    def on_worked(self, session):
+        """This is automatically called when a work session has been created
+        or modified.
 
-    #     """
-    #     pass
+        """
+        pass
 
     def save_new_instance(elem, ar):
         super(Workable, elem).save_new_instance(ar)
