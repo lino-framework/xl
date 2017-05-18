@@ -31,7 +31,8 @@ class Plugin(ad.Plugin):
     verbose_name = _("Skills")
 
     needs_plugins = [
-        'lino_noi.lib.noi',
+        # 'lino_noi.lib.noi',
+        'lino_xl.lib.xl',
         # 'lino_xl.lib.tickets',
         'lino_noi.lib.contacts']
 
