@@ -79,4 +79,5 @@ class Plugin(ad.Plugin):
 
     def get_dashboard_items(self, user):
         if user.authenticated:
-            yield self.site.actors.faculties.SuggestedTicketsByEndUser
+            if self.site.is_installed('tickets'):
+                yield self.site.actors.faculties.SuggestedTicketsByEndUser
