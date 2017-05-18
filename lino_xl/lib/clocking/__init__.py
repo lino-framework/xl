@@ -73,7 +73,5 @@ class Plugin(ad.Plugin):
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('clocking.Sessions')
 
-    def get_dashboard_items(self, user):
-        if user.authenticated:
-            yield self.site.actors.clocking.WorkedHours
-        
+    # def get_dashboard_items(self, user):
+    #     if user.authenticated:

@@ -10,7 +10,6 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino.modlib.users.mixins import My
 from lino.modlib.users.desktop import Users
-from lino_xl.lib.tickets.ui import Tickets
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from .roles import SkillsStaff
@@ -217,6 +216,7 @@ class OffersByDemander(Offers):
 if dd.is_installed('tickets'):
 
     from lino_xl.lib.tickets.roles import Triager, TicketsUser
+    from lino_xl.lib.tickets.ui import Tickets
 
 
     class AssignableWorkersByTicket(Users):

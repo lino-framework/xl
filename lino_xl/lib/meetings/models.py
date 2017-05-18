@@ -106,7 +106,7 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
         if self.name:
             return self.name
         if self.room is None:
-            return "(%s@%s)" % (self.members, dd.fds(self.start_date))
+            return "(%s)" % (dd.fds(self.start_date))
         # Note that we cannot use super() with
         # python_2_unicode_compatible
         return "(%s@%s)" % (
