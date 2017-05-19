@@ -29,6 +29,10 @@ from lino_xl.lib.appypod.mixins import PrintLabelsAction
 from lino.api import dd
 from lino import mixins
 
+if dd.is_installed('lists'):
+    partner_model = dd.plugins.lists.partner_model
+else:
+    partner_model = None
 
 class ListType(mixins.BabelNamed):
 
@@ -95,7 +99,7 @@ class Member(mixins.Sequenced):
 
     list = dd.ForeignKey('lists.List', related_name="members")
     partner = dd.ForeignKey(
-        dd.plugins.lists.partner_model,
+        partner_model,
         related_name="list_memberships")
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
