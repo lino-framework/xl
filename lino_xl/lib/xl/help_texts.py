@@ -1152,6 +1152,8 @@ equivalent to those having their state set to new."""),
     'lino_xl.lib.tickets.ui.ActiveTickets.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tickets.ui.MyTickets' : _("""Show all active tickets reported by me."""),
     'lino_xl.lib.tickets.ui.MyTickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ui.MyTicketsToWork' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.ui.MyTicketsToWork.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tim2lino.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.tim2lino.Plugin.languages' : _("""The language distribution used in the database to import. Mandatory
 parameter. No default value."""),

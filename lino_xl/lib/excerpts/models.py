@@ -601,6 +601,11 @@ class Excerpt(TypedPrintable, UserAuthored,
             return ar.html_text(ctx['body'])
             # return '<div class="htmlText">%s</div>' % ctx['body']
 
+    def before_printable_build(self, bm):
+        super(Excerpt, self).before_printable_build(bm)
+        if self.owner is not None:
+            return self.owner.before_printable_build(bm)
+        
     def get_printable_context(self, ar=None, **kw):
         """Adds a series of names to the context used when rendering printable
         documents.  Extends
