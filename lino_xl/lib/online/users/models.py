@@ -161,7 +161,7 @@ class User(User, Person):
             return a
         if self.callme_mode:
             a = rt.actors.users.OtherUsers.detail_action
-        if a.get_view_permission(ar.get_user().profile):
+        if a is not None and a.get_view_permission(ar.get_user().profile):
             return a
         
     @dd.htmlbox(_("About me"))
