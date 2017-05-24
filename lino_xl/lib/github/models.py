@@ -9,6 +9,7 @@ from django.db import models
 from lino.modlib.users.mixins import Authored
 import requests
 import json
+import datetime
 
 from lino.mixins import Created
 class Repository(dd.Model):
@@ -161,6 +162,30 @@ class Commit(Created, Authored):
     unassignable = models.BooleanField(_("Unassignable"),
                                        default=False,
                                        editable=True)
+
+    @classmethod
+    def from_api(cls, d, repo):
+        """
+        :param c: dict representing the commit from the api
+        :param repo: repo which this commit is from
+        :return: Commit instance, without doing session lookup, just parses json return values and returns instance.
+        """
+        params = dict(
+            repository=repo,
+            user=None,
+            ticket=None,
+            git_user=d['committer']['login'],
+            sha=d['sha'],
+            url=d['html_url'],
+            created=datetime.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ"),
+            description=d['commit']['message'],
+            summary="",
+            comment="",
+            unassignable=False,
+        )
+        return cls(**params)
+
+
 
 dd.inject_field(
     "users.User", 'github_username',
