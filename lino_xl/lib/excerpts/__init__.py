@@ -1,4 +1,4 @@
-# Copyright 2013-2016 Luc Saffre
+# Copyright 2013-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -30,6 +30,7 @@ your own subclass of one of them) to the :attr:`detail_layout
    mixins
    choicelists
    roles
+   doctools
    fixtures.std
    fixtures.demo2
 
