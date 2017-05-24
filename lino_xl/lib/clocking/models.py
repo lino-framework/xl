@@ -255,7 +255,7 @@ def welcome_messages(ar):
             result = E.p()
             working.pop(me)
         for u, s in working.items():
-            if result:
+            if len(result):
                 result.append(E.br())
             s[-1] = s[-1].replace(", ", ".")
             result.append(E.span(*s))
