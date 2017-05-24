@@ -57,6 +57,7 @@ class Commits(dd.Table):
     """
 
     parameters = ObservedPeriod()
+    #todo add params for repo, not assigned
 
 class CommitsByRepository(Commits):
     master_key = 'repository'
