@@ -24,7 +24,7 @@ class Plugin(ad.Plugin):
                      'lino_xl.lib.tickets',
                      ]
 
-    ticket_pattern = re.compile(r"(#[0-9]*)", "g")
+    ticket_pattern = re.compile(r"(#[0-9]*)")
 
     def on_site_startup(self, site):
         # from .mixins import Workable
@@ -33,8 +33,8 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, profile, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('github.MyCommits')
-        m.add_action('github.MyUnasignedCommits')
+        # m.add_action('github.MyCommits')
+        # m.add_action('github.MyUnasignedCommits')
         # m.add_action('github.UnknownUserCommits')
 
     def setup_config_menu(self, site, profile, m):
@@ -45,7 +45,7 @@ class Plugin(ad.Plugin):
     def setup_explorer_menu(self, site, profile, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('github.AllCommits')
+        m.add_action('github.Commits')
 
         # def get_dashboard_items(self, user):
         #     if user.authenticated:
