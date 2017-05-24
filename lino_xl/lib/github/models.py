@@ -7,6 +7,8 @@
 from lino.api import dd, rt, _
 from django.db import models
 from lino.modlib.users.mixins import Authored
+import requests
+import json
 
 from lino.mixins import Created
 class Repository(dd.Model):
@@ -53,12 +55,39 @@ class Repository(dd.Model):
 
     @dd.displayfield(_("Url"))
     def url(self, ar):
-        return "https://api.github.com/repos/%s/%s/"%(self.user_name,
+        return "https://api.github.com/repos/%s/%s/commits"%(self.user_name,
                                                       self.repo_name)
 
     @dd.displayfield(_("Number Of commits"))
     def size(self, ar):
         return self.commits.count()
+
+    def github_api_get_all_comments(self,):
+        """
+
+        :return: yields json commits of comments for this repo's master branch untill none are left
+        """
+        parms = {
+            'page':1,
+            'per_page':100
+        }
+        if self.o_auth:
+            parms['access_token'] = self.o_auth
+
+        r = requests.get(self.url, parms)
+        content = json.loads(r.content)
+        for c in content:
+            yield c
+        while 'rel="next"' in r.headers['link']:
+            parms['page'] += 1
+            r = requests.get(self.url, parms)
+
+            content = json.loads(r.content)
+            for c in content:
+                yield c
+
+
+
 class Commit(Created, Authored):
     """A **Commit** is a git commit sha and other relevant data.
 
