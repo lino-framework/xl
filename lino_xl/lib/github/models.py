@@ -6,6 +6,7 @@
 
 from lino.api import dd, rt, _
 from django.db import models
+from lino.modlib.users.mixins import Authored
 
 from lino.mixins import Created
 class Repository(dd.Model):
@@ -58,8 +59,7 @@ class Repository(dd.Model):
     @dd.displayfield(_("Number Of commits"))
     def size(self, ar):
         return self.commits.count()
-
-class Commit(Created):
+class Commit(Created, Authored):
     """A **Commit** is a git commit sha and other relevant data.
 
     .. attribute:: url

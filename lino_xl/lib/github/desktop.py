@@ -13,6 +13,7 @@ from lino import mixins
 from lino.core.roles import Explorer
 from lino_xl.lib.tickets.roles import TicketsStaff, TicketsUser
 from lino.modlib.users.mixins import My
+from lino.mixins.periods import ObservedPeriod
 
 from .models import Commit, Repository
 
@@ -32,7 +33,7 @@ class Repositories(dd.Table):
     required_roles = dd.login_required((TicketsStaff,))
     model = 'github.Repository'
     detail_layout = """
-        user_name repo_name o_auth url size
+        user_name repo_name o_auth size
         CommitsByRepository
     """
     insert_layout = dd.InsertLayout("""
@@ -47,16 +48,19 @@ class Commits(dd.Table):
     """Base table for Commits"""
     required_roles = dd.login_required((TicketsUser,))
     model = 'github.Commit'
-    column_names = 'repository sha ticket user user_name summary comment:10 *'
+    column_names = 'repository sha ticket user git_user summary comment:10 *'
     detail_layout = """
         repository sha ticket
-        user user_name url
+        user git_user url
         summary comment
         description
     """
+
+    parameters = ObservedPeriod()
+
 class CommitsByRepository(Commits):
     master_key = 'repository'
-    column_names = 'sha ticket summary user user_name comment:10 *'
+    column_names = 'sha ticket summary user git_user comment:10 *'
 
 
 class CommitsByTicket(Commits):
@@ -65,4 +69,7 @@ class CommitsByTicket(Commits):
 
 class CommitsByUser(Commits):
     master_key = 'user'
+    column_names = 'repository summary ticket url'
+
+class MyCommits(My, Commits):
     column_names = 'repository summary ticket url'

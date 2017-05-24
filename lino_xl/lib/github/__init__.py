@@ -33,7 +33,7 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, profile, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        # m.add_action('github.MyCommits')
+        m.add_action('github.MyCommits')
         # m.add_action('github.MyUnasignedCommits')
         # m.add_action('github.UnknownUserCommits')
 
