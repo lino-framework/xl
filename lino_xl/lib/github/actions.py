@@ -10,13 +10,13 @@ from lino.api import dd, rt, _
 import logging
 logger = logging.getLogger(__name__)
 
-class import_all_commits(dd.Action):
+class Import_all_commits(dd.Action):
     """
     Goes though all commits and check if they exist the the DB,
     also tries to find tickets that associate with the commit
     """
     show_in_bbar = True
-    icon_name = 'import'
+    button_text = 'import'
     # sort_index = 52
     label = _("Import All")
 
@@ -29,12 +29,12 @@ class import_all_commits(dd.Action):
         users = {}
         unknown_users = []
         for c in repo.github_api_get_all_comments():
-            commit = Commit.from_api(c)
+            commit = Commit.from_api(c, repo)
 
             #Find the user for this commit
             commit.user = users.get(commit.git_user,None)
             #not a huge fan of this, just want to avoide having to call filter for every commit
-            if commit.user is None and commit.git_user not in unknown_users:
+            if commit.user is None and commit.git_user not in unknown_users and commit.git_user:
                 user = User.objects.filter(github_username=commit.git_user)
                 if len(user):
                     user = user[0]
@@ -44,16 +44,22 @@ class import_all_commits(dd.Action):
                     unknown_users.append(commit.git_user)
 
             #Parse the title if there's  a ticket #
+            ticket_ids = dd.plugins['github'].ticket_pattern.findall(commit.description)
+            if ticket_ids:
+                try:
+                    commit.ticket = Ticket.objects.get(**{Ticket._meta.pk.name : ticket_ids[0]})
+                except Ticket.DoesNotExist:
+                    pass
 
-            #if no ticket # find Sessions during that time
-            if commit.user:
+            #if no ticket # find Sessions during that time and pick ticket
+            if commit.ticket is None and commit.user is not None:
                 sessions = Session.objects.filter(
-                    #session start day <= commit day
-                    #Session end day >= commit day
-                    #Session start time <= commit time
-                    #Session end time >= commit time
-                    #   also need to check for timezones
-                    #   commit time is UTC
-                    #   unsure what timezone the session time is in.
-                    )
-
+                    user=commit.user,
+                    start_date__lte=commit.created.date(),
+                    end_date__gte=commit.created.date(),
+                    start_time__lte=commit.created.time(),
+                    end_time__gte=commit.created.time()
+                                        )
+                if len(sessions) == 1:
+                    commit.ticket = sessions[0].ticket
+            commit.save()
