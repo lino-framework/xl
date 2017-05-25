@@ -206,9 +206,10 @@ class ExpectedMovements(dd.VirtualTable):
         account=dd.ForeignKey('accounts.Account', blank=True),
         partner=dd.ForeignKey('contacts.Partner', blank=True),
         project=dd.ForeignKey(dd.plugins.ledger.project_model, blank=True),
+        show_sepa=dd.YesNo.field(blank=True),
     )
     params_layout = "trade_type date_until from_journal " \
-                    "for_journal project partner account"
+                    "for_journal project partner account show_sepa"
 
     @classmethod
     def get_dc(cls, ar=None):
@@ -229,6 +230,10 @@ class ExpectedMovements(dd.VirtualTable):
             flt.update(account=pv.account)
         if pv.project:
             flt.update(project=pv.project)
+        if pv.show_sepa == dd.YesNo.yes:
+            flt.update(partner__sepa_accounts__primary=True)
+        elif pv.show_sepa == dd.YesNo.no:
+            flt.update(partner__sepa_accounts__primary__isnull=True)
         if pv.date_until is not None:
             flt.update(value_date__lte=pv.date_until)
         if pv.for_journal is not None:

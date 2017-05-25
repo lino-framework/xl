@@ -3,59 +3,52 @@
 <pain.001.001.02>
 <GrpHdr>
     <MsgId>{{obj.id}}/{{obj.journal.ref}} {{obj.number}}</MsgId>
-    <CreDtTm>{{now}}</CreDtTm>
-    <NbOfTxs>[=ntrim(DbfSum({oFnl()},"1",1,FIN->IdJnl+FIN->IdDoc))]</NbOfTxs>
+    <CreDtTm>{{now.isoformat()}}</CreDtTm>
+    <NbOfTxs>{{obj.items.count()}}</NbOfTxs>
     <Grpg>MIXD</Grpg>
     <InitgPty>
-        <Nm>[=trim(MemName1)]</Nm>
+        <Nm>{{escape(str(site.site_config.site_company))}}</Nm>
         <Id><OrgId><PrtryId>
-            <Id>[=strtran(substr(MemNoTva,4),".","")]</Id>
+            <Id>{{site.site_config.site_company.vat_id[4:]}}</Id>
             <Issr>KBO-BCE</Issr>
         </PrtryId></OrgId></Id>
     </InitgPty>
 </GrpHdr>
 <PmtInf>
-<PmtInfId>[=FIN->IdJnl+FIN->IdDoc]</PmtInfId>
+<PmtInfId>{{obj.journal.ref}} {{obj.number}}</PmtInfId>
 <PmtMtd>TRF</PmtMtd>
 <PmtTpInf><SvcLvl><Cd>SEPA</Cd></SvcLvl></PmtTpInf>
-<ReqdExctnDt>[=dtocf(FIN->Date,"yyyy-mm-dd")]</ReqdExctnDt>
-<Dbtr><Nm>[=trim(MemName1)]</Nm><Id><OrgId><PrtryId><Id>[=strtran(substr(MemNoTva,4),".","")]</Id><Issr>KBO-BCE</Issr></PrtryId></OrgId></Id></Dbtr>
-<DbtrAcct><Id><IBAN>[=be2iban(DbfPeek(oJnl(),FIN->IdJnl,"JNL->Compte"))]</IBAN></Id></DbtrAcct>
-<DbtrAgt><FinInstnId><BIC>[=be2bic(DbfPeek(oJnl(),FIN->IdJnl,"JNL->Compte"))]</BIC></FinInstnId></DbtrAgt>
-[=setvar("i",0)]
-[etc loop transactions DbfScan({oFnl(),oPar()},1,\
-  FIN->IdJnl+FIN->IdDoc,\
-  "FNL->IdJnl+FNL->IdDoc=='"+FIN->IdJnl+FIN->IdDoc+"'",\
-  ".t.",\
-  xlEval)]
-[=DlgPlus("i",1)]
-[=ParExist(FNL->IdCpt)]
-[=setvar("ban",BanParse(PAR->Compte1))]
-[=getvar("ban")!=NIL.or.Confirm("Invalid BIC:IBAN for "+trim(PAR->Compte1),MsgContinue())]
-[=len(trim(getvar("ban")[2]))>6.or.Confirm("Could not find a BIC for NBAN "+trim(PAR->Compte1),MsgContinue())]
+<ReqdExctnDt>{{obj.execution_date.isoformat()}}</ReqdExctnDt>
+<Dbtr><Nm>{{escape(str(site.site_config.site_company))}}</Nm><Id><OrgId><PrtryId><Id>{{site.site_config.site_company.vat_id[4:]}}</Id><Issr>KBO-BCE</Issr></PrtryId></OrgId></Id></Dbtr>
+<DbtrAcct><Id><IBAN>{{obj.journal.sepa_account.iban}}</IBAN></Id></DbtrAcct>
+{% if obj.journal.sepa_account.bic %}
+<DbtrAgt><FinInstnId><BIC>{{obj.journal.sepa_account.bic}}</BIC></FinInstnId></DbtrAgt>
+{% endif %}
+{% for item in obj.items.all() %}
 <CdtTrfTxInf>
 <PmtId><EndToEndId>.</EndToEndId></PmtId>
-<Amt><InstdAmt Ccy="[=FIN->IdDev]">[=ltrim(FNL->Mont)]</InstdAmt></Amt>
-<CdtrAgt><FinInstnId><BIC>[=trim(getvar("ban")[2])]</BIC></FinInstnId></CdtrAgt>
+<Amt><InstdAmt Ccy="EUR">{{item.amount}}</InstdAmt></Amt>
+{% if item.bic %}
+<CdtrAgt><FinInstnId><BIC>{{item.bic}}</BIC></FinInstnId></CdtrAgt>
+{% endif %}
 <Cdtr>
- <Nm>[=trim(ParName())]</Nm>
-[etc if !empty(Nat2iso(PAR->Pays))]
+ <Nm>{{escape(str(item.partner))}}</Nm>
+{% if item.partner.country %}
  <PstlAdr>
- [etc if !empty(ParStreet())]
- <AdrLine>[=ParStreet()]</AdrLine>
- [etc endif]
- [etc if !empty(ParCity())]
- <AdrLine>[=ParCity()]</AdrLine>
- [etc endif]
- <Ctry>[=trim(Nat2iso(PAR->Pays))]</Ctry>
+ {% if item.partner.street %}
+ <AdrLine>{{item.partner.street}}</AdrLine>
+ {% endif %}
+ {% if item.partner.city %}
+ <AdrLine>{{item.partner.city}}</AdrLine>
+ {% endif %}
+ <Ctry>{{item.partner.country.isocode}}</Ctry>
  </PstlAdr>
-[etc endif]
+{% endif %}
  </Cdtr>
-<CdtrAcct><Id><IBAN>[=getvar("ban")[3]]</IBAN></Id></CdtrAcct>
-[=ParExist(FNL->IdCpt)]
-<RmtInf><Ustrd>[=trim(FNL->Libell)]*[=trim(PAR->Firme)]*[=FNL->IdJnl+" "+FNL->IdDoc]</Ustrd></RmtInf>
+<CdtrAcct><Id><IBAN>{{item.bank_account.iban}}</IBAN></Id></CdtrAcct>
+<RmtInf><Ustrd>{{item.remark}}*{{item.partner.name}}*{{item.voucher}}</Ustrd></RmtInf>
 </CdtTrfTxInf>
-[etc endloop transactions]
+{% endfor %}
 </PmtInf>
 </pain.001.001.02>
 </Document>

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2015 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -35,7 +35,15 @@ def objects():
         'contacts.Company',
         "name zip_code city:name street street_no",
         country='EE').build
-    yield company('Rumma & Ko OÜ', '10115', 'Tallinn', 'Tartu mnt', '71')
+    rumma = company(
+        'Rumma & Ko OÜ', '10115', 'Tallinn', 'Tartu mnt', '71',
+        url="http://www.saffre-rumma.net/")
+    if dd.is_installed('vat'):
+        rumma.vat_id = "EE100588749"
+        # a vat_id is required for generating valid XML from payment order
+    yield rumma
+
+    settings.SITE.site_config.update(site_company=rumma)
 
     company = Instantiator(
         'contacts.Company', "name zip_code city:name street street_no",
