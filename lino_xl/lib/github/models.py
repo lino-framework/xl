@@ -177,7 +177,7 @@ class Commit(Created, Authored):
             repository=repo,
             user=None,
             ticket=None,
-            git_user=d['committer']['login'] if d['committer'] is not None else None,
+            git_user=d['committer']['login'] if d['committer'] is not None else "",
             sha=d['sha'],
             url=d['html_url'],
             created=timezone.utc.localize(timezone.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ")),

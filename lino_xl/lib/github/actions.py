@@ -34,7 +34,7 @@ class Import_all_commits(dd.Action):
             #Find the user for this commit
             commit.user = users.get(commit.git_user,None)
             #not a huge fan of this, just want to avoide having to call filter for every commit
-            if commit.user is None and commit.git_user not in unknown_users and commit.git_user is not None:
+            if commit.user is None and commit.git_user not in unknown_users and commit.git_user:
                 user = User.objects.filter(github_username=commit.git_user)
                 if len(user):
                     user = user[0]
