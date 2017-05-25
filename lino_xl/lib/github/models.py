@@ -165,7 +165,6 @@ class Commit(Created, Authored):
                                        default=False,
                                        editable=True)
 
-    import pprint
     @classmethod
     def from_api(cls, d, repo):
         """
@@ -173,11 +172,12 @@ class Commit(Created, Authored):
         :param repo: repo which this commit is from
         :return: Commit instance, without doing session lookup, just parses json return values and returns instance.
         """
+
         params = dict(
             repository=repo,
             user=None,
             ticket=None,
-            git_user=d['committer']['login'],#Causes error, None has no 'get' value.
+            git_user=d['committer']['login'] if d['committer'] is not None else None,
             sha=d['sha'],
             url=d['html_url'],
             created=timezone.utc.localize(timezone.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ")),
