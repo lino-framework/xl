@@ -126,6 +126,7 @@ class Commit(Created, Authored):
         verbose_name_plural = _('Commits')
         abstract = dd.is_abstract_model(__name__, 'Commit')
 
+
     repository = dd.ForeignKey(Repository,
                                verbose_name=_("Repository"),
                                related_name="commits")
@@ -153,12 +154,15 @@ class Commit(Created, Authored):
                        editable=False)
     description = dd.RichTextField(_("Description"),
                                editable=False,
-                               blank=True, null=True)
+                               blank=True, null=True,
+                                   format="plain"
+                                   )
     summary = dd.CharField(_("Summary"),
                                editable=False,
                                blank=True, null=True,
                            max_length=72)
     comment = dd.CharField(_("Comment"),
+                           blank=True, null=True,
                            max_length=50)
 
     unassignable = models.BooleanField(_("Unassignable"),
@@ -177,7 +181,7 @@ class Commit(Created, Authored):
             repository=repo,
             user=None,
             ticket=None,
-            git_user=d['committer']['login'] if d['committer'] is not None else "",
+            git_user=d['committer']['login'] if d['committer'] is not None else d['commit']['committer']['name'],
             sha=d['sha'],
             url=d['html_url'],
             created=timezone.utc.localize(timezone.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ")),

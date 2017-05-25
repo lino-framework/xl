@@ -9,6 +9,7 @@ Actions for `lino_xl.lib.github`.
 from lino.api import dd, rt, _
 import logging
 logger = logging.getLogger(__name__)
+from django.db.models import Q
 
 class Import_all_commits(dd.Action):
     """
@@ -35,7 +36,7 @@ class Import_all_commits(dd.Action):
             commit.user = users.get(commit.git_user,None)
             #not a huge fan of this, just want to avoide having to call filter for every commit
             if commit.user is None and commit.git_user not in unknown_users and commit.git_user:
-                user = User.objects.filter(github_username=commit.git_user)
+                user = User.objects.filter(Q(github_username=commit.git_user)|Q(first_name__contains=commit.git_user.split()[0]))
                 if len(user):
                     user = user[0]
                     commit.user = user
@@ -62,4 +63,9 @@ class Import_all_commits(dd.Action):
                                         )
                 if len(sessions) == 1:
                     commit.ticket = sessions[0].ticket
+                elif len(sessions) > 1:
+                    commit.ticket = sessions[0].ticket
+                    commit.comment = ", ".join([s.ticket for s in sessions])
+            # commit.full_clean() #Just update records
             commit.save()
+        ar.set_response(refresh_all=True)
