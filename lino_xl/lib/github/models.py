@@ -9,8 +9,8 @@ from django.db import models
 from lino.modlib.users.mixins import Authored
 import requests
 import json
-import datetime
-
+from django.utils import timezone
+from .actions import Import_all_commits
 from lino.mixins import Created
 class Repository(dd.Model):
     """A **Repository** is a git username and repo name,
@@ -50,6 +50,8 @@ class Repository(dd.Model):
     o_auth    = dd.PasswordField(_("OAuth Token"),
                              max_length=40,
                              blank=True)
+
+    import_all_commits = Import_all_commits()
 
     def __str__(self):
         return "%s:%s"%(self.user_name, self.repo_name)
@@ -163,10 +165,11 @@ class Commit(Created, Authored):
                                        default=False,
                                        editable=True)
 
+    import pprint
     @classmethod
     def from_api(cls, d, repo):
         """
-        :param c: dict representing the commit from the api
+        :param d: dict representing the commit from the api
         :param repo: repo which this commit is from
         :return: Commit instance, without doing session lookup, just parses json return values and returns instance.
         """
@@ -174,10 +177,10 @@ class Commit(Created, Authored):
             repository=repo,
             user=None,
             ticket=None,
-            git_user=d['committer']['login'],
+            git_user=d['committer']['login'],#Causes error, None has no 'get' value.
             sha=d['sha'],
             url=d['html_url'],
-            created=datetime.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ"),
+            created=timezone.utc.localize(timezone.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ")),
             description=d['commit']['message'],
             summary="",
             comment="",
