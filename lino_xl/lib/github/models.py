@@ -5,13 +5,13 @@
 """
 
 from lino.api import dd, rt, _
-from django.db import models
 from lino.modlib.users.mixins import Authored
 import requests
 import json
 from django.utils import timezone
 from .actions import Import_all_commits
 from lino.mixins import Created
+
 class Repository(dd.Model):
     """A **Repository** is a git username and repo name,
     along with an o-auth token to allow for more then 60 requests to
@@ -144,7 +144,10 @@ class Commit(Created, Authored):
 
     git_user = dd.CharField(_("Git User Name"),
                             blank=True,
-                            max_length=39,)
+                            max_length=39, )
+    commiter_name = dd.CharField(_("Git User Name"),
+                            blank=True,
+                            max_length=100, )
     sha = dd.CharField(_("Sha Hash"),
                        max_length=40,
                        primary_key=True,
@@ -152,22 +155,22 @@ class Commit(Created, Authored):
     url = dd.CharField(_("Commit page"),
                        max_length=255,
                        editable=False)
-    description = dd.RichTextField(_("Description"),
+    description = dd.models.TextField(_("Description"),
                                editable=False,
                                blank=True, null=True,
-                                   format="plain"
                                    )
     summary = dd.CharField(_("Summary"),
                                editable=False,
                                blank=True, null=True,
-                           max_length=72)
+                           max_length=100)
     comment = dd.CharField(_("Comment"),
                            blank=True, null=True,
                            max_length=50)
 
-    unassignable = models.BooleanField(_("Unassignable"),
+    unassignable = dd.models.BooleanField(_("Unassignable"),
                                        default=False,
                                        editable=True)
+    data = dd.models.TextField(_("Raw json") )
 
     @classmethod
     def from_api(cls, d, repo):
@@ -181,13 +184,15 @@ class Commit(Created, Authored):
             repository=repo,
             user=None,
             ticket=None,
-            git_user=d['committer']['login'] if d['committer'] is not None else d['commit']['committer']['name'],
+            git_user=d['committer']['login'] if d['committer'] is not None else "",
+            commiter_name=d['commit']['committer']['name'],
             sha=d['sha'],
             url=d['html_url'],
             created=timezone.utc.localize(timezone.datetime.strptime(d['commit']['committer']['date'], "%Y-%m-%dT%H:%M:%SZ")),
             description=d['commit']['message'],
-            summary="",
+            summary=d['commit']['message'].split('\n',1)[0][0:100],
             comment="",
+            data=json.dumps(d),
             unassignable=False,
         )
         return cls(**params)
