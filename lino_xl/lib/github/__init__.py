@@ -24,7 +24,7 @@ class Plugin(ad.Plugin):
                      'lino_xl.lib.tickets',
                      ]
 
-    ticket_pattern = re.compile(r"#([0-9]+)")
+    ticket_pattern = re.compile(r"(?<!Merge pull request )#([0-9]+)")
 
     def on_site_startup(self, site):
         # from .mixins import Workable
