@@ -55,13 +55,14 @@ class Commits(dd.Table):
         summary comment
         description
     """
+    order_by = ["-created"]
 
     parameters = ObservedPeriod()
     #todo add params for repo, not assigned
 
 class CommitsByRepository(Commits):
     master_key = 'repository'
-    column_names = 'sha ticket summary user git_user comment:10 *'
+    column_names = 'sha ticket summary user git_user created comment:10 *'
 
 
 class CommitsByTicket(Commits):
