@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2008-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """Model mixins for `lino_xl.lib.ledger`.
@@ -41,16 +27,6 @@ else:
     
 
 class ProjectRelated(dd.Model):
-    """Model mixin for objects that are related to a :attr:`project`.
-
-    .. attribute:: project
-
-        Pointer to the "project". This field exists only if the
-        :attr:`project_model
-        <lino_xl.lib.ledger.Plugin.project_model>` setting of the
-        :mod:`lino_xl.lib.ledger` plugin is nonempty.
-
-    """
     class Meta:
         abstract = True
 
@@ -68,26 +44,6 @@ class ProjectRelated(dd.Model):
 
 
 class PartnerRelated(dd.Model):
-    """Base class for things that are related to one and only one trade
-    partner. This is base class for both (1) trade document vouchers
-    (e.g. invoices or offers) and (2) for the individual entries of
-    financial vouchers and ledger movements.
-
-    .. attribute:: partner
-
-        The recipient of this document. A pointer to
-        :class:`lino_xl.lib.contacts.models.Partner`.
-
-    .. attribute:: payment_term
-
-        The payment terms to be used in this document.  A pointer to
-        :class:`PaymentTerm`.
-
-    .. attribute:: recipient
-
-        Alias for the partner
-
-    """
     class Meta:
         abstract = True
 
@@ -136,27 +92,6 @@ class PartnerRelated(dd.Model):
 
 
 class Matching(dd.Model):
-    """Model mixin for database objects that are considered *matching
-    transactions*.  A **matching transaction** is a transaction that
-    points to some other movement which it "clears" at least partially.
-
-    A movement is cleared when its amount equals the sum of all
-    matching movements.
-
-    Adds a field :attr:`match` and a chooser for it.  Requires a field
-    `partner`.  The default implementation of the chooser for
-    :attr:`match` requires a `journal`.
-
-    Base class for :class:`lino_xl.lib.vat.AccountInvoice`
-    (and e.g. `lino_xl.lib.sales.Invoice`, `lino_xl.lib.finan.DocItem`)
-    
-    .. attribute:: match
-
-       Pointer to the :class:`movement
-       <lino.modlib.ledger.models.Movement>` which is being cleared by
-       this movement.
-
-    """
     class Meta:
         abstract = True
 
@@ -186,29 +121,6 @@ class Matching(dd.Model):
 
 
 class VoucherItem(dd.Model):
-    """Base class for items of a voucher.
-
-    Subclasses must define the following fields:
-
-    .. attribute:: voucher
-
-        Pointer to the voucher which contains this item.  Non
-        nullable.  The voucher must be a subclass of
-        :class:`ledger.Voucher<lino_xl.lib.ledger.models.Voucher>`.
-        The `related_name` must be `'items'`.
-    
-
-    .. attribute:: title
-
-        The title of this voucher.
-
-        Currently (because of :djangoticket:`19465`), this field is
-        not implemented here but in the subclasses:
-
-        :class:`lino_xl.lib.vat.models.AccountInvoice`
-        :class:`lino_xl.lib.vat.models.InvoiceItem`
-
-    """
 
     allow_cascaded_delete = ['voucher']
 
@@ -237,19 +149,6 @@ class SequencedVoucherItem(Sequenced):
 
 
 class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
-    """Abstract base class for voucher items which point to an account.
-    This is subclassed by
-    :class:`lino_xl.lib.vat.models.InvoiceItem`
-    and
-    :class:`lino_xl.lib.vatless.models.InvoiceItem`.
-    It defines the :attr:`account` field and some related methods.
-
-    .. attribute:: account
-
-        ForeignKey pointing to the account (:class:`accounts.Account
-        <lino_xl.lib.accounts.models.Account>`) that is to be moved.
-
-    """
 
     class Meta:
         abstract = True

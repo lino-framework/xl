@@ -1,23 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2012-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
-"""Utilities for `lino_xl.lib.ledger`
+"""Utilities for this plugin.
 
 
 .. data:: on_ledger_movement
@@ -37,7 +23,7 @@ from django.dispatch import Signal, receiver
 from lino.api import rt, dd
 
 from lino.utils import SumCollector
-from lino_xl.lib.accounts.utils import ZERO, DEBIT
+from lino_xl.lib.accounts.utils import Balance, ZERO, DEBIT
 
 
 CENT = Decimal('.01')
@@ -49,59 +35,7 @@ def myround(d):
     return d.quantize(CENT, rounding=ROUND_HALF_UP)
 
 
-class Balance(object):
-    """Light-weight object to represent a balance, i.e. an amount together
-    with its booking direction (debit or credit).
-
-    Attributes:
-
-    .. attribute:: d
-
-        The amount of this balance when it is debiting, otherwise zero.
-
-    .. attribute:: c
-
-        The amount of this balance when it is crediting, otherwise zero.
-
-    """
-
-    def __init__(self, d, c):
-        if d > c:
-            self.d = d - c
-            self.c = ZERO
-        else:
-            self.c = c - d
-            self.d = ZERO
-
-
 class DueMovement(object):
-    """
-    A volatile object representing a group of matching movements.
-
-    A **due movement** is a movement which a partner should do in
-    order to satisfy their debt.  Or which we should do in order to
-    satisfy our debt towards a partner.
-
-    The "matching" movements of a given movement are those whose
-    `match`, `partner` and `account` fields have the same values.
-    
-    These movements are themselves grouped into "debts" and "payments".
-    A "debt" increases the debt and a "payment" decreases it.
-    
-    .. attribute:: match
-
-        The common `match` string of these movments
-
-    .. attribute:: dc
-
-        Whether I mean *my* debts and payments (towards that partner)
-        or those *of the partner* (towards me).
-
-    .. attribute:: partner
-
-    .. attribute:: account
-
-    """
     def __init__(self, dc, mvt):
         self.dc = dc
         # self.match = mvt.get_match()

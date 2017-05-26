@@ -1,25 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
-
-
-"""Database models for `lino_xl.lib.accounts`.
-
-"""
+# Copyright 2008-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 from django.db import models
 from django.conf import settings
@@ -36,7 +17,6 @@ from .utils import DEBIT, CREDIT, DCLABELS, ZERO
 
 
 class Group(mixins.BabelNamed):
-    "A group of accounts."
     class Meta:
         verbose_name = _("Account Group")
         verbose_name_plural = _("Account Groups")
@@ -48,7 +28,6 @@ class Group(mixins.BabelNamed):
 
 
 class Groups(dd.Table):
-    """The global table of all account groups."""
     model = 'accounts.Group'
     required_roles = dd.login_required(LedgerStaff)
     order_by = ['ref']
@@ -69,51 +48,6 @@ class Groups(dd.Table):
 
 @dd.python_2_unicode_compatible
 class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
-    """An **account** is an item of an account chart used to collect
-    ledger transactions or other accountable items.
-
-    .. attribute:: name
-
-        The multilingual designation of this account, as the users see
-        it.
-
-
-    .. attribute:: group
-
-        The *account group* to which this account belongs.  Points to
-        an instance of :class:`Group`.  If this field is empty, the
-        account won't appear in certain reports.
-    
-    .. attribute:: seqno
-
-        The sequence number of this account within its :attr:`group`.
-    
-    .. attribute:: ref
-
-        An optional unique name which can be used to reference a given
-        account.
-
-    .. attribute:: type
-
-        The *account type* of this account.  This points to an item of
-        :class:`AccountTypes
-        <lino_xl.lib.accounts.choicelists.AccountTypes>`.
-    
-    .. attribute:: needs_partner
-
-        Whether bookings to this account need a partner specified.
-
-        This causes the contra entry of financial documents to be
-        detailed (i.e. one for every item) or not (i.e. a single
-        contra entry per voucher, without project nor partner).
-
-    .. attribute:: default_amount
-
-        The default amount to book in bank statements or journal
-        entries when this account has been selected manually. The
-        default booking direction is that of the :attr:`type`.
-
-    """
     ref_max_length = settings.SITE.plugins.accounts.ref_length
 
     class Meta:

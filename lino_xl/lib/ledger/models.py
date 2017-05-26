@@ -1,26 +1,9 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2008-2017 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# License: BSD (see file COPYING for details)
 
 
-"""Database models for `lino_xl.lib.ledger`.
-
-- Models :class:`Journal`, :class:`Voucher` and :class:`Movement`
-
+"""Database models for this plugin.
 
 """
 
@@ -66,73 +49,6 @@ class Journal(mixins.BabelNamed,
               mixins.Sequenced,
               mixins.Referrable,
               PrintableType):
-    """The model used to store **journals**.
-    See :ref:`cosi.specs.ledger.journals`.
-
-    **Fields:**
-
-    .. attribute:: ref
-    .. attribute:: trade_type
-
-        Pointer to :class:`TradeTypes`.
-
-    .. attribute:: voucher_type
-
-        Pointer to an item of :class:`VoucherTypes`.
-
-    .. attribute:: journal_group
-
-        Pointer to an item of :class:`JournalGroups`.
-
-    .. attribute:: yearly_numbering
-
-        Whether the
-        :attr:`number<lino_xl.lib.ledger.models.Voucher.number>` of
-        vouchers should restart at 1 every year.
-
-    .. attribute:: force_sequence
-
-    .. attribute:: account
-    .. attribute:: printed_name
-    .. attribute:: dc
-
-        The primary booking direction.
-
-        In a journal of *sales invoices* this should be *Debit*
-        (checked), because a positive invoice total should be
-        *debited* from the customer's account.
-
-        In a journal of *purchase invoices* this should be *Credit*
-        (not checked), because a positive invoice total should be
-        *credited* from the supplier's account.
-
-        In a journal of *bank statements* this should be *Debit*
-        (checked), because a positive balance change should be
-        *debited* from the bank's general account.
-
-        In a journal of *payment orders* this should be *Credit* (not
-        checked), because a positive total means an "expense" and
-        should be *credited* from the journal's general account.
-
-        In all financial vouchers, the amount of every item increases
-        the total if its direction is opposite of the primary
-        direction.
-
-    .. attribute:: auto_check_clearings
-
-        Whether to automatically check and update the 'cleared' status
-        of involved transactions when (de)registering a voucher of
-        this journal.
-
-        This can be temporarily disabled e.g. by batch actions in
-        order to save time.
-
-    .. attribute:: template
-
-        See :attr:`PrintableType.template
-        <lino.mixins.printable.PrintableType.template>`.
-
-    """
 
     class Meta:
         app_label = 'ledger'
@@ -293,21 +209,6 @@ class Journal(mixins.BabelNamed,
 
 @dd.python_2_unicode_compatible
 class AccountingPeriod(DatePeriod, mixins.Referrable):
-    """An **accounting period** is the smallest time slice to be observed
-    (declare) in accounting reports. Usually it corresponds to one
-    *month*. Except for some small companies which declare per
-    quarter.  For each period it must be possible to specify the exact
-    dates during which it is allowed to register vouchers into this
-    period, and also its "state": whether it is "closed" or not.
-
-    .. attribute:: start_date
-    .. attribute:: end_date
-    .. attribute:: state
-    .. attribute:: year
-    .. attribute:: ref
-    
-
-    """
     class Meta:
         app_label = 'ledger'
         verbose_name = _("Accounting period")
@@ -390,50 +291,6 @@ AccountingPeriod.set_widget_options('ref', width=6)
   
 class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
               
-    """A convention on how an invoice should be paid.
-
-    The following fields define the default value for `due_date`:
-
-    .. attribute:: days
-
-        Number of days to add to :attr:`voucher_date`.
-
-    .. attribute:: months
-
-        Number of months to add to :attr:`voucher_date`.
-
-    .. attribute:: end_of_month
-
-        Whether to move :attr:`voucher_date` to the end of month.
-
-    .. attribute:: printed_text
-
-        Used in :xfile:`sales/VatProductInvoice/trailer.html` as
-        follows::
-
-            {% if obj.payment_term.printed_text %}
-            {{parse(obj.payment_term.printed_text)}}
-            {% else %}
-            {{_("Payment terms")}} : {{obj.payment_term}}
-            {% endif %}
-
-    The :attr:`printed_text` field is important when using
-    **prepayments** or other more complex payment terms.  Lino uses a
-    rather simple approach to handle prepayment invoices: only the
-    global amount and the final due date is stored in the database,
-    all intermediate amounts and due dates are just generated in the
-    printable document. You just define one :class:`PaymentTerm
-    <lino_xl.lib.ledger.models.PaymentTerm>` row for each prepayment
-    formula and configure your :attr:`printed_text` field. For
-    example::
-
-        Prepayment <b>30%</b> 
-        ({{(obj.total_incl*30)/100}} {{obj.currency}})
-        due on <b>{{fds(obj.due_date)}}</b>, remaining 
-        {{obj.total_incl - (obj.total_incl*30)/100}} {{obj.currency}}
-        due 10 days before delivery.
-
-    """
 
     class Meta:
         app_label = 'ledger'
@@ -459,60 +316,6 @@ class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
 
 @dd.python_2_unicode_compatible
 class Voucher(UserAuthored, mixins.Registrable):
-    """A Voucher is a document that represents a monetary transaction.
-
-    It is *not* abstract so that :class:`Movement` can have a ForeignKey
-    to a Voucher.
-
-    A voucher is never instantiated using this base model but using
-    one of its subclasses. Examples of subclassed are sales.Invoice,
-    vat.AccountInvoice (or vatless.AccountInvoice), finan.Statement
-    etc...
-    
-    Subclasses must define a field `state`.
-
-    .. attribute:: journal
-
-        The journal into which this voucher has been booked. This is a
-        mandatory pointer to a :class:`Journal` instance.
-
-    .. attribute:: number
-
-        The sequence number of this voucher in the :attr:`journal`.
-
-        The voucher number is automatically assigned when the voucher
-        is saved for the first time.  The voucher number depends on
-        whether :attr:`yearly_numbering` is enabled or not.
-
-        There might be surprising numbering if two users create
-        vouchers in a same journal at the same time.
-
-    .. attribute:: entry_date
-
-        The date of the journal entry, i.e. when this voucher has been
-        journalized or booked.
-
-    .. attribute:: voucher_date
-
-        The date on the voucher, i.e. when this voucher has been
-        issued by its emitter.
-
-    .. attribute:: accounting_period
-
-        The accounting period and fiscal year to which this entry is
-        to be assigned to. The default value is determined from
-        :attr:`entry_date`.
-
-    .. attribute:: narration
-
-        A short explanation which ascertains the subject matter of
-        this journal entry.
-
-    .. attribute:: number_with_year
-
-
-    """
-
     manager_roles_required = dd.login_required(VoucherSupervisor)
     
     class Meta:
@@ -832,63 +635,6 @@ Voucher.set_widget_options('number_with_year', width=8)
 
 @dd.python_2_unicode_compatible
 class Movement(ProjectRelated):
-    """Represents an accounting movement in the ledger.
-
-    .. attribute:: value_date
-
-        The date at which this movement is to be entered into the
-        ledger.  This is usually the voucher's :attr:`entry_date
-        <lino_xl.lib.ledger.models.Voucher.entry_date>`, except
-        e.g. for bank statements where each item can have its own
-        value date.
-
-    .. attribute:: voucher
-
-        Pointer to the :class:`Voucher` who caused this movement.
-
-    .. attribute:: partner
-
-        Pointer to the partner involved in this movement. This may be
-        blank.
-
-    .. attribute:: seqno
-
-        Sequential number within a voucher.
-
-    .. attribute:: account
-
-        Pointer to the :class:`Account` that is being moved by this movement.
-
-    .. attribute:: amount
-    .. attribute:: dc
-
-    .. attribute:: match
-
-        Pointer to the :class:`Movement` that is being cleared by this
-        movement.
-
-    .. attribute:: cleared
-
-        Whether
-
-    .. attribute:: voucher_partner
-
-        A virtual field which returns the *partner of the voucher*.
-        For incoming invoices this is the supplier, for outgoing
-        invoices this is the customer, for financial vouchers this is
-        empty.
-
-    .. attribute:: voucher_link
-
-        A virtual field which shows a link to the voucher.
-
-    .. attribute:: match_link
-
-        A virtual field which shows a clickable variant of the match
-        string. Clicking it will open a table with all movements
-        having that match.
-
-    """
     allow_cascaded_delete = ['voucher']
 
     class Meta:
@@ -1030,10 +776,6 @@ Movement.set_widget_options('voucher_link', width=12)
 
 
 class MatchRule(dd.Model):
-    """A **match rule** specifies that a movement into given account can
-    be cleared using a given journal.
-
-    """
     # allow_cascaded_delete = ['account', 'journal']
 
     class Meta:

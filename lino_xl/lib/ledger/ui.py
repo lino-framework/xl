@@ -17,21 +17,7 @@
 # <http://www.gnu.org/licenses/>.
 
 
-"""User interface definitions for `lino_xl.lib.ledger`.
-
-- :class:`DebtsByAccount` and :class:`DebtsByPartner` are two reports
-  based on :class:`ExpectedMovements`
-
-- :class:`GeneralAccountsBalance`, :class:`CustomerAccountsBalance` and
-  :class:`SupplierAccountsBalance` three reports based on
-  :class:`AccountsBalance` and :class:`PartnerAccountsBalance`
-
-- :class:`Debtors` and :class:`Creditors` are tables with one row for
-  each partner who has a positive balance (either debit or credit).
-  Accessible via :menuselection:`Reports --> Ledger --> Debtors` and
-  :menuselection:`Reports --> Ledger --> Creditors`
-
-
+"""User interface definitions for this plugin.
 
 
 """
@@ -71,9 +57,6 @@ class JournalDetail(dd.DetailLayout):
 
 
 class Journals(dd.Table):
-    """The default table showing all instances of :class:`Journal`.
-
-    """
     required_roles = dd.login_required(LedgerStaff)
     model = 'ledger.Journal'
     order_by = ["seqno"]
@@ -135,9 +118,6 @@ class PaymentTerms(dd.Table):
 
 
 class Vouchers(dd.Table):
-    """
-    The base table for all tables working on :class:`Voucher`.
-    """
     required_roles = dd.login_required(LedgerUser)
     model = 'ledger.Voucher'
     editable = False
@@ -181,14 +161,6 @@ class MatchRulesByJournal(ByJournal, MatchRules):
 
 
 class ExpectedMovements(dd.VirtualTable):
-    """
-    A virtual table of :class:`DueMovement` rows, showing
-    all "expected" "movements (payments)".
-
-    Subclassed by :class:`lino_xl.lib.finan.models.SuggestionsByVoucher`.
-
-
-    """
     row_height = 4
     required_roles = dd.login_required(AccountingReader)
     label = _("Debts")
@@ -321,11 +293,6 @@ class ExpectedMovements(dd.VirtualTable):
 
 
 class DebtsByAccount(ExpectedMovements):
-    """
-    The :class:`ExpectedMovements` accessible by clicking the "Debts"
-    action button on an :class:`Account <ml.accounts.Account>`.
-
-    """
     master = 'accounts.Account'
 
     @classmethod
@@ -344,15 +311,6 @@ dd.inject_action('accounts.Account', due=dd.ShowSlaveTable(DebtsByAccount))
 
 
 class DebtsByPartner(ExpectedMovements):
-    """This is the table being printed in a Payment Reminder.  Usually
-    this table has one row per sales invoice which is not fully paid.
-    But several invoices ("debts") may be grouped by match.  If the
-    partner has purchase invoices, these are deduced from the balance.
-
-    This table is accessible by clicking the "Debts" action button on
-    a Partner.
-
-    """
     master = 'contacts.Partner'
     #~ column_names = 'due_date debts payments balance'
 
@@ -372,15 +330,6 @@ dd.inject_action('contacts.Partner', due=dd.ShowSlaveTable(DebtsByPartner))
 
 
 class PartnerVouchers(Vouchers):
-    """Base class for tables of partner vouchers.
-
-    .. attribute:: cleared
-
-        - Yes : show only completely cleared vouchers.
-        - No : show only vouchers with at least one open partner movement.
-        - empty: don't care about movements.
-
-    """
     editable = True
 
     parameters = dict(
@@ -417,16 +366,6 @@ def mvtsum(**fkw):
 
 
 class AccountsBalance(dd.VirtualTable):
-    """A virtual table, the base class for different reports that show a
-    list of accounts with the following columns:
-
-      ref description old_d old_c during_d during_c new_d new_c
-
-    Subclasses are :class:'GeneralAccountsBalance`,
-    :class:'CustomerAccountsBalance` and
-    :class:'SupplierAccountsBalance`.
-
-    """
     auto_fit_column_widths = True
     column_names = "ref description old_d old_c during_d during_c new_d new_c"
     slave_grid_format = 'html'
@@ -498,9 +437,6 @@ class AccountsBalance(dd.VirtualTable):
 
 
 class GeneralAccountsBalance(AccountsBalance):
-    """An :class:`AccountsBalance` for general accounts.
-
-    """
 
     label = _("General Accounts Balances")
 
@@ -519,9 +455,6 @@ class GeneralAccountsBalance(AccountsBalance):
 
 
 class PartnerAccountsBalance(AccountsBalance):
-    """An :class:`AccountsBalance` for partner accounts.
-
-    """
     trade_type = NotImplementedError
 
     @classmethod
@@ -540,18 +473,11 @@ class PartnerAccountsBalance(AccountsBalance):
 
 
 class CustomerAccountsBalance(PartnerAccountsBalance):
-    """
-    A :class:`PartnerAccountsBalance` for the TradeType "sales".
-
-    """
     label = _("Customer Accounts Balances")
     trade_type = TradeTypes.sales
 
 
 class SupplierAccountsBalance(PartnerAccountsBalance):
-    """
-    A :class:`PartnerAccountsBalance` for the TradeType "purchases".
-    """
     label = _("Supplier Accounts Balances")
     trade_type = TradeTypes.purchases
 
@@ -560,14 +486,6 @@ class SupplierAccountsBalance(PartnerAccountsBalance):
 
 
 class DebtorsCreditors(dd.VirtualTable):
-    """
-    Abstract base class for different tables showing a list of
-    partners with the following columns:
-
-      partner due_date balance actions
-
-
-    """
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
     column_names = "age due_date partner partner_id balance vouchers"
@@ -655,11 +573,6 @@ class DebtorsCreditors(dd.VirtualTable):
 
 
 class Debtors(DebtorsCreditors):
-    """
-    Lists those partners who have some debt against us.
-    :class:`DebtorsCreditors`.
-
-    """
     label = _("Debtors")
     help_text = _("List of partners who are in debt towards us "
                   "(usually customers).")
@@ -667,10 +580,6 @@ class Debtors(DebtorsCreditors):
 
 
 class Creditors(DebtorsCreditors):
-    """
-    Lists those partners who give us some form of credit.
-    :class:`DebtorsCreditors`.
-    """
     label = _("Creditors")
     help_text = _("List of partners who are giving credit to us "
                   "(usually suppliers).")

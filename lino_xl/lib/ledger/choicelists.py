@@ -1,23 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2008-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
-"""Choicelists for `lino_xl.lib.ledger`.
+"""Choicelists for this plugin.
 
 """
 
@@ -31,34 +17,6 @@ from .roles import LedgerStaff
 
 
 class JournalGroups(dd.ChoiceList):
-    """The list of possible journal groups.
-
-    This list is used to build the main menu. For each journal group
-    there will be a menu item in the main menu.
-
-    Journals whose :attr:`journal_group
-    <lino_xl.lib.ledger.models.Journal.journal_group>` is empty will
-    not be available through the main user menu.
-
-    The default configuration has the following journal groups:
-
-    .. attribute:: sales
-
-        For sales journals.
-
-    .. attribute:: purchases
-
-        For purchases journals.
-
-    .. attribute:: wages
-
-        For wages journals.
-
-    .. attribute:: financial
-
-        For financial journals (bank statements and cash reports)
-
-    """
     verbose_name = _("Journal group")
     verbose_name_plural = _("Journal groups")
     required_roles = dd.login_required(LedgerStaff)
@@ -76,17 +34,6 @@ class FiscalYear(dd.Choice):
 
 class FiscalYears(dd.ChoiceList):
 
-    """A list of the fiscal years available in this database.
-
-    The default value for this list is 5 years starting from
-    :attr:`start_year <lino_xl.lib.ledger.Plugin.start_year>`.
-
-    If the fiscal year of your company is the same as the calendar
-    year, then the default entries in this should do.  Otherwise you
-    can override this in your
-    :attr:`workflows_module <lino.core.site.Site.workflows_module>`.
-
-    """
     required_roles = dd.login_required(LedgerStaff)
     item_class = FiscalYear
     verbose_name = _("Fiscal Year")
@@ -119,7 +66,6 @@ class FiscalYears(dd.ChoiceList):
 
 
 class PeriodStates(dd.Workflow):
-    """The list of possible states of an accounting period."""
     pass
 
 add = PeriodStates.add_item
@@ -128,32 +74,6 @@ add('20', _("Closed"), 'closed')
 
 
 class VoucherType(dd.Choice):
-    """Base class for all items of :class:`VoucherTypes`.
-    
-    The **voucher type** --in a simplified approach-- defines the
-    database model used to store vouchers of this type
-    (:attr:`model`).
-
-    But it can be more complex: actually the voucher type is defined
-    by its :attr:`table_class`, i.e. application developers can define
-    more than one *voucher type* per model by providing alternative
-    tables (views) for it.
-
-    Every Lino Cosi application has its own global list of voucher
-    types defined in the :class:`VoucherTypes` choicelist.
-
-    .. attribute:: model
-
-        The database model used to store vouchers of this type.
-        A subclass of :class:`lino_xl.lib.ledger.models.Voucher``.
-
-    .. attribute:: table_class
-
-        Must be a table on :attr:`model` and with `master_key` set to
-        the
-        :attr:`journal<lino_xl.lib.ledger.models.Voucher.journal>`.
-
-    """
     def __init__(self, model, table_class, text=None):
         self.table_class = table_class
         model = dd.resolve_model(model)
@@ -194,15 +114,6 @@ class VoucherType(dd.Choice):
 
 
 class VoucherTypes(dd.ChoiceList):
-    """A list of the available voucher types. Items are instances of
-    :class:VoucherType`.
-
-    The :attr:`Journal.voucher_type
-    <lino_xl.lib.ledger.models.Journal.voucher_type>` field points
-    to an item of this.
-
-    """
-
     required_roles = dd.login_required(LedgerStaff)
     verbose_name = _("Voucher type")
     verbose_name_plural = _("Voucher types")
@@ -234,40 +145,6 @@ class VoucherTypes(dd.ChoiceList):
 
 
 class TradeType(dd.Choice):
-    """Base class for the choices of :class:`TradeTypes`.
-
-    .. attribute:: dc
-
-        The default booking direction.
-
-    .. attribute:: price_field
-
-        The name and label of the `price` field to be defined on the
-        :class:`Product <lino.modlib.products.models.Product>`
-        database model.
-
-        With Lino Così you can define one price field per trade type.
-
-    .. attribute:: partner_account_field
-
-        The name and label of the :guilabel:`Partner account` field to
-        be defined for this trade type on the :class:`SiteConfig
-        <lino.modlib.system.models.SiteConfig>` database model.
-
-    .. attribute:: base_account_field
-
-        The name and label of the :guilabel:`Base account` field to
-        be defined for this trade type on the :class:`SiteConfig
-        <lino.modlib.system.models.SiteConfig>` database model.
-
-
-    .. attribute:: vat_account_field
-
-        The name and label of the :guilabel:`VAT account` field to be
-        defined for this trade type on the :class:`SiteConfig
-        <lino.modlib.system.models.SiteConfig>` database model.
-
-    """
     price_field_name = None
     price_field_label = None
     partner_account_field_name = None
@@ -331,40 +208,6 @@ class TradeType(dd.Choice):
 
 
 class TradeTypes(dd.ChoiceList):
-    """A choicelist with the *trade types* defined for this application.
-
-    The **trade type** is one of the basic properties of every ledger
-    operation which involves an external partner.  Every partner
-    movement belongs to one and only one trade type.
-
-    The default configuration defines the following trade types:
-
-    .. attribute:: sales
-
-        A sale transaction is when you write an invoice to a customer
-        and then expect the customer to pay it.
-
-    .. attribute:: purchases
-
-        A purchase transaction is when you get an invoice from a
-        provider who expects you to pay it.
-
-
-    .. attribute:: wages
-
-        A wage transaction is when you write a payroll (declare the
-        fact that you owe some wage to an employee) and later pay it
-        (e.g. via a payment order).
-
-
-    .. attribute:: clearings
-
-        A clearing transaction is when an employee declares that he
-        paid some invoice for you, and later you pay that money back
-        to his account.
-
-    """
-
     required_roles = dd.login_required(LedgerStaff)
     verbose_name = _("Trade type")
     verbose_name_plural = _("Trade types")
@@ -429,47 +272,10 @@ def inject_tradetype_fields(sender, **kw):
 
 
 class VoucherState(dd.State):
-    """Base class for items of :class:`VoucherStates`.
-    """
     editable = False
-    """
-    Whether a voucher in this state is editable.
-    """
 
 
 class VoucherStates(dd.Workflow):
-    """:class:`lino_xl.lib.ledger.VoucherStates` defines the list of
-possible states of a voucher.
-
-In a default configuration, vouchers can be :attr:`draft`,
-:attr:`registered`, :attr:`cancelled` or :attr:`signed`.
-
-.. attribute:: draft
-
-    *Draft* vouchers can be modified but are not yet visible as movements
-    in the ledger.
-
-.. attribute:: registered
-
-    *Registered* vouchers cannot be modified, but are visible as
-    movements in the ledger.
-
-.. attribute:: cancelled
-
-    *Cancelled* is similar to *Draft*, except that you cannot edit the
-    fields. This is used for invoices which have been sent, but the
-    customer signaled that they doen't agree. Instead of writing a
-    credit nota, you can decide to just cancel the invoice.
-
-.. attribute:: signed
-
-    The *Signed* state is similar to *registered*, but cannot usually be
-    deregistered anymore. This state is not visible in the default
-    configuration. In order to make it usable, you must define a custom
-    workflow for :class:`lino_xl.lib.ledger.VoucherStates`.
-
-    """
-
     item_class = VoucherState
 
     @classmethod

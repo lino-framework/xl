@@ -3,39 +3,6 @@
 from __future__ import unicode_literals
 from django.utils.translation import ugettext_lazy as _
 help_texts = {
-    'lino_xl.lib.accounts.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.accounts.Plugin.ref_length' : _("""The max_length of the Reference field of an account."""),
-    'lino_xl.lib.accounts.choicelists.Sheet' : _("""Base class for a financial statement."""),
-    'lino_xl.lib.accounts.choicelists.Balance' : _("""In financial accounting, a balance sheet or statement of financial
-position is a summary of the financial balances of an
-organisation."""),
-    'lino_xl.lib.accounts.choicelists.Earnings' : _("""https://en.wikipedia.org/wiki/Statement_of_comprehensive_income#Requirements_of_IFRS"""),
-    'lino_xl.lib.accounts.choicelists.AccountType' : _("""The base class for all account types."""),
-    'lino_xl.lib.accounts.choicelists.AccountTypes' : _("""The global list of account types. See AccountType."""),
-    'lino_xl.lib.accounts.choicelists.AccountTypes.item_class' : _("""alias of AccountType"""),
-    'lino_xl.lib.accounts.fields.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
-    'lino_xl.lib.accounts.fields.DebitOrCreditField' : _("""A field that stores either DEBIT or CREDIT (see
-lino_xl.lib.accounts.utils)."""),
-    'lino_xl.lib.accounts.fields.DebitOrCreditField.lino_atomizer_class' : _("""alias of DebitOrCreditStoreField"""),
-    'lino_xl.lib.accounts.models.Group' : _("""A group of accounts."""),
-    'lino_xl.lib.accounts.models.Groups' : _("""The global table of all account groups."""),
-    'lino_xl.lib.accounts.models.Groups.model' : _("""alias of Group"""),
-    'lino_xl.lib.accounts.models.Account' : _("""An account is an item of an account chart used to collect
-ledger transactions or other accountable items."""),
-    'lino_xl.lib.accounts.models.Account.name' : _("""The multilingual designation of this account, as the users see
-it."""),
-    'lino_xl.lib.accounts.models.Account.group' : _("""The account group to which this account belongs.  Points to
-an instance of Group.  If this field is empty, the
-account won’t appear in certain reports."""),
-    'lino_xl.lib.accounts.models.Account.seqno' : _("""The sequence number of this account within its group."""),
-    'lino_xl.lib.accounts.models.Account.ref' : _("""An optional unique name which can be used to reference a given
-account."""),
-    'lino_xl.lib.accounts.models.Account.type' : _("""The account type of this account.  This points to an item of
-AccountTypes."""),
-    'lino_xl.lib.accounts.models.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
-    'lino_xl.lib.accounts.models.Account.default_amount' : _("""The default amount to book in bank statements or journal
-entries when this account has been selected manually. The
-default booking direction is that of the type."""),
     'lino_xl.lib.addresses.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the “addressee” of any address."""),
     'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
@@ -695,237 +662,11 @@ the invoice."""),
     'lino_xl.lib.invoicing.models.Item.invoice' : _("""The invoice that has been generated. This field is empty for
 new items. When an item has been executed, this field points
 to the generated invoice."""),
-    'lino_xl.lib.ledger.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.ledger.Plugin.use_pcmn' : _("""Whether to use the PCMN notation."""),
-    'lino_xl.lib.ledger.Plugin.project_model' : _("""Leave this to None for normal behaviour.  Set this to a string of
-the form ‘<app_label>.<ModelName>’ if you want to add an
-additional field project to all models which inherit from
-lino_xl.lib.ledger.mixins.ProjectRelated."""),
-    'lino_xl.lib.ledger.Plugin.intrusive_menu' : _("""Whether the plugin should integrate into the application’s main
-menu in an intrusive way.  Intrusive means that the main menu gets
-one top-level item per journal group."""),
-    'lino_xl.lib.ledger.Plugin.start_year' : _("""An integer with the calendar year in which this site starts working."""),
-    'lino_xl.lib.ledger.Plugin.fix_y2k' : _("""Whether to use a Y2K compatible representation for fiscal years."""),
-    'lino_xl.lib.ledger.Plugin.force_cleared_until' : _("""Force all movements on vouchers with entry_date until the given
-date to be cleared.  This is useful e.g. when you want to keep
-legacy invoices in your database but not their payments."""),
-    'lino_xl.lib.ledger.choicelists.JournalGroups' : _("""The list of possible journal groups."""),
-    'lino_xl.lib.ledger.choicelists.JournalGroups.sales' : _("""For sales journals."""),
-    'lino_xl.lib.ledger.choicelists.JournalGroups.purchases' : _("""For purchases journals."""),
-    'lino_xl.lib.ledger.choicelists.JournalGroups.wages' : _("""For wages journals."""),
-    'lino_xl.lib.ledger.choicelists.JournalGroups.financial' : _("""For financial journals (bank statements and cash reports)"""),
-    'lino_xl.lib.ledger.choicelists.FiscalYears' : _("""A list of the fiscal years available in this database."""),
-    'lino_xl.lib.ledger.choicelists.PeriodStates' : _("""The list of possible states of an accounting period."""),
-    'lino_xl.lib.ledger.choicelists.VoucherType' : _("""Base class for all items of VoucherTypes."""),
-    'lino_xl.lib.ledger.choicelists.VoucherType.model' : _("""The database model used to store vouchers of this type.
-A subclass of lino_xl.lib.ledger.models.Voucher`."""),
-    'lino_xl.lib.ledger.choicelists.VoucherType.table_class' : _("""Must be a table on model and with master_key set to
-the
-journal."""),
-    'lino_xl.lib.ledger.choicelists.VoucherTypes' : _("""A list of the available voucher types. Items are instances of
-:class:VoucherType`."""),
-    'lino_xl.lib.ledger.choicelists.VoucherTypes.item_class' : _("""alias of VoucherType"""),
-    'lino_xl.lib.ledger.choicelists.TradeType' : _("""Base class for the choices of TradeTypes."""),
-    'lino_xl.lib.ledger.choicelists.TradeType.dc' : _("""The default booking direction."""),
-    'lino_xl.lib.ledger.choicelists.TradeType.price_field' : _("""The name and label of the price field to be defined on the
-Product
-database model."""),
-    'lino_xl.lib.ledger.choicelists.TradeType.partner_account_field' : _("""The name and label of the Partner account field to
-be defined for this trade type on the SiteConfig database model."""),
-    'lino_xl.lib.ledger.choicelists.TradeType.base_account_field' : _("""The name and label of the Base account field to
-be defined for this trade type on the SiteConfig database model."""),
-    'lino_xl.lib.ledger.choicelists.TradeType.vat_account_field' : _("""The name and label of the VAT account field to be
-defined for this trade type on the SiteConfig database model."""),
-    'lino_xl.lib.ledger.choicelists.TradeTypes' : _("""A choicelist with the trade types defined for this application."""),
-    'lino_xl.lib.ledger.choicelists.TradeTypes.sales' : _("""A sale transaction is when you write an invoice to a customer
-and then expect the customer to pay it."""),
-    'lino_xl.lib.ledger.choicelists.TradeTypes.purchases' : _("""A purchase transaction is when you get an invoice from a
-provider who expects you to pay it."""),
-    'lino_xl.lib.ledger.choicelists.TradeTypes.wages' : _("""A wage transaction is when you write a payroll (declare the
-fact that you owe some wage to an employee) and later pay it
-(e.g. via a payment order)."""),
-    'lino_xl.lib.ledger.choicelists.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he
-paid some invoice for you, and later you pay that money back
-to his account."""),
-    'lino_xl.lib.ledger.choicelists.TradeTypes.item_class' : _("""alias of TradeType"""),
-    'lino_xl.lib.ledger.choicelists.VoucherState' : _("""Base class for items of VoucherStates."""),
-    'lino_xl.lib.ledger.choicelists.VoucherState.editable' : _("""Whether a voucher in this state is editable."""),
-    'lino_xl.lib.ledger.choicelists.VoucherStates' : _("""lino_xl.lib.ledger.VoucherStates defines the list of
-possible states of a voucher."""),
-    'lino_xl.lib.ledger.choicelists.VoucherStates.draft' : _("""Draft vouchers can be modified but are not yet visible as movements
-in the ledger."""),
-    'lino_xl.lib.ledger.choicelists.VoucherStates.registered' : _("""Registered vouchers cannot be modified, but are visible as
-movements in the ledger."""),
-    'lino_xl.lib.ledger.choicelists.VoucherStates.cancelled' : _("""Cancelled is similar to Draft, except that you cannot edit the
-fields. This is used for invoices which have been sent, but the
-customer signaled that they doen’t agree. Instead of writing a
-credit nota, you can decide to just cancel the invoice."""),
-    'lino_xl.lib.ledger.choicelists.VoucherStates.signed' : _("""The Signed state is similar to registered, but cannot usually be
-deregistered anymore. This state is not visible in the default
-configuration. In order to make it usable, you must define a custom
-workflow for lino_xl.lib.ledger.VoucherStates."""),
-    'lino_xl.lib.ledger.choicelists.VoucherStates.item_class' : _("""alias of VoucherState"""),
     'lino_xl.lib.ledger.fields.DcAmountField' : _("""An editable virtual PriceField to get and set both database fields
 amount and dc at once. It may be used only on
 models which also defines these two fields."""),
-    'lino_xl.lib.ledger.mixins.ProjectRelated' : _("""Model mixin for objects that are related to a project."""),
-    'lino_xl.lib.ledger.mixins.ProjectRelated.project' : _("""Pointer to the “project”. This field exists only if the
-project_model setting of the
-lino_xl.lib.ledger plugin is nonempty."""),
-    'lino_xl.lib.ledger.mixins.PartnerRelated' : _("""Base class for things that are related to one and only one trade
-partner. This is base class for both (1) trade document vouchers
-(e.g. invoices or offers) and (2) for the individual entries of
-financial vouchers and ledger movements."""),
-    'lino_xl.lib.ledger.mixins.PartnerRelated.partner' : _("""The recipient of this document. A pointer to
-lino_xl.lib.contacts.models.Partner."""),
-    'lino_xl.lib.ledger.mixins.PartnerRelated.payment_term' : _("""The payment terms to be used in this document.  A pointer to
-PaymentTerm."""),
-    'lino_xl.lib.ledger.mixins.PartnerRelated.recipient' : _("""Alias for the partner"""),
-    'lino_xl.lib.ledger.mixins.Matching' : _("""Model mixin for database objects that are considered matching
-transactions.  A matching transaction is a transaction that
-points to some other movement which it “clears” at least partially."""),
-    'lino_xl.lib.ledger.mixins.Matching.match' : _("""Pointer to the movement which is being cleared by
-this movement."""),
-    'lino_xl.lib.ledger.mixins.VoucherItem' : _("""Base class for items of a voucher."""),
-    'lino_xl.lib.ledger.mixins.VoucherItem.voucher' : _("""Pointer to the voucher which contains this item.  Non
-nullable.  The voucher must be a subclass of
-ledger.Voucher.
-The related_name must be ‘items’."""),
-    'lino_xl.lib.ledger.mixins.VoucherItem.title' : _("""The title of this voucher."""),
-    'lino_xl.lib.ledger.mixins.AccountVoucherItem' : _("""Abstract base class for voucher items which point to an account.
-This is subclassed by
-lino_xl.lib.vat.models.InvoiceItem
-and
-lino_xl.lib.vatless.models.InvoiceItem.
-It defines the account field and some related methods."""),
-    'lino_xl.lib.ledger.mixins.AccountVoucherItem.account' : _("""ForeignKey pointing to the account (accounts.Account) that is to be moved."""),
-    'lino_xl.lib.ledger.models.Journal' : _("""The model used to store journals.
-See cosi.specs.ledger.journals."""),
-    'lino_xl.lib.ledger.models.Journal.trade_type' : _("""Pointer to TradeTypes."""),
-    'lino_xl.lib.ledger.models.Journal.voucher_type' : _("""Pointer to an item of VoucherTypes."""),
-    'lino_xl.lib.ledger.models.Journal.journal_group' : _("""Pointer to an item of JournalGroups."""),
-    'lino_xl.lib.ledger.models.Journal.yearly_numbering' : _("""Whether the
-number of
-vouchers should restart at 1 every year."""),
-    'lino_xl.lib.ledger.models.Journal.dc' : _("""The primary booking direction."""),
-    'lino_xl.lib.ledger.models.Journal.auto_check_clearings' : _("""Whether to automatically check and update the ‘cleared’ status
-of involved transactions when (de)registering a voucher of
-this journal."""),
-    'lino_xl.lib.ledger.models.Journal.template' : _("""See PrintableType.template."""),
-    'lino_xl.lib.ledger.models.AccountingPeriod' : _("""An accounting period is the smallest time slice to be observed
-(declare) in accounting reports. Usually it corresponds to one
-month. Except for some small companies which declare per
-quarter.  For each period it must be possible to specify the exact
-dates during which it is allowed to register vouchers into this
-period, and also its “state”: whether it is “closed” or not."""),
-    'lino_xl.lib.ledger.models.PaymentTerm' : _("""A convention on how an invoice should be paid."""),
-    'lino_xl.lib.ledger.models.PaymentTerm.days' : _("""Number of days to add to voucher_date."""),
-    'lino_xl.lib.ledger.models.PaymentTerm.months' : _("""Number of months to add to voucher_date."""),
-    'lino_xl.lib.ledger.models.PaymentTerm.end_of_month' : _("""Whether to move voucher_date to the end of month."""),
-    'lino_xl.lib.ledger.models.PaymentTerm.printed_text' : _("""Used in sales/VatProductInvoice/trailer.html as
-follows:"""),
-    'lino_xl.lib.ledger.models.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
-    'lino_xl.lib.ledger.models.Voucher.journal' : _("""The journal into which this voucher has been booked. This is a
-mandatory pointer to a Journal instance."""),
-    'lino_xl.lib.ledger.models.Voucher.number' : _("""The sequence number of this voucher in the journal."""),
-    'lino_xl.lib.ledger.models.Voucher.entry_date' : _("""The date of the journal entry, i.e. when this voucher has been
-journalized or booked."""),
-    'lino_xl.lib.ledger.models.Voucher.voucher_date' : _("""The date on the voucher, i.e. when this voucher has been
-issued by its emitter."""),
-    'lino_xl.lib.ledger.models.Voucher.accounting_period' : _("""The accounting period and fiscal year to which this entry is
-to be assigned to. The default value is determined from
-entry_date."""),
-    'lino_xl.lib.ledger.models.Voucher.narration' : _("""A short explanation which ascertains the subject matter of
-this journal entry."""),
-    'lino_xl.lib.ledger.models.Voucher.currency' : _("""This is currently used only in some print templates."""),
-    'lino_xl.lib.ledger.models.Movement' : _("""Represents an accounting movement in the ledger."""),
-    'lino_xl.lib.ledger.models.Movement.value_date' : _("""The date at which this movement is to be entered into the
-ledger.  This is usually the voucher’s entry_date, except
-e.g. for bank statements where each item can have its own
-value date."""),
-    'lino_xl.lib.ledger.models.Movement.voucher' : _("""Pointer to the Voucher who caused this movement."""),
-    'lino_xl.lib.ledger.models.Movement.partner' : _("""Pointer to the partner involved in this movement. This may be
-blank."""),
-    'lino_xl.lib.ledger.models.Movement.seqno' : _("""Sequential number within a voucher."""),
-    'lino_xl.lib.ledger.models.Movement.account' : _("""Pointer to the Account that is being moved by this movement."""),
-    'lino_xl.lib.ledger.models.Movement.match' : _("""Pointer to the Movement that is being cleared by this
-movement."""),
-    'lino_xl.lib.ledger.models.Movement.cleared' : _("""Whether"""),
-    'lino_xl.lib.ledger.models.Movement.voucher_partner' : _("""A virtual field which returns the partner of the voucher.
-For incoming invoices this is the supplier, for outgoing
-invoices this is the customer, for financial vouchers this is
-empty."""),
-    'lino_xl.lib.ledger.models.Movement.voucher_link' : _("""A virtual field which shows a link to the voucher."""),
-    'lino_xl.lib.ledger.models.Movement.match_link' : _("""A virtual field which shows a clickable variant of the match
-string. Clicking it will open a table with all movements
-having that match."""),
-    'lino_xl.lib.ledger.models.MatchRule' : _("""A match rule specifies that a movement into given account can
-be cleared using a given journal."""),
-    'lino_xl.lib.ledger.models.VoucherChecker' : _("""Check for wrong ledger movements"""),
     'lino_xl.lib.ledger.roles.VoucherSupervisor' : _("""Somebody who can edit vouchers which have been written by other
 users."""),
-    'lino_xl.lib.ledger.ui.Journals' : _("""The default table showing all instances of Journal."""),
-    'lino_xl.lib.ledger.ui.Journals.model' : _("""alias of Journal"""),
-    'lino_xl.lib.ledger.ui.Vouchers' : _("""The base table for all tables working on Voucher."""),
-    'lino_xl.lib.ledger.ui.Vouchers.model' : _("""alias of Voucher"""),
-    'lino_xl.lib.ledger.ui.ExpectedMovements' : _("""A virtual table of DueMovement rows, showing
-all “expected” “movements (payments)”."""),
-    'lino_xl.lib.ledger.ui.DebtsByAccount' : _("""The ExpectedMovements accessible by clicking the “Debts”
-action button on an Account."""),
-    'lino_xl.lib.ledger.ui.DebtsByAccount.master' : _("""alias of Account"""),
-    'lino_xl.lib.ledger.ui.DebtsByPartner' : _("""This is the table being printed in a Payment Reminder.  Usually
-this table has one row per sales invoice which is not fully paid.
-But several invoices (“debts”) may be grouped by match.  If the
-partner has purchase invoices, these are deduced from the balance."""),
-    'lino_xl.lib.ledger.ui.DebtsByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.ledger.ui.PartnerVouchers' : _("""Base class for tables of partner vouchers."""),
-    'lino_xl.lib.ledger.ui.PartnerVouchers.model' : _("""alias of Voucher"""),
-    'lino_xl.lib.ledger.ui.AccountsBalance' : _("""A virtual table, the base class for different reports that show a
-list of accounts with the following columns:"""),
-    'lino_xl.lib.ledger.ui.GeneralAccountsBalance' : _("""An AccountsBalance for general accounts."""),
-    'lino_xl.lib.ledger.ui.PartnerAccountsBalance' : _("""An AccountsBalance for partner accounts."""),
-    'lino_xl.lib.ledger.ui.PartnerAccountsBalance.trade_type' : _("""alias of NotImplementedError"""),
-    'lino_xl.lib.ledger.ui.CustomerAccountsBalance' : _("""A PartnerAccountsBalance for the TradeType “sales”."""),
-    'lino_xl.lib.ledger.ui.SupplierAccountsBalance' : _("""A PartnerAccountsBalance for the TradeType “purchases”."""),
-    'lino_xl.lib.ledger.ui.DebtorsCreditors' : _("""Abstract base class for different tables showing a list of
-partners with the following columns:"""),
-    'lino_xl.lib.ledger.ui.DebtorsCreditors.d_or_c' : _("""alias of NotImplementedError"""),
-    'lino_xl.lib.ledger.ui.Debtors' : _("""Lists those partners who have some debt against us.
-DebtorsCreditors."""),
-    'lino_xl.lib.ledger.ui.Creditors' : _("""Lists those partners who give us some form of credit.
-DebtorsCreditors."""),
-    'lino_xl.lib.ledger.ui.ActivityReport' : _("""A report consisting of the following tables:"""),
-    'lino_xl.lib.ledger.ui.Movements' : _("""The base table for all tables working on Movement.
-Defines filtering parameters and general behaviour."""),
-    'lino_xl.lib.ledger.ui.Movements.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.ui.AllMovements' : _("""Displayed by Explorer ‣ Accounting ‣ Movements."""),
-    'lino_xl.lib.ledger.ui.AllMovements.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.ui.MovementsByVoucher' : _("""Show the ledger movements of a voucher."""),
-    'lino_xl.lib.ledger.ui.MovementsByVoucher.master' : _("""alias of Voucher"""),
-    'lino_xl.lib.ledger.ui.MovementsByVoucher.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.ui.MovementsByPartner' : _("""Show the ledger movements of a partner.
-See also lino_xl.lib.ledger.models.Movement."""),
-    'lino_xl.lib.ledger.ui.MovementsByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.ledger.ui.MovementsByPartner.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.ui.MovementsByProject' : _("""Show the ledger movements of a project.
-See also lino_xl.lib.ledger.models.Movement."""),
-    'lino_xl.lib.ledger.ui.MovementsByProject.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.ui.MovementsByAccount' : _("""Shows the movements done on a given general account."""),
-    'lino_xl.lib.ledger.ui.MovementsByAccount.description' : _("""A virtual field showing a comma-separated list of the
-following items:"""),
-    'lino_xl.lib.ledger.ui.MovementsByAccount.master' : _("""alias of Account"""),
-    'lino_xl.lib.ledger.ui.MovementsByAccount.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.ui.MovementsByMatch' : _("""Show all movements having a given match."""),
-    'lino_xl.lib.ledger.ui.MovementsByMatch.master' : _("""alias of unicode"""),
-    'lino_xl.lib.ledger.ui.MovementsByMatch.model' : _("""alias of Movement"""),
-    'lino_xl.lib.ledger.utils.Balance' : _("""Light-weight object to represent a balance, i.e. an amount together
-with its booking direction (debit or credit)."""),
-    'lino_xl.lib.ledger.utils.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
-    'lino_xl.lib.ledger.utils.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
-    'lino_xl.lib.ledger.utils.DueMovement' : _("""A volatile object representing a group of matching movements."""),
-    'lino_xl.lib.ledger.utils.DueMovement.match' : _("""The common match string of these movments"""),
-    'lino_xl.lib.ledger.utils.DueMovement.dc' : _("""Whether I mean my debts and payments (towards that partner)
-or those of the partner (towards me)."""),
     'lino_xl.lib.lists.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.notes.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.notes.choicelists.SpecialType' : _("""Represents a special note type."""),
@@ -1307,6 +1048,224 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.models.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.models.VotesByVotable.master' : _("""alias of Ticket"""),
     'lino_xl.lib.votes.models.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.accounts.AccountType' : _("""The base class for all account types."""),
+    'lino_xl.lib.accounts.BankAccounts' : _("""A subclass of Assets."""),
+    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types. See AccountType."""),
+    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
+    'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for something
+where you can put money and retrieve it later."""),
+    'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
+it."""),
+    'lino_xl.lib.accounts.Account.group' : _("""The account group to which this account belongs.  Points to
+an instance of Group.  If this field is empty, the
+account won’t appear in certain reports."""),
+    'lino_xl.lib.accounts.Account.seqno' : _("""The sequence number of this account within its group."""),
+    'lino_xl.lib.accounts.Account.ref' : _("""An optional unique name which can be used to reference a given
+account."""),
+    'lino_xl.lib.accounts.Account.type' : _("""The account type of this account.  This points to an item of
+AccountTypes."""),
+    'lino_xl.lib.accounts.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
+    'lino_xl.lib.accounts.Account.default_amount' : _("""The default amount to book in bank statements or journal
+entries when this account has been selected manually. The
+default booking direction is that of the type."""),
+    'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
+    'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
+    'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
+together with its booking direction (debit or credit)."""),
+    'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
+    'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
+    'lino_xl.lib.accounts.BalanceSheet' : _("""In financial accounting, a balance sheet or statement of financial
+position is a summary of the financial balances of an
+organisation."""),
+    'lino_xl.lib.accounts.DebitOrCreditField' : _("""A field that stores the “direction” of a movement, i.e. either
+DEBIT or CREDIT."""),
+    'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
+    'lino_xl.lib.accounts.Plugin' : _("""The max_length of the Reference field of an account."""),
+    'lino_xl.lib.ledger.MatchRule' : _("""A match rule specifies that a movement into given account can
+be cleared using a given journal."""),
+    'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger."""),
+    'lino_xl.lib.ledger.Movement.value_date' : _("""The date at which this movement is to be entered into the
+ledger.  This is usually the voucher’s entry_date, except
+e.g. for bank statements where each item can have its own
+value date."""),
+    'lino_xl.lib.ledger.Movement.voucher' : _("""Pointer to the Voucher who caused this movement."""),
+    'lino_xl.lib.ledger.Movement.partner' : _("""Pointer to the partner involved in this movement. This may be
+blank."""),
+    'lino_xl.lib.ledger.Movement.seqno' : _("""Sequential number within a voucher."""),
+    'lino_xl.lib.ledger.Movement.account' : _("""Pointer to the Account that is being moved by this movement."""),
+    'lino_xl.lib.ledger.Movement.match' : _("""Pointer to the Movement that is being cleared by this
+movement."""),
+    'lino_xl.lib.ledger.Movement.cleared' : _("""Whether"""),
+    'lino_xl.lib.ledger.Movement.voucher_partner' : _("""A virtual field which returns the partner of the voucher.
+For incoming invoices this is the supplier, for outgoing
+invoices this is the customer, for financial vouchers this is
+empty."""),
+    'lino_xl.lib.ledger.Movement.voucher_link' : _("""A virtual field which shows a link to the voucher."""),
+    'lino_xl.lib.ledger.Movement.match_link' : _("""A virtual field which shows a clickable variant of the match
+string. Clicking it will open a table with all movements
+having that match."""),
+    'lino_xl.lib.ledger.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
+    'lino_xl.lib.ledger.Voucher.journal' : _("""The journal into which this voucher has been booked. This is a
+mandatory pointer to a Journal instance."""),
+    'lino_xl.lib.ledger.Voucher.number' : _("""The sequence number of this voucher in the journal."""),
+    'lino_xl.lib.ledger.Voucher.entry_date' : _("""The date of the journal entry, i.e. when this voucher has been
+journalized or booked."""),
+    'lino_xl.lib.ledger.Voucher.voucher_date' : _("""The date on the voucher, i.e. when this voucher has been
+issued by its emitter."""),
+    'lino_xl.lib.ledger.Voucher.accounting_period' : _("""The accounting period and fiscal year to which this entry is
+to be assigned to. The default value is determined from
+entry_date."""),
+    'lino_xl.lib.ledger.Voucher.narration' : _("""A short explanation which ascertains the subject matter of
+this journal entry."""),
+    'lino_xl.lib.ledger.PaymentTerm' : _("""The payment term of an invoice is a convention on how the invoice
+should be paid."""),
+    'lino_xl.lib.ledger.PaymentTerm.days' : _("""Number of days to add to voucher_date."""),
+    'lino_xl.lib.ledger.PaymentTerm.months' : _("""Number of months to add to voucher_date."""),
+    'lino_xl.lib.ledger.PaymentTerm.end_of_month' : _("""Whether to move voucher_date to the end of month."""),
+    'lino_xl.lib.ledger.PaymentTerm.printed_text' : _("""Used in sales/VatProductInvoice/trailer.html as
+follows:"""),
+    'lino_xl.lib.ledger.AccountingPeriod' : _("""An accounting period is the smallest time slice to be observed
+(declare) in accounting reports. Usually it corresponds to one
+month. Except for some small companies which declare per
+quarter."""),
+    'lino_xl.lib.ledger.Journal' : _("""A journal is a named sequence of numbered vouchers."""),
+    'lino_xl.lib.ledger.Journal.trade_type' : _("""Pointer to TradeTypes."""),
+    'lino_xl.lib.ledger.Journal.voucher_type' : _("""Pointer to an item of VoucherTypes."""),
+    'lino_xl.lib.ledger.Journal.journal_group' : _("""Pointer to an item of JournalGroups."""),
+    'lino_xl.lib.ledger.Journal.yearly_numbering' : _("""Whether the
+number of
+vouchers should restart at 1 every year."""),
+    'lino_xl.lib.ledger.Journal.dc' : _("""The primary booking direction."""),
+    'lino_xl.lib.ledger.Journal.auto_check_clearings' : _("""Whether to automatically check and update the ‘cleared’ status
+of involved transactions when (de)registering a voucher of
+this journal."""),
+    'lino_xl.lib.ledger.Journal.template' : _("""See PrintableType.template."""),
+    'lino_xl.lib.ledger.Journals' : _("""The default table showing all instances of Journal."""),
+    'lino_xl.lib.ledger.ByJournal' : _("""Mixin for journal-based tables of vouchers."""),
+    'lino_xl.lib.ledger.Vouchers' : _("""The base table for all tables working on Voucher."""),
+    'lino_xl.lib.ledger.ExpectedMovements' : _("""A virtual table of DueMovement rows, showing
+all “expected” “movements (payments)”."""),
+    'lino_xl.lib.ledger.DebtsByAccount' : _("""The ExpectedMovements accessible by clicking the “Debts”
+action button on an account."""),
+    'lino_xl.lib.ledger.DebtsByPartner' : _("""This is the table being printed in a Payment Reminder.  Usually
+this table has one row per sales invoice which is not fully paid.
+But several invoices (“debts”) may be grouped by match.  If the
+partner has purchase invoices, these are deduced from the balance."""),
+    'lino_xl.lib.ledger.PartnerVouchers' : _("""Base class for tables of partner vouchers."""),
+    'lino_xl.lib.ledger.AccountsBalance' : _("""A virtual table, the base class for different reports that show a
+list of accounts with the following columns:"""),
+    'lino_xl.lib.ledger.GeneralAccountsBalance' : _("""An AccountsBalance for general accounts."""),
+    'lino_xl.lib.ledger.PartnerAccountsBalance' : _("""An AccountsBalance for partner accounts."""),
+    'lino_xl.lib.ledger.CustomerAccountsBalance' : _("""A PartnerAccountsBalance for the TradeType “sales”."""),
+    'lino_xl.lib.ledger.SuppliersAccountsBalance' : _("""A PartnerAccountsBalance for the TradeType “purchases”."""),
+    'lino_xl.lib.ledger.DebtorsCreditors' : _("""Abstract base class for different tables showing a list of
+partners with the following columns:"""),
+    'lino_xl.lib.ledger.Debtors' : _("""Shows partners who have some debt against us.
+Inherits from DebtorsCreditors."""),
+    'lino_xl.lib.ledger.Creditors' : _("""Shows partners who give us some form of credit.
+Inherits from DebtorsCreditors."""),
+    'lino_xl.lib.ledger.FiscalYears' : _("""A choicelist with the fiscal years available in this database."""),
+    'lino_xl.lib.ledger.JournalGroups' : _("""The list of possible journal groups."""),
+    'lino_xl.lib.ledger.JournalGroups.sales' : _("""For sales journals."""),
+    'lino_xl.lib.ledger.JournalGroups.purchases' : _("""For purchases journals."""),
+    'lino_xl.lib.ledger.JournalGroups.wages' : _("""For wages journals."""),
+    'lino_xl.lib.ledger.JournalGroups.financial' : _("""For financial journals (bank statements and cash reports)"""),
+    'lino_xl.lib.ledger.PeriodStates' : _("""The list of possible states of an accounting period."""),
+    'lino_xl.lib.ledger.VoucherTypes' : _("""A list of the voucher types available in this application. Items
+are instances of :class:VoucherType`."""),
+    'lino_xl.lib.ledger.VoucherType' : _("""Base class for all items of VoucherTypes."""),
+    'lino_xl.lib.ledger.VoucherType.model' : _("""The database model used to store vouchers of this type.
+A subclass of lino_xl.lib.ledger.models.Voucher`."""),
+    'lino_xl.lib.ledger.VoucherType.table_class' : _("""Must be a table on model and with master_key set to
+the
+journal."""),
+    'lino_xl.lib.ledger.VoucherState' : _("""Base class for items of VoucherStates."""),
+    'lino_xl.lib.ledger.VoucherState.editable' : _("""Whether a voucher in this state is editable."""),
+    'lino_xl.lib.ledger.VoucherStates' : _("""The list of possible states of a voucher."""),
+    'lino_xl.lib.ledger.VoucherStates.draft' : _("""Draft vouchers can be modified but are not yet visible as movements
+in the ledger."""),
+    'lino_xl.lib.ledger.VoucherStates.registered' : _("""Registered vouchers cannot be modified, but are visible as
+movements in the ledger."""),
+    'lino_xl.lib.ledger.VoucherStates.cancelled' : _("""Cancelled is similar to Draft, except that you cannot edit the
+fields. This is used for invoices which have been sent, but the
+customer signaled that they doen’t agree. Instead of writing a
+credit nota, you can decide to just cancel the invoice."""),
+    'lino_xl.lib.ledger.VoucherStates.signed' : _("""The Signed state is similar to registered, but cannot usually be
+deregistered anymore. This state is not visible in the default
+configuration. In order to make it usable, you must define a custom
+workflow for lino_xl.lib.ledger.VoucherStates."""),
+    'lino_xl.lib.ledger.TradeTypes' : _("""A choicelist with the trade types defined for this application."""),
+    'lino_xl.lib.ledger.TradeTypes.sales' : _("""A sale transaction is when you write an invoice to a customer
+and then expect the customer to pay it."""),
+    'lino_xl.lib.ledger.TradeTypes.purchases' : _("""A purchase transaction is when you get an invoice from a
+provider who expects you to pay it."""),
+    'lino_xl.lib.ledger.TradeTypes.wages' : _("""A wage transaction is when you write a payroll (declare the
+fact that you owe some wage to an employee) and later pay it
+(e.g. via a payment order)."""),
+    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he
+paid some invoice for you, and later you pay that money back
+to his account."""),
+    'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
+    'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
+    'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
+Product
+database model."""),
+    'lino_xl.lib.ledger.TradeType.partner_account_field' : _("""The name and label of the Partner account field to
+be defined for this trade type on the SiteConfig database model."""),
+    'lino_xl.lib.ledger.TradeType.base_account_field' : _("""The name and label of the Base account field to
+be defined for this trade type on the SiteConfig database model."""),
+    'lino_xl.lib.ledger.TradeType.vat_account_field' : _("""The name and label of the VAT account field to be
+defined for this trade type on the SiteConfig database model."""),
+    'lino_xl.lib.ledger.SequencedVoucherItem' : _("""A VoucherItem which also inherits from
+lino.mixins.sequenced.Sequenced."""),
+    'lino_xl.lib.ledger.AccountVoucherItem' : _("""Abstract base class for voucher items which point to an account."""),
+    'lino_xl.lib.ledger.AccountVoucherItem.account' : _("""ForeignKey pointing to the account (accounts.Account) that is to be moved."""),
+    'lino_xl.lib.ledger.VoucherItem' : _("""Base class for items of a voucher."""),
+    'lino_xl.lib.ledger.VoucherItem.voucher' : _("""Pointer to the voucher which contains this item.  Non
+nullable.  The voucher must be a subclass of
+ledger.Voucher.
+The related_name must be ‘items’."""),
+    'lino_xl.lib.ledger.VoucherItem.title' : _("""The title of this voucher."""),
+    'lino_xl.lib.ledger.Matching' : _("""Model mixin for database objects that are considered matching
+transactions.  A matching transaction is a transaction that
+points to some other movement which it “clears” at least partially."""),
+    'lino_xl.lib.ledger.Matching.match' : _("""Pointer to the movement which is being cleared by
+this movement."""),
+    'lino_xl.lib.ledger.PartnerRelated' : _("""Base class for things that are related to one and only one trade
+partner. This is base class for both (1) trade document vouchers
+(e.g. invoices or offers) and (2) for the individual entries of
+financial vouchers and ledger movements."""),
+    'lino_xl.lib.ledger.PartnerRelated.partner' : _("""The recipient of this document. A pointer to
+lino_xl.lib.contacts.models.Partner."""),
+    'lino_xl.lib.ledger.PartnerRelated.payment_term' : _("""The payment terms to be used in this document.  A pointer to
+PaymentTerm."""),
+    'lino_xl.lib.ledger.PartnerRelated.recipient' : _("""Alias for the partner"""),
+    'lino_xl.lib.ledger.ProjectRelated' : _("""Model mixin for objects that are related to a project."""),
+    'lino_xl.lib.ledger.ProjectRelated.project' : _("""Pointer to the “project”. This field exists only if the
+project_model setting is
+nonempty."""),
+    'lino_xl.lib.ledger.DueMovement' : _("""A volatile object representing a group of matching movements."""),
+    'lino_xl.lib.ledger.DueMovement.match' : _("""The common match string of these movments"""),
+    'lino_xl.lib.ledger.DueMovement.dc' : _("""Whether I mean my debts and payments (towards that partner)
+or those of the partner (towards me)."""),
+    'lino_xl.lib.ledger.Plugin.currency_symbol' : _("""Temporary approach until we add support for multiple
+currencies."""),
+    'lino_xl.lib.ledger.Plugin.use_pcmn' : _("""Whether to use the PCMN notation."""),
+    'lino_xl.lib.ledger.Plugin.project_model' : _("""Leave this to None for normal behaviour.  Set this to a
+string of the form ‘<app_label>.<ModelName>’ if you want to
+add an additional field project to all models which inherit
+from lino_xl.lib.ledger.ProjectRelated."""),
+    'lino_xl.lib.ledger.Plugin.intrusive_menu' : _("""Whether the plugin should integrate into the application’s
+main menu in an intrusive way.  Intrusive means that the main
+menu gets one top-level item per journal group."""),
+    'lino_xl.lib.ledger.Plugin.start_year' : _("""An integer with the calendar year in which this site starts
+working."""),
+    'lino_xl.lib.ledger.Plugin.fix_y2k' : _("""Whether to use a Y2K compatible representation for fiscal
+years."""),
+    'lino_xl.lib.ledger.Plugin.force_cleared_until' : _("""Force all movements on vouchers with entry_date until the
+given date to be cleared.  This is useful e.g. when you want
+to keep legacy invoices in your database but not their
+payments."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly “deployment”) is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
