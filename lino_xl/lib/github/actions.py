@@ -33,16 +33,20 @@ class Import_all_commits(dd.Action):
             commit = Commit.from_api(c, repo)
 
             #Find the user for this commit
-            commit.user = users.get(commit.git_user,None)
+            commit.user = users.get(commit.git_user,None) or users.get(commit.commiter_name,None)
             #not a huge fan of this, just want to avoide having to call filter for every commit
-            if commit.user is None and commit.git_user not in unknown_users and commit.git_user:
-                user = User.objects.filter(Q(github_username=commit.git_user)|Q(first_name__contains=commit.git_user.split()[0]))
+            if commit.user is None and \
+                    (commit.git_user not in unknown_users or commit.commiter_name not in unknown_users) :
+                user = User.objects.filter(Q(github_username=commit.git_user)|Q(first_name__contains=commit.commiter_name.split()[0]))
                 if len(user):
                     user = user[0]
                     commit.user = user
-                    users[commit.git_user] = user
+                    if commit.git_user:
+                        users[commit.git_user] = user
+                    else:
+                        users[commit.commiter_name] = user
                 else:
-                    unknown_users.append(commit.git_user)
+                    unknown_users.append(commit.git_user or commit.commiter_name)
 
             #Parse the title if there's  a ticket #
             ticket_ids = dd.plugins['github'].ticket_pattern.findall(commit.description)
