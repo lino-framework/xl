@@ -17,10 +17,12 @@ import datetime
 from dateutil.relativedelta import relativedelta as delta
 
 from decimal import Decimal
+from unipath import Path
 
 from django.conf import settings
 from lino.utils import Cycler
 from lino.api import dd, rt
+from lino.utils.xmlgen.sepa.validate import validate_pain001
 
 finan = dd.resolve_app('finan')
 
@@ -45,19 +47,38 @@ PAYMENT_DIFFS = Cycler(PAYMENT_DIFFS)
 def objects(refs="PMO BNK"):
 
     Journal = rt.modules.ledger.Journal
+    Account = rt.models.sepa.Account
     USERS = Cycler(settings.SITE.user_model.objects.all())
     OFFSETS = Cycler(12, 20, 28)
 
     START_YEAR = dd.plugins.ledger.start_year
     end_date = settings.SITE.demo_date(-30)
+    site_company = settings.SITE.site_config.site_company
 
     ses = rt.login('robin')
 
     for ref in refs.split():
-        offset = OFFSETS.pop()
-        date = datetime.date(START_YEAR, 1, 1)
         jnl = Journal.objects.get(ref=ref)
         sug_table = jnl.voucher_type.table_class.suggestions_table
+        if ref == 'PMO':
+            assert site_company is not None
+            if site_company.country is None:
+                raise Exception(
+                    "Oops, site company {} has no country".format(
+                        site_company))
+            qs = Account.objects.filter(partner=site_company)
+            if qs.count():
+                acct = qs[0]
+            else:
+                acct = Account(
+                    partner=site_company, iban="BE83540256917919",
+                    bic="BBRUBEBB", primary=True)
+                yield acct
+            jnl.sepa_account = acct
+            yield jnl
+            
+        offset = OFFSETS.pop()
+        date = datetime.date(START_YEAR, 1, 1)
         while date < end_date:
             voucher = jnl.create_voucher(
                 user=USERS.pop(),
@@ -89,12 +110,18 @@ def objects(refs="PMO BNK"):
             if voucher.items.count() == 0:
                 voucher.delete()
             else:
+                if ref == 'PMO':
+                    voucher.execution_date = voucher.voucher_date
                 voucher.register(REQUEST)
                 voucher.save()
 
             # For payment orders we also write the XML file
             if ref == 'PMO':
-                voucher.write_xml.run_from_session(ses)
+                rv = voucher.write_xml.run_from_session(ses)
+                assert rv['success']
+                fn = Path(settings.SITE.cache_dir + rv['open_url'])
+                assert fn.exists()
+                validate_pain001(fn)
 
             date += delta(months=1)
         # JOURNAL_BANK = Journal.objects.get(ref="BNK")

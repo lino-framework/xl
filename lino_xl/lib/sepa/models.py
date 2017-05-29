@@ -148,3 +148,13 @@ class AccountsByPartner(Accounts):
     iban bic
     remark
     """
+
+dd.inject_field(
+    'ledger.Journal',
+    'sepa_account',
+    dd.ForeignKey('sepa.Account',
+        blank=True, null=True,
+        help_text=_("Your bank account to specify in payment order.")))
+
+
+    

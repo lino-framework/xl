@@ -552,6 +552,8 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
     def param_defaults(cls, ar, **kw):
         kw = super(SuggestionsByPaymentOrder, cls).param_defaults(ar, **kw)
         voucher = ar.master_instance
+        if voucher.journal.sepa_account:
+            kw.update(show_sepa=dd.YesNo.yes)
         # kw.update(journal=voucher.journal)
         kw.update(date_until=voucher.execution_date or voucher.voucher_date)
         if voucher.journal.trade_type is not None:

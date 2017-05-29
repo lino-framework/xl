@@ -85,6 +85,7 @@ lino_xl.lib.appypod
 lino_xl.lib.beid
 lino_xl.lib.blogs
 lino_xl.lib.boards
+lino_xl.lib.github
 lino_xl.lib.groups
 lino_xl.lib.groups.fixtures
 lino_xl.lib.teams

@@ -1,11 +1,13 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """Makes sure that there is at least one excerpt for every ExcerptType.
 Render all excerpts by running their do_print method.
 
 """
+from __future__ import unicode_literals
+
 import traceback
 
 from lino.api import rt, dd
@@ -48,6 +50,9 @@ def objects():
         try:
             rv = ses.run(obj.do_print)
             assert rv['success']
+        except Warning as e:
+            dd.logger.warning(
+                "Failed to render %s : %s", obj, e)
         except Exception as e:
             if SEVERE:
                 raise
