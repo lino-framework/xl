@@ -337,8 +337,12 @@ class TimLoader(TimLoader):
                     coaching.client = par2
                     coaching.full_clean()
                     coaching.save()
-                par1.delete()
-                # par1.obsoletes = par2
+                try:
+                    par1.delete()
+                except Warning as e:
+                    dd.logger.warning("Failed to delete {} : {}".format(
+                        par1, e))
+                    # par1.obsoletes = par2
                 # par1.full_clean()
                 # par1.save()
                 
