@@ -29,7 +29,7 @@ class Import_all_commits(dd.Action):
         User = rt.models.users.User
         users = {}
         unknown_users = []
-        for c in repo.github_api_get_all_comments():
+        for c in repo.github_api_get_all_comments(sha=kw.get('sha', None)):
             commit = Commit.from_api(c, repo)
 
             #Find the user for this commit
@@ -69,7 +69,7 @@ class Import_all_commits(dd.Action):
                     commit.ticket = sessions[0].ticket
                 elif len(sessions) > 1:
                     commit.ticket = sessions[0].ticket
-                    commit.comment = ", ".join([s.ticket for s in sessions])
+                    commit.comment = ", ".join([str(s.ticket) for s in sessions])
             # commit.full_clean() #Just update records
             commit.save()
         ar.set_response(refresh_all=True)
