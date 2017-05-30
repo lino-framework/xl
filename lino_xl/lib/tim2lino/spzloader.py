@@ -333,10 +333,20 @@ class TimLoader(TimLoader):
             except Client.DoesNotExist:
                 pass
             else:
-                for coaching in rt.models.coachings.Coaching.objects.filter(client=par1):
-                    coaching.client = par2
-                    coaching.full_clean()
-                    coaching.save()
+                for obj in rt.models.coachings.Coaching.objects.filter(client=par1):
+                    obj.client = par2
+                    obj.full_clean()
+                    obj.save()
+                for obj in rt.models.lists.Member.objects.filter(partner=par1):
+                    obj.partner = par2
+                    obj.full_clean()
+                    obj.save()
+                    
+                for obj in rt.models.households.Member.objects.filter(person=par1):
+                    obj.person = par2
+                    obj.full_clean()
+                    obj.save()
+                    
                 try:
                     par1.delete()
                 except Warning as e:
