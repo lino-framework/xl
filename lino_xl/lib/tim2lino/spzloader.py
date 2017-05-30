@@ -118,8 +118,14 @@ class TimLoader(TimLoader):
                 user = self.get_user(idusr)
                 if user is not None:
                     if isinstance(obj, dd.plugins.coachings.client_model):
+                        kw = dict()
+                        if row.date1:
+                            kw.update(start_date=row.date1)
+                            if row.date2 and row.date2 > row.date1:
+                                # avoid "Date period ends before it started."
+                                kw.update(end_date=row.date2)
                         yield rt.models.coachings.Coaching(
-                            client=obj, user=user)
+                            client=obj, user=user, **kw)
                     else:
                         dd.logger.warning(
                             "No coaching for non-client %s", obj)
@@ -327,10 +333,14 @@ class TimLoader(TimLoader):
             except Client.DoesNotExist:
                 pass
             else:
-                # par1.delete()
-                par1.obsoletes = par2
-                par1.full_clean()
-                par1.save()
+                for coaching in rt.models.coachings.Coaching.objects.filter(client=par1):
+                    coaching.client = par2
+                    coaching.full_clean()
+                    coaching.save()
+                par1.delete()
+                # par1.obsoletes = par2
+                # par1.full_clean()
+                # par1.save()
                 
     def objects(self):
 
@@ -344,7 +354,8 @@ class TimLoader(TimLoader):
         yield Country(isocode='LU', **dd.str2kw('name', _("Luxemburg")))
         yield Country(isocode='PL', **dd.str2kw('name', _("Poland")))
         yield Country(isocode='AU', **dd.str2kw('name', _("Austria")))
-        yield Country(isocode='USA', **dd.str2kw('name', _("United States")))
+        yield Country(isocode='US', short_code='USA',
+                      **dd.str2kw('name', _("United States")))
         yield self.load_dbf('USR')
         
         yield super(TimLoader, self).objects()
