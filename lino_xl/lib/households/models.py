@@ -8,6 +8,7 @@
 
 from __future__ import unicode_literals
 import six
+from builtins import str
 
 import logging
 logger = logging.getLogger(__name__)
@@ -151,7 +152,8 @@ class Household(contacts.Partner):
     def __str__(self):
         if self.type:
             return "{} ({})".format(self.get_full_name(), self.type)
-        return six.text_type(self.get_full_name())
+        # return six.text_type(self.get_full_name())
+        return str(self.get_full_name())
 
     def get_name_elems(self, ar):
         elems = []
@@ -365,8 +367,8 @@ class Member(mixins.DatePeriod, mixins.Human, mixins.Born):
             # return models.Model.__str__(self)
             # return super(Member, self).__str__()
         if self.role is None:
-            return unicode(self.person)
-        return u"%s (%s)" % (self.person, self.role)
+            return str(self.person)
+        return "%s (%s)" % (self.person, self.role)
 
     def get_address_lines(self):
         for ln in self.person.address_person_lines():
@@ -477,7 +479,7 @@ class SiblingsByPerson(Members):
         # obj is the Person for which we display the household
 
         def format_item(m):
-            elems = [unicode(m.role), ': ']
+            elems = [str(m.role), ': ']
             if m.person:
                 elems += [obj.format_family_member(ar, m.person)]
                 hl = self.find_links(ar, m.person, obj)
@@ -576,7 +578,7 @@ class MembersByPerson(Members):
         items = []
         for m in sar.data_iterator:
             
-            args = (unicode(m.role), _(" in "),
+            args = (str(m.role), _(" in "),
                     ar.obj2html(m.household))
             if m.primary:
                 items.append(E.li(E.b("\u2611 ", *args)))
@@ -602,7 +604,7 @@ class MembersByPerson(Members):
                 sar = ar.spawn(ba,  # master_instance=obj,
                                selected_rows=[obj],
                                action_param_values=apv)
-                buttons.append(ar.href_to_request(sar, unicode(t)))
+                buttons.append(ar.href_to_request(sar, str(t)))
             elems += join_elems(buttons, sep=' / ')
         return E.div(*elems)
 
