@@ -24,7 +24,6 @@ class Import_all_commits(dd.Action):
     def run_from_ui(self, ar, **kw):
         repo = ar.selected_rows[0]
         Commit = rt.models.github.Commit
-        Session = rt.models.clocking.Session
         Ticket = rt.models.tickets.Ticket
         User = rt.models.users.User
         users = {}
@@ -58,13 +57,7 @@ class Import_all_commits(dd.Action):
 
             #if no ticket # find Sessions during that time and pick ticket
             if commit.ticket is None and commit.user is not None:
-                sessions = Session.objects.filter(
-                    user=commit.user,
-                    start_date__lte=commit.created.date(),
-                    end_date__gte=commit.created.date(),
-                    start_time__lte=commit.created.time(),
-                    end_time__gte=commit.created.time()
-                                        )
+                sessions = self.find_sessions(commit, commit.user)
                 if len(sessions) == 1:
                     commit.ticket = sessions[0].ticket
                 elif len(sessions) > 1:
@@ -73,3 +66,13 @@ class Import_all_commits(dd.Action):
             # commit.full_clean() #Just update records
             commit.save()
         ar.set_response(refresh_all=True)
+
+    @staticmethod
+    def find_sessions(commit, user):
+        return rt.models.clocking.Session.objects.filter(
+            user=user,
+            start_date__lte=commit.created.date(),
+            end_date__gte=commit.created.date(),
+            start_time__lte=commit.created.time(),
+            end_time__gte=commit.created.time()
+        )
