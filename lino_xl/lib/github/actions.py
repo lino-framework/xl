@@ -101,8 +101,8 @@ class Import_all_commits(dd.Action):
             Q(start_date__lte=commit.created.date()),
             Q(end_date__gte=commit.created.date()) | Q(end_date=None),
             Q(start_time__lte=commit.created.time()),
-            Q(end_time__gte=commit.created.time()| Q(end_date=None))
-        )
+            Q(end_time__gte=commit.created.time()) | Q(end_date=None))
+
 
 
 class Import_new_commits(Import_all_commits):
@@ -120,7 +120,7 @@ class Import_new_commits(Import_all_commits):
         pks = frozenset(
             pk[0] for pk in rt.models.github.Commit.objects.values_list(rt.models.github.Commit._meta.pk.name)
                         )
-        for commit in super(Import_all_commits, self).get_commits(repo, **kw):
+        for commit in super(Import_new_commits, self).get_commits(repo, **kw):
             if commit.sha in pks:
                 break
             else:
@@ -137,6 +137,6 @@ class Update_all_repos(Import_new_commits):
         # repo = ar.selected_rows[0] #
         self.run_from_code(ar, repo=None, **kw)
 
-    def run_from_code(self, ar, repo, *args, **kw):
+    def run_from_code(self, ar, *args, **kw):
         for repo in rt.models.github.Repository.objects.all():
             super(Update_all_repos, self).run_from_code(ar, repo, *args, **kw)

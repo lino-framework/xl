@@ -81,11 +81,11 @@ class CommitsByTicket(Commits):
         for c in sar:
             #todo have another js button that will expend the summary into the complete description.
             html += "<li><a href={commit_url}>{sha}</a>:{user}:{date}<br/>{summary}</li>".format(
-                commit_url = c.url,
-                sha = c.sha[:6],
-                user = E.tostring(ar.obj2html(c.user, str(c.user))),
-                date = E.tostring(ar.obj2html(c, naturaltime(c.created),title = c.created.strftime('%Y-%m-%d %H:%M'))),
-                summary=c.summary,
+                commit_url=c.url,
+                sha=c.sha[:6],
+                user=E.tostring(ar.obj2html(c.user,str(c.user))),
+                date=E.tostring(ar.obj2html(c, naturaltime(c.created),title = c.created.strftime('%Y-%m-%d %H:%M'))),
+                summar=c.summary,
             )
 
         html += "</ul>"
