@@ -9,7 +9,7 @@ from lino.modlib.users.mixins import Authored
 import requests
 import json
 from django.utils import timezone
-from .actions import Import_all_commits
+from .actions import Import_all_commits, Import_new_commits, Update_all_repos
 from lino.mixins import Created
 from lino.utils.xmlgen.html import E
 
@@ -53,6 +53,8 @@ class Repository(dd.Model):
                              blank=True)
 
     import_all_commits = Import_all_commits()
+    import_new_commits = Import_new_commits()
+    update_all_repos = Update_all_repos()
 
     def __str__(self):
         return "%s:%s"%(self.user_name, self.repo_name)
