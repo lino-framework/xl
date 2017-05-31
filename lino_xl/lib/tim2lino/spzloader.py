@@ -367,10 +367,11 @@ class TimLoader(TimLoader):
                     par1.save()
                     dd.logger.warning("Failed to delete {} : {}".format(
                         par1, e))
+        super(TimLoader, self).finalize()
+        
       except Exception as e:
         dd.logger.warning("Exception during finalize : {}".format(e))
               
-      super(TimLoader, self).finalize()
                 
     def objects(self):
 
