@@ -100,7 +100,6 @@ class Repository(dd.Model):
         return [E.a(self.repo_name, href=self.url)]
 
 
-
 class Commit(Created, Authored):
     """A **Commit** is a git commit sha and other relevant data.
 
@@ -152,17 +151,18 @@ class Commit(Created, Authored):
         related_name="Commits",
         blank=True, null=True)
 
-    git_user = dd.CharField(_("Git User Name"),
+    git_user = dd.CharField(_("Github User Name"),
                             blank=True,
-                            max_length=39, )
+                            max_length=39,
+                            editable=False)
     commiter_name = dd.CharField(_("Git User Name"),
                             blank=True,
-                            max_length=100, )
+                            max_length=100,)
     sha = dd.CharField(_("Sha Hash"),
                        max_length=40,
                        primary_key=True,
                        editable=False)
-    url = dd.CharField(_("Commit page"),
+    url = dd.models.URLField(_("Commit page"),
                        max_length=255,
                        editable=False)
     description = dd.models.TextField(_("Description"),
@@ -175,7 +175,7 @@ class Commit(Created, Authored):
                            max_length=100)
     comment = dd.CharField(_("Comment"),
                            blank=True, null=True,
-                           max_length=50)
+                           max_length=255)
 
     unassignable = dd.models.BooleanField(_("Unassignable"),
                                        default=False,
