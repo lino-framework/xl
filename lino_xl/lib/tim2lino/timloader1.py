@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Import legacy data from TIM (basic version).
@@ -35,9 +35,11 @@ from dateutil import parser as dateparser
 
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from django.utils.timezone import make_aware
 
 from lino.utils import dblogger
 from lino.utils import dpy
+from lino.mixins import Created
 
 from lino_xl.lib.accounts.choicelists import AccountTypes
 from lino_xl.lib.accounts.utils import ZERO
@@ -46,8 +48,6 @@ from lino.core.utils import obj2str
 from lino.core.utils import is_valid_email
 
 from lino_xl.lib.ledger.utils import myround
-from lino_xl.lib.ledger.choicelists import JournalGroups
-# from lino_xl.lib.ledger.fixtures.std import payment_terms
 from lino_xl.lib.tim2lino.utils import TimLoader
 
 from lino.api import dd, rt
@@ -617,11 +617,22 @@ class TimLoader(TimLoader):
         #         row['RUENUM'],
         #         row['RUEBTE'])))
 
+        # the following code needs the top-level (possibly abstract)
+        # models:
+        from lino_xl.lib.contacts.models import Person, Company
+        from lino_xl.lib.households.models import Household
+
         self.store(kw, id=self.par_pk(row.idpar))
 
         cl = self.par_class(row)
         
-        if cl in (Company, Person, Household):
+        if cl is None:
+            dblogger.warning(
+                "Ignored PAR record %s (IdPrt %r)" % (
+                    row.idpar, row.idprt))
+            return
+        
+        if issubclass(cl, (Company, Person, Household)):
             email = row.email.strip()
             if email and is_valid_email(email):
                 self.store(kw, email=email)
@@ -629,8 +640,8 @@ class TimLoader(TimLoader):
         if 'idreg' in row:
             self.store(kw, vat_regime=vat_regime(row.idreg.strip()))
             
-        if cl is Company:
-            cl = Company
+        if issubclass(cl, Company):
+            # cl = Company
             self.store(
                 kw,
                 prefix=row['allo'].strip(),
@@ -639,16 +650,18 @@ class TimLoader(TimLoader):
             if dd.is_installed('vat'):
                 self.store(
                     kw, vat_id=row['notva'].strip())
-        elif cl is Person:
+                
+        if issubclass(cl, Person):
             # self.store(kw, prefix=row.allo)
             # kw.update(**name2kw(self.decode_string(row.firme)))
             self.store(
                 kw,
                 first_name=row['vorname'].strip(),
-                last_name=row.firme,
+                last_name=row.firme.strip(),
                 # birth_date=row['gebdat'],
                 title=row['allo'].strip(),
             )
+            assert kw['first_name'] or kw['last_name']
             # depends on which dbf module is being used:
             # if 'sex' in row:
             if hasattr(row, 'sex'):
@@ -656,27 +669,28 @@ class TimLoader(TimLoader):
                 sex = row.sex
                 self.store(
                     kw, gender=convert_gender(sex))
-        elif cl is Household:
+        if issubclass(cl, Household):
             self.store(
                 kw,
                 name=row.firme.strip() + ' ' + row.vorname.strip(),
             )
-        elif cl is List:
+        if issubclass(cl, List):
             self.store(
                 kw,
                 name=row.firme,
             )
-        else:
-            dblogger.warning(
-                "Ignored PAR record %s (IdPrt %r)" % (
-                    row.idpar, row.idprt))
-            return
-        if cl is not List:
+        
+        if issubclass(cl, Created):
             if 'datcrea' in row:
                 created = row.get('datcrea', None)
                 if created:
+                    created = datetime.datetime.combine(
+                        created, datetime.time(0, 0, 0))
+                    if settings.USE_TZ:
+                        created = make_aware(created)
                     kw.update(created=created)
 
+        if cl is not List:
             language = isolang(row['langue'])
             
             if settings.SITE.get_language_info(language):
@@ -820,10 +834,12 @@ class TimLoader(TimLoader):
     def create_users(self):
 
         self.ROOT = users.User(
-            username='tim', name="tim",
+            username='tim', first_name='tim', 
             id=1,
             profile=users.UserTypes.admin)
         self.ROOT.set_password("1234")
+        # if isinstance(self.ROOT, rt.models.contacts.Partner):
+        #     self.ROOT.name = "tim"
         yield self.ROOT
 
     def get_user(self, idusr=None):
