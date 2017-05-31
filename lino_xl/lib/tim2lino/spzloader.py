@@ -326,7 +326,7 @@ class TimLoader(TimLoader):
         #     yield rt.modules.notes.Note(**kw)
 
     def finalize(self):
-        super(TimLoader, self).finalize()
+      try:
         for (par1, idpar2) in self.obsolete_list:
             try:
                 par2 = Client.objects.get(id=idpar2)
@@ -363,10 +363,14 @@ class TimLoader(TimLoader):
                     par1.delete()
                 except Exception as e:
                     par1.obsoletes = par2
+                    par1.full_clean()
+                    par1.save()
                     dd.logger.warning("Failed to delete {} : {}".format(
                         par1, e))
-                # par1.full_clean()
-                # par1.save()
+      except Exception as e:
+        dd.logger.warning("Exception during finalize : {}".format(e))
+              
+      super(TimLoader, self).finalize()
                 
     def objects(self):
 
