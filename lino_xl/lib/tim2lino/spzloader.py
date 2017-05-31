@@ -326,7 +326,6 @@ class TimLoader(TimLoader):
         #     yield rt.modules.notes.Note(**kw)
 
     def finalize(self):
-      try:
         for (par1, idpar2) in self.obsolete_list:
             try:
                 par2 = Client.objects.get(id=idpar2)
@@ -337,27 +336,29 @@ class TimLoader(TimLoader):
                     obj.client = par2
                     obj.full_clean()
                     obj.save()
-                for obj in rt.models.lists.Member.objects.filter(partner=par1):
-                    obj.partner = par2
-                    obj.full_clean()
-                    obj.save()
-                    
-                for obj in rt.models.households.Member.objects.filter(person=par1):
-                    obj.person = par2
-                    obj.full_clean()
-                    obj.save()
-                    
-                for obj in rt.models.humanlinks.Link.objects.filter(
-                        parent=par1):
-                    obj.parent = par2
-                    obj.full_clean()
-                    obj.save()
-                    
-                for obj in rt.models.humanlinks.Link.objects.filter(
-                        child=par1):
-                    obj.child = par2
-                    obj.full_clean()
-                    obj.save()
+
+                if isinstance(par1, Person):
+                    for obj in rt.models.lists.Member.objects.filter(partner=par1):
+                        obj.partner = par2
+                        obj.full_clean()
+                        obj.save()
+
+                    for obj in rt.models.households.Member.objects.filter(person=par1):
+                        obj.person = par2
+                        obj.full_clean()
+                        obj.save()
+
+                    for obj in rt.models.humanlinks.Link.objects.filter(
+                            parent=par1):
+                        obj.parent = par2
+                        obj.full_clean()
+                        obj.save()
+
+                    for obj in rt.models.humanlinks.Link.objects.filter(
+                            child=par1):
+                        obj.child = par2
+                        obj.full_clean()
+                        obj.save()
                     
                 try:
                     par1.delete()
@@ -369,9 +370,6 @@ class TimLoader(TimLoader):
                         par1, e))
         super(TimLoader, self).finalize()
         
-      except Exception as e:
-        dd.logger.warning("Exception during finalize : {}".format(e))
-              
                 
     def objects(self):
 
