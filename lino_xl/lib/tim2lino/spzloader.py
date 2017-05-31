@@ -347,12 +347,24 @@ class TimLoader(TimLoader):
                     obj.full_clean()
                     obj.save()
                     
+                for obj in rt.models.humanlinks.Link.objects.filter(
+                        parent=par1):
+                    obj.parent = par2
+                    obj.full_clean()
+                    obj.save()
+                    
+                for obj in rt.models.humanlinks.Link.objects.filter(
+                        child=par1):
+                    obj.child = par2
+                    obj.full_clean()
+                    obj.save()
+                    
                 try:
                     par1.delete()
-                except Warning as e:
+                except Exception as e:
+                    par1.obsoletes = par2
                     dd.logger.warning("Failed to delete {} : {}".format(
                         par1, e))
-                    # par1.obsoletes = par2
                 # par1.full_clean()
                 # par1.save()
                 
