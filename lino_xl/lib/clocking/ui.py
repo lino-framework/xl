@@ -140,7 +140,7 @@ class Sessions(dd.Table):
             qs = qs.filter(ticket__project__in=pv.project.whole_clan())
 
         if pv.company:
-            qs = qs.filter(ticket__room__company=pv.company)
+            qs = qs.filter(ticket__site__company=pv.company)
             # if dd.is_installed('deploy'):
             #     qs = qs.filter(
             #         ticket__deployments_by_ticket__milestone__room__company=pv.company)
