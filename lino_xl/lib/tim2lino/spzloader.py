@@ -370,7 +370,7 @@ class TimLoader(TimLoader):
         super(TimLoader, self).finalize()
         
       except Exception as e:
-        dd.logger.warning("Exception during finalize : {}".format(e))
+        dd.logger.warning("Exception during finalize : %r", e)
               
                 
     def objects(self):
