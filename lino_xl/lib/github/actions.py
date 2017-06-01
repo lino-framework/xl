@@ -66,9 +66,11 @@ class Import_all_commits(dd.Action):
 
     def run_from_ui(self, ar, **kw):
         repo = ar.selected_rows[0]
-        self.run_from_code(ar, repo, **kw)
+        kw['repo'] = repo
+        self.run_from_code(ar, **kw)
 
-    def run_from_code(self, ar, repo, *args, **kw):
+    def run_from_code(self, ar, *args, **kw):
+        repo = kw.get('repo', None) or ar.selected_rows[0]
         Ticket = rt.models.tickets.Ticket
         user_finder = User_commit_finder()
         for commit in self.get_commits(repo, **kw):
@@ -135,8 +137,9 @@ class Update_all_repos(Import_new_commits):
 
     def run_from_ui(self, ar, **kw):
         # repo = ar.selected_rows[0] #
-        self.run_from_code(ar, repo=None, **kw)
+        self.run_from_code(ar, **kw)
 
     def run_from_code(self, ar, *args, **kw):
         for repo in rt.models.github.Repository.objects.all():
-            super(Update_all_repos, self).run_from_code(ar, repo, *args, **kw)
+            kw['repo'] = repo
+            super(Update_all_repos, self).run_from_code(ar, *args, **kw)
