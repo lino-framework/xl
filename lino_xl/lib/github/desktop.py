@@ -85,7 +85,7 @@ class CommitsByTicket(Commits):
                 sha=c.sha[:6],
                 user=E.tostring(ar.obj2html(c.user,str(c.user))),
                 date=E.tostring(ar.obj2html(c, naturaltime(c.created),title = c.created.strftime('%Y-%m-%d %H:%M'))),
-                summar=c.summary,
+                summary=c.summary,
             )
 
         html += "</ul>"
