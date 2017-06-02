@@ -223,6 +223,6 @@ dd.inject_field(
     "users.User", 'github_username',
     dd.CharField(_("Github Username"), max_length=39, blank=True))
 
-# @dd.schedule_often(600)
-# def update_all_repos():
-#     Repository.update_all_repos.run_from_code(rt.actors.github.Repositories.request())
+@dd.schedule_often(3600)
+def update_all_repos():
+    Repository.update_all_repos.run_from_code(rt.actors.github.Repositories.request())
