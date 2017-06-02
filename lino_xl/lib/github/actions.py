@@ -69,6 +69,7 @@ class Import_all_commits(dd.Action):
         repo = ar.selected_rows[0]
         kw['repo'] = repo
         self.run_from_code(ar, **kw)
+        ar.set_response(refresh_all=True)
 
     def run_from_code(self, ar, *args, **kw):
         repo = kw.get('repo', None)
@@ -98,7 +99,6 @@ class Import_all_commits(dd.Action):
                     commit.comment = ", ".join([str(s.ticket) for s in sessions])
             # commit.full_clean() #Just update records
             commit.save()
-        ar.set_response(refresh_all=True)
 
     @staticmethod
     def find_sessions(commit, user):
@@ -146,4 +146,7 @@ class Update_all_repos(Import_new_commits):
     def run_from_code(self, ar, *args, **kw):
         for repo in rt.models.github.Repository.objects.all():
             kw['repo'] = repo
-            super(Update_all_repos, self).run_from_code(ar, *args, **kw)
+            try:
+               super(Update_all_repos, self).run_from_code(ar, *args, **kw)
+            except Exception as e:
+                raise Exception("Error when getting commits in {}. {}".format(repo,e))
