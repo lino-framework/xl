@@ -125,7 +125,7 @@ class Import_new_commits(Import_all_commits):
             sha[0] for sha in rt.models.github.Commit.objects.values_list('sha')
                         )
         for commit in super(Import_new_commits, self).get_commits(**kw):
-            if commit.sha in pks:
+            if commit.sha in shas:
                 break
             else:
                 yield commit
