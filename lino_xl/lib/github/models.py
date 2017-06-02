@@ -48,7 +48,7 @@ class Repository(dd.Model):
                              max_length=39)
     repo_name = dd.CharField(_("Repository Name"),
                              max_length=100)
-    o_auth    = dd.PasswordField(_("OAuth Token"),
+    o_auth    = dd.CharField(_("OAuth Token"),
                              max_length=40,
                              blank=True)
 
@@ -162,7 +162,8 @@ class Commit(Created, Authored):
                             max_length=100,)
     sha = dd.CharField(_("Sha Hash"),
                        max_length=40,
-                       primary_key=True,
+                       # primary_key=True, #Causes Issues with extjs6
+                       unique=True,
                        editable=False)
     url = dd.models.URLField(_("Commit page"),
                        max_length=255,
@@ -200,7 +201,14 @@ class Commit(Created, Authored):
         :param repo: repo which this commit is from
         :return: Commit instance, without doing session lookup, just parses json return values and returns instance.
         """
+        try:
+            c = Commit.objects.get(sha = d['sha'])
+            id = c.id
+        except Commit.DoesNotExist:
+            id = None
+
         params = dict(
+            id = id,
             repository=repo,
             user=None,
             ticket=None,

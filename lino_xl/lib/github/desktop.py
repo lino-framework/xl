@@ -54,7 +54,7 @@ class Commits(dd.Table):
     detail_layout = """
         repository sha ticket
         user git_user url
-        summary comment
+        created comment
         description
     """
     order_by = ["-created"]

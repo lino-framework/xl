@@ -104,12 +104,10 @@ class Import_all_commits(dd.Action):
     def find_sessions(commit, user):
         return rt.models.clocking.Session.objects.filter(
             Q(user=user),
-            Q(start_date__lte=commit.created.date()),
-            Q(end_date__gte=commit.created.date()) | Q(end_date=None),
+            (Q(start_date=commit.created.date()) & Q(end_date__isnull=True)) | #Because some sessiosn don't have a end_date but are finished on the same day.
+            (Q(start_date__lte=commit.created.date()) & Q(end_date__gte=commit.created.date())),
             Q(start_time__lte=commit.created.time()),
             Q(end_time__gte=commit.created.time()) | Q(end_date=None))
-
-
 
 class Import_new_commits(Import_all_commits):
     """
@@ -142,11 +140,12 @@ class Update_all_repos(Import_new_commits):
     def run_from_ui(self, ar, **kw):
         # repo = ar.selected_rows[0] #
         self.run_from_code(ar, **kw)
+        ar.set_response(refresh_all=True)
 
     def run_from_code(self, ar, *args, **kw):
         for repo in rt.models.github.Repository.objects.all():
             kw['repo'] = repo
-            try:
-               super(Update_all_repos, self).run_from_code(ar, *args, **kw)
-            except Exception as e:
-                raise Exception("Error when getting commits in {}. {}".format(repo,e))
+            # try:
+            super(Update_all_repos, self).run_from_code(ar, *args, **kw)
+            # except Exception as e:
+            #     logger.exception("e")
