@@ -121,8 +121,8 @@ class Import_new_commits(Import_all_commits):
 
 
     def get_commits(self, **kw):
-        pks = frozenset(
-            pk[0] for pk in rt.models.github.Commit.objects.values_list(rt.models.github.Commit._meta.pk.name)
+        shas = frozenset(
+            sha[0] for sha in rt.models.github.Commit.objects.values_list('sha')
                         )
         for commit in super(Import_new_commits, self).get_commits(**kw):
             if commit.sha in pks:
