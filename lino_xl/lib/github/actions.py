@@ -58,9 +58,10 @@ class Import_all_commits(dd.Action):
     # sort_index = 52
     label = _("Import All")
 
-    def get_commits(self, repo, **kw):
-        for c in repo.github_api_get_all_comments(sha=kw.get('sha', None)):
-            commit = rt.models.github.Commit.from_api(c, repo)
+    def get_commits(self, **kw):
+        for c in kw.get('repo').github_api_get_all_comments(sha=kw.get('sha', None)):
+            #todo Check to make sure the request worked or not
+            commit = rt.models.github.Commit.from_api(c, kw.get('repo'))
             yield commit
 
 
@@ -68,12 +69,16 @@ class Import_all_commits(dd.Action):
         repo = ar.selected_rows[0]
         kw['repo'] = repo
         self.run_from_code(ar, **kw)
+        ar.set_response(refresh_all=True)
 
     def run_from_code(self, ar, *args, **kw):
-        repo = kw.get('repo', None) or ar.selected_rows[0]
+        repo = kw.get('repo', None)
+        if repo is None:
+            repo = ar.selected_rows[0]
+            kw['repo'] = repo
         Ticket = rt.models.tickets.Ticket
         user_finder = User_commit_finder()
-        for commit in self.get_commits(repo, **kw):
+        for commit in self.get_commits(**kw):
             commit.user = user_finder.find_user(commit)
 
             # Parse the title if there's  a ticket #
@@ -94,18 +99,15 @@ class Import_all_commits(dd.Action):
                     commit.comment = ", ".join([str(s.ticket) for s in sessions])
             # commit.full_clean() #Just update records
             commit.save()
-        ar.set_response(refresh_all=True)
 
     @staticmethod
     def find_sessions(commit, user):
         return rt.models.clocking.Session.objects.filter(
             Q(user=user),
-            Q(start_date__lte=commit.created.date()),
-            Q(end_date__gte=commit.created.date()) | Q(end_date=None),
+            (Q(start_date=commit.created.date()) & Q(end_date__isnull=True)) | #Because some sessiosn don't have a end_date but are finished on the same day.
+            (Q(start_date__lte=commit.created.date()) & Q(end_date__gte=commit.created.date())),
             Q(start_time__lte=commit.created.time()),
             Q(end_time__gte=commit.created.time()) | Q(end_date=None))
-
-
 
 class Import_new_commits(Import_all_commits):
     """
@@ -118,12 +120,12 @@ class Import_new_commits(Import_all_commits):
     label = _("Import New")
 
 
-    def get_commits(self, repo, **kw):
-        pks = frozenset(
-            pk[0] for pk in rt.models.github.Commit.objects.values_list(rt.models.github.Commit._meta.pk.name)
+    def get_commits(self, **kw):
+        shas = frozenset(
+            sha[0] for sha in rt.models.github.Commit.objects.values_list('sha')
                         )
-        for commit in super(Import_new_commits, self).get_commits(repo, **kw):
-            if commit.sha in pks:
+        for commit in super(Import_new_commits, self).get_commits(**kw):
+            if commit.sha in shas:
                 break
             else:
                 yield commit
@@ -138,8 +140,12 @@ class Update_all_repos(Import_new_commits):
     def run_from_ui(self, ar, **kw):
         # repo = ar.selected_rows[0] #
         self.run_from_code(ar, **kw)
+        ar.set_response(refresh_all=True)
 
     def run_from_code(self, ar, *args, **kw):
         for repo in rt.models.github.Repository.objects.all():
             kw['repo'] = repo
+            # try:
             super(Update_all_repos, self).run_from_code(ar, *args, **kw)
+            # except Exception as e:
+            #     logger.exception("e")

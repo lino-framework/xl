@@ -62,7 +62,7 @@ class Feasible(dd.Model):
             for dem in Demand.objects.filter(demander=self):
                 elems.append(dem.skill.obj2href(ar))
             elems = join_elems(elems, ', ')
-            return E.p(*elems)
+            return E.span(*elems)
 
         @classmethod
         def get_parameter_fields(cls, **fields):

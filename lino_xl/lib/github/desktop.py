@@ -54,7 +54,7 @@ class Commits(dd.Table):
     detail_layout = """
         repository sha ticket
         user git_user url
-        summary comment
+        created comment
         description
     """
     order_by = ["-created"]
@@ -78,6 +78,8 @@ class CommitsByTicket(Commits):
         sar = self.request_from(ar, master_instance=obj)
         items = []
         for c in sar:
+            # todo have another js button that will expand the summary
+            # into the complete description.
             items.append(E.li(
                 E.a(c.sha[:6], href=c.url),
                 ar.obj2html(c.user) if c.user else "",
@@ -87,23 +89,6 @@ class CommitsByTicket(Commits):
                     title=c.created.strftime('%Y-%m-%d %H:%M')),
                 E.br(), c.summary))
         return E.ul(*items)
-        # html = ""
-        # html += "<ul>"
-        # for c in sar:
-        #     # todo have another js button that will expand the summary
-        #     # into the complete description.
-        #     ctx.update(user=c.user)
-        #     html += "<li><a href={commit_url}>{sha}</a>:{user}:{date}<br/>{summary}</li>".format(
-        #         commit_url=c.url,
-        #         sha=c.sha[:6],
-        #         user=E.tostring(ar.obj2html(c.user,str(c.user))),
-        #         date=E.tostring()),
-        #         summary=c.summary,
-        #     )
-
-        # html += "</ul>"
-
-        # return ar.html_text(html)
 
 class CommitsByUser(Commits):
     master_key = 'user'
