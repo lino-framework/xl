@@ -82,6 +82,7 @@ class CommitsByTicket(Commits):
             # into the complete description.
             items.append(E.li(
                 E.a(c.sha[:6], href=c.url),
+                ":" if c.user else "",
                 ar.obj2html(c.user) if c.user else "",
                 ":",
                 ar.obj2html(
