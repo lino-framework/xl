@@ -76,21 +76,34 @@ class CommitsByTicket(Commits):
     @classmethod
     def get_slave_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
-        html = ""
-        html += "<ul>"
+        items = []
         for c in sar:
-            #todo have another js button that will expend the summary into the complete description.
-            html += "<li><a href={commit_url}>{sha}</a>:{user}:{date}<br/>{summary}</li>".format(
-                commit_url=c.url,
-                sha=c.sha[:6],
-                user=E.tostring(ar.obj2html(c.user,str(c.user))),
-                date=E.tostring(ar.obj2html(c, naturaltime(c.created),title = c.created.strftime('%Y-%m-%d %H:%M'))),
-                summar=c.summary,
-            )
+            items.append(E.li(
+                E.a(c.sha[:6], href=c.url),
+                ar.obj2html(c.user) if c.user else "",
+                ":",
+                ar.obj2html(
+                    c, naturaltime(c.created),
+                    title=c.created.strftime('%Y-%m-%d %H:%M')),
+                E.br(), c.summary))
+        return E.ul(*items)
+        # html = ""
+        # html += "<ul>"
+        # for c in sar:
+        #     # todo have another js button that will expand the summary
+        #     # into the complete description.
+        #     ctx.update(user=c.user)
+        #     html += "<li><a href={commit_url}>{sha}</a>:{user}:{date}<br/>{summary}</li>".format(
+        #         commit_url=c.url,
+        #         sha=c.sha[:6],
+        #         user=E.tostring(ar.obj2html(c.user,str(c.user))),
+        #         date=E.tostring()),
+        #         summary=c.summary,
+        #     )
 
-        html += "</ul>"
+        # html += "</ul>"
 
-        return ar.html_text(html)
+        # return ar.html_text(html)
 
 class CommitsByUser(Commits):
     master_key = 'user'
