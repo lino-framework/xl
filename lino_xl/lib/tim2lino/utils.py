@@ -17,6 +17,7 @@ from lino.utils import dbfreader
 class TimLoader(object):
 
     LEN_IDGEN = 6
+    ROOT  = None
 
     archived_tables = set()
     archive_name = None
@@ -42,7 +43,10 @@ class TimLoader(object):
                 dd.logger.warning(
                     "%d duplicate zip codes in %s : %s",
                     len(codes), country, ', '.join(codes))
-            
+
+        if self.ROOT is None:
+            return
+        
         ses = rt.login(self.ROOT.username)
 
         Journal = rt.models.ledger.Journal

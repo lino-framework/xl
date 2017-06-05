@@ -89,8 +89,10 @@ class JournalEntry(DatedFinancialVoucher, ProjectRelated):
         # dd.logger.info("20151211 FinancialVoucher.get_wanted_movements()")
         amount, movements_and_items = self.get_finan_movements()
         if amount:
-            raise Exception("Missing amount %s in movements" % amount)
-        return movements_and_items
+            raise Warning(_("Missing amount {} in movements").format(
+                amount))
+        for m, i in movements_and_items:
+            yield m
 
 class PaymentOrder(FinancialVoucher, Printable):
     """A **payment order** is when a user instructs a bank to execute a

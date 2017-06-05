@@ -14,7 +14,7 @@ import datetime
 
 
 from lino.utils import mti
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 
 from .timloader1 import TimLoader
 
@@ -25,6 +25,7 @@ Role = dd.resolve_model("contacts.Role")
 Household = dd.resolve_model('households.Household')
 Product = dd.resolve_model('products.Product')
 List = dd.resolve_model('lists.List')
+Client = rt.models.tera.Client
 
 Account = dd.resolve_model('accounts.Account')
 
@@ -53,7 +54,7 @@ class TimLoader(TimLoader):
     def __init__(self, *args, **kwargs):
         super(TimLoader, self).__init__(*args, **kwargs)
         self.imported_sessions = set([])
-        
+        self.obsolete_list = []
         plptypes = dict()
         plptypes['01'] = LinkTypes.parent
         plptypes['01R'] = None
@@ -68,11 +69,11 @@ class TimLoader(TimLoader):
         self.linktypes = plptypes
         
     def par_pk(self, pk):
-        if pk.startswith('E'):
-            return 1000000 + int(pk[1:])
-        elif pk.startswith('S'):
-            return 2000000 + int(pk[1:])
         try:
+            if pk.startswith('E'):
+                return 1000000 + int(pk[1:])
+            elif pk.startswith('S'):
+                return 2000000 + int(pk[1:])
             return int(pk)
         except ValueError:
             return None
@@ -92,7 +93,7 @@ class TimLoader(TimLoader):
         elif prt == 'Z':  # Zahler
             return Company
         elif prt == 'P':  # Personen
-            return Person
+            return Client
         elif prt == 'G':  # Lebensgruppen
             return Household
         elif prt == 'T':  # Therapeutische Gruppen
@@ -105,11 +106,29 @@ class TimLoader(TimLoader):
                 obj.team = self.eupen
             elif row.idpar.startswith('S'):
                 obj.team = self.stvith
+            if row.idpar != row.idpar2:
+                self.obsolete_list.append(
+                    (obj, self.par_pk(row.idpar2)))
             # if isinstance(obj, Partner):
             #     obj.isikukood = row['regkood'].strip()
             #     obj.created = row['datcrea']
             #     obj.modified = datetime.datetime.now()
             yield obj
+            for idusr in (row.idusr1, row.idusr2, row.idusr3):
+                user = self.get_user(idusr)
+                if user is not None:
+                    if isinstance(obj, dd.plugins.coachings.client_model):
+                        kw = dict()
+                        if row.date1:
+                            kw.update(start_date=row.date1)
+                            if row.date2 and row.date2 > row.date1:
+                                # avoid "Date period ends before it started."
+                                kw.update(end_date=row.date2)
+                        yield rt.models.coachings.Coaching(
+                            client=obj, user=user, **kw)
+                    else:
+                        dd.logger.warning(
+                            "No coaching for non-client %s", obj)
 
     # def load_pls(self, row, **kw):
     #     kw.update(ref=row.idpls.strip())
@@ -122,6 +141,9 @@ class TimLoader(TimLoader):
         except User.DoesNotExist:
             return None
 
+    def create_users(self):
+        pass
+        
     def load_usr(self, row, **kw):
         kw.update(username=row.userid.strip().lower())
         kw.update(first_name=row.name.strip())
@@ -214,7 +236,7 @@ class TimLoader(TimLoader):
             "Ignored PLP %s : invalid plptype", row)
 
 
-    def load_dls(self, row, **kw):
+    def unused_load_dls(self, row, **kw):
         if not row.iddls.strip():
             return
         # if not row.idpin.strip():
@@ -303,14 +325,66 @@ class TimLoader(TimLoader):
         #     kw.update(date=obj.start_date)
         #     yield rt.modules.notes.Note(**kw)
 
+    def finalize(self):
+        for (par1, idpar2) in self.obsolete_list:
+            try:
+                par2 = Client.objects.get(id=idpar2)
+            except Client.DoesNotExist:
+                pass
+            else:
+                for obj in rt.models.coachings.Coaching.objects.filter(client=par1):
+                    obj.client = par2
+                    obj.full_clean()
+                    obj.save()
+
+                if isinstance(par1, Person):
+                    for obj in rt.models.lists.Member.objects.filter(partner=par1):
+                        obj.partner = par2
+                        obj.full_clean()
+                        obj.save()
+
+                    for obj in rt.models.households.Member.objects.filter(person=par1):
+                        obj.person = par2
+                        obj.full_clean()
+                        obj.save()
+
+                    for obj in rt.models.humanlinks.Link.objects.filter(
+                            parent=par1):
+                        obj.parent = par2
+                        obj.full_clean()
+                        obj.save()
+
+                    for obj in rt.models.humanlinks.Link.objects.filter(
+                            child=par1):
+                        obj.child = par2
+                        obj.full_clean()
+                        obj.save()
+                    
+                try:
+                    par1.delete()
+                except Exception as e:
+                    par1.obsoletes = par2
+                    par1.full_clean()
+                    par1.save()
+                    dd.logger.warning("Failed to delete {} : {}".format(
+                        par1, e))
+        super(TimLoader, self).finalize()
+        
+                
     def objects(self):
 
         Team = rt.modules.teams.Team
+        Country = rt.models.countries.Country
         self.eupen = create(Team, name="Eupen")
         yield self.eupen
         self.stvith = create(Team, name="St. Vith")
         yield self.stvith
         
+        yield Country(isocode='LU', **dd.str2kw('name', _("Luxemburg")))
+        yield Country(isocode='PL', **dd.str2kw('name', _("Poland")))
+        yield Country(isocode='AU', **dd.str2kw('name', _("Austria")))
+        yield Country(isocode='US', short_code='USA',
+                      **dd.str2kw('name', _("United States")))
         yield self.load_dbf('USR')
         
         yield super(TimLoader, self).objects()

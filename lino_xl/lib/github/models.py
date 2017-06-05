@@ -9,8 +9,9 @@ from lino.modlib.users.mixins import Authored
 import requests
 import json
 from django.utils import timezone
-from .actions import Import_all_commits
+from .actions import Import_all_commits, Import_new_commits, Update_all_repos
 from lino.mixins import Created
+from lino.utils.xmlgen.html import E
 
 class Repository(dd.Model):
     """A **Repository** is a git username and repo name,
@@ -47,25 +48,31 @@ class Repository(dd.Model):
                              max_length=39)
     repo_name = dd.CharField(_("Repository Name"),
                              max_length=100)
-    o_auth    = dd.PasswordField(_("OAuth Token"),
+    o_auth    = dd.CharField(_("OAuth Token"),
                              max_length=40,
                              blank=True)
 
     import_all_commits = Import_all_commits()
+    import_new_commits = Import_new_commits()
+    update_all_repos = Update_all_repos()
 
     def __str__(self):
         return "%s:%s"%(self.user_name, self.repo_name)
 
     @dd.displayfield(_("Url"))
     def url(self, ar):
-        return "https://api.github.com/repos/%s/%s/commits"%(self.user_name,
-                                                      self.repo_name)
+        return "https://github.com/%s/%s/"%(self.user_name,
+                                            self.repo_name)
+
+    def api_url(self):
+        return "https://api.github.com/repos/%s/%s/" % (self.user_name,
+                                                        self.repo_name)
 
     @dd.displayfield(_("Number Of commits"))
     def size(self, ar):
         return self.commits.count()
 
-    def github_api_get_all_comments(self,):
+    def github_api_get_all_comments(self, sha=None):
         """
 
         :return: yields json commits of comments for this repo's master branch untill none are left
@@ -77,18 +84,22 @@ class Repository(dd.Model):
         if self.o_auth:
             parms['access_token'] = self.o_auth
 
-        r = requests.get(self.url, parms)
+        if sha is not None:
+
+            parms['sha'] = sha
+        r = requests.get(self.api_url() + 'commits', parms)
         content = json.loads(r.content)
         for c in content:
             yield c
-        while 'rel="next"' in r.headers['link']:
+        while 'rel="next"' in r.headers.get('link', ""):
             parms['page'] += 1
-            r = requests.get(self.url, parms)
-
+            r = requests.get(self.api_url() + 'commits', parms)
             content = json.loads(r.content)
             for c in content:
                 yield c
 
+    def get_overview_elems(self, ar):
+        return [E.a(self.repo_name, href=self.url)]
 
 
 class Commit(Created, Authored):
@@ -142,17 +153,19 @@ class Commit(Created, Authored):
         related_name="Commits",
         blank=True, null=True)
 
-    git_user = dd.CharField(_("Git User Name"),
+    git_user = dd.CharField(_("Github User Name"),
                             blank=True,
-                            max_length=39, )
+                            max_length=39,
+                            editable=False)
     commiter_name = dd.CharField(_("Git User Name"),
                             blank=True,
-                            max_length=100, )
+                            max_length=100,)
     sha = dd.CharField(_("Sha Hash"),
                        max_length=40,
-                       primary_key=True,
+                       # primary_key=True, #Causes Issues with extjs6
+                       unique=True,
                        editable=False)
-    url = dd.CharField(_("Commit page"),
+    url = dd.models.URLField(_("Commit page"),
                        max_length=255,
                        editable=False)
     description = dd.models.TextField(_("Description"),
@@ -165,12 +178,21 @@ class Commit(Created, Authored):
                            max_length=100)
     comment = dd.CharField(_("Comment"),
                            blank=True, null=True,
-                           max_length=50)
+                           max_length=255)
 
     unassignable = dd.models.BooleanField(_("Unassignable"),
                                        default=False,
                                        editable=True)
     data = dd.models.TextField(_("Raw json") )
+
+    def get_overview_elems(self, ar):
+        return [E.a(self.sha, href=self.url)]
+
+    # @dd.displayfield(_("GH diff"))
+    # def clickable_url(self, obj, ar):
+    #     return E.a(self.sha, href=self.url)
+
+
 
     @classmethod
     def from_api(cls, d, repo):
@@ -179,8 +201,14 @@ class Commit(Created, Authored):
         :param repo: repo which this commit is from
         :return: Commit instance, without doing session lookup, just parses json return values and returns instance.
         """
+        try:
+            c = Commit.objects.get(sha = d['sha'])
+            id = c.id
+        except Commit.DoesNotExist:
+            id = None
 
         params = dict(
+            id = id,
             repository=repo,
             user=None,
             ticket=None,
@@ -202,3 +230,7 @@ class Commit(Created, Authored):
 dd.inject_field(
     "users.User", 'github_username',
     dd.CharField(_("Github Username"), max_length=39, blank=True))
+
+@dd.schedule_often(3600)
+def update_all_repos():
+    Repository.update_all_repos.run_from_code(rt.actors.github.Repositories.request())

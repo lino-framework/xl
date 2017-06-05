@@ -9,6 +9,8 @@
 from lino.api import dd, rt, _
 
 from lino import mixins
+from lino.utils.xmlgen.html import E
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from lino.core.roles import Explorer
 from lino_xl.lib.tickets.roles import TicketsStaff, TicketsUser
@@ -48,11 +50,11 @@ class Commits(dd.Table):
     """Base table for Commits"""
     required_roles = dd.login_required((TicketsUser,))
     model = 'github.Commit'
-    column_names = 'repository sha ticket user git_user summary comment:10 *'
+    column_names = 'repository sha ticket user git_user summary created comment:10 *'
     detail_layout = """
         repository sha ticket
         user git_user url
-        summary comment
+        created comment
         description
     """
     order_by = ["-created"]
@@ -68,6 +70,26 @@ class CommitsByRepository(Commits):
 class CommitsByTicket(Commits):
     master_key = 'ticket'
     column_names = 'repository summary user url'
+    slave_grid_format = "summary"
+    # stay_in_grid = True
+
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+        sar = self.request_from(ar, master_instance=obj)
+        items = []
+        for c in sar:
+            # todo have another js button that will expand the summary
+            # into the complete description.
+            items.append(E.li(
+                E.a(c.sha[:6], href=c.url),
+                ":" if c.user else "",
+                ar.obj2html(c.user) if c.user else "",
+                ":",
+                ar.obj2html(
+                    c, naturaltime(c.created),
+                    title=c.created.strftime('%Y-%m-%d %H:%M')),
+                E.br(), c.summary))
+        return E.ul(*items)
 
 class CommitsByUser(Commits):
     master_key = 'user'
