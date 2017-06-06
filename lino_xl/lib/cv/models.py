@@ -611,10 +611,10 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
         verbose_name_plural = _("Job Experiences")
         get_latest_by = 'start_date'
 
-    company = models.CharField(max_length=200, verbose_name=_("company"))
+    company = models.CharField(max_length=200, verbose_name=_("Company"))
     #~ type = models.ForeignKey(JobType,verbose_name=_("job type"))
     title = models.CharField(
-        max_length=200, verbose_name=_("job title"), blank=True)
+        max_length=200, verbose_name=_("Job title"), blank=True)
     status = dd.ForeignKey('cv.Status', blank=True, null=True)
     duration = dd.ForeignKey('cv.Duration', blank=True, null=True)
     regime = dd.ForeignKey('cv.Regime', blank=True, null=True)
