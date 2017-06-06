@@ -877,7 +877,7 @@ class EntriesByController(Events):
     """
     required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
-    column_names = 'when_html summary workflow_buttons *'
+    column_names = 'when_text summary workflow_buttons *'
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
     slave_grid_format = "summary"
@@ -934,7 +934,7 @@ if settings.SITE.project_model:
         master_key = 'project'
         auto_fit_column_widths = True
         stay_in_grid = True
-        column_names = 'when_html user summary workflow_buttons'
+        column_names = 'when_text user summary workflow_buttons'
         # column_names = 'when_text user summary workflow_buttons'
 
 
@@ -1028,7 +1028,7 @@ class OverdueAppointments(Events):
     """
     required_roles = dd.login_required(OfficeStaff)
     label = _("Overdue appointments")
-    column_names = 'when_html user project owner event_type summary workflow_buttons *'
+    column_names = 'when_text user project owner event_type summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
 
@@ -1061,7 +1061,7 @@ class MyUnconfirmedAppointments(MyEntries):
     """
     required_roles = dd.login_required(OfficeUser)
     label = _("Unconfirmed appointments")
-    column_names = 'when_html project summary workflow_buttons *'
+    column_names = 'when_text project summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
     filter = models.Q(state__in=(EntryStates.suggested, EntryStates.draft))

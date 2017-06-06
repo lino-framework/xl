@@ -546,6 +546,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
          all entries on that day (:class:`EntriesByDay
          <lino_xl.lib.cal.ui.EntriesByDay>`).
 
+         Deprecated because it is usually irritating. Use when_text,
+         and users open the detail window as usualy by double-clicking
+         on the row. And then they have an action on each entry for
+         opening EntriesByDay if they want.
+
     .. attribute:: show_conflicting
 
          A :class:`ShowSlaveTable <lino.core.actions.ShowSlaveTable>`
@@ -828,6 +833,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         EntriesByDay = settings.SITE.modules.cal.EntriesByDay
         txt = when_text(self.start_date, self.start_time)
         return EntriesByDay.as_link(ar, self.start_date, txt)
+        # return self.obj2href(ar, txt)
 
     @dd.displayfield(_("Link URL"))
     def url(self, ar):
