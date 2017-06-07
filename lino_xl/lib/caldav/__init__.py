@@ -21,54 +21,55 @@ from django.utils.translation import ugettext_lazy as _
 from . import views
 
 from django.conf.urls import url
-import radicale.config
-import radicale.log
+# import radicale.config
+# import radicale.log
 
-try:
-    from configparser import RawConfigParser as ConfigParser
-except ImportError:
-    from ConfigParser import RawConfigParser as ConfigParser
+# try:
+#     from configparser import RawConfigParser as ConfigParser
+# except ImportError:
+#     from ConfigParser import RawConfigParser as ConfigParser
 
-try:
-    from io import StringIO as StringIO
-except ImportError:
-    from StringIO import StringIO as StringIO
+# try:
+#     from io import StringIO as StringIO
+# except ImportError:
+#     from StringIO import StringIO as StringIO
 
-class HashableConfigParser(ConfigParser):
-    def __hash__(self):
-        output = StringIO()
-        self.write(output)
-        hash_ = hash(output.getvalue())
-        output.close()
-        return hash_
+# Django autoreload fails when some value in settings is not
+# hashable. So we use a hack copied from
+# https://github.com/kyokenn/djradicale/blob/master/djradicale/__init__.py
 
-radicale.config.__class__ = HashableConfigParser
+# class HashableConfigParser(ConfigParser):
+#     def __hash__(self):
+#         output = StringIO()
+#         self.write(output)
+#         hash_ = hash(output.getvalue())
+#         output.close()
+#         return hash_
 
-radicale.log.LOGGER = logging.Logger("maildev")
-# fh = logging.FileHandler('/home/luc/rad.log')
-# fh.setLevel(logging.DEBUG)
-ch = logging.StreamHandler()
-# ch.setLevel(logging.DEBUG)
-# radicale.log.LOGGER.addHandler(fh)
-radicale.log.LOGGER.addHandler(ch)
+# radicale.config.__class__ = HashableConfigParser
+
+# radicale.log.LOGGER = logging.Logger("maildev")
+# # fh = logging.FileHandler('/home/luc/rad.log')
+# # fh.setLevel(logging.DEBUG)
+# ch = logging.StreamHandler()
+# # ch.setLevel(logging.DEBUG)
+# # radicale.log.LOGGER.addHandler(fh)
+# radicale.log.LOGGER.addHandler(ch)
 
 class Plugin(ad.Plugin):
 
-    verbose_name = _("MailDev")
-
+    verbose_name = _("CalDav")
     needs_plugins = ['lino.xl.cal']
 
-    MODULE_LABEL = _("MailDev")
+    # RADICALE_CONFIG = {
+    # 'server': {
+    #     'base_prefix': '/.rad/',
+    #     'realm': 'Radicale - Password Required',
+    # },
+    # 'logging':{
+    #     'debug':True
 
-    RADICALE_CONFIG = {
-    'server': {
-        'base_prefix': '/.rad/',
-        'realm': 'Radicale - Password Required',
-    },
-    'logging':{
-        'debug':True
-
-    },
+    # },
     # 'encoding': {
     #     'request': 'utf-8',
     #     'stock': 'utf-8',
@@ -92,19 +93,20 @@ class Plugin(ad.Plugin):
     #     'carddav': '/pim/%(user)s/addressbook.vcf',
     #     'caldav': '/pim/%(user)s/calendar.ics',
     # },
-    }
+    # }
 
     # radicale.log.LOGGER.debug("xxxxxxxxxxxxxxx")
 
-    for section, values in RADICALE_CONFIG.items():
-        for key, value in values.items():
-            if not radicale.config.has_section(section):
-                radicale.config.add_section(section)
-            radicale.config.set(section, key, value)
+    # def on_init(self):
+    #     for section, values in self.RADICALE_CONFIG.items():
+    #         for key, value in values.items():
+    #             if not radicale.config.has_section(section):
+    #                 radicale.config.add_section(section)
+    #             radicale.config.set(section, key, value)
 
     def get_patterns(self):
         return [
-            url(r'^.rad/(?P<url>.*)$', views.DjRadicaleView.as_view())
+            url(r'^caldav/(?P<url>.*)$', views.CalDavView.as_view())
         ]
 
     def unused_get_middleware_classes(self):

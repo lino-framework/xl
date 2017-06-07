@@ -1,81 +1,51 @@
-# Modified copy of https://github.com/kyokenn/djradicale/blob/master/djradicale/views.py
-# The original is Copyright (C) 2014 Okami, okami@fuzetsu.info and published using GPL.
-# Our modifications are Copyright 2017 Luc Saffre, Tonis Piip
-
-import base64
-import copy
-
 from django.conf import settings
-# from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.views.generic import RedirectView, View
-from django.utils.decorators import method_decorator
-
-from radicale import Application
+from django.views.generic import View
 
 
-class ApplicationResponse(HttpResponse):
-    def start_response(self, status, headers):
-        self.status_code = int(status.split(' ')[0])
-        for k, v in dict(headers).items():
-            self[k] = v
+from datetime import datetime
+from icalendar import Calendar, Event
+import pytz
+from icalendar import vCalAddress, vText
 
+class CalDavView(View):
+    
+    def get(self, request, *args, **kwargs):
+        
+        # code copied from http://icalendar.readthedocs.io/en/latest/usage.html#example
+        
+        cal = Calendar()
+        cal.add('prodid', '-//My calendar product//mxm.dk//')
+        cal.add('version', '2.0')
 
-class DjRadicaleView(Application, View):
-    http_method_names = [
-        'delete',
-        'get',
-        'head',
-        'mkcalendar',
-        'mkcol',
-        'move',
-        'options',
-        'propfind',
-        'proppatch',
-        'put',
-        'report',
-    ]
+        event = Event()
+        event.add('summary', 'Python meeting about calendaring')
+        event.add('dtstart', datetime(2005,4,4,8,0,0,tzinfo=pytz.utc))
+        event.add('dtend', datetime(2005,4,4,10,0,0,tzinfo=pytz.utc))
+        event.add('dtstamp', datetime(2005,4,4,0,10,0,tzinfo=pytz.utc))
+        organizer = vCalAddress('MAILTO:noone@example.com')
 
-    def __init__(self, **kwargs):
-        super(DjRadicaleView, self).__init__()
-        super(View, self).__init__(**kwargs)
+        organizer.params['cn'] = vText('Max Rasmussen')
+        organizer.params['role'] = vText('CHAIR')
+        event['organizer'] = organizer
+        event['location'] = vText('Odense, Denmark')
 
-    def do_HEAD(self, environ, read_collections, write_collections, content,
-                user):
-        """Manage HEAD request."""
-        status, headers, answer = self.do_GET(
-            environ, read_collections, write_collections, content, user)
-        return status, headers, None
+        event['uid'] = '20050115T101010/27346262376@mxm.dk'
+        event.add('priority', 5)
 
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        if not request.method.lower() in self.http_method_names:
-            return self.http_method_not_allowed(request, *args, **kwargs)
-        print "20170403 1z"
-        response = ApplicationResponse()
-        answer = self(request.META, response.start_response)
-        print "20170403"
-        for i in answer:
-            response.write(i)
-        return response
+        attendee = vCalAddress('MAILTO:maxm@example.com')
+        attendee.params['cn'] = vText('Max Rasmussen')
+        attendee.params['ROLE'] = vText('REQ-PARTICIPANT')
+        event.add('attendee', attendee, encode=0)
 
-
-class WellKnownView(DjRadicaleView):
-    @method_decorator(csrf_exempt)
-    def dispatch(self, request, *args, **kwargs):
-        # do not authentificate yet, just get the username
-        if 'HTTP_AUTHORIZATION' in self.request.META:
-            auth = request.META['HTTP_AUTHORIZATION'].split()
-            if len(auth) == 2:
-                if auth[0].lower() == 'basic':
-                    user, password = base64.b64decode(
-                        auth[1]).decode().split(':')
-                    if kwargs.get('type') == 'carddav':
-                        url = '%s/addressbook.vcf/' % user
-                    else:
-                        url = '%s/calendar.ics/' % user
-                    request.META['PATH_INFO'] = reverse(
-                        'djradicale:application', kwargs={'url': url})
-        return super(WellKnownView, self).dispatch(request, *args, **kwargs)
+        attendee = vCalAddress('MAILTO:the-dude@example.com')
+        attendee.params['cn'] = vText('The Dude')
+        attendee.params['ROLE'] = vText('REQ-PARTICIPANT')
+        event.add('attendee', attendee, encode=0)
+        
+        cal.add_component(event)
+        
+        html = cal.to_ical()
+        
+        return HttpResponse(html)
+        

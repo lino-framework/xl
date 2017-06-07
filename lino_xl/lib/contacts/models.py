@@ -112,7 +112,7 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
 
     remarks = models.TextField(_("Remarks"), blank=True)  # ,null=True)
 
-    quick_search_fields = "name"
+    quick_search_fields = "name phone gsm"
 
     # print_labels = dd.PrintLabelsAction()
 
