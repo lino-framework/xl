@@ -144,7 +144,7 @@ class BeIdCardHolder(dd.Model):
 
     def disabled_fields(self, ar):
         rv = super(BeIdCardHolder, self).disabled_fields(ar)
-        if not ar.get_user().profile.has_required_roles([dd.SiteStaff]):
+        if not ar.get_user().user_type.has_required_roles([dd.SiteStaff]):
             rv |= self.beid_readonly_fields
         #~ logger.info("20130808 beid %s", rv)
         return rv

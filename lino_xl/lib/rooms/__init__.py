@@ -12,6 +12,6 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.Plugin`."
     verbose_name = _("Rooms")
 
-    def setup_main_menu(self, site, profile, main):
+    def setup_main_menu(self, site, user_type, main):
         m = main.get_item("cal")
         m.add_action('rooms.Bookings')

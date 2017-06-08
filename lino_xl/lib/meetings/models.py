@@ -32,7 +32,7 @@ from lino_xl.lib.tickets.mixins import Milestone
 # from lino.mixins.periods import DatePeriod
 # from lino_xl.lib.excerpts.mixins import Certifiable
 # from lino_xl.lib.excerpts.mixins import ExcerptTitle
-# from lino.modlib.users.mixins import UserAuthored
+# from lino.modlib.auth.mixins import UserAuthored
 from django.utils.translation import string_concat
 # from lino.modlib.printing.mixins import Printable
 from lino.modlib.printing.utils import PrintableObject

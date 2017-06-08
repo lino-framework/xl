@@ -187,7 +187,7 @@ class VouchersByPartner(dd.VirtualTable):
 
         actions = []
 
-        if not ar.get_user().profile.readonly:
+        if not ar.get_user().user_type.readonly:
             for vt in vtypes:
                 for jnl in vt.get_journals():
                     sar = vt.table_class.insert_action.request_from(

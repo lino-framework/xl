@@ -1,6 +1,6 @@
 # Copyright 2015-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""An extension of :mod:`lino.modlib.users` which adds functionality
+"""An extension of :mod:`lino.modlib.auth` which adds functionality
 for managing online registration.
 
 .. autosummary::
@@ -12,7 +12,7 @@ for managing online registration.
 
 """
 
-from lino.modlib.users import Plugin
+from lino.modlib.auth import Plugin
 
 
 class Plugin(Plugin):

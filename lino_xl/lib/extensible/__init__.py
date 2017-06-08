@@ -58,7 +58,7 @@ class Plugin(ad.Plugin):
                 'src', 'locale',
                 'extensible-lang-' + language + '.js')
 
-    def setup_main_menu(config, site, profile, m):
+    def setup_main_menu(config, site, user_type, m):
         m = m.add_menu("cal", site.plugins.cal.verbose_name)
         # m = m.add_menu("cal", _("Calendar"))
         m.add_action('extensible.CalendarPanel')

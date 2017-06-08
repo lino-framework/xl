@@ -28,7 +28,7 @@ class Plugin(ad.Plugin):
         self.person_model = site.models.resolve(self.person_model)
         super(Plugin, self).on_site_startup(site)
         
-    def setup_config_menu(config, site, profile, m):
+    def setup_config_menu(config, site, user_type, m):
         m = m.add_menu(config.app_label, config.verbose_name)
         # m.add_action('cv.TrainingTypes')
         m.add_action('cv.StudyTypes')
@@ -39,7 +39,7 @@ class Plugin(ad.Plugin):
         m.add_action('cv.Statuses')
         m.add_action('cv.Durations')
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         m = m.add_menu(config.app_label, config.verbose_name)
         m.add_action('cv.AllLanguageKnowledges')
         m.add_action('cv.AllTrainings')

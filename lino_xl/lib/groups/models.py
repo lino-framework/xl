@@ -19,7 +19,7 @@ from lino.api import dd, rt, _
 from lino import mixins
 from lino.utils.xmlgen.html import E, join_elems
 from lino.modlib.comments.mixins import Commentable
-from lino.modlib.users.mixins import UserAuthored, My
+from lino.modlib.auth.mixins import UserAuthored, My
 from lino.modlib.notify.mixins import ChangeObservable
 
 
@@ -41,7 +41,7 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeObservable,
         """Adds the :attr:`user` filter parameter field."""
         fields.setdefault(
             'user', models.ForeignKey(
-                'users.User', blank=True, null=True))
+                'auth.User', blank=True, null=True))
         return super(Group, cls).get_parameter_fields(**fields)
 
     def get_change_observers(self):

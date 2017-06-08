@@ -62,7 +62,7 @@ class Plugin(ad.Plugin):
             raise Exception(
                 "countries plugin requires a nonempty `country_code` setting.")
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('countries.Countries')
         m.add_action('countries.Places')

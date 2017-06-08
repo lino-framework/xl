@@ -17,19 +17,19 @@ class Plugin(ad.Plugin):
     partner_model = 'contacts.Partner'
     menu_group = 'contacts'
 
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         # mg = site.plugins.contacts
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('lists.Lists')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # mg = site.plugins.contacts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('lists.ListTypes')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # mg = site.plugins.contacts
         m = m.add_menu(mg.app_label, mg.verbose_name)

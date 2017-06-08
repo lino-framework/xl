@@ -32,7 +32,7 @@ Calendar = dd.resolve_model('cal.Calendar')
 
 # def subscribe_all():
 
-#     for u in settings.SITE.user_model.objects.exclude(profile=''):
+#     for u in settings.SITE.user_model.objects.exclude(user_type=''):
 #         for obj in Calendar.objects.all():
 #             obj = Subscription(user=u, calendar=obj)
 #             yield obj
@@ -97,7 +97,7 @@ def objects():
         yield e
 
     # # some conflicting events
-    # USERS = Cycler(rt.users.User.objects.all())
+    # USERS = Cycler(rt.auth.User.objects.all())
     # ET = EventType.objects.filter(is_appointment=True)
     # date = settings.SITE.demo_date(200)
     # e = Event(start_date=date, summary="Conflicting 1", event_type=ETYPES.pop(), user=USERS.pop())

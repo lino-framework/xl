@@ -8,8 +8,8 @@ from builtins import str
 from django.db import models
 
 from lino.api import dd, rt, _
-from lino.modlib.users.mixins import My
-from lino.modlib.users.desktop import Users
+from lino.modlib.auth.mixins import My
+from lino.modlib.auth.desktop import Users
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from .roles import SkillsStaff
@@ -220,7 +220,7 @@ if dd.is_installed('tickets'):
 
 
     class AssignableWorkersByTicket(Users):
-        # model = 'users.User'
+        # model = 'auth.User'
         use_as_default_table = False
         # model = 'faculties.Competence'
         master = 'tickets.Ticket'
@@ -232,11 +232,11 @@ if dd.is_installed('tickets'):
         def get_request_queryset(self, ar):
             ticket = ar.master_instance
             if ticket is None:
-                return rt.models.users.User.objects.none()
+                return rt.models.auth.User.objects.none()
 
             # rt.models.faculties.Competence.objects.filter(
             #     faculty=ticket.faculty)
-            qs = rt.models.users.User.objects.all()
+            qs = rt.models.auth.User.objects.all()
             # qs = super(
             #     AssignableWorkersByTicket, self).get_request_queryset(ar)
 

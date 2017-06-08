@@ -42,7 +42,7 @@ class Plugin(ad.Plugin):
     demander_model = 'contacts.Partner'
     # supplier_model = 'contacts.Partner'
 
-    # end_user_model = 'users.User'
+    # end_user_model = 'auth.User'
     end_user_model = 'contacts.Partner'
 
     def on_site_startup(self, site):
@@ -56,7 +56,7 @@ class Plugin(ad.Plugin):
         # return self.site.plugins.get(
         #     self.demander_model._meta.app_label)
     
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # mg = site.plugins.tickets
         m = m.add_menu(mg.app_label, mg.verbose_name)
@@ -64,14 +64,14 @@ class Plugin(ad.Plugin):
         # m.add_action('faculties.Competences')
         m.add_action('faculties.MyOffers')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('faculties.TopLevelSkills')
         m.add_action('faculties.AllSkills')
         m.add_action('faculties.SkillTypes')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         # m.add_action('faculties.Competences')

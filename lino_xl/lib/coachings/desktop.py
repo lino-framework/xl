@@ -13,7 +13,7 @@ from django.db import models
 from lino.api import dd, _
 from lino import mixins
 
-from lino.modlib.users.mixins import My
+from lino.modlib.auth.mixins import My
 from .roles import CoachingsUser, CoachingsStaff
 from .choicelists import *
 
@@ -45,12 +45,12 @@ class Coachings(dd.Table):
 
     parameters = mixins.ObservedPeriod(
         coached_by=models.ForeignKey(
-            'users.User',
+            'auth.User',
             blank=True, null=True,
             verbose_name=_("Coached by"),
             help_text="""Nur Begleitungen dieses Benutzers."""),
         and_coached_by=models.ForeignKey(
-            'users.User',
+            'auth.User',
             blank=True, null=True,
             verbose_name=_("and by"),
             help_text="""... und auch Begleitungen dieses Benutzers."""),
@@ -136,8 +136,8 @@ class Coachings(dd.Table):
 
         """
         
-        if not ar.get_user().profile.has_required_roles([CoachingsUser]):
-        #if not ar.get_user().profile.coaching_level:
+        if not ar.get_user().user_type.has_required_roles([CoachingsUser]):
+        #if not ar.get_user().user_type.coaching_level:
             return False
         return super(Coachings, self).get_create_permission(ar)
 

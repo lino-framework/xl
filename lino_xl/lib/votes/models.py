@@ -20,7 +20,7 @@ from lino.core.utils import lazy_format
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from lino.mixins import Created, ObservedPeriod
-from lino.modlib.users.mixins import UserAuthored, My
+from lino.modlib.auth.mixins import UserAuthored, My
 from lino.modlib.notify.choicelists import MailModes
 from lino_xl.lib.cal.mixins import daterange_text
 from lino_xl.lib.clocking.mixins import Workable
@@ -139,7 +139,7 @@ class Vote(UserAuthored, Created, Workable):
         df = super(Vote, self).disabled_fields(ar)
         if self.votable_id:
             me = ar.get_user()
-            if not me.profile.has_required_roles([VotesStaff]):
+            if not me.user_type.has_required_roles([VotesStaff]):
                 if not me in self.votable.get_vote_raters():
                     df.add('rating')
         return df

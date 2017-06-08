@@ -180,8 +180,8 @@ lino_xl.lib.faculties
 lino_xl.lib.clocking
 lino_xl.lib.clocking.fixtures
 lino_xl.lib.online
-lino_xl.lib.online.users
-lino_xl.lib.online.users.fixtures
+lino_xl.lib.online.auth
+lino_xl.lib.online.auth.fixtures
 lino_xl.lib.votes
 lino_xl.lib.votes.fixtures
 lino_xl.lib.uploads

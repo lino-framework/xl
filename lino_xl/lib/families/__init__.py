@@ -21,7 +21,7 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Families")
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         mg = site.plugins.contacts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('families.Couples')

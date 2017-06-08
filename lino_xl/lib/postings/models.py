@@ -18,7 +18,7 @@ from lino import mixins
 from lino.api import dd
 
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import My, UserAuthored
+from lino.modlib.auth.mixins import My, UserAuthored
 
 from lino.modlib.office.roles import OfficeUser
 

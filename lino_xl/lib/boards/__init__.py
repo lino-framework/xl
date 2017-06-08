@@ -20,12 +20,12 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Boards")
 
-    def setup_config_menu(config, site, profile, m):
+    def setup_config_menu(config, site, user_type, m):
         menu_host = site.plugins.contacts
         m = m.add_menu(menu_host.app_label, menu_host.verbose_name)
         m.add_action('boards.Boards')
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         menu_host = site.plugins.contacts
         m = m.add_menu(menu_host.app_label, menu_host.verbose_name)
         m.add_action('boards.Members')

@@ -52,19 +52,19 @@ class Plugin(ad.Plugin):
         rdm('person', site.models.contacts.Person)
         rdm('company', site.models.contacts.Company)
     
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         # We use the string representations and not the classes because
         # other installed applications may want to override these tables.
         for a in ('contacts.Persons', 'contacts.Companies'):
             m.add_action(a)
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('contacts.CompanyTypes')
         m.add_action('contacts.RoleTypes')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('contacts.Roles')
         m.add_action('contacts.Partners')

@@ -41,7 +41,7 @@ class Plugin(ad.Plugin):
         # if not issubclass(self.partner_model, AddressOwner):
         #     raise Exception("partner_model is not an AddressOwner")
         
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         # mg = self.get_menu_group()
         mg = site.plugins.contacts
         m = m.add_menu(mg.app_label, mg.verbose_name)

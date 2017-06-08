@@ -42,7 +42,7 @@ from lino.mixins.duplicable import Duplicable
 from lino.mixins.periods import DatePeriod
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.excerpts.mixins import ExcerptTitle
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.auth.mixins import UserAuthored
 from lino.modlib.printing.mixins import Printable
 from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation
@@ -376,7 +376,7 @@ class Course(Reservation, Duplicable, PrintableObject):
             if area:
                 table = rt.actors.resolve(area.courses_table)
                 a = table.detail_action
-                if ar is None or a.get_view_permission(ar.get_user().profile):
+                if ar is None or a.get_view_permission(ar.get_user().user_type):
                     return a
                 return None
         return super(Course, self).get_detail_action(ar)

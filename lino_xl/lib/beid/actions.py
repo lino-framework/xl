@@ -64,12 +64,12 @@ class BaseBeIdReadCardAction(dd.Action):
     http_method = 'POST'
     sorry_msg = _("Sorry, I cannot handle that case: %s")
 
-    def get_view_permission(self, profile):
+    def get_view_permission(self, user_type):
         """Make invisible when :attr:`lino.core.site.Site.use_java` is
 `False`."""
         if not settings.SITE.use_java:
             return False
-        return super(BaseBeIdReadCardAction, self).get_view_permission(profile)
+        return super(BaseBeIdReadCardAction, self).get_view_permission(user_type)
 
     def get_button_label(self, actor):
         return self.label

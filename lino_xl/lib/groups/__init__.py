@@ -11,7 +11,7 @@ from lino import ad, _
 
 class Plugin(ad.Plugin):
     verbose_name = _("Groups")
-    # member_model = 'users.User'
+    # member_model = 'auth.User'
     menu_group = 'system'
     needs_plugins = ['lino.modlib.comments']
 
@@ -23,12 +23,12 @@ class Plugin(ad.Plugin):
     #     self.member_model = site.models.resolve(self.member_model)
     #     super(Plugin, self).on_site_startup(site)
         
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('groups.Groups')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('groups.AllMemberships')

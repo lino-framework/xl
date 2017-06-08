@@ -42,7 +42,7 @@ class Plugin(ad.Plugin):
 
     """
 
-    def setup_main_menu(config, site, profile, m):
+    def setup_main_menu(config, site, user_type, m):
         app = site.plugins.reception
         m = m.add_menu(app.app_name, app.verbose_name)
 

@@ -21,7 +21,7 @@ from lino.api import dd, rt
 
 from lino import mixins
 
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.auth.mixins import UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
 from lino.modlib.plausibility.choicelists import Checker
 
@@ -335,7 +335,7 @@ dd.update_field(ClientContact, 'contact_person',
 
 
 dd.inject_field(
-    'users.User', 'coaching_type',
+    'auth.User', 'coaching_type',
     dd.ForeignKey(
         'coachings.CoachingType',
         blank=True, null=True,
@@ -343,7 +343,7 @@ dd.inject_field(
             "The coaching type used for new coachings with this user.")))
 
 dd.inject_field(
-    'users.User', 'coaching_supervisor',
+    'auth.User', 'coaching_supervisor',
     models.BooleanField(
         _("Coaching supervisor"),
         default=False,

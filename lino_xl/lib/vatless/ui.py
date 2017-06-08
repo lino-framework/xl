@@ -229,7 +229,7 @@ class VouchersByPartner(dd.VirtualTable):
             actions.append(btn)
             return True
 
-        if not ar.get_user().profile.readonly:
+        if not ar.get_user().user_type.readonly:
             flt = {self._master_field_name: obj}
             for vt in vtypes:
                 for jnl in vt.get_journals():

@@ -115,7 +115,7 @@ class Plugin(ad.Plugin):
         self.partner_model = site.models.resolve(self.partner_model)
         super(Plugin, self).on_site_startup(site)
         
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.MyEntries')  # string spec to allow overriding
         m.add_action('cal.OverdueAppointments')
@@ -129,7 +129,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.MyPresences')
         m.add_action('cal.MyOverdueAppointments')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.Calendars')
         # m.add_action('cal.MySubscriptions')
@@ -146,7 +146,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.EventPolicies')
         m.add_action('cal.RemoteCalendars')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.AllEntries')
         m.add_action('cal.Tasks')

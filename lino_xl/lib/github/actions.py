@@ -25,7 +25,7 @@ class User_commit_finder():
         :return:
         """
         # Find the user for this commit
-        User = rt.models.users.User
+        User = rt.models.auth.User
         found_user = self.users.get(commit.git_user, None) or self.users.get(commit.commiter_name, None)
         # not a huge fan of this, just want to avoid having to call filter for every commit
         if found_user is None and \

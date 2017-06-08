@@ -6,7 +6,7 @@
 
 """
 
-from lino.modlib.users.desktop import *
+from lino.modlib.auth.desktop import *
 
 from lino.api import _
 
@@ -15,12 +15,12 @@ from lino.core import actions
 from lino_xl.lib.clocking.roles import Worker
 from .choicelists import UserStates
 
-from lino.modlib.users.actions import SendWelcomeMail
+from lino.modlib.auth.actions import SendWelcomeMail
 from lino.modlib.office.roles import OfficeUser
 #from .models import VerifyUser
 
 Users.parameters.update(user_state=UserStates.field(blank=True))
-# Users.simple_parameters = ['profile', 'user_state']
+# Users.simple_parameters = ['user_type', 'user_state']
 # Users.workflow_state_field = 'user_state'
 
 class OtherUsers(Users):
@@ -36,7 +36,7 @@ class OtherUsers(Users):
 
     
 # def site_setup(site):
-#     site.modules.users.Users.set_detail_layout(UserDetail())
+#     site.modules.auth.Users.set_detail_layout(UserDetail())
 
 
 class RegisterUserLayout(dd.InsertLayout):
@@ -84,7 +84,7 @@ class NewUsers(Users):
     welcome_message_when_count = 0
     required_roles = dd.login_required(SiteAdmin)
     use_as_default_table = False
-    column_names = 'created first_name last_name username profile workflow_buttons *'
+    column_names = 'created first_name last_name username user_type workflow_buttons *'
     order_by = ['created']
 
     send_welcome_email = SendWelcomeMail()

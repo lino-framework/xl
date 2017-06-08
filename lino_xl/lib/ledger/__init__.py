@@ -48,7 +48,7 @@ class Plugin(ad.Plugin):
         for y in range(self.start_year, today.year + 6):
             FiscalYears.add_item(FiscalYears.year2value(y), str(y))
 
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         if not self.intrusive_menu:
             mg = site.plugins.accounts
             m = m.add_menu(mg.app_label, mg.verbose_name)
@@ -63,7 +63,7 @@ class Plugin(ad.Plugin):
                                 label=unicode(jnl),
                                 params=dict(master_instance=jnl))
 
-    def setup_reports_menu(self, site, profile, m):
+    def setup_reports_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('ledger.Situation')
@@ -71,14 +71,14 @@ class Plugin(ad.Plugin):
         m.add_action('ledger.Debtors')
         m.add_action('ledger.Creditors')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('ledger.Journals')
         m.add_action('ledger.AccountingPeriods')
         m.add_action('ledger.PaymentTerms')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('ledger.MatchRules')

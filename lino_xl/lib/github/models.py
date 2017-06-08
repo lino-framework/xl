@@ -5,7 +5,7 @@
 """
 
 from lino.api import dd, rt, _
-from lino.modlib.users.mixins import Authored
+from lino.modlib.auth.mixins import Authored
 import requests
 import json
 from django.utils import timezone
@@ -143,7 +143,7 @@ class Commit(Created, Authored):
                                related_name="commits")
 
     user = dd.ForeignKey(
-        'users.User',
+        'auth.User',
         verbose_name=_("Author"),
         related_name="%(app_label)s_%(class)s_set_by_user",
         blank=True, null=True)
@@ -228,7 +228,7 @@ class Commit(Created, Authored):
 
 
 dd.inject_field(
-    "users.User", 'github_username',
+    "auth.User", 'github_username',
     dd.CharField(_("Github Username"), max_length=39, blank=True))
 
 @dd.schedule_often(3600)

@@ -34,7 +34,7 @@ class MarkUserActive(dd.ChangeStateAction):
     # show_in_bbar = True
     
     def get_action_permission(self, ar, obj, state):
-        if not obj.profile or not obj.username:
+        if not obj.user_type or not obj.username:
             return False
         if obj.verification_code:
             return False

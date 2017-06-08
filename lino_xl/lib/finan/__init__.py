@@ -50,7 +50,7 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.ledger']
     suggest_future_vouchers = False
 
-    # def setup_main_menu(self, site, profile, m):
+    # def setup_main_menu(self, site, user_type, m):
     #     m = m.add_menu(self.app_label, self.verbose_name)
     #     ledger = site.modules.ledger
     #     for jnl in ledger.Journal.objects.filter(trade_type=''):
@@ -58,7 +58,7 @@ class Plugin(ad.Plugin):
     #                      label=unicode(jnl),
     #                      params=dict(master_instance=jnl))
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('finan.AllBankStatements')
         m.add_action('finan.AllJournalEntries')

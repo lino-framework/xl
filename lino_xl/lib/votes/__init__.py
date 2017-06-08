@@ -36,7 +36,7 @@ class Plugin(ad.Plugin):
         self.votable_model = resolve_model(self.votable_model)
         super(Plugin, self).on_site_startup(site)
         
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # mg = site.plugins[self.votable_model._meta.app_label]
         # mg = site.plugins.office
@@ -47,7 +47,7 @@ class Plugin(ad.Plugin):
         m.add_action('votes.MyWatched')
         # m.add_action('votes.MyVotes')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # p = site.plugins.tickets
         m = m.add_menu(mg.app_label, mg.verbose_name)

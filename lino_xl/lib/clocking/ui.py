@@ -111,7 +111,7 @@ class Sessions(dd.Table):
             'tickets.Project', null=True, blank=True),
         ticket=dd.ForeignKey(
             dd.plugins.clocking.ticket_model, null=True, blank=True),
-        # user=dd.ForeignKey('users.User', null=True, blank=True),
+        # user=dd.ForeignKey('auth.User', null=True, blank=True),
         session_type=dd.ForeignKey(
             'clocking.SessionType', null=True, blank=True),
         observed_event=dd.PeriodEvents.field(

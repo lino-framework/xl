@@ -40,7 +40,7 @@ class Plugin(ad.Plugin):
         self.end_user_model = site.models.resolve(self.end_user_model)
         super(Plugin, self).on_site_startup(site)
         
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         # m.add_action('tickets.MyCompetences')
@@ -60,7 +60,7 @@ class Plugin(ad.Plugin):
 
 
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('tickets.AllProjects')
@@ -69,7 +69,7 @@ class Plugin(ad.Plugin):
         m.add_action('tickets.TicketTypes')
         # m.add_action('tickets.AllSites')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         # m.add_action('tickets.Projects')

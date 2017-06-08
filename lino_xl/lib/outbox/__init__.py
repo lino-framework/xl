@@ -27,12 +27,12 @@ class Plugin(ad.Plugin):
 
     MODULE_LABEL = _("Outbox")
 
-    def setup_main_menu(config, site, profile, m):
+    def setup_main_menu(config, site, user_type, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('outbox.MyOutbox')
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('outbox.Mails')

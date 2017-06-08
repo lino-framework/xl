@@ -42,20 +42,20 @@ class Plugin(ad.Plugin):
     
         
         
-    # def setup_main_menu(self, site, profile, m):
+    # def setup_main_menu(self, site, user_type, m):
     #     mg = self.get_menu_group()
     #     m = m.add_menu(mg.app_label, mg.verbose_name)
     #     m.add_action('coachings.CoachedClients')
     #     m.add_action('coachings.MyCoachings')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('coachings.CoachingTypes')
         m.add_action('coachings.CoachingEndings')
         m.add_action('coachings.ClientContactTypes')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('coachings.Coachings')

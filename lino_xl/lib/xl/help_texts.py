@@ -863,7 +863,7 @@ included to a detail window on partner."""),
     'lino_xl.lib.stars.models.Star' : _("""Represents the fact that a given database object is starred by a
 given User."""),
     'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
-    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
+    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.auth.models.User`"""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.tickets.roles.TicketsUser' : _("""A user who can create new tickets."""),
     'lino_xl.lib.tickets.roles.Searcher' : _("""A user who can see all tickets."""),

@@ -38,7 +38,7 @@ from lino.utils.mti import get_child
 from lino.utils.report import Report
 
 from lino.modlib.system.choicelists import PeriodEvents
-from lino.modlib.users.mixins import My
+from lino.modlib.auth.mixins import My
 
 from .choicelists import EnrolmentStates, CourseStates, CourseAreas
 
