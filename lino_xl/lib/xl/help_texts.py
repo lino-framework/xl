@@ -62,7 +62,6 @@ contain also entries for refugee statuses."""),
 saving a record.  If this is False, the national_id
 might contain invalid values which would then cause plausibility
 problems."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.card_issuer' : _("""The administration who issued this ID card."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
@@ -681,19 +680,19 @@ Site."""),
     'lino_xl.lib.notes.models.Note' : _("""A note is a dated and timed document written by its author (a
 user). For example a report of a meeting or a phone call, or just
 some observation. Notes are usually meant for internal use."""),
-    'lino_xl.lib.online.users.choicelists.UserStates' : _("""The list of possible choices for the state field
+    'lino_xl.lib.online.auth.choicelists.UserStates' : _("""The list of possible choices for the state field
 of a User."""),
-    'lino_xl.lib.online.users.choicelists.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
+    'lino_xl.lib.online.auth.choicelists.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
 verifcation code, and that a username and password are set."""),
-    'lino_xl.lib.online.users.desktop.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
-    'lino_xl.lib.online.users.desktop.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
-    'lino_xl.lib.online.users.models.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
+    'lino_xl.lib.online.auth.desktop.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
+    'lino_xl.lib.online.auth.desktop.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
+    'lino_xl.lib.online.auth.models.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
 checks certain things before accepting the new user."""),
-    'lino_xl.lib.online.users.models.VerifyUser' : _("""Enter your verification code."""),
-    'lino_xl.lib.online.users.models.User.callme_mode' : _("""Whether other users can see my contact data."""),
-    'lino_xl.lib.online.users.models.User.verification_code' : _("""A random string set for every new user. Used for
+    'lino_xl.lib.online.auth.models.VerifyUser' : _("""Enter your verification code."""),
+    'lino_xl.lib.online.auth.models.User.callme_mode' : _("""Whether other users can see my contact data."""),
+    'lino_xl.lib.online.auth.models.User.verification_code' : _("""A random string set for every new user. Used for
 online_registration."""),
-    'lino_xl.lib.online.users.models.User.user_state' : _("""The registration state of this user."""),
+    'lino_xl.lib.online.auth.models.User.user_state' : _("""The registration state of this user."""),
     'lino_xl.lib.outbox.choicelists.RecipientTypes' : _("""A list of possible values for the type field of a
 Recipient."""),
     'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
@@ -761,10 +760,6 @@ like …?”."""),
 “not at all”, “a bit”, “moderate”, “quite well” and “very well”"""),
     'lino_xl.lib.properties.models.PropType' : _("""The type of the values that a property accepts.
 Each PropType may (or may not) imply a list of choices."""),
-    'lino_xl.lib.properties.models.PropType.default_value' : _("""The default value to set when creating a PropertyOccurence.
-This is currently used only in some fixture…"""),
-    'lino_xl.lib.properties.models.PropType.limit_to_choices' : _("""not yet supported"""),
-    'lino_xl.lib.properties.models.PropType.multiple_choices' : _("""not yet supported"""),
     'lino_xl.lib.properties.models.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
 in combo boxes."""),
     'lino_xl.lib.properties.models.PropGroup' : _("""A Property Group defines a list of Properties that fit together
