@@ -31,8 +31,8 @@ Account = dd.resolve_model('accounts.Account')
 
 clocking = dd.resolve_app('clocking')
 
-User = rt.models.users.User
-UserTypes = rt.models.users.UserTypes
+User = rt.models.auth.User
+UserTypes = rt.models.auth.UserTypes
 Partner = rt.models.contacts.Partner
 
 lists_Member = rt.models.lists.Member
@@ -152,7 +152,7 @@ class TimLoader(TimLoader):
             kw.update(team=self.eupen)
         elif abtlg == 'S':
             kw.update(team=self.stvith)
-        kw.update(profile=UserTypes.admin)
+        kw.update(user_type=UserTypes.admin)
         o = User(**kw)
         o.set_password("1234")
         return o
@@ -270,7 +270,7 @@ class TimLoader(TimLoader):
             except User.DoesNotExist:
                 u = create(
                     User, username=idusr, first_name=u1.first_name, team=team,
-                    profile=u1.profile)
+                    user_type=u1.user_type)
             
         kw.update(user=u)
         kw.update(id=pk)

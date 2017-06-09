@@ -36,7 +36,7 @@ class Plugin(ad.Plugin):
         super(Plugin, self).on_site_startup(site)
         
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         # mg = site.plugins.contacts
         mg = site.plugins[self.person_model._meta.app_label]
         m = m.add_menu(mg.app_label, mg.verbose_name)

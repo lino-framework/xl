@@ -18,7 +18,7 @@ from django.db import models
 from lino.mixins import Hierarchical, Sequenced
 from lino.utils.mldbc.mixins import BabelNamed
 
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.auth.mixins import UserAuthored
 
 MAX_WEIGHT = 100
 

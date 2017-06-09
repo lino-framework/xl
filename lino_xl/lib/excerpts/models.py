@@ -38,8 +38,8 @@ from lino.utils import join_elems
 from lino.core.exceptions import UnresolvedChoice
 
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import UserAuthored, My
-from lino.modlib.users.choicelists import SiteAdmin
+from lino.modlib.auth.mixins import UserAuthored, My
+from lino.modlib.auth.choicelists import SiteAdmin
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 
 davlink = settings.SITE.plugins.get('davlink', None)

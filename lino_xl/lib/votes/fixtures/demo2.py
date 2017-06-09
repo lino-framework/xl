@@ -17,7 +17,7 @@ def unused_objects():
 
     Vote = rt.models.votes.Vote
     VoteStates = rt.models.votes.VoteStates
-    User = rt.models.users.User
+    User = rt.models.auth.User
 
     STATES  = Cycler(VoteStates.objects())
     USERS = Cycler(User.objects.all())

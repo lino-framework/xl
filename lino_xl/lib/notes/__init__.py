@@ -34,18 +34,18 @@ class Plugin(ad.Plugin):
             'note', site.models.notes.Note,
             title=lambda obj: obj.subject)
     
-    def setup_main_menu(config, site, profile, m):
+    def setup_main_menu(config, site, user_type, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('notes.MyNotes')
 
-    def setup_config_menu(config, site, profile, m):
+    def setup_config_menu(config, site, user_type, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('notes.NoteTypes')
         m.add_action('notes.EventTypes')
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('notes.AllNotes')

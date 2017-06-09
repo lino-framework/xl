@@ -27,7 +27,7 @@ from lino import mixins
 from lino.utils import mti
 from lino.utils.xmlgen.html import E
 from lino.mixins.periods import DatePeriod
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.auth.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.plausibility.choicelists import Checker
 

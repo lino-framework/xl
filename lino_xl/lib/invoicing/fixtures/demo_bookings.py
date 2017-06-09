@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -36,8 +36,8 @@ def objects():
     #     return
     from lino_xl.lib.ledger.roles import LedgerStaff
     accountants = LedgerStaff.get_user_profiles()
-    users = rt.models.users.User.objects.filter(
-        language=dd.get_default_language(), profile__in=accountants)
+    users = rt.models.auth.User.objects.filter(
+        language=dd.get_default_language(), user_type__in=accountants)
     if users.count() == 0:
         return
     ses = rt.login(users[0].username)

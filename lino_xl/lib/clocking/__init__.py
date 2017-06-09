@@ -56,19 +56,19 @@ class Plugin(ad.Plugin):
                 self.default_reporting_type)
             self.default_reporting_type = x
 
-    def setup_main_menu(self, site, profile, m):
+    def setup_main_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('clocking.MySessions')
         # m.add_action('clocking.MySessionsByDate')
         # m.add_action('clocking.WorkedHours')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('clocking.SessionTypes')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('clocking.Sessions')

@@ -10,13 +10,13 @@ from lino.utils.mldbc import babel_named as named
 
 def objects():
     Group = rt.models.groups.Group
-    User = rt.models.users.User
-    UserTypes = rt.actors.users.UserTypes
+    User = rt.models.auth.User
+    UserTypes = rt.actors.auth.UserTypes
 
     yield named(Group, _("Hitchhiker's Guide to the Galaxy"))
     yield named(Group, _("Star Trek"))
     yield named(Group, _("Harry Potter"))
 
-    yield User(username="andy", profile=UserTypes.user)
-    yield User(username="bert", profile=UserTypes.user)
-    yield User(username="chloe", profile=UserTypes.user)
+    yield User(username="andy", user_type=UserTypes.user)
+    yield User(username="bert", user_type=UserTypes.user)
+    yield User(username="chloe", user_type=UserTypes.user)

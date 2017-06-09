@@ -14,7 +14,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from lino.core.roles import Explorer
 from lino_xl.lib.tickets.roles import TicketsStaff, TicketsUser
-from lino.modlib.users.mixins import My
+from lino.modlib.auth.mixins import My
 from lino.mixins.periods import ObservedPeriod
 
 from .models import Commit, Repository

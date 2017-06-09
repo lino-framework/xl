@@ -17,18 +17,18 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ['lino_xl.lib.tickets']
 
-    # def setup_main_menu(self, site, profile, m):
+    # def setup_main_menu(self, site, user_type, m):
     #     # p = self.get_menu_group()
     #     p = site.plugins.tickets
     #     m = m.add_menu(p.app_label, p.verbose_name)
     #     m.add_action('deploy.MyMilestones')
 
-    # def setup_config_menu(self, site, profile, m):
+    # def setup_config_menu(self, site, user_type, m):
     #     p = self.get_menu_group()
     #     m = m.add_menu(p.app_label, p.verbose_name)
     #     # m.add_action('tickets.Projects')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         # p = self.get_menu_group()
         p = site.plugins.tickets
         m = m.add_menu(p.app_label, p.verbose_name)

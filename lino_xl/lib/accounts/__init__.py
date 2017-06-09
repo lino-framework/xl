@@ -25,7 +25,7 @@ You probably want to replace this by:
 ad.configure_plugins("accounts", ref_length=%r)
 """ % (self.site, v))
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         # m.add_action('accounts.AccountCharts')
         if False:

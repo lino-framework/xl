@@ -13,7 +13,7 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino.core.gfks import gfk2lookup
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import UserAuthored, My
+from lino.modlib.auth.mixins import UserAuthored, My
 from lino.modlib.office.roles import OfficeUser
 # from lino.core.requests import BaseRequest
 
@@ -28,7 +28,7 @@ class Star(UserAuthored, Controllable):
 
     .. attribute:: user
 
-        The starring user (pointer to :class:lino.modlib.users.models.User`
+        The starring user (pointer to :class:lino.modlib.auth.models.User`
 
     .. attribute:: nickname
 

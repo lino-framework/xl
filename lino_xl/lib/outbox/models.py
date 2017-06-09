@@ -27,7 +27,7 @@ from lino.core import actions
 from lino.core.site import html2text
 from django.core.mail import EmailMultiAlternatives
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.auth.mixins import UserAuthored
 from lino.modlib.office.roles import OfficeUser, OfficeStaff
 from lino.modlib.printing.mixins import Printable
 

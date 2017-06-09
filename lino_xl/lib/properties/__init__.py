@@ -22,11 +22,11 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Properties")
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('properties.Properties')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('properties.PropGroups')
         m.add_action('properties.PropTypes')

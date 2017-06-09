@@ -41,7 +41,7 @@ from django.utils import timezone
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
-from lino.modlib.users.mixins import My
+from lino.modlib.auth.mixins import My
 
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
@@ -219,7 +219,7 @@ class MyVisitorAction(dd.Action):
     def get_action_permission(self, ar, obj, state):
         me = ar.get_user()
         if obj.event.user != me \
-           and not me.profile.has_required_roles([OfficeOperator]):
+           and not me.user_type.has_required_roles([OfficeOperator]):
             return False
         return super(MyVisitorAction, self).get_action_permission(
             ar, obj, state)

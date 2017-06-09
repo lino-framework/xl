@@ -24,7 +24,7 @@ from lino.utils.xmlgen.html import E
 
 from lino_xl.lib.cal.mixins import daterange_text
 from lino_xl.lib.contacts.mixins import ContactRelated
-from lino.modlib.users.mixins import UserAuthored, Assignable
+from lino.modlib.auth.mixins import UserAuthored, Assignable
 from lino.modlib.comments.mixins import Commentable
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.faculties.mixins import Feasible
@@ -169,7 +169,7 @@ class Project(mixins.DatePeriod, TimeInvestment,
 
 #     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 #     # responsible_user = dd.ForeignKey(
-#     #     'users.User', verbose_name=_("Responsible"),
+#     #     'auth.User', verbose_name=_("Responsible"),
 #     #     blank=True, null=True)
 #     name = models.CharField(_("Designation"), max_length=200)
 #     remark = models.CharField(_("Remark"), max_length=200, blank=True)
@@ -518,7 +518,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         rv = super(Ticket, self).disabled_fields(ar)
         if self.project and not self.project.private:
             rv.add('private')
-        if not ar.get_user().profile.has_required_roles([Triager]):
+        if not ar.get_user().user_type.has_required_roles([Triager]):
             rv.add('user')
         return rv
 
@@ -606,7 +606,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     def is_workable_for(self, user):
         if self.standby or self.closed:
             return False
-        if not self.state.active and not user.profile.has_required_roles(
+        if not self.state.active and not user.user_type.has_required_roles(
                 [Triager]):
             return False
         return True
@@ -666,7 +666,7 @@ class Link(dd.Model):
 
 
 # dd.inject_field(
-#     'users.User', 'project',
+#     'auth.User', 'project',
 #     dd.ForeignKey(
 #         'tickets.Project',
 #         blank=True, null=True, related_name="users_by_project",

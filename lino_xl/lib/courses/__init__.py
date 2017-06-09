@@ -54,7 +54,7 @@ class Plugin(ad.Plugin):
             site.models.courses.Enrolment, self.pupil_name_fields)
         super(Plugin, self).on_site_startup(site)
         
-    def setup_main_menu(self, site, profile, main):
+    def setup_main_menu(self, site, user_type, main):
         m = main.add_menu(self.app_label, self.verbose_name)
         m.add_action('courses.MyActivities')
         for ca in site.models.courses.CourseAreas.objects():
@@ -71,12 +71,12 @@ class Plugin(ad.Plugin):
         m.add_action('courses.PendingConfirmedEnrolments')
         m.add_action('courses.MyCoursesGiven')
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('courses.Topics')
         m.add_action('courses.Slots')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('courses.AllActivities')
         m.add_action('courses.AllEnrolments')

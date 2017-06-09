@@ -16,7 +16,7 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
-from lino.modlib.users.mixins import My
+from lino.modlib.auth.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from lino.utils import join_elems

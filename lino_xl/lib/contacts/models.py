@@ -222,7 +222,7 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
         
 
         """
-        User = rt.models.users.User
+        User = rt.models.auth.User
         try:
             if issubclass(User, self.__class__):
                 return User.objects.get(partner_ptr=self)

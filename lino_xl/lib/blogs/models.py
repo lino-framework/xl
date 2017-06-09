@@ -19,7 +19,7 @@ from lino.api import dd, rt
 from lino import mixins
 from lino.modlib.gfks.mixins import Controllable
 from lino_xl.lib.topics.models import AddInterestField
-from lino.modlib.users.mixins import My, UserAuthored
+from lino.modlib.auth.mixins import My, UserAuthored
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
 from lino.core.requests import BaseRequest

@@ -19,7 +19,7 @@ from lino.utils.xmlgen.html import E
 from lino.utils.quantities import Duration
 
 from lino_xl.lib.cal.mixins import Started, Ended
-from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.auth.mixins import UserAuthored
 
 from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
 from .choicelists import ReportingTypes
@@ -312,7 +312,7 @@ if False:  # works, but is not useful
 #     'reporting_type', ReportingTypes.field(blank=True))
 
 dd.inject_field(
-    "users.User", 'open_session_on_new_ticket',
+    "auth.User", 'open_session_on_new_ticket',
     models.BooleanField(_("Open session on new ticket"), default=False))
 
 

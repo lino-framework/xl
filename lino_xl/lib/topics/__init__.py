@@ -31,21 +31,21 @@ class Plugin(ad.Plugin):
     #deprecated:
     partner_model = 'contacts.Partner'
     # menu_group = 'contacts'
-    # partner_model = 'users.User'
+    # partner_model = 'auth.User'
 
-    # def setup_main_menu(self, site, profile, m):
+    # def setup_main_menu(self, site, user_type, m):
     #     # p = self.get_menu_group()
     #     p = self.site.plugins.contacts
     #     m = m.add_menu(p.app_label, p.verbose_name)
 
-    def setup_config_menu(self, site, profile, m):
+    def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()
         # p = self.site.plugins.contacts
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('topics.AllTopics')
         m.add_action('topics.TopicGroups')
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
         # p = self.site.plugins.contacts
         m = m.add_menu(p.app_label, p.verbose_name)

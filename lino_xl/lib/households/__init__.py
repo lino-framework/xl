@@ -48,18 +48,18 @@ class Plugin(ad.Plugin):
         rdm = site.kernel.memo_parser.register_django_model
         rdm('household', site.models.households.Household)
     
-    def setup_main_menu(config, site, profile, m):
+    def setup_main_menu(config, site, user_type, m):
         mnugrp = site.plugins.contacts
         m = m.add_menu(mnugrp.app_label, mnugrp.verbose_name)
         m.add_action('households.Households')
 
-    def setup_config_menu(config, site, profile, m):
+    def setup_config_menu(config, site, user_type, m):
         mnugrp = site.plugins.contacts
         m = m.add_menu(mnugrp.app_label, mnugrp.verbose_name)
         # m.add_action(Roles)
         m.add_action('households.Types')
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         mnugrp = site.plugins.contacts
         m = m.add_menu(mnugrp.app_label, mnugrp.verbose_name)
         m.add_action('households.MemberRoles')

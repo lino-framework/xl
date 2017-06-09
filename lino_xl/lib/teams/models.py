@@ -44,11 +44,11 @@ class Teams(dd.Table):
 
 
 dd.inject_field(
-    'users.User', 'team',
+    'auth.User', 'team',
     dd.ForeignKey('teams.Team', blank=True, null=True))
 
 
-from lino.modlib.users.desktop import Users
+from lino.modlib.auth.desktop import Users
 
 class UsersByTeam(Users):
     master_key = 'team'

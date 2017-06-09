@@ -95,11 +95,11 @@ invoice item. Return value must be an item of
             self.default_vat_class = vat.VatClasses.get_by_name(
                 self.default_vat_class)
 
-    def setup_config_menu(config, site, profile, m):
+    def setup_config_menu(config, site, user_type, m):
         m = m.add_menu(config.app_label, config.verbose_name)
         m.add_action('vat.VatRules')
 
-    def setup_explorer_menu(config, site, profile, m):
+    def setup_explorer_menu(config, site, user_type, m):
         m = m.add_menu(config.app_label, config.verbose_name)
         m.add_action('vat.VatRegimes')
         m.add_action('vat.VatClasses')

@@ -32,12 +32,12 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.cal']
 
 
-    def setup_main_menu(self, site, profile, main):
+    def setup_main_menu(self, site, user_type, main):
         m = main.add_menu(self.app_label, self.verbose_name)
         m.add_action('meetings.MyMeetings')
         # m.add_separator()
 
-    def setup_explorer_menu(self, site, profile, m):
+    def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('meetings.AllMeetings')
         

@@ -73,7 +73,7 @@ class EndTicketSession(EndSession):
     
     def get_action_permission(self, ar, obj, state):
         # u = ar.get_user()
-        # if not u.profile.has_required_roles([SiteUser]):
+        # if not u.user_type.has_required_roles([SiteUser]):
         #     # avoid query with AnonymousUser
         #     return False
         if not super(EndTicketSession, self).get_action_permission(
