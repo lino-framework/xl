@@ -529,68 +529,6 @@ which I am competent."""),
     'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
 but is stored as a Couple instance."""),
-    'lino_xl.lib.finan.Plugin' : _("""This Plugin class adds some
-entries to the Explorer menu.  It contains the following
-additional attributes:"""),
-    'lino_xl.lib.finan.Plugin.suggest_future_vouchers' : _("""Whether to suggest vouchers whose due_date is in the future."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucher' : _("""Base class for all financial vouchers:
-Grouper,
-JournalEntry,
-PaymentOrder and
-BankStatement."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucher.item_account' : _("""The default value to use when
-FinancialVoucherItem.account of an item is empty."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucher.item_remark' : _("""The default value to use when
-FinancialVoucherItem.remark of an item is empty."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem' : _("""The base class for the items of all types of financial vouchers
-(FinancialVoucher)."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.account' : _("""The general account to be used in the primary booking.
-If this is empty, use item_account of the voucher."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.project' : _("""The client related to this transaction."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.partner' : _("""The partner account to be used in the primary booking."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.amount' : _("""The amount to be booked. If this is empty, then the voucher
-cannot be registered."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.dc' : _("""The direction of the primary booking to create."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.remark' : _("""External reference. The description of this transation
-as seen by the external partner."""),
-    'lino_xl.lib.finan.mixins.FinancialVoucherItem.match' : _("""An arbitrary string used to group several movements."""),
-    'lino_xl.lib.finan.mixins.DatedFinancialVoucher' : _("""A FinancialVoucher whose items have a date field."""),
-    'lino_xl.lib.finan.mixins.DatedFinancialVoucherItem' : _("""A FinancialVoucherItem with an additional date
-field."""),
-    'lino_xl.lib.finan.mixins.DatedFinancialVoucherItem.date' : _("""The value date of this item."""),
-    'lino_xl.lib.finan.models.JournalEntry' : _("""This is the model for "journal entries" ("operations diverses")."""),
-    'lino_xl.lib.finan.models.PaymentOrder' : _("""A payment order is when a user instructs a bank to execute a
-series of outgoing transactions from a given bank account."""),
-    'lino_xl.lib.finan.models.BankStatement' : _("""A bank statement is a document issued by the bank, which
-reports all transactions which occured on a given account during a
-given period."""),
-    'lino_xl.lib.finan.models.BankStatement.balance1' : _("""The old (or start) balance."""),
-    'lino_xl.lib.finan.models.BankStatement.balance2' : _("""The new (or end) balance."""),
-    'lino_xl.lib.finan.models.JournalEntryItem' : _("""An item of a JournalEntry."""),
-    'lino_xl.lib.finan.models.BankStatementItem' : _("""An item of a BankStatement."""),
-    'lino_xl.lib.finan.models.PaymentOrderItem' : _("""An item of a PaymentOrder."""),
-    'lino_xl.lib.finan.models.FinancialVouchers' : _("""Base class for the default tables of all other financial voucher
-types (JournalEntries , PaymentOrders and
-BankStatemens)."""),
-    'lino_xl.lib.finan.models.PaymentOrders' : _("""The table of all PaymentOrder vouchers."""),
-    'lino_xl.lib.finan.models.BankStatements' : _("""The table of all BankStatement vouchers."""),
-    'lino_xl.lib.finan.models.FillSuggestionsToVoucher' : _("""Fill selected suggestions from a SuggestionsByVoucher table into a
-financial voucher."""),
-    'lino_xl.lib.finan.models.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
-selected suggestion does not create a new item but replaces the
-item for which it was called."""),
-    'lino_xl.lib.finan.models.SuggestionsByVoucher' : _("""Shows the suggested items for a given voucher, with a button to
-fill them into the current voucher."""),
-    'lino_xl.lib.finan.models.SuggestionsByJournalEntry' : _("""A SuggestionsByVoucher table for a JournalEntry."""),
-    'lino_xl.lib.finan.models.SuggestionsByPaymentOrder' : _("""A SuggestionsByVoucher table for a PaymentOrder."""),
-    'lino_xl.lib.finan.models.SuggestionsByBankStatement' : _("""A SuggestionsByVoucher table for a BankStatement."""),
-    'lino_xl.lib.finan.models.SuggestionsByVoucherItem' : _("""Displays the payment suggestions for a voucher item, with a button
-to fill them into the current item (creating additional items if
-more than one suggestion was selected)."""),
-    'lino_xl.lib.finan.models.SuggestionsByBankStatementItem' : _("""A SuggestionsByVoucherItem table for a
-BankStatementItem."""),
-    'lino_xl.lib.finan.models.SuggestionsByPaymentOrderItem' : _("""A SuggestionsByVoucherItem table for a
-PaymentOrderItem."""),
     'lino_xl.lib.households.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.households.Plugin.person_model' : _("""A string referring to the model which represents a human in your
 application.  Default value is 'contacts.Person' (referring to
@@ -1076,6 +1014,70 @@ organisation."""),
 DEBIT or CREDIT."""),
     'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
     'lino_xl.lib.accounts.Plugin' : _("""The max_length of the Reference field of an account."""),
+    'lino_xl.lib.finan.JournalEntry' : _("""This is the model for "journal entries" ("operations diverses")."""),
+    'lino_xl.lib.finan.BankStatement' : _("""A bank statement is a document issued by the bank, which
+reports all transactions which occured on a given account during a
+given period."""),
+    'lino_xl.lib.finan.BankStatement.balance1' : _("""The old (or start) balance."""),
+    'lino_xl.lib.finan.BankStatement.balance2' : _("""The new (or end) balance."""),
+    'lino_xl.lib.finan.PaymentOrder' : _("""A payment order is when a user instructs a bank to execute a
+series of outgoing transactions from a given bank account."""),
+    'lino_xl.lib.finan.JournalEntryItem' : _("""An item of a JournalEntry."""),
+    'lino_xl.lib.finan.BankStatementItem' : _("""An item of a BankStatement."""),
+    'lino_xl.lib.finan.PaymentOrderItem' : _("""An item of a PaymentOrder."""),
+    'lino_xl.lib.finan.FinancialVoucher' : _("""Base class for all financial vouchers:
+Grouper,
+JournalEntry,
+PaymentOrder and
+BankStatement."""),
+    'lino_xl.lib.finan.FinancialVoucher.item_account' : _("""The default value to use when
+FinancialVoucherItem.account of an item is empty."""),
+    'lino_xl.lib.finan.FinancialVoucher.item_remark' : _("""The default value to use when
+FinancialVoucherItem.remark of an item is empty."""),
+    'lino_xl.lib.finan.DatedFinancialVoucherItem' : _("""A FinancialVoucherItem with an additional date
+field."""),
+    'lino_xl.lib.finan.DatedFinancialVoucherItem.date' : _("""The value date of this item."""),
+    'lino_xl.lib.finan.FinancialVoucherItem' : _("""The base class for the items of all types of financial vouchers
+(FinancialVoucher)."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.account' : _("""The general account to be used in the primary booking.
+If this is empty, use item_account of the voucher."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.project' : _("""The client related to this transaction."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.partner' : _("""The partner account to be used in the primary booking."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.amount' : _("""The amount to be booked. If this is empty, then the voucher
+cannot be registered."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.dc' : _("""The direction of the primary booking to create."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.remark' : _("""External reference. The description of this transation
+as seen by the external partner."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.match' : _("""An arbitrary string used to group several movements."""),
+    'lino_xl.lib.finan.Plugin' : _("""This Plugin class adds some
+entries to the Explorer menu.  It contains the following
+additional attributes:"""),
+    'lino_xl.lib.finan.Plugin.suggest_future_vouchers' : _("""Whether to suggest vouchers whose due_date is in the future."""),
+    'lino_xl.lib.finan.FinancialVouchers' : _("""Base class for the default tables of all other financial voucher
+types (JournalEntries , PaymentOrders and
+BankStatements)."""),
+    'lino_xl.lib.finan.PaymentOrders' : _("""The base table of all tables on PaymentOrder."""),
+    'lino_xl.lib.finan.BankStatements' : _("""The base table of all tables on BankStatement."""),
+    'lino_xl.lib.finan.ItemsByVoucher' : _("""The base table of all tables which display the items of a given
+voucher."""),
+    'lino_xl.lib.finan.SuggestionsByVoucher' : _("""Shows the suggested items for a given voucher, with a button to
+fill them into the current voucher."""),
+    'lino_xl.lib.finan.SuggestionsByJournalEntry' : _("""A SuggestionsByVoucher table for a JournalEntry."""),
+    'lino_xl.lib.finan.SuggestionsByPaymentOrder' : _("""A SuggestionsByVoucher table for a PaymentOrder."""),
+    'lino_xl.lib.finan.SuggestionsByBankStatement' : _("""A SuggestionsByVoucher table for a BankStatement."""),
+    'lino_xl.lib.finan.SuggestionsByVoucherItem' : _("""Displays the payment suggestions for a given voucher item, with
+a button to fill them into the current item (creating additional
+items if more than one suggestion was selected)."""),
+    'lino_xl.lib.finan.SuggestionsByPaymentOrderItem' : _("""A SuggestionsByVoucherItem table for a
+PaymentOrderItem."""),
+    'lino_xl.lib.finan.SuggestionsByBankStatementItem' : _("""A SuggestionsByVoucherItem table for a
+BankStatementItem."""),
+    'lino_xl.lib.finan.ShowSuggestions' : _("""Show suggested items for this voucher."""),
+    'lino_xl.lib.finan.FillSuggestionsToVoucher' : _("""Fill selected suggestions from a SuggestionsByVoucher table into a
+financial voucher."""),
+    'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
+selected suggestion does not create a new item but replaces the
+item for which it was called."""),
     'lino_xl.lib.ledger.MatchRule' : _("""A match rule specifies that a movement into given account can
 be cleared using a given journal."""),
     'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger."""),

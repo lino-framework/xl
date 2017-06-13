@@ -1,9 +1,6 @@
 # Copyright 2008-2016 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""
-Database models for `lino_xl.lib.finan`.
-"""
 from __future__ import unicode_literals
 import six
 
@@ -76,9 +73,6 @@ class ShowSuggestions(dd.Action):
 
 
 class JournalEntry(DatedFinancialVoucher, ProjectRelated):
-    """This is the model for "journal entries" ("operations diverses").
-
-    """
     class Meta:
         app_label = 'finan'
         abstract = dd.is_abstract_model(__name__, 'JournalEntry')
@@ -95,10 +89,6 @@ class JournalEntry(DatedFinancialVoucher, ProjectRelated):
             yield m
 
 class PaymentOrder(FinancialVoucher, Printable):
-    """A **payment order** is when a user instructs a bank to execute a
-    series of outgoing transactions from a given bank account.
-
-    """
     class Meta:
         app_label = 'finan'
         abstract = dd.is_abstract_model(__name__, 'PaymentOrder')
@@ -154,19 +144,6 @@ class PaymentOrder(FinancialVoucher, Printable):
 
 
 class BankStatement(DatedFinancialVoucher):
-    """A **bank statement** is a document issued by the bank, which
-    reports all transactions which occured on a given account during a
-    given period.
-
-    .. attribute:: balance1
-
-        The old (or start) balance.
-
-    .. attribute:: balance2
-
-        The new (or end) balance.
-
-    """
     class Meta:
         app_label = 'finan'
         abstract = dd.is_abstract_model(__name__, 'BankStatement')
@@ -207,7 +184,6 @@ class BankStatement(DatedFinancialVoucher):
 
 
 class JournalEntryItem(DatedFinancialVoucherItem):
-    """An item of a :class:`JournalEntry`."""
     class Meta:
         app_label = 'finan'
         verbose_name = _("Journal Entry item")
@@ -218,7 +194,6 @@ class JournalEntryItem(DatedFinancialVoucherItem):
 
 
 class BankStatementItem(DatedFinancialVoucherItem):
-    """An item of a :class:`BankStatement`."""
     class Meta:
         app_label = 'finan'
         verbose_name = _("Bank Statement item")
@@ -229,7 +204,6 @@ class BankStatementItem(DatedFinancialVoucherItem):
 
 
 class PaymentOrderItem(BankAccount, FinancialVoucherItem):
-    """An item of a :class:`PaymentOrder`."""
     class Meta:
         app_label = 'finan'
         verbose_name = _("Payment Order item")
@@ -279,11 +253,6 @@ class BankStatementDetail(JournalEntryDetail):
 
 
 class FinancialVouchers(dd.Table):
-    """Base class for the default tables of all other financial voucher
-    types (:class:`JournalEntries` , :class:`PaymentOrders` and
-    :class:`BankStatemens`).
-
-    """
     model = 'finan.JournalEntry'
     required_roles = dd.login_required(LedgerUser)
     params_panel_hidden = True
@@ -320,7 +289,6 @@ class JournalEntries(FinancialVouchers):
 
 
 class PaymentOrders(FinancialVouchers):
-    """The table of all :class:`PaymentOrder` vouchers."""
     model = 'finan.PaymentOrder'
     column_names = "number voucher_date narration total execution_date "\
                    "accounting_period workflow_buttons *"
@@ -329,7 +297,6 @@ class PaymentOrders(FinancialVouchers):
 
 
 class BankStatements(FinancialVouchers):
-    """The table of all :class:`BankStatement` vouchers."""
     model = 'finan.BankStatement'
     column_names = "number_with_year voucher_date balance1 balance2 " \
                    "accounting_period workflow_buttons *"
@@ -375,22 +342,22 @@ class ItemsByVoucher(dd.Table):
     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
     # slave_grid_format = 'html'
     preview_limit = 0
+    label = _("Content")
 
 
 class ItemsByJournalEntry(ItemsByVoucher):
     model = 'finan.JournalEntryItem'
-    column_names = "date partner account match remark debit credit seqno *"
+    column_names = "seqno date partner account match debit credit remark *"
 
 
 class ItemsByBankStatement(ItemsByVoucher):
     model = 'finan.BankStatementItem'
-    column_names = "date partner account match remark debit credit "\
-                   "workflow_buttons seqno *"
+    column_names = "seqno date partner account match remark debit credit "\
+                   "workflow_buttons *"
     suggestions_table = 'finan.SuggestionsByBankStatementItem'
 
 
 class ItemsByPaymentOrder(ItemsByVoucher):
-    label = _("Content")
     model = 'finan.PaymentOrderItem'
     column_names = "seqno partner workflow_buttons bank_account match "\
                    "amount remark *"
@@ -403,12 +370,6 @@ class ItemsByPaymentOrder(ItemsByVoucher):
 
 
 class FillSuggestionsToVoucher(dd.Action):
-    """Fill selected suggestions from a SuggestionsByVoucher table into a
-    financial voucher.
-
-    This creates one voucher item for each selected row.
-
-    """
     label = _("Fill")
     icon_name = 'lightning'
     http_method = 'POST'
@@ -436,11 +397,6 @@ class FillSuggestionsToVoucher(dd.Action):
 
 
 class FillSuggestionsToVoucherItem(FillSuggestionsToVoucher):
-    """Fill the selected suggestions as items to the voucher. The *first*
-    selected suggestion does not create a new item but replaces the
-    item for which it was called.
-
-    """
     def run_from_ui(self, ar, **kw):
         # compare add_item_from_due
         i = ar.master_instance
@@ -485,21 +441,6 @@ class FillSuggestionsToVoucherItem(FillSuggestionsToVoucher):
 
 
 class SuggestionsByVoucher(ledger.ExpectedMovements):
-    """Shows the suggested items for a given voucher, with a button to
-    fill them into the current voucher.
-
-    This is the base class for
-    :class:`SuggestionsByJournalEntry`
-    :class:`SuggestionsByBankStatement` and
-    :class:`SuggestionsByPaymentOrder` who define the class of the
-    master_instance (:attr:`master <lino.core.actors.Actor.master>`)
-
-    This is an abstract virtual slave table.
-
-    Every row is a :class:`DueMovement
-    <lino_xl.lib.ledger.utils.DueMovement>` object.
-
-    """
 
     label = _("Suggestions")
     # column_names = 'partner project match account due_date debts payments balance *'
@@ -541,12 +482,10 @@ class SuggestionsByVoucher(ledger.ExpectedMovements):
 
 
 class SuggestionsByJournalEntry(SuggestionsByVoucher):
-    "A :class:`SuggestionsByVoucher` table for a :class:`JournalEntry`."
     master = 'finan.JournalEntry'
 
 
 class SuggestionsByPaymentOrder(SuggestionsByVoucher):
-    "A :class:`SuggestionsByVoucher` table for a :class:`PaymentOrder`."
 
     master = 'finan.PaymentOrder'
     # column_names = 'partner match account due_date debts payments balance bank_account *'
@@ -567,16 +506,10 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
 
 
 class SuggestionsByBankStatement(SuggestionsByVoucher):
-    "A :class:`SuggestionsByVoucher` table for a :class:`BankStatement`."
     master = 'finan.BankStatement'
 
 
 class SuggestionsByVoucherItem(SuggestionsByVoucher):
-    """Displays the payment suggestions for a voucher item, with a button
-    to fill them into the current item (creating additional items if
-    more than one suggestion was selected).
-
-    """
 
     do_fill = FillSuggestionsToVoucherItem()
 
@@ -603,18 +536,10 @@ class SuggestionsByVoucherItem(SuggestionsByVoucher):
 
 
 class SuggestionsByBankStatementItem(SuggestionsByVoucherItem):
-    """A :class:`SuggestionsByVoucherItem` table for a
-    :class:`BankStatementItem`.
-
-    """
     master = 'finan.BankStatementItem'
 
 
 class SuggestionsByPaymentOrderItem(SuggestionsByVoucherItem):
-    """A :class:`SuggestionsByVoucherItem` table for a
-    :class:`PaymentOrderItem`.
-
-    """
     master = 'finan.PaymentOrderItem'
 
 
