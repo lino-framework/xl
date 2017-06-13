@@ -347,7 +347,7 @@ class ItemsByVoucher(dd.Table):
 
 class ItemsByJournalEntry(ItemsByVoucher):
     model = 'finan.JournalEntryItem'
-    column_names = "seqno date partner account match debit credit remark *"
+    column_names = "seqno date partner account:50 match debit credit remark *"
 
 
 class ItemsByBankStatement(ItemsByVoucher):
