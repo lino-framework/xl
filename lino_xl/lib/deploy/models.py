@@ -198,8 +198,7 @@ class Deployment(Sequenced, Workable):
     
     def get_siblings(self):
         "Overrides :meth:`lino.mixins.Sequenced.get_siblings`"
-        qs = self.__class__.objects.filter(
-                milestone=self.milestone).order_by('seqno')
+        qs = self.__class__.objects.filter(milestone=self.milestone)
         # print(20170321, qs)
         return qs
     

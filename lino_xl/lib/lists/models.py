@@ -67,6 +67,9 @@ class List(mixins.BabelNamed, mixins.Referrable):
 
     print_labels = PrintLabelsAction()
 
+    def get_overview_elems(self, ar):
+        return [self.obj2href(ar)]
+
 
 class Lists(dd.Table):
     required_roles = dd.login_required(ContactsUser)

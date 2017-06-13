@@ -373,6 +373,8 @@ class ItemsByVoucher(dd.Table):
     # hidden_columns = 'id amount dc seqno'
     suggest = ShowSuggestions()
     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
+    # slave_grid_format = 'html'
+    preview_limit = 0
 
 
 class ItemsByJournalEntry(ItemsByVoucher):
