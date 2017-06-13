@@ -115,7 +115,6 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
         return E.tostring_pretty(e)
 
     def get_sidebar_menu(self, request):
-        #~ qs = self.get_siblings()
         qs = Page.objects.filter(parent__isnull=True)
         #~ qs = self.children.all()
         yield ('/', 'index', unicode(_('Home')))

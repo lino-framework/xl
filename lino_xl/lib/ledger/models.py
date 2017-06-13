@@ -717,7 +717,7 @@ class Movement(ProjectRelated):
         #~ return E.div(*elems)
 
     def get_siblings(self):
-        return self.voucher.movement_set.order_by('seqno')
+        return self.voucher.movement_set.all()
         #~ return self.__class__.objects.filter().order_by('seqno')
 
     def __str__(self):

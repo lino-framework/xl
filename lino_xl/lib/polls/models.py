@@ -79,7 +79,7 @@ class Choice(mixins.BabelNamed, mixins.Sequenced):
     choiceset = models.ForeignKey('polls.ChoiceSet', related_name='choices')
 
     def get_siblings(self):
-        return self.choiceset.choices.order_by('seqno')
+        return self.choiceset.choices.all()
 
     @dd.action()
     def select_by_response(self, ar):
@@ -258,7 +258,7 @@ class Question(mixins.Sequenced):
 
     def get_siblings(self):
         #~ return self.choiceset.choices.order_by('seqno')
-        return self.poll.questions.order_by('seqno')
+        return self.poll.questions.all()
 
     def get_choiceset(self):
         if self.is_heading:

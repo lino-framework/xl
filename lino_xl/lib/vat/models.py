@@ -115,9 +115,11 @@ class VatRule(Sequenced, DatePeriod):
             num=qs.count(), context=dict(
                 vat_regime=vat_regime, vat_class=vat_class,
                 country=country.isocode, date=dd.fds(date)))
-        msg += " (SQL query was {0})".format(qs.query)
-        dd.logger.info(msg)
-        # raise Warning(msg)
+        if False:
+            msg += " (SQL query was {0})".format(qs.query)
+            dd.logger.info(msg)
+        else:
+            raise Warning(msg)
         return None
 
     def __str__(self):

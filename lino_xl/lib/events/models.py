@@ -87,7 +87,7 @@ class Stage(mixins.Sequenced):
         return str(self.city)
 
     def get_siblings(self):
-        return self.event.stages.order_by('seqno')
+        return self.event.stages.all()
 
 dd.update_field(Event, 'name', blank=True)
 
