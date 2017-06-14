@@ -12,7 +12,7 @@ from lino.utils.mldbc import babel_named as named
 
 def objects():
     Group = rt.models.groups.Group
-    User = rt.models.auth.User
+    User = rt.models.users.User
     Membership = rt.models.groups.Membership
     Comment = rt.models.comments.Comment
 

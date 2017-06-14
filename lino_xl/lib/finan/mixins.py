@@ -1,10 +1,5 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-
-"""
-Model mixins for :mod:`lino_xl.lib.finan`.
-"""
-
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -25,26 +20,6 @@ ledger = dd.resolve_app('ledger')
 
 
 class FinancialVoucher(ledger.Voucher, Certifiable):
-    """Base class for all financial vouchers:
-    :class:`Grouper`,
-    :class:`JournalEntry`,
-    :class:`PaymentOrder` and
-    :class:`BankStatement`.
-
-    .. attribute:: item_account
-
-        The default value to use when
-        :attr:`FinancialVoucherItem.account` of an item is empty.
-
-    .. attribute:: item_remark
-
-        The default value to use when
-        :attr:`FinancialVoucherItem.remark` of an item is empty.
-
-    .. attribute:: printed
-        See :attr:`lino_xl.lib.excerpts.mixins.Certifiable.printed`
-
-    """
 
     class Meta:
         abstract = True
@@ -113,52 +88,6 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
 
 class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
                            ProjectRelated, Matching):
-    """The base class for the items of all types of financial vouchers
-    (:class:`FinancialVoucher`).
-
-    .. attribute:: account
-
-        The general account to be used in the primary booking.
-        If this is empty, use :attr:`item_account` of the voucher.
-
-    .. attribute:: project
-
-        The client related to this transaction.
-
-    .. attribute:: partner
-
-        The partner account to be used in the primary booking.
-    
-        In Lino Welfare this field is optional and used only for
-        transactions whose *recipient* is different from the *client*.
-        When empty, Lino will book to the **client**
-        (i.e. :attr:`project`).
-
-    .. attribute:: amount
-
-        The amount to be booked. If this is empty, then the voucher
-        cannot be registered.
-
-    .. attribute:: dc
-
-        The direction of the primary booking to create.
-
-    .. attribute:: remark
-
-        External reference. The description of this transation
-        as seen by the external partner.
-
-    .. attribute:: seqno
-
-    .. attribute:: match
-
-        An arbitrary string used to group several movements.
-
-        A reference to the voucher that caused this voucher entry.  For
-        example the :attr:`match` of the payment of an invoice points
-        to that invoice.
-
-    """
     class Meta:
         abstract = True
         verbose_name = _("Item")
@@ -299,8 +228,6 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
 
 
 class DatedFinancialVoucher(FinancialVoucher):
-    """A :class:`FinancialVoucher` whose items have a :attr:`date` field.
-    """
     class Meta:
         app_label = 'finan'
         abstract = True
@@ -315,14 +242,7 @@ class DatedFinancialVoucher(FinancialVoucher):
 
 
 class DatedFinancialVoucherItem(FinancialVoucherItem):
-    """A :class:`FinancialVoucherItem` with an additional :attr:`date`
-    field.
-
-    .. attribute:: date
-
-        The value date of this item.
-
-    """
+    
     class Meta:
         app_label = 'finan'
         abstract = True

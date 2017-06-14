@@ -31,7 +31,7 @@ class Plugin(ad.Plugin):
     #deprecated:
     partner_model = 'contacts.Partner'
     # menu_group = 'contacts'
-    # partner_model = 'auth.User'
+    # partner_model = 'users.User'
 
     # def setup_main_menu(self, site, user_type, m):
     #     # p = self.get_menu_group()

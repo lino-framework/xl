@@ -97,7 +97,7 @@ def objects():
         yield e
 
     # # some conflicting events
-    # USERS = Cycler(rt.auth.User.objects.all())
+    # USERS = Cycler(rt.users.User.objects.all())
     # ET = EventType.objects.filter(is_appointment=True)
     # date = settings.SITE.demo_date(200)
     # e = Event(start_date=date, summary="Conflicting 1", event_type=ETYPES.pop(), user=USERS.pop())

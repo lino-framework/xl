@@ -30,7 +30,7 @@ from lino.api import dd, rt, _
 from lino.utils.xmlgen.html import E
 
 from lino_xl.lib.cal.mixins import daterange_text
-from lino.modlib.auth.mixins import My
+from lino.modlib.users.mixins import My
 from lino.utils import join_elems
 
 from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes

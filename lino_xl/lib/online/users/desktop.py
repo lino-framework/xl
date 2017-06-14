@@ -6,7 +6,7 @@
 
 """
 
-from lino.modlib.auth.desktop import *
+from lino.modlib.users.desktop import *
 
 from lino.api import _
 
@@ -15,7 +15,7 @@ from lino.core import actions
 from lino_xl.lib.clocking.roles import Worker
 from .choicelists import UserStates
 
-from lino.modlib.auth.actions import SendWelcomeMail
+from lino.modlib.users.actions import SendWelcomeMail
 from lino.modlib.office.roles import OfficeUser
 #from .models import VerifyUser
 
@@ -36,7 +36,7 @@ class OtherUsers(Users):
 
     
 # def site_setup(site):
-#     site.modules.auth.Users.set_detail_layout(UserDetail())
+#     site.modules.users.Users.set_detail_layout(UserDetail())
 
 
 class RegisterUserLayout(dd.InsertLayout):

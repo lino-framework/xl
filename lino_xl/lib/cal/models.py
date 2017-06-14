@@ -29,7 +29,7 @@ from .utils import setkw, dt2kw, when_text
 
 from lino.modlib.plausibility.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
-from lino.modlib.auth.mixins import UserAuthored, Assignable
+from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
@@ -521,7 +521,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         Another user who is expected to take responsibility for this
         entry.
 
-        See :attr:`lino.modlib.auth.mixins.Assignable.assigned_to`.
+        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`.
 
     .. attribute:: event_type
 
@@ -1039,7 +1039,7 @@ class Guest(dd.Model):
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     # Define a `user` property because we want to use
-    # `lino.modlib.auth.mixins.My`
+    # `lino.modlib.users.mixins.My`
     def get_user(self):
         # used to apply `owner` requirement in GuestState
         return self.event.user
@@ -1104,7 +1104,7 @@ def migrate_reminder(obj, reminder_date, reminder_text,
         alarm_unit=delay2alarm(delay_type))
 
 
-# Inject application-specific fields to auth.User.
+# Inject application-specific fields to users.User.
 dd.inject_field(settings.SITE.user_model,
                 'access_class',
                 AccessClasses.field(

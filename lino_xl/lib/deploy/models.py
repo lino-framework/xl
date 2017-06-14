@@ -17,7 +17,7 @@ from lino.utils.instantiator import create_row
 from lino.utils.xmlgen.html import E
 
 from lino_xl.lib.excerpts.mixins import Certifiable
-from lino.modlib.auth.mixins import UserAuthored
+from lino.modlib.users.mixins import UserAuthored
 
 from lino_xl.lib.tickets.models import Ticket, SpawnTicket
 from lino_xl.lib.tickets.choicelists import TicketStates, LinkTypes

@@ -42,7 +42,7 @@ from lino.mixins.duplicable import Duplicable
 from lino.mixins.periods import DatePeriod
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.excerpts.mixins import ExcerptTitle
-from lino.modlib.auth.mixins import UserAuthored
+from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import Printable
 from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation

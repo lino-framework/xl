@@ -20,7 +20,7 @@ from lino.core.utils import lazy_format
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from lino.mixins import Created, ObservedPeriod
-from lino.modlib.auth.mixins import UserAuthored, My
+from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.choicelists import MailModes
 from lino_xl.lib.cal.mixins import daterange_text
 from lino_xl.lib.clocking.mixins import Workable
