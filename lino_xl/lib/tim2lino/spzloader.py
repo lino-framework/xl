@@ -31,8 +31,8 @@ Account = dd.resolve_model('accounts.Account')
 
 clocking = dd.resolve_app('clocking')
 
-User = rt.models.auth.User
-UserTypes = rt.models.auth.UserTypes
+User = rt.models.users.User
+UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
 
 lists_Member = rt.models.lists.Member

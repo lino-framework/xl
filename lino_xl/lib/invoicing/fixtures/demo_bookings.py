@@ -36,7 +36,7 @@ def objects():
     #     return
     from lino_xl.lib.ledger.roles import LedgerStaff
     accountants = LedgerStaff.get_user_profiles()
-    users = rt.models.auth.User.objects.filter(
+    users = rt.models.users.User.objects.filter(
         language=dd.get_default_language(), user_type__in=accountants)
     if users.count() == 0:
         return

@@ -833,10 +833,10 @@ class TimLoader(TimLoader):
 
     def create_users(self):
 
-        self.ROOT = auth.User(
+        self.ROOT = users.User(
             username='tim', first_name='tim', 
             id=1,
-            user_type=auth.UserTypes.admin)
+            user_type=users.UserTypes.admin)
         self.ROOT.set_password("1234")
         # if isinstance(self.ROOT, rt.models.contacts.Partner):
         #     self.ROOT.name = "tim"
@@ -861,8 +861,8 @@ class TimLoader(TimLoader):
         #    chart=self.CHART,name="Verkaufsrechnungen",ref="VKR")
         # yield ledger.AccountInvoice.create_journal('purchases',
         #    chart=self.CHART,name="Einkaufsrechnungen",ref="EKR")
-        # from lino.modlib.auth import models as users
-        # ROOT = auth.User.objects.get(username='root')
+        # from lino.modlib.users import models as users
+        # ROOT = users.User.objects.get(username='root')
         # DIM = sales.InvoicingMode.objects.get(name='Default')
         yield tim.load_dbf('GEN', self.load_gen2group)
         yield tim.load_dbf('GEN', self.load_gen2account)

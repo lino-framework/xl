@@ -7,7 +7,7 @@
 This is the base plugin which defines common things for all user teams:
 
 - Define the `Team` model
-- Inject into `auth.User` a pointer to `teams.Team`
+- Inject into `users.User` a pointer to `teams.Team`
 - Define a `UsersByTeam` view
 - Add a menu command to configure the list of teams.
 
@@ -26,7 +26,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.Plugin`."
 
     verbose_name = _("User teams")
-    needs_plugins = ['lino.modlib.auth']
+    needs_plugins = ['lino.modlib.users']
 
     def setup_config_menu(config, site, user_type, m):
         mg = site.plugins.system

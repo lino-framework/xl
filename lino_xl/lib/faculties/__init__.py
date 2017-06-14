@@ -42,7 +42,7 @@ class Plugin(ad.Plugin):
     demander_model = 'contacts.Partner'
     # supplier_model = 'contacts.Partner'
 
-    # end_user_model = 'auth.User'
+    # end_user_model = 'users.User'
     end_user_model = 'contacts.Partner'
 
     def on_site_startup(self, site):

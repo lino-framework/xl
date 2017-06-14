@@ -13,10 +13,10 @@ component severity resolution time changetime user""".split()
 
 
 def makeuser(username):
-    User = rt.modules.auth.User
+    User = rt.modules.users.User
     u, created = User.objects.get_or_create(username=username.strip())
     if created:
-        # u.user_type = rt.modules.auth.UserTypes.admin
+        # u.user_type = rt.modules.users.UserTypes.admin
         # u.set_password('1234')
         # u.modified = datetime.datetime.now()
         u.full_clean()
@@ -28,7 +28,7 @@ def objects():
     Project = rt.modules.tickets.Project
     Milestone = rt.models.deploy.Milestone
     Ticket = rt.modules.tickets.Ticket
-    User = rt.modules.auth.User
+    User = rt.modules.users.User
     TicketStates = rt.modules.tickets.TicketStates
 
     states = set()

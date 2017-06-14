@@ -11,7 +11,7 @@ from lino import ad, _
 
 class Plugin(ad.Plugin):
     verbose_name = _("Groups")
-    # member_model = 'auth.User'
+    # member_model = 'users.User'
     menu_group = 'system'
     needs_plugins = ['lino.modlib.comments']
 

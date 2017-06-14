@@ -38,7 +38,7 @@ class comment_email():
         except ObjectDoesNotExist:
             comment = None
         try:
-            user = rt.models.auth.User.objects.get(username=user)
+            user = rt.models.users.User.objects.get(username=user)
         except ObjectDoesNotExist:
             user = None
         return comment, user

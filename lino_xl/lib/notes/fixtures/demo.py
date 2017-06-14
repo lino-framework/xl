@@ -27,7 +27,7 @@ SUBJECTS = Cycler((
 
 
 def objects():
-    User = rt.modules.auth.User
+    User = rt.modules.users.User
     Note = rt.modules.notes.Note
     NoteType = rt.modules.notes.NoteType
 

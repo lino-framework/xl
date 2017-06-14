@@ -15,7 +15,7 @@ from lino.api import dd, rt, _
 contacts = dd.resolve_app('contacts')
 Person = contacts.Person
 
-from lino.modlib.auth.models import *
+from lino.modlib.users.models import *
 
 from .choicelists import UserStates
 
@@ -92,7 +92,7 @@ class VerifyUser(dd.Action):
         assert len(ar.selected_rows) == 1
         user = ar.selected_rows[0]
         pv = ar.action_param_values
-        # qs = rt.models.auth.User.objects.exclude(verification_code='')
+        # qs = rt.models.users.User.objects.exclude(verification_code='')
         # try:
         #     user = qs.get(email=pv.email)
         # except Exception:
@@ -130,7 +130,7 @@ class User(User, Person):
     workflow_state_field = 'user_state'
 
     class Meta(User.Meta):
-        app_label = 'auth'
+        app_label = 'users'
         abstract = dd.is_abstract_model(__name__, 'User')
 
     callme_mode = models.BooleanField(
@@ -160,7 +160,7 @@ class User(User, Person):
         if a is not None:
             return a
         if self.callme_mode:
-            a = rt.actors.auth.OtherUsers.detail_action
+            a = rt.actors.users.OtherUsers.detail_action
         if a is not None and a.get_view_permission(ar.get_user().user_type):
             return a
         
@@ -176,7 +176,7 @@ class User(User, Person):
 
     # def get_default_table(self, ar):
     #     tbl = super(User, self).get_default_table(ar)
-    #     return rt.actors.auth.OtherUsers
+    #     return rt.actors.users.OtherUsers
     
     # def __str__(self):
     #     s = self.get_full_name()
@@ -186,7 +186,7 @@ class User(User, Person):
     #     return s
 
 
-dd.update_field('auth.User', 'remarks', verbose_name=_("About me"))
+dd.update_field('users.User', 'remarks', verbose_name=_("About me"))
 
 from lino.utils import camelize
 
@@ -196,7 +196,7 @@ def create_user(username, user_type=None, **kw):
         kw.update(username=username, user_type=user_type)
         kw.update(first_name=first_name)
         # kw.update(partner=person)
-        return rt.models.auth.User(**kw)
+        return rt.models.users.User(**kw)
     else:
         # return dd.plugins.faculties.supplier_model(first_name=first_name)
         return rt.models.contacts.Person(first_name=first_name)

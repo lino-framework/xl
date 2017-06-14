@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 from lino.api import dd, rt, _
 from django.db import models
 
-from lino.modlib.auth.mixins import UserAuthored
+from lino.modlib.users.mixins import UserAuthored
 
 
 class BoardDecision(UserAuthored):

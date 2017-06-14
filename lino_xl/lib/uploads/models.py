@@ -151,12 +151,12 @@ class Uploads(Uploads):
 
     parameters = mixins.ObservedPeriod(
         # puser=models.ForeignKey(
-        #     'auth.User', blank=True, null=True,
+        #     'users.User', blank=True, null=True,
         #     verbose_name=_("Uploaded by")),
         upload_type=models.ForeignKey(
             'uploads.UploadType', blank=True, null=True),
         coached_by=models.ForeignKey(
-            'auth.User',
+            'users.User',
             blank=True, null=True,
             verbose_name=_("Coached by"),
             help_text=_(

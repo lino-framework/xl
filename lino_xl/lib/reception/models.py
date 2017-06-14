@@ -41,7 +41,7 @@ from django.utils import timezone
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
-from lino.modlib.auth.mixins import My
+from lino.modlib.users.mixins import My
 
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems

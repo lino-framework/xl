@@ -12,7 +12,7 @@ from lino import mixins
 
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
-from lino.modlib.auth.mixins import My
+from lino.modlib.users.mixins import My
 from lino.api import dd, rt, _
 
 # class MilestoneDetail(dd.DetailLayout):

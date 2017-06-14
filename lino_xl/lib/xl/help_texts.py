@@ -618,19 +618,19 @@ Site."""),
     'lino_xl.lib.notes.models.Note' : _("""A note is a dated and timed document written by its author (a
 user). For example a report of a meeting or a phone call, or just
 some observation. Notes are usually meant for internal use."""),
-    'lino_xl.lib.online.auth.choicelists.UserStates' : _("""The list of possible choices for the state field
+    'lino_xl.lib.online.users.choicelists.UserStates' : _("""The list of possible choices for the state field
 of a User."""),
-    'lino_xl.lib.online.auth.choicelists.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
+    'lino_xl.lib.online.users.choicelists.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
 verifcation code, and that a username and password are set."""),
-    'lino_xl.lib.online.auth.desktop.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
-    'lino_xl.lib.online.auth.desktop.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
-    'lino_xl.lib.online.auth.models.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
+    'lino_xl.lib.online.users.desktop.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
+    'lino_xl.lib.online.users.desktop.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
+    'lino_xl.lib.online.users.models.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
 checks certain things before accepting the new user."""),
-    'lino_xl.lib.online.auth.models.VerifyUser' : _("""Enter your verification code."""),
-    'lino_xl.lib.online.auth.models.User.callme_mode' : _("""Whether other users can see my contact data."""),
-    'lino_xl.lib.online.auth.models.User.verification_code' : _("""A random string set for every new user. Used for
+    'lino_xl.lib.online.users.models.VerifyUser' : _("""Enter your verification code."""),
+    'lino_xl.lib.online.users.models.User.callme_mode' : _("""Whether other users can see my contact data."""),
+    'lino_xl.lib.online.users.models.User.verification_code' : _("""A random string set for every new user. Used for
 online_registration."""),
-    'lino_xl.lib.online.auth.models.User.user_state' : _("""The registration state of this user."""),
+    'lino_xl.lib.online.users.models.User.user_state' : _("""The registration state of this user."""),
     'lino_xl.lib.outbox.choicelists.RecipientTypes' : _("""A list of possible values for the type field of a
 Recipient."""),
     'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
@@ -796,7 +796,7 @@ included to a detail window on partner."""),
     'lino_xl.lib.stars.models.Star' : _("""Represents the fact that a given database object is starred by a
 given User."""),
     'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
-    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.auth.models.User`"""),
+    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.tickets.roles.TicketsUser' : _("""A user who can create new tickets."""),
     'lino_xl.lib.tickets.roles.Searcher' : _("""A user who can see all tickets."""),

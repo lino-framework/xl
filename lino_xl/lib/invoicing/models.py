@@ -35,7 +35,7 @@ from django.utils import translation
 from lino.modlib.gfks.fields import GenericForeignKeyIdField
 from lino.core.gfks import GenericForeignKey, ContentType
 
-from lino.modlib.auth.mixins import UserAuthored, My
+from lino.modlib.users.mixins import UserAuthored, My
 
 # from lino_xl.lib.ledger.choicelists import VoucherTypes
 

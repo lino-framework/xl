@@ -24,7 +24,7 @@ from lino import mixins
 from lino.utils.xmlgen.html import E
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.auth.mixins import My, UserAuthored
+from lino.modlib.users.mixins import My, UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
