@@ -984,9 +984,8 @@ must resolve using resolve_states."""),
     'lino_xl.lib.accounts.AccountType' : _("""The base class for all account types."""),
     'lino_xl.lib.accounts.BankAccounts' : _("""A subclass of Assets."""),
     'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types. See AccountType."""),
-    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
-    'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for something
-where you can put money and retrieve it later."""),
+    'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for "something
+where you can place money and retrieve it later"."""),
     'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
 it."""),
     'lino_xl.lib.accounts.Account.group' : _("""The account group to which this account belongs.  Points to
@@ -1001,8 +1000,16 @@ AccountTypes."""),
     'lino_xl.lib.accounts.Account.default_amount' : _("""The default amount to book in bank statements or journal
 entries when this account has been selected manually. The
 default booking direction is that of the type."""),
+    'lino_xl.lib.accounts.Account.FOO_allowed' : _("""These checkboxes indicate whether this account can be used on
+an item of a purchases (or sales or wages or FOO)
+invoice. There is one such checkbox for every trade type
+(TradeTypes).  They
+exist only when the ledger plugin
+is installed as well.  See also the
+get_allowed_accounts method."""),
     'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
     'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
+    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
     'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
 together with its booking direction (debit or credit)."""),
     'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
