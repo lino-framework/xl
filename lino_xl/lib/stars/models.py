@@ -51,7 +51,7 @@ class Star(UserAuthored, Controllable):
         """
         return cls.objects.filter(**gfk2lookup(cls.owner, obj, **kwargs))
 
-dd.update_field(Star, 'user', verbose_name=_("User"))
+dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))
 
 Star.update_controller_field(blank=False, null=False)

@@ -484,6 +484,13 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         """
         if dd.is_installed('votes'):
             self.set_auto_vote(session.user, VoteStates.invited)
+        elif dd.is_installed('stars'):
+            star = get_favourite(self, user=session.user)
+            if star is None:
+                Star = rt.modules.stars.Star
+                star = Star(owner=self, user=session.user)
+                star.save()
+
         self.touch()
 
     def on_commented(self, comment, ar, cw):
@@ -493,7 +500,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             star = get_favourite(self, user=comment.user)
             if star is None:
                 Star = rt.modules.stars.Star
-                star= Star(owner=self, user=comment.user)
+                star = Star(owner=self, user=comment.user)
                 star.save()
 
 
