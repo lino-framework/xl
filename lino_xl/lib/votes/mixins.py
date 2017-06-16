@@ -6,7 +6,7 @@
 """
 
 from lino.api import dd, rt, _
-from lino.utils.instantiator import create_row
+from lino.utils.instantiator import create_row, create_or_update_row
 from lino.modlib.notify.mixins import ChangeObservable
 from .choicelists import VoteStates
 from .roles import SimpleVotesUser
@@ -68,13 +68,21 @@ class Votable(ChangeObservable):
             #     if user in wanted_votes:
             #         return
             for user in self.get_vote_raters():
-                self.set_auto_vote(user, VoteStates.author)
+                create_or_update_row(
+                    rt.models.votes.Vote,
+                    dict(user=user,
+                         votable=self),
+                    dict(user=user,
+                         votable=self,
+                         state=VoteStates.author)
+                )
+
             # for user, state in wanted_votes.items():
             #     self.set_auto_vote(user, state)
 
-        def on_commented(self, comment, ar, cw):
-            super(Votable, self).on_commented(comment, ar, cw)
-            self.set_auto_vote(comment.user, VoteStates.invited)
+        # def on_commented(self, comment, ar, cw):
+        #     super(Votable, self).on_commented(comment, ar, cw)
+        #     self.set_auto_vote(comment.user, VoteStates.invited)
 
         def set_auto_vote(self, user, state):
             # dd.logger.info("20170406 set_auto_vote %s %s", user, state)
@@ -84,9 +92,9 @@ class Votable(ChangeObservable):
                     rt.models.votes.Vote, user=user,
                     votable=self, state=state)
 
-        def after_ui_save(self, ar, cw):
-            """Automatically call :meth:`set_author_votes` after saving.
+        def after_ui_create(self, ar):
+            """Automatically call :meth:`set_author_votes` after creation.
 
             """
-            super(Votable, self).after_ui_save(ar, cw)
+            super(Votable, self).after_ui_create(ar)
             self.set_author_votes()
