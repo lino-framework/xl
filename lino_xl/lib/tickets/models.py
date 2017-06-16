@@ -477,31 +477,33 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             if not self.project.private:
                 self.private = False
 
+    def add_change_watcher(self, user):
+        if user is None:
+            return
+        if dd.is_installed('votes'):
+            self.set_auto_vote(user, VoteStates.watching)
+        elif dd.is_installed('stars'):
+            star = get_favourite(self, user=user)
+            if star is None:
+                Star = rt.modules.stars.Star
+                star = Star(owner=self, user=user)
+                star.save()
+
     def on_worked(self, session):
         """This is automatically called when a work session has been created
         or modified.
 
         """
-        if dd.is_installed('votes'):
-            self.set_auto_vote(session.user, VoteStates.invited)
-        elif dd.is_installed('stars'):
-            star = get_favourite(self, user=session.user)
-            if star is None:
-                Star = rt.modules.stars.Star
-                star = Star(owner=self, user=session.user)
-                star.save()
-
+        self.add_change_watcher(session.user)
         self.touch()
 
     def on_commented(self, comment, ar, cw):
-        if dd.is_installed('votes'):
-            self.set_auto_vote(comment.user, VoteStates.watching)
-        elif dd.is_installed('stars'):
-            star = get_favourite(self, user=comment.user)
-            if star is None:
-                Star = rt.modules.stars.Star
-                star = Star(owner=self, user=comment.user)
-                star.save()
+        """This is automatically called when a work session has been created
+        or modified.
+
+        """
+        self.add_change_watcher(comment.user)
+        self.touch()
 
 
     # def get_project_for_vote(self, vote):
