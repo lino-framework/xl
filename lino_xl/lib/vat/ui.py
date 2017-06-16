@@ -45,6 +45,7 @@ class VatRules(dd.Table):
     start_date end_date rate can_edit *"
     hide_sums = True
     auto_fit_column_widths = True
+    order_by = ['seqno']
 
 
 class InvoiceDetail(dd.DetailLayout):
