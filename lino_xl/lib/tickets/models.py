@@ -363,7 +363,7 @@ class SpawnTicket(dd.Action):
         for k in ('project', 'private'):
             setattr(new, k, getattr(old, k))
         new.full_clean()
-        new.save()
+        new.save_new_instance(ar)
         self.make_link(ar, new, old)
         ar.success(
             _("New ticket {0} has been spawned as child of {1}.").format(
