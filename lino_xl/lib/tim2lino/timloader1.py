@@ -354,6 +354,8 @@ class TimLoader(TimLoader):
             kw.update(group=ag)
             kw.update(type=pcmn2type(idgen))
             self.babel2kw('libell', 'name', row, kw)
+            kw.update(purchases_allowed=True)
+            kw.update(sales_allowed=True)
             # def names2kw(kw,*names):
                 # names = [n.strip() for n in names]
                 # kw.update(name=names[0])
