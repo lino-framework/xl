@@ -542,8 +542,6 @@ class Tickets(dd.Table):
                   'state',
                   'project',
                   'topic', 'site'))
-        if not dd.is_installed('votes'):
-            s.add('assigned_to')
         return s
 
     @classmethod
@@ -577,34 +575,12 @@ class Tickets(dd.Table):
         # elif pv.show_closed == dd.YesNo.yes:
         #     qs = qs.filter(closed=True)
 
-        if dd.is_installed('votes'):
-            if pv.assigned_to:
-                # qs = qs.filter(
-                #     Q(votes_by_ticket__user=pv.assigned_to) |
-                #     Q(votes_by_ticket__end_user=pv.assigned_to)).distinct()
-                qs = qs.filter(
-                    votes_by_ticket__user=pv.assigned_to).distinct()
-            
-            if pv.not_assigned_to:
-                # print(20170318, self, qs.model, pv.not_assigned_to)
-                # qs = qs.exclude(
-                #     Q(votes_by_ticket__user_id=pv.not_assigned_to.id) |
-                #     Q(votes_by_ticket__end_user_id=pv.not_assigned_to.id))
-                qs = qs.exclude(
-                    votes_by_ticket__user=pv.not_assigned_to)
-            if pv.show_assigned == dd.YesNo.no:
-                qs = qs.filter(vote__isnull=False).distinct()
-            elif pv.show_assigned == dd.YesNo.yes:
-                qs = qs.filter(vote__isnull=True).distinct()
-
-        else:
-            if pv.not_assigned_to:
-                qs = qs.exclude(assigned_to=pv.not_assigned_to)
-
-            if pv.show_assigned == dd.YesNo.no:
-                qs = qs.filter(assigned_to__isnull=False)
-            elif pv.show_assigned == dd.YesNo.yes:
-                qs = qs.filter(assigned_to__isnull=True)
+        if pv.assigned_to:
+            # qs = qs.filter(
+            #     Q(votes_by_ticket__user=pv.assigned_to) |
+            #     Q(votes_by_ticket__end_user=pv.assigned_to)).distinct()
+            qs = qs.filter(
+                votes_by_ticket__user=pv.assigned_to).distinct()
             
         if pv.deployed_to:
             # qs = qs.filter(
@@ -612,6 +588,20 @@ class Tickets(dd.Table):
             #     Q(votes_by_ticket__end_user=pv.assigned_to)).distinct()
             qs = qs.filter(
                 deployments_by_ticket__milestone=pv.deployed_to).distinct()
+            
+        if pv.not_assigned_to:
+            # print(20170318, self, qs.model, pv.not_assigned_to)
+            # qs = qs.exclude(
+            #     Q(votes_by_ticket__user_id=pv.not_assigned_to.id) |
+            #     Q(votes_by_ticket__end_user_id=pv.not_assigned_to.id))
+            qs = qs.exclude(
+                votes_by_ticket__user=pv.not_assigned_to)
+            
+        if pv.show_assigned == dd.YesNo.no:
+            qs = qs.filter(vote__isnull=False).distinct()
+        elif pv.show_assigned == dd.YesNo.yes:
+            qs = qs.filter(vote__isnull=True).distinct()
+
         if pv.show_deployed == dd.YesNo.no:
             qs = qs.exclude(deployments_by_ticket__isnull=False)
         elif pv.show_deployed == dd.YesNo.yes:
@@ -710,11 +700,7 @@ class RefTickets(AllTickets):
         return kw
 
 class UnassignedTickets(Tickets):
-    if dd.is_installed('votes'):
-        column_names = "summary project user votes_by_ticket *"
-    else:
-        column_names = "summary project user assigned_to *"
-        
+    column_names = "summary project user votes_by_ticket *"
     label = _("Unassigned Tickets")
     required_roles = dd.login_required(Triager)
 
