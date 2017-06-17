@@ -480,6 +480,9 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     def add_change_watcher(self, user):
         if user is None:
             return
+        user = user.get_as_user()
+        if user is None:
+            return
         if dd.is_installed('votes'):
             self.set_auto_vote(user, VoteStates.watching)
         elif dd.is_installed('stars'):
