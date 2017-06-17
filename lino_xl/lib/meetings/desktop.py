@@ -71,7 +71,7 @@ class MeetingDetail(dd.DetailLayout):
 
         more = dd.Panel("""
         more_left:30 blogs.EntriesByController:50
-        description     stars.StarsByController:30
+        description     #stars.StarsByController:30
         """, label=_("More"))
 
 
