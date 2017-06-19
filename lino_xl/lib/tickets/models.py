@@ -377,7 +377,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
              mixins.Referrable):
 
     quick_search_fields = "summary description ref"
-    quick_search_fields_strict = "id"
+
     workflow_state_field = 'state'
 
     create_session_on_create = True
