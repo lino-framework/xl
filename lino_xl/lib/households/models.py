@@ -115,7 +115,6 @@ class Household(contacts.Partner):
         verbose_name = _("Household")
         verbose_name_plural = _("Households")
 
-    prefix = models.CharField(max_length=200, blank=True)
     type = models.ForeignKey(Type, blank=True, null=True)
     # head = dd.ForeignKey('contacts.Person', verbose_name=_("Chef")),
 

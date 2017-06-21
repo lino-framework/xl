@@ -79,6 +79,13 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
         e.g. saving a :class:`Person` will automatically set her
         `name` field to "last_name, first_name".
 
+    .. attribute:: prefix
+
+        An optional name prefix. For organisations this is inserted
+        before the name, for persons this is inserted between first
+        name and last name (see
+        :meth:`lino.mixins.human.Human.get_last_name_prefix`).
+
     .. attribute:: email
 
         The primary email address.
@@ -108,11 +115,14 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
         verbose_name = _("Partner")
         verbose_name_plural = _("Partners")
 
+    prefix = models.CharField(
+        _("Name prefix"), max_length=200, blank=True)
+
     name = models.CharField(max_length=200, verbose_name=_('Name'))
 
     remarks = models.TextField(_("Remarks"), blank=True)  # ,null=True)
 
-    quick_search_fields = "name phone gsm"
+    quick_search_fields = "prefix name phone gsm"
 
     # print_labels = dd.PrintLabelsAction()
 
@@ -141,6 +151,10 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
         #~ logger.info("20120327 Partner.save(%s,%s)",args,kw)
         super(Partner, self).save(*args, **kw)
 
+    def get_last_name_prefix(self):
+        # overrides lino.mixins.humans.Human
+        return self.prefix
+    
     def __str__(self):
         #~ return self.name
         return self.get_full_name()
@@ -149,13 +163,14 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
         #~ yield self.name
         yield self.get_full_name()
 
-    def get_full_name(self, *args, **kw):
+    def get_full_name(self, *args, **kwargs):
         """Return a one-line string representing this Partner.  The default
-        returns simply the `name` field, ignoring any parameters, but
+        returns simply the `name`, optionally prefixed by the
+        :attr:`prefix`, ignoring any arguments, but
         e.g. :class:`Human` overrides this.
 
         """
-        return self.name
+        return join_words(self.prefix, self.name)
     full_name = property(get_full_name)
 
     @dd.displayfield(_("Name"))
@@ -260,7 +275,7 @@ class PartnerDetail(dd.DetailLayout):
     remarks
     """
 
-    name_box = "name"
+    name_box = "prefix name"
     info_box = "id language"
 
 
@@ -313,6 +328,10 @@ class Person(Human, Born, Partner):
         verbose_name_plural = _("Persons")
         ordering = ['last_name', 'first_name']
 
+    def get_after_salutation_words(self):
+        if self.prefix:
+            yield self.prefix
+            
     def full_clean(self, *args, **kw):
         """Set the `name` field of this person.  This field is visible in the
         Partner's detail but not in the Person's detail and serves for
@@ -338,14 +357,14 @@ class Person(Human, Born, Partner):
 
     def get_name_elems(self, ar):
         elems = [self.get_salutation(nominative=True), ' ',
-                 self.title, E.br()]
+                 self.prefix, E.br()]
         elems += [self.first_name, ' ', E.b(self.last_name)]
         return elems
 
 
 class PersonDetail(PartnerDetail):
 
-    name_box = "last_name first_name:15 gender title:10"
+    name_box = "last_name first_name:15 gender prefix:10"
     info_box = "id:5 language:10"
     bottom_box = "remarks contacts.RolesByPerson"
 
@@ -404,9 +423,6 @@ class Company(Partner):
         app_label = 'contacts'
         verbose_name = _("Organization")
         verbose_name_plural = _("Organizations")
-
-    prefix = models.CharField(
-        _("Name prefix"), max_length=200, blank=True)
 
     type = models.ForeignKey('contacts.CompanyType', blank=True, null=True)
 
