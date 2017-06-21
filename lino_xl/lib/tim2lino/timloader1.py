@@ -647,7 +647,7 @@ class TimLoader(TimLoader):
             self.store(
                 kw,
                 prefix=row['allo'].strip(),
-                name=row.firme,
+                name=row.firme.strip() + ' ' + row.vorname,
             )
             if dd.is_installed('vat'):
                 self.store(
