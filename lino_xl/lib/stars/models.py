@@ -9,7 +9,7 @@
 
 
 from django.db import models
-
+from django.contrib.contenttypes.models import ContentType
 from lino.api import dd, rt, _
 from lino.core.gfks import gfk2lookup
 from lino.modlib.gfks.mixins import Controllable
@@ -51,7 +51,7 @@ class Star(UserAuthored, Controllable):
         """
         return cls.objects.filter(**gfk2lookup(cls.owner, obj, **kwargs))
 
-dd.update_field(Star, 'user', verbose_name=_("User"))
+dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))
 
 Star.update_controller_field(blank=False, null=False)
@@ -60,13 +60,26 @@ Star.update_controller_field(blank=False, null=False)
 class Stars(dd.Table):
     model = 'stars.Star'
     column_names = "id owner user nickname *"
+    parameters = dict(
+                type=dd.ForeignKey(ContentType, blank=False, null=False)
+    )
+    # params_layout = """"""
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        qs = super(Stars, self).get_request_queryset(ar)
+        pv = ar.param_values
+        if pv['type']:
+            qs=qs.filter(owner_type=pv['type'])
+        return qs
+
 
 class AllStars(Stars):
     required_roles = dd.login_required(dd.SiteStaff)
 
 class MyStars(My, Stars):
     required_roles = dd.login_required(OfficeUser)
-    column_names = "owner nickname *"
+    column_names = "owner nickname owner_type *"
     order_by = ['nickname', 'id']
 
 
