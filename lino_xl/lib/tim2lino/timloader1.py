@@ -677,10 +677,7 @@ class TimLoader(TimLoader):
                 name=row.firme.strip() + ' ' + row.vorname.strip(),
             )
         if issubclass(cl, List):
-            self.store(
-                kw,
-                name=row.firme,
-            )
+            self.store(kw, designation=row.firme)
         
         if issubclass(cl, Created):
             if 'datcrea' in row:

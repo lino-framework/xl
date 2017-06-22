@@ -25,6 +25,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from lino_xl.lib.appypod.mixins import PrintLabelsAction
+from lino.utils.mldbc.mixins import BabelDesignated
 
 from lino.api import dd
 from lino import mixins
@@ -34,7 +35,8 @@ if dd.is_installed('lists'):
 else:
     partner_model = None
 
-class ListType(mixins.BabelNamed):
+#class ListType(mixins.BabelNamed):
+class ListType(BabelDesignated):
 
     """Represents a possible choice for the `list_type` field of a
     :class:`List`.
@@ -51,10 +53,11 @@ class ListType(mixins.BabelNamed):
 class ListTypes(dd.Table):
     required_roles = dd.login_required(ContactsStaff)
     model = 'lists.ListType'
-    column_names = 'name *'
+    column_names = 'designation *'
 
 
-class List(mixins.BabelNamed, mixins.Referrable):
+#class List(mixins.BabelNamed, mixins.Referrable):
+class List(BabelDesignated, mixins.Referrable):
 
     class Meta:
         app_label = 'lists'
@@ -74,19 +77,19 @@ class List(mixins.BabelNamed, mixins.Referrable):
 class Lists(dd.Table):
     required_roles = dd.login_required(ContactsUser)
     model = 'lists.List'
-    # column_names = 'ref name list_type *'
+    # column_names = 'ref designation list_type *'
     column_names = 'ref overview list_type *'
     order_by = ['ref']
 
     insert_layout = dd.InsertLayout("""
     ref list_type
-    name
+    designation
     remarks
     """, window_size=(60, 12))
 
     detail_layout = dd.DetailLayout("""
     ref list_type id
-    name
+    designation
     remarks
     MembersByList
     """)
