@@ -329,6 +329,10 @@ keep contact data (address, phone numbers, ...)."""),
 Subclasses may hide this field and fill it automatically,
 e.g. saving a Person will automatically set her
 name field to "last_name, first_name"."""),
+    'lino_xl.lib.contacts.models.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
+before the name, for persons this is inserted between first
+name and last name (see
+lino.mixins.human.Human.get_last_name_prefix())."""),
     'lino_xl.lib.contacts.models.Partner.email' : _("""The primary email address."""),
     'lino_xl.lib.contacts.models.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
 formatting characters in phone numbers when searching.  For
@@ -337,7 +341,8 @@ search for phone number containing "1234" will not find it."""),
     'lino_xl.lib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino_xl.lib.contacts.models.Partner.language' : _("""The language to use when communicating with this partner."""),
     'lino_xl.lib.contacts.models.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
-returns simply the name field, ignoring any parameters, but
+returns simply the name, optionally prefixed by the
+prefix, ignoring any arguments, but
 e.g. Human overrides this."""),
     'lino_xl.lib.contacts.models.Person' : _("""A physical person and an individual human being.
 See also lino.tutorial.human."""),
