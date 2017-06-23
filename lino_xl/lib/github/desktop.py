@@ -81,7 +81,7 @@ class CommitsByTicket(Commits):
             # todo have another js button that will expand the summary
             # into the complete description.
             items.append(E.li(
-                E.a(c.sha[:6], href=c.url),
+                E.a(c.sha[:6], href=c.url, target="_BLANK"),
                 ":" if c.user else "",
                 ar.obj2html(c.user) if c.user else "",
                 ":",
