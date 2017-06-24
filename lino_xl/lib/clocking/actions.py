@@ -35,6 +35,38 @@ class EndSession(WorkerAction):
     # label = u"↘"  # u"\u2198"
     # label = _("End session")
     # label = u"\u231a\u2198"
+    # todo: Move to Noi somehow...
+    # parameters = dict(
+    #     summary= models.CharField(
+    #     _("Summary"), max_length=200, blank=True,
+    #     help_text=_("Summary of the session.")),
+    # )
+
+    def get_sessions(self, ar):
+        return ar.selected_rows
+
+    def end_session(self, ar, obj, now=None):
+        if now is None:
+            now = timezone.now()
+        obj.set_datetime('end', now)
+        if ar.action_param_values and ar.action_param_values.summary:
+                obj.summary = ar.action_param_values.summary
+        obj.full_clean()
+        obj.save()
+
+    def run_from_ui(self, ar, **kw):
+
+        def ok(ar2):
+            now = timezone.now()
+            for obj in self.get_sessions(ar):
+                self.end_session(ar, obj, now)
+            ar2.set_response(refresh=True)
+
+        if True:
+            ok(ar)
+        else:
+            msg = _("Close {0} sessions.").format(len(ar.selected_rows))
+            ar.confirm(ok, msg, _("Are you sure?"))
 
 class EndThisSession(EndSession):
     """Close this session, i.e. stop working on that ticket for this time.
@@ -46,30 +78,16 @@ class EndThisSession(EndSession):
             return False
         return super(EndThisSession, self).get_action_permission(ar, obj, state)
 
-    def run_from_ui(self, ar, **kw):
-
-        def ok(ar2):
-            now = timezone.now()
-            for obj in ar.selected_rows:
-                obj.set_datetime('end', now)
-                # obj.end_date = dd.today()
-                # obj.end_time = now.time()
-                obj.full_clean()
-                obj.save()
-                # obj.ticket.touch()
-                # obj.ticket.save()
-            ar2.set_response(refresh=True)
-
-        if True:
-            ok(ar)
-        else:
-            msg = _("Close {0} sessions.").format(len(ar.selected_rows))
-            ar.confirm(ok, msg, _("Are you sure?"))
-
-
 class EndTicketSession(EndSession):
     """End your running session on this ticket. 
     """
+    def get_sessions(self, ar):
+        Session = rt.modules.clocking.Session
+        for obj in ar.selected_rows:
+            ses = Session.objects.get(
+                user=ar.get_user(), ticket=obj.get_ticket(),
+                end_time__isnull=True)
+            yield ses
     
     def get_action_permission(self, ar, obj, state):
         # u = ar.get_user()
@@ -87,19 +105,6 @@ class EndTicketSession(EndSession):
         if qs.count() == 0:
             return False
         return True
-
-    def run_from_ui(self, ar, **kw):
-        Session = rt.modules.clocking.Session
-        # for ticket in self.get_workables(ar):
-        for obj in ar.selected_rows:
-            ses = Session.objects.get(
-                user=ar.get_user(), ticket=obj.get_ticket(),
-                end_time__isnull=True)
-            ses.set_datetime('end', timezone.now())
-            ses.full_clean()
-            ses.save()
-        ar.set_response(refresh=True)
-
 
 class StartTicketSession(WorkerAction):
     """Start a session on this ticket."""
