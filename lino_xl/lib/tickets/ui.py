@@ -686,9 +686,10 @@ class DuplicatesByTicket(Tickets):
     (i.e. whose `duplicate_of` field points to this ticket.
 
     """
+    slave_grid_format = 'html'
     label = _("Duplicates")
     master_key = 'duplicate_of'
-    column_names = "id summary *"
+    column_names = "overview state *"
 
 
 
