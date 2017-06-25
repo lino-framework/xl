@@ -57,6 +57,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.ActiveProjects')
         # m.add_action('tickets.MyWishes')
         m.add_action('tickets.RefTickets')
+        m.add_action('tickets.MySites')
 
 
 
@@ -67,7 +68,7 @@ class Plugin(ad.Plugin):
         m.add_action('tickets.TopLevelProjects')
         m.add_action('tickets.ProjectTypes')
         m.add_action('tickets.TicketTypes')
-        # m.add_action('tickets.AllSites')
+        m.add_action('tickets.AllSites')
 
     def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()

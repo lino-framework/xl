@@ -959,7 +959,10 @@ class Sites(dd.Table):
     model = 'tickets.Site'
     column_names = "name company contact_person remark id *"
     order_by = ['name']
-    detail_html_template = "tickets/Site/detail.html"
+    # detail_html_template = "tickets/Site/detail.html"
+    parameters = dd.ParameterPanel(
+        watcher=dd.ForeignKey('users.User', blank=True, null=True, )
+    )
 
     insert_layout = """
     name
@@ -968,6 +971,27 @@ class Sites(dd.Table):
     """
     detail_layout = SiteDetail()
 
+    @classmethod
+    def get_request_queryset(self, ar):
+        qs = super(Sites, self).get_request_queryset(ar)
+        pv = ar.param_values
+
+        if pv.watcher:
+            sqs = rt.models.stars.Star.for_model('tickets.Site', user=pv.watcher)
+            stared_ticket_ids = sqs.values_list('owner_id')
+            qs = qs.filter(pk__in=stared_ticket_ids)
+
+        return qs
+
+
+class MySites(Sites):
+    label = _("My Sites")
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MySites, self).param_defaults(ar, **kw)
+        kw.update(watcher=ar.get_user())
+        return kw
 
 
 class AllSites(Sites):
