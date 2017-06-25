@@ -160,23 +160,33 @@ class Project(mixins.DatePeriod, TimeInvestment,
     #     super(Project, self).save(*args, **kwargs)
 
 
-# @dd.python_2_unicode_compatible
-# class Site(dd.Model):
-#     class Meta:
-#         app_label = 'tickets'
-#         verbose_name = pgettext("Ticketing", "Site")
-#         verbose_name_plural = pgettext("Ticketing", "Sites")
+@dd.python_2_unicode_compatible
+class Site(ContactRelated, Starrable):
+    class Meta:
+        app_label = 'tickets'
+        verbose_name = pgettext("Ticketing", "Site")
+        verbose_name_plural = pgettext("Ticketing", "Sites")
 
 #     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 #     # responsible_user = dd.ForeignKey(
 #     #     'users.User', verbose_name=_("Responsible"),
 #     #     blank=True, null=True)
 #     name = models.CharField(_("Designation"), max_length=200)
-#     remark = models.CharField(_("Remark"), max_length=200, blank=True)
+    description = dd.RichTextField(_("Description"), blank=True)
+    remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
-#     def __str__(self):
-#         return self.name
-    
+    name = models.CharField(_("Designation"), max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+dd.update_field(
+    Site, 'company', verbose_name=_("Client"))
+dd.update_field(
+    Site, 'contact_person', verbose_name=_("Contact person"))
+
+
 # @dd.python_2_unicode_compatible
 # class Competence(UserAuthored, Prioritized):
 

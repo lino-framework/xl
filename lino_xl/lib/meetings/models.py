@@ -71,7 +71,9 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
     description = dd.RichTextField(_("Description"), blank=True)
 
     quick_search_fields = 'name description ref'
-    site_field_name = 'room'
+    site_field_name = 'site'
+
+    site = dd.ForeignKey('tickets.Site', blank=True, null=True)
 
     state = MeetingStates.field(
         default=MeetingStates.draft.as_callable)

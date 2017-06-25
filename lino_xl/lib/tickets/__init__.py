@@ -30,7 +30,7 @@ class Plugin(ad.Plugin):
         # 'lino.modlib.changes',
         'lino_noi.lib.noi']
 
-    site_model = 'cal.Room'
+    site_model = 'tickets.Site'
     milestone_model = 'meetings.Meeting'
     end_user_model = 'contacts.Partner'
 

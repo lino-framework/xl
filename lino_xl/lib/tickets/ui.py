@@ -938,31 +938,41 @@ class TicketsByReporter(Tickets):
     master_key = 'user'
     column_names = "id summary:60 workflow_buttons:20 *"
 
-    
-# class Sites(dd.Table):
-#     # required_roles = set()  # also for anonymous
-#     required_roles = dd.login_required(TicketsUser)
-#     model = 'tickets.Site'
-#     column_names = "name partner remark id *"
-#     order_by = ['name']
-#     detail_html_template = "tickets/Site/detail.html"
 
-#     insert_layout = """
-#     name
-#     remark
-#     """
-
-#     detail_layout = """
-#     id name partner #responsible_user
-#     remark
-#     TicketsBySite
-#     """
+class SiteDetail(dd.DetailLayout):
+    bottom_left = """
+    description
+    stars.StarsByController"""
+    bottom = """
+        bottom_left:30 TicketsBySite
+        """
+    main = """
+        id name company contact_person
+        remark
+        bottom"""
 
 
-# class AllSites(Sites):
-#     required_roles = dd.login_required(TicketsStaff)
+class Sites(dd.Table):
+    # required_roles = set()  # also for anonymous
+    required_roles = dd.login_required(TicketsUser)
+    model = 'tickets.Site'
+    column_names = "name company contact_person remark id *"
+    order_by = ['name']
+    detail_html_template = "tickets/Site/detail.html"
+
+    insert_layout = """
+    name
+    remark
+    description
+    """
+    detail_layout = SiteDetail()
 
 
+
+class AllSites(Sites):
+    required_roles = dd.login_required(TicketsStaff)
+
+# # List of sites that user X has stared?
 # class SitesByPartner(Sites):
 #     master_key = 'partner'
 #     column_names = "name remark *"
@@ -974,7 +984,7 @@ class TicketsBySite(Tickets):
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        mi = ar.master_instance
+        # mi = ar.master_instance
         kw = super(TicketsBySite, self).param_defaults(ar, **kw)
         kw.update(show_active=dd.YesNo.yes)
         # kw.update(interesting_for=mi.partner)

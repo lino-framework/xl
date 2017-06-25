@@ -52,7 +52,7 @@ class MeetingDetail(dd.DetailLayout):
         main = "general #cal_tab more"
 
         general = dd.Panel("""
-        room workflow_buttons #name ref
+        room site workflow_buttons #name ref
         deploy.DeploymentsByMilestone
         """, label=_("General"))
 
