@@ -66,11 +66,47 @@ class UnstarObject(dd.Action):
         ar.success(
             _("{0} is no longer starred.").format(obj), refresh_all=True)
 
+# NOTE: Do we want to perhaps have this in change_watchers rather then here?
+class CascadeStars(dd.Action):
+    """
+    Gathers a list of childen models that want to have all the stars that are in the parent, then add them.
+
+    Used when adding a new star to a high-level object. Done in separate action for safety.
+    """
+    sort_index = 100
+    label = u"★"  # 2605
+    help_text = _("Cascade Stars to all objects under this model")
+    # show_in_workflow = True
+    show_in_bbar = True
+    required_roles = dd.login_required(OfficeUser)
+
+    def run_from_ui(self, ar, **kw):
+        obj = ar.selected_rows[0]
+        # stars = obj.get_stars()
+        users = [s.user for s in obj.get_stars()]
+        for o in obj.get_children_starrable(ar):
+            if o.stars_cascade:
+                for u in users:
+                    star = get_favourite(o, user=u)
+                    if star is None:
+                        Star = rt.modules.stars.Star
+                        star = Star(owner=o, user=u)
+                        star.save()
+                    # o.add_change_watcher(u)
+        #todo: Better return message?
+        # ar.success(
+        #     _("{0} is no longer starred.").format(obj), refresh_all=True)
+
 
 class Starrable(ChangeObservable):
 
     class Meta(object):
         abstract = True
+
+    stars_cascade = True
+    """
+    If true the CascadeStars action will not add stars to this model, even if it is a child
+    """
 
     if dd.is_installed("stars"):
 
@@ -86,3 +122,15 @@ class Starrable(ChangeObservable):
         def get_stars(self):
             for star in rt.models.stars.Star.for_obj(self):
                 yield star
+
+class Starrable_Tree(Starrable):
+    class Meta(object):
+        abstract = True
+    stars_cascade = True
+
+    if dd.is_installed("stars"):
+
+        cascade_stars = CascadeStars()
+
+        def get_children_starrable(self, ar):
+            raise NotImplementedError()
