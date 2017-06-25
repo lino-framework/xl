@@ -170,7 +170,6 @@ class MyMeetings(Meetings):
         return kw
 
 
-
 class ActiveMeetings(Meetings):
     label = _("Future Meetings")
     column_names = 'overview room *'
@@ -179,9 +178,15 @@ class ActiveMeetings(Meetings):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(ActiveMeetings, self).param_defaults(ar, **kw)
-        kw.update(state=MeetingStates.active)
+        # kw.update(state=MeetingStates.active
+        kw.update(show_active=dd.YesNo.yes)
         # kw.update(can_enroll=dd.YesNo.yes)
         return kw
+
+class MeetingsBySite(ActiveMeetings):
+    label = _("Site Milestones")
+    column_names = 'overview *'
+    master_key = 'site'
 
 
 class InactiveMeetings(Meetings):

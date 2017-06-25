@@ -946,10 +946,11 @@ class SiteDetail(dd.DetailLayout):
     bottom = """
         bottom_left:30 TicketsBySite
         """
-    main = """
+    general = dd.Panel("""
         id name company contact_person
         remark
-        bottom"""
+        bottom""", label=_("General"))
+    main = """general meetings.MeetingsBySite"""
 
 
 class Sites(dd.Table):
