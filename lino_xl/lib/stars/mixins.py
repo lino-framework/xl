@@ -80,5 +80,9 @@ class Starrable(ChangeObservable):
         def get_change_observers(self):
             for o in super(Starrable, self).get_change_observers():
                 yield o
-            for star in rt.models.stars.Star.for_obj(self):
+            for star in self.get_stars():
                 yield (star.user, star.user.mail_mode)
+
+        def get_stars(self):
+            for star in rt.models.stars.Star.for_obj(self):
+                yield star
