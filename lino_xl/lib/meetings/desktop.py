@@ -133,8 +133,9 @@ class Meetings(dd.Table):
             qs = qs.filter(state=pv.state)
 
         if pv.member:
-            pass
-            # qs = qs.filter(list__members__in=list(pv.member.list_memberships.all()))
+            sqs = rt.models.stars.Star.for_model('meetings.Meeting', user=pv.member)
+            stared_ticket_ids = sqs.values_list('owner_id')
+            qs = qs.filter(pk__in=stared_ticket_ids)
 
         if pv.start_date:
             # dd.logger.info("20160512 start_date is %r", pv.start_date)
@@ -166,7 +167,7 @@ class MyMeetings(Meetings):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
-        # kw.update(member=ar.get_user().get_partner_instance())
+        kw.update(member=ar.get_user())
         return kw
 
 
