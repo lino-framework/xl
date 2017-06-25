@@ -16,7 +16,7 @@ from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.office.roles import OfficeUser
 # from lino.core.requests import BaseRequest
-
+from six import string_types
 
 class Star(UserAuthored, Controllable):
     """Represents the fact that a given database object is starred by a
@@ -50,6 +50,17 @@ class Star(UserAuthored, Controllable):
 
         """
         return cls.objects.filter(**gfk2lookup(cls.owner, obj, **kwargs))
+
+    @classmethod
+    def for_model(cls, model, **kwargs):
+        """Return a queryset of :class:`Star` instances for the given database
+        model.
+        """
+        if isinstance(model, string_types):
+            model = dd.resolve_model(model)
+        ct = ContentType.objects.get_for_model(model)
+        kwargs[cls.owner.ct_field]= ct
+        return cls.objects.filter(**kwargs)
 
 dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))
