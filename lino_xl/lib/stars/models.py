@@ -42,7 +42,8 @@ class Star(UserAuthored, Controllable):
         app_label = 'stars'
         verbose_name = _("Star")
         verbose_name_plural = _("Stars")
-
+        unique_together = ('user', 'owner_id', 'owner_type')
+        
     @classmethod
     def for_obj(cls, obj, **kwargs):
         """Return a queryset of :class:`Star` instances for the given database
