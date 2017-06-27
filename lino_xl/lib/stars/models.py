@@ -45,6 +45,8 @@ class Star(UserAuthored, Controllable):
     """
 
     # controller_is_optional = False
+    allow_cascaded_delete = 'master'
+    allow_cascaded_copy = 'master'
 
     nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
 
@@ -52,7 +54,7 @@ class Star(UserAuthored, Controllable):
         app_label = 'stars'
         verbose_name = _("Star")
         verbose_name_plural = _("Stars")
-        unique_together = ('user', 'owner_id', 'owner_type', 'master_id', 'master_type', )
+        unique_together = ('user', 'owner_id', 'owner_type', 'master',)
         
     @classmethod
     def for_obj(cls, obj, **kwargs):
@@ -83,25 +85,46 @@ class Star(UserAuthored, Controllable):
         kwargs[cls.owner.ct_field]= ct
         return cls.objects.filter(**kwargs)
 
+    #
+    # master_label = _("Master object")
+    #
+    #
+    # master_type = dd.ForeignKey(
+    #     ContentType,
+    #     editable=True,
+    #     blank=True, null=True,
+    #     verbose_name=string_concat(master_label, ' ', _('(type)')),
+    #     related_name='stars_by_master')
+    # master_id = GenericForeignKeyIdField(
+    #     master_type,
+    #     editable=True,
+    #     blank=True, null=True,
+    #     verbose_name=string_concat(master_label, ' ', _('(object)')))
+    # master = GenericForeignKey(
+    #     'master_type', 'master_id',
+    #     verbose_name=master_label
+    # )
+    master = dd.ForeignKey('self',
+                           verbose_name=_("Master_Star"),
+                           blank=True, null=True,
+                           related_name=_("children_stars"),
+                           # on_delete=models.CASCADE,
+                           )
+    @classmethod
+    def create_star(cls, obj, ar):
+        # todo: Fix in extjs6, user is always user not subuser
+        star = cls(owner=obj, user=ar.get_user())
+        star.save()
+        star.create_children(obj, ar)
 
-    master_label = _("Master object")
+    def create_children(self, obj, ar):
+        for child in self.owner.get_children_starrable(ar):
+            Star(owner=child, user=ar.get_user(), master=self).save()
 
-
-    master_type = dd.ForeignKey(
-        ContentType,
-        editable=True,
-        blank=True, null=True,
-        verbose_name=string_concat(master_label, ' ', _('(type)')),
-        related_name='stars_by_master')
-    master_id = GenericForeignKeyIdField(
-        master_type,
-        editable=True,
-        blank=True, null=True,
-        verbose_name=string_concat(master_label, ' ', _('(object)')))
-    master = GenericForeignKey(
-        'master_type', 'master_id',
-        verbose_name=master_label
-    )
+    def after_ui_create(self, ar):
+        #Needed for when creating Tickets for other Users on a table-view.
+        self.create_children(self.owner, ar)
+        super(Star, self).after_ui_create(ar)
 
 dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))

@@ -37,21 +37,15 @@ class StarObject(dd.Action):
         return super(StarObject, self).get_action_permission(ar, obj, state)
 
     def run_from_ui(self, ar, **kw):
+        Star = rt.modules.stars.Star
         obj = ar.selected_rows[0]
-        self.create_star(obj, ar)
+        Star.create_star(obj, ar)
         ar.success(
             _("{0} is now starred.").format(obj), refresh_all=True)
 
     # def create_star(self, obj, ar):
     #     Star = rt.modules.stars.Star
     #     Star(owner=obj, user=ar.get_user()).save()
-
-    def create_star(self, obj, ar):
-        Star = rt.modules.stars.Star
-        Star(owner=obj, user=ar.get_user()).save()
-        for child in obj.get_children_starrable(ar):
-            # Don't use recurse since we only want a single level deep
-            Star(owner=child, user=ar.get_user(), master=obj).save()
 
 class FullStarObject(StarObject):
 
@@ -64,7 +58,7 @@ class FullStarObject(StarObject):
     def get_action_permission(self, ar, obj, state):
         user = ar.get_user()
         if user.authenticated:
-            master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master_id__isnull=True)
+            master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
             child_star_qs = rt.modules.stars.Star.for_obj(obj, user=user)
             if not (master_star_qs.count() == 0 and child_star_qs.count()):
                 return False
@@ -84,7 +78,7 @@ class UnstarObject(dd.Action):
     def get_action_permission(self, ar, obj, state):
         user = ar.get_user()
         if user.authenticated:
-            master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master_id__isnull=True)
+            master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
             if not (master_star_qs.count()):
                 return False
         else:
@@ -99,11 +93,11 @@ class UnstarObject(dd.Action):
 
     def delete_star(self, obj, ar):
         user = ar.get_user()
-        children_star_qs = rt.modules.stars.Star.for_master(obj, user=user)
+        # children_star_qs = rt.modules.stars.Star.for_master(obj, user=user)
         # star = get_favourite(obj, ar.get_user())
-        children_star_qs.delete()
+        # children_star_qs.delete()
         # ON cascade delete?
-        master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master_id__isnull=True)
+        master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
         master_star_qs.delete()
 
 class Starrable(ChangeObservable):
@@ -115,10 +109,6 @@ class Starrable(ChangeObservable):
     """
     A list of (model, master-key, related_field) tuples for child starrables"""
 
-    stars_cascade = True
-    """
-    If true the CascadeStars action will not add stars to this model, even if it is a child
-    """
 
     if dd.is_installed("stars"):
 
