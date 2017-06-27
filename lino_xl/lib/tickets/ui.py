@@ -948,7 +948,7 @@ class SiteDetail(dd.DetailLayout):
         """
     general = dd.Panel("""
         id name company contact_person
-        remark
+        workflow_buttons:1 remark
         bottom""", label=_("General"))
     main = """general meetings.MeetingsBySite"""
 
