@@ -18,6 +18,11 @@ from lino.modlib.office.roles import OfficeUser
 # from lino.core.requests import BaseRequest
 from six import string_types
 
+from lino.core.gfks import gfk2lookup
+from django.utils.translation import string_concat
+
+from lino.modlib.gfks.fields import GenericForeignKey, GenericForeignKeyIdField
+
 class Star(UserAuthored, Controllable):
     """Represents the fact that a given database object is starred by a
     given User.
@@ -32,6 +37,11 @@ class Star(UserAuthored, Controllable):
 
     .. attribute:: nickname
 
+
+    .. attribute:: master
+
+        The starred object that caused this stared object
+
     """
 
     # controller_is_optional = False
@@ -42,7 +52,7 @@ class Star(UserAuthored, Controllable):
         app_label = 'stars'
         verbose_name = _("Star")
         verbose_name_plural = _("Stars")
-        unique_together = ('user', 'owner_id', 'owner_type')
+        unique_together = ('user', 'owner_id', 'owner_type', 'master_id', 'master_type', )
         
     @classmethod
     def for_obj(cls, obj, **kwargs):
@@ -51,6 +61,16 @@ class Star(UserAuthored, Controllable):
 
         """
         return cls.objects.filter(**gfk2lookup(cls.owner, obj, **kwargs))
+
+    @classmethod
+    def for_obj_and_master(cls, obj, master, **kwargs):
+        kwargs = gfk2lookup(cls.owner, obj, **kwargs)
+        kwargs = gfk2lookup(cls.master, master, **kwargs)
+        return cls.objects.filter(**gfk2lookup(cls.owner, obj, **kwargs))
+
+    @classmethod
+    def for_master(cls, master, **kwargs):
+        return cls.objects.filter(**gfk2lookup(cls.master, master, **kwargs))
 
     @classmethod
     def for_model(cls, model, **kwargs):
@@ -62,6 +82,26 @@ class Star(UserAuthored, Controllable):
         ct = ContentType.objects.get_for_model(model)
         kwargs[cls.owner.ct_field]= ct
         return cls.objects.filter(**kwargs)
+
+
+    master_label = _("Master object")
+
+
+    master_type = dd.ForeignKey(
+        ContentType,
+        editable=True,
+        blank=True, null=True,
+        verbose_name=string_concat(master_label, ' ', _('(type)')),
+        related_name='stars_by_master')
+    master_id = GenericForeignKeyIdField(
+        master_type,
+        editable=True,
+        blank=True, null=True,
+        verbose_name=string_concat(master_label, ' ', _('(object)')))
+    master = GenericForeignKey(
+        'master_type', 'master_id',
+        verbose_name=master_label
+    )
 
 dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))

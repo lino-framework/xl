@@ -70,6 +70,8 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
 
     description = dd.RichTextField(_("Description"), blank=True)
 
+    child_starrables = [('deploy.Deployment','milestone','ticket')]
+
     quick_search_fields = 'name description ref'
     site_field_name = 'site'
 

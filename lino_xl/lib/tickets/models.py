@@ -31,7 +31,7 @@ from lino_xl.lib.faculties.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.clocking.mixins import Workable
-from lino_xl.lib.stars.mixins import Starrable, get_favourite, Starrable_Tree
+from lino_xl.lib.stars.mixins import Starrable, get_favourite
 from lino_xl.lib.clocking.choicelists import ReportingTypes
 from lino.utils import join_elems
 
@@ -161,7 +161,7 @@ class Project(mixins.DatePeriod, TimeInvestment,
 
 
 @dd.python_2_unicode_compatible
-class Site(ContactRelated, Starrable_Tree):
+class Site(ContactRelated, Starrable):
     class Meta:
         app_label = 'tickets'
         verbose_name = pgettext("Ticketing", "Site")
@@ -172,17 +172,20 @@ class Site(ContactRelated, Starrable_Tree):
 #     #     'users.User', verbose_name=_("Responsible"),
 #     #     blank=True, null=True)
 #     name = models.CharField(_("Designation"), max_length=200)
+    child_starrables = [(milestone_model, 'site', None),
+                        ('tickets.Ticket', 'site', None)]
+
     description = dd.RichTextField(_("Description"), blank=True)
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
     name = models.CharField(_("Designation"), max_length=200)
 
-    def get_children_starrable(self, ar):
-        obj = ar.selected_rows[0]
-        milestone = dd.resolve_model(milestone_model)
-        for x in milestone.objects.filter(**{milestone.site_field_name: obj}):
-            yield x
-        for x in rt.models.tickets.Ticket.objects.filter(site=obj):
-            yield x
+    # def get_children_starrable(self, ar):
+    #     obj = ar.selected_rows[0]
+    #     milestone = dd.resolve_model(milestone_model)
+    #     for x in milestone.objects.filter(**{milestone.site_field_name: obj}):
+    #         yield x
+    #     for x in rt.models.tickets.Ticket.objects.filter(site=obj):
+    #         yield x
 
 
     def __str__(self):
