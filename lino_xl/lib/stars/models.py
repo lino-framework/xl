@@ -85,6 +85,17 @@ class Star(UserAuthored, Controllable):
         kwargs[cls.owner.ct_field]= ct
         return cls.objects.filter(**kwargs)
 
+    @classmethod
+    def for_master_model(cls, model, **kwargs):
+        """Return a queryset of master :class:`Star` instances for the given database
+        model.
+        """
+        if isinstance(model, string_types):
+            model = dd.resolve_model(model)
+        ct = ContentType.objects.get_for_model(model)
+        kwargs["master__" + cls.owner.ct_field] = ct
+        return cls.objects.filter(**kwargs)
+
     #
     # master_label = _("Master object")
     #
