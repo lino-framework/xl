@@ -12,7 +12,7 @@ from decimal import Decimal
 
 # from django.db import models
 # from django.conf import settings
-from django.utils.translation import string_concat
+#from django.utils.translation import string_concat
 
 from lino.api import dd
 

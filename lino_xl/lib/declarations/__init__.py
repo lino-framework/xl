@@ -1,5 +1,16 @@
 # Copyright 2008-2017 Luc Saffre
+"""Functionality for managing VAT declarations.
 
+.. autosummary::
+   :toctree:
+
+    choicelists
+    be
+    models
+    desktop
+    fixtures.demo_bookings
+
+"""
 
 from lino import ad
 

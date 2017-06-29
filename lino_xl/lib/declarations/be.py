@@ -98,11 +98,11 @@ def demo_objects():
         return obj
 
     yield dcl(SALES_ACCOUNT, '03')
-    yield dcl(VAT_DUE_ACCOUNT, '10')
-    yield dcl(VAT_DEDUCTIBLE_ACCOUT, '30')
-    yield dcl(VAT_RETURNABLE_ACCOUNT, '40')
+    yield dcl(VAT_DUE_ACCOUNT, '54')
+    yield dcl(VAT_DEDUCTIBLE_ACCOUT, '59')
+    yield dcl(VAT_RETURNABLE_ACCOUNT, '55')
     # yield dcl(VATDCL_ACCOUNT, '20')
-    yield dcl(PURCHASE_OF_GOODS, '80')
-    yield dcl(PURCHASE_OF_SERVICES, '81')
-    yield dcl(PURCHASE_OF_INVESTMENTS, '82')
+    yield dcl(PURCHASE_OF_GOODS, '81')
+    yield dcl(PURCHASE_OF_SERVICES, '82')
+    yield dcl(PURCHASE_OF_INVESTMENTS, '83')
 

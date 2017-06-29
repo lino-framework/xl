@@ -47,8 +47,10 @@ class Declaration(ledger.Voucher, DatePeriod):
     #~ fields_list = DeclarationFields
 
     class Meta:
+        app_label = 'declarations'
         verbose_name = _("VAT declaration")
         verbose_name_plural = _("VAT declarations")
+        
     def full_clean(self, *args, **kw):
         if self.voucher_date:
             # declare the previous month by default 
