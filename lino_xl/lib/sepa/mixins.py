@@ -136,6 +136,12 @@ class Payable(PartnerRelated):
         return self.due_date or self.voucher_date
 
     def get_payable_sums_dict(self):
+        """To be implemented by subclasses.  Expected to return a dict which
+        maps 5-tuples `(account, project, is_base, vat_class,
+        vat_regime)` to the amount. is_base, vat_class and vat_regime
+        are needed by :mod:`lino_xl.lib.declarations`.
+
+        """
         raise NotImplemented()
 
     def get_wanted_movements(self):
@@ -144,10 +150,12 @@ class Payable(PartnerRelated):
         counter_sums = SumCollector()
         partner = self.get_partner()
         for k, amount in item_sums.items():
-            acc, prj = k
+            acc, prj, is_base, vat_class, vat_regime = k
             yield self.create_movement(
                 None, acc, prj, self.journal.dc, amount,
-                partner=partner if acc.needs_partner else None)  # 20160413
+                partner=partner if acc.needs_partner else None,
+                is_base=is_base,
+                vat_class=vat_class, vat_regime=vat_regime)
             counter_sums.collect(prj, amount)
 
         acc = self.get_trade_type().get_partner_account()

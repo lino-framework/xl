@@ -106,6 +106,7 @@ Accounting stuff
     tim2lino
     sepa
     invoicing
+    declarations
 
 Differentiator packages
 =======================

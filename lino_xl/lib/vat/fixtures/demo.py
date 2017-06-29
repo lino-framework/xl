@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
 """
-Sets `payment_term` of all partners.
+Sets `vat_regime` of all partners.
 
 """
 
@@ -15,8 +15,8 @@ from lino.api import rt
 
 def objects():
 
-    PAYMENT_TERMS = Cycler(rt.models.ledger.PaymentTerm.objects.all())
+    REGIMES = Cycler(rt.models.vat.VatRegimes.get_list_items())
 
     for obj in rt.models.contacts.Partner.objects.all():
-        obj.payment_term = PAYMENT_TERMS.pop()
+        obj.vat_regime = REGIMES.pop()
         yield obj

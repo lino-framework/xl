@@ -1,32 +1,15 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2012-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """
-Model mixins for `lino_xl.lib.vat`.
+Model mixins for this plugin.
 
 """
 
 from __future__ import unicode_literals
 from __future__ import print_function
-
-import logging
-logger = logging.getLogger(__name__)
 
 from decimal import Decimal
 
@@ -89,6 +72,10 @@ class VatTotal(dd.Model):
         A :class:`lino.core.fields.PriceField` which stores the amount
         of VAT.
 
+    .. method:: get_trade_type
+
+        Subclasses of VatTotal must implement this method.
+
     """
     class Meta:
         abstract = True
@@ -110,6 +97,9 @@ class VatTotal(dd.Model):
 
     """
 
+    # def get_trade_type(self):
+    #     raise NotImplementedError()
+
     def disabled_fields(self, ar):
         """Disable all three total fields if `auto_compute_totals` is set,
         otherwise disable :attr:`total_vat` if
@@ -120,7 +110,7 @@ class VatTotal(dd.Model):
         if self.auto_compute_totals:
             fields |= self._total_fields
         else:
-            rule = self.get_vat_rule()
+            rule = self.get_vat_rule(self.get_trade_type())
             if rule is not None and not rule.can_edit:
                 fields.add('total_vat')
         return fields
@@ -128,7 +118,7 @@ class VatTotal(dd.Model):
     def reset_totals(self, ar):
         pass
 
-    def get_vat_rule(self):
+    def get_vat_rule(self, tt):
         """Return the VAT rule for this voucher or voucher item. Called when
         user edits a total field in the document header when
         `auto_compute_totals` is False.
@@ -147,14 +137,14 @@ class VatTotal(dd.Model):
         If there are rounding differences, `total_vat` will get them.
 
         """
-        # logger.info("20150128 total_base_changed %r", self.total_base)
+        # dd.logger.info("20150128 total_base_changed %r", self.total_base)
         if self.total_base is None:
             self.reset_totals(ar)
             if self.total_base is None:
                 return
 
-        rule = self.get_vat_rule()
-        # logger.info("20150128 %r", rule)
+        rule = self.get_vat_rule(self.get_trade_type())
+        # dd.logger.info("20150128 %r", rule)
         if rule is None:
             self.total_incl = None
             self.total_vat = None
@@ -195,7 +185,7 @@ class VatTotal(dd.Model):
             if self.total_incl is None:
                 return
         # assert not isinstance(self.total_incl,basestring)
-        rule = self.get_vat_rule()
+        rule = self.get_vat_rule(self.get_trade_type())
         if rule is None:
             self.total_base = None
             self.total_vat = None
@@ -260,29 +250,47 @@ class VatDocument(ProjectRelated, VatTotal):
             return
         base = Decimal()
         vat = Decimal()
+        tt = self.get_trade_type()
         for i in self.items.all():
+            vr = i.get_vat_rule(tt)
             if i.total_base is not None:
                 base += i.total_base
-                vat += i.total_vat
+            if i.total_vat is not None:
+                if not vr.vat_returnable_account:
+                    vat += i.total_vat
         self.total_base = base
         self.total_vat = vat
         self.total_incl = vat + base
 
     def get_payable_sums_dict(self):
+        # implements sepa.mixins.Payable
         sums = SumCollector()
         tt = self.get_trade_type()
-        vat_account = tt.get_vat_account()
-        if vat_account is None:
-            raise Exception("No VAT account for %s." % tt)
+        # vat_account = tt.get_vat_account()
+        # if vat_account is None:
+        #     raise Exception("No VAT account for %s." % tt)
         for i in self.items.order_by('seqno'):
+            vr = i.get_vat_rule(tt)
             if i.total_base:
                 b = i.get_base_account(tt)
                 if b is None:
                     msg = "No base account for {0} (tt {1}, total_base {2})"
                     raise Exception(msg.format(i, tt, i.total_base))
-                sums.collect((b, self.project), i.total_base)
+                sums.collect(
+                    (b, self.project, True, i.vat_class, self.vat_regime),
+                    i.total_base)
             if i.total_vat:
-                sums.collect((vat_account, self.project), i.total_vat)
+                if not vr.vat_account:
+                    raise Exception("No VAT account for %s." % vr)
+                sums.collect(
+                    (vr.vat_account, self.project,
+                     False, i.vat_class, self.vat_regime),
+                    i.total_vat)
+                if vr.vat_returnable_account:
+                    sums.collect(
+                        (vr.vat_returnable_account, self.project,
+                         False, i.vat_class, self.vat_regime),
+                        - i.total_vat)
         return sums
 
     def fill_defaults(self):
@@ -327,11 +335,14 @@ class VatItemBase(VoucherItem, VatTotal):
 
     vat_class = VatClasses.field(blank=True, default=get_default_vat_class)
 
+    def get_trade_type(self):
+        return self.voucher.get_trade_type()
+
     def get_vat_class(self, tt):
         return dd.plugins.vat.get_vat_class(tt, self)
 
     def vat_class_changed(self, ar):
-        # logger.info("20121204 vat_class_changed")
+        # dd.logger.info("20121204 vat_class_changed")
         if self.voucher.vat_regime.item_vat:
             self.total_incl_changed(ar)
         else:
@@ -340,8 +351,11 @@ class VatItemBase(VoucherItem, VatTotal):
     def get_base_account(self, tt):
         raise NotImplementedError
 
-    def get_vat_rule(self):
+    def get_vat_rule(self, tt):
         """Return the `VatRule` which applies for this item.
+
+        `tt` is the trade type (which is the same for each item of a
+        voucher, that's why we expect the caller to provide it).
 
         This basically calls the class method
         :meth:`VatRule.get_vat_rule
@@ -359,8 +373,8 @@ class VatItemBase(VoucherItem, VatTotal):
 
         """
 
+        # tt = self.voucher.get_trade_type()
         if self.vat_class is None:
-            tt = self.voucher.get_trade_type()
             self.vat_class = self.get_vat_class(tt)
 
         if False:
@@ -369,7 +383,7 @@ class VatItemBase(VoucherItem, VatTotal):
         else:
             country = dd.plugins.countries.get_my_country()
         rule = rt.modules.vat.VatRule.get_vat_rule(
-            self.voucher.vat_regime, self.vat_class, country,
+            tt, self.voucher.vat_regime, self.vat_class, country,
             self.voucher.voucher_date)
         return rule
 
