@@ -94,7 +94,7 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
             old.save()
         super(Referrable, self).on_duplicate(ar, master)
 
-    def after_duplicate(self, ar):
+    def after_duplicate(self, ar, master):
         rt.models.deploy.Deployment.objects.filter(Q(milestone=self),
                                                Q(new_ticket_state__in=TicketStates.filter(active=False)) | Q(ticket__state__in=TicketStates.filter(active=False))
                                                ).delete()
@@ -103,6 +103,11 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
             old_ticket_state=None,
             remark="",
         )
+        stars = rt.models.stars.Star.for_obj(master,) #no master__isnull since we want to copy the site star
+        for s in stars:
+            s.owner = self
+            s.id = None
+            s.save()
 
     def __str__(self):
         if self.ref:
@@ -138,6 +143,17 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
                 # u = obj.partner.get_as_user()
                 # if u is not None:
                 yield s.user
+
+    def site_changed(self, ar):
+        """Leaves a sub-star of old site, but that's OK for now"""
+        if self.site is not None:
+            self.site.add_child_stars(self.site, self)
+            # self.add_change_watcher(star.user)
+
+    def after_ui_create(self, ar):
+        self.site_changed(ar)
+        super(Meeting, self).after_ui_create(ar)
+
 
     @classmethod
     def add_param_filter(

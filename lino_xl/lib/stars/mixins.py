@@ -11,11 +11,11 @@ from lino.utils.xmlgen.html import E
 from lino.modlib.office.roles import OfficeUser
 from lino.modlib.notify.mixins import ChangeObservable
 from six import string_types
+from django.db import IntegrityError
 
-
-def get_favourite(obj, user):
+def get_favourite(obj, user, **kws):
     if user.authenticated:
-        qs = rt.modules.stars.Star.for_obj(obj, user=user)
+        qs = rt.modules.stars.Star.for_obj(obj, user=user,**kws)
         if qs.count() == 0:
             return None
         return qs[0]
@@ -119,15 +119,27 @@ class Starrable(ChangeObservable):
         def get_change_observers(self):
             for o in super(Starrable, self).get_change_observers():
                 yield o
+            users = set()
             for star in self.get_stars():
-                yield (star.user, star.user.mail_mode)
+                if star.user not in users:
+                    yield (star.user, star.user.mail_mode)
+                    users.add(star.user)
 
         def get_stars(self):
-            for star in rt.models.stars.Star.for_obj(self):
-                yield star
+            return rt.models.stars.Star.for_obj(self)
 
-        def get_children_starrable(self, ar):
+        def get_children_starrable(self):
             for model, fk, related in self.child_starrables:
                 model = dd.resolve_model(model) if isinstance(model, string_types) else model
                 for obj in model.objects.filter(**{fk: self}):
                     yield obj if related is None else getattr(obj, related)
+
+        def add_child_stars(self, master, child,):
+            """Add child stars to a master"""
+            Star = rt.modules.stars.Star
+            for star in master.get_stars():
+                try:
+                    Star(owner=child, user=star.user, master=star).save()
+                except IntegrityError:
+                    #fastest way to solve this, the on_change methods are iiregularly called sometimes before create, sometimes not.
+                    pass

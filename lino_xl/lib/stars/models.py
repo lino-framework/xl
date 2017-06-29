@@ -19,9 +19,8 @@ from lino.modlib.office.roles import OfficeUser
 from six import string_types
 
 from lino.core.gfks import gfk2lookup
-from django.utils.translation import string_concat
 
-from lino.modlib.gfks.fields import GenericForeignKey, GenericForeignKeyIdField
+# from lino.modlib.gfks.fields import GenericForeignKey, GenericForeignKeyIdField
 
 class Star(UserAuthored, Controllable):
     """Represents the fact that a given database object is starred by a
@@ -45,8 +44,8 @@ class Star(UserAuthored, Controllable):
     """
 
     # controller_is_optional = False
-    allow_cascaded_delete = 'master'
-    allow_cascaded_copy = 'master'
+    allow_cascaded_delete = 'master owner'
+    allow_cascaded_copy = 'master' #owner does not work ticket #1948
 
     nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
 
@@ -126,16 +125,29 @@ class Star(UserAuthored, Controllable):
         # todo: Fix in extjs6, user is always user not subuser
         star = cls(owner=obj, user=ar.get_user())
         star.save()
-        star.create_children(obj, ar)
+        star.create_children(ar)
 
-    def create_children(self, obj, ar):
-        for child in self.owner.get_children_starrable(ar):
+    def create_children(self, ar):
+        for child in self.owner.get_children_starrable():
             Star(owner=child, user=ar.get_user(), master=self).save()
+
+    @classmethod
+    def get_parent_star_from_model(cls, master_model, child, ar):
+        # lookup a parent star when all you know is the model of the parent
+        kw = gfk2lookup(Star.owner, child, user=ar.get_user())
+        return cls.for_master_model(master_model, **kw)
 
     def after_ui_create(self, ar):
         #Needed for when creating Tickets for other Users on a table-view.
-        self.create_children(self.owner, ar)
+        self.create_children(ar)
         super(Star, self).after_ui_create(ar)
+
+    @dd.displayfield(_("Stared Because"))
+    def master_owner(self, ar):
+        return ar.obj2html(self.master.owner) if self.master is not None else ""
+
+    # def __str__(self):
+    #     return self.master.owner
 
 dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))
@@ -145,9 +157,10 @@ Star.update_controller_field(blank=False, null=False)
 
 class Stars(dd.Table):
     model = 'stars.Star'
-    column_names = "id owner user nickname *"
+    column_names = "id owner user nickname master_owner *"
     parameters = dict(
-                type=dd.ForeignKey(ContentType, blank=False, null=False)
+                type=dd.ForeignKey(ContentType, blank=True, null=True),
+                inherited_stars=dd.YesNo.field(_("inherited stars"), blank=True, null=True)
     )
     # params_layout = """"""
 
@@ -156,7 +169,12 @@ class Stars(dd.Table):
         qs = super(Stars, self).get_request_queryset(ar)
         pv = ar.param_values
         if pv['type']:
-            qs=qs.filter(owner_type=pv['type'])
+            qs = qs.filter(owner_type=pv['type'])
+        if pv['inherited_stars'] is dd.YesNo.no:
+            qs = qs.filter(master__isnull=True)
+        elif pv['inherited_stars'] is dd.YesNo.yes:
+            qs = qs.filter(master__isnull=False)
+
         return qs
 
 
@@ -165,14 +183,30 @@ class AllStars(Stars):
 
 class MyStars(My, Stars):
     required_roles = dd.login_required(OfficeUser)
-    column_names = "owner nickname owner_type *"
+    column_names = "owner nickname owner_type master_owner *"
     order_by = ['nickname', 'id']
 
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyStars, self).param_defaults(ar, **kw)
+        kw.update(inherited_stars=dd.YesNo.no)
+        return kw
 
 class StarsByController(Stars):
     label = _("Starred by")
     master_key = 'owner'
     column_names = "user *"
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(StarsByController, self).param_defaults(ar, **kw)
+        kw.update(inherited_stars=dd.YesNo.no)
+        return kw
+
+class AllStarsByController(Stars):
+    label = _("Starred by")
+    master_key = 'owner'
+    column_names = "user master_owner *"
 
 
 from lino.utils.xmlgen.html import E

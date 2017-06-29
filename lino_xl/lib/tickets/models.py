@@ -507,7 +507,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         if dd.is_installed('votes'):
             self.set_auto_vote(user, VoteStates.watching)
         elif dd.is_installed('stars'):
-            star = get_favourite(self, user=user)
+            star = get_favourite(self, user=user, master=None)
             if star is None:
                 Star = rt.modules.stars.Star
                 star = Star(owner=self, user=user)
