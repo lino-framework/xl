@@ -690,6 +690,7 @@ class DuplicatesByTicket(Tickets):
     label = _("Duplicates")
     master_key = 'duplicate_of'
     column_names = "overview state *"
+    editable = False
 
 
 
