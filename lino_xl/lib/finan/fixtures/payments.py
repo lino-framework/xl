@@ -118,9 +118,11 @@ def objects(refs="PMO BNK"):
             # For payment orders we also write the XML file
             if ref == 'PMO':
                 rv = voucher.write_xml.run_from_session(ses)
-                assert rv['success']
+                if not rv['success']:
+                    raise Exception("20170630")
                 fn = Path(settings.SITE.cache_dir + rv['open_url'])
-                assert fn.exists()
+                if not fn.exists():
+                    raise Exception("20170630")
                 validate_pain001(fn)
 
             date += delta(months=1)
