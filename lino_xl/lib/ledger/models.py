@@ -599,7 +599,8 @@ class Voucher(UserAuthored, mixins.Registrable):
         """
         return mti.get_child(self, self.journal.voucher_type.model)
 
-    def obj2html(self, ar):
+    # def obj2html(self, ar):
+    def obj2href(self, ar):
         mc = self.get_mti_leaf()
         if mc is None:
             return ''

@@ -89,6 +89,8 @@ lino_xl.lib.github
 lino_xl.lib.groups
 lino_xl.lib.groups.fixtures
 lino_xl.lib.teams
+lino_xl.lib.declarations
+lino_xl.lib.declarations.fixtures
 lino_xl.lib.cal
 lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management

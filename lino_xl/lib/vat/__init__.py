@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2013-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """Adds functionality for handling incoming and outgoing invoices in a
@@ -23,7 +9,7 @@ context where the site operator is subject to value-added tax
 :mod:`lino_xl.lib.vatless` instead.
 
 This module is designed to work both *with* and *without*
-:mod:`lino_cosi.lib.declarations` installed.
+:mod:`lino_xl.lib.declarations` installed.
 
 Installing this plugin will automatically install
 :mod:`lino_xl.lib.countries` :mod:`lino_xl.lib.ledger`.
@@ -37,9 +23,9 @@ much sense).
    :toctree:
 
     models
-    ui
-    utils
+    desktop
     choicelists
+    utils
     mixins
     fixtures.novat
     fixtures.euvatrates
@@ -58,11 +44,11 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ['lino_xl.lib.countries', 'lino_xl.lib.ledger']
 
-    vat_quarterly = False
-    """
-    Set this to True to support quarterly VAT declarations.
-    Used by :mod:`lino_cosi.lib.declarations`.
-    """
+    # vat_quarterly = False
+    # """
+    # Set this to True to support quarterly VAT declarations.
+    # Used by :mod:`lino_xl.lib.declarations`.
+    # """
 
     default_vat_regime = 'private'
     """The default VAT regime. If this is specified as a string, Lino will

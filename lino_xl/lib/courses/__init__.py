@@ -87,6 +87,6 @@ class Plugin(ad.Plugin):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
         if user.authenticated:
-            yield self.site.actors.courses.MyCoursesGiven
-            yield self.site.actors.courses.MyActivities
-        yield self.site.actors.courses.StatusReport
+            yield self.site.models.courses.MyCoursesGiven
+            yield self.site.models.courses.MyActivities
+        yield self.site.models.courses.StatusReport

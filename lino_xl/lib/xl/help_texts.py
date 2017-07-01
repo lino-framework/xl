@@ -456,6 +456,11 @@ calling get_confirm_veto to
 verify whether it is valid (e.g. whether there are enough free
 places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.declarations.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.declarations.models.Declaration' : _("""A VAT declaration is when a company declares to the state
+how much sales and purchases they've done during a given period.
+It is a summary of ledger movements.
+It is at the same time a ledger voucher."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
@@ -849,8 +854,6 @@ given topic."""),
     'lino_xl.lib.topics.models.Topic' : _("""A topic is something somebody can be interested in."""),
     'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
     'lino_xl.lib.vat.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.vat.Plugin.vat_quarterly' : _("""Set this to True to support quarterly VAT declarations.
-Used by lino_cosi.lib.declarations."""),
     'lino_xl.lib.vat.Plugin.default_vat_regime' : _("""The default VAT regime. If this is specified as a string, Lino will
 resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
@@ -865,6 +868,22 @@ possibly other factors."""),
     'lino_xl.lib.vat.choicelists.VatRegimes' : _("""The VAT regime is a classification of the way how VAT is being
 handled, e.g. whether and how it is to be paid."""),
     'lino_xl.lib.vat.choicelists.VatRegimes.item_class' : _("""alias of VatRegime"""),
+    'lino_xl.lib.vat.desktop.VatRules' : _("""The table of all lino_xl.lib.vat.models.VatRule objects."""),
+    'lino_xl.lib.vat.desktop.VatRules.model' : _("""alias of VatRule"""),
+    'lino_xl.lib.vat.desktop.InvoiceDetail' : _("""The detail layout used by Invoices."""),
+    'lino_xl.lib.vat.desktop.Invoices' : _("""The table of all
+VatAccountInvoice
+objects."""),
+    'lino_xl.lib.vat.desktop.Invoices.model' : _("""alias of VatAccountInvoice"""),
+    'lino_xl.lib.vat.desktop.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
+voucher_type
+must be lino_xl.lib.vat.models.VatAccountInvoice)"""),
+    'lino_xl.lib.vat.desktop.InvoicesByJournal.master' : _("""alias of Journal"""),
+    'lino_xl.lib.vat.desktop.InvoicesByJournal.model' : _("""alias of VatAccountInvoice"""),
+    'lino_xl.lib.vat.desktop.VouchersByPartner' : _("""A lino.core.tables.VirtualTable which shows all VatDocument
+vouchers by lino_xl.lib.contacts.models.Partner. It has a
+customized slave summary."""),
+    'lino_xl.lib.vat.desktop.VouchersByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.vat.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
     'lino_xl.lib.vat.mixins.PartnerDetailMixin.ledger' : _("""Shows the tables VouchersByPartner and MovementsByPartner."""),
@@ -905,22 +924,6 @@ to False."""),
     'lino_xl.lib.vat.models.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
 amounts (not products, quantities, discounts)."""),
     'lino_xl.lib.vat.models.InvoiceItem' : _("""An item of an account invoice."""),
-    'lino_xl.lib.vat.ui.VatRules' : _("""The table of all lino_xl.lib.vat.models.VatRule objects."""),
-    'lino_xl.lib.vat.ui.VatRules.model' : _("""alias of VatRule"""),
-    'lino_xl.lib.vat.ui.InvoiceDetail' : _("""The detail layout used by Invoices."""),
-    'lino_xl.lib.vat.ui.Invoices' : _("""The table of all
-VatAccountInvoice
-objects."""),
-    'lino_xl.lib.vat.ui.Invoices.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.ui.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
-voucher_type
-must be lino_xl.lib.vat.models.VatAccountInvoice)"""),
-    'lino_xl.lib.vat.ui.InvoicesByJournal.master' : _("""alias of Journal"""),
-    'lino_xl.lib.vat.ui.InvoicesByJournal.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.ui.VouchersByPartner' : _("""A lino.core.tables.VirtualTable which shows all VatDocument
-vouchers by lino_xl.lib.contacts.models.Partner. It has a
-customized slave summary."""),
-    'lino_xl.lib.vat.ui.VouchersByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.vatless.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vatless.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
