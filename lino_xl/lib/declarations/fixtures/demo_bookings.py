@@ -36,13 +36,18 @@ REQUEST = settings.SITE.login()  # BaseRequest()
 def objects():
 
     Journal = rt.models.ledger.Journal
+    Company = rt.models.contacts.Company
     Declaration = rt.models.declarations.Declaration
-    DeclarationFields = rt.models.declarations.DeclarationFields
-    Account = rt.models.accounts.Account
+    # DeclarationFields = rt.models.declarations.DeclarationFields
+    # Account = rt.models.accounts.Account
 
-    m = import_module(dd.plugins.declarations.country_module)
+    # m = import_module(dd.plugins.declarations.country_module)
+    from lino_xl.lib.declarations.be import demo_objects
 
-    yield m.demo_objects()
+    yield demo_objects()
+
+    agency = Company(name="Tax agency")
+    yield agency
     
     USERS = Cycler(settings.SITE.user_model.objects.all())
     JOURNAL = Journal.objects.get(ref="VAT")
@@ -53,6 +58,7 @@ def objects():
         dcl = Declaration(
             journal=JOURNAL,
             user=USERS.pop(),
+            partner=agency,
             voucher_date=date,
             entry_date=date + delta(days=5))
         yield dcl

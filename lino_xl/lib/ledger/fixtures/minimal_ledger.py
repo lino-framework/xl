@@ -216,7 +216,8 @@ def objects():
     if declarations:
         kw = dict(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("VAT declarations")))
-        kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=None)
+        kw.update(must_declare=False)
+        kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=DEBIT)
         yield declarations.Declaration.create_journal(**kw)
 
     payments = []

@@ -78,10 +78,12 @@ class DeclarationField(dd.Choice):
     def attach(self, choicelist):
         super(DeclarationField, self).attach(choicelist)
         self.observed_fields = set()
-        for v in self.fieldnames.split():
-            f = choicelist.get_by_value(v)
+        for n in self.fieldnames.split():
+            f = choicelist.get_by_value(n)
             if f is None:
-                raise Exception("Invalid declaration field {}".format(v))
+                raise Exception(
+                    "Invalid observed field {} for {}".format(
+                        n, self))
             self.observed_fields.add(f)
         
     # def __str__(self):
@@ -91,6 +93,9 @@ class DeclarationField(dd.Choice):
 
     def collect_movement(self, dcl, mvt):
         return 0
+    
+    def collect_wanted_movements(self, dcl, mvt_dcit):
+        pass
     
     def collect_from_sums(self, dcl, sums):
         pass
@@ -133,8 +138,12 @@ class MvtDeclarationField(DeclarationField):
 class AccountDeclarationField(MvtDeclarationField):
     
     def __init__(self, value, *args, **kwargs):
-        kwargs.update(observed_fields=value)
+        kwargs.update(fieldnames=value)
         super(AccountDeclarationField, self).__init__(value, *args, **kwargs)
+
+
+class WritableDeclarationField(DeclarationField):
+    editable = True
 
 
 class DeclarationFields(dd.ChoiceList):
@@ -152,3 +161,11 @@ class DeclarationFields(dd.ChoiceList):
     @classmethod    
     def add_sum_field(cls, *args, **kwargs):
         DeclarationFields.add_item_instance(SumDeclarationField(*args, **kwargs))
+
+
+    @classmethod    
+    def add_writable_field(cls, *args, **kwargs):
+        DeclarationFields.add_item_instance(WritableDeclarationField(
+            *args, **kwargs))
+
+

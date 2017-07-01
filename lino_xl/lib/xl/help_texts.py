@@ -425,19 +425,6 @@ consist of only digits."""),
     'lino_xl.lib.courses.desktop.EnrolmentsByPupil.master' : _("""alias of Person"""),
     'lino_xl.lib.courses.desktop.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
     'lino_xl.lib.courses.desktop.StatusReport' : _("""Gives an overview about what's up today ."""),
-    'lino_xl.lib.courses.models.Line' : _("""An activity line (or series) groups courses into a
-configurable list of categories."""),
-    'lino_xl.lib.courses.models.Line.name' : _("""The designation of this activity line as seen by the user
-e.g. when selecting the line."""),
-    'lino_xl.lib.courses.models.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
-    'lino_xl.lib.courses.models.Line.body_template' : _("""The body template to use when printing an activity of this
-line.  Leave empty to use the site's default (defined by
-body_template on the
-lino_xl.lib.excerpts.models.ExcerptType for
-Course)"""),
-    'lino_xl.lib.courses.models.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
-application defines several variants of
-EnrolmentsByPupil."""),
     'lino_xl.lib.courses.models.Course' : _("""A Course is a group of pupils that regularily meet with a given
 teacher in a given room to speak about a given subject."""),
     'lino_xl.lib.courses.models.Course.max_places' : _("""Available places. The maximum number of participants to allow
@@ -451,6 +438,19 @@ given course."""),
     'lino_xl.lib.courses.models.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
     'lino_xl.lib.courses.models.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
 participant."""),
+    'lino_xl.lib.courses.models.Line' : _("""An activity line (or series) groups courses into a
+configurable list of categories."""),
+    'lino_xl.lib.courses.models.Line.name' : _("""The designation of this activity line as seen by the user
+e.g. when selecting the line."""),
+    'lino_xl.lib.courses.models.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
+    'lino_xl.lib.courses.models.Line.body_template' : _("""The body template to use when printing an activity of this
+line.  Leave empty to use the site's default (defined by
+body_template on the
+lino_xl.lib.excerpts.models.ExcerptType for
+Course)"""),
+    'lino_xl.lib.courses.models.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+application defines several variants of
+EnrolmentsByPupil."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment. Sets the state to confirmed after
 calling get_confirm_veto to
 verify whether it is valid (e.g. whether there are enough free
@@ -912,6 +912,9 @@ VatRegimes."""),
 VatClasses."""),
     'lino_xl.lib.vat.mixins.QtyVatItemBase' : _("""Model mixin for items of a VatTotal, adds unit_price and
 qty."""),
+    'lino_xl.lib.vat.models.InvoiceItem' : _("""An item of an account invoice."""),
+    'lino_xl.lib.vat.models.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
+amounts (not products, quantities, discounts)."""),
     'lino_xl.lib.vat.models.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.models.VatRule.vat_regime' : _("""The regime for which this rule applies. Pointer to
@@ -921,9 +924,6 @@ stored as 0.20 (not 20)."""),
     'lino_xl.lib.vat.models.VatRule.can_edit' : _("""Whether the VAT amount can be modified by the user. This applies
 only for documents with VatTotal.auto_compute_totals set
 to False."""),
-    'lino_xl.lib.vat.models.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
-amounts (not products, quantities, discounts)."""),
-    'lino_xl.lib.vat.models.InvoiceItem' : _("""An item of an account invoice."""),
     'lino_xl.lib.vatless.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vatless.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
