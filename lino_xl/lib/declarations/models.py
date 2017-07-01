@@ -148,8 +148,9 @@ class Declaration(ledger.Voucher, DatePeriod):
         for fld in DeclarationFields.get_list_items():
             setattr(self, fld.name, sums[fld.name])
 
-# importing the country module will fill DeclarationFields
-import_module(dd.plugins.declarations.country_module)
+if dd.is_installed('declarations'): # avoid autodoc failure
+    # importing the country module will fill DeclarationFields
+    import_module(dd.plugins.declarations.country_module)
 
 for fld in DeclarationFields.objects():
     dd.inject_field(Declaration, fld.name, fld.get_model_field())

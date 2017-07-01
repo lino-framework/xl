@@ -160,8 +160,8 @@ class Plugin(ad.Plugin):
 
     def get_dashboard_items(self, user):
         if user.authenticated:
-            yield self.site.actors.cal.MyTasks
-            yield self.site.actors.cal.MyEntries
-            yield self.site.actors.cal.MyOverdueAppointments
+            yield self.site.models.cal.MyTasks
+            yield self.site.models.cal.MyEntries
+            yield self.site.models.cal.MyOverdueAppointments
         else:
-            yield self.site.actors.cal.PublicEntries
+            yield self.site.models.cal.PublicEntries

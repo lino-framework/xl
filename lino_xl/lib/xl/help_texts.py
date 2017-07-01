@@ -457,6 +457,10 @@ verify whether it is valid (e.g. whether there are enough free
 places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.declarations.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.declarations.models.Declaration' : _("""A VAT declaration is when a company declares to the state
+how much sales and purchases they've done during a given period.
+It is a summary of ledger movements.
+It is at the same time a ledger voucher."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
