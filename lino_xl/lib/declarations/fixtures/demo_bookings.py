@@ -10,10 +10,6 @@ Creates demo VAT declarations.
 
 from __future__ import unicode_literals
 
-import logging
-logger = logging.getLogger(__name__)
-
-
 import datetime
 from dateutil.relativedelta import relativedelta as delta
 from importlib import import_module
@@ -21,11 +17,6 @@ from importlib import import_module
 from django.conf import settings
 from lino.utils import Cycler
 from lino.api import dd, rt
-
-from lino_xl.lib.vat.mixins import myround
-
-vat = dd.resolve_app('vat')
-sales = dd.resolve_app('sales')
 
 from lino_xl.lib.declarations.models import AMONTH
 
@@ -41,10 +32,10 @@ def objects():
     # DeclarationFields = rt.models.declarations.DeclarationFields
     # Account = rt.models.accounts.Account
 
-    # m = import_module(dd.plugins.declarations.country_module)
-    from lino_xl.lib.declarations.be import demo_objects
+    m = import_module(dd.plugins.declarations.country_module)
+    # from lino_xl.lib.declarations.be import demo_objects
 
-    yield demo_objects()
+    yield m.demo_objects()
 
     agency = Company(name="Tax agency")
     yield agency

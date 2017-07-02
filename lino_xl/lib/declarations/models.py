@@ -11,7 +11,6 @@ to work both with and without :mod:`lino_xl.lib.ledger` installed.
 
 from __future__ import unicode_literals
 
-from importlib import import_module
 from decimal import Decimal
 from dateutil.relativedelta import relativedelta as delta
 AMONTH = delta(months=1)
