@@ -542,10 +542,6 @@ class Voucher(UserAuthored, mixins.Registrable):
         return super(Voucher, self).disable_delete(ar)
 
     def get_wanted_movements(self):
-        """Subclasses must implement this.  Supposed to return or yield a
-        list of unsaved :class:`Movement` instances.
-
-        """
         raise NotImplementedError()
 
     def create_movement(self, item, account, project, dc, amount, **kw):

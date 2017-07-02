@@ -145,17 +145,25 @@ class Payable(PartnerRelated):
         raise NotImplemented()
 
     def get_wanted_movements(self):
+        """Implements
+        :meth:`lino_xl.lib.ledger.Voucher.get_wanted_movements`.
+
+        """
         item_sums = self.get_payable_sums_dict()
         # logger.info("20120901 get_wanted_movements %s", sums_dict)
         counter_sums = SumCollector()
         partner = self.get_partner()
+        has_vat = dd.is_installed('vat')
+        kw = dict()
         for k, amount in item_sums.items():
             acc, prj, is_base, vat_class, vat_regime = k
+            if has_vat:
+                kw.update(
+                    is_base=is_base,
+                    vat_class=vat_class, vat_regime=vat_regime)
             yield self.create_movement(
                 None, acc, prj, self.journal.dc, amount,
-                partner=partner if acc.needs_partner else None,
-                is_base=is_base,
-                vat_class=vat_class, vat_regime=vat_regime)
+                partner=partner if acc.needs_partner else None)
             counter_sums.collect(prj, amount)
 
         acc = self.get_trade_type().get_partner_account()

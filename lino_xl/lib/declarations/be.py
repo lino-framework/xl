@@ -3,16 +3,18 @@
 
 """Belgian VAT declaration fields.
 
+This module may be specified as your :attr:`country_module
+<lino_xl.lib.declarations.Plugin.country_module>`.
+
+Importing this module will configure the
+fields of :class:`DeclarationFields
+<lino_xl.lib.declarations.choicelists.DeclarationFields>` to those of
+a Belgian VAT declaration.
+
 Based on `165-625-directives-2016.pdf
 <https://finances.belgium.be/sites/default/files/downloads/165-625-directives-2016.pdf>`__
 and `finances.belgium.be
 <https://finances.belgium.be/fr/entreprises/tva/declaration/declaration_periodique>`__
-
-Importing this module (usually from your :attr:`custom_layouts_module
-<lino.core.site.Site.custom_layouts_module>`) will configure the
-fields of :class:`DeclarationFields
-<lino_xl.lib.declarations.choicelists.DeclarationFields>` to those of
-a Belgian VAT declaration.
 
 """
 
@@ -155,7 +157,9 @@ class DeclarationDetail(dd.DetailLayout):
     # F84 F85 F86 F87 F88
     # """
 
-rt.models.declarations.Declarations.detail_layout = DeclarationDetail()
+if dd.is_installed('declarations'):
+
+    rt.models.declarations.Declarations.detail_layout = DeclarationDetail()
 
 
 def demo_objects():
