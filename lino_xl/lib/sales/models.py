@@ -39,8 +39,8 @@ TradeTypes.sales.update(
     price_field_label=_("Sales price"),
     base_account_field_name='sales_account',
     base_account_field_label=_("Sales Base account"),
-    vat_account_field_name='sales_vat_account',
-    vat_account_field_label=_("Sales VAT account"),
+    # vat_account_field_name='sales_vat_account',
+    # vat_account_field_label=_("Sales VAT account"),
     partner_account_field_name='clients_account',
     partner_account_field_label=_("Clients account"))
 
@@ -422,11 +422,11 @@ class ProductDocItem(QtyVatItemBase, Bleached):
         if catalog_price is None:
             return
         # assert self.vat_class == self.product.vat_class
-        rule = self.get_vat_rule()
+        rule = self.get_vat_rule(tt)
         if rule is None:
             return
         cat_rule = rt.modules.vat.VatRule.get_vat_rule(
-            get_default_vat_regime, self.get_vat_class(tt),
+            tt, get_default_vat_regime, self.get_vat_class(tt),
             dd.plugins.countries.get_my_country(),
             dd.today())
         if cat_rule is None:

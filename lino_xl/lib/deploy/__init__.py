@@ -37,4 +37,4 @@ class Plugin(ad.Plugin):
         
     # def get_dashboard_items(self, user):
     #     if user.authenticated:
-    #         yield self.site.actors.deploy.MyMilestones
+    #         yield self.site.models.deploy.MyMilestones

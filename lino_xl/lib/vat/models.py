@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2012-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """Database models for `lino_xl.lib.vat`.
@@ -47,8 +33,8 @@ from lino_xl.lib.ledger.choicelists import TradeTypes
 TradeTypes.purchases.update(
     base_account_field_name='purchases_account',
     base_account_field_label=_("Purchases Base account"),
-    vat_account_field_name='purchases_vat_account',
-    vat_account_field_label=_("Purchases VAT account"),
+    # vat_account_field_name='purchases_vat_account',
+    # vat_account_field_label=_("Purchases VAT account"),
     partner_account_field_name='suppliers_account',
     partner_account_field_label=_("Suppliers account"))
 
@@ -87,19 +73,32 @@ class VatRule(Sequenced, DatePeriod):
         verbose_name_plural = _("VAT rules")
 
     country = dd.ForeignKey('countries.Country', blank=True, null=True)
+    trade_type = TradeTypes.field(blank=True)
     vat_class = VatClasses.field(blank=True)
     vat_regime = VatRegimes.field(blank=True)
     rate = models.DecimalField(default=ZERO, decimal_places=4, max_digits=7)
     can_edit = models.BooleanField(_("Editable amount"), default=True)
+    vat_account = dd.ForeignKey(
+        'accounts.Account',
+        verbose_name=_("VAT account"),
+        related_name="vat_rules_by_account",
+        blank=True, null=True)
+    vat_returnable_account = dd.ForeignKey(
+        'accounts.Account',
+        related_name="vat_rules_by_returnable_account",
+        verbose_name=_("VAT returnable account"), blank=True, null=True)
 
     @classmethod
-    def get_vat_rule(cls, vat_regime, vat_class, country, date):
+    def get_vat_rule(cls, trade_type, vat_regime, vat_class, country,
+                     date):
         """Return the first VatRule object to be applied for the given
         criteria.
 
         """
         qs = cls.objects.order_by('seqno')
         qs = qs.filter(Q(country__isnull=True) | Q(country=country))
+        if trade_type is not None:
+            qs = qs.filter(Q(trade_type__in=('', trade_type)))
         if vat_class is not None:
             # qs = qs.filter(Q(vat_class='') | Q(vat_class=vat_class))
             qs = qs.filter(Q(vat_class__in=('', vat_class)))
@@ -124,11 +123,12 @@ class VatRule(Sequenced, DatePeriod):
 
     def __str__(self):
         kw = dict(
+            trade_type=self.trade_type,
             vat_regime=self.vat_regime,
             vat_class=self.vat_class,
             rate=self.rate,
             country=self.country, seqno=self.seqno)
-        return "{country} {vat_class} {rate}".format(**kw)
+        return "{trade_type} {country} {vat_class} {rate}".format(**kw)
 
 
 class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
@@ -180,16 +180,19 @@ if False:
 
 
 dd.inject_field(
-    'contacts.Partner',
-    'vat_regime',
-    VatRegimes.field(
-        blank=True,
-        help_text=_("The default VAT regime for \
-        sales and purchases of this partner.")))
+    'contacts.Partner', 'vat_regime', VatRegimes.field(blank=True))
+
+dd.inject_field(
+    'ledger.Movement', 'vat_regime', VatRegimes.field(blank=True))
+
+dd.inject_field(
+    'ledger.Movement', 'vat_class', VatClasses.field(blank=True))
+
+dd.inject_field(
+    'ledger.Movement', 'is_base', models.BooleanField(default=False))
 
 dd.inject_field(
     'contacts.Company',
     'vat_id',
     models.CharField(_("VAT id"), max_length=200, blank=True))
 
-from .ui import *

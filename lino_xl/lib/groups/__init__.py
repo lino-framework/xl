@@ -34,6 +34,6 @@ class Plugin(ad.Plugin):
         m.add_action('groups.AllMemberships')
 
     def get_dashboard_items(self, user):
-        yield self.site.actors.groups.MyGroups
+        yield self.site.models.groups.MyGroups
         
         

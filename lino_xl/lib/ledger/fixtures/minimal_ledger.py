@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2012-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 
 """
@@ -35,6 +21,7 @@ logger = logging.getLogger(__name__)
 from django.conf import settings
 from lino.api import dd, rt, _
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.accounts import *
 
 accounts = dd.resolve_app('accounts')
 vat = dd.resolve_app('vat')
@@ -45,30 +32,6 @@ declarations = dd.resolve_app('declarations')
 #~ partners = dd.resolve_app('partners')
 
 
-def pcmnref(ref, pcmn):
-    if settings.SITE.plugins.ledger.use_pcmn:
-        return pcmn
-    return ref
-
-CUSTOMERS_ACCOUNT = pcmnref('customers', '4000')
-SUPPLIERS_ACCOUNT = pcmnref('suppliers',  '4400')
-
-VAT_DUE_ACCOUNT = pcmnref('vat_due',   '4510')
-VAT_DEDUCTIBLE_ACCOUT = pcmnref('vat_deductible', '4512')
-VATDCL_ACCOUNT = pcmnref('vatdcl', '4513')
-
-BESTBANK_ACCOUNT = pcmnref('bestbank', '5500')
-CASH_ACCOUNT = pcmnref('cash', '5700')
-
-PURCHASE_OF_GOODS = pcmnref('goods', '6040')
-PURCHASE_OF_SERVICES = pcmnref('services', '6010')
-PURCHASE_OF_INVESTMENTS = pcmnref('investments', '6020')
-
-PO_BESTBANK_ACCOUNT = pcmnref('bestbankpo', '5810')
-
-SALES_ACCOUNT = pcmnref('sales', '7000')
-
-MEMBERSHIP_FEE_ACCOUNT = pcmnref('membership_fee', '7310')
 
 current_group = None
 
@@ -119,23 +82,20 @@ def objects():
 
     yield Group('45', 'assets', "TVA à payer",
                 "Geschuldete MWSt", "VAT to pay", "Käibemaksukonto")
-    obj = Account(VAT_DUE_ACCOUNT, 'incomes',
+    yield Account(VAT_DUE_ACCOUNT, 'incomes',
                   "TVA due",
                   "Geschuldete MWSt",
                   "VAT due", "Käibemaks maksta", clearable=True)
-    yield obj
-    if sales:
-        settings.SITE.site_config.update(sales_vat_account=obj)
-
-    obj = Account(
+    yield Account(VAT_RETURNABLE_ACCOUNT, 'assets',
+                  "TVA à retourner",
+                  "Rückzahlbare MWSt",
+                  "VAT returnable", "Käibemaks tagastada", clearable=True)
+    yield Account(
         VAT_DEDUCTIBLE_ACCOUT, 'assets',
         "TVA déductible",
         "Abziehbare MWSt",
         "VAT deductible", "Enammakstud käibemaks",
         clearable=True)
-    yield obj
-    if ledger:
-        settings.SITE.site_config.update(purchases_vat_account=obj)
 
     # PCMN 55
     yield Group('55', 'assets',
@@ -181,13 +141,13 @@ def objects():
     obj = Account(SALES_ACCOUNT, 'incomes',
                   "Ventes", "Verkäufe", "Sales", "Müük",
                   sales_allowed=True)
-    obj = Account(MEMBERSHIP_FEE_ACCOUNT, 'incomes',
-                  "Cotisation", "Mitgliedsbeitrag",
-                  "Membership fee", "Liikmemaks",
-                  sales_allowed=True, default_amount=15)
     yield obj
     if sales:
         settings.SITE.site_config.update(sales_account=obj)
+    yield Account(MEMBERSHIP_FEE_ACCOUNT, 'incomes',
+                  "Cotisation", "Mitgliedsbeitrag",
+                  "Membership fee", "Liikmemaks",
+                  sales_allowed=True, default_amount=15)
 
     # JOURNALS
 
@@ -256,11 +216,8 @@ def objects():
     if declarations:
         kw = dict(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("VAT declarations")))
-        # kw = dd.babel_values(
-        #     'name', en="VAT declarations",
-        #     de="MWSt-Erklärungen", fr="Déclarations TVA",
-        #     et="Käibemaksudeklaratsioonid")
-        kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=None)
+        kw.update(must_declare=False)
+        kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=DEBIT)
         yield declarations.Declaration.create_journal(**kw)
 
     payments = []

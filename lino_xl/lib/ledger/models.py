@@ -71,6 +71,7 @@ class Journal(mixins.BabelNamed,
     dc = DebitOrCreditField(_("Primary booking direction"))
     yearly_numbering = models.BooleanField(
         _("Yearly numbering"), default=False)
+    must_declare = models.BooleanField(default=True)
     # invert_due_dc = models.BooleanField(
     #     _("Invert booking direction"),
     #     help_text=_("Whether to invert booking direction of due movement."),
@@ -541,10 +542,6 @@ class Voucher(UserAuthored, mixins.Registrable):
         return super(Voucher, self).disable_delete(ar)
 
     def get_wanted_movements(self):
-        """Subclasses must implement this.  Supposed to return or yield a
-        list of unsaved :class:`Movement` instances.
-
-        """
         raise NotImplementedError()
 
     def create_movement(self, item, account, project, dc, amount, **kw):
@@ -599,7 +596,8 @@ class Voucher(UserAuthored, mixins.Registrable):
         """
         return mti.get_child(self, self.journal.voucher_type.model)
 
-    def obj2html(self, ar):
+    # def obj2html(self, ar):
+    def obj2href(self, ar):
         mc = self.get_mti_leaf()
         if mc is None:
             return ''

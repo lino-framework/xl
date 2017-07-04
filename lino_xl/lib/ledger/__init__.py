@@ -11,6 +11,7 @@ See :doc:`/specs/cosi/ledger`.
 
     roles
     fields
+    accounts
     management.commands.reregister
     fixtures.std
     fixtures.demo
