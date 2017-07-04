@@ -85,7 +85,7 @@ class Meetings(dd.Table):
     ref room
     start_date
     """, window_size = (40, 10,))
-    column_names = "start_date name ref room workflow_buttons *"
+    column_names = "start_date name ref site room workflow_buttons *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
     # order_by = ['name']
@@ -154,7 +154,7 @@ class AllMeetings(Meetings):
                    # "weekdays_text:10 times_text:10"
 
 class MyMeetings(Meetings):
-    column_names = "start_date:8 overview room workflow_buttons *"
+    column_names = "start_date:8 overview site room workflow_buttons *"
     order_by = ['start_date']
 
     @classmethod

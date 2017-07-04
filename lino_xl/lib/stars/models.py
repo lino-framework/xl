@@ -233,3 +233,14 @@ def welcome_messages(ar):
 
 dd.add_welcome_handler(welcome_messages)
 
+
+def Create_Stars_From_Scratch():
+    """ Function to re-create logical stars after updateing Jane with the new Star model"""
+    for Ticket in rt.models.tickets.Ticket.objects.all():
+        Ticket.after_ui_create(None) # Sets auther enduser and asigned stars
+    for comment in rt.models.comments.Comment.objects.all():
+        if isinstance(comment.owner, rt.models.tickets.Ticket):
+            Ticket.add_change_watcher(comment.user)
+    for session in rt.models.clocking.Session.objects.all():
+        session.ticket.add_change_watcher(session.user)
+

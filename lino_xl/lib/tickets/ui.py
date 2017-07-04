@@ -467,7 +467,7 @@ class Tickets(dd.Table):
     model = 'tickets.Ticket'
     order_by = ["-id"]
     column_names = 'id summary:50 user:10 topic #faculty ' \
-                   'workflow_buttons:30 site:10 project:10 *'
+                   'workflow_buttons:30 #site:10 project:10 *' # Site commented to not disturbe care
     detail_layout = TicketDetail()
     insert_layout = """
     summary
