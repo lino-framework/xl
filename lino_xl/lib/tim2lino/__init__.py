@@ -77,9 +77,9 @@ class Plugin(ad.Plugin):
         suppliers_account='440000',
         wages_account='460000',
         sales_account='704000',
-        sales_vat_account='411000',  # vat paid 411000, 472100
+        # sales_vat_account='411000',  # vat paid 411000, 472100
         purchases_account='610000',
-        purchases_vat_account='451000',  # due vat 451000, 472200
+        # purchases_vat_account='451000',  # due vat 451000, 472200
         clearings_account='499000')  # 462100
 
     def add_load_listener(self, tableName, func):

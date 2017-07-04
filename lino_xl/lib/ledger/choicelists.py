@@ -151,8 +151,8 @@ class TradeType(dd.Choice):
     partner_account_field_label = None
     base_account_field_name = None
     base_account_field_label = None
-    vat_account_field_name = None
-    vat_account_field_label = None
+    # vat_account_field_name = None
+    # vat_account_field_label = None
     dc = DEBIT
 
     def get_base_account(self):
@@ -166,16 +166,16 @@ class TradeType(dd.Choice):
         return getattr(settings.SITE.site_config,
                        self.base_account_field_name)
 
-    def get_vat_account(self):
-        """Return the :class:`Account <lino_xl.lib.accounts.models.Account>`
-        into which the **VAT amount** of any operation should be
-        booked.
+    # def get_vat_account(self):
+    #     """Return the :class:`Account <lino_xl.lib.accounts.models.Account>`
+    #     into which the **VAT amount** of any operation should be
+    #     booked.
 
-        """
-        if self.vat_account_field_name is None:
-            return None
-            # raise Exception("%s has no vat_account_field_name!" % self)
-        return getattr(settings.SITE.site_config, self.vat_account_field_name)
+    #     """
+    #     if self.vat_account_field_name is None:
+    #         return None
+    #         # raise Exception("%s has no vat_account_field_name!" % self)
+    #     return getattr(settings.SITE.site_config, self.vat_account_field_name)
 
     def get_partner_account(self):
         """Return the :class:`Account <lino_xl.lib.accounts.models.Account>`
@@ -242,14 +242,15 @@ def inject_tradetype_fields(sender, **kw):
                     verbose_name=tt.partner_account_field_label,
                     related_name='configs_by_' + tt.partner_account_field_name,
                     blank=True, null=True))
-        if tt.vat_account_field_name is not None:
-            dd.inject_field('system.SiteConfig', tt.vat_account_field_name,
-                            dd.ForeignKey(
-                                'accounts.Account',
-                                verbose_name=tt.vat_account_field_label,
-                                related_name='configs_by_' +
-                                tt.vat_account_field_name,
-                                blank=True, null=True))
+        # if tt.vat_account_field_name is not None:
+        #     # this field is no longer used except for backwards compat
+        #     dd.inject_field('system.SiteConfig', tt.vat_account_field_name,
+        #                     dd.ForeignKey(
+        #                         'accounts.Account',
+        #                         verbose_name=tt.vat_account_field_label,
+        #                         related_name='configs_by_' +
+        #                         tt.vat_account_field_name,
+        #                         blank=True, null=True))
         if tt.base_account_field_name is not None:
             dd.inject_field('system.SiteConfig', tt.base_account_field_name,
                             dd.ForeignKey(
