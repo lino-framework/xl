@@ -984,6 +984,47 @@ class Sites(dd.Table):
 
         return qs
 
+    @dd.requestfield(_("New Tickets"))
+    def new_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new))
+
+    @dd.requestfield(_("Tickets To Talk"))
+    def talk_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk))
+
+    @dd.requestfield(_("Open Tickets"))
+    def open_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened))
+
+    @dd.requestfield(_("Started Tickets"))
+    def started_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started))
+
+    @dd.requestfield(_("Sleeping Tickets"))
+    def sleeping_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping))
+
+    @dd.requestfield(_("Ready Tickets"))
+    def ready_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready))
+
+    @dd.requestfield(_("Closed Tickets"))
+    def closed_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed))
+
+    @dd.requestfield(_("Cancelled Tickets"))
+    def cancelled_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled))
+
+    @dd.requestfield(_("Active Tickets"))
+    def active_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.yes))
+
+    @dd.requestfield(_("InActive Tickets"))
+    def inactive_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.no))
+
+
 
 class MySites(Sites):
     label = _("My Sites")
@@ -994,6 +1035,9 @@ class MySites(Sites):
         kw.update(watcher=ar.get_user())
         return kw
 
+class MySitesDashboard(MySites):
+    label = _("Sites Overview")
+    column_names = """overview new_tickets talk_tickets open_tickets started_tickets sleeping_tickets ready_tickets closed_tickets cancelled_tickets active_tickets inactive_tickets """
 
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)

@@ -127,9 +127,14 @@ class Star(UserAuthored, Controllable):
         star.save()
         star.create_children(ar)
 
-    def create_children(self, ar):
+    def yield_children(self, user):
         for child in self.owner.get_children_starrable():
-            Star(owner=child, user=ar.get_user(), master=self).save()
+            yield Star(owner=child, user=user, master=self)
+
+
+    def create_children(self, ar):
+        for child in self.yield_children(ar.get_user()):
+            child.save()
 
     @classmethod
     def get_parent_star_from_model(cls, master_model, child, ar):
@@ -144,6 +149,7 @@ class Star(UserAuthored, Controllable):
 
     @dd.displayfield(_("Stared Because"))
     def master_owner(self, ar):
+        if ar is None: return None
         return ar.obj2html(self.master.owner) if self.master is not None else ""
 
     # def __str__(self):
