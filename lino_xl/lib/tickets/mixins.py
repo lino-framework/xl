@@ -18,19 +18,18 @@ class Milestone(dd.Model):
         return []
     
     def after_ui_save(self, ar, cw):
-        """Automatically invite every participant to vote on every wish.
-
         """
-        super(Milestone, self).after_ui_save(ar, cw)
-        participants = list(self.get_milestone_users())
-        for wish in self.wishes_by_milestone.all():
-            for user in participants:
-                if dd.is_installed('votes'):
-                    wish.ticket.set_auto_vote(user, VoteStates.invited)
-                if dd.is_installed('stars'):
-                    star = get_favourite(wish.ticket, user=user)
-                    if star is None:
-                        Star = rt.modules.stars.Star
-                        star = Star(owner=wish.ticket, user=user)
-                        star.save()
+        """
+        # super(Milestone, self).after_ui_save(ar, cw)
+        # participants = list(self.get_milestone_users())
+        # for wish in self.wishes_by_milestone.all():
+        #     for user in participants:
+        #         if dd.is_installed('votes'):
+        #             wish.ticket.set_auto_vote(user, VoteStates.invited)
+        #         if dd.is_installed('stars'):
+        #             star = get_favourite(wish.ticket, user=user)
+        #             if star is None:
+        #                 Star = rt.modules.stars.Star
+        #                 star = Star(owner=wish.ticket, user=user)
+        #                 star.save()
 

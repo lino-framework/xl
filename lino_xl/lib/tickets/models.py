@@ -160,23 +160,44 @@ class Project(mixins.DatePeriod, TimeInvestment,
     #     super(Project, self).save(*args, **kwargs)
 
 
-# @dd.python_2_unicode_compatible
-# class Site(dd.Model):
-#     class Meta:
-#         app_label = 'tickets'
-#         verbose_name = pgettext("Ticketing", "Site")
-#         verbose_name_plural = pgettext("Ticketing", "Sites")
+@dd.python_2_unicode_compatible
+class Site(ContactRelated, Starrable):
+    class Meta:
+        app_label = 'tickets'
+        verbose_name = pgettext("Ticketing", "Site")
+        verbose_name_plural = pgettext("Ticketing", "Sites")
 
 #     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 #     # responsible_user = dd.ForeignKey(
 #     #     'users.User', verbose_name=_("Responsible"),
 #     #     blank=True, null=True)
 #     name = models.CharField(_("Designation"), max_length=200)
-#     remark = models.CharField(_("Remark"), max_length=200, blank=True)
+    child_starrables = [(milestone_model, 'site', None),
+                        ('tickets.Ticket', 'site', None)]
 
-#     def __str__(self):
-#         return self.name
-    
+    description = dd.RichTextField(_("Description"), blank=True)
+    remark = models.CharField(_("Remark"), max_length=200, blank=True)
+    name = models.CharField(_("Designation"), max_length=200)
+
+    # def get_children_starrable(self, ar):
+    #     obj = ar.selected_rows[0]
+    #     milestone = dd.resolve_model(milestone_model)
+    #     for x in milestone.objects.filter(**{milestone.site_field_name: obj}):
+    #         yield x
+    #     for x in rt.models.tickets.Ticket.objects.filter(site=obj):
+    #         yield x
+
+
+    def __str__(self):
+        return self.name
+
+
+dd.update_field(
+    Site, 'company', verbose_name=_("Client"))
+dd.update_field(
+    Site, 'contact_person', verbose_name=_("Contact person"))
+
+
 # @dd.python_2_unicode_compatible
 # class Competence(UserAuthored, Prioritized):
 
@@ -486,7 +507,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         if dd.is_installed('votes'):
             self.set_auto_vote(user, VoteStates.watching)
         elif dd.is_installed('stars'):
-            star = get_favourite(self, user=user)
+            star = get_favourite(self, user=user, master=None)
             if star is None:
                 Star = rt.modules.stars.Star
                 star = Star(owner=self, user=user)

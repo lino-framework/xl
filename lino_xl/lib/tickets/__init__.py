@@ -30,7 +30,7 @@ class Plugin(ad.Plugin):
         # 'lino.modlib.changes',
         'lino_noi.lib.noi']
 
-    site_model = 'cal.Room'
+    site_model = 'tickets.Site'
     milestone_model = 'meetings.Meeting'
     end_user_model = 'contacts.Partner'
 
@@ -57,6 +57,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.ActiveProjects')
         # m.add_action('tickets.MyWishes')
         m.add_action('tickets.RefTickets')
+        m.add_action('tickets.MySites')
 
 
 
@@ -67,7 +68,7 @@ class Plugin(ad.Plugin):
         m.add_action('tickets.TopLevelProjects')
         m.add_action('tickets.ProjectTypes')
         m.add_action('tickets.TicketTypes')
-        # m.add_action('tickets.AllSites')
+        m.add_action('tickets.AllSites')
 
     def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
@@ -81,6 +82,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         if user.authenticated:
             yield self.site.models.tickets.MyTickets
+            yield self.site.models.tickets.MySitesDashboard
             # yield self.site.models.tickets.MyTicketsToWork #in noi
             yield self.site.models.tickets.TicketsToTriage
             # else:

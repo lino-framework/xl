@@ -228,13 +228,26 @@ class Deployment(Sequenced, Workable):
                     ticket=self.ticket, wish_type=self.wish_type,
                     remark=self.remark)
                 
-        
-    def after_ui_save(self, ar, cw):
-        """
-        Automatically invite every participant to vote on every wish when adding deployment.
-        """
-        super(Deployment, self).after_ui_save(ar, cw)
-        self.milestone.after_ui_save(ar, cw)
+
+    def milestone_changed(self, ar):
+        self.ticket_changed(ar)
+
+    def ticket_changed(self, ar):
+        if self.ticket is not None and self.milestone is not None:
+            self.milestone.add_child_stars(self.milestone, self.ticket)
+
+    def after_ui_create(self, ar):
+        # print "Create"
+        self.ticket_changed(ar)
+        super(Deployment, self).after_ui_create(ar)
+
+
+    # def after_ui_save(self, ar, cw):
+    #     """
+    #     Automatically invite every participant to vote on every wish when adding deployment.
+    #     """
+    #     super(Deployment, self).after_ui_save(ar, cw)
+    #     self.milestone.after_ui_save(ar, cw)
 
     @dd.displayfield(_("Actions"))
     def workflow_buttons(self, ar):

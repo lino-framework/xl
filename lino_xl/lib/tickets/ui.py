@@ -467,7 +467,7 @@ class Tickets(dd.Table):
     model = 'tickets.Ticket'
     order_by = ["-id"]
     column_names = 'id summary:50 user:10 topic #faculty ' \
-                   'workflow_buttons:30 site:10 project:10 *'
+                   'workflow_buttons:30 #site:10 project:10 *' # Site commented to not disturbe care
     detail_layout = TicketDetail()
     insert_layout = """
     summary
@@ -686,9 +686,11 @@ class DuplicatesByTicket(Tickets):
     (i.e. whose `duplicate_of` field points to this ticket.
 
     """
+    slave_grid_format = 'html'
     label = _("Duplicates")
     master_key = 'duplicate_of'
-    column_names = "id summary *"
+    column_names = "overview state *"
+    editable = False
 
 
 
@@ -937,31 +939,110 @@ class TicketsByReporter(Tickets):
     master_key = 'user'
     column_names = "id summary:60 workflow_buttons:20 *"
 
-    
-# class Sites(dd.Table):
-#     # required_roles = set()  # also for anonymous
-#     required_roles = dd.login_required(TicketsUser)
-#     model = 'tickets.Site'
-#     column_names = "name partner remark id *"
-#     order_by = ['name']
-#     detail_html_template = "tickets/Site/detail.html"
 
-#     insert_layout = """
-#     name
-#     remark
-#     """
-
-#     detail_layout = """
-#     id name partner #responsible_user
-#     remark
-#     TicketsBySite
-#     """
+class SiteDetail(dd.DetailLayout):
+    bottom_left = """
+    description
+    stars.StarsByController"""
+    bottom = """
+        bottom_left:30 TicketsBySite
+        """
+    general = dd.Panel("""
+        id name company contact_person
+        workflow_buttons:1 remark
+        bottom""", label=_("General"))
+    main = """general meetings.MeetingsBySite"""
 
 
-# class AllSites(Sites):
-#     required_roles = dd.login_required(TicketsStaff)
+class Sites(dd.Table):
+    # required_roles = set()  # also for anonymous
+    required_roles = dd.login_required(TicketsUser)
+    model = 'tickets.Site'
+    column_names = "name company contact_person remark workflow_buttons id *"
+    order_by = ['name']
+    # detail_html_template = "tickets/Site/detail.html"
+    parameters = dd.ParameterPanel(
+        watcher=dd.ForeignKey('users.User', blank=True, null=True, )
+    )
+
+    insert_layout = """
+    name
+    remark
+    description
+    """
+    detail_layout = SiteDetail()
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        qs = super(Sites, self).get_request_queryset(ar)
+        pv = ar.param_values
+
+        if pv.watcher:
+            sqs = rt.models.stars.Star.for_model('tickets.Site', user=pv.watcher)
+            stared_ticket_ids = sqs.values_list('owner_id')
+            qs = qs.filter(pk__in=stared_ticket_ids)
+
+        return qs
+
+    @dd.requestfield(_("New Tickets"))
+    def new_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new))
+
+    @dd.requestfield(_("Tickets To Talk"))
+    def talk_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk))
+
+    @dd.requestfield(_("Open Tickets"))
+    def open_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened))
+
+    @dd.requestfield(_("Started Tickets"))
+    def started_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started))
+
+    @dd.requestfield(_("Sleeping Tickets"))
+    def sleeping_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping))
+
+    @dd.requestfield(_("Ready Tickets"))
+    def ready_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready))
+
+    @dd.requestfield(_("Closed Tickets"))
+    def closed_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed))
+
+    @dd.requestfield(_("Cancelled Tickets"))
+    def cancelled_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled))
+
+    @dd.requestfield(_("Active Tickets"))
+    def active_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.yes))
+
+    @dd.requestfield(_("InActive Tickets"))
+    def inactive_tickets(self, obj, ar):
+        return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.no))
 
 
+
+class MySites(Sites):
+    label = _("My Sites")
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MySites, self).param_defaults(ar, **kw)
+        kw.update(watcher=ar.get_user())
+        return kw
+
+class MySitesDashboard(MySites):
+    label = _("Sites Overview")
+    column_names = """overview new_tickets talk_tickets open_tickets started_tickets sleeping_tickets ready_tickets closed_tickets cancelled_tickets active_tickets inactive_tickets """
+
+class AllSites(Sites):
+    required_roles = dd.login_required(TicketsStaff)
+
+# # List of sites that user X has stared?
 # class SitesByPartner(Sites):
 #     master_key = 'partner'
 #     column_names = "name remark *"
@@ -973,7 +1054,7 @@ class TicketsBySite(Tickets):
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        mi = ar.master_instance
+        # mi = ar.master_instance
         kw = super(TicketsBySite, self).param_defaults(ar, **kw)
         kw.update(show_active=dd.YesNo.yes)
         # kw.update(interesting_for=mi.partner)

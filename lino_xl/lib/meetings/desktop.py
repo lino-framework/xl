@@ -52,7 +52,7 @@ class MeetingDetail(dd.DetailLayout):
         main = "general #cal_tab more"
 
         general = dd.Panel("""
-        room workflow_buttons #name ref
+        room site workflow_buttons #name ref
         deploy.DeploymentsByMilestone
         """, label=_("General"))
 
@@ -85,7 +85,7 @@ class Meetings(dd.Table):
     ref room
     start_date
     """, window_size = (40, 10,))
-    column_names = "start_date name ref room workflow_buttons *"
+    column_names = "start_date name ref site room workflow_buttons *"
     # order_by = ['start_date']
     # order_by = 'line__name room__name start_date'.split()
     # order_by = ['name']
@@ -133,8 +133,9 @@ class Meetings(dd.Table):
             qs = qs.filter(state=pv.state)
 
         if pv.member:
-            pass
-            # qs = qs.filter(list__members__in=list(pv.member.list_memberships.all()))
+            sqs = rt.models.stars.Star.for_model('meetings.Meeting', user=pv.member)
+            stared_ticket_ids = sqs.values_list('owner_id')
+            qs = qs.filter(pk__in=stared_ticket_ids)
 
         if pv.start_date:
             # dd.logger.info("20160512 start_date is %r", pv.start_date)
@@ -153,7 +154,7 @@ class AllMeetings(Meetings):
                    # "weekdays_text:10 times_text:10"
 
 class MyMeetings(Meetings):
-    column_names = "start_date:8 overview room workflow_buttons *"
+    column_names = "start_date:8 overview site room workflow_buttons *"
     order_by = ['start_date']
 
     @classmethod
@@ -166,9 +167,8 @@ class MyMeetings(Meetings):
         kw = super(MyMeetings, self).param_defaults(ar, **kw)
         # kw.update(state=MeetingStates.active)
         kw.update(show_active=dd.YesNo.yes)
-        # kw.update(member=ar.get_user().get_partner_instance())
+        kw.update(member=ar.get_user())
         return kw
-
 
 
 class ActiveMeetings(Meetings):
@@ -179,9 +179,15 @@ class ActiveMeetings(Meetings):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(ActiveMeetings, self).param_defaults(ar, **kw)
-        kw.update(state=MeetingStates.active)
+        # kw.update(state=MeetingStates.active
+        kw.update(show_active=dd.YesNo.yes)
         # kw.update(can_enroll=dd.YesNo.yes)
         return kw
+
+class MeetingsBySite(ActiveMeetings):
+    label = _("Site Milestones")
+    column_names = 'overview *'
+    master_key = 'site'
 
 
 class InactiveMeetings(Meetings):
