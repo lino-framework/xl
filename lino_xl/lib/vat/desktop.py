@@ -38,6 +38,7 @@ class InvoiceDetail(dd.DetailLayout):
     """The detail layout used by :class:`Invoices`.
 
     """
+    
     main = "general ledger"
 
     totals = """

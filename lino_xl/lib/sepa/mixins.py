@@ -137,10 +137,10 @@ class Payable(PartnerRelated):
 
     def get_payable_sums_dict(self):
         """To be implemented by subclasses.  Expected to return a dict which
-        maps 5-tuples `(account, project, is_base, vat_class,
-        vat_regime)` to the amount. is_base, vat_class and vat_regime
-        are needed by :mod:`lino_xl.lib.declarations`.
-
+        maps 4-tuples `(account, project, vat_class, vat_regime)` to
+        the amount. `vat_class`
+        is a :class:`lino_xl.lib.vat.VatClasses`
+        and `vat_regime` a :class:`lino_xl.lib.vat.VatRegimes`.
         """
         raise NotImplemented()
 
@@ -156,14 +156,14 @@ class Payable(PartnerRelated):
         has_vat = dd.is_installed('vat')
         kw = dict()
         for k, amount in item_sums.items():
-            acc, prj, is_base, vat_class, vat_regime = k
+            acc, prj, vat_class, vat_regime = k
             if has_vat:
                 kw.update(
-                    is_base=is_base,
                     vat_class=vat_class, vat_regime=vat_regime)
+            if acc.needs_partner:
+                kw.update(partner=partner)
             yield self.create_movement(
-                None, acc, prj, self.journal.dc, amount,
-                partner=partner if acc.needs_partner else None)
+                None, acc, prj, self.journal.dc, amount, **kw)
             counter_sums.collect(prj, amount)
 
         acc = self.get_trade_type().get_partner_account()

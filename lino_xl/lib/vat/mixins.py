@@ -14,12 +14,17 @@ from __future__ import print_function
 from decimal import Decimal
 
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 from lino.utils import SumCollector
+from lino.utils.dates import AMONTH, ADAY
 from lino.api import dd, rt, _
 
 from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
+from lino_xl.lib.ledger.models import Voucher
+from lino_xl.lib.sepa.mixins import Payable
+from lino.mixins.periods import DatePeriod
 
 from .utils import ZERO, ONE
 from .choicelists import VatClasses, VatRegimes
@@ -277,19 +282,19 @@ class VatDocument(ProjectRelated, VatTotal):
                     msg = "No base account for {0} (tt {1}, total_base {2})"
                     raise Exception(msg.format(i, tt, i.total_base))
                 sums.collect(
-                    (b, self.project, True, i.vat_class, self.vat_regime),
+                    (b, self.project, i.vat_class, self.vat_regime),
                     i.total_base)
             if i.total_vat:
                 if not vr.vat_account:
                     raise Exception("No VAT account for %s." % vr)
                 sums.collect(
                     (vr.vat_account, self.project,
-                     False, i.vat_class, self.vat_regime),
+                     i.vat_class, self.vat_regime),
                     i.total_vat)
                 if vr.vat_returnable_account:
                     sums.collect(
                         (vr.vat_returnable_account, self.project,
-                         False, i.vat_class, self.vat_regime),
+                         i.vat_class, self.vat_regime),
                         - i.total_vat)
         return sums
 
@@ -471,4 +476,144 @@ class QtyVatItemBase(VatItemBase):
         if self.unit_price is not None and self.qty is not None:
             self.set_amount(ar, myround(self.unit_price * self.qty))
 
+
+class VatDeclaration(Voucher, DatePeriod, Payable):
+
+    """
+    A VAT declaration is when a company declares to the state
+    how much sales and purchases they've done during a given period.
+    It is a summary of ledger movements.
+    It is at the same time a ledger voucher.
+    """
+
+    class Meta:
+        abstract = True
+        
+    def full_clean(self, *args, **kw):
+        if self.voucher_date:
+            # declare the previous month by default 
+            if not self.start_date:
+                self.start_date = (self.voucher_date-AMONTH).replace(day=1)
+            if not self.end_date:
+                self.end_date = self.start_date + AMONTH - ADAY
+        if self.voucher_date <= self.end_date:
+           raise ValidationError(
+               "Voucher date must be after the covered period")
+        self.compute_fields()
+        super(VatDeclaration, self).full_clean(*args, **kw)
+
+    def get_payable_sums_dict(self):
+        """Implements
+        :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
+
+        """
+        mvt_dict = {}
+        for fld in self.fields_list.get_list_items():
+            fld.collect_wanted_movements(self, mvt_dict)
+        return mvt_dict
+
+    def get_wanted_movements(self):
+        # dd.logger.info("20151211 FinancialVoucher.get_wanted_movements()")
+        
+        # TODO: not yet implemented.
+        return []
+        amount = ZERO
+        movements_and_items = []
+        
+        for i in self.items.all():
+            if i.dc == self.journal.dc:
+                amount += i.amount
+            else:
+                amount -= i.amount
+            # kw = dict(seqno=i.seqno, partner=i.partner)
+            kw = dict(partner=i.get_partner())
+            kw.update(match=i.match or i.get_default_match())
+            b = self.create_movement(
+                i, i.account or self.item_account,
+                i.project, i.dc, i.amount, **kw)
+            movements_and_items.append((b, i))
+
+        return amount, movements_and_items
+    
+
+    def unused_register_voucher(self, *args, **kwargs):
+        super(VatDeclaration, self).register_voucher(*args, **kwargs)
+        self.compute_fields()
+        if False:
+            count = 0
+            for doc in rt.models.ledger.Voucher.objects.filter(
+                # journal=jnl,
+                # year=self.accounting_period.year,
+                # entry_date__month=month,
+                journal__must_declare=True,
+                entry_date__gte=self.start_date,
+                entry_date__lte=self.end_date,
+                declared_in__isnull=True
+            ):
+                #~ logger.info("20121208 a can_declare %s",doc)
+                count += 1
+                doc.declared_in = self
+                doc.save()
+                #~ declared_docs.append(doc)
+
+    def unused_deregister_voucher(self, *args, **kwargs):
+        super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
+        if False:
+            for doc in rt.models.ledger.Voucher.objects.filter(
+                    declared_in=self):
+                doc.declared_in = None
+                doc.save()
+            
+    # def before_state_change(self, ar, old, new):
+    #     if new.name == 'register':
+    #         self.compute_fields()
+    #     elif new.name == 'draft':
+    #     super(Declaration, self).before_state_change(ar, old, new)
+
+    #~ def register(self,ar):
+        #~ self.compute_fields()
+        #~ super(Declaration,self).register(ar)
+        #~
+    #~ def deregister(self,ar):
+        #~ for doc in ledger.Voucher.objects.filter(declared_in=self):
+            #~ doc.declared_in = None
+            #~ doc.save()
+        #~ super(Declaration,self).deregister(ar)
+
+        
+    def compute_fields(self):
+        sums = dict()
+        fields = self.fields_list.get_list_items()
+        for fld in fields:
+            if fld.editable:
+                sums[fld.name] = getattr(self, fld.name)
+            else:
+                sums[fld.name] = ZERO
+
+        qs = rt.models.ledger.Movement.objects.filter(
+            # voucher__journal=jnl,
+            # voucher__year=self.accounting_period.year,
+            voucher__journal__must_declare=True,
+            voucher__entry_date__gte=self.start_date,
+            voucher__entry_date__lte=self.end_date)
+            # voucher__declared_in__isnull=True)
+
+        for mvt in qs:
+            for fld in fields:
+                amount = fld.collect_movement(self, mvt)
+                if amount:
+                    sums[fld.name] += amount
+            
+        for fld in fields:
+            fld.collect_from_sums(self, sums)
+
+        #~ print 20121209, item_models
+        #~ for m in item_models:
+        #~ for m in rt.models_by_base(VatDocument):
+            #~ for item in m.objects.filter(voucher__declaration=self):
+                #~ logger.info("20121208 b document %s",doc)
+                #~ self.collect_item(sums,item)
+
+        for fld in fields:
+            setattr(self, fld.name, sums[fld.name])
 

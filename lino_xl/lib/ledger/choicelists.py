@@ -26,6 +26,7 @@ add('10', _("Sales"), 'sales')
 add('20', _("Purchases"), 'purchases')
 add('30', _("Wages"), 'wages')
 add('40', _("Financial"), 'financial')
+add('50', _("VAT"), 'vat')
 
 
 class FiscalYear(dd.Choice):

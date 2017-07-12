@@ -21,7 +21,7 @@ from lino.modlib.system.choicelists import PeriodEvents
 from lino.api import dd, rt, _
 
 from .utils import ZERO
-from .choicelists import VatClasses, VatRegimes
+from .choicelists import VatClasses, VatRegimes, VatColumns
 from .mixins import VatDocument, VatItemBase
 
 from lino_xl.lib.ledger.models import Voucher
@@ -188,11 +188,15 @@ dd.inject_field(
 dd.inject_field(
     'ledger.Movement', 'vat_class', VatClasses.field(blank=True))
 
-dd.inject_field(
-    'ledger.Movement', 'is_base', models.BooleanField(default=False))
+# dd.inject_field(
+#     'ledger.Movement', 'is_base', models.BooleanField(default=False))
 
 dd.inject_field(
     'contacts.Company',
     'vat_id',
     models.CharField(_("VAT id"), max_length=200, blank=True))
+
+dd.inject_field('accounts.Account',
+                'vat_column',
+                VatColumns.field(blank=True, null=True))
 

@@ -8,9 +8,6 @@ context where the site operator is subject to value-added tax
 (VAT). Site operators outside the European Union are likely to use 
 :mod:`lino_xl.lib.vatless` instead.
 
-This module is designed to work both *with* and *without*
-:mod:`lino_xl.lib.declarations` installed.
-
 Installing this plugin will automatically install
 :mod:`lino_xl.lib.countries` :mod:`lino_xl.lib.ledger`.
 
