@@ -35,7 +35,7 @@ from lino_xl.lib.stars.mixins import Starrable, get_favourite
 from lino_xl.lib.clocking.choicelists import ReportingTypes
 from lino.utils import join_elems
 
-from .choicelists import TicketEvents, TicketStates, LinkTypes
+from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities
 from .roles import Triager
 
 site_model = dd.plugins.tickets.site_model
@@ -53,9 +53,9 @@ end_user_model = dd.plugins.tickets.end_user_model
 class Prioritized(dd.Model):
     class Meta:
         abstract = True
-    priority = models.SmallIntegerField(_("Priority"), default=100)
+    #priority = models.SmallIntegerField(_("Priority"), default=100)
+    priority = Priorities.field(default=Priorities.as_callable('normal'))
 
-    
 class TimeInvestment(Commentable):
     class Meta:
         abstract = True
@@ -417,7 +417,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
     summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
-        blank=True,
+        blank=False,
         help_text=_("Short summary of the problem."))
     description = dd.RichTextField(_("Description"), blank=True)
     upgrade_notes = dd.RichTextField(
