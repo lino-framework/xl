@@ -3,9 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Database models for `lino_xl.lib.vat`.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -41,33 +38,6 @@ TradeTypes.purchases.update(
 
 @dd.python_2_unicode_compatible
 class VatRule(Sequenced, DatePeriod):
-    """A rule which defines how VAT is to be handled for a given invoice
-    item.
-
-    Example data see :mod:`lino_xl.lib.vat.fixtures.euvatrates`.
-
-    Database fields:
-
-    .. attribute:: country
-    .. attribute:: vat_class
-
-    .. attribute:: vat_regime
-
-        The regime for which this rule applies. Pointer to
-        :class:`VatRegimes <lino_xl.lib.vat.choicelists.VatRegimes>`.
-    
-    .. attribute:: rate
-    
-        The VAT rate to be applied. Note that a VAT rate of 20 percent is
-        stored as `0.20` (not `20`).
-
-    .. attribute:: can_edit
-
-        Whether the VAT amount can be modified by the user. This applies
-        only for documents with :attr:`VatTotal.auto_compute_totals` set
-        to `False`.
-
-    """
     class Meta:
         verbose_name = _("VAT rule")
         verbose_name_plural = _("VAT rules")
@@ -83,6 +53,8 @@ class VatRule(Sequenced, DatePeriod):
         verbose_name=_("VAT account"),
         related_name="vat_rules_by_account",
         blank=True, null=True)
+    vat_returnable = models.BooleanField(
+        _("VAT is returnable"), default=False)
     vat_returnable_account = dd.ForeignKey(
         'accounts.Account',
         related_name="vat_rules_by_returnable_account",
@@ -91,10 +63,6 @@ class VatRule(Sequenced, DatePeriod):
     @classmethod
     def get_vat_rule(cls, trade_type, vat_regime, vat_class, country,
                      date):
-        """Return the first VatRule object to be applied for the given
-        criteria.
-
-        """
         qs = cls.objects.order_by('seqno')
         qs = qs.filter(Q(country__isnull=True) | Q(country=country))
         if trade_type is not None:
@@ -132,27 +100,12 @@ class VatRule(Sequenced, DatePeriod):
 
 
 class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
-    """An invoice for which the user enters just the bare accounts and
-    amounts (not products, quantities, discounts).
-
-    An account invoice does not usually produce a printable
-    document. This model is typically used to store incoming purchase
-    invoices, but exceptions in both directions are possible: (1)
-    purchase invoices can be stored using `purchases.Invoice` if stock
-    management is important, or (2) outgoing sales invoice can have
-    been created using some external tool and are entered into Lino
-    just for the general ledger.
-
-    """
     class Meta:
         verbose_name = _("Invoice")
         verbose_name_plural = _("Invoices")
 
 
 class InvoiceItem(AccountVoucherItem, VatItemBase):
-    """An item of an account invoice.
-
-    """
     class Meta:
         verbose_name = _("Account invoice item")
         verbose_name_plural = _("Account invoice items")

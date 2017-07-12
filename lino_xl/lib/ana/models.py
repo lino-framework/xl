@@ -28,6 +28,7 @@ class Group(BabelDesignated, Referrable):
 class Groups(dd.Table):
     model = 'ana.Group'
     required_roles = dd.login_required(LedgerStaff)
+    stay_in_grid = True
     order_by = ['ref']
     column_names = 'ref designation *'
 
@@ -74,15 +75,16 @@ class Account(BabelDesignated, Sequenced, Referrable):
 class Accounts(dd.Table):
     model = 'ana.Account'
     required_roles = dd.login_required(LedgerStaff)
+    stay_in_grid = True
     order_by = ['ref']
     column_names = "ref designation group *"
     insert_layout = """
-    ref group
     designation
+    ref group
     """
     detail_layout = """
-    ref group id
-    designation
+    ref designation
+    group id
     ana.MovementsByAccount
     """
 

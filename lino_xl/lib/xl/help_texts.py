@@ -66,6 +66,7 @@ problems."""),
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
+    'lino_xl.lib.bevat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.blogs.models.Entry' : _("""A blog entry is a short article with a title, published on a given
 date and time by a given user."""),
     'lino_xl.lib.blogs.models.LatestEntries' : _("""Show the most recent blog entries."""),
@@ -456,11 +457,6 @@ calling get_confirm_veto to
 verify whether it is valid (e.g. whether there are enough free
 places)."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.declarations.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.declarations.models.Declaration' : _("""A VAT declaration is when a company declares to the state
-how much sales and purchases they've done during a given period.
-It is a summary of ledger movements.
-It is at the same time a ledger voucher."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
@@ -807,6 +803,7 @@ included to a detail window on partner."""),
 given User."""),
     'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
     'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
+    'lino_xl.lib.stars.models.Star.master' : _("""The starred object that caused this stared object"""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.tickets.roles.TicketsUser' : _("""A user who can create new tickets."""),
     'lino_xl.lib.tickets.roles.Searcher' : _("""A user who can see all tickets."""),
@@ -900,30 +897,12 @@ of VAT."""),
 automatically, i.e. the fields total_base,
 total_vat and total_incl are disabled.  This is
 set to True for lino_xl.lib.sales.models.SalesDocument."""),
-    'lino_xl.lib.vat.mixins.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
-    'lino_xl.lib.vat.mixins.VatDocument.partner' : _("""Mandatory field to be defined in another class."""),
-    'lino_xl.lib.vat.mixins.VatDocument.refresh_after_item_edit' : _("""The total fields of an invoice are currently not automatically
-updated each time an item is modified.  Users must click the
-Save or the Register button to see the invoices totals."""),
-    'lino_xl.lib.vat.mixins.VatDocument.vat_regime' : _("""The VAT regime to be used in this document.  A pointer to
-VatRegimes."""),
-    'lino_xl.lib.vat.mixins.VatItemBase' : _("""Model mixin for items of a VatTotal."""),
-    'lino_xl.lib.vat.mixins.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
-VatClasses."""),
     'lino_xl.lib.vat.mixins.QtyVatItemBase' : _("""Model mixin for items of a VatTotal, adds unit_price and
 qty."""),
-    'lino_xl.lib.vat.models.InvoiceItem' : _("""An item of an account invoice."""),
-    'lino_xl.lib.vat.models.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
-amounts (not products, quantities, discounts)."""),
-    'lino_xl.lib.vat.models.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
-item."""),
-    'lino_xl.lib.vat.models.VatRule.vat_regime' : _("""The regime for which this rule applies. Pointer to
-VatRegimes."""),
-    'lino_xl.lib.vat.models.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
-stored as 0.20 (not 20)."""),
-    'lino_xl.lib.vat.models.VatRule.can_edit' : _("""Whether the VAT amount can be modified by the user. This applies
-only for documents with VatTotal.auto_compute_totals set
-to False."""),
+    'lino_xl.lib.vat.mixins.VatDeclaration' : _("""A VAT declaration is when a company declares to the state
+how much sales and purchases they've done during a given period.
+It is a summary of ledger movements.
+It is at the same time a ledger voucher."""),
     'lino_xl.lib.vatless.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vatless.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
@@ -1350,4 +1329,30 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
+    'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
+item."""),
+    'lino_xl.lib.vat.VatRule.vat_regime' : _("""The regime for which this rule applies. Pointer to
+VatRegimes."""),
+    'lino_xl.lib.vat.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
+stored as 0.20 (not 20)."""),
+    'lino_xl.lib.vat.VatRule.can_edit' : _("""Whether the VAT amount can be modified by the user. This applies
+only for documents with VatTotal.auto_compute_totals set
+to False."""),
+    'lino_xl.lib.vat.VatRule.vat_account' : _("""The general account where VAT is to be booked."""),
+    'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is to be returned (i.e. not paid to the partner)."""),
+    'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
+field is empty, then VAT will be added to the base account.."""),
+    'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
+amounts (not products, quantities, discounts)."""),
+    'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
+    'lino_xl.lib.vat.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
+    'lino_xl.lib.vat.VatDocument.partner' : _("""Mandatory field to be defined in another class."""),
+    'lino_xl.lib.vat.VatDocument.refresh_after_item_edit' : _("""The total fields of an invoice are currently not automatically
+updated each time an item is modified.  Users must click the
+Save or the Register button to see the invoices totals."""),
+    'lino_xl.lib.vat.VatDocument.vat_regime' : _("""The VAT regime to be used in this document.  A pointer to
+VatRegimes."""),
+    'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatTotal."""),
+    'lino_xl.lib.vat.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
+VatClasses."""),
 }

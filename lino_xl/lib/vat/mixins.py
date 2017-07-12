@@ -200,34 +200,6 @@ class VatTotal(dd.Model):
 
 
 class VatDocument(ProjectRelated, VatTotal):
-    """Abstract base class for invoices, offers and other vouchers.
-
-    .. attribute:: partner
-
-       Mandatory field to be defined in another class.
-
-    .. attribute:: refresh_after_item_edit
-
-        The total fields of an invoice are currently not automatically
-        updated each time an item is modified.  Users must click the
-        Save or the Register button to see the invoices totals.
-
-        One idea is to have
-        :meth:`lino_xl.lib.vat.models.VatItemBase.after_ui_save`
-        insert a `refresh_all=True` (into the response to the PUT or
-        POST coming from Lino.GridPanel.on_afteredit).
-        
-        This has the disadvantage that the cell cursor moves to the
-        upper left corner after each cell edit.  We can see how this
-        feels by setting :attr:`refresh_after_item_edit` to `True`.
-
-    .. attribute:: vat_regime
-
-        The VAT regime to be used in this document.  A pointer to
-        :class:`VatRegimes`.
-
-    """
-
     auto_compute_totals = True
 
     refresh_after_item_edit = False
@@ -261,7 +233,7 @@ class VatDocument(ProjectRelated, VatTotal):
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                if not vr.vat_returnable_account:
+                if vr.vat_returnable:
                     vat += i.total_vat
         self.total_base = base
         self.total_vat = vat
@@ -276,8 +248,8 @@ class VatDocument(ProjectRelated, VatTotal):
         #     raise Exception("No VAT account for %s." % tt)
         for i in self.items.order_by('seqno'):
             vr = i.get_vat_rule(tt)
+            b = i.get_base_account(tt)
             if i.total_base:
-                b = i.get_base_account(tt)
                 if b is None:
                     msg = "No base account for {0} (tt {1}, total_base {2})"
                     raise Exception(msg.format(i, tt, i.total_base))
@@ -291,9 +263,10 @@ class VatDocument(ProjectRelated, VatTotal):
                     (vr.vat_account, self.project,
                      i.vat_class, self.vat_regime),
                     i.total_vat)
-                if vr.vat_returnable_account:
+                if vr.vat_returnable:
+                    acc = vr.vat_returnable_account or b
                     sums.collect(
-                        (vr.vat_returnable_account, self.project,
+                        (acc, self.project,
                          i.vat_class, self.vat_regime),
                         - i.total_vat)
         return sums
@@ -318,22 +291,6 @@ class VatDocument(ProjectRelated, VatTotal):
 
 
 class VatItemBase(VoucherItem, VatTotal):
-    """Model mixin for items of a :class:`VatTotal`.
-
-    Abstract Base class for
-    :class:`lino_xl.lib.ledger.models.InvoiceItem`, i.e. the lines of
-    invoices *without* unit prices and quantities.
-
-    Subclasses must define a field called "voucher" which must be a
-    ForeignKey with related_name="items" to the "owning document",
-    which in turn must be a subclass of :class:`VatDocument`).
-
-    .. attribute:: vat_class
-
-        The VAT class to be applied for this item. A pointer to
-        :class:`VatClasses`.
-
-    """
 
     class Meta:
         abstract = True
@@ -357,27 +314,6 @@ class VatItemBase(VoucherItem, VatTotal):
         raise NotImplementedError
 
     def get_vat_rule(self, tt):
-        """Return the `VatRule` which applies for this item.
-
-        `tt` is the trade type (which is the same for each item of a
-        voucher, that's why we expect the caller to provide it).
-
-        This basically calls the class method
-        :meth:`VatRule.get_vat_rule
-        <lino_xl.lib.vat.models.VatRule.get_vat_rule>` with
-        appropriate arguments.
-
-        When selling certain products ("automated digital services")
-        in the EU, you have to pay VAT in the buyer's country at that
-        country's VAT rate.  See e.g.  `How can I comply with VAT
-        obligations?
-        <https://ec.europa.eu/growth/tools-databases/dem/watify/selling-online/how-can-i-comply-vat-obligations>`_.
-        TODO: Add a new attribute `VatClass.buyers_country` or a
-        checkbox `Product.buyers_country` or some other way to specify
-        this.
-
-        """
-
         # tt = self.voucher.get_trade_type()
         if self.vat_class is None:
             self.vat_class = self.get_vat_class(tt)
@@ -412,8 +348,6 @@ class VatItemBase(VoucherItem, VatTotal):
             self.total_base_changed(ar)
 
     def reset_totals(self, ar):
-        """
-        """
         if not self.voucher.auto_compute_totals:
             total = Decimal()
             for item in self.voucher.items.exclude(id=self.id):
