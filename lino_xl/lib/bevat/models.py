@@ -39,10 +39,13 @@ class Declaration(VatDeclaration):
 #     # importing the country module will fill DeclarationFields
 #     import_module(dd.plugins.declarations.country_module)
 
-# dd.inject_field('ledger.Voucher',
-#                 'declared_in',
-#                 models.ForeignKey(Declaration,
-#                                   blank=True, null=True))
+from lino_xl.lib.vat.mixins import DECLARED_IN
+
+if DECLARED_IN:
+    dd.inject_field('ledger.Voucher',
+                    'declared_in',
+                    dd.ForeignKey(Declaration,
+                                  blank=True, null=True))
 
 # dd.inject_field('accounts.Account',
 #                 'declaration_field',

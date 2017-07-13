@@ -167,69 +167,85 @@ class DeclarationField(dd.Choice):
                         n, self))
             self.observed_fields.add(f)
         
-    # def __str__(self):
-    #     # return force_text(self.text, errors="replace")
-    #     # return self.text
-    #     return "[{}] {}".format(self.value, self.text)
-
-    def collect_from_movement(self, dcl, mvt):
-        return 0
-    
-    def collect_payable_sums(self, dcl, sums):
-        if self.is_payable:
-            vat_class = None
-            vat_regime = None
-            project = None
-            amount = getattr(dcl, self.name)
-            account = dcl.journal.account
-            k = (account, project, vat_class, vat_regime)
-            sums.collect(k, amount)
-    
-    def collect_from_sums(self, dcl, sums):
-        pass
-
     def get_model_field(self):
         return dd.PriceField(
             self.text, default=Decimal, editable=self.editable,
             help_text=self.help_text)
     
+    # def __str__(self):
+    #     # return force_text(self.text, errors="replace")
+    #     # return self.text
+    #     return "[{}] {}".format(self.value, self.text)
+
+    def collect_from_movement(self, dcl, mvt, field_values, payable_sums):
+        pass
+    
+    def collect_from_sums(self, dcl, sums, payable_sums):
+        pass
+
 class SumDeclarationField(DeclarationField):
     
-    def collect_from_sums(self, dcl, sums):
+    def collect_from_sums(self, dcl, field_values, payable_sums):
         tot = Decimal()
         for f in self.observed_fields:
-            tot += sums[f.name]
-        sums[self.name] = tot
+            v = field_values[f.name]
+            if f.dc == self.dc:
+                tot += v
+            else:
+                tot += v
+        field_values[self.name] = tot
         
+class WritableDeclarationField(DeclarationField):
+    editable = True
+    def collect_from_sums(self, dcl, field_values, payable_sums):
+        if self.is_payable:
+            amount = field_values[self.name]
+            if amount:
+                if self.dc == dcl.journal.dc:
+                    amount = - amount
+                k = (dcl.journal.account, None, None, None)
+                payable_sums.collect(k, amount)
+
 class MvtDeclarationField(DeclarationField):
     
-    def collect_from_movement(self, dcl, mvt):
+    def collect_from_movement(self, dcl, mvt, field_values, payable_sums):
         # if not mvt.account.declaration_field in self.observed_fields:
         #     return 0
         if self.vat_classes is not None:
             if not mvt.vat_class in self.vat_classes:
-                return 0
+                return
             if mvt.vat_class in self.exclude_vat_classes:
-                return 0
+                return
         if self.vat_columns is not None:
             if not mvt.account.vat_column in self.vat_columns:
-                return 0
+                return
             if mvt.account.vat_column in self.exclude_vat_columns:
-                return 0
+                return
         if self.vat_regimes is not None:
             if not mvt.vat_regime in self.vat_regimes:
-                return 0
+                return
             if mvt.vat_regime in self.exclude_vat_regimes:
-                return 0
+                return
         if mvt.dc == self.dc:
-            return mvt.amount
+            amount = mvt.amount
         elif self.both_dc:
-            return - mvt.amount
+            amount = -mvt.amount
         else:
-            return 0
-            
-class AccountDeclarationField(MvtDeclarationField):
-    pass
+            return
+        if not amount:
+            return
+        field_values[self.name] += amount
+        if self.is_payable:
+            if self.dc == dcl.journal.dc:
+                amount = - amount
+            k = (mvt.account, mvt.project, mvt.vat_class, mvt.vat_regime)
+            payable_sums.collect(k, amount)
+            # k = (dcl.journal.account, None, None, None)
+            # payable_sums.collect(k, amount)
+    
+
+# class AccountDeclarationField(MvtDeclarationField):
+#     pass
     # def __init__(self, value, dc, vat_columns, *args, **kwargs):
     #     # kwargs.update(fieldnames=value)
     #     kwargs.update(vat_columns=vat_columns)
@@ -237,19 +253,16 @@ class AccountDeclarationField(MvtDeclarationField):
     #         value, dc, *args, **kwargs)
 
 
-class WritableDeclarationField(DeclarationField):
-    editable = True
-
 
 class DeclarationFieldsBase(dd.ChoiceList):
     verbose_name_plural = _("Declaration fields")
     item_class = DeclarationField
     column_names = "value name text description *"
     
-    @classmethod    
-    def add_account_field(cls, *args, **kwargs):
-        cls.add_item_instance(
-            AccountDeclarationField(*args, **kwargs))
+    # @classmethod    
+    # def add_account_field(cls, *args, **kwargs):
+    #     cls.add_item_instance(
+    #         AccountDeclarationField(*args, **kwargs))
         
     @classmethod    
     def add_mvt_field(cls, *args, **kwargs):

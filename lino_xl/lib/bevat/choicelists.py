@@ -21,16 +21,16 @@ from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 class DeclarationFields(DeclarationFieldsBase):
     pass
 
-afld = DeclarationFields.add_account_field
+# afld = DeclarationFields.add_account_field
 sfld = DeclarationFields.add_sum_field
 mfld = DeclarationFields.add_mvt_field
 wfld = DeclarationFields.add_writable_field
 
 # (II) sales base 
-afld("00", DEBIT, '00', _("Sales 0%"))
-afld("01", DEBIT, '01', _("Sales 6%"))
-afld("02", DEBIT, '02', _("Sales 12%"))
-afld("03", DEBIT, '03', _("Sales 20%"))
+mfld("00", DEBIT, '00', _("Sales 0%"))
+mfld("01", DEBIT, '01', _("Sales 6%"))
+mfld("02", DEBIT, '02', _("Sales 12%"))
+mfld("03", DEBIT, '03', _("Sales 20%"))
 mfld("44", DEBIT, "00 01 02 03", _("Sales located inside EU"),
       vat_regimes="inside")
 mfld("45", DEBIT, "00 01 02 03",  _("Sales to co-contractors"),
@@ -44,9 +44,9 @@ mfld("49", CREDIT, "00 01 02 03", _("CN sales 49"))
 
 # (III) purchases base
 
-afld("81", CREDIT, '81', _("Ware"))
-afld("82", CREDIT, '82', _("Services"))
-afld("83", CREDIT, '83', _("Investments"))
+mfld("81", CREDIT, '81', _("Ware"))
+mfld("82", CREDIT, '82', _("Services"))
+mfld("83", CREDIT, '83', _("Investments"))
 
 mfld("84", DEBIT, "81 82 83", 
       _("CN purchases on operations in 86 and 88"),
@@ -64,15 +64,17 @@ mfld("88", CREDIT, "81 82 83", _("IC services"),
 # (IV) DUE TAXES
 
 mfld("54", CREDIT, '54', _("Due VAT for 01, 02 and 03"),
-     vat_regimes="!intracom !delayed !cocontractor")
+     vat_regimes="!intracom !delayed !cocontractor", is_payable=True)
 mfld("55", CREDIT, '54', _("Due VAT for 86 and 88"),
-     vat_regimes="intracom")
+     vat_regimes="intracom", is_payable=True)
 mfld("56", CREDIT, '54',
       _("Due VAT for 87 except those covered by 57"),
-     vat_regimes="cocontractor")
+     vat_regimes="cocontractor", is_payable=True)
 mfld("57", CREDIT, '54',
       _("Due VAT for 87 except those covered by 57"),
-      vat_regimes="delayed")
+      vat_regimes="delayed", is_payable=True)
+wfld("61", CREDIT, None, _("Miscellaneous corrections due"),
+     is_payable=True)
 
 sfld("XX", CREDIT, None, _("Total of due taxes"),
      "54 55 56 57")
@@ -80,14 +82,14 @@ sfld("XX", CREDIT, None, _("Total of due taxes"),
 # (V) DEDUCTIBLE TAXES
 # ...
 mfld("59", DEBIT, '59', _("Deductible VAT from purchase invoices"),
-     "81 82 83")
-wfld("62", DEBIT, None, _("Miscellaneous corrections"))
-mfld("64", DEBIT, '59', _("VAT on sales CN"))
+     "81 82 83", is_payable=True)
+wfld("62", DEBIT, None, _("Miscellaneous corrections deductible"),
+     is_payable=True)
+mfld("64", DEBIT, '59', _("VAT on sales CN"), is_payable=True)
 
 sfld("YY", DEBIT, None, _("Total of deductible taxes"),
      "59 62 64")
 
-sfld("71", CREDIT, None, _("Total of deductible taxes"), "XX YY",
-     is_payable=True)
+sfld("71", CREDIT, None, _("Total of deductible taxes"), "XX YY")
 
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

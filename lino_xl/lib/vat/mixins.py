@@ -29,6 +29,7 @@ from lino.mixins.periods import DatePeriod
 from .utils import ZERO, ONE
 from .choicelists import VatClasses, VatRegimes
 
+DECLARED_IN = False
 
 class PartnerDetailMixin(dd.DetailLayout):
     """Defines a panel :attr:`ledger`, to be added as a tab panel to your
@@ -438,23 +439,13 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
         if self.voucher_date <= self.end_date:
            raise ValidationError(
                "Voucher date must be after the covered period")
-        self.compute_fields()
+        # self.compute_fields()
         super(VatDeclaration, self).full_clean(*args, **kw)
 
-    def get_payable_sums_dict(self):
-        """Implements
-        :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
-
-        """
-        sums = SumCollector()
-        for fld in self.fields_list.get_list_items():
-            fld.collect_payable_sums(self, sums)
-        return sums
-
     def register_voucher(self, *args, **kwargs):
-        self.compute_fields()
+        # self.compute_fields()
         super(VatDeclaration, self).register_voucher(*args, **kwargs)
-        if False:
+        if DECLARED_IN:
             count = 0
             for doc in rt.models.ledger.Voucher.objects.filter(
                 # journal=jnl,
@@ -471,9 +462,9 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
                 doc.save()
                 #~ declared_docs.append(doc)
 
-    def unused_deregister_voucher(self, *args, **kwargs):
+    def deregister_voucher(self, *args, **kwargs):
         super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
-        if False:
+        if DECLARED_IN:
             for doc in rt.models.ledger.Voucher.objects.filter(
                     declared_in=self):
                 doc.declared_in = None
@@ -496,9 +487,17 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
         #~ super(Declaration,self).deregister(ar)
 
         
-    def compute_fields(self):
-        sums = dict()
+    def get_payable_sums_dict(self):
+        """Implements
+        :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
+
+        As a side effect this updates values of all fields of this
+        declaration.
+
+        """
         fields = self.fields_list.get_list_items()
+        payable_sums = SumCollector()
+        sums = dict()  # field sums
         for fld in fields:
             if fld.editable:
                 sums[fld.name] = getattr(self, fld.name)
@@ -517,12 +516,13 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
 
         for mvt in qs:
             for fld in fields:
-                amount = fld.collect_from_movement(self, mvt)
-                if amount:
-                    sums[fld.name] += amount
+                fld.collect_from_movement(
+                    self, mvt, sums, payable_sums)
             
         for fld in fields:
-            fld.collect_from_sums(self, sums)
+            fld.collect_from_sums(self, sums, payable_sums)
+
+        # dd.logger.info("20170713 value in 55 is %s", sums['F55'])
 
         #~ print 20121209, item_models
         #~ for m in item_models:
@@ -532,5 +532,10 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
                 #~ self.collect_item(sums,item)
 
         for fld in fields:
-            setattr(self, fld.name, sums[fld.name])
+            if not fld.editable:
+                setattr(self, fld.name, sums[fld.name])
 
+        # self.full_clean()
+        # self.save()
+
+        return payable_sums

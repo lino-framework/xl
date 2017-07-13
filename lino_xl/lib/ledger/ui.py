@@ -695,6 +695,11 @@ class Movements(dd.Table):
         elif pv.cleared == dd.YesNo.no:
             qs = qs.filter(cleared=False)
 
+        if pv.start_date:
+            qs = qs.filter(value_date__gte=pv.start_date)
+        if pv.end_date:
+            qs = qs.filter(value_date__lte=pv.end_date)
+            
         # if ar.param_values.partner:
         #     qs = qs.filter(partner=ar.param_values.partner)
         # if ar.param_values.paccount:
