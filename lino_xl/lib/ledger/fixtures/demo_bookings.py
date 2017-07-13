@@ -21,11 +21,10 @@ from decimal import Decimal
 
 from django.conf import settings
 from lino.utils import Cycler
+from lino.utils.dates import AMONTH
 from lino.api import dd, rt
 
 from lino_xl.lib.vat.mixins import myround
-
-vat = dd.resolve_app('vat')
 
 # from lino.core.requests import BaseRequest
 REQUEST = settings.SITE.login()  # BaseRequest()
@@ -48,6 +47,8 @@ def objects():
         raise Exception("No providers.")
 
     JOURNAL_P = Journal.objects.get(ref="PRC")
+    if dd.is_installed('ana'):
+        ANA_ACCS = Cycler(rt.models.ana.Account.objects.all())
     ACCOUNTS = Cycler(JOURNAL_P.get_allowed_accounts())
     AMOUNTS = Cycler([Decimal(x) for x in
                       "20 29.90 39.90 99.95 199.95 599.95 1599.99".split()])
@@ -84,19 +85,31 @@ def objects():
 
         for story in PURCHASE_STORIES:
             vd = date + delta(days=DATE_DELTAS.pop())
-            invoice = vat.VatAccountInvoice(
+            if dd.is_installed('ana'):
+                cl = rt.models.ana.AnaAccountInvoice
+            else:
+                cl = rt.models.vat.VatAccountInvoice
+                
+            invoice = cl(
                 journal=JOURNAL_P, partner=story[0], user=USERS.pop(),
                 voucher_date=vd,
                 payment_term=PAYMENT_TERMS.pop(),
                 entry_date=vd + delta(days=1))
             yield invoice
             for account, amount in story[1]:
+                kwargs = dict()
+                if dd.is_installed('ana'):
+                    if account.needs_ana:
+                        kwargs.update(ana_account=ANA_ACCS.pop())
+                    model = rt.models.ana.InvoiceItem
+                else:
+                    model = rt.models.vat.InvoiceItem
                 amount += amount + \
                     (amount * INFLATION_RATE * (date.year - START_YEAR))
-                item = vat.InvoiceItem(voucher=invoice,
-                                       account=account,
-                                       total_incl=myround(amount) +
-                                       AMOUNT_DELTAS.pop())
+                item = model(voucher=invoice,
+                             account=account,
+                             total_incl=myround(amount) +
+                             AMOUNT_DELTAS.pop(), **kwargs)
                 item.total_incl_changed(REQUEST)
                 item.before_ui_save(REQUEST)
                 #~ if item.total_incl:
@@ -108,4 +121,4 @@ def objects():
             invoice.register(REQUEST)
             invoice.save()
 
-        date += delta(months=1)
+        date += AMONTH

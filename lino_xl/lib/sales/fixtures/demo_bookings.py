@@ -1,20 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2012-2016 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
 
 
 """
@@ -51,17 +36,33 @@ REQUEST = settings.SITE.login()  # BaseRequest()
 
 def objects():
 
+    TradeTypes = rt.models.ledger.TradeTypes
+    VatRule = rt.models.vat.VatRule
+    VatRegimes = rt.models.vat.VatRegimes
+    
     Journal = rt.models.ledger.Journal
     Person = rt.models.contacts.Person
+    Partner = rt.models.contacts.Partner
     Product = rt.models.products.Product
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
 
     PRODUCTS = Cycler(Product.objects.order_by('id'))
     JOURNAL_S = Journal.objects.get(ref="SLS")
-    CUSTOMERS = Cycler(Person.objects.filter(
-        gender=dd.Genders.male).order_by('id'))
-    assert Person.objects.count() > 0
+
+
+    tt = TradeTypes.sales
+    regimes = set()
+    for reg in VatRegimes.get_list_items():
+        if VatRule.get_vat_rule(tt, reg, default=False):
+            regimes.add(reg)
+    qs = Partner.objects.filter(vat_regime__in=regimes).order_by('id')
+    assert qs.count() > 0
+    CUSTOMERS = Cycler(qs)
+    
+    # CUSTOMERS = Cycler(Person.objects.filter(
+    #     gender=dd.Genders.male).order_by('id'))
+    # assert Person.objects.count() > 0
     ITEMCOUNT = Cycler(1, 2, 3)
     QUANTITIES = Cycler(15, 10, 8, 4)
     # SALES_PER_MONTH = Cycler(2, 1, 3, 2, 0)

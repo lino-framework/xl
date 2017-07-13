@@ -103,7 +103,7 @@ class AccountInvoice(BankAccount, Payable, Voucher, Matching, ProjectRelated):
                         "No base account for %s (amount is %r)" % (
                             i, i.amount))
                 sums.collect(
-                    (b, i.project or self.project, True, None, None), i.amount)
+                    (b, i.project or self.project, None, None), i.amount)
         return sums
 
     def full_clean(self, *args, **kw):

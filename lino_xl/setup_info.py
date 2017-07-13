@@ -81,6 +81,8 @@ lino_xl
 lino_xl.lib
 lino_xl.lib.addresses
 lino_xl.lib.addresses.fixtures
+lino_xl.lib.ana
+lino_xl.lib.ana.fixtures
 lino_xl.lib.appypod
 lino_xl.lib.beid
 lino_xl.lib.blogs
@@ -89,8 +91,8 @@ lino_xl.lib.github
 lino_xl.lib.groups
 lino_xl.lib.groups.fixtures
 lino_xl.lib.teams
-lino_xl.lib.declarations
-lino_xl.lib.declarations.fixtures
+lino_xl.lib.bevat
+lino_xl.lib.bevat.fixtures
 lino_xl.lib.cal
 lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management

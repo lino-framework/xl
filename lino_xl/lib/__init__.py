@@ -100,13 +100,14 @@ Accounting stuff
     sales
     ledger
     finan
-    vat
-    vatless
     finan
     tim2lino
     sepa
     invoicing
-    declarations
+    vat
+    vatless
+    bevat
+    ana
 
 Differentiator packages
 =======================

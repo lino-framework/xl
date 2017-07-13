@@ -22,13 +22,14 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT
 from lino_xl.lib.ledger.accounts import *
+from lino.utils import Cycler
 
-accounts = dd.resolve_app('accounts')
+#accounts = dd.resolve_app('accounts')
 vat = dd.resolve_app('vat')
 sales = dd.resolve_app('sales')
 ledger = dd.resolve_app('ledger')
 finan = dd.resolve_app('finan')
-declarations = dd.resolve_app('declarations')
+bevat = dd.resolve_app('bevat')
 #~ partners = dd.resolve_app('partners')
 
 
@@ -44,18 +45,18 @@ def objects():
         if et is None:
             et = en
         global current_group
-        current_group = accounts.Group(
+        current_group = rt.models.accounts.Group(
             ref=ref,
-            account_type=accounts.AccountTypes.get_by_name(type),
+            account_type=rt.models.accounts.AccountTypes.get_by_name(type),
             **dd.babel_values('name', de=de, fr=fr, en=en, et=et))
         return current_group
 
     def Account(ref, type, fr, de, en, et, **kw):
         kw.update(dd.babel_values('name', de=de, fr=fr, en=en, et=et))
-        return accounts.Account(
+        return rt.models.accounts.Account(
             group=current_group,
             ref=ref,
-            type=accounts.AccountTypes.get_by_name(type),
+            type=rt.models.accounts.AccountTypes.get_by_name(type),
             **kw)
 
     yield Group('10', 'capital', "Capital", "Kapital", "Capital", "Kapitaal")
@@ -120,18 +121,30 @@ def objects():
                   "VAT to declare", "Käibemaks deklareerimata")
 
     yield Group('6', 'expenses', u"Charges", u"Aufwendungen", "Expenses", "Kulud")
+
+    kwargs = dict(purchases_allowed=True)
+    
+    if dd.is_installed('ana'):
+        kwargs.update(needs_ana=True)
+        ANA_ACCS = Cycler(rt.models.ana.Account.objects.all())
+        
+    if dd.is_installed('ana'):
+        kwargs.update(ana_account=ANA_ACCS.pop())
+        
     yield Account(PURCHASE_OF_GOODS, 'expenses',
                   "Achat de marchandise",
                   "Wareneinkäufe",
                   "Purchase of goods",
                   "Varade soetamine",
-                  purchases_allowed=True)
+                  **kwargs)
+    if dd.is_installed('ana'):
+        kwargs.update(ana_account=ANA_ACCS.pop())
     yield Account(PURCHASE_OF_SERVICES, 'expenses',
                   "Services et biens divers",
                   "Dienstleistungen",
                   "Purchase of services",
                   "Teenuste soetamine",
-                  purchases_allowed=True)
+                  **kwargs)
     yield Account(PURCHASE_OF_INVESTMENTS, 'expenses',
                   "Investissements", "Anlagen",
                   "Purchase of investments", "Investeeringud",
@@ -171,7 +184,10 @@ def objects():
     kw.update(trade_type='purchases', ref="PRC")
     kw.update(dd.str2kw('name', _("Purchase invoices")))
     kw.update(dc=CREDIT)
-    yield vat.VatAccountInvoice.create_journal(**kw)
+    if dd.is_installed('ana'):
+        yield rt.models.ana.AnaAccountInvoice.create_journal(**kw)
+    else:
+        yield vat.VatAccountInvoice.create_journal(**kw)
 
     if finan:
         kw.update(journal_group=JournalGroups.financial)
@@ -213,12 +229,12 @@ def objects():
         kw.update(dc=DEBIT)
         yield finan.JournalEntry.create_journal(**kw)
 
-    if declarations:
-        kw = dict(journal_group=JournalGroups.financial)
+    if bevat:
+        kw = dict(journal_group=JournalGroups.vat)
         kw.update(dd.str2kw('name', _("VAT declarations")))
         kw.update(must_declare=False)
         kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=DEBIT)
-        yield declarations.Declaration.create_journal(**kw)
+        yield bevat.Declaration.create_journal(**kw)
 
     payments = []
     if finan:

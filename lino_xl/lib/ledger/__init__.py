@@ -54,8 +54,8 @@ class Plugin(ad.Plugin):
             mg = site.plugins.accounts
             m = m.add_menu(mg.app_label, mg.verbose_name)
 
-        Journal = site.modules.ledger.Journal
-        JournalGroups = site.modules.ledger.JournalGroups
+        Journal = site.models.ledger.Journal
+        JournalGroups = site.models.ledger.JournalGroups
         for grp in JournalGroups.objects():
             subm = m.add_menu(grp.name, grp.text)
             for jnl in Journal.objects.filter(
