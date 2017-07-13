@@ -36,6 +36,13 @@ TradeTypes.purchases.update(
     partner_account_field_label=_("Suppliers account"))
 
 
+TradeTypes.taxes.update(
+    # base_account_field_name='taxes_account',
+    # base_account_field_label=_("Taxes Base account"),
+    partner_account_field_name='tax_offices_account',
+    partner_account_field_label=_("Tax offices account"))
+
+
 @dd.python_2_unicode_compatible
 class VatRule(Sequenced, DatePeriod):
     class Meta:

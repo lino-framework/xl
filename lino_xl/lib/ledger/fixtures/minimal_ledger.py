@@ -81,6 +81,26 @@ def objects():
     if vat:
         settings.SITE.site_config.update(suppliers_account=obj)
 
+    obj = Account(VATDCL_ACCOUNT, 'liabilities',
+                  "TVA déclarée",
+                  "Deklarierte MWSt.",
+                  "Declared VAT", "Deklareeritud käibemaks ",
+                  clearable=True)
+    yield obj
+    # settings.SITE.site_config.update(vat_offices_account=obj)
+
+        
+    obj = Account(TAX_OFFICES_ACCOUNT, 'liabilities',
+                  "Bureaux fiscaux",
+                  "Steuerämter",
+                  "Tax offices", "Maksuametid",
+                  clearable=True, needs_partner=True)
+    yield obj
+    if vat:
+        settings.SITE.site_config.update(tax_offices_account=obj)
+
+        
+
     yield Group('45', 'assets', "TVA à payer",
                 "Geschuldete MWSt", "VAT to pay", "Käibemaksukonto")
     yield Account(VAT_DUE_ACCOUNT, 'incomes',
@@ -113,12 +133,6 @@ def objects():
                   "Zahlungsaufträge Bestbank",
                   "Payment Orders Bestbank",
                   "Maksekorraldused Parimpank", clearable=True)
-
-    # TODO: use another account type than bank_accounts:
-    yield Account(VATDCL_ACCOUNT, 'bank_accounts',
-                  "TVA à declarer",
-                  "MWSt zu deklarieren",
-                  "VAT to declare", "Käibemaks deklareerimata")
 
     yield Group('6', 'expenses', u"Charges", u"Aufwendungen", "Expenses", "Kulud")
 
@@ -231,6 +245,7 @@ def objects():
 
     if bevat:
         kw = dict(journal_group=JournalGroups.vat)
+        kw.update(trade_type='taxes')
         kw.update(dd.str2kw('name', _("VAT declarations")))
         kw.update(must_declare=False)
         kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=DEBIT)

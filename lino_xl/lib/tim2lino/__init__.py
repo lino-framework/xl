@@ -75,6 +75,7 @@ class Plugin(ad.Plugin):
     siteconfig_accounts = dict(
         clients_account='400000',
         suppliers_account='440000',
+        tax_offices_account='450000',
         wages_account='460000',
         sales_account='704000',
         # sales_vat_account='411000',  # vat paid 411000, 472100

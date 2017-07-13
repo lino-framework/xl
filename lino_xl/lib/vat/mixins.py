@@ -413,7 +413,7 @@ class QtyVatItemBase(VatItemBase):
             self.set_amount(ar, myround(self.unit_price * self.qty))
 
 
-class VatDeclaration(Voucher, DatePeriod, Payable):
+class VatDeclaration(Payable, Voucher, DatePeriod):
 
     """
     A VAT declaration is when a company declares to the state
@@ -425,6 +425,9 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
     class Meta:
         abstract = True
         
+    def get_match(self):
+        return self.get_default_match()  # no manual match field
+
     def full_clean(self, *args, **kw):
         if self.voucher_date:
             # declare the previous month by default 
@@ -443,38 +446,14 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
         :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
 
         """
-        mvt_dict = {}
+        sums = SumCollector()
         for fld in self.fields_list.get_list_items():
-            fld.collect_wanted_movements(self, mvt_dict)
-        return mvt_dict
+            fld.collect_payable_sums(self, sums)
+        return sums
 
-    def get_wanted_movements(self):
-        # dd.logger.info("20151211 FinancialVoucher.get_wanted_movements()")
-        
-        # TODO: not yet implemented.
-        return []
-        amount = ZERO
-        movements_and_items = []
-        
-        for i in self.items.all():
-            if i.dc == self.journal.dc:
-                amount += i.amount
-            else:
-                amount -= i.amount
-            # kw = dict(seqno=i.seqno, partner=i.partner)
-            kw = dict(partner=i.get_partner())
-            kw.update(match=i.match or i.get_default_match())
-            b = self.create_movement(
-                i, i.account or self.item_account,
-                i.project, i.dc, i.amount, **kw)
-            movements_and_items.append((b, i))
-
-        return amount, movements_and_items
-    
-
-    def unused_register_voucher(self, *args, **kwargs):
-        super(VatDeclaration, self).register_voucher(*args, **kwargs)
+    def register_voucher(self, *args, **kwargs):
         self.compute_fields()
+        super(VatDeclaration, self).register_voucher(*args, **kwargs)
         if False:
             count = 0
             for doc in rt.models.ledger.Voucher.objects.filter(
@@ -534,9 +513,11 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
             voucher__entry_date__lte=self.end_date)
             # voucher__declared_in__isnull=True)
 
+        # print(20170713, qs)
+
         for mvt in qs:
             for fld in fields:
-                amount = fld.collect_movement(self, mvt)
+                amount = fld.collect_from_movement(self, mvt)
                 if amount:
                     sums[fld.name] += amount
             

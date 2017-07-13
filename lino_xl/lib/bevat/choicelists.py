@@ -63,12 +63,13 @@ mfld("88", CREDIT, "81 82 83", _("IC services"),
 
 # (IV) DUE TAXES
 
-mfld("54", CREDIT, '54', _("Due VAT for 01, 02 and 03"))
+mfld("54", CREDIT, '54', _("Due VAT for 01, 02 and 03"),
+     vat_regimes="!intracom !delayed !cocontractor")
 mfld("55", CREDIT, '54', _("Due VAT for 86 and 88"),
      vat_regimes="intracom")
 mfld("56", CREDIT, '54',
       _("Due VAT for 87 except those covered by 57"),
-     vat_regimes="!intracom")
+     vat_regimes="cocontractor")
 mfld("57", CREDIT, '54',
       _("Due VAT for 87 except those covered by 57"),
       vat_regimes="delayed")
@@ -86,6 +87,7 @@ mfld("64", DEBIT, '59', _("VAT on sales CN"))
 sfld("YY", DEBIT, None, _("Total of deductible taxes"),
      "59 62 64")
 
-sfld("71", CREDIT, None, _("Total of deductible taxes"), "XX YY")
+sfld("71", CREDIT, None, _("Total of deductible taxes"), "XX YY",
+     is_payable=True)
 
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

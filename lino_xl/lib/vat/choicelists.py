@@ -12,27 +12,13 @@ from __future__ import print_function
 
 from decimal import Decimal
 from lino.api import dd, _
+from lino.utils.xmlgen.html import E
 from lino_xl.lib.ledger.roles import LedgerStaff
+
+from lino_xl.lib.accounts.utils import DCLABELS
 
 
 class VatClasses(dd.ChoiceList):
-    """
-    A VAT class is a direct or indirect property of a trade object
-    (e.g. a Product) which determines the VAT *rate* to be used.  It
-    does not contain the actual rate because this still varies
-    depending on your country, the time and type of the operation, and
-    possibly other factors.
-
-    Default classes are:
-
-    .. attribute:: exempt
-
-    .. attribute:: reduced
-
-    .. attribute:: normal
-
-
-    """
     verbose_name = _("VAT Class")
     verbose_name_plural = _("VAT Classes")
     required_roles = dd.login_required(LedgerStaff)
@@ -47,6 +33,7 @@ class VatColumns(dd.ChoiceList):
     verbose_name = _("VAT column")
     verbose_name_plural = _("VAT columns")
     required_roles = dd.login_required(LedgerStaff)
+    show_values = True
     
 add = VatColumns.add_item
 add('00', _("Sales basis 0"))
@@ -62,18 +49,11 @@ add('83', _("Purchase of investments"))
 
 
 class VatRegime(dd.Choice):
-    "Base class for choices of :class:`VatRegimes`."
 
     item_vat = True
-    "Whether unit prices are VAT included or not."
 
 
 class VatRegimes(dd.ChoiceList):
-    """
-    The VAT regime is a classification of the way how VAT is being
-    handled, e.g. whether and how it is to be paid.
-
-    """
     verbose_name = _("VAT regime")
     verbose_name_plural = _("VAT regimes")
     item_class = VatRegime
@@ -106,13 +86,14 @@ class DeclarationField(dd.Choice):
     exclude_vat_classes = None
     vat_columns = None
     exclude_vat_columns = None
+    is_payable = False
     
     def __init__(self, value, dc,
                  vat_columns=None,
                  # is_base,
                  text=None,
                  fieldnames='',
-                 both_dc=False,
+                 both_dc=True,
                  vat_regimes=None, vat_classes=None,
                  **kwargs):
         name = "F" + value
@@ -126,7 +107,7 @@ class DeclarationField(dd.Choice):
         self.dc = dc
         self.both_dc = both_dc
 
-        if vat_regimes is not None:
+        if vat_regimes:
             self.vat_regimes = set()
             self.exclude_vat_regimes = set()
             for n in vat_regimes.split():
@@ -142,7 +123,7 @@ class DeclarationField(dd.Choice):
                             v, value))
                 s.add(v)
             
-        if vat_classes is not None:
+        if vat_classes:
             self.vat_classes = set()
             self.exclude_vat_classes = set()
             for n in vat_classes.split():
@@ -158,7 +139,7 @@ class DeclarationField(dd.Choice):
                             v, value))
                 s.add(v)
                 
-        if vat_columns is not None:
+        if vat_columns:
             self.vat_columns = set()
             self.exclude_vat_columns = set()
             for n in vat_columns.split():
@@ -191,11 +172,18 @@ class DeclarationField(dd.Choice):
     #     # return self.text
     #     return "[{}] {}".format(self.value, self.text)
 
-    def collect_movement(self, dcl, mvt):
+    def collect_from_movement(self, dcl, mvt):
         return 0
     
-    def collect_wanted_movements(self, dcl, mvt_dict):
-        pass
+    def collect_payable_sums(self, dcl, sums):
+        if self.is_payable:
+            vat_class = None
+            vat_regime = None
+            project = None
+            amount = getattr(dcl, self.name)
+            account = dcl.journal.account
+            k = (account, project, vat_class, vat_regime)
+            sums.collect(k, amount)
     
     def collect_from_sums(self, dcl, sums):
         pass
@@ -215,7 +203,7 @@ class SumDeclarationField(DeclarationField):
         
 class MvtDeclarationField(DeclarationField):
     
-    def collect_movement(self, dcl, mvt):
+    def collect_from_movement(self, dcl, mvt):
         # if not mvt.account.declaration_field in self.observed_fields:
         #     return 0
         if self.vat_classes is not None:
@@ -233,19 +221,20 @@ class MvtDeclarationField(DeclarationField):
                 return 0
             if mvt.vat_regime in self.exclude_vat_regimes:
                 return 0
-        if mvt.dc is self.dc:
+        if mvt.dc == self.dc:
             return mvt.amount
         elif self.both_dc:
-            return mvt.amount
+            return - mvt.amount
         else:
             return 0
             
 class AccountDeclarationField(MvtDeclarationField):
-    
-    def __init__(self, value, *args, **kwargs):
-        kwargs.update(fieldnames=value)
-        super(AccountDeclarationField, self).__init__(
-            value, *args, **kwargs)
+    pass
+    # def __init__(self, value, dc, vat_columns, *args, **kwargs):
+    #     # kwargs.update(fieldnames=value)
+    #     kwargs.update(vat_columns=vat_columns)
+    #     super(AccountDeclarationField, self).__init__(
+    #         value, dc, *args, **kwargs)
 
 
 class WritableDeclarationField(DeclarationField):
@@ -253,8 +242,9 @@ class WritableDeclarationField(DeclarationField):
 
 
 class DeclarationFieldsBase(dd.ChoiceList):
-
+    verbose_name_plural = _("Declaration fields")
     item_class = DeclarationField
+    column_names = "value name text description *"
     
     @classmethod    
     def add_account_field(cls, *args, **kwargs):
@@ -276,4 +266,40 @@ class DeclarationFieldsBase(dd.ChoiceList):
     def add_writable_field(cls, *args, **kwargs):
         cls.add_item_instance(
             WritableDeclarationField(*args, **kwargs))
+        
+
+    @dd.displayfield(_("Description"))
+    def description(cls, fld, ar):
+        if ar is None:
+            return ''
+        elems = [fld.help_text, E.br()]
+        def x(label, lst, xlst):
+            if lst is None:
+                return
+            spec = ' '.join([i.name or i.value for i in lst])
+            if xlst is not None:
+                spec += ' ' + ' '.join([
+                    "!"+(i.name or i.value) for i in xlst])
+            spec = spec.strip()
+            if spec:
+                elems.extend([label, " ", spec, E.br()])
+
+        x(_("columns"), fld.vat_columns, fld.exclude_vat_columns)
+        x(_("regimes"), fld.vat_regimes, fld.exclude_vat_regimes)
+        x(_("classes"), fld.vat_classes, fld.exclude_vat_classes)
+
+
+        elems += [
+            fld.__class__.__name__, ' ',
+            DCLABELS[fld.dc], 
+            "" if fld.both_dc else " only",
+            E.br()]
+
+        if fld.observed_fields:
+            elems += [
+                _("Sum of"), ' ',
+                ' '.join([i.name for i in fld.observed_fields]),
+                E.br()]
+
+        return E.div(*elems)
 
