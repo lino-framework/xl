@@ -61,8 +61,8 @@ class VatRule(Sequenced, DatePeriod):
         verbose_name=_("VAT returnable account"), blank=True, null=True)
 
     @classmethod
-    def get_vat_rule(cls, trade_type, vat_regime, vat_class, country,
-                     date):
+    def get_vat_rule(cls, trade_type, vat_regime, vat_class=None,
+                     country=None, date=None, default=models.NOT_PROVIDED):
         qs = cls.objects.order_by('seqno')
         qs = qs.filter(Q(country__isnull=True) | Q(country=country))
         if trade_type is not None:
@@ -74,20 +74,23 @@ class VatRule(Sequenced, DatePeriod):
             qs = qs.filter(
                 # Q(vat_regime='') | Q(vat_regime=vat_regime))
                 Q(vat_regime__in=('', vat_regime)))
-        qs = PeriodEvents.active.add_filter(qs, date)
+        if date is not None:
+            qs = PeriodEvents.active.add_filter(qs, date)
         if qs.count() > 0:
             return qs[0]
-        # rt.show(VatRules)
-        msg = _("Found {num} VAT rules for %{context}!)").format(
-            num=qs.count(), context=dict(
-                vat_regime=vat_regime, vat_class=vat_class,
-                country=country.isocode, date=dd.fds(date)))
-        if False:
-            msg += " (SQL query was {0})".format(qs.query)
-            dd.logger.info(msg)
-        else:
-            raise Warning(msg)
-        return None
+        if default is models.NOT_PROVIDED:
+            # rt.show(VatRules)
+            msg = _("No VAT rule for %{context}!)").format(
+                context=dict(
+                    vat_regime=vat_regime, vat_class=vat_class,
+                    trade_type=trade_type,
+                    country=country, date=dd.fds(date)))
+            if False:
+                msg += " (SQL query was {0})".format(qs.query)
+                dd.logger.info(msg)
+            else:
+                raise Warning(msg)
+        return default
 
     def __str__(self):
         kw = dict(

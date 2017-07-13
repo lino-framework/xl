@@ -233,7 +233,7 @@ class VatDocument(ProjectRelated, VatTotal):
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                if vr.vat_returnable:
+                if not vr.vat_returnable:
                     vat += i.total_vat
         self.total_base = base
         self.total_vat = vat
@@ -259,16 +259,18 @@ class VatDocument(ProjectRelated, VatTotal):
             if i.total_vat:
                 if not vr.vat_account:
                     raise Exception("No VAT account for %s." % vr)
-                sums.collect(
-                    (vr.vat_account, self.project,
-                     i.vat_class, self.vat_regime),
-                    i.total_vat)
+                vat_amount = i.total_vat
                 if vr.vat_returnable:
                     acc = vr.vat_returnable_account or b
                     sums.collect(
                         (acc, self.project,
                          i.vat_class, self.vat_regime),
-                        - i.total_vat)
+                        vat_amount)
+                    vat_amount = - vat_amount
+                sums.collect(
+                    (vr.vat_account, self.project,
+                     i.vat_class, self.vat_regime),
+                    vat_amount)
         return sums
 
     def fill_defaults(self):

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -19,6 +19,7 @@ from lino.api import rt
 Company = Instantiator('contacts.Company', 'name url').build
 Account = Instantiator('sepa.Account', 'partner bic iban remark').build
 
+from lino_xl.lib.vat.choicelists import VatRegimes
 
 class Adder(object):
     def __init__(self):
@@ -28,6 +29,10 @@ class Adder(object):
 
     def add_company(self, name, url, **kw):
         obj = Company(name=name, url=url, **kw)
+        if obj.country.isocode == 'BE':
+            obj.vat_regime = VatRegimes.subject
+        else:
+            obj.vat_regime = VatRegimes.intracom
         self.current_partner = obj
         self.primary = True
         return obj
