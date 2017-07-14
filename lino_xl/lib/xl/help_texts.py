@@ -855,16 +855,6 @@ given topic."""),
 resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
 resolve it at startup into an item of VatClasses."""),
-    'lino_xl.lib.vat.choicelists.VatClasses' : _("""A VAT class is a direct or indirect property of a trade object
-(e.g. a Product) which determines the VAT rate to be used.  It
-does not contain the actual rate because this still varies
-depending on your country, the time and type of the operation, and
-possibly other factors."""),
-    'lino_xl.lib.vat.choicelists.VatRegime' : _("""Base class for choices of VatRegimes."""),
-    'lino_xl.lib.vat.choicelists.VatRegime.item_vat' : _("""Whether unit prices are VAT included or not."""),
-    'lino_xl.lib.vat.choicelists.VatRegimes' : _("""The VAT regime is a classification of the way how VAT is being
-handled, e.g. whether and how it is to be paid."""),
-    'lino_xl.lib.vat.choicelists.VatRegimes.item_class' : _("""alias of VatRegime"""),
     'lino_xl.lib.vat.desktop.VatRules' : _("""The table of all lino_xl.lib.vat.models.VatRule objects."""),
     'lino_xl.lib.vat.desktop.VatRules.model' : _("""alias of VatRule"""),
     'lino_xl.lib.vat.desktop.InvoiceDetail' : _("""The detail layout used by Invoices."""),
@@ -1331,6 +1321,7 @@ confirmation, documentation,..)"""),
 Noi uses courses.Course."""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
+    'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),
     'lino_xl.lib.vat.VatRule.vat_regime' : _("""The regime for which this rule applies. Pointer to
 VatRegimes."""),
     'lino_xl.lib.vat.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
@@ -1339,9 +1330,12 @@ stored as 0.20 (not 20)."""),
 only for documents with VatTotal.auto_compute_totals set
 to False."""),
     'lino_xl.lib.vat.VatRule.vat_account' : _("""The general account where VAT is to be booked."""),
-    'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is to be returned (i.e. not paid to the partner)."""),
+    'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is "returnable" (i.e. not to be paid to or by the
+partner). Returnable VAT, unlike normal VAT, does not increase
+the total amount of the voucher and causes an additional
+movement into the vat_returnable_account."""),
     'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
-field is empty, then VAT will be added to the base account.."""),
+field is empty, then VAT will be added to the base account."""),
     'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
 amounts (not products, quantities, discounts)."""),
     'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
@@ -1355,4 +1349,13 @@ VatRegimes."""),
     'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatTotal."""),
     'lino_xl.lib.vat.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
 VatClasses."""),
+    'lino_xl.lib.vat.VatClasses' : _("""The global list of VAT classes."""),
+    'lino_xl.lib.vat.VatColumns' : _("""The global list of VAT columns."""),
+    'lino_xl.lib.vat.VatRegime' : _("""Base class for choices of VatRegimes."""),
+    'lino_xl.lib.vat.VatRegime.item_vat' : _("""Whether unit prices are VAT included or not."""),
+    'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes. Each item is an instance of
+VatRegime."""),
+    'lino_xl.lib.vat.DeclarationField' : _("""Base class for all fields of VAT declarations."""),
+    'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of other declaration
+fields to be observed by this field."""),
 }

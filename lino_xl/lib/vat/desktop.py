@@ -15,7 +15,7 @@ from lino.utils.xmlgen.html import E
 
 from .mixins import VatDocument
 
-from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
+from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 
@@ -95,6 +95,8 @@ class InvoicesByJournal(Invoices, ByJournal):
     voucher_date total_incl
     """
 
+class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
+    label = _("Purchase journal")
 
 VoucherTypes.add_item(VatAccountInvoice, InvoicesByJournal)
 

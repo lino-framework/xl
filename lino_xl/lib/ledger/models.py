@@ -348,6 +348,19 @@ class Voucher(UserAuthored, mixins.Registrable):
         """
         return dd.plugins.ledger.currency_symbol
 
+    @classmethod
+    def get_parameter_fields(cls, **fields):
+        fields.setdefault(
+            'accounting_period', dd.ForeignKey(
+                'ledger.AccountingPeriod', blank=True, null=True))
+        return super(Voucher, cls).get_parameter_fields(**fields)
+
+    @classmethod
+    def get_simple_parameters(cls):
+        s = super(Voucher, cls).get_simple_parameters()
+        s.add('accounting_period')
+        return s
+
     @dd.displayfield(_("No."))
     def number_with_year(self, ar):
         return "{0}/{1}".format(self.number, self.accounting_period.year)
@@ -415,7 +428,9 @@ class Voucher(UserAuthored, mixins.Registrable):
         return Journal.objects.filter(voucher_type=vt).order_by('seqno')
 
     @dd.chooser()
-    def accounting_period_choices(cls, entry_date):
+    def unused_accounting_period_choices(cls, entry_date):
+        # deactivated because it also limits the choices of the
+        # parameter field (which is a Lino bug)
         return rt.modules.ledger.AccountingPeriod.get_available_periods(
             entry_date)
 

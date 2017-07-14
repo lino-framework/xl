@@ -22,6 +22,7 @@ See :doc:`/specs/cosi/ledger`.
 from __future__ import unicode_literals
 
 import datetime
+from django.utils.functional import lazystr
 
 from lino.api import ad, _
 
@@ -61,14 +62,17 @@ class Plugin(ad.Plugin):
             for jnl in Journal.objects.filter(
                     journal_group=grp).order_by('seqno'):
                 subm.add_action(jnl.voucher_type.table_class,
-                                label=unicode(jnl),
+                                label=lazystr(jnl),
                                 params=dict(master_instance=jnl))
 
     def setup_reports_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('ledger.Situation')
-        m.add_action('ledger.ActivityReport')
+        # m.add_action('ledger.ActivityReport')
+        m.add_action('ledger.GeneralAccountsBalance')
+        m.add_action('ledger.CustomerAccountsBalance')
+        m.add_action('ledger.SupplierAccountsBalance')
         m.add_action('ledger.Debtors')
         m.add_action('ledger.Creditors')
 

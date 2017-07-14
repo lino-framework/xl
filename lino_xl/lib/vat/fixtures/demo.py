@@ -25,9 +25,11 @@ def objects():
                 regimes.append(reg)
 
     if len(regimes) == 0:
-        raise Exception("No VAT regimes! Please load either novat or euvatrates before demo!")
+        regimes = VatRegimes.get_list_items()
+        # raise Exception("No VAT regimes! Please load either novat or euvatrates before demo!")
 
     REGIMES = Cycler(regimes)
+    
 
     for obj in rt.models.contacts.Partner.objects.all():
         obj.vat_regime = REGIMES.pop()

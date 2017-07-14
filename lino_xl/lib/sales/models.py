@@ -29,8 +29,9 @@ from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes
-from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
+from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 from lino.mixins.bleached import Bleached
+from lino.mixins import Monthly
 from lino_xl.lib.ledger.roles import LedgerStaff, LedgerUser
 
 
@@ -368,6 +369,9 @@ class InvoicesByJournal(Invoices, ByJournal):
         "total_incl subject:10 " \
         "workflow_buttons *"
 
+class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
+    label = _("Sales invoice journal")
+
 
 class DueInvoices(Invoices):
     """Shows all due product invoices."""
@@ -587,7 +591,7 @@ class InvoicesByPartner(Invoices):
 
 
 @dd.receiver(dd.pre_analyze)
-def add_voucher_type(sender, **kw):
+def pre_analyze(sender, **kw):
     VoucherTypes.add_item('sales.VatProductInvoice', InvoicesByJournal)
 
 
