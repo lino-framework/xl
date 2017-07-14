@@ -169,7 +169,8 @@ class Payable(PartnerRelated):
         acc = self.get_trade_type().get_partner_account()
         if acc is None:
             if len(counter_sums.items()):
-                raise Exception("Could not find partner account")
+                raise Exception("No partner account for {}".format(
+                    self.get_trade_type()))
         else:
             for prj, amount in counter_sums.items():
                 yield self.create_movement(
