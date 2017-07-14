@@ -116,7 +116,7 @@ class Payable(PartnerRelated):
     # title = models.CharField(_("Description"), max_length=200, blank=True)
 
     def full_clean(self):
-        if self.payment_term is None:
+        if self.payment_term is None and self.partner_id is not None:
             self.payment_term = self.partner.payment_term
         if not self.due_date:
             if self.payment_term:
