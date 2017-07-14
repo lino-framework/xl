@@ -21,3 +21,8 @@ class Plugin(ad.Plugin):
         m.add_action('ana.Groups')
         m.add_action('ana.Accounts')
 
+    def setup_explorer_menu(config, site, user_type, m):
+        m = m.add_menu(config.app_label, config.verbose_name)
+        m.add_action('ana.Invoices')
+        # m.add_action('ana.InvoiceItems')
+

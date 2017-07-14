@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -366,6 +366,11 @@ def mvtsum(**fkw):
 
 
 class AccountsBalance(dd.VirtualTable):
+    """A table which shows a list of general ledger accounts during the
+    observed period, showing their old and new balances and the sum of
+    debit and credit movements.
+
+    """
     auto_fit_column_widths = True
     column_names = "ref description old_d old_c during_d during_c new_d new_c"
     slave_grid_format = 'html'
@@ -607,7 +612,8 @@ class Situation(Report):
 
 
 class ActivityReport(Report):
-    """
+    """Overview of the financial activity during a given period.
+
     A report consisting of the following tables:
 
     - :class:`GeneralAccountsBalance`
@@ -616,7 +622,6 @@ class ActivityReport(Report):
 
     """
     label = _("Activity Report")
-    help_text = _("Overview of the financial activity during a given period.")
     required_roles = dd.login_required(AccountingReader)
 
     parameters = mixins.Yearly(
@@ -690,6 +695,11 @@ class Movements(dd.Table):
         elif pv.cleared == dd.YesNo.no:
             qs = qs.filter(cleared=False)
 
+        if pv.start_date:
+            qs = qs.filter(value_date__gte=pv.start_date)
+        if pv.end_date:
+            qs = qs.filter(value_date__lte=pv.end_date)
+            
         # if ar.param_values.partner:
         #     qs = qs.filter(partner=ar.param_values.partner)
         # if ar.param_values.paccount:

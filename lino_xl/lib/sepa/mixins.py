@@ -175,7 +175,7 @@ class Payable(PartnerRelated):
                 yield self.create_movement(
                     None, acc, prj, not self.journal.dc, amount,
                     partner=partner if acc.needs_partner else None,
-                    match=self.match or self.get_default_match())
+                    match=self.get_match())
 
 
 class BankAccountChecker(Checker):

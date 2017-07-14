@@ -19,14 +19,20 @@ def pcmnref(ref, pcmn):
         return pcmn
     return ref
 
+# partner centralization accounts:
 CUSTOMERS_ACCOUNT = pcmnref('customers', '4000')
 SUPPLIERS_ACCOUNT = pcmnref('suppliers',  '4400')
+TAX_OFFICES_ACCOUNT = pcmnref('tax_offices',  '4500')
 
+# VAT to declare:
 VAT_DUE_ACCOUNT = pcmnref('vat_due',   '4510')
 VAT_RETURNABLE_ACCOUNT = pcmnref('vat_returnable',   '4511')
 VAT_DEDUCTIBLE_ACCOUT = pcmnref('vat_deductible', '4512')
+
+# declared VAT:
 VATDCL_ACCOUNT = pcmnref('vatdcl', '4513')
 
+# financial accounts
 BESTBANK_ACCOUNT = pcmnref('bestbank', '5500')
 CASH_ACCOUNT = pcmnref('cash', '5700')
 

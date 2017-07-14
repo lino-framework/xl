@@ -3,23 +3,12 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Adds functionality for handling incoming and outgoing invoices in a
-context where the site operator is subject to value-added tax
-(VAT). Site operators outside the European Union are likely to use 
-:mod:`lino_xl.lib.vatless` instead.
-
-Installing this plugin will automatically install
-:mod:`lino_xl.lib.countries` :mod:`lino_xl.lib.ledger`.
-
-The modules :mod:`lino_xl.lib.vatless` and :mod:`lino_xl.lib.vat` can
-theoretically both be installed (though obviously this wouldn't make
-much sense).
+"""See :doc:`/specs/vat`.
 
 
 .. autosummary::
    :toctree:
 
-    models
     desktop
     choicelists
     utils
@@ -86,4 +75,7 @@ invoice item. Return value must be an item of
         m = m.add_menu(config.app_label, config.verbose_name)
         m.add_action('vat.VatRegimes')
         m.add_action('vat.VatClasses')
+        m.add_action('vat.VatColumns')
+        m.add_action('vat.Invoices')
+        # m.add_action('vat.InvoiceItems')
 

@@ -281,7 +281,7 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
         qs = Movement.objects.filter(
             partner=self.get_partner(),
             cleared=False,
-            match=self.match or self.get_default_match())
+            match=self.get_match())
         return Movement.get_balance(not self.journal.dc, qs)
 
     @dd.virtualfield(dd.PriceField(_("Balance before")))

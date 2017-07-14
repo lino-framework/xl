@@ -59,8 +59,11 @@ def objects():
 
     yield demo_objects()
 
-    agency = Company(name="Tax agency")
-    yield agency
+    office = Company(
+        name="Mehrwertsteuer-Kontrollamt Eupen",
+        street="Vervierser Str. 8",
+        country_id="BE", zip_code="4700")
+    yield office
     
     USERS = Cycler(settings.SITE.user_model.objects.all())
     JOURNAL = Journal.objects.get(ref="VAT")
@@ -71,7 +74,7 @@ def objects():
         dcl = Declaration(
             journal=JOURNAL,
             user=USERS.pop(),
-            partner=agency,
+            partner=office,
             voucher_date=date,
             entry_date=date + delta(days=5))
         yield dcl
