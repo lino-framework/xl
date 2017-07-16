@@ -21,8 +21,18 @@ class Plugin(ad.Plugin):
         m.add_action('ana.Groups')
         m.add_action('ana.Accounts')
 
-    def setup_explorer_menu(config, site, user_type, m):
-        m = m.add_menu(config.app_label, config.verbose_name)
+    def setup_reports_menu(self, site, user_type, m):
+        mg = site.plugins.accounts
+        # mg = site.plugins.vat
+        m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('ana.PrintableInvoicesByJournal')
+        m.add_action('ana.AnalyticAccountsBalance')
+
+    def setup_explorer_menu(self, site, user_type, m):
+        mg = site.plugins.accounts
+        # mg = site.plugins.vat
+        # mg = self
+        m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('ana.Invoices')
         # m.add_action('ana.InvoiceItems')
 

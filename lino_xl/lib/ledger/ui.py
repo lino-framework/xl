@@ -1,20 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2008-2017 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# License: BSD (see file COPYING for details)
 
 
 """User interface definitions for this plugin.
@@ -69,11 +55,10 @@ class Journals(dd.Table):
     voucher_type
     """, window_size=(60, 'auto'))
 
-
 class ByJournal(dd.Table):
     # order_by = ["-entry_date", '-id']
     order_by = ["-accounting_period__year", "-number"]
-    master_key = 'journal'  # see django issue 10808
+    master_key = 'journal'
     # start_at_bottom = True
     required_roles = dd.login_required(LedgerUser)
 
@@ -96,6 +81,16 @@ class ByJournal(dd.Table):
             kw.update(account=account)
         return rt.modules.ledger.Journal(
             trade_type=trade_type, voucher_type=vt, **kw)
+
+class PrintableByJournal(ByJournal):
+    editable = False
+    params_layout = "journal year accounting_period"
+    
+    column_names = "number entry_date partner total_base total_vat total_incl vat_regime *"
+
+    @classmethod
+    def setup_request(self, ar):
+        ar.master_instance = ar.param_values.journal
 
 
 class AccountingPeriods(dd.Table):
@@ -131,12 +126,13 @@ class Vouchers(dd.Table):
     @classmethod
     def get_request_queryset(cls, ar):
         qs = super(Vouchers, cls).get_request_queryset(ar)
-        if not isinstance(qs, list):
-            pv = ar.param_values
-            if pv.year:
-                qs = qs.filter(accounting_period__year=pv.year)
-            if pv.journal:
-                qs = qs.filter(journal=pv.journal)
+        if isinstance(qs, list):
+            return qs
+        pv = ar.param_values
+        if pv.year:
+            qs = qs.filter(accounting_period__year=pv.year)
+        if pv.journal:
+            qs = qs.filter(journal=pv.journal)
         return qs
 
 
@@ -371,11 +367,19 @@ class AccountsBalance(dd.VirtualTable):
     debit and credit movements.
 
     """
+    required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
     column_names = "ref description old_d old_c during_d during_c new_d new_c"
     slave_grid_format = 'html'
     abstract = True
 
+    parameters = mixins.Yearly(
+        # include_vat = models.BooleanField(
+        #     verbose_name=dd.apps.vat.verbose_name),
+    )
+
+    params_layout = "start_date end_date"
+    
     @classmethod
     def rowmvtfilter(self, row):
         raise NotImplementedError()
@@ -386,35 +390,40 @@ class AccountsBalance(dd.VirtualTable):
 
     @classmethod
     def get_data_rows(self, ar):
-        mi = ar.master_instance
-        if mi is None:
-            return
+        pv = ar.param_values
+        # mi = ar.master_instance
+        # if mi is None:
+        #     return
         qs = self.get_request_queryset(ar)
         for row in qs:
             flt = self.rowmvtfilter(row)
             row.old = Balance(
                 mvtsum(
-                    value_date__lt=mi.start_date,
+                    value_date__lt=pv.start_date,
                     dc=DEBIT, **flt),
                 mvtsum(
-                    value_date__lt=mi.start_date,
+                    value_date__lt=pv.start_date,
                     dc=CREDIT, **flt))
             row.during_d = mvtsum(
-                value_date__gte=mi.start_date,
-                value_date__lte=mi.end_date,
+                value_date__gte=pv.start_date,
+                value_date__lte=pv.end_date,
                 dc=DEBIT, **flt)
             row.during_c = mvtsum(
-                value_date__gte=mi.start_date,
-                value_date__lte=mi.end_date,
+                value_date__gte=pv.start_date,
+                value_date__lte=pv.end_date,
                 dc=CREDIT, **flt)
             if row.old.d or row.old.c or row.during_d or row.during_c:
                 row.new = Balance(row.old.d + row.during_d,
                                   row.old.c + row.during_c)
                 yield row
 
+    @dd.displayfield(_("Reference"))
+    def ref(self, row, ar):
+        return row.ref
+
     @dd.displayfield(_("Description"))
     def description(self, row, ar):
-        return ar.obj2html(row)
+        return row.obj2href(ar)
 
     @dd.virtualfield(dd.PriceField(_("Debit\nbefore")))
     def old_d(self, row, ar):
@@ -439,7 +448,7 @@ class AccountsBalance(dd.VirtualTable):
     @dd.virtualfield(dd.PriceField(_("Credit\nafter")))
     def new_c(self, row, ar):
         return row.new.d
-
+    
 
 class GeneralAccountsBalance(AccountsBalance):
 
@@ -453,10 +462,6 @@ class GeneralAccountsBalance(AccountsBalance):
     @classmethod
     def rowmvtfilter(self, row):
         return dict(account=row)
-
-    @dd.displayfield(_("Ref"))
-    def ref(self, row, ar):
-        return ar.obj2html(row.group)
 
 
 class PartnerAccountsBalance(AccountsBalance):

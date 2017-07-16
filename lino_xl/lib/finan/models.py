@@ -130,7 +130,7 @@ class PaymentOrder(FinancialVoucher, Printable):
             if acc.needs_partner:
                 yield self.create_movement(
                     i, acc, m.project, not m.dc, m.amount,
-                    partner=m.partner, match=m.get_match())
+                    partner=m.partner, match=i.get_match())
         if not acc.needs_partner:
             yield self.create_movement(
                 None, acc, None, not self.journal.dc, amount)

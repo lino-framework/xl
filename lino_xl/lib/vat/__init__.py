@@ -67,12 +67,19 @@ invoice item. Return value must be an item of
             self.default_vat_class = vat.VatClasses.get_by_name(
                 self.default_vat_class)
 
-    def setup_config_menu(config, site, user_type, m):
-        m = m.add_menu(config.app_label, config.verbose_name)
+    def setup_config_menu(self, site, user_type, m):
+        m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('vat.VatRules')
 
-    def setup_explorer_menu(config, site, user_type, m):
-        m = m.add_menu(config.app_label, config.verbose_name)
+    def setup_reports_menu(self, site, user_type, m):
+        mg = site.plugins.accounts
+        # mg = site.plugins.vat
+        # mg = self
+        m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('vat.PrintableInvoicesByJournal')
+
+    def setup_explorer_menu(self, site, user_type, m):
+        m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('vat.VatRegimes')
         m.add_action('vat.VatClasses')
         m.add_action('vat.VatColumns')
