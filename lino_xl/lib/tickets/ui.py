@@ -533,7 +533,7 @@ class Tickets(dd.Table):
 
     params_layout = """
     user end_user assigned_to not_assigned_to interesting_for site project state priority deployed_to
-    has_project show_assigned show_active show_deployed show_todo show_private priority
+    has_project show_assigned show_active show_deployed show_todo show_private
     start_date end_date observed_event topic has_ref"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
