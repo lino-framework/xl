@@ -22,6 +22,16 @@ T00 = time(0, 0, 0)
 T24 = time(23, 59, 59)
 
 
+class Priorities(dd.ChoiceList):
+    verbose_name = _("Priority")
+    verbose_name_plural = _("Priorities")
+
+Priorities.add_item('10', _("Critical"), 'critical')
+Priorities.add_item('20', _("High"), 'high')
+Priorities.add_item('30', _("Normal"), 'normal')
+Priorities.add_item('40', _("Low"), 'low')
+Priorities.add_item('50', _("Very Low"), 'very_low')
+
 class TicketEvents(dd.ChoiceList):
     verbose_name = _("Observed event")
     verbose_name_plural = _("Observed events")
