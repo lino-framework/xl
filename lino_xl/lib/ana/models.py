@@ -14,6 +14,7 @@ from lino.api import dd, rt
 from lino.mixins import Referrable, Sequenced
 from lino.utils.mldbc.mixins import BabelDesignated
 from lino_xl.lib.ledger.choicelists import VoucherTypes
+from lino_xl.lib.ledger.ui import AccountsBalance
 
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 
@@ -105,20 +106,20 @@ from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.mixins import Matching, AccountVoucherItem
 from lino_xl.lib.sepa.mixins import Payable
 from lino_xl.lib.vat.mixins import VatDocument, VatItemBase
-from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
+from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 
 
 class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
     class Meta:
-        verbose_name = _("Invoice")
-        verbose_name_plural = _("Invoices")
+        verbose_name = _("Analytic invoice")
+        verbose_name_plural = _("Analytic invoices")
 
 
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:
         app_label = 'ana'
-        verbose_name = _("Analytic account invoice item")
-        verbose_name_plural = _("Analytic account invoice items")
+        verbose_name = _("Analytic invoice item")
+        verbose_name_plural = _("Analytic invoice items")
 
     voucher = dd.ForeignKey('ana.AnaAccountInvoice', related_name='items')
     ana_account = dd.ForeignKey('ana.Account', blank=True, null=True)
@@ -196,8 +197,35 @@ class InvoicesByJournal(Invoices, ByJournal):
     voucher_date total_incl
     """
 
+class AnalyticAccountsBalance(AccountsBalance):
 
-VoucherTypes.add_item(AnaAccountInvoice, InvoicesByJournal)
+    label = _("Analytic Accounts Balance")
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        return rt.models.ana.Account.objects.order_by(
+            'group__ref', 'ref')
+
+    @classmethod
+    def rowmvtfilter(self, row):
+        return dict(ana_account=row)
+
+    @dd.displayfield(_("Ref"))
+    def ref(self, row, ar):
+        return ar.obj2html(row.group)
+
+
+                  
+
+
+@dd.receiver(dd.pre_analyze)
+def pre_analyze(sender, **kw):
+    VoucherTypes.add_item('ana.AnaAccountInvoice', InvoicesByJournal)
+
+class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
+    label = _("Purchase journal (analytic)")
+
+
     
 class ItemsByInvoice(dd.Table):
     required_roles = dd.login_required(LedgerUser)

@@ -29,8 +29,9 @@ from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes
-from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
+from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 from lino.mixins.bleached import Bleached
+from lino.mixins import Monthly
 from lino_xl.lib.ledger.roles import LedgerStaff, LedgerUser
 
 
@@ -281,7 +282,7 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
         qs = Movement.objects.filter(
             partner=self.get_partner(),
             cleared=False,
-            match=self.match or self.get_default_match())
+            match=self.get_match())
         return Movement.get_balance(not self.journal.dc, qs)
 
     @dd.virtualfield(dd.PriceField(_("Balance before")))
@@ -367,6 +368,9 @@ class InvoicesByJournal(Invoices, ByJournal):
         "partner " \
         "total_incl subject:10 " \
         "workflow_buttons *"
+
+class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
+    label = _("Sales invoice journal")
 
 
 class DueInvoices(Invoices):
@@ -587,7 +591,7 @@ class InvoicesByPartner(Invoices):
 
 
 @dd.receiver(dd.pre_analyze)
-def add_voucher_type(sender, **kw):
+def pre_analyze(sender, **kw):
     VoucherTypes.add_item('sales.VatProductInvoice', InvoicesByJournal)
 
 

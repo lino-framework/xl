@@ -33,7 +33,7 @@ from lino_xl.lib.cal.mixins import daterange_text
 from lino.modlib.users.mixins import My
 from lino.utils import join_elems
 
-from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes
+from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes, Priorities
 
 from .roles import TicketsUser, Searcher, Triager, TicketsStaff
 
@@ -516,6 +516,9 @@ class Tickets(dd.Table):
         state=TicketStates.field(
             blank=True,
             help_text=_("Only rows having this state.")),
+        priority=Priorities.field(_("Priority"),
+            blank=True,
+            help_text=_("Only rows having this priority.")),
         show_assigned=dd.YesNo.field(_("Assigned"), blank=True),
         show_deployed=dd.YesNo.field(
             _("Deployed"), blank=True,
@@ -529,7 +532,7 @@ class Tickets(dd.Table):
     )
 
     params_layout = """
-    user end_user assigned_to not_assigned_to interesting_for site project state deployed_to
+    user end_user assigned_to not_assigned_to interesting_for site project state priority deployed_to
     has_project show_assigned show_active show_deployed show_todo show_private
     start_date end_date observed_event topic has_ref"""
 
@@ -541,7 +544,7 @@ class Tickets(dd.Table):
         s |= set(('end_user',  # 'assigned_to',
                   'state',
                   'project',
-                  'topic', 'site'))
+                  'topic', 'site', 'priority'))
         if not dd.is_installed('votes'):
             s.add('assigned_to')
         return s
@@ -653,7 +656,6 @@ class Tickets(dd.Table):
             qs = qs.filter(ref__isnull=False)
         elif pv.has_ref == dd.YesNo.no:
             qs = qs.filter(ref__isnull=True)
-
         # print 20150512, qs.query
         # 1253
         
@@ -796,8 +798,8 @@ class TicketsToTriage(Tickets):
     required_roles = dd.login_required(Triager)
     label = _("Tickets to triage")
     button_label = _("Triage")
-    order_by = ["-id"]
-    column_names = 'overview:50 topic:10 #user:10 project:10 ' \
+    order_by = "priority -id".split()
+    column_names = 'overview:50 priority topic:10 #user:10 project:10 ' \
                    '#assigned_to:10 ticket_type:10 workflow_buttons:40 *'
     params_panel_hidden = True
 
@@ -813,7 +815,7 @@ class TicketsToTriage(Tickets):
 class TicketsToTalk(Tickets):
     label = _("Tickets to talk")
     required_roles = dd.login_required(Triager)
-    order_by = ["-priority", "-deadline", "-id"]
+    order_by = ["priority", "-deadline", "-id"]
     # order_by = ["-id"]
     column_names = "overview:50 priority #deadline waiting_for " \
                    "workflow_buttons:40 *"
@@ -856,7 +858,7 @@ class ActiveTickets(Tickets):
     required_roles = dd.login_required(Triager)
     order_by = ["-id"]
     # order_by = ["-modified", "id"]
-    column_names = 'overview:50 topic:10 user:10 end_user:10 project:10 ' \
+    column_names = 'overview:50 priority topic:10 user:10 end_user:10 project:10 ' \
                    '#assigned_to:10 ticket_type:10 workflow_buttons:40 *'
 
     @classmethod
@@ -870,8 +872,8 @@ class ActiveTickets(Tickets):
 class MyTickets(My, Tickets):
     """Show all active tickets reported by me."""
     required_roles = dd.login_required(TicketsUser)
-    order_by = ["-id"]
-    column_names = 'overview:50 workflow_buttons:30 *'
+    order_by = ["priority", "-id"]
+    column_names = ("priority overview:50 workflow_buttons *")
     params_layout = """
     user end_user site project state
     start_date end_date observed_event topic show_active"""
@@ -889,7 +891,7 @@ class MyTicketsToWork(Tickets):
         """Show all active tickets reported by me."""
         label = _("Tickets to work")
         required_roles = dd.login_required(TicketsUser)
-        order_by = ["-id"]
+        order_by = ["priority", "-id"]
         column_names = 'overview:50 workflow_buttons:30 *'
         params_layout = """
         user end_user site project state
@@ -986,35 +988,35 @@ class Sites(dd.Table):
 
     @dd.requestfield(_("New Tickets"))
     def new_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new, show_active=None))
 
     @dd.requestfield(_("Tickets To Talk"))
     def talk_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk, show_active=None))
 
     @dd.requestfield(_("Open Tickets"))
     def open_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened, show_active=None))
 
     @dd.requestfield(_("Started Tickets"))
     def started_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started, show_active=None))
 
     @dd.requestfield(_("Sleeping Tickets"))
     def sleeping_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping, show_active=None))
 
     @dd.requestfield(_("Ready Tickets"))
     def ready_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready, show_active=None))
 
     @dd.requestfield(_("Closed Tickets"))
     def closed_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed, show_active=None))
 
     @dd.requestfield(_("Cancelled Tickets"))
     def cancelled_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled))
+        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled, show_active=None))
 
     @dd.requestfield(_("Active Tickets"))
     def active_tickets(self, obj, ar):
@@ -1051,6 +1053,8 @@ class AllSites(Sites):
 class TicketsBySite(Tickets):
     label = _("Known problems")
     master_key = 'site'
+    column_names = ("priority overview:50 workflow_buttons *")
+    order_by = ["priority", "-id"]
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -1066,7 +1070,7 @@ class TicketsByProject(Tickets):
     master_key = 'project'
     required_roles = dd.login_required(Triager)
     column_names = ("priority overview:50 workflow_buttons *")
-    order_by = ["-priority", "-id"]
+    order_by = ["priority", "-id"]
 
 
     @classmethod

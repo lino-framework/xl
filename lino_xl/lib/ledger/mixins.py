@@ -119,6 +119,9 @@ class Matching(dd.Model):
         # todo: move this to implementing classes?
         return cls.get_match_choices(journal, partner)
 
+    def get_match(self):
+        return self.match or self.get_default_match()
+
 
 class VoucherItem(dd.Model):
 

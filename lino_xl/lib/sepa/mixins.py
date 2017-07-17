@@ -116,7 +116,7 @@ class Payable(PartnerRelated):
     # title = models.CharField(_("Description"), max_length=200, blank=True)
 
     def full_clean(self):
-        if self.payment_term is None:
+        if self.payment_term is None and self.partner_id is not None:
             self.payment_term = self.partner.payment_term
         if not self.due_date:
             if self.payment_term:
@@ -169,13 +169,14 @@ class Payable(PartnerRelated):
         acc = self.get_trade_type().get_partner_account()
         if acc is None:
             if len(counter_sums.items()):
-                raise Exception("Could not find partner account")
+                raise Exception("No partner account for {}".format(
+                    self.get_trade_type()))
         else:
             for prj, amount in counter_sums.items():
                 yield self.create_movement(
                     None, acc, prj, not self.journal.dc, amount,
                     partner=partner if acc.needs_partner else None,
-                    match=self.match or self.get_default_match())
+                    match=self.get_match())
 
 
 class BankAccountChecker(Checker):

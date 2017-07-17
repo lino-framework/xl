@@ -348,6 +348,19 @@ class Voucher(UserAuthored, mixins.Registrable):
         """
         return dd.plugins.ledger.currency_symbol
 
+    @classmethod
+    def get_parameter_fields(cls, **fields):
+        fields.setdefault(
+            'accounting_period', dd.ForeignKey(
+                'ledger.AccountingPeriod', blank=True, null=True))
+        return super(Voucher, cls).get_parameter_fields(**fields)
+
+    @classmethod
+    def get_simple_parameters(cls):
+        s = super(Voucher, cls).get_simple_parameters()
+        s.add('accounting_period')
+        return s
+
     @dd.displayfield(_("No."))
     def number_with_year(self, ar):
         return "{0}/{1}".format(self.number, self.accounting_period.year)
@@ -415,7 +428,9 @@ class Voucher(UserAuthored, mixins.Registrable):
         return Journal.objects.filter(voucher_type=vt).order_by('seqno')
 
     @dd.chooser()
-    def accounting_period_choices(cls, entry_date):
+    def unused_accounting_period_choices(cls, entry_date):
+        # deactivated because it also limits the choices of the
+        # parameter field (which is a Lino bug)
         return rt.modules.ledger.AccountingPeriod.get_available_periods(
             entry_date)
 
@@ -456,14 +471,13 @@ class Voucher(UserAuthored, mixins.Registrable):
         
     def set_workflow_state(self, ar, state_field, newstate):
         """"""
-        def doit(ar2):
-            if newstate.name == 'registered':
-                self.register_voucher(ar2)
-            elif newstate.name == 'draft':
-                self.deregister_voucher(ar2)
-            super(Voucher, self).set_workflow_state(ar2, state_field, newstate)
+        if newstate.name == 'registered':
+            self.register_voucher(ar)
+        elif newstate.name == 'draft':
+            self.deregister_voucher(ar)
+        super(Voucher, self).set_workflow_state(ar, state_field, newstate)
 
-        doit(ar)
+        # doit(ar)
 
         # if newstate.name == 'registered':
         #     ar.confirm(
@@ -493,6 +507,9 @@ class Voucher(UserAuthored, mixins.Registrable):
             # dd.logger.info("20151211 gonna call get_wanted_movements()")
             movements = self.get_wanted_movements()
             # dd.logger.info("20151211 gonna save %d movements", len(movements))
+            # self.full_clean()
+            # self.save()
+            
             fcu = dd.plugins.ledger.force_cleared_until
             for m in movements:
                 seqno += 1
@@ -515,7 +532,7 @@ class Voucher(UserAuthored, mixins.Registrable):
     def do_and_clear(self, func, do_clear):
         """Delete all movements of this voucher, then run the given callable
         `func`, passing it a set with all partners who had at least
-        one movement in this voucher. The function is allowed to add
+        one movement in this voucher. The function is expected to add
         more partners to this set.  Then call `check_clearings` for
         all these partners.
 
@@ -554,7 +571,7 @@ class Voucher(UserAuthored, mixins.Registrable):
 
         """
         # dd.logger.info("20151211 ledger.create_movement()")
-        if not isinstance(account, rt.modules.accounts.Account):
+        if not isinstance(account, rt.models.accounts.Account):
             raise Warning("{} is not an Account object".format(account))
         kw['voucher'] = self
         kw['account'] = account
@@ -573,7 +590,7 @@ class Voucher(UserAuthored, mixins.Registrable):
         kw['amount'] = amount
         kw['dc'] = dc
 
-        b = rt.modules.ledger.Movement(**kw)
+        b = rt.models.ledger.Movement(**kw)
         return b
 
     #~ def get_row_permission(self,ar,state,ba):

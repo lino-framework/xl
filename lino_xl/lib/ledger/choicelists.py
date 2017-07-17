@@ -218,6 +218,7 @@ class TradeTypes(dd.ChoiceList):
 TradeTypes.add_item('S', _("Sales"), 'sales', dc=CREDIT)
 TradeTypes.add_item('P', _("Purchases"), 'purchases', dc=DEBIT)
 TradeTypes.add_item('W', _("Wages"), 'wages', dc=DEBIT)
+TradeTypes.add_item('T', _("Taxes"), 'taxes', dc=DEBIT)
 TradeTypes.add_item('C', _("Clearings"), 'clearings', dc=DEBIT)
 
 # Note that :mod:`lino_xl.lib.sales.models` and/or

@@ -77,7 +77,7 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
                 amount -= i.amount
             # kw = dict(seqno=i.seqno, partner=i.partner)
             kw = dict(partner=i.get_partner())
-            kw.update(match=i.match or i.get_default_match())
+            kw.update(match=i.get_match())
             b = self.create_movement(
                 i, i.account or self.item_account,
                 i.project, i.dc, i.amount, **kw)

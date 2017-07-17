@@ -14,12 +14,20 @@ ledger = dd.resolve_app('ledger')
 
 #from .choicelists import DeclarationFields
 
-# class VouchersByDeclaration(ledger.Vouchers):
-#     column_names = 'overview entry_date accounting_period user *'
-#     master_key = 'declared_in'
-#     order_by = ['entry_date']
-#     editable = False
+from lino_xl.lib.vat.mixins import DECLARED_IN
 
+if DECLARED_IN:
+    
+    class VouchersByDeclaration(ledger.Vouchers):
+        column_names = 'overview entry_date accounting_period user *'
+        master_key = 'declared_in'
+        order_by = ['entry_date']
+        editable = False
+# else:        
+
+#     class VouchersByDeclaration(dd.Table):
+#         abstract = True
+#         required_roles = set([1])
 
 class DeclarationDetail(dd.DetailLayout):
     main = "info values"
@@ -32,7 +40,7 @@ class DeclarationDetail(dd.DetailLayout):
     values = dd.Panel("""
     start_date end_date 
     c2 c2b c2c c3 c3b c4 c5
-    FXX FYY F71
+    F61 F62 FXX FYY F71
     # VouchersByDeclaration
     """, label=_("Values"))
     
@@ -73,7 +81,6 @@ class DeclarationDetail(dd.DetailLayout):
     """
     c5 = """
     F59
-    F62 
     F64
     """
     

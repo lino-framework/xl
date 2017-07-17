@@ -29,6 +29,7 @@ from lino.mixins.periods import DatePeriod
 from .utils import ZERO, ONE
 from .choicelists import VatClasses, VatRegimes
 
+DECLARED_IN = False
 
 class PartnerDetailMixin(dd.DetailLayout):
     """Defines a panel :attr:`ledger`, to be added as a tab panel to your
@@ -276,7 +277,8 @@ class VatDocument(ProjectRelated, VatTotal):
     def fill_defaults(self):
         super(VatDocument, self).fill_defaults()
         if not self.vat_regime:
-            self.vat_regime = self.partner.vat_regime
+            if self.partner_id:
+                self.vat_regime = self.partner.vat_regime
             if not self.vat_regime:
                 self.vat_regime = get_default_vat_regime()
 
@@ -413,7 +415,7 @@ class QtyVatItemBase(VatItemBase):
             self.set_amount(ar, myround(self.unit_price * self.qty))
 
 
-class VatDeclaration(Voucher, DatePeriod, Payable):
+class VatDeclaration(Payable, Voucher, DatePeriod):
 
     """
     A VAT declaration is when a company declares to the state
@@ -425,6 +427,9 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
     class Meta:
         abstract = True
         
+    def get_match(self):
+        return self.get_default_match()  # no manual match field
+
     def full_clean(self, *args, **kw):
         if self.voucher_date:
             # declare the previous month by default 
@@ -435,47 +440,13 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
         if self.voucher_date <= self.end_date:
            raise ValidationError(
                "Voucher date must be after the covered period")
-        self.compute_fields()
+        # self.compute_fields()
         super(VatDeclaration, self).full_clean(*args, **kw)
 
-    def get_payable_sums_dict(self):
-        """Implements
-        :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
-
-        """
-        mvt_dict = {}
-        for fld in self.fields_list.get_list_items():
-            fld.collect_wanted_movements(self, mvt_dict)
-        return mvt_dict
-
-    def get_wanted_movements(self):
-        # dd.logger.info("20151211 FinancialVoucher.get_wanted_movements()")
-        
-        # TODO: not yet implemented.
-        return []
-        amount = ZERO
-        movements_and_items = []
-        
-        for i in self.items.all():
-            if i.dc == self.journal.dc:
-                amount += i.amount
-            else:
-                amount -= i.amount
-            # kw = dict(seqno=i.seqno, partner=i.partner)
-            kw = dict(partner=i.get_partner())
-            kw.update(match=i.match or i.get_default_match())
-            b = self.create_movement(
-                i, i.account or self.item_account,
-                i.project, i.dc, i.amount, **kw)
-            movements_and_items.append((b, i))
-
-        return amount, movements_and_items
-    
-
-    def unused_register_voucher(self, *args, **kwargs):
+    def register_voucher(self, *args, **kwargs):
+        # self.compute_fields()
         super(VatDeclaration, self).register_voucher(*args, **kwargs)
-        self.compute_fields()
-        if False:
+        if DECLARED_IN:
             count = 0
             for doc in rt.models.ledger.Voucher.objects.filter(
                 # journal=jnl,
@@ -492,9 +463,9 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
                 doc.save()
                 #~ declared_docs.append(doc)
 
-    def unused_deregister_voucher(self, *args, **kwargs):
+    def deregister_voucher(self, *args, **kwargs):
         super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
-        if False:
+        if DECLARED_IN:
             for doc in rt.models.ledger.Voucher.objects.filter(
                     declared_in=self):
                 doc.declared_in = None
@@ -517,9 +488,17 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
         #~ super(Declaration,self).deregister(ar)
 
         
-    def compute_fields(self):
-        sums = dict()
+    def get_payable_sums_dict(self):
+        """Implements
+        :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
+
+        As a side effect this updates values of all fields of this
+        declaration.
+
+        """
         fields = self.fields_list.get_list_items()
+        payable_sums = SumCollector()
+        sums = dict()  # field sums
         for fld in fields:
             if fld.editable:
                 sums[fld.name] = getattr(self, fld.name)
@@ -534,14 +513,17 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
             voucher__entry_date__lte=self.end_date)
             # voucher__declared_in__isnull=True)
 
+        # print(20170713, qs)
+
         for mvt in qs:
             for fld in fields:
-                amount = fld.collect_movement(self, mvt)
-                if amount:
-                    sums[fld.name] += amount
+                fld.collect_from_movement(
+                    self, mvt, sums, payable_sums)
             
         for fld in fields:
-            fld.collect_from_sums(self, sums)
+            fld.collect_from_sums(self, sums, payable_sums)
+
+        # dd.logger.info("20170713 value in 55 is %s", sums['F55'])
 
         #~ print 20121209, item_models
         #~ for m in item_models:
@@ -551,5 +533,10 @@ class VatDeclaration(Voucher, DatePeriod, Payable):
                 #~ self.collect_item(sums,item)
 
         for fld in fields:
-            setattr(self, fld.name, sums[fld.name])
+            if not fld.editable:
+                setattr(self, fld.name, sums[fld.name])
 
+        # self.full_clean()
+        # self.save()
+
+        return payable_sums
