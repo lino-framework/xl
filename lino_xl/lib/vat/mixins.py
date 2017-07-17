@@ -277,7 +277,8 @@ class VatDocument(ProjectRelated, VatTotal):
     def fill_defaults(self):
         super(VatDocument, self).fill_defaults()
         if not self.vat_regime:
-            self.vat_regime = self.partner.vat_regime
+            if self.partner_id:
+                self.vat_regime = self.partner.vat_regime
             if not self.vat_regime:
                 self.vat_regime = get_default_vat_regime()
 
