@@ -234,7 +234,7 @@ class VatDocument(ProjectRelated, VatTotal):
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                if not vr.vat_returnable:
+                if vr is not None and not vr.vat_returnable:
                     vat += i.total_vat
         self.total_base = base
         self.total_vat = vat
@@ -253,13 +253,15 @@ class VatDocument(ProjectRelated, VatTotal):
             if i.total_base:
                 if b is None:
                     msg = "No base account for {0} (tt {1}, total_base {2})"
-                    raise Exception(msg.format(i, tt, i.total_base))
+                    raise Warning(msg.format(i, tt, i.total_base))
                 sums.collect(
                     (b, self.project, i.vat_class, self.vat_regime),
                     i.total_base)
-            if i.total_vat:
+            if i.total_vat and vr is not None:
                 if not vr.vat_account:
-                    raise Exception("No VAT account for %s." % vr)
+                    msg = _("This rule ({}) does not allow any VAT.")
+                    raise Warning(msg.format(vr))
+                        
                 vat_amount = i.total_vat
                 if vr.vat_returnable:
                     acc = vr.vat_returnable_account or b
@@ -327,10 +329,9 @@ class VatItemBase(VoucherItem, VatTotal):
                 dd.plugins.countries.get_my_country()
         else:
             country = dd.plugins.countries.get_my_country()
-        rule = rt.modules.vat.VatRule.get_vat_rule(
+        return rt.modules.vat.VatRule.get_vat_rule(
             tt, self.voucher.vat_regime, self.vat_class, country,
             self.voucher.voucher_date)
-        return rule
 
     # def save(self,*args,**kw):
         # super(VatItemBase,self).save(*args,**kw)
