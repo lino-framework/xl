@@ -253,13 +253,15 @@ class VatDocument(ProjectRelated, VatTotal):
             if i.total_base:
                 if b is None:
                     msg = "No base account for {0} (tt {1}, total_base {2})"
-                    raise Exception(msg.format(i, tt, i.total_base))
+                    raise Warning(msg.format(i, tt, i.total_base))
                 sums.collect(
                     (b, self.project, i.vat_class, self.vat_regime),
                     i.total_base)
             if i.total_vat and vr is not None:
                 if not vr.vat_account:
-                    raise Exception("No VAT account for %s." % vr)
+                    msg = _("This rule ({}) does not allow any VAT.")
+                    raise Warning(msg.format(vr))
+                        
                 vat_amount = i.total_vat
                 if vr.vat_returnable:
                     acc = vr.vat_returnable_account or b
