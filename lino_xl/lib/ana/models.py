@@ -151,9 +151,9 @@ class InvoiceDetail(dd.DetailLayout):
     total_incl
     """
 
-    topleft = """id voucher_date partner user
-    due_date your_ref vat_regime #item_vat
-    workflow_buttons payment_term
+    topleft = """id entry_date voucher_date partner
+    payment_term due_date your_ref vat_regime
+    workflow_buttons user
     """
 
     ledger = dd.Panel("""

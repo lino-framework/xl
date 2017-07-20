@@ -110,6 +110,8 @@ class Place(Hierarchical, mixins.BabelNamed):
     country = models.ForeignKey('countries.Country')
     zip_code = models.CharField(max_length=8, blank=True)
     type = PlaceTypes.field(blank=True)
+    show_type = models.BooleanField(_("Show type"), default=False)
+    
     # parent = models.ForeignKey(
     #     'self',
     #     blank=True, null=True,
@@ -146,7 +148,7 @@ class Place(Hierarchical, mixins.BabelNamed):
         else:
             s = ' / '.join(names)
             # s = "%s (%s)" % (names[0], ', '.join(names[1:]))
-        if True:  # TODO: attribute per type?
+        if self.show_type:
             s += " (%s)" % str(self.type)
         return s
 

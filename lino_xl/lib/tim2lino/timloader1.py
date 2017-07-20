@@ -656,10 +656,13 @@ class TimLoader(TimLoader):
         if issubclass(cl, Person):
             # self.store(kw, prefix=row.allo)
             # kw.update(**name2kw(self.decode_string(row.firme)))
+            last_name = row.firme.strip()
+            if row.name2.strip():
+                last_name += '-' + row.name2.strip()
             self.store(
                 kw,
                 first_name=row['vorname'].strip(),
-                last_name=row.firme.strip(),
+                last_name=last_name,
                 # birth_date=row['gebdat'],
                 title=row['allo'].strip(),
             )

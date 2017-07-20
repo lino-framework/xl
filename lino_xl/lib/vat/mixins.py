@@ -425,6 +425,10 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
     It is at the same time a ledger voucher.
     """
 
+    declared_period = dd.ForeignKey(
+        'ledger.AccountingPeriod', blank=True)
+
+    
     class Meta:
         abstract = True
         
@@ -433,14 +437,19 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
 
     def full_clean(self, *args, **kw):
         if self.voucher_date:
+            AP = rt.models.ledger.AccountingPeriod
             # declare the previous month by default 
-            if not self.start_date:
-                self.start_date = (self.voucher_date-AMONTH).replace(day=1)
-            if not self.end_date:
-                self.end_date = self.start_date + AMONTH - ADAY
-        if self.voucher_date <= self.end_date:
-           raise ValidationError(
-               "Voucher date must be after the covered period")
+            if not self.declared_period_id:
+                self.declared_period = AP.get_default_for_date(
+                    self.voucher_date - AMONTH)
+                
+            # if not self.start_date:
+            #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)
+            # if not self.end_date:
+            #     self.end_date = self.start_date + AMONTH - ADAY
+        # if self.voucher_date <= self.end_date:
+        #    raise ValidationError(
+        #        "Voucher date must be after the covered period")
         # self.compute_fields()
         super(VatDeclaration, self).full_clean(*args, **kw)
 
@@ -493,7 +502,7 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
         """Implements
         :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
 
-        As a side effect this updates values of all fields of this
+        As a side effect this updates values in the fields of this
         declaration.
 
         """
@@ -510,8 +519,7 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
             # voucher__journal=jnl,
             # voucher__year=self.accounting_period.year,
             voucher__journal__must_declare=True,
-            voucher__entry_date__gte=self.start_date,
-            voucher__entry_date__lte=self.end_date)
+            voucher__accounting_period=self.declared_period)
             # voucher__declared_in__isnull=True)
 
         # print(20170713, qs)
