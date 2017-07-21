@@ -58,6 +58,7 @@ class CoachingType(mixins.BabelNamed):
         app_label = 'coachings'
         verbose_name = _("Coaching type")
         verbose_name_plural = _('Coaching types')
+        abstract = dd.is_abstract_model(__name__, 'CoachingType')
 
     does_integ = models.BooleanField(
         INTEG_LABEL, default=True,
@@ -80,6 +81,7 @@ class CoachingEnding(mixins.BabelNamed, mixins.Sequenced):
         app_label = 'coachings'
         verbose_name = _("Reason of termination")
         verbose_name_plural = _('Coaching termination reasons')
+        abstract = dd.is_abstract_model(__name__, 'CoachingEnding')
 
     #~ name = models.CharField(_("designation"),max_length=200)
     type = dd.ForeignKey(
@@ -104,6 +106,7 @@ class Coaching(UserAuthored, mixins.DatePeriod, dd.ImportedFields, ChangeObserva
         app_label = 'coachings'
         verbose_name = _("Coaching")
         verbose_name_plural = _("Coachings")
+        abstract = dd.is_abstract_model(__name__, 'Coaching')
 
     # user = models.ForeignKey(
     #     settings.SITE.user_model,
@@ -288,6 +291,7 @@ class ClientContactType(mixins.BabelNamed):
         app_label = 'coachings'
         verbose_name = _("Client Contact type")
         verbose_name_plural = _("Client Contact types")
+        abstract = dd.is_abstract_model(__name__, 'ClientContactType')
 
 
 class ClientContact(ClientContactBase):
@@ -319,6 +323,7 @@ class ClientContact(ClientContactBase):
         app_label = 'coachings'
         verbose_name = _("Client Contact")
         verbose_name_plural = _("Client Contacts")
+        abstract = dd.is_abstract_model(__name__, 'ClientContact')
     #~ type = ClientContactTypes.field(blank=True)
     client = dd.ForeignKey(client_model)
     remark = models.TextField(_("Remarks"), blank=True)  # ,null=True)

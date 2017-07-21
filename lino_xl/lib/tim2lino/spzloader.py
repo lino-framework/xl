@@ -34,6 +34,7 @@ clocking = dd.resolve_app('clocking')
 User = rt.models.users.User
 UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
+Coaching = rt.models.coachings.Coaching
 
 lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
@@ -124,8 +125,7 @@ class TimLoader(TimLoader):
                             if row.date2 and row.date2 > row.date1:
                                 # avoid "Date period ends before it started."
                                 kw.update(end_date=row.date2)
-                        yield rt.models.coachings.Coaching(
-                            client=obj, user=user, **kw)
+                        yield Coaching(client=obj, user=user, **kw)
                     else:
                         dd.logger.warning(
                             "No coaching for non-client %s", obj)
@@ -332,7 +332,7 @@ class TimLoader(TimLoader):
             except Client.DoesNotExist:
                 pass
             else:
-                for obj in rt.models.coachings.Coaching.objects.filter(client=par1):
+                for obj in Coaching.objects.filter(client=par1):
                     obj.client = par2
                     obj.full_clean()
                     obj.save()
