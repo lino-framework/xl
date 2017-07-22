@@ -33,12 +33,12 @@ class DeclarationDetail(dd.DetailLayout):
     main = "info values"
     
     info = dd.Panel("""
-    entry_date accounting_period partner user workflow_buttons
+    voucher_date entry_date declared_period accounting_period
     ledger.MovementsByVoucher
     """, label=_("Info"))
     
     values = dd.Panel("""
-    start_date end_date 
+    partner user workflow_buttons
     c2 c2b c2c c3 c3b c4 c5
     F61 F62 FXX FYY F71
     # VouchersByDeclaration
@@ -96,10 +96,10 @@ class Declarations(dd.Table):
     model = 'bevat.Declaration'
     detail_layout = DeclarationDetail()
     insert_layout = """
-    start_date end_date
-    entry_date accounting_period
+    declared_period
+    voucher_date accounting_period
     """
-    column_names = 'number accounting_period start_date end_date workflow_buttons *'
+    column_names = 'number declared_period accounting_period workflow_buttons *'
     # detail_layout = dd.DetailLayout("""
     # start_date end_date entry_date accounting_period user workflow_buttons
     # fields
@@ -110,7 +110,7 @@ class Declarations(dd.Table):
 class DeclarationsByJournal(ledger.ByJournal, Declarations):
     params_panel_hidden = True
     #master = journals.Journal
-    column_names = "number accounting_period start_date end_date user *"
+    column_names = "number declared_period accounting_period user *"
 
 from .models import Declaration
 ledger.VoucherTypes.add_item(Declaration, DeclarationsByJournal)

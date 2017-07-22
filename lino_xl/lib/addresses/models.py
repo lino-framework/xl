@@ -129,7 +129,7 @@ class Addresses(dd.Table):
 class AddressesByPartner(Addresses):
     required_roles = dd.login_required()
     master_key = 'partner'
-    column_names = 'address_type:10 remark:10 address_column:30 primary:5'
+    column_names = 'address_type:10 remark:10 address_column:30 primary:5 *'
     label = _("Addresses")
     auto_fit_column_widths = True
     stay_in_grid = True
@@ -143,3 +143,9 @@ class AddressesByPartner(Addresses):
 
 
 
+class AddressesByCity(Addresses):
+    required_roles = dd.login_required()
+    master_key = 'city'
+    column_names = 'address_type:10 partner remark:10 street primary:5 *'
+    stay_in_grid = True
+    window_size = (80, 20)

@@ -122,7 +122,6 @@ class Payable(PartnerRelated):
             if self.payment_term:
                 self.due_date = self.payment_term.get_due_date(
                     self.voucher_date)
-
         super(Payable, self).full_clean()
         
 

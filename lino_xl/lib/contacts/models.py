@@ -306,7 +306,7 @@ class Partners(dd.Table):
 class PartnersByCity(Partners):
     master_key = 'city'
     order_by = 'street street_no street_box addr2'.split()
-    column_names = "street street_no street_box addr2 name language *"
+    column_names = "address_column #street #street_no #street_box #addr2 name *"
 
 
 class PartnersByCountry(Partners):
@@ -606,7 +606,7 @@ dd.inject_field(
         help_text=_("The next automatic id for any new partner.")))
 
 
-def site_setup(site):
+def unused_site_setup(site):
 
     site.modules.countries.Places.set_detail_layout("""
     name country
