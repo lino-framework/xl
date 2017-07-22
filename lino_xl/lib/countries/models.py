@@ -210,7 +210,7 @@ class Places(dd.Table):
 class PlacesByPlace(Places):
     label = _("Subdivisions")
     master_key = 'parent'
-    column_names = "name type zip_code *"
+    column_names = "overview type zip_code *"
 
 
 class PlacesByCountry(Places):
