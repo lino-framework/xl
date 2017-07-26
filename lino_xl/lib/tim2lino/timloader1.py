@@ -679,7 +679,7 @@ class TimLoader(TimLoader):
                 kw,
                 name=row.firme.strip() + ' ' + row.vorname.strip(),
             )
-        if issubclass(cl, List):
+        if dd.is_installed('lists') and issubclass(cl, List):
             self.store(kw, designation=row.firme)
         
         if issubclass(cl, Created):
@@ -692,7 +692,8 @@ class TimLoader(TimLoader):
                         created = make_aware(created)
                     kw.update(created=created)
 
-        if cl is not List:
+        # if cl is not List:
+        if issubclass(cl, rt.models.contacts.Partner):
             language = isolang(row['langue'])
             
             if settings.SITE.get_language_info(language):

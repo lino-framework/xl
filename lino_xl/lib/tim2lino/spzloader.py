@@ -12,9 +12,12 @@ An extension of :mod:`tim2lino <lino_xl.lib.tim2lino.fitxtures.tim2lino>`.
 from __future__ import unicode_literals
 import datetime
 
+from builtins import str
 
-from lino.utils import mti
+# from lino.utils import mti
+from lino.utils.instantiator import create_row
 from lino.api import dd, rt, _
+
 
 from .timloader1 import TimLoader
 
@@ -22,10 +25,14 @@ Person = dd.resolve_model("contacts.Person")
 Company = dd.resolve_model("contacts.Company")
 RoleType = dd.resolve_model("contacts.RoleType")
 Role = dd.resolve_model("contacts.Role")
-Household = dd.resolve_model('households.Household')
+Household = rt.models.households.Household
 Product = dd.resolve_model('products.Product')
-List = dd.resolve_model('lists.List')
+# List = dd.resolve_model('lists.List')
 Client = rt.models.tera.Client
+Course = rt.models.courses.Course
+Line = rt.models.courses.Line
+CourseAreas = rt.models.courses.CourseAreas
+Enrolment = rt.models.courses.Enrolment
 
 Account = dd.resolve_model('accounts.Account')
 
@@ -36,14 +43,13 @@ UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
 Coaching = rt.models.coachings.Coaching
 
-lists_Member = rt.models.lists.Member
+# lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
 Link = rt.models.humanlinks.Link
 LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
 from lino.utils.instantiator import create
-
 
 class TimLoader(TimLoader):
 
@@ -68,7 +74,19 @@ class TimLoader(TimLoader):
         plptypes['10'] = LinkTypes.spouse
         plptypes['11'] = LinkTypes.friend
         self.linktypes = plptypes
+        a = CourseAreas.default
+        self.other_groups = create_row(Line, name=a.text, course_area=a)
+        a = CourseAreas.life_groups
+        self.life_groups = create_row(Line, name=a.text, course_area=a)
+        a = CourseAreas.therapies
+        self.therapies = create_row(Line, name=a.text, course_area=a)
         
+    def get_users(self, row):
+        for idusr in (row.idusr1, row.idusr2, row.idusr3):
+            user = self.get_user(idusr)
+            if user is not None:
+                yield user
+
     def par_pk(self, pk):
         try:
             if pk.startswith('E'):
@@ -98,7 +116,7 @@ class TimLoader(TimLoader):
         elif prt == 'G':  # Lebensgruppen
             return Household
         elif prt == 'T':  # Therapeutische Gruppen
-            return List
+            return Household  # List
         #~ dblogger.warning("Unhandled PAR->IdPrt %r",prt)
 
     def load_par(self, row):
@@ -107,28 +125,52 @@ class TimLoader(TimLoader):
                 obj.team = self.eupen
             elif row.idpar.startswith('S'):
                 obj.team = self.stvith
-            if row.idpar != row.idpar2:
+            if row.idpar != row.idpar2 and row.idpar2.strip():
                 self.obsolete_list.append(
                     (obj, self.par_pk(row.idpar2)))
             # if isinstance(obj, Partner):
             #     obj.isikukood = row['regkood'].strip()
             #     obj.created = row['datcrea']
             #     obj.modified = datetime.datetime.now()
+            name = row.firme.strip() + ' ' + row.vorname.strip()
+            prt = row.idprt
+            if prt == "T":
+                kw = dict(name=name, line=self.other_groups, id=obj.id)
+                for user in self.get_users(row):
+                    kw.update(teacher=user)
+                    break
+                yield Course(**kw)
+                return
+            
             yield obj
-            for idusr in (row.idusr1, row.idusr2, row.idusr3):
-                user = self.get_user(idusr)
-                if user is not None:
-                    if isinstance(obj, dd.plugins.coachings.client_model):
-                        kw = dict()
-                        if row.date1:
-                            kw.update(start_date=row.date1)
-                            if row.date2 and row.date2 > row.date1:
-                                # avoid "Date period ends before it started."
-                                kw.update(end_date=row.date2)
-                        yield Coaching(client=obj, user=user, **kw)
-                    else:
-                        dd.logger.warning(
-                            "No coaching for non-client %s", obj)
+            
+            if prt == "G":
+                kw = dict(
+                    name=name, line=self.life_groups, id=obj.id,
+                    household_id=obj.id)
+                for user in self.get_users(row):
+                    kw.update(teacher=user)
+                    break
+                yield Course(**kw)
+                return
+            for user in self.get_users(row):
+                if prt == "P":
+                    kw = dict()
+                    if row.date1:
+                        kw.update(start_date=row.date1)
+                        if row.date2 and row.date2 > row.date1:
+                            # avoid "Date period ends before it started."
+                            kw.update(end_date=row.date2)
+                    therapy = Course(
+                        line=self.therapies,
+                        client_id=obj.id,
+                        name=name, teacher=user, id=obj.id)
+                    yield therapy
+                    yield Enrolment(pupil=obj, course=therapy, **kw)
+                    return
+                else:
+                    dd.logger.warning(
+                        "No coaching for non-client %s", obj)
 
     # def load_pls(self, row, **kw):
     #     kw.update(ref=row.idpls.strip())
@@ -169,6 +211,8 @@ class TimLoader(TimLoader):
         plptype = row.type.strip()
         if plptype.endswith("-"):
             return
+        if not plptype:
+            return
         if plptype[0] in "01":
             if not plptype in self.linktypes:
                 dd.logger.warning(
@@ -189,10 +233,11 @@ class TimLoader(TimLoader):
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar2", row)
                 return
-            return Link(parent=p1, child=p2, type=linktype)
+            yield Link(parent=p1, child=p2, type=linktype)
         
         elif plptype == "80":
-            p1 = self.get_partner(List, row.idpar1)
+            # p1 = self.get_partner(List, row.idpar1)
+            p1 = self.get_partner(Course, row.idpar1)
             if p1 is None:
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar1", row)
@@ -202,17 +247,18 @@ class TimLoader(TimLoader):
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar2", row)
                 return
-            return lists_Member(list=p1, partner=p2)
+            # return lists_Member(list=p1, partner=p2)
+            yield Enrolment(course=p1, pupil=p2)  # 
 
         elif plptype[0] in "78":
             p1 = self.get_partner(Household, row.idpar1)
             if p1 is None:
-                dd.logger.debug(
+                dd.logger.warning(
                     "Ignored PLP %s : Invalid idpar1", row)
                 return
             p2 = self.get_partner(Person, row.idpar2)
             if p2 is None:
-                dd.logger.debug(
+                dd.logger.warning(
                     "Ignored PLP %s : Invalid idpar2", row)
                 return
             if plptype == "81":
@@ -229,7 +275,14 @@ class TimLoader(TimLoader):
                 role = households_MemberRoles.relative
             else:
                 role = households_MemberRoles.relative
-            return households_Member(household=p1, person=p2, role=role)
+            yield households_Member(household=p1, person=p2, role=role)
+            
+            p1 = self.get_partner(Course, row.idpar1)
+            if p1 is None:
+                dd.logger.warning(
+                    "Ignored PLP %s : no course for idpar1", row)
+                return
+            yield Enrolment(course=p1, pupil=p2, remark=str(role))
         elif plptype == "81-":
             return
         dd.logger.debug(
@@ -332,33 +385,25 @@ class TimLoader(TimLoader):
             except Client.DoesNotExist:
                 pass
             else:
-                for obj in Coaching.objects.filter(client=par1):
-                    obj.client = par2
-                    obj.full_clean()
-                    obj.save()
 
+                def replace(model, k):
+                    for obj in model.objects.filter(**{k: par1}):
+                        setattr(obj, k, par2)
+                        obj.full_clean()
+                        obj.save()
+
+                # replace(Coaching, 'client')
+                
                 if isinstance(par1, Person):
-                    for obj in rt.models.lists.Member.objects.filter(partner=par1):
-                        obj.partner = par2
-                        obj.full_clean()
-                        obj.save()
-
-                    for obj in rt.models.households.Member.objects.filter(person=par1):
-                        obj.person = par2
-                        obj.full_clean()
-                        obj.save()
-
-                    for obj in rt.models.humanlinks.Link.objects.filter(
-                            parent=par1):
-                        obj.parent = par2
-                        obj.full_clean()
-                        obj.save()
-
-                    for obj in rt.models.humanlinks.Link.objects.filter(
-                            child=par1):
-                        obj.child = par2
-                        obj.full_clean()
-                        obj.save()
+                    replace(Enrolment, 'pupil')
+                    replace(rt.models.households.Member, 'person')
+                    replace(rt.models.humanlinks.Link, 'parent')
+                    replace(rt.models.humanlinks.Link, 'child')
+                    replace(Course, 'client')
+                    
+                if isinstance(par1, Household):
+                    if isinstance(par2, Household):
+                        replace(Course, 'household')
                     
                 try:
                     par1.delete()
