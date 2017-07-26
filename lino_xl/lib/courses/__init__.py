@@ -51,9 +51,10 @@ class Plugin(ad.Plugin):
         if not issubclass(self.teacher_model, Contactable):
             raise Exception("teacher_model must be contactable")
         if not issubclass(self.pupil_model, Enrollable):
-            site.logger.warning(
-                "pupil_model must be enrollable but %s isn't", 
-                self.pupil_model)
+            if False: # disabled because it causes sphinx-build to fail
+                site.logger.warning(
+                    "pupil_model must be enrollable but %s isn't", 
+                    self.pupil_model)
         # self.pupil_name_fields = set(self.pupil_name_fields.split())
         self.pupil_name_fields = fields_list(
             site.models.courses.Enrolment, self.pupil_name_fields)
