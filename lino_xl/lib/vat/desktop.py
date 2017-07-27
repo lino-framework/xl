@@ -49,7 +49,7 @@ class InvoiceDetail(dd.DetailLayout):
     """
 
     general = dd.Panel("""
-    id voucher_date partner user
+    id entry_date partner user
     due_date your_ref vat_regime #item_vat
     ItemsByInvoice:60 totals:20
     """, label=_("General"))
@@ -69,11 +69,11 @@ class Invoices(PartnerVouchers):
     required_roles = dd.login_required(LedgerUser)
     model = 'vat.VatAccountInvoice'
     order_by = ["-id"]
-    column_names = "voucher_date id number partner total_incl user *"
+    column_names = "entry_date id number partner total_incl user *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal partner
-    voucher_date total_incl
+    entry_date total_incl
     """
     # start_at_bottom = True
 
@@ -92,7 +92,7 @@ class InvoicesByJournal(Invoices, ByJournal):
                   #~ "ledger_remark:10 " \
     insert_layout = """
     partner
-    voucher_date total_incl
+    entry_date total_incl
     """
 
 class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
@@ -118,9 +118,9 @@ class VouchersByPartner(dd.VirtualTable):
     """
     required_roles = dd.login_required(LedgerUser)
     label = _("VAT vouchers")
-    order_by = ["-voucher_date", '-id']
+    order_by = ["-entry_date", '-id']
     master = 'contacts.Partner'
-    column_names = "voucher_date voucher total_incl total_base total_vat"
+    column_names = "entry_date voucher total_incl total_base total_vat"
 
     slave_grid_format = 'summary'
 
@@ -133,7 +133,7 @@ class VouchersByPartner(dd.VirtualTable):
                 rows += list(M.objects.filter(partner=obj))
 
             def by_date(a, b):
-                return cmp(b.voucher_date, a.voucher_date)
+                return cmp(b.entry_date, a.entry_date)
 
             rows.sort(by_date)
         return rows
@@ -142,9 +142,9 @@ class VouchersByPartner(dd.VirtualTable):
     def voucher(self, row, ar):
         return ar.obj2html(row)
 
-    @dd.virtualfield('ledger.Voucher.voucher_date')
-    def voucher_date(self, row, ar):
-        return row.voucher_date
+    @dd.virtualfield('ledger.Voucher.entry_date')
+    def entry_date(self, row, ar):
+        return row.entry_date
 
     @dd.virtualfield('vat.VatAccountInvoice.total_incl')
     def total_incl(self, row, ar):

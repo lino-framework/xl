@@ -63,7 +63,7 @@ class InvoiceDetail(dd.DetailLayout):
     main = "general ledger"
 
     general = dd.Panel("""
-    journal number voucher_date entry_date accounting_period workflow_buttons
+    journal number entry_date voucher_date accounting_period workflow_buttons
     partner payment_term due_date bank_account
     your_ref narration amount
     ItemsByInvoice
@@ -77,7 +77,7 @@ class InvoiceDetail(dd.DetailLayout):
 
 class ProjectInvoiceDetail(InvoiceDetail):
     general = dd.Panel("""
-    journal number voucher_date entry_date accounting_period workflow_buttons
+    journal number entry_date voucher_date accounting_period workflow_buttons
     project narration
     partner your_ref
     payment_term due_date bank_account amount
@@ -93,12 +93,12 @@ class Invoices(PartnerVouchers):
     #     **PartnerVouchers.parameters)
     # params_layout = "project partner state journal year"
     # params_panel_hidden = True
-    column_names = "voucher_date id number partner amount user *"
+    column_names = "entry_date id number partner amount user *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal
     partner
-    voucher_date
+    entry_date
     """
     # start_at_bottom = True
 
@@ -124,22 +124,22 @@ class InvoicesByJournal(ByJournal, Invoices):
 
     """
     params_layout = "partner state year"
-    column_names = "number voucher_date " \
+    column_names = "number entry_date " \
         "partner amount due_date user workflow_buttons *"
     insert_layout = """
     partner
-    voucher_date
+    entry_date
     """
     order_by = ["-id"]
 
 
 class ProjectInvoicesByJournal(InvoicesByJournal):
-    column_names = "number voucher_date " \
+    column_names = "number entry_date " \
         "project partner amount due_date user workflow_buttons *"
     insert_layout = """
     project
     partner
-    voucher_date
+    entry_date
     """
     detail_layout = ProjectInvoiceDetail()
     
@@ -175,7 +175,7 @@ class VouchersByPartner(dd.VirtualTable):
                 rows += list(M.objects.filter(**flt))
 
             def by_date(a, b):
-                return cmp(b.voucher_date, a.voucher_date)
+                return cmp(b.entry_date, a.entry_date)
 
             rows.sort(by_date)
         return rows

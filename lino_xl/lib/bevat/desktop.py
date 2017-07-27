@@ -33,7 +33,7 @@ class DeclarationDetail(dd.DetailLayout):
     main = "info values"
     
     info = dd.Panel("""
-    voucher_date entry_date declared_period accounting_period
+    entry_date declared_period accounting_period
     ledger.MovementsByVoucher
     """, label=_("Info"))
     
@@ -97,7 +97,7 @@ class Declarations(dd.Table):
     detail_layout = DeclarationDetail()
     insert_layout = """
     declared_period
-    voucher_date accounting_period
+    entry_date accounting_period
     """
     column_names = 'number declared_period accounting_period workflow_buttons *'
     # detail_layout = dd.DetailLayout("""

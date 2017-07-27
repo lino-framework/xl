@@ -331,7 +331,7 @@ class VatItemBase(VoucherItem, VatTotal):
             country = dd.plugins.countries.get_my_country()
         return rt.modules.vat.VatRule.get_vat_rule(
             tt, self.voucher.vat_regime, self.vat_class, country,
-            self.voucher.voucher_date)
+            self.voucher.entry_date)
 
     # def save(self,*args,**kw):
         # super(VatItemBase,self).save(*args,**kw)
@@ -426,7 +426,8 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
     """
 
     declared_period = dd.ForeignKey(
-        'ledger.AccountingPeriod', blank=True)
+        'ledger.AccountingPeriod',
+        blank=True, verbose_name=_("Declared period"))
 
     
     class Meta:
@@ -436,12 +437,12 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
         return self.get_default_match()  # no manual match field
 
     def full_clean(self, *args, **kw):
-        if self.voucher_date:
+        if self.entry_date:
             AP = rt.models.ledger.AccountingPeriod
             # declare the previous month by default 
             if not self.declared_period_id:
                 self.declared_period = AP.get_default_for_date(
-                    self.voucher_date - AMONTH)
+                    self.entry_date - AMONTH)
                 
             # if not self.start_date:
             #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)

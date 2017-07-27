@@ -292,7 +292,7 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
         qs = Movement.objects.filter(
             partner=self.get_partner(),
             cleared=False,
-            value_date__lte=self.voucher_date)
+            value_date__lte=self.entry_date)
         qs = qs.exclude(voucher=self)
         return Movement.get_balance(not self.journal.dc, qs)
 
@@ -308,7 +308,7 @@ class InvoiceDetail(dd.DetailLayout):
     """, label=_("Totals"))
 
     invoice_header = dd.Panel("""
-    voucher_date partner vat_regime
+    entry_date partner vat_regime
     #order subject your_ref match
     payment_term due_date:20 paper_type printed
     """, label=_("Header"))  # sales_remark
@@ -324,7 +324,7 @@ class InvoiceDetail(dd.DetailLayout):
     """, label=_("More"))
 
     ledger = dd.Panel("""
-    entry_date journal accounting_period number narration
+    #voucher_date journal accounting_period number narration
     ledger.MovementsByVoucher
     """, label=_("Ledger"))
 
@@ -334,10 +334,10 @@ class Invoices(SalesDocuments):
     required_roles = dd.login_required(LedgerUser)
     order_by = ["-id"]
     # order_by = ["journal", "accounting_period__year", "number"]
-    column_names = "id voucher_date partner total_incl user *"
+    column_names = "id entry_date partner total_incl user *"
     detail_layout = InvoiceDetail()
     insert_layout = dd.InsertLayout("""
-    partner voucher_date
+    partner entry_date
     subject
     """, window_size=(40, 'auto'))
     # parameters = dict(
@@ -364,7 +364,7 @@ class InvoicesByJournal(Invoices, ByJournal):
     order_by = ["-accounting_period__year", "-number"]
     params_panel_hidden = True
     params_layout = "partner year state cleared"
-    column_names = "number_with_year voucher_date due_date " \
+    column_names = "number_with_year entry_date due_date " \
         "partner " \
         "total_incl subject:10 " \
         "workflow_buttons *"
@@ -569,7 +569,7 @@ class DocumentsToSign(Invoices):
     use_as_default_table = False
     filter = dict(user__isnull=True)
     # can_add = perms.never
-    column_names = "number:4 #order voucher_date " \
+    column_names = "number:4 #order entry_date " \
         "partner:10 " \
         "subject:10 total_incl total_base total_vat "
     # actions = Invoices.actions + [ SignAction() ]
@@ -577,9 +577,9 @@ class DocumentsToSign(Invoices):
 
 class InvoicesByPartner(Invoices):
     # model = 'sales.VatProductInvoice'
-    order_by = ["-voucher_date", '-id']
+    order_by = ["-entry_date", '-id']
     master_key = 'partner'
-    column_names = "voucher_date journal__ref number total_incl "\
+    column_names = "entry_date journal__ref number total_incl "\
                    "workflow_buttons *"
 
 

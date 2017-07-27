@@ -401,6 +401,12 @@ class Voucher(UserAuthored, mixins.Registrable):
             self.number = self.journal.get_next_number(self)
         super(Voucher, self).full_clean(*args, **kwargs)
 
+    def entry_date_changed(self, ar):
+        self.accounting_period = AccountingPeriod.get_default_for_date(
+            self.entry_date)
+        self.voucher_date = self.entry_date
+        self.accounting_period_changed(ar)
+
     def accounting_period_changed(self, ar):
         """If user changes the :attr:`accounting_period`, then the `number`
         might need to change.
@@ -409,7 +415,7 @@ class Voucher(UserAuthored, mixins.Registrable):
         self.number = self.journal.get_next_number(self)
 
     def get_due_date(self):
-        return self.voucher_date
+        return self.entry_date
 
     def get_trade_type(self):
         return self.journal.trade_type

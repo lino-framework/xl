@@ -88,7 +88,7 @@ class PartnerRelated(dd.Model):
 
     def payment_term_changed(self, ar=None):
         if self.payment_term:
-            self.due_date = self.payment_term.get_due_date(self.voucher_date)
+            self.due_date = self.payment_term.get_due_date(self.entry_date)
 
 
 class Matching(dd.Model):

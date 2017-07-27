@@ -151,7 +151,7 @@ class InvoiceDetail(dd.DetailLayout):
     total_incl
     """
 
-    topleft = """id entry_date voucher_date partner
+    topleft = """id entry_date #voucher_date partner
     payment_term due_date your_ref vat_regime
     workflow_buttons user
     """
@@ -171,11 +171,11 @@ class Invoices(PartnerVouchers):
     required_roles = dd.login_required(LedgerUser)
     model = 'ana.AnaAccountInvoice'
     order_by = ["-id"]
-    column_names = "voucher_date id number partner total_incl user *"
+    column_names = "entry_date id number partner total_incl user *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal partner
-    voucher_date total_incl
+    entry_date total_incl
     """
     # start_at_bottom = True
 
@@ -187,14 +187,14 @@ class InvoicesByJournal(Invoices, ByJournal):
 
     """
     params_layout = "partner state year"
-    column_names = "number voucher_date due_date " \
+    column_names = "number entry_date due_date " \
         "partner " \
         "total_incl " \
         "total_base total_vat user workflow_buttons *"
                   #~ "ledger_remark:10 " \
     insert_layout = """
     partner
-    voucher_date total_incl
+    entry_date total_incl
     """
 
 class AnalyticAccountsBalance(AccountsBalance):

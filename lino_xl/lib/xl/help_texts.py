@@ -1089,10 +1089,10 @@ having that match."""),
     'lino_xl.lib.ledger.Voucher.journal' : _("""The journal into which this voucher has been booked. This is a
 mandatory pointer to a Journal instance."""),
     'lino_xl.lib.ledger.Voucher.number' : _("""The sequence number of this voucher in the journal."""),
-    'lino_xl.lib.ledger.Voucher.entry_date' : _("""The date of the journal entry, i.e. when this voucher has been
+    'lino_xl.lib.ledger.Voucher.entry_date' : _("""The date of the journal entry, i.e. when this voucher is to
 journalized or booked."""),
-    'lino_xl.lib.ledger.Voucher.voucher_date' : _("""The date on the voucher, i.e. when this voucher has been
-issued by its emitter."""),
+    'lino_xl.lib.ledger.Voucher.voucher_date' : _("""The date on the voucher (i.e. when it has been issued by its
+emitter)."""),
     'lino_xl.lib.ledger.Voucher.accounting_period' : _("""The accounting period and fiscal year to which this entry is
 to be assigned to. The default value is determined from
 entry_date."""),

@@ -82,7 +82,7 @@ def objects(refs="PMO BNK"):
         while date < end_date:
             voucher = jnl.create_voucher(
                 user=USERS.pop(),
-                voucher_date=date + delta(days=offset))
+                entry_date=date + delta(days=offset))
             yield voucher
 
             # start action request for do_fill:
@@ -111,7 +111,7 @@ def objects(refs="PMO BNK"):
                 voucher.delete()
             else:
                 if ref == 'PMO':
-                    voucher.execution_date = voucher.voucher_date
+                    voucher.execution_date = voucher.entry_date
                 voucher.register(REQUEST)
                 voucher.save()
 
