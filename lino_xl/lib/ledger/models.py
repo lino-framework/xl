@@ -325,8 +325,8 @@ class Voucher(UserAuthored, mixins.Registrable):
         verbose_name_plural = _("Vouchers")
 
     journal = JournalRef()
-    voucher_date = models.DateField(_("Voucher date"), default=dd.today)
     entry_date = models.DateField(_("Entry date"), default=dd.today)
+    voucher_date = models.DateField(_("Voucher date"))
     accounting_period = models.ForeignKey(
         'ledger.AccountingPeriod', blank=True)
     number = VoucherNumber(_("No."), blank=True, null=True)
@@ -394,6 +394,8 @@ class Voucher(UserAuthored, mixins.Registrable):
         return super(Voucher, model).quick_search_filter(search_text, prefix)
 
     def full_clean(self, *args, **kwargs):
+        if self.voucher_date is None:
+            self.voucher_date = self.entry_date
         if not self.accounting_period_id:
             self.accounting_period = AccountingPeriod.get_default_for_date(
                 self.entry_date)
