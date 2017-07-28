@@ -63,9 +63,9 @@ class UploadTypes(UploadTypes):
 
 
 class Upload(Upload, mixins.ProjectRelated, ContactRelated,
-             mixins.DatePeriod):
+             mixins.DateRange):
     """Extends the library model by adding the `ContactRelated`,
-    `ProjectRelated` and `DatePeriod` mixins and two fields.
+    `ProjectRelated` and `DateRange` mixins and two fields.
 
     .. attribute:: remark
     
@@ -149,7 +149,7 @@ class Uploads(Uploads):
     description
     """
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         # puser=models.ForeignKey(
         #     'users.User', blank=True, null=True,
         #     verbose_name=_("Uploaded by")),

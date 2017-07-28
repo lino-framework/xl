@@ -79,7 +79,7 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
             kw = dict(partner=i.get_partner())
             kw.update(match=i.get_match())
             b = self.create_movement(
-                i, i.account or self.item_account,
+                i, (i.account or self.item_account, None),
                 i.project, i.dc, i.amount, **kw)
             movements_and_items.append((b, i))
 

@@ -92,7 +92,7 @@ class CoachingEnding(mixins.BabelNamed, mixins.Sequenced):
 
 
 @dd.python_2_unicode_compatible
-class Coaching(UserAuthored, mixins.DatePeriod, dd.ImportedFields, ChangeObservable):
+class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservable):
 
     """A Coaching ("Begleitung" in German and "intervention" in French) is
     when a given client is being coached by a given user during a

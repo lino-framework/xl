@@ -136,6 +136,7 @@ class TimLoader(TimLoader):
             prt = row.idprt
             if prt == "T":
                 kw = dict(name=name, line=self.other_groups, id=obj.id)
+                kw.update(ref=row.idpar.strip())
                 for user in self.get_users(row):
                     kw.update(teacher=user)
                     break
@@ -148,6 +149,7 @@ class TimLoader(TimLoader):
                 kw = dict(
                     name=name, line=self.life_groups, id=obj.id,
                     household_id=obj.id)
+                kw.update(ref=row.idpar.strip())
                 for user in self.get_users(row):
                     kw.update(teacher=user)
                     break

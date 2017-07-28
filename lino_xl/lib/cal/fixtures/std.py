@@ -13,7 +13,6 @@ from __future__ import unicode_literals
 
 import datetime
 from dateutil.relativedelta import relativedelta
-ONE_DAY = relativedelta(days=1)
 from dateutil.easter import easter
 
 from django.conf import settings

@@ -19,7 +19,7 @@ from lino.api import dd, rt, _
 from lino.core.utils import lazy_format
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
-from lino.mixins import Created, ObservedPeriod
+from lino.mixins import Created, ObservedDateRange
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.choicelists import MailModes
 from lino_xl.lib.cal.mixins import daterange_text
@@ -242,7 +242,7 @@ class Votes(dd.Table):
     # stay_in_grid = True
     required_roles = dd.login_required(VotesUser)
 
-    parameters = ObservedPeriod(
+    parameters = ObservedDateRange(
         observed_event=VoteEvents.field(blank=True))
 
     params_layout = """

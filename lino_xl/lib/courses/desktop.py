@@ -183,7 +183,7 @@ class Activities(dd.Table):
     order_by = ['-start_date', '-start_time']
     auto_fit_column_widths = True
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         line=models.ForeignKey('courses.Line', blank=True, null=True),
         topic=models.ForeignKey('courses.Topic', blank=True, null=True),
         teacher=models.ForeignKey(
@@ -431,7 +431,7 @@ class Enrolments(dd.Table):
     # debug_permissions=20130531
     model = 'courses.Enrolment'
     stay_in_grid = True
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         author=dd.ForeignKey(
             settings.SITE.user_model, blank=True, null=True),
         state=EnrolmentStates.field(blank=True, null=True),

@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 import datetime
 from dateutil.relativedelta import relativedelta
-ONE_DAY = relativedelta(days=1)
+from lino.utils import ONE_DAY
 DEMO_DURATION = relativedelta(hours=1, minutes=30)
 
 from django.conf import settings

@@ -26,7 +26,7 @@ from lino.api import dd, rt, _
 from lino import mixins
 from lino.utils import mti
 from lino.utils.xmlgen.html import E
-from lino.mixins.periods import DatePeriod
+from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.plausibility.choicelists import Checker
@@ -38,7 +38,7 @@ from lino_xl.lib.accounts.fields import DebitOrCreditField
 from .utils import get_due_movements, check_clearings
 from .choicelists import (FiscalYears, VoucherTypes, VoucherStates,
                           PeriodStates, JournalGroups, TradeTypes)
-from .mixins import ProjectRelated, VoucherNumber, JournalRef
+from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable
 from .roles import VoucherSupervisor
 # from .mixins import FKMATCH
 from .ui import *
@@ -209,7 +209,7 @@ class Journal(mixins.BabelNamed,
 
 
 @dd.python_2_unicode_compatible
-class AccountingPeriod(DatePeriod, mixins.Referrable):
+class AccountingPeriod(DateRange, mixins.Referrable):
     class Meta:
         app_label = 'ledger'
         verbose_name = _("Accounting period")
@@ -261,6 +261,21 @@ class AccountingPeriod(DatePeriod, mixins.Referrable):
     <https://docs.python.org/2/library/string.html#formatstrings>`_
 
     """
+
+    @classmethod
+    def get_periods_in_range(cls, p1, p2):
+        return cls.objects.filter(ref__gte=p1.ref, ref__lte=p2.ref)
+    
+    @classmethod
+    def get_period_filter(cls, fieldname, p1, p2, **kwargs):
+        if p1 is None:
+            return kwargs
+        if p2 is None:
+            kwargs[fieldname] = p1
+        else:
+            periods = cls.get_periods_in_range(p1, p2)
+            kwargs[fieldname+'__in'] = periods
+        return kwargs
 
     @classmethod
     def get_default_for_date(cls, d):
@@ -316,7 +331,7 @@ class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
 
 
 @dd.python_2_unicode_compatible
-class Voucher(UserAuthored, mixins.Registrable):
+class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     manager_roles_required = dd.login_required(VoucherSupervisor)
     
     class Meta:
@@ -348,18 +363,18 @@ class Voucher(UserAuthored, mixins.Registrable):
         """
         return dd.plugins.ledger.currency_symbol
 
-    @classmethod
-    def get_parameter_fields(cls, **fields):
-        fields.setdefault(
-            'accounting_period', dd.ForeignKey(
-                'ledger.AccountingPeriod', blank=True, null=True))
-        return super(Voucher, cls).get_parameter_fields(**fields)
+    # @classmethod
+    # def get_parameter_fields(cls, **fields):
+    #     fields.setdefault(
+    #         'accounting_period', dd.ForeignKey(
+    #             'ledger.AccountingPeriod', blank=True, null=True))
+    #     return super(Voucher, cls).get_parameter_fields(**fields)
 
-    @classmethod
-    def get_simple_parameters(cls):
-        s = super(Voucher, cls).get_simple_parameters()
-        s.add('accounting_period')
-        return s
+    # @classmethod
+    # def get_simple_parameters(cls):
+    #     s = super(Voucher, cls).get_simple_parameters()
+    #     s.add('accounting_period')
+    #     return s
 
     @dd.displayfield(_("No."))
     def number_with_year(self, ar):
@@ -569,7 +584,7 @@ class Voucher(UserAuthored, mixins.Registrable):
     def get_wanted_movements(self):
         raise NotImplementedError()
 
-    def create_movement(self, item, account, project, dc, amount, **kw):
+    def create_movement(self, item, acc_tuple, project, dc, amount, **kw):
         """Create a movement for this voucher.
 
         The specified `item` may be `None` if this the movement is
@@ -579,10 +594,13 @@ class Voucher(UserAuthored, mixins.Registrable):
 
         """
         # dd.logger.info("20151211 ledger.create_movement()")
+        account, ana_account = acc_tuple
         if not isinstance(account, rt.models.accounts.Account):
             raise Warning("{} is not an Account object".format(account))
         kw['voucher'] = self
         kw['account'] = account
+        if ana_account is not None:
+            kw['ana_account'] = ana_account
         kw['value_date'] = self.entry_date
         if account.clearable:
             kw.update(cleared=False)
@@ -657,7 +675,7 @@ Voucher.set_widget_options('number_with_year', width=8)
 
 
 @dd.python_2_unicode_compatible
-class Movement(ProjectRelated):
+class Movement(ProjectRelated, PeriodRangeObservable):
     allow_cascaded_delete = ['voucher']
 
     class Meta:
@@ -665,6 +683,8 @@ class Movement(ProjectRelated):
         verbose_name = _("Movement")
         verbose_name_plural = _("Movements")
 
+    observable_period_field = 'voucher__accounting_period'
+    
     voucher = models.ForeignKey(Voucher)
 
     partner = dd.ForeignKey(
@@ -794,7 +814,8 @@ class Movement(ProjectRelated):
                 s += "): {0}".format(dm.balance)
                 mvts.append(s)
             return '\n'.join(mvts)
-            
+
+
 Movement.set_widget_options('voucher_link', width=12)
 
 

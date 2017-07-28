@@ -11,7 +11,7 @@ from django.db import models
 from django.conf import settings
 from django.db.models import Q
 
-from lino.mixins.periods import DatePeriod
+from lino.mixins.periods import DateRange
 from lino.mixins import Sequenced
 from lino.modlib.system.choicelists import PeriodEvents
 
@@ -44,7 +44,7 @@ TradeTypes.taxes.update(
 
 
 @dd.python_2_unicode_compatible
-class VatRule(Sequenced, DatePeriod):
+class VatRule(Sequenced, DateRange):
     class Meta:
         verbose_name = _("VAT rule")
         verbose_name_plural = _("VAT rules")

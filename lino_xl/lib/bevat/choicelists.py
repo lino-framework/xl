@@ -50,7 +50,7 @@ mfld("83", CREDIT, '83', _("Investments"))
 
 mfld("84", DEBIT, "81 82 83", 
       _("CN purchases on operations in 86 and 88"),
-      vat_regimes="intracom")
+      vat_regimes="intracom", only_dc=True)
 mfld("85", DEBIT, "81 82 83", _("CN purchases on other operations"),
       vat_regimes="!intracom !delayed")
 mfld("86", CREDIT, "81 82 83",
@@ -63,20 +63,20 @@ mfld("88", CREDIT, "81 82 83", _("IC services"),
 
 # (IV) DUE TAXES
 
-mfld("54", CREDIT, '54', _("Due VAT for 01, 02 and 03"),
+mfld("54", DEBIT, '54', _("Due VAT for 01, 02 and 03"),
      vat_regimes="!intracom !delayed !cocontractor", is_payable=True)
-mfld("55", CREDIT, '54', _("Due VAT for 86 and 88"),
+mfld("55", DEBIT, '54', _("Due VAT for 86 and 88"),
      vat_regimes="intracom", is_payable=True)
-mfld("56", CREDIT, '54',
+mfld("56", DEBIT, '54',
       _("Due VAT for 87 except those covered by 57"),
      vat_regimes="cocontractor", is_payable=True)
-mfld("57", CREDIT, '54',
+mfld("57", DEBIT, '54',
       _("Due VAT for 87 except those covered by 57"),
       vat_regimes="delayed", is_payable=True)
-wfld("61", CREDIT, None, _("Miscellaneous corrections due"),
+wfld("61", DEBIT, None, _("Miscellaneous corrections due"),
      is_payable=True)
 
-sfld("XX", CREDIT, None, _("Total of due taxes"),
+sfld("XX", DEBIT, None, _("Total of due taxes"),
      "54 55 56 57")
 
 # (V) DEDUCTIBLE TAXES
@@ -90,6 +90,6 @@ mfld("64", DEBIT, '59', _("VAT on sales CN"), is_payable=True)
 sfld("YY", DEBIT, None, _("Total of deductible taxes"),
      "59 62 64")
 
-sfld("71", CREDIT, None, _("Total of deductible taxes"), "XX YY")
+sfld("71", DEBIT, None, _("Total to pay"), "XX YY")
 
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

@@ -133,6 +133,9 @@ class InvoiceItem(AccountVoucherItem, VatItemBase):
                     raise ValidationError("No analytic account")
         super(InvoiceItem, self).full_clean(*args, **kwargs)
 
+    def get_ana_account(self):
+        return self.ana_account
+
 
 class InvoiceDetail(dd.DetailLayout):
     """The detail layout used by :class:`Invoices`.

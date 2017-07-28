@@ -93,7 +93,7 @@ class Meetings(dd.Table):
     auto_fit_column_widths = True
 
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         user=models.ForeignKey(
             settings.SITE.user_model,
             blank=True, null=True),

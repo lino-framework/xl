@@ -22,9 +22,10 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
+from lino_xl.lib.ledger.mixins import PeriodRange
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
-from lino.mixins.periods import DatePeriod
+from lino.mixins.periods import DateRange
 
 from .utils import ZERO, ONE
 from .choicelists import VatClasses, VatRegimes
@@ -250,12 +251,13 @@ class VatDocument(ProjectRelated, VatTotal):
         for i in self.items.order_by('seqno'):
             vr = i.get_vat_rule(tt)
             b = i.get_base_account(tt)
+            ana_account = i.get_ana_account()
             if i.total_base:
                 if b is None:
                     msg = "No base account for {0} (tt {1}, total_base {2})"
                     raise Warning(msg.format(i, tt, i.total_base))
                 sums.collect(
-                    (b, self.project, i.vat_class, self.vat_regime),
+                    ((b, ana_account), self.project, i.vat_class, self.vat_regime),
                     i.total_base)
             if i.total_vat and vr is not None:
                 if not vr.vat_account:
@@ -264,14 +266,17 @@ class VatDocument(ProjectRelated, VatTotal):
                         
                 vat_amount = i.total_vat
                 if vr.vat_returnable:
-                    acc = vr.vat_returnable_account or b
+                    if vr.vat_returnable_account is None:
+                        acc_tuple = (b, ana_account)
+                    else:
+                        acc_tuple = (vr.vat_returnable_account, None)
                     sums.collect(
-                        (acc, self.project,
+                        (acc_tuple, self.project,
                          i.vat_class, self.vat_regime),
                         vat_amount)
                     vat_amount = - vat_amount
                 sums.collect(
-                    (vr.vat_account, self.project,
+                    ((vr.vat_account, None), self.project,
                      i.vat_class, self.vat_regime),
                     vat_amount)
         return sums
@@ -415,8 +420,7 @@ class QtyVatItemBase(VatItemBase):
         if self.unit_price is not None and self.qty is not None:
             self.set_amount(ar, myround(self.unit_price * self.qty))
 
-
-class VatDeclaration(Payable, Voucher, DatePeriod):
+class VatDeclaration(Payable, Voucher, PeriodRange):
 
     """
     A VAT declaration is when a company declares to the state
@@ -425,11 +429,6 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
     It is at the same time a ledger voucher.
     """
 
-    declared_period = dd.ForeignKey(
-        'ledger.AccountingPeriod',
-        blank=True, verbose_name=_("Declared period"))
-
-    
     class Meta:
         abstract = True
         
@@ -440,8 +439,8 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
         if self.entry_date:
             AP = rt.models.ledger.AccountingPeriod
             # declare the previous month by default 
-            if not self.declared_period_id:
-                self.declared_period = AP.get_default_for_date(
+            if not self.start_period_id:
+                self.start_period = AP.get_default_for_date(
                     self.entry_date - AMONTH)
                 
             # if not self.start_date:
@@ -516,12 +515,15 @@ class VatDeclaration(Payable, Voucher, DatePeriod):
             else:
                 sums[fld.name] = ZERO
 
-        qs = rt.models.ledger.Movement.objects.filter(
+        flt = self.get_period_filter(
+            'voucher__accounting_period',
             # voucher__journal=jnl,
             # voucher__year=self.accounting_period.year,
-            voucher__journal__must_declare=True,
-            voucher__accounting_period=self.declared_period)
+            voucher__journal__must_declare=True)
             # voucher__declared_in__isnull=True)
+
+
+        qs = rt.models.ledger.Movement.objects.filter(**flt)
 
         # print(20170713, qs)
 

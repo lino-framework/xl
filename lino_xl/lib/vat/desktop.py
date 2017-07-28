@@ -84,7 +84,7 @@ class InvoicesByJournal(Invoices, ByJournal):
     must be :class:`lino_xl.lib.vat.models.VatAccountInvoice`)
 
     """
-    params_layout = "partner state year"
+    params_layout = "partner state start_period end_period user"
     column_names = "number voucher_date due_date " \
         "partner " \
         "total_incl " \

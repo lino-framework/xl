@@ -129,11 +129,11 @@ class PaymentOrder(FinancialVoucher, Printable):
             yield m
             if acc.needs_partner:
                 yield self.create_movement(
-                    i, acc, m.project, not m.dc, m.amount,
+                    i, (acc, None), m.project, not m.dc, m.amount,
                     partner=m.partner, match=i.get_match())
         if not acc.needs_partner:
             yield self.create_movement(
-                None, acc, None, not self.journal.dc, amount)
+                None, (acc, None), None, not self.journal.dc, amount)
 
     def add_item_from_due(self, obj, **kwargs):
         # if obj.bank_account is None:
@@ -180,7 +180,8 @@ class BankStatement(DatedFinancialVoucher):
         self.balance2 = self.balance1 + amount
         for m, i in movements_and_items:
             yield m
-        yield self.create_movement(None, a, None, self.journal.dc, amount)
+        yield self.create_movement(
+            None, (a, None), None, self.journal.dc, amount)
 
 
 class JournalEntryItem(DatedFinancialVoucherItem):

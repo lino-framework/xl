@@ -40,7 +40,7 @@ from lino.api import dd, rt, _
 #     description
 #     """, window_size=(50, 15))
 
-#     parameters = mixins.ObservedPeriod(
+#     parameters = mixins.ObservedDateRange(
 #         show_closed=dd.YesNo.field(
 #             blank=True, default=dd.YesNo.no.as_callable,
 #             help_text=_("Show milestons which are closed.")))
@@ -89,7 +89,7 @@ from lino.api import dd, rt, _
 
 class Deployments(dd.Table):
     model = 'deploy.Deployment'
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         show_closed=dd.YesNo.field(
             blank=True, default=dd.YesNo.no.as_callable,
             help_text=_("Show deployments on closed milestones.")))

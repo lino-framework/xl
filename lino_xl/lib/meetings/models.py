@@ -29,7 +29,7 @@ from lino.mixins import Referrable
 from lino.mixins.duplicable import Duplicable
 from lino_xl.lib.tickets.mixins import Milestone
 
-# from lino.mixins.periods import DatePeriod
+# from lino.mixins.periods import DateRange
 # from lino_xl.lib.excerpts.mixins import Certifiable
 # from lino_xl.lib.excerpts.mixins import ExcerptTitle
 # from lino.modlib.users.mixins import UserAuthored
@@ -43,7 +43,7 @@ from lino_xl.lib.stars.mixins import Starrable
 # from lino_xl.lib.contacts.mixins import ContactRelated
 
 from datetime import datetime
-from lino.utils.dates import DatePeriodValue
+from lino.utils.dates import DateRangeValue
 
 from .choicelists import MeetingStates
 from lino_xl.lib.tickets.choicelists import TicketStates

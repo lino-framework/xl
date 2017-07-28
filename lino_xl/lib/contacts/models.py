@@ -43,7 +43,7 @@ from lino_xl.lib.countries.mixins import AddressLocation
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
-from lino.mixins.periods import ObservedPeriod
+from lino.mixins.periods import ObservedDateRange
 
 
 from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
@@ -208,7 +208,7 @@ class Partner(Contactable, Phonable, mixins.Polymorphic,
                 blank=True,
                 help_text=_("Extended filter criteria")))
         fields = super(Partner, cls).get_parameter_fields(**fields)
-        return ObservedPeriod(**fields)
+        return ObservedDateRange(**fields)
 
     @classmethod
     def get_request_queryset(self, ar):

@@ -148,20 +148,27 @@ add('60', _("Cohabitating"), 'cohabitating')
 
 
 class ResidenceTypes(dd.ChoiceList):
+    """The list of Belgian resident registers
+    (Einwohnerregister, Registre de résidents).
+
+    https://en.wikipedia.org/wiki/Resident_registration
+
+    ======================= =========================== =======================
+    de                      fr                          nl
+    ======================= =========================== =======================
+    Bevölkerungsregister    Registre de la population   Bevolkingsregister
+    Fremdenregister         Registre des étrangers      Vreemdelingenregister
+    Warteregister           Registre d'attente
+    ======================= =========================== =======================
 
     """
-    Types of registries for the Belgian residence.
-    
-    """
-    verbose_name = _("Residence type")
-    verbose_name_plural = _("Residence types")
+    verbose_name = _("Resident register")
+    verbose_name_plural = _("Resident registers")
 
 add = ResidenceTypes.add_item
-# Bevölkerungsregister registre de la population
-add('1', _("Registry of citizens"))
-# Fremdenregister        Registre des étrangers      vreemdelingenregister
-add('2', _("Registry of foreigners"))
-add('3', _("Waiting for registry"))    # Warteregister
+add('1', _("Register of citizens"))
+add('2', _("Register of foreigners"))
+add('3', _("Waiting register"))
 
 
 class BeIdCardTypes(dd.ChoiceList):

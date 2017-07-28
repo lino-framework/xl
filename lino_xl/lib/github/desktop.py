@@ -15,7 +15,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from lino.core.roles import Explorer
 from lino_xl.lib.tickets.roles import TicketsStaff, TicketsUser
 from lino.modlib.users.mixins import My
-from lino.mixins.periods import ObservedPeriod
+from lino.mixins.periods import ObservedDateRange
 
 from .models import Commit, Repository
 
@@ -59,7 +59,7 @@ class Commits(dd.Table):
     """
     order_by = ["-created"]
 
-    parameters = ObservedPeriod()
+    parameters = ObservedDateRange()
     #todo add params for repo, not assigned
 
 class CommitsByRepository(Commits):

@@ -43,7 +43,7 @@ class Coachings(dd.Table):
     help_text = _("Liste des accompagnements.")
     model = 'coachings.Coaching'
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         coached_by=models.ForeignKey(
             'users.User',
             blank=True, null=True,

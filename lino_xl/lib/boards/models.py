@@ -21,7 +21,7 @@ from lino.modlib.office.roles import OfficeUser
 from .mixins import BoardDecision
 
 
-class Board(mixins.BabelNamed, mixins.DatePeriod):
+class Board(mixins.BabelNamed, mixins.DateRange):
 
     class Meta:
         app_label = 'boards'
