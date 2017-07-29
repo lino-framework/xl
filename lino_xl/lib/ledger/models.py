@@ -180,7 +180,7 @@ class Journal(mixins.BabelNamed,
         if self.force_sequence:
             if doc.number + 1 != self.get_next_number(doc):
                 return _("%s is not the last voucher in journal"
-                         % unicode(doc))
+                         % str(doc))
 
     def get_template_groups(self):
         """Here we override the class method by an instance method.  This
@@ -641,10 +641,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
 
     # def obj2html(self, ar):
     def obj2href(self, ar):
-        mc = self.get_mti_leaf()
-        if mc is None:
-            return ''
-        return ar.obj2html(mc)
+        return ar.obj2html(self.get_mti_leaf())
 
     #~ def add_voucher_item(self,account=None,**kw):
         #~ if account is not None:
@@ -716,6 +713,8 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     def select_text(self):
         v = self.voucher.get_mti_leaf()
+        if v is None:
+            return str(self.voucher)
         return "%s (%s)" % (v, v.entry_date)
 
     @dd.virtualfield(dd.PriceField(_("Debit")))
@@ -734,16 +733,15 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     def voucher_link(self, ar):
         if ar is None:
             return ''
-        obj = self.voucher.get_mti_leaf()
-        if obj is None:
-            return str(obj)
-        return ar.obj2html(obj)
+        return ar.obj2html(self.voucher.get_mti_leaf())
 
     @dd.displayfield(_("Voucher partner"))
     def voucher_partner(self, ar):
         if ar is None:
             return ''
         voucher = self.voucher.get_mti_leaf()
+        if voucher is None:
+            return ''
         p = voucher.get_partner()
         if p is None:
             return ''
@@ -767,7 +765,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         #~ return self.__class__.objects.filter().order_by('seqno')
 
     def __str__(self):
-        return "%s.%d" % (unicode(self.voucher), self.seqno)
+        return "%s.%d" % (str(self.voucher), self.seqno)
 
     # def get_match(self):
     #     return self.match or str(self.voucher)
