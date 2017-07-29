@@ -157,18 +157,18 @@ class TimLoader(TimLoader):
                 return
             for user in self.get_users(row):
                 if prt == "P":
+                    therapy = Course(
+                        line=self.therapies,
+                        client_id=obj.id,
+                        name=name, teacher=user, id=obj.id,
+                        ref=row.idpar.strip())
+                    yield therapy
                     kw = dict()
                     if row.date1:
                         kw.update(start_date=row.date1)
                         if row.date2 and row.date2 > row.date1:
                             # avoid "Date period ends before it started."
                             kw.update(end_date=row.date2)
-                    kw.update(ref=row.idpar.strip())
-                    therapy = Course(
-                        line=self.therapies,
-                        client_id=obj.id,
-                        name=name, teacher=user, id=obj.id)
-                    yield therapy
                     yield Enrolment(pupil=obj, course=therapy, **kw)
                     return
                 else:
