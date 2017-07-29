@@ -916,6 +916,8 @@ class MovementsByAccount(Movements):
             return ''
         elems = []
         voucher = self.voucher.get_mti_leaf()
+        if voucher is None:
+            return str(voucher)
         if voucher.narration:
             elems.append(voucher.narration)
         p = voucher.get_partner()
