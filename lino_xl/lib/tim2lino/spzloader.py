@@ -163,6 +163,7 @@ class TimLoader(TimLoader):
                         if row.date2 and row.date2 > row.date1:
                             # avoid "Date period ends before it started."
                             kw.update(end_date=row.date2)
+                    kw.update(ref=row.idpar.strip())
                     therapy = Course(
                         line=self.therapies,
                         client_id=obj.id,
@@ -401,6 +402,8 @@ class TimLoader(TimLoader):
                     replace(rt.models.households.Member, 'person')
                     replace(rt.models.humanlinks.Link, 'parent')
                     replace(rt.models.humanlinks.Link, 'child')
+                    
+                if isinstance(par1, Client):
                     replace(Course, 'client')
                     
                 if isinstance(par1, Household):
