@@ -734,7 +734,10 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     def voucher_link(self, ar):
         if ar is None:
             return ''
-        return ar.obj2html(self.voucher.get_mti_leaf())
+        obj = self.voucher.get_mti_leaf()
+        if obj is None:
+            return str(obj)
+        return ar.obj2html(obj)
 
     @dd.displayfield(_("Voucher partner"))
     def voucher_partner(self, ar):
