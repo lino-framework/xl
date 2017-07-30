@@ -742,7 +742,7 @@ class Excerpts(dd.Table):
     auto_fit_column_widths = True
     allow_create = False
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         excerpt_type=models.ForeignKey(
             'excerpts.ExcerptType', blank=True, null=True),
         pcertifying=dd.YesNo.field(_("Certifying excerpts"), blank=True))

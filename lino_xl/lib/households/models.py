@@ -254,7 +254,7 @@ class HouseholdsByType(Households):
 
 
 @dd.python_2_unicode_compatible
-class Member(mixins.DatePeriod, mixins.Human, mixins.Born):
+class Member(mixins.DateRange, mixins.Human, mixins.Born):
     """A **household membership** represents the fact that a given person
     is (or has been) part of a given household.
 

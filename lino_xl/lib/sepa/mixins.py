@@ -136,8 +136,10 @@ class Payable(PartnerRelated):
 
     def get_payable_sums_dict(self):
         """To be implemented by subclasses.  Expected to return a dict which
-        maps 4-tuples `(account, project, vat_class, vat_regime)` to
-        the amount. `vat_class`
+        maps 4-tuples `(acc_tuple, project, vat_class, vat_regime)` to
+        the amount. 
+        `acc_tuple` is a tuple `(general_account, analytic_account)`,
+        `vat_class`
         is a :class:`lino_xl.lib.vat.VatClasses`
         and `vat_regime` a :class:`lino_xl.lib.vat.VatRegimes`.
         """
@@ -155,14 +157,20 @@ class Payable(PartnerRelated):
         has_vat = dd.is_installed('vat')
         kw = dict()
         for k, amount in item_sums.items():
-            acc, prj, vat_class, vat_regime = k
+            acc_tuple, prj, vat_class, vat_regime = k
+            # acc_tuple is a tuple (account, ana_account)
+            if not isinstance(acc_tuple, tuple):
+                raise Exception("Not a tuple: {}".format(acc_tuple))
+            if not isinstance(acc_tuple[0], rt.models.accounts.Account):
+                raise Exception("Not an account: {}".format(acc_tuple[0]))
             if has_vat:
                 kw.update(
                     vat_class=vat_class, vat_regime=vat_regime)
-            if acc.needs_partner:
+                
+            if acc_tuple[0].needs_partner:
                 kw.update(partner=partner)
             yield self.create_movement(
-                None, acc, prj, self.journal.dc, amount, **kw)
+                None, acc_tuple, prj, self.journal.dc, amount, **kw)
             counter_sums.collect(prj, amount)
 
         acc = self.get_trade_type().get_partner_account()
@@ -173,7 +181,7 @@ class Payable(PartnerRelated):
         else:
             for prj, amount in counter_sums.items():
                 yield self.create_movement(
-                    None, acc, prj, not self.journal.dc, amount,
+                    None, (acc, None), prj, not self.journal.dc, amount,
                     partner=partner if acc.needs_partner else None,
                     match=self.get_match())
 

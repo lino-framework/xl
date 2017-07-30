@@ -10,6 +10,7 @@
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from django.db import models
 
@@ -88,7 +89,7 @@ class PartnerRelated(dd.Model):
 
     def payment_term_changed(self, ar=None):
         if self.payment_term:
-            self.due_date = self.payment_term.get_due_date(self.voucher_date)
+            self.due_date = self.payment_term.get_due_date(self.entry_date)
 
 
 class Matching(dd.Model):
@@ -141,6 +142,8 @@ class VoucherItem(dd.Model):
                 return False
         return super(VoucherItem, self).get_row_permission(ar, state, ba)
 
+    def get_ana_account(self):
+        return None
 
 class SequencedVoucherItem(Sequenced):
 
@@ -180,4 +183,69 @@ def JournalRef(**kw):
 def VoucherNumber(*args, **kwargs):
     return models.IntegerField(*args, **kwargs)
 
+
+class PeriodRange(dd.Model):
+    class Meta:
+        abstract = True
+
+    start_period = dd.ForeignKey(
+        'ledger.AccountingPeriod',
+        blank=True, verbose_name=_("Start period"),
+        related_name="%(app_label)s_%(class)s_set_by_start_period")
+
+    end_period = dd.ForeignKey(
+        'ledger.AccountingPeriod',
+        blank=True, null=True,
+        verbose_name=_("End period"),
+        related_name="%(app_label)s_%(class)s_set_by_end_period")
+
+    
+    def get_period_filter(self, fieldname, **kwargs):
+        return rt.models.ledger.AccountingPeriod.get_period_filter(
+            fieldname, self.start_period, self.end_period, **kwargs)
+    
+    
+class PeriodRangeObservable(dd.Model):
+    class Meta:
+        abstract = True
+        
+    observable_period_field = 'accounting_period'
+
+
+    @classmethod
+    def get_parameter_fields(cls, **fields):
+        fields.update(
+            start_period=dd.ForeignKey(
+                'ledger.AccountingPeriod',
+                blank=True, null=True,
+                help_text=_("Start of observed period range"),
+                verbose_name=_("Period from")))
+        fields.update(
+            end_period=dd.ForeignKey(
+                'ledger.AccountingPeriod',
+                blank=True, null=True,
+                help_text=_(
+                    "Optional end of observed period range. "
+                    "Leave empty to consider only the Start period."),
+                verbose_name=_("Period until")))
+        return super(PeriodRangeObservable, cls).get_parameter_fields(**fields)
+
+    @classmethod
+    def get_request_queryset(cls, ar):
+        pv = ar.param_values
+        qs = super(PeriodRangeObservable, cls).get_request_queryset(ar)
+        flt = rt.models.ledger.AccountingPeriod.get_period_filter(
+            cls.observable_period_field, pv.start_period, pv.end_period)
+        return qs.filter(**flt)
+
+    @classmethod
+    def get_title_tags(cls, ar):
+        for t in super(PeriodRangeObservable, cls).get_title_tags(ar):
+            yield t
+        pv = ar.param_values
+        if pv.start_period is not None:
+            if pv.end_period is None:
+                yield str(pv.start_period)
+            else:
+                yield "{}..{}".format(pv.start_period, pv.end_period)
 

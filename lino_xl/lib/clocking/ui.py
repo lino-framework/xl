@@ -17,7 +17,7 @@ from lino.utils import ONE_DAY
 from lino.utils.xmlgen.html import E, join_elems
 from lino.utils.quantities import Duration
 from lino.modlib.system.choicelists import ObservedEvent
-from lino.mixins.periods import ObservedPeriod
+from lino.mixins.periods import ObservedDateRange
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from datetime import datetime
 
@@ -104,7 +104,7 @@ class Sessions(dd.Table):
     order_by = ['-start_date', '-start_time', 'id']
     # order_by = ['start_date', 'start_time']
     # stay_in_grid = True
-    parameters = ObservedPeriod(
+    parameters = ObservedDateRange(
         company=dd.ForeignKey(
             'contacts.Company', null=True, blank=True),
         project=dd.ForeignKey(

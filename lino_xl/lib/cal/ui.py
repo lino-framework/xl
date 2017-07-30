@@ -169,7 +169,7 @@ class Tasks(dd.Table):
 
     params_panel_hidden = True
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         user=dd.ForeignKey(settings.SITE.user_model,
                            verbose_name=_("Managed by"),
                            blank=True, null=True,
@@ -314,7 +314,7 @@ class Guests(dd.Table):
     role
     """, window_size=(60, 'auto'))
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         user=dd.ForeignKey(settings.SITE.user_model,
                            verbose_name=_("Responsible user"),
                            blank=True, null=True,
@@ -649,7 +649,7 @@ class Events(dd.Table):
 
     params_panel_hidden = True
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         user=dd.ForeignKey(settings.SITE.user_model,
                            verbose_name=_("Managed by"),
                            blank=True, null=True,

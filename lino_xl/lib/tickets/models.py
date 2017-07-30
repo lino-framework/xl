@@ -95,7 +95,7 @@ class TicketType(mixins.BabelNamed):
 
 
 @dd.python_2_unicode_compatible
-class Project(mixins.DatePeriod, TimeInvestment,
+class Project(mixins.DateRange, TimeInvestment,
               mixins.Hierarchical, mixins.Referrable,
               ContactRelated):
     class Meta:

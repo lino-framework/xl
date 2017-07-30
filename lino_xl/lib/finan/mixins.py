@@ -79,7 +79,7 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
             kw = dict(partner=i.get_partner())
             kw.update(match=i.get_match())
             b = self.create_movement(
-                i, i.account or self.item_account,
+                i, (i.account or self.item_account, None),
                 i.project, i.dc, i.amount, **kw)
             movements_and_items.append((b, i))
 
@@ -138,7 +138,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         flt = dict(partner=self.partner, cleared=False)
 
         if not dd.plugins.finan.suggest_future_vouchers:
-            flt.update(value_date__lte=self.voucher.voucher_date)
+            flt.update(value_date__lte=self.voucher.entry_date)
 
         if self.match:
             flt.update(match=self.match)

@@ -377,8 +377,8 @@ class TimLoader(TimLoader):
         kw.update(year=year)
         kw.update(number=number)
         # kw.update(id=pk)
-        kw.update(voucher_date=row.date)
         kw.update(entry_date=row.date)
+        kw.update(voucher_date=row.date)
         kw.update(user=self.get_user())
         kw.update(balance1=mton(row.mont1, ZERO))
         kw.update(balance2=mton(row.mont2, ZERO))
@@ -473,8 +473,8 @@ class TimLoader(TimLoader):
             # partner=contacts.Partner.objects.get(pk=self.par_pk(row.idpar))
         else:
             raise Exception("Unknown TradeType %r" % jnl.trade_type)
-        kw.update(voucher_date=row.date)
         kw.update(entry_date=row.date)
+        kw.update(voucher_date=row.date)
         kw.update(user=self.get_user(row.auteur))
         kw.update(total_excl=mton(row.montr))
         kw.update(total_vat=mton(row.montt))
@@ -679,7 +679,7 @@ class TimLoader(TimLoader):
                 kw,
                 name=row.firme.strip() + ' ' + row.vorname.strip(),
             )
-        if issubclass(cl, List):
+        if dd.is_installed('lists') and issubclass(cl, List):
             self.store(kw, designation=row.firme)
         
         if issubclass(cl, Created):
@@ -692,7 +692,8 @@ class TimLoader(TimLoader):
                         created = make_aware(created)
                     kw.update(created=created)
 
-        if cl is not List:
+        # if cl is not List:
+        if issubclass(cl, rt.models.contacts.Partner):
             language = isolang(row['langue'])
             
             if settings.SITE.get_language_info(language):

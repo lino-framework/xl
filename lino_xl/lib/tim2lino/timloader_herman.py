@@ -137,7 +137,7 @@ class TimLoader(TimLoader):
 
     def load_pls(self, row, **kw):
         kw.update(ref=row.idpls.strip())
-        kw.update(name=row.name)
+        kw.update(designation=row.name)
         return List(**kw)
 
     def load_new(self, row, **kw):

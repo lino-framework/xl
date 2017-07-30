@@ -281,7 +281,7 @@ class StudyTypesByLevel(StudyTypes):
 
 
 class PeriodTable(dd.Table):
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         observed_event=PeriodEvents.field(blank=True))
     params_layout = "start_date end_date observed_event"
 

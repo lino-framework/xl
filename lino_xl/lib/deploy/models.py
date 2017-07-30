@@ -11,7 +11,7 @@ from django.db import models
 
 from lino.api import dd, rt, _
 
-from lino.mixins import Sequenced, DatePeriod
+from lino.mixins import Sequenced, DateRange
 from lino.utils import join_elems
 from lino.utils.instantiator import create_row
 from lino.utils.xmlgen.html import E
@@ -47,7 +47,7 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 
 
 # @dd.python_2_unicode_compatible
-# class Milestone(UserAuthored, DatePeriod, Certifiable):
+# class Milestone(UserAuthored, DateRange, Certifiable):
 #     """A **Milestone** is a named step of evolution on a given Site.  In
 #     Scrum they are called sprints.
 

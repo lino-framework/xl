@@ -173,7 +173,7 @@ class Bookings(dd.Table):
     column_names = "start_date company room  *"
     order_by = ['start_date']
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         company=models.ForeignKey('contacts.Company', blank=True, null=True),
         state=BookingStates.field(blank=True),
     )

@@ -61,6 +61,7 @@ class ByJournal(dd.Table):
     master_key = 'journal'
     # start_at_bottom = True
     required_roles = dd.login_required(LedgerUser)
+    params_layout = "start_period end_period state user"
 
     @classmethod
     def get_title_base(self, ar):
@@ -84,7 +85,7 @@ class ByJournal(dd.Table):
 
 class PrintableByJournal(ByJournal):
     editable = False
-    params_layout = "journal year accounting_period"
+    params_layout = "journal start_period end_period state"
     
     column_names = "number entry_date partner total_base total_vat total_incl vat_regime *"
 
@@ -121,7 +122,7 @@ class Vouchers(dd.Table):
     parameters = dict(
         year=FiscalYears.field(blank=True),
         journal=JournalRef(blank=True))
-    params_layout = "year journal"
+    params_layout = "journal start_period end_period state user"
 
     @classmethod
     def get_request_queryset(cls, ar):
@@ -154,6 +155,7 @@ class MatchRulesByJournal(ByJournal, MatchRules):
     order_by = ["account"]
     master_key = 'journal'
     column_names = "account *"
+    params_layout = None
 
 
 class ExpectedMovements(dd.VirtualTable):
@@ -335,7 +337,7 @@ class PartnerVouchers(Vouchers):
         partner=dd.ForeignKey('contacts.Partner', blank=True, null=True),
         cleared=dd.YesNo.field(_("Show cleared vouchers"), blank=True),
         **Vouchers.parameters)
-    params_layout = "partner project state journal year cleared"
+    params_layout = "partner project state journal start_period end_period cleared"
     params_panel_hidden = True
 
     @classmethod
@@ -675,9 +677,10 @@ class Movements(dd.Table):
     column_names = 'value_date voucher_link description \
     debit credit match_link cleared *'
     sum_text_column = 2
+    order_by = ['id']
 
     editable = False
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         year=FiscalYears.field(blank=True),
         journal_group=JournalGroups.field(blank=True),
         partner=dd.ForeignKey('contacts.Partner', blank=True, null=True),
@@ -687,7 +690,7 @@ class Movements(dd.Table):
         journal=JournalRef(blank=True),
         cleared=dd.YesNo.field(_("Show cleared movements"), blank=True))
     params_layout = """
-    start_date end_date cleared
+    start_period end_period start_date end_date cleared
     journal_group journal year project partner account"""
 
     @classmethod
@@ -756,11 +759,12 @@ class Movements(dd.Table):
         elems = []
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
-        if voucher.narration:
-            elems.append(voucher.narration)
-        p = voucher.get_partner()
-        if p is not None:
-            elems.append(ar.obj2html(p))
+        if voucher is not None:
+            if voucher.narration:
+                elems.append(voucher.narration)
+            p = voucher.get_partner()
+            if p is not None:
+                elems.append(ar.obj2html(p))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
@@ -781,7 +785,7 @@ class MovementsByVoucher(Movements):
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'voucher'
-    column_names = 'seqno project partner account debit credit match_link cleared'
+    column_names = 'seqno project partner account debit credit match_link cleared *'
     sum_text_column = 3
     # auto_fit_column_widths = True
     slave_grid_format = "html"
@@ -815,11 +819,12 @@ class MovementsByPartner(Movements):
         elems = []
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
-        if voucher.narration:
-            elems.append(voucher.narration)
-        p = voucher.get_partner()
-        if p is not None and p != ar.master_instance:
-            elems.append(ar.obj2html(p))
+        if voucher is not None:
+            if voucher.narration:
+                elems.append(voucher.narration)
+            p = voucher.get_partner()
+            if p is not None and p != ar.master_instance:
+                elems.append(ar.obj2html(p))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
@@ -868,13 +873,14 @@ class MovementsByProject(MovementsByPartner):
         elems = []
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
-        if voucher.narration:
-            elems.append(voucher.narration)
-        p = voucher.get_partner()
-        if p is not None:
-            elems.append(ar.obj2html(p))
-        if self.partner and self.partner != p:
-            elems.append(ar.obj2html(self.partner))
+        if voucher is not None:
+            if voucher.narration:
+                elems.append(voucher.narration)
+            p = voucher.get_partner()
+            if p is not None:
+                elems.append(ar.obj2html(p))
+            if self.partner and self.partner != p:
+                elems.append(ar.obj2html(self.partner))
         return E.p(*join_elems(elems, " / "))
 
 
@@ -913,11 +919,12 @@ class MovementsByAccount(Movements):
             return ''
         elems = []
         voucher = self.voucher.get_mti_leaf()
-        if voucher.narration:
-            elems.append(voucher.narration)
-        p = voucher.get_partner()
-        if p is not None:
-            elems.append(ar.obj2html(p))
+        if voucher is not None:
+            if voucher.narration:
+                elems.append(voucher.narration)
+            p = voucher.get_partner()
+            if p is not None:
+                elems.append(ar.obj2html(p))
         if self.partner:
             elems.append(ar.obj2html(self.partner))
         if self.project:
@@ -961,9 +968,10 @@ class MovementsByMatch(Movements):
         if self.voucher.narration:
             elems.append(self.voucher.narration)
         voucher = self.voucher.get_mti_leaf()
-        p = voucher.get_partner()
-        if p is not None and p != ar.master_instance:
-            elems.append(ar.obj2html(p))
+        if voucher is not None:
+            p = voucher.get_partner()
+            if p is not None and p != ar.master_instance:
+                elems.append(ar.obj2html(p))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))

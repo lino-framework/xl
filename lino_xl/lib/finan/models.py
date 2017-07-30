@@ -129,11 +129,11 @@ class PaymentOrder(FinancialVoucher, Printable):
             yield m
             if acc.needs_partner:
                 yield self.create_movement(
-                    i, acc, m.project, not m.dc, m.amount,
+                    i, (acc, None), m.project, not m.dc, m.amount,
                     partner=m.partner, match=i.get_match())
         if not acc.needs_partner:
             yield self.create_movement(
-                None, acc, None, not self.journal.dc, amount)
+                None, (acc, None), None, not self.journal.dc, amount)
 
     def add_item_from_due(self, obj, **kwargs):
         # if obj.bank_account is None:
@@ -158,7 +158,7 @@ class BankStatement(DatedFinancialVoucher):
             #~ logger.info("20131005 no journal")
             return None
         qs = self.__class__.objects.filter(
-            journal=self.journal).order_by('-voucher_date')
+            journal=self.journal).order_by('-entry_date')
         if qs.count() > 0:
             #~ logger.info("20131005 no other vouchers")
             return qs[0]
@@ -180,7 +180,8 @@ class BankStatement(DatedFinancialVoucher):
         self.balance2 = self.balance1 + amount
         for m, i in movements_and_items:
             yield m
-        yield self.create_movement(None, a, None, self.journal.dc, amount)
+        yield self.create_movement(
+            None, (a, None), None, self.journal.dc, amount)
 
 
 class JournalEntryItem(DatedFinancialVoucherItem):
@@ -228,7 +229,7 @@ class JournalEntryDetail(dd.DetailLayout):
     main = "general ledger"
 
     general = dd.Panel("""
-    voucher_date user narration workflow_buttons
+    entry_date user narration workflow_buttons
     finan.ItemsByJournalEntry
     """, label=_("General"))
 
@@ -240,14 +241,14 @@ class JournalEntryDetail(dd.DetailLayout):
 
 class PaymentOrderDetail(JournalEntryDetail):
     general = dd.Panel("""
-    voucher_date user narration total execution_date workflow_buttons
+    entry_date user narration total execution_date workflow_buttons
     finan.ItemsByPaymentOrder
     """, label=_("General"))
 
 
 class BankStatementDetail(JournalEntryDetail):
     general = dd.Panel("""
-    voucher_date balance1 balance2 user workflow_buttons
+    entry_date balance1 balance2 user workflow_buttons
     finan.ItemsByBankStatement
     """, label=_("General"))
 
@@ -256,7 +257,7 @@ class FinancialVouchers(dd.Table):
     model = 'finan.JournalEntry'
     required_roles = dd.login_required(LedgerUser)
     params_panel_hidden = True
-    order_by = ["id", "voucher_date"]
+    order_by = ["id", "entry_date"]
     parameters = dict(
         pyear=ledger.FiscalYears.field(blank=True),
         #~ ppartner=models.ForeignKey('contacts.Partner',blank=True,null=True),
@@ -264,7 +265,7 @@ class FinancialVouchers(dd.Table):
     params_layout = "pjournal pyear"
     detail_layout = JournalEntryDetail()
     insert_layout = dd.InsertLayout("""
-    voucher_date
+    entry_date
     narration
     """, window_size=(40, 'auto'))
 
@@ -284,13 +285,13 @@ class FinancialVouchers(dd.Table):
 
 class JournalEntries(FinancialVouchers):
     suggestions_table = 'finan.SuggestionsByJournalEntry'
-    column_names = "number_with_year voucher_date "\
+    column_names = "number_with_year entry_date "\
                    "accounting_period workflow_buttons *"
 
 
 class PaymentOrders(FinancialVouchers):
     model = 'finan.PaymentOrder'
-    column_names = "number voucher_date narration total execution_date "\
+    column_names = "number entry_date narration total execution_date "\
                    "accounting_period workflow_buttons *"
     detail_layout = PaymentOrderDetail()
     suggestions_table = 'finan.SuggestionsByPaymentOrder'
@@ -298,11 +299,11 @@ class PaymentOrders(FinancialVouchers):
 
 class BankStatements(FinancialVouchers):
     model = 'finan.BankStatement'
-    column_names = "number_with_year voucher_date balance1 balance2 " \
+    column_names = "number_with_year entry_date balance1 balance2 " \
                    "accounting_period workflow_buttons *"
     detail_layout = BankStatementDetail()
     insert_layout = """
-    voucher_date
+    entry_date
     balance1
     """
     suggestions_table = 'finan.SuggestionsByBankStatement'
@@ -468,7 +469,7 @@ class SuggestionsByVoucher(ledger.ExpectedMovements):
         voucher = ar.master_instance
         kw.update(for_journal=voucher.journal)
         if not dd.plugins.finan.suggest_future_vouchers:
-            kw.update(date_until=voucher.voucher_date)
+            kw.update(date_until=voucher.entry_date)
         # kw.update(trade_type=vat.TradeTypes.purchases)
         return kw
 
@@ -498,7 +499,7 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
         if voucher.journal.sepa_account:
             kw.update(show_sepa=dd.YesNo.yes)
         # kw.update(journal=voucher.journal)
-        kw.update(date_until=voucher.execution_date or voucher.voucher_date)
+        kw.update(date_until=voucher.execution_date or voucher.entry_date)
         if voucher.journal.trade_type is not None:
             kw.update(trade_type=voucher.journal.trade_type)
         # kw.update(trade_type=vat.TradeTypes.purchases)
@@ -530,7 +531,7 @@ class SuggestionsByVoucherItem(SuggestionsByVoucher):
         voucher = item.voucher
         kw.update(for_journal=voucher.journal)
         if not dd.plugins.finan.suggest_future_vouchers:
-            kw.update(date_until=voucher.voucher_date)
+            kw.update(date_until=voucher.entry_date)
         kw.update(partner=item.partner)
         return kw
 

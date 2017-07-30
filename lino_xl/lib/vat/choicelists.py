@@ -203,7 +203,7 @@ class WritableDeclarationField(DeclarationField):
             if amount:
                 if self.dc == dcl.journal.dc:
                     amount = - amount
-                k = (dcl.journal.account, None, None, None)
+                k = ((dcl.journal.account, None), None, None, None)
                 payable_sums.collect(k, amount)
 
 class MvtDeclarationField(DeclarationField):
@@ -238,7 +238,7 @@ class MvtDeclarationField(DeclarationField):
         if self.is_payable:
             if self.dc == dcl.journal.dc:
                 amount = - amount
-            k = (mvt.account, mvt.project, mvt.vat_class, mvt.vat_regime)
+            k = ((mvt.account, None), mvt.project, mvt.vat_class, mvt.vat_regime)
             payable_sums.collect(k, amount)
             # k = (dcl.journal.account, None, None, None)
             # payable_sums.collect(k, amount)

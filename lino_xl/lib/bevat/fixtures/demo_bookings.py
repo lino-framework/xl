@@ -75,8 +75,8 @@ def objects():
             journal=JOURNAL,
             user=USERS.pop(),
             partner=office,
-            voucher_date=date,
-            entry_date=date + delta(days=5))
+            entry_date=date,
+            voucher_date=date)
         yield dcl
         dcl.register(REQUEST)
         dcl.save()

@@ -89,7 +89,7 @@ class Projects(dd.Table):
     detail_layout = ProjectDetail()
     column_names = "ref name parent company private *"
     order_by = ["ref"]
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         observed_event=ProjectEvents.field(blank=True),
         interesting_for=dd.ForeignKey(
             'contacts.Partner',
@@ -481,7 +481,7 @@ class Tickets(dd.Table):
 
     detail_html_template = "tickets/Ticket/detail.html"
 
-    parameters = mixins.ObservedPeriod(
+    parameters = mixins.ObservedDateRange(
         observed_event=TicketEvents.field(blank=True),
         topic=dd.ForeignKey('topics.Topic', blank=True, ),
         site=dd.ForeignKey(site_model, blank=True),

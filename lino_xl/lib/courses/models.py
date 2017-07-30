@@ -39,7 +39,7 @@ from lino.utils.xmlgen.html import E, join_elems
 from lino.mixins import Referrable
 from lino.mixins.human import parse_name
 from lino.mixins.duplicable import Duplicable
-from lino.mixins.periods import DatePeriod
+from lino.mixins.periods import DateRange
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.excerpts.mixins import ExcerptTitle
 from lino.modlib.users.mixins import UserAuthored
@@ -50,7 +50,7 @@ from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.utils import day_and_month
 from lino_xl.lib.contacts.mixins import ContactRelated
 
-from lino.utils.dates import DatePeriodValue
+from lino.utils.dates import DateRangeValue
 
 from .choicelists import EnrolmentStates, CourseStates, CourseAreas
 from .actions import PrintPresenceSheet
@@ -515,7 +515,7 @@ class Course(Reservation, Duplicable, PrintableObject):
         qs = Enrolment.objects.filter(course=self, **flt)
         # see voga.projects.roger.tests.test_max_places
         if today is None:
-            rng = DatePeriodValue(dd.today(), None)
+            rng = DateRangeValue(dd.today(), None)
             qs = PeriodEvents.active.add_filter(qs, rng)
         else:
             qs = PeriodEvents.active.add_filter(qs, today)
@@ -623,7 +623,7 @@ class ConfirmedSubmitInsert(dd.SubmitInsert):
 
 
 @dd.python_2_unicode_compatible
-class Enrolment(UserAuthored, Certifiable, DatePeriod):
+class Enrolment(UserAuthored, Certifiable, DateRange):
     """An **enrolment** is when a given pupil plans to participate in a
     given course.
 
