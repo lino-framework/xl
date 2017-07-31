@@ -90,6 +90,8 @@ mfld("64", DEBIT, '59', _("VAT on sales CN"), is_payable=True)
 sfld("YY", DEBIT, None, _("Total of deductible taxes"),
      "59 62 64")
 
+# Actually only one of them
 sfld("71", DEBIT, None, _("Total to pay"), "XX YY")
+sfld("72", CREDIT, None, _("Total to pay"), "XX YY")
 
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

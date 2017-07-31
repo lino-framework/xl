@@ -720,7 +720,9 @@ class AnswersByResponse(dd.VirtualTable):
         pv = dict(question=obj.question)
 
         # ia = obj.response.toggle_choice
-        sar = obj.response.toggle_choice.request_from(ar)
+        sar = obj.response.toggle_choice.request_from(
+            ar, is_on_main_actor=False)
+        # print(20170731, sar.is_on_main_actor)
         if False:  # since 20170129
             ba = Responses.actions.toggle_choice
             if ba is None:

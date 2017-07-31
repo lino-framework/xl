@@ -296,7 +296,8 @@ class EventGenerator(dd.Model):
         
         event_type = self.update_cal_event_type()
         if event_type is None:
-            ar.info("No event_type")
+            # raise Exception("20170731")
+            ar.info("No automatic events event_type")
             return wanted, unwanted
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
