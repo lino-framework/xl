@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -38,7 +38,7 @@ document)."""
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
-        if obj.printed_by is None:
+        if obj.printed_by_id is None:
             ar.error(_("Oops, the print cache was already cleared."))
             return
 
@@ -165,9 +165,9 @@ class Certifiable(dd.Model):
     def printed(self, ar):
         if ar is None:
             return ''
-        ex = self.printed_by
-        if ex is None:
+        if self.printed_by_id is None:
             return ''
+        ex = self.printed_by
         return ar.obj2html(ex, naturaltime(ex.build_time))
 
     def clear_cache(self):
