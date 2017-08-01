@@ -559,7 +559,7 @@ class Tickets(dd.Table):
 
         if pv.interesting_for:
             qs = qs.filter(
-                Q(project__company=pv.interesting_for))
+                Q(site__company=pv.interesting_for))
                 # Q(votes_by_ticket__project__company=pv.interesting_for))
             
         # if pv.project:
