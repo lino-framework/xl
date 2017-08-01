@@ -42,7 +42,7 @@ class Plugin(ad.Plugin):
 
     default_reporting_type = 'regular'
 
-    def on_site_startup(self, site):
+    def post_site_startup(self, site):
         # from .mixins import Workable
         self.ticket_model = site.models.resolve(self.ticket_model)
         # if not issubclass(self.ticket_model, Workable):
