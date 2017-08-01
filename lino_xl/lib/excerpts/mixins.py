@@ -165,9 +165,9 @@ class Certifiable(dd.Model):
     def printed(self, ar):
         if ar is None:
             return ''
-        if self.printed_by_id is None:
-            return ''
         ex = self.printed_by
+        if ex is None:
+            return ''
         return ar.obj2html(ex, naturaltime(ex.build_time))
 
     def clear_cache(self):
