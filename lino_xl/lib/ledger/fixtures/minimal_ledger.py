@@ -30,6 +30,7 @@ sales = dd.resolve_app('sales')
 ledger = dd.resolve_app('ledger')
 finan = dd.resolve_app('finan')
 bevat = dd.resolve_app('bevat')
+bevats = dd.resolve_app('bevats')
 #~ partners = dd.resolve_app('partners')
 
 
@@ -243,13 +244,16 @@ def objects():
         kw.update(dc=DEBIT)
         yield finan.JournalEntry.create_journal(**kw)
 
-    if bevat:
+    for m in (bevat, bevats):
+        if not m:
+            continue
         kw = dict(journal_group=JournalGroups.vat)
         kw.update(trade_type='taxes')
         kw.update(dd.str2kw('name', _("VAT declarations")))
         kw.update(must_declare=False)
-        kw.update(account=VATDCL_ACCOUNT, ref="VAT", dc=DEBIT)
-        yield bevat.Declaration.create_journal(**kw)
+        kw.update(account=VATDCL_ACCOUNT,
+                  ref=m.DEMO_JOURNAL_NAME, dc=DEBIT)
+        yield m.Declaration.create_journal(**kw)
 
     payments = []
     if finan:

@@ -30,23 +30,13 @@ add('2', _("Normal"), 'normal')    # everything else
 
 
 class VatColumns(dd.ChoiceList):
+    # to be populated by bevat, bevats, ...
     verbose_name = _("VAT column")
     verbose_name_plural = _("VAT columns")
     required_roles = dd.login_required(LedgerStaff)
     show_values = True
-    
-add = VatColumns.add_item
-add('00', _("Sales basis 0"))
-add('01', _("Sales basis 1"))
-add('02', _("Sales basis 2"))
-add('03', _("Sales basis 3"))
-add('54', _("VAT due"))
-add('55', _("VAT returnable"))
-add('59', _("VAT deductible"))
-add('81', _("Purchase of goods"))
-add('82', _("Purchase of services"))
-add('83', _("Purchase of investments"))
 
+    
 
 class VatRegime(dd.Choice):
 
@@ -64,18 +54,10 @@ class VatRegimes(dd.ChoiceList):
 
 add = VatRegimes.add_item
 add('10', _("Private person"), 'private')
-add('11', _("Private person (reduced)"), 'reduced')
 add('20', _("Subject to VAT"), 'subject')
-add('25', _("Co-contractor"), 'cocontractor')
 add('30', _("Intra-community"), 'intracom')
-add('31', _("Delay in collection"), 'delayed') # report de perception
-add('40', _("Inside EU"), 'inside')
-add('50', _("Outside EU"), 'outside')
-add('60', _("Exempt"), 'exempt', item_vat=False)
-add('70', _("Germany"), 'de')
-add('71', _("Luxemburg"), 'lu')
-
-
+# re-populated in bevat or bevats.
+# See also lino_xl.lib.vat.Plugin.default_vat_regime
 
 # @dd.python_2_unicode_compatible
 class DeclarationField(dd.Choice):

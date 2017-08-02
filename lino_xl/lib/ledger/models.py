@@ -35,7 +35,7 @@ from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
 from lino_xl.lib.accounts.choicelists import AccountTypes
 from lino_xl.lib.accounts.fields import DebitOrCreditField
 
-from .utils import get_due_movements, check_clearings
+from .utils import get_due_movements, check_clearings_by_partner
 from .choicelists import (FiscalYears, VoucherTypes, VoucherStates,
                           PeriodStates, JournalGroups, TradeTypes)
 from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable
@@ -562,16 +562,20 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         """
         existing_mvts = self.movement_set.all()
         partners = set()
+        # accounts = set()
         if not self.journal.auto_check_clearings:
             do_clear = False
         if do_clear:
-            for m in existing_mvts.filter(partner__isnull=False):
+            for m in existing_mvts.filter(
+                    account__clearable=True, partner__isnull=False):
                 partners.add(m.partner)
         existing_mvts.delete()
         func(partners)
         if do_clear:
             for p in partners:
-                check_clearings(p)
+                check_clearings_by_partner(p)
+            # for a in accounts:
+            #     check_clearings_by_account(a)
         
         # dd.logger.info("20151211 Done cosi.Voucher.register_voucher()")
 

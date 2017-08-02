@@ -901,6 +901,8 @@ class MovementsByAccount(Movements):
 
     """
     master_key = 'account'
+    column_names = 'value_date voucher_link description \
+    debit credit match_link *'
     order_by = ['-value_date']
     # auto_fit_column_widths = True
     slave_grid_format = "html"

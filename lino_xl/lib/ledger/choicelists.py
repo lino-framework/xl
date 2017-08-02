@@ -75,9 +75,10 @@ add('20', _("Closed"), 'closed')
 
 
 class VoucherType(dd.Choice):
-    def __init__(self, model, table_class, text=None):
+    # def __init__(self, model, table_class, text=None):
+    def __init__(self, table_class, text=None):
         self.table_class = table_class
-        model = dd.resolve_model(model)
+        model = dd.resolve_model(table_class.model)
         self.model = model
         # value = dd.full_model_name(model)
         value = str(table_class)

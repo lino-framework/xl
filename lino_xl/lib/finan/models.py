@@ -546,7 +546,7 @@ class SuggestionsByPaymentOrderItem(SuggestionsByVoucherItem):
 
 # Declare the voucher types:
 
-VoucherTypes.add_item(JournalEntry, JournalEntriesByJournal)
-VoucherTypes.add_item(PaymentOrder, PaymentOrdersByJournal)
-VoucherTypes.add_item(BankStatement, BankStatementsByJournal)
-# VoucherTypes.add_item(Grouper, GroupersByJournal)
+VoucherTypes.add_item_lazy(JournalEntriesByJournal)
+VoucherTypes.add_item_lazy(PaymentOrdersByJournal)
+VoucherTypes.add_item_lazy(BankStatementsByJournal)
+# VoucherTypes.add_item_lazy(GroupersByJournal)

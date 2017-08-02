@@ -29,7 +29,7 @@ class Plugin(ad.Plugin):
     
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu("vat", site.plugins.vat.verbose_name)
-        m.add_action('bevat.Declarations')
-        m.add_action('bevat.DeclarationFields')
+        m.add_action('bevats.Declarations')
+        m.add_action('bevats.DeclarationFields')
 
 
