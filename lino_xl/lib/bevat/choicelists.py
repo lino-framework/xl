@@ -21,7 +21,7 @@ from lino_xl.lib.vat.choicelists import VatRegimes
 
 VatRegimes.clear()
 add = VatRegimes.add_item
-add('10', _("Private person"), 'private')
+add('10', _("Private person"), 'normal')
 add('11', _("Private person (reduced)"), 'reduced')
 add('20', _("Subject to VAT"), 'subject')
 add('25', _("Co-contractor"), 'cocontractor')

@@ -53,10 +53,10 @@ class VatRegimes(dd.ChoiceList):
         i.e. whether and how it is to be paid.")
 
 add = VatRegimes.add_item
-add('10', _("Private person"), 'private')
+add('10', _("Private person"), 'normal')
 add('20', _("Subject to VAT"), 'subject')
 add('30', _("Intra-community"), 'intracom')
-# re-populated in bevat or bevats.
+# re-populated in bevat and bevats.
 # See also lino_xl.lib.vat.Plugin.default_vat_regime
 
 # @dd.python_2_unicode_compatible

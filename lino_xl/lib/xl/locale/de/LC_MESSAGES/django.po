@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-28 21:46+0300\n"
-"PO-Revision-Date: 2017-07-28 21:47+0300\n"
+"PO-Revision-Date: 2017-08-03 03:51+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -4831,7 +4831,7 @@ msgstr "Saldenliste Generalkonten"
 
 #: lino_xl/lib/ledger/ui.py:488
 msgid "Customer Accounts Balances"
-msgstr "Saldenlisten Lieferanten"
+msgstr "Saldenliste Kunden"
 
 #: lino_xl/lib/ledger/ui.py:493
 msgid "Supplier Accounts Balances"

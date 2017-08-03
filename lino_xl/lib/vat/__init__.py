@@ -36,7 +36,7 @@ class Plugin(ad.Plugin):
     # Used by :mod:`lino_xl.lib.declarations`.
     # """
 
-    default_vat_regime = 'private'
+    default_vat_regime = 'normal'
     """The default VAT regime. If this is specified as a string, Lino will
     resolve it at startup into an item of :class:`VatRegimes
     <lino_xl.lib.vat.VatRegimes>`.
