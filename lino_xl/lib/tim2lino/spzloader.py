@@ -383,41 +383,47 @@ class TimLoader(TimLoader):
 
     def finalize(self):
         for (par1, idpar2) in self.obsolete_list:
+            par2 = None
             try:
                 par2 = Client.objects.get(id=idpar2)
             except Client.DoesNotExist:
-                pass
-            else:
-
-                def replace(model, k):
-                    for obj in model.objects.filter(**{k: par1}):
-                        setattr(obj, k, par2)
-                        obj.full_clean()
-                        obj.save()
-
-                # replace(Coaching, 'client')
-                
-                if isinstance(par1, Person):
-                    replace(Enrolment, 'pupil')
-                    replace(rt.models.households.Member, 'person')
-                    replace(rt.models.humanlinks.Link, 'parent')
-                    replace(rt.models.humanlinks.Link, 'child')
-                    
-                if isinstance(par1, Client):
-                    replace(Course, 'client')
-                    
-                if isinstance(par1, Household):
-                    if isinstance(par2, Household):
-                        replace(Course, 'household')
-                    
                 try:
-                    par1.delete()
-                except Exception as e:
-                    par1.obsoletes = par2
-                    par1.full_clean()
-                    par1.save()
-                    dd.logger.warning("Failed to delete {} : {}".format(
-                        par1, e))
+                    par2 = Household.objects.get(id=idpar2)
+                except Household.DoesNotExist:
+                    pass
+                
+            if par2 is None:
+                continue
+
+            def replace(model, k):
+                for obj in model.objects.filter(**{k: par1}):
+                    setattr(obj, k, par2)
+                    obj.full_clean()
+                    obj.save()
+
+            # replace(Coaching, 'client')
+
+            if isinstance(par1, Person):
+                replace(Enrolment, 'pupil')
+                replace(rt.models.households.Member, 'person')
+                replace(rt.models.humanlinks.Link, 'parent')
+                replace(rt.models.humanlinks.Link, 'child')
+
+            if isinstance(par1, Client):
+                replace(Course, 'partner')
+
+            if isinstance(par1, Household):
+                if isinstance(par2, Household):
+                    replace(Course, 'partner')
+
+            try:
+                par1.delete()
+            except Exception as e:
+                par1.obsoletes = par2
+                par1.full_clean()
+                par1.save()
+                dd.logger.warning("Failed to delete {} : {}".format(
+                    par1, e))
         super(TimLoader, self).finalize()
         
                 

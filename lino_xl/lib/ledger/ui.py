@@ -800,7 +800,7 @@ class MovementsByPartner(Movements):
     # slave_grid_format = "html"
     slave_grid_format = "summary"
     # auto_fit_column_widths = True
-    order_by = ['voucher__id', '-value_date', 'account__ref']
+    order_by = ['-value_date', 'voucher__id', 'account__ref']
 
     @classmethod
     def param_defaults(cls, ar, **kw):
