@@ -91,8 +91,11 @@ class Link(dd.Model):
         another parent of same sex, then it becomes a foster child,
         otherwise a natural child.
 
-        This is called from
-        :class:`lino_welfare.modlib.households.models.Member` to
+        Note that the ages are ignored here, Lino will shamelessly
+        create a link even when the child is older than the parent.
+
+        This is called from :meth:`full_clean` of
+        :class:`lino_xl.lib.households.Member` to
         automatically create human links between two household
         members.
 
@@ -106,8 +109,8 @@ class Link(dd.Model):
             parent=parent, child=child, type__in=cls.parent_link_types)
         if qs.count() == 0:
             qs = cls.objects.filter(
-                child=child, type__in=cls.parent_link_types)
-            qs = qs.exclude(parent__gender=parent.gender)
+                child=child, type__in=cls.parent_link_types,
+                parent__gender=parent.gender)
             if qs.count() == 0:
                 auto_type = LinkTypes.parent
             else:
