@@ -252,7 +252,7 @@ def objects():
         kw.update(dd.str2kw('name', _("VAT declarations")))
         kw.update(must_declare=False)
         kw.update(account=VATDCL_ACCOUNT,
-                  ref=m.DEMO_JOURNAL_NAME, dc=DEBIT)
+                  ref=m.DEMO_JOURNAL_NAME, dc=CREDIT)
         yield m.Declaration.create_journal(**kw)
 
     payments = []

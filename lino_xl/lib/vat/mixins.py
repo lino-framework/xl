@@ -441,7 +441,9 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
             # declare the previous month by default 
             if not self.start_period_id:
                 self.start_period = AP.get_default_for_date(
-                    self.entry_date - AMONTH)
+                    self.entry_date)
+                # self.start_period = AP.get_default_for_date(
+                #     self.entry_date - AMONTH)
                 
             # if not self.start_date:
             #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)

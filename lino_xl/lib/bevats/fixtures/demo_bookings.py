@@ -67,15 +67,15 @@ def objects():
     
     USERS = Cycler(settings.SITE.user_model.objects.all())
     JOURNAL = Journal.objects.get(ref=rt.models.bevats.DEMO_JOURNAL_NAME)
-    date = datetime.date(dd.plugins.ledger.start_year, 1, 4)
+    # date = datetime.date(dd.plugins.ledger.start_year, 1, 4)
+    date = datetime.date(dd.plugins.ledger.start_year, 1, 31)
     end_date = settings.SITE.demo_date(-30) 
     while date < end_date:
         dcl = Declaration(
             journal=JOURNAL,
             user=USERS.pop(),
             partner=office,
-            entry_date=date,
-            voucher_date=date)
+            entry_date=date)
         yield dcl
         dcl.register(REQUEST)
         dcl.save()
