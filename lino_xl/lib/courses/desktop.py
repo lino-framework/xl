@@ -164,6 +164,7 @@ class CourseDetail(dd.DetailLayout):
     EnrolmentsByCourse
     """, label=_("Enrolments"))
 
+# Course.detail_layout_class = CourseDetail
 
 class Activities(dd.Table):
     """Base table for all activities.
@@ -171,7 +172,7 @@ class Activities(dd.Table):
     _course_area = None
     required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     model = 'courses.Course'
-    detail_layout = CourseDetail()
+    detail_layout = 'courses.CourseDetail'
     insert_layout = """
     line teacher
     name start_date

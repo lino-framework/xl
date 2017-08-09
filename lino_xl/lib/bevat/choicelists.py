@@ -16,6 +16,35 @@ from lino_xl.lib.accounts.utils import DEBIT, CREDIT
 from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
+from lino_xl.lib.vat.choicelists import VatColumns
+from lino_xl.lib.vat.choicelists import VatRegimes
+
+VatRegimes.clear()
+add = VatRegimes.add_item
+add('10', _("Private person"), 'normal')
+add('11', _("Private person (reduced)"), 'reduced')
+add('20', _("Subject to VAT"), 'subject')
+add('25', _("Co-contractor"), 'cocontractor')
+add('30', _("Intra-community"), 'intracom')
+add('31', _("Delay in collection"), 'delayed') # report de perception
+add('40', _("Inside EU"), 'inside')
+add('50', _("Outside EU"), 'outside')
+add('60', _("Exempt"), 'exempt', item_vat=False)
+add('70', _("Germany"), 'de')
+add('71', _("Luxemburg"), 'lu')
+
+VatColumns.clear()
+add = VatColumns.add_item
+add('00', _("Sales basis 0"))
+add('01', _("Sales basis 1"))
+add('02', _("Sales basis 2"))
+add('03', _("Sales basis 3"))
+add('54', _("VAT due"))
+add('55', _("VAT returnable"))
+add('59', _("VAT deductible"))
+add('81', _("Purchase of goods"))
+add('82', _("Purchase of services"))
+add('83', _("Purchase of investments"))
 
 
 class DeclarationFields(DeclarationFieldsBase):
@@ -50,7 +79,7 @@ mfld("83", CREDIT, '83', _("Investments"))
 
 mfld("84", DEBIT, "81 82 83", 
       _("CN purchases on operations in 86 and 88"),
-      vat_regimes="intracom", only_dc=True)
+      vat_regimes="intracom", both_dc=False)
 mfld("85", DEBIT, "81 82 83", _("CN purchases on other operations"),
       vat_regimes="!intracom !delayed")
 mfld("86", CREDIT, "81 82 83",

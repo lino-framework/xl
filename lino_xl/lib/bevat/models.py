@@ -24,6 +24,8 @@ from lino_xl.lib.vat.mixins import VatDeclaration
 
 from .choicelists import DeclarationFields
 
+DEMO_JOURNAL_NAME = "VAT"
+
 # print("20170711a {}".format(DeclarationFields.get_list_items()))
 
 class Declaration(VatDeclaration):

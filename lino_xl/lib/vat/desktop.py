@@ -98,7 +98,7 @@ class InvoicesByJournal(Invoices, ByJournal):
 class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
     label = _("Purchase journal")
 
-VoucherTypes.add_item(VatAccountInvoice, InvoicesByJournal)
+VoucherTypes.add_item_lazy(InvoicesByJournal)
 
 
 class ItemsByInvoice(dd.Table):

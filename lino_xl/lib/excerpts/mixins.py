@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -38,7 +38,7 @@ document)."""
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
-        if obj.printed_by is None:
+        if obj.printed_by_id is None:
             ar.error(_("Oops, the print cache was already cleared."))
             return
 

@@ -144,10 +144,8 @@ class ProjectInvoicesByJournal(InvoicesByJournal):
     detail_layout = ProjectInvoiceDetail()
     
 
-VoucherTypes.add_item(
-    AccountInvoice, InvoicesByJournal, _("Invoices"))
-VoucherTypes.add_item(
-    AccountInvoice, ProjectInvoicesByJournal, _("Project invoices"))
+VoucherTypes.add_item_lazy(InvoicesByJournal, _("Invoices"))
+VoucherTypes.add_item_lazy(ProjectInvoicesByJournal, _("Project invoices"))
 
 
 class VouchersByPartner(dd.VirtualTable):

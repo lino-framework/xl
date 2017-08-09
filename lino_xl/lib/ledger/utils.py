@@ -183,13 +183,24 @@ def get_due_movements(dc, **flt):
     return matches
 
 
-def check_clearings(partner, matches=[]):
+def check_clearings_by_account(account, matches=[]):
+    # not used. See blog/2017/0802.rst
+    qs = rt.modules.ledger.Movement.objects.filter(
+        account=account).order_by('match')
+    check_clearings(qs, matches)
+    on_ledger_movement.send(sender=account.__class__, instance=account)
+    
+def check_clearings_by_partner(partner, matches=[]):
+    qs = rt.modules.ledger.Movement.objects.filter(
+        partner=partner).order_by('match')
+    check_clearings(qs, matches)
+    on_ledger_movement.send(sender=partner.__class__, instance=partner)
+    
+def check_clearings(qs, matches=[]):
     """Check whether involved movements are cleared or not, and update
     their :attr:`cleared` field accordingly.
 
     """
-    qs = rt.modules.ledger.Movement.objects.filter(
-        partner=partner, account__clearable=True).order_by('match')
     qs = qs.select_related('voucher', 'voucher__journal')
     if len(matches):
         qs = qs.filter(match__in=matches)
@@ -212,4 +223,3 @@ def check_clearings(partner, matches=[]):
         sat = (balance == ZERO)
         qs.filter(account=account, match=match).update(cleared=sat)
 
-    on_ledger_movement.send(sender=partner.__class__, instance=partner)

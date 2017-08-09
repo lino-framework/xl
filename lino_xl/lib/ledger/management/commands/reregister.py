@@ -40,7 +40,7 @@ from django.core.management.base import BaseCommand  # CommandError
 from lino.api import dd, rt
 
 from lino.core.requests import BaseRequest
-from lino_xl.lib.ledger.utils import check_clearings
+from lino_xl.lib.ledger.utils import check_clearings_by_partner
 
 
 def puts(msg):
@@ -76,7 +76,7 @@ def reregister_vouchers(username=None, args=[], simulate=False):
         puts(msg)
         qs = rt.models.contacts.Partner.objects.all()
         for obj in progress.bar(qs):
-            check_clearings(obj)
+            check_clearings_by_partner(obj)
 
 
 class Command(BaseCommand):

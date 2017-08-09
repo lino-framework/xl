@@ -221,9 +221,7 @@ class AnalyticAccountsBalance(AccountsBalance):
                   
 
 
-@dd.receiver(dd.pre_analyze)
-def pre_analyze(sender, **kw):
-    VoucherTypes.add_item('ana.AnaAccountInvoice', InvoicesByJournal)
+VoucherTypes.add_item_lazy(InvoicesByJournal)
 
 class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
     label = _("Purchase journal (analytic)")

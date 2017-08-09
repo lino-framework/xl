@@ -590,9 +590,7 @@ class InvoicesByPartner(Invoices):
     # master_key = 'person'
 
 
-@dd.receiver(dd.pre_analyze)
-def pre_analyze(sender, **kw):
-    VoucherTypes.add_item('sales.VatProductInvoice', InvoicesByJournal)
+VoucherTypes.add_item_lazy(InvoicesByJournal)
 
 
 class ProductDetailMixin(dd.DetailLayout):

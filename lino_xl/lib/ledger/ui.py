@@ -785,10 +785,11 @@ class MovementsByVoucher(Movements):
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'voucher'
-    column_names = 'seqno project partner account debit credit match_link cleared *'
+    column_names = 'account project partner debit credit match_link cleared *'
     sum_text_column = 3
     # auto_fit_column_widths = True
     slave_grid_format = "html"
+    order_by = ['value_date', 'account__ref']
 
 
 class MovementsByPartner(Movements):
@@ -796,10 +797,10 @@ class MovementsByPartner(Movements):
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'partner'
-    order_by = ['-value_date']
     # slave_grid_format = "html"
     slave_grid_format = "summary"
     # auto_fit_column_widths = True
+    order_by = ['-value_date', 'voucher__id', 'account__ref']
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -901,9 +902,12 @@ class MovementsByAccount(Movements):
 
     """
     master_key = 'account'
-    order_by = ['-value_date']
+    column_names = 'value_date voucher_link description \
+    debit credit match_link *'
+    # order_by = ['-value_date']
     # auto_fit_column_widths = True
     slave_grid_format = "html"
+    order_by = ['-value_date', 'account__ref']
 
     @classmethod
     def param_defaults(cls, ar, **kw):

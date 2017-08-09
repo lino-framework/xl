@@ -30,70 +30,41 @@ if DECLARED_IN:
 #         required_roles = set([1])
 
 class DeclarationDetail(dd.DetailLayout):
-    main = "info values"
-    
-    info = dd.Panel("""
+    main = """
     start_period end_period entry_date accounting_period
-    ledger.MovementsByVoucher
-    """, label=_("Info"))
-    
-    values = dd.Panel("""
     partner user workflow_buttons
-    c2 c2b c2c c3 c3b c4 c5
-    F61 F62 FXX FYY F71
-    # VouchersByDeclaration
-    """, label=_("Values"))
+    c1 c2 c2b c3 c4
+    ledger.MovementsByVoucher
+    """
+   
+    c1 = """
+    F71
+    F72
+    F73
+    """
     
-    c2="""
-    F00 
-    F01 
-    F02 
-    F03 
+    c2 = """
+    F75
+    F76
     """
-    c2b="""
-    F44 
-    F45
-    F46
-    """
-    c2c="""
-    F47
-    F48
-    F49
+    c2b = """
+    F77
+    F78
     """
     c3 = """
+    F80
     F81 
-    F82 
-    F83
-    F84 
+    F82
     """
-    c3b = """
-    F85 
-    F86 
-    F87 
-    F88
+    c4 = """
+    F83
     """
 
-    c4 = """
-    F54
-    F55 
-    F56
-    F57
-    """
-    c5 = """
-    F59
-    F64
-    """
     
-    # fields="""
-    # F00 F01 F02 F03 
-    # F44 F45 F46 F47 F48 F49
-    # F81 F82 F83
-    # F84 F85 F86 F87 F88
-    # """
 
 
 class Declarations(dd.Table):
-    model = 'bevat.Declaration'
+    model = 'bevats.Declaration'
     detail_layout = DeclarationDetail()
     insert_layout = """
     entry_date 
@@ -111,7 +82,7 @@ class Declarations(dd.Table):
 class DeclarationsByJournal(ledger.ByJournal, Declarations):
     params_panel_hidden = True
     #master = journals.Journal
-    column_names = "number entry_date start_period end_period accounting_period FXX FYY F71 workflow_buttons *"
+    column_names = "number entry_date start_period end_period accounting_period F80 F81 F82 F83 workflow_buttons *"
 
 ledger.VoucherTypes.add_item_lazy(DeclarationsByJournal)
 

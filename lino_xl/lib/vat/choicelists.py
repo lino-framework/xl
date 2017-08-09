@@ -10,6 +10,7 @@ Choicelists for `lino_xl.lib.vat`.
 from __future__ import unicode_literals
 from __future__ import print_function
 
+from atelier.utils import is_string
 from decimal import Decimal
 from lino.api import dd, _
 from lino.utils.xmlgen.html import E
@@ -30,23 +31,13 @@ add('2', _("Normal"), 'normal')    # everything else
 
 
 class VatColumns(dd.ChoiceList):
+    # to be populated by bevat, bevats, ...
     verbose_name = _("VAT column")
     verbose_name_plural = _("VAT columns")
     required_roles = dd.login_required(LedgerStaff)
     show_values = True
-    
-add = VatColumns.add_item
-add('00', _("Sales basis 0"))
-add('01', _("Sales basis 1"))
-add('02', _("Sales basis 2"))
-add('03', _("Sales basis 3"))
-add('54', _("VAT due"))
-add('55', _("VAT returnable"))
-add('59', _("VAT deductible"))
-add('81', _("Purchase of goods"))
-add('82', _("Purchase of services"))
-add('83', _("Purchase of investments"))
 
+    
 
 class VatRegime(dd.Choice):
 
@@ -63,19 +54,11 @@ class VatRegimes(dd.ChoiceList):
         i.e. whether and how it is to be paid.")
 
 add = VatRegimes.add_item
-add('10', _("Private person"), 'private')
-add('11', _("Private person (reduced)"), 'reduced')
+add('10', _("Private person"), 'normal')
 add('20', _("Subject to VAT"), 'subject')
-add('25', _("Co-contractor"), 'cocontractor')
 add('30', _("Intra-community"), 'intracom')
-add('31', _("Delay in collection"), 'delayed') # report de perception
-add('40', _("Inside EU"), 'inside')
-add('50', _("Outside EU"), 'outside')
-add('60', _("Exempt"), 'exempt', item_vat=False)
-add('70', _("Germany"), 'de')
-add('71', _("Luxemburg"), 'lu')
-
-
+# re-populated in bevat and bevats.
+# See also lino_xl.lib.vat.Plugin.default_vat_regime
 
 # @dd.python_2_unicode_compatible
 class DeclarationField(dd.Choice):
@@ -104,10 +87,24 @@ class DeclarationField(dd.Choice):
         
         # self.is_base = is_base
         self.fieldnames = fieldnames
+        self.vat_regimes = vat_regimes
+        self.vat_classes = vat_classes
+        self.vat_columns = vat_columns
         self.dc = dc
         self.both_dc = both_dc
 
-        if vat_regimes:
+    def attach(self, choicelist):
+        self.observed_fields = set()
+        for n in self.fieldnames.split():
+            f = choicelist.get_by_value(n)
+            if f is None:
+                raise Exception(
+                    "Invalid observed field {} for {}".format(
+                        n, self))
+            self.observed_fields.add(f)
+
+        if is_string(self.vat_regimes):
+            vat_regimes = self.vat_regimes
             self.vat_regimes = set()
             self.exclude_vat_regimes = set()
             for n in vat_regimes.split():
@@ -120,10 +117,13 @@ class DeclarationField(dd.Choice):
                 if v is None:
                     raise Exception(
                         "Invalid VAT regime {} for field {}".format(
-                            v, value))
+                            v, self.value))
                 s.add(v)
+            if len(self.vat_regimes) == 0:
+                self.vat_regimes = None
             
-        if vat_classes:
+        if is_string(self.vat_classes):
+            vat_classes = self.vat_classes
             self.vat_classes = set()
             self.exclude_vat_classes = set()
             for n in vat_classes.split():
@@ -136,10 +136,13 @@ class DeclarationField(dd.Choice):
                 if v is None:
                     raise Exception(
                         "Invalid VAT class {} for field {}".format(
-                            v, value))
+                            v, self.value))
                 s.add(v)
+            if len(self.vat_classes) == 0:
+                self.vat_classes = None
                 
-        if vat_columns:
+        if is_string(self.vat_columns):
+            vat_columns = self.vat_columns
             self.vat_columns = set()
             self.exclude_vat_columns = set()
             for n in vat_columns.split():
@@ -152,20 +155,15 @@ class DeclarationField(dd.Choice):
                 if v is None:
                     raise Exception(
                         "Invalid VAT column {} for field {}".format(
-                            v, value))
+                            v, self.value))
                 s.add(v)
-        
-
-    def attach(self, choicelist):
+            if len(self.vat_columns) == 0:
+                self.vat_columns = None
+            
+            
+            
         super(DeclarationField, self).attach(choicelist)
-        self.observed_fields = set()
-        for n in self.fieldnames.split():
-            f = choicelist.get_by_value(n)
-            if f is None:
-                raise Exception(
-                    "Invalid observed field {} for {}".format(
-                        n, self))
-            self.observed_fields.add(f)
+            
         
     def get_model_field(self):
         return dd.PriceField(

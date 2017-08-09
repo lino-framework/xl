@@ -34,14 +34,14 @@ def demo_objects():
         obj.vat_column = VatColumns.get_by_value(fld)
         return obj
 
-    yield dcl(SALES_ACCOUNT, '03')
+    # yield dcl(SALES_ACCOUNT, '03')
     yield dcl(VAT_DUE_ACCOUNT, '54')
     yield dcl(VAT_DEDUCTIBLE_ACCOUT, '59')
     yield dcl(VAT_RETURNABLE_ACCOUNT, '55')
     # yield dcl(VATDCL_ACCOUNT, '20')
-    yield dcl(PURCHASE_OF_GOODS, '81')
-    yield dcl(PURCHASE_OF_SERVICES, '82')
-    yield dcl(PURCHASE_OF_INVESTMENTS, '83')
+    yield dcl(PURCHASE_OF_GOODS, '71')
+    yield dcl(PURCHASE_OF_SERVICES, '75')
+    yield dcl(PURCHASE_OF_INVESTMENTS, '72')
 
 
 
@@ -50,7 +50,7 @@ def objects():
 
     Journal = rt.models.ledger.Journal
     Company = rt.models.contacts.Company
-    Declaration = rt.models.bevat.Declaration
+    Declaration = rt.models.bevats.Declaration
     # DeclarationFields = rt.models.declarations.DeclarationFields
     # Account = rt.models.accounts.Account
 
@@ -66,17 +66,16 @@ def objects():
     yield office
     
     USERS = Cycler(settings.SITE.user_model.objects.all())
-    JOURNAL = Journal.objects.get(ref=rt.models.bevat.DEMO_JOURNAL_NAME)
-
-    date = datetime.date(dd.plugins.ledger.start_year, 1, 4)
+    JOURNAL = Journal.objects.get(ref=rt.models.bevats.DEMO_JOURNAL_NAME)
+    # date = datetime.date(dd.plugins.ledger.start_year, 1, 4)
+    date = datetime.date(dd.plugins.ledger.start_year, 1, 31)
     end_date = settings.SITE.demo_date(-30) 
     while date < end_date:
         dcl = Declaration(
             journal=JOURNAL,
             user=USERS.pop(),
             partner=office,
-            entry_date=date,
-            voucher_date=date)
+            entry_date=date)
         yield dcl
         dcl.register(REQUEST)
         dcl.save()

@@ -441,7 +441,9 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
             # declare the previous month by default 
             if not self.start_period_id:
                 self.start_period = AP.get_default_for_date(
-                    self.entry_date - AMONTH)
+                    self.entry_date)
+                # self.start_period = AP.get_default_for_date(
+                #     self.entry_date - AMONTH)
                 
             # if not self.start_date:
             #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)
@@ -455,7 +457,6 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
 
     def register_voucher(self, *args, **kwargs):
         # self.compute_fields()
-        super(VatDeclaration, self).register_voucher(*args, **kwargs)
         if DECLARED_IN:
             count = 0
             for doc in rt.models.ledger.Voucher.objects.filter(
@@ -472,14 +473,42 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
                 doc.declared_in = self
                 doc.save()
                 #~ declared_docs.append(doc)
+        if False: # write match to declared movements
+            flt = self.get_period_filter(
+                'voucher__accounting_period',
+                match='',
+                account__clearable=True,
+                account__needs_partner=False,
+                voucher__journal__must_declare=True)
+            qs = rt.models.ledger.Movement.objects.filter(**flt)
+            for mvt in qs:
+                mvt.match = self.get_match()
+                mvt.save()
+        super(VatDeclaration, self).register_voucher(*args, **kwargs)
+                
 
     def deregister_voucher(self, *args, **kwargs):
-        super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
         if DECLARED_IN:
             for doc in rt.models.ledger.Voucher.objects.filter(
                     declared_in=self):
                 doc.declared_in = None
                 doc.save()
+                
+        if False:  # remove match from declared movements
+            flt = self.get_period_filter(
+                'voucher__accounting_period',
+                match=self.get_match(),
+                account__clearable=True,
+                account__needs_partner=False,
+                voucher__journal__must_declare=True)
+            qs = rt.models.ledger.Movement.objects.filter(**flt)
+            for mvt in qs:
+                mvt.match = ''
+                mvt.save()
+            
+        # deregister
+        super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
+                
             
     # def before_state_change(self, ar, old, new):
     #     if new.name == 'register':
@@ -502,8 +531,8 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
         """Implements
         :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
 
-        As a side effect this updates values in the fields of this
-        declaration.
+        As a side effect this updates values in the computed fields of
+        this declaration.
 
         """
         fields = self.fields_list.get_list_items()
@@ -513,7 +542,7 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
             if fld.editable:
                 sums[fld.name] = getattr(self, fld.name)
             else:
-                sums[fld.name] = ZERO
+                sums[fld.name] = Decimal('0.00')  # ZERO
 
         flt = self.get_period_filter(
             'voucher__accounting_period',
@@ -531,6 +560,9 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
             for fld in fields:
                 fld.collect_from_movement(
                     self, mvt, sums, payable_sums)
+                # if fld.is_payable:
+                #     print("20170802 after {} {} : {}".format(
+                #         fld, mvt.amount, payable_sums))
             
         for fld in fields:
             fld.collect_from_sums(self, sums, payable_sums)
@@ -550,5 +582,4 @@ class VatDeclaration(Payable, Voucher, PeriodRange):
 
         # self.full_clean()
         # self.save()
-
         return payable_sums

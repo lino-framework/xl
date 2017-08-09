@@ -25,5 +25,5 @@ def objects():
         vat_regime=VatRegimes.intracom,
         vat_class=VatClasses.normal,
         vat_returnable=True)
-    yield VatRule(vat_regime=VatRegimes.private, rate=0)
+    yield VatRule(vat_regime=VatRegimes.normal, rate=0)
     yield VatRule(vat_regime=VatRegimes.subject, rate=0)
