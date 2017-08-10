@@ -976,6 +976,8 @@ class MovementsByMatch(Movements):
             p = voucher.get_partner()
             if p is not None and p != ar.master_instance:
                 elems.append(ar.obj2html(p))
+            elif self.partner:
+                elems.append(ar.obj2html(self.partner))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
