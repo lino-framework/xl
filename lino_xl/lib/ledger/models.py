@@ -59,10 +59,9 @@ class Journal(mixins.BabelNamed,
     voucher_type = VoucherTypes.field()
     journal_group = JournalGroups.field()
     auto_check_clearings = models.BooleanField(
-        _("Check clearing"), default=True,
-        help_text=_("Automatically update the cleared status of involved "
-                    "transactions when (de)registering a voucher of this "
-                    "journal"))
+        _("Check clearing"), default=True)
+    auto_fill_suggestions = models.BooleanField(
+        _("Fill suggestions"), default=True)
     force_sequence = models.BooleanField(
         _("Force chronological sequence"), default=False)
     account = dd.ForeignKey('accounts.Account', blank=True, null=True)
@@ -599,6 +598,8 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         """
         # dd.logger.info("20151211 ledger.create_movement()")
         account, ana_account = acc_tuple
+        if account is None and item is not None:
+            raise Warning("No account specified for {}".format(item))
         if not isinstance(account, rt.models.accounts.Account):
             raise Warning("{} is not an Account object".format(account))
         kw['voucher'] = self

@@ -1,6 +1,7 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
+from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 
@@ -21,10 +22,15 @@ ledger = dd.resolve_app('ledger')
 
 class FinancialVoucher(ledger.Voucher, Certifiable):
 
+    auto_compute_amount = False
+    
     class Meta:
         abstract = True
 
-    item_account = dd.ForeignKey('accounts.Account', blank=True, null=True)
+    item_account = dd.ForeignKey(
+        'accounts.Account',
+        verbose_name=_("Default account"),
+        blank=True, null=True)
     item_remark = models.CharField(
         _("External reference"), max_length=200, blank=True)
 
@@ -133,7 +139,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
 
         """
         # dd.logger.info("20160329 FinancialMixin.partner_changed")
-        if not self.partner:
+        if not self.partner or not self.voucher.journal.auto_fill_suggestions:
             return
         flt = dict(partner=self.partner, cleared=False)
 
@@ -174,6 +180,21 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         if self.account.default_amount:
             self.amount = self.account.default_amount
             self.dc = not self.account.type.dc
+            return
+        if self.voucher.auto_compute_amount:
+            total = Decimal()
+            dc = self.voucher.journal.dc
+            for item in self.voucher.items.exclude(id=self.id):
+                if item.dc == dc:
+                    total -= item.amount
+                else:
+                    total += item.amount
+            if total < 0:
+                dc = not dc
+                total = - total
+            self.dc = dc
+            self.amount = total
+        
         
     def get_partner(self):
         return self.partner or self.project
@@ -253,8 +274,8 @@ class DatedFinancialVoucherItem(FinancialVoucherItem):
         super(DatedFinancialVoucherItem, self).on_create(ar)
         if self.voucher.last_item_date:
             self.date = self.voucher.last_item_date
-        else:
-            self.date = dd.today()
+        # else:
+        #     self.date = dd.today()
 
     def date_changed(self, ar):
         obj = self.voucher

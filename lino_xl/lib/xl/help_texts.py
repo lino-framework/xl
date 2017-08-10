@@ -1127,6 +1127,8 @@ vouchers should restart at 1 every year."""),
     'lino_xl.lib.ledger.Journal.auto_check_clearings' : _("""Whether to automatically check and update the 'cleared' status
 of involved transactions when (de)registering a voucher of
 this journal."""),
+    'lino_xl.lib.ledger.Journal.auto_fill_suggestions' : _("""Whether to automatically fill voucher item from due payments
+of the partner when entering a financial voucher."""),
     'lino_xl.lib.ledger.Journal.template' : _("""See PrintableType.template."""),
     'lino_xl.lib.ledger.Journals' : _("""The default table showing all instances of Journal."""),
     'lino_xl.lib.ledger.ByJournal' : _("""Mixin for journal-based tables of vouchers."""),
