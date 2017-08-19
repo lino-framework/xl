@@ -36,7 +36,7 @@ class JournalDetail(dd.DetailLayout):
     name ref:5
     trade_type seqno id voucher_type:10 journal_group:10
     account build_method template
-    dc force_sequence #invert_due_dc yearly_numbering auto_check_clearings must_declare
+    dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare
     printed_name
     MatchRulesByJournal
     """
@@ -976,6 +976,8 @@ class MovementsByMatch(Movements):
             p = voucher.get_partner()
             if p is not None and p != ar.master_instance:
                 elems.append(ar.obj2html(p))
+            elif self.partner:
+                elems.append(ar.obj2html(self.partner))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))

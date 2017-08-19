@@ -73,6 +73,7 @@ class ShowSuggestions(dd.Action):
 
 
 class JournalEntry(DatedFinancialVoucher, ProjectRelated):
+    auto_compute_amount = True
     class Meta:
         app_label = 'finan'
         abstract = dd.is_abstract_model(__name__, 'JournalEntry')
@@ -226,29 +227,31 @@ class PaymentOrderItem(BankAccount, FinancialVoucherItem):
 
 
 class JournalEntryDetail(dd.DetailLayout):
-    main = "general ledger"
+    main = "general more"
 
     general = dd.Panel("""
-    entry_date user narration workflow_buttons
+    entry_date number:6 user workflow_buttons
+    narration id
     finan.ItemsByJournalEntry
     """, label=_("General"))
 
-    ledger = dd.Panel("""
-    journal accounting_period number id
+    more = dd.Panel("""
+    journal accounting_period item_account item_remark
     ledger.MovementsByVoucher
-    """, label=_("Ledger"))
+    """, label=_("More"))
 
 
 class PaymentOrderDetail(JournalEntryDetail):
     general = dd.Panel("""
-    entry_date user narration total execution_date workflow_buttons
+    entry_date number:6 user total execution_date workflow_buttons
+    narration id
     finan.ItemsByPaymentOrder
     """, label=_("General"))
 
 
 class BankStatementDetail(JournalEntryDetail):
     general = dd.Panel("""
-    entry_date balance1 balance2 user workflow_buttons
+    entry_date balance1 balance2 user id workflow_buttons
     finan.ItemsByBankStatement
     """, label=_("General"))
 
@@ -341,7 +344,7 @@ class ItemsByVoucher(dd.Table):
     # hidden_columns = 'id amount dc seqno'
     suggest = ShowSuggestions()
     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
-    # slave_grid_format = 'html'
+    slave_grid_format = 'html'
     preview_limit = 0
     label = _("Content")
 
