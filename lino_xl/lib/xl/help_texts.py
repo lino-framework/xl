@@ -385,7 +385,7 @@ that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.countries.mixins.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
 method, ..."""),
-    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to Place."""),
+    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to the Place which is used as city."""),
     'lino_xl.lib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
     'lino_xl.lib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
     'lino_xl.lib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
