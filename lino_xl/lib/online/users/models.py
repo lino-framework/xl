@@ -170,8 +170,8 @@ class User(User, Person):
         
     @classmethod
     def get_simple_parameters(cls):
-        s = super(User, cls).get_simple_parameters()
-        s.add('user_state')
+        s = list(super(User, cls).get_simple_parameters())
+        s.append('user_state')
         return s
 
     # def get_default_table(self, ar):

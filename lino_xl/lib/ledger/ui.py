@@ -342,8 +342,8 @@ class PartnerVouchers(Vouchers):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(PartnerVouchers, cls).get_simple_parameters()
-        s |= set(['partner', 'state'])
+        s = list(super(PartnerVouchers, cls).get_simple_parameters())
+        s += ['partner', 'state']
         return s
 
     @classmethod
@@ -728,12 +728,12 @@ class Movements(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        p = super(Movements, cls).get_simple_parameters()
-        p.add('partner')
-        p.add('project')
-        # p.add('journal_group')
-        # p.add('year')
-        p.add('account')
+        p = list(super(Movements, cls).get_simple_parameters())
+        p.append('partner')
+        p.append('project')
+        # p.append('journal_group')
+        # p.append('year')
+        p.append('account')
         return p
 
     @classmethod

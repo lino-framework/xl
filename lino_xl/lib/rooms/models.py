@@ -181,9 +181,9 @@ class Bookings(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(Bookings, cls).get_simple_parameters()
-        s.add('company')
-        s.add('state')
+        s = list(super(Bookings, cls).get_simple_parameters())
+        s.append('company')
+        s.append('state')
         return s
 
     # simple_parameters = 'company state'.split()

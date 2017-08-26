@@ -46,7 +46,6 @@ class ContactDetail(dd.Model):
         related_name='phones_by_partner')
     value = dd.CharField(_("Value"), max_length=200, blank=True)
     remark = dd.CharField(_("Remark"), max_length=200, blank=True)
-
     primary = models.BooleanField(_("Primary"), default=False)
 
     allow_cascaded_delete = ['partner']
@@ -71,6 +70,9 @@ class ContactDetail(dd.Model):
         super(ContactDetail, self).full_clean()
         self.detail_type.validate(self.value)
 
+    @classmethod
+    def get_simple_parameters(cls):
+        return ['partner', 'detail_type']
 
 @dd.receiver(dd.pre_ui_delete, sender=ContactDetail)
 def clear_partner_on_delete(sender=None, request=None, **kw):
@@ -84,7 +86,7 @@ class ContactDetails(dd.Table):
     model = 'phones.ContactDetail'
     required_roles = dd.login_required(dd.SiteStaff)
     column_names = (
-        "partner detail_type:10 value:30 remark:10 "
+        "value:30 detail_type:10 remark:10 partner id "
         "primary *")
     insert_layout = """
     detail_type 

@@ -221,10 +221,10 @@ class Activities(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(Activities, cls).get_simple_parameters()
-        s.add('line')
-        s.add('teacher')
-        s.add('state')
+        s = list(super(Activities, cls).get_simple_parameters())
+        s.append('line')
+        s.append('teacher')
+        s.append('state')
         # s.add('user')
         return s
 
