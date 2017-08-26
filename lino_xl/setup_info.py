@@ -139,6 +139,8 @@ lino_xl.lib.outbox
 lino_xl.lib.outbox.fixtures
 lino_xl.lib.pages
 lino_xl.lib.pages.fixtures
+lino_xl.lib.phones
+lino_xl.lib.phones.fixtures
 lino_xl.lib.pisa
 lino_xl.lib.polls
 lino_xl.lib.polls.fixtures

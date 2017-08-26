@@ -8,13 +8,14 @@ Contacts management
 .. autosummary::
    :toctree:
 
-    addresses
-    contacts
     countries
-    cv
-    dupable_partners
+    contacts
+    addresses
+    phones
     households
     humanlinks
+    cv
+    dupable_partners
 
 Groupware
 =========
