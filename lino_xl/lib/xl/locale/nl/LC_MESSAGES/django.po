@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-10 04:52+0200\n"
+"POT-Creation-Date: 2017-08-25 20:28+0300\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -118,12 +118,12 @@ msgstr ""
 msgid "Default amount"
 msgstr ""
 
-#: lino_xl/lib/accounts/utils.py:14 lino_xl/lib/finan/models.py:193
+#: lino_xl/lib/accounts/utils.py:14 lino_xl/lib/finan/models.py:194
 #: lino_xl/lib/ledger/models.py:725 lino_xl/lib/ledger/ui.py:438
 msgid "Debit"
 msgstr ""
 
-#: lino_xl/lib/accounts/utils.py:15 lino_xl/lib/finan/models.py:194
+#: lino_xl/lib/accounts/utils.py:15 lino_xl/lib/finan/models.py:195
 #: lino_xl/lib/ledger/models.py:731 lino_xl/lib/ledger/ui.py:442
 msgid "Credit"
 msgstr ""
@@ -327,8 +327,8 @@ msgstr "Omschrijving"
 
 #: lino_xl/lib/ana/models.py:149 lino_xl/lib/cal/fixtures/std.py:35
 #: lino_xl/lib/courses/desktop.py:152 lino_xl/lib/excerpts/models.py:699
-#: lino_xl/lib/finan/models.py:235 lino_xl/lib/finan/models.py:248
-#: lino_xl/lib/finan/models.py:255 lino_xl/lib/mailbox/ui.py:35
+#: lino_xl/lib/finan/models.py:236 lino_xl/lib/finan/models.py:249
+#: lino_xl/lib/finan/models.py:256 lino_xl/lib/mailbox/ui.py:35
 #: lino_xl/lib/meetings/desktop.py:57 lino_xl/lib/polls/models.py:191
 #: lino_xl/lib/polls/models.py:382 lino_xl/lib/rooms/models.py:155
 #: lino_xl/lib/sales/models.py:319 lino_xl/lib/tickets/ui.py:75
@@ -3189,7 +3189,7 @@ msgid " (HTML)"
 msgstr ""
 
 #: lino_xl/lib/courses/models.py:316 lino_xl/lib/excerpts/models.py:323
-#: lino_xl/lib/finan/models.py:105 lino_xl/lib/postings/models.py:44
+#: lino_xl/lib/finan/models.py:106 lino_xl/lib/postings/models.py:44
 msgid "Print"
 msgstr "Drucken"
 
@@ -4119,32 +4119,33 @@ msgstr ""
 msgid "Write XML"
 msgstr ""
 
-#: lino_xl/lib/finan/mixins.py:29
+#: lino_xl/lib/finan/mixins.py:32
 #, fuzzy
 msgid "Default account"
 msgstr "Änderungsart"
 
-#: lino_xl/lib/finan/mixins.py:32 lino_xl/lib/finan/mixins.py:102
-msgid "External reference"
+#: lino_xl/lib/finan/mixins.py:35 lino_xl/lib/finan/mixins.py:105
+#: lino_xl/lib/sepa/mixins.py:114
+msgid "Your reference"
 msgstr ""
 
-#: lino_xl/lib/finan/mixins.py:96
+#: lino_xl/lib/finan/mixins.py:99
 #, fuzzy
 msgid "Item"
 msgstr "Site"
 
-#: lino_xl/lib/finan/mixins.py:97
+#: lino_xl/lib/finan/mixins.py:100
 #, fuzzy
 msgid "Items"
 msgstr "Site"
 
-#: lino_xl/lib/finan/mixins.py:99 lino_xl/lib/invoicing/models.py:242
+#: lino_xl/lib/finan/mixins.py:102 lino_xl/lib/invoicing/models.py:242
 #: lino_xl/lib/vatless/models.py:58 lino_xl/lib/vatless/models.py:131
 #, fuzzy
 msgid "Amount"
 msgstr "Land"
 
-#: lino_xl/lib/finan/mixins.py:156
+#: lino_xl/lib/finan/mixins.py:159
 #, fuzzy
 msgid "{} suggestions"
 msgstr "Omschrijving"
@@ -4153,111 +4154,111 @@ msgstr "Omschrijving"
 msgid "Field '{0}' in journal '{0}' is empty!"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:79
+#: lino_xl/lib/finan/models.py:80
 #, fuzzy
 msgid "Journal Entry"
 msgstr "Land"
 
-#: lino_xl/lib/finan/models.py:80
+#: lino_xl/lib/finan/models.py:81
 #, fuzzy
 msgid "Journal Entries"
 msgstr "Kalenders"
 
-#: lino_xl/lib/finan/models.py:86
+#: lino_xl/lib/finan/models.py:87
 msgid "Missing amount {} in movements"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:95
+#: lino_xl/lib/finan/models.py:96
 msgid "Payment Order"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:96
+#: lino_xl/lib/finan/models.py:97
 #: lino_xl/lib/ledger/fixtures/minimal_ledger.py:209
 msgid "Payment Orders"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:98
+#: lino_xl/lib/finan/models.py:99
 msgid "Total"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:100
+#: lino_xl/lib/finan/models.py:101
 #, fuzzy
 msgid "Execution date"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/finan/models.py:150
+#: lino_xl/lib/finan/models.py:151
 #, fuzzy
 msgid "Bank Statement"
 msgstr "Thema"
 
-#: lino_xl/lib/finan/models.py:151
+#: lino_xl/lib/finan/models.py:152
 #, fuzzy
 msgid "Bank Statements"
 msgstr "Thema"
 
-#: lino_xl/lib/finan/models.py:153
+#: lino_xl/lib/finan/models.py:154
 msgid "Old balance"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:154
+#: lino_xl/lib/finan/models.py:155
 msgid "New balance"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:190
+#: lino_xl/lib/finan/models.py:191
 msgid "Journal Entry item"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:191
+#: lino_xl/lib/finan/models.py:192
 msgid "Journal Entry items"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:200
+#: lino_xl/lib/finan/models.py:201
 msgid "Bank Statement item"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:201
+#: lino_xl/lib/finan/models.py:202
 msgid "Bank Statement items"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:203
+#: lino_xl/lib/finan/models.py:204
 #, fuzzy
 msgid "Income"
 msgstr "Willkommen"
 
-#: lino_xl/lib/finan/models.py:204
+#: lino_xl/lib/finan/models.py:205
 #, fuzzy
 msgid "Expense"
 msgstr "Drucken"
 
-#: lino_xl/lib/finan/models.py:210
+#: lino_xl/lib/finan/models.py:211
 msgid "Payment Order item"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:211
+#: lino_xl/lib/finan/models.py:212
 msgid "Payment Order items"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:240 lino_xl/lib/meetings/desktop.py:75
+#: lino_xl/lib/finan/models.py:241 lino_xl/lib/meetings/desktop.py:75
 #: lino_xl/lib/polls/models.py:386 lino_xl/lib/sales/models.py:324
 #: lino_xl/lib/tickets/ui.py:83 lino_xl/lib/tickets/ui.py:423
 msgid "More"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:348 lino_xl/lib/sales/models.py:497
+#: lino_xl/lib/finan/models.py:349 lino_xl/lib/sales/models.py:497
 #, fuzzy
 msgid "Content"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/finan/models.py:376
+#: lino_xl/lib/finan/models.py:377
 msgid "Fill"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:396 lino_xl/lib/finan/models.py:440
+#: lino_xl/lib/finan/models.py:397 lino_xl/lib/finan/models.py:441
 #, fuzzy, python-format
 msgid "%d items have been added to %s."
 msgstr "%s wurde aktualisiert."
 
-#: lino_xl/lib/finan/models.py:448 lino_xl/lib/invoicing/models.py:324
+#: lino_xl/lib/finan/models.py:449 lino_xl/lib/invoicing/models.py:324
 #, fuzzy
 msgid "Suggestions"
 msgstr "Omschrijving"
@@ -6577,10 +6578,6 @@ msgstr ""
 msgid "SEPA"
 msgstr ""
 
-#: lino_xl/lib/sepa/mixins.py:114
-msgid "Your reference"
-msgstr ""
-
 #: lino_xl/lib/sepa/mixins.py:195
 msgid "Check for partner mismatches in bank accounts"
 msgstr ""
@@ -8669,7 +8666,7 @@ msgid ""
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:388
-msgid "A pointer to Place."
+msgid "A pointer to the Place which is used as city."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:389
@@ -16688,5 +16685,11 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Types of registries for the Belgian residence."
+#~ msgstr ""
+
+#~ msgid "A pointer to Place."
+#~ msgstr ""
+
+#~ msgid "External reference"
 #~ msgstr ""
 

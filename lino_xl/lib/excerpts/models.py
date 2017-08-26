@@ -754,8 +754,8 @@ class Excerpts(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(Excerpts, cls).get_simple_parameters()
-        s.add('excerpt_type')
+        s = list(super(Excerpts, cls).get_simple_parameters())
+        s.append('excerpt_type')
         return s
 
     @classmethod

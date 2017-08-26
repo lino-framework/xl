@@ -38,7 +38,7 @@ class CountryCity(dd.Model):
     
     .. attribute:: city
     
-        A pointer to :class:`Place`.
+        A pointer to the :class:`Place` which is used as city.
 
 
     """

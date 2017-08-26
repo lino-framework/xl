@@ -297,9 +297,9 @@ class Votes(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(Votes, cls).get_simple_parameters()
-        s.add('state')
-        s.add('mail_mode')
+        s = list(super(Votes, cls).get_simple_parameters())
+        s.append('state')
+        s.append('mail_mode')
         return s
 
     @classmethod

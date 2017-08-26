@@ -40,6 +40,7 @@ from lino.utils import join_words
 from lino.utils import join_elems
 
 from lino_xl.lib.countries.mixins import AddressLocation
+from lino_xl.lib.phones.mixins import ContactDetailsOwner
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
@@ -47,7 +48,7 @@ from lino.mixins.periods import ObservedDateRange
 
 
 from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
-from lino.mixins import Contactable, Phonable
+# from lino.mixins import Contactable, Phonable
 from .roles import SimpleContactsUser, ContactsStaff
 from .choicelists import PartnerEvents
 
@@ -58,8 +59,7 @@ PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
 
 @dd.python_2_unicode_compatible
-class Partner(Contactable, Phonable, mixins.Polymorphic,
-              AddressLocation):
+class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
     """A Partner is any physical or moral person for which you want to
     keep contact data (address, phone numbers, ...).
 

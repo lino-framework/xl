@@ -8,21 +8,21 @@ help_texts = {
     'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the "addressee" of any address."""),
     'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
     'lino_xl.lib.addresses.mixins.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
-    'lino_xl.lib.addresses.models.Address' : _("""Inherits fields from
+    'lino_xl.lib.addresses.Address' : _("""Inherits fields from
 lino_xl.lib.countries.CountryRegionCity (country, region,
 city. zip_code) and lino_xl.lib.contacts.AddresssLocation
 (street, street_no, ...)"""),
-    'lino_xl.lib.addresses.models.Address.data_source' : _("""Pointer to choicelists.DataSources."""),
-    'lino_xl.lib.addresses.models.Address.primary' : _("""Whether this address is the primary address of its owner.
+    'lino_xl.lib.addresses.Address.data_source' : _("""Pointer to choicelists.DataSources."""),
+    'lino_xl.lib.addresses.Address.primary' : _("""Whether this address is the primary address of its owner.
 Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
     'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.appypod.choicelists.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
+    'lino_xl.lib.appypod.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
 for appy.pod."""),
-    'lino_xl.lib.appypod.choicelists.AppyOdtBuildMethod' : _("""Generates .odt files from .odt templates."""),
-    'lino_xl.lib.appypod.choicelists.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
-    'lino_xl.lib.appypod.choicelists.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
-    'lino_xl.lib.appypod.choicelists.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyOdtBuildMethod' : _("""Generates .odt files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
     'lino_xl.lib.appypod.mixins.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
 model which implements
 Addressable."""),
@@ -33,22 +33,22 @@ BeIdCardHolder."""),
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
     'lino_xl.lib.beid.Plugin.read_only_simulate' : _("""Whether to just simulate."""),
-    'lino_xl.lib.beid.choicelists.CivilStates' : _("""The global list of civil states that a client can have.  This
+    'lino_xl.lib.beid.CivilStates' : _("""The global list of civil states that a client can have.  This
 is the list of choices for the civil_state field of a
 Client."""),
-    'lino_xl.lib.beid.choicelists.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
+    'lino_xl.lib.beid.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
 officiellement lié"""),
-    'lino_xl.lib.beid.choicelists.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
-    'lino_xl.lib.beid.choicelists.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
+    'lino_xl.lib.beid.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
+    'lino_xl.lib.beid.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
 votre partenaire est décédé"""),
-    'lino_xl.lib.beid.choicelists.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
-    'lino_xl.lib.beid.choicelists.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
-    'lino_xl.lib.beid.choicelists.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
+    'lino_xl.lib.beid.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
+    'lino_xl.lib.beid.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
+    'lino_xl.lib.beid.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
 corps et de biens, Getrennt von Tisch und Bett)"""),
-    'lino_xl.lib.beid.choicelists.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
-    'lino_xl.lib.beid.choicelists.ResidenceTypes' : _("""The list of Belgian resident registers
+    'lino_xl.lib.beid.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
+    'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers
 (Einwohnerregister, Registre de résidents)."""),
-    'lino_xl.lib.beid.choicelists.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
+    'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
 Currently only Belgian eid cards are tested.
 Concrete subclasses must also inherit from lino.mixins.Born."""),
@@ -70,28 +70,28 @@ them."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
     'lino_xl.lib.bevat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.bevats.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.blogs.models.Entry' : _("""A blog entry is a short article with a title, published on a given
+    'lino_xl.lib.blogs.Entry' : _("""A blog entry is a short article with a title, published on a given
 date and time by a given user."""),
-    'lino_xl.lib.blogs.models.LatestEntries' : _("""Show the most recent blog entries."""),
+    'lino_xl.lib.blogs.LatestEntries' : _("""Show the most recent blog entries."""),
     'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
 lino_welfare.modlib.aids.mixins.Confirmation."""),
-    'lino_xl.lib.boards.models.Member' : _("""A Member is when a given ml.contacts.Person
+    'lino_xl.lib.boards.Member' : _("""A Member is when a given ml.contacts.Person
 belongs to a given Board."""),
     'lino_xl.lib.cal.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
 Default value is 5 years after today."""),
-    'lino_xl.lib.cal.choicelists.Weekdays' : _("""A choicelist with the seven days of a week."""),
-    'lino_xl.lib.cal.choicelists.DurationUnit' : _("""Base class for the choices in the DurationUnits
+    'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
+    'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
 choicelist."""),
-    'lino_xl.lib.cal.choicelists.DurationUnits' : _("""A list of possible values for the duration_unit field of an
+    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the duration_unit field of an
 Event."""),
-    'lino_xl.lib.cal.choicelists.DurationUnits.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.choicelists.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
-    'lino_xl.lib.cal.choicelists.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
+    'lino_xl.lib.cal.DurationUnits.item_class' : _("""alias of DurationUnit"""),
+    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
+    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
-    'lino_xl.lib.cal.choicelists.Recurrencies.item_class' : _("""alias of DurationUnit"""),
+    'lino_xl.lib.cal.Recurrencies.item_class' : _("""alias of DurationUnit"""),
     'lino_xl.lib.cal.mixins.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.mixins.UpdateEntriesByEvent' : _("""Update all events of this series. This is installed as
 update_events on Event."""),
@@ -105,126 +105,126 @@ lino.modlib.courses.models.Course."""),
     'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
     'lino_xl.lib.cal.mixins.Component.auto_type' : _("""Contains the sequence number if this is an automatically
 generated component. Otherwise this field is empty."""),
-    'lino_xl.lib.cal.models.RemoteCalendar' : _("""Remote calendars will be synchronized by
+    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
 lino_xl.lib.cal.management.commands.watch_calendars,
 and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.cal.models.Room' : _("""A location where calendar entries can happen.  For a given Room you
+    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
 can see the EntriesByRoom that happened (or will happen)
 there.  A Room has a multilingual name."""),
-    'lino_xl.lib.cal.models.Priority' : _("""The priority of a task or entry."""),
-    'lino_xl.lib.cal.models.EventType' : _("""The possible value of the Event.type field."""),
-    'lino_xl.lib.cal.models.EventType.is_appointment' : _("""Whether entries of this type should be considered
+    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
+    'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
+    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
 "appointments" (i.e. whose time and place have been agreed
 upon with other users or external parties)."""),
-    'lino_xl.lib.cal.models.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
-    'lino_xl.lib.cal.models.EventType.locks_user' : _("""Whether calendar entries of this type make the user
+    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
+    'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
 unavailable for other locking events at the same time."""),
-    'lino_xl.lib.cal.models.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
-    'lino_xl.lib.cal.models.EventType.event_label' : _("""Default text for summary of new entries."""),
-    'lino_xl.lib.cal.models.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
+    'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
+    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
-    'lino_xl.lib.cal.models.Task' : _("""A Task is when a user plans to to something
+    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to to something
 (and optionally wants to get reminded about it)."""),
-    'lino_xl.lib.cal.models.Task.state' : _("""The state of this Task. one of TaskStates."""),
-    'lino_xl.lib.cal.models.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
+    'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
+    'lino_xl.lib.cal.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
 calendar entries."""),
-    'lino_xl.lib.cal.models.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
-    'lino_xl.lib.cal.models.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
+    'lino_xl.lib.cal.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
+    'lino_xl.lib.cal.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
 entries."""),
-    'lino_xl.lib.cal.models.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
-    'lino_xl.lib.cal.models.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
-    'lino_xl.lib.cal.models.UpdateGuests' : _("""Populate or update the list of participants for this entry
+    'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
+    'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
+    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this entry
 according to the suggestions."""),
-    'lino_xl.lib.cal.models.ExtAllDayField' : _("""An editable virtual field needed for
+    'lino_xl.lib.cal.ExtAllDayField' : _("""An editable virtual field needed for
 communication with the Ext.ensible CalendarPanel
 because we consider the "all day" checkbox
 equivalent to "empty start and end time fields"."""),
-    'lino_xl.lib.cal.models.Event' : _("""A calendar entry is a lapse of time to be visualized in a
+    'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
 calendar."""),
-    'lino_xl.lib.cal.models.Event.end_time' : _("""These four fields define the duration of this entry.
+    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
 Only start_date is mandatory."""),
-    'lino_xl.lib.cal.models.Event.summary' : _("""A one-line descriptive text."""),
-    'lino_xl.lib.cal.models.Event.description' : _("""A longer descriptive text."""),
-    'lino_xl.lib.cal.models.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.cal.models.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
+    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
+    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
+    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
+    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
 entry."""),
-    'lino_xl.lib.cal.models.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
+    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
 field pointing to a given EventType, which holds
 extended configurable information about this entry."""),
-    'lino_xl.lib.cal.models.Event.state' : _("""The state of this entry. The state can change according to
+    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
 rules defined by the workflow, that's why we sometimes refer
 to it as the life cycle."""),
-    'lino_xl.lib.cal.models.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
+    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
 the same time."""),
-    'lino_xl.lib.cal.models.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
+    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
 all entries on that day (EntriesByDay)."""),
-    'lino_xl.lib.cal.models.Event.show_conflicting' : _("""A ShowSlaveTable
+    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
-    'lino_xl.lib.cal.models.EventGuestChecker' : _("""Check for calendar entries without participants."""),
-    'lino_xl.lib.cal.models.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
-    'lino_xl.lib.cal.models.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
-    'lino_xl.lib.cal.models.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of days
+    'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
+    'lino_xl.lib.cal.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
+    'lino_xl.lib.cal.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
+    'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of days
 allowed by their type."""),
-    'lino_xl.lib.cal.models.LongEntryChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.models.Guest' : _("""Represents the fact that a given person is expected to attend to a
+    'lino_xl.lib.cal.LongEntryChecker.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
 given event."""),
-    'lino_xl.lib.cal.models.Guest.event' : _("""The calendar event to which this presence applies."""),
-    'lino_xl.lib.cal.models.Guest.partner' : _("""The partner to which this presence applies."""),
-    'lino_xl.lib.cal.models.Guest.role' : _("""The role of this partner in this presence."""),
-    'lino_xl.lib.cal.models.Guest.state' : _("""The state of this presence."""),
-    'lino_xl.lib.cal.ui.Rooms' : _("""List of rooms where calendar events can happen."""),
-    'lino_xl.lib.cal.ui.Rooms.model' : _("""alias of Room"""),
-    'lino_xl.lib.cal.ui.TasksByUser' : _("""Shows the list of tasks for this user."""),
-    'lino_xl.lib.cal.ui.TasksByUser.master' : _("""alias of User"""),
-    'lino_xl.lib.cal.ui.TasksByUser.model' : _("""alias of Task"""),
-    'lino_xl.lib.cal.ui.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
+    'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
+    'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
+    'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
+    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
+    'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
+    'lino_xl.lib.cal.Rooms.model' : _("""alias of Room"""),
+    'lino_xl.lib.cal.TasksByUser' : _("""Shows the list of tasks for this user."""),
+    'lino_xl.lib.cal.TasksByUser.master' : _("""alias of User"""),
+    'lino_xl.lib.cal.TasksByUser.model' : _("""alias of Task"""),
+    'lino_xl.lib.cal.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
 future."""),
-    'lino_xl.lib.cal.ui.MyTasks.default_end_date_offset' : _("""Number of days to go into the future. The default value for
+    'lino_xl.lib.cal.MyTasks.default_end_date_offset' : _("""Number of days to go into the future. The default value for
 end_date will be today + that number of days."""),
-    'lino_xl.lib.cal.ui.MyTasks.model' : _("""alias of Task"""),
-    'lino_xl.lib.cal.ui.Guests' : _("""The default table for Guest."""),
-    'lino_xl.lib.cal.ui.Guests.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.ui.MyPresences' : _("""Shows all my presences in calendar events, independently of their
+    'lino_xl.lib.cal.MyTasks.model' : _("""alias of Task"""),
+    'lino_xl.lib.cal.Guests' : _("""The default table for Guest."""),
+    'lino_xl.lib.cal.Guests.model' : _("""alias of Guest"""),
+    'lino_xl.lib.cal.MyPresences' : _("""Shows all my presences in calendar events, independently of their
 state."""),
-    'lino_xl.lib.cal.ui.MyPresences.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.ui.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
-    'lino_xl.lib.cal.ui.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
-    'lino_xl.lib.cal.ui.Events' : _("""Table which shows all calendar events."""),
-    'lino_xl.lib.cal.ui.Events.show_appointments' : _("""Whether only appointments should be
+    'lino_xl.lib.cal.MyPresences.model' : _("""alias of Guest"""),
+    'lino_xl.lib.cal.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
+    'lino_xl.lib.cal.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
+    'lino_xl.lib.cal.Events' : _("""Table which shows all calendar events."""),
+    'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be
 shown.  "Yes" means only appointments, "No"
 means no appointments and leaving it to blank shows both types
 of events."""),
-    'lino_xl.lib.cal.ui.Events.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
-    'lino_xl.lib.cal.ui.ConflictingEvents.master' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.ConflictingEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
+    'lino_xl.lib.cal.Events.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
+    'lino_xl.lib.cal.ConflictingEvents.master' : _("""alias of Event"""),
+    'lino_xl.lib.cal.ConflictingEvents.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date."""),
-    'lino_xl.lib.cal.ui.EntriesByDay.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.EntriesByRoom' : _("""Displays the Events at a given Room."""),
-    'lino_xl.lib.cal.ui.EntriesByRoom.master' : _("""alias of Room"""),
-    'lino_xl.lib.cal.ui.EntriesByRoom.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.EntriesByController' : _("""Shows the events linked to this database object."""),
-    'lino_xl.lib.cal.ui.EntriesByController.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.OneEvent' : _("""Show a single calendar event."""),
-    'lino_xl.lib.cal.ui.OneEvent.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyEntries' : _("""Table which shows today's and all future appointments of the
+    'lino_xl.lib.cal.EntriesByDay.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.EntriesByRoom' : _("""Displays the Events at a given Room."""),
+    'lino_xl.lib.cal.EntriesByRoom.master' : _("""alias of Room"""),
+    'lino_xl.lib.cal.EntriesByRoom.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.EntriesByController' : _("""Shows the events linked to this database object."""),
+    'lino_xl.lib.cal.EntriesByController.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.OneEvent' : _("""Show a single calendar event."""),
+    'lino_xl.lib.cal.OneEvent.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.MyEntries' : _("""Table which shows today's and all future appointments of the
 requesting user.  The default filter parameters are set to show
 only appointments."""),
-    'lino_xl.lib.cal.ui.MyEntries.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyEntriesToday' : _("""Like MyEntries, but only today."""),
-    'lino_xl.lib.cal.ui.MyEntriesToday.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyAssignedEvents' : _("""The table of events which are assigned to me. That is, whose
+    'lino_xl.lib.cal.MyEntries.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.MyEntriesToday' : _("""Like MyEntries, but only today."""),
+    'lino_xl.lib.cal.MyEntriesToday.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.MyAssignedEvents' : _("""The table of events which are assigned to me. That is, whose
 Event.assigned_to field refers to the requesting user."""),
-    'lino_xl.lib.cal.ui.MyAssignedEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
+    'lino_xl.lib.cal.MyAssignedEvents.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
 over but who are still in a nonstable state."""),
-    'lino_xl.lib.cal.ui.OverdueAppointments.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyOverdueAppointments' : _("""Like OverdueAppointments, but only for myself."""),
-    'lino_xl.lib.cal.ui.MyOverdueAppointments.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ui.MyUnconfirmedAppointments' : _("""Shows my appointments in the near future which are in suggested or
+    'lino_xl.lib.cal.OverdueAppointments.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.MyOverdueAppointments' : _("""Like OverdueAppointments, but only for myself."""),
+    'lino_xl.lib.cal.MyOverdueAppointments.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.MyUnconfirmedAppointments' : _("""Shows my appointments in the near future which are in suggested or
 draft state."""),
-    'lino_xl.lib.cal.ui.MyUnconfirmedAppointments.model' : _("""alias of Event"""),
+    'lino_xl.lib.cal.MyUnconfirmedAppointments.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
@@ -249,62 +249,62 @@ EndTicketSession."""),
     'lino_xl.lib.clocking.actions.StartTicketSession' : _("""Start a session on this ticket."""),
     'lino_xl.lib.clocking.actions.PrintActivityReport' : _("""Print an activity report."""),
     'lino_xl.lib.clocking.mixins.Workable' : _("""Base class for things that workers can work on."""),
-    'lino_xl.lib.clocking.models.SessionType' : _("""The type of a Session."""),
-    'lino_xl.lib.clocking.models.Session' : _("""A Session is when a user works during a given lapse of time on
+    'lino_xl.lib.clocking.SessionType' : _("""The type of a Session."""),
+    'lino_xl.lib.clocking.Session' : _("""A Session is when a user works during a given lapse of time on
 a given Ticket."""),
-    'lino_xl.lib.clocking.models.Session.start_date' : _("""The date when you started to work."""),
-    'lino_xl.lib.clocking.models.Session.start_time' : _("""The time (in hh:mm) when you started working on this
+    'lino_xl.lib.clocking.Session.start_date' : _("""The date when you started to work."""),
+    'lino_xl.lib.clocking.Session.start_time' : _("""The time (in hh:mm) when you started working on this
 session."""),
-    'lino_xl.lib.clocking.models.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
-    'lino_xl.lib.clocking.models.Session.end_time' : _("""The time (in hh:mm) when you stopped to work. This is empty
+    'lino_xl.lib.clocking.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
+    'lino_xl.lib.clocking.Session.end_time' : _("""The time (in hh:mm) when you stopped to work. This is empty
 as long as you are busy with this session."""),
-    'lino_xl.lib.clocking.models.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
+    'lino_xl.lib.clocking.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
 from the difference between start_time and
 end_time."""),
-    'lino_xl.lib.clocking.models.Session.faculty' : _("""The faculty that has been used during this session. On a new
+    'lino_xl.lib.clocking.Session.faculty' : _("""The faculty that has been used during this session. On a new
 session this defaults to the needed faculty currently specified
 on the ticket."""),
     'lino_xl.lib.clocking.roles.Worker' : _("""A user who is candidate for working on a ticket."""),
-    'lino_xl.lib.clocking.ui.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
+    'lino_xl.lib.clocking.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
 during the given period."""),
-    'lino_xl.lib.clocking.ui.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
+    'lino_xl.lib.clocking.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
 during the given period."""),
-    'lino_xl.lib.clocking.ui.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
-    'lino_xl.lib.clocking.ui.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
-    'lino_xl.lib.clocking.ui.SessionsByTicket.master' : _("""alias of Partner"""),
-    'lino_xl.lib.clocking.ui.SessionsByTicket.model' : _("""alias of Session"""),
+    'lino_xl.lib.clocking.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
+    'lino_xl.lib.clocking.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
+    'lino_xl.lib.clocking.SessionsByTicket.master' : _("""alias of Partner"""),
+    'lino_xl.lib.clocking.SessionsByTicket.model' : _("""alias of Session"""),
     'lino_xl.lib.coachings.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.coachings.choicelists.ClientEvents' : _("""A choicelist of observable client events."""),
-    'lino_xl.lib.coachings.choicelists.ClientCreated' : _("""The choice for ClientEvents which
+    'lino_xl.lib.coachings.ClientEvents' : _("""A choicelist of observable client events."""),
+    'lino_xl.lib.coachings.ClientCreated' : _("""The choice for ClientEvents which
 selects clients whose record has been created during the observed
 period."""),
-    'lino_xl.lib.coachings.choicelists.ClientModified' : _("""The choice for ClientEvents which selects clients whose
+    'lino_xl.lib.coachings.ClientModified' : _("""The choice for ClientEvents which selects clients whose
 main record has been modified during the observed period."""),
-    'lino_xl.lib.coachings.desktop.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
+    'lino_xl.lib.coachings.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
     'lino_xl.lib.coachings.mixins.Coachable' : _("""Base class for coachable client."""),
     'lino_xl.lib.coachings.mixins.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
-    'lino_xl.lib.coachings.models.CoachingType' : _("""The type of a coaching can be used for expressing different
+    'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
 types of responsibilities. For example in welfare they
 differentiate between "General Social Service" and "Integration
 Service"."""),
-    'lino_xl.lib.coachings.models.CoachingType.does_integ' : _("""Whether coachings of this type are to be considered as
+    'lino_xl.lib.coachings.CoachingType.does_integ' : _("""Whether coachings of this type are to be considered as
 integration work. This is used when generating calendar events
 for evaluation meetings (see
 lino_xl.lib.coaching.Coachable.setup_auto_event())"""),
-    'lino_xl.lib.coachings.models.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French) is
+    'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French) is
 when a given client is being coached by a given user during a
 given period."""),
-    'lino_xl.lib.coachings.models.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
+    'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
 should have active coachings"""),
-    'lino_xl.lib.coachings.models.ClientContactType' : _("""A client contact type is the type or "role" which must be
+    'lino_xl.lib.coachings.ClientContactType' : _("""A client contact type is the type or "role" which must be
 specified for a given ClientContact."""),
-    'lino_xl.lib.coachings.models.ClientContact' : _("""A client contact is when a given partner has a given role for
+    'lino_xl.lib.coachings.ClientContact' : _("""A client contact is when a given partner has a given role for
 a given client."""),
     'lino_xl.lib.coachings.roles.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
     'lino_xl.lib.coachings.roles.CoachingsStaff' : _("""A user who can configure coaching functionality."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.contacts.choicelists.PartnerEvents' : _("""A choicelist of observable partner events."""),
+    'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
     'lino_xl.lib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
 or a company, the latter potentially represented by a contact
 person having a given role in that company.  Typical usages are
@@ -327,46 +327,46 @@ lino_xl.lib.contacts.models.Role object."""),
 something that refers to a "partner".  person means a "contact
 person" for the partner."""),
     'lino_xl.lib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
-    'lino_xl.lib.contacts.models.Partner' : _("""A Partner is any physical or moral person for which you want to
+    'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
 keep contact data (address, phone numbers, ...)."""),
-    'lino_xl.lib.contacts.models.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
+    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
 Subclasses may hide this field and fill it automatically,
 e.g. saving a Person will automatically set her
 name field to "last_name, first_name"."""),
-    'lino_xl.lib.contacts.models.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
+    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
 before the name, for persons this is inserted between first
 name and last name (see
 lino.mixins.human.Human.get_last_name_prefix())."""),
-    'lino_xl.lib.contacts.models.Partner.email' : _("""The primary email address."""),
-    'lino_xl.lib.contacts.models.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
+    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
+    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
 formatting characters in phone numbers when searching.  For
 example, if you enter "087/12.34.56" as a phone number, then a
 search for phone number containing "1234" will not find it."""),
-    'lino_xl.lib.contacts.models.Partner.gsm' : _("""The primary mobile phone number."""),
-    'lino_xl.lib.contacts.models.Partner.language' : _("""The language to use when communicating with this partner."""),
-    'lino_xl.lib.contacts.models.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
+    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
+    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
 returns simply the name, optionally prefixed by the
 prefix, ignoring any arguments, but
 e.g. Human overrides this."""),
-    'lino_xl.lib.contacts.models.Person' : _("""A physical person and an individual human being.
+    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
 See also lino.tutorial.human."""),
-    'lino_xl.lib.contacts.models.Persons' : _("""List of all Persons."""),
-    'lino_xl.lib.contacts.models.Persons.model' : _("""alias of Person"""),
-    'lino_xl.lib.contacts.models.CompanyType' : _("""A type of organization. Used by Company.type field."""),
-    'lino_xl.lib.contacts.models.Company.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.contacts.models.Company.full_name' : _("""Deserves more documentation."""),
-    'lino_xl.lib.contacts.models.RoleType' : _("""A RoleType is "what a given Person can be for a
+    'lino_xl.lib.contacts.Persons' : _("""List of all Persons."""),
+    'lino_xl.lib.contacts.Persons.model' : _("""alias of Person"""),
+    'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
+    'lino_xl.lib.contacts.Company.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.Company.full_name' : _("""Deserves more documentation."""),
+    'lino_xl.lib.contacts.RoleType' : _("""A RoleType is "what a given Person can be for a
 given Company"."""),
-    'lino_xl.lib.contacts.models.Role' : _("""A Contact (historical model name Role) is a
+    'lino_xl.lib.contacts.Role' : _("""A Contact (historical model name Role) is a
 Person who has a given role (ContactType) in a
 given Company."""),
-    'lino_xl.lib.contacts.models.Role.company' : _("""The company where this person has a role."""),
-    'lino_xl.lib.contacts.models.Role.type' : _("""The role of this person in this company."""),
-    'lino_xl.lib.contacts.models.Role.person' : _("""The person having this role in this company."""),
-    'lino_xl.lib.contacts.models.RolesByPerson' : _("""Shows all roles of a person."""),
-    'lino_xl.lib.contacts.models.RolesByPerson.master' : _("""alias of Person"""),
-    'lino_xl.lib.contacts.models.RolesByPerson.model' : _("""alias of Role"""),
-    'lino_xl.lib.contacts.models.Organisation' : _("""alias of Company"""),
+    'lino_xl.lib.contacts.Role.company' : _("""The company where this person has a role."""),
+    'lino_xl.lib.contacts.Role.type' : _("""The role of this person in this company."""),
+    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.RolesByPerson' : _("""Shows all roles of a person."""),
+    'lino_xl.lib.contacts.RolesByPerson.master' : _("""alias of Person"""),
+    'lino_xl.lib.contacts.RolesByPerson.model' : _("""alias of Role"""),
+    'lino_xl.lib.contacts.Organisation' : _("""alias of Company"""),
     'lino_xl.lib.contacts.roles.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
     'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to full contacts functionality."""),
     'lino_xl.lib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
@@ -381,78 +381,78 @@ countries there is a mandatory intermediate field."""),
     'lino_xl.lib.countries.Plugin.country_code' : _("""The 2-letter ISO code of the country where the site owner is
 located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
-    'lino_xl.lib.countries.choicelists.PlaceTypes' : _("""A choicelist of possible place types."""),
+    'lino_xl.lib.countries.PlaceTypes' : _("""A choicelist of possible place types."""),
     'lino_xl.lib.countries.mixins.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
 method, ..."""),
-    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to Place."""),
+    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to the Place which is used as city."""),
     'lino_xl.lib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
     'lino_xl.lib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
     'lino_xl.lib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
-    'lino_xl.lib.countries.models.Country' : _("""A "country" or "nation"."""),
-    'lino_xl.lib.countries.models.Countries' : _("""The table of all countries."""),
-    'lino_xl.lib.countries.models.Countries.model' : _("""alias of Country"""),
-    'lino_xl.lib.countries.models.Place' : _("""Any kind of named geographic region (except those who have an entry
+    'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
+    'lino_xl.lib.countries.Countries' : _("""The table of all countries."""),
+    'lino_xl.lib.countries.Countries.model' : _("""alias of Country"""),
+    'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
-    'lino_xl.lib.countries.models.PlaceChecker' : _("""The name of a geographical place
+    'lino_xl.lib.countries.PlaceChecker' : _("""The name of a geographical place
 (lino_xl.lib.countries.models.Place.name) should not
 consist of only digits."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
     'lino_xl.lib.courses.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.courses.choicelists.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
-    'lino_xl.lib.courses.desktop.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
-    'lino_xl.lib.courses.desktop.EntriesByTeacher.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.desktop.EntriesByTeacher.model' : _("""alias of Event"""),
-    'lino_xl.lib.courses.desktop.CourseDetail' : _("""The detail layout of a Course."""),
-    'lino_xl.lib.courses.desktop.Activities' : _("""Base table for all activities."""),
-    'lino_xl.lib.courses.desktop.Activities.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.desktop.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher)."""),
-    'lino_xl.lib.courses.desktop.MyCoursesGiven.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.desktop.MyCoursesGiven.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.desktop.CoursesByLine' : _("""Show the courses per course line."""),
-    'lino_xl.lib.courses.desktop.CoursesByLine.master' : _("""alias of Line"""),
-    'lino_xl.lib.courses.desktop.CoursesByLine.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.desktop.CoursesByTopic' : _("""Shows the courses of a given topic."""),
-    'lino_xl.lib.courses.desktop.CoursesByTopic.master' : _("""alias of Topic"""),
-    'lino_xl.lib.courses.desktop.CoursesByTopic.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.desktop.Enrolments' : _("""Base class for all enrolment tables."""),
-    'lino_xl.lib.courses.desktop.Enrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.desktop.AllEnrolments' : _("""Show global list of all enrolments."""),
-    'lino_xl.lib.courses.desktop.AllEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.desktop.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
-    'lino_xl.lib.courses.desktop.PendingRequestedEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.desktop.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
-    'lino_xl.lib.courses.desktop.PendingConfirmedEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.desktop.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
-    'lino_xl.lib.courses.desktop.EnrolmentsByPupil.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.desktop.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.desktop.StatusReport' : _("""Gives an overview about what's up today ."""),
-    'lino_xl.lib.courses.models.Course' : _("""A Course is a group of pupils that regularily meet with a given
+    'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
+    'lino_xl.lib.courses.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
+    'lino_xl.lib.courses.EntriesByTeacher.master' : _("""alias of Person"""),
+    'lino_xl.lib.courses.EntriesByTeacher.model' : _("""alias of Event"""),
+    'lino_xl.lib.courses.CourseDetail' : _("""The detail layout of a Course."""),
+    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.Activities.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher)."""),
+    'lino_xl.lib.courses.MyCoursesGiven.master' : _("""alias of Person"""),
+    'lino_xl.lib.courses.MyCoursesGiven.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
+    'lino_xl.lib.courses.CoursesByLine.master' : _("""alias of Line"""),
+    'lino_xl.lib.courses.CoursesByLine.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
+    'lino_xl.lib.courses.CoursesByTopic.master' : _("""alias of Topic"""),
+    'lino_xl.lib.courses.CoursesByTopic.model' : _("""alias of Course"""),
+    'lino_xl.lib.courses.Enrolments' : _("""Base class for all enrolment tables."""),
+    'lino_xl.lib.courses.Enrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
+    'lino_xl.lib.courses.AllEnrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
+    'lino_xl.lib.courses.PendingRequestedEnrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
+    'lino_xl.lib.courses.PendingConfirmedEnrolments.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
+    'lino_xl.lib.courses.EnrolmentsByPupil.master' : _("""alias of Person"""),
+    'lino_xl.lib.courses.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
+    'lino_xl.lib.courses.StatusReport' : _("""Gives an overview about what's up today ."""),
+    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
 teacher in a given room to speak about a given subject."""),
-    'lino_xl.lib.courses.models.Course.max_places' : _("""Available places. The maximum number of participants to allow
+    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
 in this course."""),
-    'lino_xl.lib.courses.models.Course.free_places' : _("""Number of free places."""),
-    'lino_xl.lib.courses.models.Course.requested' : _("""Number of requested places."""),
-    'lino_xl.lib.courses.models.Course.trying' : _("""Number of trying places."""),
-    'lino_xl.lib.courses.models.Course.confirmed' : _("""Number of confirmed places."""),
-    'lino_xl.lib.courses.models.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
+    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
+    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
+    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
+    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
+    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
 given course."""),
-    'lino_xl.lib.courses.models.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
-    'lino_xl.lib.courses.models.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
+    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
+    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
 participant."""),
-    'lino_xl.lib.courses.models.Line' : _("""An activity line (or series) groups courses into a
+    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
 configurable list of categories."""),
-    'lino_xl.lib.courses.models.Line.name' : _("""The designation of this activity line as seen by the user
+    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
 e.g. when selecting the line."""),
-    'lino_xl.lib.courses.models.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
-    'lino_xl.lib.courses.models.Line.body_template' : _("""The body template to use when printing an activity of this
+    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
+    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
 line.  Leave empty to use the site's default (defined by
 body_template on the
 lino_xl.lib.excerpts.models.ExcerptType for
 Course)"""),
-    'lino_xl.lib.courses.models.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
 application defines several variants of
 EnrolmentsByPupil."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment. Sets the state to confirmed after
@@ -467,7 +467,7 @@ places)."""),
     'lino_xl.lib.excerpts.Plugin.responsible_user' : _("""The username of the user responsible for monitoring the excerpts
 system. This is currently used only by
 lino_xl.lib.excerpts.fixtures.demo2."""),
-    'lino_xl.lib.excerpts.choicelists.Shortcuts' : _("""The list of excerpt shortcut fields.  An excerpt shortcut field is
+    'lino_xl.lib.excerpts.Shortcuts' : _("""The list of excerpt shortcut fields.  An excerpt shortcut field is
 a virtual display field with actions for quickly managing, from a
 given database object, the excerpt for this object of a given type."""),
     'lino_xl.lib.excerpts.mixins.ClearPrinted' : _("""Action to clear the print cache (i.e. the generated printable
@@ -486,57 +486,57 @@ selecting an instance of this model."""),
     'lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
 One field for every language.
 If this is empty, then name is used."""),
-    'lino_xl.lib.excerpts.models.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
+    'lino_xl.lib.excerpts.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
 Excerpt.excerpt_type which points to an ExcerptType
 instance."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.name' : _("""The designation of this excerpt type.
+    'lino_xl.lib.excerpts.ExcerptType.name' : _("""The designation of this excerpt type.
 One field for every language."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.content_type' : _("""The database model for which this excerpt type is to be used."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.build_method' : _("""See lino.modlib.printing.mixins.PrintableType.build_method."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.body_template' : _("""The body template to use when printing an excerpt of this type."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.email_template' : _("""The template to use when sending this an excerpt of this type
+    'lino_xl.lib.excerpts.ExcerptType.content_type' : _("""The database model for which this excerpt type is to be used."""),
+    'lino_xl.lib.excerpts.ExcerptType.build_method' : _("""See lino.modlib.printing.mixins.PrintableType.build_method."""),
+    'lino_xl.lib.excerpts.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
+    'lino_xl.lib.excerpts.ExcerptType.body_template' : _("""The body template to use when printing an excerpt of this type."""),
+    'lino_xl.lib.excerpts.ExcerptType.email_template' : _("""The template to use when sending this an excerpt of this type
 by email."""),
-    'lino_xl.lib.excerpts.models.ExcerptType.shortcut' : _("""Optional pointer to a shortcut field.  If this is not empty, then
+    'lino_xl.lib.excerpts.ExcerptType.shortcut' : _("""Optional pointer to a shortcut field.  If this is not empty, then
 the given shortcut field will manage excerpts of this type."""),
-    'lino_xl.lib.excerpts.models.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
-    'lino_xl.lib.excerpts.models.ExcerptTypes.model' : _("""alias of ExcerptType"""),
-    'lino_xl.lib.excerpts.models.CreateExcerpt' : _("""Action to create an excerpt in order to print this data record."""),
-    'lino_xl.lib.excerpts.models.Excerpt' : _("""A printable document that describes some aspect of the current
+    'lino_xl.lib.excerpts.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
+    'lino_xl.lib.excerpts.ExcerptTypes.model' : _("""alias of ExcerptType"""),
+    'lino_xl.lib.excerpts.CreateExcerpt' : _("""Action to create an excerpt in order to print this data record."""),
+    'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
 situation."""),
-    'lino_xl.lib.excerpts.models.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
-    'lino_xl.lib.excerpts.models.Excerpt.owner' : _("""The object being printed by this excerpt.
+    'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
+    'lino_xl.lib.excerpts.Excerpt.owner' : _("""The object being printed by this excerpt.
 See Controllable.owner."""),
-    'lino_xl.lib.excerpts.models.Excerpt.company' : _("""The optional company of the recipient of this
+    'lino_xl.lib.excerpts.Excerpt.company' : _("""The optional company of the recipient of this
 excerpt.  See ContactRelated.company."""),
-    'lino_xl.lib.excerpts.models.Excerpt.contact_person' : _("""The optional contact person of the recipient of this
+    'lino_xl.lib.excerpts.Excerpt.contact_person' : _("""The optional contact person of the recipient of this
 excerpt.  See ContactRelated.contact_person."""),
-    'lino_xl.lib.excerpts.models.Excerpt.recipient' : _("""The recipient of this excerpt.  See
+    'lino_xl.lib.excerpts.Excerpt.recipient' : _("""The recipient of this excerpt.  See
 ContactRelated.recipient"""),
-    'lino_xl.lib.excerpts.models.Excerpt.language' : _("""The language used for printing this excerpt."""),
-    'lino_xl.lib.excerpts.models.Excerpts' : _("""Base class for all tables on Excerpt."""),
-    'lino_xl.lib.excerpts.models.Excerpts.model' : _("""alias of Excerpt"""),
-    'lino_xl.lib.excerpts.models.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
+    'lino_xl.lib.excerpts.Excerpt.language' : _("""The language used for printing this excerpt."""),
+    'lino_xl.lib.excerpts.Excerpts' : _("""Base class for all tables on Excerpt."""),
+    'lino_xl.lib.excerpts.Excerpts.model' : _("""alias of Excerpt"""),
+    'lino_xl.lib.excerpts.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
 this."""),
-    'lino_xl.lib.excerpts.models.ExcerptsByOwner.model' : _("""alias of Excerpt"""),
+    'lino_xl.lib.excerpts.ExcerptsByOwner.model' : _("""alias of Excerpt"""),
     'lino_xl.lib.extensible.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
     'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
     'lino_xl.lib.faculties.Plugin' : _("""The model of objects to be used as demander of skill
 demands."""),
-    'lino_xl.lib.faculties.models.Faculty' : _("""A skill is a knowledge or ability which can be
+    'lino_xl.lib.faculties.Faculty' : _("""A skill is a knowledge or ability which can be
 required in order to work e.g. on some ticket, and which
 individual users can have (offer) or not."""),
-    'lino_xl.lib.faculties.models.Competence' : _("""A skill offer is when a given user is declared to have a
+    'lino_xl.lib.faculties.Competence' : _("""A skill offer is when a given user is declared to have a
 given skill."""),
-    'lino_xl.lib.faculties.models.Demand' : _("""A Skill demand is when a given end user declares to need a
+    'lino_xl.lib.faculties.Demand' : _("""A Skill demand is when a given end user declares to need a
 given skill."""),
-    'lino_xl.lib.faculties.ui.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
+    'lino_xl.lib.faculties.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
 which I am competent."""),
-    'lino_xl.lib.faculties.ui.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
-    'lino_xl.lib.faculties.ui.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
+    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
     'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.families.models.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
+    'lino_xl.lib.families.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
 but is stored as a Couple instance."""),
     'lino_xl.lib.households.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.households.Plugin.person_model' : _("""A string referring to the model which represents a human in your
@@ -544,42 +544,42 @@ application.  Default value is 'contacts.Person' (referring to
 lino_xl.lib.contacts.models.Person)."""),
     'lino_xl.lib.households.Plugin.adult_age' : _("""The age (in years) a person needs to have in order to be considered
 adult."""),
-    'lino_xl.lib.households.choicelists.MemberDependencies' : _("""The list of allowed choices for the charge of a household member."""),
-    'lino_xl.lib.households.choicelists.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
-    'lino_xl.lib.households.models.Type' : _("""Type of a household.
+    'lino_xl.lib.households.MemberDependencies' : _("""The list of allowed choices for the charge of a household member."""),
+    'lino_xl.lib.households.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
+    'lino_xl.lib.households.Type' : _("""Type of a household.
 http://www.belgium.be/fr/famille/couple/cohabitation/"""),
-    'lino_xl.lib.households.models.Household' : _("""A Household is a Partner who represents several Persons living together.
+    'lino_xl.lib.households.Household' : _("""A Household is a Partner who represents several Persons living together.
 A Household has a list of members."""),
-    'lino_xl.lib.households.models.Household.full_name' : _("""Overrides
+    'lino_xl.lib.households.Household.full_name' : _("""Overrides
 lino_xl.lib.contacts.models.Partner.get_full_name()."""),
-    'lino_xl.lib.households.models.Member' : _("""A household membership represents the fact that a given person
+    'lino_xl.lib.households.Member' : _("""A household membership represents the fact that a given person
 is (or has been) part of a given household."""),
-    'lino_xl.lib.households.models.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
-    'lino_xl.lib.households.models.Member.end_date' : _("""Until when this membership exists."""),
-    'lino_xl.lib.households.models.SiblingsByPerson' : _("""Displays the siblings of a given person in that person's active
+    'lino_xl.lib.households.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
+    'lino_xl.lib.households.Member.end_date' : _("""Until when this membership exists."""),
+    'lino_xl.lib.households.SiblingsByPerson' : _("""Displays the siblings of a given person in that person's active
 household."""),
-    'lino_xl.lib.households.models.SiblingsByPerson.master' : _("""alias of Person"""),
-    'lino_xl.lib.households.models.SiblingsByPerson.model' : _("""alias of Member"""),
+    'lino_xl.lib.households.SiblingsByPerson.master' : _("""alias of Person"""),
+    'lino_xl.lib.households.SiblingsByPerson.model' : _("""alias of Member"""),
     'lino_xl.lib.humanlinks.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.humanlinks.Plugin.person_model' : _("""A string referring to the model which represents a human in your
 application.  Default value is 'contacts.Person' (referring to
 lino_xl.lib.contacts.Person)."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes' : _("""The global list of human link types.  This is used as choicelist
+    'lino_xl.lib.humanlinks.LinkTypes' : _("""The global list of human link types.  This is used as choicelist
 for the type
 field of a human link."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes.adoptive_parent' : _("""A person who adopts a child of other parents as his or her own child."""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes.stepparent' : _("""Someone that your mother or father marries after the marriage
+    'lino_xl.lib.humanlinks.LinkTypes.adoptive_parent' : _("""A person who adopts a child of other parents as his or her own child."""),
+    'lino_xl.lib.humanlinks.LinkTypes.stepparent' : _("""Someone that your mother or father marries after the marriage
 to or relationship with your other parent has ended"""),
-    'lino_xl.lib.humanlinks.choicelists.LinkTypes.foster_parent' : _("""A man (woman) who looks after or brings up a child or children
+    'lino_xl.lib.humanlinks.LinkTypes.foster_parent' : _("""A man (woman) who looks after or brings up a child or children
 as a father (mother), in place of the natural or adoptive
 father (mother). [thefreedictionary]"""),
-    'lino_xl.lib.humanlinks.models.Link' : _("""A link between two persons."""),
-    'lino_xl.lib.humanlinks.models.Link.parent' : _("""Pointer to the person who is "parent"."""),
-    'lino_xl.lib.humanlinks.models.Link.child' : _("""Pointer to the person who is "child"."""),
-    'lino_xl.lib.humanlinks.models.Link.type' : _("""The type of link.  Pointer to LinkTypes."""),
-    'lino_xl.lib.humanlinks.models.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
-    'lino_xl.lib.humanlinks.models.LinksByHuman.master' : _("""alias of Person"""),
-    'lino_xl.lib.humanlinks.models.LinksByHuman.model' : _("""alias of Link"""),
+    'lino_xl.lib.humanlinks.Link' : _("""A link between two persons."""),
+    'lino_xl.lib.humanlinks.Link.parent' : _("""Pointer to the person who is "parent"."""),
+    'lino_xl.lib.humanlinks.Link.child' : _("""Pointer to the person who is "child"."""),
+    'lino_xl.lib.humanlinks.Link.type' : _("""The type of link.  Pointer to LinkTypes."""),
+    'lino_xl.lib.humanlinks.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
+    'lino_xl.lib.humanlinks.LinksByHuman.master' : _("""alias of Person"""),
+    'lino_xl.lib.humanlinks.LinksByHuman.model' : _("""alias of Link"""),
     'lino_xl.lib.invoicing.Plugin.item_model' : _("""The database model into which invoiceable objects should create
 invoice items.  Default value refers to
 sales.InvoiceItem."""),
@@ -594,18 +594,18 @@ is going to receive an invoice."""),
 to all invoice items pointing to this enrolment."""),
     'lino_xl.lib.invoicing.mixins.Invoiceable.invoiceable_date_field' : _("""The name of the field which holds the invoiceable date.  Must be
 set by subclasses."""),
-    'lino_xl.lib.invoicing.models.Plan' : _("""An invoicing plan is a rather temporary database object which
+    'lino_xl.lib.invoicing.Plan' : _("""An invoicing plan is a rather temporary database object which
 represents the plan of a given user to have Lino generate a series
 of invoices."""),
-    'lino_xl.lib.invoicing.models.Plan.journal' : _("""The journal where to create invoices.  When this field is
+    'lino_xl.lib.invoicing.Plan.journal' : _("""The journal where to create invoices.  When this field is
 empty, you can fill the plan with suggestions but cannot
 execute the plan."""),
-    'lino_xl.lib.invoicing.models.Plan.execute_plan' : _("""Execute this plan, i.e. create an invoice for each selected
+    'lino_xl.lib.invoicing.Plan.execute_plan' : _("""Execute this plan, i.e. create an invoice for each selected
 suggestion."""),
-    'lino_xl.lib.invoicing.models.Item' : _("""The items of an invoicing plan are called suggestions."""),
-    'lino_xl.lib.invoicing.models.Item.preview' : _("""A textual preview of the invoiceable items to be included in
+    'lino_xl.lib.invoicing.Item' : _("""The items of an invoicing plan are called suggestions."""),
+    'lino_xl.lib.invoicing.Item.preview' : _("""A textual preview of the invoiceable items to be included in
 the invoice."""),
-    'lino_xl.lib.invoicing.models.Item.invoice' : _("""The invoice that has been generated. This field is empty for
+    'lino_xl.lib.invoicing.Item.invoice' : _("""The invoice that has been generated. This field is empty for
 new items. When an item has been executed, this field points
 to the generated invoice."""),
     'lino_xl.lib.ledger.fields.DcAmountField' : _("""An editable virtual PriceField to get and set both database fields
@@ -615,32 +615,32 @@ models which also defines these two fields."""),
 users."""),
     'lino_xl.lib.lists.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.notes.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.notes.choicelists.SpecialType' : _("""Represents a special note type."""),
-    'lino_xl.lib.notes.choicelists.SpecialTypes' : _("""The list of special note types which have been declared on this
+    'lino_xl.lib.notes.SpecialType' : _("""Represents a special note type."""),
+    'lino_xl.lib.notes.SpecialTypes' : _("""The list of special note types which have been declared on this
 Site."""),
-    'lino_xl.lib.notes.choicelists.SpecialTypes.item_class' : _("""alias of SpecialType"""),
-    'lino_xl.lib.notes.models.NoteTypes' : _("""Displays all rows of NoteType."""),
-    'lino_xl.lib.notes.models.NoteTypes.model' : _("""alias of NoteType"""),
-    'lino_xl.lib.notes.models.EventType' : _("""A possible choice for Note.event_type."""),
-    'lino_xl.lib.notes.models.EventTypes' : _("""List of all Event Types."""),
-    'lino_xl.lib.notes.models.EventTypes.model' : _("""alias of EventType"""),
-    'lino_xl.lib.notes.models.Note' : _("""A note is a dated and timed document written by its author (a
+    'lino_xl.lib.notes.SpecialTypes.item_class' : _("""alias of SpecialType"""),
+    'lino_xl.lib.notes.NoteTypes' : _("""Displays all rows of NoteType."""),
+    'lino_xl.lib.notes.NoteTypes.model' : _("""alias of NoteType"""),
+    'lino_xl.lib.notes.EventType' : _("""A possible choice for Note.event_type."""),
+    'lino_xl.lib.notes.EventTypes' : _("""List of all Event Types."""),
+    'lino_xl.lib.notes.EventTypes.model' : _("""alias of EventType"""),
+    'lino_xl.lib.notes.Note' : _("""A note is a dated and timed document written by its author (a
 user). For example a report of a meeting or a phone call, or just
 some observation. Notes are usually meant for internal use."""),
-    'lino_xl.lib.online.users.choicelists.UserStates' : _("""The list of possible choices for the state field
+    'lino_xl.lib.online.users.UserStates' : _("""The list of possible choices for the state field
 of a User."""),
-    'lino_xl.lib.online.users.choicelists.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
+    'lino_xl.lib.online.users.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
 verifcation code, and that a username and password are set."""),
-    'lino_xl.lib.online.users.desktop.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
-    'lino_xl.lib.online.users.desktop.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
-    'lino_xl.lib.online.users.models.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
+    'lino_xl.lib.online.users.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
+    'lino_xl.lib.online.users.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
+    'lino_xl.lib.online.users.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
 checks certain things before accepting the new user."""),
-    'lino_xl.lib.online.users.models.VerifyUser' : _("""Enter your verification code."""),
-    'lino_xl.lib.online.users.models.User.callme_mode' : _("""Whether other users can see my contact data."""),
-    'lino_xl.lib.online.users.models.User.verification_code' : _("""A random string set for every new user. Used for
+    'lino_xl.lib.online.users.VerifyUser' : _("""Enter your verification code."""),
+    'lino_xl.lib.online.users.User.callme_mode' : _("""Whether other users can see my contact data."""),
+    'lino_xl.lib.online.users.User.verification_code' : _("""A random string set for every new user. Used for
 online_registration."""),
-    'lino_xl.lib.online.users.models.User.user_state' : _("""The registration state of this user."""),
-    'lino_xl.lib.outbox.choicelists.RecipientTypes' : _("""A list of possible values for the type field of a
+    'lino_xl.lib.online.users.User.user_state' : _("""The registration state of this user."""),
+    'lino_xl.lib.outbox.RecipientTypes' : _("""A list of possible values for the type field of a
 Recipient."""),
     'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
 Concrete examples are cal.EventType, cal.GuestRole,
@@ -651,39 +651,40 @@ being typed by this MailableType. Example:"""),
     'lino_xl.lib.outbox.mixins.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
 must also inherit from mixins.Printable or some subclass
 thereof."""),
-    'lino_xl.lib.outbox.models.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
-    'lino_xl.lib.outbox.models.SendMail' : _("""Sends an outbox.Mail as an email."""),
-    'lino_xl.lib.outbox.models.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
-    'lino_xl.lib.outbox.models.SentByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.outbox.models.SentByPartner.model' : _("""alias of Mail"""),
-    'lino_xl.lib.polls.models.Poll' : _("""A series of questions."""),
-    'lino_xl.lib.polls.models.AllPolls' : _("""Show all polls of all users."""),
-    'lino_xl.lib.polls.models.AllPolls.model' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.models.MyPolls' : _("""Show all polls whose author I am."""),
-    'lino_xl.lib.polls.models.MyPolls.model' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.models.Question' : _("""A question of a poll."""),
-    'lino_xl.lib.polls.models.Question.number' : _("""The number of this question within this poll."""),
-    'lino_xl.lib.polls.models.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
-    'lino_xl.lib.polls.models.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
+    'lino_xl.lib.outbox.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
+    'lino_xl.lib.outbox.SendMail' : _("""Sends an outbox.Mail as an email."""),
+    'lino_xl.lib.outbox.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
+    'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
+    'lino_xl.lib.phones.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.polls.Poll' : _("""A series of questions."""),
+    'lino_xl.lib.polls.AllPolls' : _("""Show all polls of all users."""),
+    'lino_xl.lib.polls.AllPolls.model' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.MyPolls' : _("""Show all polls whose author I am."""),
+    'lino_xl.lib.polls.MyPolls.model' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.Question' : _("""A question of a poll."""),
+    'lino_xl.lib.polls.Question.number' : _("""The number of this question within this poll."""),
+    'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
+    'lino_xl.lib.polls.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
 get_slave_summary()."""),
-    'lino_xl.lib.polls.models.ResponsesByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.polls.models.ResponsesByPartner.model' : _("""alias of Response"""),
-    'lino_xl.lib.polls.models.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
+    'lino_xl.lib.polls.ResponsesByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.polls.ResponsesByPartner.model' : _("""alias of Response"""),
+    'lino_xl.lib.polls.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
 question in a given response."""),
-    'lino_xl.lib.polls.models.AnswerRemarkField' : _("""An editable virtual field."""),
-    'lino_xl.lib.polls.models.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
+    'lino_xl.lib.polls.AnswerRemarkField' : _("""An editable virtual field."""),
+    'lino_xl.lib.polls.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
 volatile AnswersByResponseRow instances."""),
-    'lino_xl.lib.polls.models.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
+    'lino_xl.lib.polls.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
 this question, eventually (if editing is permitted) together with
 buttons to modify the selection."""),
-    'lino_xl.lib.polls.models.AnswersByResponse.master' : _("""alias of Response"""),
-    'lino_xl.lib.polls.models.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
-    'lino_xl.lib.polls.models.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
+    'lino_xl.lib.polls.AnswersByResponse.master' : _("""alias of Response"""),
+    'lino_xl.lib.polls.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
+    'lino_xl.lib.polls.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
 instances."""),
-    'lino_xl.lib.polls.models.AnswersByQuestion.master' : _("""alias of Question"""),
-    'lino_xl.lib.polls.models.PollResult' : _("""Shows a summay of responses to this poll."""),
-    'lino_xl.lib.polls.models.PollResult.master' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.models.PollResult.model' : _("""alias of Question"""),
+    'lino_xl.lib.polls.AnswersByQuestion.master' : _("""alias of Question"""),
+    'lino_xl.lib.polls.PollResult' : _("""Shows a summay of responses to this poll."""),
+    'lino_xl.lib.polls.PollResult.master' : _("""alias of Poll"""),
+    'lino_xl.lib.polls.PollResult.model' : _("""alias of Question"""),
     'lino_xl.lib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
     'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
     'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll."""),
@@ -693,89 +694,89 @@ instances."""),
 The Postable gives the list of recipients, and there will 
 be one Posting for each recipient."""),
     'lino_xl.lib.postings.mixins.Postable' : _("""Mixin for models that provide a "Post" button."""),
-    'lino_xl.lib.postings.models.PostingStates' : _("""List of possible values for the state field of a 
+    'lino_xl.lib.postings.PostingStates' : _("""List of possible values for the state field of a 
 Posting."""),
-    'lino_xl.lib.postings.models.Posting' : _("""A Posting is the fact that a letter or other item 
+    'lino_xl.lib.postings.Posting' : _("""A Posting is the fact that a letter or other item 
 has been sent using snail mail."""),
     'lino_xl.lib.products.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.products.models.ProductCat' : _("""A product category is a way to group products."""),
-    'lino_xl.lib.products.models.Product' : _("""A product is something you can sell or buy."""),
+    'lino_xl.lib.products.ProductCat' : _("""A product category is a way to group products."""),
+    'lino_xl.lib.products.Product' : _("""A product is something you can sell or buy."""),
     'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.properties.models.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
+    'lino_xl.lib.properties.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
 like ...?"."""),
-    'lino_xl.lib.properties.models.HowWell' : _("""A list of possible answers to questions of type "How well ...?":
+    'lino_xl.lib.properties.HowWell' : _("""A list of possible answers to questions of type "How well ...?":
 "not at all", "a bit", "moderate", "quite well" and "very well" """),
-    'lino_xl.lib.properties.models.PropType' : _("""The type of the values that a property accepts.
+    'lino_xl.lib.properties.PropType' : _("""The type of the values that a property accepts.
 Each PropType may (or may not) imply a list of choices."""),
-    'lino_xl.lib.properties.models.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
+    'lino_xl.lib.properties.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
 in combo boxes."""),
-    'lino_xl.lib.properties.models.PropGroup' : _("""A Property Group defines a list of Properties that fit together
+    'lino_xl.lib.properties.PropGroup' : _("""A Property Group defines a list of Properties that fit together
 under a common name.  Examples of Property Groups: Skills, Soft
 Skills, Obstacles There will be one menu entry per Group."""),
-    'lino_xl.lib.properties.models.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
+    'lino_xl.lib.properties.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
 certain value."""),
-    'lino_xl.lib.properties.models.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
-    'lino_xl.lib.properties.models.ChoicesByType.master' : _("""alias of PropType"""),
-    'lino_xl.lib.properties.models.ChoicesByType.model' : _("""alias of PropChoice"""),
+    'lino_xl.lib.properties.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
+    'lino_xl.lib.properties.ChoicesByType.master' : _("""alias of PropType"""),
+    'lino_xl.lib.properties.ChoicesByType.model' : _("""alias of PropChoice"""),
     'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
-    'lino_xl.lib.reception.models.CheckinVisitor' : _("""Mark this visitor as arrived."""),
-    'lino_xl.lib.reception.models.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
-    'lino_xl.lib.reception.models.CheckoutVisitor' : _("""The "Checkout" action on a Guest."""),
-    'lino_xl.lib.reception.models.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
+    'lino_xl.lib.reception.CheckinVisitor' : _("""Mark this visitor as arrived."""),
+    'lino_xl.lib.reception.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
+    'lino_xl.lib.reception.CheckoutVisitor' : _("""The "Checkout" action on a Guest."""),
+    'lino_xl.lib.reception.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
 partner."""),
-    'lino_xl.lib.reception.models.AppointmentsByPartner.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.AppointmentsByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.reception.models.ExpectedGuests' : _("""General table of all expected guests."""),
-    'lino_xl.lib.reception.models.ExpectedGuests.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.Visitors' : _("""Common base class for the following tables:"""),
-    'lino_xl.lib.reception.models.Visitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.BusyVisitors' : _("""Show busy visitors (with any user)."""),
-    'lino_xl.lib.reception.models.BusyVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.WaitingVisitors' : _("""Show waiting visitors (for any user)."""),
-    'lino_xl.lib.reception.models.WaitingVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.GoneVisitors' : _("""Show gone visitors (for any user)."""),
-    'lino_xl.lib.reception.models.GoneVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.MyWaitingVisitors' : _("""Show visitors waiting for me."""),
-    'lino_xl.lib.reception.models.MyWaitingVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.MyBusyVisitors' : _("""Show the visitors with whom I am busy."""),
-    'lino_xl.lib.reception.models.MyBusyVisitors.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.models.MyGoneVisitors' : _("""Show my visitors who have gone."""),
-    'lino_xl.lib.reception.models.MyGoneVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.AppointmentsByPartner.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.reception.ExpectedGuests' : _("""General table of all expected guests."""),
+    'lino_xl.lib.reception.ExpectedGuests.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.Visitors' : _("""Common base class for the following tables:"""),
+    'lino_xl.lib.reception.Visitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.BusyVisitors' : _("""Show busy visitors (with any user)."""),
+    'lino_xl.lib.reception.BusyVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.WaitingVisitors' : _("""Show waiting visitors (for any user)."""),
+    'lino_xl.lib.reception.WaitingVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.GoneVisitors' : _("""Show gone visitors (for any user)."""),
+    'lino_xl.lib.reception.GoneVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.MyWaitingVisitors' : _("""Show visitors waiting for me."""),
+    'lino_xl.lib.reception.MyWaitingVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.MyBusyVisitors' : _("""Show the visitors with whom I am busy."""),
+    'lino_xl.lib.reception.MyBusyVisitors.model' : _("""alias of Guest"""),
+    'lino_xl.lib.reception.MyGoneVisitors' : _("""Show my visitors who have gone."""),
+    'lino_xl.lib.reception.MyGoneVisitors.model' : _("""alias of Guest"""),
     'lino_xl.lib.reception.workflows.CloseMeeting' : _("""Close the meeting (mark it as "took place") and check out all
 guests. Ask confirmation naming the guests who need to check out."""),
     'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.sales.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.sales.models.PaperType' : _("""Which paper (document template) to use when printing an invoice."""),
-    'lino_xl.lib.sales.models.SalesDocument' : _("""Common base class for orders.Order and VatProductInvoice."""),
-    'lino_xl.lib.sales.models.SalesDocument.print_items_table' : _("""Which table (column layout) to use in the printed document."""),
-    'lino_xl.lib.sales.models.VatProductInvoice' : _("""A sales invoice is a legal document which describes that something
+    'lino_xl.lib.sales.PaperType' : _("""Which paper (document template) to use when printing an invoice."""),
+    'lino_xl.lib.sales.SalesDocument' : _("""Common base class for orders.Order and VatProductInvoice."""),
+    'lino_xl.lib.sales.SalesDocument.print_items_table' : _("""Which table (column layout) to use in the printed document."""),
+    'lino_xl.lib.sales.VatProductInvoice' : _("""A sales invoice is a legal document which describes that something
 (the invoice items) has been sold to a given partner. The partner
 can be either a private person or an organization."""),
-    'lino_xl.lib.sales.models.VatProductInvoice.balance_before' : _("""The balance of previous payments or debts. On a printed
+    'lino_xl.lib.sales.VatProductInvoice.balance_before' : _("""The balance of previous payments or debts. On a printed
 invoice, this amount should be mentioned and added to the
 invoice's amount in order to get the total amount to pay."""),
-    'lino_xl.lib.sales.models.VatProductInvoice.balance_to_pay' : _("""The balance of all movements matching this invoice."""),
-    'lino_xl.lib.sales.models.VatProductInvoice.print_items_table' : _("""alias of ItemsByInvoicePrint"""),
-    'lino_xl.lib.sales.models.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose voucher_type must be
+    'lino_xl.lib.sales.VatProductInvoice.balance_to_pay' : _("""The balance of all movements matching this invoice."""),
+    'lino_xl.lib.sales.VatProductInvoice.print_items_table' : _("""alias of ItemsByInvoicePrint"""),
+    'lino_xl.lib.sales.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose voucher_type must be
 VatProductInvoice)"""),
-    'lino_xl.lib.sales.models.InvoicesByJournal.master' : _("""alias of Journal"""),
-    'lino_xl.lib.sales.models.InvoicesByJournal.model' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.models.DueInvoices' : _("""Shows all due product invoices."""),
-    'lino_xl.lib.sales.models.DueInvoices.model' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.models.ProductDocItem' : _("""Mixin for voucher items which potentially refer to a product."""),
-    'lino_xl.lib.sales.models.ProductDocItem.description' : _("""A multi-line rich text to be printed in the resulting printable
+    'lino_xl.lib.sales.InvoicesByJournal.master' : _("""alias of Journal"""),
+    'lino_xl.lib.sales.InvoicesByJournal.model' : _("""alias of VatProductInvoice"""),
+    'lino_xl.lib.sales.DueInvoices' : _("""Shows all due product invoices."""),
+    'lino_xl.lib.sales.DueInvoices.model' : _("""alias of VatProductInvoice"""),
+    'lino_xl.lib.sales.ProductDocItem' : _("""Mixin for voucher items which potentially refer to a product."""),
+    'lino_xl.lib.sales.ProductDocItem.description' : _("""A multi-line rich text to be printed in the resulting printable
 document."""),
-    'lino_xl.lib.sales.models.InvoiceItem' : _("""An item of a sales invoice."""),
-    'lino_xl.lib.sales.models.InvoiceItems' : _("""Shows all sales invoice items."""),
-    'lino_xl.lib.sales.models.InvoiceItems.model' : _("""alias of InvoiceItem"""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrint' : _("""The table used to render items in a printable document."""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrint.description_print' : _("""TODO: write more about it."""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrint.master' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrint.model' : _("""alias of InvoiceItem"""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrintNoQtyColumn' : _("""Alternative column layout to be used when printing an invoice."""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrintNoQtyColumn.master' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.models.ItemsByInvoicePrintNoQtyColumn.model' : _("""alias of InvoiceItem"""),
+    'lino_xl.lib.sales.InvoiceItem' : _("""An item of a sales invoice."""),
+    'lino_xl.lib.sales.InvoiceItems' : _("""Shows all sales invoice items."""),
+    'lino_xl.lib.sales.InvoiceItems.model' : _("""alias of InvoiceItem"""),
+    'lino_xl.lib.sales.ItemsByInvoicePrint' : _("""The table used to render items in a printable document."""),
+    'lino_xl.lib.sales.ItemsByInvoicePrint.description_print' : _("""TODO: write more about it."""),
+    'lino_xl.lib.sales.ItemsByInvoicePrint.master' : _("""alias of VatProductInvoice"""),
+    'lino_xl.lib.sales.ItemsByInvoicePrint.model' : _("""alias of InvoiceItem"""),
+    'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn' : _("""Alternative column layout to be used when printing an invoice."""),
+    'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn.master' : _("""alias of VatProductInvoice"""),
+    'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn.model' : _("""alias of InvoiceItem"""),
     'lino_xl.lib.sepa.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.sepa.fields.UppercaseTextFieldElement' : _("""A CharFieldElement which accepts only upper-case characters."""),
     'lino_xl.lib.sepa.fields.UppercaseTextField' : _("""A custom CharField that accepts only uppercase caracters."""),
@@ -789,55 +790,55 @@ field partner."""),
     'lino_xl.lib.sepa.mixins.Payable.title' : _("""A char field with a description for this transaction."""),
     'lino_xl.lib.sepa.mixins.BankAccountChecker' : _("""Checks for the following plausibility problems:"""),
     'lino_xl.lib.sepa.mixins.BankAccountChecker.model' : _("""alias of BankAccount"""),
-    'lino_xl.lib.sepa.models.Account' : _("""A bank account related to a given Partner."""),
-    'lino_xl.lib.sepa.models.Account.statements' : _("""A virtual field which displays the date of the last imported
+    'lino_xl.lib.sepa.Account' : _("""A bank account related to a given Partner."""),
+    'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported
 statement for this account. Clicking on this date will open
 the B2C account <lino_cosi.lib.b2c.models.Account> with same
 IBAN number."""),
-    'lino_xl.lib.sepa.models.AccountsByPartner' : _("""Show the bank account(s) defined for a given partner. To be
+    'lino_xl.lib.sepa.AccountsByPartner' : _("""Show the bank account(s) defined for a given partner. To be
 included to a detail window on partner."""),
-    'lino_xl.lib.sepa.models.AccountsByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.sepa.models.AccountsByPartner.model' : _("""alias of Account"""),
+    'lino_xl.lib.sepa.AccountsByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.sepa.AccountsByPartner.model' : _("""alias of Account"""),
     'lino_xl.lib.sepa.roles.SepaUser' : _("""Can see imported statements and movements per partner."""),
     'lino_xl.lib.sepa.roles.SepaStaff' : _("""Can see imported statements and movements also globally in the
 :menuselection`Explorer` menu."""),
     'lino_xl.lib.stars.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.stars.models.Star' : _("""Represents the fact that a given database object is starred by a
+    'lino_xl.lib.stars.Star' : _("""Represents the fact that a given database object is starred by a
 given User."""),
-    'lino_xl.lib.stars.models.Star.owner' : _("""The starred database object"""),
-    'lino_xl.lib.stars.models.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
-    'lino_xl.lib.stars.models.Star.master' : _("""The starred object that caused this stared object"""),
+    'lino_xl.lib.stars.Star.owner' : _("""The starred database object"""),
+    'lino_xl.lib.stars.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
+    'lino_xl.lib.stars.Star.master' : _("""The starred object that caused this stared object"""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.tickets.roles.TicketsUser' : _("""A user who can create new tickets."""),
     'lino_xl.lib.tickets.roles.Searcher' : _("""A user who can see all tickets."""),
     'lino_xl.lib.tickets.roles.Triager' : _("""A user who is responsible for triaging new tickets."""),
     'lino_xl.lib.tickets.roles.TicketsStaff' : _("""Can configure tickets functionality."""),
-    'lino_xl.lib.tickets.ui.Tickets' : _("""Global list of all tickets."""),
-    'lino_xl.lib.tickets.ui.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
-    'lino_xl.lib.tickets.ui.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
-    'lino_xl.lib.tickets.ui.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
+    'lino_xl.lib.tickets.Tickets' : _("""Global list of all tickets."""),
+    'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
+    'lino_xl.lib.tickets.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
+    'lino_xl.lib.tickets.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
 or ToDo)."""),
-    'lino_xl.lib.tickets.ui.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
+    'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
 or ToDo)."""),
-    'lino_xl.lib.tickets.ui.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
-    'lino_xl.lib.tickets.ui.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
-    'lino_xl.lib.tickets.ui.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
-    'lino_xl.lib.tickets.ui.Tickets.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
+    'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
+    'lino_xl.lib.tickets.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
+    'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
+    'lino_xl.lib.tickets.Tickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
 (i.e. whose duplicate_of field points to this ticket."""),
-    'lino_xl.lib.tickets.ui.DuplicatesByTicket.master' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.DuplicatesByTicket.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.RefTickets' : _("""Tickets that have a reference."""),
-    'lino_xl.lib.tickets.ui.RefTickets.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.TicketsToTriage' : _("""List of tickets that need to be triaged.  Currently this is
+    'lino_xl.lib.tickets.DuplicatesByTicket.master' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.DuplicatesByTicket.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.RefTickets' : _("""Tickets that have a reference."""),
+    'lino_xl.lib.tickets.RefTickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.TicketsToTriage' : _("""List of tickets that need to be triaged.  Currently this is
 equivalent to those having their state set to new."""),
-    'lino_xl.lib.tickets.ui.TicketsToTriage.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.ActiveTickets' : _("""Show all tickets that are in an active state."""),
-    'lino_xl.lib.tickets.ui.ActiveTickets.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.MyTickets' : _("""Show all active tickets reported by me."""),
-    'lino_xl.lib.tickets.ui.MyTickets.model' : _("""alias of Ticket"""),
-    'lino_xl.lib.tickets.ui.MyTicketsToWork' : _("""Show all active tickets reported by me."""),
-    'lino_xl.lib.tickets.ui.MyTicketsToWork.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.TicketsToTriage.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.ActiveTickets' : _("""Show all tickets that are in an active state."""),
+    'lino_xl.lib.tickets.ActiveTickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.MyTickets.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.MyTicketsToWork.model' : _("""alias of Ticket"""),
     'lino_xl.lib.tim2lino.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.tim2lino.Plugin.languages' : _("""The language distribution used in the database to import. Mandatory
 parameter. No default value."""),
@@ -846,34 +847,34 @@ parameter. No default value."""),
     'lino_xl.lib.tim2lino.Plugin.dbf_table_ext' : _("""The file extension of TIM tables. Meaningful values are '.DBF' or
 .FOX."""),
     'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.topics.models.AddInterestField' : _("""An editable virtual field used for adding an interest to the
+    'lino_xl.lib.topics.AddInterestField' : _("""An editable virtual field used for adding an interest to the
 object."""),
-    'lino_xl.lib.topics.models.TopicGroup' : _("""Currently not used."""),
-    'lino_xl.lib.topics.models.Interest' : _("""An interest is the fact that a given partner is interested in a
+    'lino_xl.lib.topics.TopicGroup' : _("""Currently not used."""),
+    'lino_xl.lib.topics.Interest' : _("""An interest is the fact that a given partner is interested in a
 given topic."""),
-    'lino_xl.lib.topics.models.Topic' : _("""A topic is something somebody can be interested in."""),
+    'lino_xl.lib.topics.Topic' : _("""A topic is something somebody can be interested in."""),
     'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
     'lino_xl.lib.vat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vat.Plugin.default_vat_regime' : _("""The default VAT regime. If this is specified as a string, Lino will
 resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
 resolve it at startup into an item of VatClasses."""),
-    'lino_xl.lib.vat.desktop.VatRules' : _("""The table of all lino_xl.lib.vat.models.VatRule objects."""),
-    'lino_xl.lib.vat.desktop.VatRules.model' : _("""alias of VatRule"""),
-    'lino_xl.lib.vat.desktop.InvoiceDetail' : _("""The detail layout used by Invoices."""),
-    'lino_xl.lib.vat.desktop.Invoices' : _("""The table of all
+    'lino_xl.lib.vat.VatRules' : _("""The table of all lino_xl.lib.vat.models.VatRule objects."""),
+    'lino_xl.lib.vat.VatRules.model' : _("""alias of VatRule"""),
+    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
+    'lino_xl.lib.vat.Invoices' : _("""The table of all
 VatAccountInvoice
 objects."""),
-    'lino_xl.lib.vat.desktop.Invoices.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.desktop.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
+    'lino_xl.lib.vat.Invoices.model' : _("""alias of VatAccountInvoice"""),
+    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
 voucher_type
 must be lino_xl.lib.vat.models.VatAccountInvoice)"""),
-    'lino_xl.lib.vat.desktop.InvoicesByJournal.master' : _("""alias of Journal"""),
-    'lino_xl.lib.vat.desktop.InvoicesByJournal.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.desktop.VouchersByPartner' : _("""A lino.core.tables.VirtualTable which shows all VatDocument
+    'lino_xl.lib.vat.InvoicesByJournal.master' : _("""alias of Journal"""),
+    'lino_xl.lib.vat.InvoicesByJournal.model' : _("""alias of VatAccountInvoice"""),
+    'lino_xl.lib.vat.VouchersByPartner' : _("""A lino.core.tables.VirtualTable which shows all VatDocument
 vouchers by lino_xl.lib.contacts.models.Partner. It has a
 customized slave summary."""),
-    'lino_xl.lib.vat.desktop.VouchersByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.vat.VouchersByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.vat.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
     'lino_xl.lib.vat.mixins.PartnerDetailMixin.ledger' : _("""Shows the tables VouchersByPartner and MovementsByPartner."""),
@@ -901,16 +902,16 @@ It is at the same time a ledger voucher."""),
 layout's main element."""),
     'lino_xl.lib.vatless.mixins.PartnerDetailMixin.ledger' : _("""Shows the tables vatless.VouchersByPartner and
 ledger.MovementsByPartner."""),
-    'lino_xl.lib.vatless.models.AccountInvoice.auto_compute_totals' : _("""Set this to True on subclasses who compute their totals
+    'lino_xl.lib.vatless.AccountInvoice.auto_compute_totals' : _("""Set this to True on subclasses who compute their totals
 automatically, i.e. which have the field amount disabled."""),
-    'lino_xl.lib.vatless.models.InvoiceItem' : _("""An item of an AccountInvoice."""),
-    'lino_xl.lib.vatless.ui.ItemsByInvoice' : _("""This is the "content" part of an invoice."""),
-    'lino_xl.lib.vatless.ui.ItemsByProjectInvoice' : _("""Like ItemsByInvoice, but in a project invoice we don't
+    'lino_xl.lib.vatless.InvoiceItem' : _("""An item of an AccountInvoice."""),
+    'lino_xl.lib.vatless.ItemsByInvoice' : _("""This is the "content" part of an invoice."""),
+    'lino_xl.lib.vatless.ItemsByProjectInvoice' : _("""Like ItemsByInvoice, but in a project invoice we don't
 want to have a project column per item."""),
-    'lino_xl.lib.vatless.ui.InvoicesByJournal' : _("""Shows all simple invoices of a given journal (whose
+    'lino_xl.lib.vatless.InvoicesByJournal' : _("""Shows all simple invoices of a given journal (whose
 Journal.voucher_type must be
 lino_xl.lib.sales.models.AccountInvoice)."""),
-    'lino_xl.lib.vatless.ui.VouchersByPartner' : _("""Shows all ledger vouchers of a given partner."""),
+    'lino_xl.lib.vatless.VouchersByPartner' : _("""Shows all ledger vouchers of a given partner."""),
     'lino_xl.lib.votes.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.votes.Plugin.votable_model' : _("""The things we are voting about. A string referring to the model
 which represents a votable in your application.  Default value is
@@ -918,49 +919,49 @@ which represents a votable in your application.  Default value is
 lino_xl.lib.tickets.models.Ticket)."""),
     'lino_xl.lib.votes.actions.CreateVote' : _("""Define your vote about this object."""),
     'lino_xl.lib.votes.actions.VotableEditVote' : _("""Edit your vote about this object."""),
-    'lino_xl.lib.votes.choicelists.VoteState' : _("""The state of a vote."""),
-    'lino_xl.lib.votes.choicelists.VoteState.vote_name' : _("""Translatable text. How a vote is called when in this state."""),
-    'lino_xl.lib.votes.choicelists.VoteStates' : _("""The list of possible states of a vote.  This is used as choicelist
+    'lino_xl.lib.votes.VoteState' : _("""The state of a vote."""),
+    'lino_xl.lib.votes.VoteState.vote_name' : _("""Translatable text. How a vote is called when in this state."""),
+    'lino_xl.lib.votes.VoteStates' : _("""The list of possible states of a vote.  This is used as choicelist
 for the state
 field of a vote."""),
-    'lino_xl.lib.votes.choicelists.VoteStates.author' : _("""Reserved for the author's vote.  Lino automatically creates an
+    'lino_xl.lib.votes.VoteStates.author' : _("""Reserved for the author's vote.  Lino automatically creates an
 author vote for every author of a ticket (see
 get_vote_raters)."""),
-    'lino_xl.lib.votes.choicelists.VoteStates.item_class' : _("""alias of VoteState"""),
+    'lino_xl.lib.votes.VoteStates.item_class' : _("""alias of VoteState"""),
     'lino_xl.lib.votes.mixins.Votable' : _("""Base class for models that can be used as
 lino_xl.lib.votes.Plugin.votable_model."""),
-    'lino_xl.lib.votes.models.Vote' : _("""A vote is when a user has an opinion or interest about a given
+    'lino_xl.lib.votes.Vote' : _("""A vote is when a user has an opinion or interest about a given
 ticket (or any other votable)."""),
-    'lino_xl.lib.votes.models.Vote.votable' : _("""The ticket (or other votable) being voted."""),
-    'lino_xl.lib.votes.models.Vote.user' : _("""The user who is voting."""),
-    'lino_xl.lib.votes.models.Vote.state' : _("""The state of this vote.  Pointer to VoteStates."""),
-    'lino_xl.lib.votes.models.Vote.priority' : _("""My personal priority for this ticket."""),
-    'lino_xl.lib.votes.models.Vote.rating' : _("""How the ticket author rates my help on this ticket."""),
-    'lino_xl.lib.votes.models.Vote.remark' : _("""Why I am interested in this ticket."""),
-    'lino_xl.lib.votes.models.Vote.nickname' : _("""My nickname for this ticket. Optional."""),
-    'lino_xl.lib.votes.models.Votes' : _("""Table parameters:"""),
-    'lino_xl.lib.votes.models.Votes.observed_event' : _("""There are two class attributes for defining a filter conditions
+    'lino_xl.lib.votes.Vote.votable' : _("""The ticket (or other votable) being voted."""),
+    'lino_xl.lib.votes.Vote.user' : _("""The user who is voting."""),
+    'lino_xl.lib.votes.Vote.state' : _("""The state of this vote.  Pointer to VoteStates."""),
+    'lino_xl.lib.votes.Vote.priority' : _("""My personal priority for this ticket."""),
+    'lino_xl.lib.votes.Vote.rating' : _("""How the ticket author rates my help on this ticket."""),
+    'lino_xl.lib.votes.Vote.remark' : _("""Why I am interested in this ticket."""),
+    'lino_xl.lib.votes.Vote.nickname' : _("""My nickname for this ticket. Optional."""),
+    'lino_xl.lib.votes.Votes' : _("""Table parameters:"""),
+    'lino_xl.lib.votes.Votes.observed_event' : _("""There are two class attributes for defining a filter conditions
 which canot be removed by the user:"""),
-    'lino_xl.lib.votes.models.Votes.filter_vote_states' : _("""A set of vote states to require (i.e. to filter upon).  This
+    'lino_xl.lib.votes.Votes.filter_vote_states' : _("""A set of vote states to require (i.e. to filter upon).  This
 must resolve using resolve_states."""),
-    'lino_xl.lib.votes.models.Votes.exclude_vote_states' : _("""A set of vote states to exclude.  This must
+    'lino_xl.lib.votes.Votes.exclude_vote_states' : _("""A set of vote states to exclude.  This must
 resolve using resolve_states."""),
-    'lino_xl.lib.votes.models.Votes.filter_ticket_states' : _("""A set of ticket states to require (i.e. to filter upon). This
+    'lino_xl.lib.votes.Votes.filter_ticket_states' : _("""A set of ticket states to require (i.e. to filter upon). This
 must resolve using resolve_states."""),
-    'lino_xl.lib.votes.models.Votes.model' : _("""alias of Vote"""),
-    'lino_xl.lib.votes.models.MyVotes' : _("""Show all my votes."""),
-    'lino_xl.lib.votes.models.MyVotes.model' : _("""alias of Vote"""),
-    'lino_xl.lib.votes.models.MyInvitations' : _("""Show my votes in state invited."""),
-    'lino_xl.lib.votes.models.MyInvitations.model' : _("""alias of Vote"""),
-    'lino_xl.lib.votes.models.MyOffers' : _("""Show the tickets for which I am candidate"""),
-    'lino_xl.lib.votes.models.MyOffers.model' : _("""alias of Vote"""),
-    'lino_xl.lib.votes.models.MyTasks' : _("""Show my votes in states assigned and done"""),
-    'lino_xl.lib.votes.models.MyTasks.model' : _("""alias of Vote"""),
-    'lino_xl.lib.votes.models.MyWatched' : _("""Show my votes in state watching"""),
-    'lino_xl.lib.votes.models.MyWatched.model' : _("""alias of Vote"""),
-    'lino_xl.lib.votes.models.VotesByVotable' : _("""Show the votes about this object."""),
-    'lino_xl.lib.votes.models.VotesByVotable.master' : _("""alias of Ticket"""),
-    'lino_xl.lib.votes.models.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.Votes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyVotes' : _("""Show all my votes."""),
+    'lino_xl.lib.votes.MyVotes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyInvitations' : _("""Show my votes in state invited."""),
+    'lino_xl.lib.votes.MyInvitations.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyOffers' : _("""Show the tickets for which I am candidate"""),
+    'lino_xl.lib.votes.MyOffers.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyTasks' : _("""Show my votes in states assigned and done"""),
+    'lino_xl.lib.votes.MyTasks.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyWatched' : _("""Show my votes in state watching"""),
+    'lino_xl.lib.votes.MyWatched.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
+    'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of Ticket"""),
+    'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
     'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""A VAT declaration."""),
@@ -1274,17 +1275,17 @@ is being fixed (or installed or activated) by a given milestone
 how or why it occured. We call it the "type" of that "wish"."""),
     'lino_xl.lib.deploy.WishTypes.resolution' : _("""a new ticket was created as the result of this milestone"""),
     'lino_xl.lib.deploy.DeploymentsByTicket' : _("""Show the milestones where this ticket occurs as a wish."""),
-    'lino_xl.lib.tickets.models.Project' : _("""A project is something on which several users work together."""),
-    'lino_xl.lib.tickets.models.Project.assign_to' : _("""The user to whom new tickets will be assigned.
+    'lino_xl.lib.tickets.Project' : _("""A project is something on which several users work together."""),
+    'lino_xl.lib.tickets.Project.assign_to' : _("""The user to whom new tickets will be assigned.
 See Ticket.assigned_to."""),
-    'lino_xl.lib.tickets.models.ProjectType' : _("""The type of a Project."""),
-    'lino_xl.lib.tickets.models.TimeInvestment' : _("""Model mixin for things which represent a time investment.  This
+    'lino_xl.lib.tickets.ProjectType' : _("""The type of a Project."""),
+    'lino_xl.lib.tickets.TimeInvestment' : _("""Model mixin for things which represent a time investment.  This
 currently just defines a group of three fields:"""),
-    'lino_xl.lib.tickets.models.TimeInvestment.closed' : _("""Whether this investment is closed, i.e. certain things should
+    'lino_xl.lib.tickets.TimeInvestment.closed' : _("""Whether this investment is closed, i.e. certain things should
 not change anymore."""),
-    'lino_xl.lib.tickets.models.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
+    'lino_xl.lib.tickets.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
 publicly visible anywhere."""),
-    'lino_xl.lib.tickets.models.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
+    'lino_xl.lib.tickets.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
     'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work. It is a concrete
 question or problem handled formulated by a user."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for

@@ -540,13 +540,13 @@ class Tickets(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(Tickets, cls).get_simple_parameters()
-        s |= set(('end_user',  # 'assigned_to',
-                  'state',
-                  'project',
-                  'topic', 'site', 'priority'))
+        s = list(super(Tickets, cls).get_simple_parameters())
+        s += ['end_user',  # 'assigned_to',
+              'state',
+              'project',
+              'topic', 'site', 'priority']
         if not dd.is_installed('votes'):
-            s.add('assigned_to')
+            s.append('assigned_to')
         return s
 
     @classmethod

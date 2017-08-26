@@ -120,8 +120,8 @@ class Sessions(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = super(Sessions, cls).get_simple_parameters()
-        s |= set(['session_type', 'ticket'])
+        s = list(super(Sessions, cls).get_simple_parameters())
+        s += ['session_type', 'ticket']
         return s
 
     params_layout = "start_date end_date observed_event company project "\

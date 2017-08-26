@@ -32,7 +32,7 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
         verbose_name=_("Default account"),
         blank=True, null=True)
     item_remark = models.CharField(
-        _("External reference"), max_length=200, blank=True)
+        _("Your reference"), max_length=200, blank=True)
 
     # def after_state_change(self, ar, old, new):
     #     super(FinancialVoucher, self).after_state_change(ar, old, new)
@@ -102,7 +102,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     amount = dd.PriceField(_("Amount"), default=ZERO, null=False)
     dc = DebitOrCreditField()
     remark = models.CharField(
-        _("External reference"), max_length=200, blank=True)
+        _("Your reference"), max_length=200, blank=True)
     account = dd.ForeignKey('accounts.Account', blank=True, null=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
