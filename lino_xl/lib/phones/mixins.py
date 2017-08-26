@@ -12,6 +12,7 @@ from __future__ import print_function
 
 from django.utils.translation import ugettext_lazy as _
 
+from lino.utils import join_elems
 from lino.api import rt, dd
 from lino.utils.xmlgen.html import E
 from lino.core.diff import ChangeWatcher
@@ -45,4 +46,22 @@ class ContactDetailsOwner(Contactable, Phonable):
                 except ContactDetail.DoesNotExist:
                     setattr(self, k, fld.get_default())
                 self.save()
+
+    def get_overview_elems(self, ar):
+        # elems = super(ContactDetailsOwner, self).get_overview_elems(ar)
+        yield rt.models.phones.ContactDetailsByPartner.get_slave_summary(
+            self, ar)
+        
+        # elems = []
+        # sar = ar.spawn('phones.ContactDetailsByPartner',
+        #                master_instance=self)
+        
+        # items = [o.detail_type.as_html(o, sar) for o in sar]
+        # if len(items) > 0:
+        #     elems += join_elems(items, sep=', ')
+        
+        # btn = sar.as_button(_("Manage contact details"))
+        # # elems.append(E.p(btn, align="right"))
+        # elems.append(E.p(btn))
+        # return elems
 

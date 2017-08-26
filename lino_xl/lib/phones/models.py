@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 # Copyright 2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
@@ -113,20 +114,30 @@ class ContactDetailsByPartner(ContactDetails):
     def get_slave_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
         html = []
-        
-        def fmt(o):
-            return o.detail_type.as_html(o, ar)
-        
-        items = [fmt(o) for o in sar]
+        items = [o.detail_type.as_html(o, sar) for o in sar]
             
         if len(items) > 0:
             html += join_elems(items, sep=', ')
             
-        sar = self.insert_action.request_from(sar)
-        if sar.get_permission():
-            btn = sar.ar2button()
-            html.append(E.br())
+        ins = self.insert_action.request_from(sar)
+        if ins.get_permission():
+            # kw = dict(label=u"⊕") # 2295 circled plus
+            # kw.update(icon_name=None)
+            # # kw.update(
+            # #     style="text-decoration:none; font-size:120%;")  
+            # btn = ins.ar2button(**kw)
+            btn = ins.ar2button()
+                
+            # if len(items) > 0:
+            #     html.append(E.br())
+            html.append(' ')
             html.append(btn)
+
+        html.append(' ')
+        # html.append(sar.as_button(u"⚙"))  # GEAR
+        html.append(sar.as_button(icon_name="wrench"))  # GEAR
+        # html.append(sar.as_button(
+        #     u"⚙", style="text-decoration:none; font-size:140%;"))  # GEAR
             
         return E.p(*html)
     
