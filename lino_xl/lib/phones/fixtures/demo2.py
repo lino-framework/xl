@@ -14,5 +14,5 @@ def objects():
     from lino_xl.lib.phones.mixins import ContactDetailsOwner
     for m in rt.models_by_base(ContactDetailsOwner):
         for p in m.objects.all():
-            p.sync_primary_contact_detail_()
+            p.propagate_contact_details()
             yield p

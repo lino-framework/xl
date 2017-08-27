@@ -29,7 +29,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
     verbose_name = _("Meetings")
 
-    needs_plugins = ['lino_xl.lib.cal']
+    needs_plugins = ['lino_xl.lib.cal', 'lino_xl.lib.stars']
 
 
     def setup_main_menu(self, site, user_type, main):

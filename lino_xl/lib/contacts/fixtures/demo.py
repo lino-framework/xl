@@ -86,8 +86,10 @@ def objects():
     eupen = Place.objects.get(name__exact='Eupen')
     person = Instantiator("contacts.Person", "first_name last_name",
                           country='BE', city=eupen, zip_code='4700').build
-    yield person('Andreas',  'Arens', gender=dd.Genders.male)
-    yield person('Annette',  'Arens', gender=dd.Genders.female)
+    yield person('Andreas',  'Arens', gender=dd.Genders.male,
+                 phone="+32 87123456", email="andreas@arens.com")
+    yield person('Annette',  'Arens', gender=dd.Genders.female,
+                 phone="+32 87123457", email="annette@arens.com")
     yield person('Hans',     'Altenberg', gender=dd.Genders.male)
     yield person('Alfons',   'Ausdemwald', gender=dd.Genders.male)
     yield person('Laurent',  'Bastiaensen', gender=dd.Genders.male)
