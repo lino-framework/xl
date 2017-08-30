@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -33,7 +33,6 @@ class PlaceTypes(dd.ChoiceList):
     .. django2rst::
 
             rt.show(countries.PlaceTypes)
-
 
     Sources used:
 
@@ -88,7 +87,7 @@ class CountryDriver(object):
 
 
 class CountryDrivers(object):
-    BE = CountryDriver('21', '50 70')
+    BE = CountryDriver('21', '50 52 70')
     EE = CountryDriver('20', '50 51 52 55 61 62 70')
     DE = CountryDriver('10', '50 51 52 70')
     FR = CountryDriver('24', '50 51 52 70')

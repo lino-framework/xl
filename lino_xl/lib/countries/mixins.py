@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Model mixins for `lino_xl.lib.countries`.
@@ -38,8 +38,13 @@ class CountryCity(dd.Model):
     
     .. attribute:: city
     
-        A pointer to the :class:`Place` which is used as city.
+        The locality, i.e. usually a village, city or town. 
 
+        The choicelist for this field shows only places returned by
+        :meth:`lino_xl.lib.countries.Place.get_cities`.
+
+        This is a pointer to :class:`Place`.
+        The internal name `city` is for historical reasons.
 
     """
     class Meta(object):
@@ -49,7 +54,7 @@ class CountryCity(dd.Model):
         "countries.Country", blank=True, null=True)
     city = dd.ForeignKey(
         'countries.Place',
-        verbose_name=_('City'),
+        verbose_name=_('Locality'),
         blank=True, null=True)
     zip_code = models.CharField(_("Zip code"), max_length=10, blank=True)
 

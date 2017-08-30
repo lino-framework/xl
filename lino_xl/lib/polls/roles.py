@@ -8,15 +8,11 @@ from lino.core.roles import UserRole, SiteUser, SiteAdmin
 
 
 class PollsUser(UserRole):
-    """A user who has access to polls functionality.
-
-    """
+    pass
 
 
 class PollsStaff(PollsUser):
-    """A user who manages configuration of polls functionality.
-
-    """
+    pass
 
 
 class PollsAdmin(PollsStaff, SiteAdmin):

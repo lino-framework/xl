@@ -3,15 +3,11 @@
 
 """Provides database models and functionality for managing polls.
 
-This is the main plugin for :ref:`polly`.  It is also used in
-:ref:`welfare`.
+See also :doc:`/specs/polly` and :doc:`/specs/polls`.
 
 .. autosummary::
    :toctree:
 
-    roles
-    models
-    utils
     fixtures.bible
     fixtures.feedback
     fixtures.compass

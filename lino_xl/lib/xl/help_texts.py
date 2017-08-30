@@ -385,7 +385,8 @@ that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.countries.mixins.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
 method, ..."""),
-    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""A pointer to the Place which is used as city."""),
+    'lino_xl.lib.countries.mixins.CountryCity.city' : _("""The locality, i.e. usually a village, city or town. The
+internal name city is for historical reasons."""),
     'lino_xl.lib.countries.mixins.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
     'lino_xl.lib.countries.mixins.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
     'lino_xl.lib.countries.mixins.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
@@ -656,38 +657,6 @@ thereof."""),
     'lino_xl.lib.outbox.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
-    'lino_xl.lib.polls.Poll' : _("""A series of questions."""),
-    'lino_xl.lib.polls.AllPolls' : _("""Show all polls of all users."""),
-    'lino_xl.lib.polls.AllPolls.model' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.MyPolls' : _("""Show all polls whose author I am."""),
-    'lino_xl.lib.polls.MyPolls.model' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.Question' : _("""A question of a poll."""),
-    'lino_xl.lib.polls.Question.number' : _("""The number of this question within this poll."""),
-    'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
-    'lino_xl.lib.polls.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view is
-get_slave_summary()."""),
-    'lino_xl.lib.polls.ResponsesByPartner.master' : _("""alias of Partner"""),
-    'lino_xl.lib.polls.ResponsesByPartner.model' : _("""alias of Response"""),
-    'lino_xl.lib.polls.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
-question in a given response."""),
-    'lino_xl.lib.polls.AnswerRemarkField' : _("""An editable virtual field."""),
-    'lino_xl.lib.polls.AnswersByResponse' : _("""The table used for answering to a poll. The rows of this table are
-volatile AnswersByResponseRow instances."""),
-    'lino_xl.lib.polls.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
-this question, eventually (if editing is permitted) together with
-buttons to modify the selection."""),
-    'lino_xl.lib.polls.AnswersByResponse.master' : _("""alias of Response"""),
-    'lino_xl.lib.polls.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
-    'lino_xl.lib.polls.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
-instances."""),
-    'lino_xl.lib.polls.AnswersByQuestion.master' : _("""alias of Question"""),
-    'lino_xl.lib.polls.PollResult' : _("""Shows a summay of responses to this poll."""),
-    'lino_xl.lib.polls.PollResult.master' : _("""alias of Poll"""),
-    'lino_xl.lib.polls.PollResult.model' : _("""alias of Question"""),
-    'lino_xl.lib.polls.roles.PollsUser' : _("""A user who has access to polls functionality."""),
-    'lino_xl.lib.polls.roles.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
-    'lino_xl.lib.polls.utils.PollStates' : _("""The list of possible states of a Poll."""),
-    'lino_xl.lib.polls.utils.ResponseStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.postings.mixins.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
@@ -1343,6 +1312,31 @@ and this owner.  Setting this field will automatically uncheck
 any previously primary items and update the owner's contact
 detail fields."""),
     'lino_xl.lib.phones.ContactDetailsOwner' : _("""Base class for the potential owner of contact details."""),
+    'lino_xl.lib.polls.Poll' : _("""A series of questions."""),
+    'lino_xl.lib.polls.AllPolls' : _("""Show all polls of all users."""),
+    'lino_xl.lib.polls.Question' : _("""A question of a poll."""),
+    'lino_xl.lib.polls.Question.number' : _("""The number of this question within this poll."""),
+    'lino_xl.lib.polls.Response.toggle_choice' : _("""See ToggleChoice"""),
+    'lino_xl.lib.polls.ResponsesByPartner' : _("""Show all responses for a given partner.  Default view shows a
+summary of all responses for a that partner using a bullet list
+grouped by poll."""),
+    'lino_xl.lib.polls.AnswersByResponse' : _("""The table used for answering to a poll. This is a virtual table
+and its rows are volatile AnswersByResponseRow instances."""),
+    'lino_xl.lib.polls.AnswersByResponse.answer_buttons' : _("""A virtual field that displays the currently selected answer(s) for
+this question, eventually (if editing is permitted) together with
+buttons to modify the selection."""),
+    'lino_xl.lib.polls.AnswersByResponseRow' : _("""Volatile object to represent the one and only answer to a given
+question in a given response."""),
+    'lino_xl.lib.polls.AnswerRemarkField' : _("""An editable virtual field."""),
+    'lino_xl.lib.polls.AnswersByQuestion' : _("""The rows of this table are volatile AnswersByQuestionRow
+instances."""),
+    'lino_xl.lib.polls.AnswersByQuestionRow' : _("""Volatile object to represent a row of AnswersByQuestion."""),
+    'lino_xl.lib.polls.PollResult' : _("""Shows a summay of responses to this poll."""),
+    'lino_xl.lib.polls.PollsUser' : _("""A user who has access to polls functionality."""),
+    'lino_xl.lib.polls.PollsStaff' : _("""A user who manages configuration of polls functionality."""),
+    'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
+    'lino_xl.lib.polls.PollStates' : _("""The list of possible states of a Poll."""),
+    'lino_xl.lib.polls.ResponseStates' : _("""The list of possible states of a Response."""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),

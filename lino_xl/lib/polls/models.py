@@ -1,25 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2013-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""Database models for `lino_xl.lib.polls`.
-
-.. rubric:: Models overview
-
-A :class:`Poll` is a collection of :class:`Questions <Question>` which
-we want to ask repeatedly to different people. Each Question has a
-*question text* and a :class:`ChoiceSet`, i.e. a stored ordered set of
-possible choices.  A :class:`Response` is when somebody answers to a
-`Poll`.  A Response contains a set of :class:`AnswerChoices
-<AnswerChoice>`, each of which represents a given Choice selected by
-the questioned person for a given `Question` of the `Poll`.  If the
-Question is *multiple choice*, then there may be more than one
-`AnswerChoice` per `Question`.  A `Response` also contains a set of
-`AnswerRemarks`, each of with represents a remark written by the
-responding person for a given Question of the Poll.
-
-See also :doc:`/tested/polly`.
-
-"""
 from builtins import str
 from builtins import object
 
@@ -101,7 +82,6 @@ class ChoicesBySet(Choices):
 
 @dd.python_2_unicode_compatible
 class Poll(UserAuthored, mixins.CreatedModified, Referrable):
-    """A series of questions."""
     class Meta(object):
         app_label = 'polls'
         abstract = dd.is_abstract_model(__name__, 'Poll')
@@ -211,7 +191,6 @@ class Polls(dd.Table):
 
 
 class AllPolls(Polls):
-    """Show all polls of all users."""
     required_roles = dd.login_required(PollsStaff)
     column_names = 'id ref title user state *'
 
@@ -223,13 +202,6 @@ class MyPolls(My, Polls):
 
 @dd.python_2_unicode_compatible
 class Question(mixins.Sequenced):
-    """A question of a poll.
-
-    .. attribute:: number
-
-       The number of this question within this poll.
-
-    """
     class Meta(object):
         app_label = 'polls'
         verbose_name = _("Question")
@@ -299,8 +271,6 @@ class QuestionsByPoll(Questions):
 
 
 class ToggleChoice(dd.Action):
-    """Toggle the given choice for the given question in this response.
-    """
     readonly = False
     show_in_bbar = False
     parameters = dict(
@@ -410,20 +380,12 @@ class ResponsesByPoll(Responses):
 
 
 class ResponsesByPartner(Responses):
-    """Show all responses for a given partner.  Default view is
-    :meth:`get_slave_summary`.
-
-    """
     master_key = 'partner'
     column_names = 'date user state remark *'
     slave_grid_format = 'summary'
 
     @classmethod
     def get_slave_summary(self, obj, ar):
-        """Displays a summary of all responses for a given partner using a
-        bullet list grouped by poll.
-
-        """
         if obj is None:
             return
 
@@ -462,6 +424,8 @@ class AnswerChoice(dd.Model):
         # ordering removed 20160721 because it probably caused random
         # results when serializing.
 
+    allow_cascaded_delete = ['response']
+    
     response = models.ForeignKey('polls.Response')
     question = models.ForeignKey('polls.Question')
     choice = models.ForeignKey(
@@ -487,6 +451,8 @@ class AnswerRemark(dd.Model):
         verbose_name = _("Answer Remark")
         verbose_name_plural = _("Answer Remarks")
         ordering = ['question__seqno']
+
+    allow_cascaded_delete = ['response']
 
     response = models.ForeignKey('polls.Response')
     question = models.ForeignKey('polls.Question')
@@ -550,13 +516,6 @@ class AllAnswerRemarks(AnswerRemarks):
 
 @dd.python_2_unicode_compatible
 class AnswersByResponseRow(object):
-    """Volatile object to represent the one and only answer to a given
-    question in a given response.
-
-    Used by :class:`AnswersByResponse` whose rows are instances of
-    this.
-
-    """
     FORWARD_TO_QUESTION = tuple(
         "full_clean after_ui_save disable_delete save_new_instance save_watched_instance delete_instance".split())
 
@@ -584,9 +543,6 @@ class AnswersByResponseRow(object):
 
 
 class AnswerRemarkField(dd.VirtualField):
-    """
-    An editable virtual field.
-    """
     editable = True
 
     def __init__(self):
@@ -605,16 +561,6 @@ class AnswerRemarkField(dd.VirtualField):
 
 
 class AnswersByResponse(dd.VirtualTable):
-    """The table used for answering to a poll. The rows of this table are
-    volatile :class:`AnswersByResponseRow` instances.
-
-    .. attribute:: answer_buttons
-
-        A virtual field that displays the currently selected answer(s) for
-        this question, eventually (if editing is permitted) together with
-        buttons to modify the selection.
-
-    """
     label = _("Answers")
     editable = True
     master = 'polls.Response'
@@ -790,9 +736,6 @@ class AnswersByResponse(dd.VirtualTable):
 
 @dd.python_2_unicode_compatible
 class AnswersByQuestionRow(object):
-    """Volatile object to represent a row of :class:`AnswersByQuestion`.
-
-    """
     FORWARD_TO_RESPONSE = tuple(
         "full_clean after_ui_save disable_delete".split())
 
@@ -819,10 +762,6 @@ class AnswersByQuestionRow(object):
 
 
 class AnswersByQuestion(dd.VirtualTable):
-    """The rows of this table are volatile :class:`AnswersByQuestionRow`
-instances.
-
-    """
     label = _("Answers")
     master = 'polls.Question'
     column_names = 'response:40 answer:30 remark:20 *'
@@ -851,7 +790,6 @@ instances.
 
 
 class PollResult(Questions):
-    "Shows a summay of responses to this poll."
     master_key = 'poll'
     column_names = "question choiceset answers a1"
 
