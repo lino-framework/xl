@@ -1,12 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""The database models and tables for :mod:`lino_xl.lib.countries`.
-
-.. autosummary::
-
-"""
 from __future__ import unicode_literals
 from builtins import str
 from builtins import object
@@ -31,8 +26,6 @@ FREQUENT_COUNTRIES = ['BE', 'NL', 'DE', 'FR', 'LU']
 
 
 class Country(mixins.BabelNamed):
-    """A "country" or "nation".
-    """
 
     class Meta(object):
         verbose_name = _("Country")
@@ -94,10 +87,6 @@ from lino.mixins import Hierarchical
 
 
 class Place(Hierarchical, mixins.BabelNamed):
-    """Any kind of named geographic region (except those who have an entry
-    in :class:`Country`.
-
-    """
     class Meta(object):
         verbose_name = _("Place")
         verbose_name_plural = _("Places")

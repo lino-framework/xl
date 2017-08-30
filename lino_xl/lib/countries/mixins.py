@@ -2,12 +2,6 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Model mixins for `lino_xl.lib.countries`.
-
-These include :class:`CountryCity`, :class:`CountryRegionCity` and
-:class:`AddressLocation`.
-
-"""
 from __future__ import unicode_literals
 from builtins import str
 from builtins import object
@@ -29,24 +23,6 @@ from .utils import get_address_formatter
 
 class CountryCity(dd.Model):
 
-    """Model mixin that adds two fields `country` and `city` and defines
-    a context-sensitive chooser for `city`, a `create_city_choice`
-    method, ...
-
-    .. attribute:: country
-    .. attribute:: zip_code
-    
-    .. attribute:: city
-    
-        The locality, i.e. usually a village, city or town. 
-
-        The choicelist for this field shows only places returned by
-        :meth:`lino_xl.lib.countries.Place.get_cities`.
-
-        This is a pointer to :class:`Place`.
-        The internal name `city` is for historical reasons.
-
-    """
     class Meta(object):
         abstract = True
 
@@ -112,10 +88,6 @@ class CountryCity(dd.Model):
 
 
 class CountryRegionCity(CountryCity):
-    """
-    Adds a `region` field to a :class:`CountryCity`.
-
-    """
     region = models.ForeignKey(
         'countries.Place',
         blank=True, null=True,
@@ -165,50 +137,23 @@ class CountryRegionCity(CountryCity):
 
 
 class AddressLocation(CountryRegionCity, Addressable):
-    """A mixin for models which contain a postal address location.
-
-    .. attribute:: addr1
-    .. attribute:: street_prefix
-    .. attribute:: street
-    .. attribute:: street_no
-    .. attribute:: street_box
-    .. attribute:: addr2
-    
-    .. attribute:: addess_column
-
-        Virtual field which returns the location as a comma-separated
-        one-line string.
-
-    """
     class Meta(object):
         abstract = True
 
     addr1 = models.CharField(
         _("Address line before street"),
-        max_length=200, blank=True,
-        help_text=_("Address line before street"))
-
+        max_length=200, blank=True)
     street_prefix = models.CharField(
-        _("Street prefix"), max_length=200, blank=True,
-        help_text=_("Text to print before name of street, "
-                    "but to ignore for sorting."))
-
+        _("Street prefix"), max_length=200, blank=True)
     street = models.CharField(
-        _("Street"), max_length=200, blank=True,
-        help_text=_("Name of street, without house number."))
-
+        _("Street"), max_length=200, blank=True)
     street_no = models.CharField(
-        _("No."), max_length=10, blank=True,
-        help_text=_("House number."))
-
+        _("No."), max_length=10, blank=True)
     street_box = models.CharField(
-        _("Box"), max_length=10, blank=True,
-        help_text=_("Text to print after street nuber on the same line."))
-
+        _("Box"), max_length=10, blank=True)
     addr2 = models.CharField(
         _("Address line after street"),
-        max_length=200, blank=True,
-        help_text=_("Address line to print below street line."))
+        max_length=200, blank=True)
 
     def on_create(self, ar):
         sc = settings.SITE.site_config.site_company
@@ -240,25 +185,6 @@ class AddressLocation(CountryRegionCity, Addressable):
         #~ logger.debug('%s : as_address() -> %r',self,lines)
 
     def address_location(self, linesep="\n"):
-        """Return the plain text postal address location part.  Lines are
-        separated by `linesep` which defaults to ``"\\n"``.
-
-        The following example creates a Partner, then calls its
-        :meth:`address_location` method:
-
-        >>> BE = countries.Country.objects.get(pk='BE')
-        >>> p = contacts.Partner(
-        ...   name="Foo",
-        ...   street_prefix="Rue de l'", street="Abattoir", 
-        ...   street_no=5, country=BE, zip_code="4000")
-        >>> p.full_clean()
-        >>> p.save()
-        >>> print(p.address_location())
-        Rue de l' Abattoir 5
-        4000 Liège
-        Belgium
-
-        """
         return linesep.join(self.address_location_lines())
 
     @dd.displayfield(_("Address"))

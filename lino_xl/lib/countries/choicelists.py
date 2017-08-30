@@ -2,12 +2,6 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""
-Choicelists for `lino_xl.lib.countries`.
-
-.. autosummary::
-
-"""
 from __future__ import unicode_literals
 from builtins import object
 
@@ -27,18 +21,6 @@ class PlaceType(dd.Choice):
 
 
 class PlaceTypes(dd.ChoiceList):
-    """
-    A choicelist of possible place types.
-
-    .. django2rst::
-
-            rt.show(countries.PlaceTypes)
-
-    Sources used:
-
-    - http://en.wikipedia.org/wiki/List_of_subnational_entities
-
-    """
     verbose_name = _("Place Type")
     item_class = PlaceType
 
