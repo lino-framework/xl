@@ -656,7 +656,6 @@ thereof."""),
     'lino_xl.lib.outbox.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
-    'lino_xl.lib.phones.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.polls.Poll' : _("""A series of questions."""),
     'lino_xl.lib.polls.AllPolls' : _("""Show all polls of all users."""),
     'lino_xl.lib.polls.AllPolls.model' : _("""alias of Poll"""),
@@ -1339,6 +1338,11 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
+    'lino_xl.lib.phones.ContactDetail.primary' : _("""Whether this item is the primary contact detail for this type
+and this owner.  Setting this field will automatically uncheck
+any previously primary items and update the owner's contact
+detail fields."""),
+    'lino_xl.lib.phones.ContactDetailsOwner' : _("""Base class for the potential owner of contact details."""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),
