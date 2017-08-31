@@ -1220,6 +1220,7 @@ payments."""),
     'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
     'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
+    'lino_xl.lib.countries.PlaceTypes' : _("""A choicelist of possible place types."""),
     'lino_xl.lib.countries.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
 method, ..."""),
@@ -1234,7 +1235,6 @@ method, ..."""),
     'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
     'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
-    'lino_xl.lib.countries.PlaceTypes' : _("""A choicelist of possible place types."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
