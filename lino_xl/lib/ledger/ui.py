@@ -358,7 +358,7 @@ class PartnerVouchers(Vouchers):
 
 
 def mvtsum(**fkw):
-    d = rt.modules.ledger.Movement.objects.filter(
+    d = rt.models.ledger.Movement.objects.filter(
         **fkw).aggregate(models.Sum('amount'))
     return d['amount__sum'] or ZERO
 
@@ -375,12 +375,28 @@ class AccountsBalance(dd.VirtualTable):
     slave_grid_format = 'html'
     abstract = True
 
-    parameters = mixins.Yearly(
-        # include_vat = models.BooleanField(
-        #     verbose_name=dd.apps.vat.verbose_name),
-    )
+    parameters = dict(
+        start_period=dd.ForeignKey(
+            'ledger.AccountingPeriod',
+            blank=True, null=True,
+            help_text=_("Start of observed period range"),
+            verbose_name=_("Period from")),
+        end_period=dd.ForeignKey(
+            'ledger.AccountingPeriod',
+            blank=True, null=True,
+            help_text=_(
+                "Optional end of observed period range. "
+                "Leave empty to consider only the Start period."),
+            verbose_name=_("Period until")))
+    
+    params_layout = "start_period end_period"
+    
+    # parameters = mixins.Yearly(
+    #     # include_vat = models.BooleanField(
+    #     #     verbose_name=dd.apps.vat.verbose_name),
+    # )
 
-    params_layout = "start_date end_date"
+    # params_layout = "start_date end_date"
     
     @classmethod
     def rowmvtfilter(self, row):
@@ -399,21 +415,41 @@ class AccountsBalance(dd.VirtualTable):
         qs = self.get_request_queryset(ar)
         for row in qs:
             flt = self.rowmvtfilter(row)
-            row.old = Balance(
-                mvtsum(
-                    value_date__lt=pv.start_date,
-                    dc=DEBIT, **flt),
-                mvtsum(
-                    value_date__lt=pv.start_date,
-                    dc=CREDIT, **flt))
-            row.during_d = mvtsum(
-                value_date__gte=pv.start_date,
-                value_date__lte=pv.end_date,
-                dc=DEBIT, **flt)
-            row.during_c = mvtsum(
-                value_date__gte=pv.start_date,
-                value_date__lte=pv.end_date,
-                dc=CREDIT, **flt)
+            if True:
+                oldflt = dict()
+                oldflt.update(flt)
+                duringflt = dict()
+                duringflt.update(flt)
+                if pv.start_period:
+                    oldflt.update(
+                        voucher__accounting_period__lt=pv.start_period)
+                    duringflt.update(
+                        voucher__accounting_period__gte=pv.start_period)
+                if pv.end_period:
+                    duringflt.update(
+                        voucher__accounting_period__lte=pv.end_period)
+                    
+                row.old = Balance(
+                    mvtsum(dc=DEBIT, **oldflt),
+                    mvtsum(dc=CREDIT, **oldflt))
+                row.during_d = mvtsum(dc=DEBIT, **duringflt)
+                row.during_c = mvtsum(dc=CREDIT, **duringflt)
+            else:
+                row.old = Balance(
+                    mvtsum(
+                        value_date__lt=pv.start_date,
+                        dc=DEBIT, **flt),
+                    mvtsum(
+                        value_date__lt=pv.start_date,
+                        dc=CREDIT, **flt))
+                row.during_d = mvtsum(
+                    value_date__gte=pv.start_date,
+                    value_date__lte=pv.end_date,
+                    dc=DEBIT, **flt)
+                row.during_c = mvtsum(
+                    value_date__gte=pv.start_date,
+                    value_date__lte=pv.end_date,
+                    dc=CREDIT, **flt)
             if row.old.d or row.old.c or row.during_d or row.during_c:
                 row.new = Balance(row.old.d + row.during_d,
                                   row.old.c + row.during_c)
@@ -471,7 +507,7 @@ class PartnerAccountsBalance(AccountsBalance):
 
     @classmethod
     def get_request_queryset(self, ar):
-        return rt.modules.contacts.Partner.objects.order_by('name')
+        return rt.models.contacts.Partner.objects.order_by('name')
 
     @classmethod
     def rowmvtfilter(self, row):
