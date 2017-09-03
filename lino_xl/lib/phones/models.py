@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
+from lino.core.diff import ChangeWatcher
 
 from lino.api import dd
 from lino.core.roles import SiteStaff
@@ -21,19 +22,6 @@ from .choicelists import ContactDetailTypes
 
 @dd.python_2_unicode_compatible
 class ContactDetail(dd.Model):
-    """.. attribute:: partner
-
-    .. attribute:: detail_type
-
-    .. attribute:: primary
-    
-        Whether this item is the primary contact detail for this type
-        and this owner.  Setting this field will automatically uncheck
-        any previously primary items and update the owner's contact
-        detail fields.
-
-    """
-
     class Meta:
         app_label = 'phones'
         verbose_name = _("Contact detail")
@@ -53,6 +41,10 @@ class ContactDetail(dd.Model):
     def __str__(self):
         return self.detail_type.format(self.value)
 
+    def full_clean(self):
+        super(ContactDetail, self).full_clean()
+        self.detail_type.validate(self.value)
+
     def after_ui_save(self, ar, cw):
         super(ContactDetail, self).after_ui_save(ar, cw)
         mi = self.partner
@@ -64,11 +56,12 @@ class ContactDetail(dd.Model):
                     o.primary = False
                     o.save()
                     ar.set_response(refresh_all=True)
-        mi.sync_primary_contact_detail(ar.request)
-
-    def full_clean(self):
-        super(ContactDetail, self).full_clean()
-        self.detail_type.validate(self.value)
+        k = self.contact_detail.field_name
+        if k:
+            watcher = ChangeWatcher(mi)
+            setattr(mi, k, self.value)
+            watcher.send_update(ar)
+            mi.save()
 
     @classmethod
     def get_simple_parameters(cls):
@@ -79,7 +72,7 @@ def clear_partner_on_delete(sender=None, request=None, **kw):
     self = sender
     mi = self.partner
     if mi:
-        mi.sync_primary_contact_detail(request)
+        mi.propagate_contact_detail(self.detail_type)
 
 
 class ContactDetails(dd.Table):

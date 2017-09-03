@@ -2,66 +2,109 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""
-Model mixins for `lino_xl.lib.phones`.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
 
 from django.utils.translation import ugettext_lazy as _
 
-from lino.utils import join_elems
 from lino.api import rt, dd
-from lino.utils.xmlgen.html import E
 from lino.core.diff import ChangeWatcher
 from lino.mixins import Contactable, Phonable
-
-from .choicelists import ContactDetailTypes
-
+from lino.modlib.plausibility.choicelists import Checker
 
 class ContactDetailsOwner(Contactable, Phonable):
-    """Base class for the potential owner of contact details.
-
-    """
+    
     class Meta:
         abstract = True
 
-    def sync_primary_contact_detail(self, ar):
-        watcher = ChangeWatcher(self)
-        self.sync_primary_contact_detail_()
-        watcher.send_update(ar)
+    if dd.is_installed('phones'):
 
-    def sync_primary_contact_detail_(self):
-        ContactDetail = rt.modules.phones.ContactDetail
-        for cdt in ContactDetailTypes.get_list_items():
+        def phone_changed(self, ar):
+            self.propagate_contact_detail(
+                rt.models.phones.ContactDetailTypes.phone)
+            
+        def gsm_changed(self, ar):
+            self.propagate_contact_detail(
+                rt.models.phones.ContactDetailTypes.mobile)
+            
+        def url_changed(self, ar):
+            self.propagate_contact_detail(
+                rt.models.phones.ContactDetailTypes.url)
+            
+        def fax_changed(self, ar):
+            self.propagate_contact_detail(
+                rt.models.phones.ContactDetailTypes.fax)
+            
+        def email_changed(self, ar):
+            self.propagate_contact_detail(
+                rt.models.phones.ContactDetailTypes.email)
+            
+        def propagate_contact_detail(self, cdt):
             k = cdt.field_name
             if k:
-                fld = self._meta.get_field(k)
+                value = getattr(self, k)
+                ContactDetail = rt.models.phones.ContactDetail
                 kw = dict(partner=self, primary=True, detail_type=cdt)
                 try:
                     cd = ContactDetail.objects.get(**kw)
-                    setattr(self, k, cd.value)
+                    if value:
+                        cd.value = value
+                        # don't full_clean() because no need to check
+                        # primary of other items
+                        cd.save()
+                    else:
+                        cd.delete()
                 except ContactDetail.DoesNotExist:
-                    setattr(self, k, fld.get_default())
-                self.save()
+                    if value:
+                        kw.update(value=value)
+                        cd = ContactDetail(**kw)
+                        cd.save()
 
-    def get_overview_elems(self, ar):
-        # elems = super(ContactDetailsOwner, self).get_overview_elems(ar)
-        yield rt.models.phones.ContactDetailsByPartner.get_slave_summary(
-            self, ar)
-        
-        # elems = []
-        # sar = ar.spawn('phones.ContactDetailsByPartner',
-        #                master_instance=self)
-        
-        # items = [o.detail_type.as_html(o, sar) for o in sar]
-        # if len(items) > 0:
-        #     elems += join_elems(items, sep=', ')
-        
-        # btn = sar.as_button(_("Manage contact details"))
-        # # elems.append(E.p(btn, align="right"))
-        # elems.append(E.p(btn))
-        # return elems
+        def propagate_contact_details(self, ar=None):
+            watcher = ChangeWatcher(self)
+            ContactDetailTypes = rt.models.phones.ContactDetailTypes
+            for cdt in ContactDetailTypes.get_list_items():
+                self.propagate_contact_detail(cdt)
+            if ar is not None:
+                watcher.send_update(ar)
+                
+        def get_overview_elems(self, ar):
+            # elems = super(ContactDetailsOwner, self).get_overview_elems(ar)
+            yield rt.models.phones.ContactDetailsByPartner.get_slave_summary(
+                self, ar)
 
+
+if dd.is_installed('phones'):
+    
+    class ContactDetailsOwnerChecker(Checker):
+        verbose_name = _("Check for mismatches between contact details and owner")
+        model = ContactDetailsOwner
+        msg_mismatch = _("Field differs from primary item")
+        msg_empty = _("Field is empty but primary item exists")
+        msg_missing = _("Missing primary item")
+        
+        def get_plausibility_problems(self, obj, fix=False):
+            ContactDetailTypes = rt.models.phones.ContactDetailTypes
+            ContactDetail = rt.models.phones.ContactDetail
+            for cdt in ContactDetailTypes.get_list_items():
+                k = cdt.field_name
+                if k:
+                    value = getattr(obj, k)
+                    kw = dict(partner=obj, primary=True, detail_type=cdt)
+                    try:
+                        cd = ContactDetail.objects.get(**kw)
+                        if value:
+                            if cd.value != value:
+                                yield (False, self.msg_mismatch)
+                        else:
+                            yield (False, self.msg_empty)
+                    except ContactDetail.DoesNotExist:
+                        if value:
+                            yield (True, self.msg_missing)
+                            if fix:
+                                kw.update(value=value)
+                                cd = ContactDetail(**kw)
+                                cd.save()
+
+    ContactDetailsOwnerChecker.activate()

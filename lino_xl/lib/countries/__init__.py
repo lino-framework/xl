@@ -3,17 +3,13 @@
 
 """Defines models and choicelists for managing geographic places.
 
+See :doc:`/specs/countries`.
 
 .. autosummary::
    :toctree:
 
-    choicelists
-    mixins
-    models
     utils
     fixtures
-
-See also :mod:`lino_xl.lib.statbel.countries`.
 
 """
 

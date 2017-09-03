@@ -1,19 +1,12 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2013-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""Utilities, choicelists, mixins used by :mod:`lino_xl.lib.polls`.
-
-"""
 
 from lino.api import dd
 from django.utils.translation import ugettext_lazy as _
 
 
 class PollStates(dd.Workflow):
-    """
-    The list of possible states of a :class:`Poll`.
-
-    """
     verbose_name_plural = _("Poll states")
     required_roles = dd.login_required(dd.SiteStaff)
 
@@ -32,10 +25,6 @@ PollStates.draft.add_transition(
 
 
 class ResponseStates(dd.Workflow):
-    """
-    The list of possible states of a :class:`Poll`. 
-
-    """
     verbose_name_plural = _("Response states")
     required_roles = dd.login_required(dd.SiteStaff)
 

@@ -137,6 +137,7 @@ class EntriesByTeacher(cal.Events):
 class CourseDetail(dd.DetailLayout):
     """The detail layout of a :class:`Course`.
     """
+    required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     # start = "start_date start_time"
     # end = "end_date end_time"
     # freq = "every every_unit"
@@ -279,6 +280,7 @@ class Activities(dd.Table):
 class Courses(Activities):
     # required_roles = dd.login_required(CoursesUser)
     _course_area = CourseAreas.default.as_callable()
+    required_roles = dd.login_required(CoursesUser)
 
     # courses_by_line = dd.ShowSlaveTable('courses.CoursesByLine')
 
@@ -319,6 +321,7 @@ class MyCoursesGiven(Activities):
     required_roles = dd.login_required(CoursesTeacher)
     master_key = "teacher"
     column_names = "overview weekdays_text times_text room workflow_buttons *"
+    # detail_layout = 'courses.CourseDetail'
 
     @classmethod
     def setup_request(self, ar):
