@@ -52,11 +52,12 @@ class CertifyEnrolment(PrintAndChangeStateAction):
 
 
 class ConfirmEnrolment(dd.ChangeStateAction):
-    """Confirm this enrolment. Sets the :attr:`state` to `confirmed` after
-    calling :meth:`get_confirm_veto
-    <lino_xl.lib.courses.models.Enrolment.get_confirm_veto>` to
-    verify whether it is valid (e.g. whether there are enough free
-    places).
+    """Confirm this enrolment. 
+
+    Sets the :attr:`state` to `confirmed` after Check for possible
+    problems by calling :meth:`get_confirm_veto
+    <lino_xl.lib.courses.models.Enrolment.get_confirm_veto>` to verify
+    whether it is valid (e.g. whether there are enough free places).
 
     """
     label = _("Confirm")
@@ -64,7 +65,6 @@ class ConfirmEnrolment(dd.ChangeStateAction):
     #~ required = dict(states='assigned',owner=True)
     # ~ required = dict(states='published rescheduled took_place')#,owner=True)
     required_states = 'requested'  # ,owner=True)
-    help_text = _("Check for possible problems.")
 
     def run_from_ui(self, ar, **kw):
         #~ problems = []

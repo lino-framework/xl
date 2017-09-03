@@ -375,9 +375,12 @@ class Course(Reservation, Duplicable, PrintableObject):
             area = self.line.course_area
             if area:
                 table = rt.actors.resolve(area.courses_table)
-                a = table.detail_action
-                if ar is None or a.get_view_permission(ar.get_user().user_type):
-                    return a
+                ba = table.detail_action
+                ba = ba.action.defining_actor.detail_action
+                # if ar is None or ba.get_row_permission(ar, self, None):
+                #     return ba
+                if ar is None or ba.get_view_permission(ar.get_user().user_type):
+                    return ba
                 return None
         return super(Course, self).get_detail_action(ar)
             
@@ -486,10 +489,12 @@ class Course(Reservation, Duplicable, PrintableObject):
 
     def get_overview_elems(self, ar):
         elems = []
-        elems.append(ar.obj2html(self))
+        # elems.append(ar.obj2html(self))
+        elems.append(self.obj2href(ar))
         if self.teacher_id:
             elems.append(" / ")
-            elems.append(ar.obj2html(self.teacher))
+            # elems.append(ar.obj2html(self.teacher))
+            elems.append(self.teacher.obj2href(ar))
         return elems
 
     #~ @dd.displayfield(_("Where"))

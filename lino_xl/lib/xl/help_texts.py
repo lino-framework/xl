@@ -438,10 +438,7 @@ Course)"""),
     'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
 application defines several variants of
 EnrolmentsByPupil."""),
-    'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment. Sets the state to confirmed after
-calling get_confirm_veto to
-verify whether it is valid (e.g. whether there are enough free
-places)."""),
+    'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
