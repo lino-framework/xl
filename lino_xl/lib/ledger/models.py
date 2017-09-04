@@ -215,6 +215,8 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         verbose_name_plural = _("Accounting periods")
         ordering = ['ref']
 
+    preferred_foreignkey_width = 10
+    
     state = PeriodStates.field(default=PeriodStates.open.as_callable())
     year = FiscalYears.field(blank=True)
     remark = models.CharField(_("Remark"), max_length=250, blank=True)

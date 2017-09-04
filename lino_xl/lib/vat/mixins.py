@@ -20,12 +20,12 @@ from lino.utils import SumCollector
 from lino.utils.dates import AMONTH, ADAY
 from lino.api import dd, rt, _
 
+from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
 from lino_xl.lib.ledger.mixins import PeriodRange
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
-from lino.mixins.periods import DateRange
 
 from .utils import ZERO, ONE
 from .choicelists import VatClasses, VatRegimes
@@ -420,7 +420,8 @@ class QtyVatItemBase(VatItemBase):
         if self.unit_price is not None and self.qty is not None:
             self.set_amount(ar, myround(self.unit_price * self.qty))
 
-class VatDeclaration(Payable, Voucher, PeriodRange):
+
+class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
     """
     A VAT declaration is when a company declares to the state

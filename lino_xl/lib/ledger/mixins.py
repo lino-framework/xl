@@ -16,6 +16,7 @@ from django.db import models
 
 from lino.api import dd, rt, _
 from lino.mixins import Sequenced
+from .roles import LedgerUser
 # from lino.utils.xmlgen.html import E
 # from lino.modlib.notify.utils import rich_text_to_elems
 
@@ -60,6 +61,11 @@ class PartnerRelated(dd.Model):
     def get_partner(self):
         """Overrides Voucher.get_partner"""
         return self.partner
+
+    def get_print_language(self):
+        p = self.get_partner()
+        if p is not None:
+            return p.language
 
     def get_recipient(self):
         return self.partner
@@ -248,4 +254,14 @@ class PeriodRangeObservable(dd.Model):
                 yield str(pv.start_period)
             else:
                 yield "{}..{}".format(pv.start_period, pv.end_period)
+
+                
+class ItemsByVoucher(dd.Table):
+    label = _("Content")
+    required_roles = dd.login_required(LedgerUser)
+    master_key = 'voucher'
+    order_by = ["seqno"]
+    auto_fit_column_widths = True
+    slave_grid_format = 'html'
+    preview_limit = 0
 

@@ -18,6 +18,7 @@ from .mixins import VatDocument
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
+from lino_xl.lib.ledger.mixins import ItemsByVoucher
 
 from .models import VatAccountInvoice
 
@@ -69,7 +70,7 @@ class Invoices(PartnerVouchers):
     required_roles = dd.login_required(LedgerUser)
     model = 'vat.VatAccountInvoice'
     order_by = ["-id"]
-    column_names = "entry_date id number partner total_incl user *"
+    column_names = "entry_date id number_with_year partner total_incl user *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal partner
@@ -85,7 +86,7 @@ class InvoicesByJournal(Invoices, ByJournal):
 
     """
     params_layout = "partner state start_period end_period user"
-    column_names = "number voucher_date due_date " \
+    column_names = "number_with_year voucher_date due_date " \
         "partner " \
         "total_incl " \
         "total_base total_vat user workflow_buttons *"
@@ -100,14 +101,9 @@ class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
 
 VoucherTypes.add_item_lazy(InvoicesByJournal)
 
-
-class ItemsByInvoice(dd.Table):
-    required_roles = dd.login_required(LedgerUser)
+class ItemsByInvoice(ItemsByVoucher):
     model = 'vat.InvoiceItem'
     column_names = "account title vat_class total_base total_vat total_incl"
-    master_key = 'voucher'
-    order_by = ["seqno"]
-    auto_fit_column_widths = True
 
 
 class VouchersByPartner(dd.VirtualTable):

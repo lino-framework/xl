@@ -1192,6 +1192,7 @@ between and including these two are to be considered."""),
     'lino_xl.lib.ledger.PeriodRangeObservable' : _("""Model mixin for objects that can be filtered by a range of
 accounting periods. This adds two fields start_period and
 end_period to the parameter fields."""),
+    'lino_xl.lib.ledger.ItemsByVoucher' : _("""Shows the items of this voucher."""),
     'lino_xl.lib.ledger.DueMovement' : _("""A volatile object representing a group of matching movements."""),
     'lino_xl.lib.ledger.DueMovement.match' : _("""The common match string of these movments"""),
     'lino_xl.lib.ledger.DueMovement.dc' : _("""Whether I mean my debts and payments (towards that partner)

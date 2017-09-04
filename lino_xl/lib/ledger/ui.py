@@ -371,9 +371,10 @@ class AccountsBalance(dd.VirtualTable):
     """
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
-    column_names = "ref description old_d old_c during_d during_c new_d new_c"
+    column_names = "description old_d old_c empty_column:1 during_d during_c empty_column:1 new_d new_c"
     slave_grid_format = 'html'
     abstract = True
+    params_panel_hidden = False
 
     parameters = dict(
         start_period=dd.ForeignKey(
@@ -487,10 +488,15 @@ class AccountsBalance(dd.VirtualTable):
     def new_c(self, row, ar):
         return row.new.d
     
+    @dd.displayfield("")
+    def empty_column(self, row, ar):
+        return ''
+
+    
 
 class GeneralAccountsBalance(AccountsBalance):
 
-    label = _("General Accounts Balances")
+    label = _("General Accounts Balance")
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -521,12 +527,12 @@ class PartnerAccountsBalance(AccountsBalance):
 
 
 class CustomerAccountsBalance(PartnerAccountsBalance):
-    label = _("Customer Accounts Balances")
+    label = _("Customer Accounts Balance")
     trade_type = TradeTypes.sales
 
 
 class SupplierAccountsBalance(PartnerAccountsBalance):
-    label = _("Supplier Accounts Balances")
+    label = _("Supplier Accounts Balance")
     trade_type = TradeTypes.purchases
 
 
