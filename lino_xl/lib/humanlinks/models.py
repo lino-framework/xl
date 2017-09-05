@@ -167,7 +167,7 @@ class LinksByHuman(Links):
         LinkTypes.relative, LinkTypes.other)
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **filter):
         mi = ar.master_instance  # a Person
         Link = rt.modules.humanlinks.Link
         if mi is None:

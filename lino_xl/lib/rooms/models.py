@@ -189,8 +189,8 @@ class Bookings(dd.Table):
     # simple_parameters = 'company state'.split()
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Bookings, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(Bookings, self).get_request_queryset(ar, **filter)
         if isinstance(qs, list):
             return qs
         # for n in self.simple_param_fields:

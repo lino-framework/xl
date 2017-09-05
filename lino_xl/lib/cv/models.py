@@ -286,8 +286,8 @@ class PeriodTable(dd.Table):
     params_layout = "start_date end_date observed_event"
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(PeriodTable, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(PeriodTable, self).get_request_queryset(ar, **filter)
 
         pv = ar.param_values
         ce = pv.observed_event

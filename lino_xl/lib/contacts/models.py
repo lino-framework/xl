@@ -211,8 +211,8 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
         return ObservedDateRange(**fields)
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Partner, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(Partner, self).get_request_queryset(ar, **filter)
 
         pv = ar.param_values
         oe = pv.observed_event

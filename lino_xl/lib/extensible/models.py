@@ -116,8 +116,8 @@ class PanelCalendars(Calendars):
     column_names = 'id summary description color is_hidden'
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(PanelCalendars, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(PanelCalendars, self).get_request_queryset(ar, **filter)
         subs = rt.models.cal.Subscription.objects.filter(
             user=ar.get_user()).values_list('calendar__id', flat=True)
         return qs.filter(id__in=subs)

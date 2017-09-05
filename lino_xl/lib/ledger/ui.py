@@ -125,8 +125,8 @@ class Vouchers(dd.Table):
     params_layout = "journal start_period end_period state user"
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Vouchers, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(Vouchers, cls).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
         pv = ar.param_values
@@ -347,8 +347,8 @@ class PartnerVouchers(Vouchers):
         return s
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(PartnerVouchers, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(PartnerVouchers, cls).get_request_queryset(ar, **kwargs)
         # movement_set__partner=models.F('partner'))
         if ar.param_values.cleared == dd.YesNo.yes:
             qs = qs.exclude(movement__cleared=False)
@@ -404,7 +404,7 @@ class AccountsBalance(dd.VirtualTable):
         raise NotImplementedError()
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         raise NotImplementedError()
 
     @classmethod
@@ -499,7 +499,7 @@ class GeneralAccountsBalance(AccountsBalance):
     label = _("General Accounts Balance")
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         return rt.modules.accounts.Account.objects.order_by(
             'group__ref', 'ref')
 
@@ -512,7 +512,7 @@ class PartnerAccountsBalance(AccountsBalance):
     trade_type = NotImplementedError
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         return rt.models.contacts.Partner.objects.order_by('name')
 
     @classmethod
@@ -736,8 +736,8 @@ class Movements(dd.Table):
     journal_group journal year project partner account"""
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Movements, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(Movements, cls).get_request_queryset(ar, **kwargs)
 
         pv = ar.param_values
         if pv.cleared == dd.YesNo.yes:
@@ -1000,8 +1000,8 @@ class MovementsByMatch(Movements):
         return pk
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(MovementsByMatch, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(MovementsByMatch, cls).get_request_queryset(ar, **kwargs)
         qs = qs.filter(match=ar.master_instance)
         return qs
 

@@ -635,15 +635,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         #~ return super(Voucher,self).get_row_permission(ar,state,ba)
 
     def get_mti_leaf(self):
-        """
-        Return the specialized form of this voucher.
-
-        For example if we have :class:`ml.ledger.Voucher` instance, we
-        can get the actual document (Invoice, PaymentOrder,
-        BankStatement, ...) by calling this method.
-
-
-        """
         return mti.get_child(self, self.journal.voucher_type.model)
 
     # def obj2html(self, ar):

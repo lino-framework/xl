@@ -170,11 +170,11 @@ class Uploads(Uploads):
     auto_fit_column_widths = True
 
     @classmethod
-    def get_request_queryset(cls, ar):
+    def get_request_queryset(cls, ar, **kwargs):
         # (why was this?) use inherited method from grandparent (not
         # direct parent)
         # qs = super(LibraryUploads, cls).get_request_queryset(ar)
-        qs = super(Uploads, cls).get_request_queryset(ar)
+        qs = super(Uploads, cls).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
         ce = pv.observed_event

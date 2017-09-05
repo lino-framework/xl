@@ -119,9 +119,9 @@ class Meetings(dd.Table):
         return obj
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # dd.logger.info("20160223 %s", self)
-        qs = super(Meetings, self).get_request_queryset(ar)
+        qs = super(Meetings, self).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
         pv = ar.param_values

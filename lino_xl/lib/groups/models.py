@@ -89,8 +89,8 @@ class Groups(dd.Table):
     """
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Groups, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Groups, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
         if pv.user:

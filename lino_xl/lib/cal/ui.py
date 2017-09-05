@@ -185,9 +185,9 @@ class Tasks(dd.Table):
     """
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
-        qs = super(Tasks, self).get_request_queryset(ar)
+        qs = super(Tasks, self).get_request_queryset(ar, **kwargs)
 
         if ar.param_values.user:
             qs = qs.filter(user=ar.param_values.user)
@@ -338,9 +338,9 @@ class Guests(dd.Table):
     project partner"""
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
-        qs = super(Guests, self).get_request_queryset(ar)
+        qs = super(Guests, self).get_request_queryset(ar, **kwargs)
 
         if isinstance(qs, list):
             return qs
@@ -451,11 +451,11 @@ class MyPresences(Guests):
     params_panel_hidden = True
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # logger.info("20130809 MyPresences")
         if ar.get_user().partner is None:
             raise Warning("Action not available for users without partner")
-        return super(MyPresences, self).get_request_queryset(ar)
+        return super(MyPresences, self).get_request_queryset(ar, **kwargs)
 
     @classmethod
     def get_row_permission(cls, obj, ar, state, ba):
@@ -681,9 +681,9 @@ class Events(dd.Table):
     pending_states = set(EntryStates.filter(fixed=False))
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
-        qs = super(Events, self).get_request_queryset(ar)
+        qs = super(Events, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
         if pv.user:
@@ -781,7 +781,7 @@ class ConflictingEvents(Events):
     column_names = 'start_date start_time end_time project room user *'
 
     @classmethod
-    def get_request_queryset(self, ar, **kw):
+    def get_request_queryset(self, ar, **kwargs):
         qs = ar.master_instance.get_conflicting_events()
         if qs is None:
             return rt.modules.cal.Event.objects.none()

@@ -277,8 +277,8 @@ class FinancialVouchers(dd.Table):
     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(FinancialVouchers, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(FinancialVouchers, cls).get_request_queryset(ar, **kwargs)
         if not isinstance(qs, list):
             if ar.param_values.pyear:
                 qs = qs.filter(accounting_period__year=ar.param_values.pyear)

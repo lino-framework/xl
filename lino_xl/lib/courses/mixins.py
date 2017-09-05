@@ -44,8 +44,8 @@ class Enrollable(dd.Model):
 
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Enrollable, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(Enrollable, cls).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
         if pv.course:
             qs = qs.filter(enrolments_by_pupil__course=pv.course)

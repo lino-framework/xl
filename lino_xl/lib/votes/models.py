@@ -303,8 +303,8 @@ class Votes(dd.Table):
         return s
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Votes, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Votes, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
         if self.filter_vote_states is not None:

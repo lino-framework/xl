@@ -121,14 +121,14 @@ class EntriesByTeacher(cal.Events):
     auto_fit_column_widths = True
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         teacher = ar.master_instance
         if teacher is None:
             return []
         if True:
             return []
         # TODO: build a list of courses, then show entries by course
-        qs = super(EntriesByTeacher, self).get_request_queryset(ar)
+        qs = super(EntriesByTeacher, self).get_request_queryset(ar, **kwargs)
         # mycourses = rt.modules.Course.objects.filter(teacher=teacher)
         qs = qs.filter(course__in=teacher.course_set.all())
         return qs
@@ -230,9 +230,9 @@ class Activities(dd.Table):
         return s
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # dd.logger.info("20160223 %s", self)
-        qs = super(Activities, self).get_request_queryset(ar)
+        qs = super(Activities, self).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
 
@@ -485,8 +485,8 @@ class Enrolments(dd.Table):
         return super(Enrolments, self).get_actor_label()
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Enrolments, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Enrolments, self).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
         pv = ar.param_values

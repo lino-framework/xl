@@ -229,14 +229,15 @@ class VatDocument(ProjectRelated, VatTotal):
             return
         base = Decimal()
         vat = Decimal()
-        tt = self.get_trade_type()
+        # tt = self.get_trade_type()
         for i in self.items.all():
-            vr = i.get_vat_rule(tt)
+            # vr = i.get_vat_rule(tt)
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                if vr is not None and not vr.vat_returnable:
-                    vat += i.total_vat
+                # if vr is not None and not vr.vat_returnable:
+                #     vat += i.total_vat
+                vat += i.total_vat
         self.total_base = base
         self.total_vat = vat
         self.total_incl = vat + base

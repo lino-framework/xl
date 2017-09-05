@@ -45,8 +45,8 @@ class Messages(dd.Table):
         #     default=False))
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Messages, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Messages, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
         if pv.show_assigned == dd.YesNo.no:

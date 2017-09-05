@@ -1335,6 +1335,10 @@ instances."""),
     'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
     'lino_xl.lib.polls.PollStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.polls.ResponseStates' : _("""The list of possible states of a Response."""),
+    'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose vat_regime is
+intra-Community."""),
+    'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose vat_regime is
+intra-Community."""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),
@@ -1355,6 +1359,8 @@ field is empty, then VAT will be added to the base account."""),
     'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
 amounts (not products, quantities, discounts)."""),
     'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
+    'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and
+IntracomPurchases"""),
     'lino_xl.lib.vat.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
     'lino_xl.lib.vat.VatDocument.partner' : _("""Mandatory field to be defined in another class."""),
     'lino_xl.lib.vat.VatDocument.refresh_after_item_edit' : _("""The total fields of an invoice are currently not automatically

@@ -205,7 +205,7 @@ class AnalyticAccountsBalance(AccountsBalance):
     label = _("Analytic Accounts Balance")
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **filter):
         return rt.models.ana.Account.objects.order_by(
             'group__ref', 'ref')
 
