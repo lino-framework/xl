@@ -209,6 +209,89 @@ class SalesDocument(VatDocument, Certifiable):
 class SalesDocuments(PartnerVouchers):
     pass
 
+class MakeCopy(dd.Action):
+    button_text = u"\u2042"  # ASTERISM (⁂)
+    
+    label = _("Make copy")
+    show_in_workflow = True
+    show_in_bbar = False
+    copy_item_fields = set('product total_incl unit_price qty'.split())
+    
+    parameters = dict(
+        partner=dd.ForeignKey('contacts.Partner'),
+        product=dd.ForeignKey('products.Product', blank=True),
+        subject=models.CharField(
+            _("Subject"), max_length=200, blank=True),
+        your_ref=models.CharField(
+            _("Your ref"), max_length=200, blank=True),
+        entry_date=models.DateField(_("Entry date")),
+        total_incl=dd.PriceField(_("Total incl VAT"), blank=True),
+    )
+    params_layout = """
+    entry_date partner
+    your_ref
+    subject
+    product total_incl
+    """
+
+    def action_param_defaults(self, ar, obj, **kw):
+        kw = super(MakeCopy, self).action_param_defaults(ar, obj, **kw)
+        kw.update(your_ref=obj.your_ref)
+        kw.update(subject=obj.subject)
+        kw.update(entry_date=obj.entry_date)
+        kw.update(partner=obj.partner)
+        # qs = obj.items.all()
+        # if qs.count():
+        #     kw.update(product=qs[0].product)
+        # kw.update(total_incl=obj.total_incl)
+        return kw
+
+    def run_from_ui(self, ar, **kw):
+        VoucherStates = rt.models.ledger.VoucherStates
+        obj = ar.selected_rows[0]
+        pv = ar.action_param_values
+        kw = dict(
+            journal=obj.journal,
+            user=ar.get_user(),
+            partner=pv.partner, entry_date=pv.entry_date,
+            subject=pv.subject,
+            your_ref=pv.your_ref)
+
+        new = obj.__class__(**kw)
+        new.fill_defaults()
+        new.full_clean()
+        new.save()
+        if pv.total_incl:
+            if not pv.product:
+                qs = obj.items.all()
+                if qs.count():
+                    pv.product = qs[0].product
+            item = new.add_voucher_item(
+                total_incl=pv.total_incl, product=pv.product)
+            item.total_incl_changed(ar)
+            item.full_clean()
+            item.save()
+        else:
+            for olditem in obj.items.all():
+                # ikw = dict()
+                # for k in self.copy_item_fields:
+                #     ikw[k] = getattr(olditem, k)
+                ikw = { k: getattr(olditem, k)
+                        for k in self.copy_item_fields}
+                item = new.add_voucher_item(**ikw)
+                item.total_incl_changed(ar)
+                item.full_clean()
+                item.save()
+            
+        new.full_clean()
+        new.register_voucher(ar)
+        new.state = VoucherStates.registered
+        new.save()
+        ar.goto_instance(new)
+        ar.success()
+
+
+
 
 class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
     """A sales invoice is a legal document which describes that something
@@ -235,6 +318,8 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
         verbose_name_plural = _("Product invoices")
 
     quick_search_fields = "partner__name subject"
+
+    make_copy = MakeCopy()
 
     # order = dd.ForeignKey('orders.Order', blank=True, null=True)
 
