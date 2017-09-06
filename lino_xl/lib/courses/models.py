@@ -704,6 +704,8 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         qs = rt.models.courses.Course.objects.filter(flt)
         if course_area:
             qs = qs.filter(line__course_area=course_area)
+        enrollable_states = CourseStates.filter(active=True)
+        qs = qs.filter(state__in=enrollable_states)
         return qs
 
     @dd.chooser()

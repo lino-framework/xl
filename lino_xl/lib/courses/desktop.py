@@ -74,15 +74,16 @@ class Slots(dd.Table):
 class Topics(dd.Table):
     model = 'courses.Topic'
     required_roles = dd.login_required(dd.SiteAdmin)
+    stay_in_grid = True
     detail_layout = """
     id name
     courses.LinesByTopic
     courses.CoursesByTopic
     """
-    insert_layout = """
-    name
-    id
-    """
+    # insert_layout = """
+    # name
+    # id
+    # """
 
 
 class Lines(dd.Table):
@@ -358,6 +359,12 @@ class CoursesByTopic(Activities):
     @classmethod
     def get_filter_kw(self, ar, **kw):
         kw.update(line__topic=ar.master_instance)
+        return kw
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
+        kw.update(show_active=dd.YesNo.yes)
         return kw
 
     # @classmethod
