@@ -132,6 +132,13 @@ class Links(dd.Table):
     type
     child
     """, window_size=(40, 'auto'))
+    
+    insert_layout = """
+    parent
+    type
+    child
+    """
+
 
 
 class LinksByHuman(Links):
