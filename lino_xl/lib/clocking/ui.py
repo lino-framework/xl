@@ -45,7 +45,7 @@ class TicketHasSessions(ObservedEvent):
         if pv.start_date:
             qs = qs.filter(sessions_by_ticket__start_date__gte=pv.start_date)
         if pv.end_date:
-            qs = qs.filter(sessions_by_ticket__end_date__lte=pv.end_date)
+            qs = qs.filter(sessions_by_ticket__start_date__lte=pv.end_date)
         qs = qs.annotate(num_sessions=Count('sessions_by_ticket'))
         qs = qs.filter(num_sessions__gt=0)
         return qs
