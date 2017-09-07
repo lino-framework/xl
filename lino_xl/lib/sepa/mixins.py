@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -121,7 +121,7 @@ class Payable(PartnerRelated):
         if not self.due_date:
             if self.payment_term:
                 self.due_date = self.payment_term.get_due_date(
-                    self.voucher_date)
+                    self.voucher_date or self.entry_date)
         super(Payable, self).full_clean()
         
 
