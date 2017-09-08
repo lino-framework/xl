@@ -221,7 +221,7 @@ class SessionsByTicket(Sessions):
 
 class MySessions(Sessions):
     column_names = 'start_date start_time end_time '\
-                   'break_time duration ticket_no ticket_site summary *'
+                   'break_time duration ticket_no ticket__site summary *'
 
     @classmethod
     def param_defaults(self, ar, **kw):
