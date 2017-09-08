@@ -22,7 +22,7 @@ class StartMeeting(dd.ChangeStateAction):
     def run_from_ui(self, ar, **kw):
         #~ problems = []
         for obj in ar.selected_rows:
-            qs = obj.wishes_by_milestone.select_related('ticket__state')
+            qs = obj.wishes_by_milestone.select_related('ticket')
             for de in qs:
                 de.old_ticket_state = de.ticket.state
                 de.full_clean()
@@ -58,7 +58,7 @@ class FinishMeeting(dd.ChangeStateAction):
 
         must_update = []
         for obj in sl:
-            qs = obj.wishes_by_milestone.exclude().select_related('ticket__state', 'ticket')
+            qs = obj.wishes_by_milestone.exclude().select_related('ticket')
             for de in qs:
                 if de.new_ticket_state is not None:
                     if de.ticket.state != de.new_ticket_state:
