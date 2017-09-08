@@ -1,15 +1,12 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2014 Luc Saffre
+# Copyright 2009-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
-Loads a series of default :class:`ml.contacts.CompanyType`.
+Loads a series of default company types.
 
-.. django2rst::
+See :class:`lino_xl.lib.contacts.CompanyType`.
 
-  rt.show('contacts.CompanyTypes')
-
-See also :srcref:`docs/tickets/108`.
 """
 
 from __future__ import unicode_literals
