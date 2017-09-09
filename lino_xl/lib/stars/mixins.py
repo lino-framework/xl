@@ -16,9 +16,10 @@ from django.db import IntegrityError
 def get_favourite(obj, user, **kws):
     if user.authenticated:
         qs = rt.modules.stars.Star.for_obj(obj, user=user,**kws)
-        if qs.count() == 0:
-            return None
-        return qs[0]
+        # if qs.count() == 0:
+        #     return None
+        # return qs[0]
+        return qs.first()
 
 
 class StarObject(dd.Action):
@@ -30,11 +31,11 @@ class StarObject(dd.Action):
     show_in_bbar = False
     required_roles = dd.login_required(OfficeUser)
 
-    def get_action_permission(self, ar, obj, state):
-        star = get_favourite(obj, ar.get_user())
-        if star is not None:
-            return False
-        return super(StarObject, self).get_action_permission(ar, obj, state)
+    # def get_action_permission(self, ar, obj, state):
+    #     star = get_favourite(obj, ar.get_user())
+    #     if star is not None:
+    #         return False
+    #     return super(StarObject, self).get_action_permission(ar, obj, state)
 
     def run_from_ui(self, ar, **kw):
         Star = rt.modules.stars.Star
@@ -53,37 +54,38 @@ class FullStarObject(StarObject):
     # 9956 U+26e4 ⛤
     # 10027 U+272b ✯
     # 10031 u+272f ✫
-    help_text = _("Star this database object.")
+    help_text = _("Star this database object fully.")
 
-    def get_action_permission(self, ar, obj, state):
-        user = ar.get_user()
-        if user.authenticated:
-            master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
-            child_star_qs = rt.modules.stars.Star.for_obj(obj, user=user)
-            if not (master_star_qs.count() == 0 and child_star_qs.count()):
-                return False
-        else:
-            return False
-        return super(StarObject, self).get_action_permission(ar, obj, state) #Skip StarObject method
+    # def get_action_permission(self, ar, obj, state):
+    #     user = ar.get_user()
+    #     if user.authenticated:
+    #         master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
+    #         child_star_qs = rt.modules.stars.Star.for_obj(obj, user=user)
+    #         if not (master_star_qs.count() == 0 and child_star_qs.count()):
+    #             return False
+    #     else:
+    #         return False
+    #     return super(StarObject, self).get_action_permission(ar, obj, state) #Skip StarObject method
 
 class UnstarObject(dd.Action):
+    "Unstar this database object."
+    
     sort_index = 100
     # label = "-"
     label = u"★"  # 2605
 
-    help_text = _("Unstar this database object.")
     show_in_workflow = True
     show_in_bbar = False
 
-    def get_action_permission(self, ar, obj, state):
-        user = ar.get_user()
-        if user.authenticated:
-            master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
-            if not (master_star_qs.count()):
-                return False
-        else:
-            return False
-        return super(UnstarObject, self).get_action_permission(ar, obj, state)
+    # def get_action_permission(self, ar, obj, state):
+    #     user = ar.get_user()
+    #     if user.authenticated:
+    #         master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
+    #         if not (master_star_qs.count()):
+    #             return False
+    #     else:
+    #         return False
+    #     return super(UnstarObject, self).get_action_permission(ar, obj, state)
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
@@ -115,6 +117,34 @@ class Starrable(ChangeObservable):
         star_object = StarObject()
         full_star_object = FullStarObject()
         unstar_object = UnstarObject()
+
+        def disabled_fields(self, ar):
+            s = super(Starrable, self).disabled_fields(ar)
+            Star = rt.modules.stars.Star
+            user = ar.get_user()
+            if not user.authenticated:
+                s.add('unstar_object')
+                s.add('star_object')
+                s.add('full_star_object')
+                return s
+            master_star_qs = Star.for_obj(
+                self, user=user, master__isnull=True)
+            any_star_qs = Star.for_obj(self, user=user)
+            if any_star_qs.count():
+                s.add('star_object')
+                if master_star_qs.count():
+                    s.add('full_star_object')
+                else:
+                    s.add('unstar_object')
+            else:
+                s.add('full_star_object')
+                s.add('unstar_object')
+            # star = get_favourite(self, user)
+            # if star is None:
+            #     s.add('star_object')
+            #     s.add('full_star_object')
+            # else:
+            return s
 
         def get_change_observers(self):
             for o in super(Starrable, self).get_change_observers():
