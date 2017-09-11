@@ -1001,7 +1001,7 @@ class MovementsByAccount(Movements):
     # order_by = ['-value_date']
     # auto_fit_column_widths = True
     slave_grid_format = "html"
-    order_by = ['-value_date', 'account__ref']
+    order_by = ['-value_date', 'account__ref', 'id']
 
     @classmethod
     def param_defaults(cls, ar, **kw):
