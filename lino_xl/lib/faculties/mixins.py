@@ -65,15 +65,14 @@ class Feasible(dd.Model):
             return E.span(*elems)
 
         @classmethod
-        def get_parameter_fields(cls, **fields):
-            fields = super(Feasible,cls).get_parameter_fields(**fields)
+        def setup_parameters(cls, fields):
+            super(Feasible,cls).setup_parameters(fields)
             fields.update(
-            feasable_by = dd.ForeignKey(
-                # settings.SITE.user_model,
-                dd.plugins.faculties.end_user_model,
-                verbose_name=_("Feasable by"), blank=True, null=True),
-            )
-            return fields
+                feasable_by = dd.ForeignKey(
+                    # settings.SITE.user_model,
+                    dd.plugins.faculties.end_user_model,
+                    verbose_name=_("Feasable by"),
+                    blank=True, null=True))
 
         @classmethod
         def get_request_queryset(cls, ar):

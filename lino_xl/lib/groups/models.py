@@ -37,12 +37,12 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeObservable,
 
 
     @classmethod
-    def get_parameter_fields(cls, **fields):
+    def setup_parameters(cls, fields):
         """Adds the :attr:`user` filter parameter field."""
         fields.setdefault(
             'user', models.ForeignKey(
                 'users.User', blank=True, null=True))
-        return super(Group, cls).get_parameter_fields(**fields)
+        super(Group, cls).setup_parameters(fields)
 
     def get_change_observers(self):
         for x in super(Group, self).get_change_observers():

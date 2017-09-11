@@ -219,7 +219,7 @@ class PeriodRangeObservable(dd.Model):
 
 
     @classmethod
-    def get_parameter_fields(cls, **fields):
+    def setup_parameters(cls, fields):
         fields.update(
             start_period=dd.ForeignKey(
                 'ledger.AccountingPeriod',
@@ -234,7 +234,7 @@ class PeriodRangeObservable(dd.Model):
                     "Optional end of observed period range. "
                     "Leave empty to consider only the Start period."),
                 verbose_name=_("Period until")))
-        return super(PeriodRangeObservable, cls).get_parameter_fields(**fields)
+        super(PeriodRangeObservable, cls).setup_parameters(fields)
 
     @classmethod
     def get_request_queryset(cls, ar, **kwargs):

@@ -362,7 +362,36 @@ def mvtsum(**fkw):
         **fkw).aggregate(models.Sum('amount'))
     return d['amount__sum'] or ZERO
 
+class AccountingPeriodRange(dd.ParameterPanel):
+    def __init__(self,
+                 verbose_name_start=_("Period from"),
+                 verbose_name_end=_("until"), **kwargs):
+        kwargs.update(
+            start_period=dd.ForeignKey(
+                'ledger.AccountingPeriod',
+                blank=True, null=True,
+                help_text=_("Start of observed period range"),
+                verbose_name=verbose_name_start),
+            end_period=dd.ForeignKey(
+                'ledger.AccountingPeriod',
+                blank=True, null=True,
+                help_text=_(
+                    "Optional end of observed period range. "
+                    "Leave empty to consider only the Start period."),
+                verbose_name=verbose_name_end))
+        super(AccountingPeriodRange, self).__init__(**kwargs)
 
+    def get_title_tags(self, ar):
+        pv = ar.param_values
+        if pv.start_period:
+            if pv.end_period:
+                yield _("Periods {}...{}").format(
+                    pv.start_period, pv.end_period)
+            else:
+                yield _("Period {}").format(pv.start_period)
+        else:
+            yield str(_("All periods"))
+            
 class AccountsBalance(dd.VirtualTable):
     """A table which shows a list of general ledger accounts during the
     observed period, showing their old and new balances and the sum of
@@ -376,20 +405,7 @@ class AccountsBalance(dd.VirtualTable):
     abstract = True
     params_panel_hidden = False
 
-    parameters = dict(
-        start_period=dd.ForeignKey(
-            'ledger.AccountingPeriod',
-            blank=True, null=True,
-            help_text=_("Start of observed period range"),
-            verbose_name=_("Period from")),
-        end_period=dd.ForeignKey(
-            'ledger.AccountingPeriod',
-            blank=True, null=True,
-            help_text=_(
-                "Optional end of observed period range. "
-                "Leave empty to consider only the Start period."),
-            verbose_name=_("Period until")))
-    
+    parameters = AccountingPeriodRange()
     params_layout = "start_period end_period"
     
     # parameters = mixins.Yearly(
@@ -686,6 +702,42 @@ class ActivityReport(Report):
         CustomerAccountsBalance,
         SupplierAccountsBalance)
 
+    
+class AccountingReport(Report):
+    label = _("Accounting Report")
+    required_roles = dd.login_required(AccountingReader)
+    params_panel_hidden = False
+    parameters = AccountingPeriodRange(
+        with_balances = models.BooleanField(
+            verbose_name=_("Balances"), default=True),
+        with_activity = models.BooleanField(
+            verbose_name=_("Activity"), default=True))
+    params_layout = """
+    start_period end_period with_balances with_activity
+    """ # NB setup_parameters will add names here
+
+    @classmethod
+    def setup_parameters(cls, fields):
+        for tt in TradeTypes.get_list_items():
+            k = 'with_'+tt.name
+            fields[k] = models.BooleanField(
+                verbose_name=tt.text, default=True)
+            cls.params_layout += ' ' + k
+        super(AccountingReport, cls).setup_parameters(fields)
+        
+    @classmethod
+    def get_story(cls, self, ar):
+        pv = ar.param_values
+        bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
+        balances = [GeneralAccountsBalance]
+        if pv.with_sales:
+            balances.append(CustomerAccountsBalance)
+        if pv.with_purchases:
+            balances.append(SupplierAccountsBalance)
+        if pv.with_balances:
+            for B in balances:
+                yield E.h1(B.label)
+                yield B.request(param_values=bpv)
 
 # MODULE_LABEL = dd.plugins.accounts.verbose_name
 

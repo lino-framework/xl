@@ -365,11 +365,11 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         return dd.plugins.ledger.currency_symbol
 
     # @classmethod
-    # def get_parameter_fields(cls, **fields):
+    # def setup_parameters(cls, **fields):
     #     fields.setdefault(
     #         'accounting_period', dd.ForeignKey(
     #             'ledger.AccountingPeriod', blank=True, null=True))
-    #     return super(Voucher, cls).get_parameter_fields(**fields)
+    #     return super(Voucher, cls).setup_parameters(**fields)
 
     # @classmethod
     # def get_simple_parameters(cls):

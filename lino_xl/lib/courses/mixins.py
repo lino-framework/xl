@@ -34,13 +34,13 @@ class Enrollable(dd.Model):
         return None
     
     @classmethod
-    def get_parameter_fields(cls, **fields):
+    def setup_parameters(cls, fields):
         fields.update(
             enrolment_state=EnrolmentStates.field(blank=True),
             course=dd.ForeignKey(
                 'courses.Course', blank=True, null=True))
 
-        return super(Enrollable, cls).get_parameter_fields(**fields)
+        super(Enrollable, cls).setup_parameters(fields)
 
 
     @classmethod
