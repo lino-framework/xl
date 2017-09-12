@@ -106,6 +106,8 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     account = dd.ForeignKey('accounts.Account', blank=True, null=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
+    quick_search_fields = 'remark account__ref account__name partner__name'
+    
     @dd.chooser(simple_values=True)
     def match_choices(cls, voucher, partner):
         return cls.get_match_choices(voucher.journal, partner)
