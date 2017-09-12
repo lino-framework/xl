@@ -153,6 +153,7 @@ class Tasks(dd.Table):
     stay_in_grid = True
     column_names = 'start_date summary workflow_buttons *'
     order_by = ["start_date", "start_time"]
+    force_phantom_row = True
 
     detail_layout = """
     start_date due_date id workflow_buttons
@@ -644,6 +645,7 @@ class Events(dd.Table):
     summary
     # room priority access_class transparent
     """
+    force_phantom_row = True
 
     detail_html_template = "cal/Event/detail.html"
 
