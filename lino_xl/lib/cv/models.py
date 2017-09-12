@@ -382,7 +382,6 @@ class TrainingsByPerson(HistoryByPerson, Trainings):
     column_names = 'type sector function remarks \
     start_date end_date duration_text \
     school country state certificates *'
-    auto_fit_column_widths = True
 
 
 #
@@ -466,7 +465,6 @@ class StudiesByPerson(HistoryByPerson, Studies):
     required_roles = dd.login_required(CareerUser)
     column_names = 'type content start_date end_date duration_text school country \
     state education_level *'
-    auto_fit_column_widths = True
     
     insert_layout = """
     start_date end_date
@@ -661,9 +659,10 @@ class ExperiencesByFunction(Experiences):
 
 class ExperiencesByPerson(HistoryByPerson, Experiences):
     required_roles = dd.login_required(CareerUser)
-    auto_fit_column_widths = True
+    
     column_names = "company country start_date end_date duration_text function \
     status duration termination_reason remarks *"
+    
     insert_layout = """
     start_date end_date
     company function

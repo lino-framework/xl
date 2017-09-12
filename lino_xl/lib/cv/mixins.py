@@ -186,6 +186,8 @@ class HistoryByPerson(dd.Table):
     """
     master_key = 'person'
     order_by = ["start_date"]
+    force_phantom_row = True
+    auto_fit_column_widths = True
 
     @classmethod
     def create_instance(self, req, **kw):
