@@ -289,7 +289,7 @@ class FinancialVouchers(dd.Table):
 
 class JournalEntries(FinancialVouchers):
     suggestions_table = 'finan.SuggestionsByJournalEntry'
-    column_names = "number_with_year entry_date "\
+    column_names = "number_with_year entry_date narration "\
                    "accounting_period workflow_buttons *"
 
 
@@ -349,6 +349,7 @@ from lino_xl.lib.ledger.mixins import ItemsByVoucher
 class ItemsByJournalEntry(ItemsByVoucher):
     model = 'finan.JournalEntryItem'
     column_names = "seqno date partner account:50 match debit credit remark *"
+    quick_search_fields = 'account__ref account__name partner__name'
 
 
 class ItemsByBankStatement(ItemsByVoucher):
@@ -357,6 +358,7 @@ class ItemsByBankStatement(ItemsByVoucher):
                    "workflow_buttons *"
     suggestions_table = 'finan.SuggestionsByBankStatementItem'
     suggest = ShowSuggestions()
+    quick_search_fields = 'account__ref account__name partner__name'
 
 
 class ItemsByPaymentOrder(ItemsByVoucher):
@@ -365,6 +367,7 @@ class ItemsByPaymentOrder(ItemsByVoucher):
                    "amount remark *"
     suggestions_table = 'finan.SuggestionsByPaymentOrderItem'
     suggest = ShowSuggestions()
+    quick_search_fields = 'account__ref account__name partner__name'
 
 
 class FillSuggestionsToVoucher(dd.Action):
