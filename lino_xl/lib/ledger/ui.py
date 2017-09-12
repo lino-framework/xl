@@ -62,6 +62,7 @@ class ByJournal(dd.Table):
     # start_at_bottom = True
     required_roles = dd.login_required(LedgerUser)
     params_layout = "start_period end_period state user"
+    no_phantom_row = True
 
     @classmethod
     def get_title_base(self, ar):
