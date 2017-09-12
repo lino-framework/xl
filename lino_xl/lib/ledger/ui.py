@@ -883,9 +883,9 @@ class MovementsByVoucher(Movements):
     sum_text_column = 3
     # auto_fit_column_widths = True
     slave_grid_format = "html"
-    order_by = ['value_date', 'account__ref']
-
-
+    order_by = dd.plugins.ledger.remove_dummy(
+        'value_date', 'account__ref', 'partner', 'project', 'id')
+    
 class MovementsByPartner(Movements):
     """Show the ledger movements of a partner.
     See also :class:`lino_xl.lib.ledger.models.Movement`.
@@ -894,7 +894,9 @@ class MovementsByPartner(Movements):
     # slave_grid_format = "html"
     slave_grid_format = "summary"
     # auto_fit_column_widths = True
-    order_by = ['-value_date', 'voucher__id', 'account__ref']
+    # order_by = ['-value_date', 'voucher__id', 'account__ref']
+    order_by = dd.plugins.ledger.remove_dummy(
+        '-value_date', 'voucher__id', 'account__ref', 'project', 'id')
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -953,6 +955,7 @@ class MovementsByProject(MovementsByPartner):
     """
     master_key = 'project'
     slave_grid_format = "html"
+    order_by = ['-value_date', 'partner', 'id']
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -1001,7 +1004,9 @@ class MovementsByAccount(Movements):
     # order_by = ['-value_date']
     # auto_fit_column_widths = True
     slave_grid_format = "html"
-    order_by = ['-value_date', 'account__ref', 'id']
+    # order_by = ['-value_date', 'account__ref', 'project', 'id']
+    order_by = dd.plugins.ledger.remove_dummy(
+        '-value_date', 'partner__name', 'project', 'id')
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -1041,8 +1046,9 @@ class MovementsByMatch(Movements):
     column_names = 'value_date voucher_link description '\
                    'debit credit cleared *'
     master = six.text_type  # 'ledger.Matching'
-    order_by = ['-value_date']
     variable_row_height = True
+    order_by = dd.plugins.ledger.remove_dummy(
+        '-value_date', 'account__ref', 'project', 'id')
 
     details_of_master_template = _("%(details)s matching '%(master)s'")
 

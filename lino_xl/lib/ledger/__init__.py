@@ -95,4 +95,9 @@ class Plugin(ad.Plugin):
         m.add_action('ledger.TradeTypes')
         m.add_action('ledger.JournalGroups')
 
+    def remove_dummy(self, *args):
+        lst = list(args)
+        if self.project_model is None:
+            lst.remove('project')
+        return lst
 

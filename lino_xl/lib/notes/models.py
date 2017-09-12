@@ -257,6 +257,8 @@ if settings.SITE.project_model is not None:
 
     class NotesByProject(NotesByX):
         master_key = 'project'
+        force_phantom_row = True
+        # stay_in_grid = True
 
 
 class NotesByOwner(NotesByX):

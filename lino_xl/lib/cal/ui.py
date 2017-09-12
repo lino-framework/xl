@@ -676,9 +676,9 @@ class Events(dd.Table):
     """
     # ~ next = NextDateAction() # doesn't yet work. 20121203
 
-    fixed_states = set(EntryStates.filter(fixed=True))
+    # fixed_states = set(EntryStates.filter(fixed=True))
     # pending_states = set([es for es in EntryStates if not es.fixed])
-    pending_states = set(EntryStates.filter(fixed=False))
+    # pending_states = set(EntryStates.filter(fixed=False))
 
     @classmethod
     def get_request_queryset(self, ar, **kwargs):
@@ -709,9 +709,9 @@ class Events(dd.Table):
             qs = qs.filter(room=pv.room)
 
         if pv.observed_event == EventEvents.stable:
-            qs = qs.filter(state__in=self.fixed_states)
+            qs = qs.filter(state__in=set(EntryStates.filter(fixed=True)))
         elif pv.observed_event == EventEvents.pending:
-            qs = qs.filter(state__in=self.pending_states)
+            qs = qs.filter(state__in=set(EntryStates.filter(fixed=False)))
 
         if pv.start_date:
             qs = qs.filter(start_date__gte=pv.start_date)
