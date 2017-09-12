@@ -44,6 +44,7 @@ class DueMovement(object):
         self.account = mvt.account
         self.project = mvt.project
         self.pk = self.id = mvt.id
+        self.obj2href = mvt.obj2href
 
         self.debts = []
         self.payments = []
