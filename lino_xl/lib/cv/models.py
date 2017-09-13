@@ -112,6 +112,13 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     slave_grid_format = "summary"
     window_size  = (70, 15)
     detail_layout = dd.DetailLayout("""
+    language 
+    native
+    cef_level
+    spoken_passively spoken written
+    """, window_size=(50, 'auto'))
+    
+    insert_layout = dd.InsertLayout("""
     language
     native
     cef_level
@@ -137,28 +144,15 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
         for this table.
 
         """
-        if True:  # new format since 20170329
-            return obj.get_language_knowledge()
-        
         sar = self.request_from(ar, master_instance=obj)
-
-        html = []
-        items = [sar.obj2html(o) for o in sar]
-
         sar = self.insert_action.request_from(sar)
         if sar.get_permission():
-            btn = sar.ar2button()
-            items.append(btn)
-            
-        if len(items) > 0:
-            html += join_elems(items, sep=', ')
-            
-        return E.p(*html)        
-
-        # text = ', '.join([str(o) for o in sar])
-
-        # return ar.html_text(text)
-
+            # lst = [sar.ar2button(label=u"⊕", icon_name=None)]
+            lst = [sar.ar2button()]
+        else:
+            lst = []
+        return obj.get_language_knowledge(*lst)
+        
 
     
 

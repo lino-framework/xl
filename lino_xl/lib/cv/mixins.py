@@ -44,7 +44,7 @@ class BiographyOwner(dd.Model):
     def language_knowledge(self, ar):
         return self.get_language_knowledge()
     
-    def get_language_knowledge(self):
+    def get_language_knowledge(self, *buttons):
         self.load_language_knowledge()
         lst = []
         for lng in settings.SITE.languages:
@@ -54,8 +54,10 @@ class BiographyOwner(dd.Model):
             #     lst.append("{}: {}".format(lng.name, ))
             # else:
             #     lst.append("{}: {}".format(lng.name, cl))
-        lst.append("{}: {}".format(
-            _("Mother tongues"), self.mother_tongues))
+        if len(self._mother_tongues):
+            lst.append("{}: {}".format(
+                _("Mother tongues"), self.mother_tongues))
+        lst += buttons
         lst = join_elems(lst, E.br)
         return E.p(*lst)
                 
