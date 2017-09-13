@@ -2,9 +2,6 @@
 # Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Tables for `lino_xl.lib.clocking`.
-
-"""
 import sys
 
 

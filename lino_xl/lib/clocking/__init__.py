@@ -3,11 +3,7 @@
 """
 Adds functionality for managing worktime clocking.
 
-.. autosummary::
-   :toctree:
-
-    roles
-    ui
+See :doc:`/specs/noi/clocking`.
 
 """
 
