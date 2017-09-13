@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Tables for `lino_xl.lib.clocking`.
@@ -35,10 +35,6 @@ def ensureUtf(s):
         return str(s)
 
 class TicketHasSessions(ObservedEvent):
-    """Select only tickets for which there has been at least one session
-    during the given period.
-
-    """
     text = _("Has been worked on")
 
     def add_filter(self, qs, pv):
@@ -54,10 +50,6 @@ TicketEvents.add_item_instance(TicketHasSessions("clocking"))
 
 
 class ProjectHasSessions(ObservedEvent):
-    """Select only projects for which there has been at least one session
-    during the given period.
-
-    """
     text = _("Has been worked on")
 
     def add_filter(self, qs, pv):
@@ -152,15 +144,6 @@ class Sessions(dd.Table):
 
 
 class SessionsByTicket(Sessions):
-    """
-    The "Sessions" panel in the detail of a ticket.
-
-    .. attribute:: slave_summary
-
-        This panel shows:
-
-         
-    """
     master_key = 'ticket'
     column_names = 'start_date summary start_time end_time  '\
                    'break_time duration user *'

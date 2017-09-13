@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""Defines actions for this plugin."""
 
 
 from django.db import models
@@ -25,11 +24,6 @@ class WorkerAction(dd.Action):
     #     return ar.selected_rows
 
 class EndSession(WorkerAction):
-    """Close a given session, i.e. stop working on that ticket for this
-    time.  Common base for :class:`EndThisSession` and
-    :class:`EndTicketSession`.
-
-    """
     label = u"■"  # BLACK SQUARE (U+25A0)
     # label = u"◉"  # FISHEYE (U+25C9)
     # label = u"↘"  # u"\u2198"
@@ -69,9 +63,6 @@ class EndSession(WorkerAction):
             ar.confirm(ok, msg, _("Are you sure?"))
 
 class EndThisSession(EndSession):
-    """Close this session, i.e. stop working on that ticket for this time.
-
-    """
 
     def get_action_permission(self, ar, obj, state):
         if obj.end_time:
@@ -79,8 +70,6 @@ class EndThisSession(EndSession):
         return super(EndThisSession, self).get_action_permission(ar, obj, state)
 
 class EndTicketSession(EndSession):
-    """End your running session on this ticket. 
-    """
     def get_sessions(self, ar):
         Session = rt.modules.clocking.Session
         for obj in ar.selected_rows:
@@ -89,25 +78,24 @@ class EndTicketSession(EndSession):
                 end_time__isnull=True)
             yield ses
     
-    def get_action_permission(self, ar, obj, state):
-        # u = ar.get_user()
-        # if not u.user_type.has_required_roles([SiteUser]):
-        #     # avoid query with AnonymousUser
-        #     return False
-        if not super(EndTicketSession, self).get_action_permission(
-                ar, obj, state):
-            return False
-        user = ar.get_user()
+    # def get_action_permission(self, ar, obj, state):
+    #     # u = ar.get_user()
+    #     # if not u.user_type.has_required_roles([SiteUser]):
+    #     #     # avoid query with AnonymousUser
+    #     #     return False
+    #     if not super(EndTicketSession, self).get_action_permission(
+    #             ar, obj, state):
+    #         return False
+    #     user = ar.get_user()
             
-        Session = rt.modules.clocking.Session
-        qs = Session.objects.filter(
-            user=user, ticket=obj.get_ticket(), end_time__isnull=True)
-        if qs.count() == 0:
-            return False
-        return True
+    #     Session = rt.modules.clocking.Session
+    #     qs = Session.objects.filter(
+    #         user=user, ticket=obj.get_ticket(), end_time__isnull=True)
+    #     if qs.count() == 0:
+    #         return False
+    #     return True
 
 class StartTicketSession(WorkerAction):
-    """Start a session on this ticket."""
     # label = _("Start session")
     # label = u"\u262d"
     # label = u"\u2692"
@@ -122,19 +110,19 @@ class StartTicketSession(WorkerAction):
     readonly = True
     # required_roles = dd.login_required(Worker)
 
-    def get_action_permission(self, ar, obj, state):
-        user = ar.get_user()
-        if not obj.is_workable_for(user):
-            return False
-        if not super(StartTicketSession, self).get_action_permission(
-                ar, obj, state):
-            return False
-        Session = rt.modules.clocking.Session
-        qs = Session.objects.filter(
-            user=user, ticket=obj.get_ticket(), end_time__isnull=True)
-        if qs.count():
-            return False
-        return True
+    # def get_action_permission(self, ar, obj, state):
+    #     user = ar.get_user()
+    #     if not obj.is_workable_for(user):
+    #         return False
+    #     if not super(StartTicketSession, self).get_action_permission(
+    #             ar, obj, state):
+    #         return False
+    #     Session = rt.modules.clocking.Session
+    #     qs = Session.objects.filter(
+    #         user=user, ticket=obj.get_ticket(), end_time__isnull=True)
+    #     if qs.count():
+    #         return False
+    #     return True
 
     def run_from_ui(self, ar, **kw):
         me = ar.get_user()
@@ -186,7 +174,6 @@ class PrintActivityReport(DirectPrintAction):
 
 class ShowMySessionsByDay(dd.Action):
     label = _("Day's work")
-    help_text = _("Show all sessions on the same day.")
     show_in_bbar = True
     sort_index = 60
     icon_name = 'calendar'

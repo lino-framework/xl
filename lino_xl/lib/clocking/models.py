@@ -2,10 +2,6 @@
 # Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for this plugin.
-
-"""
-
 # import datetime
 
 from django.conf import settings
@@ -27,8 +23,6 @@ from .mixins import Workable
 
 
 class SessionType(mixins.BabelNamed):
-    """The type of a :class:`Session`.
-    """
 
     class Meta:
         app_label = 'clocking'
@@ -38,65 +32,6 @@ class SessionType(mixins.BabelNamed):
 
 @dd.python_2_unicode_compatible
 class Session(UserAuthored, Started, Ended, Workable):
-    """A **Session** is when a user works during a given lapse of time on
-    a given Ticket.
-
-    Extreme case of a session:
-
-    - I start to work on an existing ticket #1 at 9:23.  A customer phones
-      at 10:17 with a question. Created #2.  That call is interrupted
-      several times (by the customer himself).  During the first
-      interruption another customer calls, with another problem (ticket
-      #3) which we solve together within 5 minutes.  During the second
-      interruption of #2 (which lasts 7 minutes) I make a coffee break.
-
-      During the third interruption I continue to analyze the
-      customer's problem.  When ticket #2 is solved, I decided that
-      it's not worth to keep track of each interruption and that the
-      overall session time for this ticket can be estimated to 0:40.
-
-      ::
-
-        Ticket start end    Pause  Duration
-        #1      9:23 13:12  0:45
-        #2     10:17 11:12  0:12       0:43
-        #3     10:23 10:28             0:05
-
-
-    .. attribute:: start_date
-
-        The date when you started to work.
-
-    .. attribute:: start_time
-
-        The time (in `hh:mm`) when you started working on this
-        session.
-
-        This is your local time according to the time zone specified
-        in your preferences.
-
-    .. attribute:: end_date
-
-        Leave this field blank if it is the same date as start_date.
-
-    .. attribute:: end_time
-
-        The time (in `hh:mm`) when you stopped to work. This is empty
-        as long as you are busy with this session.
-
-    .. attribute:: break_time
-    
-       The time (in `hh:mm`) to remove from the duration resulting
-       from the difference between :attr:`start_time` and
-       :attr:`end_time`.
-
-    .. attribute:: faculty
-
-       The faculty that has been used during this session. On a new
-       session this defaults to the needed faculty currently specified
-       on the ticket.
-
-    """
     class Meta:
         app_label = 'clocking'
         verbose_name = _("Session")
@@ -213,6 +148,8 @@ class Session(UserAuthored, Started, Ended, Workable):
 
 dd.update_field(
     Session, 'user', blank=False, null=False, verbose_name=_("Worker"))
+dd.update_field(
+    Session, 'end_time', db_index=True)
 
 Session.set_widget_options('ticket__id', label=_("Ticket #"))
 Session.set_widget_options('ticket_no', width=8)
@@ -230,36 +167,37 @@ def welcome_messages(ar):
     # your open sessions (i.e. those you are busy with)
     qs = Session.objects.filter(end_time__isnull=True)
     working = {me:[E.b(unicode(_("You are busy with ")))]}
-    if qs.count() > 0:
-        for ses in qs:
-            if ses.user not in working:
-                working[ses.user] = [ar.obj2html(ses.user), _(" is working on: ")]
-            txt = unicode(ses.ticket)
-            working[ses.user].append(
-                ar.obj2html(ses.ticket, txt, title=getattr(ses.ticket,'summary',"") or
-                                                   getattr(ses.ticket,'name',"")))
+    if qs.count() == 0:
+        return
+    for ses in qs:
+        if ses.user not in working:
+            working[ses.user] = [ar.obj2html(ses.user), _(" is working on: ")]
+        txt = unicode(ses.ticket)
+        working[ses.user].append(
+            ar.obj2html(ses.ticket, txt, title=getattr(ses.ticket,'summary',"") or
+                                               getattr(ses.ticket,'name',"")))
 
-            if ses.user == me:
-                working[ses.user] += [
-                    ' (',
-                    ar.instance_action_button(
-                        ses.end_session, EndTicketSession.label),
-                    ')']
-            working[ses.user].append(', ')
+        if ses.user == me:
+            working[ses.user] += [
+                ' (',
+                ar.instance_action_button(
+                    ses.end_session, EndTicketSession.label),
+                ')']
+        working[ses.user].append(', ')
 
-        if len(working[me]) > 1:
+    if len(working[me]) > 1:
 
-            working[me][-1] = working[me][-1].replace(", ", ".")
-            result = E.p(*working.pop(me))
-        else:
-            result = E.p()
-            working.pop(me)
-        for u, s in working.items():
-            if len(result):
-                result.append(E.br())
-            s[-1] = s[-1].replace(", ", ".")
-            result.append(E.span(*s))
-        yield result
+        working[me][-1] = working[me][-1].replace(", ", ".")
+        result = E.p(*working.pop(me))
+    else:
+        result = E.p()
+        working.pop(me)
+    for u, s in working.items():
+        if len(result):
+            result.append(E.br())
+        s[-1] = s[-1].replace(", ", ".")
+        result.append(E.span(*s))
+    yield result
 
 dd.add_welcome_handler(welcome_messages)
 

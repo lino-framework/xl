@@ -6,11 +6,8 @@ Adds functionality for managing worktime clocking.
 .. autosummary::
    :toctree:
 
-    models
-    actions
     roles
     ui
-    mixins
 
 """
 
@@ -20,7 +17,6 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.plugin.Plugin`."
 
     # verbose_name = _("Clocking")
     verbose_name = _("Working time")

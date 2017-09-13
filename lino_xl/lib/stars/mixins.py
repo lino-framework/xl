@@ -120,7 +120,7 @@ class Starrable(ChangeObservable):
 
         def disabled_fields(self, ar):
             s = super(Starrable, self).disabled_fields(ar)
-            Star = rt.modules.stars.Star
+            Star = rt.models.stars.Star
             user = ar.get_user()
             if not user.authenticated:
                 s.add('unstar_object')
