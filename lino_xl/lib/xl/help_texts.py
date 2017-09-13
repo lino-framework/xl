@@ -239,40 +239,6 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent (with acceptable explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
-    'lino_xl.lib.clocking.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.clocking.Plugin.ticket_model' : _("""The model that is to be used as the "ticket"."""),
-    'lino_xl.lib.clocking.actions.EndSession' : _("""Close a given session, i.e. stop working on that ticket for this
-time.  Common base for EndThisSession and
-EndTicketSession."""),
-    'lino_xl.lib.clocking.actions.EndThisSession' : _("""Close this session, i.e. stop working on that ticket for this time."""),
-    'lino_xl.lib.clocking.actions.EndTicketSession' : _("""End your running session on this ticket."""),
-    'lino_xl.lib.clocking.actions.StartTicketSession' : _("""Start a session on this ticket."""),
-    'lino_xl.lib.clocking.actions.PrintActivityReport' : _("""Print an activity report."""),
-    'lino_xl.lib.clocking.mixins.Workable' : _("""Base class for things that workers can work on."""),
-    'lino_xl.lib.clocking.SessionType' : _("""The type of a Session."""),
-    'lino_xl.lib.clocking.Session' : _("""A Session is when a user works during a given lapse of time on
-a given Ticket."""),
-    'lino_xl.lib.clocking.Session.start_date' : _("""The date when you started to work."""),
-    'lino_xl.lib.clocking.Session.start_time' : _("""The time (in hh:mm) when you started working on this
-session."""),
-    'lino_xl.lib.clocking.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
-    'lino_xl.lib.clocking.Session.end_time' : _("""The time (in hh:mm) when you stopped to work. This is empty
-as long as you are busy with this session."""),
-    'lino_xl.lib.clocking.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
-from the difference between start_time and
-end_time."""),
-    'lino_xl.lib.clocking.Session.faculty' : _("""The faculty that has been used during this session. On a new
-session this defaults to the needed faculty currently specified
-on the ticket."""),
-    'lino_xl.lib.clocking.roles.Worker' : _("""A user who is candidate for working on a ticket."""),
-    'lino_xl.lib.clocking.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
-during the given period."""),
-    'lino_xl.lib.clocking.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
-during the given period."""),
-    'lino_xl.lib.clocking.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
-    'lino_xl.lib.clocking.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
-    'lino_xl.lib.clocking.SessionsByTicket.master' : _("""alias of Partner"""),
-    'lino_xl.lib.clocking.SessionsByTicket.model' : _("""alias of Session"""),
     'lino_xl.lib.coachings.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.coachings.ClientEvents' : _("""A choicelist of observable client events."""),
     'lino_xl.lib.coachings.ClientCreated' : _("""The choice for ClientEvents which
@@ -1233,6 +1199,36 @@ method, ..."""),
     'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
     'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
+    'lino_xl.lib.clocking.SessionType' : _("""The type of a Session."""),
+    'lino_xl.lib.clocking.Session' : _("""A Session is when a user works during a given lapse of time on
+a given Ticket."""),
+    'lino_xl.lib.clocking.Session.start_date' : _("""The date when you started to work."""),
+    'lino_xl.lib.clocking.Session.start_time' : _("""The time (in hh:mm) when you started working on this
+session."""),
+    'lino_xl.lib.clocking.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
+    'lino_xl.lib.clocking.Session.end_time' : _("""The time (in hh:mm) when the worker stopped to work."""),
+    'lino_xl.lib.clocking.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
+from the difference between start_time and
+end_time."""),
+    'lino_xl.lib.clocking.Session.faculty' : _("""The faculty that has been used during this session. On a new
+session this defaults to the needed faculty currently specified
+on the ticket."""),
+    'lino_xl.lib.clocking.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
+    'lino_xl.lib.clocking.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
+    'lino_xl.lib.clocking.StartTicketSession' : _("""Start a session on this ticket."""),
+    'lino_xl.lib.clocking.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
+    'lino_xl.lib.clocking.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
+    'lino_xl.lib.clocking.Workable' : _("""Base class for things that workers can work on."""),
+    'lino_xl.lib.clocking.ServiceReport' : _("""A service report is a document used in various discussions with
+a stakeholder."""),
+    'lino_xl.lib.clocking.ServiceReport.user' : _("""This can be empty and will then show the working time of all
+users."""),
+    'lino_xl.lib.clocking.ShowMySessionsByDay' : _("""Show all sessions on the same day."""),
+    'lino_xl.lib.clocking.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.clocking.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.clocking.Worker' : _("""A user who is candidate for working on a ticket."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),

@@ -1,11 +1,11 @@
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
 """This plugin adds a series of build methods for generating printable
 documents using LibreOffice.
 
-It also adds a generic button to "print" *any* table into PDF using
+It also adds a generic button to "print" any table as PDF using
 LibreOffice.  If :mod:`lino_xl.lib.contacts` (or a child thereof) is
 installed, it adds a :class:`PrintLabelsAction
 <lino_xl.lib.appypod.mixins.PrintLabelsAction>`.

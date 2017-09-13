@@ -480,7 +480,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             # html += E.tostring(E.b(_("Description")))
             html += ar.parse_memo(self.description)
         if self.upgrade_notes:
-            html += E.tostring(E.b(_("Resolution")))
+            html += E.tostring(E.b(_("Resolution"))) + ": "
             html += ar.parse_memo(self.upgrade_notes)
         if self.duplicate_of_id:
             html += E.tostring(_("Duplicate of")) + " "
