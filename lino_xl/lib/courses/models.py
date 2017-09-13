@@ -153,7 +153,6 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
         verbose_name = pgettext("singular form", "Activity line")
         verbose_name_plural = pgettext("plural form", 'Activity lines')
 
-    # ref = dd.NullCharField(_("Reference"), max_length=30, unique=True)
     course_area = CourseAreas.field(
         default=CourseAreas.default.as_callable)
     # default=CourseAreas.get_lazy('default')

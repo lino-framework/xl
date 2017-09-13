@@ -90,11 +90,16 @@ class BeIdCardHolder(dd.Model):
 
     """
 
-    national_id = dd.NullCharField(
-        max_length=200,
-        unique=True,
-        verbose_name=_("National ID")
-        #~ blank=True,verbose_name=_("National ID")
+    # national_id = dd.NullCharField(
+    #     max_length=200,
+    #     unique=True,
+    #     verbose_name=_("National ID")
+    #     #~ blank=True,verbose_name=_("National ID")
+    #     # ~ ,validators=[ssin.ssin_validator] # 20121108
+    # )
+    national_id = models.CharField(
+        _("National ID"), max_length=200,
+        unique=True, blank=True, null=True
         # ~ ,validators=[ssin.ssin_validator] # 20121108
     )
 
