@@ -25,8 +25,7 @@ class Group(mixins.BabelNamed):
     #     max_length=settings.SITE.plugins.accounts.ref_length, unique=True)
     ref = models.CharField(
         max_length=settings.SITE.plugins.accounts.ref_length,
-        blank=True, null=True,
-        unique=True)
+        blank=True, null=True, unique=True)
     account_type = AccountTypes.field(blank=True)
     # help_text = dd.RichTextField(_("Introduction"),format="html",blank=True)
 
