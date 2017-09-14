@@ -30,11 +30,11 @@ document)."""
     help_text = _("Mark this object as not printed. A subsequent "
                   "call to print will generate a new cache file.")
 
-    def get_action_permission(self, ar, obj, state):
-        if obj.printed_by_id is None:
-            return False
-        return super(ClearPrinted, self).get_action_permission(
-            ar, obj, state)
+    # def get_action_permission(self, ar, obj, state):
+    #     if obj.printed_by_id is None:
+    #         return False
+    #     return super(ClearPrinted, self).get_action_permission(
+    #         ar, obj, state)
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
@@ -108,9 +108,14 @@ class Certifiable(dd.Model):
     clear_printed = ClearPrinted()
 
     def disabled_fields(self, ar):
+        # if self._state.adding:
+        #     return set()
+        s = super(Certifiable, self).disabled_fields(ar)
         if self.printed_by_id is None:
-            return set()
-        return self.CERTIFIED_FIELDS
+            s.add('clear_printed')
+        else:
+            s |= self.CERTIFIED_FIELDS
+        return s
 
     def on_duplicate(self, ar, master):
         """After duplicating e.g. a budget which had been printed, we don't

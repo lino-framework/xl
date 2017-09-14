@@ -25,5 +25,11 @@ def objects():
         vat_regime=VatRegimes.intracom,
         vat_class=VatClasses.normal,
         vat_returnable=True)
+    yield VatRule(
+        rate='0.21', trade_type=TradeTypes.purchases,
+        vat_account=Account.get_by_ref(VAT_DUE_ACCOUNT),
+        vat_regime=VatRegimes.intracom_supp,
+        vat_class=VatClasses.normal,
+        vat_returnable=True)
     yield VatRule(vat_regime=VatRegimes.normal, rate=0)
     yield VatRule(vat_regime=VatRegimes.subject, rate=0)

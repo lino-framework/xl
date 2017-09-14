@@ -62,6 +62,7 @@ class ByJournal(dd.Table):
     # start_at_bottom = True
     required_roles = dd.login_required(LedgerUser)
     params_layout = "start_period end_period state user"
+    no_phantom_row = True
 
     @classmethod
     def get_title_base(self, ar):
@@ -125,8 +126,8 @@ class Vouchers(dd.Table):
     params_layout = "journal start_period end_period state user"
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Vouchers, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(Vouchers, cls).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
         pv = ar.param_values
@@ -347,8 +348,8 @@ class PartnerVouchers(Vouchers):
         return s
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(PartnerVouchers, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(PartnerVouchers, cls).get_request_queryset(ar, **kwargs)
         # movement_set__partner=models.F('partner'))
         if ar.param_values.cleared == dd.YesNo.yes:
             qs = qs.exclude(movement__cleared=False)
@@ -362,7 +363,36 @@ def mvtsum(**fkw):
         **fkw).aggregate(models.Sum('amount'))
     return d['amount__sum'] or ZERO
 
+class AccountingPeriodRange(dd.ParameterPanel):
+    def __init__(self,
+                 verbose_name_start=_("Period from"),
+                 verbose_name_end=_("until"), **kwargs):
+        kwargs.update(
+            start_period=dd.ForeignKey(
+                'ledger.AccountingPeriod',
+                blank=True, null=True,
+                help_text=_("Start of observed period range"),
+                verbose_name=verbose_name_start),
+            end_period=dd.ForeignKey(
+                'ledger.AccountingPeriod',
+                blank=True, null=True,
+                help_text=_(
+                    "Optional end of observed period range. "
+                    "Leave empty to consider only the Start period."),
+                verbose_name=verbose_name_end))
+        super(AccountingPeriodRange, self).__init__(**kwargs)
 
+    def get_title_tags(self, ar):
+        pv = ar.param_values
+        if pv.start_period:
+            if pv.end_period:
+                yield _("Periods {}...{}").format(
+                    pv.start_period, pv.end_period)
+            else:
+                yield _("Period {}").format(pv.start_period)
+        else:
+            yield str(_("All periods"))
+            
 class AccountsBalance(dd.VirtualTable):
     """A table which shows a list of general ledger accounts during the
     observed period, showing their old and new balances and the sum of
@@ -371,24 +401,12 @@ class AccountsBalance(dd.VirtualTable):
     """
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
-    column_names = "ref description old_d old_c during_d during_c new_d new_c"
+    column_names = "description old_d old_c empty_column:1 during_d during_c empty_column:1 new_d new_c"
     slave_grid_format = 'html'
     abstract = True
+    params_panel_hidden = False
 
-    parameters = dict(
-        start_period=dd.ForeignKey(
-            'ledger.AccountingPeriod',
-            blank=True, null=True,
-            help_text=_("Start of observed period range"),
-            verbose_name=_("Period from")),
-        end_period=dd.ForeignKey(
-            'ledger.AccountingPeriod',
-            blank=True, null=True,
-            help_text=_(
-                "Optional end of observed period range. "
-                "Leave empty to consider only the Start period."),
-            verbose_name=_("Period until")))
-    
+    parameters = AccountingPeriodRange()
     params_layout = "start_period end_period"
     
     # parameters = mixins.Yearly(
@@ -403,7 +421,7 @@ class AccountsBalance(dd.VirtualTable):
         raise NotImplementedError()
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         raise NotImplementedError()
 
     @classmethod
@@ -487,13 +505,18 @@ class AccountsBalance(dd.VirtualTable):
     def new_c(self, row, ar):
         return row.new.d
     
+    @dd.displayfield("")
+    def empty_column(self, row, ar):
+        return ''
+
+    
 
 class GeneralAccountsBalance(AccountsBalance):
 
-    label = _("General Accounts Balances")
+    label = _("General Accounts Balance")
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         return rt.modules.accounts.Account.objects.order_by(
             'group__ref', 'ref')
 
@@ -506,7 +529,7 @@ class PartnerAccountsBalance(AccountsBalance):
     trade_type = NotImplementedError
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         return rt.models.contacts.Partner.objects.order_by('name')
 
     @classmethod
@@ -521,12 +544,12 @@ class PartnerAccountsBalance(AccountsBalance):
 
 
 class CustomerAccountsBalance(PartnerAccountsBalance):
-    label = _("Customer Accounts Balances")
+    label = _("Customer Accounts Balance")
     trade_type = TradeTypes.sales
 
 
 class SupplierAccountsBalance(PartnerAccountsBalance):
-    label = _("Supplier Accounts Balances")
+    label = _("Supplier Accounts Balance")
     trade_type = TradeTypes.purchases
 
 
@@ -680,6 +703,42 @@ class ActivityReport(Report):
         CustomerAccountsBalance,
         SupplierAccountsBalance)
 
+    
+class AccountingReport(Report):
+    label = _("Accounting Report")
+    required_roles = dd.login_required(AccountingReader)
+    params_panel_hidden = False
+    parameters = AccountingPeriodRange(
+        with_balances = models.BooleanField(
+            verbose_name=_("Balances"), default=True),
+        with_activity = models.BooleanField(
+            verbose_name=_("Activity"), default=True))
+    params_layout = """
+    start_period end_period with_balances with_activity
+    """ # NB setup_parameters will add names here
+
+    @classmethod
+    def setup_parameters(cls, fields):
+        for tt in TradeTypes.get_list_items():
+            k = 'with_'+tt.name
+            fields[k] = models.BooleanField(
+                verbose_name=tt.text, default=True)
+            cls.params_layout += ' ' + k
+        super(AccountingReport, cls).setup_parameters(fields)
+        
+    @classmethod
+    def get_story(cls, self, ar):
+        pv = ar.param_values
+        bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
+        balances = [GeneralAccountsBalance]
+        if pv.with_sales:
+            balances.append(CustomerAccountsBalance)
+        if pv.with_purchases:
+            balances.append(SupplierAccountsBalance)
+        if pv.with_balances:
+            for B in balances:
+                yield E.h1(B.label)
+                yield B.request(param_values=bpv)
 
 # MODULE_LABEL = dd.plugins.accounts.verbose_name
 
@@ -730,8 +789,8 @@ class Movements(dd.Table):
     journal_group journal year project partner account"""
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Movements, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(Movements, cls).get_request_queryset(ar, **kwargs)
 
         pv = ar.param_values
         if pv.cleared == dd.YesNo.yes:
@@ -825,9 +884,9 @@ class MovementsByVoucher(Movements):
     sum_text_column = 3
     # auto_fit_column_widths = True
     slave_grid_format = "html"
-    order_by = ['value_date', 'account__ref']
-
-
+    order_by = dd.plugins.ledger.remove_dummy(
+        'value_date', 'account__ref', 'partner', 'project', 'id')
+    
 class MovementsByPartner(Movements):
     """Show the ledger movements of a partner.
     See also :class:`lino_xl.lib.ledger.models.Movement`.
@@ -836,7 +895,9 @@ class MovementsByPartner(Movements):
     # slave_grid_format = "html"
     slave_grid_format = "summary"
     # auto_fit_column_widths = True
-    order_by = ['-value_date', 'voucher__id', 'account__ref']
+    # order_by = ['-value_date', 'voucher__id', 'account__ref']
+    order_by = dd.plugins.ledger.remove_dummy(
+        '-value_date', 'voucher__id', 'account__ref', 'project', 'id')
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -895,6 +956,7 @@ class MovementsByProject(MovementsByPartner):
     """
     master_key = 'project'
     slave_grid_format = "html"
+    order_by = ['-value_date', 'partner', 'id']
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -943,7 +1005,9 @@ class MovementsByAccount(Movements):
     # order_by = ['-value_date']
     # auto_fit_column_widths = True
     slave_grid_format = "html"
-    order_by = ['-value_date', 'account__ref']
+    # order_by = ['-value_date', 'account__ref', 'project', 'id']
+    order_by = dd.plugins.ledger.remove_dummy(
+        '-value_date', 'partner__name', 'project', 'id')
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -983,8 +1047,9 @@ class MovementsByMatch(Movements):
     column_names = 'value_date voucher_link description '\
                    'debit credit cleared *'
     master = six.text_type  # 'ledger.Matching'
-    order_by = ['-value_date']
     variable_row_height = True
+    order_by = dd.plugins.ledger.remove_dummy(
+        '-value_date', 'account__ref', 'project', 'id')
 
     details_of_master_template = _("%(details)s matching '%(master)s'")
 
@@ -994,8 +1059,8 @@ class MovementsByMatch(Movements):
         return pk
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(MovementsByMatch, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(MovementsByMatch, cls).get_request_queryset(ar, **kwargs)
         qs = qs.filter(match=ar.master_instance)
         return qs
 

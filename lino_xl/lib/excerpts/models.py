@@ -596,7 +596,9 @@ class Excerpt(TypedPrintable, UserAuthored,
     def preview(self, ar):
         if ar is None:
             return ''
-        with translation.override(self.get_print_language()):
+        lang = self.get_print_language() or \
+               settings.SITE.DEFAULT_LANGUAGE.django_code
+        with translation.override(lang):
             ctx = self.get_printable_context(ar)
             return ar.html_text(ctx['body'])
             # return '<div class="htmlText">%s</div>' % ctx['body']
@@ -680,7 +682,8 @@ def post_init_excerpt(sender, instance=None, **kwargs):
         if not self.language:
             rec = self.recipient
             if rec is not None:
-                self.language = rec.get_print_language()
+                self.language = rec.get_print_language() or \
+                                settings.SITE.DEFAULT_LANGUAGE.django_code
 
 
 if has_davlink:

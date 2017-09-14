@@ -153,7 +153,6 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
         verbose_name = pgettext("singular form", "Activity line")
         verbose_name_plural = pgettext("plural form", 'Activity lines')
 
-    # ref = dd.NullCharField(_("Reference"), max_length=30, unique=True)
     course_area = CourseAreas.field(
         default=CourseAreas.default.as_callable)
     # default=CourseAreas.get_lazy('default')
@@ -704,6 +703,8 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         qs = rt.models.courses.Course.objects.filter(flt)
         if course_area:
             qs = qs.filter(line__course_area=course_area)
+        enrollable_states = CourseStates.filter(active=True)
+        qs = qs.filter(state__in=enrollable_states)
         return qs
 
     @dd.chooser()

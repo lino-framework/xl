@@ -132,6 +132,13 @@ class Links(dd.Table):
     type
     child
     """, window_size=(40, 'auto'))
+    
+    insert_layout = """
+    parent
+    type
+    child
+    """
+
 
 
 class LinksByHuman(Links):
@@ -167,7 +174,7 @@ class LinksByHuman(Links):
         LinkTypes.relative, LinkTypes.other)
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **filter):
         mi = ar.master_instance  # a Person
         Link = rt.modules.humanlinks.Link
         if mi is None:

@@ -735,14 +735,14 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
 
     # no longer needed after 20170826
     # @classmethod
-    # def get_parameter_fields(cls, **fields):
+    # def setup_parameters(cls, **fields):
     #     """Adds the :attr:`room` filter parameter field."""
     #     fld = cls._meta.get_field('room')
     #     fields.setdefault(
     #         'room', models.ForeignKey(
     #             'cal.Room', verbose_name=fld.verbose_name,
     #             blank=True, null=True))
-    #     return super(Reservation, cls).get_parameter_fields(**fields)
+    #     return super(Reservation, cls).setup_parameters(**fields)
 
     @classmethod
     def get_simple_parameters(cls):

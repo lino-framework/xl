@@ -34,18 +34,18 @@ class Enrollable(dd.Model):
         return None
     
     @classmethod
-    def get_parameter_fields(cls, **fields):
+    def setup_parameters(cls, fields):
         fields.update(
             enrolment_state=EnrolmentStates.field(blank=True),
             course=dd.ForeignKey(
                 'courses.Course', blank=True, null=True))
 
-        return super(Enrollable, cls).get_parameter_fields(**fields)
+        super(Enrollable, cls).setup_parameters(fields)
 
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Enrollable, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(Enrollable, cls).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
         if pv.course:
             qs = qs.filter(enrolments_by_pupil__course=pv.course)

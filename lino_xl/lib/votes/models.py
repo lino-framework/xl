@@ -145,7 +145,7 @@ class Vote(UserAuthored, Created, Workable):
         return df
 
     @classmethod
-    def get_parameter_fields(cls, **fields):
+    def setup_parameters(cls, fields):
         fields.update(
             ticket_user=dd.ForeignKey(
                 settings.SITE.user_model,
@@ -175,7 +175,7 @@ class Vote(UserAuthored, Created, Workable):
         fields.update(
             votable_state=fld.choicelist.field(
                 lbl, blank=True, help_text=hlp))
-        return super(Vote, cls).get_parameter_fields(**fields)
+        super(Vote, cls).setup_parameters(fields)
 
     @dd.displayfield(_("Description"))
     def votable_overview(self, ar):
@@ -303,8 +303,8 @@ class Votes(dd.Table):
         return s
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Votes, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Votes, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
         if self.filter_vote_states is not None:

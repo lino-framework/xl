@@ -230,28 +230,29 @@ class JournalEntryDetail(dd.DetailLayout):
     main = "general more"
 
     general = dd.Panel("""
-    entry_date number:6 user workflow_buttons
-    narration id
+    entry_date number:6 workflow_buttons
+    narration
     finan.ItemsByJournalEntry
     """, label=_("General"))
 
     more = dd.Panel("""
-    journal accounting_period item_account item_remark
+    journal accounting_period user id
+    item_account item_remark
     ledger.MovementsByVoucher
     """, label=_("More"))
 
 
 class PaymentOrderDetail(JournalEntryDetail):
     general = dd.Panel("""
-    entry_date number:6 user total execution_date workflow_buttons
-    narration id
+    entry_date number:6 total execution_date workflow_buttons
+    narration
     finan.ItemsByPaymentOrder
     """, label=_("General"))
 
 
 class BankStatementDetail(JournalEntryDetail):
     general = dd.Panel("""
-    entry_date balance1 balance2 user id workflow_buttons
+    entry_date number:6 balance1 balance2 workflow_buttons
     finan.ItemsByBankStatement
     """, label=_("General"))
 
@@ -276,8 +277,8 @@ class FinancialVouchers(dd.Table):
     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(FinancialVouchers, cls).get_request_queryset(ar)
+    def get_request_queryset(cls, ar, **kwargs):
+        qs = super(FinancialVouchers, cls).get_request_queryset(ar, **kwargs)
         if not isinstance(qs, list):
             if ar.param_values.pyear:
                 qs = qs.filter(accounting_period__year=ar.param_values.pyear)
@@ -288,14 +289,14 @@ class FinancialVouchers(dd.Table):
 
 class JournalEntries(FinancialVouchers):
     suggestions_table = 'finan.SuggestionsByJournalEntry'
-    column_names = "number_with_year entry_date "\
+    column_names = "number_with_year entry_date narration "\
                    "accounting_period workflow_buttons *"
 
 
 class PaymentOrders(FinancialVouchers):
     model = 'finan.PaymentOrder'
-    column_names = "number entry_date narration total execution_date "\
-                   "accounting_period workflow_buttons *"
+    column_names = "number_with_year entry_date narration total "\
+                   "execution_date accounting_period workflow_buttons *"
     detail_layout = PaymentOrderDetail()
     suggestions_table = 'finan.SuggestionsByPaymentOrder'
 
@@ -335,18 +336,14 @@ class JournalEntriesByJournal(ledger.ByJournal, JournalEntries):
 class BankStatementsByJournal(ledger.ByJournal, BankStatements):
     pass
 
+from lino_xl.lib.ledger.mixins import ItemsByVoucher
 
-class ItemsByVoucher(dd.Table):
-    order_by = ["seqno"]
-    column_names = "date partner account match remark debit credit seqno *"
-    master_key = 'voucher'
-    auto_fit_column_widths = True
-    # hidden_columns = 'id amount dc seqno'
-    suggest = ShowSuggestions()
-    suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
-    slave_grid_format = 'html'
-    preview_limit = 0
-    label = _("Content")
+# class ItemsByVoucher(ItemsByVoucher):
+#     suggest = ShowSuggestions()
+#     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
+    # slave_grid_format = 'html'
+    # preview_limit = 0
+    # label = _("Content")
 
 
 class ItemsByJournalEntry(ItemsByVoucher):
@@ -359,6 +356,7 @@ class ItemsByBankStatement(ItemsByVoucher):
     column_names = "seqno date partner account match remark debit credit "\
                    "workflow_buttons *"
     suggestions_table = 'finan.SuggestionsByBankStatementItem'
+    suggest = ShowSuggestions()
 
 
 class ItemsByPaymentOrder(ItemsByVoucher):
@@ -366,11 +364,7 @@ class ItemsByPaymentOrder(ItemsByVoucher):
     column_names = "seqno partner workflow_buttons bank_account match "\
                    "amount remark *"
     suggestions_table = 'finan.SuggestionsByPaymentOrderItem'
-
-
-# class ItemsByGrouper(ItemsByVoucher):
-#     model = 'finan.GrouperItem'
-#     column_names = "seqno partner match amount remark *"
+    suggest = ShowSuggestions()
 
 
 class FillSuggestionsToVoucher(dd.Action):

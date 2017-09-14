@@ -215,6 +215,8 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         verbose_name_plural = _("Accounting periods")
         ordering = ['ref']
 
+    preferred_foreignkey_width = 10
+    
     state = PeriodStates.field(default=PeriodStates.open.as_callable())
     year = FiscalYears.field(blank=True)
     remark = models.CharField(_("Remark"), max_length=250, blank=True)
@@ -363,11 +365,11 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         return dd.plugins.ledger.currency_symbol
 
     # @classmethod
-    # def get_parameter_fields(cls, **fields):
+    # def setup_parameters(cls, **fields):
     #     fields.setdefault(
     #         'accounting_period', dd.ForeignKey(
     #             'ledger.AccountingPeriod', blank=True, null=True))
-    #     return super(Voucher, cls).get_parameter_fields(**fields)
+    #     return super(Voucher, cls).setup_parameters(**fields)
 
     # @classmethod
     # def get_simple_parameters(cls):
@@ -633,15 +635,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         #~ return super(Voucher,self).get_row_permission(ar,state,ba)
 
     def get_mti_leaf(self):
-        """
-        Return the specialized form of this voucher.
-
-        For example if we have :class:`ml.ledger.Voucher` instance, we
-        can get the actual document (Invoice, PaymentOrder,
-        BankStatement, ...) by calling this method.
-
-
-        """
         return mti.get_child(self, self.journal.voucher_type.model)
 
     # def obj2html(self, ar):

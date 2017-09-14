@@ -15,7 +15,7 @@ from lino.mixins import Referrable, Sequenced
 from lino.utils.mldbc.mixins import BabelDesignated
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import AccountsBalance
-
+from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 
 
@@ -174,7 +174,7 @@ class Invoices(PartnerVouchers):
     required_roles = dd.login_required(LedgerUser)
     model = 'ana.AnaAccountInvoice'
     order_by = ["-id"]
-    column_names = "entry_date id number partner total_incl user *"
+    column_names = "entry_date number_with_year partner total_incl user id *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal partner
@@ -190,7 +190,7 @@ class InvoicesByJournal(Invoices, ByJournal):
 
     """
     params_layout = "partner state year"
-    column_names = "number entry_date due_date " \
+    column_names = "number_with_year entry_date due_date " \
         "partner " \
         "total_incl " \
         "total_base total_vat user workflow_buttons *"
@@ -205,7 +205,7 @@ class AnalyticAccountsBalance(AccountsBalance):
     label = _("Analytic Accounts Balance")
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **filter):
         return rt.models.ana.Account.objects.order_by(
             'group__ref', 'ref')
 
@@ -228,13 +228,9 @@ class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
 
 
     
-class ItemsByInvoice(dd.Table):
-    required_roles = dd.login_required(LedgerUser)
+class ItemsByInvoice(ItemsByVoucher):
     model = 'ana.InvoiceItem'
     column_names = "account title ana_account vat_class total_base total_vat total_incl *"
-    master_key = 'voucher'
-    order_by = ["seqno"]
-    auto_fit_column_widths = True
 
 
 

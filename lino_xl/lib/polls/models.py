@@ -541,6 +541,10 @@ class AnswersByResponseRow(object):
             return str(_("N/A"))
         return ', '.join([str(ac.choice) for ac in self.choices])
 
+    def obj2href(self, ar):
+        # needed by detail_pointer
+        return ''
+
 
 class AnswerRemarkField(dd.VirtualField):
     editable = True

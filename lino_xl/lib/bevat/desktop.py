@@ -100,7 +100,7 @@ class Declarations(dd.Table):
     start_period 
     end_period
     """
-    column_names = 'number entry_date start_period end_period accounting_period user *'
+    column_names = 'number_with_year entry_date start_period end_period accounting_period user *'
     # detail_layout = dd.DetailLayout("""
     # start_date end_date entry_date accounting_period user workflow_buttons
     # fields
@@ -111,7 +111,7 @@ class Declarations(dd.Table):
 class DeclarationsByJournal(ledger.ByJournal, Declarations):
     params_panel_hidden = True
     #master = journals.Journal
-    column_names = "number entry_date start_period end_period accounting_period FXX FYY F71 workflow_buttons *"
+    column_names = "number_with_year entry_date start_period end_period accounting_period FXX FYY F71 workflow_buttons *"
 
 ledger.VoucherTypes.add_item_lazy(DeclarationsByJournal)
 

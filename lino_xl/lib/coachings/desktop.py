@@ -83,8 +83,8 @@ class Coachings(dd.Table):
         #~ return kw
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Coachings, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(Coachings, self).get_request_queryset(ar, **filter)
         pv = ar.param_values
         coaches = []
         for u in (pv.coached_by, pv.and_coached_by):

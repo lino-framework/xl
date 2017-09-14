@@ -16,10 +16,13 @@ from lino.utils.xmlgen.html import E
 from .mixins import VatDocument
 
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
+from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
+from lino_xl.lib.ledger.mixins import ItemsByVoucher
 
 from .models import VatAccountInvoice
+from .choicelists import VatRegimes
 
 
 class VatRules(dd.Table):
@@ -28,7 +31,8 @@ class VatRules(dd.Table):
     model = 'vat.VatRule'
     required_roles = dd.login_required(LedgerStaff)
     column_names = "seqno country trade_type vat_class vat_regime \
-    #start_date #end_date rate can_edit vat_account vat_returnable_account *"
+    #start_date #end_date rate can_edit \
+    vat_account vat_returnable vat_returnable_account *"
     hide_sums = True
     auto_fit_column_widths = True
     order_by = ['seqno']
@@ -69,7 +73,7 @@ class Invoices(PartnerVouchers):
     required_roles = dd.login_required(LedgerUser)
     model = 'vat.VatAccountInvoice'
     order_by = ["-id"]
-    column_names = "entry_date id number partner total_incl user *"
+    column_names = "entry_date id number_with_year partner total_incl user *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal partner
@@ -85,7 +89,7 @@ class InvoicesByJournal(Invoices, ByJournal):
 
     """
     params_layout = "partner state start_period end_period user"
-    column_names = "number voucher_date due_date " \
+    column_names = "number_with_year voucher_date due_date " \
         "partner " \
         "total_incl " \
         "total_base total_vat user workflow_buttons *"
@@ -100,14 +104,9 @@ class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
 
 VoucherTypes.add_item_lazy(InvoicesByJournal)
 
-
-class ItemsByInvoice(dd.Table):
-    required_roles = dd.login_required(LedgerUser)
+class ItemsByInvoice(ItemsByVoucher):
     model = 'vat.InvoiceItem'
     column_names = "account title vat_class total_base total_vat total_incl"
-    master_key = 'voucher'
-    order_by = ["seqno"]
-    auto_fit_column_widths = True
 
 
 class VouchersByPartner(dd.VirtualTable):
@@ -192,3 +191,40 @@ class VouchersByPartner(dd.VirtualTable):
         return E.div(*elems)
 
 
+class IntracomInvoices(PartnerVouchers):
+    _trade_type = None
+    editable = False
+    model = VatDocument
+    column_names = 'detail_pointer partner partner__vat_id vat_regime total_base total_vat total_incl'
+    # order_by = ['entry_date', 'partner']
+    # order_by = ['entry_date', 'id']
+    # order_by = ['entry_date', 'number']
+    order_by = ['number']
+    hidden_elements = frozenset(
+        """entry_date journal__trade_type journal number 
+        journal__trade_type state user""".split())
+    
+    @classmethod
+    def get_queryset(cls, ar, **kwargs):
+        fkw = dict()
+        if cls._trade_type is not None:
+            fkw.update(journal__trade_type=cls._trade_type)
+        regimes = set([r for r in VatRegimes.get_list_items()
+                       if r.name.startswith('intracom')])
+        # (VatRegimes.intracom, VatRegimes.intracom_supp)
+        fkw.update(vat_regime__in=regimes)
+        qs = super(IntracomInvoices, cls).get_queryset(ar, **fkw)
+        # raise Exception("20170905 {}".format(qs.query))
+        return qs
+    
+dd.update_field(
+    IntracomInvoices, 'detail_pointer', verbose_name=_("Invoice"))    
+    
+class IntracomSales(IntracomInvoices):
+    _trade_type = TradeTypes.sales
+    label = _("Intra-Community sales")
+
+class IntracomPurchases(IntracomInvoices):
+    _trade_type = TradeTypes.purchases
+    label = _("Intra-Community purchases")
+    

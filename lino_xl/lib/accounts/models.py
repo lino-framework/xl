@@ -21,8 +21,11 @@ class Group(mixins.BabelNamed):
         verbose_name = _("Account Group")
         verbose_name_plural = _("Account Groups")
 
-    ref = dd.NullCharField(
-        max_length=settings.SITE.plugins.accounts.ref_length, unique=True)
+    # ref = dd.NullCharField(
+    #     max_length=settings.SITE.plugins.accounts.ref_length, unique=True)
+    ref = models.CharField(
+        max_length=settings.SITE.plugins.accounts.ref_length,
+        blank=True, null=True, unique=True)
     account_type = AccountTypes.field(blank=True)
     # help_text = dd.RichTextField(_("Introduction"),format="html",blank=True)
 

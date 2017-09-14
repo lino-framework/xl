@@ -1,0 +1,29 @@
+{%- set page_size = 'portrait' -%}
+{%- extends "weasyprint/base.weasy.html" -%}
+
+{%- block main %}
+
+{{ super() }}
+
+{% if obj.end_period %}
+Period from {{obj.start_period}} to {{obj.end_period}}
+{% else %}
+Period {{obj.start_period}}
+{% endif %}
+
+<ul>
+  {% for fld in rt.models.bevats.DeclarationFields.get_list_items() %}
+  {% set v = getattr(obj, fld.name) %}
+  {% if v %}
+  <li>{{fld}} {{fld.help_text}} : {{v}}</li>
+  {% endif %}
+{% endfor %}
+</ul>
+
+{% set pv = dict(start_period=obj.start_period, end_period=obj.end_period) %}
+{{ar.show(rt.models.vat.IntracomPurchases, param_values=pv, header_level=2)}}
+{% if False %}
+{{ar.show(rt.models.ledger.GeneralAccountsBalance, param_values=pv, header_level=2)}}
+{% endif %}
+
+{%- endblock %}

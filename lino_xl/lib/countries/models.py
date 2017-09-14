@@ -86,6 +86,7 @@ class Countries(dd.Table):
 from lino.mixins import Hierarchical
 
 
+# @dd.python_2_unicode_compatible
 class Place(Hierarchical, mixins.BabelNamed):
     class Meta(object):
         verbose_name = _("Place")
@@ -113,6 +114,12 @@ class Place(Hierarchical, mixins.BabelNamed):
     #         return self.parent.get_parents(self, *grandparents)
     #     return [self] + list(grandparents)
 
+    # def __str__(self):
+    #     if self.zip_code:
+    #         return "{} {}".format(
+    #             dd.babelattr(self, 'name'), self.zip_code)
+    #     return dd.babelattr(self, 'name')
+    
     @dd.chooser()
     def type_choices(cls, country):
         if country is not None:
@@ -139,6 +146,8 @@ class Place(Hierarchical, mixins.BabelNamed):
             # s = "%s (%s)" % (names[0], ', '.join(names[1:]))
         if self.show_type:
             s += " (%s)" % str(self.type)
+        if self.zip_code:
+            s = self.zip_code + " " + s
         return s
 
     @classmethod

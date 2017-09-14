@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-"""Defines model mixins for this plugin."""
 
 
 from django.db import models
@@ -19,51 +18,52 @@ from .actions import StartTicketSession, EndTicketSession
 
 
 class Workable(dd.Model):
-    """Base class for things that workers can work on. 
-
-    The model specified in :attr:`ticket_model
-    <lino_xl.lib.clocking.Plugin.ticket_model>` must be a subclass of
-    this.
-    
-    For example, in :ref:`noi` tickets are workable, or in
-    :ref:`psico` partners are workable.
-
-    """
     class Meta:
         abstract = True
 
     create_session_on_create = False
 
-    if dd.is_installed('clocking'):
-        start_session = StartTicketSession()
-        end_session = EndTicketSession()
-
     def get_ticket(self):
         return self
 
     def is_workable_for(self, user):
-        """Return True if the given user can start a working session on this
-        object.
-
-        """
         return True
 
     def on_worked(self, session):
-        """This is automatically called when a work session has been created
-        or modified.
-
-        """
         pass
 
-    def save_new_instance(elem, ar):
-        super(Workable, elem).save_new_instance(ar)
+    if dd.is_installed('clocking'):
+        
+        start_session = StartTicketSession()
+        end_session = EndTicketSession()
 
-        if rt.settings.SITE.loading_from_dump or not dd.is_installed('clocking'):
-            return
-        me = ar.get_user()
-        # print elem.create_session_on_create
-        if elem.create_session_on_create and me is not None and me.open_session_on_new_ticket:
-            ses = rt.modules.clocking.Session(ticket=elem, user=me)
-            ses.full_clean()
-            ses.save()
+        def disabled_fields(self, ar):
+            s = super(Workable, self).disabled_fields(ar)
+            user = ar.get_user()
+            if not (user.authenticated and self.is_workable_for(user)):
+                s.add('start_session')
+                s.add('end_session')
+                return s
+            Session = rt.models.clocking.Session
+            qs = Session.objects.filter(
+                user=user, ticket=self.get_ticket(),
+                end_time__isnull=True)
+            if qs.exists():
+                s.add('start_session')
+            else:
+                s.add('end_session')
+            return s
+            
+            
+        def save_new_instance(elem, ar):
+            super(Workable, elem).save_new_instance(ar)
+
+            if rt.settings.SITE.loading_from_dump or not dd.is_installed('clocking'):
+                return
+            me = ar.get_user()
+            # print elem.create_session_on_create
+            if elem.create_session_on_create and me is not None and me.open_session_on_new_ticket:
+                ses = rt.models.clocking.Session(ticket=elem, user=me)
+                ses.full_clean()
+                ses.save()
 

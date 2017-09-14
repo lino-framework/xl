@@ -202,17 +202,16 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
         return self.language
 
     @classmethod
-    def get_parameter_fields(cls, **fields):
+    def setup_parameters(cls, fields):
         fields.update(
             observed_event=PartnerEvents.field(
                 blank=True,
                 help_text=_("Extended filter criteria")))
-        fields = super(Partner, cls).get_parameter_fields(**fields)
-        return ObservedDateRange(**fields)
+        super(Partner, cls).setup_parameters(fields)
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Partner, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(Partner, self).get_request_queryset(ar, **filter)
 
         pv = ar.param_values
         oe = pv.observed_event
@@ -284,6 +283,7 @@ class Partners(dd.Table):
     model = 'contacts.Partner'
     column_names = "name email * id"
     order_by = ['name', 'id']
+    parameters = ObservedDateRange()
     detail_layout = PartnerDetail()
     insert_layout = """
     name

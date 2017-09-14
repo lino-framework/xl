@@ -44,6 +44,7 @@ class DueMovement(object):
         self.account = mvt.account
         self.project = mvt.project
         self.pk = self.id = mvt.id
+        self.obj2href = mvt.obj2href
 
         self.debts = []
         self.payments = []
@@ -160,10 +161,13 @@ def get_due_movements(dc, **flt):
     """
     if dc is None:
         return
-    qs = rt.modules.ledger.Movement.objects.filter(**flt)
+    qs = rt.models.ledger.Movement.objects.filter(**flt)
     qs = qs.filter(account__clearable=True)
     # qs = qs.exclude(match='')
-    qs = qs.order_by('value_date')
+    qs = qs.order_by(*dd.plugins.ledger.remove_dummy(
+        'value_date', 'account__ref', 'partner', 'project', 'id'))
+    
+    
     matches_by_account = dict()
     matches = []
     for mvt in qs:

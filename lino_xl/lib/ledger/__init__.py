@@ -68,8 +68,9 @@ class Plugin(ad.Plugin):
     def setup_reports_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('ledger.Situation')
+        # m.add_action('ledger.Situation')
         # m.add_action('ledger.ActivityReport')
+        m.add_action('ledger.AccountingReport')
         m.add_action('ledger.GeneralAccountsBalance')
         m.add_action('ledger.CustomerAccountsBalance')
         m.add_action('ledger.SupplierAccountsBalance')
@@ -94,4 +95,9 @@ class Plugin(ad.Plugin):
         m.add_action('ledger.TradeTypes')
         m.add_action('ledger.JournalGroups')
 
+    def remove_dummy(self, *args):
+        lst = list(args)
+        if self.project_model is None:
+            lst.remove('project')
+        return lst
 

@@ -341,7 +341,7 @@ class SentByPartner(Mails):
     order_by = ['sent']
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         q1 = Recipient.objects.filter(
             partner=ar.master_instance).values('mail').query
         qs = Mail.objects.filter(id__in=q1)

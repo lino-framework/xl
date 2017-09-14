@@ -86,7 +86,7 @@ class TrendEvent(UserAuthored):
         abstract = dd.is_abstract_model(__name__, 'TrendEvent')
         verbose_name = _("Trend event")
         verbose_name_plural = _("Trend events")
-        unique_together = ['subject', 'trend_stage']
+        # unique_together = ['subject', 'trend_stage']
 
     subject = dd.ForeignKey(
         dd.plugins.trends.subject_model,

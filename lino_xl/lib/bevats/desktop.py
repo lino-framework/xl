@@ -31,9 +31,9 @@ if DECLARED_IN:
 
 class DeclarationDetail(dd.DetailLayout):
     main = """
-    start_period end_period entry_date accounting_period
-    partner user workflow_buttons
-    c1 c2 c2b c3 c4
+    start_period end_period entry_date accounting_period user
+    partner narration workflow_buttons
+    c1:10 c2:10 c2b:10 c3:10 c4:10
     ledger.MovementsByVoucher
     """
    
@@ -58,6 +58,7 @@ class DeclarationDetail(dd.DetailLayout):
     """
     c4 = """
     F83
+    printed
     """
 
     
@@ -71,7 +72,7 @@ class Declarations(dd.Table):
     start_period 
     end_period
     """
-    column_names = 'number entry_date start_period end_period accounting_period user *'
+    column_names = 'number_with_year entry_date start_period end_period accounting_period user *'
     # detail_layout = dd.DetailLayout("""
     # start_date end_date entry_date accounting_period user workflow_buttons
     # fields
@@ -82,7 +83,7 @@ class Declarations(dd.Table):
 class DeclarationsByJournal(ledger.ByJournal, Declarations):
     params_panel_hidden = True
     #master = journals.Journal
-    column_names = "number entry_date start_period end_period accounting_period F80 F81 F82 F83 workflow_buttons *"
+    column_names = "number_with_year entry_date start_period end_period accounting_period F80 F81 F82 F83 workflow_buttons *"
 
 ledger.VoucherTypes.add_item_lazy(DeclarationsByJournal)
 

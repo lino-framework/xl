@@ -112,6 +112,13 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     slave_grid_format = "summary"
     window_size  = (70, 15)
     detail_layout = dd.DetailLayout("""
+    language 
+    native
+    cef_level
+    spoken_passively spoken written
+    """, window_size=(50, 'auto'))
+    
+    insert_layout = dd.InsertLayout("""
     language
     native
     cef_level
@@ -137,28 +144,15 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
         for this table.
 
         """
-        if True:  # new format since 20170329
-            return obj.get_language_knowledge()
-        
         sar = self.request_from(ar, master_instance=obj)
-
-        html = []
-        items = [sar.obj2html(o) for o in sar]
-
         sar = self.insert_action.request_from(sar)
         if sar.get_permission():
-            btn = sar.ar2button()
-            items.append(btn)
-            
-        if len(items) > 0:
-            html += join_elems(items, sep=', ')
-            
-        return E.p(*html)        
-
-        # text = ', '.join([str(o) for o in sar])
-
-        # return ar.html_text(text)
-
+            # lst = [sar.ar2button(label=u"⊕", icon_name=None)]
+            lst = [sar.ar2button()]
+        else:
+            lst = []
+        return obj.get_language_knowledge(*lst)
+        
 
     
 
@@ -286,8 +280,8 @@ class PeriodTable(dd.Table):
     params_layout = "start_date end_date observed_event"
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(PeriodTable, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **filter):
+        qs = super(PeriodTable, self).get_request_queryset(ar, **filter)
 
         pv = ar.param_values
         ce = pv.observed_event
@@ -382,7 +376,6 @@ class TrainingsByPerson(HistoryByPerson, Trainings):
     column_names = 'type sector function remarks \
     start_date end_date duration_text \
     school country state certificates *'
-    auto_fit_column_widths = True
 
 
 #
@@ -466,7 +459,6 @@ class StudiesByPerson(HistoryByPerson, Studies):
     required_roles = dd.login_required(CareerUser)
     column_names = 'type content start_date end_date duration_text school country \
     state education_level *'
-    auto_fit_column_widths = True
     
     insert_layout = """
     start_date end_date
@@ -661,9 +653,10 @@ class ExperiencesByFunction(Experiences):
 
 class ExperiencesByPerson(HistoryByPerson, Experiences):
     required_roles = dd.login_required(CareerUser)
-    auto_fit_column_widths = True
+    
     column_names = "company country start_date end_date duration_text function \
     status duration termination_reason remarks *"
+    
     insert_layout = """
     start_date end_date
     company function

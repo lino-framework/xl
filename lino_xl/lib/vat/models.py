@@ -155,7 +155,8 @@ dd.inject_field(
 #     'ledger.Movement', 'is_base', models.BooleanField(default=False))
 
 dd.inject_field(
-    'contacts.Company',
+    # 'contacts.Company',
+    'contacts.Partner',
     'vat_id',
     models.CharField(_("VAT id"), max_length=200, blank=True))
 

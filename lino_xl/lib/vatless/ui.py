@@ -32,20 +32,22 @@ from lino.utils.xmlgen.html import E
 from lino_xl.lib.ledger.mixins import PartnerRelated
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
+from lino_xl.lib.ledger.mixins import ItemsByVoucher
 
 from .models import AccountInvoice
 
 
-class InvoiceItems(dd.Table):
-    model = 'vatless.InvoiceItem'
-    # auto_fit_column_widths = True
-    order_by = ['voucher', "seqno"]
+# class InvoiceItems(dd.Table):
+#     model = 'vatless.InvoiceItem'
+#     # auto_fit_column_widths = True
+#     order_by = ['voucher', "seqno"]
 
 
-class ItemsByInvoice(InvoiceItems):
+class ItemsByInvoice(ItemsByVoucher):
     """This is the "content" part of an invoice.
 
     """
+    model = 'vatless.InvoiceItem'
     column_names = "project account amount title move_buttons *"
     master_key = 'voucher'
     order_by = ["seqno"]
@@ -93,7 +95,7 @@ class Invoices(PartnerVouchers):
     #     **PartnerVouchers.parameters)
     # params_layout = "project partner state journal year"
     # params_panel_hidden = True
-    column_names = "entry_date id number partner amount user *"
+    column_names = "entry_date id number_with_year partner amount user *"
     detail_layout = InvoiceDetail()
     insert_layout = """
     journal
@@ -124,7 +126,7 @@ class InvoicesByJournal(ByJournal, Invoices):
 
     """
     params_layout = "partner state year"
-    column_names = "number entry_date " \
+    column_names = "number_with_year entry_date " \
         "partner amount due_date user workflow_buttons *"
     insert_layout = """
     partner
@@ -134,7 +136,7 @@ class InvoicesByJournal(ByJournal, Invoices):
 
 
 class ProjectInvoicesByJournal(InvoicesByJournal):
-    column_names = "number entry_date " \
+    column_names = "number_with_year entry_date " \
         "project partner amount due_date user workflow_buttons *"
     insert_layout = """
     project

@@ -77,6 +77,9 @@ invoice item. Return value must be an item of
         # mg = self
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('vat.PrintableInvoicesByJournal')
+        m.add_action('vat.IntracomPurchases')
+        m.add_action('vat.IntracomSales')
+        
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)

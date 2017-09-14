@@ -23,7 +23,8 @@ VatRegimes.clear()
 add = VatRegimes.add_item
 add('10', _("Not subject to VAT"), 'normal')
 add('20', _("Subject to VAT"), 'subject')
-add('30', _("Intra-community"), 'intracom')
+add('30', _("Intracom services"), 'intracom')
+add('35', _("Intracom supplies"), 'intracom_supp')
 
 VatColumns.clear()
 add = VatColumns.add_item
@@ -47,7 +48,7 @@ wfld = DeclarationFields.add_writable_field
 
 # II. Opérations à déclarer (montant hors TVA)
 
-mfld("71", CREDIT, '71', _("Ware"))
+mfld("71", CREDIT, '71', _("Intracom supplies"))
 mfld("72", CREDIT, '72', _("New vehicles"))
 mfld("73", CREDIT, '73', _("Excised products"))
 mfld("75", CREDIT, '75', _("Intracom services"))

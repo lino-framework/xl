@@ -74,15 +74,16 @@ class Slots(dd.Table):
 class Topics(dd.Table):
     model = 'courses.Topic'
     required_roles = dd.login_required(dd.SiteAdmin)
+    stay_in_grid = True
     detail_layout = """
     id name
     courses.LinesByTopic
     courses.CoursesByTopic
     """
-    insert_layout = """
-    name
-    id
-    """
+    # insert_layout = """
+    # name
+    # id
+    # """
 
 
 class Lines(dd.Table):
@@ -121,14 +122,14 @@ class EntriesByTeacher(cal.Events):
     auto_fit_column_widths = True
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         teacher = ar.master_instance
         if teacher is None:
             return []
         if True:
             return []
         # TODO: build a list of courses, then show entries by course
-        qs = super(EntriesByTeacher, self).get_request_queryset(ar)
+        qs = super(EntriesByTeacher, self).get_request_queryset(ar, **kwargs)
         # mycourses = rt.modules.Course.objects.filter(teacher=teacher)
         qs = qs.filter(course__in=teacher.course_set.all())
         return qs
@@ -230,9 +231,9 @@ class Activities(dd.Table):
         return s
 
     @classmethod
-    def get_request_queryset(self, ar):
+    def get_request_queryset(self, ar, **kwargs):
         # dd.logger.info("20160223 %s", self)
-        qs = super(Activities, self).get_request_queryset(ar)
+        qs = super(Activities, self).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
 
@@ -316,6 +317,9 @@ class MyCoursesGiven(Activities):
     This requires the :attr:`partner` field in my user settings to
     point to me as a teacher.
 
+    For users whose :attr:`partner` field is empty, this list shows
+    all courses without teacher.
+
     """
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
@@ -326,7 +330,10 @@ class MyCoursesGiven(Activities):
     @classmethod
     def setup_request(self, ar):
         u = ar.get_user()
-        ar.master_instance = get_child(u.partner, teacher_model)
+        if isinstance(u, teacher_model):
+            ar.master_instance = u
+        elif u.partner is not None:
+            ar.master_instance = get_child(u.partner, teacher_model)
         super(MyCoursesGiven, self).setup_request(ar)
     
 
@@ -358,6 +365,12 @@ class CoursesByTopic(Activities):
     @classmethod
     def get_filter_kw(self, ar, **kw):
         kw.update(line__topic=ar.master_instance)
+        return kw
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
+        kw.update(show_active=dd.YesNo.yes)
         return kw
 
     # @classmethod
@@ -485,8 +498,8 @@ class Enrolments(dd.Table):
         return super(Enrolments, self).get_actor_label()
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Enrolments, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Enrolments, self).get_request_queryset(ar, **kwargs)
         if isinstance(qs, list):
             return qs
         pv = ar.param_values

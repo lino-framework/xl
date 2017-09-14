@@ -171,8 +171,8 @@ class Stars(dd.Table):
     # params_layout = """"""
 
     @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Stars, self).get_request_queryset(ar)
+    def get_request_queryset(self, ar, **kwargs):
+        qs = super(Stars, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
         if pv['type']:
             qs = qs.filter(owner_type=pv['type'])
