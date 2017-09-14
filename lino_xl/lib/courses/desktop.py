@@ -327,7 +327,8 @@ class MyCoursesGiven(Activities):
     @classmethod
     def setup_request(self, ar):
         u = ar.get_user()
-        ar.master_instance = get_child(u.partner, teacher_model)
+        if u.partner is not None:
+            ar.master_instance = get_child(u.partner, teacher_model)
         super(MyCoursesGiven, self).setup_request(ar)
     
 
