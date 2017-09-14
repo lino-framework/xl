@@ -317,6 +317,9 @@ class MyCoursesGiven(Activities):
     This requires the :attr:`partner` field in my user settings to
     point to me as a teacher.
 
+    For users whose :attr:`partner` field is empty, this list shows
+    all courses without teacher.
+
     """
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
