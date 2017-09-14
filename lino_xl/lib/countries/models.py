@@ -147,7 +147,7 @@ class Place(Hierarchical, mixins.BabelNamed):
         if self.show_type:
             s += " (%s)" % str(self.type)
         if self.zip_code:
-            s += " (%s)" % self.zip_code
+            s = self.zip_code + " " + s
         return s
 
     @classmethod
