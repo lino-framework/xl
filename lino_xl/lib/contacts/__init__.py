@@ -1,4 +1,4 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for managing contacts.
@@ -23,12 +23,6 @@ This plugin is being extended by :ref:`welfare` in
 :mod:`lino_welfare.modlib.contacts` or by :ref:`voga` in
 :mod:`lino_voga.modlib.contacts`.
 
-
-The default database comes with the following list of
-:class:`RoleType`:
-
-.. django2rst:: rt.show(contacts.RoleTypes)
-    
 
 """
 
