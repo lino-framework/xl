@@ -16,7 +16,12 @@ from django.db import models
 
 from lino.api import dd, rt, _
 from lino.mixins import Sequenced
+
+from lino.utils.xmlgen.html import E
+
+from .choicelists import VoucherTypes
 from .roles import LedgerUser
+
 # from lino.utils.xmlgen.html import E
 # from lino.modlib.notify.utils import rich_text_to_elems
 
@@ -265,3 +270,89 @@ class ItemsByVoucher(dd.Table):
     slave_grid_format = 'html'
     preview_limit = 0
 
+class VouchersByPartnerBase(dd.VirtualTable):
+    """Shows all ledger vouchers of a given partner.
+    
+    This is a :class:`lino.core.tables.VirtualTable` with a customized
+    slave summary.
+
+    """
+    label = _("Partner vouchers")
+    required_roles = dd.login_required(LedgerUser)
+
+    order_by = ["-entry_date", '-id']
+    master = 'contacts.Partner'
+    slave_grid_format = 'summary'
+
+    _master_field_name = 'partner'
+    _voucher_base = PartnerRelated
+
+    @classmethod
+    def get_data_rows(self, ar):
+        obj = ar.master_instance
+        rows = []
+        if obj is not None:
+            flt = {self._master_field_name: obj}
+            for M in rt.models_by_base(self._voucher_base):
+                rows += list(M.objects.filter(**flt))
+
+            # def by_date(a, b):
+            #     return cmp(b.entry_date, a.entry_date)
+
+            rows.sort(key= lambda i: i.entry_date)
+        return rows
+
+    @dd.displayfield(_("Voucher"))
+    def voucher(self, row, ar):
+        return ar.obj2html(row)
+
+    @dd.virtualfield('ledger.Movement.partner')
+    def partner(self, row, ar):
+        return row.partner
+
+    @dd.virtualfield('ledger.Voucher.entry_date')
+    def entry_date(self, row, ar):
+        return row.entry_date
+
+    @dd.virtualfield('ledger.Voucher.state')
+    def state(self, row, ar):
+        return row.state
+
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+
+        elems = []
+        sar = self.request(master_instance=obj)
+        # elems += ["Partner:", unicode(ar.master_instance)]
+        for voucher in sar:
+            vc = voucher.get_mti_leaf()
+            if vc and vc.state.name == "draft":
+                elems += [ar.obj2html(vc), " "]
+
+        vtypes = []
+        for vt in VoucherTypes.items():
+            if issubclass(vt.model, self._voucher_base):
+                vtypes.append(vt)
+
+        actions = []
+
+        def add_action(btn):
+            if btn is None:
+                return False
+            actions.append(btn)
+            return True
+
+        if not ar.get_user().user_type.readonly:
+            flt = {self._master_field_name: obj}
+            for vt in vtypes:
+                for jnl in vt.get_journals():
+                    sar = vt.table_class.insert_action.request_from(
+                        ar, master_instance=jnl,
+                        known_values=flt)
+                    btn = sar.ar2button(label=unicode(jnl), icon_name=None)
+                    if len(actions):
+                        actions.append(', ')
+                    actions.append(btn)
+
+            elems += [E.br(), _("Create voucher in journal"), " "] + actions
+        return E.div(*elems)
