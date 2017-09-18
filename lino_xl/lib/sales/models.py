@@ -543,7 +543,8 @@ class ProductDocItem(QtyVatItemBase, Bleached):
     def full_clean(self):
         super(ProductDocItem, self).full_clean()
         if self.total_incl and not self.product:
-            if self.get_base_account() is None:
+            tt = self.voucher.get_trade_type()
+            if self.get_base_account(tt) is None:
                 raise ValidationError(
                     _("You must specify a product if there is an amount."))
 
