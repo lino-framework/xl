@@ -258,7 +258,7 @@ class PartnerDetail(dd.DetailLayout):
     name_box
     country region city zip_code:10
     addr1
-    street_prefix street:25 street_no street_box
+    #street_prefix street:25 street_no street_box
     addr2
     """, label=_("Address"))
 
@@ -274,7 +274,7 @@ class PartnerDetail(dd.DetailLayout):
     remarks
     """
 
-    name_box = "prefix name"
+    name_box = "#prefix name"
     info_box = "id language"
 
 
@@ -364,7 +364,7 @@ class Person(Human, Born, Partner):
 
 class PersonDetail(PartnerDetail):
 
-    name_box = "last_name first_name:15 gender prefix:10"
+    name_box = "last_name first_name:15 gender #prefix:10"
     info_box = "id:5 language:10"
     bottom_box = "remarks contacts.RolesByPerson"
 
