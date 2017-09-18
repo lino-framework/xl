@@ -127,7 +127,7 @@ class Competence(UserAuthored, Sequenced):
 
 dd.update_field(Competence, 'user', verbose_name=_("User"))
 
-
+    
 #class Demand(UserAuthored):
 class Demand(dd.Model):
     """A **Skill demand** is when a given *end user* declares to need a
@@ -137,7 +137,7 @@ class Demand(dd.Model):
     .. attribute:: skill
 
     """
-    
+
     allow_cascaded_delete = "demander"
 
     class Meta:
@@ -157,7 +157,7 @@ class Demand(dd.Model):
             "How important this skill is for this demand. "
             "A number between -{0} and +{0}.").format(MAX_WEIGHT))
     # description = dd.RichTextField(_("Description"), blank=True)
-    
+
 
 # if dd.is_installed('tickets'):
 #     dd.inject_field(
