@@ -152,7 +152,7 @@ class MatchRulesByAccount(MatchRules):
     column_names = "journal *"
 
 
-class MatchRulesByJournal(ByJournal, MatchRules):
+class MatchRulesByJournal(MatchRules):
     order_by = ["account"]
     master_key = 'journal'
     column_names = "account *"
