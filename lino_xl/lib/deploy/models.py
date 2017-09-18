@@ -250,7 +250,7 @@ class Deployment(Sequenced, Workable):
     #     self.milestone.after_ui_save(ar, cw)
 
     @dd.displayfield(_("Actions"))
-    def workflow_buttons(self, ar):
+    def workflow_buttons(self, ar, **kwargs):
         if ar is None:
             return ''
         l = super(Deployment, self).get_workflow_buttons(ar)
