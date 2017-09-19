@@ -356,7 +356,7 @@ class BodyTemplateContentField(dd.VirtualField):
         if not fn:
             return "(%s)" % _(
                 "Excerpt type \"%s\" has no body_template") % obj.excerpt_type
-        return file(fn).read().decode('utf8')
+        return open(fn).read().decode('utf8')
 
     def set_value_in_object(self, ar, obj, value):
         if ar is None or value is None:
@@ -376,7 +376,7 @@ class BodyTemplateContentField(dd.VirtualField):
         settings.SITE.makedirs_if_missing(dirname(local_file))
         value = value.encode('utf-8')
         logger.info("Wrote body_template_content %s", local_file)
-        file(local_file, "w").write(value)
+        open(local_file, "w").write(value)
 
 ##
 ##

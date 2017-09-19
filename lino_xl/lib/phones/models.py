@@ -56,7 +56,7 @@ class ContactDetail(dd.Model):
                     o.primary = False
                     o.save()
                     ar.set_response(refresh_all=True)
-        k = self.contact_detail.field_name
+        k = self.detail_type.field_name
         if k:
             watcher = ChangeWatcher(mi)
             setattr(mi, k, self.value)

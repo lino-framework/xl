@@ -1,15 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
-#
+# Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""
-Model mixins for `lino_xl.lib.cal`.
-
-.. autosummary::
-
-
-"""
 
 from __future__ import unicode_literals
 from builtins import str
@@ -76,12 +68,6 @@ class MoveEntryNext(dd.MultipleRowAction):
 
 
 class UpdateEntries(dd.MultipleRowAction):
-    """Generate or update the automatic events controlled by this object.
-
-    This action is installed as :attr:`update_events` on
-    :class:`EventGenerator`.
-
-    """
     label = _('Update Events')
     button_text = ' ⚡ '  # 26A1
     help_text = _('Create or update the automatic events '
@@ -94,10 +80,6 @@ class UpdateEntries(dd.MultipleRowAction):
 
 
 class UpdateEntriesByEvent(UpdateEntries):
-    """Update all events of this series. This is installed as
-    :attr:`update_events` on :class:`Event`.
-
-    """
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
             return False
@@ -109,13 +91,6 @@ class UpdateEntriesByEvent(UpdateEntries):
 
 
 class EventGenerator(dd.Model):
-    """
-    Base class for things that generate a suite of events.
-
-    See :ref:`specs.cal.automatic_events`.
-
-    """
-
     class Meta:
         abstract = True
 
@@ -275,17 +250,6 @@ class EventGenerator(dd.Model):
         pass
 
     def get_wanted_auto_events(self, ar):
-        """Return a tuple of two dicts of "wanted" and "unwanted" events.
-
-        Both dicts map a sequence number to an Event instances.
-        `wanted` holds events to be saved,
-        `unwanted` holds events to be deleted.
-
-        If an event has been manually moved to another date, all
-        subsequent events adapt to the new rythm (except those which
-        have themselves been manually modified).
-                        
-        """
 
         wanted = dict()
         unwanted = dict()
@@ -519,35 +483,6 @@ class EventGenerator(dd.Model):
 
 class RecurrenceSet(Started, Ended):
 
-    """Mixin for models that express a set of repeating calendar events.
-    See :ref:`specs.cal.automatic_events`.
-
-    .. attribute:: start_date
-    .. attribute:: start_time
-    .. attribute:: end_date
-    .. attribute:: end_time
-
-    .. attribute:: every
-    .. attribute:: every_unit
-    .. attribute:: max_events
-
-    .. attribute:: monday
-    .. attribute:: tuesday
-    .. attribute:: wednesday
-    .. attribute:: thursday
-    .. attribute:: friday
-    .. attribute:: saturday
-    .. attribute:: sunday
-
-
-    .. attribute:: weekdays_text
-
-        A virtual field returning the textual formulation of the
-        weekdays where the recurrence occurs.
-    
-        Usage examples see :ref:`book.specs.cal`.
-
-    """
 
     class Meta:
         abstract = True
@@ -715,15 +650,6 @@ dd.update_field(RecurrenceSet, 'start_date', default=dd.today)
 
 class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
                   UserAuthored):
-    """Base class for :class:`lino_xl.lib.rooms.models.Booking` and
-    :class:`lino.modlib.courses.models.Course`.
-
-    Inherits from both :class:`EventGenerator` and :class:`RecurrenceSet`.
-
-    .. attribute:: room
-    .. attribute:: max_date
-
-    """
 
     class Meta:
         abstract = True
@@ -787,17 +713,6 @@ class Component(Started,
                 ChangeObservable,
                 mixins.CreatedModified):
 
-    """Abstract base class for :class:`Event` and :class:`Task`.
-
-    .. attribute:: auto_type
-
-        Contains the sequence number if this is an automatically
-        generated component. Otherwise this field is empty.
-
-        Automatically generated components behave differently at
-        certain levels.
-
-    """
     workflow_state_field = 'state'
     manager_roles_required = dd.login_required(
         (OfficeStaff, OfficeOperator))

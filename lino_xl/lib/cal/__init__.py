@@ -8,10 +8,7 @@
 .. autosummary::
    :toctree:
 
-    mixins
     utils
-    models
-    choicelists
     actions
     ui
     workflows
@@ -85,7 +82,8 @@ class Plugin(ad.Plugin):
                      # 'lino.modlib.notify',
                      'lino_xl.lib.xl']
 
-    partner_model = 'contacts.Partner'
+    # partner_model = 'contacts.Partner'
+    partner_model = 'contacts.Person'
     
     ignore_dates_before = None
     """Ignore dates before the given date.  

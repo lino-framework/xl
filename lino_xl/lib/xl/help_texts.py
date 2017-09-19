@@ -82,96 +82,6 @@ belongs to a given Board."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
 Default value is 5 years after today."""),
-    'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
-    'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
-choicelist."""),
-    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the duration_unit field of an
-Event."""),
-    'lino_xl.lib.cal.DurationUnits.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
-    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
-data of that year."""),
-    'lino_xl.lib.cal.Recurrencies.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.mixins.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
-    'lino_xl.lib.cal.mixins.UpdateEntriesByEvent' : _("""Update all events of this series. This is installed as
-update_events on Event."""),
-    'lino_xl.lib.cal.mixins.EventGenerator' : _("""Base class for things that generate a suite of events."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
-See specs.cal.automatic_events."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
-weekdays where the recurrence occurs."""),
-    'lino_xl.lib.cal.mixins.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
-lino.modlib.courses.models.Course."""),
-    'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
-    'lino_xl.lib.cal.mixins.Component.auto_type' : _("""Contains the sequence number if this is an automatically
-generated component. Otherwise this field is empty."""),
-    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
-lino_xl.lib.cal.management.commands.watch_calendars,
-and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
-can see the EntriesByRoom that happened (or will happen)
-there.  A Room has a multilingual name."""),
-    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
-    'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
-    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
-"appointments" (i.e. whose time and place have been agreed
-upon with other users or external parties)."""),
-    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
-    'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
-unavailable for other locking events at the same time."""),
-    'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
-    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
-    'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
-It corresponds to what the extensible CalendarPanel calls "Calendars" """),
-    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to to something
-(and optionally wants to get reminded about it)."""),
-    'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
-    'lino_xl.lib.cal.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
-calendar entries."""),
-    'lino_xl.lib.cal.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
-    'lino_xl.lib.cal.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
-entries."""),
-    'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
-    'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
-    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this entry
-according to the suggestions."""),
-    'lino_xl.lib.cal.ExtAllDayField' : _("""An editable virtual field needed for
-communication with the Ext.ensible CalendarPanel
-because we consider the "all day" checkbox
-equivalent to "empty start and end time fields"."""),
-    'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
-calendar."""),
-    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
-Only start_date is mandatory."""),
-    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
-    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
-    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
-entry."""),
-    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
-field pointing to a given EventType, which holds
-extended configurable information about this entry."""),
-    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
-rules defined by the workflow, that's why we sometimes refer
-to it as the life cycle."""),
-    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
-the same time."""),
-    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
-all entries on that day (EntriesByDay)."""),
-    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
-button which opens the ConflictingEvents table for this event."""),
-    'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
-    'lino_xl.lib.cal.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
-    'lino_xl.lib.cal.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
-    'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of days
-allowed by their type."""),
-    'lino_xl.lib.cal.LongEntryChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
-given event."""),
-    'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
-    'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
-    'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
-    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
     'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
     'lino_xl.lib.cal.Rooms.model' : _("""alias of Room"""),
     'lino_xl.lib.cal.TasksByUser' : _("""Shows the list of tasks for this user."""),
@@ -639,7 +549,7 @@ certain value."""),
     'lino_xl.lib.reception.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
 partner."""),
     'lino_xl.lib.reception.AppointmentsByPartner.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of Person"""),
     'lino_xl.lib.reception.ExpectedGuests' : _("""General table of all expected guests."""),
     'lino_xl.lib.reception.ExpectedGuests.model' : _("""alias of Guest"""),
     'lino_xl.lib.reception.Visitors' : _("""Common base class for the following tables:"""),
@@ -873,6 +783,85 @@ must resolve using resolve_states."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevats.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
+    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
+lino_xl.lib.cal.management.commands.watch_calendars,
+and local modifications will be sent back to the remote calendar."""),
+    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
+can see the EntriesByRoom that happened (or will happen)
+there.  A Room has a multilingual name."""),
+    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
+    'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
+    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
+"appointments" (i.e. whose time and place have been agreed
+upon with other users or external parties)."""),
+    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
+    'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
+unavailable for other locking events at the same time."""),
+    'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
+    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
+It corresponds to what the extensible CalendarPanel calls "Calendars" """),
+    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to to something
+(and optionally wants to get reminded about it)."""),
+    'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
+    'lino_xl.lib.cal.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
+calendar entries."""),
+    'lino_xl.lib.cal.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
+    'lino_xl.lib.cal.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
+entries."""),
+    'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
+    'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
+    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this entry
+according to the suggestions."""),
+    'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
+calendar."""),
+    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
+Only start_date is mandatory."""),
+    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
+    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
+    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
+    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
+entry."""),
+    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
+field pointing to a given EventType, which holds
+extended configurable information about this entry."""),
+    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
+rules defined by the workflow, that's why we sometimes refer
+to it as the life cycle."""),
+    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
+the same time."""),
+    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
+all entries on that day (EntriesByDay)."""),
+    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
+button which opens the ConflictingEvents table for this event."""),
+    'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
+given event."""),
+    'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
+    'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
+    'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
+    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
+    'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
+    'lino_xl.lib.cal.EventGenerator.do_update_events' : _("""See UpdateEntries."""),
+    'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
+See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
+weekdays where the recurrence occurs."""),
+    'lino_xl.lib.cal.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
+lino.modlib.courses.models.Course."""),
+    'lino_xl.lib.cal.Component' : _("""Abstract base class for Event and Task."""),
+    'lino_xl.lib.cal.Component.auto_type' : _("""Contains the sequence number if this is an automatically
+generated component. Otherwise this field is empty."""),
+    'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
+    'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
+choicelist."""),
+    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the
+lino_xl.lib.cal.Event.duration_unit field of a calendar
+entry."""),
+    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
+    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
+data of that year."""),
+    'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
+    'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
     'lino_xl.lib.accounts.AccountType' : _("""The base class for all account types."""),
     'lino_xl.lib.accounts.BankAccounts' : _("""A subclass of Assets."""),
     'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types. See AccountType."""),
