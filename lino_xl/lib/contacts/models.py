@@ -2,24 +2,6 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.contacts`.
-
-- The :class:`Partner` model (and its two subclasses
-  :class:`Person` and :class:`Company`)
-
-- A :class:`CompanyType` model can be used to classify companies.
-
-- The :class:`Role` and :class:`RoleType` models store "who is who"
-  information.
-
-  TODO: rename :class:`Role` to "Contact", :class:`RoleType` to "Role"
-  and field `Contact.type` to `role`.  Move Partner, Person and
-  Company into a separate plugin "partners".
-
-.. autosummary::
-
-"""
-
 
 from __future__ import unicode_literals
 from builtins import str
@@ -60,52 +42,6 @@ PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
 @dd.python_2_unicode_compatible
 class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
-    """A Partner is any physical or moral person for which you want to
-    keep contact data (address, phone numbers, ...).
-
-    A :class:`Partner` can act as the recipient of a sales invoice, as
-    the sender of an incoming purchases invoice, ...
-
-    A Partner has at least a name and usually also an "official" address.
-
-    Predefined subclasses of Partners are :class:`Person` for physical
-    persons and :class:`Company` for companies, organisations and any
-    kind of non-formal Partners.
-
-    .. attribute:: name
-
-        The full name of this partner. Used for alphabetic sorting.
-        Subclasses may hide this field and fill it automatically,
-        e.g. saving a :class:`Person` will automatically set her
-        `name` field to "last_name, first_name".
-
-    .. attribute:: prefix
-
-        An optional name prefix. For organisations this is inserted
-        before the name, for persons this is inserted between first
-        name and last name (see
-        :meth:`lino.mixins.human.Human.get_last_name_prefix`).
-
-    .. attribute:: email
-
-        The primary email address.
-
-    .. attribute:: phone
-
-        The primary phone number.  Note that Lino does not ignore
-        formatting characters in phone numbers when searching.  For
-        example, if you enter "087/12.34.56" as a phone number, then a
-        search for phone number containing "1234" will *not* find it.
-
-    .. attribute:: gsm
-
-        The primary mobile phone number.
-
-    .. attribute:: language
-
-        The language to use when communicating with this partner.
-
-    """
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
@@ -316,11 +252,6 @@ class PartnersByCountry(Partners):
 
 
 class Person(Human, Born, Partner):
-    """
-    A physical person and an individual human being.
-    See also :ref:`lino.tutorial.human`.
-
-    """
     class Meta(object):
         app_label = 'contacts'
         abstract = dd.is_abstract_model(__name__, 'Person')
@@ -370,9 +301,6 @@ class PersonDetail(PartnerDetail):
 
 
 class Persons(Partners):
-    """
-    List of all Persons.
-    """
     required_roles = dd.login_required(SimpleContactsUser)
     model = "contacts.Person"
     order_by = ["last_name", "first_name", "id"]
@@ -388,9 +316,6 @@ class Persons(Partners):
 
 
 class CompanyType(mixins.BabelNamed):
-    """A type of organization. Used by :attr:`Company.type` field.
-
-    """
     class Meta(object):
         app_label = 'contacts'  # avoid RemovedInDjango19Warning
         abstract = dd.is_abstract_model(__name__, 'CompanyType')
@@ -408,16 +333,6 @@ class CompanyTypes(dd.Table):
 
 
 class Company(Partner):
-    """An organisation.  The internal name is "Company" for historical
-    reasons and because that's easier to type.
-
-    See also :srcref:`docs/tickets/14`.
-
-  .. attribute:: type
-    
-    Pointer to the :class:`CompanyType`.
-
-    """
     class Meta(object):
         abstract = dd.is_abstract_model(__name__, 'Company')
         app_label = 'contacts'
@@ -485,15 +400,6 @@ class Companies(Partners):
 # class ContactType(mixins.BabelNamed):
 class RoleType(mixins.BabelNamed):
 
-    """A :class:`RoleType` is "what a given :class:`Person` can be for a
-    given :class:`Company`".
-
-    TODO: rename "RoleType" to "Function" or "ContactType".
-    
-    RoleType,name is used at "in seiner Eigenschaft als ..."  in
-    document templates for contracts.
-
-    """
     class Meta(object):
         app_label = 'contacts'  # avoid RemovedInDjango19Warning
         abstract = dd.is_abstract_model(__name__, 'RoleType')
@@ -508,24 +414,6 @@ class RoleTypes(dd.Table):
 
 @dd.python_2_unicode_compatible
 class Role(dd.Model, Addressable):
-
-    """A Contact (historical model name :class:`Role`) is a
-    :class:`Person` who has a given role (:class:`ContactType`) in a
-    given :class:`Company`.
-
-    .. attribute:: company
-
-        The company where this person has a role.
-
-    .. attribute:: type
-
-        The role of this person in this company.
-    
-    .. attribute:: person
-
-        The person having this role in this company.
-    
-    """
 
     class Meta(object):
         app_label = 'contacts'  # avoid RemovedInDjango19Warning

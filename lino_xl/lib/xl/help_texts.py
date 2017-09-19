@@ -179,73 +179,6 @@ a given client."""),
     'lino_xl.lib.coachings.roles.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
     'lino_xl.lib.coachings.roles.CoachingsStaff' : _("""A user who can configure coaching functionality."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
-or a company, the latter potentially represented by a contact
-person having a given role in that company.  Typical usages are
-invoices or contracts."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino_xl.lib.contacts.models.Company."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.contact_person' : _("""Pointer to lino_xl.lib.contacts.models.Person."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.contact_role' : _("""The optional Role
-of the contact_person within company."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
-company, except when that field is empty, in which
-case partner contains the contact_person.  If both
-fields are empty, then partner contains None."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
-printing a postal address for this.
-This is typically either the company or
-contact_person (if one of these fields is
-non-empty). It may also be a
-lino_xl.lib.contacts.models.Role object."""),
-    'lino_xl.lib.contacts.mixins.PartnerDocument' : _("""Adds two fields 'partner' and 'person' to this model, making it
-something that refers to a "partner".  person means a "contact
-person" for the partner."""),
-    'lino_xl.lib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
-    'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
-keep contact data (address, phone numbers, ...)."""),
-    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
-Subclasses may hide this field and fill it automatically,
-e.g. saving a Person will automatically set her
-name field to "last_name, first_name"."""),
-    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
-before the name, for persons this is inserted between first
-name and last name (see
-lino.mixins.human.Human.get_last_name_prefix())."""),
-    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
-    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
-formatting characters in phone numbers when searching.  For
-example, if you enter "087/12.34.56" as a phone number, then a
-search for phone number containing "1234" will not find it."""),
-    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
-    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
-    'lino_xl.lib.contacts.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
-returns simply the name, optionally prefixed by the
-prefix, ignoring any arguments, but
-e.g. Human overrides this."""),
-    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
-See also lino.tutorial.human."""),
-    'lino_xl.lib.contacts.Persons' : _("""List of all Persons."""),
-    'lino_xl.lib.contacts.Persons.model' : _("""alias of Person"""),
-    'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
-    'lino_xl.lib.contacts.Company.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.contacts.Company.full_name' : _("""Deserves more documentation."""),
-    'lino_xl.lib.contacts.RoleType' : _("""A RoleType is "what a given Person can be for a
-given Company"."""),
-    'lino_xl.lib.contacts.Role' : _("""A Contact (historical model name Role) is a
-Person who has a given role (ContactType) in a
-given Company."""),
-    'lino_xl.lib.contacts.Role.company' : _("""The company where this person has a role."""),
-    'lino_xl.lib.contacts.Role.type' : _("""The role of this person in this company."""),
-    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
-    'lino_xl.lib.contacts.RolesByPerson' : _("""Shows all roles of a person."""),
-    'lino_xl.lib.contacts.RolesByPerson.master' : _("""alias of Person"""),
-    'lino_xl.lib.contacts.RolesByPerson.model' : _("""alias of Role"""),
-    'lino_xl.lib.contacts.Organisation' : _("""alias of Company"""),
-    'lino_xl.lib.contacts.roles.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
-    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to full contacts functionality."""),
-    'lino_xl.lib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
     'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
 to True if you live in a country like Belgium.  Belgium is
@@ -862,6 +795,69 @@ entry."""),
 data of that year."""),
     'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
+    'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
+    'lino_xl.lib.contacts.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
+    'lino_xl.lib.contacts.ContactsUser' : _("""A user who has access to full contacts functionality."""),
+    'lino_xl.lib.contacts.ContactsStaff' : _("""A user who can configure contacts functionality."""),
+    'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
+    'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
+keep contact data (address, phone numbers, ...)."""),
+    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
+Subclasses may hide this field and fill it automatically,
+e.g. saving a Person will automatically set her
+name field to "last_name, first_name"."""),
+    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
+before the name, for persons this is inserted between first
+name and last name (see
+lino.mixins.human.Human.get_last_name_prefix())."""),
+    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
+    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
+formatting characters in phone numbers when searching.  For
+example, if you enter "087/12.34.56" as a phone number, then a
+search for phone number containing "1234" will not find it."""),
+    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
+    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.Persons' : _("""A physical person and an individual human being.
+See also lino.tutorial.human."""),
+    'lino_xl.lib.contacts.Companies' : _("""An organisation.  The verbose name is "Organization" while the
+internal name is "Company" because the latter easier to type and
+for historical reasons."""),
+    'lino_xl.lib.contacts.Companies.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.Companies.phone' : _("""These fields (and some others) are defined in the base model
+Partner, they are what companies and persons have in
+common."""),
+    'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
+    'lino_xl.lib.contacts.RoleType' : _("""A function (RoleType) is what a given Person
+can be in a given Company."""),
+    'lino_xl.lib.contacts.RoleType.name' : _("""A translatable designation. Used e.g. in document templates
+for contracts."""),
+    'lino_xl.lib.contacts.Role' : _("""A role is when a given person has a given function
+(ContactType) in a given organization."""),
+    'lino_xl.lib.contacts.Role.company' : _("""The organization where this person has this role."""),
+    'lino_xl.lib.contacts.Role.type' : _("""The function of this person in this company."""),
+    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.ContactRelated' : _("""Model mixin for things that relate to either a private person
+or a company, the latter potentially represented by a contact
+person having a given role in that company.  Typical usages are
+invoices or contracts."""),
+    'lino_xl.lib.contacts.ContactRelated.company' : _("""Pointer to Company."""),
+    'lino_xl.lib.contacts.ContactRelated.contact_person' : _("""Pointer to Person."""),
+    'lino_xl.lib.contacts.ContactRelated.contact_role' : _("""The optional Role
+of the contact_person within company."""),
+    'lino_xl.lib.contacts.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
+company, except when that field is empty, in which
+case partner contains the contact_person.  If both
+fields are empty, then partner contains None."""),
+    'lino_xl.lib.contacts.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
+printing a postal address for this.
+This is typically either the company or
+contact_person (if one of these fields is
+non-empty). It may also be a
+lino_xl.lib.contacts.models.Role object."""),
+    'lino_xl.lib.contacts.PartnerDocument' : _("""Deprecated.
+Adds two fields 'partner' and 'person' to this model, making it
+something that refers to a "partner".  person means a "contact
+person" for the partner."""),
     'lino_xl.lib.accounts.AccountType' : _("""The base class for all account types."""),
     'lino_xl.lib.accounts.BankAccounts' : _("""A subclass of Assets."""),
     'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types. See AccountType."""),
