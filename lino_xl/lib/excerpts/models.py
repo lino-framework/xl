@@ -356,7 +356,10 @@ class BodyTemplateContentField(dd.VirtualField):
         if not fn:
             return "(%s)" % _(
                 "Excerpt type \"%s\" has no body_template") % obj.excerpt_type
-        return open(fn).read().decode('utf8')
+        if six.PY2:
+            return open(fn).read().decode('utf8')
+        else:
+            return open(fn).read()
 
     def set_value_in_object(self, ar, obj, value):
         if ar is None or value is None:
