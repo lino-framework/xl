@@ -817,7 +817,8 @@ example, if you enter "087/12.34.56" as a phone number, then a
 search for phone number containing "1234" will not find it."""),
     'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
-    'lino_xl.lib.contacts.Persons' : _("""A physical person and an individual human being.
+    'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
+    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
 See also lino.tutorial.human."""),
     'lino_xl.lib.contacts.Companies' : _("""An organisation.  The verbose name is "Organization" while the
 internal name is "Company" because the latter easier to type and
