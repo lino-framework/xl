@@ -215,7 +215,7 @@ class OffersByDemander(Offers):
 
 if dd.is_installed('tickets'):
 
-    from lino_xl.lib.tickets.roles import Triager, TicketsUser
+    from lino_xl.lib.tickets.roles import Triager, Reporter
     from lino_xl.lib.tickets.ui import Tickets
 
 
@@ -261,7 +261,7 @@ if dd.is_installed('tickets'):
         """
         master = dd.plugins.faculties.end_user_model
         label = _("Where I can help")
-        required_roles = dd.login_required(TicketsUser)
+        required_roles = dd.login_required(Reporter)
         column_names = 'overview:50 needed_skills ' \
                        'workflow_buttons:30 *'
         params_panel_hidden = True
