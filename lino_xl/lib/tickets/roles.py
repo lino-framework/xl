@@ -4,26 +4,28 @@
 
 """
 
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole  #, SiteUser
 
-class TicketsUser(SiteUser):
-    """A user who can create new tickets.
+class TicketsReader(UserRole):
+    pass
 
-    """
-
-class Searcher(TicketsUser):    
+class Searcher(UserRole):    
     """A user who can see all tickets.
 
     """
 
-
-class Triager(Searcher):
+class Triager(UserRole):
     """A user who is responsible for triaging new tickets.
 
     """
 
+class Reporter(UserRole):
+    """A user who can create new tickets and edit their own tickets.
 
-class TicketsStaff(Triager):
+    """
+
+
+class TicketsStaff(UserRole):
     """Can configure tickets functionality.
 
     """

@@ -13,7 +13,7 @@ from lino.utils.xmlgen.html import E
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from lino.core.roles import Explorer
-from lino_xl.lib.tickets.roles import TicketsStaff, TicketsUser
+from lino_xl.lib.tickets.roles import TicketsStaff, Triager, Reporter
 from lino.modlib.users.mixins import My
 from lino.mixins.periods import ObservedDateRange
 
@@ -48,7 +48,7 @@ class Repositories(dd.Table):
 
 class Commits(dd.Table):
     """Base table for Commits"""
-    required_roles = dd.login_required((TicketsUser,))
+    required_roles = dd.login_required((Triager, Reporter))
     model = 'github.Commit'
     column_names = 'repository sha ticket user git_user summary created comment:10 *'
     detail_layout = """

@@ -1,16 +1,14 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for managing contacts.
 
+See :doc:`/specs/contacts`.
+
 .. autosummary::
    :toctree:
 
-    roles
-    choicelists
-    models
     utils
-    mixins
     dummy
     fixtures.std
     fixtures.demo
@@ -19,33 +17,18 @@
     management.commands.garble_persons
 
 
-This plugin is being extended by :ref:`welfare` in
-:mod:`lino_welfare.modlib.contacts` or by :ref:`voga` in
-:mod:`lino_voga.modlib.contacts`.
-
-
-The default database comes with the following list of
-:class:`RoleType`:
-
-.. django2rst:: rt.show(contacts.RoleTypes)
-    
-
 """
 
 from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.plugin.Plugin`."
-
     verbose_name = _("Contacts")
-
     needs_plugins = ['lino_xl.lib.countries', 'lino.modlib.system']
 
     ## settings
 
     region_label = _('Region')
-    """The `verbose_name` of the `region` field."""
 
     def post_site_startup(self, site):
         rdm = site.kernel.memo_parser.register_django_model
@@ -68,7 +51,6 @@ class Plugin(ad.Plugin):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('contacts.Roles')
         m.add_action('contacts.Partners')
-
 
 
             

@@ -44,6 +44,7 @@ class Plugin(ad.Plugin):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         # m.add_action('tickets.MyCompetences')
+        # m.add_action('tickets.PublicTickets')
         m.add_action('tickets.MyTickets')
         # m.add_action('tickets.MyTicketsToWork') #In noi
         if site.is_installed('faculties'):
@@ -51,7 +52,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.TicketsToDo')
         # m.add_action('tickets.MyOwnedTickets')
         m.add_action('tickets.ActiveTickets')
-        m.add_action('tickets.AllTickets')
+        m.add_action('tickets.Tickets')
         # m.add_action('tickets.MyKnownProblems')
         m.add_action('tickets.UnassignedTickets')
         # m.add_action('tickets.ActiveProjects')
@@ -85,6 +86,6 @@ class Plugin(ad.Plugin):
             yield self.site.models.tickets.MySitesDashboard
             # yield self.site.models.tickets.MyTicketsToWork #in noi
             yield self.site.models.tickets.TicketsToTriage
-            # else:
-        #     yield self.site.models.tickets.   PublicTickets
+        # else:
+        #     yield self.site.models.tickets.PublicTickets
     

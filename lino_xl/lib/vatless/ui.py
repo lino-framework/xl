@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015 Luc Saffre
+# Copyright 2015-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -27,14 +27,11 @@ from __future__ import unicode_literals
 
 from lino.api import dd, rt, _
 
-from lino.utils.xmlgen.html import E
-
-from lino_xl.lib.ledger.mixins import PartnerRelated
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 
-from .models import AccountInvoice
+# from .models import AccountInvoice
 
 
 # class InvoiceItems(dd.Table):
@@ -149,37 +146,12 @@ class ProjectInvoicesByJournal(InvoicesByJournal):
 VoucherTypes.add_item_lazy(InvoicesByJournal, _("Invoices"))
 VoucherTypes.add_item_lazy(ProjectInvoicesByJournal, _("Project invoices"))
 
+from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
 
-class VouchersByPartner(dd.VirtualTable):
-    """Shows all ledger vouchers of a given partner.
+class VouchersByPartner(VouchersByPartnerBase):
+    column_names = "entry_date voucher amount state"
+    # _voucher_base = AccountInvoice
     
-    This is a :class:`lino.core.tables.VirtualTable` with a customized
-    slave summary.
-
-    """
-    label = _("Partner vouchers")
-    order_by = ["-date", '-id']
-    master = 'contacts.Partner'
-    slave_grid_format = 'summary'
-
-    column_names = "date voucher amount state"
-    _master_field_name = 'partner'
-
-    @classmethod
-    def get_data_rows(self, ar):
-        obj = ar.master_instance
-        rows = []
-        if obj is not None:
-            flt = {self._master_field_name: obj}
-            for M in rt.models_by_base(AccountInvoice):
-                rows += list(M.objects.filter(**flt))
-
-            def by_date(a, b):
-                return cmp(b.entry_date, a.entry_date)
-
-            rows.sort(by_date)
-        return rows
-
     @dd.displayfield(_("Voucher"))
     def voucher(self, row, ar):
         return ar.obj2html(row)
@@ -189,59 +161,7 @@ class VouchersByPartner(dd.VirtualTable):
     #     def project(self, row, ar):
     #         return row.project
 
-    @dd.virtualfield('ledger.Movement.partner')
-    def partner(self, row, ar):
-        return row.partner
-
-    @dd.virtualfield('ledger.Voucher.entry_date')
-    def date(self, row, ar):
-        return row.entry_date
-
-    @dd.virtualfield('ledger.Voucher.state')
-    def state(self, row, ar):
-        return row.state
-
     @dd.virtualfield('vatless.AccountInvoice.amount')
     def amount(self, row, ar):
         return row.amount
-
-    @classmethod
-    def get_slave_summary(self, obj, ar):
-
-        elems = []
-        sar = self.request(master_instance=obj)
-        # elems += ["Partner:", unicode(ar.master_instance)]
-        for voucher in sar:
-            vc = voucher.get_mti_leaf()
-            if vc and vc.state.name == "draft":
-                elems += [ar.obj2html(vc), " "]
-
-        vtypes = []
-        for vt in VoucherTypes.items():
-            if issubclass(vt.model, PartnerRelated):
-                vtypes.append(vt)
-
-        actions = []
-
-        def add_action(btn):
-            if btn is None:
-                return False
-            actions.append(btn)
-            return True
-
-        if not ar.get_user().user_type.readonly:
-            flt = {self._master_field_name: obj}
-            for vt in vtypes:
-                for jnl in vt.get_journals():
-                    sar = vt.table_class.insert_action.request_from(
-                        ar, master_instance=jnl,
-                        known_values=flt)
-                    btn = sar.ar2button(label=unicode(jnl), icon_name=None)
-                    if len(actions):
-                        actions.append(', ')
-                    actions.append(btn)
-
-            elems += [E.br(), _("Create voucher in journal"), " "] + actions
-        return E.div(*elems)
-
 

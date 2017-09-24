@@ -14,52 +14,6 @@ from lino.utils.xmlgen.html import E, lines2p
 
 
 class ContactRelated(dd.Model):
-    """Model mixin for things that relate to **either** a private person
-    **or** a company, the latter potentially represented by a contact
-    person having a given role in that company.  Typical usages are
-    **invoices** or **contracts**.
-
-    Adds 3 database fields and two virtual fields.
-
-    .. attribute:: company
-
-        Pointer to :class:`lino_xl.lib.contacts.models.Company`.
-
-    .. attribute:: contact_person
-
-        Pointer to :class:`lino_xl.lib.contacts.models.Person`.
-
-    .. attribute:: contact_role
-
-        The optional :class:`Role <lino_xl.lib.contacts.models.Role>`
-        of the :attr:`contact_person` within :attr:`company`.
-
-    .. attribute:: partner
-
-        (Virtual field) The "legal partner", i.e. usually the
-        :attr:`company`, except when that field is empty, in which
-        case `partner` contains the :attr:`contact_person`.  If both
-        fields are empty, then `partner` contains `None`.
-
-    .. attribute:: recipient
-
-        (Virtual field) The :class:`Addressable
-        <lino.utils.addressable.Addressable>` object to use when
-        printing a postal address for this.
-        This is typically either the :attr:`company` or
-        :attr:`contact_person` (if one of these fields is
-        non-empty). It may also be a
-        :class:`lino_xl.lib.contacts.models.Role` object.
-
-
-    Difference between :attr:`partner` and `recipient`: an invoice can
-    be issued and addressed to a given person in a company (i.e. a
-    :class:`Role <lino_xl.lib.contacts.models.Role>` object), but
-    accountants want to know the juristic person, which is either the
-    :attr:`company` or a private :attr:`person` (if no :attr:`company`
-    specified), but not a combination of both.
-
-    """
 
     class Meta(object):
         abstract = True
@@ -192,18 +146,10 @@ class ContactRelated(dd.Model):
 
 class PartnerDocument(dd.Model):
 
-    """Adds two fields 'partner' and 'person' to this model, making it
-    something that refers to a "partner".  `person` means a "contact
-    person" for the partner.
-
-    """
-
     class Meta(object):
         abstract = True
 
-    company = dd.ForeignKey("contacts.Company",
-                            blank=True, null=True)
-
+    company = dd.ForeignKey("contacts.Company", blank=True, null=True)
     person = dd.ForeignKey("contacts.Person", blank=True, null=True)
     
     def get_partner(self):

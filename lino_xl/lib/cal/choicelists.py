@@ -3,12 +3,6 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""
-Choicelists for this plugin.
-
-Functional specs see :ref:`book.specs.cal`.
-
-"""
 
 from __future__ import unicode_literals
 
@@ -21,9 +15,6 @@ from lino.utils.format_date import fds
 from .utils import day_and_month
 
 class Weekdays(dd.ChoiceList):
-    """A choicelist with the seven days of a week.
-
-    """
     verbose_name = _("Weekday")
 add = Weekdays.add_item
 add('1', _('Monday'), 'monday')
@@ -37,28 +28,11 @@ add('7', _('Sunday'), 'sunday')
 WORKDAYS = frozenset([
     Weekdays.get_by_name(k)
     for k in 'monday tuesday wednesday thursday friday'.split()])
-"The five workdays of the week (Monday to Friday)."
-
-
 
 
 class DurationUnit(dd.Choice):
-    """Base class for the choices in the :class:`DurationUnits`
-    choicelist.
-
-    """
 
     def add_duration(unit, orig, value):
-        """Return a date or datetime obtained by adding `value`
-        times this `unit` to the specified value `orig`.
-        Returns None is `orig` is empty.
-        
-        This is intended for use as a `curried magic method` of a
-        specified list item:
-
-        Examples see :ref:`book.specs.cal`.
-        
-        """
         if orig is None:
             return None
         if unit.value == 's':
@@ -103,11 +77,6 @@ class DurationUnit(dd.Choice):
 
 class DurationUnits(dd.ChoiceList):
 
-    """A list of possible values for the `duration_unit` field of an
-    :class:`Event`.
-
-
-    """
     verbose_name = _("Duration Unit")
     item_class = DurationUnit
 
@@ -123,22 +92,6 @@ add('Y', _('years'), 'years')
 
 
 class Recurrencies(dd.ChoiceList):
-    """List of possible choices for a 'recurrency' field.
-
-    Note that a recurrency (an item of this choicelist) is also a
-    :class:`DurationUnit`.
-
-    .. attribute:: easter
-
-        Repeat events yearly, moving them together with the Easter
-        data of that year.
-
-        Lino computes the offset (number of days) between this rule's
-        :attr:`start_date` and the Easter date of that year, and
-        generates subsequent events so that this offset remains the
-        same.
-
-    """
     verbose_name = _("Recurrency")
     item_class = DurationUnit
 

@@ -35,7 +35,7 @@ from lino.utils import join_elems
 
 from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes, Priorities
 
-from .roles import TicketsUser, Searcher, Triager, TicketsStaff
+from .roles import TicketsReader, Reporter, Searcher, Triager, TicketsStaff
 
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
@@ -84,7 +84,7 @@ class ProjectDetail(dd.DetailLayout):
 
 
 class Projects(dd.Table):
-    required_roles = dd.login_required(TicketsUser)
+    required_roles = dd.login_required(Reporter)
     model = 'tickets.Project'
     detail_layout = ProjectDetail()
     column_names = "ref name parent company private *"
@@ -223,7 +223,7 @@ if False:
     
     class Wishes(dd.Table):
         model = 'tickets.Wish'
-        required_roles = dd.login_required(TicketsUser)
+        required_roles = dd.login_required(Reporter)
 
         insert_layout = """
         ticket 
@@ -463,7 +463,9 @@ class Tickets(dd.Table):
         Show only tickets for which the given supplier is competent.
 
     """
-    required_roles = set()  # also for anonymous
+    required_roles = dd.login_required(Searcher)
+    label = _("All tickets")
+    # required_roles = set()  # also for anonymous
     model = 'tickets.Ticket'
     order_by = ["-id"]
     column_names = 'id summary:50 user:10 topic #faculty ' \
@@ -678,9 +680,9 @@ class Tickets(dd.Table):
                 pv.end_date)
 
 
-class AllTickets(Tickets):
-    label = _("All tickets")
-    required_roles = dd.login_required(Searcher)
+# class AllTickets(Tickets):
+#     label = _("All tickets")
+#     required_roles = dd.login_required(Searcher)
 
 
 class DuplicatesByTicket(Tickets):
@@ -693,14 +695,16 @@ class DuplicatesByTicket(Tickets):
     master_key = 'duplicate_of'
     column_names = "overview state *"
     editable = False
+    required_roles = set([])
 
 
 
-class RefTickets(AllTickets):
+class RefTickets(Tickets):
     """
     Tickets that have a reference.
     """
     label = _("Reference Tickets")
+    required_roles = dd.login_required(Triager)
 
     column_names = 'id ref:20 summary:50 user:10 topic #faculty ' \
                    'workflow_buttons:30 project:10 *'
@@ -738,6 +742,7 @@ class TicketsByEndUser(Tickets):
     master_key = 'end_user'
     column_names = ("overview:50 workflow_buttons * ")
     # slave_grid_format = "summary"
+    required_roles = dd.login_required(TicketsReader)
 
     @classmethod
     def get_slave_summary(self, obj, ar):
@@ -772,21 +777,21 @@ class TicketsByTopic(Tickets):
     column_names = "summary state  *"
 
 
-class PublicTickets(Tickets):
-    label = _("Public tickets")
-    order_by = ["-priority", "-id"]
-    column_names = 'overview:50 ticket_type:10 topic:10 priority:3 *'
-    # filter = Q(assigned_to=None)
+# class PublicTickets(Tickets):
+#     label = _("Public tickets")
+#     order_by = ["-priority", "-id"]
+#     column_names = 'overview:50 ticket_type:10 topic:10 priority:3 *'
+#     # filter = Q(assigned_to=None)
 
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(PublicTickets, self).param_defaults(ar, **kw)
-        # kw.update(show_assigned=dd.YesNo.no)
-        kw.update(show_private=dd.YesNo.no)
-        # kw.update(show_active=dd.YesNo.yes)
-        # kw.update(show_closed=dd.YesNo.no)
-        kw.update(state=TicketStates.opened)
-        return kw
+#     @classmethod
+#     def param_defaults(self, ar, **kw):
+#         kw = super(PublicTickets, self).param_defaults(ar, **kw)
+#         # kw.update(show_assigned=dd.YesNo.no)
+#         kw.update(show_private=dd.YesNo.no)
+#         # kw.update(show_active=dd.YesNo.yes)
+#         # kw.update(show_closed=dd.YesNo.no)
+#         kw.update(state=TicketStates.opened)
+#         return kw
 
 
 class TicketsToTriage(Tickets):
@@ -795,8 +800,8 @@ class TicketsToTriage(Tickets):
     <lino_xl.lib.tickets.choicelists.TicketStates.new>`.
 
     """
-    required_roles = dd.login_required(Triager)
     label = _("Tickets to triage")
+    required_roles = dd.login_required(Triager)
     button_label = _("Triage")
     order_by = "priority -id".split()
     column_names = 'overview:50 priority topic:10 #user:10 project:10 ' \
@@ -871,7 +876,7 @@ class ActiveTickets(Tickets):
 
 class MyTickets(My, Tickets):
     """Show all active tickets reported by me."""
-    required_roles = dd.login_required(TicketsUser)
+    required_roles = dd.login_required(Reporter)
     order_by = ["priority", "-id"]
     column_names = ("priority overview:50 workflow_buttons *")
     params_layout = """
@@ -890,7 +895,7 @@ class MyTickets(My, Tickets):
 class MyTicketsToWork(Tickets):
         """Show all active tickets reported by me."""
         label = _("Tickets to work")
-        required_roles = dd.login_required(TicketsUser)
+        required_roles = dd.login_required(Reporter)
         order_by = ["priority", "-id"]
         column_names = 'overview:50 workflow_buttons:30 *'
         params_layout = """
@@ -958,7 +963,7 @@ class SiteDetail(dd.DetailLayout):
 
 class Sites(dd.Table):
     # required_roles = set()  # also for anonymous
-    required_roles = dd.login_required(TicketsUser)
+    required_roles = dd.login_required(Reporter)
     model = 'tickets.Site'
     column_names = "name company contact_person remark workflow_buttons id *"
     order_by = ['name']

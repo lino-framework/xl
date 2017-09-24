@@ -24,7 +24,7 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Topics")
     
-    needs_plugins = ['lino_xl.lib.xl']
+    needs_plugins = ['lino_xl.lib.xl', 'lino.modlib.gfks']
     # needs_plugins = ['lino_xl.lib.contacts']
 
     

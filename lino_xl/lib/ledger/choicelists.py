@@ -197,8 +197,9 @@ class TradeType(dd.Choice):
 
         """
         if self.base_account_field_name is None:
-            raise Exception("%s has no base_account_field_name" % self)
-        return getattr(product, self.base_account_field_name) or \
+            return None
+            # raise Exception("%s has no base_account_field_name" % self)
+        return getattr(product, self.base_account_field_name, None) or \
             getattr(settings.SITE.site_config, self.base_account_field_name)
 
     def get_catalog_price(self, product):

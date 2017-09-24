@@ -3,9 +3,6 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""Database models for this plugin.
-
-"""
 
 from __future__ import unicode_literals
 from builtins import str
@@ -82,11 +79,6 @@ register_calendartype('google', GoogleCalendar())
 
 class RemoteCalendar(mixins.Sequenced):
 
-    """
-    Remote calendars will be synchronized by
-    :mod:`lino_xl.lib.cal.management.commands.watch_calendars`,
-    and local modifications will be sent back to the remote calendar.
-    """
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'RemoteCalendar')
@@ -119,11 +111,6 @@ class RemoteCalendar(mixins.Sequenced):
 
 
 class Room(mixins.BabelNamed, ContactRelated):
-    """A location where calendar entries can happen.  For a given Room you
-    can see the :class:`EntriesByRoom` that happened (or will happen)
-    there.  A Room has a multilingual name.
-
-    """
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Room')
@@ -138,7 +125,6 @@ dd.update_field(
     Room, 'contact_person', verbose_name=_("Contact person"))    
 
 class Priority(mixins.BabelNamed):
-    "The priority of a task or entry."
     class Meta:
         app_label = 'cal'
         verbose_name = _("Priority")
@@ -148,36 +134,6 @@ class Priority(mixins.BabelNamed):
 
 @dd.python_2_unicode_compatible
 class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
-    """The possible value of the :attr:`Event.type` field.
-
-    .. attribute:: is_appointment
-
-        Whether entries of this type should be considered
-        "appointments" (i.e. whose time and place have been agreed
-        upon with other users or external parties).
-
-        Certain tables show only entries whose type has the
-        `is_appointment` field checked.  See :attr:`show_appointments
-        <lino_xl.lib.cal.ui.Entries.show_appointments>`.
-
-    .. attribute:: max_days
-
-        The maximal number of days allowed as duration.
-
-    .. attribute:: locks_user
-
-        Whether calendar entries of this type make the user
-        unavailable for other locking events at the same time.
-
-    .. attribute:: max_conflicting
-
-        How many conflicting events should be tolerated.
-
-    .. attribute:: event_label
-
-        Default text for summary of new entries.
-
-    """
     templates_group = 'cal/Event'
 
     class Meta:
@@ -250,15 +206,6 @@ class Calendar(mixins.BabelNamed):
 
 class Subscription(UserAuthored):
 
-    """
-    A Suscription is when a User subscribes to a Calendar.
-    It corresponds to what the extensible CalendarPanel calls "Calendars"
-    
-    :user: points to the author (recipient) of this subscription
-    :other_user:
-    
-    """
-
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Subscription')
@@ -278,15 +225,6 @@ class Subscription(UserAuthored):
 
 
 class Task(Component):
-    """A Task is when a user plans to to something
-    (and optionally wants to get reminded about it).
-
-    .. attribute:: state
-     
-        The state of this Task. one of :class:`TaskStates`.
-
-
-    """
     class Meta:
         app_label = 'cal'
         verbose_name = _("Task")
@@ -329,14 +267,6 @@ class Task(Component):
         # ~ return "#" + str(self.pk)
 
 class EventPolicy(mixins.BabelNamed, RecurrenceSet):
-    """A **recurrency policy** is a rule used for generating automatic
-    calendar entries.
-
-    .. attribute:: event_type
-
-        Generated calendar entries will have this type.
-
-    """
     class Meta:
         app_label = 'cal'
         verbose_name = _("Recurrency policy")
@@ -350,25 +280,6 @@ class EventPolicy(mixins.BabelNamed, RecurrenceSet):
 
 class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
                      UserAuthored):
-    """A **recurring event** describes a series of recurrent calendar
-    entries.
-    
-    .. attribute:: name
-
-        See :attr:`lino.utils.mldbc.mixins.BabelNamed.name`.
-    
-    .. attribute:: every_unit
-
-        Inherited from :attr:`RecurrentSet.every_unit
-        <lino_xl.lib.cal.models.RecurrentSet.every_unit>`.
-
-    .. attribute:: event_type
-
-
-
-    .. attribute:: description
-
-    """
     class Meta:
         app_label = 'cal'
         verbose_name = _("Recurring event")
@@ -417,20 +328,6 @@ dd.update_field(
 
 
 class UpdateGuests(dd.MultipleRowAction):
-    """Populate or update the list of participants for this entry
-    according to the suggestions. 
-
-
-    Calls :meth:`suggest_guests` to instantiate them.
-
-    - No guests are added when loading from dump
-
-    - The entry must be in a state which allows editing the guests
-
-    - Deletes existing guests in state invited that are no longer
-      suggested
-
-    """
 
     label = _('Update Guests')
     # icon_name = 'lightning'
@@ -490,74 +387,6 @@ class ExtAllDayField(dd.VirtualField):
 
 @dd.python_2_unicode_compatible
 class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
-    """A **calendar entry** is a lapse of time to be visualized in a
-    calendar.
-
-    .. attribute:: start_date
-    .. attribute:: start_time
-    .. attribute:: end_date
-    .. attribute:: end_time
-
-        These four fields define the duration of this entry.
-        Only :attr:`start_date` is mandatory.
-
-        If :attr:`end_date` is the same as :attr:`start_date`, then it
-        is preferrable to leave it empty.
-
-    .. attribute:: summary
-
-         A one-line descriptive text.
-
-    .. attribute:: description
-
-         A longer descriptive text.
-
-    .. attribute:: user
-
-         The responsible user.
-
-    .. attribute:: assigned_to
-
-        Another user who is expected to take responsibility for this
-        entry.
-
-        See :attr:`lino.modlib.users.mixins.Assignable.assigned_to`.
-
-    .. attribute:: event_type
-
-         The type of this entry. Every calendar entry should have this
-         field pointing to a given :class:`EventType`, which holds
-         extended configurable information about this entry.
-
-    .. attribute:: state
-
-        The state of this entry. The state can change according to
-        rules defined by the workflow, that's why we sometimes refer
-        to it as the life cycle.
-
-    .. attribute:: transparent
-
-        Indicates that this entry shouldn't prevent other entries at
-        the same time.
-
-    .. attribute:: when_html
-
-         Shows the date and time of the entry with a link that opens
-         all entries on that day (:class:`EntriesByDay
-         <lino_xl.lib.cal.ui.EntriesByDay>`).
-
-         Deprecated because it is usually irritating. Use when_text,
-         and users open the detail window as usualy by double-clicking
-         on the row. And then they have an action on each entry for
-         opening EntriesByDay if they want.
-
-    .. attribute:: show_conflicting
-
-         A :class:`ShowSlaveTable <lino.core.actions.ShowSlaveTable>`
-         button which opens the :class:`ConflictingEvents
-         <lino_xl.lib.cal.ui.ConflictingEvents>` table for this event.
-
-    """
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Event')
@@ -997,28 +826,6 @@ LongEntryChecker.activate()
 
 @dd.python_2_unicode_compatible
 class Guest(dd.Model):
-    """Represents the fact that a given person is expected to attend to a
-    given event.
-
-    TODO: Rename this to "Presence".
-
-    .. attribute:: event
-
-        The calendar event to which this presence applies.
-
-    .. attribute:: partner
-
-        The partner to which this presence applies.
-
-    .. attribute:: role
-
-        The role of this partner in this presence.
-
-    .. attribute:: state
-
-        The state of this presence.
-
-    """
     workflow_state_field = 'state'
     allow_cascaded_delete = ['event']
 

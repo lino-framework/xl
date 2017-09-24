@@ -65,6 +65,7 @@ class Journal(mixins.BabelNamed,
     force_sequence = models.BooleanField(
         _("Force chronological sequence"), default=False)
     account = dd.ForeignKey('accounts.Account', blank=True, null=True)
+    partner = dd.ForeignKey('contacts.Company', blank=True, null=True)
     printed_name = dd.BabelCharField(
         _("Printed document designation"), max_length=100, blank=True)
     dc = DebitOrCreditField(_("Primary booking direction"))

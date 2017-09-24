@@ -13,6 +13,7 @@ from decimal import Decimal
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
 from lino.core import actions
@@ -496,8 +497,8 @@ class ProductDocItem(QtyVatItemBase, Bleached):
     discount = dd.PercentageField(_("Discount"), blank=True, null=True)
 
     def get_base_account(self, tt):
-        if self.product is None:
-            return tt.get_base_account()
+        # if self.product is None:
+        #     return tt.get_base_account()
         return tt.get_product_base_account(self.product)
         # return self.voucher.journal.chart.get_account_by_ref(ref)
 
@@ -538,6 +539,14 @@ class ProductDocItem(QtyVatItemBase, Bleached):
             if self.qty is None:
                 self.qty = Decimal("1")
             self.discount_changed(ar)
+
+    def full_clean(self):
+        super(ProductDocItem, self).full_clean()
+        if self.total_incl and not self.product:
+            tt = self.voucher.get_trade_type()
+            if self.get_base_account(tt) is None:
+                raise ValidationError(
+                    _("You must specify a product if there is an amount."))
 
 
 class InvoiceItem(ProductDocItem, SequencedVoucherItem):

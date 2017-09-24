@@ -15,6 +15,7 @@ from lino_xl.lib.ledger.fields import DcAmountField
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from lino_xl.lib.ledger.mixins import ProjectRelated
+from lino_xl.lib.ledger.mixins import PartnerRelated
 from lino_xl.lib.sepa.mixins import BankAccount
 from lino.modlib.printing.mixins import Printable
 
@@ -124,6 +125,8 @@ class PaymentOrder(FinancialVoucher, Printable):
         acc = self.journal.account
         if not acc:
             warn_jnl_account(self.journal)
+        # TODO: what if the needs_partner of the journal's account
+        # is not checked? Shouldn't we raise an error here?
         amount, movements_and_items = self.get_finan_movements()
         self.total = - amount
         for m, i in movements_and_items:
@@ -134,7 +137,8 @@ class PaymentOrder(FinancialVoucher, Printable):
                     partner=m.partner, match=i.get_match())
         if not acc.needs_partner:
             yield self.create_movement(
-                None, (acc, None), None, not self.journal.dc, amount)
+                None, (acc, None), None, not self.journal.dc, amount,
+                partner=self.journal.partner, match=self.get_default_match())
 
     def add_item_from_due(self, obj, **kwargs):
         # if obj.bank_account is None:

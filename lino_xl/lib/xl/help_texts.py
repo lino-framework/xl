@@ -82,96 +82,6 @@ belongs to a given Board."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
 Default value is 5 years after today."""),
-    'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
-    'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
-choicelist."""),
-    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the duration_unit field of an
-Event."""),
-    'lino_xl.lib.cal.DurationUnits.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
-    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
-data of that year."""),
-    'lino_xl.lib.cal.Recurrencies.item_class' : _("""alias of DurationUnit"""),
-    'lino_xl.lib.cal.mixins.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
-    'lino_xl.lib.cal.mixins.UpdateEntriesByEvent' : _("""Update all events of this series. This is installed as
-update_events on Event."""),
-    'lino_xl.lib.cal.mixins.EventGenerator' : _("""Base class for things that generate a suite of events."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
-See specs.cal.automatic_events."""),
-    'lino_xl.lib.cal.mixins.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
-weekdays where the recurrence occurs."""),
-    'lino_xl.lib.cal.mixins.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
-lino.modlib.courses.models.Course."""),
-    'lino_xl.lib.cal.mixins.Component' : _("""Abstract base class for Event and Task."""),
-    'lino_xl.lib.cal.mixins.Component.auto_type' : _("""Contains the sequence number if this is an automatically
-generated component. Otherwise this field is empty."""),
-    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
-lino_xl.lib.cal.management.commands.watch_calendars,
-and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
-can see the EntriesByRoom that happened (or will happen)
-there.  A Room has a multilingual name."""),
-    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
-    'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
-    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
-"appointments" (i.e. whose time and place have been agreed
-upon with other users or external parties)."""),
-    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
-    'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
-unavailable for other locking events at the same time."""),
-    'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
-    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
-    'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
-It corresponds to what the extensible CalendarPanel calls "Calendars" """),
-    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to to something
-(and optionally wants to get reminded about it)."""),
-    'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
-    'lino_xl.lib.cal.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
-calendar entries."""),
-    'lino_xl.lib.cal.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
-    'lino_xl.lib.cal.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
-entries."""),
-    'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
-    'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
-    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this entry
-according to the suggestions."""),
-    'lino_xl.lib.cal.ExtAllDayField' : _("""An editable virtual field needed for
-communication with the Ext.ensible CalendarPanel
-because we consider the "all day" checkbox
-equivalent to "empty start and end time fields"."""),
-    'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
-calendar."""),
-    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
-Only start_date is mandatory."""),
-    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
-    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
-    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
-entry."""),
-    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
-field pointing to a given EventType, which holds
-extended configurable information about this entry."""),
-    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
-rules defined by the workflow, that's why we sometimes refer
-to it as the life cycle."""),
-    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
-the same time."""),
-    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
-all entries on that day (EntriesByDay)."""),
-    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
-button which opens the ConflictingEvents table for this event."""),
-    'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
-    'lino_xl.lib.cal.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
-    'lino_xl.lib.cal.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
-    'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of days
-allowed by their type."""),
-    'lino_xl.lib.cal.LongEntryChecker.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
-given event."""),
-    'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
-    'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
-    'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
-    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
     'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
     'lino_xl.lib.cal.Rooms.model' : _("""alias of Room"""),
     'lino_xl.lib.cal.TasksByUser' : _("""Shows the list of tasks for this user."""),
@@ -269,73 +179,6 @@ a given client."""),
     'lino_xl.lib.coachings.roles.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
     'lino_xl.lib.coachings.roles.CoachingsStaff' : _("""A user who can configure coaching functionality."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.contacts.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated' : _("""Model mixin for things that relate to either a private person
-or a company, the latter potentially represented by a contact
-person having a given role in that company.  Typical usages are
-invoices or contracts."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.company' : _("""Pointer to lino_xl.lib.contacts.models.Company."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.contact_person' : _("""Pointer to lino_xl.lib.contacts.models.Person."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.contact_role' : _("""The optional Role
-of the contact_person within company."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
-company, except when that field is empty, in which
-case partner contains the contact_person.  If both
-fields are empty, then partner contains None."""),
-    'lino_xl.lib.contacts.mixins.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
-printing a postal address for this.
-This is typically either the company or
-contact_person (if one of these fields is
-non-empty). It may also be a
-lino_xl.lib.contacts.models.Role object."""),
-    'lino_xl.lib.contacts.mixins.PartnerDocument' : _("""Adds two fields 'partner' and 'person' to this model, making it
-something that refers to a "partner".  person means a "contact
-person" for the partner."""),
-    'lino_xl.lib.contacts.mixins.OldCompanyContact' : _("""Abstract class which adds two fields company and contact."""),
-    'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
-keep contact data (address, phone numbers, ...)."""),
-    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
-Subclasses may hide this field and fill it automatically,
-e.g. saving a Person will automatically set her
-name field to "last_name, first_name"."""),
-    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
-before the name, for persons this is inserted between first
-name and last name (see
-lino.mixins.human.Human.get_last_name_prefix())."""),
-    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
-    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
-formatting characters in phone numbers when searching.  For
-example, if you enter "087/12.34.56" as a phone number, then a
-search for phone number containing "1234" will not find it."""),
-    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
-    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
-    'lino_xl.lib.contacts.Partner.full_name' : _("""Return a one-line string representing this Partner.  The default
-returns simply the name, optionally prefixed by the
-prefix, ignoring any arguments, but
-e.g. Human overrides this."""),
-    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
-See also lino.tutorial.human."""),
-    'lino_xl.lib.contacts.Persons' : _("""List of all Persons."""),
-    'lino_xl.lib.contacts.Persons.model' : _("""alias of Person"""),
-    'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
-    'lino_xl.lib.contacts.Company.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.contacts.Company.full_name' : _("""Deserves more documentation."""),
-    'lino_xl.lib.contacts.RoleType' : _("""A RoleType is "what a given Person can be for a
-given Company"."""),
-    'lino_xl.lib.contacts.Role' : _("""A Contact (historical model name Role) is a
-Person who has a given role (ContactType) in a
-given Company."""),
-    'lino_xl.lib.contacts.Role.company' : _("""The company where this person has a role."""),
-    'lino_xl.lib.contacts.Role.type' : _("""The role of this person in this company."""),
-    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
-    'lino_xl.lib.contacts.RolesByPerson' : _("""Shows all roles of a person."""),
-    'lino_xl.lib.contacts.RolesByPerson.master' : _("""alias of Person"""),
-    'lino_xl.lib.contacts.RolesByPerson.model' : _("""alias of Role"""),
-    'lino_xl.lib.contacts.Organisation' : _("""alias of Company"""),
-    'lino_xl.lib.contacts.roles.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
-    'lino_xl.lib.contacts.roles.ContactsUser' : _("""A user who has access to full contacts functionality."""),
-    'lino_xl.lib.contacts.roles.ContactsStaff' : _("""A user who can configure contacts functionality."""),
     'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
 to True if you live in a country like Belgium.  Belgium is
@@ -639,7 +482,7 @@ certain value."""),
     'lino_xl.lib.reception.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
 partner."""),
     'lino_xl.lib.reception.AppointmentsByPartner.model' : _("""alias of Guest"""),
-    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of Partner"""),
+    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of Person"""),
     'lino_xl.lib.reception.ExpectedGuests' : _("""General table of all expected guests."""),
     'lino_xl.lib.reception.ExpectedGuests.model' : _("""alias of Guest"""),
     'lino_xl.lib.reception.Visitors' : _("""Common base class for the following tables:"""),
@@ -691,7 +534,6 @@ document."""),
     'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn.master' : _("""alias of VatProductInvoice"""),
     'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn.model' : _("""alias of InvoiceItem"""),
     'lino_xl.lib.sepa.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.sepa.fields.UppercaseTextFieldElement' : _("""A CharFieldElement which accepts only upper-case characters."""),
     'lino_xl.lib.sepa.fields.UppercaseTextField' : _("""A custom CharField that accepts only uppercase caracters."""),
     'lino_xl.lib.sepa.fields.BICField' : _("""Database field used to store a BIC."""),
     'lino_xl.lib.sepa.fields.IBANField' : _("""Database field used to store an IBAN."""),
@@ -722,9 +564,9 @@ given User."""),
     'lino_xl.lib.stars.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
     'lino_xl.lib.stars.Star.master' : _("""The starred object that caused this stared object"""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.tickets.roles.TicketsUser' : _("""A user who can create new tickets."""),
     'lino_xl.lib.tickets.roles.Searcher' : _("""A user who can see all tickets."""),
     'lino_xl.lib.tickets.roles.Triager' : _("""A user who is responsible for triaging new tickets."""),
+    'lino_xl.lib.tickets.roles.Reporter' : _("""A user who can create new tickets and edit their own tickets."""),
     'lino_xl.lib.tickets.roles.TicketsStaff' : _("""Can configure tickets functionality."""),
     'lino_xl.lib.tickets.Tickets' : _("""Global list of all tickets."""),
     'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
@@ -784,10 +626,6 @@ voucher_type
 must be lino_xl.lib.vat.models.VatAccountInvoice)"""),
     'lino_xl.lib.vat.InvoicesByJournal.master' : _("""alias of Journal"""),
     'lino_xl.lib.vat.InvoicesByJournal.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.VouchersByPartner' : _("""A lino.core.tables.VirtualTable which shows all VatDocument
-vouchers by lino_xl.lib.contacts.models.Partner. It has a
-customized slave summary."""),
-    'lino_xl.lib.vat.VouchersByPartner.master' : _("""alias of Partner"""),
     'lino_xl.lib.vat.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
     'lino_xl.lib.vat.mixins.PartnerDetailMixin.ledger' : _("""Shows the tables VouchersByPartner and MovementsByPartner."""),
@@ -824,7 +662,6 @@ want to have a project column per item."""),
     'lino_xl.lib.vatless.InvoicesByJournal' : _("""Shows all simple invoices of a given journal (whose
 Journal.voucher_type must be
 lino_xl.lib.sales.models.AccountInvoice)."""),
-    'lino_xl.lib.vatless.VouchersByPartner' : _("""Shows all ledger vouchers of a given partner."""),
     'lino_xl.lib.votes.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.votes.Plugin.votable_model' : _("""The things we are voting about. A string referring to the model
 which represents a votable in your application.  Default value is
@@ -879,6 +716,149 @@ must resolve using resolve_states."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevats.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
+    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
+lino_xl.lib.cal.management.commands.watch_calendars,
+and local modifications will be sent back to the remote calendar."""),
+    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
+can see the EntriesByRoom that happened (or will happen)
+there.  A Room has a multilingual name."""),
+    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
+    'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
+    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
+"appointments" (i.e. whose time and place have been agreed
+upon with other users or external parties)."""),
+    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
+    'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
+unavailable for other locking events at the same time."""),
+    'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
+    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
+It corresponds to what the extensible CalendarPanel calls "Calendars" """),
+    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to to something
+(and optionally wants to get reminded about it)."""),
+    'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
+    'lino_xl.lib.cal.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
+calendar entries."""),
+    'lino_xl.lib.cal.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
+    'lino_xl.lib.cal.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
+entries."""),
+    'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
+    'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
+    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this entry
+according to the suggestions."""),
+    'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
+calendar."""),
+    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
+Only start_date is mandatory."""),
+    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
+    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
+    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
+    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
+entry."""),
+    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
+field pointing to a given EventType, which holds
+extended configurable information about this entry."""),
+    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
+rules defined by the workflow, that's why we sometimes refer
+to it as the life cycle."""),
+    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
+the same time."""),
+    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
+all entries on that day (EntriesByDay)."""),
+    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
+button which opens the ConflictingEvents table for this event."""),
+    'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
+given event."""),
+    'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
+    'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
+    'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
+    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
+    'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
+    'lino_xl.lib.cal.EventGenerator.do_update_events' : _("""See UpdateEntries."""),
+    'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
+See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
+weekdays where the recurrence occurs."""),
+    'lino_xl.lib.cal.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
+lino.modlib.courses.models.Course."""),
+    'lino_xl.lib.cal.Component' : _("""Abstract base class for Event and Task."""),
+    'lino_xl.lib.cal.Component.auto_type' : _("""Contains the sequence number if this is an automatically
+generated component. Otherwise this field is empty."""),
+    'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
+    'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
+choicelist."""),
+    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the
+lino_xl.lib.cal.Event.duration_unit field of a calendar
+entry."""),
+    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
+    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
+data of that year."""),
+    'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
+    'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
+    'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
+    'lino_xl.lib.contacts.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
+    'lino_xl.lib.contacts.ContactsUser' : _("""A user who has access to full contacts functionality."""),
+    'lino_xl.lib.contacts.ContactsStaff' : _("""A user who can configure contacts functionality."""),
+    'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
+    'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
+keep contact data (address, phone numbers, ...)."""),
+    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
+Subclasses may hide this field and fill it automatically,
+e.g. saving a Person will automatically set her
+name field to "last_name, first_name"."""),
+    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
+before the name, for persons this is inserted between first
+name and last name (see
+lino.mixins.human.Human.get_last_name_prefix())."""),
+    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
+    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
+formatting characters in phone numbers when searching.  For
+example, if you enter "087/12.34.56" as a phone number, then a
+search for phone number containing "1234" will not find it."""),
+    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
+    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
+    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
+See also lino.tutorial.human."""),
+    'lino_xl.lib.contacts.Companies' : _("""An organisation.  The verbose name is "Organization" while the
+internal name is "Company" because the latter easier to type and
+for historical reasons."""),
+    'lino_xl.lib.contacts.Companies.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.Companies.phone' : _("""These fields (and some others) are defined in the base model
+Partner, they are what companies and persons have in
+common."""),
+    'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
+    'lino_xl.lib.contacts.RoleType' : _("""A function (RoleType) is what a given Person
+can be in a given Company."""),
+    'lino_xl.lib.contacts.RoleType.name' : _("""A translatable designation. Used e.g. in document templates
+for contracts."""),
+    'lino_xl.lib.contacts.Role' : _("""A role is when a given person has a given function
+(ContactType) in a given organization."""),
+    'lino_xl.lib.contacts.Role.company' : _("""The organization where this person has this role."""),
+    'lino_xl.lib.contacts.Role.type' : _("""The function of this person in this company."""),
+    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.ContactRelated' : _("""Model mixin for things that relate to either a private person
+or a company, the latter potentially represented by a contact
+person having a given role in that company.  Typical usages are
+invoices or contracts."""),
+    'lino_xl.lib.contacts.ContactRelated.company' : _("""Pointer to Company."""),
+    'lino_xl.lib.contacts.ContactRelated.contact_person' : _("""Pointer to Person."""),
+    'lino_xl.lib.contacts.ContactRelated.contact_role' : _("""The optional Role
+of the contact_person within company."""),
+    'lino_xl.lib.contacts.ContactRelated.partner' : _("""(Virtual field) The "legal partner", i.e. usually the
+company, except when that field is empty, in which
+case partner contains the contact_person.  If both
+fields are empty, then partner contains None."""),
+    'lino_xl.lib.contacts.ContactRelated.recipient' : _("""(Virtual field) The Addressable object to use when
+printing a postal address for this.
+This is typically either the company or
+contact_person (if one of these fields is
+non-empty). It may also be a
+lino_xl.lib.contacts.models.Role object."""),
+    'lino_xl.lib.contacts.PartnerDocument' : _("""Deprecated.
+Adds two fields 'partner' and 'person' to this model, making it
+something that refers to a "partner".  person means a "contact
+person" for the partner."""),
     'lino_xl.lib.accounts.AccountType' : _("""The base class for all account types."""),
     'lino_xl.lib.accounts.BankAccounts' : _("""A subclass of Assets."""),
     'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types. See AccountType."""),
@@ -1037,6 +1017,10 @@ quarter."""),
     'lino_xl.lib.ledger.Journal.yearly_numbering' : _("""Whether the
 number of
 vouchers should restart at 1 every year."""),
+    'lino_xl.lib.ledger.Journal.account' : _("""The account to use for the counter-movements generated by
+vouchers in this journal."""),
+    'lino_xl.lib.ledger.Journal.partner' : _("""The partner to use as default partner for all vouchers in this
+journal."""),
     'lino_xl.lib.ledger.Journal.dc' : _("""The primary booking direction."""),
     'lino_xl.lib.ledger.Journal.auto_check_clearings' : _("""Whether to automatically check and update the 'cleared' status
 of involved transactions when (de)registering a voucher of
