@@ -2,6 +2,8 @@
 # Copyright 2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
+from __future__ import unicode_literals
+
 from django.conf import settings
 from lino.api import dd, rt, _
 from lino.utils import Cycler
