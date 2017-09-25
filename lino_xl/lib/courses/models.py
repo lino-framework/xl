@@ -418,8 +418,7 @@ class Course(Reservation, Duplicable, PrintableObject):
         # fkw = dict(course=self)
         # states = (EnrolmentStates.requested, EnrolmentStates.confirmed)
         # fkw.update(state__in=states)
-        qs = Enrolment.objects.filter(course=self).order_by(
-            *dd.plugins.courses.pupil_name_fields)
+        qs = Enrolment.objects.filter(course=self).order_by(*pupil_name_fields)
         for obj in qs:
             if obj.is_guest_for(event):
                 yield Guest(
