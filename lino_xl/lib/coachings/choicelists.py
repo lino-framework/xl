@@ -1,16 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
-
-"""Choicelists for this plugin.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.db.models import Count
 
@@ -22,9 +15,6 @@ from .roles import CoachingsStaff
 
 
 class ClientEvents(dd.ChoiceList):
-    """A choicelist of observable client events.
-
-    """
     verbose_name = _("Observed event")
     verbose_name_plural = _("Observed events")
     max_length = 50
@@ -53,10 +43,6 @@ ClientEvents.add_item_instance(ClientHasCoaching("active"))
 
 
 class ClientCreated(ObservedEvent):
-    """The choice for :class:`ClientEvents` which
-    selects clients whose record has been *created* during the observed
-    period.
-    """
     text = _("Created")
 
     def add_filter(self, qs, pv):
@@ -70,10 +56,6 @@ ClientEvents.add_item_instance(ClientCreated("created"))
 
 
 class ClientModified(ObservedEvent):
-    """The choice for :class:`ClientEvents` which selects clients whose
-    main record has been *modified* during the observed period.
-
-    """
     text = _("Modified")
 
     def add_filter(self, qs, pv):

@@ -149,35 +149,7 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent (with acceptable explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
-    'lino_xl.lib.coachings.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.coachings.ClientEvents' : _("""A choicelist of observable client events."""),
-    'lino_xl.lib.coachings.ClientCreated' : _("""The choice for ClientEvents which
-selects clients whose record has been created during the observed
-period."""),
-    'lino_xl.lib.coachings.ClientModified' : _("""The choice for ClientEvents which selects clients whose
-main record has been modified during the observed period."""),
     'lino_xl.lib.coachings.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
-    'lino_xl.lib.coachings.mixins.Coachable' : _("""Base class for coachable client."""),
-    'lino_xl.lib.coachings.mixins.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
-    'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
-types of responsibilities. For example in welfare they
-differentiate between "General Social Service" and "Integration
-Service"."""),
-    'lino_xl.lib.coachings.CoachingType.does_integ' : _("""Whether coachings of this type are to be considered as
-integration work. This is used when generating calendar events
-for evaluation meetings (see
-lino_xl.lib.coaching.Coachable.setup_auto_event())"""),
-    'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French) is
-when a given client is being coached by a given user during a
-given period."""),
-    'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
-should have active coachings"""),
-    'lino_xl.lib.coachings.ClientContactType' : _("""A client contact type is the type or "role" which must be
-specified for a given ClientContact."""),
-    'lino_xl.lib.coachings.ClientContact' : _("""A client contact is when a given partner has a given role for
-a given client."""),
-    'lino_xl.lib.coachings.roles.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
-    'lino_xl.lib.coachings.roles.CoachingsStaff' : _("""A user who can configure coaching functionality."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
@@ -795,6 +767,40 @@ entry."""),
 data of that year."""),
     'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
+    'lino_xl.lib.coachings.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
+    'lino_xl.lib.coachings.Coachable' : _("""Base class for coachable client. The model specified as
+client_model must implement this."""),
+    'lino_xl.lib.coachings.Coachable.client_state' : _("""Pointer to ClientStates"""),
+    'lino_xl.lib.coachings.ClientStates' : _("""The list of client states."""),
+    'lino_xl.lib.coachings.ClientEvents' : _("""The list of observable client events."""),
+    'lino_xl.lib.coachings.ClientEvents.created' : _("""Select clients whose record has been created during the observed
+period."""),
+    'lino_xl.lib.coachings.ClientEvents.modified' : _("""The choice for ClientEvents which selects clients whose
+main record has been modified during the observed period."""),
+    'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
+types of responsibilities. For example in welfare they
+differentiate between "General Social Service" and "Integration
+Service"."""),
+    'lino_xl.lib.coachings.CoachingType.does_integ' : _("""Whether coachings of this type are to be considered as
+integration work."""),
+    'lino_xl.lib.coachings.CoachingEnding' : _("""A Coaching termination reason expresses why a coaching has been
+terminated."""),
+    'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French)
+is when a given client is being coached by a given user during a
+given period."""),
+    'lino_xl.lib.coachings.ClientContact' : _("""A client contact is when a given partner has a given role for
+a given client."""),
+    'lino_xl.lib.coachings.ClientContact.client' : _("""The Client."""),
+    'lino_xl.lib.coachings.ClientContact.type' : _("""The type of contact. Pointer to ClientContactType."""),
+    'lino_xl.lib.coachings.ClientContact.company' : _("""The organization."""),
+    'lino_xl.lib.coachings.ClientContact.contact_person' : _("""The contact person in the organization."""),
+    'lino_xl.lib.coachings.ClientContact.contact_role' : _("""The role of the contact person in the organization."""),
+    'lino_xl.lib.coachings.ClientContactType' : _("""A client contact type is the type or "role" which must be
+specified for a given ClientContact."""),
+    'lino_xl.lib.coachings.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
+    'lino_xl.lib.coachings.CoachingsStaff' : _("""A user who can configure coachings functionality."""),
+    'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
+should have active coachings."""),
     'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
     'lino_xl.lib.contacts.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
     'lino_xl.lib.contacts.ContactsUser' : _("""A user who has access to full contacts functionality."""),
