@@ -418,7 +418,9 @@ class Course(Reservation, Duplicable, PrintableObject):
         # fkw = dict(course=self)
         # states = (EnrolmentStates.requested, EnrolmentStates.confirmed)
         # fkw.update(state__in=states)
-        qs = Enrolment.objects.filter(course=self).order_by(*pupil_name_fields)
+        qs = Enrolment.objects.filter(course=self).order_by(
+            *Enrolment.quick_search_fields)
+            # *pupil_name_fields)
         for obj in qs:
             if obj.is_guest_for(event):
                 yield Guest(
@@ -453,7 +455,7 @@ class Course(Reservation, Duplicable, PrintableObject):
         Sets room and start_time for automatic events.
         This is a usage example for
         :meth:`EventGenerator.before_auto_event_save
-        <lino_xl.lib.cal.models.EventGenerator.before_auto_event_save>`.
+        <lino_xl.lib.cal.EventGenerator.before_auto_event_save>`.
         """
         #~ logger.info("20131008 before_auto_event_save")
         assert not settings.SITE.loading_from_dump
