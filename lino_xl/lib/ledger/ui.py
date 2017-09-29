@@ -706,16 +706,19 @@ class ActivityReport(Report):
     
 class AccountingReport(Report):
     label = _("Accounting Report")
+    auto_apply_params = False
     required_roles = dd.login_required(AccountingReader)
     params_panel_hidden = False
     parameters = AccountingPeriodRange(
+        with_general = models.BooleanField(
+            verbose_name=_("General"), default=True),
         with_balances = models.BooleanField(
             verbose_name=_("Balances"), default=True),
         with_activity = models.BooleanField(
             verbose_name=_("Activity"), default=True))
     params_layout = """
     start_period end_period with_balances with_activity
-    """ # NB setup_parameters will add names here
+    with_general""" # setup_parameters will add names here
 
     @classmethod
     def setup_parameters(cls, fields):
@@ -724,13 +727,19 @@ class AccountingReport(Report):
             fields[k] = models.BooleanField(
                 verbose_name=tt.text, default=True)
             cls.params_layout += ' ' + k
+        # cls.params_layout += ' go_button'
         super(AccountingReport, cls).setup_parameters(fields)
         
     @classmethod
     def get_story(cls, self, ar):
         pv = ar.param_values
+        if not pv.start_period:
+            yield E.p(_("Select at least a start period"))
+            return
         bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
-        balances = [GeneralAccountsBalance]
+        balances = []
+        if pv.with_general:
+            balances.append(GeneralAccountsBalance)
         if pv.with_sales:
             balances.append(CustomerAccountsBalance)
         if pv.with_purchases:
@@ -739,6 +748,12 @@ class AccountingReport(Report):
             for B in balances:
                 yield E.h1(B.label)
                 yield B.request(param_values=bpv)
+
+    # def get_build_method(self):
+    #     return 'appypdf'
+        # return rt.models.printing.BuildMethods.appypdf
+
+    build_method = 'appypdf'
 
 # MODULE_LABEL = dd.plugins.accounts.verbose_name
 
