@@ -165,6 +165,8 @@ that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
     'lino_xl.lib.courses.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.courses.Plugin.pupil_name_fields' : _("""The value to use as quick_search_fields for
+Enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
     'lino_xl.lib.courses.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
     'lino_xl.lib.courses.EntriesByTeacher.master' : _("""alias of Person"""),
