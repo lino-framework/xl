@@ -15,6 +15,8 @@ import logging
 logger = logging.getLogger(__name__)
 
 from django.db import models
+from django.db.models import Q, F, OuterRef, Subquery, Sum
+from django.db.models.expressions import RawSQL
 
 from lino.api import dd, rt, _
 from lino import mixins
@@ -393,12 +395,13 @@ class AccountingPeriodRange(dd.ParameterPanel):
         else:
             yield str(_("All periods"))
             
-class AccountsBalance(dd.VirtualTable):
+class AccountsBalance(dd.Table):
     """A table which shows a list of general ledger accounts during the
     observed period, showing their old and new balances and the sum of
     debit and credit movements.
 
     """
+    editable = False
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
     column_names = "description old_d old_c empty_column:1 during_d during_c empty_column:1 new_d new_c"
@@ -417,61 +420,79 @@ class AccountsBalance(dd.VirtualTable):
     # params_layout = "start_date end_date"
     
     @classmethod
-    def rowmvtfilter(self, row):
+    def new_balance(cls, row):
+        return Balance(row.old_d, row.old_c) + Balance(
+            row.during_d, row.during_c)
+
+    @classmethod
+    def rowmvtfilter(self):
         raise NotImplementedError()
 
     @classmethod
     def get_request_queryset(self, ar, **kwargs):
-        raise NotImplementedError()
 
-    @classmethod
-    def get_data_rows(self, ar):
+        # see https://docs.djangoproject.com/en/1.11/ref/models/expressions/#using-aggregates-within-a-subquery-expression
+        AccountingPeriod = rt.models.ledger.AccountingPeriod
         pv = ar.param_values
+        sp = pv.start_period or AccountingPeriod.get_default_for_date(
+            dd.today())
+        ep = pv.end_period or sp
+        
         # mi = ar.master_instance
         # if mi is None:
         #     return
-        qs = self.get_request_queryset(ar)
-        for row in qs:
-            flt = self.rowmvtfilter(row)
-            if True:
-                oldflt = dict()
-                oldflt.update(flt)
-                duringflt = dict()
-                duringflt.update(flt)
-                if pv.start_period:
-                    oldflt.update(
-                        voucher__accounting_period__lt=pv.start_period)
-                    duringflt.update(
-                        voucher__accounting_period__gte=pv.start_period)
-                if pv.end_period:
-                    duringflt.update(
-                        voucher__accounting_period__lte=pv.end_period)
-                    
-                row.old = Balance(
-                    mvtsum(dc=DEBIT, **oldflt),
-                    mvtsum(dc=CREDIT, **oldflt))
-                row.during_d = mvtsum(dc=DEBIT, **duringflt)
-                row.during_c = mvtsum(dc=CREDIT, **duringflt)
-            else:
-                row.old = Balance(
-                    mvtsum(
-                        value_date__lt=pv.start_date,
-                        dc=DEBIT, **flt),
-                    mvtsum(
-                        value_date__lt=pv.start_date,
-                        dc=CREDIT, **flt))
-                row.during_d = mvtsum(
-                    value_date__gte=pv.start_date,
-                    value_date__lte=pv.end_date,
-                    dc=DEBIT, **flt)
-                row.during_c = mvtsum(
-                    value_date__gte=pv.start_date,
-                    value_date__lte=pv.end_date,
-                    dc=CREDIT, **flt)
-            if row.old.d or row.old.c or row.during_d or row.during_c:
-                row.new = Balance(row.old.d + row.during_d,
-                                  row.old.c + row.during_c)
-                yield row
+        qs = super(AccountsBalance, self).get_request_queryset(ar)
+        
+        flt = self.rowmvtfilter()
+        oldflt = dict()
+        oldflt.update(flt)
+        duringflt = dict()
+        duringflt.update(flt)
+        during_periods = AccountingPeriod.objects.filter(
+            ref__gte=sp.ref, ref__lte=ep.ref)
+        before_periods = AccountingPeriod.objects.filter(
+            ref__lt=sp.ref)
+        oldflt.update(voucher__accounting_period__in=before_periods)
+        duringflt.update(voucher__accounting_period__in=during_periods)
+
+        outer_link = self.model._meta.model_name
+
+        def addann(kw, name, dc, flt):
+            mvts = rt.models.ledger.Movement.objects.filter(dc=dc, **flt)
+            # mvts = mvts.distinct()
+            mvts = mvts.order_by()
+            mvts = mvts.values(outer_link)
+            # mvts = mvts.values('amount')
+            mvts = mvts.annotate(total=Sum(
+                'amount', output_field=dd.PriceField()))
+            mvts = mvts.values('total')
+            # mvts = mvts.annotate(total=Sum('amount'))
+            # kw[name] = Sum(Subquery(
+            #     mvts.values('amount'), output_field=dd.PriceField()))
+            # kw[name] = Sum(Subquery(mvts))
+            kw[name] = Subquery(mvts, output_field=dd.PriceField())
+
+        kw = dict()
+        addann(kw, 'old_d', DEBIT, oldflt)
+        addann(kw, 'old_c', CREDIT, oldflt)
+        addann(kw, 'during_d', DEBIT, duringflt)
+        addann(kw, 'during_c', CREDIT, duringflt)
+        
+        # print("20170930 kw {}".format(kw))
+        
+        # qs = qs.distinct()
+        qs = qs.annotate(**kw)
+
+        # qs = qs.filter(
+        #     Q(old_d__isnull=False)|Q(old_c__isnull=False)
+        #     |Q(during_d__isnull=False)|Q(during_c__isnull=False))
+
+        qs = qs.exclude(
+            old_d=ZERO, old_c=ZERO,
+            during_d=ZERO, during_c=ZERO)
+
+        # print("20170930 {}".format(qs.query))
+        return qs
 
     @dd.displayfield(_("Reference"))
     def ref(self, row, ar):
@@ -483,11 +504,11 @@ class AccountsBalance(dd.VirtualTable):
 
     @dd.virtualfield(dd.PriceField(_("Debit\nbefore")))
     def old_d(self, row, ar):
-        return row.old.d
+        return row.old_d
 
     @dd.virtualfield(dd.PriceField(_("Credit\nbefore")))
     def old_c(self, row, ar):
-        return row.old.c
+        return row.old_c
 
     @dd.virtualfield(dd.PriceField(_("Debit")))
     def during_d(self, row, ar):
@@ -499,11 +520,11 @@ class AccountsBalance(dd.VirtualTable):
 
     @dd.virtualfield(dd.PriceField(_("Debit\nafter")))
     def new_d(self, row, ar):
-        return row.new.c
+        return self.new_balance(row).d
 
     @dd.virtualfield(dd.PriceField(_("Credit\nafter")))
     def new_c(self, row, ar):
-        return row.new.d
+        return self.new_balance(row).c
     
     @dd.displayfield("")
     def empty_column(self, row, ar):
@@ -514,29 +535,24 @@ class AccountsBalance(dd.VirtualTable):
 class GeneralAccountsBalance(AccountsBalance):
 
     label = _("General Accounts Balance")
+    model = 'accounts.Account'
+    order_by = ['group__ref', 'ref']
 
     @classmethod
-    def get_request_queryset(self, ar, **kwargs):
-        return rt.modules.accounts.Account.objects.order_by(
-            'group__ref', 'ref')
-
-    @classmethod
-    def rowmvtfilter(self, row):
-        return dict(account=row)
-
+    def rowmvtfilter(self):
+        return dict(account=OuterRef('pk'))
+    
 
 class PartnerAccountsBalance(AccountsBalance):
     trade_type = NotImplementedError
+    model = 'contacts.Partner'
+    order_by = ['name', 'id']
 
     @classmethod
-    def get_request_queryset(self, ar, **kwargs):
-        return rt.models.contacts.Partner.objects.order_by('name')
-
-    @classmethod
-    def rowmvtfilter(self, row):
+    def rowmvtfilter(self):
         a = self.trade_type.get_partner_account()
         # TODO: what if a is None?
-        return dict(partner=row, account=a)
+        return dict(partner=OuterRef('pk'), account=a)
 
     @dd.displayfield(_("Ref"))
     def ref(self, row, ar):
@@ -567,10 +583,6 @@ class DebtorsCreditors(dd.VirtualTable):
     # params_layout = "today"
 
     d_or_c = NotImplementedError
-
-    @classmethod
-    def rowmvtfilter(self, row):
-        raise NotImplementedError()
 
     @classmethod
     def get_data_rows(self, ar):

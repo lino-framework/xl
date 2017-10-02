@@ -16,7 +16,10 @@ DCLABELS = {
 }
 
 class Balance(object):
+    
     def __init__(self, d, c):
+        if d is None: d = ZERO
+        if c is None: c = ZERO
         if d > c:
             self.d = d - c
             self.c = ZERO
@@ -24,4 +27,16 @@ class Balance(object):
             self.c = c - d
             self.d = ZERO
 
-
+    def __sub__(self, o):
+        d1 = self.d or ZERO
+        c1 = self.c or ZERO
+        d2 = o.d or ZERO
+        c2 = o.c or ZERO
+        return Balance(d1-d2, c1-c2)
+    
+    def __add__(self, o):
+        d1 = self.d or ZERO
+        c1 = self.c or ZERO
+        d2 = o.d or ZERO
+        c2 = o.c or ZERO
+        return Balance(d1+d2, c1+c2)
