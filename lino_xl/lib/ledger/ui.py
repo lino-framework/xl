@@ -438,9 +438,6 @@ class AccountsBalance(dd.Table):
             dd.today())
         ep = pv.end_period or sp
         
-        # mi = ar.master_instance
-        # if mi is None:
-        #     return
         qs = super(AccountsBalance, self).get_request_queryset(ar)
         
         flt = self.rowmvtfilter()
@@ -459,17 +456,11 @@ class AccountsBalance(dd.Table):
 
         def addann(kw, name, dc, flt):
             mvts = rt.models.ledger.Movement.objects.filter(dc=dc, **flt)
-            # mvts = mvts.distinct()
             mvts = mvts.order_by()
-            mvts = mvts.values(outer_link)
-            # mvts = mvts.values('amount')
+            mvts = mvts.values(outer_link)  # this was the important thing
             mvts = mvts.annotate(total=Sum(
                 'amount', output_field=dd.PriceField()))
             mvts = mvts.values('total')
-            # mvts = mvts.annotate(total=Sum('amount'))
-            # kw[name] = Sum(Subquery(
-            #     mvts.values('amount'), output_field=dd.PriceField()))
-            # kw[name] = Sum(Subquery(mvts))
             kw[name] = Subquery(mvts, output_field=dd.PriceField())
 
         kw = dict()
@@ -478,14 +469,7 @@ class AccountsBalance(dd.Table):
         addann(kw, 'during_d', DEBIT, duringflt)
         addann(kw, 'during_c', CREDIT, duringflt)
         
-        # print("20170930 kw {}".format(kw))
-        
-        # qs = qs.distinct()
         qs = qs.annotate(**kw)
-
-        # qs = qs.filter(
-        #     Q(old_d__isnull=False)|Q(old_c__isnull=False)
-        #     |Q(during_d__isnull=False)|Q(during_c__isnull=False))
 
         qs = qs.exclude(
             old_d=ZERO, old_c=ZERO,
@@ -504,11 +488,11 @@ class AccountsBalance(dd.Table):
 
     @dd.virtualfield(dd.PriceField(_("Debit\nbefore")))
     def old_d(self, row, ar):
-        return row.old_d
+        return Balance(row.old_d, row.old_c).d
 
     @dd.virtualfield(dd.PriceField(_("Credit\nbefore")))
     def old_c(self, row, ar):
-        return row.old_c
+        return Balance(row.old_d, row.old_c).c
 
     @dd.virtualfield(dd.PriceField(_("Debit")))
     def during_d(self, row, ar):
