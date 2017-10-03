@@ -91,12 +91,19 @@ p {
 <td>{{enrolment.pupil.age}}</td>
 {% for e in events %}
 <td align="center" valign="middle">
-{% if (enrolment.end_date and e.start_date > enrolment.end_date) 
-   or (enrolment.start_date and e.start_date < enrolment.start_date) %}
-X
-{% else %}
-&nbsp;
-{% endif %}
+{%- set guest=rt.models.cal.Guest.objects.filter(
+    partner=enrolment.pupil, event=e).first() -%}
+{%- if guest -%}
+  {{guest.state.button_text}}
+  {% if ar.action_param_values.show_remarks %}
+    {{guest.remark}}
+  {%- endif -%}
+{%- elif (enrolment.end_date and e.start_date > enrolment.end_date) 
+    or (enrolment.start_date and e.start_date < enrolment.start_date) -%}
+  X
+{%- else -%}
+  &nbsp;
+{%- endif -%}
 </td>
 {% endfor %}
 {% if ar.action_param_values.show_remarks %}

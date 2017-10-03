@@ -38,14 +38,31 @@ class Plugin(ad.Plugin):
     verbose_name = _("Activities")
     teacher_model = 'contacts.Person'
     pupil_model = 'contacts.Person'
+    
     pupil_name_fields = "pupil__name"
+    """The value to use as :attr:`quick_search_fields
+    <lino.core.model.Model.quick_search_fields>` for
+    :class:`Enrolment`. 
+
+    Note that this remains a text string while
+    :attr:`quick_search_fields
+    <lino.core.model.Model.quick_search_fields>` is resolved into a
+    set of field names at site startup.
+
+    """
 
     needs_plugins = ['lino_xl.lib.cal']
+
+    def unused_on_plugins_loaded(self, site):
+        # from lino.core.fields import fields_list
+        self.pupil_name_fields = set(self.pupil_name_fields.split())
+        # self.pupil_name_fields = fields_list(
+        #      site.models.courses.Enrolment, self.pupil_name_fields)
+        super(Plugin, self).on_plugins_loaded(site)
 
     def on_site_startup(self, site):
         from lino.mixins import Contactable
         from lino_xl.lib.courses.mixins import Enrollable
-        from lino.core.fields import fields_list
         self.pupil_model = site.models.resolve(self.pupil_model)
         self.teacher_model = site.models.resolve(self.teacher_model)
         if not issubclass(self.teacher_model, Contactable):
@@ -55,9 +72,6 @@ class Plugin(ad.Plugin):
                 site.logger.warning(
                     "pupil_model must be enrollable but %s isn't", 
                     self.pupil_model)
-        # self.pupil_name_fields = set(self.pupil_name_fields.split())
-        self.pupil_name_fields = fields_list(
-            site.models.courses.Enrolment, self.pupil_name_fields)
         super(Plugin, self).on_site_startup(site)
         
     def setup_main_menu(self, site, user_type, main):

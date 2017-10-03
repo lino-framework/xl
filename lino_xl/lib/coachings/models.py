@@ -2,10 +2,6 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for this plugin.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 
@@ -26,7 +22,7 @@ from lino.modlib.notify.mixins import ChangeObservable
 from lino.modlib.plausibility.choicelists import Checker
 
 from .mixins import ClientContactBase
-from .choicelists import ClientEvents, ClientStates
+from .choicelists import ClientStates
 from .roles import CoachingsStaff
 
 
@@ -41,19 +37,6 @@ GSS_LABEL = _("GSS")  # General Social Service
 
 class CoachingType(mixins.BabelNamed):
 
-    """The **type** of a coaching can be used for expressing different
-    types of responsibilities. For example in :ref:`welfare` they
-    differentiate between "General Social Service" and "Integration
-    Service".
-
-    .. attribute:: does_integ
-
-        Whether coachings of this type are to be considered as
-        integration work. This is used when generating calendar events
-        for evaluation meetings (see
-        :meth:`lino_xl.lib.coaching.Coachable.setup_auto_event`)
-
-    """
     class Meta:
         app_label = 'coachings'
         verbose_name = _("Coaching type")
@@ -93,14 +76,6 @@ class CoachingEnding(mixins.BabelNamed, mixins.Sequenced):
 
 @dd.python_2_unicode_compatible
 class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservable):
-
-    """A Coaching ("Begleitung" in German and "intervention" in French) is
-    when a given client is being coached by a given user during a
-    given period.  
-
-    For example in :ref:`welfare` that used is a social assistant.
-
-    """
 
     class Meta:
         app_label = 'coachings'
@@ -257,10 +232,6 @@ class ClientChecker(Checker):
 
 
 class ClientCoachingsChecker(ClientChecker):
-    """Coached clients should not be obsolete.  Only coached clients
-    should have active coachings
-
-    """
     verbose_name = _("Check coachings")
 
     def get_plausibility_problems(self, obj, fix=False):
@@ -278,15 +249,6 @@ ClientCoachingsChecker.activate()
 
 
 class ClientContactType(mixins.BabelNamed):
-    """A **client contact type** is the type or "role" which must be
-    specified for a given :class:`ClientContact`.
-
-    .. attribute:: can_refund
-
-    Whether persons of this type can be used as doctor of a refund
-    confirmation. Injected by :mod:`lino_welfare.modlib.aids`.
-
-    """
     class Meta:
         app_label = 'coachings'
         verbose_name = _("Client Contact type")
@@ -295,30 +257,6 @@ class ClientContactType(mixins.BabelNamed):
 
 
 class ClientContact(ClientContactBase):
-    """A **client contact** is when a given partner has a given role for
-    a given client.
-
-    .. attribute:: client
-
-    The :class:`Client`
-
-    .. attribute:: company
-
-    the Company
-
-    .. attribute:: contact_person
-    
-    the Contact person in the Company
-
-    .. attribute:: contact_role
-    
-    the role of the contact person in the Company
-
-    .. attribute:: type
-    
-    The :class:`ClientContactType`.
-
-    """
     class Meta:
         app_label = 'coachings'
         verbose_name = _("Client Contact")
@@ -343,16 +281,13 @@ dd.inject_field(
     'users.User', 'coaching_type',
     dd.ForeignKey(
         'coachings.CoachingType',
-        blank=True, null=True,
-        help_text=_(
-            "The coaching type used for new coachings with this user.")))
+        blank=True, null=True))
 
 dd.inject_field(
     'users.User', 'coaching_supervisor',
     models.BooleanField(
         _("Coaching supervisor"),
-        default=False,
-        help_text=_("Notify me when a coach has been assigned")))
+        default=False))
 
 dd.inject_field(
     'contacts.Partner', 'client_contact_type',

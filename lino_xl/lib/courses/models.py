@@ -11,14 +11,8 @@ from __future__ import unicode_literals
 from __future__ import print_function
 from builtins import str
 
-"""Database models for :mod:`lino_xl.lib.courses`.
-
-.. autosummary::
-
-"""
-
-import logging
-logger = logging.getLogger(__name__)
+# import logging
+# logger = logging.getLogger(__name__)
 
 from decimal import Decimal
 ZERO = Decimal()
@@ -425,7 +419,8 @@ class Course(Reservation, Duplicable, PrintableObject):
         # states = (EnrolmentStates.requested, EnrolmentStates.confirmed)
         # fkw.update(state__in=states)
         qs = Enrolment.objects.filter(course=self).order_by(
-            *dd.plugins.courses.pupil_name_fields)
+            *Enrolment.quick_search_fields)
+            # *pupil_name_fields)
         for obj in qs:
             if obj.is_guest_for(event):
                 yield Guest(
@@ -460,7 +455,7 @@ class Course(Reservation, Duplicable, PrintableObject):
         Sets room and start_time for automatic events.
         This is a usage example for
         :meth:`EventGenerator.before_auto_event_save
-        <lino_xl.lib.cal.models.EventGenerator.before_auto_event_save>`.
+        <lino_xl.lib.cal.EventGenerator.before_auto_event_save>`.
         """
         #~ logger.info("20131008 before_auto_event_save")
         assert not settings.SITE.loading_from_dump
@@ -695,7 +690,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
 
     @dd.chooser()
     def course_choices(cls, course_area, request_date):
-        dd.logger.info("20160714 course_choices %s", course_area)
+        # dd.logger.info("20160714 course_choices %s", course_area)
         if request_date is None:
             request_date = dd.today()
         flt = Q(enrolments_until__isnull=True)
@@ -780,10 +775,11 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
 
     @dd.virtualfield(dd.HtmlBox(_("Participant")))
     def pupil_info(self, ar):
+        txt = self.pupil.get_full_name(nominative=True)
         if ar is None:
-            return ''
-        elems = [ar.obj2html(self.pupil,
-                             self.pupil.get_full_name(nominative=True))]
+            elems = [txt]
+        else:
+            elems = [ar.obj2html(self.pupil, txt)]
         elems += [', ']
         elems += join_elems(
             list(self.pupil.address_location_lines()),

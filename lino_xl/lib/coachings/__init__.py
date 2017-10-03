@@ -2,18 +2,11 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Adds the concept of coachings.
-
-A **coaching** is when a given person (a client) is being coached by a
-given user during a given period.
+"""See :doc:`/specs/coachings`.
 
 .. autosummary::
    :toctree:
 
-    roles
-    mixins
-    choicelists
-    models
     desktop
     fixtures
     utils
@@ -25,7 +18,6 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.plugin.Plugin`."
     verbose_name = _("Coachings")
 
     needs_plugins = ['lino_xl.lib.contacts', 'lino_xl.lib.extensible']
@@ -60,4 +52,7 @@ class Plugin(ad.Plugin):
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('coachings.Coachings')
         m.add_action('coachings.ClientContacts')
+        # m.add_action('coachings.ClientEvents')
+        # m.add_action('coachings.ClientStates')
+        
 

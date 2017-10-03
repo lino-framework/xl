@@ -22,7 +22,7 @@ import unittest
 import tempfile
 
 from appy.pod.renderer import Renderer
-from appy import version
+# from appy import version
 
 PARAMS = dict(pythonWithUnoPath='/usr/bin/python3')
 PARAMS.update(raiseOnError=True)
@@ -39,14 +39,15 @@ class RaiseExceptionTest(unittest.TestCase):
     #                  "not supported with appy version %s" % version.short)
     def test_01(self):
 
-        if V(version.short) < V('0.9.0'):
-            # "not supported with appy version %s" % version.short)
-            return
+        # if V(version.short) < V('0.9.0'):
+        #     # "not supported with appy version %s" % version.short)
+        #     return
 
         tpl = join(MYDIR, 'appy', 'template.odt')
         context = dict()
         context.update(
-            appy_version=version.verbose,
+            # appy_version=version.verbose,
+            appy_version="not given",
             python_version=sys.version,
             platform=sys.platform,
         )

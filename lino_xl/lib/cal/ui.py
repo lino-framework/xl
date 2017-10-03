@@ -302,6 +302,7 @@ class Guests(dd.Table):
     # required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     column_names = 'partner role workflow_buttons remark event *'
+    order_by = ['event__start_date', 'event__start_time']
     stay_in_grid = True
     detail_layout = """
     event partner role
@@ -401,7 +402,7 @@ class GuestsByEvent(Guests):
     master_key = 'event'
     required_roles = dd.login_required(OfficeUser)
     auto_fit_column_widths = True
-    column_names = 'partner role workflow_buttons'
+    column_names = 'partner role workflow_buttons remark *'
 
 
 class GuestsByRole(Guests):
@@ -415,8 +416,13 @@ class GuestsByPartner(Guests):
     required_roles = dd.login_required(OfficeUser)
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
-
     slave_grid_format = "summary"
+
+    # @classmethod
+    # def param_defaults(self, ar, **kw):
+    #     kw = super(GuestsByPartner, self).param_defaults(ar, **kw)
+    #     kw.update(event_state=EntryStates.took_place)
+    #     return kw
 
     @classmethod
     def get_slave_summary(self, obj, ar):
@@ -431,7 +437,11 @@ class GuestsByPartner(Guests):
 
         elems = []
         for guest in sar:
-            lbl = dd.fds(guest.event.start_date)
+            if guest.event.owner:
+                fmt = guest.event.owner.get_date_formatter()
+            else:
+                fmt = dd.fds
+            lbl = fmt(guest.event.start_date)
             if guest.state.button_text:
                 lbl = "{0}{1}".format(lbl, guest.state.button_text)
             elems.append(ar.obj2html(guest.event, lbl))

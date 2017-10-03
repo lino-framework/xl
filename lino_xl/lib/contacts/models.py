@@ -162,7 +162,7 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
         pv = ar.param_values
 
         if pv.observed_event:
-            yield unicode(pv.observed_event)
+            yield str(pv.observed_event)
 
 
     def get_as_user(self):

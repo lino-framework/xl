@@ -46,8 +46,8 @@ def dt2kw(dt, name, **d):
     Examples:
     
     >>> dt = datetime.datetime(2013,12,25,17,15,00)
-    >>> dt2kw(dt,'foo')
-    {u'foo_date': datetime.date(2013, 12, 25), u'foo_time': datetime.time(17, 15)}
+    >>> dt2kw(dt,'foo') == {'foo_date': datetime.date(2013, 12, 25), 'foo_time': datetime.time(17, 15)}
+    True
 
     """
     if dt:

@@ -79,9 +79,13 @@ class CourseAreas(dd.ChoiceList):
     verbose_name = _("Layout")
     verbose_name_plural = _("Course layouts")
     item_class = CourseArea
+    
 
 add = CourseAreas.add_item
-add('C', dd.plugins.courses.verbose_name, 'default')
+try:
+    add('C', dd.plugins.courses.verbose_name, 'default')
+except AttributeError:
+    add('C', 'oops, courses not installed', 'default')
 # add('J', _("Journeys"), 'journeys')
 
 

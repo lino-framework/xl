@@ -6,12 +6,7 @@ from lino.core.roles import SiteUser
 
 
 class CoachingsUser(SiteUser):
-    """A user who has access to basic coachings functionality.
-
-    """
+    pass
     
 class CoachingsStaff(CoachingsUser):
-    """A user who can configure coaching functionality.
-
-    """
-
+    pass
