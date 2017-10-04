@@ -408,7 +408,8 @@ class AccountsBalance(dd.Table):
     slave_grid_format = 'html'
     abstract = True
     params_panel_hidden = False
-
+    use_as_default_table = False
+    
     parameters = AccountingPeriodRange()
     params_layout = "start_period end_period"
     

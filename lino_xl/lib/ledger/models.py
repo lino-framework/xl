@@ -681,7 +681,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     observable_period_field = 'voucher__accounting_period'
     
-    voucher = models.ForeignKey(Voucher)
+    voucher = dd.ForeignKey('ledger.Voucher')
 
     partner = dd.ForeignKey(
         'contacts.Partner',
