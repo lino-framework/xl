@@ -349,7 +349,8 @@ class CoursesByTopic(Activities):
 
     """
     
-    master = 'courses.Topic'
+    master_key = 'line__topic'
+    # master = 'courses.Topic'
     order_by = ['-start_date']
     column_names = "overview weekdays_text:10 times_text:10 "\
                    "max_places:8 confirmed "\
@@ -362,10 +363,10 @@ class CoursesByTopic(Activities):
     allow_create = False  # because we cannot set a line for a new
                           # activity.
 
-    @classmethod
-    def get_filter_kw(self, ar, **kw):
-        kw.update(line__topic=ar.master_instance)
-        return kw
+    # @classmethod
+    # def get_filter_kw(self, ar, **kw):
+    #     kw.update(line__topic=ar.master_instance)
+    #     return kw
 
     @classmethod
     def param_defaults(self, ar, **kw):
