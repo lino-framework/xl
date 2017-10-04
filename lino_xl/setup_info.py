@@ -28,8 +28,7 @@ install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='17.9.0',
-    # version='1.7.5',
+    version='17.10.0',
     install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",
@@ -197,22 +196,22 @@ lino_xl.lib.uploads
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\
-  Programming Language :: Python
-  Programming Language :: Python :: 2
-  Development Status :: 5 - Production/Stable
-  Environment :: Web Environment
-  Framework :: Django
-  Intended Audience :: Developers
-  Intended Audience :: System Administrators
-  License :: OSI Approved :: BSD License
-  Natural Language :: English
-  Natural Language :: French
-  Natural Language :: German
-  Operating System :: OS Independent
-  Topic :: Database :: Front-Ends
-  Topic :: Home Automation
-  Topic :: Office/Business
-  Topic :: Software Development :: Libraries :: Application Frameworks""".splitlines())
+Programming Language :: Python
+Programming Language :: Python :: 2
+Programming Language :: Python :: 3
+Development Status :: 5 - Production/Stable
+Environment :: Web Environment
+Framework :: Django
+Intended Audience :: Developers
+Intended Audience :: System Administrators
+License :: OSI Approved :: BSD License
+Natural Language :: English
+Natural Language :: French
+Natural Language :: German
+Operating System :: OS Independent
+Topic :: Database :: Front-Ends
+Topic :: Office/Business
+Topic :: Software Development :: Libraries :: Application Frameworks""".splitlines())
 
 SETUP_INFO.update(message_extractors={
     'lino_xl': [
