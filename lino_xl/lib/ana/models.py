@@ -109,11 +109,99 @@ from lino_xl.lib.vat.mixins import VatDocument, VatItemBase
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 
 
+class MakeCopy(dd.Action):
+    button_text = u"\u2042"  # ASTERISM (⁂)
+    
+    label = _("Make copy")
+    show_in_workflow = True
+    show_in_bbar = False
+    copy_item_fields = set('account ana_account total_incl'.split())
+    
+    parameters = dict(
+        partner=dd.ForeignKey('contacts.Partner'),
+        account=dd.ForeignKey('accounts.Account', blank=True),
+        ana_account=dd.ForeignKey('ana.Account', blank=True),
+        subject=models.CharField(
+            _("Subject"), max_length=200, blank=True),
+        your_ref=models.CharField(
+            _("Your ref"), max_length=200, blank=True),
+        entry_date=models.DateField(_("Entry date")),
+        total_incl=dd.PriceField(_("Total incl VAT"), blank=True),
+    )
+    params_layout = """
+    entry_date partner 
+    your_ref
+    subject total_incl
+    account ana_account 
+    """
+
+    def action_param_defaults(self, ar, obj, **kw):
+        kw = super(MakeCopy, self).action_param_defaults(ar, obj, **kw)
+        kw.update(your_ref=obj.your_ref)
+        kw.update(subject=obj.narration)
+        kw.update(entry_date=obj.entry_date)
+        kw.update(partner=obj.partner)
+        # qs = obj.items.all()
+        # if qs.count():
+        #     kw.update(product=qs[0].product)
+        # kw.update(total_incl=obj.total_incl)
+        return kw
+
+    def run_from_ui(self, ar, **kw):
+        VoucherStates = rt.models.ledger.VoucherStates
+        obj = ar.selected_rows[0]
+        pv = ar.action_param_values
+        kw = dict(
+            journal=obj.journal,
+            user=ar.get_user(),
+            partner=pv.partner, entry_date=pv.entry_date,
+            narration=pv.subject,
+            your_ref=pv.your_ref)
+
+        new = obj.__class__(**kw)
+        new.fill_defaults()
+        new.full_clean()
+        new.save()
+        if pv.total_incl:
+            if not pv.account or not pv.ana_account:
+                qs = obj.items.all()
+                if qs.count():
+                    if not pv.account:
+                        pv.account = qs[0].account
+                    if not pv.ana_account:
+                        pv.ana_account = qs[0].ana_account
+            item = new.add_voucher_item(
+                total_incl=pv.total_incl, account=pv.account,
+                ana_account=pv.ana_account)
+            item.total_incl_changed(ar)
+            item.full_clean()
+            item.save()
+        else:
+            for olditem in obj.items.all():
+                # ikw = dict()
+                # for k in self.copy_item_fields:
+                #     ikw[k] = getattr(olditem, k)
+                ikw = { k: getattr(olditem, k)
+                        for k in self.copy_item_fields}
+                item = new.add_voucher_item(**ikw)
+                item.total_incl_changed(ar)
+                item.full_clean()
+                item.save()
+            
+        new.full_clean()
+        new.register_voucher(ar)
+        new.state = VoucherStates.registered
+        new.save()
+        ar.goto_instance(new)
+        ar.success()
+
+
 class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
     class Meta:
         verbose_name = _("Analytic invoice")
         verbose_name_plural = _("Analytic invoices")
 
+    make_copy = MakeCopy()
 
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:
