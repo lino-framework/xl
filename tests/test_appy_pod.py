@@ -12,6 +12,8 @@ You can run only this test as follows::
   $ python setup.py test -s tests.test_appy_pod
 
 """
+from __future__ import print_function
+import six
 import os
 import os.path
 from os.path import join, dirname, abspath, exists
@@ -57,10 +59,12 @@ class RaiseExceptionTest(unittest.TestCase):
         renderer = Renderer(tpl, context, target, **PARAMS)
         try:
             renderer.run()
+            # self.fail(target)
             self.fail("appy renderer failed to raise an error.")
         except Exception as e:
-            s = str(e)
+            s = str(e).strip()
             if not s.startswith('Error while evaluating expression "foo".'):
-                self.fail("Incorrect appy error message.")
+                self.fail("Incorrect appy error message. {}".format(s))
+            # import pdb ; pdb.set_trace()
             if not s.endswith("name 'foo' is not defined"):
-                self.fail("Incorrect appy error message.")
+                self.fail("Incorrect appy error message. {}".format(s))
