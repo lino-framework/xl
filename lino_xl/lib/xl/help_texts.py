@@ -971,6 +971,8 @@ financial voucher."""),
     'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
+    'lino_xl.lib.ledger.AccountingReport' : _("""A combined report which produces a series of reports for a given
+period as one action."""),
     'lino_xl.lib.ledger.MatchRule' : _("""A match rule specifies that a movement into given account can
 be cleared using a given journal."""),
     'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger."""),
@@ -995,6 +997,8 @@ empty."""),
 string. Clicking it will open a table with all movements
 having that match."""),
     'lino_xl.lib.ledger.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
+    'lino_xl.lib.ledger.Voucher.state' : _("""The workflow state of this voucher. Choices are defined in
+VoucherStates"""),
     'lino_xl.lib.ledger.Voucher.journal' : _("""The journal into which this voucher has been booked. This is a
 mandatory pointer to a Journal instance."""),
     'lino_xl.lib.ledger.Voucher.number' : _("""The sequence number of this voucher in the journal."""),
@@ -1082,14 +1086,15 @@ journal."""),
 in the ledger."""),
     'lino_xl.lib.ledger.VoucherStates.registered' : _("""Registered vouchers cannot be modified, but are visible as
 movements in the ledger."""),
-    'lino_xl.lib.ledger.VoucherStates.cancelled' : _("""Cancelled is similar to Draft, except that you cannot edit the
-fields. This is used for invoices which have been sent, but the
-customer signaled that they doen't agree. Instead of writing a
-credit nota, you can decide to just cancel the invoice."""),
-    'lino_xl.lib.ledger.VoucherStates.signed' : _("""The Signed state is similar to registered, but cannot usually be
-deregistered anymore. This state is not visible in the default
-configuration. In order to make it usable, you must define a custom
-workflow for lino_xl.lib.ledger.VoucherStates."""),
+    'lino_xl.lib.ledger.VoucherStates.cancelled' : _("""Cancelled is similar to Draft, except that you cannot edit
+the fields. This is used for invoices which have been sent,
+but the customer signaled that they doen't agree. Instead of
+writing a credit nota, you can decide to just cancel the
+invoice."""),
+    'lino_xl.lib.ledger.VoucherStates.signed' : _("""The Signed state is similar to registered, but cannot
+usually be deregistered anymore. This state is not visible in
+the default configuration. In order to make it usable, you
+must define a custom workflow for VoucherStates."""),
     'lino_xl.lib.ledger.TradeTypes' : _("""A choicelist with the trade types defined for this application."""),
     'lino_xl.lib.ledger.TradeTypes.sales' : _("""A sale transaction is when you write an invoice to a customer
 and then expect the customer to pay it."""),

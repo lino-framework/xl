@@ -340,34 +340,32 @@ class Guests(dd.Table):
 
     @classmethod
     def get_request_queryset(self, ar, **kwargs):
-        # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
         qs = super(Guests, self).get_request_queryset(ar, **kwargs)
 
         if isinstance(qs, list):
             return qs
+        pv = ar.param_values
+        if pv.user:
+            qs = qs.filter(event__user=pv.user)
+        if settings.SITE.project_model is not None and pv.project:
+            qs = qs.filter(event__project=pv.project)
 
-        if ar.param_values.user:
-            qs = qs.filter(event__user=ar.param_values.user)
-        if settings.SITE.project_model is not None and ar.param_values.project:
-            qs = qs.filter(event__project=ar.param_values.project)
+        if pv.event_state:
+            qs = qs.filter(event__state=pv.event_state)
 
-        if ar.param_values.event_state:
-            qs = qs.filter(event__state=ar.param_values.event_state)
+        if pv.guest_state:
+            qs = qs.filter(state=pv.guest_state)
 
-        if ar.param_values.guest_state:
-            qs = qs.filter(state=ar.param_values.guest_state)
+        if pv.partner:
+            qs = qs.filter(partner=pv.partner)
 
-        if ar.param_values.partner:
-            qs = qs.filter(partner=ar.param_values.partner)
-
-        if ar.param_values.start_date:
-            if ar.param_values.end_date:
-                qs = qs.filter(
-                    event__start_date__gte=ar.param_values.start_date)
-            else:
-                qs = qs.filter(event__start_date=ar.param_values.start_date)
-        if ar.param_values.end_date:
-            qs = qs.filter(event__end_date__lte=ar.param_values.end_date)
+        # we test whether the *start_date* of event is within the
+        # given range. Filtering guests by the end_date of their event
+        # is currently not supported.
+        if pv.start_date:
+            qs = qs.filter(event__start_date__gte=pv.start_date)
+        if pv.end_date:
+            qs = qs.filter(event__start_date__lte=pv.end_date)
         return qs
 
     @classmethod
@@ -418,11 +416,12 @@ class GuestsByPartner(Guests):
     auto_fit_column_widths = True
     slave_grid_format = "summary"
 
-    # @classmethod
-    # def param_defaults(self, ar, **kw):
-    #     kw = super(GuestsByPartner, self).param_defaults(ar, **kw)
-    #     kw.update(event_state=EntryStates.took_place)
-    #     return kw
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(GuestsByPartner, self).param_defaults(ar, **kw)
+        # kw.update(event_state=EntryStates.took_place)
+        kw.update(end_date=dd.today(7))
+        return kw
 
     @classmethod
     def get_slave_summary(self, obj, ar):
