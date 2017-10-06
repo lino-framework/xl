@@ -35,9 +35,9 @@ from .roles import AccountingReader, LedgerUser, LedgerStaff
 
 class JournalDetail(dd.DetailLayout):
     main = """
-    name ref:5
-    trade_type seqno id voucher_type:10 journal_group:10
-    account build_method template
+    name ref:5 seqno:5
+    voucher_type:30 journal_group:15 build_method:20 template:20 id:5
+    trade_type account partner
     dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare
     printed_name
     MatchRulesByJournal

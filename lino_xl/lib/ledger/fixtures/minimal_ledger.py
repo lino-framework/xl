@@ -40,7 +40,8 @@ current_group = None
 
 def objects():
 
-    JournalGroups = rt.modules.ledger.JournalGroups
+    JournalGroups = rt.models.ledger.JournalGroups
+    Company = rt.models.contacts.Company
 
     def Group(ref, type, fr, de, en, et=None):
         if et is None:
@@ -100,6 +101,11 @@ def objects():
     if vat:
         settings.SITE.site_config.update(tax_offices_account=obj)
 
+    obj = Account(BANK_PO_ACCOUNT, 'liabilities',
+                  "Ordres de paiement",
+                  "Zahlungsaufträge", "Payment orders", "Maksekorraldused",
+                  clearable=True, needs_partner=True)
+    yield obj
         
 
     yield Group('45', 'assets', "TVA à payer",
@@ -129,11 +135,11 @@ def objects():
     yield Group('58', 'assets',
                 "Transactions en cours", "Laufende Transaktionen",
                 "Running transactions")
-    yield Account(PO_BESTBANK_ACCOUNT, 'bank_accounts',
-                  "Ordres de paiement Bestbank",
-                  "Zahlungsaufträge Bestbank",
-                  "Payment Orders Bestbank",
-                  "Maksekorraldused Parimpank", clearable=True)
+    # yield Account(PO_BESTBANK_ACCOUNT, 'bank_accounts',
+    #               "Ordres de paiement Bestbank",
+    #               "Zahlungsaufträge Bestbank",
+    #               "Payment Orders Bestbank",
+    #               "Maksekorraldused Parimpank", clearable=True)
 
     yield Group('6', 'expenses', u"Charges", u"Aufwendungen", "Expenses", "Kulud")
 
@@ -205,14 +211,21 @@ def objects():
         yield vat.VatAccountInvoice.create_journal(**kw)
 
     if finan:
+
+        bestbank = Company(
+            name="Bestbank",
+            country=dd.plugins.countries.get_my_country())
+        yield bestbank
+        
         kw.update(journal_group=JournalGroups.financial)
-        kw.update(dd.str2kw('name', _("Payment Orders")))
+        kw.update(dd.str2kw('name', _("Bestbank Payment Orders")))
         # kw.update(dd.babel_values(
         #     'name', de="Zahlungsaufträge", fr="Ordres de paiement",
         #     en="Payment Orders", et="Maksekorraldused"))
         kw.update(
-            trade_type='purchases',
-            account=PO_BESTBANK_ACCOUNT,
+            trade_type='bank_po',
+            partner=bestbank,
+            account=BANK_PO_ACCOUNT,
             ref="PMO")
         kw.update(dc=CREDIT)
         yield finan.PaymentOrder.create_journal(**kw)

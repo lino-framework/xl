@@ -222,6 +222,7 @@ TradeTypes.add_item('P', _("Purchases"), 'purchases', dc=DEBIT)
 TradeTypes.add_item('W', _("Wages"), 'wages', dc=DEBIT)
 TradeTypes.add_item('T', _("Taxes"), 'taxes', dc=DEBIT)
 TradeTypes.add_item('C', _("Clearings"), 'clearings', dc=DEBIT)
+TradeTypes.add_item('B', _("Bank payment orders"), 'bank_po', dc=DEBIT)
 
 # Note that :mod:`lino_xl.lib.sales.models` and/or
 # :mod:`lino_xl.lib.ledger.models` (if installed) will modify
