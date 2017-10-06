@@ -112,18 +112,19 @@ def objects(refs="PMO BNK"):
             else:
                 if ref == 'PMO':
                     voucher.execution_date = voucher.entry_date
+                    assert voucher.execution_date is not None
                 voucher.register(REQUEST)
                 voucher.save()
 
-            # For payment orders we also write the XML file
-            if ref == 'PMO':
-                rv = voucher.write_xml.run_from_session(ses)
-                if not rv['success']:
-                    raise Exception("20170630")
-                fn = Path(settings.SITE.cache_dir + rv['open_url'])
-                if not fn.exists():
-                    raise Exception("20170630")
-                validate_pain001(fn)
+                # For payment orders we also write the XML file
+                if ref == 'PMO':
+                    rv = voucher.write_xml.run_from_session(ses)
+                    if not rv['success']:
+                        raise Exception("20170630")
+                    fn = Path(settings.SITE.cache_dir + rv['open_url'])
+                    if not fn.exists():
+                        raise Exception("20170630")
+                    validate_pain001(fn)
 
             date += delta(months=1)
         # JOURNAL_BANK = Journal.objects.get(ref="BNK")

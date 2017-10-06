@@ -217,7 +217,7 @@ def objects():
             country=dd.plugins.countries.get_my_country())
         yield bestbank
         
-        kw.update(journal_group=JournalGroups.financial)
+        kw = dict(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("Bestbank Payment Orders")))
         # kw.update(dd.babel_values(
         #     'name', de="Zahlungsaufträge", fr="Ordres de paiement",
@@ -230,8 +230,8 @@ def objects():
         kw.update(dc=CREDIT)
         yield finan.PaymentOrder.create_journal(**kw)
 
-        kw.update(journal_group=JournalGroups.financial)
-        kw.update(trade_type='')
+        kw = dict(journal_group=JournalGroups.financial)
+        # kw.update(trade_type='')
         kw.update(dc=DEBIT)
         kw.update(account=CASH_ACCOUNT, ref="CSH")
         kw.update(dd.str2kw('name', _("Cash")))
@@ -241,13 +241,11 @@ def objects():
         #     et="Kassa")
         yield finan.BankStatement.create_journal(**kw)
 
-        kw.update(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("Bestbank")))
         kw.update(account=BESTBANK_ACCOUNT, ref="BNK")
         kw.update(dc=DEBIT)
         yield finan.BankStatement.create_journal(**kw)
 
-        kw.update(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("Miscellaneous Journal Entries")))
         # kw = dd.babel_values(
         #     'name', en="Miscellaneous Journal Entries",

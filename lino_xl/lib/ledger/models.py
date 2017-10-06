@@ -123,9 +123,9 @@ class Journal(mixins.BabelNamed,
 
     def get_allowed_accounts(self, **kw):
         if self.trade_type:
-            kw[self.trade_type.name + '_allowed'] = True
+            return self.trade_type.get_allowed_accounts(**kw)
         # kw.update(chart=self.chart)
-        return rt.modules.accounts.Account.objects.filter(**kw)
+        return rt.models.accounts.Account.objects.filter(**kw)
 
     def get_next_number(self, voucher):
         # ~ self.save() # 20131005 why was this?

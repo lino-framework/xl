@@ -132,7 +132,11 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
         return elems
 
     def get_name_elems(self, ar):
-        return [E.b(self.name)]
+        elems = []
+        if self.prefix:
+            elems += [self.prefix, ' ']
+        elems.append(E.b(self.name))
+        return elems
 
     def get_print_language(self):
         return self.language
@@ -349,12 +353,6 @@ class Company(Partner):
         return join_words(self.prefix, self.name)
     full_name = property(get_full_name)
 
-    def get_name_elems(self, ar):
-        elems = []
-        if self.prefix:
-            elems += [self.prefix, ' ']
-        elems += [E.b(self.name)]
-        return elems
 
 
 class CompanyDetail(PartnerDetail):

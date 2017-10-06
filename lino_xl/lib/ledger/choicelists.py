@@ -209,6 +209,10 @@ class TradeType(dd.Choice):
         """
         return getattr(product, self.price_field_name)
 
+    def get_allowed_accounts(self, **kw):
+        kw[self.name + '_allowed'] = True
+        return rt.models.accounts.Account.objects.filter(**kw)
+        
 
 class TradeTypes(dd.ChoiceList):
     required_roles = dd.login_required(LedgerStaff)

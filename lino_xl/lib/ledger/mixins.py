@@ -180,9 +180,8 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
     @dd.chooser()
     def account_choices(self, voucher):
         if voucher and voucher.journal:
-            fkw = {voucher.journal.trade_type.name + '_allowed': True}
-            return rt.modules.accounts.Account.objects.filter(**fkw)
-        return []
+            return voucher.journal.get_allowed_accounts()
+        return rt.modules.accounts.Account.objects.none()
 
 
 def JournalRef(**kw):
