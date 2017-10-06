@@ -277,6 +277,7 @@ class InvoicesByJournal(Invoices, ByJournal):
     must be :class:`lino_xl.lib.vat.models.VatAccountInvoice`)
 
     """
+    order_by = ["-accounting_period__year", "-number"]
     params_layout = "partner state year"
     column_names = "number_with_year entry_date due_date " \
         "partner " \
