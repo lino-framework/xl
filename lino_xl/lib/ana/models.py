@@ -271,13 +271,13 @@ class Invoices(PartnerVouchers):
     # start_at_bottom = True
 
 
-class InvoicesByJournal(Invoices, ByJournal):
+class InvoicesByJournal(ByJournal, Invoices):
     """Shows all invoices of a given journal (whose
     :attr:`voucher_type<lino_xl.lib.ledger.models.Journal.voucher_type>`
     must be :class:`lino_xl.lib.vat.models.VatAccountInvoice`)
 
     """
-    order_by = ["-accounting_period__year", "-number"]
+    # order_by = ["-accounting_period__year", "-number"]
     params_layout = "partner state year"
     column_names = "number_with_year entry_date due_date " \
         "partner " \
