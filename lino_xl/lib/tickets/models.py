@@ -121,10 +121,11 @@ class Project(mixins.DateRange, TimeInvestment,
     changeset_url_template = models.CharField(blank=True, max_length=200)
     # root = models.ForeignKey(
     #     'self', blank=True, null=True, verbose_name=_("Root"))
-    if dd.is_installed('clocking'):
-        reporting_type = ReportingTypes.field(blank=True)
-    else:
-        reporting_type = dd.DummyField()
+    reporting_type = ReportingTypes.field(blank=True)
+    # if dd.is_installed('clocking'):
+    #     reporting_type = ReportingTypes.field(blank=True)
+    # else:
+    #     reporting_type = dd.DummyField()
     # milestone = dd.ForeignKey(
     #     'deploy.Milestone',
     #     related_name='projects_by_milestone', blank=True, null=True)
@@ -179,6 +180,8 @@ class Site(ContactRelated, Starrable):
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
     name = models.CharField(_("Designation"), max_length=200)
 
+    reporting_type = ReportingTypes.field(blank=True)
+        
     # def get_children_starrable(self, ar):
     #     obj = ar.selected_rows[0]
     #     milestone = dd.resolve_model(milestone_model)

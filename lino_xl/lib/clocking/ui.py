@@ -79,7 +79,7 @@ class Sessions(dd.Table):
                    'break_time summary duration ticket_no  *'
 
     detail_layout = """
-    ticket:40 user:20 faculty:20
+    ticket:40 user:20 faculty:20 reporting_type:10
     start_date start_time end_date end_time break_time duration
     summary:60 workflow_buttons:20
     description
@@ -98,8 +98,10 @@ class Sessions(dd.Table):
             'contacts.Company', null=True, blank=True),
         project=dd.ForeignKey(
             'tickets.Project', null=True, blank=True),
-        ticket=dd.ForeignKey(
-            dd.plugins.clocking.ticket_model, null=True, blank=True),
+        site=dd.ForeignKey(
+            'tickets.Site', null=True, blank=True),
+        # ticket=dd.ForeignKey(
+        #     dd.plugins.clocking.ticket_model, null=True, blank=True),
         # user=dd.ForeignKey('users.User', null=True, blank=True),
         session_type=dd.ForeignKey(
             'clocking.SessionType', null=True, blank=True),
@@ -113,8 +115,10 @@ class Sessions(dd.Table):
         s += ['session_type', 'ticket']
         return s
 
-    params_layout = "start_date end_date observed_event company project "\
-                    "user session_type ticket"
+    params_layout = """
+    start_date end_date observed_event company project
+    user session_type ticket site
+    """
     auto_fit_column_widths = True
 
     @classmethod
@@ -127,6 +131,9 @@ class Sessions(dd.Table):
 
         if pv.project:
             qs = qs.filter(ticket__project__in=pv.project.whole_clan())
+
+        if pv.site:
+            qs = qs.filter(ticket__site=pv.site)
 
         if pv.company:
             qs = qs.filter(ticket__site__company=pv.company)
