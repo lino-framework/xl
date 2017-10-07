@@ -9,6 +9,7 @@ Creates fictive demo bookings with monthly purchases.
 See also:
 - :mod:`lino_xl.lib.finan.fixtures.demo_bookings`
 - :mod:`lino_xl.lib.sales.fixtures.demo_bookings`
+- :mod:`lino_xl.lib.invoicing.fixtures.demo_bookings`
 
 """
 
@@ -30,18 +31,34 @@ from lino_xl.lib.vat.mixins import myround
 REQUEST = settings.SITE.login()  # BaseRequest()
 MORE_THAN_A_MONTH = datetime.timedelta(days=40)
 
+from lino_xl.lib.vat.choicelists import VatAreas
+from lino_xl.lib.ledger.choicelists import TradeTypes
 
 def objects():
 
     Journal = rt.models.ledger.Journal
     PaymentTerm = rt.models.ledger.PaymentTerm
-    
+    VatRule = rt.models.vat.VatRule
     Company = rt.models.contacts.Company
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
 
-    PROVIDERS = Cycler(Company.objects.filter(
-        sepa_accounts__iban__isnull=False).order_by('id'))
+    def func():
+        # qs = Company.objects.filter(sepa_accounts__iban__isnull=False)
+        qs = Company.objects.exclude(vat_regime='')
+        for p in qs.order_by('id'):
+            # if Journal.objects.filter(partner=p).exists():
+            #     continue
+            # if not p.vat_regime:
+            #     continue
+            va = VatAreas.get_for_country(p.country)
+            if va is None:
+                continue
+            rule = VatRule.get_vat_rule(
+                va, TradeTypes.purchases, p.vat_regime, default=False)
+            if rule:
+                yield p
+    PROVIDERS = Cycler(func())
 
     if len(PROVIDERS) == 0:
         raise Exception("No providers.")
@@ -62,7 +79,7 @@ def objects():
 
     """
     PURCHASE_STORIES = []
-    for i in range(5):
+    for i in range(7):
         # provider, (account,amount)
         story = (PROVIDERS.pop(), [])
         story[1].append((ACCOUNTS.pop(), AMOUNTS.pop()))
@@ -79,7 +96,6 @@ def objects():
     PAYMENT_TERMS = Cycler(PaymentTerm.objects.all())
     if len(PAYMENT_TERMS) == 0:
         raise Exception("No PAYMENT_TERMS.")
-
     
     while date < end_date:
 
@@ -110,14 +126,16 @@ def objects():
                              account=account,
                              total_incl=myround(amount) +
                              AMOUNT_DELTAS.pop(), **kwargs)
-                item.total_incl_changed(REQUEST)
-                item.before_ui_save(REQUEST)
-                #~ if item.total_incl:
-                    #~ print "20121208 ok", item
-                #~ else:
-                    #~ if item.product.price:
-                        #~ raise Exception("20121208")
-                yield item
+                try:
+                    item.total_incl_changed(REQUEST)
+                except Exception as e:
+                    msg = "20171006 {} in ({} {!r})".format(
+                        e, invoice.partner, invoice.vat_regime)
+                    # raise Exception(msg)
+                    dd.logger.warning(msg)
+                else:
+                    item.before_ui_save(REQUEST)
+                    yield item
             invoice.register(REQUEST)
             invoice.save()
 

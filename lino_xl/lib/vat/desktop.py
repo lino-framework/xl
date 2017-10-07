@@ -2,10 +2,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Tables for `lino_xl.lib.vat`.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 
@@ -27,11 +23,10 @@ from .choicelists import VatRegimes
 
 
 class VatRules(dd.Table):
-    """The table of all :class:`lino_xl.lib.vat.models.VatRule` objects."""
 
     model = 'vat.VatRule'
     required_roles = dd.login_required(LedgerStaff)
-    column_names = "seqno country trade_type vat_class vat_regime \
+    column_names = "seqno vat_area trade_type vat_class vat_regime \
     #start_date #end_date rate can_edit \
     vat_account vat_returnable vat_returnable_account *"
     hide_sums = True
@@ -40,9 +35,6 @@ class VatRules(dd.Table):
 
 
 class InvoiceDetail(dd.DetailLayout):
-    """The detail layout used by :class:`Invoices`.
-
-    """
     
     main = "general ledger"
 
@@ -66,11 +58,6 @@ class InvoiceDetail(dd.DetailLayout):
 
 
 class Invoices(PartnerVouchers):
-    """The table of all
-    :class:`VatAccountInvoice<lino_xl.lib.vat.models.VatAccountInvoice>`
-    objects.
-
-    """
     required_roles = dd.login_required(LedgerUser)
     model = 'vat.VatAccountInvoice'
     order_by = ["-id"]
@@ -84,11 +71,6 @@ class Invoices(PartnerVouchers):
 
 
 class InvoicesByJournal(Invoices, ByJournal):
-    """Shows all invoices of a given journal (whose
-    :attr:`voucher_type<lino_xl.lib.ledger.models.Journal.voucher_type>`
-    must be :class:`lino_xl.lib.vat.models.VatAccountInvoice`)
-
-    """
     params_layout = "partner state start_period end_period user"
     column_names = "number_with_year voucher_date due_date " \
         "partner " \

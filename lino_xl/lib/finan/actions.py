@@ -22,3 +22,19 @@ class WriteXML(DirectPrintAction):
     # show_in_bbar = False
 
 
+class WritePaymentsInitiation(WriteXML):
+
+    tplname = "pain_001"
+    
+    def before_build(self, bm, elem):
+        acc = elem.journal.sepa_account
+        if not acc:
+            raise Warning(
+                _("Journal {} has no SEPA account").format(elem.journal))
+        if not acc.bic:
+            raise Warning(
+                _("SEPA account for journal {} has no BIC").format(
+                    elem.journal))
+        
+        return super(WritePaymentsInitiation, self).before_build(bm, elem)
+

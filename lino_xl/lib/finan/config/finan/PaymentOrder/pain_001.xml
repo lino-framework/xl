@@ -39,14 +39,14 @@
  <AdrLine>{{item.partner.street}}</AdrLine>
  {% endif %}
  {% if item.partner.city %}
- <AdrLine>{{item.partner.city}}</AdrLine>
+ <AdrLine>{{escape(str(item.partner.city))}}</AdrLine>
  {% endif %}
  <Ctry>{{item.partner.country.isocode}}</Ctry>
  </PstlAdr>
 {% endif %}
  </Cdtr>
 <CdtrAcct><Id><IBAN>{{item.bank_account.iban}}</IBAN></Id></CdtrAcct>
-<RmtInf><Ustrd>{{item.remark}}*{{item.partner.name}}*{{item.voucher}}</Ustrd></RmtInf>
+<RmtInf><Ustrd>{{escape(item.remark)}}*{{escape(item.partner.name)}}*{{item.voucher}}</Ustrd></RmtInf>
 </CdtTrfTxInf>
 {% endfor %}
 </PmtInf>

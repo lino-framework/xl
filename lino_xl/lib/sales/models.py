@@ -25,6 +25,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.vat.utils import add_vat, remove_vat, HUNDRED
 from lino_xl.lib.vat.mixins import QtyVatItemBase, VatDocument
 from lino_xl.lib.vat.mixins import get_default_vat_regime, myround
+from lino_xl.lib.vat.choicelists import VatAreas
 from lino_xl.lib.sepa.mixins import Payable
 from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
 from lino_xl.lib.ledger.models import Voucher
@@ -515,9 +516,10 @@ class ProductDocItem(QtyVatItemBase, Bleached):
         rule = self.get_vat_rule(tt)
         if rule is None:
             return
-        cat_rule = rt.modules.vat.VatRule.get_vat_rule(
-            tt, get_default_vat_regime, self.get_vat_class(tt),
-            dd.plugins.countries.get_my_country(),
+        va = VatAreas.get_for_country(
+            dd.plugins.countries.get_my_country())
+        cat_rule = rt.models.vat.VatRule.get_vat_rule(
+            va, tt, get_default_vat_regime(), self.get_vat_class(tt),
             dd.today())
         if cat_rule is None:
             return

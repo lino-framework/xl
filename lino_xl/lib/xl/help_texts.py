@@ -583,45 +583,12 @@ object."""),
 given topic."""),
     'lino_xl.lib.topics.Topic' : _("""A topic is something somebody can be interested in."""),
     'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
-    'lino_xl.lib.vat.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.vat.Plugin' : _("""The Plugin object for this
+plugin."""),
     'lino_xl.lib.vat.Plugin.default_vat_regime' : _("""The default VAT regime. If this is specified as a string, Lino will
 resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
 resolve it at startup into an item of VatClasses."""),
-    'lino_xl.lib.vat.VatRules' : _("""The table of all lino_xl.lib.vat.models.VatRule objects."""),
-    'lino_xl.lib.vat.VatRules.model' : _("""alias of VatRule"""),
-    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
-    'lino_xl.lib.vat.Invoices' : _("""The table of all
-VatAccountInvoice
-objects."""),
-    'lino_xl.lib.vat.Invoices.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
-voucher_type
-must be lino_xl.lib.vat.models.VatAccountInvoice)"""),
-    'lino_xl.lib.vat.InvoicesByJournal.master' : _("""alias of Journal"""),
-    'lino_xl.lib.vat.InvoicesByJournal.model' : _("""alias of VatAccountInvoice"""),
-    'lino_xl.lib.vat.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
-layout's main element."""),
-    'lino_xl.lib.vat.mixins.PartnerDetailMixin.ledger' : _("""Shows the tables VouchersByPartner and MovementsByPartner."""),
-    'lino_xl.lib.vat.mixins.VatTotal' : _("""Model mixin which defines the fields total_incl, total_base
-and total_vat.  Used for both the document header
-(VatDocument) and for each item (VatItemBase)."""),
-    'lino_xl.lib.vat.mixins.VatTotal.total_incl' : _("""A lino.core.fields.PriceField which stores the total
-amount VAT included."""),
-    'lino_xl.lib.vat.mixins.VatTotal.total_base' : _("""A lino.core.fields.PriceField which stores the total
-amount VAT excluded."""),
-    'lino_xl.lib.vat.mixins.VatTotal.total_vat' : _("""A lino.core.fields.PriceField which stores the amount
-of VAT."""),
-    'lino_xl.lib.vat.mixins.VatTotal.auto_compute_totals' : _("""Set this to True on subclasses who compute their totals
-automatically, i.e. the fields total_base,
-total_vat and total_incl are disabled.  This is
-set to True for lino_xl.lib.sales.models.SalesDocument."""),
-    'lino_xl.lib.vat.mixins.QtyVatItemBase' : _("""Model mixin for items of a VatTotal, adds unit_price and
-qty."""),
-    'lino_xl.lib.vat.mixins.VatDeclaration' : _("""A VAT declaration is when a company declares to the state
-how much sales and purchases they've done during a given period.
-It is a summary of ledger movements.
-It is at the same time a ledger voucher."""),
     'lino_xl.lib.vatless.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vatless.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
@@ -688,8 +655,8 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
     'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
-    'lino_xl.lib.bevats.Declaration' : _("""A VAT declaration."""),
-    'lino_xl.lib.bevats.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
+    'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
+    'lino_xl.lib.bevats.DeclarationFields' : _("""Implements lino_xl.lib.vat.DeclarationFields."""),
     'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
 lino_xl.lib.cal.management.commands.watch_calendars,
 and local modifications will be sent back to the remote calendar."""),
@@ -1332,6 +1299,8 @@ instances."""),
 intra-Community."""),
     'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose vat_regime is
 intra-Community."""),
+    'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and
+IntracomPurchases"""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),
@@ -1349,11 +1318,21 @@ the total amount of the voucher and causes an additional
 movement into the vat_returnable_account."""),
     'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
 field is empty, then VAT will be added to the base account."""),
+    'lino_xl.lib.vat.VatRules' : _("""The table of all VatRule objects."""),
     'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
 amounts (not products, quantities, discounts)."""),
+    'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
+    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
+voucher_type
+must be VatAccountInvoice)"""),
+    'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
+    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
     'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
-    'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and
-IntracomPurchases"""),
+    'lino_xl.lib.vat.VatTotal' : _("""Model mixin which defines the fields total_incl,
+total_base and total_vat."""),
+    'lino_xl.lib.vat.VatTotal.total_incl' : _("""The amount VAT included."""),
+    'lino_xl.lib.vat.VatTotal.total_base' : _("""The amount VAT excluded."""),
+    'lino_xl.lib.vat.VatTotal.total_vat' : _("""The amount of VAT."""),
     'lino_xl.lib.vat.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
     'lino_xl.lib.vat.VatDocument.partner' : _("""Mandatory field to be defined in another class."""),
     'lino_xl.lib.vat.VatDocument.refresh_after_item_edit' : _("""The total fields of an invoice are currently not automatically
@@ -1364,14 +1343,15 @@ VatRegimes."""),
     'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatTotal."""),
     'lino_xl.lib.vat.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
 VatClasses."""),
-    'lino_xl.lib.vat.VatDeclaration' : _("""Base class for VAT declarations. Currently Lino can do Belgian VAT
-declarations (implemented by bevat.Declaration in lino_xl.lib.bevat)."""),
+    'lino_xl.lib.vat.QtyVatItemBase' : _("""Model mixin for items of a VatTotal, adds unit_price
+and qty."""),
     'lino_xl.lib.vat.VatClasses' : _("""The global list of VAT classes."""),
     'lino_xl.lib.vat.VatColumns' : _("""The global list of VAT columns."""),
     'lino_xl.lib.vat.VatRegime' : _("""Base class for choices of VatRegimes."""),
     'lino_xl.lib.vat.VatRegime.item_vat' : _("""Whether unit prices are VAT included or not."""),
-    'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes. Each item is an instance of
+    'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes.  Each item is an instance of
 VatRegime."""),
+    'lino_xl.lib.vat.mixins.VatDeclaration' : _("""Abstract base class for VAT declarations."""),
     'lino_xl.lib.vat.DeclarationField' : _("""Base class for all fields of VAT declarations."""),
     'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of other declaration
 fields to be observed by this field."""),

@@ -139,9 +139,15 @@ class Plan(UserAuthored):
         return plan
 
     def fill_plan(self, ar):
-        """Yield a list of invoiceables for the given plan,
-        one for each invoice line to generate.
+        """Add items to this plan, one for each invoice to generate.
 
+        This also groups the invoiceables by their invoiceable
+        partner.
+
+        Note a case we had (20171007) : One enrolment for Alfons whose
+        invoice_recipient points to Erna, a second enrolment for Erna
+        directly. The first enrolment returned Erna as Partner, the
+        second returned Erna as Pupil, so they were not grouped.
 
         """
         Item = rt.modules.invoicing.Item
@@ -149,10 +155,10 @@ class Plan(UserAuthored):
         for obj in self.get_invoiceables_for_plan():
             partner = obj.get_invoiceable_partner()
             idate = obj.get_invoiceable_date()
-            item = collected.get(partner, None)
+            item = collected.get(partner.pk, None)
             if item is None:
                 item = Item(plan=self, partner=partner)
-                collected[partner] = item
+                collected[partner.pk] = item
             if item.first_date is None:
                 item.first_date = idate
             else:
@@ -202,6 +208,7 @@ class Plan(UserAuthored):
         return unicode(self.user)
 
 
+@dd.python_2_unicode_compatible
 class Item(dd.Model):
     """The items of an invoicing plan are called **suggestions**.
 
@@ -277,8 +284,10 @@ class Item(dd.Model):
                     items.append(i)
 
         if len(items) == 0:
-            ar.info(_("No invoiceables found for %s.") % self)
-            return
+            raise Warning(_("No invoiceables found for %s.") % self)
+            # dd.logger.warning(
+            #     _("No invoiceables found for %s.") % self.partner)
+            # return
 
         invoice.full_clean()
         invoice.save()
@@ -298,6 +307,8 @@ class Item(dd.Model):
 
         return invoice
 
+    def __str__(self):
+        return "{0} {1}".format(self.plan, self.partner)
 
 class Plans(dd.Table):
     required_roles = dd.login_required(LedgerUser)

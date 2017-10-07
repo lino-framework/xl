@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # This file is part of Lino Cosi.
 #
 # Lino Cosi is free software: you can redistribute it and/or modify
@@ -82,6 +82,7 @@ class StartInvoicingForPartner(StartInvoicing):
 
 
 class UpdatePlan(dd.Action):
+    label = _("Update plan")
     icon_name = 'lightning'
     help_text = _("Build a new list of suggestions. "
                   "This will remove all current suggestions")
@@ -94,6 +95,7 @@ class UpdatePlan(dd.Action):
 
 
 class ExecutePlan(dd.Action):
+    label = _("Execute plan")
     icon_name = 'money'
 
     help_text = _("Execute this invoicing plan. "
@@ -107,6 +109,7 @@ class ExecutePlan(dd.Action):
 
 
 class ExecuteItem(ExecutePlan):
+    label = _("Execute item")
     show_in_workflow = True
     show_in_bbar = False
     

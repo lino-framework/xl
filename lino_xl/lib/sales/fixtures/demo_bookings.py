@@ -25,10 +25,10 @@ from lino.utils import Cycler
 from lino.api import dd, rt
 
 from lino_xl.lib.vat.mixins import myround
+from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas
 
 vat = dd.resolve_app('vat')
 sales = dd.resolve_app('sales')
-
 
 # from lino.core.requests import BaseRequest
 REQUEST = settings.SITE.login()  # BaseRequest()
@@ -38,12 +38,20 @@ def objects():
 
     TradeTypes = rt.models.ledger.TradeTypes
     VatRule = rt.models.vat.VatRule
-    VatRegimes = rt.models.vat.VatRegimes
-    
     Journal = rt.models.ledger.Journal
-    Person = rt.models.contacts.Person
+    # Person = rt.models.contacts.Person
     Partner = rt.models.contacts.Partner
     Product = rt.models.products.Product
+
+    def get_trade_countries(tt):
+        Country = rt.models.countries.Country
+        areas = set()
+        for va in VatAreas.get_list_items():
+            if VatRule.get_vat_rule(va, tt, default=False):
+                areas.add(va)
+        for obj in Country.objects.all():
+            if VatAreas.get_for_country(obj) in areas:
+                yield obj
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
 
@@ -51,14 +59,21 @@ def objects():
     JOURNAL_S = Journal.objects.get(ref="SLS")
 
 
-    tt = TradeTypes.sales
-    regimes = set()
-    for reg in VatRegimes.get_list_items():
-        if VatRule.get_vat_rule(tt, reg, default=False):
-            regimes.add(reg)
-    qs = Partner.objects.filter(vat_regime__in=regimes).order_by('id')
-    assert qs.count() > 0
-    CUSTOMERS = Cycler(qs)
+    # tt = TradeTypes.sales
+    # regimes = set()
+    # for reg in VatRegimes.get_list_items():
+    #     if VatRule.get_vat_rule(tt, reg, default=False):
+    #         regimes.add(reg)
+    # qs = Partner.objects.filter(vat_regime__in=regimes).order_by('id')
+    # assert qs.count() > 0
+    # CUSTOMERS = Cycler(qs)
+    CUSTOMERS = Cycler(
+        Partner.objects.filter(
+            country__in=get_trade_countries(
+                TradeTypes.sales)).order_by('id'))
+    if len(CUSTOMERS) == 0:
+        raise Exception("20171006 no customers ({})".format(
+            len(list(get_trade_countries(TradeTypes.sales)))))
     
     # CUSTOMERS = Cycler(Person.objects.filter(
     #     gender=dd.Genders.male).order_by('id'))
@@ -92,9 +107,16 @@ def objects():
                     voucher=invoice,
                     product=PRODUCTS.pop(),
                     qty=QUANTITIES.pop())
-                item.product_changed(REQUEST)
-                item.before_ui_save(REQUEST)
-                yield item
+                try:
+                    item.product_changed(REQUEST)
+                except Exception as e:
+                    msg = "20171006 {} in ({} {!r})".format(
+                        e, invoice.partner, invoice.vat_regime)
+                    # raise Exception(msg)
+                    dd.logger.warning(msg)
+                else:
+                    item.before_ui_save(REQUEST)
+                    yield item
             invoice.register(REQUEST)
             invoice.save()
 

@@ -17,14 +17,19 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
-from lino_xl.lib.vat.choicelists import VatRegimes
+from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas
+
+
+NAT = VatAreas.national
+EU = VatAreas.eu
+INT = VatAreas.international
 
 VatRegimes.clear()
 add = VatRegimes.add_item
 add('10', _("Not subject to VAT"), 'normal')
-add('20', _("Subject to VAT"), 'subject')
-add('30', _("Intracom services"), 'intracom')
-add('35', _("Intracom supplies"), 'intracom_supp')
+add('20', _("Subject to VAT"), 'subject', NAT)
+add('30', _("Intracom services"), 'intracom', EU)
+add('35', _("Intracom supplies"), 'intracom_supp', EU)
 
 VatColumns.clear()
 add = VatColumns.add_item

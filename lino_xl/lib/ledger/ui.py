@@ -487,11 +487,11 @@ class AccountsBalance(dd.Table):
     def description(self, row, ar):
         return row.obj2href(ar)
 
-    @dd.virtualfield(dd.PriceField(_("Debit\nbefore")))
+    @dd.virtualfield(dd.PriceField(_("Debit before")))
     def old_d(self, row, ar):
         return Balance(row.old_d, row.old_c).d
 
-    @dd.virtualfield(dd.PriceField(_("Credit\nbefore")))
+    @dd.virtualfield(dd.PriceField(_("Credit before")))
     def old_c(self, row, ar):
         return Balance(row.old_d, row.old_c).c
 
@@ -503,11 +503,11 @@ class AccountsBalance(dd.Table):
     def during_c(self, row, ar):
         return row.during_c
 
-    @dd.virtualfield(dd.PriceField(_("Debit\nafter")))
+    @dd.virtualfield(dd.PriceField(_("Debit after")))
     def new_d(self, row, ar):
         return self.new_balance(row).d
 
-    @dd.virtualfield(dd.PriceField(_("Credit\nafter")))
+    @dd.virtualfield(dd.PriceField(_("Credit after")))
     def new_c(self, row, ar):
         return self.new_balance(row).c
     

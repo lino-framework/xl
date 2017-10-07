@@ -2,11 +2,6 @@
 # Copyright 2012-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""
-Choicelists for `lino_xl.lib.vat`.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 
@@ -38,10 +33,38 @@ class VatColumns(dd.ChoiceList):
     show_values = True
 
     
+class VatAreas(dd.ChoiceList):
+    verbose_name = _("VAT area")
+    verbose_name_plural = _("VAT areas")
+    required_roles = dd.login_required(LedgerStaff)
+    EU_COUNTRY_CODES = set("BE FR DE NL LU EE DK NO SE".split())
+    
+    @classmethod
+    def get_for_country(cls, country):
+        if country.isocode == dd.plugins.countries.country_code:
+            return cls.national
+        if country.isocode in cls.EU_COUNTRY_CODES:
+            return cls.eu
+        return cls.international
+    
+add = VatAreas.add_item
+add('10', _("National"), 'national')
+add('20', _("EU"), 'eu')
+add('30', _("International"), 'international')
 
 class VatRegime(dd.Choice):
-
     item_vat = True
+    vat_area = None
+
+    def __init__(self, value, text, name, vat_area=None, item_vat=True):
+        super(VatRegime, self).__init__(value, text, name)
+        self.vat_area = vat_area
+        self.item_vat = item_vat
+
+    def is_allowed_for(self, vat_area):
+        if self.vat_area is None:
+            return True
+        return self.vat_area == vat_area
 
 
 class VatRegimes(dd.ChoiceList):
@@ -49,19 +72,39 @@ class VatRegimes(dd.ChoiceList):
     verbose_name_plural = _("VAT regimes")
     item_class = VatRegime
     required_roles = dd.login_required(LedgerStaff)
-    help_text = _(
-        "Determines how the VAT is being handled, \
-        i.e. whether and how it is to be paid.")
+
+NAT = VatAreas.national
+EU = VatAreas.eu
 
 add = VatRegimes.add_item
 add('10', _("Private person"), 'normal')
-add('20', _("Subject to VAT"), 'subject')
-add('30', _("Intra-community"), 'intracom')
+add('20', _("Subject to VAT"), 'subject', NAT)
+add('30', _("Intra-community"), 'intracom', EU)
 # re-populated in bevat and bevats.
 # See also lino_xl.lib.vat.Plugin.default_vat_regime
 
 # @dd.python_2_unicode_compatible
 class DeclarationField(dd.Choice):
+    """
+    Base class for all fields of VAT declarations.
+
+    .. attribute:: both_dc
+    .. attribute:: editable
+    .. attribute:: fieldnames
+
+       An optional space-separated list of names of other declaration
+       fields to be observed by this field.
+                   
+    .. attribute:: vat_regimes
+    .. attribute:: vat_classes
+    .. attribute:: vat_columns
+                   
+    .. attribute:: exclude_vat_regimes
+    .. attribute:: exclude_vat_classes
+    .. attribute:: exclude_vat_columns
+    .. attribute:: is_payable
+    
+    """
     editable = False
     vat_regimes = None
     exclude_vat_regimes = None

@@ -23,6 +23,7 @@ from django.conf import settings
 from lino.utils import Cycler
 from lino.api import dd, rt
 from lino.utils.xmlgen.sepa.validate import validate_pain001
+from lino_xl.lib.sepa.fixtures.sample_ibans import IBANS
 
 finan = dd.resolve_app('finan')
 
@@ -43,11 +44,32 @@ PAYMENT_DIFFS += [-0.30]
 PAYMENT_DIFFS += [0.02]
 PAYMENT_DIFFS = Cycler(PAYMENT_DIFFS)
 
+IBAN_CYCLERS = dict()
+
+def add_demo_account(partner):
+    if partner.country is None:
+        return None
+    Account = rt.models.sepa.Account
+    qs = Account.objects.filter(partner=partner)
+    acct = qs.first()
+    if acct is None:
+        ibans = IBAN_CYCLERS.get(partner.country)
+        if ibans is None:
+            ibans = Cycler([
+                x for x in IBANS if x.startswith(
+                    partner.country.isocode)])
+            IBAN_CYCLERS[partner.country] = ibans
+        acct = Account(partner=partner, iban=ibans.pop(), primary=True)
+        acct.bic = "BBRUBEBB"
+        acct.full_clean()
+        acct.save()
+    return acct
 
 def objects(refs="PMO BNK"):
 
-    Journal = rt.modules.ledger.Journal
-    Account = rt.models.sepa.Account
+    Journal = rt.models.ledger.Journal
+    Company = rt.models.contacts.Company
+    
     USERS = Cycler(settings.SITE.user_model.objects.all())
     OFFSETS = Cycler(12, 20, 28)
 
@@ -57,7 +79,12 @@ def objects(refs="PMO BNK"):
 
     ses = rt.login('robin')
 
+    for p in Company.objects.filter(country__isnull=False):
+        add_demo_account(p)
+
     for ref in refs.split():
+        # if ref == 'BNK':
+        #     continue  # temp 20171007
         jnl = Journal.objects.get(ref=ref)
         sug_table = jnl.voucher_type.table_class.suggestions_table
         if ref == 'PMO':
@@ -66,14 +93,8 @@ def objects(refs="PMO BNK"):
                 raise Exception(
                     "Oops, site company {} has no country".format(
                         site_company))
-            qs = Account.objects.filter(partner=site_company)
-            if qs.count():
-                acct = qs[0]
-            else:
-                acct = Account(
-                    partner=site_company, iban="BE83540256917919",
-                    bic="BBRUBEBB", primary=True)
-                yield acct
+
+            acct = add_demo_account(site_company)
             jnl.sepa_account = acct
             yield jnl
             

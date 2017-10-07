@@ -18,7 +18,7 @@ from lino.modlib.system.choicelists import PeriodEvents
 from lino.api import dd, rt, _
 
 from .utils import ZERO
-from .choicelists import VatClasses, VatRegimes, VatColumns
+from .choicelists import VatClasses, VatRegimes, VatColumns, VatAreas
 from .mixins import VatDocument, VatItemBase
 
 from lino_xl.lib.ledger.models import Voucher
@@ -49,7 +49,9 @@ class VatRule(Sequenced, DateRange):
         verbose_name = _("VAT rule")
         verbose_name_plural = _("VAT rules")
 
+    vat_area = VatAreas.field(blank=True)
     country = dd.ForeignKey('countries.Country', blank=True, null=True)
+    # country is no longer used. will probably be removed.
     trade_type = TradeTypes.field(blank=True)
     vat_class = VatClasses.field(blank=True)
     vat_regime = VatRegimes.field(blank=True)
@@ -68,10 +70,14 @@ class VatRule(Sequenced, DateRange):
         verbose_name=_("VAT returnable account"), blank=True, null=True)
 
     @classmethod
-    def get_vat_rule(cls, trade_type, vat_regime, vat_class=None,
-                     country=None, date=None, default=models.NOT_PROVIDED):
+    def get_vat_rule(cls, vat_area,
+                     trade_type=None, vat_regime=None, vat_class=None,
+                     date=None, default=models.NOT_PROVIDED):
         qs = cls.objects.order_by('seqno')
-        qs = qs.filter(Q(country__isnull=True) | Q(country=country))
+        if vat_area is not None:
+            qs = qs.filter(vat_area__in=('', vat_area))
+        # qs = qs.filter(vat_area=vat_area or country.vat_area)
+        # qs = qs.filter(Q(country__isnull=True) | Q(country=country))
         if trade_type is not None:
             qs = qs.filter(Q(trade_type__in=('', trade_type)))
         if vat_class is not None:
@@ -83,15 +89,16 @@ class VatRule(Sequenced, DateRange):
                 Q(vat_regime__in=('', vat_regime)))
         if date is not None:
             qs = PeriodEvents.active.add_filter(qs, date)
-        if qs.count() > 0:
-            return qs[0]
+        # if qs.count() > 0:
+            # return qs[0]
+        rule = qs.first()
+        if rule:
+            return rule
         if default is models.NOT_PROVIDED:
             # rt.show(VatRules)
-            msg = _("No VAT rule for %{context}!)").format(
-                context=dict(
-                    vat_regime=vat_regime, vat_class=vat_class,
-                    trade_type=trade_type,
-                    country=country, date=dd.fds(date)))
+            msg = _("No VAT rule for ({!r},{!r},{!r},{!r},{!r})").format(
+                    trade_type, vat_class, vat_area, vat_regime, 
+                    dd.fds(date))
             if False:
                 msg += " (SQL query was {0})".format(qs.query)
                 dd.logger.info(msg)
@@ -105,8 +112,8 @@ class VatRule(Sequenced, DateRange):
             vat_regime=self.vat_regime,
             vat_class=self.vat_class,
             rate=self.rate,
-            country=self.country, seqno=self.seqno)
-        return "{trade_type} {country} {vat_class} {rate}".format(**kw)
+            vat_area=self.vat_area, seqno=self.seqno)
+        return "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
 
 
 class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
@@ -163,4 +170,8 @@ dd.inject_field(
 dd.inject_field('accounts.Account',
                 'vat_column',
                 VatColumns.field(blank=True, null=True))
+
+# dd.inject_field('countries.Country',
+#                 'vat_area',
+#                 VatAreas.field(blank=True, null=True))
 

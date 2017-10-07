@@ -820,7 +820,6 @@ Movement.set_widget_options('voucher_link', width=12)
 
 
 class MatchRule(dd.Model):
-    # allow_cascaded_delete = ['account', 'journal']
 
     class Meta:
         app_label = 'ledger'

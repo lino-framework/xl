@@ -5,7 +5,6 @@
 
 """
 Adds some commonly known partners and their bank accounts.
-
 These are real data randomly collected from Internet.
 
 """
@@ -119,3 +118,5 @@ def objects():
             country="BE",
             zip_code="4700")
     yield A('GEBABEBB', 'BE38 2480 1735 7572')
+
+

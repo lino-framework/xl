@@ -17,21 +17,26 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
-from lino_xl.lib.vat.choicelists import VatRegimes
+from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas
+
+NAT = VatAreas.national
+EU = VatAreas.eu
+INT = VatAreas.international
 
 VatRegimes.clear()
 add = VatRegimes.add_item
-add('10', _("Private person"), 'normal')
-add('11', _("Private person (reduced)"), 'reduced')
-add('20', _("Subject to VAT"), 'subject')
-add('25', _("Co-contractor"), 'cocontractor')
-add('30', _("Intra-community"), 'intracom')
-add('31', _("Delay in collection"), 'delayed') # report de perception
-add('40', _("Inside EU"), 'inside')
-add('50', _("Outside EU"), 'outside')
+add('10', _("Private person"), 'normal', NAT)
+add('11', _("Private person (reduced)"), 'reduced', NAT)
+add('20', _("Subject to VAT"), 'subject', NAT)
+add('25', _("Co-contractor"), 'cocontractor', NAT)
+add('30', _("Intra-community"), 'intracom', EU)
+add('31', _("Delay in collection"), 'delayed', EU) # report de perception
+add('40', _("Inside EU"), 'inside', EU)
+add('50', _("Outside EU"), 'outside', INT)
 add('60', _("Exempt"), 'exempt', item_vat=False)
-add('70', _("Germany"), 'de')
-add('71', _("Luxemburg"), 'lu')
+if False:
+    add('70', _("Germany"), 'de')
+    add('71', _("Luxemburg"), 'lu')
 
 VatColumns.clear()
 add = VatColumns.add_item
