@@ -258,7 +258,8 @@ class VatItemBase(VoucherItem, VatTotal):
             
         # country = self.voucher.partner.country or \
         #           dd.plugins.countries.get_my_country()
-        vat_area = VatAreas.get_for_country(self.voucher.partner.country)
+        vat_area = VatAreas.get_for_country(
+            self.voucher.partner.country.isocode)
         return rt.models.vat.VatRule.get_vat_rule(
             vat_area,
             trade_type=tt,
@@ -480,6 +481,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
 
         qs = rt.models.ledger.Movement.objects.filter(**flt)
+        qs = qs.order_by('voucher__journal', 'voucher__number')
 
         # print(20170713, qs)
 

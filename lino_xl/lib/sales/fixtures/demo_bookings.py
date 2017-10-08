@@ -50,7 +50,7 @@ def objects():
             if VatRule.get_vat_rule(va, tt, default=False):
                 areas.add(va)
         for obj in Country.objects.all():
-            if VatAreas.get_for_country(obj) in areas:
+            if VatAreas.get_for_country(obj.isocode) in areas:
                 yield obj
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
@@ -105,6 +105,7 @@ def objects():
             for j in range(ITEMCOUNT.pop()):
                 item = sales.InvoiceItem(
                     voucher=invoice,
+                    seqno=j+1,
                     product=PRODUCTS.pop(),
                     qty=QUANTITIES.pop())
                 try:

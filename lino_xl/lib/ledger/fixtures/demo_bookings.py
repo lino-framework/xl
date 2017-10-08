@@ -45,13 +45,14 @@ def objects():
 
     def func():
         # qs = Company.objects.filter(sepa_accounts__iban__isnull=False)
-        qs = Company.objects.exclude(vat_regime='')
+        qs = Company.objects.exclude(vat_regime='').filter(
+            country__isnull=False)
         for p in qs.order_by('id'):
             # if Journal.objects.filter(partner=p).exists():
             #     continue
             # if not p.vat_regime:
             #     continue
-            va = VatAreas.get_for_country(p.country)
+            va = VatAreas.get_for_country(p.country.isocode)
             if va is None:
                 continue
             rule = VatRule.get_vat_rule(

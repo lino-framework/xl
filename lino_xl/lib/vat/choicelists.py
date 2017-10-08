@@ -37,13 +37,13 @@ class VatAreas(dd.ChoiceList):
     verbose_name = _("VAT area")
     verbose_name_plural = _("VAT areas")
     required_roles = dd.login_required(LedgerStaff)
-    EU_COUNTRY_CODES = set("BE FR DE NL LU EE DK NO SE".split())
+    EU_COUNTRY_CODES = set("BE FR DE NL LU EE DK NO SE IT".split())
     
     @classmethod
-    def get_for_country(cls, country):
-        if country.isocode == dd.plugins.countries.country_code:
+    def get_for_country(cls, isocode):
+        if isocode == dd.plugins.countries.country_code:
             return cls.national
-        if country.isocode in cls.EU_COUNTRY_CODES:
+        if isocode in cls.EU_COUNTRY_CODES:
             return cls.eu
         return cls.international
     
