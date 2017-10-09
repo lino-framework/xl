@@ -25,10 +25,7 @@ from lino.utils import Cycler
 from lino.api import dd, rt
 
 from lino_xl.lib.vat.mixins import myround
-from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas
-
-vat = dd.resolve_app('vat')
-sales = dd.resolve_app('sales')
+from lino_xl.lib.vat.choicelists import VatAreas, VatRules
 
 # from lino.core.requests import BaseRequest
 REQUEST = settings.SITE.login()  # BaseRequest()
@@ -37,17 +34,19 @@ REQUEST = settings.SITE.login()  # BaseRequest()
 def objects():
 
     TradeTypes = rt.models.ledger.TradeTypes
-    VatRule = rt.models.vat.VatRule
+    #VatRule = rt.models.vat.VatRule
     Journal = rt.models.ledger.Journal
     # Person = rt.models.contacts.Person
     Partner = rt.models.contacts.Partner
     Product = rt.models.products.Product
+    VatProductInvoice = rt.models.sales.VatProductInvoice
+    InvoiceItem = rt.models.sales.InvoiceItem
 
     def get_trade_countries(tt):
         Country = rt.models.countries.Country
         areas = set()
         for va in VatAreas.get_list_items():
-            if VatRule.get_vat_rule(va, tt, default=False):
+            if VatRules.get_vat_rule(va, tt, default=False):
                 areas.add(va)
         for obj in Country.objects.all():
             if VatAreas.get_for_country(obj.isocode) in areas:
@@ -93,7 +92,7 @@ def objects():
             # to the same partner.
             if partner is None or i % 5:
                 partner = CUSTOMERS.pop()
-            invoice = sales.VatProductInvoice(
+            invoice = VatProductInvoice(
                 journal=JOURNAL_S,
                 partner=partner,
                 user=USERS.pop(),
@@ -103,7 +102,7 @@ def objects():
             )
             yield invoice
             for j in range(ITEMCOUNT.pop()):
-                item = sales.InvoiceItem(
+                item = InvoiceItem(
                     voucher=invoice,
                     seqno=j+1,
                     product=PRODUCTS.pop(),

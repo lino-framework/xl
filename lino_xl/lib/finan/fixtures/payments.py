@@ -47,6 +47,7 @@ PAYMENT_DIFFS = Cycler(PAYMENT_DIFFS)
 IBAN_CYCLERS = dict()
 
 def add_demo_account(partner):
+    # raise Exception("20171009")
     if partner.country is None:
         return None
     Account = rt.models.sepa.Account
@@ -79,8 +80,12 @@ def objects(refs="PMO BNK"):
 
     ses = rt.login('robin')
 
-    for p in Company.objects.filter(country__isnull=False):
+    qs = Company.objects.filter(country__isnull=False)
+    # if qs.count() < 10:
+    #     raise Exception("20171009")
+    for p in qs:
         add_demo_account(p)
+
 
     for ref in refs.split():
         # if ref == 'BNK':

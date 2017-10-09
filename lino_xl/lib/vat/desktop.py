@@ -7,7 +7,7 @@ from __future__ import print_function
 
 from lino.api import dd, rt, _
 
-from lino.utils.xmlgen.html import E
+# from lino.utils.xmlgen.html import E
 
 from .mixins import VatDocument
 
@@ -18,20 +18,19 @@ from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
 
-from .models import VatAccountInvoice
 from .choicelists import VatRegimes
 
 
-class VatRules(dd.Table):
+# class VatRules(dd.Table):
 
-    model = 'vat.VatRule'
-    required_roles = dd.login_required(LedgerStaff)
-    column_names = "seqno vat_area trade_type vat_class vat_regime \
-    #start_date #end_date rate can_edit \
-    vat_account vat_returnable vat_returnable_account *"
-    hide_sums = True
-    auto_fit_column_widths = True
-    order_by = ['seqno']
+#     model = 'vat.VatRule'
+#     required_roles = dd.login_required(LedgerStaff)
+#     column_names = "seqno vat_area trade_type vat_class vat_regime \
+#     #start_date #end_date rate can_edit \
+#     vat_account vat_returnable vat_returnable_account *"
+#     hide_sums = True
+#     auto_fit_column_widths = True
+#     order_by = ['seqno']
 
 
 class InvoiceDetail(dd.DetailLayout):

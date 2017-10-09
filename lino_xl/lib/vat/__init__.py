@@ -9,8 +9,8 @@
    :toctree:
 
     utils
-    fixtures.novat
-    fixtures.euvatrates
+
+.. fixtures.novat fixtures.euvatrates
 
 """
 
@@ -58,10 +58,6 @@ class Plugin(ad.Plugin):
             self.default_vat_class = vat.VatClasses.get_by_name(
                 self.default_vat_class)
 
-    def setup_config_menu(self, site, user_type, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('vat.VatRules')
-
     def setup_reports_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         # mg = site.plugins.vat
@@ -78,5 +74,6 @@ class Plugin(ad.Plugin):
         m.add_action('vat.VatClasses')
         m.add_action('vat.VatColumns')
         m.add_action('vat.Invoices')
+        m.add_action('vat.VatRules')
         # m.add_action('vat.InvoiceItems')
 

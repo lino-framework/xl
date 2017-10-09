@@ -13,6 +13,7 @@ from django.utils.translation import string_concat
 from lino.api import dd, rt, _
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT
+from lino_xl.lib.accounts.choicelists import CommonAccounts
 from .roles import LedgerStaff
 
 
@@ -149,58 +150,53 @@ class VoucherTypes(dd.ChoiceList):
 class TradeType(dd.Choice):
     price_field_name = None
     price_field_label = None
-    partner_account_field_name = None
-    partner_account_field_label = None
-    base_account_field_name = None
-    base_account_field_label = None
+    partner_account = None
+    # partner_account_field_name = None
+    # partner_account_field_label = None
+    base_account = None
+    # base_account_field_name = None
+    # base_account_field_label = None
     # vat_account_field_name = None
     # vat_account_field_label = None
     dc = DEBIT
 
     def get_base_account(self):
-        """Return the :class:`lino_xl.lib.accounts.models.Account` into which
-        the **base amount** of any operation should be booked.
-
-        """
-        if self.base_account_field_name is None:
-            return None
-            # raise Exception("%s has no base_account_field_name!" % self)
-        return getattr(settings.SITE.site_config,
-                       self.base_account_field_name)
-
-    # def get_vat_account(self):
-    #     """Return the :class:`Account <lino_xl.lib.accounts.models.Account>`
-    #     into which the **VAT amount** of any operation should be
-    #     booked.
-
-    #     """
-    #     if self.vat_account_field_name is None:
-    #         return None
-    #         # raise Exception("%s has no vat_account_field_name!" % self)
-    #     return getattr(settings.SITE.site_config, self.vat_account_field_name)
-
-    def get_partner_account(self):
-        """Return the :class:`Account <lino_xl.lib.accounts.models.Account>`
-        into which the **total amount** of any operation (base + VAT)
+        """Return the account into which the **base amount** of any operation
         should be booked.
 
         """
-        if self.partner_account_field_name is None:
-            return None
-        return getattr(
-            settings.SITE.site_config, self.partner_account_field_name)
+        return self.base_account.get_object()
+        # if self.base_account_field_name is None:
+        #     return None
+        #     # raise Exception("%s has no base_account_field_name!" % self)
+        # return getattr(settings.SITE.site_config,
+        #                self.base_account_field_name)
+
+    def get_partner_account(self):
+        """Return the account into which the **total amount** of any 
+        operation (base + VAT) should be booked.
+
+        """
+        if self.partner_account:
+            return self.partner_account.get_object()
+        # if self.partner_account_field_name is None:
+        #     return None
+        # return getattr(
+        #     settings.SITE.site_config, self.partner_account_field_name)
 
     def get_product_base_account(self, product):
-        """Return the :class:`Account <lino_xl.lib.accounts.models.Account>`
+        """Return the account
         into which the **base amount** of any operation should be
         booked.
 
         """
-        if self.base_account_field_name is None:
-            return None
-            # raise Exception("%s has no base_account_field_name" % self)
-        return getattr(product, self.base_account_field_name, None) or \
-            getattr(settings.SITE.site_config, self.base_account_field_name)
+        return self.base_account.get_object()
+          # if self.base_account_field_name is None:
+        #     return None
+        #     # raise Exception("%s has no base_account_field_name" % self)
+        # return getattr(product, self.base_account_field_name, None) or \
+        #     getattr(settings.SITE.site_config, self.base_account_field_name
+        # )
 
     def get_catalog_price(self, product):
         """Return the catalog price of the given product for operations with
@@ -221,10 +217,22 @@ class TradeTypes(dd.ChoiceList):
     item_class = TradeType
     help_text = _("The type of trade: usually either `sales` or `purchases`.")
 
-TradeTypes.add_item('S', _("Sales"), 'sales', dc=CREDIT)
-TradeTypes.add_item('P', _("Purchases"), 'purchases', dc=DEBIT)
-TradeTypes.add_item('W', _("Wages"), 'wages', dc=DEBIT)
-TradeTypes.add_item('T', _("Taxes"), 'taxes', dc=DEBIT)
+TradeTypes.add_item(
+    'S', _("Sales"), 'sales', dc=CREDIT,
+    base_account=CommonAccounts.sales,
+    partner_account=CommonAccounts.customers)
+TradeTypes.add_item(
+    'P', _("Purchases"), 'purchases', dc=DEBIT,
+    base_account=CommonAccounts.purchase_of_goods,
+    partner_account=CommonAccounts.suppliers)
+TradeTypes.add_item(
+    'W', _("Wages"), 'wages', dc=DEBIT,
+    base_account=CommonAccounts.wages,
+    partner_account=CommonAccounts.employees)
+TradeTypes.add_item(
+    'T', _("Taxes"), 'taxes', dc=DEBIT,
+    base_account=CommonAccounts.due_taxes,
+    partner_account=CommonAccounts.tax_offices)
 TradeTypes.add_item('C', _("Clearings"), 'clearings', dc=DEBIT)
 TradeTypes.add_item('B', _("Bank payment orders"), 'bank_po', dc=DEBIT)
 
@@ -242,43 +250,36 @@ def inject_tradetype_fields(sender, **kw):
 
     """
     for tt in TradeTypes.items():
-        if tt.partner_account_field_name is not None:
-            dd.inject_field(
-                'system.SiteConfig',
-                tt.partner_account_field_name,
-                dd.ForeignKey(
-                    'accounts.Account',
-                    verbose_name=tt.partner_account_field_label,
-                    related_name='configs_by_' + tt.partner_account_field_name,
-                    blank=True, null=True))
-        # if tt.vat_account_field_name is not None:
-        #     # this field is no longer used except for backwards compat
-        #     dd.inject_field('system.SiteConfig', tt.vat_account_field_name,
+        # if tt.partner_account_field_name is not None:
+        #     dd.inject_field(
+        #         'system.SiteConfig',
+        #         tt.partner_account_field_name,
+        #         dd.ForeignKey(
+        #             'accounts.Account',
+        #             verbose_name=tt.partner_account_field_label,
+        #             related_name='configs_by_' + tt.partner_account_field_name,
+        #             blank=True, null=True))
+        # if tt.base_account_field_name is not None:
+        #     dd.inject_field('system.SiteConfig', tt.base_account_field_name,
         #                     dd.ForeignKey(
         #                         'accounts.Account',
-        #                         verbose_name=tt.vat_account_field_label,
+        #                         verbose_name=tt.base_account_field_label,
         #                         related_name='configs_by_' +
-        #                         tt.vat_account_field_name,
+        #                         tt.base_account_field_name,
         #                         blank=True, null=True))
-        if tt.base_account_field_name is not None:
-            dd.inject_field('system.SiteConfig', tt.base_account_field_name,
-                            dd.ForeignKey(
-                                'accounts.Account',
-                                verbose_name=tt.base_account_field_label,
-                                related_name='configs_by_' +
-                                tt.base_account_field_name,
-                                blank=True, null=True))
-            dd.inject_field('products.Product', tt.base_account_field_name,
-                            dd.ForeignKey(
-                                'accounts.Account',
-                                verbose_name=tt.base_account_field_label,
-                                related_name='products_by_' +
-                                tt.base_account_field_name,
-                                blank=True, null=True))
+        # if tt.base_account is not None:
+        #     dd.inject_field('products.Product', tt.base_account_field_name,
+        #                     dd.ForeignKey(
+        #                         'accounts.Account',
+        #                         verbose_name=tt.base_account_field_label,
+        #                         related_name='products_by_' +
+        #                         tt.base_account_field_name,
+        #                         blank=True, null=True))
         if tt.price_field_name is not None:
-            dd.inject_field('products.Product', tt.price_field_name,
-                            dd.PriceField(verbose_name=tt.price_field_label,
-                                          blank=True, null=True))
+            dd.inject_field(
+                'products.Product', tt.price_field_name,
+                dd.PriceField(verbose_name=tt.price_field_label,
+                              blank=True, null=True))
 
 
 class VoucherState(dd.State):

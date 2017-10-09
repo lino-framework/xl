@@ -79,8 +79,8 @@ if True:
     sepa = dd.resolve_app('sepa')
     lists = dd.resolve_app('lists')
 
-if dd.is_installed('vat'):    
-    VatRule = rt.modules.vat.VatRule
+# if dd.is_installed('vat'):    
+#     VatRule = rt.modules.vat.VatRule
 
 
 # def convert_username(name):
@@ -543,16 +543,16 @@ class TimLoader(TimLoader):
         # kw.update(date=row.date)
 
         # check whether we need a vat rule
-        if mv and mb:
-            vatrule = dict(vat_class=vc, vat_regime=doc.vat_regime)
-            vatrule.update(
-                country=doc.partner.country or
-                dd.plugins.countries.get_my_country())
-            try:
-                VatRule.objects.get(**vatrule)
-            except VatRule.DoesNotExist:
-                vatrule.update(rate=myround(mv / mb))
-                yield VatRule(**vatrule)
+        # if mv and mb:
+        #     vatrule = dict(vat_class=vc, vat_regime=doc.vat_regime)
+        #     vatrule.update(
+        #         country=doc.partner.country or
+        #         dd.plugins.countries.get_my_country())
+        #     try:
+        #         VatRule.objects.get(**vatrule)
+        #     except VatRule.DoesNotExist:
+        #         vatrule.update(rate=myround(mv / mb))
+        #         yield VatRule(**vatrule)
         try:
             yield doc.add_voucher_item(**kw)
         except Exception as e:

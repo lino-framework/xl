@@ -12,6 +12,8 @@ Currently used by the :mod:`minimal_ledger
 
 """
 
+raise Exception("No longer used (20171008)")
+
 from django.conf import settings
 
 def pcmnref(ref, pcmn):

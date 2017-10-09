@@ -23,7 +23,7 @@ from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
 
 from .utils import ZERO, ONE
-from .choicelists import VatClasses, VatRegimes, VatAreas
+from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
 DECLARED_IN = False
 
@@ -174,7 +174,7 @@ class VatDocument(ProjectRelated, VatTotal):
         # if vat_account is None:
         #     raise Exception("No VAT account for %s." % tt)
         for i in self.items.order_by('seqno'):
-            vr = i.get_vat_rule(tt)
+            rule = i.get_vat_rule(tt)
             b = i.get_base_account(tt)
             ana_account = i.get_ana_account()
             if i.total_base:
@@ -184,24 +184,25 @@ class VatDocument(ProjectRelated, VatTotal):
                 sums.collect(
                     ((b, ana_account), self.project, i.vat_class, self.vat_regime),
                     i.total_base)
-            if i.total_vat and vr is not None:
-                if not vr.vat_account:
+            if i.total_vat and rule is not None:
+                if not rule.vat_account:
                     msg = _("This rule ({}) does not allow any VAT.")
-                    raise Warning(msg.format(vr))
+                    raise Warning(msg.format(rule))
                         
                 vat_amount = i.total_vat
-                if vr.vat_returnable:
-                    if vr.vat_returnable_account is None:
+                if rule.vat_returnable:
+                    if rule.vat_returnable_account is None:
                         acc_tuple = (b, ana_account)
                     else:
-                        acc_tuple = (vr.vat_returnable_account, None)
+                        acc_tuple = (
+                            rule.vat_returnable_account.get_object(), None)
                     sums.collect(
                         (acc_tuple, self.project,
                          i.vat_class, self.vat_regime),
                         vat_amount)
                     vat_amount = - vat_amount
                 sums.collect(
-                    ((vr.vat_account, None), self.project,
+                    ((rule.vat_account.get_object(), None), self.project,
                      i.vat_class, self.vat_regime),
                     vat_amount)
         return sums
@@ -260,7 +261,7 @@ class VatItemBase(VoucherItem, VatTotal):
         #           dd.plugins.countries.get_my_country()
         vat_area = VatAreas.get_for_country(
             self.voucher.partner.country.isocode)
-        return rt.models.vat.VatRule.get_vat_rule(
+        return VatRules.get_vat_rule(
             vat_area,
             trade_type=tt,
             vat_regime=self.voucher.vat_regime,

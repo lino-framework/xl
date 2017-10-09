@@ -31,14 +31,13 @@ from lino_xl.lib.vat.mixins import myround
 REQUEST = settings.SITE.login()  # BaseRequest()
 MORE_THAN_A_MONTH = datetime.timedelta(days=40)
 
-from lino_xl.lib.vat.choicelists import VatAreas
+from lino_xl.lib.vat.choicelists import VatAreas, VatRules
 from lino_xl.lib.ledger.choicelists import TradeTypes
 
 def objects():
 
     Journal = rt.models.ledger.Journal
     PaymentTerm = rt.models.ledger.PaymentTerm
-    VatRule = rt.models.vat.VatRule
     Company = rt.models.contacts.Company
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
@@ -55,7 +54,7 @@ def objects():
             va = VatAreas.get_for_country(p.country.isocode)
             if va is None:
                 continue
-            rule = VatRule.get_vat_rule(
+            rule = VatRules.get_vat_rule(
                 va, TradeTypes.purchases, p.vat_regime, default=False)
             if rule:
                 yield p

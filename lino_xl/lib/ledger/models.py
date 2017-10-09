@@ -32,7 +32,6 @@ from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.plausibility.choicelists import Checker
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
-from lino_xl.lib.accounts.choicelists import AccountTypes
 from lino_xl.lib.accounts.fields import DebitOrCreditField
 
 from .utils import get_due_movements, check_clearings_by_partner
@@ -77,10 +76,6 @@ class Journal(mixins.BabelNamed,
     #     help_text=_("Whether to invert booking direction of due movement."),
     #     default=True)
 
-    # @dd.chooser()
-    # def account_choices(cls, chart):
-    #     fkw = dict(type=AccountTypes.bank_accounts)
-    #     return rt.modules.accounts.Account.objects.filter(chart=chart, **fkw)
 
     def get_doc_model(self):
         """The model of vouchers in this Journal.

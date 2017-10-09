@@ -17,7 +17,8 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
-from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas
+from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas, VatRules
+from lino_xl.lib.accounts.choicelists import CommonAccounts
 
 
 NAT = VatAreas.national
@@ -41,6 +42,16 @@ add('72', _("Purchase of new vehicles"))
 add('73', _("Purchase of excised products"))
 add('75', _("Purchase of services"))
 add('76', _("Other purchase"))
+
+
+VatRules.clear()
+add = VatRules.add_item
+# country_code = dd.plugins.countries.country_code
+# if country_code == "BE":
+add('010', 'normal',  '0.21', EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
+add('020', 'normal',  '0.21', EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
+add('900')
+
 
 class DeclarationFields(DeclarationFieldsBase):
     pass
