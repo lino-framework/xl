@@ -834,8 +834,7 @@ lino_xl.lib.contacts.models.Role object."""),
 Adds two fields 'partner' and 'person' to this model, making it
 something that refers to a "partner".  person means a "contact
 person" for the partner."""),
-    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts. Every item is an instance of
-CommonAccount."""),
+    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
     'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts."""),
     'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
 accounts."""),
