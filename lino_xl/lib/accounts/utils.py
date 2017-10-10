@@ -27,6 +27,15 @@ class Balance(object):
             self.c = c - d
             self.d = ZERO
 
+    def __str__(self):
+        if self.d:
+            return "{} DB".format(self.d)
+        return "{} CR".format(self.c)
+    
+    def __repr__(self):
+        return "Balance({},{})".format(self.d, self.c)
+        return "{} CR".format(self.c)
+    
     def __sub__(self, o):
         d1 = self.d or ZERO
         c1 = self.c or ZERO

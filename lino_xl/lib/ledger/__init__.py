@@ -11,7 +11,6 @@ See :doc:`/specs/cosi/ledger`.
 
     roles
     fields
-    accounts
     management.commands.reregister
     fixtures.std
     fixtures.demo
@@ -71,9 +70,9 @@ class Plugin(ad.Plugin):
         # m.add_action('ledger.Situation')
         # m.add_action('ledger.ActivityReport')
         m.add_action('ledger.AccountingReport')
-        m.add_action('ledger.GeneralAccountsBalance')
-        m.add_action('ledger.CustomerAccountsBalance')
-        m.add_action('ledger.SupplierAccountsBalance')
+        # m.add_action('ledger.GeneralAccountBalances')
+        # m.add_action('ledger.CustomerAccountBalances')
+        # m.add_action('ledger.SupplierAccountBalances')
         m.add_action('ledger.Debtors')
         m.add_action('ledger.Creditors')
 

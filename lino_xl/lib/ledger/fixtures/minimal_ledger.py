@@ -22,7 +22,7 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT
 from lino_xl.lib.ledger import choicelists as pcmn
-from lino_xl.lib.ledger.choicelists import CommonAccounts
+from lino_xl.lib.accounts.choicelists import CommonAccounts, AccountTypes
 from lino.utils import Cycler
 
 #accounts = dd.resolve_app('accounts')
@@ -50,7 +50,7 @@ def objects():
         global current_group
         current_group = rt.models.accounts.Group(
             ref=ref,
-            account_type=CommonAccounts.get_by_name(type),
+            account_type=AccountTypes.get_by_name(type),
             **dd.babel_values('name', de=de, fr=fr, en=en, et=et))
         return current_group
 
@@ -147,8 +147,6 @@ def objects():
     
     # if sales:
     #     settings.SITE.site_config.update(sales_account=obj)
-    yield CommonAccounts.membership_fees.create_object(
-        default_amount=15, **kwargs)
 
     # JOURNALS
 

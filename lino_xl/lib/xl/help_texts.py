@@ -834,9 +834,12 @@ lino_xl.lib.contacts.models.Role object."""),
 Adds two fields 'partner' and 'person' to this model, making it
 something that refers to a "partner".  person means a "contact
 person" for the partner."""),
-    'lino_xl.lib.accounts.AccountType' : _("""The base class for all account types."""),
-    'lino_xl.lib.accounts.BankAccounts' : _("""A subclass of Assets."""),
-    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types. See AccountType."""),
+    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts. Every item is an instance of
+CommonAccount."""),
+    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts."""),
+    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
+accounts."""),
+    'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
     'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for "something
 where you can place money and retrieve it later"."""),
     'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
@@ -848,7 +851,7 @@ account won't appear in certain reports."""),
     'lino_xl.lib.accounts.Account.ref' : _("""An optional unique name which can be used to reference a given
 account."""),
     'lino_xl.lib.accounts.Account.type' : _("""The account type of this account.  This points to an item of
-AccountTypes."""),
+CommonAccounts."""),
     'lino_xl.lib.accounts.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
     'lino_xl.lib.accounts.Account.default_amount' : _("""The default amount to book in bank statements or journal
 entries when this account has been selected manually. The
@@ -862,14 +865,13 @@ is installed as well.  See also the
 get_allowed_accounts method."""),
     'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
     'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
-    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
     'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
 together with its booking direction (debit or credit)."""),
     'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
     'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
-    'lino_xl.lib.accounts.BalanceSheet' : _("""In financial accounting, a balance sheet or statement of financial
-position is a summary of the financial balances of an
-organisation."""),
+    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
+    'lino_xl.lib.accounts.BalanceSheet' : _("""A balance sheet or statement of financial position is a
+summary of the financial balances of an organisation."""),
     'lino_xl.lib.accounts.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
 DEBIT or CREDIT."""),
     'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
@@ -1345,6 +1347,7 @@ VatRegimes."""),
 VatClasses."""),
     'lino_xl.lib.vat.QtyVatItemBase' : _("""Model mixin for items of a VatTotal, adds unit_price
 and qty."""),
+    'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
     'lino_xl.lib.vat.VatClasses' : _("""The global list of VAT classes."""),
     'lino_xl.lib.vat.VatColumns' : _("""The global list of VAT columns."""),
     'lino_xl.lib.vat.VatRegime' : _("""Base class for choices of VatRegimes."""),

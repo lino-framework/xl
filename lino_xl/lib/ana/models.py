@@ -14,7 +14,7 @@ from lino.api import dd, rt
 from lino.mixins import Referrable, Sequenced
 from lino.utils.mldbc.mixins import BabelDesignated
 from lino_xl.lib.ledger.choicelists import VoucherTypes
-from lino_xl.lib.ledger.ui import AccountsBalance
+from lino_xl.lib.ledger.ui import AccountBalances
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 
@@ -289,9 +289,9 @@ class InvoicesByJournal(ByJournal, Invoices):
     entry_date total_incl
     """
 
-class AnalyticAccountsBalance(AccountsBalance):
+class AnalyticAccountBalances(AccountBalances):
 
-    label = _("Analytic Accounts Balance")
+    label = _("Analytic Account Balances")
 
     @classmethod
     def get_request_queryset(self, ar, **filter):

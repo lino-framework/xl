@@ -28,10 +28,11 @@ class Adder(object):
 
     def add_company(self, name, url, **kw):
         obj = Company(name=name, url=url, **kw)
-        if obj.country.isocode == 'BE':
-            obj.vat_regime = VatRegimes.subject
-        else:
-            obj.vat_regime = VatRegimes.intracom
+        if VatRegimes.is_installed():
+            if obj.country.isocode == 'BE':
+                obj.vat_regime = VatRegimes.subject
+            else:
+                obj.vat_regime = VatRegimes.intracom
         self.current_partner = obj
         self.primary = True
         return obj

@@ -24,8 +24,7 @@ class Sheet(object):
         """
         Return a list the top-level account types included in this Sheet
         """
-        return [o for o in CommonAccounts.objects()
-                if o.sheet == cls and o.top_level]
+        return [o for o in AccountTypes.objects() if o.sheet == cls]
 
 
 class BalanceSheet(Sheet):
@@ -40,53 +39,35 @@ class EarningsSheet(Sheet):
     verbose_name = _("Profit & Loss statement")
 
 
-class CashFlowSheet(Sheet):
-    verbose_name = _("Cash flow statement")
+# class CashFlowSheet(Sheet):
+#     verbose_name = _("Cash flow statement")
 
 # La balance des comptes (généraux|particuliers|fournisseurs|clients)
 
-
-class AccountsBalanceSheet(Sheet):
-    verbose_name = _("Accounts balances")
-
-
-Sheet.objects = (BalanceSheet, EarningsSheet, CashFlowSheet)
+# class AccountBalancesSheet(Sheet):
+#     verbose_name = _("Account balances")
 
 
-class CommonAccount(dd.Choice):
+Sheet.objects = (BalanceSheet, EarningsSheet)
+
+
+class AccountType(dd.Choice):
     # top_level = True
     sheet = None
-    clearable = False
-    needs_partner = False
     
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         # the class attribute `name` ís used as value
-        super(CommonAccount, self).__init__(
-            self.value, self.text, self.name)
+        super(AccountType, self).__init__(*args, **kwargs)
         self.top_level = len(self.value) == 1
 
-    def create_object(self, **kwargs):
-        kwargs.update(dd.str2kw('name', self.text))
-        kwargs.update(clearable=self.clearable)
-        kwargs.update(needs_partner=self.needs_partner)
-        return rt.models.accounts.Account(
-            ref=self.value, type=self,  **kwargs)
     
-    def get_object(self):
-        # return rt.models.accounts.Account.objects.get(ref=self.value)
-        Account = rt.models.accounts.Account
-        try:
-            return Account.objects.get(ref=self.value)
-        except Account.DoesNotExist:
-            return None
 
-
-
-class CommonAccounts(dd.ChoiceList):
-    verbose_name = _("Account Type")
-    item_class = CommonAccount
+class AccountTypes(dd.ChoiceList):
+    verbose_name = _("Account type")
+    verbose_name_plural = _("Account types")
+    item_class = AccountType
     column_names = 'value name text dc sheet'
-
+    
     @dd.virtualfield(DebitOrCreditField(_("D/C")))
     def dc(cls, choice, ar):
         return choice.dc
@@ -96,9 +77,9 @@ class CommonAccounts(dd.ChoiceList):
         return choice.sheet.__name__
 
 
-add = CommonAccounts.add_item_instance
+add = AccountTypes.add_item_instance
 
-class Assets(CommonAccount):
+class Assets(AccountType):
     value = 'A'
     text = _("Assets")   # Aktiva, Anleihe, Vermögen, Anlage
     name = "assets"
@@ -107,7 +88,7 @@ class Assets(CommonAccount):
 add(Assets())
 
 
-class Liabilities(CommonAccount):
+class Liabilities(AccountType):
     value = 'L'
     text = _("Liabilities")  # Guthaben, Schulden, Verbindlichkeit
     name = "liabilities"
@@ -116,7 +97,7 @@ class Liabilities(CommonAccount):
 add(Liabilities())
 
 
-class Capital(CommonAccount):  # aka Owner's Equities
+class Capital(AccountType):  # aka Owner's Equities
     value = 'C'
     text = _("Capital")  # Kapital
     name = "capital"
@@ -125,17 +106,17 @@ class Capital(CommonAccount):  # aka Owner's Equities
 add(Capital())
 
 
-class Income(CommonAccount):
+class Incomes(AccountType):
     value = 'I'
     text = _("Incomes")  # Gain/Revenue     Einnahmen  Produits
     name = "incomes"
     dc = CREDIT
     balance_sheet = True
     sheet = EarningsSheet
-add(Income())
+add(Incomes())
 
 
-class Expenses(CommonAccount):
+class Expenses(AccountType):
     value = 'E'
     text = _("Expenses")  # Loss/Cost       Ausgaben   Charges
     name = "expenses"
@@ -144,129 +125,79 @@ class Expenses(CommonAccount):
 add(Expenses())
 
 
-class BankAccounts(Assets):
-    value = '55'
-    text = _("Bank accounts")
-    name = 'bank_accounts'
-    #~ dc = CREDIT
-add(BankAccounts())
+class CommonAccount(dd.Choice):
+    clearable = False
+    needs_partner = False
+    account_type = None
+    _instance = None
+    
+    def __init__(self, value, text, name, actype, clearable, **kwargs):
+        # the class attribute `name` ís used as value
+        super(CommonAccount, self).__init__(value, text, name, **kwargs)
+        self.account_type = AccountTypes.get_by_name(actype)
+        self.clearable = clearable
+        self.clearable = clearable
+        self.needs_partner = clearable
+
+    def create_object(self, **kwargs):
+        kwargs.update(dd.str2kw('name', self.text))
+        kwargs.update(clearable=self.clearable)
+        kwargs.update(needs_partner=self.needs_partner)
+        kwargs.update(type=self.account_type)
+        return rt.models.accounts.Account(
+            ref=self.value, **kwargs)
+    
+    def get_object(self):
+        # return rt.models.accounts.Account.objects.get(ref=self.value)
+        if self._instance is None:
+            Account = rt.models.accounts.Account
+            try:
+                self._instance = Account.objects.get(ref=self.value)
+            except Account.DoesNotExist:
+                return None
+        return self._instance
 
 
+class CommonAccounts(dd.ChoiceList):
+    verbose_name = _("Common account")
+    verbose_name_plural = _("Common accounts")
+    item_class = CommonAccount
+    column_names = 'value name text account_type'
 
-class Customers(Assets):
-    value = '4000'
-    text = _("Customers")
-    name = "customers"
-    clearable = True
-    needs_partner = True
-add(Customers())
-
-class Suppliers(Liabilities):
-    value = '4400'
-    text = _("Suppliers")
-    name = "suppliers"
-    clearable=True
-    needs_partner=True
-add(Suppliers())
-
-class TaxOffices(Liabilities):
-    value = '4600'
-    text = _("Tax Offices")
-    name = 'tax_offices'
-    clearable = True
-    needs_partner = True
-add(TaxOffices())
-
-class Employees(Liabilities):
-    value = '4500'
-    text = _("Employees")
-    name = "employees"
-    clearable=True
-    needs_partner=True
-add(Employees())
-
-class PendingPaymentOrders(Assets):
-    value = '4700'
-    text = _("Pending Payment Orders")
-    name = 'pending_po'
-    clearable = True
-    needs_partner = True
-add(PendingPaymentOrders())
+    @dd.virtualfield(models.CharField(_("Account type"), max_length=20))
+    def account_type(cls, choice, ar):
+        return choice.account_type
 
 
-class VatDue(Liabilities):
-    value = '4510'
-    text = _("VAT due")
-    name = 'vat_due'
-    clearable = True
-    needs_partner = True
-add(VatDue())
+add = CommonAccounts.add_item
 
-class VatReturnable(Liabilities):
-    value = '4511'
-    text = _("VAT returnable")
-    name = 'vat_returnable'
-add(VatReturnable())
+add('4000', _("Customers"),   'customers', 'assets', True)
+add('4300', _("Pending Payment Orders"), 'pending_po', 'assets', True)
+add('4400', _("Suppliers"),   'suppliers', 'liabilities', True)
+add('4500', _("Employees"),   'employees', 'liabilities', True)
+add('4600', _("Tax Offices"), 'tax_offices', 'liabilities', True)
 
-class VatDeductible(Liabilities):
-    value = '4512'
-    text = _("VAT deductible")
-    name = 'vat_deductible'
-add(VatDeductible())
+add('4510', _("VAT due"), 'vat_due', 'liabilities', False)
+add('4511', _("VAT returnable"), 'vat_returnable', 'liabilities', False)
+add('4512', _("VAT deductible"), 'vat_deductible', 'liabilities', False)
+add('4513', _("VAT declared"), 'due_taxes', 'liabilities', False)
 
-class VatDeclared(Liabilities):
-    value = '4513'
-    text = _("VAT declared")
-    name = 'due_taxes'
-    clearable=True
-    needs_partner=True
-add(VatDeclared())
+add('5500', _("BestBank"), 'best_bank', 'assets', False)
+add('5700', _("Cash"), 'cash', 'assets', False)
 
-class BestBank(BankAccounts):
-    value = '5500'
-    text = _("BestBank")
-    name = 'best_bank'
-add(BestBank())
+add('6040', _("Purchase of goods"), 'purchase_of_goods', 'expenses', False)
+add('6010', _("Purchase of services"), 'purchase_of_services', 'expenses', False)
+add('6020', _("Purchase of investments"), 'purchase_of_investments', 'expenses', False)
 
-class Cash(BankAccounts):
-    value = '5700'
-    text = _("Cash")
-    name = 'cash'
-add(Cash())
+add('6300', _("Wages"), 'wages', 'expenses', False)
 
-class PurchaseOfGoods(Expenses):
-    value = '6040'
-    text = _("Purchase of goods")
-    name = 'purchase_of_goods'
-add(PurchaseOfGoods())
+add('7000', _("Sales"), 'sales', 'incomes', False)
 
-class PurchaseOfServices(Expenses):
-    value = '6010'
-    text = _("Purchase of services")
-    name = 'purchase_of_services'
-add(PurchaseOfServices())
 
-class PurchaseOfInvestments(Expenses):
-    value = '6020'
-    text = _("Purchase of investments")
-    name = 'purchase_of_investments'
-add(PurchaseOfInvestments())
+# class BankAccounts(Assets):
+#     value = '55'
+#     text = _("Bank accounts")
+#     name = 'bank_accounts'
+#     #~ dc = CREDIT
+# add(BankAccounts())
 
-class Wages(Expenses):
-    value = '6300'
-    text = _("Wages")
-    name = 'wages'
-add(Wages())
-
-class Sales(Income):
-    value = '7000'
-    text = _("Sales")
-    name = 'sales'
-add(Sales())
-
-# TODO: move the following definition to lino_voga
-class MembershipFees(Sales):
-    value = '7310'
-    text = _("Membership fees")
-    name = 'membership_fees'
-add(MembershipFees())
