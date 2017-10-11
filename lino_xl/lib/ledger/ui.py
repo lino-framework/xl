@@ -521,7 +521,8 @@ class GeneralAccountBalances(AccountBalances):
 
     label = _("General Account Balances")
     model = 'accounts.Account'
-    order_by = ['group__ref', 'ref']
+    # order_by = ['group__ref', 'ref']
+    order_by = ['ref']
 
     @classmethod
     def rowmvtfilter(self, ar):
