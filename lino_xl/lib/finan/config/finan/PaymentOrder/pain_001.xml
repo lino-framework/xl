@@ -18,7 +18,7 @@
 <PmtInfId>{{obj.journal.ref}} {{obj.number}}</PmtInfId>
 <PmtMtd>TRF</PmtMtd>
 <PmtTpInf><SvcLvl><Cd>SEPA</Cd></SvcLvl></PmtTpInf>
-<ReqdExctnDt>{{obj.execution_date.isoformat()}}</ReqdExctnDt>
+<ReqdExctnDt>{{(obj.execution_date or obj.entry_date).isoformat()}}</ReqdExctnDt>
 <Dbtr><Nm>{{escape(str(site.site_config.site_company))}}</Nm><Id><OrgId><PrtryId><Id>{{site.site_config.site_company.vat_id[4:]}}</Id><Issr>KBO-BCE</Issr></PrtryId></OrgId></Id></Dbtr>
 <DbtrAcct><Id><IBAN>{{obj.journal.sepa_account.iban}}</IBAN></Id></DbtrAcct>
 {% if obj.journal.sepa_account.bic %}

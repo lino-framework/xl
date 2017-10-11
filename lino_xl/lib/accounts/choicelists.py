@@ -126,6 +126,7 @@ add(Expenses())
 
 
 class CommonAccount(dd.Choice):
+    show_values = True
     clearable = False
     needs_partner = False
     account_type = None

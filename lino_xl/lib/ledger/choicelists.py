@@ -154,8 +154,8 @@ class TradeType(dd.Choice):
     # partner_account_field_name = None
     # partner_account_field_label = None
     base_account = None
-    # base_account_field_name = None
-    # base_account_field_label = None
+    base_account_field_name = None
+    base_account_field_label = None
     # vat_account_field_name = None
     # vat_account_field_label = None
     dc = DEBIT
@@ -190,13 +190,11 @@ class TradeType(dd.Choice):
         booked.
 
         """
-        return self.base_account.get_object()
-          # if self.base_account_field_name is None:
-        #     return None
-        #     # raise Exception("%s has no base_account_field_name" % self)
-        # return getattr(product, self.base_account_field_name, None) or \
-        #     getattr(settings.SITE.site_config, self.base_account_field_name
-        # )
+        if self.base_account_field_name is None:
+            return self.base_account.get_object()
+            # raise Exception("%s has no base_account_field_name" % self)
+        return getattr(product, self.base_account_field_name, None) or \
+            self.base_account.get_object()
 
     def get_catalog_price(self, product):
         """Return the catalog price of the given product for operations with
@@ -267,14 +265,14 @@ def inject_tradetype_fields(sender, **kw):
         #                         related_name='configs_by_' +
         #                         tt.base_account_field_name,
         #                         blank=True, null=True))
-        # if tt.base_account is not None:
-        #     dd.inject_field('products.Product', tt.base_account_field_name,
-        #                     dd.ForeignKey(
-        #                         'accounts.Account',
-        #                         verbose_name=tt.base_account_field_label,
-        #                         related_name='products_by_' +
-        #                         tt.base_account_field_name,
-        #                         blank=True, null=True))
+        if tt.base_account_field_name is not None:
+            dd.inject_field('products.Product', tt.base_account_field_name,
+                            dd.ForeignKey(
+                                'accounts.Account',
+                                verbose_name=tt.base_account_field_label,
+                                related_name='products_by_' +
+                                tt.base_account_field_name,
+                                blank=True, null=True))
         if tt.price_field_name is not None:
             dd.inject_field(
                 'products.Product', tt.price_field_name,

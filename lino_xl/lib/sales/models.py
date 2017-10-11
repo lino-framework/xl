@@ -39,9 +39,9 @@ from lino_xl.lib.ledger.roles import LedgerStaff, LedgerUser
 
 TradeTypes.sales.update(
     price_field_name='sales_price',
-    price_field_label=_("Sales price"))
-    # base_account_field_name='sales_account',
-    # base_account_field_label=_("Sales Base account"),
+    price_field_label=_("Sales price"),
+    base_account_field_name='sales_account',
+    base_account_field_label=_("Sales Base account"))
     # vat_account_field_name='sales_vat_account',
     # vat_account_field_label=_("Sales VAT account"),
     # partner_account_field_name='clients_account',
