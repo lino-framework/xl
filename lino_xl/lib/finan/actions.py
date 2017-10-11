@@ -32,8 +32,8 @@ object.
     tplname = "pain_001"
     
     def before_build(self, bm, elem):
-        if not elem.execution_date:
-            raise Warning(_("You must specify an execution date"))
+        # if not elem.execution_date:
+        #     raise Warning(_("You must specify an execution date"))
         acc = elem.journal.sepa_account
         if not acc:
             raise Warning(
