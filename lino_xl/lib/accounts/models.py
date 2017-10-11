@@ -96,7 +96,7 @@ class Accounts(dd.Table):
     name
     """
     detail_layout = """
-    ref group type id
+    ref group type common_account id
     name
     needs_partner:30 clearable:30 default_amount:10 #default_dc
     ledger.MovementsByAccount
