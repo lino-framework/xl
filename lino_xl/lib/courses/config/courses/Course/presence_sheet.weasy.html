@@ -94,7 +94,7 @@ p {
 {%- set guest=rt.models.cal.Guest.objects.filter(
     partner=enrolment.pupil, event=e).first() -%}
 {%- if guest -%}
-  {{guest.state.button_text}}
+  {{guest.state.button_text or guest.state}}
   {% if ar.action_param_values.show_remarks %}
     {{guest.remark}}
   {%- endif -%}
