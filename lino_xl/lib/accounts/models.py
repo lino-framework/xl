@@ -60,6 +60,7 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
 
     group = models.ForeignKey('accounts.Group', blank=True, null=True)
     type = AccountTypes.field()  # blank=True)
+    common_account = CommonAccounts.field(blank=True)
     needs_partner = models.BooleanField(_("Needs partner"), default=False)
     clearable = models.BooleanField(_("Clearable"), default=False)
     # default_dc = DebitOrCreditField(_("Default booking direction"))

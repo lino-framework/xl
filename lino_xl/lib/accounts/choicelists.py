@@ -143,6 +143,7 @@ class CommonAccount(dd.Choice):
         kwargs.update(dd.str2kw('name', self.text))
         kwargs.update(clearable=self.clearable)
         kwargs.update(needs_partner=self.needs_partner)
+        kwargs.update(common_account=self)
         kwargs.update(type=self.account_type)
         return rt.models.accounts.Account(
             ref=self.value, **kwargs)
@@ -152,7 +153,7 @@ class CommonAccount(dd.Choice):
         if self._instance is None:
             Account = rt.models.accounts.Account
             try:
-                self._instance = Account.objects.get(ref=self.value)
+                self._instance = Account.objects.get(common_account=self)
             except Account.DoesNotExist:
                 return None
         return self._instance
