@@ -12,10 +12,11 @@ from lino.api import dd, rt, _
 from lino.modlib.printing.mixins import DirectPrintAction
 
 class WriteXML(DirectPrintAction):
-    """Action to generate an XML file.
+    """Generate an XML file from this database object.
+
     """
     combo_group = "writexml"
-    label = _("Write XML")
+    label = _("XML")
     
     build_method = "xml"
     icon_name = None
@@ -23,6 +24,10 @@ class WriteXML(DirectPrintAction):
 
 
 class WritePaymentsInitiation(WriteXML):
+    """Generate an XML file (SEPA payment initiation) from this database
+object.
+
+    """
 
     tplname = "pain_001"
     
