@@ -8,15 +8,15 @@
 An **activity** is a series of scheduled calendar events where a given
 teacher teaches a given group of participants about a given topic.
 
+The internal name "courses" of this plugin and its main model is for
+historic reasons. In :ref:`welfare` they are called "workshops", in
+:ref:`tera` they are called "therapies".
+
 There is a configurable list of **topics**.  Activities are grouped
 into **activity lines** (meaning "series").  An activity line is a
 series of activities having a same **topic**.
 
 The participants of an activity are stored as **Enrolments**.
-
-The internal name "courses" of this plugin and the main model is for
-historic reasons.  
-
 
 .. autosummary::
    :toctree:
@@ -26,6 +26,12 @@ historic reasons.
    choicelists
    workflows
    desktop
+
+
+.. xfile:: presence_sheet.weasy.html
+
+    The template used for printing a presence sheet of an activity
+    (both versions pdf and html)
 
 """
 
