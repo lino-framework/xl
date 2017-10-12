@@ -54,7 +54,7 @@ class TopLevelSkills(Skills):
     label = _("Skills (tree)")
     required_roles = dd.login_required(dd.SiteStaff)
     order_by = ["name"]
-    column_names = 'name remarks children_summary parent *'
+    column_names = 'overview remarks children_summary parent *'
     filter = models.Q(parent__isnull=True)
     variable_row_height = True
 
@@ -213,45 +213,46 @@ class OffersByDemander(Offers):
     
 
 
+class AssignableWorkersByTicket(Users):
+    # model = 'users.User'
+    use_as_default_table = False
+    # model = 'faculties.Competence'
+    master = dd.plugins.faculties.demander_model  # 'tickets.Ticket'
+    column_names = 'username #faculties_competence_set_by_user__affinity *'
+    label = _("Assignable workers")
+    # required_roles = dd.login_required(Triager)
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        ticket = ar.master_instance
+        if ticket is None:
+            return rt.models.users.User.objects.none()
+
+        # rt.models.faculties.Competence.objects.filter(
+        #     faculty=ticket.faculty)
+        qs = rt.models.users.User.objects.all()
+        # qs = super(
+        #     AssignableWorkersByTicket, self).get_request_queryset(ar)
+
+        topic = ticket.get_topic()
+        if topic:
+            qs = qs.filter(
+                faculties_competence_set_by_user__topic=topic)
+        cond = models.Q()
+        for dem in rt.models.faculties.Demand.objects.filter(
+                demander=ticket):
+            faculties = dem.skill.get_parental_line()
+            cond |= models.Q(
+                faculties_competence_set_by_user__faculty__in=faculties)
+        qs = qs.filter(cond)
+        qs = qs.order_by('faculties_competence_set_by_user__affinity')
+        return qs
+
+
 if dd.is_installed('tickets'):
 
     from lino_xl.lib.tickets.roles import Triager, Reporter
     from lino_xl.lib.tickets.ui import Tickets
-
-
-    class AssignableWorkersByTicket(Users):
-        # model = 'users.User'
-        use_as_default_table = False
-        # model = 'faculties.Competence'
-        master = 'tickets.Ticket'
-        column_names = 'username #faculties_competence_set_by_user__affinity *'
-        label = _("Assignable workers")
-        required_roles = dd.login_required(Triager)
-
-        @classmethod
-        def get_request_queryset(self, ar):
-            ticket = ar.master_instance
-            if ticket is None:
-                return rt.models.users.User.objects.none()
-
-            # rt.models.faculties.Competence.objects.filter(
-            #     faculty=ticket.faculty)
-            qs = rt.models.users.User.objects.all()
-            # qs = super(
-            #     AssignableWorkersByTicket, self).get_request_queryset(ar)
-
-            if ticket.topic:
-                qs = qs.filter(
-                    faculties_competence_set_by_user__topic=ticket.topic)
-            cond = models.Q()
-            for dem in rt.models.faculties.Demand.objects.filter(
-                    demander=ticket):
-                faculties = dem.skill.get_parental_line()
-                cond |= models.Q(
-                    faculties_competence_set_by_user__faculty__in=faculties)
-            qs = qs.filter(cond)
-            qs = qs.order_by('faculties_competence_set_by_user__affinity')
-            return qs
 
 
     class SuggestedTicketsByEndUser(Tickets):

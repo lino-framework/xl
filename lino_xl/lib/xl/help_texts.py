@@ -287,17 +287,18 @@ this."""),
     'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
     'lino_xl.lib.faculties.Plugin' : _("""The model of objects to be used as demander of skill
 demands."""),
+    'lino_xl.lib.faculties.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
+which I am competent."""),
+    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.master' : _("""alias of Person"""),
+    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
+    'lino_xl.lib.faculties.Competence' : _("""A skill offer is when a given user is declared to have a
+given skill."""),
+    'lino_xl.lib.faculties.Demand' : _("""A Skill demand is when a given demander declares to need a
+given skill."""),
+    'lino_xl.lib.faculties.Demand.importance' : _("""How important this skill is for this demand."""),
     'lino_xl.lib.faculties.Faculty' : _("""A skill is a knowledge or ability which can be
 required in order to work e.g. on some ticket, and which
 individual users can have (offer) or not."""),
-    'lino_xl.lib.faculties.Competence' : _("""A skill offer is when a given user is declared to have a
-given skill."""),
-    'lino_xl.lib.faculties.Demand' : _("""A Skill demand is when a given end user declares to need a
-given skill."""),
-    'lino_xl.lib.faculties.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
-which I am competent."""),
-    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.master' : _("""alias of Partner"""),
-    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.model' : _("""alias of Ticket"""),
     'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.families.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
 but is stored as a Couple instance."""),
@@ -883,6 +884,12 @@ given period."""),
     'lino_xl.lib.finan.BankStatement.balance2' : _("""The new (or end) balance."""),
     'lino_xl.lib.finan.PaymentOrder' : _("""A payment order is when a user instructs a bank to execute a
 series of outgoing transactions from a given bank account."""),
+    'lino_xl.lib.finan.PaymentOrder.entry_date' : _("""The date of the ledger entry."""),
+    'lino_xl.lib.finan.PaymentOrder.execution_date' : _("""The execution date of payment order. If this is empty, Lino
+assumes the entry_date when writing the
+pain_001.xml file."""),
+    'lino_xl.lib.finan.PaymentOrder.total' : _("""The total amount. This is automatically computed when you register
+de voucher."""),
     'lino_xl.lib.finan.JournalEntryItem' : _("""An item of a JournalEntry."""),
     'lino_xl.lib.finan.BankStatementItem' : _("""An item of a BankStatement."""),
     'lino_xl.lib.finan.PaymentOrderItem' : _("""An item of a PaymentOrder."""),

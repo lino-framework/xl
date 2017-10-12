@@ -7,7 +7,7 @@
    :toctree:
 
    models
-   ui
+   desktop
    roles
 
 """
@@ -37,13 +37,14 @@ class Plugin(ad.Plugin):
         'lino_noi.lib.contacts']
 
     # demander_model = 'tickets.Ticket'
-    # demander_model = 'contacts.Person'
+    demander_model = 'contacts.Person'
+    # demander_model = 'contacts.Partner'
+    # demander_model = 'comments.Comment'
     # supplier_model = 'contacts.Person'
-    demander_model = 'contacts.Partner'
     # supplier_model = 'contacts.Partner'
 
     # end_user_model = 'users.User'
-    end_user_model = 'contacts.Partner'
+    end_user_model = 'contacts.Person'
 
     def on_site_startup(self, site):
         self.end_user_model = site.models.resolve(self.end_user_model)
@@ -79,6 +80,10 @@ class Plugin(ad.Plugin):
         m.add_action('faculties.Demands')
 
     def get_dashboard_items(self, user):
+        for x in super(Plugin, self).get_dashboard_items(user):
+            yield x
         if user.authenticated:
             if self.site.is_installed('tickets'):
                 yield self.site.models.faculties.SuggestedTicketsByEndUser
+            yield self.site.models.faculties.TopLevelSkills
+                
