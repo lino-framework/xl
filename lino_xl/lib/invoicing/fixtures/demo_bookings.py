@@ -53,6 +53,11 @@ def objects():
         # for i in plan.items.all()[:9]:
         for i in plan.items.all():
             obj = i.create_invoice(ses)
-            assert obj is not None
-            yield obj
+            if obj is not None:
+                yield obj
+            else:
+                msg = "create_invoice failed for {}".format(i)
+                raise Exception(msg)
+                # dd.logger.warning(msg)
+                # return
         today = DurationUnits.months.add_duration(today, 1)

@@ -12,7 +12,7 @@ from lino import mixins
 # from lino.core.roles import SiteStaff
 from lino_xl.lib.ledger.roles import LedgerStaff
 
-from .choicelists import *
+from .choicelists import AccountTypes, CommonAccounts
 from .utils import DEBIT, CREDIT, DCLABELS, ZERO
 
 
@@ -60,6 +60,7 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
 
     group = models.ForeignKey('accounts.Group', blank=True, null=True)
     type = AccountTypes.field()  # blank=True)
+    common_account = CommonAccounts.field(blank=True)
     needs_partner = models.BooleanField(_("Needs partner"), default=False)
     clearable = models.BooleanField(_("Clearable"), default=False)
     # default_dc = DebitOrCreditField(_("Default booking direction"))
@@ -95,7 +96,7 @@ class Accounts(dd.Table):
     name
     """
     detail_layout = """
-    ref group type id
+    ref group type common_account id
     name
     needs_partner:30 clearable:30 default_amount:10 #default_dc
     ledger.MovementsByAccount

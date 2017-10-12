@@ -101,9 +101,11 @@ class Session(UserAuthored, Started, Ended, Workable):
     def get_reporting_type(self):
         if self.reporting_type:
             return self.reporting_type
-        if self.ticket and self.ticket.project:
-            if self.ticket.project.reporting_type:
-                return self.ticket.project.reporting_type
+        t = self.get_ticket()
+        if t.site and t.site.reporting_type:
+            return t.site.reporting_type
+        # if t.project and t.project.reporting_type:
+        #     return t.project.reporting_type
         return dd.plugins.clocking.default_reporting_type
 
     # def after_ui_save(self, ar, cw):

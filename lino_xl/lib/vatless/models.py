@@ -41,11 +41,11 @@ from lino_xl.lib.ledger.mixins import (
     AccountVoucherItem, Matching)
 from lino_xl.lib.sepa.mixins import Payable, BankAccount
 from lino_xl.lib.ledger.models import Voucher
-from lino_xl.lib.ledger.choicelists import TradeTypes
+# from lino_xl.lib.ledger.choicelists import TradeTypes
 
-TradeTypes.purchases.update(
-    partner_account_field_name='suppliers_account',
-    partner_account_field_label=_("Suppliers account"))
+# TradeTypes.purchases.update(
+#     partner_account_field_name='suppliers_account',
+#     partner_account_field_label=_("Suppliers account"))
 
 
 class AccountInvoice(BankAccount, Payable, Voucher, Matching, ProjectRelated):

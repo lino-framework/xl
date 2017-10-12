@@ -25,6 +25,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.vat.utils import add_vat, remove_vat, HUNDRED
 from lino_xl.lib.vat.mixins import QtyVatItemBase, VatDocument
 from lino_xl.lib.vat.mixins import get_default_vat_regime, myround
+from lino_xl.lib.vat.choicelists import VatAreas, VatRules
 from lino_xl.lib.sepa.mixins import Payable
 from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
 from lino_xl.lib.ledger.models import Voucher
@@ -40,19 +41,19 @@ TradeTypes.sales.update(
     price_field_name='sales_price',
     price_field_label=_("Sales price"),
     base_account_field_name='sales_account',
-    base_account_field_label=_("Sales Base account"),
+    base_account_field_label=_("Sales Base account"))
     # vat_account_field_name='sales_vat_account',
     # vat_account_field_label=_("Sales VAT account"),
-    partner_account_field_name='clients_account',
-    partner_account_field_label=_("Clients account"))
+    # partner_account_field_name='clients_account',
+    # partner_account_field_label=_("Clients account"))
 
-TradeTypes.wages.update(
-    partner_account_field_name='wages_account',
-    partner_account_field_label=_("Wages account"))
+# TradeTypes.wages.update(
+#     partner_account_field_name='wages_account',
+#     partner_account_field_label=_("Wages account"))
 
-TradeTypes.clearings.update(
-    partner_account_field_name='clearings_account',
-    partner_account_field_label=_("Clearings account"))
+# TradeTypes.clearings.update(
+#     partner_account_field_name='clearings_account',
+#     partner_account_field_label=_("Clearings account"))
 
 from lino_xl.lib.contacts.models import Partners
 
@@ -515,9 +516,9 @@ class ProductDocItem(QtyVatItemBase, Bleached):
         rule = self.get_vat_rule(tt)
         if rule is None:
             return
-        cat_rule = rt.modules.vat.VatRule.get_vat_rule(
-            tt, get_default_vat_regime, self.get_vat_class(tt),
-            dd.plugins.countries.get_my_country(),
+        va = VatAreas.get_for_country(dd.plugins.countries.country_code)
+        cat_rule = VatRules.get_vat_rule(
+            va, tt, get_default_vat_regime(), self.get_vat_class(tt),
             dd.today())
         if cat_rule is None:
             return

@@ -12,6 +12,8 @@ Currently used by the :mod:`minimal_ledger
 
 """
 
+raise Exception("No longer used (20171008)")
+
 from django.conf import settings
 
 def pcmnref(ref, pcmn):
@@ -23,6 +25,7 @@ def pcmnref(ref, pcmn):
 CUSTOMERS_ACCOUNT = pcmnref('customers', '4000')
 SUPPLIERS_ACCOUNT = pcmnref('suppliers',  '4400')
 TAX_OFFICES_ACCOUNT = pcmnref('tax_offices',  '4500')
+BANK_PO_ACCOUNT = pcmnref('bank_po',  '4600')
 
 # VAT to declare:
 VAT_DUE_ACCOUNT = pcmnref('vat_due',   '4510')
@@ -40,7 +43,7 @@ PURCHASE_OF_GOODS = pcmnref('goods', '6040')
 PURCHASE_OF_SERVICES = pcmnref('services', '6010')
 PURCHASE_OF_INVESTMENTS = pcmnref('investments', '6020')
 
-PO_BESTBANK_ACCOUNT = pcmnref('bestbankpo', '5810')
+# PO_BESTBANK_ACCOUNT = pcmnref('bestbankpo', '5810')
 
 SALES_ACCOUNT = pcmnref('sales', '7000')
 

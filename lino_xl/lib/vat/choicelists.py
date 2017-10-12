@@ -2,21 +2,18 @@
 # Copyright 2012-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""
-Choicelists for `lino_xl.lib.vat`.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 
+from django.db import models
 from atelier.utils import is_string
 from decimal import Decimal
 from lino.api import dd, _
 from lino.utils.xmlgen.html import E
 from lino_xl.lib.ledger.roles import LedgerStaff
+from lino_xl.lib.ledger.choicelists import TradeTypes
 
-from lino_xl.lib.accounts.utils import DCLABELS
+from lino_xl.lib.accounts.utils import DCLABELS, ZERO
 
 
 class VatClasses(dd.ChoiceList):
@@ -30,6 +27,25 @@ add('1', _("Reduced"), 'reduced')  # food, books,...
 add('2', _("Normal"), 'normal')    # everything else
 
 
+class VatAreas(dd.ChoiceList):
+    verbose_name = _("VAT area")
+    verbose_name_plural = _("VAT areas")
+    required_roles = dd.login_required(LedgerStaff)
+    EU_COUNTRY_CODES = set("BE FR DE NL LU EE DK NO SE IT".split())
+    
+    @classmethod
+    def get_for_country(cls, isocode):
+        if isocode == dd.plugins.countries.country_code:
+            return cls.national
+        if isocode in cls.EU_COUNTRY_CODES:
+            return cls.eu
+        return cls.international
+    
+add = VatAreas.add_item
+add('10', _("National"), 'national')
+add('20', _("EU"), 'eu')
+add('30', _("International"), 'international')
+
 class VatColumns(dd.ChoiceList):
     # to be populated by bevat, bevats, ...
     verbose_name = _("VAT column")
@@ -38,10 +54,19 @@ class VatColumns(dd.ChoiceList):
     show_values = True
 
     
-
 class VatRegime(dd.Choice):
-
     item_vat = True
+    vat_area = None
+
+    def __init__(self, value, text, name, vat_area=None, item_vat=True):
+        super(VatRegime, self).__init__(value, text, name)
+        self.vat_area = vat_area
+        self.item_vat = item_vat
+
+    def is_allowed_for(self, vat_area):
+        if self.vat_area is None:
+            return True
+        return self.vat_area == vat_area
 
 
 class VatRegimes(dd.ChoiceList):
@@ -49,19 +74,39 @@ class VatRegimes(dd.ChoiceList):
     verbose_name_plural = _("VAT regimes")
     item_class = VatRegime
     required_roles = dd.login_required(LedgerStaff)
-    help_text = _(
-        "Determines how the VAT is being handled, \
-        i.e. whether and how it is to be paid.")
 
-add = VatRegimes.add_item
-add('10', _("Private person"), 'normal')
-add('20', _("Subject to VAT"), 'subject')
-add('30', _("Intra-community"), 'intracom')
+# NAT = VatAreas.national
+# EU = VatAreas.eu
+
+# add = VatRegimes.add_item
+# add('10', _("Private person"), 'normal')
+# add('20', _("Subject to VAT"), 'subject', NAT)
+# add('30', _("Intra-community"), 'intracom', EU)
 # re-populated in bevat and bevats.
 # See also lino_xl.lib.vat.Plugin.default_vat_regime
 
 # @dd.python_2_unicode_compatible
 class DeclarationField(dd.Choice):
+    """
+    Base class for all fields of VAT declarations.
+
+    .. attribute:: both_dc
+    .. attribute:: editable
+    .. attribute:: fieldnames
+
+       An optional space-separated list of names of other declaration
+       fields to be observed by this field.
+                   
+    .. attribute:: vat_regimes
+    .. attribute:: vat_classes
+    .. attribute:: vat_columns
+                   
+    .. attribute:: exclude_vat_regimes
+    .. attribute:: exclude_vat_classes
+    .. attribute:: exclude_vat_columns
+    .. attribute:: is_payable
+    
+    """
     editable = False
     vat_regimes = None
     exclude_vat_regimes = None
@@ -313,4 +358,89 @@ class DeclarationFieldsBase(dd.ChoiceList):
                 E.br()]
 
         return E.div(*elems)
+    
+
+
+class VatRule(dd.Choice):
+
+    start_date = None
+    end_date= None
+    vat_area = None
+    trade_type = None
+    vat_class = None
+    vat_regime = None
+    rate = ZERO
+    can_edit = False
+    vat_account = None
+    vat_returnable = False
+    vat_returnable_account = None
+    
+    def __init__(self, value,
+                 vat_class=None, rate=None,
+                 vat_area=None, trade_type=None,
+                 vat_regime=None, vat_account=None,
+                 vat_returnable_account=None, vat_returnable=None):
+        kw = dict()
+        if rate is not None:
+            kw.update(rate=Decimal(rate))
+        if vat_returnable is not None:
+            kw.update(vat_returnable=vat_returnable)
+        if trade_type:
+            kw.update(trade_type=TradeTypes.get_by_name(trade_type))
+        if vat_regime:
+            kw.update(vat_regime=VatRegimes.get_by_name(vat_regime))
+        if vat_class:
+            kw.update(vat_class=VatClasses.get_by_name(vat_class))
+        if vat_account:
+            kw.update(vat_account=vat_account)
+        if vat_returnable_account:
+            kw.update(
+                vat_returnable_account=vat_returnable_account)
+        # text = "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
+        super(VatRule, self).__init__(value, value, **kw)
+        
+    # def __str__(self):
+    #     kw = dict(
+    #         trade_type=self.trade_type,
+    #         vat_regime=self.vat_regime,
+    #         vat_class=self.vat_class,
+    #         rate=self.rate,
+    #         vat_area=self.vat_area, seqno=self.seqno)
+    #     return "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
+
+class VatRules(dd.ChoiceList):
+    verbose_name = _("VAT rule")
+    verbose_name_plural = _("VAT rules")
+    item_class = VatRule
+    
+    @classmethod
+    def get_vat_rule(
+            cls, vat_area,
+            trade_type=None, vat_regime=None, vat_class=None,
+            date=None, default=models.NOT_PROVIDED):
+        for i in cls.get_list_items():
+            if i.vat_area is not None and vat_area != i.vat_area:
+                continue
+            if i.trade_type is not None and trade_type != i.trade_type:
+                continue
+            if i.vat_class is not None and vat_class != i.vat_class:
+                continue
+            if i.vat_regime is not None and vat_regime != i.vat_regime:
+                continue
+            if date is not None:
+                if i.start_date and i.start_date > date:
+                    continue
+                if i.end_date and i.end_date < date:
+                    continue
+            return i
+        if default is models.NOT_PROVIDED:
+            msg = _("No VAT rule for ({!r},{!r},{!r},{!r},{!r})").format(
+                    trade_type, vat_class, vat_area, vat_regime, 
+                    dd.fds(date))
+            if False:
+                dd.logger.info(msg)
+            else:
+                raise Warning(msg)
+        return default
+
 

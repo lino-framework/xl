@@ -32,7 +32,6 @@ from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.plausibility.choicelists import Checker
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
-from lino_xl.lib.accounts.choicelists import AccountTypes
 from lino_xl.lib.accounts.fields import DebitOrCreditField
 
 from .utils import get_due_movements, check_clearings_by_partner
@@ -77,10 +76,6 @@ class Journal(mixins.BabelNamed,
     #     help_text=_("Whether to invert booking direction of due movement."),
     #     default=True)
 
-    # @dd.chooser()
-    # def account_choices(cls, chart):
-    #     fkw = dict(type=AccountTypes.bank_accounts)
-    #     return rt.modules.accounts.Account.objects.filter(chart=chart, **fkw)
 
     def get_doc_model(self):
         """The model of vouchers in this Journal.
@@ -123,9 +118,9 @@ class Journal(mixins.BabelNamed,
 
     def get_allowed_accounts(self, **kw):
         if self.trade_type:
-            kw[self.trade_type.name + '_allowed'] = True
+            return self.trade_type.get_allowed_accounts(**kw)
         # kw.update(chart=self.chart)
-        return rt.modules.accounts.Account.objects.filter(**kw)
+        return rt.models.accounts.Account.objects.filter(**kw)
 
     def get_next_number(self, voucher):
         # ~ self.save() # 20131005 why was this?
@@ -681,7 +676,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     observable_period_field = 'voucher__accounting_period'
     
-    voucher = models.ForeignKey(Voucher)
+    voucher = dd.ForeignKey('ledger.Voucher')
 
     partner = dd.ForeignKey(
         'contacts.Partner',
@@ -820,7 +815,6 @@ Movement.set_widget_options('voucher_link', width=12)
 
 
 class MatchRule(dd.Model):
-    # allow_cascaded_delete = ['account', 'journal']
 
     class Meta:
         app_label = 'ledger'

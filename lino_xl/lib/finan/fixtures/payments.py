@@ -23,6 +23,7 @@ from django.conf import settings
 from lino.utils import Cycler
 from lino.api import dd, rt
 from lino.utils.xmlgen.sepa.validate import validate_pain001
+from lino_xl.lib.sepa.fixtures.sample_ibans import IBANS
 
 finan = dd.resolve_app('finan')
 
@@ -43,11 +44,33 @@ PAYMENT_DIFFS += [-0.30]
 PAYMENT_DIFFS += [0.02]
 PAYMENT_DIFFS = Cycler(PAYMENT_DIFFS)
 
+IBAN_CYCLERS = dict()
+
+def add_demo_account(partner):
+    # raise Exception("20171009")
+    if partner.country is None:
+        return None
+    Account = rt.models.sepa.Account
+    qs = Account.objects.filter(partner=partner)
+    acct = qs.first()
+    if acct is None:
+        ibans = IBAN_CYCLERS.get(partner.country)
+        if ibans is None:
+            ibans = Cycler([
+                x for x in IBANS if x.startswith(
+                    partner.country.isocode)])
+            IBAN_CYCLERS[partner.country] = ibans
+        acct = Account(partner=partner, iban=ibans.pop(), primary=True)
+        acct.bic = "BBRUBEBB"
+        acct.full_clean()
+        acct.save()
+    return acct
 
 def objects(refs="PMO BNK"):
 
-    Journal = rt.modules.ledger.Journal
-    Account = rt.models.sepa.Account
+    Journal = rt.models.ledger.Journal
+    Company = rt.models.contacts.Company
+    
     USERS = Cycler(settings.SITE.user_model.objects.all())
     OFFSETS = Cycler(12, 20, 28)
 
@@ -57,7 +80,16 @@ def objects(refs="PMO BNK"):
 
     ses = rt.login('robin')
 
+    qs = Company.objects.filter(country__isnull=False)
+    # if qs.count() < 10:
+    #     raise Exception("20171009")
+    for p in qs:
+        add_demo_account(p)
+
+
     for ref in refs.split():
+        # if ref == 'BNK':
+        #     continue  # temp 20171007
         jnl = Journal.objects.get(ref=ref)
         sug_table = jnl.voucher_type.table_class.suggestions_table
         if ref == 'PMO':
@@ -66,14 +98,8 @@ def objects(refs="PMO BNK"):
                 raise Exception(
                     "Oops, site company {} has no country".format(
                         site_company))
-            qs = Account.objects.filter(partner=site_company)
-            if qs.count():
-                acct = qs[0]
-            else:
-                acct = Account(
-                    partner=site_company, iban="BE83540256917919",
-                    bic="BBRUBEBB", primary=True)
-                yield acct
+
+            acct = add_demo_account(site_company)
             jnl.sepa_account = acct
             yield jnl
             
@@ -110,20 +136,23 @@ def objects(refs="PMO BNK"):
             if voucher.items.count() == 0:
                 voucher.delete()
             else:
-                if ref == 'PMO':
-                    voucher.execution_date = voucher.entry_date
+                # if ref == 'PMO':
+                #     voucher.execution_date = voucher.entry_date
+                #     assert voucher.execution_date is not None
                 voucher.register(REQUEST)
                 voucher.save()
 
-            # For payment orders we also write the XML file
-            if ref == 'PMO':
-                rv = voucher.write_xml.run_from_session(ses)
-                if not rv['success']:
-                    raise Exception("20170630")
-                fn = Path(settings.SITE.cache_dir + rv['open_url'])
-                if not fn.exists():
-                    raise Exception("20170630")
-                validate_pain001(fn)
+                # For payment orders we also write the XML file
+                if ref == 'PMO':
+                    rv = voucher.write_xml.run_from_session(ses)
+                    if not rv['success']:
+                        raise Exception("20170630")
+                    if False:
+                        # not needed here because write_xml validates
+                        fn = Path(settings.SITE.cache_dir + rv['open_url'])
+                        if not fn.exists():
+                            raise Exception("20170630")
+                        validate_pain001(fn)
 
             date += delta(months=1)
         # JOURNAL_BANK = Journal.objects.get(ref="BNK")

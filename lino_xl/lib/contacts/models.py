@@ -23,6 +23,7 @@ from lino.utils import join_elems
 
 from lino_xl.lib.countries.mixins import AddressLocation
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
+from lino_xl.lib.faculties.mixins import Feasible
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
@@ -41,7 +42,8 @@ PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
 
 @dd.python_2_unicode_compatible
-class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
+class Partner(ContactDetailsOwner, mixins.Polymorphic,
+              AddressLocation, Feasible):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
@@ -132,7 +134,11 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic, AddressLocation):
         return elems
 
     def get_name_elems(self, ar):
-        return [E.b(self.name)]
+        elems = []
+        if self.prefix:
+            elems += [self.prefix, ' ']
+        elems.append(E.b(self.name))
+        return elems
 
     def get_print_language(self):
         return self.language
@@ -349,12 +355,6 @@ class Company(Partner):
         return join_words(self.prefix, self.name)
     full_name = property(get_full_name)
 
-    def get_name_elems(self, ar):
-        elems = []
-        if self.prefix:
-            elems += [self.prefix, ' ']
-        elems += [E.b(self.name)]
-        return elems
 
 
 class CompanyDetail(PartnerDetail):

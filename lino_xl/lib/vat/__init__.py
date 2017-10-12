@@ -5,16 +5,12 @@
 
 """See :doc:`/specs/vat`.
 
-
 .. autosummary::
    :toctree:
 
-    desktop
-    choicelists
     utils
-    mixins
-    fixtures.novat
-    fixtures.euvatrates
+
+.. fixtures.novat fixtures.euvatrates
 
 """
 
@@ -23,18 +19,13 @@ from lino.api import ad
 import six
 
 class Plugin(ad.Plugin):
-    """See :class:`lino.core.plugin.Plugin`.
+    """The :class:`Plugin <lino.core.plugin.Plugin>` object for this
+    plugin.
 
     """
     verbose_name = _("VAT")
 
     needs_plugins = ['lino_xl.lib.countries', 'lino_xl.lib.ledger']
-
-    # vat_quarterly = False
-    # """
-    # Set this to True to support quarterly VAT declarations.
-    # Used by :mod:`lino_xl.lib.declarations`.
-    # """
 
     default_vat_regime = 'normal'
     """The default VAT regime. If this is specified as a string, Lino will
@@ -52,8 +43,8 @@ class Plugin(ad.Plugin):
 
     def get_vat_class(self, tt, item):
         """Return the VAT class to be used for given trade type and given
-invoice item. Return value must be an item of
-:class:`lino_xl.lib.vat.models.VatClasses`.
+        invoice item. Return value must be an item of
+        :class:`lino_xl.lib.vat.VatClasses`.
 
         """
         return self.default_vat_class
@@ -66,10 +57,6 @@ invoice item. Return value must be an item of
         if isinstance(self.default_vat_class, six.string_types):
             self.default_vat_class = vat.VatClasses.get_by_name(
                 self.default_vat_class)
-
-    def setup_config_menu(self, site, user_type, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('vat.VatRules')
 
     def setup_reports_menu(self, site, user_type, m):
         mg = site.plugins.accounts
@@ -87,5 +74,6 @@ invoice item. Return value must be an item of
         m.add_action('vat.VatClasses')
         m.add_action('vat.VatColumns')
         m.add_action('vat.Invoices')
+        m.add_action('vat.VatRules')
         # m.add_action('vat.InvoiceItems')
 

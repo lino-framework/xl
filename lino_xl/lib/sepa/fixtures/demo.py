@@ -5,7 +5,6 @@
 
 """
 Adds some commonly known partners and their bank accounts.
-
 These are real data randomly collected from Internet.
 
 """
@@ -29,10 +28,11 @@ class Adder(object):
 
     def add_company(self, name, url, **kw):
         obj = Company(name=name, url=url, **kw)
-        if obj.country.isocode == 'BE':
-            obj.vat_regime = VatRegimes.subject
-        else:
-            obj.vat_regime = VatRegimes.intracom
+        if VatRegimes.is_installed():
+            if obj.country.isocode == 'BE':
+                obj.vat_regime = VatRegimes.subject
+            else:
+                obj.vat_regime = VatRegimes.intracom
         self.current_partner = obj
         self.primary = True
         return obj
@@ -119,3 +119,5 @@ def objects():
             country="BE",
             zip_code="4700")
     yield A('GEBABEBB', 'BE38 2480 1735 7572')
+
+

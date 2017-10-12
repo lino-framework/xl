@@ -8,6 +8,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from django.db import models
+# from django.core.exceptions import ValidationError
 
 from lino.utils.xmlgen.html import E, join_elems
 from lino_xl.lib.accounts.utils import ZERO, DEBIT, CREDIT
@@ -24,7 +25,7 @@ from lino.api import dd, rt, _
 from .mixins import (FinancialVoucher, FinancialVoucherItem,
                      DatedFinancialVoucher, DatedFinancialVoucherItem)
 
-from .actions import WriteXML
+from .actions import WritePaymentsInitiation
 
 
 ledger = dd.resolve_app('ledger')
@@ -101,7 +102,7 @@ class PaymentOrder(FinancialVoucher, Printable):
     execution_date = models.DateField(
         _("Execution date"), blank=True, null=True)
 
-    write_xml = WriteXML(tplname="pain_001")
+    write_xml = WritePaymentsInitiation()
     #templates_group = ''
 
     @dd.displayfield(_("Print"))
@@ -146,6 +147,9 @@ class PaymentOrder(FinancialVoucher, Printable):
         i = super(PaymentOrder, self).add_item_from_due(obj, **kwargs)
         i.bank_account = obj.bank_account
         return i
+
+    # def full_clean(self, *args, **kwargs):
+    #     super(PaymentOrder, self).full_clean(*args, **kwargs)
 
 
 class BankStatement(DatedFinancialVoucher):
@@ -393,7 +397,7 @@ class FillSuggestionsToVoucher(dd.Action):
                 n += 1
 
         msg = _("%d items have been added to %s.") % (n, voucher)
-        logger.info(msg)
+        # logger.info(msg)
         kw.update(close_window=True)
         ar.success(msg, **kw)
 
@@ -437,7 +441,7 @@ class FillSuggestionsToVoucherItem(FillSuggestionsToVoucher):
                 n += 1
 
         msg = _("%d items have been added to %s.") % (n, voucher)
-        logger.info(msg)
+        # logger.info(msg)
         kw.update(close_window=True)
         ar.success(msg, **kw)
 
@@ -501,8 +505,8 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
             kw.update(show_sepa=dd.YesNo.yes)
         # kw.update(journal=voucher.journal)
         kw.update(date_until=voucher.execution_date or voucher.entry_date)
-        if voucher.journal.trade_type is not None:
-            kw.update(trade_type=voucher.journal.trade_type)
+        # if voucher.journal.trade_type is not None:
+        #     kw.update(trade_type=voucher.journal.trade_type)
         # kw.update(trade_type=vat.TradeTypes.purchases)
         return kw
 

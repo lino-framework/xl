@@ -552,6 +552,12 @@ class Tickets(dd.Table):
         return s
 
     @classmethod
+    def get_queryset(self, ar, **filter):
+        return self.model.objects.select_related(
+            'user', 'assigned_to', 'project',
+            'duplicate_of', 'end_user')
+        
+    @classmethod
     def get_request_queryset(self, ar):
         qs = super(Tickets, self).get_request_queryset(ar)
         pv = ar.param_values
@@ -955,7 +961,8 @@ class SiteDetail(dd.DetailLayout):
         bottom_left:30 TicketsBySite
         """
     general = dd.Panel("""
-        id name company contact_person
+        id name 
+        company contact_person reporting_type
         workflow_buttons:1 remark
         bottom""", label=_("General"))
     main = """general meetings.MeetingsBySite"""

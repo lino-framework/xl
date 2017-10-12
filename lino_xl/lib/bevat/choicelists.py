@@ -17,21 +17,27 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
-from lino_xl.lib.vat.choicelists import VatRegimes
+from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas, VatRules
+from lino_xl.lib.accounts.choicelists import CommonAccounts
+
+NAT = VatAreas.national
+EU = VatAreas.eu
+INT = VatAreas.international
 
 VatRegimes.clear()
 add = VatRegimes.add_item
-add('10', _("Private person"), 'normal')
-add('11', _("Private person (reduced)"), 'reduced')
-add('20', _("Subject to VAT"), 'subject')
-add('25', _("Co-contractor"), 'cocontractor')
-add('30', _("Intra-community"), 'intracom')
-add('31', _("Delay in collection"), 'delayed') # report de perception
-add('40', _("Inside EU"), 'inside')
-add('50', _("Outside EU"), 'outside')
+add('10', _("Private person"), 'normal', NAT)
+add('11', _("Private person (reduced)"), 'reduced', NAT)
+add('20', _("Subject to VAT"), 'subject', NAT)
+add('25', _("Co-contractor"), 'cocontractor', NAT)
+add('30', _("Intra-community"), 'intracom', EU)
+add('31', _("Delay in collection"), 'delayed', EU) # report de perception
+add('40', _("Inside EU"), 'inside', EU)
+add('50', _("Outside EU"), 'outside', INT)
 add('60', _("Exempt"), 'exempt', item_vat=False)
-add('70', _("Germany"), 'de')
-add('71', _("Luxemburg"), 'lu')
+if False:
+    add('70', _("Germany"), 'de')
+    add('71', _("Luxemburg"), 'lu')
 
 VatColumns.clear()
 add = VatColumns.add_item
@@ -45,6 +51,40 @@ add('59', _("VAT deductible"))
 add('81', _("Purchase of goods"))
 add('82', _("Purchase of services"))
 add('83', _("Purchase of investments"))
+
+
+VatRules.clear()
+add = VatRules.add_item
+# country_code = dd.plugins.countries.country_code
+# if country_code == "BE":
+add('010', 'normal',  '0.21', NAT, 'sales',     None,       CommonAccounts.vat_due)
+add('020', 'reduced', '0.07', NAT, 'sales',     None,       CommonAccounts.vat_due)
+add('030', 'normal',  '0.21', NAT, 'purchases', None,       CommonAccounts.vat_deductible)
+add('040', 'reduced', '0.07', NAT, 'purchases', None,       CommonAccounts.vat_deductible)
+add('050', 'normal',  '0.21', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+add('060', 'reduced', '0.07', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+add('070', 'normal',  '0.21', EU,  'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+add('080', 'reduced', '0.07', EU,  'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+add('900')
+
+# if country_code == "EE":
+#     add('010', 'normal', 'EE', None, '0.20')
+#     add('010', 'reduced', 'EE', None, '0.09')
+
+# if country_code == "NL":
+#     add('010', 'normal', 'NL', None, '0.21')
+#     add('010', 'reduced', 'NL', None, '0.06')
+
+# if country_code == "DE":
+#     add('010', 'normal', 'DE', None, '0.19')
+#     add('010', 'reduced', 'DE', None, '0.07')
+
+# if country_code == "FR":
+#     add('010', 'normal', 'FR', None, '0.20')
+#     add('010', 'reduced', 'FR', None, '0.10')
+#     # in FR there are more VAT classes, we currently don't support them
+#     # add('010', 'reduced', 'FR', None, None, '0.055')
+#     # add('010', 'reduced', 'FR', None, None, '0.021')
 
 
 class DeclarationFields(DeclarationFieldsBase):

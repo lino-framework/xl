@@ -35,9 +35,9 @@ from .roles import AccountingReader, LedgerUser, LedgerStaff
 
 class JournalDetail(dd.DetailLayout):
     main = """
-    name ref:5
-    trade_type seqno id voucher_type:10 journal_group:10
-    account build_method template
+    name ref:5 seqno:5
+    voucher_type:30 journal_group:15 build_method:20 template:20 id:5
+    trade_type account partner
     dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare
     printed_name
     MatchRulesByJournal
@@ -395,7 +395,7 @@ class AccountingPeriodRange(dd.ParameterPanel):
         else:
             yield str(_("All periods"))
             
-class AccountsBalance(dd.Table):
+class AccountBalances(dd.Table):
     """A table which shows a list of general ledger accounts during the
     observed period, showing their old and new balances and the sum of
     debit and credit movements.
@@ -408,7 +408,8 @@ class AccountsBalance(dd.Table):
     slave_grid_format = 'html'
     abstract = True
     params_panel_hidden = False
-
+    use_as_default_table = False
+    
     parameters = AccountingPeriodRange()
     params_layout = "start_period end_period"
     
@@ -438,9 +439,9 @@ class AccountsBalance(dd.Table):
             dd.today())
         ep = pv.end_period or sp
         
-        qs = super(AccountsBalance, self).get_request_queryset(ar)
+        qs = super(AccountBalances, self).get_request_queryset(ar)
         
-        flt = self.rowmvtfilter()
+        flt = self.rowmvtfilter(ar)
         oldflt = dict()
         oldflt.update(flt)
         duringflt = dict()
@@ -486,11 +487,11 @@ class AccountsBalance(dd.Table):
     def description(self, row, ar):
         return row.obj2href(ar)
 
-    @dd.virtualfield(dd.PriceField(_("Debit\nbefore")))
+    @dd.virtualfield(dd.PriceField(_("Debit before")))
     def old_d(self, row, ar):
         return Balance(row.old_d, row.old_c).d
 
-    @dd.virtualfield(dd.PriceField(_("Credit\nbefore")))
+    @dd.virtualfield(dd.PriceField(_("Credit before")))
     def old_c(self, row, ar):
         return Balance(row.old_d, row.old_c).c
 
@@ -502,11 +503,11 @@ class AccountsBalance(dd.Table):
     def during_c(self, row, ar):
         return row.during_c
 
-    @dd.virtualfield(dd.PriceField(_("Debit\nafter")))
+    @dd.virtualfield(dd.PriceField(_("Debit after")))
     def new_d(self, row, ar):
         return self.new_balance(row).d
 
-    @dd.virtualfield(dd.PriceField(_("Credit\nafter")))
+    @dd.virtualfield(dd.PriceField(_("Credit after")))
     def new_c(self, row, ar):
         return self.new_balance(row).c
     
@@ -516,41 +517,47 @@ class AccountsBalance(dd.Table):
 
     
 
-class GeneralAccountsBalance(AccountsBalance):
+class GeneralAccountBalances(AccountBalances):
 
-    label = _("General Accounts Balance")
+    label = _("General Account Balances")
     model = 'accounts.Account'
-    order_by = ['group__ref', 'ref']
+    # order_by = ['group__ref', 'ref']
+    order_by = ['ref']
 
     @classmethod
-    def rowmvtfilter(self):
+    def rowmvtfilter(self, ar):
         return dict(account=OuterRef('pk'))
     
 
-class PartnerAccountsBalance(AccountsBalance):
-    trade_type = NotImplementedError
+class PartnerBalancesByTradeType(AccountBalances):
+    
     model = 'contacts.Partner'
     order_by = ['name', 'id']
 
     @classmethod
-    def rowmvtfilter(self):
-        a = self.trade_type.get_partner_account()
-        # TODO: what if a is None?
+    def get_title_base(self, ar):
+        return _("Partner Account Balances {}").format(ar.master_instance)
+        
+    @classmethod
+    def rowmvtfilter(self, ar):
+        tt = ar.master_instance
+        if tt is None:
+            return
+        a = tt.get_partner_account()
         return dict(partner=OuterRef('pk'), account=a)
 
     @dd.displayfield(_("Ref"))
     def ref(self, row, ar):
         return str(row.pk)
+    
+# class CustomerAccountsBalance(PartnerAccountsBalance):
+#     label = _("Customer Accounts Balance")
+#     trade_type = TradeTypes.sales
 
 
-class CustomerAccountsBalance(PartnerAccountsBalance):
-    label = _("Customer Accounts Balance")
-    trade_type = TradeTypes.sales
-
-
-class SupplierAccountsBalance(PartnerAccountsBalance):
-    label = _("Supplier Accounts Balance")
-    trade_type = TradeTypes.purchases
+# class SupplierAccountsBalance(PartnerAccountsBalance):
+#     label = _("Supplier Accounts Balance")
+#     trade_type = TradeTypes.purchases
 
 
 ##
@@ -673,31 +680,31 @@ class Situation(Report):
     report_items = (Debtors, Creditors)
 
 
-class ActivityReport(Report):
-    """Overview of the financial activity during a given period.
+# class ActivityReport(Report):
+#     """Overview of the financial activity during a given period.
 
-    A report consisting of the following tables:
+#     A report consisting of the following tables:
 
-    - :class:`GeneralAccountsBalance`
-    - :class:`CustomerAccountsBalance`
-    - :class:`SupplierAccountsBalance`
+#     - :class:`GeneralAccountsBalance`
+#     - :class:`CustomerAccountsBalance`
+#     - :class:`SupplierAccountsBalance`
 
-    """
-    label = _("Activity Report")
-    required_roles = dd.login_required(AccountingReader)
+#     """
+#     label = _("Activity Report")
+#     required_roles = dd.login_required(AccountingReader)
 
-    parameters = mixins.Yearly(
-        # include_vat = models.BooleanField(
-        #     verbose_name=dd.apps.vat.verbose_name),
-    )
+#     parameters = mixins.Yearly(
+#         # include_vat = models.BooleanField(
+#         #     verbose_name=dd.apps.vat.verbose_name),
+#     )
 
-    params_layout = "start_date end_date"
-    #~ params_panel_hidden = True
+#     params_layout = "start_date end_date"
+#     #~ params_panel_hidden = True
 
-    report_items = (
-        GeneralAccountsBalance,
-        CustomerAccountsBalance,
-        SupplierAccountsBalance)
+#     report_items = (
+#         GeneralAccountsBalance,
+#         CustomerAccountsBalance,
+#         SupplierAccountsBalance)
 
     
 class AccountingReport(Report):
@@ -735,15 +742,24 @@ class AccountingReport(Report):
         bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
         balances = []
         if pv.with_general:
-            balances.append(GeneralAccountsBalance)
-        if pv.with_sales:
-            balances.append(CustomerAccountsBalance)
-        if pv.with_purchases:
-            balances.append(SupplierAccountsBalance)
+            balances.append(GeneralAccountBalances.request(
+                param_values=bpv))
+        for tt in TradeTypes.get_list_items():
+            k = 'with_'+tt.name
+            if pv[k]:
+                balances.append(
+                    PartnerBalancesByTradeType.request(
+                        master_instance=tt, param_values=bpv))
+        # if pv.with_sales:
+        #     balances.append(CustomerAccountsBalance)
+        # if pv.with_purchases:
+        #     balances.append(SupplierAccountsBalance)
         if pv.with_balances:
-            for B in balances:
-                yield E.h1(B.label)
-                yield B.request(param_values=bpv)
+            for sar in balances:
+                yield E.h1(sar.get_title())
+                yield sar
+                # yield E.h1(B.label)
+                # yield B.request(param_values=bpv)
 
     # def get_build_method(self):
     #     return 'appypdf'

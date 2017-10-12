@@ -3,21 +3,16 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
-Model mixins for this plugin.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 
 from decimal import Decimal
 
 from django.conf import settings
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 
 from lino.utils import SumCollector
-from lino.utils.dates import AMONTH, ADAY
+# from lino.utils.dates import AMONTH, ADAY
 from lino.api import dd, rt, _
 
 from lino_xl.lib.excerpts.mixins import Certifiable
@@ -28,7 +23,7 @@ from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
 
 from .utils import ZERO, ONE
-from .choicelists import VatClasses, VatRegimes
+from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
 DECLARED_IN = False
 
@@ -60,30 +55,6 @@ def get_default_vat_class():
 
 
 class VatTotal(dd.Model):
-    """Model mixin which defines the fields `total_incl`, `total_base`
-    and `total_vat`.  Used for both the document header
-    (:class:`VatDocument`) and for each item (:class:`VatItemBase`).
-
-    .. attribute:: total_incl
-    
-        A :class:`lino.core.fields.PriceField` which stores the total
-        amount VAT *included*.
-
-    .. attribute:: total_base
-
-        A :class:`lino.core.fields.PriceField` which stores the total
-        amount VAT *excluded*.
-
-    .. attribute:: total_vat
-
-        A :class:`lino.core.fields.PriceField` which stores the amount
-        of VAT.
-
-    .. method:: get_trade_type
-
-        Subclasses of VatTotal must implement this method.
-
-    """
     class Meta:
         abstract = True
 
@@ -97,22 +68,11 @@ class VatTotal(dd.Model):
     # when `auto_compute_totals` is True.
 
     auto_compute_totals = False
-    """Set this to `True` on subclasses who compute their totals
-    automatically, i.e. the fields :attr:`total_base`,
-    :attr:`total_vat` and :attr:`total_incl` are disabled.  This is
-    set to `True` for :class:`lino_xl.lib.sales.models.SalesDocument`.
-
-    """
 
     # def get_trade_type(self):
     #     raise NotImplementedError()
 
     def disabled_fields(self, ar):
-        """Disable all three total fields if `auto_compute_totals` is set,
-        otherwise disable :attr:`total_vat` if
-        :attr:`VatRule.can_edit` is False.
-
-        """
         fields = super(VatTotal, self).disabled_fields(ar)
         if self.auto_compute_totals:
             fields |= self._total_fields
@@ -126,24 +86,9 @@ class VatTotal(dd.Model):
         pass
 
     def get_vat_rule(self, tt):
-        """Return the VAT rule for this voucher or voucher item. Called when
-        user edits a total field in the document header when
-        `auto_compute_totals` is False.
-
-        """
         return None
 
     def total_base_changed(self, ar):
-        """Called when user has edited the `total_base` field.  If total_base
-        has been set to blank, then Lino fills it using
-        :meth:`reset_totals`. If user has entered a value, compute
-        :attr:`total_vat` and :attr:`total_incl` from this value using
-        the vat rate. If there is no VatRule, `total_incl` and
-        `total_vat` are set to None.
-
-        If there are rounding differences, `total_vat` will get them.
-
-        """
         # dd.logger.info("20150128 total_base_changed %r", self.total_base)
         if self.total_base is None:
             self.reset_totals(ar)
@@ -160,13 +105,6 @@ class VatTotal(dd.Model):
             self.total_vat = self.total_incl - self.total_base
 
     def total_vat_changed(self, ar):
-        """Called when user has edited the `total_vat` field.  If it has been
-        set to blank, then Lino fills it using
-        :meth:`reset_totals`. If user has entered a value, compute
-        :attr:`total_incl`. If there is no VatRule, `total_incl` is
-        set to None.
-
-        """
         if self.total_vat is None:
             self.reset_totals(ar)
             if self.total_vat is None:
@@ -177,16 +115,6 @@ class VatTotal(dd.Model):
         self.total_incl = self.total_vat + self.total_base
 
     def total_incl_changed(self, ar):
-        """Called when user has edited the `total_incl` field.  If total_incl
-        has been set to blank, then Lino fills it using
-        :meth:`reset_totals`. If user enters a value, compute
-        :attr:`total_base` and :attr:`total_vat` from this value using
-        the vat rate. If there is no VatRule, `total_incl` should be
-        disabled, so this method will never be called.
-
-        If there are rounding differences, `total_vat` will get them.
-
-        """
         if self.total_incl is None:
             self.reset_totals(ar)
             if self.total_incl is None:
@@ -229,14 +157,10 @@ class VatDocument(ProjectRelated, VatTotal):
             return
         base = Decimal()
         vat = Decimal()
-        # tt = self.get_trade_type()
         for i in self.items.all():
-            # vr = i.get_vat_rule(tt)
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                # if vr is not None and not vr.vat_returnable:
-                #     vat += i.total_vat
                 vat += i.total_vat
         self.total_base = base
         self.total_vat = vat
@@ -250,7 +174,7 @@ class VatDocument(ProjectRelated, VatTotal):
         # if vat_account is None:
         #     raise Exception("No VAT account for %s." % tt)
         for i in self.items.order_by('seqno'):
-            vr = i.get_vat_rule(tt)
+            rule = i.get_vat_rule(tt)
             b = i.get_base_account(tt)
             ana_account = i.get_ana_account()
             if i.total_base:
@@ -260,24 +184,25 @@ class VatDocument(ProjectRelated, VatTotal):
                 sums.collect(
                     ((b, ana_account), self.project, i.vat_class, self.vat_regime),
                     i.total_base)
-            if i.total_vat and vr is not None:
-                if not vr.vat_account:
+            if i.total_vat and rule is not None:
+                if not rule.vat_account:
                     msg = _("This rule ({}) does not allow any VAT.")
-                    raise Warning(msg.format(vr))
+                    raise Warning(msg.format(rule))
                         
                 vat_amount = i.total_vat
-                if vr.vat_returnable:
-                    if vr.vat_returnable_account is None:
+                if rule.vat_returnable:
+                    if rule.vat_returnable_account is None:
                         acc_tuple = (b, ana_account)
                     else:
-                        acc_tuple = (vr.vat_returnable_account, None)
+                        acc_tuple = (
+                            rule.vat_returnable_account.get_object(), None)
                     sums.collect(
                         (acc_tuple, self.project,
                          i.vat_class, self.vat_regime),
                         vat_amount)
                     vat_amount = - vat_amount
                 sums.collect(
-                    ((vr.vat_account, None), self.project,
+                    ((rule.vat_account.get_object(), None), self.project,
                      i.vat_class, self.vat_regime),
                     vat_amount)
         return sums
@@ -326,18 +251,22 @@ class VatItemBase(VoucherItem, VatTotal):
         raise NotImplementedError
 
     def get_vat_rule(self, tt):
-        # tt = self.voucher.get_trade_type()
         if self.vat_class is None:
             self.vat_class = self.get_vat_class(tt)
-
-        if False:
-            country = self.voucher.partner.country or \
-                dd.plugins.countries.get_my_country()
-        else:
-            country = dd.plugins.countries.get_my_country()
-        return rt.modules.vat.VatRule.get_vat_rule(
-            tt, self.voucher.vat_regime, self.vat_class, country,
-            self.voucher.entry_date)
+            # we store it because there might come more calls, but we
+            # don't save it because here's not the place to decide
+            # this.
+            
+        # country = self.voucher.partner.country or \
+        #           dd.plugins.countries.get_my_country()
+        vat_area = VatAreas.get_for_country(
+            self.voucher.partner.country.isocode)
+        return VatRules.get_vat_rule(
+            vat_area,
+            trade_type=tt,
+            vat_regime=self.voucher.vat_regime,
+            vat_class=self.vat_class, 
+            date=self.voucher.entry_date)
 
     # def save(self,*args,**kw):
         # super(VatItemBase,self).save(*args,**kw)
@@ -346,11 +275,6 @@ class VatItemBase(VoucherItem, VatTotal):
 
     def set_amount(self, ar, amount):
         self.voucher.fill_defaults()
-        # rule = self.get_vat_rule()
-        # if rule is None:
-        #     rate = ZERO
-        # else:
-        #     rate = rule.rate
         if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
             self.total_incl = myround(amount)
             self.total_incl_changed(ar)
@@ -388,14 +312,6 @@ class VatItemBase(VoucherItem, VatTotal):
 
 
 class QtyVatItemBase(VatItemBase):
-    """Model mixin for items of a :class:`VatTotal`, adds `unit_price` and
-`qty`.
-
-    Abstract Base class for :class:`lino_xl.lib.sales.InvoiceItem` and
-    :class:`lino_xl.lib.sales.OrderItem`, i.e. the lines of invoices
-    *with* unit prices and quantities.
-
-    """
 
     class Meta:
         abstract = True
@@ -423,12 +339,22 @@ class QtyVatItemBase(VatItemBase):
 
 
 class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
+    """Abstract base class for VAT declarations.
 
-    """
-    A VAT declaration is when a company declares to the state
+    A **VAT declaration** is when a company declares to its government
     how much sales and purchases they've done during a given period.
-    It is a summary of ledger movements.
-    It is at the same time a ledger voucher.
+
+    A VAT declaration is a computed summary of ledger movements in an
+    **observed period**, but it is also itself a ledger voucher which
+    generates new movements in its own period.
+
+    :class:`lino_xl.lib.sepa.Payable`
+    :class:`lino_xl.lib.ledger.Voucher`
+    :class:`lino_xl.lib.excerpts.Certifiable`
+    :class:`lino_xl.lib.ledger.PeriodRange`
+
+    .. attribute:: accounting_period
+
     """
 
     class Meta:
@@ -530,8 +456,9 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
         
     def get_payable_sums_dict(self):
-        """Implements
-        :meth:`lino_xl.lib.sepa.mixins.Payable.get_payable_sums_dict`.
+        """
+        Implements
+        :meth:`lino_xl.lib.sepa.Payable.get_payable_sums_dict`.
 
         As a side effect this updates values in the computed fields of
         this declaration.
@@ -555,6 +482,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
 
         qs = rt.models.ledger.Movement.objects.filter(**flt)
+        qs = qs.order_by('voucher__journal', 'voucher__number')
 
         # print(20170713, qs)
 

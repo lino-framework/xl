@@ -22,6 +22,9 @@ class Feasible(dd.Model):
     #in the base class without faculties installed
     if dd.is_installed('faculties'):
 
+        def get_topic(self):
+            return None
+
         @dd.displayfield(_("Suppliers"))
         def suppliers(self, ar):
             """Displays a list of candidate suppliers.

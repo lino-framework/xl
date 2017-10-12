@@ -24,6 +24,7 @@ from lino import mixins
 from lino.utils.xmlgen.html import E
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
+from lino_xl.lib.faculties.mixins import Feasible
 from lino.modlib.users.mixins import My, UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
@@ -117,6 +118,7 @@ class EventTypes(dd.Table):
 class Note(TypedPrintable,
            UserAuthored,
            Controllable,
+           Feasible,
            ContactRelated,
            mixins.ProjectRelated,
            ChangeObservable,
@@ -222,7 +224,7 @@ class NoteDetail(dd.DetailLayout):
 class Notes(dd.Table):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     model = 'notes.Note'
-    detail_layout = NoteDetail()
+    detail_layout = 'notes.NoteDetail'
     column_names = "date time id user event_type type project subject * body"
     order_by = ["date", "time"]
 

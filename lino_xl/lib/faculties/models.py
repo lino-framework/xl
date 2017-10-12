@@ -130,12 +130,17 @@ dd.update_field(Competence, 'user', verbose_name=_("User"))
     
 #class Demand(UserAuthored):
 class Demand(dd.Model):
-    """A **Skill demand** is when a given *end user* declares to need a
+    """A **Skill demand** is when a given *demander* declares to need a
     given skill.
 
     .. attribute:: demander
     .. attribute:: skill
+    .. attribute:: importance
 
+        How important this skill is for this demand.
+
+        Expressed as a number between -MAX_WEIGHT and +MAX_WEIGHT.
+    
     """
 
     allow_cascaded_delete = "demander"
@@ -152,10 +157,7 @@ class Demand(dd.Model):
         verbose_name=_("Demander"),
         blank=True, null=True)
     importance = models.IntegerField(
-        _("Importance"), blank=True, default=MAX_WEIGHT,
-        help_text=_(
-            "How important this skill is for this demand. "
-            "A number between -{0} and +{0}.").format(MAX_WEIGHT))
+        _("Importance"), blank=True, default=MAX_WEIGHT)
     # description = dd.RichTextField(_("Description"), blank=True)
 
 
@@ -165,4 +167,3 @@ class Demand(dd.Model):
 #         dd.ForeignKey("faculties.Faculty", blank=True, null=True))
 
 
-from .ui import *

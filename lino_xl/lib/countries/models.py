@@ -31,6 +31,7 @@ class Country(mixins.BabelNamed):
         verbose_name = _("Country")
         verbose_name_plural = _("Countries")
         abstract = dd.is_abstract_model(__name__, 'Country')
+        ordering = ['isocode']
 
     isocode = models.CharField(
         max_length=4, primary_key=True,

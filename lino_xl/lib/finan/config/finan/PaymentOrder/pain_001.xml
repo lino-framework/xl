@@ -2,24 +2,34 @@
 <Document xmlns="urn:iso:std:iso:20022:tech:xsd:pain.001.001.02" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 <pain.001.001.02>
 <GrpHdr>
-    <MsgId>{{obj.id}}/{{obj.journal.ref}} {{obj.number}}</MsgId>
-    <CreDtTm>{{now.isoformat()}}</CreDtTm>
-    <NbOfTxs>{{obj.items.count()}}</NbOfTxs>
-    <Grpg>MIXD</Grpg>
-    <InitgPty>
-        <Nm>{{escape(str(site.site_config.site_company))}}</Nm>
-        <Id><OrgId><PrtryId>
-            <Id>{{site.site_config.site_company.vat_id[4:]}}</Id>
-            <Issr>KBO-BCE</Issr>
-        </PrtryId></OrgId></Id>
-    </InitgPty>
+  <MsgId>{{obj.id}}/{{obj.journal.ref}} {{obj.number}}</MsgId>
+  <CreDtTm>{{now.isoformat()}}</CreDtTm>
+  <NbOfTxs>{{obj.items.count()}}</NbOfTxs>
+  <Grpg>MIXD</Grpg>
+  <InitgPty>
+    <Nm>{{our_name|escape}}</Nm>
+{% if our_id %}
+    <Id><OrgId><PrtryId>
+      <Id>{{our_id}}</Id>
+      <Issr>{{our_issuer}}</Issr>
+    </PrtryId></OrgId></Id>
+{% endif %}
+  </InitgPty>
 </GrpHdr>
 <PmtInf>
 <PmtInfId>{{obj.journal.ref}} {{obj.number}}</PmtInfId>
 <PmtMtd>TRF</PmtMtd>
 <PmtTpInf><SvcLvl><Cd>SEPA</Cd></SvcLvl></PmtTpInf>
-<ReqdExctnDt>{{obj.execution_date.isoformat()}}</ReqdExctnDt>
-<Dbtr><Nm>{{escape(str(site.site_config.site_company))}}</Nm><Id><OrgId><PrtryId><Id>{{site.site_config.site_company.vat_id[4:]}}</Id><Issr>KBO-BCE</Issr></PrtryId></OrgId></Id></Dbtr>
+<ReqdExctnDt>{{(obj.execution_date or obj.entry_date).isoformat()}}</ReqdExctnDt>
+<Dbtr>
+  <Nm>{{our_name|escape}}</Nm>
+{% if our_id %}
+  <Id><OrgId><PrtryId>
+    <Id>{{our_id}}</Id>
+    <Issr>{{our_issuer}}</Issr>
+  </PrtryId></OrgId></Id>
+{% endif %}
+</Dbtr>
 <DbtrAcct><Id><IBAN>{{obj.journal.sepa_account.iban}}</IBAN></Id></DbtrAcct>
 {% if obj.journal.sepa_account.bic %}
 <DbtrAgt><FinInstnId><BIC>{{obj.journal.sepa_account.bic}}</BIC></FinInstnId></DbtrAgt>
@@ -39,14 +49,14 @@
  <AdrLine>{{item.partner.street}}</AdrLine>
  {% endif %}
  {% if item.partner.city %}
- <AdrLine>{{item.partner.city}}</AdrLine>
+ <AdrLine>{{escape(str(item.partner.city))}}</AdrLine>
  {% endif %}
  <Ctry>{{item.partner.country.isocode}}</Ctry>
  </PstlAdr>
 {% endif %}
  </Cdtr>
 <CdtrAcct><Id><IBAN>{{item.bank_account.iban}}</IBAN></Id></CdtrAcct>
-<RmtInf><Ustrd>{{item.remark}}*{{item.partner.name}}*{{item.voucher}}</Ustrd></RmtInf>
+<RmtInf><Ustrd>{{escape(item.remark)}}*{{escape(item.partner.name)}}*{{item.voucher}}</Ustrd></RmtInf>
 </CdtTrfTxInf>
 {% endfor %}
 </PmtInf>

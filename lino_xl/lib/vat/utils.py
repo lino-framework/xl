@@ -2,34 +2,43 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
+"""Utility functions for VAT.
 
-"""Utility function for `lino_xl.lib.vat`.
+.. $ python setup.py test -s tests.LibTests.test_vat_utils
 
->>> from decimal import Decimal
 >>> from lino_xl.lib.vat.utils import add_vat, remove_vat
->>> rate = Decimal(21)
->>> add_vat(100, rate)
-Decimal('121')
->>> remove_vat(Decimal('121.00'), rate)
-Decimal('100')
+
+>>> add_vat(100, 21)
+121.0
+
+>>> remove_vat(121, 21)
+100.0
+
+>>> add_vat(10, 21)
+12.1
+
+>>> add_vat(1, 21)
+1.21
 
 """
 
+from __future__ import division
 from __future__ import unicode_literals
 
 from decimal import Decimal
 from lino_xl.lib.accounts.utils import ZERO
 
-HUNDRED = Decimal('100')
-# ZERO = Decimal('0.00')
+HUNDRED = Decimal('100.00')
 ONE = Decimal('1.00')
 
 
 def add_vat(base, rate):
     "Add to the given base amount `base` the VAT of rate `rate`."
-    return base * (HUNDRED + rate) / HUNDRED
+    # return base * (HUNDRED + rate) / HUNDRED
+    return base * (100 + rate) / 100
 
 
 def remove_vat(incl, rate):
     "Remove from the given amount `incl` the VAT of rate `rate`."
-    return incl / ((HUNDRED + rate) / HUNDRED)
+    # return incl / ((HUNDRED + rate) / HUNDRED)
+    return incl / ((100 + rate) / 100)
