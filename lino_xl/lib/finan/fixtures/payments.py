@@ -136,9 +136,9 @@ def objects(refs="PMO BNK"):
             if voucher.items.count() == 0:
                 voucher.delete()
             else:
-                if ref == 'PMO':
-                    voucher.execution_date = voucher.entry_date
-                    assert voucher.execution_date is not None
+                # if ref == 'PMO':
+                #     voucher.execution_date = voucher.entry_date
+                #     assert voucher.execution_date is not None
                 voucher.register(REQUEST)
                 voucher.save()
 
@@ -147,10 +147,12 @@ def objects(refs="PMO BNK"):
                     rv = voucher.write_xml.run_from_session(ses)
                     if not rv['success']:
                         raise Exception("20170630")
-                    fn = Path(settings.SITE.cache_dir + rv['open_url'])
-                    if not fn.exists():
-                        raise Exception("20170630")
-                    validate_pain001(fn)
+                    if False:
+                        # not needed here because write_xml validates
+                        fn = Path(settings.SITE.cache_dir + rv['open_url'])
+                        if not fn.exists():
+                            raise Exception("20170630")
+                        validate_pain001(fn)
 
             date += delta(months=1)
         # JOURNAL_BANK = Journal.objects.get(ref="BNK")
