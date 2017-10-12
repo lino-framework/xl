@@ -8,6 +8,7 @@
 """
 
 from django.conf import settings
+from django.db import models
 from django.utils.translation import string_concat
 
 from lino.api import dd, rt, _
@@ -266,13 +267,14 @@ def inject_tradetype_fields(sender, **kw):
         #                         tt.base_account_field_name,
         #                         blank=True, null=True))
         if tt.base_account_field_name is not None:
-            dd.inject_field('products.Product', tt.base_account_field_name,
-                            dd.ForeignKey(
-                                'accounts.Account',
-                                verbose_name=tt.base_account_field_label,
-                                related_name='products_by_' +
-                                tt.base_account_field_name,
-                                blank=True, null=True))
+            dd.inject_field(
+                'products.Product', tt.base_account_field_name,
+                dd.ForeignKey(
+                    'accounts.Account',
+                    verbose_name=tt.base_account_field_label,
+                    on_delete=models.PROTECT,
+                    related_name='products_by_' + tt.base_account_field_name,
+                    blank=True, null=True))
         if tt.price_field_name is not None:
             dd.inject_field(
                 'products.Product', tt.price_field_name,
