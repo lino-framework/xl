@@ -128,9 +128,11 @@ class ContactDetailsByPartner(ContactDetails):
             html.append(' ')
             html.append(btn)
 
-        html.append(' ')
+        # html.append(' ')
+        html.append(E.br())
+        html.append(sar.as_button(_("Manage contact details")))
         # html.append(sar.as_button(u"⚙"))  # GEAR
-        html.append(sar.as_button(icon_name="wrench"))  # GEAR
+        # html.append(sar.as_button(icon_name="wrench"))  # GEAR
         # html.append(sar.as_button(
         #     u"⚙", style="text-decoration:none; font-size:140%;"))  # GEAR
             

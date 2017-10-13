@@ -22,6 +22,7 @@ from lino.utils import join_words
 from lino.utils import join_elems
 
 from lino_xl.lib.countries.mixins import AddressLocation
+from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
 
@@ -30,7 +31,7 @@ from lino.utils.addressable import Addressable
 from lino.mixins.periods import ObservedDateRange
 
 
-from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
+# from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
 # from lino.mixins import Contactable, Phonable
 from .roles import SimpleContactsUser, ContactsStaff
 from .choicelists import PartnerEvents
@@ -40,10 +41,9 @@ from lino.mixins.human import name2kw, Human, Born
 
 PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
-
 @dd.python_2_unicode_compatible
 class Partner(ContactDetailsOwner, mixins.Polymorphic,
-              AddressLocation, Feasible):
+              AddressLocation, AddressOwner, Feasible):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
@@ -424,7 +424,7 @@ class Role(dd.Model, Addressable):
     type = models.ForeignKey(
         'contacts.RoleType',
         blank=True, null=True,
-        verbose_name=_("Contact Role"))
+        verbose_name=_("Role"))
     person = models.ForeignKey(
         "contacts.Person", related_name='rolesbyperson')
     company = models.ForeignKey(
