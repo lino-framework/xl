@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -11,13 +11,13 @@ from __future__ import unicode_literals
 from __future__ import print_function
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-
-from lino.api import dd
+from lino.api import dd, rt, _
+from lino.modlib.plausibility.choicelists import Checker
 from lino_xl.lib.countries.mixins import AddressLocation
 from lino.core.roles import SiteStaff
 
 from .choicelists import AddressTypes, DataSources
+from .mixins import AddressOwner
 
 
 @dd.python_2_unicode_compatible
@@ -107,7 +107,7 @@ def clear_partner_on_delete(sender=None, request=None, **kw):
 
 class Addresses(dd.Table):
     model = 'addresses.Address'
-    required_roles = dd.login_required(dd.SiteStaff)
+    required_roles = dd.login_required(SiteStaff)
     column_names = (
         "partner address_type:10 remark:10 "
         "address_column:30 primary data_source *")
@@ -149,3 +149,90 @@ class AddressesByCity(Addresses):
     column_names = 'address_type:10 partner remark:10 street primary:5 *'
     stay_in_grid = True
     window_size = (80, 20)
+
+
+class AddressOwnerChecker(Checker):
+    """Checks for the following plausibility problems:
+
+    - :message:`Unique address is not marked primary.` --
+      if there is exactly one :class:`Address` object which just fails to
+      be marked as primary, mark it as primary and return it.
+
+    - :message:`Non-empty address fields, but no address record.`
+      -- if there is no :class:`Address` object, and if the
+      :class:`Partner` has some non-empty address field, create an
+      address record from these, using `AddressTypes.official` as
+      type.
+
+    """
+    verbose_name = _("Check for missing or non-primary address records")
+    model = AddressOwner
+    messages = dict(
+        no_address=_("Owner with address, but no address record."),
+        unique_not_primary=_("Unique address is not marked primary."),
+        no_primary=_("Multiple addresses, but none is primary."),
+        multiple_primary=_("Multiple primary addresses."),
+        primary_differs=_("Primary address differs from owner address ({0})."),
+    )
+    
+    def get_plausibility_problems(self, obj, fix=False):
+        Address = rt.models.addresses.Address
+        qs = Address.objects.filter(partner=obj)
+        num = qs.count()
+        if num == 0:
+            kw = dict()
+            for fldname in Address.ADDRESS_FIELDS:
+                value = getattr(obj, fldname)
+                if value:
+                    kw[fldname] = value
+            if kw:
+                yield (True, self.messages['no_address'])
+                if fix:
+                    kw.update(partner=obj, primary=True)
+                    kw.update(address_type=AddressTypes.official)
+                    addr = Address(**kw)
+                    addr.full_clean()
+                    addr.save()
+            return
+    
+        def getdiffs(obj, addr):
+            diffs = {}
+            for k in Address.ADDRESS_FIELDS:
+                my = getattr(addr, k)
+                other = getattr(obj, k)
+                if my != other:
+                    diffs[k] = (my, other)
+            return diffs
+
+        if num == 1:
+            addr = qs[0]
+            # check whether it is the same address than the one
+            # specified on AddressOwner
+            diffs = getdiffs(obj, addr)
+            if not diffs:
+                if not addr.primary:
+                    yield (True, self.messages['unique_not_primary'])
+                    if fix:
+                        addr.primary = True
+                        addr.full_clean()
+                        addr.save()
+                return
+        else:
+            addr = None
+            qs = qs.filter(primary=True)
+            num = qs.count()
+            if num == 0:
+                yield (False, self.messages['no_primary'])
+            elif num == 1:
+                addr = qs[0]
+                diffs = getdiffs(obj, addr)
+            else:
+                yield (False, self.messages['multiple_primary'])
+        if addr and diffs:
+            diffstext = [
+                _("{0}:{1}->{2}").format(k, *v) for k, v in diffs.items()]
+            msg = self.messages['primary_differs'].format(', '.join(diffstext))
+            yield (False, msg)
+
+AddressOwnerChecker.activate()
+    

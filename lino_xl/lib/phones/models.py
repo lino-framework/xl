@@ -8,16 +8,17 @@ from __future__ import unicode_literals
 from __future__ import print_function
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from lino.core.diff import ChangeWatcher
+from lino.modlib.plausibility.choicelists import Checker
 
-from lino.api import dd
+from lino.api import dd, rt, _
 from lino.core.roles import SiteStaff
 
 from .choicelists import ContactDetailTypes
+from .mixins import ContactDetailsOwner
 
 
 @dd.python_2_unicode_compatible
@@ -77,7 +78,7 @@ def clear_partner_on_delete(sender=None, request=None, **kw):
 
 class ContactDetails(dd.Table):
     model = 'phones.ContactDetail'
-    required_roles = dd.login_required(dd.SiteStaff)
+    required_roles = dd.login_required(SiteStaff)
     column_names = (
         "value:30 detail_type:10 remark:10 partner id "
         "primary *")
@@ -128,9 +129,11 @@ class ContactDetailsByPartner(ContactDetails):
             html.append(' ')
             html.append(btn)
 
-        html.append(' ')
+        # html.append(' ')
+        html.append(E.br())
+        html.append(sar.as_button(_("Manage contact details")))
         # html.append(sar.as_button(u"⚙"))  # GEAR
-        html.append(sar.as_button(icon_name="wrench"))  # GEAR
+        # html.append(sar.as_button(icon_name="wrench"))  # GEAR
         # html.append(sar.as_button(
         #     u"⚙", style="text-decoration:none; font-size:140%;"))  # GEAR
             
@@ -138,3 +141,35 @@ class ContactDetailsByPartner(ContactDetails):
     
 
 
+class ContactDetailsOwnerChecker(Checker):
+    verbose_name = _("Check for mismatches between contact details and owner")
+    model = ContactDetailsOwner
+    msg_mismatch = _("Field differs from primary item")
+    msg_empty = _("Field is empty but primary item exists")
+    msg_missing = _("Missing primary item")
+
+    def get_plausibility_problems(self, obj, fix=False):
+        # dd.logger.info("20171013 Checking {}", obj)
+        ContactDetailTypes = rt.models.phones.ContactDetailTypes
+        ContactDetail = rt.models.phones.ContactDetail
+        for cdt in ContactDetailTypes.get_list_items():
+            k = cdt.field_name
+            if k:
+                value = getattr(obj, k)
+                kw = dict(partner=obj, primary=True, detail_type=cdt)
+                try:
+                    cd = ContactDetail.objects.get(**kw)
+                    if value:
+                        if cd.value != value:
+                            yield (False, self.msg_mismatch)
+                    else:
+                        yield (False, self.msg_empty)
+                except ContactDetail.DoesNotExist:
+                    if value:
+                        yield (True, self.msg_missing)
+                        if fix:
+                            kw.update(value=value)
+                            cd = ContactDetail(**kw)
+                            cd.save()
+
+ContactDetailsOwnerChecker.activate()

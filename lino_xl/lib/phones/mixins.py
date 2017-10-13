@@ -6,12 +6,9 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
-from django.utils.translation import ugettext_lazy as _
-
 from lino.api import rt, dd
 from lino.core.diff import ChangeWatcher
 from lino.mixins import Contactable, Phonable
-from lino.modlib.plausibility.choicelists import Checker
 
 class ContactDetailsOwner(Contactable, Phonable):
     
@@ -74,37 +71,8 @@ class ContactDetailsOwner(Contactable, Phonable):
             yield rt.models.phones.ContactDetailsByPartner.get_slave_summary(
                 self, ar)
 
+    else:
 
-if dd.is_installed('phones'):
-    
-    class ContactDetailsOwnerChecker(Checker):
-        verbose_name = _("Check for mismatches between contact details and owner")
-        model = ContactDetailsOwner
-        msg_mismatch = _("Field differs from primary item")
-        msg_empty = _("Field is empty but primary item exists")
-        msg_missing = _("Missing primary item")
+        def get_overview_elems(self, ar):
+            return []
         
-        def get_plausibility_problems(self, obj, fix=False):
-            ContactDetailTypes = rt.models.phones.ContactDetailTypes
-            ContactDetail = rt.models.phones.ContactDetail
-            for cdt in ContactDetailTypes.get_list_items():
-                k = cdt.field_name
-                if k:
-                    value = getattr(obj, k)
-                    kw = dict(partner=obj, primary=True, detail_type=cdt)
-                    try:
-                        cd = ContactDetail.objects.get(**kw)
-                        if value:
-                            if cd.value != value:
-                                yield (False, self.msg_mismatch)
-                        else:
-                            yield (False, self.msg_empty)
-                    except ContactDetail.DoesNotExist:
-                        if value:
-                            yield (True, self.msg_missing)
-                            if fix:
-                                kw.update(value=value)
-                                cd = ContactDetail(**kw)
-                                cd.save()
-
-    ContactDetailsOwnerChecker.activate()
