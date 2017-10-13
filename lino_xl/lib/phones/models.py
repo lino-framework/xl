@@ -149,7 +149,7 @@ class ContactDetailsOwnerChecker(Checker):
     msg_missing = _("Missing primary item")
 
     def get_plausibility_problems(self, obj, fix=False):
-        dd.logger.info("20171013 Checking {}", obj)
+        # dd.logger.info("20171013 Checking {}", obj)
         ContactDetailTypes = rt.models.phones.ContactDetailTypes
         ContactDetail = rt.models.phones.ContactDetail
         for cdt in ContactDetailTypes.get_list_items():
