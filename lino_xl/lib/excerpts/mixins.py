@@ -98,104 +98,106 @@ class Certifiable(dd.Model):
     class Meta:
         abstract = True
 
-    printed_by = dd.ForeignKey(
-        'excerpts.Excerpt',
-        verbose_name=_("Printed"),
-        editable=False,
-        related_name="%(app_label)s_%(class)s_set_as_printed",
-        blank=True, null=True, on_delete=models.SET_NULL)
+    if dd.is_installed('excerpts'):
 
-    clear_printed = ClearPrinted()
+        printed_by = dd.ForeignKey(
+            'excerpts.Excerpt',
+            verbose_name=_("Printed"),
+            editable=False,
+            related_name="%(app_label)s_%(class)s_set_as_printed",
+            blank=True, null=True, on_delete=models.SET_NULL)
 
-    def disabled_fields(self, ar):
-        # if self._state.adding:
-        #     return set()
-        s = super(Certifiable, self).disabled_fields(ar)
-        if self.printed_by_id is None:
-            s.add('clear_printed')
-        else:
-            s |= self.CERTIFIED_FIELDS
-        return s
+        clear_printed = ClearPrinted()
 
-    def on_duplicate(self, ar, master):
-        """After duplicating e.g. a budget which had been printed, we don't
-        want the duplicate point to the same
-        excerpt. :meth:`lino.mixins.duplicable.Duplicable.on_duplicate`.
+        def disabled_fields(self, ar):
+            # if self._state.adding:
+            #     return set()
+            s = super(Certifiable, self).disabled_fields(ar)
+            if self.printed_by_id is None:
+                s.add('clear_printed')
+            else:
+                s |= self.CERTIFIED_FIELDS
+            return s
 
-        """
-        super(Certifiable, self).on_duplicate(ar, master)
-        self.printed_by = None
+        def on_duplicate(self, ar, master):
+            """After duplicating e.g. a budget which had been printed, we don't
+            want the duplicate point to the same
+            excerpt. :meth:`lino.mixins.duplicable.Duplicable.on_duplicate`.
 
-    @classmethod
-    def on_analyze(cls, site):
-        # Contract.user.verbose_name = _("responsible (DSBE)")
-        cls.CERTIFIED_FIELDS = dd.fields_list(
-            cls,
-            cls.get_certifiable_fields())
-        super(Certifiable, cls).on_analyze(site)
-
-    @classmethod
-    def get_printable_demo_objects(cls, excerpt_type):
-        """Return an iterable of database objects for which Lino should
-        generate a printable excerpt.
-
-        This is being called by
-        :mod:`lino_xl.lib.excerpts.fixtures.demo2`.
-
-        """
-
-        qs = cls.objects.all()
-        if qs.count() > 0:
-            yield qs[0]
-
-    @classmethod
-    def get_certifiable_fields(cls):
-        """
-        Expected to return a string with a space-separated list of field
-        names.  These files will automaticaly become disabled (readonly)
-        when the document is "certified". The default implementation
-        returns an empty string, which means that no field will become
-        disabled when the row is "certified".
-
-        For example::
-
-          @classmethod
-          def get_certifiable_fields(cls):
-              return 'date user title'
-
-        """
-        return ''
-
-    @dd.displayfield(_("Printed"))
-    def printed(self, ar):
-        if ar is None:
-            return ''
-        ex = self.printed_by
-        if ex is None:
-            return ''
-        return ar.obj2html(ex, naturaltime(ex.build_time))
-
-    def clear_cache(self):
-        obj = self.printed_by
-        if obj is not None:
+            """
+            super(Certifiable, self).on_duplicate(ar, master)
             self.printed_by = None
-            self.full_clean()
-            self.save()
-            obj.delete()
 
-    def get_excerpt_title(self):
-        """A string to be used in templates as the title of the certifying
-        document.
+        @classmethod
+        def on_analyze(cls, site):
+            # Contract.user.verbose_name = _("responsible (DSBE)")
+            cls.CERTIFIED_FIELDS = dd.fields_list(
+                cls,
+                cls.get_certifiable_fields())
+            super(Certifiable, cls).on_analyze(site)
 
-        """
-        return unicode(self)
+        @classmethod
+        def get_printable_demo_objects(cls, excerpt_type):
+            """Return an iterable of database objects for which Lino should
+            generate a printable excerpt.
 
-    def get_excerpt_templates(self, bm):
-        """Return either `None` or a list of template names to be used when
-        printing an excerpt controlled by this object.
+            This is being called by
+            :mod:`lino_xl.lib.excerpts.fixtures.demo2`.
 
-        """
-        return None
+            """
+
+            qs = cls.objects.all()
+            if qs.count() > 0:
+                yield qs[0]
+
+        @classmethod
+        def get_certifiable_fields(cls):
+            """
+            Expected to return a string with a space-separated list of field
+            names.  These files will automaticaly become disabled (readonly)
+            when the document is "certified". The default implementation
+            returns an empty string, which means that no field will become
+            disabled when the row is "certified".
+
+            For example::
+
+              @classmethod
+              def get_certifiable_fields(cls):
+                  return 'date user title'
+
+            """
+            return ''
+
+        @dd.displayfield(_("Printed"))
+        def printed(self, ar):
+            if ar is None:
+                return ''
+            ex = self.printed_by
+            if ex is None:
+                return ''
+            return ar.obj2html(ex, naturaltime(ex.build_time))
+
+        def clear_cache(self):
+            obj = self.printed_by
+            if obj is not None:
+                self.printed_by = None
+                self.full_clean()
+                self.save()
+                obj.delete()
+
+        def get_excerpt_title(self):
+            """A string to be used in templates as the title of the certifying
+            document.
+
+            """
+            return str(self)
+
+        def get_excerpt_templates(self, bm):
+            """Return either `None` or a list of template names to be used when
+            printing an excerpt controlled by this object.
+
+            """
+            return None
 
 
 class ExcerptTitle(BabelNamed):
