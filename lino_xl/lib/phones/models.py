@@ -18,6 +18,7 @@ from lino.api import dd, rt, _
 from lino.core.roles import SiteStaff
 
 from .choicelists import ContactDetailTypes
+from .mixins import ContactDetailsOwner
 
 
 @dd.python_2_unicode_compatible
@@ -142,12 +143,13 @@ class ContactDetailsByPartner(ContactDetails):
 
 class ContactDetailsOwnerChecker(Checker):
     verbose_name = _("Check for mismatches between contact details and owner")
-    model = 'phones.ContactDetailsOwner'
+    model = ContactDetailsOwner
     msg_mismatch = _("Field differs from primary item")
     msg_empty = _("Field is empty but primary item exists")
     msg_missing = _("Missing primary item")
 
     def get_plausibility_problems(self, obj, fix=False):
+        dd.logger.info("20171013 Checking {}", obj)
         ContactDetailTypes = rt.models.phones.ContactDetailTypes
         ContactDetail = rt.models.phones.ContactDetail
         for cdt in ContactDetailTypes.get_list_items():

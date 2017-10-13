@@ -17,6 +17,7 @@ from lino_xl.lib.countries.mixins import AddressLocation
 from lino.core.roles import SiteStaff
 
 from .choicelists import AddressTypes, DataSources
+from .mixins import AddressOwner
 
 
 @dd.python_2_unicode_compatible
@@ -165,7 +166,7 @@ class AddressOwnerChecker(Checker):
 
     """
     verbose_name = _("Check for missing or non-primary address records")
-    model = 'addresses.AddressOwner'
+    model = AddressOwner
     messages = dict(
         no_address=_("Owner with address, but no address record."),
         unique_not_primary=_("Unique address is not marked primary."),
