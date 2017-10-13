@@ -75,5 +75,7 @@ class AddressOwner(dd.Model):
             # elems.append(E.p(btn, align="right"))
             elems.append(E.p(btn))
             return elems
-    
+    else:
 
+        def get_overview_elems(self, ar):
+            return []

@@ -131,6 +131,8 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
             E.div(*elems,
                   style="font-size:18px;font-weigth:bold;"
                   "vertical-align:bottom;text-align:middle")]
+        elems += AddressOwner.get_overview_elems(self, ar)
+        elems += ContactDetailsOwner.get_overview_elems(self, ar)
         return elems
 
     def get_name_elems(self, ar):
