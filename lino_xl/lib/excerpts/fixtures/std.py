@@ -18,9 +18,8 @@ def objects():
     ExcerptType = rt.models.excerpts.ExcerptType
     for cls in rt.models_by_base(Certifiable):
         kw = dd.str2kw('name', cls._meta.verbose_name)
+        kw.update(primary=True, certifying=True)
         yield ExcerptType(
-            primary=True,
-            certifying=True,
             content_type=ContentType.objects.get_for_model(cls),
             **kw)
 

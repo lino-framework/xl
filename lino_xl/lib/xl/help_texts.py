@@ -6,8 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 help_texts = {
     'lino_xl.lib.addresses.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the "addressee" of any address."""),
-    'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
-    'lino_xl.lib.addresses.mixins.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
     'lino_xl.lib.addresses.Address' : _("""Inherits fields from
 lino_xl.lib.countries.CountryRegionCity (country, region,
 city. zip_code) and lino_xl.lib.contacts.AddresssLocation
@@ -16,6 +14,8 @@ city. zip_code) and lino_xl.lib.contacts.AddresssLocation
     'lino_xl.lib.addresses.Address.primary' : _("""Whether this address is the primary address of its owner.
 Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
+    'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
+    'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
     'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.appypod.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
 for appy.pod."""),

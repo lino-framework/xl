@@ -25,7 +25,8 @@ from lino_xl.lib.countries.mixins import AddressLocation
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
-from lino_xl.lib.excerpts.mixins import Certifiable
+from lino.modlib.printing.mixins import Printable
+# from lino_xl.lib.excerpts.mixins import Certifiable
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
@@ -44,7 +45,7 @@ PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
 @dd.python_2_unicode_compatible
 class Partner(ContactDetailsOwner, mixins.Polymorphic,
-              AddressLocation, AddressOwner, Feasible):
+              AddressLocation, AddressOwner, Feasible, Printable):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
@@ -259,7 +260,7 @@ class PartnersByCountry(Partners):
     column_names = "city street street_no name language *"
     order_by = "city street street_no".split()
 
-class Person(Human, Born, Certifiable, Partner):
+class Person(Human, Born, Partner):
     class Meta(object):
         app_label = 'contacts'
         abstract = dd.is_abstract_model(__name__, 'Person')

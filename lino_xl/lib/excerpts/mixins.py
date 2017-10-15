@@ -17,6 +17,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.db import models
 
 from lino.utils.mldbc.mixins import BabelNamed
+from lino.modlib.printing.mixins import Printable
 
 from lino.api import dd
 
@@ -54,7 +55,7 @@ document)."""
             ok(ar)
 
 
-class Certifiable(dd.Model):
+class Certifiable(Printable):
     """Any model which inherits from this mixin becomes "certifiable".
     That is:
 
@@ -135,20 +136,6 @@ class Certifiable(dd.Model):
                 cls,
                 cls.get_certifiable_fields())
             super(Certifiable, cls).on_analyze(site)
-
-        @classmethod
-        def get_printable_demo_objects(cls, excerpt_type):
-            """Return an iterable of database objects for which Lino should
-            generate a printable excerpt.
-
-            This is being called by
-            :mod:`lino_xl.lib.excerpts.fixtures.demo2`.
-
-            """
-
-            qs = cls.objects.all()
-            if qs.count() > 0:
-                yield qs[0]
 
         @classmethod
         def get_certifiable_fields(cls):

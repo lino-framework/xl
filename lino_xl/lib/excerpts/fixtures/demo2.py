@@ -12,7 +12,7 @@ import traceback
 
 from lino.api import rt, dd
 
-from lino_xl.lib.excerpts.mixins import Certifiable
+# from lino_xl.lib.excerpts.mixins import Certifiable
 
 PRINT_THEM_ALL = True
 SEVERE = True
@@ -29,13 +29,14 @@ def objects():
 
     for et in ExcerptType.objects.all():
         model = et.content_type.model_class()
-        if issubclass(model, Certifiable):
-            qs = model.get_printable_demo_objects(et)
-        else:
-            qs = model.objects.all()
-            if qs.count() > 0:
-                qs = [qs[0]]
-
+        qs = model.get_printable_demo_objects()
+        # if issubclass(model, Certifiable):
+        #     qs = model.get_printable_demo_objects(et)
+        # else:
+        #     qs = model.objects.all()
+        #     if qs.count() > 0:
+        #         qs = [qs[0]]
+        # if et.certifying:
         for obj in qs:
             ses.selected_rows = [obj]
             yield et.get_or_create_excerpt(ses)

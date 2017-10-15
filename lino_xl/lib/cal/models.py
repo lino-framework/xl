@@ -26,6 +26,7 @@ from .utils import setkw, dt2kw, when_text
 
 from lino.modlib.plausibility.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
+from lino.modlib.printing.mixins import Printable
 from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
@@ -825,7 +826,7 @@ LongEntryChecker.activate()
 
 
 @dd.python_2_unicode_compatible
-class Guest(dd.Model):
+class Guest(Printable):
     workflow_state_field = 'state'
     allow_cascaded_delete = ['event']
 
