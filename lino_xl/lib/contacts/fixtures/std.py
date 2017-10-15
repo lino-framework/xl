@@ -115,7 +115,8 @@ def objects():
         ContentType = rt.models.contenttypes.ContentType
         yield ExcerptType(
             build_method='appypdf',
-            content_type=ContentType.objects.get_for_model(Partner),
+            template="TermsConditions.odt",
+            content_type=ContentType.objects.get_for_model(Person),
             **dd.str2kw('name', _("Terms & conditions")))
 
     if dd.is_installed('contenttypes'):
