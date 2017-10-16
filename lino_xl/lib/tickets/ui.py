@@ -463,7 +463,6 @@ class Tickets(dd.Table):
         Show only tickets for which the given supplier is competent.
 
     """
-    abstract = True
     required_roles = dd.login_required(Searcher)
     # label = _("All tickets")
     # required_roles = set()  # also for anonymous
