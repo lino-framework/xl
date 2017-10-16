@@ -52,7 +52,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.TicketsToDo')
         # m.add_action('tickets.MyOwnedTickets')
         m.add_action('tickets.ActiveTickets')
-        m.add_action('tickets.Tickets')
+        m.add_action('tickets.AllTickets')
         # m.add_action('tickets.MyKnownProblems')
         m.add_action('tickets.UnassignedTickets')
         # m.add_action('tickets.ActiveProjects')
