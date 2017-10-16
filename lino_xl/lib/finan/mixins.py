@@ -130,6 +130,9 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             return
         
         flt = dict(match=self.match, cleared=False)
+        if not dd.plugins.finan.suggest_future_vouchers:
+            flt.update(value_date__lte=self.voucher.entry_date)
+
         self.collect_suggestions(ar, flt)
 
 
@@ -146,8 +149,8 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         if not dd.plugins.finan.suggest_future_vouchers:
             flt.update(value_date__lte=self.voucher.entry_date)
 
-        # if self.match:
-        #     flt.update(match=self.match)
+        if self.match:
+            flt.update(match=self.match)
 
         self.collect_suggestions(ar, flt)
         
