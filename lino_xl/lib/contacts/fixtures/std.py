@@ -16,8 +16,7 @@ from builtins import filter
 from django.db import models
 from django.conf import settings
 
-from django.utils.translation import ugettext as _
-
+from lino.api import dd, rt, _
 from lino.api.dd import babel_values
 
 from lino.core.utils import resolve_model
@@ -98,27 +97,9 @@ for ln in COMPANY_TYPES_TEXT.splitlines():
 
 def objects():
 
-    #~ yield companyType('Firma','Firma')
-    #~ yield companyType('asbl','asbl')
-    #~ yield companyType('A.S.B.L.','A.S.B.L.')
-    #~ yield companyType('sprl','sprl')
-    #~ yield companyType('GmbH','GmbH')
-    #~ yield companyType('AG','AG')
-    #~ yield companyType('S.A.','S.A.')
-    #~ yield companyType('S.C.','S.C.')
-    #~ yield companyType('V.o.G.','V.o.G.')
-    #~ yield companyType('G.o.E.','G.o.E.')
-    #~ yield companyType('A.S.B.L.','Association sans but lucratif')
-    #~ yield companyType('Maison','Maison')
-    #~ yield companyType('Fachklinik','Fachklinik')
-    #~ yield companyType("Centre d'Accueil d'Urgence","Centre d'Accueil d'Urgence")
-
-    #~ yield companyType(**babel_values('name',
-        #~ en=u"Public Limited Company",
-        #~ nl=u'NV (Naamloze Vennootschap)',
-        #~ fr=u'SA (Société Anonyme)',
-        #~ de=u"AG (Aktiengesellschaft)"))
-
+    Partner = rt.models.contacts.Partner
+    Person = rt.models.contacts.Person
+    
     for ct in COMPANY_TYPES:
         yield companyType(**ct)
 
@@ -128,14 +109,20 @@ def objects():
     yield roletype(**babel_values('name', en="IT Manager", fr='Gérant informatique', de="EDV-Manager", et="IT manager"))
     yield roletype(**babel_values('name', en="President", fr='Président', de="Präsident", et="President"))
 
-    if settings.SITE.is_installed('contenttypes'):
+    
+    if dd.is_installed('excerpts') and dd.is_installed('appypod'):
+        ExcerptType = rt.models.excerpts.ExcerptType
+        ContentType = rt.models.contenttypes.ContentType
+        yield ExcerptType(
+            build_method='appypdf',
+            template="TermsConditions.odt",
+            content_type=ContentType.objects.get_for_model(Person),
+            **dd.str2kw('name', _("Terms & conditions")))
 
-        from django.contrib.contenttypes.models import ContentType
-
+    if dd.is_installed('contenttypes'):
+        ContentType = rt.models.contenttypes.ContentType
         I = Instantiator('gfks.HelpText',
                          'content_type field help_text').build
-
-        Person = resolve_model("contacts.Person")
         t = ContentType.objects.get_for_model(Person)
 
         #~ yield I(t,'birth_date',u"""\
@@ -147,7 +134,6 @@ def objects():
     #~ </ul>
     #~ """)
 
-        Partner = resolve_model('contacts.Partner')
         t = ContentType.objects.get_for_model(Partner)
         yield I(t, 'language', u"""\
     Die Sprache, in der Dokumente ausgestellt werden sollen.

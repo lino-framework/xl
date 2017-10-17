@@ -318,10 +318,10 @@ class ExcerptTypes(dd.Table):
 
 
 class CreateExcerpt(dd.Action):
-    """Action to create an excerpt in order to print this data record."""
+    """Create an excerpt in order to print this data record.
+    """
     icon_name = 'printer'
     label = _('Print')
-    help_text = _('Create an excerpt in order to print this data record.')
     sort_index = 50  # like "Print"
     combo_group = "creacert"
 
@@ -898,7 +898,9 @@ def set_excerpts_actions(sender, **kw):
                                # models that existed before but have
                                # been removed
                 an = atype.get_action_name()
-                m.define_action(**{an: CreateExcerpt(atype, six.text_type(atype))})
+                if not hasattr(m, an):
+                    m.define_action(**{an: CreateExcerpt(
+                        atype, six.text_type(atype))})
                 # dd.logger.info("Added print action to %s", m)
 
                 # if atype.certifying and not issubclass(m, Certifiable):

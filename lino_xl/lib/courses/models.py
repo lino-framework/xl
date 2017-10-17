@@ -38,7 +38,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.excerpts.mixins import ExcerptTitle
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import Printable
-from lino.modlib.printing.utils import PrintableObject
+# from lino.modlib.printing.utils import PrintableObject
 from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.utils import day_and_month
@@ -221,7 +221,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
 
 
 @dd.python_2_unicode_compatible
-class Course(Reservation, Duplicable, PrintableObject):
+class Course(Reservation, Duplicable, Printable):
     """A Course is a group of pupils that regularily meet with a given
     teacher in a given room to speak about a given subject.
 
@@ -259,7 +259,7 @@ class Course(Reservation, Duplicable, PrintableObject):
     .. attribute:: confirmed
 
         Number of confirmed places.
-
+    
 
     """
 

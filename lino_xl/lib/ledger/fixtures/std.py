@@ -47,20 +47,14 @@ def payment_terms():
 
 
 def objects():
-    ExcerptType = rt.modules.excerpts.ExcerptType
-    ContentType = rt.modules.contenttypes.ContentType
-
-    # yield ExcerptType(
-    #     body_template="payment_reminder.body.html",
-    #     content_type=ContentType.objects.get_for_model(
-    #         dd.resolve_model('contacts.Partner')),
-    #     **dd.str2kw('name', _("Payment reminder")))
+    ExcerptType = rt.models.excerpts.ExcerptType
+    ContentType = rt.models.contenttypes.ContentType
+    Partner = rt.models.contacts.Partner
 
     yield ExcerptType(
         template="payment_reminder.weasy.html",
         build_method='weasy2pdf',
-        content_type=ContentType.objects.get_for_model(
-            dd.resolve_model('contacts.Partner')),
+        content_type=ContentType.objects.get_for_model(Partner),
         **dd.str2kw('name', _("Payment reminder")))
 
     yield payment_terms()

@@ -124,16 +124,17 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     def get_siblings(self):
         return self.voucher.items.all()
 
-    def unused_match_changed(self, ar):
-        if self.match:
-            get_due_movements(not self.voucher.journal.dc)
-            dc = not self.voucher.journal.dc
-            m = ledger.DueMovement(dc, self)
-            # dd.logger.info("20160604 %s %s", m.debts, m.payments)
-            self.dc = dc
-            self.amount = m.balance
-            # if not m.balance:
-            #     raise Exception("20151117")
+    def match_changed(self, ar):
+        
+        if not self.match or not self.voucher.journal.auto_fill_suggestions:
+            return
+        
+        flt = dict(match=self.match, cleared=False)
+        if not dd.plugins.finan.suggest_future_vouchers:
+            flt.update(value_date__lte=self.voucher.entry_date)
+
+        self.collect_suggestions(ar, flt)
+
 
     def partner_changed(self, ar):
         """The :meth:`trigger method <lino.core.model.Model.FOO_changed>` for
@@ -150,6 +151,10 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
 
         if self.match:
             flt.update(match=self.match)
+
+        self.collect_suggestions(ar, flt)
+        
+    def collect_suggestions(self, ar, flt):
         suggestions = list(ledger.get_due_movements(
             self.voucher.journal.dc, **flt))
 
@@ -159,6 +164,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             self.fill_suggestion(suggestions[0])
         elif ar:
             self.match = _("{} suggestions").format(len(suggestions))
+            
             # def ok(ar2):
             #     # self.fill_suggestion(suggestions[0])
             #     # self.set_grouper(suggestions)
@@ -216,6 +222,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         self.amount = - match.balance
         self.match = match.match
         self.project = match.project
+        self.partner = match.partner  # when called from match_changed()
 
     def guess_amount(self):
         self.account_changed(None)

@@ -18,8 +18,26 @@ from lino.api import dd, rt
 from lino.utils.demonames.bel import streets_of_eupen
 STREETS = Cycler(streets_of_eupen())
 
+def site_company_objects():
+
+    company = Instantiator(
+        'contacts.Company',
+        "name zip_code city:name street street_no",
+        country='EE').build
+    rumma = company(
+        # 'Rumma & Ko OÜ', '10115', 'Tallinn', 'Tartu mnt', '71',
+        'Rumma & Ko OÜ', '78003', 'Vigala', 'Uus tn', '1',
+        url="http://www.saffre-rumma.net/")
+    if dd.is_installed('vat'):
+        rumma.vat_id = "EE100588749"
+        # a vat_id is required for generating valid XML from payment order
+    yield rumma
+
+    settings.SITE.site_config.update(site_company=rumma)
 
 def objects():
+
+    yield site_company_objects()
 
     if settings.SITE.get_language_info('de'):
         munich = 'München'
@@ -30,20 +48,6 @@ def objects():
         kelmis = 'La Calamine'
     else:
         kelmis = 'Kelmis'  # en, de
-
-    company = Instantiator(
-        'contacts.Company',
-        "name zip_code city:name street street_no",
-        country='EE').build
-    rumma = company(
-        'Rumma & Ko OÜ', '10115', 'Tallinn', 'Tartu mnt', '71',
-        url="http://www.saffre-rumma.net/")
-    if dd.is_installed('vat'):
-        rumma.vat_id = "EE100588749"
-        # a vat_id is required for generating valid XML from payment order
-    yield rumma
-
-    settings.SITE.site_config.update(site_company=rumma)
 
     company = Instantiator(
         'contacts.Company', "name zip_code city:name street street_no",

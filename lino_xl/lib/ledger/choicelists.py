@@ -104,7 +104,7 @@ class VoucherType(dd.Choice):
             settings.SITE.kernel.default_ui)
         from lino.modlib.extjs.elems import GridElement
         for e in lh.walk():
-            print(repr(e), e.__class__)
+            # print(repr(e), e.__class__)
             if isinstance(e, GridElement):
                 return e
 

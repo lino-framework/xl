@@ -464,7 +464,7 @@ class Tickets(dd.Table):
 
     """
     required_roles = dd.login_required(Searcher)
-    label = _("All tickets")
+    # label = _("All tickets")
     # required_roles = set()  # also for anonymous
     model = 'tickets.Ticket'
     order_by = ["-id"]
@@ -686,9 +686,10 @@ class Tickets(dd.Table):
                 pv.end_date)
 
 
-# class AllTickets(Tickets):
-#     label = _("All tickets")
-#     required_roles = dd.login_required(Searcher)
+class AllTickets(Tickets):
+    label = _("All tickets")
+    use_paging = True
+    required_roles = dd.login_required(Searcher)
 
 
 class DuplicatesByTicket(Tickets):
@@ -882,6 +883,7 @@ class ActiveTickets(Tickets):
 
 class MyTickets(My, Tickets):
     """Show all active tickets reported by me."""
+    label = _("My tickets")
     required_roles = dd.login_required(Reporter)
     order_by = ["priority", "-id"]
     column_names = ("priority overview:50 workflow_buttons *")

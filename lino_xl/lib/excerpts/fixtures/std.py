@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -15,15 +15,11 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 
 
 def objects():
-    ExcerptType = rt.modules.excerpts.ExcerptType
+    ExcerptType = rt.models.excerpts.ExcerptType
     for cls in rt.models_by_base(Certifiable):
         kw = dd.str2kw('name', cls._meta.verbose_name)
-        if False:
-            kw.update(backward_compat=True)
+        kw.update(primary=True, certifying=True)
         yield ExcerptType(
-            #template='Default.odt',
-            primary=True,
-            certifying=True,
             content_type=ContentType.objects.get_for_model(cls),
             **kw)
 

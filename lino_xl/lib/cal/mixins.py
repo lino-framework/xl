@@ -59,6 +59,8 @@ class MoveEntryNext(dd.MultipleRowAction):
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
             return False
+        if state.fixed:
+            return False
         return super(MoveEntryNext, self).get_action_permission(
             ar, obj, state)
 
@@ -392,25 +394,27 @@ class EventGenerator(dd.Model):
             raise Exception(
                 "%s cannot move event controlled by %s" % (
                     self, we.owner))
-        if we.state == EntryStates.suggested:
-            we.state = EntryStates.draft
-        rset = self.update_cal_rset()
-        date = rset.get_next_alt_date(ar, we.start_date)
-        if date is None:
-            return
-        until = self.update_cal_until() \
-            or dd.plugins.cal.ignore_dates_after
-        we.start_date = date
-        if self.resolve_conflicts(we, ar, rset, until) is None:
-            return
-        we.save()
+        def doit(ar):
+            if we.state == EntryStates.suggested:
+                we.state = EntryStates.draft
+            rset = self.update_cal_rset()
+            date = rset.get_next_alt_date(ar, we.start_date)
+            if date is None:
+                return
+            until = self.update_cal_until() \
+                or dd.plugins.cal.ignore_dates_after
+            we.start_date = date
+            if self.resolve_conflicts(we, ar, rset, until) is None:
+                return
+            we.save()
 
-        # update all following events:
-        self.update_auto_events(ar)
+            # update all following events:
+            self.update_auto_events(ar)
 
-        # report success and tell the client to refresh
-        ar.set_response(refresh=True)
-        ar.success()
+            # report success and tell the client to refresh
+            ar.success(refresh=True)
+            
+        ar.confirm(doit, _("Move {} to next available date?").format(we))
 
     def care_about_conflicts(self, we):
         """Whether this event generator should try to resolve conflicts (in

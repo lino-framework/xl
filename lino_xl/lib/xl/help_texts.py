@@ -6,8 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 help_texts = {
     'lino_xl.lib.addresses.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the "addressee" of any address."""),
-    'lino_xl.lib.addresses.mixins.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
-    'lino_xl.lib.addresses.mixins.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
     'lino_xl.lib.addresses.Address' : _("""Inherits fields from
 lino_xl.lib.countries.CountryRegionCity (country, region,
 city. zip_code) and lino_xl.lib.contacts.AddresssLocation
@@ -16,6 +14,8 @@ city. zip_code) and lino_xl.lib.contacts.AddresssLocation
     'lino_xl.lib.addresses.Address.primary' : _("""Whether this address is the primary address of its owner.
 Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
+    'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
+    'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
     'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.appypod.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
 for appy.pod."""),
@@ -264,7 +264,7 @@ by email."""),
 the given shortcut field will manage excerpts of this type."""),
     'lino_xl.lib.excerpts.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
     'lino_xl.lib.excerpts.ExcerptTypes.model' : _("""alias of ExcerptType"""),
-    'lino_xl.lib.excerpts.CreateExcerpt' : _("""Action to create an excerpt in order to print this data record."""),
+    'lino_xl.lib.excerpts.CreateExcerpt' : _("""Create an excerpt in order to print this data record."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
 situation."""),
     'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
@@ -1273,11 +1273,15 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
+    'lino_xl.lib.phones.ContactDetailType.field_name' : _("""The name of field on the ContactDetailsOwner where
+the value of the primary item of this type is to be mirrored."""),
+    'lino_xl.lib.phones.ContactDetailTypes' : _("""The list of "built-in" types of contact detail items."""),
     'lino_xl.lib.phones.ContactDetail.primary' : _("""Whether this item is the primary contact detail for this type
 and this owner.  Setting this field will automatically uncheck
 any previously primary items and update the owner's contact
 detail fields."""),
-    'lino_xl.lib.phones.ContactDetailsOwner' : _("""Base class for the potential owner of contact details."""),
+    'lino_xl.lib.phones.ContactDetailsOwner' : _("""Model mixin for the potential owner of contact details."""),
+    'lino_xl.lib.phones.ContactDetailsOwnerChecker' : _("""Checks for mismatches between contact details and owner."""),
     'lino_xl.lib.polls.Poll' : _("""A series of questions."""),
     'lino_xl.lib.polls.AllPolls' : _("""Show all polls of all users."""),
     'lino_xl.lib.polls.Question' : _("""A question of a poll."""),
