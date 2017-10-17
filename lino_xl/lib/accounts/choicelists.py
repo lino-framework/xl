@@ -164,11 +164,19 @@ class CommonAccounts(dd.ChoiceList):
     verbose_name = _("Common account")
     verbose_name_plural = _("Common accounts")
     item_class = CommonAccount
-    column_names = 'value name text account_type'
+    column_names = 'value name text account_type clearable db_object'
 
     @dd.virtualfield(models.CharField(_("Account type"), max_length=20))
     def account_type(cls, choice, ar):
         return choice.account_type
+
+    @dd.virtualfield(dd.ForeignKey('accounts.Account'))
+    def db_object(cls, choice, ar):
+        return choice.get_object()
+
+    @dd.virtualfield(models.BooleanField(_("Clearable")))
+    def clearable(cls, choice, ar):
+        return choice.clearable
 
 
 add = CommonAccounts.add_item
