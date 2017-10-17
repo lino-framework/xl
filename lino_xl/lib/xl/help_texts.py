@@ -902,14 +902,12 @@ BankStatement."""),
 FinancialVoucherItem.account of an item is empty."""),
     'lino_xl.lib.finan.FinancialVoucher.item_remark' : _("""The default value to use when
 FinancialVoucherItem.remark of an item is empty."""),
-    'lino_xl.lib.finan.DatedFinancialVoucherItem' : _("""A FinancialVoucherItem with an additional date
-field."""),
-    'lino_xl.lib.finan.DatedFinancialVoucherItem.date' : _("""The value date of this item."""),
     'lino_xl.lib.finan.FinancialVoucherItem' : _("""The base class for the items of all types of financial vouchers
 (FinancialVoucher)."""),
     'lino_xl.lib.finan.FinancialVoucherItem.account' : _("""The general account to be used in the primary booking.
 If this is empty, use item_account of the voucher."""),
-    'lino_xl.lib.finan.FinancialVoucherItem.project' : _("""The client related to this transaction."""),
+    'lino_xl.lib.finan.FinancialVoucherItem.project' : _("""The "project" related to this transaction. For example in Lino
+Welfare this is the client."""),
     'lino_xl.lib.finan.FinancialVoucherItem.partner' : _("""The partner account to be used in the primary booking."""),
     'lino_xl.lib.finan.FinancialVoucherItem.amount' : _("""The amount to be booked. If this is empty, then the voucher
 cannot be registered."""),
@@ -917,6 +915,9 @@ cannot be registered."""),
     'lino_xl.lib.finan.FinancialVoucherItem.remark' : _("""External reference. The description of this transation
 as seen by the external partner."""),
     'lino_xl.lib.finan.FinancialVoucherItem.match' : _("""An arbitrary string used to group several movements."""),
+    'lino_xl.lib.finan.DatedFinancialVoucherItem' : _("""A FinancialVoucherItem with an additional date
+field."""),
+    'lino_xl.lib.finan.DatedFinancialVoucherItem.date' : _("""The value date of this item."""),
     'lino_xl.lib.finan.Plugin' : _("""This Plugin class adds some
 entries to the Explorer menu.  It contains the following
 additional attributes:"""),
