@@ -12,6 +12,7 @@ from lino.api import dd, rt, _
 
 from .fields import DebitOrCreditField
 from .utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.roles import LedgerStaff
 
 
 class Sheet(object):
@@ -67,6 +68,7 @@ class AccountTypes(dd.ChoiceList):
     verbose_name_plural = _("Account types")
     item_class = AccountType
     column_names = 'value name text dc sheet'
+    required_roles = dd.login_required(LedgerStaff)
     
     @dd.virtualfield(DebitOrCreditField(_("D/C")))
     def dc(cls, choice, ar):
@@ -165,6 +167,7 @@ class CommonAccounts(dd.ChoiceList):
     verbose_name_plural = _("Common accounts")
     item_class = CommonAccount
     column_names = 'value name text account_type clearable db_object'
+    required_roles = dd.login_required(LedgerStaff)
 
     @dd.virtualfield(models.CharField(_("Account type"), max_length=20))
     def account_type(cls, choice, ar):
