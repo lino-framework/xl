@@ -88,6 +88,8 @@ class Session(UserAuthored, Started, Ended, Workable):
             #     self.faculty = self.ticket.faculty
             if self.ticket_id:
                 self.ticket.on_worked(self)
+            if self.end_time is not None and self.end_date is None:
+                self.end_date = self.start_date
         super(Session, self).full_clean(*args, **kwargs)
 
     def unused_save(self, *args, **kwargs):
