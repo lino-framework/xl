@@ -36,6 +36,9 @@ class Feasible(dd.Model):
             if ar is None:
                 return ''
 
+            if not isinstance(self, dd.plugins.faculties.demander_model):
+                return ''
+            
             Offer = rt.models.faculties.Competence
             Demand = rt.models.faculties.Demand
             faculties = set()
@@ -59,7 +62,8 @@ class Feasible(dd.Model):
             """
             if ar is None:
                 return ''
-
+            if not isinstance(self, dd.plugins.faculties.demander_model):
+                return ''
             Demand = rt.models.faculties.Demand
             elems = []
             for dem in Demand.objects.filter(demander=self):

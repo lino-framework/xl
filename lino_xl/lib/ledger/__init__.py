@@ -86,6 +86,7 @@ class Plugin(ad.Plugin):
     def setup_explorer_menu(self, site, user_type, m):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('accounts.CommonAccounts')
         m.add_action('ledger.MatchRules')
         m.add_action('ledger.AllVouchers')
         m.add_action('ledger.VoucherTypes')

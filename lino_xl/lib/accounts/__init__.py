@@ -35,3 +35,7 @@ ad.configure_plugins("accounts", ref_length=%r)
         m.add_action('accounts.Groups')
         m.add_action('accounts.Accounts')
 
+    # def setup_explorer_menu(self, site, user_type, m):
+    #     mg = self
+    #     m = m.add_menu(mg.app_label, mg.verbose_name)
+    #     m.add_action('accounts.CommonAccounts')
