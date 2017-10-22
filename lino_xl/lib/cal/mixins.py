@@ -29,6 +29,7 @@ from .choicelists import Recurrencies, Weekdays, AccessClasses
 
 from .workflows import EntryStates
 from .utils import day_and_month
+from .actions import UpdateAllGuests
 
 def format_time(t):
     if t is None:
@@ -97,6 +98,7 @@ class EventGenerator(dd.Model):
         abstract = True
 
     do_update_events = UpdateEntries()
+    update_all_guests = UpdateAllGuests()
 
     @classmethod
     def get_registrable_fields(cls, site):
