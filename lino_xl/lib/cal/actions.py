@@ -10,7 +10,10 @@ Tables for this plugin.
 
 from __future__ import unicode_literals
 
+from django.conf import settings
 from lino.api import dd, rt, _
+from lino.core.gfks import gfk2lookup
+from .workflows import EntryStates, GuestStates
 
 
 
@@ -35,3 +38,57 @@ class ShowEntriesByDay(dd.Action):
         ar.set_response(eval_js=js)
 
 
+class UpdateGuests(dd.Action):
+
+    label = _('Update Guests')
+    # icon_name = 'lightning'
+    button_text = ' ☷ '  # 2637
+    custom_handler = True
+
+    def run_from_ui(self, ar, **kw):
+        if settings.SITE.loading_from_dump:
+            return 0
+        for obj in ar.selected_rows:
+            if not obj.state.edit_guests:
+                # ar.info("not state.edit_guests")
+                continue
+            self.run_on_event(ar, obj)
+            
+    def run_on_event(self, ar, obj):
+        n = 0
+        # existing = set([g.partner.pk for g in obj.guest_set.all()])
+        existing = {g.partner.pk : g for g in obj.guest_set.all()}
+
+        # create suggested guest that don't exist
+        for sg in obj.suggest_guests():
+            eg = existing.pop(sg.partner.pk, None)
+            if eg is None:
+                sg.save()
+                n += 1
+
+        # remove unwanted participants
+        for pk, g in existing.items():
+            if g.state == GuestStates.invited:
+                g.delete()
+        msg = _("%d row(s) have been updated.") % n
+        ar.info(msg)
+
+
+class UpdateAllGuests(UpdateGuests):
+    
+    def run_from_ui(self, ar, **kw):
+        Event = rt.models.cal.Event
+        gfk = Event._meta.get_field('owner')
+        states = EntryStates.filter(fixed=False)
+        
+        for obj in ar.selected_rows:
+            qs = Event.objects.filter(
+                **gfk2lookup(gfk, obj, state__in=states))
+            def ok(ar2):
+                for e in qs:
+                    self.run_on_event(ar, e)
+
+            fmt = obj.get_date_formatter()
+            txt = ', '.join([fmt(e.start_date) for e in qs])
+            ar.confirm(ok, _("Update guests for {} events: {}").format(
+                qs.count(), txt))

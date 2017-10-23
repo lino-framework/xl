@@ -33,10 +33,8 @@ from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
 from .workflows import (TaskStates, EntryStates, GuestStates)
-
-# removed from default config because you cannot easily unload it again
-# from .workflows import take
-
+from .actions import UpdateGuests
+    
 from .mixins import Component
 from .mixins import EventGenerator, RecurrenceSet, Reservation
 from .mixins import Ended
@@ -327,32 +325,6 @@ dd.update_field(
     RecurrentEvent, 'every_unit',
     default=Recurrencies.yearly.as_callable, blank=False, null=False)
 
-
-class UpdateGuests(dd.MultipleRowAction):
-
-    label = _('Update Guests')
-    # icon_name = 'lightning'
-    button_text = ' ☷ '  # 2637
-
-    def run_on_row(self, obj, ar):
-        if settings.SITE.loading_from_dump:
-            return 0
-        if not obj.state.edit_guests:
-            ar.info("not state.edit_guests")
-            return 0
-        # existing = set([g.partner.pk for g in obj.guest_set.all()])
-        existing = {g.partner.pk : g for g in obj.guest_set.all()}
-        n = 0
-        for sg in obj.suggest_guests():
-            eg = existing.pop(sg.partner.pk, None)
-            if eg is None:
-                sg.save()
-                n += 1
-        # remove unwanted participants
-        for pk, g in existing.items():
-            if g.state == GuestStates.invited:
-                g.delete()
-        return n
 
 
 class ExtAllDayField(dd.VirtualField):
