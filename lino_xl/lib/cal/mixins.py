@@ -56,6 +56,7 @@ class MoveEntryNext(dd.MultipleRowAction):
     show_in_workflow = True
     show_in_bbar = False
     help_text = _("Move this event to next available date")
+    readonly = False
 
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
@@ -73,10 +74,11 @@ class MoveEntryNext(dd.MultipleRowAction):
 class UpdateEntries(dd.MultipleRowAction):
     label = _('Update Events')
     button_text = ' ⚡ '  # 26A1
-    help_text = _('Create or update the automatic events '
+    help_text = _('Create or update the automatic calendar entries '
                   'controlled by this generator.')
 
     # icon_name = 'lightning'
+    readonly = False
 
     def run_on_row(self, obj, ar):
         return obj.update_reminders(ar)
