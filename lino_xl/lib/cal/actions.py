@@ -3,10 +3,6 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""
-Tables for this plugin.
-
-"""
 
 from __future__ import unicode_literals
 
@@ -19,7 +15,6 @@ from .workflows import EntryStates, GuestStates
 
 class ShowEntriesByDay(dd.Action):
     label = _("Today")
-    help_text = _("Show all calendar events of the same day.")
     show_in_bbar = True
     sort_index = 60
     icon_name = 'calendar'
@@ -55,7 +50,7 @@ class UpdateGuests(dd.Action):
             self.run_on_event(ar, obj)
             
     def run_on_event(self, ar, obj):
-        n = 0
+        c = u = d = 0
         # existing = set([g.partner.pk for g in obj.guest_set.all()])
         existing = {g.partner.pk : g for g in obj.guest_set.all()}
 
@@ -64,13 +59,18 @@ class UpdateGuests(dd.Action):
             eg = existing.pop(sg.partner.pk, None)
             if eg is None:
                 sg.save()
-                n += 1
+                c += 1
+            else:
+                u += 1
 
         # remove unwanted participants
         for pk, g in existing.items():
             if g.state == GuestStates.invited:
                 g.delete()
-        msg = _("%d row(s) have been updated.") % n
+                d += 1
+        msg = _("Update presences for {} : "
+                "{} created, {} unchanged, {} deleted.").format(
+                    obj, c, u, d)
         ar.info(msg)
 
 
@@ -90,5 +90,5 @@ class UpdateAllGuests(UpdateGuests):
 
             fmt = obj.get_date_formatter()
             txt = ', '.join([fmt(e.start_date) for e in qs])
-            ar.confirm(ok, _("Update guests for {} events: {}").format(
+            ar.confirm(ok, _("Update presences for {} events: {}").format(
                 qs.count(), txt))

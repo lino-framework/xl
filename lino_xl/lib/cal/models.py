@@ -423,15 +423,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     
         
     def has_conflicting_events(self):
-        """Whether this event has any conflicting events.
-        
-        This is roughly equivalent to asking whether
-        :meth:`get_conflicting_events()` returns more than 0 events.
-
-        Except when this event's type tolerates more than one events
-        at the same time.
-
-        """
         qs = self.get_conflicting_events()
         if qs is None:
             return False
@@ -444,12 +435,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         return qs.count() > n
 
     def get_conflicting_events(self):
-        """
-        Return a QuerySet of Events that conflict with this one.
-        Must work also when called on an unsaved instance.
-        May return None to indicate an empty queryset.
-        Applications may override this to add specific conditions.
-        """
         if self.transparent:
             return
         if self.state.transparent:
@@ -533,20 +518,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         self.update_guests.run_from_code(ar)
 
     def suggest_guests(self):
-        """Yield the list of Guest instances to be added to this Event.  This
-        method is called from :meth:`update_guests`.
-
-        """
         if self.owner:
             for obj in self.owner.suggest_cal_guests(self):
                 yield obj
 
     def get_event_summary(event, ar):
-        """How this event should be summarized in contexts where possibly
-        another user is looking (i.e. currently in invitations of
-        guests, or in the extensible calendar panel).
-
-        """
         # from django.utils.translation import ugettext as _
         s = event.summary
         # if event.owner_id:
@@ -566,11 +542,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         return s
 
     def before_ui_save(self, ar, **kw):
-        """Mark the event as "user modified" by setting a default state.
-        This is important because EventGenerators may not modify any
-        user-modified Events.
-
-        """
         # logger.info("20130528 before_ui_save")
         if self.state is EntryStates.suggested:
             self.state = EntryStates.draft
@@ -647,14 +618,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     # reminder.return_type = dd.DisplayField(_("Reminder"))
 
     def get_calendar(self):
-        """
-        Returns the Calendar which contains this event,
-        or None if no subscription is found.
-        Needed for ext.ensible calendar panel.
-
-        The default implementation returns None.
-        Override this if your app uses Calendars.
-        """
         # for sub in Subscription.objects.filter(user=ar.get_user()):
             # if sub.contains_event(self):
                 # return sub
@@ -682,7 +645,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         super(Event, cls).on_analyze(lino)
 
     def auto_type_changed(self, ar):
-        """When the number has changed, we must update the summary."""
         if self.auto_type:
             self.summary = self.owner.update_cal_summary(
                 self.event_type, self.auto_type)

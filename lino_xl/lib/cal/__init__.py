@@ -2,15 +2,13 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""This is Lino's Calendar module.
+"""This is Lino's Calendar module. See :doc:`/specs/cal`.
 
 
 .. autosummary::
    :toctree:
 
     utils
-    actions
-    ui
     workflows
     fixtures.std
     fixtures.demo

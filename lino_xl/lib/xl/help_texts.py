@@ -82,59 +82,6 @@ belongs to a given Board."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
 Default value is 5 years after today."""),
-    'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
-    'lino_xl.lib.cal.Rooms.model' : _("""alias of Room"""),
-    'lino_xl.lib.cal.TasksByUser' : _("""Shows the list of tasks for this user."""),
-    'lino_xl.lib.cal.TasksByUser.master' : _("""alias of User"""),
-    'lino_xl.lib.cal.TasksByUser.model' : _("""alias of Task"""),
-    'lino_xl.lib.cal.MyTasks' : _("""All my tasks.  Only those whose start_date is today or in the
-future."""),
-    'lino_xl.lib.cal.MyTasks.default_end_date_offset' : _("""Number of days to go into the future. The default value for
-end_date will be today + that number of days."""),
-    'lino_xl.lib.cal.MyTasks.model' : _("""alias of Task"""),
-    'lino_xl.lib.cal.Guests' : _("""The default table for Guest."""),
-    'lino_xl.lib.cal.Guests.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.MyPresences' : _("""Shows all my presences in calendar events, independently of their
-state."""),
-    'lino_xl.lib.cal.MyPresences.model' : _("""alias of Guest"""),
-    'lino_xl.lib.cal.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
-    'lino_xl.lib.cal.RecurrentEvents.model' : _("""alias of RecurrentEvent"""),
-    'lino_xl.lib.cal.Events' : _("""Table which shows all calendar events."""),
-    'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be
-shown.  "Yes" means only appointments, "No"
-means no appointments and leaving it to blank shows both types
-of events."""),
-    'lino_xl.lib.cal.Events.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
-    'lino_xl.lib.cal.ConflictingEvents.master' : _("""alias of Event"""),
-    'lino_xl.lib.cal.ConflictingEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
-"date" column because it shows events of a given date."""),
-    'lino_xl.lib.cal.EntriesByDay.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.EntriesByRoom' : _("""Displays the Events at a given Room."""),
-    'lino_xl.lib.cal.EntriesByRoom.master' : _("""alias of Room"""),
-    'lino_xl.lib.cal.EntriesByRoom.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.EntriesByController' : _("""Shows the events linked to this database object."""),
-    'lino_xl.lib.cal.EntriesByController.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.OneEvent' : _("""Show a single calendar event."""),
-    'lino_xl.lib.cal.OneEvent.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.MyEntries' : _("""Table which shows today's and all future appointments of the
-requesting user.  The default filter parameters are set to show
-only appointments."""),
-    'lino_xl.lib.cal.MyEntries.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.MyEntriesToday' : _("""Like MyEntries, but only today."""),
-    'lino_xl.lib.cal.MyEntriesToday.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.MyAssignedEvents' : _("""The table of events which are assigned to me. That is, whose
-Event.assigned_to field refers to the requesting user."""),
-    'lino_xl.lib.cal.MyAssignedEvents.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
-over but who are still in a nonstable state."""),
-    'lino_xl.lib.cal.OverdueAppointments.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.MyOverdueAppointments' : _("""Like OverdueAppointments, but only for myself."""),
-    'lino_xl.lib.cal.MyOverdueAppointments.model' : _("""alias of Event"""),
-    'lino_xl.lib.cal.MyUnconfirmedAppointments' : _("""Shows my appointments in the near future which are in suggested or
-draft state."""),
-    'lino_xl.lib.cal.MyUnconfirmedAppointments.model' : _("""alias of Event"""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
@@ -168,6 +115,9 @@ that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.courses.Plugin.pupil_name_fields' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
+    'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
+    'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
+    'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
     'lino_xl.lib.courses.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
     'lino_xl.lib.courses.EntriesByTeacher.master' : _("""alias of Person"""),
     'lino_xl.lib.courses.EntriesByTeacher.model' : _("""alias of Event"""),
@@ -664,7 +614,10 @@ and local modifications will be sent back to the remote calendar."""),
     'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
 can see the EntriesByRoom that happened (or will happen)
 there.  A Room has a multilingual name."""),
+    'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
     'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
+    'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
+    'lino_xl.lib.cal.EventTypes' : _("""The list of Event Types defined on this system."""),
     'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
     'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
 "appointments" (i.e. whose time and place have been agreed
@@ -674,20 +627,29 @@ upon with other users or external parties)."""),
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.GuestRole' : _("""The role of a guest expresses what the partner is going to do there."""),
+    'lino_xl.lib.cal.GuestRoles' : _("""Global table of guest roles."""),
     'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
-    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to to something
+    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to do something
 (and optionally wants to get reminded about it)."""),
     'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
+    'lino_xl.lib.cal.Tasks' : _("""Global table of all tasks for all users."""),
+    'lino_xl.lib.cal.TasksByUser' : _("""Shows the list of tasks for this user."""),
+    'lino_xl.lib.cal.MyTasks' : _("""Shows my tasks whose start date is today or in the future."""),
     'lino_xl.lib.cal.EventPolicy' : _("""A recurrency policy is a rule used for generating automatic
 calendar entries."""),
     'lino_xl.lib.cal.EventPolicy.event_type' : _("""Generated calendar entries will have this type."""),
+    'lino_xl.lib.cal.EventPolicies' : _("""Global table of all possible recurrencly policies."""),
+    'lino_xl.lib.cal.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
     'lino_xl.lib.cal.RecurrentEvent' : _("""A recurring event describes a series of recurrent calendar
 entries."""),
     'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
     'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
-    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this entry
-according to the suggestions."""),
+    'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this calendar
+entry according to the suggestions."""),
+    'lino_xl.lib.cal.UpdateAllGuests' : _("""Update the presence lists of all calendar events generated by
+this."""),
     'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
 calendar."""),
     'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
@@ -709,12 +671,37 @@ the same time."""),
 all entries on that day (EntriesByDay)."""),
     'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
+    'lino_xl.lib.cal.Events' : _("""Table which shows all calendar events."""),
+    'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be
+shown.  "Yes" means only appointments, "No"
+means no appointments and leaving it to blank shows both types
+of events."""),
+    'lino_xl.lib.cal.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
+    'lino_xl.lib.cal.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
+"date" column because it shows events of a given date."""),
+    'lino_xl.lib.cal.EntriesByRoom' : _("""Displays the calendar entries at a given Room."""),
+    'lino_xl.lib.cal.EntriesByController' : _("""Shows the calendar entries controlled by this database object."""),
+    'lino_xl.lib.cal.OneEvent' : _("""Show a single calendar event."""),
+    'lino_xl.lib.cal.MyEntries' : _("""Table of appointments for which I am responsible."""),
+    'lino_xl.lib.cal.MyEntriesToday' : _("""Like MyEntries, but only today."""),
+    'lino_xl.lib.cal.MyAssignedEvents' : _("""The table of calendar entries which are assigned to me.  That
+is, whose Event.assigned_to field refers to the requesting
+user."""),
+    'lino_xl.lib.cal.OverdueAppointments' : _("""Shows overdue appointments, i.e. appointments whose date is
+over but who are still in a nonstable state."""),
+    'lino_xl.lib.cal.MyOverdueAppointments' : _("""Like OverdueAppointments, but only for myself."""),
+    'lino_xl.lib.cal.MyUnconfirmedAppointments' : _("""Shows my appointments in the near future which are in suggested or
+draft state."""),
     'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
 given event."""),
     'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
     'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
     'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
     'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
+    'lino_xl.lib.cal.Guests' : _("""The default table of presences."""),
+    'lino_xl.lib.cal.MyPresences' : _("""Shows all my presences in calendar events, independently of their
+state."""),
+    'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
     'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
     'lino_xl.lib.cal.EventGenerator.do_update_events' : _("""See UpdateEntries."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
@@ -737,6 +724,7 @@ entry."""),
 data of that year."""),
     'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
+    'lino_xl.lib.cal.ShowEntriesByDay' : _("""Show all calendar events of the same day."""),
     'lino_xl.lib.coachings.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
     'lino_xl.lib.coachings.Coachable' : _("""Base class for coachable client. The model specified as
 client_model must implement this."""),

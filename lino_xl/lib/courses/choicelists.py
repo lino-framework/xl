@@ -47,6 +47,16 @@ class EnrolmentStates(dd.Workflow):
     .. attribute:: confirmed
     .. attribute:: cancelled
 
+        The enrolment was cancelled before it even started.
+
+    .. attribute:: ended
+
+        The enrolment was was successfully ended.
+
+    .. attribute:: abandoned
+
+        The enrolment was abandoned.
+
     """
     verbose_name_plural = _("Enrolment states")
     required_roles = dd.login_required(dd.SiteAdmin)
@@ -59,10 +69,10 @@ add('11', _("Trying"), 'trying', invoiceable=False, uses_a_place=True)
 add('20', _("Confirmed"), 'confirmed', invoiceable=True, uses_a_place=True)
 add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 # add('40', _("Certified"), 'certified', invoiceable=True, uses_a_place=True)
-#~ add('40', _("Started"),'started')
-#~ add('50', _("Success"),'success')
-#~ add('60', _("Award"),'award')
-#~ add('90', _("Abandoned"),'abandoned')
+# add('40', _("Started"), 'started')
+add('50', _("Ended"), 'ended', invoiceable=True, uses_a_place=False)
+# add('60', _("Award"),'award')
+add('90', _("Abandoned"), 'abandoned', invoiceable=False, uses_a_place=False)
 
 
 class CourseArea(dd.Choice):
