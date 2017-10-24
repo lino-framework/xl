@@ -3,10 +3,6 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""
-Tables for this plugin.
-
-"""
 
 from __future__ import unicode_literals
 
@@ -38,9 +34,6 @@ class RemoteCalendars(dd.Table):
 
 
 class Rooms(dd.Table):
-    """List of rooms where calendar events can happen.
-
-    """
     required_roles = dd.login_required((OfficeStaff, CalendarReader))
     
     model = 'cal.Room'
@@ -63,7 +56,6 @@ class AllRooms(Rooms):
 
 
 class Priorities(dd.Table):
-    help_text = _("List of possible priorities of calendar events.")
     required_roles = dd.login_required(OfficeStaff)
     model = 'cal.Priority'
     column_names = 'name *'
@@ -147,7 +139,6 @@ class UserDetailMixin(dd.DetailLayout):
 
     
 class Tasks(dd.Table):
-    help_text = _("""A calendar task is something you need to do.""")
     model = 'cal.Task'
     required_roles = dd.login_required(OfficeStaff)
     stay_in_grid = True
@@ -240,21 +231,13 @@ class TasksByController(Tasks):
 
 
 class TasksByUser(Tasks):
-    """
-    Shows the list of tasks for this user.
-    """
     master_key = 'user'
     required_roles = dd.login_required(OfficeUser)
 
 
 class MyTasks(Tasks):
-    """All my tasks.  Only those whose start_date is today or in the
-    future.
-
-    """
     label = _("My tasks")
     required_roles = dd.login_required(OfficeUser)
-    help_text = _("Table of all my tasks.")
     column_names = 'start_date summary workflow_buttons project'
     params_panel_hidden = True
     default_end_date_offset = 30
@@ -284,8 +267,6 @@ class TasksByProject(Tasks):
 
 
 class GuestRoles(dd.Table):
-    help_text = _("The role of a guest expresses what the "
-                  "partner is going to do there.")
     model = 'cal.GuestRole'
     required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     detail_layout = """
@@ -296,8 +277,6 @@ class GuestRoles(dd.Table):
 
 
 class Guests(dd.Table):
-    "The default table for :class:`Guest`."
-    help_text = _("""A guest is a partner invited to an event. """)
     model = 'cal.Guest'
     # required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
@@ -449,10 +428,6 @@ class GuestsByPartner(Guests):
         # return E.div(class_="htmlText", *elems)
 
 class MyPresences(Guests):
-    """Shows all my presences in calendar events, independently of their
-    state.
-
-    """
     required_roles = dd.login_required(OfficeUser)
     order_by = ['event__start_date', 'event__start_time']
     label = _("My presences")
@@ -491,8 +466,6 @@ class MyPresences(Guests):
 # class MyPendingInvitations(Guests):
 class MyPendingPresences(MyPresences):
     label = _("My pending invitations")
-    help_text = _(
-        """Received invitations which I must accept or reject.""")
     # filter = models.Q(state=GuestStates.invited)
     column_names = 'event__when_text role workflow_buttons remark'
     params_panel_hidden = True
@@ -523,10 +496,6 @@ class MyGuests(Guests):
 
 
 class EventTypes(dd.Table):
-    help_text = _("""The list of Event Types defined on this system.
-    An EventType is a list of events which have certain things in common,
-    especially they are displayed in the same colour in the calendar panel.
-    """)
     required_roles = dd.login_required(OfficeStaff)
     model = 'cal.EventType'
     column_names = "name *"
@@ -549,9 +518,6 @@ class EventTypes(dd.Table):
 
 
 class RecurrentEvents(dd.Table):
-    """The list of all recurrent events (:class:`RecurrentEvent`).
-
-    """
     model = 'cal.RecurrentEvent'
     required_roles = dd.login_required(OfficeStaff)
     column_names = "start_date end_date name every_unit event_type *"
@@ -618,20 +584,6 @@ add('20', _("Unstable"), 'pending')
 
 
 class Events(dd.Table):
-    """Table which shows all calendar events.
-
-    .. attribute:: show_appointments
-
-        Whether only :term:`appointments <appointment>` should be
-        shown.  "Yes" means only appointments, "No"
-        means no appointments and leaving it to blank shows both types
-        of events.
-
-        An appointment is an event whose *event type* has
-        :attr:`appointment
-        <lino_xl.lib.cal.models.EventType.appointment>` checked.
-
-    """
 
     model = 'cal.Event'
     required_roles = dd.login_required(OfficeStaff)
@@ -779,9 +731,6 @@ class EntriesByType(Events):
 
 
 class ConflictingEvents(Events):
-    """Shows events conflicting with this one (the master).
-    
-    """
     label = ' ⚔ '  # 2694
     help_text = _("Show events conflicting with this one.")
 
@@ -813,14 +762,6 @@ class PublicEntries(Events):
 
 
 class EntriesByDay(Events):
-    """
-    This table is usually labelled "Appointments today". It has no
-    "date" column because it shows events of a given date.
-
-    The default filter parameters are set to show only
-    :term:`appointments <appointment>`.
-
-    """
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Appointments today")
     column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
@@ -870,19 +811,11 @@ class EntriesByDay(Events):
 class EntriesByRoom(Events):
 
     """
-    Displays the :class:`Events <Event>` at a given :class:`Room`.
     """
     master_key = 'room'
 
 
 class EntriesByController(Events):
-    """Shows the events linked to this database object.
-
-    If the master is an :class:`EventGenerator
-    <lino_xl.lib.cal.mixins.EventGenerator>`, then this includes
-    especially the events which were automatically generated.
-
-    """
     required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
@@ -947,7 +880,6 @@ if settings.SITE.project_model:
 
 
 class OneEvent(Events):
-    """Show a single calendar event."""
     show_detail_navigator = False
     use_as_default_table = False
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
@@ -955,13 +887,7 @@ class OneEvent(Events):
 
 
 class MyEntries(Events):
-    """Table which shows today's and all future appointments of the
-    requesting user.  The default filter parameters are set to show
-    only :term:`appointments <appointment>`.
-
-    """
     label = _("My appointments")
-    help_text = _("Table of my appointments.")
     required_roles = dd.login_required(OfficeUser)
     column_names = 'overview project #event_type #summary workflow_buttons *'
     auto_fit_column_widths = True
@@ -984,7 +910,6 @@ class MyEntries(Events):
 
 
 class MyEntriesToday(MyEntries):
-    """Like :class:`MyEntries`, but only today."""
     label = _("My appointments today")
     column_names = 'start_time end_time project event_type '\
                    'summary workflow_buttons *'
@@ -998,16 +923,7 @@ class MyEntriesToday(MyEntries):
 
 
 class MyAssignedEvents(MyEntries):
-    """
-    The table of events which are *assigned* to me. That is, whose
-    :attr:`Event.assigned_to` field refers to the requesting user.
-
-    This table also causes a :term:`welcome message` "X events have been
-    assigned to you" in case it is not empty.
-
-    """
     label = _("Events assigned to me")
-    help_text = _("Table of events assigned to me.")
     required_roles = dd.login_required(OfficeUser)
 
     @classmethod
@@ -1027,13 +943,6 @@ class MyAssignedEvents(MyEntries):
 
 
 class OverdueAppointments(Events):
-    """Shows **overdue appointments**, i.e. appointments whose date is
-    over but who are still in a nonstable state.
-
-    :attr:`show_appointments` is set to "Yes", :attr:`observed_event`
-    is set to "Unstable", :attr:`end_date` is set to today.
-
-    """
     required_roles = dd.login_required(OfficeStaff)
     label = _("Overdue appointments")
     column_names = 'when_text user project owner event_type summary workflow_buttons *'
@@ -1049,24 +958,11 @@ class OverdueAppointments(Events):
         return kw
 
 class MyOverdueAppointments(My, OverdueAppointments):
-    """Like OverdueAppointments, but only for myself.
-
-    """
     label = _("My overdue appointments")
     required_roles = dd.login_required(OfficeUser)
     column_names = 'overview owner event_type workflow_buttons *'
 
 class MyUnconfirmedAppointments(MyEntries):
-    """Shows my appointments in the near future which are in suggested or
-    draft state.
-
-    Appointments before today are not shown.  The parameters
-    :attr:`end_date` and :attr:`start_date` can manually be modified
-    in the parameters panel.
-
-    The state filter (draft or suggested) cannot be removed.
-
-    """
     required_roles = dd.login_required(OfficeUser)
     label = _("Unconfirmed appointments")
     column_names = 'when_text project summary workflow_buttons *'
