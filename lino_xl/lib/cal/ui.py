@@ -377,20 +377,23 @@ class AllGuests(Guests):
 
 class GuestsByEvent(Guests):
     master_key = 'event'
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required(OfficeUser)
     auto_fit_column_widths = True
     column_names = 'partner role workflow_buttons remark *'
 
 
 class GuestsByRole(Guests):
     master_key = 'role'
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required(OfficeUser)
 
 
 class GuestsByPartner(Guests):
     label = _("Presences")
     master_key = 'partner'
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required(OfficeUser)
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
     slave_grid_format = "summary"
