@@ -21,13 +21,12 @@ from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
 from lino.modlib.plausibility.choicelists import Checker
 
-from .mixins import ClientContactBase
-from .choicelists import ClientStates
+from lino_xl.lib.clients.choicelists import ClientStates
 from .roles import CoachingsStaff
 
 
 try:
-    client_model = dd.plugins.coachings.client_model
+    client_model = dd.plugins.clients.client_model
 except AttributeError:  # for Sphinx autodoc
     client_model = None
     
@@ -248,35 +247,6 @@ class ClientCoachingsChecker(ClientChecker):
 ClientCoachingsChecker.activate()
 
 
-class ClientContactType(mixins.BabelNamed):
-    class Meta:
-        app_label = 'coachings'
-        verbose_name = _("Client Contact type")
-        verbose_name_plural = _("Client Contact types")
-        abstract = dd.is_abstract_model(__name__, 'ClientContactType')
-
-
-class ClientContact(ClientContactBase):
-    class Meta:
-        app_label = 'coachings'
-        verbose_name = _("Client Contact")
-        verbose_name_plural = _("Client Contacts")
-        abstract = dd.is_abstract_model(__name__, 'ClientContact')
-    #~ type = ClientContactTypes.field(blank=True)
-    client = dd.ForeignKey(client_model)
-    remark = models.TextField(_("Remarks"), blank=True)  # ,null=True)
-
-    def full_clean(self, *args, **kw):
-        if not self.remark and not self.type \
-           and not self.company and not self.contact_person:
-            raise ValidationError(_("Must fill at least one field."))
-        super(ClientContact, self).full_clean(*args, **kw)
-
-
-dd.update_field(ClientContact, 'contact_person',
-                verbose_name=_("Contact person"))
-
-
 dd.inject_field(
     'users.User', 'coaching_type',
     dd.ForeignKey(
@@ -288,18 +258,4 @@ dd.inject_field(
     models.BooleanField(
         _("Coaching supervisor"),
         default=False))
-
-dd.inject_field(
-    'contacts.Partner', 'client_contact_type',
-    dd.ForeignKey(
-        'coachings.ClientContactType', blank=True, null=True))
-
-# contacts = dd.resolve_app('contacts')
-
-from lino_xl.lib.contacts.models import Partners
-
-class PartnersByClientContactType(Partners):
-    master_key = 'client_contact_type'
-    column_names = "name address_column phone gsm email *"
-    auto_fit_column_widths = True
 

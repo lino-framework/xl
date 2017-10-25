@@ -41,7 +41,7 @@ clocking = dd.resolve_app('clocking')
 User = rt.models.users.User
 UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
-Coaching = rt.models.coachings.Coaching
+# Coaching = rt.models.coachings.Coaching
 
 # lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
