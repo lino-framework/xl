@@ -70,9 +70,9 @@ add('20', _("Confirmed"), 'confirmed', invoiceable=True, uses_a_place=True)
 add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 # add('40', _("Certified"), 'certified', invoiceable=True, uses_a_place=True)
 # add('40', _("Started"), 'started')
-add('50', _("Ended"), 'ended', invoiceable=True, uses_a_place=False)
+# add('50', _("Ended"), 'ended', invoiceable=True, uses_a_place=False)
 # add('60', _("Award"),'award')
-add('90', _("Abandoned"), 'abandoned', invoiceable=False, uses_a_place=False)
+# add('90', _("Abandoned"), 'abandoned', invoiceable=False, uses_a_place=False)
 
 
 class CourseArea(dd.Choice):

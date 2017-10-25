@@ -725,16 +725,27 @@ data of that year."""),
     'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
     'lino_xl.lib.cal.ShowEntriesByDay' : _("""Show all calendar events of the same day."""),
-    'lino_xl.lib.coachings.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
+    'lino_xl.lib.clients.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
+    'lino_xl.lib.clients.ClientBase' : _("""Base class for a client. The model specified as
+client_model must implement this."""),
+    'lino_xl.lib.clients.ClientBase.client_state' : _("""Pointer to ClientStates"""),
+    'lino_xl.lib.clients.ClientStates' : _("""The list of client states."""),
+    'lino_xl.lib.clients.ClientEvents' : _("""The list of observable client events."""),
+    'lino_xl.lib.clients.ClientEvents.created' : _("""Select clients whose record has been created during the observed
+period."""),
+    'lino_xl.lib.clients.ClientEvents.modified' : _("""The choice for ClientEvents which selects clients whose
+main record has been modified during the observed period."""),
+    'lino_xl.lib.clients.ClientContact' : _("""A client contact is when a given partner has a given role for
+a given client."""),
+    'lino_xl.lib.clients.ClientContact.client' : _("""The Client."""),
+    'lino_xl.lib.clients.ClientContact.type' : _("""The type of contact. Pointer to ClientContactType."""),
+    'lino_xl.lib.clients.ClientContact.company' : _("""The organization."""),
+    'lino_xl.lib.clients.ClientContact.contact_person' : _("""The contact person in the organization."""),
+    'lino_xl.lib.clients.ClientContact.contact_role' : _("""The role of the contact person in the organization."""),
+    'lino_xl.lib.clients.ClientContactType' : _("""A client contact type is the type or "role" which must be
+specified for a given ClientContact."""),
     'lino_xl.lib.coachings.Coachable' : _("""Base class for coachable client. The model specified as
 client_model must implement this."""),
-    'lino_xl.lib.coachings.Coachable.client_state' : _("""Pointer to ClientStates"""),
-    'lino_xl.lib.coachings.ClientStates' : _("""The list of client states."""),
-    'lino_xl.lib.coachings.ClientEvents' : _("""The list of observable client events."""),
-    'lino_xl.lib.coachings.ClientEvents.created' : _("""Select clients whose record has been created during the observed
-period."""),
-    'lino_xl.lib.coachings.ClientEvents.modified' : _("""The choice for ClientEvents which selects clients whose
-main record has been modified during the observed period."""),
     'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
 types of responsibilities. For example in welfare they
 differentiate between "General Social Service" and "Integration
@@ -746,15 +757,6 @@ terminated."""),
     'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French)
 is when a given client is being coached by a given user during a
 given period."""),
-    'lino_xl.lib.coachings.ClientContact' : _("""A client contact is when a given partner has a given role for
-a given client."""),
-    'lino_xl.lib.coachings.ClientContact.client' : _("""The Client."""),
-    'lino_xl.lib.coachings.ClientContact.type' : _("""The type of contact. Pointer to ClientContactType."""),
-    'lino_xl.lib.coachings.ClientContact.company' : _("""The organization."""),
-    'lino_xl.lib.coachings.ClientContact.contact_person' : _("""The contact person in the organization."""),
-    'lino_xl.lib.coachings.ClientContact.contact_role' : _("""The role of the contact person in the organization."""),
-    'lino_xl.lib.coachings.ClientContactType' : _("""A client contact type is the type or "role" which must be
-specified for a given ClientContact."""),
     'lino_xl.lib.coachings.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
     'lino_xl.lib.coachings.CoachingsStaff' : _("""A user who can configure coachings functionality."""),
     'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients

@@ -12,6 +12,7 @@ from __future__ import print_function
 from django.db.models import Q
 
 from lino.api import dd
+# from lino.utils.dates import daterange_text
 
 
 def only_coached_by(qs, user):
@@ -56,14 +57,6 @@ def add_coachings_filter(qs, user, period, primary):
     if primary:
         flt &= Q(coachings_by_client__primary=True)
     return qs.filter(flt).distinct()
-
-
-def daterange_text(a, b):
-    """
-    """
-    if a == b:
-        return dd.dtos(a)
-    return dd.dtos(a) + "-" + dd.dtos(b)
 
 
 def has_contracts_filter(prefix, period):

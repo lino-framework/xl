@@ -79,6 +79,7 @@ Miscellaneous
     beid
     polls
     products
+    clients
     coachings
     trends
 

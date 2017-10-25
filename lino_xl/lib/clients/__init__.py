@@ -2,14 +2,12 @@
 # License: BSD (see file COPYING for details)
 
 
-"""See :doc:`/specs/coachings`.
+"""See :doc:`/specs/clients`.
 
 .. autosummary::
    :toctree:
 
     desktop
-    fixtures
-    utils
 
 """
 
@@ -18,19 +16,18 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    verbose_name = _("Coachings")
-
-    # needs_plugins = ['lino_xl.lib.clients']
+    verbose_name = _("Clients")
+    needs_plugins = ['lino_xl.lib.contacts']
     
-    # client_model = 'contacts.Person'
+    client_model = 'contacts.Person'
 
-    # def post_site_startup(self, site):
-    #     self.client_model = site.models.resolve(self.client_model)
-    #     super(Plugin, self).post_site_startup(site)
+    def post_site_startup(self, site):
+        self.client_model = site.models.resolve(self.client_model)
+        super(Plugin, self).post_site_startup(site)
 
-    #     site.kernel.memo_parser.register_django_model(
-    #         'client', self.client_model,
-    #         title=lambda obj: obj.get_full_name())
+        site.kernel.memo_parser.register_django_model(
+            'client', self.client_model,
+            title=lambda obj: obj.get_full_name())
         
     # def setup_main_menu(self, site, user_type, m):
     #     mg = self.get_menu_group()
@@ -41,12 +38,11 @@ class Plugin(ad.Plugin):
     def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('coachings.CoachingTypes')
-        m.add_action('coachings.CoachingEndings')
+        m.add_action('clients.ClientContactTypes')
 
     def setup_explorer_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('coachings.Coachings')
+        m.add_action('clients.ClientContacts')
         
 
