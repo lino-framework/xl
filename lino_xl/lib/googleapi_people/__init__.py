@@ -3,12 +3,15 @@
 
 
 from lino.api import ad, _
-from lino_xl.lib.contacts import Plugin
+# from lino_xl.lib.contacts import Plugin
+# from lino.modlib.users import Plugin
 
 class Plugin(ad.Plugin):
     "See :class:`lino.core.plugin.Plugin`."
 
     verbose_name = _("Google API People")
+    # partner_model = 'googleapi_people.Person'
+    # extends_models = ['Person']
 
     # needs_plugins = ['lino_xl.lib.contacts']
 
@@ -31,8 +34,10 @@ class Plugin(ad.Plugin):
 
 
     # def post_site_startup(self, site):
+    #     self.partner_model = site.models.resolve(self.partner_model)
     #     rdm = site.kernel.memo_parser.register_django_model
     #     rdm('partner', site.models.googleapi_people.Partner)
+    #     super(Plugin, self).on_site_startup(site)
     #     rdm('company', site.models.contacts.Company)
 
     # def setup_main_menu(self, site, user_type, m):
