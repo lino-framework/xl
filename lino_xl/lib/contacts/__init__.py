@@ -24,7 +24,7 @@ from lino.api import ad, _
 
 class Plugin(ad.Plugin):
     verbose_name = _("Contacts")
-    needs_plugins = ['lino_xl.lib.countries', 'lino.modlib.system']
+    needs_plugins = ['lino_xl.lib.countries', 'lino.modlib.system','lino_xl.lib.googleapi_people']
 
     ## settings
 

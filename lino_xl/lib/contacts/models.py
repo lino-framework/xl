@@ -27,6 +27,7 @@ from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
 from lino.modlib.printing.mixins import Printable
 # from lino_xl.lib.excerpts.mixins import Certifiable
+from lino_xl.lib.googleapi_people.models import GooglePeople
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
@@ -260,7 +261,7 @@ class PartnersByCountry(Partners):
     column_names = "city street street_no name language *"
     order_by = "city street street_no".split()
 
-class Person(Human, Born, Partner):
+class Person(Human, Born, Partner,GooglePeople):
     class Meta(object):
         app_label = 'contacts'
         abstract = dd.is_abstract_model(__name__, 'Person')
