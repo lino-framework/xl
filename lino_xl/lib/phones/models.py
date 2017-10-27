@@ -51,8 +51,9 @@ class ContactDetail(dd.Model):
         mi = self.partner
         if mi is None:
             return
-        if self.primary:
-            for o in mi.phones_by_partner.exclude(id=self.id):
+        if self.primary and self.detail_type:
+            for o in mi.phones_by_partner.exclude(id=self.id).filter(
+                    detail_type=self.detail_type):
                 if o.primary:
                     o.primary = False
                     o.save()

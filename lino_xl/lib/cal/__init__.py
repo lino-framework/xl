@@ -89,7 +89,7 @@ class Plugin(ad.Plugin):
     Default value is `None`, meaning "no limit".
 
     Unlike :attr:`hide_events_before
-    <lino.modlib.lino_startup.models.SiteConfig.hide_events_before>`
+    <lino.modlib.system.SiteConfig.hide_events_before>`
     this is not editable through the web interface.
 
     """
