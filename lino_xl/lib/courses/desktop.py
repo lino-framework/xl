@@ -684,8 +684,10 @@ class StatusReport(Report):
     @classmethod
     def get_story(cls, self, ar):
         for topic in rt.models.courses.Topic.objects.all():
-            yield E.h3(str(topic))
-            yield ar.spawn(
-                rt.actors.courses.CoursesByTopic, master_instance=topic)
+            sar = ar.spawn(
+                rt.models.courses.CoursesByTopic, master_instance=topic)
+            if sar.get_total_count():
+                yield E.h3(str(topic))
+                yield sar
 
 
