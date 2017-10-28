@@ -19,7 +19,7 @@ from lino import mixins
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.clients.choicelists import ClientStates
 from .roles import CoachingsStaff
@@ -233,7 +233,7 @@ class ClientChecker(Checker):
 class ClientCoachingsChecker(ClientChecker):
     verbose_name = _("Check coachings")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if obj.client_state == ClientStates.coached:
             if obj.is_obsolete:
                 yield (False, _("Both coached and obsolete."))

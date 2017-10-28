@@ -29,7 +29,7 @@ from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt, _
 from lino.utils import SumCollector
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.ledger.utils import DEBIT
 
 from lino_xl.lib.ledger.mixins import PartnerRelated
@@ -187,7 +187,7 @@ class Payable(PartnerRelated):
 
 
 class BankAccountChecker(Checker):
-    """Checks for the following plausibility problems:
+    """Checks for the following data problems:
 
     - :message:`Bank account owner ({0}) differs from partner ({1})` --
 
@@ -199,7 +199,7 @@ class BankAccountChecker(Checker):
             "Bank account owner ({0}) differs from partner ({1})"),
     )
     
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
 
         if obj.bank_account:
             if obj.bank_account.partner != obj.get_partner():

@@ -19,7 +19,7 @@ from lino import mixins
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 
 from .mixins import ClientContactBase
 from .choicelists import ClientStates, ClientEvents

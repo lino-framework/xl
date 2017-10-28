@@ -12,7 +12,7 @@ from django.db import models
 from lino.utils.xmlgen.html import E
 from lino.utils import join_elems
 from lino.core.diff import ChangeWatcher
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 
 from lino.api import dd, rt, _
 from lino.core.roles import SiteStaff
@@ -149,7 +149,7 @@ class ContactDetailsOwnerChecker(Checker):
     msg_empty = _("Field is empty but primary item exists")
     msg_missing = _("Missing primary item")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         # dd.logger.info("20171013 Checking {}", obj)
         ContactDetailTypes = rt.models.phones.ContactDetailTypes
         ContactDetail = rt.models.phones.ContactDetail
