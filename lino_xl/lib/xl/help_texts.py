@@ -14,7 +14,7 @@ city. zip_code) and lino_xl.lib.contacts.AddresssLocation
     'lino_xl.lib.addresses.Address.primary' : _("""Whether this address is the primary address of its owner.
 Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
-    'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following plausibility problems:"""),
+    'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of AddressOwner"""),
     'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.appypod.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
@@ -62,7 +62,7 @@ contain also entries for refugee statuses."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolder.validate_national_id' : _("""Whether to validate the national_id immediately before
 saving a record.  If this is False, the national_id
-might contain invalid values which would then cause plausibility
+might contain invalid values which would then cause data
 problems."""),
     'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
 (see BeIdCardHolder.national_id), but this checker reports
@@ -468,7 +468,7 @@ transactions. To be combined with some mixin which defines a
 field partner."""),
     'lino_xl.lib.sepa.mixins.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
     'lino_xl.lib.sepa.mixins.Payable.title' : _("""A char field with a description for this transaction."""),
-    'lino_xl.lib.sepa.mixins.BankAccountChecker' : _("""Checks for the following plausibility problems:"""),
+    'lino_xl.lib.sepa.mixins.BankAccountChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.sepa.mixins.BankAccountChecker.model' : _("""alias of BankAccount"""),
     'lino_xl.lib.sepa.Account' : _("""A bank account related to a given Partner."""),
     'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported

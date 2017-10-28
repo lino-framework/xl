@@ -24,7 +24,7 @@ from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses)
 from .utils import setkw, dt2kw, when_text
 
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.printing.mixins import Printable
 from lino.modlib.users.mixins import UserAuthored, Assignable
@@ -668,7 +668,7 @@ class EventGuestChecker(EntryChecker):
     """
     verbose_name = _("Entries without participants")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if not obj.state.edit_guests:
             return
         existing = set([g.partner.pk for g in obj.guest_set.all()])
@@ -690,7 +690,7 @@ class ConflictingEventsChecker(EntryChecker):
     """
     verbose_name = _("Check for conflicting calendar entries")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if not obj.has_conflicting_events():
             return
         qs = obj.get_conflicting_events()
@@ -714,7 +714,7 @@ class ObsoleteEventTypeChecker(EntryChecker):
     """
     verbose_name = _("Obsolete event type of generated entries")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if not obj.auto_type:
             return
         et = obj.owner.update_cal_event_type()
@@ -738,7 +738,7 @@ class LongEntryChecker(EntryChecker):
     verbose_name = _("Too long-lasting calendar entries")
     model = Event
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if obj.end_date is None:
             return
         et = obj.event_type

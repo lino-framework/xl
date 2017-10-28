@@ -15,7 +15,7 @@ from django.conf import settings
 from lino.api import dd
 from lino import mixins
 from django.utils.translation import ugettext_lazy as _
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
 from .choicelists import PlaceTypes, CountryDrivers
@@ -226,9 +226,9 @@ class PlaceChecker(Checker):
 
     """
     model = 'countries.Place'
-    verbose_name = _("Check plausibility of geographical places.")
+    verbose_name = _("Check data of geographical places.")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if obj.name.isdigit():
             yield (False, _("Name contains only digits."))
 

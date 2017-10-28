@@ -29,7 +29,7 @@ from lino.utils.xmlgen.html import E
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
 from lino_xl.lib.accounts.fields import DebitOrCreditField
@@ -868,7 +868,7 @@ class VoucherChecker(Checker):
             if m is not Voucher:
                 yield m
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if obj.__class__ is rt.models.ledger.Voucher:
             return
 

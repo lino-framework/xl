@@ -39,7 +39,7 @@ from lino.utils import ssin
 from lino.utils import join_words
 from lino.utils import IncompleteDate
 from lino_xl.lib.contacts.utils import street2kw
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 from .roles import BeIdUser
 
 from .actions import BeIdReadCardAction, FindByBeIdAction
@@ -85,7 +85,7 @@ class BeIdCardHolder(dd.Model):
     validate_national_id = False
     """Whether to validate the :attr:`national_id` immediately before
     saving a record.  If this is `False`, the :attr:`national_id`
-    might contain invalid values which would then cause plausibility
+    might contain invalid values which would then cause data
     problems.
 
     """
@@ -277,7 +277,7 @@ class BeIdCardHolderChecker(Checker):
     model = BeIdCardHolder
     verbose_name = _("Check for invalid SSINs")
 
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         if obj.national_id:
             try:
                 expected = ssin.parse_ssin(obj.national_id)

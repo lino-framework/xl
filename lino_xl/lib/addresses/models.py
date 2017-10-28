@@ -12,7 +12,7 @@ from __future__ import print_function
 
 from django.db import models
 from lino.api import dd, rt, _
-from lino.modlib.plausibility.choicelists import Checker
+from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.countries.mixins import AddressLocation
 from lino.core.roles import SiteStaff
 
@@ -152,7 +152,7 @@ class AddressesByCity(Addresses):
 
 
 class AddressOwnerChecker(Checker):
-    """Checks for the following plausibility problems:
+    """Checks for the following data problems:
 
     - :message:`Unique address is not marked primary.` --
       if there is exactly one :class:`Address` object which just fails to
@@ -175,7 +175,7 @@ class AddressOwnerChecker(Checker):
         primary_differs=_("Primary address differs from owner address ({0})."),
     )
     
-    def get_plausibility_problems(self, obj, fix=False):
+    def get_checkdata_problems(self, obj, fix=False):
         Address = rt.models.addresses.Address
         qs = Address.objects.filter(partner=obj)
         num = qs.count()

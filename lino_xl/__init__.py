@@ -1,9 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
-"""The :mod:`lino_xl` package contains the code of the :ref:`xl`.
+"""This package contains the code of the :ref:`xl`.
 
 .. autosummary::
    :toctree:
