@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2009-2017 Luc Saffre
-#
 # License: BSD (see file COPYING for details)
 
 # ~ Note that this module may not have a docstring because any
