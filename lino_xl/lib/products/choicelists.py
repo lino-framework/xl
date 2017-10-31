@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -23,12 +23,3 @@ add('20', _("Piece"), 'piece')
 add('30', _("Kg"), 'kg')
 
 
-
-
-
-
-from django.db import models
-from django.utils.translation import ugettext_lazy as _
-
-from lino.api import dd
-from lino import mixins

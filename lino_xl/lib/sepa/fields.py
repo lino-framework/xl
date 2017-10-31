@@ -1,19 +1,5 @@
-# Copyright 2014-2015 Luc Saffre
-# This file is part of Lino Cosi.
-#
-# Lino Cosi is free software: you can redistribute it and/or modify
-# it under the terms of the GNU Affero General Public License as
-# published by the Free Software Foundation, either version 3 of the
-# License, or (at your option) any later version.
-#
-# Lino Cosi is distributed in the hope that it will be useful, but
-# WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-# Affero General Public License for more details.
-#
-# You should have received a copy of the GNU Affero General Public
-# License along with Lino Cosi.  If not, see
-# <http://www.gnu.org/licenses/>.
+# Copyright 2014-2017 Luc Saffre
+# License: BSD (see file COPYING for details)
 
 """Defines entry fields for IBAN and BIC.
 
@@ -24,15 +10,10 @@ from django.db import models
 from localflavor.generic import models as iban_fields
 from localflavor.generic.forms import IBANFormField
 
-from django.utils.six import with_metaclass
-
 from lino.api import dd
 
 from lino.utils.jsgen import js_code
-# from lino.modlib.extjs.elems import CharFieldElement
 import six
-# from lino_extjs6.extjs6.elems import CharFieldElement
-# TODO: support ExtJS6
 
 IBAN_FORMFIELD = IBANFormField()
 
