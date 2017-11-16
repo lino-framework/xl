@@ -342,13 +342,13 @@ class CoursesByLine(Activities):
     master_key = "line"
     column_names = "overview weekdays_text room times_text teacher *"
     order_by = ['room__name', '-start_date']
+    
 
 
 class CoursesByTopic(Activities):
     """Shows the courses of a given topic.
 
     """
-    
     master_key = 'line__topic'
     # master = 'courses.Topic'
     order_by = ['-start_date']
@@ -368,12 +368,6 @@ class CoursesByTopic(Activities):
     #     kw.update(line__topic=ar.master_instance)
     #     return kw
 
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
-        kw.update(show_active=dd.YesNo.yes)
-        return kw
-
     # @classmethod
     # def get_request_queryset(self, ar):
     #     Course = rt.models.courses.Course
@@ -381,6 +375,12 @@ class CoursesByTopic(Activities):
     #     if topic is None:
     #         return Course.objects.none()
     #     return Course.objects.filter(line__topic=topic)
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
+        kw.update(show_active=dd.YesNo.yes)
+        return kw
 
 
 class CoursesBySlot(Activities):
