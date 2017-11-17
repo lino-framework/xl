@@ -9,6 +9,7 @@ from __future__ import print_function
 from lino.api import rt, dd
 from lino.core.diff import ChangeWatcher
 from lino.mixins import Contactable, Phonable
+from .choicelists import ContactDetailTypes
 
 class ContactDetailsOwner(Contactable, Phonable):
     
@@ -17,25 +18,36 @@ class ContactDetailsOwner(Contactable, Phonable):
 
     if dd.is_installed('phones'):
 
-        def phone_changed(self, ar):
-            self.propagate_contact_detail(
-                rt.models.phones.ContactDetailTypes.phone)
+        def after_ui_save(self, ar, cw):
+            if cw is None:  # it's a new instance
+                for cdt in ContactDetailTypes.get_list_items():
+                    self.propagate_contact_detail(cdt)
+                pass
+            else:
+                for k, old, new in cw.get_updates():
+                    cdt = getattr(ContactDetailTypes, k, False)
+                    if cdt:
+                        self.propagate_contact_detail(cdt)
+                    
+        # def phone_changed(self, ar):
+        #     self.propagate_contact_detail(
+        #         rt.models.phones.ContactDetailTypes.phone)
             
-        def gsm_changed(self, ar):
-            self.propagate_contact_detail(
-                rt.models.phones.ContactDetailTypes.mobile)
+        # def gsm_changed(self, ar):
+        #     self.propagate_contact_detail(
+        #         rt.models.phones.ContactDetailTypes.mobile)
             
-        def url_changed(self, ar):
-            self.propagate_contact_detail(
-                rt.models.phones.ContactDetailTypes.url)
+        # def url_changed(self, ar):
+        #     self.propagate_contact_detail(
+        #         rt.models.phones.ContactDetailTypes.url)
             
-        def fax_changed(self, ar):
-            self.propagate_contact_detail(
-                rt.models.phones.ContactDetailTypes.fax)
+        # def fax_changed(self, ar):
+        #     self.propagate_contact_detail(
+        #         rt.models.phones.ContactDetailTypes.fax)
             
-        def email_changed(self, ar):
-            self.propagate_contact_detail(
-                rt.models.phones.ContactDetailTypes.email)
+        # def email_changed(self, ar):
+        #     self.propagate_contact_detail(
+        #         rt.models.phones.ContactDetailTypes.email)
             
         def propagate_contact_detail(self, cdt):
             k = cdt.field_name
@@ -56,11 +68,11 @@ class ContactDetailsOwner(Contactable, Phonable):
                     if value:
                         kw.update(value=value)
                         cd = ContactDetail(**kw)
+                        # self.phones_by_partner.add(cd, bulk=False)
                         cd.save()
 
         def propagate_contact_details(self, ar=None):
             watcher = ChangeWatcher(self)
-            ContactDetailTypes = rt.models.phones.ContactDetailTypes
             for cdt in ContactDetailTypes.get_list_items():
                 self.propagate_contact_detail(cdt)
             if ar is not None:
