@@ -3,11 +3,14 @@
 # License: BSD (see file COPYING for details)
 
 
-from django.core.validators import validate_email
+from django.core.validators import validate_email, URLValidator
 
 from lino.utils.xmlgen.html import E
 from lino.api import dd, _
 from lino.modlib.office.roles import OfficeStaff
+
+
+validate_url = URLValidator()
 
 
 class ContactDetailType(dd.Choice):
@@ -34,7 +37,7 @@ class EMAIL(ContactDetailType):
 
 class URL(ContactDetailType):
     def validate(self, value):
-        validate_email(value)
+        validate_url(value)
 
     def as_html(self, obj, ar):
         txt = obj.remark or obj.value

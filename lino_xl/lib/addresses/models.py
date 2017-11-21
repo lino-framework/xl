@@ -171,11 +171,14 @@ class AddressOwnerChecker(Checker):
         no_address=_("Owner with address, but no address record."),
         unique_not_primary=_("Unique address is not marked primary."),
         no_primary=_("Multiple addresses, but none is primary."),
+        # invalid_partner_model=_("Invalid partner model."),
         multiple_primary=_("Multiple primary addresses."),
         primary_differs=_("Primary address differs from owner address ({0})."),
     )
     
     def get_checkdata_problems(self, obj, fix=False):
+        if not isinstance(obj, dd.plugins.addresses.partner_model):
+            return
         Address = rt.models.addresses.Address
         qs = Address.objects.filter(partner=obj)
         num = qs.count()

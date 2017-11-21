@@ -1,0 +1,91 @@
+{% extends "lists/List/base.wk.html" %}
+
+{%- block head %}
+{{ super() }}
+<style type="text/css">
+table {
+    border-collapse: collapse;
+}
+table, td, th {
+    border: 1px solid black;
+}
+body { 
+    font-family: "Liberation sans", "arial";
+    font-size: 10pt;
+}
+
+p { 
+    padding: 0;
+    margin: 0;  
+}
+
+@page {
+    margin: 10mm; margin-top: 15mm; margin-bottom: 15mm; 
+    size: landscape;
+    @bottom-right {
+        content: counter(page) "/" counter(pages);
+    }
+}
+
+
+@media print {
+  tr.avoid {
+    page-break-inside: avoid !important;
+  } 
+}
+@media screen {
+    div.footer_div {
+        display: none;
+    }
+}
+@media print {
+    div.footer_div {
+        position: fixed;
+        bottom: -5mm;
+        width: 100%;
+        border-top: solid 1pt;
+        padding: 2pt;
+    }
+}
+
+</style>
+{%- endblock %}
+
+
+{%- block main %}
+{{ super() }}
+
+<div class="footer_div">{{obj}}</div>
+
+<table border="1" width="100%">
+<thead>
+<tr>
+<td>{{_("No.")}}</td>
+<td>{{_("Participant")}}</td>
+<td>{{_("Name & email")}}</td>
+<td>{{_("GSM")}}</td>
+<td>{{_("Phone")}}</td>
+<td>{{_("Remark")}}</td>
+</tr>
+</thead>
+
+<tbody>
+{% for member in obj.members.all() %}
+<tr class="avoid">
+<td>{{loop.index}}</td>
+<td>{{E.tostring(member.partner)}}</td>
+{% if member.partner.person %}
+<td>{{member.partner.person}} &lt;{{member.partner.email}}&gt;</td>
+{% else %}
+<td>{{member.partner.name}} &lt;{{member.partner.email}}&gt;</td>
+{% endif %}
+<td>{{member.partner.gsm}}</td>
+<td>{{member.partner.phone}}</td>
+<td>{{member.remark}}</td>
+</tr>
+{% endfor %}
+
+</tbody>
+
+</table>
+{%- endblock %}

@@ -1,0 +1,25 @@
+<html>
+<head>
+{%- block head %}
+<meta charset="UTF-8"> 
+{%- endblock %}
+</head>
+<body>
+{%- block header %}
+<h1>{{obj}}</h1>
+{%- endblock %}
+
+{%- block intro %}
+<ul>
+{% for k in ['list_type', 'ref', 'remarks', 'designation'] %}
+<li>{{obj._meta.get_field(k).verbose_name}} : {{getattr(obj, k)}}</li>
+{% endfor %}
+
+</ul>
+{%- endblock %}
+
+{%- block main %}
+{%- endblock %}
+</body>
+</html>
+
