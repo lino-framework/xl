@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Luc Saffre
+# Copyright 2012-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -7,27 +7,18 @@
 
 """
 
-import logging
-logger = logging.getLogger(__name__)
-
-import os
-import sys
-import cgi
-import datetime
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy
 from django.utils.translation import get_language
 
 from lino.api import dd, rt
-from lino.utils.xmlgen import html as xghtml
-E = xghtml.E
+from lino.utils.xmlgen.html import E
+from lino.core.renderer import add_user_language
 
 from lino import mixins
 from django.conf import settings
-
-PAGES = settings.SITE.plugins.pages
+from .utils import render_node
 
 #~ class PageType(dbutils.BabelNamed,mixins.PrintableType,outbox.MailableType):
 
@@ -60,9 +51,6 @@ PAGES = settings.SITE.plugins.pages
 
 
 class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
-    """
-    Deserves more documentation.
-    """
 
     class Meta:
         verbose_name = _("Node")
@@ -73,11 +61,12 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
 
     raw_html = models.BooleanField(_("raw html"), default=False)
 
-    def get_absolute_url(self):
+    def get_absolute_url(self, **kwargs):
         if self.ref:
             if self.ref != 'index':
-                return PAGES.build_plain_url(self.ref)
-        return PAGES.build_plain_url()
+                return dd.plugins.pages.build_plain_url(
+                    self.ref, **kwargs)
+        return dd.plugins.pages.build_plain_url(**kwargs)
 
     def get_sidebar_caption(self):
         if self.title:
@@ -93,7 +82,10 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
         #~ return unicode(_('Home'))
 
     def get_sidebar_item(self, request, other):
-        a = E.a(self.get_sidebar_caption(), href=self.get_absolute_url())
+        kw = dict()
+        add_user_language(kw, request)
+        url = self.get_absolute_url(**kw)
+        a = E.a(self.get_sidebar_caption(), href=url)
         if self == other:
             return E.li(a, class_='active')
         return E.li(a)
@@ -180,16 +172,7 @@ def create_page(**kw):
 
 
 def lookup(ref, *args, **kw):
-    #~ if ref == '':
-        #~ ref = None
     return Page.get_by_ref(ref, *args, **kw)
-    #~ try:
-        #~ return Page.objects.get_by_ref(ref)
-    #~ except Page.DoesNotExist:
-        #~ pass
-
-from lino_xl.lib.pages.dummy import render_node
-
 
 def get_all_pages():
     return Page.objects.all()
