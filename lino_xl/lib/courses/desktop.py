@@ -446,6 +446,7 @@ class Enrolments(dd.Table):
 
     _course_area = None
 
+    required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     # debug_permissions=20130531
     model = 'courses.Enrolment'
     stay_in_grid = True

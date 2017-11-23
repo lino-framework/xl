@@ -337,6 +337,8 @@ class Trainings(PeriodTable):
     order_by = "country city type".split()
     column_names = "person start_date end_date duration_text type state sector function *"
 
+    required_roles = dd.login_required(CareerUser)
+    
     detail_layout = """
     person start_date end_date duration_text
     type state #success certificates
@@ -354,25 +356,22 @@ class Trainings(PeriodTable):
 
 
 class AllTrainings(Trainings):
-    """The explorer table showing all :class:`Trainings` instances.
+    """Show all :class:`Training` instances.
 
     """
     required_roles = dd.login_required(CareerStaff)
 
 
 class TrainingsByCountry(Trainings):
-    required_roles = dd.login_required(CareerUser)
     master_key = 'country'
 
 
 class TrainingsByType(Trainings):
-    required_roles = dd.login_required(CareerUser)
     master_key = 'type'
 
 
 class TrainingsByPerson(HistoryByPerson, Trainings):
     """Show the trainings of a given person."""
-    required_roles = dd.login_required(CareerUser)
     column_names = 'type sector function remarks \
     start_date end_date duration_text \
     school country state certificates *'

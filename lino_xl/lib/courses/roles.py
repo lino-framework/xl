@@ -7,9 +7,13 @@ from lino.core.roles import UserRole
 
 
 class CoursesTeacher(UserRole):
+    "Can see and edit their own courses."
     pass
 
-class CoursesUser(UserRole):
-    # TODO: rename to CoursesStaff
+class CoursesUser(UserRole): # TODO: rename to CoursesCoordinator
+    "Can see and edit all courses."
     pass
 
+# class CoursesStaff(CoursesUser):
+#     "Can edit all courses and configure the plugin."
+#     pass
