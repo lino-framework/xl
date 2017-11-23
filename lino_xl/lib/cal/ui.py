@@ -819,12 +819,15 @@ class EntriesByRoom(Events):
 
 
 class EntriesByController(Events):
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
     slave_grid_format = "summary"
+    order_by = ["start_date", "start_time", "auto_type", "id"]
+    # order_by = ['seqno']
 
     @classmethod
     def get_slave_summary(self, obj, ar):

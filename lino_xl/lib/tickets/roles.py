@@ -4,7 +4,7 @@
 
 """
 
-from lino.core.roles import UserRole  #, SiteUser
+from lino.core.roles import UserRole
 
 class TicketsReader(UserRole):
     pass

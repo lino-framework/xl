@@ -591,14 +591,14 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     # def get_mailable_body(self,ar):
         # return self.description
 
-    @dd.displayfield(_("When"))
+    @dd.displayfield(_("When"), sortable_by=['start_date', 'start_time'])
     def when_text(self, ar):
         txt = when_text(self.start_date, self.start_time)
         if self.end_date and self.end_date != self.start_date:
             txt += "-" + when_text(self.end_date, self.end_time)
         return txt
 
-    @dd.displayfield(_("When"))
+    @dd.displayfield(_("When"), sortable_by=['start_date', 'start_time'])
     # def linked_date(self, ar):
     def when_html(self, ar):
         if ar is None:
