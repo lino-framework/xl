@@ -139,6 +139,7 @@ class TimLoader(object):
         return s.strip()
 
     def after_gen_load(self):
+        return
         Account = rt.modules.accounts.Account
         sc = dict()
         for k, v in dd.plugins.tim2lino.siteconfig_accounts.items():

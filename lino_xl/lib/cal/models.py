@@ -160,6 +160,7 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         _("Simultaneous entries"), default=1)
     max_days = models.PositiveIntegerField(
         _("Maximum days"), default=1)
+    transparent = models.BooleanField(_("Transparent"), default=False)
 
     def __str__(self):
         # when selecting an Event.event_type it is more natural to
@@ -427,6 +428,10 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if qs is None:
             return False
         if self.event_type is not None:
+            if self.event_type.transparent:
+                return False
+            # holidays (all room events) conflict also with events
+            # whose type otherwise would allow conflicting events
             if qs.filter(event_type__all_rooms=True).count() > 0:
                 return True
             n = self.event_type.max_conflicting - 1
@@ -439,10 +444,13 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             return
         if self.state.transparent:
             return
+        # if self.event_type is not None and self.event_type.transparent:
+        #     return
         # return False
         # Event = dd.resolve_model('cal.Event')
         # ot = ContentType.objects.get_for_model(RecurrentEvent)
         qs = self.__class__.objects.filter(transparent=False)
+        qs = qs.exclude(event_type__transparent=True)
         end_date = self.end_date or self.start_date
         flt = Q(start_date=self.start_date, end_date__isnull=True)
         flt |= Q(end_date__isnull=False,

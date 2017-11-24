@@ -148,7 +148,7 @@ class TimLoader(TimLoader):
             if prt == "G":
                 kw = dict(
                     name=name, line=self.life_groups, id=obj.id,
-                    household_id=obj.id)
+                    partner_id=obj.id)
                 kw.update(ref=row.idpar.strip())
                 for user in self.get_users(row):
                     kw.update(teacher=user)
@@ -159,7 +159,7 @@ class TimLoader(TimLoader):
                 if prt == "P":
                     therapy = Course(
                         line=self.therapies,
-                        client_id=obj.id,
+                        partner_id=obj.id,
                         name=name, teacher=user, id=obj.id,
                         ref=row.idpar.strip())
                     yield therapy

@@ -53,6 +53,8 @@ def objects():
     yield holidays
     meeting = event_type(**dd.str2kw('name', _("Meeting")))
     yield meeting    
+    yield event_type(
+        transparent=True, **dd.str2kw('name', _("Internal")))
 
     RecurrentEvent = rt.modules.cal.RecurrentEvent
     add = Instantiator(RecurrentEvent, event_type=holidays).build
