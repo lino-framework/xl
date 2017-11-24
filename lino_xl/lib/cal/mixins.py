@@ -342,8 +342,11 @@ class EventGenerator(dd.Model):
             or dd.plugins.cal.ignore_dates_after
         if until is None:
             raise Exception("ignore_dates_after may not be None")
-        max_events = rset.max_events or \
-            settings.SITE.site_config.max_auto_events
+        # don't take rset.max_events == 0 as False
+        if rset.max_events is None:
+            max_events = settings.SITE.site_config.max_auto_events
+        else:
+            max_events = rset.max_events
         Event = settings.SITE.modules.cal.Event
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
