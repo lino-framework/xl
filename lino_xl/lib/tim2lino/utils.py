@@ -129,6 +129,8 @@ class TimLoader(object):
         pass
 
     def dbfmemo(self, s):
+        if s is None:
+            return ''
         s = s.replace('\r\n', '\n')
         s = s.replace(u'\xec\n', '')
         # s = s.replace(u'\r\nì',' ')

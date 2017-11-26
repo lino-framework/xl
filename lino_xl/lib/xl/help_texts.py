@@ -619,14 +619,15 @@ there.  A Room has a multilingual name."""),
     'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of Event Types defined on this system."""),
     'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
-    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
-"appointments" (i.e. whose time and place have been agreed
-upon with other users or external parties)."""),
+    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered as "appointments"
+(i.e. whose time and place have been agreed upon with other
+users or external parties)."""),
     'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
     'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
-    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
     'lino_xl.lib.cal.GuestRole' : _("""The role of a guest expresses what the partner is going to do there."""),
     'lino_xl.lib.cal.GuestRoles' : _("""Global table of guest roles."""),
     'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
