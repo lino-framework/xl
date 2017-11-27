@@ -68,12 +68,16 @@ class AddressOwner(dd.Model):
         def get_overview_elems(self, ar):
             # elems = super(AddressOwner, self).get_overview_elems(ar)
             elems = []
-            sar = ar.spawn('addresses.AddressesByPartner',
-                           master_instance=self)
-            # btn = sar.as_button(_("Manage addresses"), icon_name="wrench")
-            btn = sar.as_button(_("Manage addresses"))
-            # elems.append(E.p(btn, align="right"))
-            elems.append(E.p(btn))
+            # e.g. in amici a company inherits from AddressOwner but
+            # is not a partner_model because there we want multiple
+            # addresses only for persons, not for companies.
+            if isinstance(self, dd.plugins.addresses.partner_model):
+                sar = ar.spawn('addresses.AddressesByPartner',
+                               master_instance=self)
+                # btn = sar.as_button(_("Manage addresses"), icon_name="wrench")
+                btn = sar.as_button(_("Manage addresses"))
+                # elems.append(E.p(btn, align="right"))
+                elems.append(E.p(btn))
             return elems
     else:
 
