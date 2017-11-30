@@ -9,8 +9,6 @@ from builtins import object
 
 import os
 
-import vobject
-
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.conf import settings
@@ -32,6 +30,17 @@ from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
 from lino.utils.media import TmpMediaFile
 from lino.mixins.periods import ObservedDateRange
+
+if dd.plugins.contacts.use_vcard_export:
+    import vobject
+    
+# try:
+#     import vobject
+# except ImportError:
+#         raise Exception(
+#             "use_vcard_export is True but vobject is not installed")
+#     vobject = None
+
 
 # from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
 # from lino.mixins import Contactable, Phonable
