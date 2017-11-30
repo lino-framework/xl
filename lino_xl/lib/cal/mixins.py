@@ -186,7 +186,8 @@ class EventGenerator(dd.Model):
             #~ print "20111014 loading_from_dump"
             return 0
         wanted, unwanted = self.get_wanted_auto_events(ar)
-        # dd.logger.info("20161015 get_wanted_auto_events() returned %s", wanted)
+        # dd.logger.info(
+        #     "20171130 get_wanted_auto_events() returned %s", unwanted)
         count = len(wanted)
         # current = 0
 
@@ -276,6 +277,7 @@ class EventGenerator(dd.Model):
             return wanted, unwanted
         
         qs = self.get_existing_auto_events()
+        
         qs = qs.order_by('start_date', 'start_time', 'auto_type')
         
         # Find the existing event before the first unmodified
@@ -385,6 +387,10 @@ class EventGenerator(dd.Model):
 
                     else:
                         self.compare_auto_event(ee, we)
+                        # we don't need to add it to wanted because
+                        # compare_auto_event() saves any changes
+                        # immediately.
+                        # wanted[event_no] = we
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
                 if date is None:
@@ -448,6 +454,9 @@ class EventGenerator(dd.Model):
             return date
         if not self.care_about_conflicts(we):
             return date
+        # if date.day == 9 and date.month == 3:
+        #     ar.info("20171130 resolve_conflicts() %s",
+        #             we.has_conflicting_events())
         # ar.debug("20140310 resolve_conflicts %s", we.start_date)
         while we.has_conflicting_events():
             qs = we.get_conflicting_events()

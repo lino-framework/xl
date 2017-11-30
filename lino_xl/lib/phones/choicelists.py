@@ -25,7 +25,7 @@ class ContactDetailType(dd.Choice):
     def as_html(self, obj, ar):
         return obj.value
 
-STD = ContactDetailType    
+STD = ContactDetailType
 
 class EMAIL(ContactDetailType):
     def validate(self, value):

@@ -846,6 +846,8 @@ class EntriesByController(Events):
         fmt = obj.get_date_formatter()
 
         elems = []
+        
+        coll = {}
         for evt in sar:
             # if len(elems) > 0:
             #     elems.append(', ')
@@ -858,8 +860,18 @@ class EntriesByController(Events):
             if evt.state.button_text:
                 lbl = "{0}{1}".format(lbl, evt.state.button_text)
             elems.append(ar.obj2html(evt, lbl))
-        # elems = join_elems(elems, sep=', ')
+
+            if evt.state in coll:
+                coll[evt.state] += 1
+            else:
+                coll[evt.state] = 1
+                
+        ul = []
+        for st in EntryStates.get_list_items():
+            ul.append(_("{} : {}").format(st, coll.get(st, 0)))
         toolbar = []
+        toolbar += join_elems(ul, sep=', ')
+        # elems = join_elems(ul, sep=E.br)
         ar1 = obj.do_update_events.request_from(sar)
         if ar1.get_permission():
             btn = ar1.ar2button(obj)
