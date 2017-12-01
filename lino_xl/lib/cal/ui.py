@@ -769,7 +769,7 @@ class PublicEntries(Events):
 
 
 class EntriesByDay(Events):
-    required_roles = dd.login_required(OfficeOperator)
+    required_roles = dd.login_required((OfficeOperator, OfficeUser))
     label = _("Appointments today")
     column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
     auto_fit_column_widths = True
@@ -823,7 +823,7 @@ class EntriesByRoom(Events):
 
 
 class EntriesByController(Events):
-    required_roles = dd.login_required(OfficeOperator)
+    required_roles = dd.login_required((OfficeOperator, OfficeUser))
     # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
