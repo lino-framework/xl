@@ -12,14 +12,17 @@ from lino.core.roles import UserRole
 from lino.modlib.office.roles import OfficeStaff, OfficeUser
 from lino.modlib.comments.roles import CommentsUser, CommentsStaff
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
+from lino_xl.lib.cal.roles import GuestOperator
 from lino_xl.lib.polls.roles import PollsUser, PollsAdmin
 
 
-class SiteUser(OfficeUser, ContactsUser, PollsUser, CommentsUser):
+class SiteUser(OfficeUser, GuestOperator, ContactsUser, PollsUser,
+               CommentsUser):
     pass
 
 
-class SiteAdmin(PollsAdmin, OfficeStaff, ContactsStaff, CommentsStaff):
+class SiteAdmin(PollsAdmin, GuestOperator, OfficeStaff, ContactsStaff,
+                CommentsStaff):
     pass
 
 

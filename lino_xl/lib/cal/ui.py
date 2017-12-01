@@ -14,7 +14,7 @@ from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
 from lino.modlib.users.mixins import My
-from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
+from lino.modlib.office.roles import OfficeUser, OfficeStaff
 
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
@@ -26,7 +26,7 @@ from .choicelists import AccessClasses
 from .mixins import daterange_text
 from .utils import when_text
 
-from .roles import CalendarReader
+from .roles import CalendarReader, GuestOperator
 
 
 class RemoteCalendars(dd.Table):
@@ -35,7 +35,8 @@ class RemoteCalendars(dd.Table):
 
 
 class Rooms(dd.Table):
-    required_roles = dd.login_required((OfficeStaff, CalendarReader))
+    required_roles = dd.login_required(OfficeStaff)
+    # required_roles = dd.login_required((OfficeStaff, CalendarReader))
     
     model = 'cal.Room'
     detail_layout = """
@@ -279,8 +280,8 @@ class GuestRoles(dd.Table):
 
 class Guests(dd.Table):
     model = 'cal.Guest'
-    # required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     column_names = 'partner role workflow_buttons remark event *'
     order_by = ['event__start_date', 'event__start_time']
     stay_in_grid = True
@@ -378,7 +379,7 @@ class AllGuests(Guests):
 
 class GuestsByEvent(Guests):
     master_key = 'event'
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
     auto_fit_column_widths = True
     column_names = 'partner role workflow_buttons remark *'
@@ -387,14 +388,14 @@ class GuestsByEvent(Guests):
 
 class GuestsByRole(Guests):
     master_key = 'role'
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
 
 
 class GuestsByPartner(Guests):
     label = _("Presences")
     master_key = 'partner'
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
@@ -768,7 +769,7 @@ class PublicEntries(Events):
 
 
 class EntriesByDay(Events):
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     label = _("Appointments today")
     column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
     auto_fit_column_widths = True
@@ -822,7 +823,7 @@ class EntriesByRoom(Events):
 
 
 class EntriesByController(Events):
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
@@ -903,7 +904,7 @@ if settings.SITE.project_model:
 class OneEvent(Events):
     show_detail_navigator = False
     use_as_default_table = False
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((GuestOperator, CalendarReader))
     # required_roles = dd.login_required(OfficeUser)
 
 

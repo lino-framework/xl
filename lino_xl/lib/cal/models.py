@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2017 Luc Saffre
-#
 # License: BSD (see file COPYING for details)
 
 
@@ -316,10 +315,6 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
         return six.text_type(self)
 
     def care_about_conflicts(self, we):
-        """Recurrent events don't care about conflicts. A holiday won't move
-        just because some other event has been created before on that date.
-
-        """
         return False
 
 dd.update_field(

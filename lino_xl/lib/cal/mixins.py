@@ -430,24 +430,9 @@ class EventGenerator(dd.Model):
         ar.confirm(doit, _("Move {} to next available date?").format(we))
 
     def care_about_conflicts(self, we):
-        """Whether this event generator should try to resolve conflicts (in
-        :meth:`resolve_conflicts`)
-
-        """
         return True
 
     def resolve_conflicts(self, we, ar, rset, until):
-        """Check whether given event `we` conflicts with other events and move
-        it to a new date if necessary. Returns (a) the event's
-        start_date if there is no conflict, (b) the next available
-        alternative date if the event conflicts with other existing
-        events and should be moved, or (c) None if there are conflicts
-        but no alternative date could be found.
-
-        `ar` is the action request who asks for this.
-        `rset` is the `RecurrenceSet`.
-
-        """
     
         date = we.start_date
         if rset == Recurrencies.once:

@@ -25,7 +25,8 @@ class ContactDetailsOwner(Contactable, Phonable):
                 pass
             else:
                 for k, old, new in cw.get_updates():
-                    cdt = getattr(ContactDetailTypes, k, False)
+                    cdt = ContactDetailTypes.find(field_name=k)
+                    # cdt = getattr(ContactDetailTypes, k, False)
                     if cdt:
                         self.propagate_contact_detail(cdt)
             super(ContactDetailsOwner, self).after_ui_save(ar, cw)
