@@ -14,7 +14,7 @@ from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
 from lino.modlib.users.mixins import My
-from lino.modlib.office.roles import OfficeUser, OfficeStaff
+from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from lino.utils import join_elems
 from lino.utils.xmlgen.html import E
@@ -769,7 +769,7 @@ class PublicEntries(Events):
 
 
 class EntriesByDay(Events):
-    required_roles = dd.login_required(GuestOperator)
+    required_roles = dd.login_required(OfficeOperator)
     label = _("Appointments today")
     column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
     auto_fit_column_widths = True
@@ -823,7 +823,7 @@ class EntriesByRoom(Events):
 
 
 class EntriesByController(Events):
-    required_roles = dd.login_required(GuestOperator)
+    required_roles = dd.login_required(OfficeOperator)
     # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
@@ -904,7 +904,8 @@ if settings.SITE.project_model:
 class OneEvent(Events):
     show_detail_navigator = False
     use_as_default_table = False
-    required_roles = dd.login_required((GuestOperator, CalendarReader))
+    required_roles = dd.login_required(
+        (OfficeOperator, OfficeUser, CalendarReader))
     # required_roles = dd.login_required(OfficeUser)
 
 
