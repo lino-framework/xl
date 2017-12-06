@@ -53,7 +53,7 @@ class Plugin(ad.Plugin):
     Note that this remains a text string while
     :attr:`quick_search_fields
     <lino.core.model.Model.quick_search_fields>` is resolved into a
-    set of field names at site startup.
+    tuple of data elements at site startup.
 
     """
 

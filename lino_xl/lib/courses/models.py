@@ -419,7 +419,7 @@ class Course(Reservation, Duplicable, Printable):
         # states = (EnrolmentStates.requested, EnrolmentStates.confirmed)
         # fkw.update(state__in=states)
         qs = Enrolment.objects.filter(course=self).order_by(
-            *Enrolment.quick_search_fields)
+            *[f.name for f in Enrolment.quick_search_fields])
             # *pupil_name_fields)
         for obj in qs:
             if obj.is_guest_for(event):
