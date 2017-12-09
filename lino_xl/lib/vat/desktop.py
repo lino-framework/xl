@@ -123,7 +123,7 @@ class IntracomInvoices(PartnerVouchers):
         journal__trade_type state user""".split())
     
     @classmethod
-    def get_queryset(cls, ar, **kwargs):
+    def get_request_queryset(cls, ar, **kwargs):
         fkw = dict()
         if cls._trade_type is not None:
             fkw.update(journal__trade_type=cls._trade_type)
@@ -131,7 +131,7 @@ class IntracomInvoices(PartnerVouchers):
                        if r.name.startswith('intracom')])
         # (VatRegimes.intracom, VatRegimes.intracom_supp)
         fkw.update(vat_regime__in=regimes)
-        qs = super(IntracomInvoices, cls).get_queryset(ar, **fkw)
+        qs = super(IntracomInvoices, cls).get_request_queryset(ar, **fkw)
         # raise Exception("20170905 {}".format(qs.query))
         return qs
     
