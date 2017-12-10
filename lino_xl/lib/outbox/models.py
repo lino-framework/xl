@@ -45,7 +45,7 @@ class Recipient(dd.Model):
     class Meta:
         verbose_name = _("Recipient")
         verbose_name_plural = _("Recipients")
-    mail = models.ForeignKey('outbox.Mail')
+    mail = dd.ForeignKey('outbox.Mail')
     partner = dd.ForeignKey('contacts.Partner',
                             #~ verbose_name=_("Recipient"),
                             blank=True, null=True)
@@ -218,9 +218,9 @@ class Mail(UserAuthored, Printable,
                                )
     body = dd.RichTextField(_("Body"), blank=True, format='html')
 
-    #~ type = models.ForeignKey(MailType,null=True,blank=True)
+    #~ type = dd.ForeignKey(MailType,null=True,blank=True)
 
-    #~ sender = models.ForeignKey(settings.SITE.user_model,
+    #~ sender = dd.ForeignKey(settings.SITE.user_model,
         #~ verbose_name=_("Sender"))
         #~ related_name='outmails_by_sender',
         #~ blank=True,null=True)
@@ -358,7 +358,7 @@ class Attachment(Controllable):
         verbose_name = _("Attachment")
         verbose_name_plural = _("Attachments")
 
-    mail = models.ForeignKey('outbox.Mail')
+    mail = dd.ForeignKey('outbox.Mail')
 
     def __str__(self):
         if self.owner_id:

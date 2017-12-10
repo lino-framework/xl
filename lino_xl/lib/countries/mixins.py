@@ -88,7 +88,7 @@ class CountryCity(dd.Model):
 
 
 class CountryRegionCity(CountryCity):
-    region = models.ForeignKey(
+    region = dd.ForeignKey(
         'countries.Place',
         blank=True, null=True,
         verbose_name=dd.plugins.countries.region_label,

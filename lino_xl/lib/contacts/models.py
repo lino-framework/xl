@@ -413,7 +413,7 @@ class Company(Partner):
         verbose_name = _("Organization")
         verbose_name_plural = _("Organizations")
 
-    type = models.ForeignKey('contacts.CompanyType', blank=True, null=True)
+    type = dd.ForeignKey('contacts.CompanyType', blank=True, null=True)
 
     def get_full_name(self, salutation=True, **salutation_options):
         """Deserves more documentation."""
@@ -489,13 +489,13 @@ class Role(dd.Model, Addressable):
         verbose_name = _("Contact Person")
         verbose_name_plural = _("Contact Persons")
 
-    type = models.ForeignKey(
+    type = dd.ForeignKey(
         'contacts.RoleType',
         blank=True, null=True,
         verbose_name=_("Role"))
-    person = models.ForeignKey(
+    person = dd.ForeignKey(
         "contacts.Person", related_name='rolesbyperson')
-    company = models.ForeignKey(
+    company = dd.ForeignKey(
         "contacts.Company", related_name='rolesbycompany')
 
     def __str__(self):
@@ -589,4 +589,4 @@ def company_tables_alias(sender, **kw):
 
 
 def PartnerField(**kw):
-    return models.ForeignKey(Partner, **kw)
+    return dd.ForeignKey(Partner, **kw)

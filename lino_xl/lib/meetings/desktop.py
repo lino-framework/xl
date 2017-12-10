@@ -94,7 +94,7 @@ class Meetings(dd.Table):
 
 
     parameters = mixins.ObservedDateRange(
-        user=models.ForeignKey(
+        user=dd.ForeignKey(
             settings.SITE.user_model,
             blank=True, null=True),
         show_active=dd.YesNo.field(
@@ -102,7 +102,7 @@ class Meetings(dd.Table):
             help_text=_("Whether to show rows in some active state")),
         state=MeetingStates.field(blank=True),
         member=dd.ForeignKey(dd.resolve_model('contacts.Partner'),
-            _("Member"), blank=True,
+            verbose_name=_("Member"), blank=True,
             help_text=_("Show rows that this person is a member")),
     )
     params_layout = """user room state show_active member

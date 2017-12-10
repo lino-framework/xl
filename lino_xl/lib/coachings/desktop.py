@@ -44,12 +44,12 @@ class Coachings(dd.Table):
     model = 'coachings.Coaching'
 
     parameters = mixins.ObservedDateRange(
-        coached_by=models.ForeignKey(
+        coached_by=dd.ForeignKey(
             'users.User',
             blank=True, null=True,
             verbose_name=_("Coached by"),
             help_text="""Nur Begleitungen dieses Benutzers."""),
-        and_coached_by=models.ForeignKey(
+        and_coached_by=dd.ForeignKey(
             'users.User',
             blank=True, null=True,
             verbose_name=_("and by"),
@@ -59,11 +59,11 @@ class Coachings(dd.Table):
         primary_coachings=dd.YesNo.field(
             _("Primary coachings"),
             blank=True, help_text="""Accompagnements primaires."""),
-        coaching_type=models.ForeignKey(
+        coaching_type=dd.ForeignKey(
             'coachings.CoachingType',
             blank=True, null=True,
             help_text="""Nur Begleitungen dieses Dienstes."""),
-        ending=models.ForeignKey(
+        ending=dd.ForeignKey(
             'coachings.CoachingEnding',
             blank=True, null=True,
             help_text="""Nur Begleitungen mit diesem Beendigungsgrund."""),

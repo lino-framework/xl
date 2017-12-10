@@ -68,7 +68,7 @@ class LanguageKnowledge(dd.Model):
 
     allow_cascaded_delete = ['person']
 
-    person = models.ForeignKey(config.person_model)
+    person = dd.ForeignKey(config.person_model)
     language = dd.ForeignKey("languages.Language")
     spoken = HowWell.field(_("Spoken"), blank=True)
     written = HowWell.field(_("Written"), blank=True)
@@ -186,7 +186,7 @@ class EducationEntry(PersonHistoryEntry, CountryCity):
     remarks = models.TextField(
         blank=True, null=True, verbose_name=_("Remarks"))
 
-    type = models.ForeignKey('cv.StudyType')
+    type = dd.ForeignKey('cv.StudyType')
 
 
 class StudyOrTraining(dd.Model):
@@ -565,7 +565,7 @@ class Function(mixins.BabelNamed):
         blank=True,
         verbose_name=_("Remark"))
 
-    sector = models.ForeignKey(Sector)
+    sector = dd.ForeignKey(Sector)
         #~ related_name="%(app_label)s_%(class)s_set_by_provider",
         #~ verbose_name=_("Job Provider"),
         #~ blank=True,null=True)
@@ -603,7 +603,7 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
         get_latest_by = 'start_date'
 
     company = models.CharField(max_length=200, verbose_name=_("Company"))
-    #~ type = models.ForeignKey(JobType,verbose_name=_("job type"))
+    #~ type = dd.ForeignKey(JobType,verbose_name=_("job type"))
     title = models.CharField(
         max_length=200, verbose_name=_("Job title"), blank=True)
     status = dd.ForeignKey('cv.Status', blank=True, null=True)

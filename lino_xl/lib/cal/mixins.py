@@ -670,7 +670,7 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
     #     """Adds the :attr:`room` filter parameter field."""
     #     fld = cls._meta.get_field('room')
     #     fields.setdefault(
-    #         'room', models.ForeignKey(
+    #         'room', dd.ForeignKey(
     #             'cal.Room', verbose_name=fld.verbose_name,
     #             blank=True, null=True))
     #     return super(Reservation, cls).setup_parameters(**fields)

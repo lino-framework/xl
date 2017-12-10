@@ -174,7 +174,7 @@ class Bookings(dd.Table):
     order_by = ['start_date']
 
     parameters = mixins.ObservedDateRange(
-        company=models.ForeignKey('contacts.Company', blank=True, null=True),
+        company=dd.ForeignKey('contacts.Company', blank=True, null=True),
         state=BookingStates.field(blank=True),
     )
     params_layout = """company state"""

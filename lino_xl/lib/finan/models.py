@@ -272,7 +272,7 @@ class FinancialVouchers(dd.Table):
     order_by = ["id", "entry_date"]
     parameters = dict(
         pyear=ledger.FiscalYears.field(blank=True),
-        #~ ppartner=models.ForeignKey('contacts.Partner',blank=True,null=True),
+        #~ ppartner=dd.ForeignKey('contacts.Partner',blank=True,null=True),
         pjournal=ledger.JournalRef(blank=True))
     params_layout = "pjournal pyear"
     detail_layout = JournalEntryDetail()

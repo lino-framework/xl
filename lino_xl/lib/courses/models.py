@@ -150,7 +150,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
     course_area = CourseAreas.field(
         default=CourseAreas.default.as_callable)
     # default=CourseAreas.get_lazy('default')
-    topic = models.ForeignKey(Topic, blank=True, null=True)
+    topic = dd.ForeignKey(Topic, blank=True, null=True)
     description = dd.BabelTextField(_("Description"), blank=True)
 
     every_unit = Recurrencies.field(
@@ -274,16 +274,16 @@ class Course(Reservation, Duplicable, Printable):
 
     site_field_name = 'room'
 
-    # line = models.ForeignKey('courses.Line', null=True, blank=True)
-    line = models.ForeignKey('courses.Line')
+    # line = dd.ForeignKey('courses.Line', null=True, blank=True)
+    line = dd.ForeignKey('courses.Line')
 
-    teacher = models.ForeignKey(
+    teacher = dd.ForeignKey(
         teacher_model,
         verbose_name=_("Instructor"),
         blank=True, null=True)
 
-    #~ room = models.ForeignKey(Room,blank=True,null=True)
-    slot = models.ForeignKey(Slot, blank=True, null=True)
+    #~ room = dd.ForeignKey(Room,blank=True,null=True)
+    slot = dd.ForeignKey(Slot, blank=True, null=True)
     description = dd.BabelTextField(_("Description"), blank=True)
     remark = models.TextField(_("Remark"), blank=True)
 
@@ -662,7 +662,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
 
     quick_search_fields = pupil_name_fields
 
-    #~ teacher = models.ForeignKey(Teacher)
+    #~ teacher = dd.ForeignKey(Teacher)
     course = dd.ForeignKey('courses.Course')
     pupil = dd.ForeignKey(
         pupil_model, related_name="enrolments_by_pupil")

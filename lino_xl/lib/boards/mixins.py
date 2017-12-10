@@ -28,7 +28,7 @@ class BoardDecision(UserAuthored):
 
     decision_date = models.DateField(
         verbose_name=_('Decided'), blank=True, null=True)
-    board = models.ForeignKey('boards.Board', blank=True, null=True)
+    board = dd.ForeignKey('boards.Board', blank=True, null=True)
 
     @dd.chooser()
     def board_choices(self, decision_date):

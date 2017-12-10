@@ -285,7 +285,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
         verbose_name_plural = _("Recurring events")
         abstract = dd.is_abstract_model(__name__, 'RecurrentEvent')
 
-    event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
+    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
     description = dd.RichTextField(
         _("Description"), blank=True, format='html')
 
@@ -369,11 +369,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     update_events = UpdateEntriesByEvent()
     show_today = ShowEntriesByDay('start_date')
 
-    event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
+    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
 
     transparent = models.BooleanField(_("Transparent"), default=False)
     room = dd.ForeignKey('cal.Room', null=True, blank=True)
-    priority = models.ForeignKey(Priority, null=True, blank=True)
+    priority = dd.ForeignKey(Priority, null=True, blank=True)
     state = EntryStates.field(
         default=EntryStates.suggested.as_callable)
     all_day = ExtAllDayField(_("all day"))
@@ -660,7 +660,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                 # return sub
         return None
 
-    @dd.virtualfield(models.ForeignKey('cal.Calendar'))
+    @dd.virtualfield(dd.ForeignKey('cal.Calendar'))
     def calendar(self, ar):
         return self.get_calendar()
 
@@ -810,9 +810,9 @@ class Guest(Printable):
         verbose_name_plural = _("Presences")
         unique_together = ['event', 'partner']
 
-    event = models.ForeignKey('cal.Event')
+    event = dd.ForeignKey('cal.Event')
     partner = dd.ForeignKey(dd.plugins.cal.partner_model)
-    role = models.ForeignKey(
+    role = dd.ForeignKey(
         'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
     state = GuestStates.field(default=GuestStates.invited.as_callable)
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
@@ -894,7 +894,7 @@ dd.inject_field(settings.SITE.user_model,
                 ))
 dd.inject_field(settings.SITE.user_model,
                 'event_type',
-                models.ForeignKey('cal.EventType',
+                dd.ForeignKey('cal.EventType',
                                   blank=True, null=True,
                                   verbose_name=_("Default Event Type"),
         help_text=_("""The default event type for your calendar events.""")
@@ -903,7 +903,7 @@ dd.inject_field(settings.SITE.user_model,
 dd.inject_field(
     'system.SiteConfig',
     'default_event_type',
-    models.ForeignKey(
+    dd.ForeignKey(
         'cal.EventType',
         blank=True, null=True,
         verbose_name=_("Default Event Type"),
@@ -913,7 +913,7 @@ dd.inject_field(
 dd.inject_field(
     'system.SiteConfig',
     'site_calendar',
-    models.ForeignKey(
+    dd.ForeignKey(
         'cal.Calendar',
         blank=True, null=True,
         related_name="%(app_label)s_%(class)s_set_by_site_calender",

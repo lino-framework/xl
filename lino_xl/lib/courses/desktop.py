@@ -187,12 +187,12 @@ class Activities(dd.Table):
     auto_fit_column_widths = True
 
     parameters = mixins.ObservedDateRange(
-        line=models.ForeignKey('courses.Line', blank=True, null=True),
-        topic=models.ForeignKey('courses.Topic', blank=True, null=True),
-        teacher=models.ForeignKey(
+        line=dd.ForeignKey('courses.Line', blank=True, null=True),
+        topic=dd.ForeignKey('courses.Topic', blank=True, null=True),
+        teacher=dd.ForeignKey(
             teacher_model, verbose_name=_("Instructor"),
             blank=True, null=True),
-        # user=models.ForeignKey(
+        # user=dd.ForeignKey(
         #     settings.SITE.user_model,
         #     blank=True, null=True),
         show_active=dd.YesNo.field(

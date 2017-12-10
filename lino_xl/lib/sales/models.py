@@ -492,7 +492,7 @@ class ProductDocItem(QtyVatItemBase, Bleached):
 
     bleached_fields = ['description']
 
-    product = models.ForeignKey('products.Product', blank=True, null=True)
+    product = dd.ForeignKey('products.Product', blank=True, null=True)
     description = dd.RichTextField(
         _("Description"), blank=True, null=True)
     discount = dd.PercentageField(_("Discount"), blank=True, null=True)
@@ -558,7 +558,7 @@ class InvoiceItem(ProductDocItem, SequencedVoucherItem):
         verbose_name = _("Product invoice item")
         verbose_name_plural = _("Product invoice items")
 
-    voucher = models.ForeignKey(
+    voucher = dd.ForeignKey(
         'sales.VatProductInvoice', related_name='items')
     title = models.CharField(_("Heading"), max_length=200, blank=True)
     # ship_ref = models.CharField(

@@ -53,7 +53,7 @@ class Account(BabelDesignated, Sequenced, Referrable):
         verbose_name_plural = _("Analytical accounts")
         ordering = ['ref']
 
-    group = models.ForeignKey(
+    group = dd.ForeignKey(
         'ana.Group', verbose_name=_("Group"), blank=True, null=True)
 
     def full_clean(self, *args, **kw):

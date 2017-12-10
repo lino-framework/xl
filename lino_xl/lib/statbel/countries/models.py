@@ -40,7 +40,7 @@ class Country(Country):
         help_text=_("The official code for this country "
                     "used by statbel.fgov.be"))
 
-    actual_country = models.ForeignKey(
+    actual_country = dd.ForeignKey(
         'self', verbose_name=_("Actual country"),
         blank=True, null=True,
         help_text=_("Select the actual country if this row represents "

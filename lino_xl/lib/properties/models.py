@@ -171,7 +171,7 @@ class PropChoice(dd.Model):
         verbose_name_plural = _("Property Choices")
         unique_together = ['type', 'value']
 
-    type = models.ForeignKey(
+    type = dd.ForeignKey(
         PropType, verbose_name=_("Property Type"))
     value = models.CharField(
         max_length=settings.SITE.propvalue_max_length,
@@ -207,8 +207,8 @@ class Property(mixins.BabelNamed):
         verbose_name = _("Property")
         verbose_name_plural = _("Properties")
 
-    group = models.ForeignKey(PropGroup)
-    type = models.ForeignKey(PropType, verbose_name=_("Property Type"))
+    group = dd.ForeignKey(PropGroup)
+    type = dd.ForeignKey(PropType, verbose_name=_("Property Type"))
 
 
 @dd.python_2_unicode_compatible
@@ -228,8 +228,8 @@ class PropertyOccurence(dd.Model):
     class Meta:
         abstract = True
 
-    group = models.ForeignKey(PropGroup)
-    property = models.ForeignKey('properties.Property')
+    group = dd.ForeignKey(PropGroup)
+    property = dd.ForeignKey('properties.Property')
     value = models.CharField(
         _("Value"),
         max_length=settings.SITE.propvalue_max_length,

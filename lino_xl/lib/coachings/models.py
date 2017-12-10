@@ -82,7 +82,7 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservab
         verbose_name_plural = _("Coachings")
         abstract = dd.is_abstract_model(__name__, 'Coaching')
 
-    # user = models.ForeignKey(
+    # user = dd.ForeignKey(
     #     settings.SITE.user_model,
     #     verbose_name=_("Coach"),
     #     related_name="%(app_label)s_%(class)s_set_by_user",
@@ -102,7 +102,7 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservab
         Enabling this field will automatically make the other \
         coachings non-primary."""))
 
-    ending = models.ForeignKey(
+    ending = dd.ForeignKey(
         'coachings.CoachingEnding',
         related_name="%(app_label)s_%(class)s_set",
         blank=True, null=True)

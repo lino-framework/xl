@@ -228,15 +228,15 @@ class Item(dd.Model):
         verbose_name = _("Invoicing suggestion")
         verbose_name_plural = _("Invoicing suggestions")
 
-    plan = models.ForeignKey('invoicing.Plan', related_name="items")
-    partner = models.ForeignKey('contacts.Partner')
+    plan = dd.ForeignKey('invoicing.Plan', related_name="items")
+    partner = dd.ForeignKey('contacts.Partner')
     first_date = models.DateField(_("First date"))
     last_date = models.DateField(_("Last date"))
     amount = dd.PriceField(_("Amount"), default=ZERO)
     number_of_invoiceables = models.IntegerField(_("Number"), default=0)
     preview = models.TextField(_("Preview"), blank=True)
     selected = models.BooleanField(_("Selected"), default=True)
-    invoice = models.ForeignKey(
+    invoice = dd.ForeignKey(
         dd.plugins.invoicing.voucher_model,
         verbose_name=_("Invoice"),
         null=True, blank=True,

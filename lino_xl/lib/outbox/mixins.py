@@ -33,7 +33,7 @@ class MailableType(dd.Model):
           templates_group = 'notes/Note'
           
       class Note(..., Mailable):
-          type = models.ForeignKey(NoteType)
+          type = dd.ForeignKey(NoteType)
 
     """
 

@@ -40,7 +40,7 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeObservable,
     def setup_parameters(cls, fields):
         """Adds the :attr:`user` filter parameter field."""
         fields.setdefault(
-            'user', models.ForeignKey(
+            'user', dd.ForeignKey(
                 'users.User', blank=True, null=True))
         super(Group, cls).setup_parameters(fields)
 

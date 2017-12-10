@@ -614,7 +614,7 @@ class DebtorsCreditors(dd.VirtualTable):
     # def partner(self, row, ar):
     #     return ar.obj2html(row)
 
-    @dd.virtualfield(models.ForeignKey('contacts.Partner'))
+    @dd.virtualfield(dd.ForeignKey('contacts.Partner'))
     def partner(self, row, ar):
         return row
 

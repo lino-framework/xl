@@ -115,7 +115,7 @@ class Household(contacts.Partner):
         verbose_name = _("Household")
         verbose_name_plural = _("Households")
 
-    type = models.ForeignKey(Type, blank=True, null=True)
+    type = dd.ForeignKey(Type, blank=True, null=True)
     # head = dd.ForeignKey('contacts.Person', verbose_name=_("Chef")),
 
     populate_members = PopulateMembers()
@@ -279,10 +279,10 @@ class Member(mixins.DateRange, mixins.Human, mixins.Born):
 
     role = MemberRoles.field(
         default=MemberRoles.child.as_callable, blank=True, null=True)
-    person = models.ForeignKey(
+    person = dd.ForeignKey(
         config.person_model, null=True, blank=True,
         related_name='household_members')
-    household = models.ForeignKey('households.Household')
+    household = dd.ForeignKey('households.Household')
     dependency = MemberDependencies.field(
         default=MemberDependencies.none.as_callable)
 

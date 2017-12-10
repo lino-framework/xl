@@ -57,7 +57,7 @@ class Choice(mixins.BabelNamed, mixins.Sequenced):
         verbose_name = _("Choice")
         verbose_name_plural = _("Choices")
 
-    choiceset = models.ForeignKey('polls.ChoiceSet', related_name='choices')
+    choiceset = dd.ForeignKey('polls.ChoiceSet', related_name='choices')
 
     def get_siblings(self):
         return self.choiceset.choices.all()
@@ -93,7 +93,7 @@ class Poll(UserAuthored, mixins.CreatedModified, Referrable):
 
     details = models.TextField(_("Details"), blank=True)
 
-    default_choiceset = models.ForeignKey(
+    default_choiceset = dd.ForeignKey(
         'polls.ChoiceSet',
         null=True, blank=True,
         related_name='polls',
@@ -210,12 +210,12 @@ class Question(mixins.Sequenced):
 
     allow_cascaded_delete = ['poll']
 
-    poll = models.ForeignKey('polls.Poll', related_name='questions')
+    poll = dd.ForeignKey('polls.Poll', related_name='questions')
     number = models.CharField(_("No."), max_length=20, blank=True)
     title = models.CharField(pgettext("polls", "Title"), max_length=200)
     details = models.TextField(_("Details"), blank=True)
 
-    choiceset = models.ForeignKey('polls.ChoiceSet', blank=True, null=True)
+    choiceset = dd.ForeignKey('polls.ChoiceSet', blank=True, null=True)
     multiple_choices = models.BooleanField(
         _("Allow multiple choices"), blank=True, default=False)
     is_heading = models.BooleanField(_("Heading"), default=False)
@@ -426,9 +426,9 @@ class AnswerChoice(dd.Model):
 
     allow_cascaded_delete = ['response']
     
-    response = models.ForeignKey('polls.Response')
-    question = models.ForeignKey('polls.Question')
-    choice = models.ForeignKey(
+    response = dd.ForeignKey('polls.Response')
+    question = dd.ForeignKey('polls.Question')
+    choice = dd.ForeignKey(
         'polls.Choice',
         related_name='answers', verbose_name=_("My answer"),
         blank=True, null=True)
@@ -454,8 +454,8 @@ class AnswerRemark(dd.Model):
 
     allow_cascaded_delete = ['response']
 
-    response = models.ForeignKey('polls.Response')
-    question = models.ForeignKey('polls.Question')
+    response = dd.ForeignKey('polls.Response')
+    question = dd.ForeignKey('polls.Question')
     remark = models.TextField(_("My remark"), blank=True)
 
     def __str__(self):
