@@ -290,7 +290,7 @@ class AllActivities(Activities):
     _course_area = None
     required_roles = dd.login_required(Explorer)
     column_names = "line:20 start_date:8 teacher user " \
-                   "weekdays_text:10 times_text:10"
+                   "weekdays_text:10 times_text:10 *"
 
 
 class CoursesByTeacher(Activities):
