@@ -9,6 +9,7 @@
 """
 
 from __future__ import unicode_literals
+from builtins import str
 import six
 
 import logging
@@ -72,7 +73,7 @@ class ByJournal(dd.Table):
         journal <Invoices>".  But we want just "Invoices".
 
         """
-        return unicode(ar.master_instance)
+        return str(ar.master_instance)
 
     @classmethod
     def create_journal(cls, trade_type=None, account=None, **kw):
@@ -866,13 +867,13 @@ class Movements(dd.Table):
         if pv.journal is not None:
             yield pv.journal.ref
         if pv.journal_group is not None:
-            yield unicode(pv.journal_group)
+            yield str(pv.journal_group)
         if pv.year is not None:
-            yield unicode(pv.year)
+            yield str(pv.year)
         if pv.cleared == dd.YesNo.no:
-            yield unicode(_("only uncleared"))
+            yield str(_("only uncleared"))
         elif pv.cleared == dd.YesNo.yes:
-            yield unicode(_("only cleared"))
+            yield str(_("only cleared"))
 
     @dd.displayfield(_("Description"))
     def description(cls, self, ar):
