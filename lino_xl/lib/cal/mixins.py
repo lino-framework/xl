@@ -265,11 +265,6 @@ class EventGenerator(dd.Model):
             ar.info("No recurrency set")
             return wanted, unwanted
         
-        event_type = self.update_cal_event_type()
-        if event_type is None:
-            # raise Exception("20170731")
-            ar.info("No automatic events event_type")
-            return wanted, unwanted
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
         if not rset.every_unit:
@@ -334,6 +329,12 @@ class EventGenerator(dd.Model):
             # else:
             #     self.compare_auto_event(ee, we)
 
+        event_type = self.update_cal_event_type()
+        if event_type is None:
+            # raise Exception("20170731")
+            ar.warning("No automatic events because event_type is empty")
+            return wanted, unwanted
+        
         # ar.debug("20140310a %s", date)
         date = rset.find_start_date(date)
         # ar.debug("20140310b %s", date)
