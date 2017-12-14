@@ -271,11 +271,11 @@ class Activities(dd.Table):
             yield t
 
         if ar.param_values.topic:
-            yield unicode(ar.param_values.topic)
+            yield str(ar.param_values.topic)
         # for n in self.simple_param_fields:
         #     v = ar.param_values.get(n)
         #     if v:
-        #         yield unicode(v)
+        #         yield str(v)
 
 
 class Courses(Activities):
@@ -535,15 +535,15 @@ class Enrolments(dd.Table):
             yield t
 
         if ar.param_values.state:
-            yield unicode(ar.param_values.state)
+            yield str(ar.param_values.state)
         elif not ar.param_values.participants_only:
-            yield unicode(_("Also ")) + unicode(EnrolmentStates.cancelled.text)
+            yield str(_("Also ")) + str(EnrolmentStates.cancelled.text)
         if ar.param_values.course_state:
-            yield unicode(
+            yield str(
                 settings.SITE.modules.courses.Course._meta.verbose_name) \
-                + ' ' + unicode(ar.param_values.course_state)
+                + ' ' + str(ar.param_values.course_state)
         if ar.param_values.author:
-            yield unicode(ar.param_values.author)
+            yield str(ar.param_values.author)
 
 
 class AllEnrolments(Enrolments):

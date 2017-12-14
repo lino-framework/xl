@@ -8,6 +8,7 @@ Database models for `lino_xl.lib.invoicing`.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from decimal import Decimal
 ZERO = Decimal()
@@ -191,7 +192,7 @@ class Plan(UserAuthored):
     def __str__(self):
         # return "{0} {1}".format(self._meta.verbose_name, self.user)
         # return self._meta.verbose_name
-        return unicode(self.user)
+        return str(self.user)
 
 
 @dd.python_2_unicode_compatible

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
+# Copyright 2011-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """
@@ -8,6 +8,7 @@ Defines :class:`PrintTableAction` and
 """
 
 import os
+from builtins import str
 
 from django.conf import settings
 from lino.utils import format_date
@@ -72,7 +73,7 @@ class PrintTableAction(actions.Action):
     def get_context(self, ar):
         return dict(
             ar=ar,
-            title=unicode(ar.get_title()),
+            title=str(ar.get_title()),
             dtos=format_date.dtos,
             dtosl=format_date.dtosl,
             dtomy=format_date.fdmy,
