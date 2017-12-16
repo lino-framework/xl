@@ -19,7 +19,6 @@ from lino import mixins
 from lino.utils import join_words
 from lino.utils import join_elems
 
-from lino_xl.lib.countries.mixins import AddressLocation
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
@@ -83,7 +82,7 @@ class ExportVCardFile(dd.Action):
 
 @dd.python_2_unicode_compatible
 class Partner(ContactDetailsOwner, mixins.Polymorphic,
-              AddressLocation, AddressOwner, Feasible, Printable):
+              AddressOwner, Feasible, Printable):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 

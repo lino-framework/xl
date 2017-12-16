@@ -23,11 +23,11 @@ from lino.api import dd, rt
 
 def objects():
 
-    Member = rt.modules.households.Member
-    MemberRoles = rt.modules.households.MemberRoles
-    # Household = resolve_model('households.Household')
+    Member = rt.models.households.Member
+    MemberRoles = rt.models.households.MemberRoles
     Person = dd.plugins.households.person_model
-    Type = resolve_model('households.Type')
+    Type = rt.models.households.Type
+    Household = rt.models.households.Household
 
     men = Person.objects.filter(gender=dd.Genders.male).order_by('-id')
     women = Person.objects.filter(gender=dd.Genders.female).order_by('-id')
@@ -84,4 +84,26 @@ def objects():
                 Person.create_household,
                 action_param_values=pv)
             
+    if False:  # dd.is_installed('addresses'):
+        Address = rt.models.addresses.Address
+        children = set()
+        
+        for h in Household.objects.all():
+            for m in Member.objects.filter(household=h, primary=True):
+                addr = Address.objects.get(
+                    partner=m.person, primary=True)
+                if m.role == MemberRoles.head:
+                    addr.partner = h
+                    addr.full_clean()
+                    addr.save()
+                else:
+                    addr.delete()
+                    children.add(m.person)
+            
+            h.sync_primary_address_()
+            
+        for p in children:
+            p.sync_primary_address_()
+            
+        
     # settings.SITE.loading_from_dump = loading_from_dump

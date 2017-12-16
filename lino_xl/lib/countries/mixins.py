@@ -161,6 +161,15 @@ class AddressLocation(CountryRegionCity, Addressable):
             self.country = sc.country
         super(AddressLocation, self).on_create(ar)
 
+    def get_primary_address(self):
+        """Return the primary address of this partner.
+
+        Return value must be either None or an instance of
+        :class:`AddressLocation`.
+
+        """
+        return self
+        
     def address_location_lines(self):
         #~ lines = []
         #~ lines = [self.name]
