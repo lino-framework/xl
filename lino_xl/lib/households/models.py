@@ -528,11 +528,11 @@ class CreateHousehold(dd.Action):
         partner=dd.ForeignKey(
             config.person_model, verbose_name=_("Partner"),
             blank=True, null=True),
-        type=dd.ForeignKey('households.Type'))
+        type=dd.ForeignKey('households.Type', blank=True, null=True))
     params_layout = """
-    partner
-    type
     head
+    type
+    partner
     """
 
     def action_param_defaults(self, ar, obj, **kw):
@@ -543,7 +543,7 @@ class CreateHousehold(dd.Action):
 
     def run_from_ui(self, ar, **kw):
         pv = ar.action_param_values
-        rt.modules.households.Household.create_household(
+        rt.models.households.Household.create_household(
             ar, pv.head, pv.partner, pv.type)
         ar.success(
             _("Household has been created"),
@@ -560,6 +560,12 @@ class MembersByPerson(Members):
     label = _("Household memberships")
     master_key = 'person'
     column_names = 'household role primary start_date end_date *'
+    insert_layout = """
+    person
+    role
+    household
+    primary
+    """
     # auto_fit_column_widths = True
     # hide_columns = 'id'
     slave_grid_format = 'summary'
@@ -588,23 +594,24 @@ class MembersByPerson(Members):
         if len(items) > 0:
             elems += [_("%s is") % obj]
             elems.append(E.ul(*items))
-        if False:
-            elems += [
-                E.br(), ar.instance_action_button(obj.create_household)]
-        else:
-            elems += [E.br(), _("Create a household"), ' : ']
-            Type = rt.modules.households.Type
-            Person = dd.resolve_model(config.person_model)
-            T = Person.get_default_table()
-            ba = T.get_action_by_name('create_household')
-            buttons = []
-            for t in Type.objects.all():
-                apv = dict(type=t, head=obj)
-                sar = ar.spawn(ba,  # master_instance=obj,
-                               selected_rows=[obj],
-                               action_param_values=apv)
-                buttons.append(ar.href_to_request(sar, str(t)))
-            elems += join_elems(buttons, sep=' / ')
+
+        if self.insert_action is not None:
+            sar = self.insert_action.request_from(ar)
+            if sar.get_permission():
+                elems.append(E.br())
+                sar.known_values.update(person=obj)
+                # sar.known_values.pop('child', None)
+                elems += [
+                    sar.ar2button(
+                        None, _("Join an existing household"), icon_name=None),
+                    " ", _("or"), " ",
+                    ar.instance_action_button(
+                        obj.create_household,
+                        _("create a new one")),
+                    # " ",
+                    # rt.models.households.Household._meta.verbose_name,
+                    "."]
+            
         return E.div(*elems)
 
 
