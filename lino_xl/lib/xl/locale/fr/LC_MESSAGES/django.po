@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2017-12-17 04:20+0200\n"
-"PO-Revision-Date: 2017-12-17 04:26+0200\n"
+"PO-Revision-Date: 2017-12-17 21:51+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -91,7 +91,7 @@ msgstr "Clients"
 
 #: lino_xl/lib/accounts/choicelists.py:188
 msgid "Pending Payment Orders"
-msgstr ""
+msgstr "Ordres de paiement ouverts"
 
 #: lino_xl/lib/accounts/choicelists.py:189 lino_xl/lib/faculties/mixins.py:28
 msgid "Suppliers"
@@ -108,21 +108,20 @@ msgstr "Compte Salaires"
 
 #: lino_xl/lib/accounts/choicelists.py:193 lino_xl/lib/bevat/choicelists.py:48
 #: lino_xl/lib/bevats/choicelists.py:37
-#, fuzzy
 msgid "VAT due"
-msgstr "Date début"
+msgstr "TVA dûe"
 
 #: lino_xl/lib/accounts/choicelists.py:194 lino_xl/lib/bevat/choicelists.py:49
 msgid "VAT returnable"
-msgstr ""
+msgstr "TVA à retourner"
 
 #: lino_xl/lib/accounts/choicelists.py:195 lino_xl/lib/bevat/choicelists.py:50
 msgid "VAT deductible"
-msgstr ""
+msgstr "TVA déductible"
 
 #: lino_xl/lib/accounts/choicelists.py:196
 msgid "VAT declared"
-msgstr ""
+msgstr "TVA déclarée"
 
 #: lino_xl/lib/accounts/choicelists.py:198
 msgid "BestBank"
@@ -135,18 +134,16 @@ msgstr "Caisse"
 
 #: lino_xl/lib/accounts/choicelists.py:201 lino_xl/lib/bevat/choicelists.py:51
 msgid "Purchase of goods"
-msgstr ""
+msgstr "Achats de marchandises"
 
 #: lino_xl/lib/accounts/choicelists.py:202 lino_xl/lib/bevat/choicelists.py:52
 #: lino_xl/lib/bevats/choicelists.py:43
-#, fuzzy
 msgid "Purchase of services"
-msgstr "Factures achat"
+msgstr "Achats de services"
 
 #: lino_xl/lib/accounts/choicelists.py:203 lino_xl/lib/bevat/choicelists.py:53
-#, fuzzy
 msgid "Purchase of investments"
-msgstr "Factures achat"
+msgstr "Achats d'investissement"
 
 #: lino_xl/lib/accounts/choicelists.py:205 lino_xl/lib/ana/fixtures/demo.py:25
 #: lino_xl/lib/ana/fixtures/demo.py:40 lino_xl/lib/ana/fixtures/demo.py:45
@@ -157,7 +154,7 @@ msgstr "Salaires"
 #: lino_xl/lib/accounts/choicelists.py:207 lino_xl/lib/ledger/choicelists.py:27
 #: lino_xl/lib/ledger/choicelists.py:220
 msgid "Sales"
-msgstr ""
+msgstr "Ventes"
 
 #: lino_xl/lib/accounts/fields.py:27
 msgid "Debit (checked) or Credit (not checked)"
@@ -180,9 +177,8 @@ msgid "Accounts"
 msgstr "Comptes"
 
 #: lino_xl/lib/accounts/models.py:64
-#, fuzzy
 msgid "Needs partner"
-msgstr "Type de note"
+msgstr "Nécessite partenaire"
 
 #: lino_xl/lib/accounts/models.py:68
 msgid "Default amount"
@@ -232,7 +228,6 @@ msgid "Reference address"
 msgstr "Adresse de référence"
 
 #: lino_xl/lib/addresses/choicelists.py:24
-#, fuzzy
 msgid "Obsolete"
 msgstr "Console"
 
