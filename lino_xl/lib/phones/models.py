@@ -36,6 +36,7 @@ class ContactDetail(dd.Model):
     value = dd.CharField(_("Value"), max_length=200, blank=True)
     remark = dd.CharField(_("Remark"), max_length=200, blank=True)
     primary = models.BooleanField(_("Primary"), default=False)
+    end_date = models.DateField(_("Until"), blank=True, null=True)
 
     allow_cascaded_delete = ['partner']
 
@@ -99,7 +100,7 @@ class ContactDetails(dd.Table):
 class ContactDetailsByPartner(ContactDetails):
     required_roles = dd.login_required()
     master_key = 'partner'
-    column_names = 'detail_type:10 value:30 primary:5 remark:10 *'
+    column_names = 'detail_type:10 value:30 primary:5 end_date remark:10 *'
     label = _("Contact details")
     auto_fit_column_widths = True
     stay_in_grid = True
@@ -110,11 +111,12 @@ class ContactDetailsByPartner(ContactDetails):
     @classmethod
     def get_slave_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
-        html = []
-        items = [o.detail_type.as_html(o, sar) for o in sar]
+        items = [o.detail_type.as_html(o, sar)
+                 for o in sar if not o.end_date]
             
+        html = []
         if len(items) == 0:
-            html += _("Contact details") + ": "
+            html += _("No contact details")
         else:
             html += join_elems(items, sep=', ')
             
