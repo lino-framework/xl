@@ -48,6 +48,8 @@ from .choicelists import PartnerEvents
 
 from lino.mixins.human import name2kw, Human, Born
 
+with_roles_history = dd.plugins.contacts.with_roles_history
+
 # from lino.core import actions
 
 PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
@@ -497,6 +499,16 @@ class Role(dd.Model, Addressable):
     company = dd.ForeignKey(
         "contacts.Company", related_name='rolesbycompany')
 
+    if with_roles_history:
+        start_date = models.DateField(
+            verbose_name=_("Start date"), blank=True, null=True)
+        end_date = models.DateField(
+            verbose_name=_("End date"), blank=True, null=True)
+    else:
+        start_date = dd.DummyField()
+        end_date = dd.DummyField()
+        
+    
     def __str__(self):
         if self.person_id is None:
             return super(Role, self).__str__()
@@ -537,7 +549,7 @@ class RolesByCompany(Roles):
     #~ required_user_level = None
     label = _("Contact persons")
     master_key = 'company'
-    column_names = 'person type *'
+    column_names = 'person type start_date end_date *'
     hidden_columns = 'id'
 
 
@@ -547,7 +559,7 @@ class RolesByPerson(Roles):
     #~ required_user_level = None
     label = _("Contact for")
     master_key = 'person'
-    column_names = 'company type *'
+    column_names = 'company type start_date end_date *'
     auto_fit_column_widths = True
     hidden_columns = 'id'
 

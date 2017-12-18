@@ -432,7 +432,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             n = self.event_type.max_conflicting - 1
         else:
             n = 0
-        date = self.start_date
+        # date = self.start_date
         # if date.day == 9 and date.month == 3:
         #     dd.logger.info("20171130 has_conflicting_events() %s", qs.query)
         return qs.count() > n
