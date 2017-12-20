@@ -770,6 +770,8 @@ should have active coachings."""),
     'lino_xl.lib.contacts.ExportVCardFile' : _("""Download all records as a .vcf file which you can import to another
 contacts application."""),
     'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
+    'lino_xl.lib.contacts.Plugin.with_roles_history' : _("""Whether to define two additional fields
+Role.start_date and Role.end_date."""),
     'lino_xl.lib.contacts.Plugin.use_vcard_export' : _("""Whether Lino should provide a button for exporting contact
 data as a vcf file."""),
     'lino_xl.lib.contacts.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
@@ -808,11 +810,15 @@ common."""),
 can be in a given Company."""),
     'lino_xl.lib.contacts.RoleType.name' : _("""A translatable designation. Used e.g. in document templates
 for contracts."""),
-    'lino_xl.lib.contacts.Role' : _("""A role is when a given person has a given function
-(ContactType) in a given organization."""),
+    'lino_xl.lib.contacts.Role' : _("""A role is when a given person exercises a given
+function (ContactType) in a given organization."""),
     'lino_xl.lib.contacts.Role.company' : _("""The organization where this person has this role."""),
-    'lino_xl.lib.contacts.Role.type' : _("""The function of this person in this company."""),
-    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.Role.type' : _("""The function of this person in this organization."""),
+    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this organization."""),
+    'lino_xl.lib.contacts.Role.start_date' : _("""When this person started to exercise this function in this
+organization."""),
+    'lino_xl.lib.contacts.Role.end_date' : _("""When this person stopped to exercise this function in this
+organization."""),
     'lino_xl.lib.contacts.ContactRelated' : _("""Model mixin for things that relate to either a private person
 or a company, the latter potentially represented by a contact
 person having a given role in that company.  Typical usages are
