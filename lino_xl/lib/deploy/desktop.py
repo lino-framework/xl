@@ -121,6 +121,7 @@ class Deployments(dd.Table):
 
 class DeploymentsByMilestone(Deployments):
     # label = _("Deployed tickets")
+    drag_drop_sequenced_field = 'seqno'
     order_by = ['seqno']
     master_key = 'milestone'
     column_names = "seqno move_buttons:8 ticket:30 old_ticket_state " \

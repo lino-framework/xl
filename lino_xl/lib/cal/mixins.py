@@ -186,7 +186,8 @@ class EventGenerator(dd.Model):
             #~ print "20111014 loading_from_dump"
             return 0
         wanted, unwanted = self.get_wanted_auto_events(ar)
-        # dd.logger.info("20161015 get_wanted_auto_events() returned %s", wanted)
+        # dd.logger.info(
+        #     "20171130 get_wanted_auto_events() returned %s", unwanted)
         count = len(wanted)
         # current = 0
 
@@ -264,11 +265,6 @@ class EventGenerator(dd.Model):
             ar.info("No recurrency set")
             return wanted, unwanted
         
-        event_type = self.update_cal_event_type()
-        if event_type is None:
-            # raise Exception("20170731")
-            ar.info("No automatic events event_type")
-            return wanted, unwanted
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
         if not rset.every_unit:
@@ -276,6 +272,7 @@ class EventGenerator(dd.Model):
             return wanted, unwanted
         
         qs = self.get_existing_auto_events()
+        
         qs = qs.order_by('start_date', 'start_time', 'auto_type')
         
         # Find the existing event before the first unmodified
@@ -332,6 +329,12 @@ class EventGenerator(dd.Model):
             # else:
             #     self.compare_auto_event(ee, we)
 
+        event_type = self.update_cal_event_type()
+        if event_type is None:
+            # raise Exception("20170731")
+            ar.warning("No automatic events because event_type is empty")
+            return wanted, unwanted
+        
         # ar.debug("20140310a %s", date)
         date = rset.find_start_date(date)
         # ar.debug("20140310b %s", date)
@@ -342,8 +345,11 @@ class EventGenerator(dd.Model):
             or dd.plugins.cal.ignore_dates_after
         if until is None:
             raise Exception("ignore_dates_after may not be None")
-        max_events = rset.max_events or \
-            settings.SITE.site_config.max_auto_events
+        # don't take rset.max_events == 0 as False
+        if rset.max_events is None:
+            max_events = settings.SITE.site_config.max_auto_events
+        else:
+            max_events = rset.max_events
         Event = settings.SITE.modules.cal.Event
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
@@ -382,6 +388,10 @@ class EventGenerator(dd.Model):
 
                     else:
                         self.compare_auto_event(ee, we)
+                        # we don't need to add it to wanted because
+                        # compare_auto_event() saves any changes
+                        # immediately.
+                        # wanted[event_no] = we
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
                 if date is None:
@@ -421,30 +431,18 @@ class EventGenerator(dd.Model):
         ar.confirm(doit, _("Move {} to next available date?").format(we))
 
     def care_about_conflicts(self, we):
-        """Whether this event generator should try to resolve conflicts (in
-        :meth:`resolve_conflicts`)
-
-        """
         return True
 
     def resolve_conflicts(self, we, ar, rset, until):
-        """Check whether given event `we` conflicts with other events and move
-        it to a new date if necessary. Returns (a) the event's
-        start_date if there is no conflict, (b) the next available
-        alternative date if the event conflicts with other existing
-        events and should be moved, or (c) None if there are conflicts
-        but no alternative date could be found.
-
-        `ar` is the action request who asks for this.
-        `rset` is the `RecurrenceSet`.
-
-        """
     
         date = we.start_date
         if rset == Recurrencies.once:
             return date
         if not self.care_about_conflicts(we):
             return date
+        # if date.day == 9 and date.month == 3:
+        #     ar.info("20171130 resolve_conflicts() %s",
+        #             we.has_conflicting_events())
         # ar.debug("20140310 resolve_conflicts %s", we.start_date)
         while we.has_conflicting_events():
             qs = we.get_conflicting_events()
@@ -673,7 +671,7 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
     #     """Adds the :attr:`room` filter parameter field."""
     #     fld = cls._meta.get_field('room')
     #     fields.setdefault(
-    #         'room', models.ForeignKey(
+    #         'room', dd.ForeignKey(
     #             'cal.Room', verbose_name=fld.verbose_name,
     #             blank=True, null=True))
     #     return super(Reservation, cls).setup_parameters(**fields)

@@ -175,7 +175,7 @@ class PersonHistoryEntry(DateRange):
     class Meta:
         abstract = True
 
-    person = models.ForeignKey(dd.plugins.cv.person_model)
+    person = dd.ForeignKey(dd.plugins.cv.person_model)
     duration_text = models.CharField(
         _("Duration"), max_length=200, blank=True)
 

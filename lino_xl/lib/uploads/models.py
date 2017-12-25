@@ -150,12 +150,12 @@ class Uploads(Uploads):
     """
 
     parameters = mixins.ObservedDateRange(
-        # puser=models.ForeignKey(
+        # puser=dd.ForeignKey(
         #     'users.User', blank=True, null=True,
         #     verbose_name=_("Uploaded by")),
-        upload_type=models.ForeignKey(
+        upload_type=dd.ForeignKey(
             'uploads.UploadType', blank=True, null=True),
-        coached_by=models.ForeignKey(
+        coached_by=dd.ForeignKey(
             'users.User',
             blank=True, null=True,
             verbose_name=_("Coached by"),

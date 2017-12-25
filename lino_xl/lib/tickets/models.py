@@ -108,7 +108,7 @@ class Project(mixins.DateRange, TimeInvestment,
 
 
     name = models.CharField(_("Name"), max_length=200)
-    # parent = models.ForeignKey(
+    # parent = dd.ForeignKey(
     #     'self', blank=True, null=True, verbose_name=_("Parent"))
     assign_to = dd.ForeignKey(
         settings.SITE.user_model,
@@ -119,7 +119,7 @@ class Project(mixins.DateRange, TimeInvestment,
     description = dd.RichTextField(_("Description"), blank=True)
     srcref_url_template = models.CharField(blank=True, max_length=200)
     changeset_url_template = models.CharField(blank=True, max_length=200)
-    # root = models.ForeignKey(
+    # root = dd.ForeignKey(
     #     'self', blank=True, null=True, verbose_name=_("Root"))
     reporting_type = ReportingTypes.field(blank=True)
     # if dd.is_installed('clocking'):
@@ -426,7 +426,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     upgrade_notes = dd.RichTextField(
         _("Resolution"), blank=True, format='plain')
     ticket_type = dd.ForeignKey('tickets.TicketType', blank=True, null=True)
-    duplicate_of = models.ForeignKey(
+    duplicate_of = dd.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
     # assigned_to = dd.ForeignKey(

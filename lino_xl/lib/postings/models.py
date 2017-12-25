@@ -71,11 +71,11 @@ class Posting(UserAuthored, mixins.ProjectRelated, Controllable):
 
     print_posting = PrintPosting()
 
-    partner = models.ForeignKey('contacts.Partner',
+    partner = dd.ForeignKey('contacts.Partner',
                                 verbose_name=_("Recipient"),
                                 blank=True, null=True)
     state = PostingStates.field()
-    #~ sender = models.ForeignKey(settings.SITE.user_model)
+    #~ sender = dd.ForeignKey(settings.SITE.user_model)
     date = models.DateField()
 
     def unused_save(self, *args, **kw):

@@ -1,11 +1,11 @@
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """User roles for this plugin. """
 
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole
 
 
-class SimpleVotesUser(SiteUser):
+class SimpleVotesUser(UserRole):
     """A user who has access to basic contacts functionality.
 
     """

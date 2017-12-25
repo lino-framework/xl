@@ -64,7 +64,7 @@ class Product(mixins.BabelNamed):
     description = dd.BabelTextField(
         verbose_name=_("Long description"),
         blank=True, null=True)
-    cat = models.ForeignKey(
+    cat = dd.ForeignKey(
         ProductCat, verbose_name=_("Category"),
         blank=True, null=True)
 

@@ -749,7 +749,7 @@ class Excerpts(dd.Table):
     allow_create = False
 
     parameters = mixins.ObservedDateRange(
-        excerpt_type=models.ForeignKey(
+        excerpt_type=dd.ForeignKey(
             'excerpts.ExcerptType', blank=True, null=True),
         pcertifying=dd.YesNo.field(_("Certifying excerpts"), blank=True))
     params_layout = """

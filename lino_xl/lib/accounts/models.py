@@ -58,7 +58,7 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
         verbose_name_plural = _("Accounts")
         ordering = ['ref']
 
-    group = models.ForeignKey('accounts.Group', blank=True, null=True)
+    group = dd.ForeignKey('accounts.Group', blank=True, null=True)
     type = AccountTypes.field()  # blank=True)
     common_account = CommonAccounts.field(blank=True)
     needs_partner = models.BooleanField(_("Needs partner"), default=False)

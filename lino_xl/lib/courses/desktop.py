@@ -187,12 +187,12 @@ class Activities(dd.Table):
     auto_fit_column_widths = True
 
     parameters = mixins.ObservedDateRange(
-        line=models.ForeignKey('courses.Line', blank=True, null=True),
-        topic=models.ForeignKey('courses.Topic', blank=True, null=True),
-        teacher=models.ForeignKey(
+        line=dd.ForeignKey('courses.Line', blank=True, null=True),
+        topic=dd.ForeignKey('courses.Topic', blank=True, null=True),
+        teacher=dd.ForeignKey(
             teacher_model, verbose_name=_("Instructor"),
             blank=True, null=True),
-        # user=models.ForeignKey(
+        # user=dd.ForeignKey(
         #     settings.SITE.user_model,
         #     blank=True, null=True),
         show_active=dd.YesNo.field(
@@ -271,11 +271,11 @@ class Activities(dd.Table):
             yield t
 
         if ar.param_values.topic:
-            yield unicode(ar.param_values.topic)
+            yield str(ar.param_values.topic)
         # for n in self.simple_param_fields:
         #     v = ar.param_values.get(n)
         #     if v:
-        #         yield unicode(v)
+        #         yield str(v)
 
 
 class Courses(Activities):
@@ -290,7 +290,7 @@ class AllActivities(Activities):
     _course_area = None
     required_roles = dd.login_required(Explorer)
     column_names = "line:20 start_date:8 teacher user " \
-                   "weekdays_text:10 times_text:10"
+                   "weekdays_text:10 times_text:10 *"
 
 
 class CoursesByTeacher(Activities):
@@ -342,13 +342,13 @@ class CoursesByLine(Activities):
     master_key = "line"
     column_names = "overview weekdays_text room times_text teacher *"
     order_by = ['room__name', '-start_date']
+    
 
 
 class CoursesByTopic(Activities):
     """Shows the courses of a given topic.
 
     """
-    
     master_key = 'line__topic'
     # master = 'courses.Topic'
     order_by = ['-start_date']
@@ -368,12 +368,6 @@ class CoursesByTopic(Activities):
     #     kw.update(line__topic=ar.master_instance)
     #     return kw
 
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
-        kw.update(show_active=dd.YesNo.yes)
-        return kw
-
     # @classmethod
     # def get_request_queryset(self, ar):
     #     Course = rt.models.courses.Course
@@ -381,6 +375,12 @@ class CoursesByTopic(Activities):
     #     if topic is None:
     #         return Course.objects.none()
     #     return Course.objects.filter(line__topic=topic)
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
+        kw.update(show_active=dd.YesNo.yes)
+        return kw
 
 
 class CoursesBySlot(Activities):
@@ -446,6 +446,7 @@ class Enrolments(dd.Table):
 
     _course_area = None
 
+    required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     # debug_permissions=20130531
     model = 'courses.Enrolment'
     stay_in_grid = True
@@ -534,15 +535,15 @@ class Enrolments(dd.Table):
             yield t
 
         if ar.param_values.state:
-            yield unicode(ar.param_values.state)
+            yield str(ar.param_values.state)
         elif not ar.param_values.participants_only:
-            yield unicode(_("Also ")) + unicode(EnrolmentStates.cancelled.text)
+            yield str(_("Also ")) + str(EnrolmentStates.cancelled.text)
         if ar.param_values.course_state:
-            yield unicode(
+            yield str(
                 settings.SITE.modules.courses.Course._meta.verbose_name) \
-                + ' ' + unicode(ar.param_values.course_state)
+                + ' ' + str(ar.param_values.course_state)
         if ar.param_values.author:
-            yield unicode(ar.param_values.author)
+            yield str(ar.param_values.author)
 
 
 class AllEnrolments(Enrolments):

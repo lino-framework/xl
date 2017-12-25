@@ -339,7 +339,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     journal = JournalRef()
     entry_date = models.DateField(_("Entry date"), default=dd.today)
     voucher_date = models.DateField(_("Voucher date"))
-    accounting_period = models.ForeignKey(
+    accounting_period = dd.ForeignKey(
         'ledger.AccountingPeriod', blank=True)
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
@@ -847,7 +847,7 @@ for tt in TradeTypes.objects():
 dd.inject_field(
     'contacts.Partner',
     'payment_term',
-    models.ForeignKey(
+    dd.ForeignKey(
         'ledger.PaymentTerm',
         blank=True, null=True,
         help_text=_("The default payment term for "

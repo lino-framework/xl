@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2017 Luc Saffre
-#
 # License: BSD (see file COPYING for details)
 
 
@@ -160,6 +159,7 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
         _("Simultaneous entries"), default=1)
     max_days = models.PositiveIntegerField(
         _("Maximum days"), default=1)
+    transparent = models.BooleanField(_("Transparent"), default=False)
 
     def __str__(self):
         # when selecting an Event.event_type it is more natural to
@@ -285,7 +285,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
         verbose_name_plural = _("Recurring events")
         abstract = dd.is_abstract_model(__name__, 'RecurrentEvent')
 
-    event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
+    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
     description = dd.RichTextField(
         _("Description"), blank=True, format='html')
 
@@ -315,10 +315,6 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
         return six.text_type(self)
 
     def care_about_conflicts(self, we):
-        """Recurrent events don't care about conflicts. A holiday won't move
-        just because some other event has been created before on that date.
-
-        """
         return False
 
 dd.update_field(
@@ -373,11 +369,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     update_events = UpdateEntriesByEvent()
     show_today = ShowEntriesByDay('start_date')
 
-    event_type = models.ForeignKey('cal.EventType', blank=True, null=True)
+    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
 
     transparent = models.BooleanField(_("Transparent"), default=False)
     room = dd.ForeignKey('cal.Room', null=True, blank=True)
-    priority = models.ForeignKey(Priority, null=True, blank=True)
+    priority = dd.ForeignKey(Priority, null=True, blank=True)
     state = EntryStates.field(
         default=EntryStates.suggested.as_callable)
     all_day = ExtAllDayField(_("all day"))
@@ -427,22 +423,41 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if qs is None:
             return False
         if self.event_type is not None:
+            if self.event_type.transparent:
+                return False
+            # holidays (all room events) conflict also with events
+            # whose type otherwise would allow conflicting events
             if qs.filter(event_type__all_rooms=True).count() > 0:
                 return True
             n = self.event_type.max_conflicting - 1
         else:
             n = 0
+        # date = self.start_date
+        # if date.day == 9 and date.month == 3:
+        #     dd.logger.info("20171130 has_conflicting_events() %s", qs.query)
         return qs.count() > n
 
     def get_conflicting_events(self):
         if self.transparent:
             return
-        if self.state.transparent:
-            return
+        # if self.event_type is not None and self.event_type.transparent:
+        #     return
         # return False
         # Event = dd.resolve_model('cal.Event')
         # ot = ContentType.objects.get_for_model(RecurrentEvent)
         qs = self.__class__.objects.filter(transparent=False)
+        qs = qs.exclude(event_type__transparent=True)
+        
+        # if self.state.transparent:
+        #     # cancelled entries are basically transparent to all
+        #     # others. Except if they have an owner, in which case we
+        #     # wouldn't want Lino to put another automatic entry at
+        #     # that date.
+        #     if self.owner_id is None:
+        #         return
+        #     qs = qs.filter(
+        #         owner_id=self.owner_id, owner_type=self.owner_type)
+        
         end_date = self.end_date or self.start_date
         flt = Q(start_date=self.start_date, end_date__isnull=True)
         flt |= Q(end_date__isnull=False,
@@ -473,19 +488,36 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                 owner_id=self.owner_id, owner_type=self.owner_type)
 
         # transparent events (cancelled or omitted) usually don't
-        # cause a conflict with other events (e.g. a holiday), except
-        # if the other event has the same owner (because a cancelled
-        # course lesson should not tolerate another lesson on the same
-        # date).
-        qs = qs.filter(
-            Q(state__in=EntryStates.filter(transparent=False)) | Q(
-                owner_id=self.owner_id, owner_type=self.owner_type))
+        # cause a conflict with other events (e.g. a holiday). But a
+        # cancelled course lesson should not tolerate another lesson
+        # of the same course on the same date.
+        ntstates = EntryStates.filter(transparent=False)
+        if self.owner_id is None:
+            if self.state.transparent:
+                return
+            qs = qs.filter(state__in=ntstates)
+        else:
+            if self.state.transparent:
+                qs = qs.filter(
+                    owner_id=self.owner_id, owner_type=self.owner_type)
+            else:
+                qs = qs.filter(
+                    Q(state__in=ntstates) | Q(
+                        owner_id=self.owner_id, owner_type=self.owner_type))
 
         if self.room is None:
-            # a non-holiday event without room conflicts with a
-            # holiday event
+            # an entry that needs a room but doesn't yet have one,
+            # conflicts with any all-room entry (e.g. a holiday).  For
+            # generated entries this list extends to roomed entries of
+            # the same generator.
+            
             if self.event_type is None or not self.event_type.all_rooms:
-                qs = qs.filter(event_type__all_rooms=True)
+                if self.owner_id is None:
+                    qs = qs.filter(event_type__all_rooms=True)
+                else:
+                    qs = qs.filter(
+                        Q(event_type__all_rooms=True) | Q(
+                            owner_id=self.owner_id, owner_type=self.owner_type))
         else:
             # other event in the same room
             c1 = Q(room=self.room)
@@ -517,6 +549,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         super(Event, self).after_ui_save(ar, cw)
         self.update_guests.run_from_code(ar)
 
+    def before_state_change(self, ar, old, new):
+        super(Event, self).before_state_change(ar, old, new)
+        if new.noauto:
+            self.auto_type = None
+        
     def suggest_guests(self):
         if self.owner:
             for obj in self.owner.suggest_cal_guests(self):
@@ -591,14 +628,14 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     # def get_mailable_body(self,ar):
         # return self.description
 
-    @dd.displayfield(_("When"))
+    @dd.displayfield(_("When"), sortable_by=['start_date', 'start_time'])
     def when_text(self, ar):
         txt = when_text(self.start_date, self.start_time)
         if self.end_date and self.end_date != self.start_date:
             txt += "-" + when_text(self.end_date, self.end_time)
         return txt
 
-    @dd.displayfield(_("When"))
+    @dd.displayfield(_("When"), sortable_by=['start_date', 'start_time'])
     # def linked_date(self, ar):
     def when_html(self, ar):
         if ar is None:
@@ -623,7 +660,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                 # return sub
         return None
 
-    @dd.virtualfield(models.ForeignKey('cal.Calendar'))
+    @dd.virtualfield(dd.ForeignKey('cal.Calendar'))
     def calendar(self, ar):
         return self.get_calendar()
 
@@ -773,9 +810,9 @@ class Guest(Printable):
         verbose_name_plural = _("Presences")
         unique_together = ['event', 'partner']
 
-    event = models.ForeignKey('cal.Event')
+    event = dd.ForeignKey('cal.Event')
     partner = dd.ForeignKey(dd.plugins.cal.partner_model)
-    role = models.ForeignKey(
+    role = dd.ForeignKey(
         'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
     state = GuestStates.field(default=GuestStates.invited.as_callable)
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
@@ -857,7 +894,7 @@ dd.inject_field(settings.SITE.user_model,
                 ))
 dd.inject_field(settings.SITE.user_model,
                 'event_type',
-                models.ForeignKey('cal.EventType',
+                dd.ForeignKey('cal.EventType',
                                   blank=True, null=True,
                                   verbose_name=_("Default Event Type"),
         help_text=_("""The default event type for your calendar events.""")
@@ -866,7 +903,7 @@ dd.inject_field(settings.SITE.user_model,
 dd.inject_field(
     'system.SiteConfig',
     'default_event_type',
-    models.ForeignKey(
+    dd.ForeignKey(
         'cal.EventType',
         blank=True, null=True,
         verbose_name=_("Default Event Type"),
@@ -876,7 +913,7 @@ dd.inject_field(
 dd.inject_field(
     'system.SiteConfig',
     'site_calendar',
-    models.ForeignKey(
+    dd.ForeignKey(
         'cal.Calendar',
         blank=True, null=True,
         related_name="%(app_label)s_%(class)s_set_by_site_calender",

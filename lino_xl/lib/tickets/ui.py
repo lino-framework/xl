@@ -870,8 +870,8 @@ class ActiveTickets(Tickets):
     required_roles = dd.login_required(Triager)
     order_by = ["-id"]
     # order_by = ["-modified", "id"]
-    column_names = 'overview:50 priority topic:10 user:10 end_user:10 project:10 ' \
-                   '#assigned_to:10 ticket_type:10 workflow_buttons:40 *'
+    column_names = 'overview:50 priority site ' \
+                   'assigned_to:10 ticket_type:10 workflow_buttons:40 *'
 
     @classmethod
     def param_defaults(self, ar, **kw):

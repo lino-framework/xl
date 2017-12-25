@@ -4,10 +4,10 @@
 
 """
 
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole
 
 
-class SkillsUser(SiteUser):
+class SkillsUser(UserRole):
     pass
 
 class SkillsStaff(SkillsUser):

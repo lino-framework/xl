@@ -3,10 +3,10 @@
 # License: BSD (see file COPYING for details)
 
 
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole
 
 
-class ProductsUser(SiteUser):
+class ProductsUser(UserRole):
     pass
 
 class ProductsStaff(ProductsUser):

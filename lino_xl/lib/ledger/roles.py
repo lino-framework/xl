@@ -12,7 +12,8 @@ class AccountingReader(UserRole):
 
 
 class VoucherSupervisor(UserRole):
-    """Somebody who can edit vouchers which have been written by other
+    """
+    Somebody who can edit vouchers which have been written by other
     users.
 
     This role is automatically inherited by LedgerStaff.

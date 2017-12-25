@@ -125,9 +125,10 @@ class TimLoader(TimLoader):
                 obj.team = self.eupen
             elif row.idpar.startswith('S'):
                 obj.team = self.stvith
-            if row.idpar != row.idpar2 and row.idpar2.strip():
+            idpar2 = row.idpar2.strip()
+            if row.idpar != idpar2 and idpar2:
                 self.obsolete_list.append(
-                    (obj, self.par_pk(row.idpar2)))
+                    (obj, self.par_pk(idpar2)))
             # if isinstance(obj, Partner):
             #     obj.isikukood = row['regkood'].strip()
             #     obj.created = row['datcrea']
@@ -148,7 +149,7 @@ class TimLoader(TimLoader):
             if prt == "G":
                 kw = dict(
                     name=name, line=self.life_groups, id=obj.id,
-                    household_id=obj.id)
+                    partner_id=obj.id)
                 kw.update(ref=row.idpar.strip())
                 for user in self.get_users(row):
                     kw.update(teacher=user)
@@ -159,7 +160,7 @@ class TimLoader(TimLoader):
                 if prt == "P":
                     therapy = Course(
                         line=self.therapies,
-                        client_id=obj.id,
+                        partner_id=obj.id,
                         name=name, teacher=user, id=obj.id,
                         ref=row.idpar.strip())
                     yield therapy

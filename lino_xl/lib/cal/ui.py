@@ -5,6 +5,7 @@
 
 
 from __future__ import unicode_literals
+from builtins import str
 
 from django.conf import settings
 from django.db import models
@@ -25,7 +26,7 @@ from .choicelists import AccessClasses
 from .mixins import daterange_text
 from .utils import when_text
 
-from .roles import CalendarReader
+from .roles import CalendarReader, GuestOperator
 
 
 class RemoteCalendars(dd.Table):
@@ -34,7 +35,8 @@ class RemoteCalendars(dd.Table):
 
 
 class Rooms(dd.Table):
-    required_roles = dd.login_required((OfficeStaff, CalendarReader))
+    required_roles = dd.login_required(OfficeStaff)
+    # required_roles = dd.login_required((OfficeStaff, CalendarReader))
     
     model = 'cal.Room'
     detail_layout = """
@@ -200,18 +202,18 @@ class Tasks(dd.Table):
         for t in super(Tasks, self).get_title_tags(ar):
             yield t
         if ar.param_values.start_date or ar.param_values.end_date:
-            yield unicode(_("Dates %(min)s to %(max)s") % dict(
+            yield str(_("Dates %(min)s to %(max)s") % dict(
                 min=ar.param_values.start_date or'...',
                 max=ar.param_values.end_date or '...'))
 
         if ar.param_values.state:
-            yield unicode(ar.param_values.state)
+            yield str(ar.param_values.state)
 
         # if ar.param_values.user:
-        #     yield unicode(ar.param_values.user)
+        #     yield str(ar.param_values.user)
 
         if settings.SITE.project_model is not None and ar.param_values.project:
-            yield unicode(ar.param_values.project)
+            yield str(ar.param_values.project)
 
     @classmethod
     def apply_cell_format(self, ar, row, col, recno, td):
@@ -278,8 +280,8 @@ class GuestRoles(dd.Table):
 
 class Guests(dd.Table):
     model = 'cal.Guest'
-    # required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     column_names = 'partner role workflow_buttons remark event *'
     order_by = ['event__start_date', 'event__start_time']
     stay_in_grid = True
@@ -353,50 +355,52 @@ class Guests(dd.Table):
             yield t
         pv = ar.param_values
         if pv.start_date or pv.end_date:
-            yield unicode(_("Dates %(min)s to %(max)s") % dict(
+            yield str(_("Dates %(min)s to %(max)s") % dict(
                 min=pv.start_date or'...',
                 max=pv.end_date or '...'))
 
         if pv.event_state:
-            yield unicode(pv.event_state)
+            yield str(pv.event_state)
 
         if pv.partner:
-            yield unicode(pv.partner)
+            yield str(pv.partner)
 
         if pv.guest_state:
-            yield unicode(pv.guest_state)
+            yield str(pv.guest_state)
 
         # if pv.user:
-        #     yield unicode(pv.user)
+        #     yield str(pv.user)
 
         if settings.SITE.project_model is not None and pv.project:
-            yield unicode(pv.project)
+            yield str(pv.project)
 
 class AllGuests(Guests):
     required_roles = dd.login_required(Explorer)
 
 class GuestsByEvent(Guests):
     master_key = 'event'
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
     auto_fit_column_widths = True
     column_names = 'partner role workflow_buttons remark *'
+    order_by = ['partner__name', 'partner__id']
 
 
 class GuestsByRole(Guests):
     master_key = 'role'
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
 
 
 class GuestsByPartner(Guests):
     label = _("Presences")
     master_key = 'partner'
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
     slave_grid_format = "summary"
+    order_by = ['event__start_date', 'event__start_time']
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -510,7 +514,7 @@ class EventTypes(dd.Table):
     start_date max_days id
     # type url_template username password
     #build_method #template email_template attach_to_email
-    is_appointment all_rooms locks_user max_conflicting
+    is_appointment all_rooms locks_user transparent max_conflicting 
     EntriesByType
     """
 
@@ -693,23 +697,23 @@ class Events(dd.Table):
                 pv.end_date)
 
         if pv.state:
-            yield unicode(pv.state)
+            yield str(pv.state)
 
         if pv.event_type:
-            yield unicode(pv.event_type)
+            yield str(pv.event_type)
 
         # if pv.user:
-        #     yield unicode(pv.user)
+        #     yield str(pv.user)
 
         if pv.room:
-            yield unicode(pv.room)
+            yield str(pv.room)
 
         if settings.SITE.project_model is not None and pv.project:
-            yield unicode(pv.project)
+            yield str(pv.project)
 
         if pv.assigned_to:
-            yield unicode(self.parameters['assigned_to'].verbose_name) \
-                + ' ' + unicode(pv.assigned_to)
+            yield str(self.parameters['assigned_to'].verbose_name) \
+                + ' ' + str(pv.assigned_to)
 
     @classmethod
     def apply_cell_format(self, ar, row, col, recno, td):
@@ -765,7 +769,7 @@ class PublicEntries(Events):
 
 
 class EntriesByDay(Events):
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((OfficeOperator, OfficeUser))
     label = _("Appointments today")
     column_names = 'start_time end_time duration room event_type summary owner workflow_buttons *'
     auto_fit_column_widths = True
@@ -819,12 +823,15 @@ class EntriesByRoom(Events):
 
 
 class EntriesByController(Events):
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeOperator, OfficeUser))
+    # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
     slave_grid_format = "summary"
+    order_by = ["start_date", "start_time", "auto_type", "id"]
+    # order_by = ['seqno']
 
     @classmethod
     def get_slave_summary(self, obj, ar):
@@ -840,6 +847,8 @@ class EntriesByController(Events):
         fmt = obj.get_date_formatter()
 
         elems = []
+        
+        coll = {}
         for evt in sar:
             # if len(elems) > 0:
             #     elems.append(', ')
@@ -852,8 +861,18 @@ class EntriesByController(Events):
             if evt.state.button_text:
                 lbl = "{0}{1}".format(lbl, evt.state.button_text)
             elems.append(ar.obj2html(evt, lbl))
-        # elems = join_elems(elems, sep=', ')
+
+            if evt.state in coll:
+                coll[evt.state] += 1
+            else:
+                coll[evt.state] = 1
+                
+        ul = []
+        for st in EntryStates.get_list_items():
+            ul.append(_("{} : {}").format(st, coll.get(st, 0)))
         toolbar = []
+        toolbar += join_elems(ul, sep=', ')
+        # elems = join_elems(ul, sep=E.br)
         ar1 = obj.do_update_events.request_from(sar)
         if ar1.get_permission():
             btn = ar1.ar2button(obj)
@@ -885,7 +904,8 @@ if settings.SITE.project_model:
 class OneEvent(Events):
     show_detail_navigator = False
     use_as_default_table = False
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(
+        (OfficeOperator, OfficeUser, CalendarReader))
     # required_roles = dd.login_required(OfficeUser)
 
 

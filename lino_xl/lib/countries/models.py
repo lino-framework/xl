@@ -98,12 +98,12 @@ class Place(Hierarchical, mixins.BabelNamed):
             unique_together = (
                 'country', 'parent', 'name', 'type', 'zip_code')
 
-    country = models.ForeignKey('countries.Country')
+    country = dd.ForeignKey('countries.Country')
     zip_code = models.CharField(max_length=8, blank=True)
     type = PlaceTypes.field(blank=True)
     show_type = models.BooleanField(_("Show type"), default=False)
     
-    # parent = models.ForeignKey(
+    # parent = dd.ForeignKey(
     #     'self',
     #     blank=True, null=True,
     #     verbose_name=_("Part of"),

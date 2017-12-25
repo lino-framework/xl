@@ -7,9 +7,7 @@ from __future__ import unicode_literals
 from builtins import str
 from builtins import object
 
-import logging
-logger = logging.getLogger(__name__)
-
+import os
 
 from django.db import models
 from django.core.exceptions import ValidationError
@@ -21,7 +19,6 @@ from lino import mixins
 from lino.utils import join_words
 from lino.utils import join_elems
 
-from lino_xl.lib.countries.mixins import AddressLocation
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
@@ -31,7 +28,18 @@ from lino_xl.lib.googleapi_people.models import GooglePeople
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
+from lino.utils.media import TmpMediaFile
 from lino.mixins.periods import ObservedDateRange
+
+if dd.plugins.contacts.use_vcard_export:
+    import vobject
+    
+# try:
+#     import vobject
+# except ImportError:
+#         raise Exception(
+#             "use_vcard_export is True but vobject is not installed")
+#     vobject = None
 
 
 # from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
@@ -41,12 +49,43 @@ from .choicelists import PartnerEvents
 
 from lino.mixins.human import name2kw, Human, Born
 
+with_roles_history = dd.plugins.contacts.with_roles_history
+
+# from lino.core import actions
 
 PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
+class ExportVCardFile(dd.Action):
+    label = _("Export as vCard")
+    icon_name = 'vcard'
+    sort_index = -10
+    select_rows = False
+    default_format = 'ajax'
+    show_in_bbar = True
+    # combo_group = 'pdf'
+
+    # def is_callable_from(self, caller):
+    #     return isinstance(caller, actions.ShowTable)
+
+    def run_from_ui(self, ar, **kw):
+        #~ print 20130912
+        #~ obj = ar.selected_rows[0]
+        mf = TmpMediaFile(ar, 'vcf')
+        settings.SITE.makedirs_if_missing(os.path.dirname(mf.name))
+        with open(mf.name, 'w') as wf:
+            for obj in ar.selected_rows:
+                j = vobject.vCard()
+                obj.fill_vcard(j)
+                wf.write(j.serialize())
+            
+        ar.set_response(success=True)
+        ar.set_response(open_url=mf.url)
+
+    
+
 @dd.python_2_unicode_compatible
 class Partner(ContactDetailsOwner, mixins.Polymorphic,
-              AddressLocation, AddressOwner, Feasible, Printable):
+              AddressOwner, Feasible, Printable):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
@@ -55,6 +94,9 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
         abstract = dd.is_abstract_model(__name__, 'Partner')
         verbose_name = _("Partner")
         verbose_name_plural = _("Partners")
+
+    if dd.plugins.contacts.use_vcard_export:
+        export_vcf = ExportVCardFile()
 
     prefix = models.CharField(
         _("Name prefix"), max_length=200, blank=True)
@@ -89,7 +131,7 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
                     self.id = sc.next_partner_id
                     sc.next_partner_id += 1
                     sc.save()
-        #~ logger.info("20120327 Partner.save(%s,%s)",args,kw)
+        #~ dd.logger.info("20120327 Partner.save(%s,%s)",args,kw)
         super(Partner, self).save(*args, **kw)
 
     def get_last_name_prefix(self):
@@ -193,6 +235,25 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
             pass
         except User.MultipleObjectsReturned:
             pass
+
+    def fill_vcard(self, j):
+        j.add('fn')
+        j.fn.value = self.name
+        if self.email:
+            j.add('email')
+            j.email.value = self.email
+            j.email.type_param = 'INTERNET'
+        if self.phone:
+            j.add('tel')
+            j.tel.value = self.phone
+            j.tel.type_param = 'HOME'
+        if self.gsm:
+            j.add('tel')
+            j.tel.value = self.gsm
+            j.tel.type_param = 'CELL'
+        if self.url:
+            j.add('url')
+            j.url.value = self.url
         
 class PartnerDetail(dd.DetailLayout):
 
@@ -302,6 +363,11 @@ class Person(Human, Born, Partner,GooglePeople):
         elems += [self.first_name, ' ', E.b(self.last_name)]
         return elems
 
+    def fill_vcard(self, j):
+        super(Person, self).fill_vcard(j)
+        j.add('n')
+        j.n.value = vobject.vcard.Name(
+            family=self.last_name, given=self.first_name )
 
 class PersonDetail(PartnerDetail):
 
@@ -349,7 +415,7 @@ class Company(Partner):
         verbose_name = _("Organization")
         verbose_name_plural = _("Organizations")
 
-    type = models.ForeignKey('contacts.CompanyType', blank=True, null=True)
+    type = dd.ForeignKey('contacts.CompanyType', blank=True, null=True)
 
     def get_full_name(self, salutation=True, **salutation_options):
         """Deserves more documentation."""
@@ -425,15 +491,25 @@ class Role(dd.Model, Addressable):
         verbose_name = _("Contact Person")
         verbose_name_plural = _("Contact Persons")
 
-    type = models.ForeignKey(
+    type = dd.ForeignKey(
         'contacts.RoleType',
         blank=True, null=True,
         verbose_name=_("Role"))
-    person = models.ForeignKey(
+    person = dd.ForeignKey(
         "contacts.Person", related_name='rolesbyperson')
-    company = models.ForeignKey(
+    company = dd.ForeignKey(
         "contacts.Company", related_name='rolesbycompany')
 
+    if with_roles_history:
+        start_date = models.DateField(
+            verbose_name=_("Start date"), blank=True, null=True)
+        end_date = models.DateField(
+            verbose_name=_("End date"), blank=True, null=True)
+    else:
+        start_date = dd.DummyField()
+        end_date = dd.DummyField()
+        
+    
     def __str__(self):
         if self.person_id is None:
             return super(Role, self).__str__()
@@ -474,7 +550,7 @@ class RolesByCompany(Roles):
     #~ required_user_level = None
     label = _("Contact persons")
     master_key = 'company'
-    column_names = 'person type *'
+    column_names = 'person type start_date end_date *'
     hidden_columns = 'id'
 
 
@@ -484,7 +560,7 @@ class RolesByPerson(Roles):
     #~ required_user_level = None
     label = _("Contact for")
     master_key = 'person'
-    column_names = 'company type *'
+    column_names = 'company type start_date end_date *'
     auto_fit_column_widths = True
     hidden_columns = 'id'
 
@@ -525,4 +601,4 @@ def company_tables_alias(sender, **kw):
 
 
 def PartnerField(**kw):
-    return models.ForeignKey(Partner, **kw)
+    return dd.ForeignKey(Partner, **kw)

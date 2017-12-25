@@ -129,6 +129,8 @@ class TimLoader(object):
         pass
 
     def dbfmemo(self, s):
+        if s is None:
+            return ''
         s = s.replace('\r\n', '\n')
         s = s.replace(u'\xec\n', '')
         # s = s.replace(u'\r\nì',' ')
@@ -139,6 +141,7 @@ class TimLoader(object):
         return s.strip()
 
     def after_gen_load(self):
+        return
         Account = rt.modules.accounts.Account
         sc = dict()
         for k, v in dd.plugins.tim2lino.siteconfig_accounts.items():

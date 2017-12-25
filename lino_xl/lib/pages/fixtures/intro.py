@@ -28,16 +28,13 @@ This is an online demo of `{{site.verbose_name}} <{{site.url}}>`__
 version {{site.version}}.
 {% endif %}
 
-{% if site.admin_prefix %}
-
 You are currently seeing the **web content** section,
 whose content and layout are configurable using
 the normal Django techniques.
 
 To see what Lino really adds to a Django site,
-you should go to the `Admin <{{site.admin_prefix}}/>`__ section.
+you should go to the `Admin <{{site.kernel.admin_ui.build_plain_url()}}/>`__ section.
 
-{% endif %}
 """)
 
 
@@ -49,16 +46,13 @@ Ce site est une démonstration en ligne de
 version {{site.version}}.
 {% endif %}
 
-{% if site.admin_prefix %}
-
 Ceci est la section publique dont le layout et le contenu sont configurables
 selon les techniques habituelles de Django.
 
 Pour voir ce que Lino ajoute à Django, vous devriez maintenant aller 
-dans la `section administrative <{{site.admin_prefix}}/>`__.
+dans la `section administrative <{{site.kernel.admin_ui.build_plain_url()}}/>`__.
 
 
-{% endif %}
 """)
 
 page('index', 'de', '', """
@@ -69,15 +63,12 @@ Diese Site ist eine Online-Demo von
 version {{site.version}}.
 {% endif %}
 
-{% if site.admin_prefix %}
-
 Dies ist der öffentliche Bereich, dessen Layout
 und Inhalt frei konfigurierbar sind wie bei jeder Django-Site.
 
 Um das Besondere an Lino zu sehen, sollten Sie nun
-in den `Verwaltungsbereich <{{site.admin_prefix}}/>`__ gehen.
+in den `Verwaltungsbereich <{{site.kernel.admin_ui.build_plain_url()}}/>`__ gehen.
 
-{% endif %}
 """)
 
 page('index', 'et', '', """
@@ -88,15 +79,12 @@ Siin jookseb
 versioon {{site.version}}.
 {% endif %}
 
-{% if site.admin_prefix %}
-
 Praegu oled kasutajaliideses "Pages", mille kujundus ja sisu saab
 seadistada nii nagu Django saitidel ikka.
 
 Um das Besondere an Lino zu sehen, sollten Sie nun
-in den `Verwaltungsbereich <{{site.admin_prefix}}/>`__ gehen.
+in den `Verwaltungsbereich <{{site.kernel.admin_ui.build_plain_url()}}/>`__ gehen.
 
-{% endif %}
 """)
 
 

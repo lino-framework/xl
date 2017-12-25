@@ -171,7 +171,7 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
         q = Q()
         if search_text.isdigit():
             for fn in model.quick_search_fields:
-                kw = {prefix + fn + "__icontains": search_text}
+                kw = {prefix + fn.name + "__icontains": search_text}
                 q = q | Q(**kw)
             return q
         #Skip referable's method

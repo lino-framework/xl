@@ -3,10 +3,10 @@
 # License: BSD (see file COPYING for details)
 
 from lino.api import _
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole
 
 
-class CareerUser(SiteUser):
+class CareerUser(UserRole):
     text = _("CV user")
 
 

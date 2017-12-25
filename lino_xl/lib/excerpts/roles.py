@@ -6,9 +6,9 @@
 Roles for this plugin.
 
 """
-from lino.core.roles import SiteUser
+from lino.core.roles import UserRole
 
-class ExcerptsUser(SiteUser):
+class ExcerptsUser(UserRole):
     pass
 
 class ExcerptsStaff(ExcerptsUser):

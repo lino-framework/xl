@@ -170,7 +170,7 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
     class Meta:
         abstract = True
 
-    account = models.ForeignKey(
+    account = dd.ForeignKey(
         'accounts.Account',
         related_name="%(app_label)s_%(class)s_set_by_account")
 

@@ -29,6 +29,9 @@ class Plugin(ad.Plugin):
     ## settings
 
     region_label = _('Region')
+    
+    use_vcard_export = False
+    with_roles_history = False
 
     def post_site_startup(self, site):
         rdm = site.kernel.memo_parser.register_django_model

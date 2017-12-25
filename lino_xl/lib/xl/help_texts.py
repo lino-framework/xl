@@ -23,6 +23,7 @@ for appy.pod."""),
     'lino_xl.lib.appypod.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
     'lino_xl.lib.appypod.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
     'lino_xl.lib.appypod.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
+    'lino_xl.lib.appypod.mixins.PrintTableAction' : _("""Show this table as a pdf document"""),
     'lino_xl.lib.appypod.mixins.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
 model which implements
 Addressable."""),
@@ -78,10 +79,6 @@ date and time by a given user."""),
 lino_welfare.modlib.aids.mixins.Confirmation."""),
     'lino_xl.lib.boards.Member' : _("""A Member is when a given ml.contacts.Person
 belongs to a given Board."""),
-    'lino_xl.lib.cal.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
-    'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
-Default value is 5 years after today."""),
     'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field. By default it contains
 the following values (which can be redefined in
@@ -619,14 +616,15 @@ there.  A Room has a multilingual name."""),
     'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of Event Types defined on this system."""),
     'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
-    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type should be considered
-"appointments" (i.e. whose time and place have been agreed
-upon with other users or external parties)."""),
+    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered as "appointments"
+(i.e. whose time and place have been agreed upon with other
+users or external parties)."""),
     'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
     'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
-    'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
+    'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
     'lino_xl.lib.cal.GuestRole' : _("""The role of a guest expresses what the partner is going to do there."""),
     'lino_xl.lib.cal.GuestRoles' : _("""Global table of guest roles."""),
     'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
@@ -725,6 +723,14 @@ data of that year."""),
     'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
     'lino_xl.lib.cal.ShowEntriesByDay' : _("""Show all calendar events of the same day."""),
+    'lino_xl.lib.cal.Plugin.partner_model' : _("""The model to use as the guest of a presence."""),
+    'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
+    'lino_xl.lib.cal.Plugin.ignore_dates_after' : _("""Ignore dates after the given date.  This should never be None.
+Default value is 5 years after today."""),
+    'lino_xl.lib.cal.CalendarReader' : _("""Can read public calendar entries. This is a kind of minimal
+calendar functionality which can be given to anonymous users,
+as done e.g. by vilma."""),
+    'lino_xl.lib.cal.GuestOperator' : _("""Can see presences and guests of a calendar entry."""),
     'lino_xl.lib.clients.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
     'lino_xl.lib.clients.ClientBase' : _("""Base class for a client. The model specified as
 client_model must implement this."""),
@@ -761,7 +767,13 @@ given period."""),
     'lino_xl.lib.coachings.CoachingsStaff' : _("""A user who can configure coachings functionality."""),
     'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
 should have active coachings."""),
+    'lino_xl.lib.contacts.ExportVCardFile' : _("""Download all records as a .vcf file which you can import to another
+contacts application."""),
     'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
+    'lino_xl.lib.contacts.Plugin.with_roles_history' : _("""Whether to define two additional fields
+Role.start_date and Role.end_date."""),
+    'lino_xl.lib.contacts.Plugin.use_vcard_export' : _("""Whether Lino should provide a button for exporting contact
+data as a vcf file."""),
     'lino_xl.lib.contacts.SimpleContactsUser' : _("""A user who has access to basic contacts functionality."""),
     'lino_xl.lib.contacts.ContactsUser' : _("""A user who has access to full contacts functionality."""),
     'lino_xl.lib.contacts.ContactsStaff' : _("""A user who can configure contacts functionality."""),
@@ -798,11 +810,15 @@ common."""),
 can be in a given Company."""),
     'lino_xl.lib.contacts.RoleType.name' : _("""A translatable designation. Used e.g. in document templates
 for contracts."""),
-    'lino_xl.lib.contacts.Role' : _("""A role is when a given person has a given function
-(ContactType) in a given organization."""),
+    'lino_xl.lib.contacts.Role' : _("""A role is when a given person exercises a given
+function (ContactType) in a given organization."""),
     'lino_xl.lib.contacts.Role.company' : _("""The organization where this person has this role."""),
-    'lino_xl.lib.contacts.Role.type' : _("""The function of this person in this company."""),
-    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this company."""),
+    'lino_xl.lib.contacts.Role.type' : _("""The function of this person in this organization."""),
+    'lino_xl.lib.contacts.Role.person' : _("""The person having this role in this organization."""),
+    'lino_xl.lib.contacts.Role.start_date' : _("""When this person started to exercise this function in this
+organization."""),
+    'lino_xl.lib.contacts.Role.end_date' : _("""When this person stopped to exercise this function in this
+organization."""),
     'lino_xl.lib.contacts.ContactRelated' : _("""Model mixin for things that relate to either a private person
 or a company, the latter potentially represented by a contact
 person having a given role in that company.  Typical usages are
@@ -1216,7 +1232,7 @@ question or problem handled formulated by a user."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for
 managing it."""),
     'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
-    'lino_xl.lib.tickets.Ticket.assigned_to' : _("""No longer used. The user who is working on this ticket."""),
+    'lino_xl.lib.tickets.Ticket.assigned_to' : _("""The user who is working on this ticket."""),
     'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates"""),
     'lino_xl.lib.tickets.Ticket.waiting_for' : _("""What to do next. An unformatted one-line text which describes
 what this ticket is waiting for."""),
