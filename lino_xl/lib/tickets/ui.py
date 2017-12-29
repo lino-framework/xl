@@ -481,7 +481,7 @@ class Tickets(dd.Table):
     # description
     # """, window_size=(70, 20))
 
-    detail_html_template = "tickets/Ticket/detail.html"
+    # detail_html_template = "tickets/Ticket/detail.html"
 
     parameters = mixins.ObservedDateRange(
         observed_event=TicketEvents.field(blank=True),
