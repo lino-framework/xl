@@ -15,42 +15,34 @@ from lino.api import dd
 from lino.utils.jsgen import js_code
 import six
 
+
+from lino.modlib.extjs.elems import CharFieldElement
+#from lino.modlib.extjs.ext_renderer import ExtRenderer
+
 IBAN_FORMFIELD = IBANFormField()
 
-def uppercasefield_widget(bcl):
-    # bcl is CharFieldElement
-    class UppercaseTextFieldElement(bcl):
-        """A CharFieldElement which accepts only upper-case characters.
+class UppercaseTextFieldElement(CharFieldElement):
+    """A CharFieldElement which accepts only upper-case characters.
+    """
+    value_template = "new Lino.UppercaseTextField(%s)"
+
+class IBANFieldElement(UppercaseTextFieldElement):
+    def get_column_options(self, **kw):
+        """Return a string to be used as `Ext.grid.Column.renderer
+        <http://docs.sencha.com/extjs/3.4.0/#!/api/Ext.grid.Column-cfg-renderer>`.
+
         """
-        value_template = "new Lino.UppercaseTextField(%s)"
-    return UppercaseTextFieldElement
-
+        kw = super(
+            UppercaseTextFieldElement, self).get_column_options(**kw)
+        kw.update(renderer=js_code('Lino.iban_renderer'))
+        return kw
     
-def ibanfield_widget(bcl):
-    # bcl is CharFieldElement
-
-    UppercaseTextFieldElement = uppercasefield_widget(bcl)
-    
-    class IBANFieldElement(UppercaseTextFieldElement):
-        def get_column_options(self, **kw):
-            """Return a string to be used as `Ext.grid.Column.renderer
-            <http://docs.sencha.com/extjs/3.4.0/#!/api/Ext.grid.Column-cfg-renderer>`.
-
-            """
-            kw = super(
-                UppercaseTextFieldElement, self).get_column_options(**kw)
-            kw.update(renderer=js_code('Lino.iban_renderer'))
-            return kw
-
-    return IBANFieldElement
-
 
 class UppercaseTextField(models.CharField, dd.CustomField):
     """A custom CharField that accepts only uppercase caracters."""
-    def create_layout_elem(self, cl, *args, **kw):
+    def create_layout_elem(self, rnd, cl, *args, **kw):
         # cl is the CharFieldElement class of the renderer
-        return uppercasefield_widget(cl)(*args, **kw)
-        # return UppercaseTextFieldElement(*args, **kw)
+        return UppercaseTextFieldElement(*args, **kw)
 
     def to_python(self, value):
         if isinstance(value, six.string_types):
@@ -74,9 +66,13 @@ class IBANField(iban_fields.IBANField, dd.CustomField):
     def from_db_value(self, value, expression, connection, context):
         return value
 
-    def create_layout_elem(self, cl, *args, **kw):
-        # cl is the CharFieldElement class of the renderer
-        return ibanfield_widget(cl)(*args, **kw)
+    def create_layout_elem(self, rnd, cl, *args, **kw):
+        return IBANFieldElement(*args, **kw)
+        # if isinstance(rnd, ExtRenderer):
+        #     # cl is the CharFieldElement class of the renderer
+        #     return IBANFieldElement(*args, **kw)
+        # if isinstance(rnd, bootstrap3.Renderer):
+        
 
     def to_python(self, value):
         if isinstance(value, six.string_types):
