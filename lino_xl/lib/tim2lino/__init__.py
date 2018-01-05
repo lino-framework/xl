@@ -10,6 +10,9 @@
 
     fixtures.tim2lino
     models
+    timloader1
+    spzloader
+    spzloader2
 
 """
 

@@ -5,7 +5,7 @@
 """
 
 Import legacy data from TIM (including households, ...).
-An extension of :mod:`tim2lino <lino_xl.lib.tim2lino.fitxtures.tim2lino>`.
+An extension of :mod:`tim2lino <lino_xl.lib.tim2lino.fixtures.tim2lino>`.
 
 
 """
