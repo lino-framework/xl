@@ -205,17 +205,22 @@ class TimLoader(TimLoader):
         except Event.DoesNotExist:
             dd.logger.warning("Unknown PLP->IdDls %s", pk)
             return
+        
         idpar = row.idpar.strip()
-        try:
-            course = Course.get_by_ref(idpar)
-        except Course.DoesNotExist:
-            dd.logger.warning("Unknown PLP->IdPar %s", idpar)
-            return
-        if not course.partner:
-            dd.logger.warning(
-                "Failed to import DLP %s : course has no partner", pk)
-            return
-        kw.update(partner=course.partner.person)
+        p = self.get_partner(Person, idpar)
+        if p is None:
+            try:
+                course = Course.get_by_ref(idpar)
+            except Course.DoesNotExist:
+                dd.logger.warning("Unknown PLP->IdPar %s", idpar)
+                return
+            if not course.partner:
+                dd.logger.warning(
+                    "Failed to import DLP %s : course has no partner", pk)
+                return
+            p = course.partner.person
+
+        kw.update(partner=p)
         o = Guest(**kw)
         try:
             o.full_clean()
