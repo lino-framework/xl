@@ -29,7 +29,9 @@ from django.core.exceptions import ValidationError
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
 from lino.utils.instantiator import create
+from lino.utils.mti import mtichild
 from lino.core.gfks import gfk2lookup
+
 from lino.api import dd, rt, _
 
 
@@ -203,22 +205,26 @@ class TimLoader(TimLoader):
         try:
             kw.update(event=Event.objects.get(pk=pk))
         except Event.DoesNotExist:
-            dd.logger.warning("Unknown PLP->IdDls %s", pk)
+            dd.logger.warning("Unknown DLP->IdDls %s", pk)
             return
         
         idpar = row.idpar.strip()
         p = self.get_partner(Person, idpar)
         if p is None:
-            try:
-                course = Course.get_by_ref(idpar)
-            except Course.DoesNotExist:
-                dd.logger.warning("Unknown PLP->IdPar %s", idpar)
-                return
-            if not course.partner:
-                dd.logger.warning(
-                    "Failed to import DLP %s : course has no partner", pk)
-                return
-            p = course.partner.person
+            co = self.get_partner(Company, idpar)
+            if co:
+                p = mtichild(co.partner, Person, last_name=co.name)
+            else:
+                try:
+                    course = Course.get_by_ref(idpar)
+                except Course.DoesNotExist:
+                    dd.logger.warning("Unknown DLP->IdPar %s", idpar)
+                    return
+                if not course.partner:
+                    dd.logger.warning(
+                        "Failed to import DLP %s : course has no partner", pk)
+                    return
+                p = course.partner.person
 
         kw.update(partner=p)
         o = Guest(**kw)
