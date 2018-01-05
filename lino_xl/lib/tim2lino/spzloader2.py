@@ -3,17 +3,20 @@
 # License: BSD (see file COPYING for details)
 
 """
-Import legacy data from TIM (second step). Much legacy data is
-already in Lino, now we parse the legacy database once more, adding
-data from one table (DLS.DBF) and verifying previously imported
-tables.
+Import legacy data from TIM (second step). 
+
+Much legacy data is already in Lino, (first imported by
+:mod:`spzloader` and then manually reviewed), now we parse the legacy
+database once more, adding more data.
 
 - import DLS.DBF as calendar entries
+- import DLP.DBF as calendar guests
 - Therapie E130280 : nicht Harry sondern Daniel müsste Therapeut
   sein. Falsch importiert.
 - No de GSM, Date naissance, Geschlecht n'ont pas été importés
 - Rechnungsempfänger und Krankenkasse importieren : pro Patient, nicht
   pro Einschreibung.
+
 """
 from __future__ import unicode_literals
 from builtins import str
@@ -214,8 +217,6 @@ class TimLoader(TimLoader):
         Course = rt.models.courses.Course
         Event = rt.models.cal.Event
         pk = row.iddls.strip()
-        if not pk:
-            return
         # if not row.idpin.strip():
         #     return
         if pk.startswith('E'):
@@ -224,6 +225,8 @@ class TimLoader(TimLoader):
         elif pk.startswith('S'):
             team = self.stvith
             pk = int(pk[1:]) + 100000
+        if not pk:
+            return
 
         # if pk in self.imported_sessions:
         #     dd.logger.warning(
