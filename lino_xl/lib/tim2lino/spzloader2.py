@@ -211,6 +211,10 @@ class TimLoader(TimLoader):
         except Course.DoesNotExist:
             dd.logger.warning("Unknown PLP->IdPar %s", idpar)
             return
+        if not course.partner:
+            dd.logger.warning(
+                "Failed to import DLP %s : course has no partner", pk)
+            return
         kw.update(partner=course.partner.person)
         o = Guest(**kw)
         try:
