@@ -209,7 +209,7 @@ class TimLoader(TimLoader):
         except Course.DoesNotExist:
             dd.logger.warning("Unknown PLP->IdPar %s", idpar)
             return
-        kw.update(partner=course.partner)
+        kw.update(partner=course.partner.person)
         yield Guest(**kw)
                 
 
@@ -302,11 +302,13 @@ class TimLoader(TimLoader):
 
         # yield self.load_dbf('PLP')
 
+        if False:  # temporarily deactivaed
+            Event = rt.models.cal.Event
+            Event.objects.all().delete()
+            yield self.load_dbf('DLS')
+        
         Guest = rt.models.cal.Guest
         Guest.objects.all().delete()
-        Event = rt.models.cal.Event
-        Event.objects.all().delete()
-        yield self.load_dbf('DLS')
         yield self.load_dbf('DLP')
         yield self.load_dbf('PAR')
             
