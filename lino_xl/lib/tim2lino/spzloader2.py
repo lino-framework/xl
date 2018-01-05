@@ -213,7 +213,7 @@ class TimLoader(TimLoader):
         if p is None:
             co = self.get_partner(Company, idpar)
             if co:
-                p = mtichild(co.partner, Person, last_name=co.name)
+                p = mtichild(co.partner_ptr, Person, last_name=co.name)
             else:
                 try:
                     course = Course.get_by_ref(idpar)
