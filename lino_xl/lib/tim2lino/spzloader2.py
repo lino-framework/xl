@@ -24,6 +24,8 @@ from builtins import str
 import datetime
 from dateutil import parser as dateparser
 
+from django.core.exceptions import ValidationError
+
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
 from lino.utils.instantiator import create
@@ -210,7 +212,13 @@ class TimLoader(TimLoader):
             dd.logger.warning("Unknown PLP->IdPar %s", idpar)
             return
         kw.update(partner=course.partner.person)
-        yield Guest(**kw)
+        o = Guest(**kw)
+        try:
+            o.full_clean()
+        except ValidationError as e:
+            dd.logger.warning("Failed to import DLP %s : %s", o, e)
+            return
+        yield o
                 
 
     def load_dls(self, row, **kw):
