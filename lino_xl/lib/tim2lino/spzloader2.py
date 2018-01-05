@@ -83,7 +83,7 @@ class TimLoader(TimLoader):
             course_area=CourseAreas.default).order_by('id')[0]
         
         
-        # self.imported_sessions = set([])
+        self.imported_sessions = set([])
         # self.obsolete_list = []
         # plptypes = dict()
         # plptypes['01'] = LinkTypes.parent
@@ -228,11 +228,10 @@ class TimLoader(TimLoader):
         if not pk:
             return
 
-        # if pk in self.imported_sessions:
-        #     dd.logger.warning(
-        #         "Cannot import duplicate session %s", pk)
-        #     return
-        # self.imported_sessions.add(pk)
+        if pk in self.imported_sessions:
+            dd.logger.warning(
+                "Cannot import duplicate session %s", pk)
+            return
         idusr = row.idusr.strip()
         u = self.get_user(idusr)
         if u is None:
@@ -269,8 +268,9 @@ class TimLoader(TimLoader):
                 ref=idpar, line=self.other_groups)
             dd.logger.info("Created new therapy %s", course)
             yield course
+            
+        self.imported_sessions.add(pk)
         kw.update(**gfk2lookup(Event.owner, course))
-                
         kw.update(summary=row.nb.strip())
         kw.update(start_date=row.date)
 
