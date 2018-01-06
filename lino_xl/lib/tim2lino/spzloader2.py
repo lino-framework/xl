@@ -147,6 +147,9 @@ class TimLoader(TimLoader):
             self.store(kw, gsm=row.gsm)
             
         cl = self.par_class(row)
+        if cl is None:
+            dd.logger.info("Cannot handle %s : par_class is None", row)
+            return
         if issubclass(cl, Person):
             v = row.gebdat
             if isinstance(v, basestring):
@@ -330,8 +333,9 @@ class TimLoader(TimLoader):
             Event.objects.all().delete()
             yield self.load_dbf('DLS')
         
-        Guest = rt.models.cal.Guest
-        Guest.objects.all().delete()
-        yield self.load_dbf('DLP')
+            Guest = rt.models.cal.Guest
+            Guest.objects.all().delete()
+            yield self.load_dbf('DLP')
+            
         yield self.load_dbf('PAR')
             
