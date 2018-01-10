@@ -17,6 +17,7 @@ from builtins import str
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
 from lino.api import dd, rt, _
+from lino.utils.instantiator import create
 
 
 from .timloader1 import TimLoader
@@ -49,7 +50,6 @@ Link = rt.models.humanlinks.Link
 LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
-from lino.utils.instantiator import create
 
 class TimLoader(TimLoader):
 

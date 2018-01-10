@@ -5,14 +5,8 @@
 
 """Add functionality for importing lecacy data from a TIM database.
 
-.. autosummary::
-    :toctree:
+See :doc:`/specs/tim2lino`.
 
-    fixtures.tim2lino
-    models
-    timloader1
-    spzloader
-    spzloader2
 
 """
 
