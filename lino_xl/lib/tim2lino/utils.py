@@ -9,6 +9,7 @@ import traceback
 import os
 from clint.textui import puts, progress
 from django.conf import settings
+from django.db import models
 from atelier.utils import AttrDict
 from lino.api import dd, rt
 from lino.utils import dbfreader
@@ -294,3 +295,38 @@ class TimLoader(object):
             if tableName2 == tableName:
                 func(self)
 
+
+
+    def expand(self, obj):
+        if obj is None:
+            pass  # ignore None values
+        elif isinstance(obj, models.Model):
+            yield obj
+        elif hasattr(obj, '__iter__'):
+            for o in obj:
+                for so in self.expand(o):
+                    yield so
+        else:
+            logger.warning("Ignored unknown object %r", obj)
+
+
+    def objects(self):
+        "Override this by subclasses."
+        return []
+    
+    @classmethod
+    def run(cls):
+        """To be used when running this loader from a run script.
+
+        Usage example:: 
+
+            from lino_xl.lib.tim2lino.spzloader2 import TimLoader
+            TimLoader.run()
+        
+        """
+        self = cls(settings.SITE.legacy_data_path)
+        for o in self.expand(self.objects()):
+            o.full_clean()
+            o.save()
+        self.finalize()
+    
