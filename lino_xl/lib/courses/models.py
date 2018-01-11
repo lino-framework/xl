@@ -2,17 +2,9 @@
 # Copyright 2012-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-
-"""Database models for `lino_xl.lib.courses`.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 from builtins import str
-
-# import logging
-# logger = logging.getLogger(__name__)
 
 from decimal import Decimal
 ZERO = Decimal()
@@ -80,8 +72,6 @@ class StartEndTime(dd.Model):
 @dd.python_2_unicode_compatible
 class Slot(mixins.Sequenced, StartEndTime):
 
-    """
-    """
     class Meta:
         app_label = 'courses'
         app_label = 'courses'
@@ -106,41 +96,6 @@ class Topic(mixins.BabelNamed, Printable, Duplicable):
 
 @dd.python_2_unicode_compatible
 class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
-    """An **activity line** (or **series**) groups courses into a
-    configurable list of categories.
-
-    We chose the word "line" instead of "series" because it has a
-    plural form (not sure whether this idea was so cool).
-
-    .. attribute:: name
-
-        The designation of this activity line as seen by the user
-        e.g. when selecting the line.
-
-        One field for every :attr:`language <lino.core.site.Site.language>`.
-
-    .. attribute:: excerpt_title
-
-        The text to print as title in enrolments.
-
-        See also
-        :attr:`lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title`.
-
-    .. attribute:: body_template
-
-        The body template to use when printing an activity of this
-        line.  Leave empty to use the site's default (defined by
-        `body_template` on the
-        :class:`lino_xl.lib.excerpts.models.ExcerptType` for
-        :class:`Course`)
-
-    .. attribute:: course_area
-
-        Pointer to :class:`CourseAreas`.  This is used only when an
-        application defines several variants of
-        :class:`EnrolmentsByPupil`.
-
-    """
     class Meta:
         app_label = 'courses'
         abstract = dd.is_abstract_model(__name__, 'Line')
@@ -222,46 +177,6 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
 
 @dd.python_2_unicode_compatible
 class Course(Reservation, Duplicable, Printable):
-    """A Course is a group of pupils that regularily meet with a given
-    teacher in a given room to speak about a given subject.
-
-    The subject of a course is expressed by the :class:`Line`.
-
-    Notes about automatic calendar entry generation:
-    
-    - When an automatically generated entry is to be moved to another
-      date, e.g. because it falls into a vacation period, then you
-      simply change it's date.  Lino will automatically adapt all
-      subsequent events.
-      
-    - Marking an automatically generated event as "Cancelled" will not
-      create a replacement event.
-
-    .. attribute:: enrolments_until
-
-    .. attribute:: max_places
-
-        Available places. The maximum number of participants to allow
-        in this course.
-
-    .. attribute:: free_places
-
-        Number of free places.
-
-    .. attribute:: requested
-
-        Number of requested places.
-
-    .. attribute:: trying
-
-        Number of trying places.
-
-    .. attribute:: confirmed
-
-        Number of confirmed places.
-    
-
-    """
 
     class Meta:
         app_label = 'courses'
@@ -623,29 +538,6 @@ class ConfirmedSubmitInsert(dd.SubmitInsert):
 
 @dd.python_2_unicode_compatible
 class Enrolment(UserAuthored, Certifiable, DateRange):
-    """An **enrolment** is when a given pupil plans to participate in a
-    given course.
-
-    .. attribute:: course_area
-    .. attribute:: course
-    .. attribute:: pupil
-    .. attribute:: request_date
-    .. attribute:: start_date
-    .. attribute:: end_date
-    .. attribute:: state
-
-        One of :class:`lino_xl.lib.courses.choicelists.EnrolmentStates`.
-
-    .. attribute:: places
-    .. attribute:: option
-    .. attribute:: remark
-    .. attribute:: confirmation_details
-    .. attribute:: pupil_info
-
-        Virtual HtmlBox field showing the name and address of the
-        participant.
-
-    """
     invoiceable_date_field = 'request_date'
     workflow_state_field = 'state'
     allow_cascaded_copy = 'course'

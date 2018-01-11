@@ -108,66 +108,10 @@ located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
-    'lino_xl.lib.courses.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.courses.Plugin.pupil_name_fields' : _("""The value to use as quick_search_fields for
-Enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
     'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
     'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
-    'lino_xl.lib.courses.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
-    'lino_xl.lib.courses.EntriesByTeacher.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.EntriesByTeacher.model' : _("""alias of Event"""),
-    'lino_xl.lib.courses.CourseDetail' : _("""The detail layout of a Course."""),
-    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
-    'lino_xl.lib.courses.Activities.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher)."""),
-    'lino_xl.lib.courses.MyCoursesGiven.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.MyCoursesGiven.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
-    'lino_xl.lib.courses.CoursesByLine.master' : _("""alias of Line"""),
-    'lino_xl.lib.courses.CoursesByLine.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
-    'lino_xl.lib.courses.CoursesByTopic.master' : _("""alias of Topic"""),
-    'lino_xl.lib.courses.CoursesByTopic.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.Enrolments' : _("""Base class for all enrolment tables."""),
-    'lino_xl.lib.courses.Enrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
-    'lino_xl.lib.courses.AllEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
-    'lino_xl.lib.courses.PendingRequestedEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
-    'lino_xl.lib.courses.PendingConfirmedEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
-    'lino_xl.lib.courses.EnrolmentsByPupil.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.StatusReport' : _("""Gives an overview about what's up today ."""),
-    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
-teacher in a given room to speak about a given subject."""),
-    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
-in this course."""),
-    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
-    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
-    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
-    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
-    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
-given course."""),
-    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
-    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
-participant."""),
-    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
-configurable list of categories."""),
-    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
-e.g. when selecting the line."""),
-    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
-    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
-line.  Leave empty to use the site's default (defined by
-body_template on the
-lino_xl.lib.excerpts.models.ExcerptType for
-Course)"""),
-    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
-application defines several variants of
-EnrolmentsByPupil."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
@@ -1179,6 +1123,50 @@ method, ..."""),
     'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
     'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
+    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
+teacher in a given room to speak about a given subject."""),
+    'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
+    'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
+this field empty if the meetings last less than one day."""),
+    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
+in this course."""),
+    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
+    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
+    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
+    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
+    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible
+manager).  Compare MyCoursesGiven."""),
+    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
+Compare MyActivities."""),
+    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
+    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
+    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
+given course."""),
+    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
+    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
+participant."""),
+    'lino_xl.lib.courses.Enrolments' : _("""Base class for all tables that show Enrolment."""),
+    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
+    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
+    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
+    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
+    'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show all enrolments of a given course."""),
+    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
+configurable list of categories."""),
+    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
+e.g. when selecting the line."""),
+    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
+    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
+line.  Leave empty to use the site's default (defined by
+body_template on the
+lino_xl.lib.excerpts.models.ExcerptType for
+Course)"""),
+    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+application defines several variants of
+EnrolmentsByPupil."""),
+    'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
+Enrolment."""),
     'lino_xl.lib.clocking.SessionType' : _("""The type of a Session."""),
     'lino_xl.lib.clocking.Session' : _("""A Session is when a user works during a given lapse of time on
 a given Ticket."""),
