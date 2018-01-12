@@ -1,9 +1,9 @@
 # Copyright 2008-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 """
-Adds functionality for managing worktime clocking.
+Adds functionality for managing workting time.
 
-See :doc:`/specs/noi/clocking`.
+See :doc:`/specs/noi/working`.
 
 """
 
@@ -27,7 +27,7 @@ class Plugin(ad.Plugin):
     """The model that is to be used as the "ticket".
 
     This must be no longer a subclass of
-    :class:`lino_xl.lib.clocking.mixins.Workable`,
+    :class:`lino_xl.lib.working.mixins.Workable`,
     it must jusst have a method `on_worked`.
 
     """
@@ -38,32 +38,32 @@ class Plugin(ad.Plugin):
         # from .mixins import Workable
         self.ticket_model = site.models.resolve(self.ticket_model)
         # if not issubclass(self.ticket_model, Workable):
-        #     msg = "Your plugins.clocking.ticket_model ({}) is not workable"
+        #     msg = "Your plugins.working.ticket_model ({}) is not workable"
         #     msg = msg.format(self.ticket_model)
         #     # raise Exception(msg)
         #     site.logger.warning(msg)
 
         if isinstance(self.default_reporting_type, six.string_types):
-            x = site.models.clocking.ReportingTypes.get_by_name(
+            x = site.models.working.ReportingTypes.get_by_name(
                 self.default_reporting_type)
             self.default_reporting_type = x
 
     def setup_main_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('clocking.MySessions')
-        # m.add_action('clocking.MySessionsByDate')
-        # m.add_action('clocking.WorkedHours')
+        m.add_action('working.MySessions')
+        # m.add_action('working.MySessionsByDate')
+        # m.add_action('working.WorkedHours')
 
     def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('clocking.SessionTypes')
+        m.add_action('working.SessionTypes')
 
     def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('clocking.Sessions')
+        m.add_action('working.Sessions')
 
     # def get_dashboard_items(self, user):
     #     if user.authenticated:

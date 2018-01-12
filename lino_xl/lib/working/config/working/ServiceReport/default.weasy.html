@@ -1,0 +1,18 @@
+{%- set page_size = 'portrait' -%}
+{%- extends "weasyprint/base.weasy.html" -%}
+
+{%- block main %}
+
+{{ super() }}
+
+Period from {{fdl(obj.start_date)}} 
+{% if obj.end_date %}
+to {{fdl(obj.end_date)}}
+{% endif %}
+
+{{ar.show(rt.models.working.SessionsByReport, obj, header_level=2)}}
+{{ar.show(rt.models.working.TicketsByReport, obj, header_level=2)}}
+{#ar.show(rt.models.working.ProjectsByReport, obj, header_level=2)#}
+{#ar.show(rt.models.working.CoursesByReport, obj, header_level=2)#}
+
+{%- endblock %}

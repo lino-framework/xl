@@ -43,7 +43,7 @@ class TicketHasSessions(ObservedEvent):
         qs = qs.filter(num_sessions__gt=0)
         return qs
 
-TicketEvents.add_item_instance(TicketHasSessions("clocking"))
+TicketEvents.add_item_instance(TicketHasSessions("working"))
 
 
 class ProjectHasSessions(ObservedEvent):
@@ -63,25 +63,25 @@ class ProjectHasSessions(ObservedEvent):
         qs = qs.filter(num_sessions__gt=0)
         return qs
 
-ProjectEvents.add_item_instance(ProjectHasSessions("clocking"))
+ProjectEvents.add_item_instance(ProjectHasSessions("working"))
 
 
 class SessionTypes(dd.Table):
     required_roles = dd.login_required(dd.SiteStaff)
-    model = 'clocking.SessionType'
+    model = 'working.SessionType'
     column_names = 'name *'
 
 
 class Sessions(dd.Table):
     required_roles = dd.login_required(Worker)
-    model = 'clocking.Session'
+    model = 'working.Session'
     column_names = 'ticket user start_date start_time end_date end_time '\
                    'break_time summary duration ticket_no  *'
 
     detail_layout = """
     ticket:40 user:20 faculty:20 reporting_type:10
     start_date start_time end_date end_time break_time duration
-    summary:60 workflow_buttons:20
+    summary:60 is_fixing workflow_buttons:20
     description
     """
     insert_layout = """
@@ -101,10 +101,10 @@ class Sessions(dd.Table):
         site=dd.ForeignKey(
             'tickets.Site', null=True, blank=True),
         # ticket=dd.ForeignKey(
-        #     dd.plugins.clocking.ticket_model, null=True, blank=True),
+        #     dd.plugins.working.ticket_model, null=True, blank=True),
         # user=dd.ForeignKey('users.User', null=True, blank=True),
         session_type=dd.ForeignKey(
-            'clocking.SessionType', null=True, blank=True),
+            'working.SessionType', null=True, blank=True),
         observed_event=dd.PeriodEvents.field(
             blank=True, default=dd.PeriodEvents.active.as_callable),
     )
@@ -150,7 +150,7 @@ class Sessions(dd.Table):
 class SessionsByTicket(Sessions):
     master_key = 'ticket'
     column_names = 'start_date summary start_time end_time  '\
-                   'break_time duration user *'
+                   'break_time duration user is_fixing *'
     slave_grid_format = 'summary'
 
     @classmethod
@@ -169,7 +169,7 @@ class SessionsByTicket(Sessions):
         # Active sessions:
         active_sessions = []
         session_summaries = E.ul()
-        qs = rt.modules.clocking.Session.objects.filter(ticket=obj)
+        qs = rt.modules.working.Session.objects.filter(ticket=obj)
         tot = Duration()
         for ses in qs:
             d = ses.get_duration()

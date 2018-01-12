@@ -37,7 +37,7 @@ Enrolment = rt.models.courses.Enrolment
 
 Account = dd.resolve_model('accounts.Account')
 
-clocking = dd.resolve_app('clocking')
+working = dd.resolve_app('working')
 
 User = rt.models.users.User
 UserTypes = rt.models.users.UserTypes
@@ -363,7 +363,7 @@ class TimLoader(TimLoader):
         # kw.update(end_time=row.bis.strip())
         # kw.update(break_time=row.pause.strip())
         # kw.update(is_private=tim2bool(row.isprivat))
-        obj = clocking.Session(**kw)
+        obj = working.Session(**kw)
         # if row.idpar.strip():
             # partner_id = self.par_pk(row.idpar)
             # if obj.project and obj.project.partner \

@@ -53,7 +53,7 @@ Enrolment = rt.models.courses.Enrolment
 
 Account = dd.resolve_model('accounts.Account')
 
-clocking = dd.resolve_app('clocking')
+working = dd.resolve_app('working')
 
 User = rt.models.users.User
 UserTypes = rt.models.users.UserTypes

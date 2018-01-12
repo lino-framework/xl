@@ -8,6 +8,6 @@ from lino.api import rt, dd
 
 
 def objects():
-    SessionType = rt.modules.clocking.SessionType
+    SessionType = rt.modules.working.SessionType
     yield SessionType(id=1, name="Default")
 

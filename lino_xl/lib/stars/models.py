@@ -247,6 +247,6 @@ def Create_Stars_From_Scratch():
     for comment in rt.models.comments.Comment.objects.all():
         if isinstance(comment.owner, rt.models.tickets.Ticket):
             Ticket.add_change_watcher(comment.user)
-    for session in rt.models.clocking.Session.objects.all():
+    for session in rt.models.working.Session.objects.all():
         session.ticket.add_change_watcher(session.user)
 

@@ -23,7 +23,7 @@ from lino.mixins import Created, ObservedDateRange
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.choicelists import MailModes
 from lino_xl.lib.cal.mixins import daterange_text
-from lino_xl.lib.clocking.mixins import Workable
+from lino_xl.lib.working.mixins import Workable
 
 from .roles import VotesUser, VotesStaff
 from .choicelists import VoteStates, VoteEvents  # , VoteViews
