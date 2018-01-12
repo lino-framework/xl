@@ -29,9 +29,6 @@ class Workable(dd.Model):
     def is_workable_for(self, user):
         return True
 
-    def on_worked(self, session):
-        pass
-
     if dd.is_installed('working'):
         
         start_session = StartTicketSession()

@@ -24,12 +24,12 @@ class Plugin(ad.Plugin):
     
     # ticket_model = 'tickets.Ticket'
     ticket_model = 'contacts.Partner'
-    """The model that is to be used as the "ticket".
+    """
+    The model that is to be used as the "ticket".
 
     This must be no longer a subclass of
-    :class:`lino_xl.lib.working.mixins.Workable`,
-    it must jusst have a method `on_worked`.
-
+    :class:`lino_xl.lib.working.mixins.Workable`, it must just have a
+    method `on_worked`.
     """
 
     default_reporting_type = 'regular'

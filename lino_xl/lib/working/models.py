@@ -87,19 +87,11 @@ class Session(UserAuthored, Started, Ended, Workable):
                 self.start_date = dd.today()
             # if self.ticket_id is not None and self.faculty_id is None:
             #     self.faculty = self.ticket.faculty
-            if self.ticket_id:
-                self.ticket.on_worked(self)
             if self.end_time is not None:
                 if self.end_date is None:
                     self.end_date = self.start_date
-                if self.is_fixing and self.ticket_id:
-                    ticket = self.ticket
-                    if self.end_date is not None:
-                        if ticket.fixed_date is None:
-                            ticket.fixed_date = self.end_date
-                            ticket.fixed_time = self.end_time
-                            ticket.full_clean()
-                            ticket.save()
+            if self.ticket_id:
+                self.ticket.on_worked(self)
                     
         super(Session, self).full_clean(*args, **kwargs)
 
@@ -259,6 +251,39 @@ if False:  # works, but is not useful
 
     from lino.utils.weekly import add_reporter
     add_reporter(weekly_reporter)
+
+
+from lino.modlib.checkdata.choicelists import Checker
+class TicketSessionsChecker(Checker):
+    """
+
+    """
+    model = dd.plugins.working.ticket_model
+    verbose_name = _("Check the fixed_since field of tickets.")
+
+    def get_checkdata_problems(self, obj, fix=False):
+        qs = rt.models.working.Session.objects.filter(
+            ticket=obj, end_time__isnull=False, is_fixing=True)
+        qs = qs.order_by('end_date', 'end_time')
+        ses = qs.first()
+        if ses is None:
+            if obj.fixed_since is not None:
+                if fix:
+                    obj.fixed_since = None
+                    obj.full_clean()
+                    obj.save()
+                yield (True, _("No fixing session but marked as fixed"))
+        else:
+            if obj.fixed_since is None:
+                if fix:
+                    obj.fixed_since = ses.get_datetime('end')
+                    obj.full_clean()
+                    obj.save()
+                yield (True, _(
+                    "Fixing session exists but ticket not marked as fixed"))
+
+TicketSessionsChecker.activate()
+    
 
 # dd.inject_field(
 #     'tickets.Project',

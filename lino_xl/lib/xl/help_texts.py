@@ -1167,36 +1167,6 @@ application defines several variants of
 EnrolmentsByPupil."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
-    'lino_xl.lib.clocking.SessionType' : _("""The type of a Session."""),
-    'lino_xl.lib.clocking.Session' : _("""A Session is when a user works during a given lapse of time on
-a given Ticket."""),
-    'lino_xl.lib.clocking.Session.start_date' : _("""The date when you started to work."""),
-    'lino_xl.lib.clocking.Session.start_time' : _("""The time (in hh:mm) when you started working on this
-session."""),
-    'lino_xl.lib.clocking.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
-    'lino_xl.lib.clocking.Session.end_time' : _("""The time (in hh:mm) when the worker stopped to work."""),
-    'lino_xl.lib.clocking.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
-from the difference between start_time and
-end_time."""),
-    'lino_xl.lib.clocking.Session.faculty' : _("""The faculty that has been used during this session. On a new
-session this defaults to the needed faculty currently specified
-on the ticket."""),
-    'lino_xl.lib.clocking.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
-    'lino_xl.lib.clocking.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
-    'lino_xl.lib.clocking.StartTicketSession' : _("""Start a session on this ticket."""),
-    'lino_xl.lib.clocking.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
-    'lino_xl.lib.clocking.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
-    'lino_xl.lib.clocking.Workable' : _("""Base class for things that workers can work on."""),
-    'lino_xl.lib.clocking.ServiceReport' : _("""A service report is a document used in various discussions with
-a stakeholder."""),
-    'lino_xl.lib.clocking.ServiceReport.user' : _("""This can be empty and will then show the working time of all
-users."""),
-    'lino_xl.lib.clocking.ShowMySessionsByDay' : _("""Show all sessions on the same day."""),
-    'lino_xl.lib.clocking.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
-during the given period."""),
-    'lino_xl.lib.clocking.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
-during the given period."""),
-    'lino_xl.lib.clocking.Worker' : _("""A user who is candidate for working on a ticket."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
@@ -1269,6 +1239,36 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
+    'lino_xl.lib.working.SessionType' : _("""The type of a Session."""),
+    'lino_xl.lib.working.Session' : _("""A Session is when a user works during a given lapse of time on
+a given Ticket."""),
+    'lino_xl.lib.working.Session.start_date' : _("""The date when you started to work."""),
+    'lino_xl.lib.working.Session.start_time' : _("""The time (in hh:mm) when you started working on this
+session."""),
+    'lino_xl.lib.working.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
+    'lino_xl.lib.working.Session.end_time' : _("""The time (in hh:mm) when the worker stopped to work."""),
+    'lino_xl.lib.working.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
+from the difference between start_time and
+end_time."""),
+    'lino_xl.lib.working.Session.faculty' : _("""The faculty that has been used during this session. On a new
+session this defaults to the needed faculty currently specified
+on the ticket."""),
+    'lino_xl.lib.working.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
+    'lino_xl.lib.working.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
+    'lino_xl.lib.working.StartTicketSession' : _("""Start a session on this ticket."""),
+    'lino_xl.lib.working.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
+    'lino_xl.lib.working.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
+    'lino_xl.lib.working.Workable' : _("""Base class for things that workers can work on."""),
+    'lino_xl.lib.working.ServiceReport' : _("""A service report is a document used in various discussions with
+a stakeholder."""),
+    'lino_xl.lib.working.ServiceReport.user' : _("""This can be empty and will then show the working time of all
+users."""),
+    'lino_xl.lib.working.ShowMySessionsByDay' : _("""Show all sessions on the same day."""),
+    'lino_xl.lib.working.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.working.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.working.Worker' : _("""A user who is candidate for working on a ticket."""),
     'lino_xl.lib.phones.ContactDetailType.field_name' : _("""The name of field on the ContactDetailsOwner where
 the value of the primary item of this type is to be mirrored."""),
     'lino_xl.lib.phones.ContactDetailTypes' : _("""The list of "built-in" types of contact detail items."""),
