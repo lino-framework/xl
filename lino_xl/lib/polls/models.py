@@ -741,7 +741,7 @@ class AnswersByResponse(dd.VirtualTable):
 @dd.python_2_unicode_compatible
 class AnswersByQuestionRow(object):
     FORWARD_TO_RESPONSE = tuple(
-        "full_clean after_ui_save disable_delete".split())
+        "full_clean after_ui_save disable_delete obj2href".split())
 
     def __init__(self, response, question):
         self.response = response
