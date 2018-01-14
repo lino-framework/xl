@@ -1,0 +1,26 @@
+{# `this` is the Excerpt, `obj` is the `owner` (e.g. a Confirmation, a
+Guest, a Client, ... #}
+<p class="OurRef">
+{% block our_ref %}
+{{_("Our reference")}}: {{this.user.initials}}/{{this.project.id}}/{{this.id}}
+{% endblock %}
+</p>
+
+{% block title %}
+<h1>{{this.excerpt_type}}</h1>
+{% endblock %}
+
+{% block body %}
+{% endblock %}
+
+{% block signature %}
+<p class="KeepTogether">{{settings.SITE.site_config.site_company}}
+<br/>
+<br/>
+<br/>
+<br/>{{this.user.get_full_name()}}
+</p>
+{% endblock %}
+
+{% block trailer %}
+{% endblock %}
