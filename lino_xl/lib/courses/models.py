@@ -478,7 +478,7 @@ class Course(Reservation, Duplicable, Printable):
 
     def get_enrolments(self, **pv):
         # pv = dict(start_date=sd, end_date=dd.today())
-        return rt.actors.courses.EnrolmentsByCourse.request(
+        return rt.models.courses.EnrolmentsByCourse.request(
             self, param_values=pv)
 
     @dd.virtualfield(dd.HtmlBox(_("Presences")))

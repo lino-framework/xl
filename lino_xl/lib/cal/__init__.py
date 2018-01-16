@@ -2,8 +2,7 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""This is Lino's Calendar module. See :doc:`/specs/cal`.
-
+"""This is Lino's calendar module. See :doc:`/specs/cal`.
 
 .. autosummary::
    :toctree:
