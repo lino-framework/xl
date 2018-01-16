@@ -25,7 +25,7 @@ from .mixins import Workable
 class SessionType(mixins.BabelNamed):
 
     class Meta:
-        app_label = 'clocking'
+        app_label = 'working'
         verbose_name = _("Session Type")
         verbose_name_plural = _('Session Types')
 
@@ -33,17 +33,17 @@ class SessionType(mixins.BabelNamed):
 @dd.python_2_unicode_compatible
 class Session(UserAuthored, Started, Ended, Workable):
     class Meta:
-        app_label = 'clocking'
+        app_label = 'working'
         verbose_name = _("Session")
         verbose_name_plural = _('Sessions')
         abstract = dd.is_abstract_model(__name__, 'Session')
 
     ticket = dd.ForeignKey(
-        dd.plugins.clocking.ticket_model,
+        dd.plugins.working.ticket_model,
         related_name="sessions_by_ticket")
 
     session_type = dd.ForeignKey(
-        'clocking.SessionType', null=True, blank=True)
+        'working.SessionType', null=True, blank=True)
     summary = models.CharField(
         _("Summary"), max_length=200, blank=True,
         help_text=_("Summary of the session."))
@@ -57,6 +57,7 @@ class Session(UserAuthored, Started, Ended, Workable):
         blank=True, null=True)
 
     reporting_type = ReportingTypes.field(blank=True)
+    is_fixing = models.BooleanField(_("Fixing"), default=False)
     
     end_session = EndThisSession()
     show_today = ShowMySessionsByDay('start_date')
@@ -86,10 +87,12 @@ class Session(UserAuthored, Started, Ended, Workable):
                 self.start_date = dd.today()
             # if self.ticket_id is not None and self.faculty_id is None:
             #     self.faculty = self.ticket.faculty
+            if self.end_time is not None:
+                if self.end_date is None:
+                    self.end_date = self.start_date
             if self.ticket_id:
                 self.ticket.on_worked(self)
-            if self.end_time is not None and self.end_date is None:
-                self.end_date = self.start_date
+                    
         super(Session, self).full_clean(*args, **kwargs)
 
     def unused_save(self, *args, **kwargs):
@@ -108,7 +111,7 @@ class Session(UserAuthored, Started, Ended, Workable):
             return t.site.reporting_type
         # if t.project and t.project.reporting_type:
         #     return t.project.reporting_type
-        return dd.plugins.clocking.default_reporting_type
+        return dd.plugins.working.default_reporting_type
 
     # def after_ui_save(self, ar, cw):
     #     super(Session, self).after_ui_save(ar, cw)
@@ -163,7 +166,7 @@ def welcome_messages(ar):
     """Yield messages for the welcome page."""
     #todo show all users active sessions
 
-    Session = rt.modules.clocking.Session
+    Session = rt.modules.working.Session
     # Ticket = rt.modules.tickets.Ticket
     # TicketStates = rt.modules.tickets.TicketStates
     me = ar.get_user()
@@ -209,7 +212,7 @@ dd.add_welcome_handler(welcome_messages)
 if False:  # works, but is not useful
 
     def weekly_reporter(days, ar, start_date, end_date):
-        Session = rt.modules.clocking.Session
+        Session = rt.modules.working.Session
         me = ar.get_user()
         qs = Session.objects.filter(
             user=me, start_date__gte=start_date, end_date__lte=end_date)
@@ -248,6 +251,39 @@ if False:  # works, but is not useful
 
     from lino.utils.weekly import add_reporter
     add_reporter(weekly_reporter)
+
+
+from lino.modlib.checkdata.choicelists import Checker
+class TicketSessionsChecker(Checker):
+    """
+
+    """
+    model = dd.plugins.working.ticket_model
+    verbose_name = _("Check the fixed_since field of tickets.")
+
+    def get_checkdata_problems(self, obj, fix=False):
+        qs = rt.models.working.Session.objects.filter(
+            ticket=obj, end_time__isnull=False, is_fixing=True)
+        qs = qs.order_by('end_date', 'end_time')
+        ses = qs.first()
+        if ses is None:
+            if obj.fixed_since is not None:
+                if fix:
+                    obj.fixed_since = None
+                    obj.full_clean()
+                    obj.save()
+                yield (True, _("No fixing session but marked as fixed"))
+        else:
+            if obj.fixed_since is None:
+                if fix:
+                    obj.fixed_since = ses.get_datetime('end')
+                    obj.full_clean()
+                    obj.save()
+                yield (True, _(
+                    "Fixing session exists but ticket not marked as fixed"))
+
+TicketSessionsChecker.activate()
+    
 
 # dd.inject_field(
 #     'tickets.Project',

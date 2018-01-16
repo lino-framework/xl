@@ -3,19 +3,9 @@
 # License: BSD (see file COPYING for details)
 
 
-"""User interface for this plugin.
-
-"""
-
 from __future__ import unicode_literals
 from __future__ import print_function
 from builtins import str
-
-"""Database models for :mod:`lino_xl.lib.courses`.
-
-.. autosummary::
-
-"""
 
 import logging
 logger = logging.getLogger(__name__)
@@ -136,8 +126,6 @@ class EntriesByTeacher(cal.Events):
 
 
 class CourseDetail(dd.DetailLayout):
-    """The detail layout of a :class:`Course`.
-    """
     required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     # start = "start_date start_time"
     # end = "end_date end_time"
@@ -147,7 +135,7 @@ class CourseDetail(dd.DetailLayout):
     main = "general cal_tab enrolments"
     
     general = dd.Panel("""
-    line teacher start_date end_date start_time end_time
+    line teacher start_date start_time end_time end_date
     room #slot workflow_buttons id:8 user
     name
     description
@@ -169,8 +157,6 @@ class CourseDetail(dd.DetailLayout):
 # Course.detail_layout_class = CourseDetail
 
 class Activities(dd.Table):
-    """Base table for all activities.
-    """
     _course_area = None
     required_roles = dd.login_required((CoursesUser, CoursesTeacher))
     model = 'courses.Course'
@@ -312,15 +298,6 @@ class MyActivities(My, Activities):
 
 
 class MyCoursesGiven(Activities):
-    """Show the courses given by me (i.e. where I am the teacher).
-
-    This requires the :attr:`partner` field in my user settings to
-    point to me as a teacher.
-
-    For users whose :attr:`partner` field is empty, this list shows
-    all courses without teacher.
-
-    """
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
     master_key = "teacher"
@@ -338,7 +315,6 @@ class MyCoursesGiven(Activities):
     
 
 class CoursesByLine(Activities):
-    """Show the courses per course line."""
     master_key = "line"
     column_names = "overview weekdays_text room times_text teacher *"
     order_by = ['room__name', '-start_date']
@@ -346,9 +322,6 @@ class CoursesByLine(Activities):
 
 
 class CoursesByTopic(Activities):
-    """Shows the courses of a given topic.
-
-    """
     master_key = 'line__topic'
     # master = 'courses.Topic'
     order_by = ['-start_date']
@@ -442,7 +415,6 @@ class ClosedCourses(Activities):
 
 
 class Enrolments(dd.Table):
-    """Base class for all enrolment tables."""
 
     _course_area = None
 
@@ -547,7 +519,6 @@ class Enrolments(dd.Table):
 
 
 class AllEnrolments(Enrolments):
-    """Show global list of all enrolments."""
     required_roles = dd.login_required(Explorer)
     order_by = ['-id']
     column_names = 'id request_date start_date end_date user course pupil pupil__birth_date pupil__age pupil__country pupil__city pupil__gender *'
@@ -574,7 +545,6 @@ class ConfirmAllEnrolments(dd.Action):
 
 
 class PendingRequestedEnrolments(Enrolments):
-    "Show all requested enrolments."
     label = _("Pending requested enrolments")
     required_roles = dd.login_required(dd.SiteStaff)
     auto_fit_column_widths = True
@@ -592,7 +562,6 @@ class PendingRequestedEnrolments(Enrolments):
 
 
 class PendingConfirmedEnrolments(Enrolments):
-    "Show all confirmed enrolments."
     label = _("Pending confirmed enrolments")
     required_roles = dd.login_required(dd.SiteStaff)
     auto_fit_column_widths = True
@@ -607,7 +576,6 @@ class PendingConfirmedEnrolments(Enrolments):
 
 
 class EnrolmentsByPupil(Enrolments):
-    """Show all enrolments of a given pupil."""
     params_panel_hidden = True
     required_roles = dd.login_required(CoursesUser)
     master_key = "pupil"

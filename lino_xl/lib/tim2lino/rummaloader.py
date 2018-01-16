@@ -33,7 +33,7 @@ households_Member = dd.resolve_model('households.Member')
 Account = dd.resolve_model('accounts.Account')
 
 tickets = dd.resolve_app('tickets')
-clocking = dd.resolve_app('clocking')
+working = dd.resolve_app('working')
 
 def ticket_state(idpns):
     if idpns == ' ':
@@ -232,7 +232,7 @@ class TimLoader(TimLoader):
         # kw.update(end_time=row.bis.strip())
         # kw.update(break_time=row.pause.strip())
         # kw.update(is_private=tim2bool(row.isprivat))
-        obj = clocking.Session(**kw)
+        obj = working.Session(**kw)
         # if row.idpar.strip():
             # partner_id = self.par_pk(row.idpar)
             # if obj.project and obj.project.partner \

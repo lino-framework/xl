@@ -404,7 +404,7 @@ class TicketDetail(dd.DetailLayout):
 
     general = dd.Panel("""
     general1 #WishesByTicket
-    comments.CommentsByRFC:60 clocking.SessionsByTicket:20
+    comments.CommentsByRFC:60 working.SessionsByTicket:20
     """, label=_("General"))
 
     history_tab = dd.Panel("""
@@ -470,7 +470,7 @@ class Tickets(dd.Table):
     order_by = ["-id"]
     column_names = 'id summary:50 user:10 topic #faculty ' \
                    'workflow_buttons:30 #site:10 project:10 *' # Site commented to not disturbe care
-    detail_layout = TicketDetail()
+    detail_layout = 'tickets.TicketDetail'
     insert_layout = """
     summary
     end_user

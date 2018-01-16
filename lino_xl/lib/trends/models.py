@@ -114,7 +114,7 @@ class TrendEvents(dd.Table):
 class EventsByStage(TrendEvents):
     label = _("Trend events")
     master_key = 'trend_stage'
-    column_names = "event_date subject remark *"
+    column_names = "event_date subject remark * subject__*"
 
 
 class EventsBySubject(TrendEvents):

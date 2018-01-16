@@ -29,10 +29,7 @@ class Workable(dd.Model):
     def is_workable_for(self, user):
         return True
 
-    def on_worked(self, session):
-        pass
-
-    if dd.is_installed('clocking'):
+    if dd.is_installed('working'):
         
         start_session = StartTicketSession()
         end_session = EndTicketSession()
@@ -44,7 +41,7 @@ class Workable(dd.Model):
                 s.add('start_session')
                 s.add('end_session')
                 return s
-            Session = rt.models.clocking.Session
+            Session = rt.models.working.Session
             qs = Session.objects.filter(
                 user=user, ticket=self.get_ticket(),
                 end_time__isnull=True)
@@ -54,16 +51,15 @@ class Workable(dd.Model):
                 s.add('end_session')
             return s
             
-            
         def save_new_instance(elem, ar):
             super(Workable, elem).save_new_instance(ar)
 
-            if rt.settings.SITE.loading_from_dump or not dd.is_installed('clocking'):
+            if rt.settings.SITE.loading_from_dump or not dd.is_installed('working'):
                 return
             me = ar.get_user()
             # print elem.create_session_on_create
             if elem.create_session_on_create and me is not None and me.open_session_on_new_ticket:
-                ses = rt.models.clocking.Session(ticket=elem, user=me)
+                ses = rt.models.working.Session(ticket=elem, user=me)
                 ses.full_clean()
                 ses.save()
 

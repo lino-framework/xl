@@ -108,66 +108,10 @@ located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
-    'lino_xl.lib.courses.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.courses.Plugin.pupil_name_fields' : _("""The value to use as quick_search_fields for
-Enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
     'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
     'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
-    'lino_xl.lib.courses.EntriesByTeacher' : _("""Show calendar entries of activities led by this teacher"""),
-    'lino_xl.lib.courses.EntriesByTeacher.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.EntriesByTeacher.model' : _("""alias of Event"""),
-    'lino_xl.lib.courses.CourseDetail' : _("""The detail layout of a Course."""),
-    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
-    'lino_xl.lib.courses.Activities.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher)."""),
-    'lino_xl.lib.courses.MyCoursesGiven.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.MyCoursesGiven.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
-    'lino_xl.lib.courses.CoursesByLine.master' : _("""alias of Line"""),
-    'lino_xl.lib.courses.CoursesByLine.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
-    'lino_xl.lib.courses.CoursesByTopic.master' : _("""alias of Topic"""),
-    'lino_xl.lib.courses.CoursesByTopic.model' : _("""alias of Course"""),
-    'lino_xl.lib.courses.Enrolments' : _("""Base class for all enrolment tables."""),
-    'lino_xl.lib.courses.Enrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
-    'lino_xl.lib.courses.AllEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
-    'lino_xl.lib.courses.PendingRequestedEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
-    'lino_xl.lib.courses.PendingConfirmedEnrolments.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
-    'lino_xl.lib.courses.EnrolmentsByPupil.master' : _("""alias of Person"""),
-    'lino_xl.lib.courses.EnrolmentsByPupil.model' : _("""alias of Enrolment"""),
-    'lino_xl.lib.courses.StatusReport' : _("""Gives an overview about what's up today ."""),
-    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
-teacher in a given room to speak about a given subject."""),
-    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
-in this course."""),
-    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
-    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
-    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
-    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
-    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
-given course."""),
-    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
-    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
-participant."""),
-    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
-configurable list of categories."""),
-    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
-e.g. when selecting the line."""),
-    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
-    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
-line.  Leave empty to use the site's default (defined by
-body_template on the
-lino_xl.lib.excerpts.models.ExcerptType for
-Course)"""),
-    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
-application defines several variants of
-EnrolmentsByPupil."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
@@ -606,15 +550,25 @@ must resolve using resolve_states."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
     'lino_xl.lib.bevats.DeclarationFields' : _("""Implements lino_xl.lib.vat.DeclarationFields."""),
-    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
-lino_xl.lib.cal.management.commands.watch_calendars,
-and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
-can see the EntriesByRoom that happened (or will happen)
-there.  A Room has a multilingual name."""),
-    'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
-    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
-    'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
+    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
+Only start_date is mandatory."""),
+    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
+    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
+    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
+    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
+entry."""),
+    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
+field pointing to a given EventType, which holds
+extended configurable information about this entry."""),
+    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
+rules defined by the workflow, that's why we sometimes refer
+to it as the life cycle."""),
+    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
+the same time."""),
+    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
+all entries on that day (EntriesByDay)."""),
+    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
+button which opens the ConflictingEvents table for this event."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of Event Types defined on this system."""),
     'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
@@ -626,6 +580,22 @@ users or external parties)."""),
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
     'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
+    'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
+    'lino_xl.lib.cal.EventGenerator.do_update_events' : _("""See UpdateEntries."""),
+    'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
+    'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
+    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
+    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
+data of that year."""),
+    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
+lino_xl.lib.cal.management.commands.watch_calendars,
+and local modifications will be sent back to the remote calendar."""),
+    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
+can see the EntriesByRoom that happened (or will happen)
+there.  A Room has a multilingual name."""),
+    'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
+    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
+    'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
     'lino_xl.lib.cal.GuestRole' : _("""The role of a guest expresses what the partner is going to do there."""),
     'lino_xl.lib.cal.GuestRoles' : _("""Global table of guest roles."""),
     'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
@@ -649,32 +619,10 @@ entries."""),
 entry according to the suggestions."""),
     'lino_xl.lib.cal.UpdateAllGuests' : _("""Update the presence lists of all calendar events generated by
 this."""),
-    'lino_xl.lib.cal.Event' : _("""A calendar entry is a lapse of time to be visualized in a
-calendar."""),
-    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
-Only start_date is mandatory."""),
-    'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
-    'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
-    'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
-    'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
-entry."""),
-    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
-field pointing to a given EventType, which holds
-extended configurable information about this entry."""),
-    'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
-rules defined by the workflow, that's why we sometimes refer
-to it as the life cycle."""),
-    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
-the same time."""),
-    'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
-all entries on that day (EntriesByDay)."""),
-    'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
-button which opens the ConflictingEvents table for this event."""),
     'lino_xl.lib.cal.Events' : _("""Table which shows all calendar events."""),
-    'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be
-shown.  "Yes" means only appointments, "No"
-means no appointments and leaving it to blank shows both types
-of events."""),
+    'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be shown.  "Yes" means only
+appointments, "No" means no appointments and leaving it to
+blank shows both types of events."""),
     'lino_xl.lib.cal.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
     'lino_xl.lib.cal.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date."""),
@@ -701,8 +649,6 @@ given event."""),
     'lino_xl.lib.cal.MyPresences' : _("""Shows all my presences in calendar events, independently of their
 state."""),
     'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
-    'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
-    'lino_xl.lib.cal.EventGenerator.do_update_events' : _("""See UpdateEntries."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
 See specs.cal.automatic_events."""),
     'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
@@ -718,11 +664,7 @@ choicelist."""),
     'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the
 lino_xl.lib.cal.Event.duration_unit field of a calendar
 entry."""),
-    'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
-    'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
-data of that year."""),
-    'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
-    'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
+    'lino_xl.lib.cal.AccessClasses' : _("""The sitewide list of access classes."""),
     'lino_xl.lib.cal.ShowEntriesByDay' : _("""Show all calendar events of the same day."""),
     'lino_xl.lib.cal.Plugin.partner_model' : _("""The model to use as the guest of a presence."""),
     'lino_xl.lib.cal.Plugin.ignore_dates_before' : _("""Ignore dates before the given date."""),
@@ -1179,36 +1121,50 @@ method, ..."""),
     'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
     'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
-    'lino_xl.lib.clocking.SessionType' : _("""The type of a Session."""),
-    'lino_xl.lib.clocking.Session' : _("""A Session is when a user works during a given lapse of time on
-a given Ticket."""),
-    'lino_xl.lib.clocking.Session.start_date' : _("""The date when you started to work."""),
-    'lino_xl.lib.clocking.Session.start_time' : _("""The time (in hh:mm) when you started working on this
-session."""),
-    'lino_xl.lib.clocking.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
-    'lino_xl.lib.clocking.Session.end_time' : _("""The time (in hh:mm) when the worker stopped to work."""),
-    'lino_xl.lib.clocking.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
-from the difference between start_time and
-end_time."""),
-    'lino_xl.lib.clocking.Session.faculty' : _("""The faculty that has been used during this session. On a new
-session this defaults to the needed faculty currently specified
-on the ticket."""),
-    'lino_xl.lib.clocking.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
-    'lino_xl.lib.clocking.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
-    'lino_xl.lib.clocking.StartTicketSession' : _("""Start a session on this ticket."""),
-    'lino_xl.lib.clocking.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
-    'lino_xl.lib.clocking.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
-    'lino_xl.lib.clocking.Workable' : _("""Base class for things that workers can work on."""),
-    'lino_xl.lib.clocking.ServiceReport' : _("""A service report is a document used in various discussions with
-a stakeholder."""),
-    'lino_xl.lib.clocking.ServiceReport.user' : _("""This can be empty and will then show the working time of all
-users."""),
-    'lino_xl.lib.clocking.ShowMySessionsByDay' : _("""Show all sessions on the same day."""),
-    'lino_xl.lib.clocking.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
-during the given period."""),
-    'lino_xl.lib.clocking.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
-during the given period."""),
-    'lino_xl.lib.clocking.Worker' : _("""A user who is candidate for working on a ticket."""),
+    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
+teacher in a given room to speak about a given subject."""),
+    'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
+    'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
+this field empty if the meetings last less than one day."""),
+    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
+in this course."""),
+    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
+    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
+    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
+    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
+    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible
+manager).  Compare MyCoursesGiven."""),
+    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
+Compare MyActivities."""),
+    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
+    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
+    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
+given course."""),
+    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
+    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
+participant."""),
+    'lino_xl.lib.courses.Enrolments' : _("""Base class for all tables that show Enrolment."""),
+    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
+    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
+    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
+    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
+    'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show all enrolments of a given course."""),
+    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
+configurable list of categories."""),
+    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
+e.g. when selecting the line."""),
+    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
+    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
+line.  Leave empty to use the site's default (defined by
+body_template on the
+lino_xl.lib.excerpts.models.ExcerptType for
+Course)"""),
+    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+application defines several variants of
+EnrolmentsByPupil."""),
+    'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
+Enrolment."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
@@ -1281,6 +1237,36 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
+    'lino_xl.lib.working.SessionType' : _("""The type of a Session."""),
+    'lino_xl.lib.working.Session' : _("""A Session is when a user works during a given lapse of time on
+a given Ticket."""),
+    'lino_xl.lib.working.Session.start_date' : _("""The date when you started to work."""),
+    'lino_xl.lib.working.Session.start_time' : _("""The time (in hh:mm) when you started working on this
+session."""),
+    'lino_xl.lib.working.Session.end_date' : _("""Leave this field blank if it is the same date as start_date."""),
+    'lino_xl.lib.working.Session.end_time' : _("""The time (in hh:mm) when the worker stopped to work."""),
+    'lino_xl.lib.working.Session.break_time' : _("""The time (in hh:mm) to remove from the duration resulting
+from the difference between start_time and
+end_time."""),
+    'lino_xl.lib.working.Session.faculty' : _("""The faculty that has been used during this session. On a new
+session this defaults to the needed faculty currently specified
+on the ticket."""),
+    'lino_xl.lib.working.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
+    'lino_xl.lib.working.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
+    'lino_xl.lib.working.StartTicketSession' : _("""Start a session on this ticket."""),
+    'lino_xl.lib.working.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
+    'lino_xl.lib.working.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
+    'lino_xl.lib.working.Workable' : _("""Base class for things that workers can work on."""),
+    'lino_xl.lib.working.ServiceReport' : _("""A service report is a document used in various discussions with
+a stakeholder."""),
+    'lino_xl.lib.working.ServiceReport.user' : _("""This can be empty and will then show the working time of all
+users."""),
+    'lino_xl.lib.working.ShowMySessionsByDay' : _("""Show all sessions on the same day."""),
+    'lino_xl.lib.working.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.working.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
+during the given period."""),
+    'lino_xl.lib.working.Worker' : _("""A user who is candidate for working on a ticket."""),
     'lino_xl.lib.phones.ContactDetailType.field_name' : _("""The name of field on the ContactDetailsOwner where
 the value of the primary item of this type is to be mirrored."""),
     'lino_xl.lib.phones.ContactDetailTypes' : _("""The list of "built-in" types of contact detail items."""),

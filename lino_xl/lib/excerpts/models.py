@@ -333,7 +333,7 @@ class CreateExcerpt(dd.Action):
         et = self.excerpt_type
         ex = et.get_or_create_excerpt(ar)
         # logger.info(
-        #     "20160427 excerpts.CreateExcerpt %s, %s",
+        #     "20180114 excerpts.CreateExcerpt %s, %s",
         #     et, et.print_directly)
         if et.print_directly:
             ex.do_print.run_from_ui(ar, **kw)
@@ -622,12 +622,15 @@ class Excerpt(TypedPrintable, UserAuthored,
         kw = super(Excerpt, self).get_printable_context(**kw)
         kw.update(obj=self.owner)
         body = ''
+        # logger.info("20180114 get_printable_context() %s", self)
         if self.excerpt_type_id is not None:
             etype = self.excerpt_type
             if etype.backward_compat:
                 kw.update(this=self.owner)
 
             tplname = self.get_body_template_name()
+            # logger.info("20180114 tplname is %s -",
+            #             tplname)
             if tplname and ar is not None:
                 body = settings.SITE.plugins.jinja.render_jinja(
                     ar, tplname, kw)
@@ -636,8 +639,8 @@ class Excerpt(TypedPrintable, UserAuthored,
                 # template = env.get_template(tplname)
                 # # logger.info("body template %s (%s)", tplname, template)
                 # body = ar.render_jinja(template, **kw)
-                # # logger.info("20160311 body template %s (%s) -> %s",
-                # #             tplname, template, body)
+                # logger.info("20160311 body template %s -> %s",
+                #             tplname, body)
 
         kw.update(body=body)
         return kw
@@ -872,13 +875,20 @@ else:
 
 @dd.receiver(dd.pre_analyze)
 def set_excerpts_actions(sender, **kw):
-    """Installs (1) print management actions on models for which there is
+    """
+    Installs (1) print management actions on models for which there is
     an excerpt type and (2) the excerpt shortcut fields defined in
     :class:`lino_xl.lib.excerpts.choicelists.Shortcuts`.
 
-    """
-    # logger.info("20140401 %s.set_attest_actions()", __name__)
+    Note that excerpt types for a model with has MTI children, the
+    action will be installed on children as well.  For example a
+    :class:`lino_avanti.lib.avanti.Client` in
+    :mod:`lino_book.projects.adg` can get printed either as a
+    :xfile:`TermsConditions.odt` or as a :xfile:`final
+    report.body.html`.
 
+    """
+    # logger.info("20180114 %s.set_excerpts_actions()", __name__)
     # in case ExcerptType is overridden
     ExcerptType = sender.modules.excerpts.ExcerptType
     Excerpt = sender.modules.excerpts.Excerpt
@@ -893,10 +903,12 @@ def set_excerpts_actions(sender, **kw):
 
     for atype, ct in etypes:
         if ct is not None:
-            m = ct.model_class()
-            if m is not None:  # e.g. database contains types for
-                               # models that existed before but have
-                               # been removed
+            bm = ct.model_class()
+            if bm is None:
+                # e.g. database contains types for models that existed
+                # before but have been removed
+                continue
+            for m in rt.models_by_base(bm):
                 an = atype.get_action_name()
                 if not hasattr(m, an):
                     m.define_action(**{an: CreateExcerpt(

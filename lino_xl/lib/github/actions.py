@@ -102,7 +102,7 @@ class Import_all_commits(dd.Action):
 
     @staticmethod
     def find_sessions(commit, user):
-        return rt.models.clocking.Session.objects.filter(
+        return rt.models.working.Session.objects.filter(
             Q(user=user),
             (Q(start_date=commit.created.date()) & Q(end_date__isnull=True)) | #Because some sessiosn don't have a end_date but are finished on the same day.
             (Q(start_date__lte=commit.created.date()) & Q(end_date__gte=commit.created.date())),

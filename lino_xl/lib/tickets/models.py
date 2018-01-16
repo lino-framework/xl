@@ -30,9 +30,9 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.faculties.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
-from lino_xl.lib.clocking.mixins import Workable
+from lino_xl.lib.working.mixins import Workable
 from lino_xl.lib.stars.mixins import Starrable, get_favourite
-from lino_xl.lib.clocking.choicelists import ReportingTypes
+from lino_xl.lib.working.choicelists import ReportingTypes
 from lino.utils import join_elems
 
 from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities
@@ -122,7 +122,7 @@ class Project(mixins.DateRange, TimeInvestment,
     # root = dd.ForeignKey(
     #     'self', blank=True, null=True, verbose_name=_("Root"))
     reporting_type = ReportingTypes.field(blank=True)
-    # if dd.is_installed('clocking'):
+    # if dd.is_installed('working'):
     #     reporting_type = ReportingTypes.field(blank=True)
     # else:
     #     reporting_type = dd.DummyField()
@@ -476,6 +476,13 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     # spawn_triggered = SpawnTicket("⚇", LinkTypes.triggers)  # "\u2687"
     # spawn_ticket = SpawnTicket("", LinkTypes.requires)  # "\u2687"
 
+    fixed_since = models.DateTimeField(
+        _("Fixed since"), blank=True, null=True, editable=False)
+    # fixed_date = models.DateField(
+    #     _("Fixed date"), blank=True, null=True)
+    # fixed_time = models.TimeField(
+    #     _("Fixed time"), blank=True, null=True)
+        
     def get_rfc_description(self, ar):
         html = ''
         
@@ -522,7 +529,16 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 
         """
         self.add_change_watcher(session.user)
+        
+        if self.fixed_since is None and session.is_fixing and session.end_time:
+            self.fixed_since = session.get_datetime('end')
+        
         self.touch()
+        
+        self.full_clean()
+        self.save()
+
+        
 
     def on_commented(self, comment, ar, cw):
         """This is automatically called when a work session has been created
@@ -556,6 +572,9 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             rv.add('private')
         if not ar.get_user().user_type.has_required_roles([Triager]):
             rv.add('user')
+            # rv.add('fixed_since')
+            # rv.add('fixed_date')
+            # rv.add('fixed_time')
         return rv
 
     # def get_choices_text(self, request, actor, field):

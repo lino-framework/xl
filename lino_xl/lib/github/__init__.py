@@ -20,7 +20,7 @@ class Plugin(ad.Plugin):
     # verbose_name = _("Clocking")
     verbose_name = _("GitHub")
 
-    needs_plugins = ['lino_xl.lib.clocking',
+    needs_plugins = ['lino_xl.lib.working',
                      'lino_xl.lib.tickets',
                      ]
 

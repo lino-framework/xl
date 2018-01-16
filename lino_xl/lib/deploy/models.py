@@ -21,7 +21,7 @@ from lino.modlib.users.mixins import UserAuthored
 
 from lino_xl.lib.tickets.models import Ticket, SpawnTicket
 from lino_xl.lib.tickets.choicelists import TicketStates, LinkTypes
-from lino_xl.lib.clocking.mixins import Workable
+from lino_xl.lib.working.mixins import Workable
 from lino_xl.lib.votes.choicelists import VoteStates
 from django.contrib.contenttypes.models import ContentType
 
