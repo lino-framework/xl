@@ -7,9 +7,9 @@ from __future__ import print_function
 
 from django.db.models import Count
 
-from lino.modlib.system.choicelists import ObservedEvent
-from lino.api import dd, _
+from lino.api import dd, rt, _
 
+from lino.modlib.system.choicelists import ObservedEvent
 from lino_xl.lib.contacts.roles import ContactsStaff
 
 
@@ -74,3 +74,48 @@ add('10', _("Newcomer"), 'newcomer')  # "first contact" in Avanti
 add('20', _("Refused"), 'refused')
 add('30', _("Coached"), 'coached')
 add('50', _("Former"), 'former')
+
+
+class CommonContactType(dd.Choice):
+    show_values = True
+    _instance = None
+    
+    def create_object(self, **kwargs):
+        kwargs.update(dd.str2kw('name', self.text))
+        kwargs.update(common_contact_type=self)
+        return rt.models.clients.ClientContactType(**kwargs)
+    
+    def get_object(self):
+        if self._instance is None:
+            M = rt.models.clients.ClientContactType
+            try:
+                self._instance = M.objects.get(common_contact_type=self)
+            except M.DoesNotExist:
+                return None
+        return self._instance
+
+    def get_contact(self, client):
+        cct = self.get_object()
+        if cct is None:
+            return
+        qs = rt.models.clients.ClientContact.objects.filter(
+            client=client, type=cct)
+        return qs.first()
+
+
+class CommonContactTypes(dd.ChoiceList):
+    verbose_name = _("Common contact type")
+    verbose_name_plural = _("Common contact types")
+    item_class = CommonContactType
+    column_names = 'value name text db_object'
+    required_roles = dd.login_required(ContactsStaff)
+
+    @dd.virtualfield(dd.ForeignKey('clients.ClientContactType'))
+    def db_object(cls, choice, ar):
+        return choice.get_object()
+
+
+add = CommonContactTypes.add_item
+
+add('10', _("Coach"), 'coach')
+add('20', _("Other"), 'other')

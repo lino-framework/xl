@@ -621,6 +621,7 @@ class Excerpt(TypedPrintable, UserAuthored,
             kw = self.owner.get_printable_context(ar, **kw)
         kw = super(Excerpt, self).get_printable_context(**kw)
         kw.update(obj=self.owner)
+        kw.update(excerpt=self)
         body = ''
         # logger.info("20180114 get_printable_context() %s", self)
         if self.excerpt_type_id is not None:

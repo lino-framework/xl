@@ -23,7 +23,7 @@ class ClientContactTypes(dd.Table):
     clients.ClientContactsByType
     """
 
-    column_names = 'id name *'
+    column_names = 'id name common_contact_type *'
 
     stay_in_grid = True
 
