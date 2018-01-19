@@ -22,6 +22,7 @@ from lino.api import dd, rt, _, pgettext
 
 from lino.utils.xmlgen.html import E
 
+from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.cal.mixins import daterange_text
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.users.mixins import UserAuthored, Assignable
@@ -398,7 +399,7 @@ class SpawnTicket(dd.Action):
 @dd.python_2_unicode_compatible
 class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
              Votable, Starrable, Workable, Prioritized, Feasible,
-             mixins.Referrable):
+             UploadController, mixins.Referrable):
 
     quick_search_fields = "summary description ref"
 

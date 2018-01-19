@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -9,6 +9,7 @@ Database models  for this plugin.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -44,8 +45,8 @@ class UploadType(UploadType):
 
 
 class UploadTypes(UploadTypes):
-    column_names = "id name wanted max_number \
-    warn_expiry_unit warn_expiry_value shortcut"
+    column_names = "id name wanted upload_area max_number \
+    warn_expiry_unit warn_expiry_value shortcut *"
 
     detail_layout = """
     id upload_area shortcut
@@ -107,7 +108,7 @@ class Upload(Upload, mixins.ProjectRelated, ContactRelated,
         update_reminder(
             1, self, self.user,
             self.end_date,
-            _("%s expires") % unicode(ut),
+            _("%s expires") % str(ut),
             ut.warn_expiry_value,
             ut.warn_expiry_unit)
 
@@ -186,6 +187,7 @@ class Uploads(Uploads):
 
         if pv.coached_by:
             qs = qs.filter(project__coachings_by_client__user=pv.coached_by)
+            # MyExpiringUploads wants only needed uploads
             qs = qs.filter(needed=True)
             
         # if pv.pupload_type:
@@ -201,15 +203,15 @@ class Uploads(Uploads):
         pv = ar.param_values
 
         if pv.observed_event:
-            yield unicode(pv.observed_event)
+            yield str(pv.observed_event)
 
         if pv.coached_by:
-            yield unicode(self.parameters['coached_by'].verbose_name) + \
-                ' ' + unicode(pv.coached_by)
+            yield str(self.parameters['coached_by'].verbose_name) + \
+                ' ' + str(pv.coached_by)
 
         if pv.user:
-            yield unicode(self.parameters['user'].verbose_name) + \
-                ' ' + unicode(pv.user)
+            yield str(self.parameters['user'].verbose_name) + \
+                ' ' + str(pv.user)
 
 
 class UploadsByType(Uploads, UploadsByType):
@@ -255,7 +257,7 @@ class UploadsByController(Uploads, UploadsByController):
 
 class UploadsByClient(AreaUploads, UploadsByController):
     "Uploads by Client"
-    master = 'pcsw.Client'
+    master = dd.plugins.clients.client_model  # 'pcsw.Client'
     master_key = 'project'
     column_names = "type end_date needed description_link user *"
     required_roles = dd.login_required(ContactsUser, (OfficeUser, OfficeOperator))
@@ -281,29 +283,4 @@ class UploadsByClient(AreaUploads, UploadsByController):
         return super(UploadsByClient, self).format_row_in_slave_summary(
             ar, obj)
 
-# class JobSearchUploadsByClient(UploadsByClient):
-#     _upload_area = UploadAreas.job_search
-
-
-# class MedicalUploadsByClient(UploadsByClient):
-#     _upload_area = UploadAreas.medical
-
-
-# class CareerUploadsByClient(UploadsByClient):
-#     _upload_area = UploadAreas.career
-
-
-def unused_site_setup(site):
-    uploads = site.modules.uploads
-    uploads.Uploads.set_detail_layout(UploadDetail())
-    # uploads.Uploads.set_insert_layout("""
-    # type file
-    # start_date end_date
-    # description
-    # """)
-    uploads.UploadsByController.set_insert_layout("""
-    file
-    type
-    start_date end_date
-    description
-    """)
+    

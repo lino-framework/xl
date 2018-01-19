@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -19,6 +19,7 @@ from lino import mixins
 from lino.utils import join_words
 from lino.utils import join_elems
 
+from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
@@ -84,7 +85,7 @@ class ExportVCardFile(dd.Action):
 
 @dd.python_2_unicode_compatible
 class Partner(ContactDetailsOwner, mixins.Polymorphic,
-              AddressOwner, Feasible, Printable):
+              AddressOwner, UploadController, Feasible, Printable):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
