@@ -22,7 +22,7 @@ from lino.modlib.notify.mixins import ChangeObservable
 from lino.modlib.checkdata.choicelists import Checker
 
 from .mixins import ClientContactBase
-from .choicelists import ClientStates, ClientEvents, CommonContactTypes
+from .choicelists import ClientStates, ClientEvents, KnownContactTypes
 
 
 try:
@@ -37,7 +37,7 @@ class ClientContactType(mixins.BabelNamed):
         verbose_name_plural = _("Client Contact types")
         abstract = dd.is_abstract_model(__name__, 'ClientContactType')
 
-    common_contact_type = CommonContactTypes.field(blank=True)
+    known_contact_type = KnownContactTypes.field(blank=True)
 
 class ClientContact(ClientContactBase):
     class Meta:

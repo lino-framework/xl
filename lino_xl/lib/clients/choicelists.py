@@ -76,20 +76,20 @@ add('30', _("Coached"), 'coached')
 add('50', _("Former"), 'former')
 
 
-class CommonContactType(dd.Choice):
+class KnownContactType(dd.Choice):
     show_values = True
     _instance = None
     
     def create_object(self, **kwargs):
         kwargs.update(dd.str2kw('name', self.text))
-        kwargs.update(common_contact_type=self)
+        kwargs.update(known_contact_type=self)
         return rt.models.clients.ClientContactType(**kwargs)
     
     def get_object(self):
         if self._instance is None:
             M = rt.models.clients.ClientContactType
             try:
-                self._instance = M.objects.get(common_contact_type=self)
+                self._instance = M.objects.get(known_contact_type=self)
             except M.DoesNotExist:
                 return None
         return self._instance
@@ -103,10 +103,10 @@ class CommonContactType(dd.Choice):
         return qs.first()
 
 
-class CommonContactTypes(dd.ChoiceList):
-    verbose_name = _("Common contact type")
-    verbose_name_plural = _("Common contact types")
-    item_class = CommonContactType
+class KnownContactTypes(dd.ChoiceList):
+    verbose_name = _("Known contact type")
+    verbose_name_plural = _("Known contact types")
+    item_class = KnownContactType
     column_names = 'value name text db_object'
     required_roles = dd.login_required(ContactsStaff)
 
@@ -115,7 +115,7 @@ class CommonContactTypes(dd.ChoiceList):
         return choice.get_object()
 
 
-add = CommonContactTypes.add_item
+add = KnownContactTypes.add_item
 
 add('10', _("Coach"), 'coach')
 add('20', _("Other"), 'other')
