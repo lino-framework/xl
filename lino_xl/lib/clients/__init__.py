@@ -44,5 +44,6 @@ class Plugin(ad.Plugin):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('clients.ClientContacts')
+        m.add_action('clients.KnownContactTypes')
         
 

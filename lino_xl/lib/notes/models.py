@@ -27,6 +27,7 @@ from lino.modlib.gfks.mixins import Controllable
 from lino_xl.lib.faculties.mixins import Feasible
 from lino.modlib.users.mixins import My, UserAuthored
 from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
@@ -122,6 +123,7 @@ class Note(TypedPrintable,
            ContactRelated,
            mixins.ProjectRelated,
            ChangeObservable,
+           UploadController,
            Mailable):
     """A **note** is a dated and timed document written by its author (a
     user). For example a report of a meeting or a phone call, or just

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -20,6 +20,7 @@ from lino.utils.xmlgen.html import E
 from lino.mixins.periods import Started, Ended
 
 from lino.modlib.office.roles import OfficeStaff, OfficeOperator
+from lino.modlib.uploads.mixins import UploadController
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
@@ -716,6 +717,7 @@ class Component(Started,
                 mixins.ProjectRelated,
                 UserAuthored,
                 Controllable,
+                UploadController,
                 ChangeObservable,
                 mixins.CreatedModified):
 

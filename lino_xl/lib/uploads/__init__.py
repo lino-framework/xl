@@ -1,4 +1,4 @@
-# Copyright 2014-2015 Luc Saffre
+# Copyright 2014-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Functionality for uploading files to the server and managing them.
@@ -22,6 +22,8 @@ from lino.modlib.uploads import Plugin
 class Plugin(Plugin):
 
     extends_models = ['UploadType', 'Upload']
+
+    # needs_plugins = ['lino_xl.lib.clients']
 
     def setup_main_menu(config, site, user_type, m):
         mg = site.plugins.office
