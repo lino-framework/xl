@@ -348,7 +348,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
                     sar = vt.table_class.insert_action.request_from(
                         ar, master_instance=jnl,
                         known_values=flt)
-                    btn = sar.ar2button(label=unicode(jnl), icon_name=None)
+                    btn = sar.ar2button(label=str(jnl), icon_name=None)
                     if len(actions):
                         actions.append(', ')
                     actions.append(btn)
