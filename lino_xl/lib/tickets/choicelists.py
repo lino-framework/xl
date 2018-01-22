@@ -77,6 +77,10 @@ ProjectEvents.add_item_instance(TicketEventModified('modified'))
 class TicketState(dd.State):
     active = False
     show_in_todo = False
+    
+    def get_summary_field(self):
+        return self.name + '_tickets'
+        # return 'tickets_in_' + self.name
    
 class TicketStates(dd.Workflow):
 
