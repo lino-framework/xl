@@ -757,6 +757,7 @@ class ObsoleteEventTypeChecker(EntryChecker):
         if obj.owner is None:
             msg = _("Has auto_type but no owner.")
             yield (False, msg)
+            return
         et = obj.owner.update_cal_event_type()
         if obj.event_type != et:
             msg = _("Event type but {0} (should be {1}).").format(
