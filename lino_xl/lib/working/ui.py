@@ -692,6 +692,6 @@ class MySitesDashboard(MySites):
 
     @classmethod
     def setup_columns(cls):
-        cls.column_names = "overview active_tickets "
+        cls.column_names = "overview "
         cls.column_names += ' '.join(get_summary_columns(False))
 
