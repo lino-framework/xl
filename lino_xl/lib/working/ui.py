@@ -669,7 +669,7 @@ def get_summary_columns(hours=True):
             k = ts.get_summary_field()
             if k is not None:
                 yield k
-    if hours:
+    if True:
         for t in ReportingTypes.get_list_items():
             k = t.name + '_hours'
             yield k
@@ -682,7 +682,7 @@ class SummariesBySite(Summaries):
 
     @classmethod
     def setup_columns(cls):
-        cls.column_names = "year active_tickets inactive_tickets "
+        cls.column_names = "year active_tickets "
         cls.column_names += ' '.join(get_summary_columns())
 
 from lino_xl.lib.tickets.ui import MySites
@@ -692,6 +692,6 @@ class MySitesDashboard(MySites):
 
     @classmethod
     def setup_columns(cls):
-        cls.column_names = "overview "
+        cls.column_names = "overview active_tickets "
         cls.column_names += ' '.join(get_summary_columns(False))
 
