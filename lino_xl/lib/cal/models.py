@@ -754,11 +754,15 @@ class ObsoleteEventTypeChecker(EntryChecker):
     def get_checkdata_problems(self, obj, fix=False):
         if not obj.auto_type:
             return
+        if obj.owner is None:
+            msg = _("Has auto_type but no owner.")
+            yield (False, msg)
         et = obj.owner.update_cal_event_type()
         if obj.event_type != et:
             msg = _("Event type but {0} (should be {1}).").format(
                 obj.event_type, et)
-            yield (False, msg)
+            autofix = False  # TODO: make this configurable?
+            yield (autofix, msg)
             if fix:
                 obj.event_type = et
                 obj.full_clean()
