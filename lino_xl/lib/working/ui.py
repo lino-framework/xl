@@ -665,9 +665,10 @@ class AllSummaries(Summaries):
 
 def get_summary_columns(hours=True):
     for ts in TicketStates.get_list_items():
-        k = ts.get_summary_field()
-        if k is not None:
-            yield k
+        if hours or ts.active:
+            k = ts.get_summary_field()
+            if k is not None:
+                yield k
     if hours:
         for t in ReportingTypes.get_list_items():
             k = t.name + '_hours'
