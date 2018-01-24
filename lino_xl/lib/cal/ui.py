@@ -900,7 +900,7 @@ if settings.SITE.project_model:
         column_names = 'when_text user summary workflow_buttons'
         # column_names = 'when_text user summary workflow_buttons'
         insert_layout = """
-        start_date start_time
+        start_date start_time end_time
         summary
         event_type
         """

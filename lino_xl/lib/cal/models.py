@@ -585,8 +585,9 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         return super(Event, self).before_ui_save(ar, **kw)
 
     def on_create(self, ar):
-        self.event_type = ar.user.event_type or \
-            settings.SITE.site_config.default_event_type
+        if self.event_type is None:
+            self.event_type = ar.user.event_type or \
+                settings.SITE.site_config.default_event_type
         self.start_date = settings.SITE.today()
         self.start_time = timezone.now().time()
         # see also Assignable.on_create()
