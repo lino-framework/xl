@@ -263,7 +263,7 @@ class MyTasks(Tasks):
 #if settings.SITE.project_model:
 
 class TasksByProject(Tasks):
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     master_key = 'project'
     column_names = 'start_date user summary workflow_buttons *'
 
@@ -893,7 +893,7 @@ class EntriesByController(Events):
 if settings.SITE.project_model:
 
     class EntriesByProject(Events):
-        required_roles = dd.login_required(OfficeUser)
+        required_roles = dd.login_required((OfficeUser, OfficeOperator))
         master_key = 'project'
         auto_fit_column_widths = True
         stay_in_grid = True
