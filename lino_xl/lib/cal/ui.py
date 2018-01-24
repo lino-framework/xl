@@ -899,6 +899,11 @@ if settings.SITE.project_model:
         stay_in_grid = True
         column_names = 'when_text user summary workflow_buttons'
         # column_names = 'when_text user summary workflow_buttons'
+        insert_layout = """
+        start_date start_time
+        summary
+        event_type
+        """
 
 
 class OneEvent(Events):
@@ -998,7 +1003,7 @@ class MyUnconfirmedAppointments(MyEntries):
         kw = super(MyUnconfirmedAppointments, self).param_defaults(ar, **kw)
         # kw.update(observed_event=EventEvents.pending)
         # kw.update(state=EntryStates.draft)
-        kw.update(start_date=settings.SITE.today())
+        kw.update(start_date=settings.SITE.today(-14))
         kw.update(end_date=settings.SITE.today(14))
         # kw.update(show_appointments=dd.YesNo.yes)
         return kw
