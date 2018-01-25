@@ -115,6 +115,8 @@ class Session(UserAuthored, Started, Ended, Workable):
         t = self.get_ticket()
         if t.site and t.site.reporting_type:
             return t.site.reporting_type
+        if t.ticket_type and t.ticket_type.reporting_type:
+            return t.ticket_type.reporting_type
         # if t.project and t.project.reporting_type:
         #     return t.project.reporting_type
         return dd.plugins.working.default_reporting_type

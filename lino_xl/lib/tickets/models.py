@@ -64,7 +64,8 @@ class TimeInvestment(Commentable):
     closed = models.BooleanField(_("Closed"), default=False)
     # private = models.BooleanField(_("Private"), default=True)
 
-    planned_time = models.TimeField(
+    # planned_time = models.TimeField(
+    planned_time = dd.DurationField(
         _("Planned time"),
         blank=True, null=True)
 
@@ -88,6 +89,7 @@ class TicketType(mixins.BabelNamed):
         verbose_name = _("Ticket type")
         verbose_name_plural = _('Ticket types')
 
+    reporting_type = ReportingTypes.field(blank=True)
 
 #~ class Repository(UserAuthored):
     #~ class Meta:
@@ -426,7 +428,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     description = dd.RichTextField(_("Description"), blank=True)
     upgrade_notes = dd.RichTextField(
         _("Resolution"), blank=True, format='plain')
-    ticket_type = dd.ForeignKey('tickets.TicketType', blank=True, null=True)
+    ticket_type = dd.ForeignKey(
+        'tickets.TicketType', blank=True, null=True)
     duplicate_of = dd.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 

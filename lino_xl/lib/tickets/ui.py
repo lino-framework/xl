@@ -60,8 +60,8 @@ class ProjectTypes(dd.Table):
 class TicketTypes(dd.Table):
     required_roles = dd.login_required(TicketsStaff)
     model = 'tickets.TicketType'
-    column_names = 'name *'
-    detail_layout = """id name
+    column_names = 'name reporting_type *'
+    detail_layout = """id name reporting_type
     TicketsByType
     """
 
