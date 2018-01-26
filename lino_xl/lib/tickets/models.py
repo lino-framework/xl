@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -15,7 +15,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 
-from atelier.sphinxconf.base import srcref
+from atelier.sphinxconf.base import py2url_txt
 
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
@@ -772,21 +772,7 @@ def setup_memo_commands(sender=None, **kwargs):
 
 
     def py2html(parser, s):
-        args = s.split(None, 1)
-        if len(args) == 1:
-            txt = s
-        else:
-            s = args[0]
-            txt = args[1]
-        parts = s.split('.')
-        try:
-            obj = import_module(parts[0])
-            for p in parts[1:]:
-                obj = getattr(obj, p)
-            mod = inspect.getmodule(obj)
-            url = srcref(mod)
-        except Exception as e:
-            url = "Error in Python code ({})".format(e)
+        url, txt = py2url_txt(s)
         # fn = inspect.getsourcefile(obj)
         if url:
             # lines = inspect.getsourcelines(s)
