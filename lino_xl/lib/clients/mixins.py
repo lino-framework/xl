@@ -27,7 +27,7 @@ class ClientBase(ChangeObservable):
     @classmethod
     def setup_parameters(cls, fields):
         fields.update(
-            client_state=ClientStates.field(blank=True))
+            client_state=ClientStates.field(blank=True, default=''))
         fields.update(
             client_contact_type=dd.ForeignKey(
                 'client.ClientContactType',

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
+# Copyright 2017-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -159,6 +159,16 @@ class TimLoader(TimLoader):
             if v:
                 self.store(
                     kw, gender=convert_gender(v))
+                
+            v = row.beruf
+            if v:
+                v = rt.models.tera.ProfessionalStates.get_by_value(v)
+                self.store(kw, professional_state=v)
+                
+        v = row.tariff
+        if v:
+            v = rt.models.tera.PartnerTariffs.get_by_value(v)
+            self.store(kw, tariff=v)
 
         if not kw:
             return
