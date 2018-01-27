@@ -165,7 +165,7 @@ class TimLoader(TimLoader):
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 self.store(kw, professional_state=v)
                 
-        v = row.tariff
+        v = row.tarif
         if v:
             v = rt.models.tera.PartnerTariffs.get_by_value(v)
             self.store(kw, tariff=v)
