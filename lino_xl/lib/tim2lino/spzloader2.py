@@ -170,6 +170,11 @@ class TimLoader(TimLoader):
             v = rt.models.tera.PartnerTariffs.get_by_value(v)
             self.store(kw, tariff=v)
 
+        v = row.stand
+        if v:
+            v = rt.models.clients.ClientStates.get_by_value(v)
+            self.store(kw, client_state=v)
+
         if not kw:
             return
         try:
