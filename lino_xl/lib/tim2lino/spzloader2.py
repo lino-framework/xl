@@ -165,15 +165,20 @@ class TimLoader(TimLoader):
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 self.store(kw, professional_state=v)
                 
-        v = row.tarif
-        if v:
-            v = rt.models.tera.PartnerTariffs.get_by_value(v)
-            self.store(kw, tariff=v)
+        if issubclass(cl, Client):
+            v = row.tarif
+            if v:
+                v = rt.models.tera.PartnerTariffs.get_by_value(v)
+                self.store(kw, tariff=v)
 
-        v = row.stand
-        if v:
-            v = rt.models.clients.ClientStates.get_by_value(v)
-            self.store(kw, client_state=v)
+            v = row.stand
+            if v:
+                v = rt.models.clients.ClientStates.get_by_value(v)
+                if v is None:
+                    dd.logger.info(
+                        "%s : invalid PAR->Stand %s", row, row.stand)
+                    return
+                self.store(kw, client_state=v)
 
         if not kw:
             return
