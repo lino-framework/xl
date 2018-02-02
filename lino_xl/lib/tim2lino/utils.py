@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2017 Luc Saffre
+# Copyright 2009-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Import legacy data from TIM (basic version).
+"""
+Import legacy data from TIM (basic version).
 """
 
 import traceback
@@ -246,7 +247,7 @@ class TimLoader(object):
                     try:
                         yield row2obj(record)
                     except Exception as e:
-                        traceback.print_exc(e)
+                        traceback.print_exc()
                         dd.logger.warning(
                             "Failed to load record %s from %s : %s",
                             record, tableName, e)
@@ -283,9 +284,9 @@ class TimLoader(object):
                         if i is not None:
                             yield settings.TIM2LINO_LOCAL(tableName, i)
                     except Exception as e:
-                        traceback.print_exc(e)
-                        dd.logger.warning("Failed to load record %s : %s",
-                                          dbfrow, e)
+                        traceback.print_exc()
+                        dd.logger.warning(
+                            "Failed to load record %s : %s", dbfrow, e)
             f.close()
 
         self.after_load(tableName)

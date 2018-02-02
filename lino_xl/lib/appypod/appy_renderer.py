@@ -141,7 +141,7 @@ class AppyRenderer(OriginalAppyRenderer):
         # except Exception as e:
         #     #self.ar.renderer = saved_renderer
         #     import traceback
-        #     traceback.print_exc(e)
+        #     traceback.print_exc()
 
     def restify_func(self, unicode_string, **kw):
         """
@@ -153,9 +153,9 @@ class AppyRenderer(OriginalAppyRenderer):
         html = restify(unicode_string, output_encoding='utf-8')
         #~ try:
             #~ html = restify(unicode_string,output_encoding='utf-8')
-        #~ except Exception,e:
+        #~ except Exception as e:
             #~ print unicode_string
-            #~ traceback.print_exc(e)
+            #~ traceback.print_exc()
         #~ print repr(html)
         #~ print html
         return self.renderXhtml(html, **kw)

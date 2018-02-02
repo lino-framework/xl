@@ -58,7 +58,7 @@ def objects():
             if SEVERE:
                 raise
             else:
-                traceback.print_exc(e)
+                traceback.print_exc()
                 dd.logger.warning(
                     "20160311 failed to render %s : %s", obj, e)
 
