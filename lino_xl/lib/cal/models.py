@@ -585,8 +585,9 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         return super(Event, self).before_ui_save(ar, **kw)
 
     def on_create(self, ar):
-        self.event_type = ar.user.event_type or \
-            settings.SITE.site_config.default_event_type
+        if self.event_type is None:
+            self.event_type = ar.user.event_type or \
+                settings.SITE.site_config.default_event_type
         self.start_date = settings.SITE.today()
         self.start_time = timezone.now().time()
         # see also Assignable.on_create()
@@ -754,11 +755,16 @@ class ObsoleteEventTypeChecker(EntryChecker):
     def get_checkdata_problems(self, obj, fix=False):
         if not obj.auto_type:
             return
+        if obj.owner is None:
+            msg = _("Has auto_type but no owner.")
+            yield (False, msg)
+            return
         et = obj.owner.update_cal_event_type()
         if obj.event_type != et:
             msg = _("Event type but {0} (should be {1}).").format(
                 obj.event_type, et)
-            yield (False, msg)
+            autofix = False  # TODO: make this configurable?
+            yield (autofix, msg)
             if fix:
                 obj.event_type = et
                 obj.full_clean()

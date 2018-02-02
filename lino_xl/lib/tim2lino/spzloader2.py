@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
+# Copyright 2017-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -159,6 +159,30 @@ class TimLoader(TimLoader):
             if v:
                 self.store(
                     kw, gender=convert_gender(v))
+                
+            v = row.beruf
+            if v:
+                v = rt.models.tera.ProfessionalStates.get_by_value(v)
+                self.store(kw, professional_state=v)
+                
+        if issubclass(cl, Client):
+            v = row.tarif
+            if v:
+                v = rt.models.tera.PartnerTariffs.get_by_value(v)
+                self.store(kw, tariff=v)
+
+            ClientStates = rt.models.clients.ClientStates
+            v = row.stand
+            if v:
+                v = ClientStates.get_by_value(v)
+            if v:
+                self.store(kw, client_state=v)
+            else:
+                self.store(
+                    kw, client_state=ClientStates.auto_closed)
+                dd.logger.info(
+                    "%s : invalid PAR->Stand %s", row, row.stand)
+                return
 
         if not kw:
             return

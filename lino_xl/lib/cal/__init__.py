@@ -89,5 +89,6 @@ class Plugin(ad.Plugin):
             yield self.site.models.cal.MyTasks
             yield self.site.models.cal.MyEntries
             yield self.site.models.cal.MyOverdueAppointments
+            yield self.site.models.cal.MyUnconfirmedAppointments
         else:
             yield self.site.models.cal.PublicEntries

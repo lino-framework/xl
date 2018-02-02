@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -15,7 +15,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 
-from atelier.sphinxconf.base import srcref
+from atelier.sphinxconf.base import py2url_txt
 
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
@@ -64,7 +64,8 @@ class TimeInvestment(Commentable):
     closed = models.BooleanField(_("Closed"), default=False)
     # private = models.BooleanField(_("Private"), default=True)
 
-    planned_time = models.TimeField(
+    # planned_time = models.TimeField(
+    planned_time = dd.DurationField(
         _("Planned time"),
         blank=True, null=True)
 
@@ -88,6 +89,7 @@ class TicketType(mixins.BabelNamed):
         verbose_name = _("Ticket type")
         verbose_name_plural = _('Ticket types')
 
+    reporting_type = ReportingTypes.field(blank=True)
 
 #~ class Repository(UserAuthored):
     #~ class Meta:
@@ -426,7 +428,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     description = dd.RichTextField(_("Description"), blank=True)
     upgrade_notes = dd.RichTextField(
         _("Resolution"), blank=True, format='plain')
-    ticket_type = dd.ForeignKey('tickets.TicketType', blank=True, null=True)
+    ticket_type = dd.ForeignKey(
+        'tickets.TicketType', blank=True, null=True)
     duplicate_of = dd.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
@@ -769,21 +772,7 @@ def setup_memo_commands(sender=None, **kwargs):
 
 
     def py2html(parser, s):
-        args = s.split(None, 1)
-        if len(args) == 1:
-            txt = s
-        else:
-            s = args[0]
-            txt = args[1]
-        parts = s.split('.')
-        try:
-            obj = import_module(parts[0])
-            for p in parts[1:]:
-                obj = getattr(obj, p)
-            mod = inspect.getmodule(obj)
-            url = srcref(mod)
-        except Exception as e:
-            url = "Error in Python code ({})".format(e)
+        url, txt = py2url_txt(s)
         # fn = inspect.getsourcefile(obj)
         if url:
             # lines = inspect.getsourcelines(s)

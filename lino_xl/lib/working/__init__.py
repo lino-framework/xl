@@ -17,7 +17,8 @@ class Plugin(ad.Plugin):
     # verbose_name = _("Clocking")
     verbose_name = _("Working time")
 
-    needs_plugins = ['lino_noi.lib.noi']
+    needs_plugins = ['lino_noi.lib.noi', 'lino_noi.lib.tickets',
+                     'lino.modlib.summaries']
 
     # project_model = 'tickets.Project'
     # project_model = 'contacts.Partner'
@@ -52,6 +53,7 @@ class Plugin(ad.Plugin):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('working.MySessions')
+        m.add_action('working.ServiceReports')
         # m.add_action('working.MySessionsByDate')
         # m.add_action('working.WorkedHours')
 
@@ -64,6 +66,10 @@ class Plugin(ad.Plugin):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('working.Sessions')
+        m.add_action('working.AllSummaries')
 
-    # def get_dashboard_items(self, user):
-    #     if user.authenticated:
+    def get_dashboard_items(self, user):
+        super(Plugin, self).get_dashboard_items(user)
+        if user.authenticated:
+            yield self.site.models.working.WorkedHours
+            yield self.site.models.working.MySitesDashboard

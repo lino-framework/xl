@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Database models for this plugin.
@@ -60,8 +60,8 @@ class ProjectTypes(dd.Table):
 class TicketTypes(dd.Table):
     required_roles = dd.login_required(TicketsStaff)
     model = 'tickets.TicketType'
-    column_names = 'name *'
-    detail_layout = """id name
+    column_names = 'name reporting_type *'
+    detail_layout = """id name reporting_type
     TicketsByType
     """
 
@@ -986,7 +986,7 @@ class Sites(dd.Table):
     remark
     description
     """
-    detail_layout = SiteDetail()
+    detail_layout = 'tickets.SiteDetail'
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -1000,45 +1000,45 @@ class Sites(dd.Table):
 
         return qs
 
-    @dd.requestfield(_("New Tickets"))
-    def new_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new, show_active=None))
+    # @dd.requestfield(_("New Tickets"))
+    # def new_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new, show_active=None))
 
-    @dd.requestfield(_("Tickets To Talk"))
-    def talk_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk, show_active=None))
+    # @dd.requestfield(_("Tickets To Talk"))
+    # def talk_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk, show_active=None))
 
-    @dd.requestfield(_("Open Tickets"))
-    def open_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened, show_active=None))
+    # @dd.requestfield(_("Open Tickets"))
+    # def open_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened, show_active=None))
 
-    @dd.requestfield(_("Started Tickets"))
-    def started_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started, show_active=None))
+    # @dd.requestfield(_("Started Tickets"))
+    # def started_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started, show_active=None))
 
-    @dd.requestfield(_("Sleeping Tickets"))
-    def sleeping_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping, show_active=None))
+    # @dd.requestfield(_("Sleeping Tickets"))
+    # def sleeping_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping, show_active=None))
 
-    @dd.requestfield(_("Ready Tickets"))
-    def ready_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready, show_active=None))
+    # @dd.requestfield(_("Ready Tickets"))
+    # def ready_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready, show_active=None))
 
-    @dd.requestfield(_("Closed Tickets"))
-    def closed_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed, show_active=None))
+    # @dd.requestfield(_("Closed Tickets"))
+    # def closed_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed, show_active=None))
 
-    @dd.requestfield(_("Cancelled Tickets"))
-    def cancelled_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled, show_active=None))
+    # @dd.requestfield(_("Cancelled Tickets"))
+    # def cancelled_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled, show_active=None))
 
-    @dd.requestfield(_("Active Tickets"))
-    def active_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.yes))
+    # @dd.requestfield(_("Active Tickets"))
+    # def active_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.yes))
 
-    @dd.requestfield(_("InActive Tickets"))
-    def inactive_tickets(self, obj, ar):
-        return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.no))
+    # @dd.requestfield(_("InActive Tickets"))
+    # def inactive_tickets(self, obj, ar):
+    #     return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.no))
 
 
 
@@ -1051,9 +1051,10 @@ class MySites(Sites):
         kw.update(watcher=ar.get_user())
         return kw
 
-class MySitesDashboard(MySites):
-    label = _("Sites Overview")
-    column_names = """overview new_tickets talk_tickets open_tickets started_tickets sleeping_tickets ready_tickets closed_tickets cancelled_tickets active_tickets inactive_tickets """
+# class MySitesDashboard(MySites):
+#     label = _("Sites Overview")
+#     column_names = """overview new_tickets talk_tickets opened_tickets started_tickets sleeping_tickets ready_tickets closed_tickets cancelled_tickets #active_tickets #inactive_tickets """
+#     # TODO: above fails if TicketStates is locally modified
 
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)
@@ -1157,4 +1158,8 @@ class TicketsByProject(Tickets):
 #             msg = _("There are {0} known problems for {1}.")
 #             msg = msg.format(count, ar.get_user().user_site)
 #             yield ar.href_to_request(sar, msg)
+
+
+
+
 

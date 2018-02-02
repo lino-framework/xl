@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
+from __future__ import unicode_literals
 
-# import datetime
 
 from django.conf import settings
 from django.db import models
@@ -13,14 +13,20 @@ from lino.api import dd, rt, _
 
 from lino.utils.xmlgen.html import E
 from lino.utils.quantities import Duration
+from lino.mixins.periods import DateRange
+from lino.modlib.users.mixins import UserAuthored
+from lino.modlib.summaries.mixins import Summary
 
 from lino_xl.lib.cal.mixins import Started, Ended
-from lino.modlib.users.mixins import UserAuthored
+from lino_xl.lib.excerpts.mixins import Certifiable
+from lino_xl.lib.contacts.mixins import ContactRelated
+from lino_xl.lib.tickets.choicelists import TicketStates
 
 from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
 from .choicelists import ReportingTypes
 from .mixins import Workable
 
+ZERO_DURATION = Duration('0:00')
 
 class SessionType(mixins.BabelNamed):
 
@@ -109,6 +115,8 @@ class Session(UserAuthored, Started, Ended, Workable):
         t = self.get_ticket()
         if t.site and t.site.reporting_type:
             return t.site.reporting_type
+        if t.ticket_type and t.ticket_type.reporting_type:
+            return t.ticket_type.reporting_type
         # if t.project and t.project.reporting_type:
         #     return t.project.reporting_type
         return dd.plugins.working.default_reporting_type
@@ -160,6 +168,178 @@ dd.update_field(
 
 Session.set_widget_options('ticket__id', label=_("Ticket #"))
 Session.set_widget_options('ticket_no', width=8)
+
+
+
+@dd.python_2_unicode_compatible
+class ServiceReport(UserAuthored, ContactRelated, Certifiable, DateRange):
+    class Meta:
+        app_label = 'working'
+        verbose_name = _("Service Report")
+        verbose_name_plural = _("Service Reports")
+
+    interesting_for = dd.ForeignKey(
+        'contacts.Partner',
+        verbose_name=_("Interesting for"),
+        blank=True, null=True,
+        help_text=_("Only tickets interesting for this partner."))
+
+    ticket_state = TicketStates.field(
+        null=True, blank=True,
+        help_text=_("Only tickets in this state."))
+
+    def __str__(self):
+        return "{} {}".format(self._meta.verbose_name, self.pk)
+
+    def get_tickets_parameters(self, **pv):
+        """Return a dict with parameter values for `tickets.Tickets` based on
+        the options of this report.
+
+        """
+        pv.update(start_date=self.start_date, end_date=self.end_date)
+        pv.update(interesting_for=self.interesting_for)
+        if self.ticket_state:
+            pv.update(state=self.ticket_state)
+        return pv
+
+    
+        
+
+class SiteSummary(Summary):
+
+    class Meta:
+        app_label = 'working'
+        verbose_name = _("Site summary")
+        verbose_name_plural = _("Site summaries")
+
+    summary_period = 'yearly'
+    master = dd.ForeignKey('tickets.Site')
+
+    active_tickets = models.IntegerField(_("Active tickets"))
+    inactive_tickets = models.IntegerField(_("Inactive tickets"))
+
+    @classmethod
+    def get_summary_master_model(cls):
+        return rt.models.tickets.Site
+
+    @classmethod
+    def get_summary_masters(cls):
+        return rt.models.tickets.Site.objects.order_by('id')
+
+    def reset_summary_data(self):
+        for t in ReportingTypes.get_list_items():
+            k = t.name + '_hours'
+            setattr(self, k, ZERO_DURATION)
+        for ts in TicketStates.get_list_items():
+            k = ts.get_summary_field()
+            if k is not None:
+                setattr(self, k, 0)
+        self.active_tickets = 0
+        self.inactive_tickets = 0
+            
+    def get_summary_collectors(self):
+        if self.year is None:
+            qs = rt.models.tickets.Ticket.objects.filter(site=self.master)
+            # qs = qs.filter(
+            #     sessions_by_ticket__start_date__year=self.year)
+            yield (self.add_from_ticket, qs)
+        
+        qs = rt.models.working.Session.objects.filter(
+            ticket__site=self.master)
+        if self.year:
+            qs = qs.filter(
+                start_date__year=self.year)
+        yield (self.add_from_session, qs)
+    
+    def add_from_ticket(self, obj):
+        ts = obj.state
+        k = ts.get_summary_field()
+        if k is not None:
+            value = getattr(self, k) + 1
+            setattr(self, k, value)
+        if ts.active:
+            self.active_tickets += 1
+        else:
+            self.inactive_tickets += 1
+
+    def add_from_session(self, obj):
+        d = obj.get_duration()
+        if d:
+            rt = obj.get_reporting_type()
+            k = rt.name + '_hours'
+            value = getattr(self, k) + d
+            setattr(self, k, value)
+        
+
+
+@dd.receiver(dd.pre_analyze)
+def inject_summary_fields(sender, **kw):
+    SiteSummary = rt.models.working.SiteSummary
+    WorkSite = rt.models.tickets.Site
+    
+    for t in ReportingTypes.get_list_items():
+        k = t.name + '_hours'
+        dd.inject_field(
+            SiteSummary, k, dd.DurationField(
+                t.text, null=True, blank=True))
+
+        def make_getter(t):
+            k = t.name + '_hours'
+            def getter(obj, ar):
+                # if ar is None:
+                #     return ''
+                qs = SiteSummary.objects.filter(
+                    master=obj, year__isnull=True)
+                d = qs.aggregate(**{k:models.Sum(k)})
+                n = d[k]
+                return n
+                # if not n:
+                #     return ''
+                # sar = rt.models.working.SessionsBySite.request(
+                #     obj, param_values=dict(
+                #         state=ts, show_active=None))
+                # # n = sar.get_total_count()
+                # url = ar.renderer.request_handler(sar)
+                # if url is None:
+                #     return str(n)
+                # return E.a(str(n), href='javascript:'+url)
+            return getter
+
+        dd.inject_field(
+            WorkSite, k, dd.VirtualField(
+                dd.DurationField(t.text), make_getter(t)))
+
+        
+    for ts in TicketStates.get_list_items():
+        k = ts.get_summary_field()
+        if k is not None:
+            dd.inject_field(
+                SiteSummary, k, models.IntegerField(ts.text))
+
+            def make_getter(ts):
+                k = ts.get_summary_field()
+                def getter(obj, ar):
+                    if ar is None:
+                        return ''
+                    qs = SiteSummary.objects.filter(master=obj)
+                    d = qs.aggregate(**{k:models.Sum(k)})
+                    n = d[k]
+                    if n == 0:
+                        return ''
+                    sar = rt.models.tickets.TicketsBySite.request(
+                        obj, param_values=dict(
+                            state=ts, show_active=None))
+                    # n = sar.get_total_count()
+                    url = ar.renderer.request_handler(sar)
+                    if url is None:
+                        return str(n)
+                    return E.a(str(n), href='javascript:'+url)
+                return getter
+
+            dd.inject_field(
+                WorkSite, k, dd.VirtualField(
+                    dd.DisplayField(ts.text), make_getter(ts)))
+
 
 
 def welcome_messages(ar):
