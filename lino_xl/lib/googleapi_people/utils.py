@@ -15,7 +15,7 @@ try:
 
     tools_argparser = tools.argparser
     tools_argparser.add_argument('runserver', action="store")
-    flags = argparse.ArgumentParser(parents=[tools_argparser]).parse_args()
+    # flags = argparse.ArgumentParser(parents=[tools_argparser]).parse_args()
     # flags.add_argument('runserver', action="store", dest="runserver")
     # flags = flags.parse_args()
 except ImportError:
