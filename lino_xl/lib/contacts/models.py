@@ -25,6 +25,7 @@ from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.faculties.mixins import Feasible
 from lino.modlib.printing.mixins import Printable
 # from lino_xl.lib.excerpts.mixins import Certifiable
+#from lino_xl.lib.googleapi_people.models import GooglePeople
 
 from lino.utils.xmlgen.html import E
 from lino.utils.addressable import Addressable
