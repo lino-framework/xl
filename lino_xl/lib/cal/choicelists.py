@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -76,7 +76,6 @@ class DurationUnit(dd.Choice):
         return day_and_month
 
 class DurationUnits(dd.ChoiceList):
-
     verbose_name = _("Duration Unit")
     item_class = DurationUnit
 
