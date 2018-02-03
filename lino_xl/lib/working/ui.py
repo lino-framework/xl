@@ -342,6 +342,9 @@ class WorkedHours(dd.VentilatingTable):
         def __unicode__(self):
             return when_text(self.day)
 
+        def __repr__(self):
+            return when_text(self.day)
+
     @dd.displayfield(_("Description"))
     def description(self, obj, ar):
         # pv = dict(start_date=obj.day, end_date=obj.day)
