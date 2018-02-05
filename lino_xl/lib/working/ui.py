@@ -443,7 +443,7 @@ class SessionsByReport(Sessions, DurationReport):
     master = 'working.ServiceReport'
     
     column_names_template = "start_date start_time end_time break_time " \
-                            "my_description:50 user #session_type {vcolumns}"
+                            "my_description:50 user {vcolumns}"
 
     order_by = ['start_date', 'start_time', 'id']
     
