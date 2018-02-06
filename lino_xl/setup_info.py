@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2017 Luc Saffre
+# Copyright 2009-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 # ~ Note that this module may not have a docstring because any
@@ -91,6 +91,7 @@ lino_xl.lib.boards
 lino_xl.lib.github
 lino_xl.lib.groups
 lino_xl.lib.groups.fixtures
+lino_xl.lib.googleapi_people
 lino_xl.lib.teams
 lino_xl.lib.bevat
 lino_xl.lib.bevat.fixtures
