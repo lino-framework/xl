@@ -51,6 +51,7 @@ from lino.utils.restify import restify
 from lino.utils.html2xhtml import html2xhtml
 from lino.utils.html2odf import html2odf, toxml
 from lino.utils.xmlgen.html import E
+from lino.api import dd
 
 from lino.modlib.extjs.elems import NumberFieldElement
 
@@ -275,7 +276,7 @@ class AppyRenderer(OriginalAppyRenderer):
         This is the function that gets called when a template contains a
         ``do text from table(...)`` statement.
         """
-        if True:
+        if False:
             return self.insert_table_(*args, **kw)
         else:
             #~ since i cannot yet tell appy_pod to alert me when there is an
@@ -297,7 +298,7 @@ class AppyRenderer(OriginalAppyRenderer):
         # logger.info("20160330 insert_table(%s)", ar)
         ar.setup_from(self.ar)
         columns, headers, widths = ar.get_field_info(column_names)
-        widths = map(int, widths)
+        widths = list(map(int, widths))
         tw = sum(widths)
         # specifying relative widths doesn't seem to work (and that's
         # a pity because absolute widths requires us to know the
