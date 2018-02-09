@@ -276,7 +276,7 @@ class AppyRenderer(OriginalAppyRenderer):
         This is the function that gets called when a template contains a
         ``do text from table(...)`` statement.
         """
-        if False:
+        if True:
             return self.insert_table_(*args, **kw)
         else:
             #~ since i cannot yet tell appy_pod to alert me when there is an
