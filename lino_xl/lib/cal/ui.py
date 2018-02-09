@@ -375,7 +375,7 @@ class Guests(dd.Table):
             yield str(pv.project)
 
 class AllGuests(Guests):
-    required_roles = dd.login_required(Explorer)
+    required_roles = dd.login_required(GuestOperator, Explorer)
 
 class GuestsByEvent(Guests):
     master_key = 'event'
