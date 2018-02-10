@@ -69,6 +69,7 @@ System extensions
     appypod
     excerpts
     stars
+    userstats
 
 Miscellaneous
 =============

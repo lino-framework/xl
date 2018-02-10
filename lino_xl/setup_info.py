@@ -160,6 +160,7 @@ lino_xl.lib.statbel.countries
 lino_xl.lib.statbel.countries.fixtures
 lino_xl.lib.thirds
 lino_xl.lib.topics
+lino_xl.lib.userstats
 lino_xl.lib.xl
 
 lino_xl.lib.accounts
