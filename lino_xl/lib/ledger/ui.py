@@ -416,7 +416,7 @@ class AccountBalances(dd.Table):
     
     # parameters = mixins.Yearly(
     #     # include_vat = models.BooleanField(
-    #     #     verbose_name=dd.apps.vat.verbose_name),
+    #     #     verbose_name=dd.plugins.vat.verbose_name),
     # )
 
     # params_layout = "start_date end_date"
@@ -696,7 +696,7 @@ class Situation(Report):
 
 #     parameters = mixins.Yearly(
 #         # include_vat = models.BooleanField(
-#         #     verbose_name=dd.apps.vat.verbose_name),
+#         #     verbose_name=dd.plugins.vat.verbose_name),
 #     )
 
 #     params_layout = "start_date end_date"

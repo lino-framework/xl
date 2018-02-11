@@ -21,7 +21,6 @@ class UserStat(Summary):
         verbose_name = _("User Statistics entry")
         verbose_name_plural = _("User Statistics")
 
-    add_timless_row = False
     summary_period = 'monthly'
     master = dd.ForeignKey('system.SiteConfig')
     active_users = models.IntegerField(_("Active users"))
@@ -37,9 +36,9 @@ class UserStat(Summary):
         # last_day_of_month(sd)
         qs = rt.models.users.User.objects.filter(username__isnull=False)
 
-        if self.month and self.year:
+        if self.year:
             qs = PeriodEvents.active.add_filter(
-                qs, datetime.date(self.year, self.month, 1))
+                qs, datetime.date(self.year, self.month or 1, 1))
         yield (self.add_from_user, qs)
 
     def add_from_user(self, obj):

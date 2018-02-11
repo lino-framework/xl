@@ -1303,6 +1303,13 @@ instances."""),
     'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
     'lino_xl.lib.polls.PollStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.polls.ResponseStates' : _("""The list of possible states of a Response."""),
+    'lino_xl.lib.userstats.UserStat' : _("""A Summary on
+SiteConfig."""),
+    'lino_xl.lib.userstats.UserStat.active_users' : _("""The number of active users. A user is considered active if
+their start_date
+is either empty or before the first day of this month or year,
+and if their end_date is either empty or
+after the first day of this month or year."""),
     'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose vat_regime is
 intra-Community."""),
     'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose vat_regime is
