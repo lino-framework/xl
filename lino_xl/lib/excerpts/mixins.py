@@ -91,7 +91,7 @@ class Certifiable(Printable):
       not `None`.
 
       Note that this field is a nullable ForeignKey with `on_delete
-      <https://docs.djangoproject.com/en/1.8/ref/models/fields/#django.db.models.ForeignKey.on_delete>`__
+      <https://docs.djangoproject.com/en/1.11/ref/models/fields/#django.db.models.ForeignKey.on_delete>`__
       set to ``SET_NULL``.
 
     """

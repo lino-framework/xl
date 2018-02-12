@@ -212,19 +212,19 @@ class SiteSummary(Summary):
         verbose_name = _("Site summary")
         verbose_name_plural = _("Site summaries")
 
-    summary_period = 'yearly'
+    summary_period = 'timeless'
     master = dd.ForeignKey('tickets.Site')
 
     active_tickets = models.IntegerField(_("Active tickets"))
     inactive_tickets = models.IntegerField(_("Inactive tickets"))
 
-    @classmethod
-    def get_summary_master_model(cls):
-        return rt.models.tickets.Site
+    # @classmethod
+    # def get_summary_master_model(cls):
+    #     return rt.models.tickets.Site
 
-    @classmethod
-    def get_summary_masters(cls):
-        return rt.models.tickets.Site.objects.order_by('id')
+    # @classmethod
+    # def get_summary_masters(cls):
+    #     return rt.models.tickets.Site.objects.order_by('id')
 
     def reset_summary_data(self):
         for t in ReportingTypes.get_list_items():

@@ -1,4 +1,4 @@
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """Defines entry fields for IBAN and BIC.
@@ -16,7 +16,7 @@ from lino.utils.jsgen import js_code
 import six
 
 
-from lino.modlib.extjs.elems import CharFieldElement
+from lino.core.elems import CharFieldElement
 #from lino.modlib.extjs.ext_renderer import ExtRenderer
 
 IBAN_FORMFIELD = IBANFormField()
@@ -28,9 +28,9 @@ class UppercaseTextFieldElement(CharFieldElement):
 
 class IBANFieldElement(UppercaseTextFieldElement):
     def get_column_options(self, **kw):
-        """Return a string to be used as `Ext.grid.Column.renderer
+        """
+        Return a string to be used as `Ext.grid.Column.renderer
         <http://docs.sencha.com/extjs/3.4.0/#!/api/Ext.grid.Column-cfg-renderer>`.
-
         """
         kw = super(
             UppercaseTextFieldElement, self).get_column_options(**kw)
