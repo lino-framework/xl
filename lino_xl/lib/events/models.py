@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2014 Luc Saffre
+# Copyright 2013-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 """
@@ -66,6 +66,12 @@ class Type(mixins.BabelNamed):
 
 class Types(dd.Table):
     model = Type
+    
+    detail_layout = """
+    name id
+    events.EventsByType
+    """
+    
 
 
 class Event(mixins.BabelNamed):
@@ -141,16 +147,17 @@ class Events(dd.Table):
 
 class EventsByType(Events):
     master_key = 'type'
-    #~ column_names = "when what where"
 
     @classmethod
     def get_column_names(self, ar):
+        if ar is None:
+            return 'when:30 what:40 where:30'
         return ar.master_instance.events_column_names
 
+class VariableEventsByType(EventsByType):
     @classmethod
     def get_handle_name(self, ar):
         hname = _handle_attr_name
-        #~ hname = super(PrintEntriesByBudget,self).get_handle_name(ar)
         hname += ar.master_instance.events_column_names.replace(" ", "_")
         return hname
 
