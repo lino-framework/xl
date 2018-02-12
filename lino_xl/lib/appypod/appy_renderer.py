@@ -53,7 +53,7 @@ from lino.utils.html2odf import html2odf, toxml
 from lino.utils.xmlgen.html import E
 from lino.api import dd
 
-from lino.modlib.extjs.elems import NumberFieldElement
+from lino.core.elems import NumberFieldElement
 
 
 OAS = '<office:automatic-styles>'
