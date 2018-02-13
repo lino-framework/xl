@@ -79,7 +79,7 @@ class Link(dd.Model):
         verbose_name = _("Link")
         verbose_name_plural = _("Links")
 
-    type = LinkTypes.field(blank=True, default=LinkTypes.jargon.as_callable)
+    type = LinkTypes.field(blank=True, default=LinkTypes.as_callable('jargon'))
     parent = dd.ForeignKey(Concept, related_name="children")
     child = dd.ForeignKey(Concept, related_name="parents")
 

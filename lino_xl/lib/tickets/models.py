@@ -690,7 +690,7 @@ class Link(dd.Model):
         verbose_name_plural = _("Dependencies")
 
     type = LinkTypes.field(
-        default=LinkTypes.requires.as_callable)
+        default=LinkTypes.as_callable('requires'))
     parent = dd.ForeignKey(
         'tickets.Ticket',
         verbose_name=_("Parent"),

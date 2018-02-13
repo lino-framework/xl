@@ -240,7 +240,7 @@ class Task(Component):
     # iCal:PERCENT
     percent = models.IntegerField(_("Duration value"), null=True, blank=True)
     state = TaskStates.field(
-        default=TaskStates.todo.as_callable)  # iCal:STATUS
+        default=TaskStates.as_callable('todo'))  # iCal:STATUS
 
     # def before_ui_save(self, ar, **kw):
     #     if self.state == TaskStates.todo:
@@ -319,7 +319,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
 
 dd.update_field(
     RecurrentEvent, 'every_unit',
-    default=Recurrencies.yearly.as_callable, blank=False, null=False)
+    default=Recurrencies.as_callable('yearly'), blank=False, null=False)
 
 
 
@@ -375,7 +375,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     room = dd.ForeignKey('cal.Room', null=True, blank=True)
     priority = dd.ForeignKey(Priority, null=True, blank=True)
     state = EntryStates.field(
-        default=EntryStates.suggested.as_callable)
+        default=EntryStates.as_callable('suggested'))
     all_day = ExtAllDayField(_("all day"))
 
     move_next = MoveEntryNext()
@@ -820,7 +820,7 @@ class Guest(Printable):
     partner = dd.ForeignKey(dd.plugins.cal.partner_model)
     role = dd.ForeignKey(
         'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
-    state = GuestStates.field(default=GuestStates.invited.as_callable)
+    state = GuestStates.field(default=GuestStates.as_callable('invited'))
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     # Define a `user` property because we want to use
@@ -893,7 +893,7 @@ def migrate_reminder(obj, reminder_date, reminder_text,
 dd.inject_field(settings.SITE.user_model,
                 'access_class',
                 AccessClasses.field(
-                    default=AccessClasses.public.as_callable,
+                    default=AccessClasses.as_callable('public'),
                     verbose_name=_("Default access class"),
                     help_text=_(
             """The default access class for your calendar events and tasks.""")

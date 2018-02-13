@@ -91,7 +91,7 @@ class Deployments(dd.Table):
     model = 'deploy.Deployment'
     parameters = mixins.ObservedDateRange(
         show_closed=dd.YesNo.field(
-            blank=True, default=dd.YesNo.no.as_callable,
+            blank=True, default=dd.YesNo.as_callable('no'),
             help_text=_("Show deployments on closed milestones.")))
 
     params_layout = "start_date end_date show_closed"

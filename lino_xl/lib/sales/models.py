@@ -174,7 +174,7 @@ class SalesDocument(VatDocument, Certifiable):
     intro = models.TextField("Introductive Text", blank=True)
     
     paper_type = dd.ForeignKey('sales.PaperType', null=True, blank=True)
-    # channel = Channels.field(default=Channels.paper.as_callable())
+    # channel = Channels.field(default=Channels.as_callable('paper'))
 
     def get_printable_type(self):
         return self.journal

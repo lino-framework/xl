@@ -103,14 +103,14 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
         verbose_name_plural = pgettext("plural form", 'Activity lines')
 
     course_area = CourseAreas.field(
-        default=CourseAreas.default.as_callable)
+        default=CourseAreas.as_callable('default'))
     # default=CourseAreas.get_lazy('default')
     topic = dd.ForeignKey(Topic, blank=True, null=True)
     description = dd.BabelTextField(_("Description"), blank=True)
 
     every_unit = Recurrencies.field(
         _("Recurrency"),
-        default=Recurrencies.weekly.as_callable,
+        default=Recurrencies.as_callable('weekly'),
         blank=True)  # iCal:DURATION
     every = models.IntegerField(_("Repeat every"), default=1)
 
@@ -205,7 +205,7 @@ class Course(Reservation, Duplicable, Printable):
     quick_search_fields = 'name line__name line__topic__name'
 
     state = CourseStates.field(
-        default=CourseStates.draft.as_callable)
+        default=CourseStates.as_callable('draft'))
 
     max_places = models.PositiveIntegerField(
         pgettext("in a course", "Available places"),
@@ -561,7 +561,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
     request_date = models.DateField(
         _("Date of request"), default=dd.today)
     state = EnrolmentStates.field(
-        default=EnrolmentStates.requested.as_callable)
+        default=EnrolmentStates.as_callable('requested'))
     places = models.PositiveIntegerField(
         pgettext("in a course", "Places used"),
         help_text=("The number of participants in this enrolment."),

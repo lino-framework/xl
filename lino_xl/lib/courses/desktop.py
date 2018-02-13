@@ -266,7 +266,7 @@ class Activities(dd.Table):
 
 class Courses(Activities):
     # required_roles = dd.login_required(CoursesUser)
-    _course_area = CourseAreas.default.as_callable()
+    _course_area = CourseAreas.default
     required_roles = dd.login_required(CoursesUser)
 
     # courses_by_line = dd.ShowSlaveTable('courses.CoursesByLine')
