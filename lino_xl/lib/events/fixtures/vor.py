@@ -60,7 +60,8 @@ def objects():
     strasse = Type(
         name="Radrennen Straße",
         name_nl="Koersen op de weg",
-        name_fr="Courses sur route")
+        name_fr="Courses sur route",
+        events_column_names="where:40 when:40")
     yield strasse
 
     mtb = Type(
