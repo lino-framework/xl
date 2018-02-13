@@ -300,18 +300,29 @@ class MyActivities(My, Activities):
 class MyCoursesGiven(Activities):
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
-    master_key = "teacher"
+    # master_key = "teacher"
     column_names = "overview weekdays_text times_text room workflow_buttons *"
     # detail_layout = 'courses.CourseDetail'
 
     @classmethod
-    def setup_request(self, ar):
+    def param_defaults(self, ar, **kw):
+        kw = super(MyCoursesGiven, self).param_defaults(ar, **kw)
         u = ar.get_user()
         if isinstance(u, teacher_model):
-            ar.master_instance = u
+            pass
         elif u.partner is not None:
-            ar.master_instance = get_child(u.partner, teacher_model)
-        super(MyCoursesGiven, self).setup_request(ar)
+            u = get_child(u.partner, teacher_model)
+        kw['teacher'] = u
+        return kw
+
+    # @classmethod
+    # def setup_request(self, ar):
+    #     u = ar.get_user()
+    #     if isinstance(u, teacher_model):
+    #         ar.master_instance = u
+    #     elif u.partner is not None:
+    #         ar.master_instance = get_child(u.partner, teacher_model)
+    #     super(MyCoursesGiven, self).setup_request(ar)
     
 
 class CoursesByLine(Activities):
