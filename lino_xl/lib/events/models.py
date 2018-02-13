@@ -61,7 +61,7 @@ class Type(mixins.BabelNamed):
             year = settings.SITE.today().year
         kw.update(filter=models.Q(date__year=year))
 
-        return EventsByType.request(**kw)
+        return VariableEventsByType.request(**kw)
 
 
 class Types(dd.Table):
@@ -155,6 +155,12 @@ class EventsByType(Events):
         return ar.master_instance.events_column_names
 
 class VariableEventsByType(EventsByType):
+    
+    @classmethod
+    def get_title_base(self, ar):
+        if ar is not None:
+            return str(ar.master_instance)
+        
     @classmethod
     def get_handle_name(self, ar):
         hname = _handle_attr_name

@@ -34,7 +34,7 @@ class UploadType(UploadType):
     """
     warn_expiry_unit = Recurrencies.field(
         _("Expiry warning (unit)"),
-        default=Recurrencies.monthly.as_callable,
+        default=Recurrencies.as_callable('monthly'),
         blank=True)  # iCal:DURATION
     warn_expiry_value = models.IntegerField(
         _("Expiry warning (value)"),
@@ -164,7 +164,7 @@ class Uploads(Uploads):
                 "Show only uploads for clients coached by this user.")),
         observed_event=dd.PeriodEvents.field(
             _("Validity"),
-            blank=True, default=dd.PeriodEvents.active.as_callable))
+            blank=True, default=dd.PeriodEvents.as_callable('active')))
     params_layout = "observed_event:20 start_date end_date \
     coached_by user upload_type"
 

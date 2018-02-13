@@ -213,7 +213,7 @@ class AccountingPeriod(DateRange, mixins.Referrable):
 
     preferred_foreignkey_width = 10
     
-    state = PeriodStates.field(default=PeriodStates.open.as_callable())
+    state = PeriodStates.field(default=PeriodStates.as_callable('open'))
     year = FiscalYears.field(blank=True)
     remark = models.CharField(_("Remark"), max_length=250, blank=True)
 
@@ -344,7 +344,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
     state = VoucherStates.field(
-        default=VoucherStates.draft.as_callable)
+        default=VoucherStates.as_callable('draft'))
     workflow_state_field = 'state'
 
     #~ @classmethod

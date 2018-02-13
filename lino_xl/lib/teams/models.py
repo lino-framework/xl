@@ -13,12 +13,12 @@ from __future__ import unicode_literals
 
 
 from lino.api import dd, _
-from lino import mixins
+from lino.mixins import BabelNamed, Referrable
 
 # users = dd.resolve_app('users')
 
 
-class Team(mixins.BabelNamed):
+class Team(BabelNamed, Referrable):
 
     class Meta:
         app_label = 'teams'
@@ -30,15 +30,16 @@ class Team(mixins.BabelNamed):
 class Teams(dd.Table):
     model = 'teams.Team'
     required_roles = dd.login_required(dd.SiteStaff)
-    column_names = 'name *'
-    order_by = ["name"]
+    column_names = 'ref name *'
+    order_by = ["ref", "name"]
 
     insert_layout = """
+    ref
     name
     """
 
     detail_layout = """
-    id name
+    id ref name 
     teams.UsersByTeam
     """
 

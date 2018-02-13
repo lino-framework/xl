@@ -278,13 +278,13 @@ class Member(mixins.DateRange, mixins.Human, mixins.Born):
     allow_cascaded_delete = 'household'
 
     role = MemberRoles.field(
-        default=MemberRoles.child.as_callable, blank=True, null=True)
+        default=MemberRoles.as_callable('child'), blank=True, null=True)
     person = dd.ForeignKey(
         config.person_model, null=True, blank=True,
         related_name='household_members')
     household = dd.ForeignKey('households.Household')
     dependency = MemberDependencies.field(
-        default=MemberDependencies.none.as_callable)
+        default=MemberDependencies.as_callable('none'))
 
     primary = models.BooleanField(
         _("Primary"),

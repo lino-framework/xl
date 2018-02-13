@@ -108,7 +108,7 @@ class Poll(UserAuthored, mixins.CreatedModified, Referrable):
                     "Every non-empty line will create one question."),
         blank=True)
 
-    state = PollStates.field(default=PollStates.draft.as_callable)
+    state = PollStates.field(default=PollStates.as_callable('draft'))
 
     workflow_state_field = 'state'
 
@@ -314,7 +314,7 @@ class Response(UserAuthored, mixins.Registrable):
 
     poll = dd.ForeignKey('polls.Poll', related_name='responses')
     date = models.DateField(_("Date"), default=dd.today)
-    state = ResponseStates.field(default=ResponseStates.draft.as_callable)
+    state = ResponseStates.field(default=ResponseStates.as_callable('draft'))
     remark = models.TextField(verbose_name=_("My general remark"), blank=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 

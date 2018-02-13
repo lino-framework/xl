@@ -69,7 +69,7 @@ class Product(mixins.BabelNamed):
         blank=True, null=True)
 
     delivery_unit = DeliveryUnit.field(
-        default=DeliveryUnit.piece.as_callable())
+        default=DeliveryUnit.as_callable('piece'))
 
     if vat:
         vat_class = vat.VatClasses.field(blank=True)

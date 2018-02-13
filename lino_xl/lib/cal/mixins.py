@@ -499,7 +499,7 @@ class RecurrenceSet(Started, Ended):
     #~ every_unit = DurationUnits.field(_("Repeat every (unit)"),
     every_unit = Recurrencies.field(
         _("Recurrency"),
-        default=Recurrencies.monthly.as_callable,
+        default=Recurrencies.as_callable('monthly'),
         blank=True)  # iCal:DURATION
     every = models.IntegerField(_("Repeat every"), default=1)
 

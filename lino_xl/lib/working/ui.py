@@ -117,7 +117,7 @@ class Sessions(dd.Table):
         session_type=dd.ForeignKey(
             'working.SessionType', null=True, blank=True),
         observed_event=dd.PeriodEvents.field(
-            blank=True, default=dd.PeriodEvents.active.as_callable),
+            blank=True, default=dd.PeriodEvents.as_callable('active')),
     )
 
     @classmethod

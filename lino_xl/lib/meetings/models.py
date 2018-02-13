@@ -76,7 +76,7 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
     site = dd.ForeignKey('tickets.Site', blank=True, null=True)
 
     state = MeetingStates.field(
-        default=MeetingStates.draft.as_callable)
+        default=MeetingStates.as_callable('draft'))
 
     name = dd.CharField(_("Title"), max_length=100, blank=True)
 
