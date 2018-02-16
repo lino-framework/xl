@@ -20,7 +20,7 @@ from __future__ import print_function
 import os
 from copy import copy
 import six
-
+from io import open
 # from decimal import Decimal
 
 # from builtins import str
@@ -199,7 +199,7 @@ class AppyRenderer(OriginalAppyRenderer):
             # logger.info("20120726 renderXhtml(%r) failed : %s", html, e)
             return self.renderXhtml(html, **kw)
 
-    def finalize_func(self, fn):
+    def finalize_func(self, fn, cls=False):
         #~ print "finalize_func()", self.automaticstyles.values()
         #~ fn = os.path.join(fn,'..','content.xml')
         #~ fn = os.path.join(fn,'content.xml')
@@ -218,8 +218,8 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ insert_marker = insert_marker.encode('utf-8')
         #~ chunk = chunk.encode('utf-8')
         fn = os.path.join(root, leaf)
-        fd = open(fn)
-        s = fd.read().decode('utf-8')
+        fd = open(fn, encoding='utf-8')
+        s = fd.read()
         fd.close()
         chunks = s.split(insert_marker)
         if len(chunks) != 2:
@@ -229,9 +229,9 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ print 20120419, ss
         s = chunks[0] + insert_marker + chunk + chunks[1]
         #~ fd = open('tmp.xml',"w")
-        fd = open(fn, "w")
+        fd = open(fn, "w",encoding='utf-8')
         #~ fd.write(s)
-        fd.write(s.encode('utf-8'))
+        fd.write(s)
         fd.close()
         #~ raise Exception(fn)
 
@@ -267,7 +267,7 @@ class AppyRenderer(OriginalAppyRenderer):
     def insert_story(self, story):
         chunks = tuple(self.story2odt(story))
         return str('').join(chunks)
-        
+
     def as_odt(self, obj):
         return obj.as_appy_pod_xml(self)
 
