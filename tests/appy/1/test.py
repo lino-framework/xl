@@ -28,9 +28,9 @@ from lino_xl.lib.appypod import setup_renderer
 
 def run_test(number,title,XHTML=None,RST=None,HTML=None):
     if ACTIVE_TESTS and not number in ACTIVE_TESTS: 
-        print "Skipped test #%d" % number
+        print ("Skipped test #%d" % number)
         return
-    print "Running test #%d" % number
+    print ("Running test #%d" % number)
     tpl = os.path.join(os.path.abspath(os.path.dirname(__file__)),'test_template.odt')
     context = dict(locals())
     context.update(
@@ -44,7 +44,7 @@ def run_test(number,title,XHTML=None,RST=None,HTML=None):
     renderer = Renderer(tpl, context, target,**APPY_PARAMS)
     setup_renderer(renderer) # adds functions restify() and html()
     renderer.run()  
-    print "Generated file", target
+    print ("Generated file", target)
     #~ os.startfile(target)    
 
 

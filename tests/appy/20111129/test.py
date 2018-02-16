@@ -83,14 +83,14 @@ def run_test(n,pp_list):
             yield p
     context = dict(properties_list=properties_list)
 
-    print [unicode(pp.property) for pp in properties_list()]
+    print ([unicode(pp.property) for pp in properties_list()])
       
     target = 'result%s.odt' % n
     if os.path.exists(target): 
         os.remove(target)
     renderer = Renderer(tpl, context, target)
     renderer.run()
-    print "Generated file", target
+    print ("Generated file", target)
 
 def _test():
     import doctest
