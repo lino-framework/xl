@@ -17,7 +17,7 @@ from django.db import models
 from lino.mixins import BabelNamed, Referrable
 from lino.utils import join_elems
 from lino.utils.instantiator import create_row
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.modlib.gfks.mixins import Controllable
 from lino.core.gfks import gfk2lookup
 

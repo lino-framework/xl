@@ -17,7 +17,7 @@ from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from lino.utils import join_elems
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 from .workflows import TaskStates
 from .workflows import GuestStates

@@ -18,7 +18,7 @@ from django.db import models
 from django.utils.translation import string_concat
 from django.utils import translation
 
-# from lino.utils.xmlgen.html import E, join_elems
+# from etgen.html import E, join_elems
 from lino.modlib.gfks.fields import GenericForeignKeyIdField
 from lino.core.gfks import GenericForeignKey, ContentType
 

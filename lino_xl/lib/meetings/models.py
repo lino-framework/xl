@@ -22,7 +22,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from lino.api import dd, rt, _
-from lino.utils.xmlgen.html import E, join_elems
+from etgen.html import E, join_elems
 from django.db.models import Q
 from lino.mixins import Referrable
 

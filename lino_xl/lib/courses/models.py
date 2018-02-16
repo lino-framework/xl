@@ -21,7 +21,7 @@ from django.utils.translation import string_concat
 from lino.api import dd, rt
 from lino import mixins
 
-from lino.utils.xmlgen.html import E, join_elems
+from etgen.html import E, join_elems
 from lino.mixins import Referrable
 from lino.mixins.human import parse_name
 from lino.mixins.duplicable import Duplicable

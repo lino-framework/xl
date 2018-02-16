@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd, rt
-from lino.utils.xmlgen.html import E, lines2p
+from etgen.html import E, lines2p
 
 
 class ContactRelated(dd.Model):

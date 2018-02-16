@@ -26,7 +26,7 @@ from lino.core.requests import BaseRequest
 from lino.mixins.bleached import BleachedPreviewBody
 
 from lino.utils import join_elems
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 from .roles import BlogsReader
 

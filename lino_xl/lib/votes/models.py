@@ -17,7 +17,7 @@ from django.conf import settings
 
 from lino.api import dd, rt, _
 from lino.core.utils import lazy_format
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils import join_elems
 from lino.mixins import Created, ObservedDateRange
 from lino.modlib.users.mixins import UserAuthored, My

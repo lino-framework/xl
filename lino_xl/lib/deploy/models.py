@@ -14,7 +14,7 @@ from lino.api import dd, rt, _
 from lino.mixins import Sequenced, DateRange
 from lino.utils import join_elems
 from lino.utils.instantiator import create_row
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.modlib.users.mixins import UserAuthored

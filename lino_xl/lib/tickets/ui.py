@@ -27,7 +27,7 @@ from django.db.models import Q
 from lino import mixins
 from lino.api import dd, rt, _
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 from lino_xl.lib.cal.mixins import daterange_text
 from lino.modlib.users.mixins import My

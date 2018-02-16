@@ -9,7 +9,7 @@ from builtins import str
 from django.db.models import Q
 
 from lino.api import dd, rt
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from .choicelists import EnrolmentStates
 
 

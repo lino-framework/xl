@@ -23,7 +23,7 @@ from lino import mixins
 
 from lino.core.roles import Explorer
 from lino.utils import join_elems
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils.mti import get_child
 from lino.utils.report import Report
 

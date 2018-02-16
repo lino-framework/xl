@@ -215,7 +215,7 @@ class AllStarsByController(Stars):
     column_names = "user master_owner *"
 
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils import join_elems
 
 

@@ -43,7 +43,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from lino.modlib.users.mixins import My
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils import join_elems
 
 from lino.api import dd, rt

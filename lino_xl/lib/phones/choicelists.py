@@ -5,7 +5,7 @@
 
 from django.core.validators import validate_email, URLValidator
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.api import dd, _
 from lino.modlib.office.roles import OfficeStaff
 

@@ -17,7 +17,7 @@ from django.db.models import Q
 
 from lino.api import dd, rt, _
 from lino import mixins
-from lino.utils.xmlgen.html import E, join_elems
+from etgen.html import E, join_elems
 from lino.modlib.comments.mixins import Commentable
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.mixins import ChangeObservable

@@ -50,7 +50,7 @@ from lino.utils import isiterable
 from lino.utils.restify import restify
 from lino.utils.html2xhtml import html2xhtml
 from lino.utils.html2odf import html2odf, toxml
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.api import dd
 
 from lino.core.elems import NumberFieldElement

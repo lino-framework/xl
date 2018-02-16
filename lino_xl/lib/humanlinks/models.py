@@ -21,7 +21,7 @@ from django.db.models import Q
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
 from lino.api import dd, rt
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from .choicelists import LinkTypes
 
 config = dd.plugins.humanlinks
