@@ -9,7 +9,7 @@ from __future__ import print_function
 
 from django.db import models
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils import join_elems
 from lino.core.diff import ChangeWatcher
 from lino.modlib.checkdata.choicelists import Checker

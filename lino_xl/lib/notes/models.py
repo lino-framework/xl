@@ -21,7 +21,7 @@ from django.utils import timezone
 from lino.api import dd, rt
 from lino import mixins
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
 from lino_xl.lib.faculties.mixins import Feasible

@@ -27,7 +27,7 @@ from lino.modlib.printing.mixins import Printable
 # from lino_xl.lib.excerpts.mixins import Certifiable
 #from lino_xl.lib.googleapi_people.models import GooglePeople
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils.addressable import Addressable
 from lino.utils.media import TmpMediaFile
 from lino.mixins.periods import ObservedDateRange

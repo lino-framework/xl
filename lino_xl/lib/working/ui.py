@@ -18,7 +18,7 @@ from lino.api import dd, rt, _
 from lino_xl.lib.tickets.ui import Tickets, Projects
 
 from lino.utils import ONE_DAY
-from lino.utils.xmlgen.html import E, join_elems
+from etgen.html import E, join_elems
 from lino.utils.quantities import Duration
 from lino.modlib.system.choicelists import ObservedEvent
 from lino.mixins.periods import ObservedDateRange

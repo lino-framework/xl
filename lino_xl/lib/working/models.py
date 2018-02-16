@@ -11,7 +11,7 @@ from django.utils import timezone
 from lino import mixins
 from lino.api import dd, rt, _
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils.quantities import Duration
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored

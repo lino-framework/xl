@@ -16,8 +16,8 @@ from lino.api import dd, rt
 from lino import mixins
 from lino.utils import join_elems
 
-from lino.utils.xmlgen import html as xghtml
-from lino.utils.xmlgen.html import E
+from etgen import html as xghtml
+from etgen.html import E
 
 from lino.mixins import Referrable
 

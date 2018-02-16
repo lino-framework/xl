@@ -13,7 +13,7 @@ from lino.core.web import extend_context
 from lino_xl.lib.appypod.mixins import PrintTableAction
 from lino.core.tables import AbstractTable
 from lino.utils.media import TmpMediaFile
-from lino.utils.xmlgen import html as xghtml
+from etgen import html as xghtml
 from django.utils.translation import ugettext_lazy as _
 
 

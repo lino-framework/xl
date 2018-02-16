@@ -20,7 +20,7 @@ from atelier.sphinxconf.base import py2url_txt
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.cal.mixins import daterange_text

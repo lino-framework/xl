@@ -13,7 +13,7 @@ from django.conf import settings
 from lino.api import dd, rt, _
 
 from lino.modlib.printing.mixins import DirectPrintAction
-from lino.utils.xmlgen.sepa.validate import validate_pain001
+from etgen.sepa.validate import validate_pain001
 
 class WriteXML(DirectPrintAction):
     """Generate an XML file from this database object.

@@ -13,7 +13,7 @@ from __future__ import print_function
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import rt, dd
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.core.diff import ChangeWatcher
 from lino_xl.lib.countries.mixins import AddressLocation
 

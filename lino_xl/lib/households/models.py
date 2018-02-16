@@ -20,7 +20,7 @@ from lino.api import dd, rt, _
 from lino import mixins
 
 from lino.utils import join_words, join_elems
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
 from .choicelists import MemberRoles, MemberDependencies

@@ -25,7 +25,7 @@ from atelier.utils import last_day_of_month
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.utils import mti
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType

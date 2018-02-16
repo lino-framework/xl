@@ -14,7 +14,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd, rt
-from lino.utils.xmlgen.html import E, join_elems
+from etgen.html import E, join_elems
 
 from lino.mixins.periods import DateRange
 

@@ -14,7 +14,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import string_concat
 
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.api import dd
 from lino import mixins
 from lino.core.constants import _handle_attr_name

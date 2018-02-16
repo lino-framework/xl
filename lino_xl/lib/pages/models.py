@@ -13,7 +13,7 @@ from django.utils.translation import pgettext_lazy
 from django.utils.translation import get_language
 
 from lino.api import dd, rt
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.core.renderer import add_user_language
 
 from lino import mixins

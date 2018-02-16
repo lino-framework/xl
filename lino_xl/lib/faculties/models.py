@@ -12,7 +12,7 @@ import logging
 from lino.api import dd, _
 
 # from lino.utils import join_elems
-from lino.utils.xmlgen.html import E, join_elems
+from etgen.html import E, join_elems
 
 from django.db import models
 from lino.mixins import Hierarchical, Sequenced

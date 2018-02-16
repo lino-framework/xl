@@ -17,7 +17,7 @@ from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
 from lino.core import actions
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils.mldbc.mixins import BabelNamed
 from lino.modlib.notify.utils import body_subject_to_elems
 

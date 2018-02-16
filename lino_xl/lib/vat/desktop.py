@@ -7,7 +7,7 @@ from __future__ import print_function
 
 from lino.api import dd, rt, _
 
-# from lino.utils.xmlgen.html import E
+# from etgen.html import E
 
 from .mixins import VatDocument
 

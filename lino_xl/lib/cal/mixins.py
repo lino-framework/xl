@@ -16,7 +16,7 @@ from django.utils.encoding import force_text
 from lino import mixins
 from lino.api import dd, rt
 from lino.utils import ONE_DAY
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.mixins.periods import Started, Ended
 
 from lino.modlib.office.roles import OfficeStaff, OfficeOperator

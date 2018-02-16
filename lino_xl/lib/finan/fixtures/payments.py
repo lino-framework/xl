@@ -22,7 +22,7 @@ from unipath import Path
 from django.conf import settings
 from lino.utils import Cycler
 from lino.api import dd, rt
-from lino.utils.xmlgen.sepa.validate import validate_pain001
+from etgen.sepa.validate import validate_pain001
 from lino_xl.lib.sepa.fixtures.sample_ibans import IBANS
 
 finan = dd.resolve_app('finan')

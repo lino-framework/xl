@@ -11,7 +11,7 @@ from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
 from lino_xl.lib.accounts.fields import DebitOrCreditField
 from lino_xl.lib.ledger.mixins import VoucherItem, SequencedVoucherItem
 from lino_xl.lib.ledger.mixins import ProjectRelated, Matching
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 from lino.api import dd, rt, _
 

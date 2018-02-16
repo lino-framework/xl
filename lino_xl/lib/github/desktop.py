@@ -9,7 +9,7 @@
 from lino.api import dd, rt, _
 
 from lino import mixins
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
 from lino.core.roles import Explorer

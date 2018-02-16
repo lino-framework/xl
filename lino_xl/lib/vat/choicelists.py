@@ -9,7 +9,7 @@ from django.db import models
 from atelier.utils import is_string
 from decimal import Decimal
 from lino.api import dd, _
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino_xl.lib.ledger.roles import LedgerStaff
 from lino_xl.lib.ledger.choicelists import TradeTypes
 

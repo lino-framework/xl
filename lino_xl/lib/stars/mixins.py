@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 from builtins import str
 from django.conf import settings
 from lino.api import dd, rt, _
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.modlib.office.roles import OfficeUser
 from lino.modlib.notify.mixins import ChangeObservable
 from six import string_types

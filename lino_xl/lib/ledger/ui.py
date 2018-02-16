@@ -22,7 +22,7 @@ from django.db.models.expressions import RawSQL
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.utils.report import Report
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils import join_elems
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO

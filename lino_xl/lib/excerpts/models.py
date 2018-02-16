@@ -33,7 +33,7 @@ from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
 from lino import mixins
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 from lino.utils import join_elems
 from lino.core.exceptions import UnresolvedChoice
 

@@ -11,7 +11,7 @@ import json
 from django.utils import timezone
 from .actions import Import_all_commits, Import_new_commits, Update_all_repos
 from lino.mixins import Created
-from lino.utils.xmlgen.html import E
+from etgen.html import E
 
 
 class Repository(dd.Model):
