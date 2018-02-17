@@ -206,9 +206,9 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ if not self.stylesManager.styles.getStyle('UL'):
             #~ self.insert_chunk(fn,'content.xml',OAS,UL_LIST_STYLE)
         self.insert_chunk(fn, 'content.xml', OAS, ''.join(
-            [toxml(n).decode('utf-8') for n in self.my_automaticstyles]))
+            [toxml(n) for n in self.my_automaticstyles]))
         self.insert_chunk(fn, 'styles.xml', OFFICE_STYLES, ''.join(
-            [toxml(n).decode('utf-8') for n in self.my_styles]))
+            [toxml(n) for n in self.my_styles]))
 
     def insert_chunk(self, root, leaf, insert_marker, chunk):
         """post-process specified xml file by inserting a chunk of XML text

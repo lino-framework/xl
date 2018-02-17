@@ -31,7 +31,7 @@ def run_test():
     context = dict()
     renderer = Renderer(tpl,context,target,**APPY_PARAMS)
     renderer.run()
-    print "Generated file", target
+    print ("Generated file", target)
     os.startfile(target)    
 
 
