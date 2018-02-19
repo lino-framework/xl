@@ -25,4 +25,4 @@ def objects():
             yield mbr
             txt = _("Hi all, my name is {} and I am new here.").format(
                 u)
-            yield Comment(owner=grp, user=u, short_text=txt)
+            yield Comment(owner=grp, user=u, body=txt)
