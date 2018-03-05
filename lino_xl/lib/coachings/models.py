@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -22,7 +22,13 @@ from lino.modlib.notify.mixins import ChangeObservable
 from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.clients.choicelists import ClientStates
-from .roles import CoachingsStaff
+from .roles import CoachingsUser, CoachingsStaff
+
+from lino.modlib.notify.choicelists import MessageTypes
+MessageTypes.add_item(
+    'coachings', dd.plugins.coachings.verbose_name,
+    required_roles={CoachingsUser})
+
 
 
 try:
@@ -204,6 +210,9 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservab
     def get_change_owner(self):
         return self.client
 
+    def get_notify_message_type(self):
+        return rt.models.notify.MessageTypes.coachings
+    
     # def get_change_observers(self):
     #     return self.client.get_change_observers()
 

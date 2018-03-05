@@ -30,3 +30,4 @@ class SpecialTypes(dd.ChoiceList):
     verbose_name_plural = _("Special note types")
     item_class = SpecialType
     max_length = 5
+

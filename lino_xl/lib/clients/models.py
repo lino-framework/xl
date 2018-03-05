@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -18,7 +18,6 @@ from lino.api import dd, rt
 from lino import mixins
 
 from lino.modlib.users.mixins import UserAuthored
-from lino.modlib.notify.mixins import ChangeObservable
 from lino.modlib.checkdata.choicelists import Checker
 
 from .mixins import ClientContactBase
