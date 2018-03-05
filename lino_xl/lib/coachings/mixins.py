@@ -66,6 +66,9 @@ class Coachable(ClientBase):
         items = [str(obj.user) for obj in self.get_coachings(period)]
         return ', '.join(items)
 
+    def get_notify_message_type(self):
+        return rt.models.notify.MessageTypes.coachings
+    
     def get_change_observers(self):
         # implements lino.modlib.notify.mixins.ChangeObservable
         for x in super(Coachable, self).get_change_observers():

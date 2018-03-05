@@ -22,6 +22,7 @@ from lino.api import dd, rt, _, pgettext
 
 from etgen.html import E
 
+from lino.modlib.notify.choicelists import MessageTypes
 from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.cal.mixins import daterange_text
 from lino_xl.lib.contacts.mixins import ContactRelated
@@ -38,6 +39,10 @@ from lino.utils import join_elems
 
 from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities
 from .roles import Triager
+
+MessageTypes.add_item(
+    'tickets', dd.plugins.tickets.verbose_name,
+    required_roles={Triager})
 
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
