@@ -55,6 +55,9 @@ from lino_xl.lib.cal.workflows import GuestStates, EntryStates
 from lino.modlib.notify.actions import NotifyingAction
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 
+from lino.modlib.notify.choicelists import MessageTypes
+MessageTypes.add_item('reception', dd.plugins.reception.verbose_name)
+
 # Before adding new GuestStates, make sure that
 # `lino_xl.lib.cal.workflows.feedback` has been imported because this
 # will clear GuestStates
