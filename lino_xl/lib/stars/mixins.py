@@ -9,7 +9,7 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from etgen.html import E
 from lino.modlib.office.roles import OfficeUser
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 from six import string_types
 from django.db import IntegrityError
 
@@ -102,7 +102,7 @@ class UnstarObject(dd.Action):
         master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
         master_star_qs.delete()
 
-class Starrable(ChangeObservable):
+class Starrable(ChangeNotifier):
 
     class Meta(object):
         abstract = True

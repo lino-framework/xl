@@ -17,7 +17,6 @@ from lino.api import dd, rt, _
 from lino import mixins
 
 from lino.utils import join_words
-from lino.utils import join_elems
 
 from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.addresses.mixins import AddressOwner
@@ -27,7 +26,7 @@ from lino.modlib.printing.mixins import Printable
 # from lino_xl.lib.excerpts.mixins import Certifiable
 #from lino_xl.lib.googleapi_people.models import GooglePeople
 
-from etgen.html import E
+from etgen.html import E, join_elems, forcetext
 from lino.utils.addressable import Addressable
 from lino.utils.media import TmpMediaFile
 from lino.mixins.periods import ObservedDateRange
@@ -174,7 +173,7 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
         elems.append(E.br())
         elems += join_elems(list(self.address_location_lines()), sep=E.br)
         elems = [
-            E.div(*elems,
+            E.div(*forcetext(elems),
                   style="font-size:18px;font-weigth:bold;"
                   "vertical-align:bottom;text-align:middle")]
         elems += AddressOwner.get_overview_elems(self, ar)

@@ -21,7 +21,7 @@ from django.utils.translation import string_concat
 from lino.api import dd, rt
 from lino import mixins
 
-from etgen.html import E, join_elems
+from etgen.html import E, join_elems, tostring
 from lino.mixins import Referrable
 from lino.mixins.human import parse_name
 from lino.mixins.duplicable import Duplicable
@@ -703,7 +703,7 @@ def setup_memo_commands(sender=None, **kwargs):
             kw.update(title=obj.name)
         e = ar.obj2html(obj, txt, **kw)
         # return str(ar)
-        return E.tostring(e)
+        return tostring(e)
 
     sender.kernel.memo_parser.register_django_model(
         'course', Course,

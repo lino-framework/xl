@@ -9,7 +9,7 @@ from django.db import models
 from atelier.utils import is_string
 from decimal import Decimal
 from lino.api import dd, _
-from etgen.html import E
+from etgen.html import E, forcetext
 from lino_xl.lib.ledger.roles import LedgerStaff
 from lino_xl.lib.ledger.choicelists import TradeTypes
 
@@ -357,7 +357,7 @@ class DeclarationFieldsBase(dd.ChoiceList):
                 ' '.join([i.name for i in fld.observed_fields]),
                 E.br()]
 
-        return E.div(*elems)
+        return E.div(*forcetext(elems))
     
 
 

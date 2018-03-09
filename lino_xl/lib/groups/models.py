@@ -20,10 +20,10 @@ from lino import mixins
 from etgen.html import E, join_elems
 from lino.modlib.comments.mixins import Commentable
 from lino.modlib.users.mixins import UserAuthored, My
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 
 
-class Group(mixins.BabelNamed, mixins.Referrable, ChangeObservable,
+class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
             Commentable):
 
     class Meta:

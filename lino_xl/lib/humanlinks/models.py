@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 """
@@ -16,11 +16,11 @@ import logging
 logger = logging.getLogger(__name__)
 
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
+#from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
-from lino.api import dd, rt
+from lino.api import dd, rt, _, gettext
 from etgen.html import E
 from .choicelists import LinkTypes
 
@@ -220,16 +220,16 @@ class LinksByHuman(Links):
         items = []
         for type, other in links:
             items.append(E.li(
-                str(type), _(" of "),
+                str(type), gettext(" of "),
                 obj.format_family_member(ar, other),
                 " (%s)" % other.age
             ))
         elems = []
         if len(items) > 0:
-            elems += [_("%s is") % obj.first_name]
+            elems += [gettext("%s is") % obj.first_name]
             elems.append(E.ul(*items))
         else:
-            elems.append(_("No relationships."))
+            elems.append(gettext("No relationships."))
 
         # Buttons for creating relationships:
         if self.insert_action is not None:
@@ -251,7 +251,7 @@ class LinksByHuman(Links):
                     actions.append(' ')
 
                 if len(actions) > 0:
-                    elems += [E.br(), _("Create relationship as ")] + actions
+                    elems += [E.br(), gettext("Create relationship as ")] + actions
         return E.div(*elems)
 
 

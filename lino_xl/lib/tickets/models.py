@@ -20,7 +20,8 @@ from atelier.sphinxconf.base import py2url_txt
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
-from etgen.html import E
+from etgen.html import E, tostring
+from etgen.utils import join_elems, forcetext
 
 from lino.modlib.notify.choicelists import MessageTypes
 from lino.modlib.uploads.mixins import UploadController
@@ -35,7 +36,6 @@ from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.working.mixins import Workable
 from lino_xl.lib.stars.mixins import Starrable, get_favourite
 from lino_xl.lib.working.choicelists import ReportingTypes
-from lino.utils import join_elems
 
 from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities
 from .roles import Triager
@@ -494,14 +494,14 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         html = ''
         
         if self.description:
-            # html += E.tostring(E.b(_("Description")))
+            # html += tostring(E.b(_("Description")))
             html += ar.parse_memo(self.description)
         if self.upgrade_notes:
-            html += E.tostring(E.b(_("Resolution"))) + ": "
+            html += tostring(E.b(_("Resolution"))) + ": "
             html += ar.parse_memo(self.upgrade_notes)
         if self.duplicate_of_id:
-            html += E.tostring(_("Duplicate of")) + " "
-            html += E.tostring(self.duplicate_of.obj2href(ar))
+            html += tostring(_("Duplicate of")) + " "
+            html += tostring(self.duplicate_of.obj2href(ar))
         return html
 
     def full_clean(self):
@@ -631,7 +631,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             elems += [", ", _("assigned to"), " ", self.assigned_to.obj2href(ar)]
 
 
-        return E.p(*elems)
+        return E.p(*forcetext(elems))
         # return E.p(*join_elems(elems, sep=', '))
             
         # if ar.actor.model is self.__class__:
@@ -640,10 +640,10 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         #     elems += self.get_workflow_buttons(ar)
         # else:
         #     elems += [' (', str(self.state.button_text), ')']
-        return elems
+        # return elems
 
     # def get_change_body(self, ar, cw):
-    #     return E.tostring(E.p(
+    #     return tostring(E.p(
     #         _("{user} worked on [ticket {t}]").format(
     #             user=ar.get_user(), t=self.id)))
 
@@ -762,7 +762,7 @@ def setup_memo_commands(sender=None, **kwargs):
     #         txt = "#{0}".format(obj.id)
     #         kw.update(title=obj.summary)
     #     e = ar.obj2html(obj, txt, **kw)
-    #     return E.tostring(e)
+    #     return tostring(e)
     #     # url = rnd.get_detail_url(obj)
     #     # title = obj.summary
     #     # return '<a href="{0}" title="{2}">{1}</a>'.format(url, text, title)

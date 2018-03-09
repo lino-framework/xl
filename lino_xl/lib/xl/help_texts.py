@@ -93,7 +93,6 @@ the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.MarkExcused' : _("""Mark this participant as absent (with acceptable explanation)."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
-    'lino_xl.lib.coachings.CoachingsByClient' : _("""The Coachings table in a Clients detail."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.countries.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
@@ -281,7 +280,7 @@ Site."""),
     'lino_xl.lib.notes.EventTypes.model' : _("""alias of EventType"""),
     'lino_xl.lib.notes.Note' : _("""A note is a dated and timed document written by its author (a
 user). For example a report of a meeting or a phone call, or just
-some observation. Notes are usually meant for internal use."""),
+some observation.  Notes are usually meant for internal use."""),
     'lino_xl.lib.online.users.UserStates' : _("""The list of possible choices for the state field
 of a User."""),
     'lino_xl.lib.online.users.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
@@ -695,6 +694,10 @@ a given client."""),
     'lino_xl.lib.clients.ClientContact.contact_role' : _("""The role of the contact person in the organization."""),
     'lino_xl.lib.clients.ClientContactType' : _("""A client contact type is the type or "role" which must be
 specified for a given ClientContact."""),
+    'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French)
+is when a given client is being coached by a given user during a
+given period."""),
+    'lino_xl.lib.coachings.Coachings' : _("""The Coachings table in a clients detail."""),
     'lino_xl.lib.coachings.Coachable' : _("""Base class for coachable client. The model specified as
 client_model must implement this."""),
     'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
@@ -705,9 +708,7 @@ Service"."""),
 integration work."""),
     'lino_xl.lib.coachings.CoachingEnding' : _("""A Coaching termination reason expresses why a coaching has been
 terminated."""),
-    'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French)
-is when a given client is being coached by a given user during a
-given period."""),
+    'lino_xl.lib.coachings.CoachingEndings' : _("""A list of reasons expressing why a coaching was ended."""),
     'lino_xl.lib.coachings.CoachingsUser' : _("""A user who has access to basic coachings functionality."""),
     'lino_xl.lib.coachings.CoachingsStaff' : _("""A user who can configure coachings functionality."""),
     'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients

@@ -221,7 +221,7 @@ class Tasks(dd.Table):
         Enhance today by making background color a bit darker.
         """
         if row.start_date == settings.SITE.today():
-            td.attrib.update(bgcolor="gold")
+            td.set('bgcolor', "gold")
 
 
 class TasksByController(Tasks):
@@ -721,7 +721,7 @@ class Events(dd.Table):
         Enhance today by making background color a bit darker.
         """
         if row.start_date == settings.SITE.today():
-            td.attrib.update(bgcolor="#bbbbbb")
+            td.set('bgcolor', "#bbbbbb")
 
     @classmethod
     def param_defaults(self, ar, **kw):

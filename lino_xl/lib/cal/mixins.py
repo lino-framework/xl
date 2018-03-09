@@ -16,7 +16,7 @@ from django.utils.encoding import force_text
 from lino import mixins
 from lino.api import dd, rt
 from lino.utils import ONE_DAY
-from etgen.html import E
+from etgen.html import E, tostring
 from lino.mixins.periods import Started, Ended
 
 from lino.modlib.office.roles import OfficeStaff, OfficeOperator
@@ -24,7 +24,7 @@ from lino.modlib.uploads.mixins import UploadController
 
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 
 from .choicelists import Recurrencies, Weekdays, AccessClasses
 
@@ -454,7 +454,7 @@ class EventGenerator(dd.Model):
                 ar.debug(
                     "Failed to get next date for %s (%s > %s).",
                     we, date, until)
-                conflicts = [E.tostring(ar.obj2html(o)) for o in qs]
+                conflicts = [tostring(ar.obj2html(o)) for o in qs]
                 msg = ', '.join(conflicts)
                 ar.warning("%s conflicts with %s. ", we, msg)
                 return None
@@ -718,7 +718,7 @@ class Component(Started,
                 UserAuthored,
                 Controllable,
                 UploadController,
-                ChangeObservable,
+                ChangeNotifier,
                 mixins.CreatedModified):
 
     workflow_state_field = 'state'

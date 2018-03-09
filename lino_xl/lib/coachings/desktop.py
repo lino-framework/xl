@@ -1,14 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
 from __future__ import print_function
-
-import logging
-logger = logging.getLogger(__name__)
-
-from django.db import models
 
 from lino.api import dd, _
 from lino import mixins
@@ -16,9 +11,6 @@ from lino import mixins
 from lino.modlib.users.mixins import My
 from .roles import CoachingsUser, CoachingsStaff
 from .choicelists import *
-
-contacts = dd.resolve_app('contacts')
-
 
 
 class CoachingTypes(dd.Table):
@@ -28,7 +20,6 @@ class CoachingTypes(dd.Table):
 
 
 class CoachingEndings(dd.Table):
-    help_text = _("A list of reasons expressing why a coaching was ended")
     required_roles = dd.login_required(CoachingsStaff)
     model = 'coachings.CoachingEnding'
     column_names = 'seqno name type *'
@@ -40,7 +31,6 @@ class CoachingEndings(dd.Table):
 
 class Coachings(dd.Table):
     required_roles = dd.login_required(CoachingsStaff)
-    help_text = _("Liste des accompagnements.")
     model = 'coachings.Coaching'
 
     parameters = mixins.ObservedDateRange(
@@ -143,9 +133,6 @@ class Coachings(dd.Table):
 
 
 class CoachingsByClient(Coachings):
-    """
-    The :class:`Coachings` table in a :class:`Clients` detail.
-    """
     required_roles = dd.login_required()
     #~ debug_permissions = 20121016
     master_key = 'client'

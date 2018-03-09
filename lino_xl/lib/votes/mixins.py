@@ -7,12 +7,12 @@
 
 from lino.api import dd, rt, _
 from lino.utils.instantiator import create_row, create_or_update_row
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 from .choicelists import VoteStates
 from .roles import SimpleVotesUser
 from .actions import CreateVote, EditVote, VotableEditVote
 
-class Votable(ChangeObservable):
+class Votable(ChangeNotifier):
     """Base class for models that can be used as
     :attr:`lino_xl.lib.votes.Plugin.votable_model`.
 

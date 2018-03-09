@@ -50,7 +50,7 @@ from lino.utils import isiterable
 from lino.utils.restify import restify
 from lino.utils.html2xhtml import html2xhtml
 from lino.utils.html2odf import html2odf, toxml
-from etgen.html import E
+from etgen.html import iselement, tostring
 from lino.api import dd
 
 from lino.core.elems import NumberFieldElement
@@ -175,8 +175,8 @@ class AppyRenderer(OriginalAppyRenderer):
             # instead.
             return ''
 
-        if E.iselement(html):
-            html = E.tostring(html)
+        if iselement(html):
+            html = tostring(html)
 
         try:
             html = html2xhtml(html)
@@ -250,7 +250,7 @@ class AppyRenderer(OriginalAppyRenderer):
         from lino.core.actors import Actor
         from lino.core.tables import TableRequest
         for item in story:
-            if E.iselement(item):
+            if iselement(item):
                 yield toxml(html2odf(item))
             elif isinstance(item, type) and issubclass(item, Actor):
                 sar = self.ar.spawn(item, *args, **kw)
@@ -441,7 +441,7 @@ class AppyRenderer(OriginalAppyRenderer):
             #     logger.info("20160330a value2cell(%s, %s)", fld.__class__, val)
             txt = fld.value2html(ar, val)
             # if i == 0:
-            #     logger.info("20160330b value2cell(%s)", E.tostring(txt))
+            #     logger.info("20160330b value2cell(%s)", tostring(txt))
 
             p = text.P(stylename=style_name)
             html2odf(txt, p)
