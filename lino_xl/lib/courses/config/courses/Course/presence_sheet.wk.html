@@ -43,7 +43,7 @@ table, td, th {
 {% for enrolment in obj.enrolments %}
 <tr class="avoid">
 <td><b>{{loop.index}}</b></td>
-<td>{{E.tostring(enrolment.pupil_info)}}</td>
+<td>{{tostring(enrolment.pupil_info)}}</td>
 {% for e in  events %}
 <td>&nbsp;</td>
 {% endfor %}

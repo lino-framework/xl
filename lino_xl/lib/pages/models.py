@@ -13,7 +13,7 @@ from django.utils.translation import pgettext_lazy
 from django.utils.translation import get_language
 
 from lino.api import dd, rt
-from etgen.html import E
+from etgen.html import E, tostring_pretty
 from lino.core.renderer import add_user_language
 
 from lino import mixins
@@ -87,7 +87,7 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
         url = self.get_absolute_url(**kw)
         a = E.a(self.get_sidebar_caption(), href=url)
         if self == other:
-            return E.li(a, class_='active')
+            return E.li(a, **{'class':'active'})
         return E.li(a)
 
     def get_sidebar_html(self, request):
@@ -101,10 +101,10 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
                 for ch in n.children.order_by('seqno'):
                     children.append(ch.get_sidebar_item(request, self))
                 if len(children):
-                    items.append(E.ul(*children, class_='nav nav-list'))
+                    items.append(E.ul(*children, **{'class':'nav nav-list'}))
 
-        e = E.ul(*items, class_='nav nav-list')
-        return E.tostring_pretty(e)
+        e = E.ul(*items, **{'class':'nav nav-list'})
+        return tostring_pretty(e)
 
     def get_sidebar_menu(self, request):
         qs = Page.objects.filter(parent__isnull=True)

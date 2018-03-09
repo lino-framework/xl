@@ -353,5 +353,5 @@ class VouchersByPartnerBase(dd.VirtualTable):
                         actions.append(', ')
                     actions.append(btn)
 
-            elems += [E.br(), _("Create voucher in journal"), " "] + actions
+            elems += [E.br(), str(_("Create voucher in journal")), " "] + actions
         return E.div(*elems)

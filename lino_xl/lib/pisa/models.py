@@ -35,7 +35,7 @@ class PrintTableActionPisa(PrintTableAction):
         t = xghtml.Table()
         ar.dump2html(t, ar.data_iterator)
 
-        return xghtml.E.tostring(t.as_element())
+        return xghtml.tostring(t.as_element())
 
     def render(self, ar, output_file):
         context = {

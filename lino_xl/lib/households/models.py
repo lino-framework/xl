@@ -16,7 +16,7 @@ logger = logging.getLogger(__name__)
 from django.db import models
 from django.conf import settings
 
-from lino.api import dd, rt, _
+from lino.api import dd, rt, _, gettext
 from lino import mixins
 
 from lino.utils import join_words, join_elems
@@ -474,7 +474,7 @@ class SiblingsByPerson(Members):
         # every parent of this household.
         sar = self.request(master_instance=obj)
         if sar.master_household is None:
-            return E.div(ar.no_data_text)
+            return E.div(str(ar.no_data_text))
         # obj is the Person for which we display the household
 
         def format_item(m):
@@ -513,8 +513,8 @@ class SiblingsByPerson(Members):
                 elems.append(', ')
             text = join_elems(
                 [parent.format_family_member(ar, p) for p in parents],
-                sep=_(" and "))
-            elems += [tt, _(" of ")] + text
+                sep=gettext(" and "))
+            elems += [tt, gettext(" of ")] + text
         return elems
 
 
@@ -583,7 +583,7 @@ class MembersByPerson(Members):
         items = []
         for m in sar.data_iterator:
             
-            args = (str(m.role), _(" in "),
+            args = (str(m.role), gettext(" in "),
                     ar.obj2html(m.household))
             if m.primary:
                 items.append(E.li(E.b("\u2611 ", *args)))
@@ -592,7 +592,7 @@ class MembersByPerson(Members):
                     ar, "\u2610 ", style="text-decoration:none;")
                 items.append(E.li(btn, *args))
         if len(items) > 0:
-            elems += [_("%s is") % obj]
+            elems += [gettext("%s is") % obj]
             elems.append(E.ul(*items))
 
         if self.insert_action is not None:
@@ -603,11 +603,11 @@ class MembersByPerson(Members):
                 # sar.known_values.pop('child', None)
                 elems += [
                     sar.ar2button(
-                        None, _("Join an existing household"), icon_name=None),
-                    " ", _("or"), " ",
+                        None, gettext("Join an existing household"), icon_name=None),
+                    " ", gettext("or"), " ",
                     ar.instance_action_button(
                         obj.create_household,
-                        _("create a new one")),
+                        gettext("create a new one")),
                     # " ",
                     # rt.models.households.Household._meta.verbose_name,
                     "."]

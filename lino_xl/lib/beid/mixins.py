@@ -169,7 +169,7 @@ class BeIdCardHolder(dd.Model):
     @dd.displayfield(_("eID card"), default='<br/><br/><br/><br/>')
     def eid_info(self, ar):
         "Display some information about the eID card."
-        attrs = dict(class_="lino-info")
+        attrs = {'class':"lino-info"}
         if ar is None:
             return E.div(**attrs)
         must_read = False
@@ -205,7 +205,7 @@ class BeIdCardHolder(dd.Model):
                 elems.append(msg)
             # same red as in lino.css for .x-grid3-row-red td
             # ~ attrs.update(style="background-color:#FA7F7F; padding:3pt;")
-            attrs.update(class_="lino-info-red")
+            attrs['class'] = "lino-info-red"
         return E.div(*elems, **attrs)
 
     def get_beid_diffs(self, attrs):

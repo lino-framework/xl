@@ -10,7 +10,7 @@ from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd, rt
-from etgen.html import E, lines2p
+from etgen.html import lines2p, tostring
 
 
 class ContactRelated(dd.Model):
@@ -105,7 +105,7 @@ class ContactRelated(dd.Model):
         """
         rec = self.get_recipient()
         if rec is None:
-            return E.tostring(lines2p([], *args, **kwargs))
+            return tostring(lines2p([], *args, **kwargs))
         return rec.get_address_html(*args, **kwargs)
 
     def contact_person_changed(self, ar):

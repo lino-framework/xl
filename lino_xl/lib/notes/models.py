@@ -26,7 +26,7 @@ from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
 from lino_xl.lib.faculties.mixins import Feasible
 from lino.modlib.users.mixins import My, UserAuthored
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
@@ -126,7 +126,7 @@ class Note(TypedPrintable,
            Feasible,
            ContactRelated,
            mixins.ProjectRelated,
-           ChangeObservable,
+           ChangeNotifier,
            UploadController,
            Mailable):
     """
@@ -193,7 +193,7 @@ class Note(TypedPrintable,
     # def get_change_observers(self):
     #     # in lino_welfare the project is pcsw.Client
     #     prj = self.project
-    #     if isinstance(prj, ChangeObservable):
+    #     if isinstance(prj, ChangeNotifier):
     #         for u in prj.get_change_observers():
     #             yield u
 

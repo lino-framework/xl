@@ -408,7 +408,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         return s
 
     def get_change_observers(self):
-        # implements ChangeObservable
+        # implements ChangeNotifier
         if not self.is_user_modified():
             return
         for x in super(Event, self).get_change_observers():

@@ -4,7 +4,7 @@
 {% block main %}
 <div class="row-fluid">
 <h1>{{obj.summary}}</h1>
-{{E.tostring(navigator)}}
+{{tostring(navigator)}}
 {% if True or obj.access_class == rt.actors.cal.AccessClasses.public %}
 <p style="background-color:#eeeeee; padding:6pt;">
  
@@ -15,7 +15,7 @@
 {% endif %}
   
 {% if obj.room %}
-<br/><b>{{_("Room")}} :</b> {{E.tostring(obj.room.obj2href(ar))}}
+<br/><b>{{_("Room")}} :</b> {{tostring(obj.room.obj2href(ar))}}
 {% endif %}
 {% if obj.type %}
 <br/><b>Type:</b> {{obj.type}}

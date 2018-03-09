@@ -8,7 +8,7 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from etgen.html import E
 
-# from lino.modlib.notify.mixins import ChangeObservable
+# from lino.modlib.notify.mixins import ChangeNotifier
 # from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.clients.mixins import ClientBase
 
@@ -70,7 +70,7 @@ class Coachable(ClientBase):
     #     return rt.models.notify.MessageTypes.coachings
     
     def get_change_observers(self):
-        # implements lino.modlib.notify.mixins.ChangeObservable
+        # implements lino.modlib.notify.mixins.ChangeNotifier
         for x in super(Coachable, self).get_change_observers():
             yield x
         for u in settings.SITE.user_model.objects.filter(

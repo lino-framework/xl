@@ -10,7 +10,7 @@ from builtins import str
 
 from lino import mixins
 
-from etgen.html import E
+from etgen.html import E, tostring
 from lino.utils import join_elems
 from lino.modlib.users.mixins import My
 from lino.api import dd, rt, _
@@ -196,14 +196,14 @@ class DeploymentsByTicket(Deployments):
                 E.li(o.obj2href(ar, text=getattr(o.wish_type,'text', _("Wish"))), " in ", o.milestone.obj2href(ar), " : ", o.remark)
             )
         if len(items) > 0:
-            html.append(E.tostring(items))
+            html.append(tostring(items))
         # items = [o.milestone.obj2href(ar) for o in sar]
         sar = cls.insert_action.request_from(sar)
         if sar.get_permission():
             btn = sar.ar2button()
             html.append(btn)
 
-        return ar.html_text(ar.parse_memo(E.tostring(html)))
+        return ar.html_text(ar.parse_memo(tostring(html)))
 
 
     

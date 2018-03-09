@@ -8,13 +8,13 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from etgen.html import E
 
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 from lino_xl.lib.contacts.mixins import ContactRelated
 
 from .choicelists import ClientStates
 
 
-class ClientBase(ChangeObservable):
+class ClientBase(ChangeNotifier):
 
     class Meta:
         abstract = True

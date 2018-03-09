@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -11,22 +11,20 @@ logger = logging.getLogger(__name__)
 from django.db import models
 from django.db.models import Q
 from django.conf import settings
-from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from lino.api import dd, rt
 
 from lino import mixins
 
 from lino.modlib.users.mixins import UserAuthored
-from lino.modlib.notify.mixins import ChangeObservable
+from lino.modlib.notify.mixins import ChangeNotifier
 from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.clients.choicelists import ClientStates
-from .roles import CoachingsUser, CoachingsStaff
+from .roles import CoachingsStaff
 
 from lino.modlib.notify.choicelists import MessageTypes
 MessageTypes.add_item('coachings', dd.plugins.coachings.verbose_name)
-
 
 
 try:
@@ -78,7 +76,7 @@ class CoachingEnding(mixins.BabelNamed, mixins.Sequenced):
 
 
 @dd.python_2_unicode_compatible
-class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservable):
+class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier):
 
     class Meta:
         app_label = 'coachings'

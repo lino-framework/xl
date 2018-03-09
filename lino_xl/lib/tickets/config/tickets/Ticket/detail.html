@@ -4,7 +4,7 @@
 {% block main %}
 <div class="row-fluid">
 <h1>#{{obj.id}} ({{obj.summary}})</h1>
-{{E.tostring(navigator)}}
+{{tostring(navigator)}}
 <p style="background-color:#eeeeee; padding:6pt;">
 <b>State:</b> {{obj.state}}  
 {% if obj.closed %} (closed){% endif %}
@@ -12,10 +12,10 @@
 (last update {{obj.modified}})
 <br/><b>Created</b> {{obj.created}} by {{obj.user}}
 {% if obj.topic %}
-<br/><b>Topic:</b> {{E.tostring(ar.obj2html(obj.topic))}}
+<br/><b>Topic:</b> {{tostring(ar.obj2html(obj.topic))}}
 {% endif %}
 {% if obj.site %}
-<br/><b>Site:</b> {{E.tostring(ar.obj2html(obj.site))}}
+<br/><b>Site:</b> {{tostring(ar.obj2html(obj.site))}}
 {% endif %}
 
 {% if False %}

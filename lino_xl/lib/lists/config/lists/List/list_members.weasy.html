@@ -73,7 +73,7 @@ p {
 {% for member in obj.members.all() %}
 <tr class="avoid">
 <td>{{loop.index}}</td>
-<td>{{E.tostring(member.partner)}}</td>
+<td>{{tostring(member.partner)}}</td>
 {% if member.partner.person %}
 <td>{{member.partner.person}} &lt;{{member.partner.email}}&gt;</td>
 {% else %}

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Luc Saffre
+# Copyright 2013-2018 Luc Saffre
 # License: BSD (see file COPYING for details)
 from builtins import str
 from builtins import object
@@ -604,7 +604,7 @@ class AnswersByResponse(dd.VirtualTable):
         ht = xghtml.Table()
         ht.attrib.update(cellspacing="5px", bgcolor="#ffffff", width="100%")
         cellattrs = dict(align="left", valign="top", bgcolor="#eeeeee")
-        headers = [_("Question")]
+        headers = [str(_("Question"))]
         for r in all_responses:
             if r == response:
                 headers.append(dd.fds(r.date))
@@ -705,7 +705,7 @@ class AnswersByResponse(dd.VirtualTable):
             sar.set_action_param_values(**pv)
             e = sar.ar2button(obj.response, text, style="text-decoration:none")
             elems.append(e)
-        return E.span(*join_elems(elems), class_="htmlText")
+        return E.span(*join_elems(elems), **{'class':"htmlText"})
 
     @classmethod
     def get_pk_field(self):
@@ -730,7 +730,7 @@ class AnswersByResponse(dd.VirtualTable):
         else:
             txt = obj.question.title
 
-        attrs = dict(class_="htmlText")
+        attrs = {'class': "htmlText"}
         if obj.question.details:
             attrs.update(title=obj.question.details)
         if obj.question.is_heading:

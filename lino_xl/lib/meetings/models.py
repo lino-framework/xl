@@ -22,7 +22,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from lino.api import dd, rt, _
-from etgen.html import E, join_elems
+from etgen.html import tostring
 from django.db.models import Q
 from lino.mixins import Referrable
 
@@ -201,7 +201,7 @@ def setup_memo_commands(sender=None, **kwargs):
             kw.update(title=obj.name)
         e = ar.obj2html(obj, txt, **kw)
         # return str(ar)
-        return E.tostring(e)
+        return tostring(e)
 
     sender.kernel.memo_parser.register_django_model(
         'meeting', Meeting,

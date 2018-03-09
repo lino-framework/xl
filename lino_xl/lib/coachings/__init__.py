@@ -1,4 +1,4 @@
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -7,7 +7,6 @@
 .. autosummary::
    :toctree:
 
-    desktop
     fixtures
     utils
 
@@ -20,7 +19,7 @@ from lino.api import ad, _
 class Plugin(ad.Plugin):
     verbose_name = _("Coachings")
 
-    # needs_plugins = ['lino_xl.lib.clients']
+    needs_plugins = ['lino_xl.lib.clients']
     
     # client_model = 'contacts.Person'
 

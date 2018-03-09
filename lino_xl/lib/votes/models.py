@@ -476,7 +476,7 @@ class VotesByVotable(Votes):
               if states[s]
               ]
         ))
-        # print(E.tostring(html))
+        # print(tostring(html))
         # items = [
         #     ar.obj2html(o, o.user.username or str(o.user))
         #     for o in rt.models.votes.Vote.objects.filter(
