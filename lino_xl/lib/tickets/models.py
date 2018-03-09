@@ -40,9 +40,7 @@ from lino.utils import join_elems
 from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities
 from .roles import Triager
 
-MessageTypes.add_item(
-    'tickets', dd.plugins.tickets.verbose_name,
-    required_roles={Triager})
+MessageTypes.add_item('tickets', dd.plugins.tickets.verbose_name)
 
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model

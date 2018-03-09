@@ -33,8 +33,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from lino.modlib.notify.choicelists import MessageTypes
-MessageTypes.add_item(
-    'notes', dd.plugins.notes.verbose_name, required_roles={OfficeUser})
+MessageTypes.add_item('notes', dd.plugins.notes.verbose_name)
 
 
 from .choicelists import SpecialTypes
@@ -130,9 +129,10 @@ class Note(TypedPrintable,
            ChangeObservable,
            UploadController,
            Mailable):
-    """A **note** is a dated and timed document written by its author (a
+    """
+    A **note** is a dated and timed document written by its author (a
     user). For example a report of a meeting or a phone call, or just
-    some observation. Notes are usually meant for internal use.
+    some observation.  Notes are usually meant for internal use.
 
     .. attribute:: date
     .. attribute:: time
@@ -141,8 +141,6 @@ class Note(TypedPrintable,
     .. attribute:: subject
     .. attribute:: body
     .. attribute:: language
-
-
     """
 
     manager_roles_required = dd.login_required(OfficeStaff)

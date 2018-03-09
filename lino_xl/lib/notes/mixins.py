@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2018 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -9,17 +9,19 @@ from lino.api import dd, rt
 
 
 class Notable(dd.Model):
-    """Base class for models which can emit system notes."""
+    """
+    Base class for models which can emit system notes.
+    """
     class Meta(object):
         abstract = True
 
     def get_system_note_type(self, ar):
-        """Expected to return either `None` (the default) or an existing
+        """
+        Expected to return either `None` (the default) or an existing
         :class:`EventType <lino_xl.lib.notes.models.EventType>`
         instance. If this is not `None`, then a notification will
         still be emitted, but the system not will not be stored in the
         database as a :class:`lino_xl.lib.notes.models.Note`.
-
         """
         return settings.SITE.site_config.system_note_type
 

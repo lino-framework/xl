@@ -25,9 +25,7 @@ from lino_xl.lib.clients.choicelists import ClientStates
 from .roles import CoachingsUser, CoachingsStaff
 
 from lino.modlib.notify.choicelists import MessageTypes
-MessageTypes.add_item(
-    'coachings', dd.plugins.coachings.verbose_name,
-    required_roles={CoachingsUser})
+MessageTypes.add_item('coachings', dd.plugins.coachings.verbose_name)
 
 
 
@@ -210,8 +208,8 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeObservab
     def get_change_owner(self):
         return self.client
 
-    def get_notify_message_type(self):
-        return rt.models.notify.MessageTypes.coachings
+    # def get_notify_message_type(self):
+    #     return rt.models.notify.MessageTypes.coachings
     
     # def get_change_observers(self):
     #     return self.client.get_change_observers()
