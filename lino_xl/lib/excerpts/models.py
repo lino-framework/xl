@@ -31,7 +31,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from lino.api import dd, rt
+from lino.api import dd, rt ,gettext
 from lino import mixins
 from etgen.html import E
 from lino.utils import join_elems
@@ -841,12 +841,12 @@ class ExcerptsByOwner(Excerpts):
 
         # qs = sar.data_iterator
         Q = models.Q
-        add(_("not printed"), Q(build_time__isnull=True))
-        add(_("Today"), Q(build_time__gte=dd.today() - ONE_DAY))
+        add(gettext("not printed"), Q(build_time__isnull=True))
+        add(gettext("Today"), Q(build_time__gte=dd.today() - ONE_DAY))
         t7 = dd.today() - ONE_WEEK
-        add(_("Last week"),
+        add(gettext("Last week"),
             Q(build_time__lte=dd.today(), build_time__gte=t7))
-        add(_("Older"), Q(build_time__lt=t7))
+        add(gettext("Older"), Q(build_time__lt=t7))
         return E.ul(*items)
 
     @classmethod

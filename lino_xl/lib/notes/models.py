@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy
 from django.utils import timezone
 
-from lino.api import dd, rt
+from lino.api import dd, rt, gettext
 from lino import mixins
 
 from etgen.html import E
@@ -199,8 +199,8 @@ class Note(TypedPrintable,
 
     def get_change_info(self, ar, cw):
         yield E.p(
-            _("Subject"), ': ', self.subject,
-            E.br(), _("Client"), ': ', ar.obj2memo(self.project))
+            gettext("Subject"), ': ', self.subject,
+            E.br(), gettext("Client"), ': ', ar.obj2memo(self.project))
         
     
 
