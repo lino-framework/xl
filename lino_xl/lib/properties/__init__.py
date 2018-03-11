@@ -1,4 +1,4 @@
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2015-2018 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
 
@@ -14,6 +14,7 @@ Adds functionality for managing foos.
 
 """
 
+from builtins import str
 from lino import ad, _
 
 
@@ -37,4 +38,4 @@ class Plugin(ad.Plugin):
                 PropsByGroup,
                 params=dict(master_instance=pg),
                 #~ label=pg.name)
-                label=unicode(pg))
+                label=str(pg))
