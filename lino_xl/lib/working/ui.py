@@ -628,6 +628,10 @@ class ServiceReports(dd.Table):
     required_roles = dd.login_required(Worker)
 
     model = "working.ServiceReport"
+    insert_layout = """
+    start_date end_date 
+    interesting_for
+    """
     detail_layout = """
     start_date end_date user interesting_for ticket_state printed
     company contact_person
