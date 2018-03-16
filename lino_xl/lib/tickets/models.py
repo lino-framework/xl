@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -18,7 +18,7 @@ from django.db.models import Q
 from atelier.sphinxconf.base import py2url_txt
 
 from lino import mixins
-from lino.api import dd, rt, _, pgettext
+from lino.api import dd, rt, _, pgettext, gettext
 
 from etgen.html import E, tostring
 from etgen.utils import join_elems, forcetext
@@ -492,7 +492,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         
     def get_rfc_description(self, ar):
         html = ''
-        
+        _ = gettext
         if self.description:
             # html += tostring(E.b(_("Description")))
             html += ar.parse_memo(self.description)
