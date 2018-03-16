@@ -88,7 +88,8 @@ class Session(UserAuthored, Started, Ended, Workable):
     def on_create(self, ar):
         super(Session, self).on_create(ar)
         if settings.USE_TZ:
-            self.time_zone = self.user.time_zone or settings.SITE.time_zone
+            self.time_zone = self.user.time_zone or \
+                             rt.models.about.TimeZones.default
         
     def get_time_zone(self):
         return self.time_zone
@@ -96,7 +97,8 @@ class Session(UserAuthored, Started, Ended, Workable):
     def full_clean(self, *args, **kwargs):
         if self.user_id and not self.time_zone:
             # can be removed when all pilot sites have migrated:
-            self.time_zone = self.user.time_zone or settings.SITE.time_zone
+            self.time_zone = self.user.time_zone or \
+                             rt.models.about.TimeZones.default
             
         if not settings.SITE.loading_from_dump:
             if self.start_time is None:
