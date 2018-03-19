@@ -602,6 +602,8 @@ and local modifications will be sent back to the remote calendar."""),
     'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
 can see the EntriesByRoom that happened (or will happen)
 there.  A Room has a multilingual name."""),
+    'lino_xl.lib.cal.Room.name' : _("""The designation of the room. This should (but is not required
+to) be unique."""),
     'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
     'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
     'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
@@ -815,6 +817,10 @@ invoice. There is one such checkbox for every trade type
 exist only when the ledger plugin
 is installed as well.  See also the
 get_allowed_accounts method."""),
+    'lino_xl.lib.accounts.Account.needs_ana' : _("""Whether transactions on this account require the user to also
+specify an analytic account."""),
+    'lino_xl.lib.accounts.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
+account."""),
     'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
     'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
     'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
@@ -924,6 +930,7 @@ empty."""),
     'lino_xl.lib.ledger.Movement.match_link' : _("""A virtual field which shows a clickable variant of the match
 string. Clicking it will open a table with all movements
 having that match."""),
+    'lino_xl.lib.ledger.Movement.ana_account' : _("""The analytic account to move together with this transactions."""),
     'lino_xl.lib.ledger.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
     'lino_xl.lib.ledger.Voucher.state' : _("""The workflow state of this voucher. Choices are defined in
 VoucherStates"""),

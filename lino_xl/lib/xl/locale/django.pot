@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino-xl 17.10.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-03-09 07:56+0200\n"
+"POT-Creation-Date: 2018-03-16 18:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -399,7 +399,7 @@ msgstr ""
 #: lino_xl/lib/tickets/models.py:274 lino_xl/lib/tickets/models.py:431
 #: lino_xl/lib/topics/models.py:67 lino_xl/lib/vat/choicelists.py:327
 #: lino_xl/lib/vat/models.py:131 lino_xl/lib/vatless/models.py:116
-#: lino_xl/lib/votes/models.py:180 lino_xl/lib/working/models.py:56
+#: lino_xl/lib/votes/models.py:180 lino_xl/lib/working/models.py:57
 #: lino_xl/lib/working/ui.py:288 lino_xl/lib/working/ui.py:348
 #: lino_xl/lib/working/ui.py:477
 msgid "Description"
@@ -1373,8 +1373,8 @@ msgid "Remote Calendars"
 msgstr ""
 
 #: lino_xl/lib/cal/models.py:87 lino_xl/lib/humanlinks/models.py:63
-#: lino_xl/lib/humanlinks/models.py:68 lino_xl/lib/tickets/models.py:707
-#: lino_xl/lib/tickets/models.py:712
+#: lino_xl/lib/humanlinks/models.py:68 lino_xl/lib/inspect/desktop.py:238
+#: lino_xl/lib/tickets/models.py:707 lino_xl/lib/tickets/models.py:712
 msgid "Type"
 msgstr ""
 
@@ -2376,8 +2376,8 @@ msgid "Name prefix"
 msgstr ""
 
 #: lino_xl/lib/contacts/models.py:104 lino_xl/lib/contacts/models.py:159
-#: lino_xl/lib/courses/models.py:83 lino_xl/lib/outbox/models.py:56
-#: lino_xl/lib/tickets/models.py:116
+#: lino_xl/lib/courses/models.py:83 lino_xl/lib/inspect/desktop.py:221
+#: lino_xl/lib/outbox/models.py:56 lino_xl/lib/tickets/models.py:116
 msgid "Name"
 msgstr ""
 
@@ -3267,7 +3267,7 @@ msgstr ""
 msgid "Interim"
 msgstr ""
 
-#: lino_xl/lib/cv/fixtures/std.py:121 lino_xl/lib/working/models.py:165
+#: lino_xl/lib/cv/fixtures/std.py:121 lino_xl/lib/working/models.py:184
 msgid "Worker"
 msgstr ""
 
@@ -3631,7 +3631,7 @@ msgid "End"
 msgstr ""
 
 #: lino_xl/lib/extensible/models.py:163 lino_xl/lib/github/models.py:174
-#: lino_xl/lib/working/models.py:54
+#: lino_xl/lib/working/models.py:55
 msgid "Summary"
 msgstr ""
 
@@ -4195,6 +4195,18 @@ msgstr ""
 msgid "%s is"
 msgstr ""
 
+#: lino_xl/lib/households/models.py:606
+msgid "Join an existing household"
+msgstr ""
+
+#: lino_xl/lib/households/models.py:607
+msgid "or"
+msgstr ""
+
+#: lino_xl/lib/households/models.py:610
+msgid "create a new one"
+msgstr ""
+
 #: lino_xl/lib/households/fixtures/std.py:21
 #: lino_xl/lib/humanlinks/fixtures/demo.py:34
 msgid "Married couple"
@@ -4439,6 +4451,79 @@ msgstr ""
 
 #: lino_xl/lib/inbox/__init__.py:18 lino_xl/lib/inbox/__init__.py:22
 msgid "Inbox"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:38
+msgid "Models"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:61
+msgid "app_label"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:65 lino_xl/lib/inspect/desktop.py:116
+msgid "name"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:69
+msgid "Detail Action"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:75
+msgid "Tables"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:88
+msgid "docstring"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:93
+msgid "Rows"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:98 lino_xl/lib/inspect/desktop.py:104
+msgid "Fields"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:120
+msgid "verbose name"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:124
+msgid "help text"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:145
+msgid "Inspector"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:150
+msgid "Inspected object"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:151
+msgid "show callables"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:234 lino_xl/lib/phones/models.py:36
+#: lino_xl/lib/properties/models.py:178 lino_xl/lib/properties/models.py:234
+msgid "Value"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:244
+msgid "Source files"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:252
+msgid "Code"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:256
+msgid "doc"
+msgstr ""
+
+#: lino_xl/lib/inspect/desktop.py:260
+msgid "module name"
 msgstr ""
 
 #: lino_xl/lib/invoicing/__init__.py:44
@@ -5491,11 +5576,6 @@ msgstr ""
 msgid "Contact details"
 msgstr ""
 
-#: lino_xl/lib/phones/models.py:36 lino_xl/lib/properties/models.py:178
-#: lino_xl/lib/properties/models.py:234
-msgid "Value"
-msgstr ""
-
 #: lino_xl/lib/phones/models.py:39
 msgid "Until"
 msgstr ""
@@ -5796,7 +5876,7 @@ msgstr ""
 msgid "Category"
 msgstr ""
 
-#: lino_xl/lib/properties/__init__.py:23 lino_xl/lib/properties/models.py:208
+#: lino_xl/lib/properties/__init__.py:24 lino_xl/lib/properties/models.py:208
 msgid "Properties"
 msgstr ""
 
@@ -6523,7 +6603,7 @@ msgid "Parent"
 msgstr ""
 
 #: lino_xl/lib/tickets/ui.py:96 lino_xl/lib/tickets/ui.py:509
-#: lino_xl/lib/working/models.py:183
+#: lino_xl/lib/working/models.py:202
 msgid "Interesting for"
 msgstr ""
 
@@ -6567,7 +6647,7 @@ msgstr ""
 msgid "Only that this user is not assigned to."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:511 lino_xl/lib/working/models.py:185
+#: lino_xl/lib/tickets/ui.py:511 lino_xl/lib/working/models.py:204
 msgid "Only tickets interesting for this partner."
 msgstr ""
 
@@ -6619,7 +6699,7 @@ msgstr ""
 msgid "Tickets to talk"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:869 lino_xl/lib/working/models.py:218
+#: lino_xl/lib/tickets/ui.py:869 lino_xl/lib/working/models.py:237
 msgid "Active tickets"
 msgstr ""
 
@@ -7074,83 +7154,83 @@ msgstr ""
 msgid "Free"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:35
+#: lino_xl/lib/working/models.py:36
 msgid "Session Type"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:36
+#: lino_xl/lib/working/models.py:37
 msgid "Session Types"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:43
+#: lino_xl/lib/working/models.py:44
 msgid "Session"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:44
+#: lino_xl/lib/working/models.py:45
 msgid "Sessions"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:55
+#: lino_xl/lib/working/models.py:56
 msgid "Summary of the session."
 msgstr ""
 
-#: lino_xl/lib/working/models.py:60
+#: lino_xl/lib/working/models.py:61
 msgid "Break Time"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:66
+#: lino_xl/lib/working/models.py:67
 msgid "Fixing"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:158 lino_xl/lib/working/models.py:169
+#: lino_xl/lib/working/models.py:177 lino_xl/lib/working/models.py:188
 msgid "Ticket #"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:178
+#: lino_xl/lib/working/models.py:197
 msgid "Service Report"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:179
+#: lino_xl/lib/working/models.py:198
 msgid "Service Reports"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:189
+#: lino_xl/lib/working/models.py:208
 msgid "Only tickets in this state."
 msgstr ""
 
-#: lino_xl/lib/working/models.py:212
+#: lino_xl/lib/working/models.py:231
 msgid "Site summary"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:213
+#: lino_xl/lib/working/models.py:232
 msgid "Site summaries"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:219
+#: lino_xl/lib/working/models.py:238
 msgid "Inactive tickets"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:356
+#: lino_xl/lib/working/models.py:375
 msgid "You are busy with "
 msgstr ""
 
-#: lino_xl/lib/working/models.py:361
+#: lino_xl/lib/working/models.py:381
 msgid " is working on: "
 msgstr ""
 
-#: lino_xl/lib/working/models.py:442
+#: lino_xl/lib/working/models.py:462
 msgid "Check the fixed_since field of tickets."
 msgstr ""
 
-#: lino_xl/lib/working/models.py:455
+#: lino_xl/lib/working/models.py:475
 msgid "No fixing session but marked as fixed"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:462
+#: lino_xl/lib/working/models.py:482
 msgid "Fixing session exists but ticket not marked as fixed"
 msgstr ""
 
-#: lino_xl/lib/working/models.py:474
+#: lino_xl/lib/working/models.py:494
 msgid "Open session on new ticket"
 msgstr ""
 
@@ -7183,7 +7263,7 @@ msgstr ""
 msgid "Worked hours"
 msgstr ""
 
-#: lino_xl/lib/working/ui.py:694
+#: lino_xl/lib/working/ui.py:698
 msgid "Sites Overview"
 msgstr ""
 
