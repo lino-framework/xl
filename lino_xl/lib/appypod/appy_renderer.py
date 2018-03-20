@@ -279,15 +279,15 @@ class AppyRenderer(OriginalAppyRenderer):
         if True:
             return self.insert_table_(*args, **kw)
         else:
-            #~ since i cannot yet tell appy_pod to alert me when there is an
-            #~ exception, here at least i write it to the logger
+            # since I cannot yet tell appy_pod to alert me when there is an
+            # exception, here at least I write it to the logger
             try:
                 s = self.insert_table_(*args, **kw)
             except Exception as e:
                 dd.logger.warning("Exception during insert_table(%s):" % args[0])
                 dd.logger.exception(e)
                 raise
-            s = s.decode('utf-8')
+            # s = s.decode('utf-8')
             #~ logger.info("""\
 #~ 20130423 appy_pod.Renderer.insert_table(%s) inserts =======
 #~ %s

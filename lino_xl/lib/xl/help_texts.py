@@ -654,10 +654,12 @@ state."""),
     'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
 See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.RecurrenceSet.max_events' : _("""Maximum number of calendar entries to generate."""),
     'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
 weekdays where the recurrence occurs."""),
     'lino_xl.lib.cal.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
 lino.modlib.courses.models.Course."""),
+    'lino_xl.lib.cal.Reservation.max_date' : _("""Don't generate calendar entries beyond this date."""),
     'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
     'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
 choicelist."""),
@@ -1136,6 +1138,8 @@ teacher in a given room to speak about a given subject."""),
     'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
     'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
 this field empty if the meetings last less than one day."""),
+    'lino_xl.lib.courses.Course.max_date' : _("""Don't generate meeting having their start date beyond this
+date."""),
     'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
 in this course."""),
     'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),

@@ -367,17 +367,11 @@ class Course(Reservation, Duplicable, Printable):
 
     def before_auto_event_save(self, event):
         """
-        Sets room and start_time for automatic events.
-        This is a usage example for
-        :meth:`EventGenerator.before_auto_event_save
-        <lino_xl.lib.cal.EventGenerator.before_auto_event_save>`.
+        Set room and start_time/end_time for automatic events.
         """
-        #~ logger.info("20131008 before_auto_event_save")
         assert not settings.SITE.loading_from_dump
         assert event.owner == self
         #~ event = instance
-        if event.is_user_modified():
-            return
         #~ if event.is_fixed_state(): return
         #~ course = event.owner
         #~ event.project = self
@@ -389,6 +383,8 @@ class Course(Reservation, Duplicable, Printable):
         else:
             event.start_time = self.start_time
             event.end_time = self.end_time
+
+        super(Course, self).before_auto_event_save(event)
 
     # @dd.displayfield(_("Info"))
     # def info(self, ar):
@@ -439,6 +435,8 @@ class Course(Reservation, Duplicable, Printable):
         return res['places__sum'] or 0
 
     def get_free_places(self, today=None):
+        if not self.max_places:
+            return None  # _("Unlimited")
         return self.max_places - self.get_used_places(today)
 
     def get_used_places(self, today=None):
@@ -448,8 +446,8 @@ class Course(Reservation, Duplicable, Printable):
     # @dd.displayfield(_("Free places"), max_length=5)
     @dd.virtualfield(models.IntegerField(_("Free places")))
     def free_places(self, ar=None):
-        if not self.max_places:
-            return None  # _("Unlimited")
+        # if not self.max_places:
+        #     return None  # _("Unlimited")
         return self.get_free_places()
 
     @dd.virtualfield(models.IntegerField(_("Requested")))

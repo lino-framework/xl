@@ -186,6 +186,7 @@ class EventGenerator(dd.Model):
         if settings.SITE.loading_from_dump:
             #~ print "20111014 loading_from_dump"
             return 0
+        rset = self.update_cal_rset()
         wanted, unwanted = self.get_wanted_auto_events(ar)
         # dd.logger.info(
         #     "20171130 get_wanted_auto_events() returned %s", unwanted)
@@ -206,55 +207,14 @@ class EventGenerator(dd.Model):
 
         # create new Events for remaining wanted
         for we in wanted.values():
-            self.before_auto_event_save(we)
+            if not we.is_user_modified():
+                rset.before_auto_event_save(we)
             we.save()
             we.after_ui_save(ar, None)
         #~ logger.info("20130528 update_auto_events done")
         return count
 
-    def compare_auto_event(self, obj, ae):
-        original_state = dict(obj.__dict__)
-        summary = force_text(ae.summary)
-        if obj.summary != summary:
-            obj.summary = summary
-        if obj.user != ae.user:
-            obj.user = ae.user
-        if obj.start_date != ae.start_date:
-            obj.start_date = ae.start_date
-        if obj.end_date != ae.end_date:
-            obj.end_date = ae.end_date
-        if obj.start_time != ae.start_time:
-            obj.start_time = ae.start_time
-        if obj.end_time != ae.end_time:
-            obj.end_time = ae.end_time
-        if obj.event_type != ae.event_type:
-            obj.event_type = ae.event_type
-        if obj.room != ae.room:
-            obj.room = ae.room
-        self.before_auto_event_save(obj)
-        if obj.__dict__ != original_state:
-            obj.save()
-
     def setup_auto_event(self, obj):
-        pass
-
-    def before_auto_event_save(self, obj):
-        """Called for automatically generated events after their automatic
-        fields have been set and before the event is saved.  This
-        allows for additional application-specific automatic fields.
-
-        E.g. the :attr:`room` field in :mod:`lino_xl.lib.courses`.
-
-        :class:`EventGenerator`
-        by default manages the following **automatic event fields**:
-
-        - :attr:`auto_type``
-        - :attr:`user`
-        - :attr:`summary`
-        - :attr:`start_date`, :attr:`start_time`
-        - :attr:`end_date`, :attr:`end_time`
-
-        """
         pass
 
     def get_wanted_auto_events(self, ar):
@@ -388,7 +348,7 @@ class EventGenerator(dd.Model):
                         date = ee.start_date
 
                     else:
-                        self.compare_auto_event(ee, we)
+                        rset.compare_auto_event(ee, we)
                         # we don't need to add it to wanted because
                         # compare_auto_event() saves any changes
                         # immediately.
@@ -488,8 +448,8 @@ class EventGenerator(dd.Model):
             return rset.every_unit.get_date_formatter()
         return day_and_month
 
-class RecurrenceSet(Started, Ended):
 
+class RecurrenceSet(Started, Ended):
 
     class Meta:
         abstract = True
@@ -567,7 +527,7 @@ class RecurrenceSet(Started, Ended):
     @dd.displayfield(_("When"))
     def weekdays_text(self, ar):
         if self.every_unit == Recurrencies.once:
-            if self.end_date:
+            if self.end_date and self.end_date != self.start_date:
                 return _("{0}-{1}").format(
                     dd.fds(self.start_date), dd.fds(self.end_date))
                 # return _("From {0} until {1}").format(
@@ -599,7 +559,7 @@ class RecurrenceSet(Started, Ended):
 
         """
         ev.start_date = newdate
-        if self.end_date is None:
+        if self.end_date is None or self.end_date == self.start_date:
             ev.end_date = None
         else:
             duration = self.end_date - newdate
@@ -651,6 +611,55 @@ class RecurrenceSet(Started, Ended):
             #~ logger.info('20130529 is_available_on(%s) -> %s -> %s',date,wd,rv)
             return rv
         return True
+
+    def compare_auto_event(self, obj, ae):
+        original_state = dict(obj.__dict__)
+        summary = force_text(ae.summary)
+        if obj.summary != summary:
+            obj.summary = summary
+        if obj.user != ae.user:
+            obj.user = ae.user
+        if obj.start_date != ae.start_date:
+            obj.start_date = ae.start_date
+        if obj.end_date != ae.end_date:
+            obj.end_date = ae.end_date
+        if obj.start_time != ae.start_time:
+            obj.start_time = ae.start_time
+        if obj.end_time != ae.end_time:
+            obj.end_time = ae.end_time
+        if obj.event_type != ae.event_type:
+            obj.event_type = ae.event_type
+        if obj.room != ae.room:
+            obj.room = ae.room
+        if not obj.is_user_modified():
+            self.before_auto_event_save(obj)
+        if obj.__dict__ != original_state:
+            obj.save()
+
+    def before_auto_event_save(self, event):
+        """
+        Called for automatically generated events after their automatic
+        fields have been set and before the event is saved.  This
+        allows for additional application-specific automatic fields.
+
+        E.g. the :attr:`room` field in :mod:`lino_xl.lib.rooms`.
+
+        :class:`EventGenerator`
+        by default manages the following **automatic event fields**:
+
+        - :attr:`auto_type``
+        - :attr:`user`
+        - :attr:`summary`
+        - :attr:`start_date`, 
+
+        NB: also :attr:`start_time` :attr:`end_date`, :attr:`end_time`?
+
+        """
+        if self.end_date and self.end_date != self.start_date:
+            duration = self.end_date - self.start_date
+            event.end_date = event.start_date + duration
+        else:
+            event.end_date = None
 
 dd.update_field(RecurrenceSet, 'start_date', default=dd.today)
 
@@ -711,7 +720,6 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
         #~ super(Reservation,self).after_ui_save(ar)
         #~ if self.state.editable:
             #~ self.update_reminders(ar)
-
 
 class Component(Started,
                 mixins.ProjectRelated,

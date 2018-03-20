@@ -289,12 +289,6 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
     description = dd.RichTextField(
         _("Description"), blank=True, format='html')
 
-    def before_auto_event_save(self, obj):
-        if self.end_date:  # and self.end_date != self.start_date:
-            duration = self.end_date - self.start_date
-            obj.end_date = obj.start_date + duration
-        super(RecurrentEvent, self).before_auto_event_save(obj)
-
     # def on_create(self,ar):
         # super(RecurrentEvent,self).on_create(ar)
         # self.event_type = settings.SITE.site_config.holiday_event_type
