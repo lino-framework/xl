@@ -371,10 +371,6 @@ class Course(Reservation, Duplicable, Printable):
         """
         assert not settings.SITE.loading_from_dump
         assert event.owner == self
-        #~ event = instance
-        #~ if event.is_fixed_state(): return
-        #~ course = event.owner
-        #~ event.project = self
         event.course = self
         event.room = self.room
         if self.slot:

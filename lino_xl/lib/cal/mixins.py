@@ -188,8 +188,9 @@ class EventGenerator(dd.Model):
             return 0
         rset = self.update_cal_rset()
         wanted, unwanted = self.get_wanted_auto_events(ar)
-        # dd.logger.info(
-        #     "20171130 get_wanted_auto_events() returned %s", unwanted)
+        # ar.info(
+        #     "20171130 get_wanted_auto_events() returned %s, %s",
+        #     wanted, unwanted)
         count = len(wanted)
         # current = 0
 
@@ -200,11 +201,15 @@ class EventGenerator(dd.Model):
         #     for e in wanted.values()])
         # dd.logger.info('20161015 ' + msg)
 
+        # ar.info("%d wanted and %d unwanted events", count, len(unwanted))
+
         for ee in unwanted.values():
             if not ee.is_user_modified():
                 ee.delete()
                 count += 1
 
+        # import pdb ; pdb.set_trace()
+        
         # create new Events for remaining wanted
         for we in wanted.values():
             if not we.is_user_modified():
@@ -240,6 +245,8 @@ class EventGenerator(dd.Model):
         # event. This is where the algorithm will start.
         event_no = 0
         date = None
+        # if qs.count():
+        #     raise Exception("20180321 {}".format(qs.count()))
         for ee in qs:
             if ee.is_user_modified():
                 event_no = ee.auto_type
@@ -262,33 +269,6 @@ class EventGenerator(dd.Model):
         
         for ee in qs:
             unwanted[ee.auto_type] = ee
-            
-            # we = wanted.pop(ee.auto_type, None)
-            # if we is None:
-            #     # there is an unwanted event in the database
-            #     if not ee.is_user_modified():
-            #         unwanted.add(ee)
-            #     #~ else:
-            #         #~ e.auto_type = None
-            #         #~ e.save()
-            # elif ee.is_user_modified():
-            #     if ee.start_date != we.start_date:
-            #         subsequent = ', '.join([str(x.auto_type)
-            #                                for x in wanted.values()])
-            #         delta = ee.start_date - we.start_date
-            #         ar.debug(
-            #             "%d has been moved from %s to %s: "
-            #             "move subsequent dates (%s) by %s"
-            #             % (
-            #                 ee.auto_type, we.start_date,
-            #                 ee.start_date, subsequent, delta))
-            #         for se in wanted.values():
-            #             # ov = se.start_date
-            #             se.start_date += delta
-            #             # ar.debug("%d : %s -> %s" % (
-            #             #     se.auto_type, ov, se.start_date))
-            # else:
-            #     self.compare_auto_event(ee, we)
 
         event_type = self.update_cal_event_type()
         if event_type is None:
@@ -316,13 +296,19 @@ class EventGenerator(dd.Model):
                 date, until, max_events)
         ignore_before = dd.plugins.cal.ignore_dates_before
         user = self.get_events_user()
+        # if max_events is not None and event_no >= max_events:
+        #     raise Exception("20180321")
         with translation.override(self.get_events_language()):
             while max_events is None or event_no < max_events:
                 if date > until:
-                    ar.info("Reached upper date limit %s", until)
+                    ar.info("Reached upper date limit %s for %s",
+                            until, event_no)
                     break
                 event_no += 1
-                if ignore_before is None or date >= ignore_before:
+                if ignore_before and date < ignore_before:
+                    ar.info("Ignore %d because it is before %s",
+                            event_no, ignore_before)
+                else:
                     we = Event(
                         auto_type=event_no,
                         user=user,
@@ -337,6 +323,8 @@ class EventGenerator(dd.Model):
                     self.setup_auto_event(we)
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
+                        ar.info("Could not resolve conflicts for %s",
+                                event_no)
                         return wanted, unwanted
                     ee = unwanted.pop(event_no, None)
                     if ee is None:
@@ -346,7 +334,6 @@ class EventGenerator(dd.Model):
                             "%s has been moved from %s to %s."
                             % (ee.summary, date, ee.start_date))
                         date = ee.start_date
-
                     else:
                         rset.compare_auto_event(ee, we)
                         # we don't need to add it to wanted because
@@ -356,7 +343,7 @@ class EventGenerator(dd.Model):
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
                 if date is None:
-                    ar.info("Could not find next date.")
+                    ar.info("Could not find next date after %s.", event_no)
                     break
         return wanted, unwanted
 
@@ -562,7 +549,7 @@ class RecurrenceSet(Started, Ended):
         if self.end_date is None or self.end_date == self.start_date:
             ev.end_date = None
         else:
-            duration = self.end_date - newdate
+            duration = self.end_date - self.start_date
             ev.end_date = newdate + duration
             
     def get_next_alt_date(self, ar, date):
@@ -658,6 +645,8 @@ class RecurrenceSet(Started, Ended):
         if self.end_date and self.end_date != self.start_date:
             duration = self.end_date - self.start_date
             event.end_date = event.start_date + duration
+            # if "Weekends" in str(event.owner):
+            #     dd.logger.info("20180321 %s", self.end_date)
         else:
             event.end_date = None
 
