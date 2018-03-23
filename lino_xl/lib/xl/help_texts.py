@@ -679,6 +679,11 @@ Default value is 5 years after today."""),
 calendar functionality which can be given to anonymous users,
 as done e.g. by vilma."""),
     'lino_xl.lib.cal.GuestOperator' : _("""Can see presences and guests of a calendar entry."""),
+    'lino_xl.lib.cal.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
+    'lino_xl.lib.cal.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
+    'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of
+days allowed by their type."""),
+    'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
     'lino_xl.lib.clients.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
     'lino_xl.lib.clients.ClientBase' : _("""Base class for a client. The model specified as
 client_model must implement this."""),
