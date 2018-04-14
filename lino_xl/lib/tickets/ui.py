@@ -1066,7 +1066,7 @@ class AllSites(Sites):
 
 
 class TicketsBySite(Tickets):
-    label = _("Known problems")
+    # label = _("Known problems")
     master_key = 'site'
     column_names = ("priority overview:50 workflow_buttons *")
     order_by = ["priority", "-id"]

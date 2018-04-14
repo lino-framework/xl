@@ -1,25 +1,13 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
-"""Defines actions for reading electronic ID smartcards.
+"""
+Defines actions for reading electronic ID smartcards.
 
 Installing this package makes sense only if there is exactly one
 subclass of the :class:`BeIdCardHolder` model mixin among your
 application's models.
-
-When this plugin is installed, you can still easily disable it by
-setting :attr:`use_java <lino.core.site.Site.use_java>` to `False` in
-your :xfile:`settings.py`.
-
-When this plugin is activated, then you must also add the `.jar` files
-required by :ref:`eidreader` into your media directory, in a
-subdirectory named "eidreader".  TODO: move :ref:`eidreader` to a
-`static` directory in the Lino repository.
-
-An (untested) alternative implementation of the same functionality is
-:mod:`lino_xl.lib.eid_jslib.beid` which overrides this plugin and does
-the same except that it uses `eidjslib` instead of :ref:`eidreader`.
 
 .. autosummary::
    :toctree:
@@ -27,9 +15,23 @@ the same except that it uses `eidjslib` instead of :ref:`eidreader`.
     choicelists
     mixins
     models
-
 """
 
+# When this plugin is installed, you can still easily disable it by
+# setting :attr:`use_java <lino.core.site.Site.use_java>` to `False`
+# in your :xfile:`settings.py`.
+
+# When this plugin is activated, then you must also add the `.jar` files
+# required by :ref:`eidreader` into your media directory, in a
+# subdirectory named "eidreader".  TODO: move :ref:`eidreader` to a
+# `static` directory in the Lino repository.
+
+# An (untested) alternative implementation of the same functionality is
+# :mod:`lino_xl.lib.eid_jslib.beid` which overrides this plugin and does
+# the same except that it uses `eidjslib` instead of :ref:`eidreader`.
+
+
+from os.path import join
 from lino.api import ad, _
 
 
@@ -58,6 +60,8 @@ class Plugin(ad.Plugin):  # was: use_eidreader
     site_js_snippets = ['beid/eidreader.js']
     media_name = 'eidreader'
     data_collector_dir = None
+    data_cache_dir = None
+    eidreader_timeout = 15
     read_only_simulate = False
 
     def on_site_startup(self, kernel):
@@ -66,6 +70,12 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         from lino.core.utils import models_by_base
 
         super(Plugin, self).on_site_startup(kernel)
+
+        if self.data_cache_dir is None:
+            self.data_cache_dir = self.site.cache_dir.child('media').child('beidtmp')
+            # self.data_cache_dir = join(
+            #     self.site.cache_dir, 'media', 'beidtmp')
+        self.site.makedirs_if_missing(self.data_cache_dir)
         
         cmc = list(models_by_base(BeIdCardHolder, toplevel_only=True))
         if len(cmc) == 1:
@@ -91,6 +101,8 @@ class Plugin(ad.Plugin):  # was: use_eidreader
     def get_body_lines(self, site, request):
         if not site.use_java:
             return
+        if site.beid_protocol:
+            return
         # p = self.build_media_url('EIDReader.jar')
         # p = self.build_media_url('eidreader.jnlp')
         p = self.build_lib_url()
@@ -105,4 +117,10 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         # yield '<param name="jnlp_href" value="%s">' % p
         yield '<param name="jnlp_href" value="eidreader.jnlp">'
         yield '</applet>'
+
+    def get_patterns(self):
+        from django.conf.urls import url
+        from . import views
+        urls = [ url('^eid/(?P<uuid>.+)', views.EidStore.as_view()) ]
+        return urls
 
