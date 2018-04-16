@@ -215,7 +215,7 @@ class Households(contacts.Partners):
     model = 'households.Household'
     required_roles = dd.login_required(ContactsUser)
     order_by = ["name"]
-    detail_layout = HouseholdDetail()
+    detail_layout = 'households.HouseholdDetail'
 
 
 class HouseholdsByType(Households):

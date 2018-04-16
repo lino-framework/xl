@@ -28,7 +28,7 @@ from django.core.exceptions import ValidationError
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
 from lino.utils.instantiator import create
-from lino.utils.mti import mtichild
+from lino.utils.mti import mtichild, insert_child
 from lino.core.gfks import gfk2lookup
 
 from lino.api import dd, rt, _
@@ -164,7 +164,7 @@ class TimLoader(TimLoader):
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 self.store(kw, professional_state=v)
                 
-        if issubclass(cl, Client):
+        if issubclass(cl, (Client, Household)):
             v = row.tarif
             if v:
                 v = rt.models.tera.PartnerTariffs.get_by_value(v)
@@ -188,9 +188,17 @@ class TimLoader(TimLoader):
         try:
             obj = cl.objects.get(pk=pk)
         except cl.DoesNotExist:
-            dd.logger.info("%s %s does not exist", cl, pk)
+            try:
+                obj = Partner.objects.get(pk=pk)
+            except cl.DoesNotExist:
+                dd.logger.info("Create new %s : %s", obj, kw)
+                yield cl(**kw)
+                return
+            dd.logger.info("Insert MTI child %s : %s", obj, kw)
+            insert_child(obj, cl, True, **kw)
+            # dd.logger.info("%s %s does not exist", cl, pk)
             return
-        dd.logger.info("Updating %s : %s", obj, kw)
+        dd.logger.info("Update existing %s : %s", obj, kw)
         for k, v in kw.items():
             setattr(obj, k, v)
         yield obj
