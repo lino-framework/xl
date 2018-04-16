@@ -16,7 +16,6 @@ database once more, adding more data.
 - No de GSM, Date naissance, Geschlecht n'ont pas été importés
 - Rechnungsempfänger und Krankenkasse importieren : pro Patient, nicht
   pro Einschreibung.
-
 """
 from __future__ import unicode_literals
 from builtins import str
@@ -352,7 +351,7 @@ class TimLoader(TimLoader):
 
         # yield self.load_dbf('PLP')
 
-        if False:  # temporarily deactivaed
+        if True:  # temporarily deactivaed
             Event = rt.models.cal.Event
             Event.objects.all().delete()
             yield self.load_dbf('DLS')

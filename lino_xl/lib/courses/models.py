@@ -123,7 +123,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
     fee = dd.ForeignKey(
         'products.Product',
         blank=True, null=True,
-        verbose_name=_("Participation fee"),
+        verbose_name=_("Attendance fee"),
         related_name='lines_by_fee')
 
     guest_role = dd.ForeignKey(
