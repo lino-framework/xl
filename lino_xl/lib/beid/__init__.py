@@ -72,7 +72,7 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         super(Plugin, self).on_site_startup(kernel)
 
         if self.data_cache_dir is None:
-            self.data_cache_dir = self.site.cache_dir.child('media').child('beidtmp')
+            self.data_cache_dir = self.site.cache_dir.child('media').child('cache').child('beid')
             # self.data_cache_dir = join(
             #     self.site.cache_dir, 'media', 'beidtmp')
         self.site.makedirs_if_missing(self.data_cache_dir)
