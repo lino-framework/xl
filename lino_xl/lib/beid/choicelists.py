@@ -214,8 +214,10 @@ class BeIdCardTypes(dd.ChoiceList):
 
 add = BeIdCardTypes.add_item
 add('1', _("Belgian citizen"), "belgian_citizen")
+add('01', _("Belgian citizen"), "belgian_citizen0")
 # ,de=u"Belgischer Staatsbürger",fr=u"Citoyen belge"),
 add('6', _("Kids card (< 12 year)"), "kids_card")
+add('06', _("Kids card (< 12 year)"), "kids_card0")
 #,de=u"Kind unter 12 Jahren"),
 
 #~ add('8', _("Habilitation"))

@@ -255,7 +255,7 @@ class BaseBeIdReadCardAction(dd.Action):
             c0 = sex[0].upper()
             if c0 == 'M':
                 return dd.Genders.male
-            if c0 == 'F':
+            if c0 in 'FWV':
                 return dd.Genders.female
             logger.warning("%s : invalid gender code %r", msg1, sex)
         kw.update(gender=sex2gender(data.gender))
@@ -339,6 +339,8 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
         if settings.SITE.beid_protocol:
             data = load_card_data(ar.request.POST['uuid'])
             data = AttrDict(data)
+            if not data.success:
+                raise Warning(_("No card data found."))
             attrs = self.card2client(data)
         else:
             data = yaml2dict(ar.request.POST)

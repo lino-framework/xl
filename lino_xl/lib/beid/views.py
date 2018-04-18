@@ -15,7 +15,7 @@ import json
 from django.views.generic import View
 # from django.core import exceptions
 from lino.core.views import json_response
-from lino.api import dd
+from lino.api import dd, _
 
 def load_card_data(uuid):
     # raise Exception("20180412 {}".format(uuid))
@@ -35,7 +35,7 @@ def load_card_data(uuid):
             time.sleep(1)
             count += 1
             if count > timeout:
-                raise Exception("Abandoned after {} failures".format(
+                raise Exception(_("Abandoned after {} seconds").format(
                     timeout))
                 # rv = dict(success=False)
                 # break

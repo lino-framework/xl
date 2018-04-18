@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-16 08:24+0200\n"
+"POT-Creation-Date: 2018-04-18 14:22+0200\n"
 "PO-Revision-Date: 2013-06-15 18:57-0300\n"
 "Last-Translator: Flavio Gondin <flvgondin@gmail.com>\n"
 "Language: pt_BR\n"
@@ -606,46 +606,50 @@ msgstr "Succès"
 msgid "Find or create card holder from eID card"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:350
+#: lino_xl/lib/beid/actions.py:343
+msgid "No card data found."
+msgstr ""
+
+#: lino_xl/lib/beid/actions.py:352
 #, python-format
 msgid ""
 "There is more than one client with national id %(national_id)s in our "
 "database."
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:380 lino_xl/lib/beid/actions.py:392
+#: lino_xl/lib/beid/actions.py:382 lino_xl/lib/beid/actions.py:394
 #, fuzzy, python-format
 msgid "New client %s has been created"
 msgstr "%s a été créé"
 
-#: lino_xl/lib/beid/actions.py:394
+#: lino_xl/lib/beid/actions.py:396
 #, python-format
 msgid "Create new client %s : Are you sure?"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:399
+#: lino_xl/lib/beid/actions.py:401
 #, python-format
 msgid ""
 "Cannot create new client because there is already a person named %s in "
 "our database."
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:403 lino_xl/lib/beid/actions.py:410
+#: lino_xl/lib/beid/actions.py:405 lino_xl/lib/beid/actions.py:412
 msgid "Oops!"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:406
+#: lino_xl/lib/beid/actions.py:408
 #, python-format
 msgid ""
 "Cannot create new client because there is more than one person named %s "
 "in our database."
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:429
+#: lino_xl/lib/beid/actions.py:431
 msgid "Update card holder data from eID card"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:455
+#: lino_xl/lib/beid/actions.py:457
 #, python-format
 msgid "National IDs %s and %s don't match "
 msgstr ""
@@ -724,47 +728,47 @@ msgstr "Type d'organisation"
 msgid "eID card types"
 msgstr "Pièces jointes"
 
-#: lino_xl/lib/beid/choicelists.py:216
+#: lino_xl/lib/beid/choicelists.py:216 lino_xl/lib/beid/choicelists.py:217
 msgid "Belgian citizen"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:218
+#: lino_xl/lib/beid/choicelists.py:219 lino_xl/lib/beid/choicelists.py:220
 msgid "Kids card (< 12 year)"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:224
+#: lino_xl/lib/beid/choicelists.py:226
 msgid "Foreigner card A"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:228
+#: lino_xl/lib/beid/choicelists.py:230
 msgid "Foreigner card B"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:232
+#: lino_xl/lib/beid/choicelists.py:234
 msgid "Foreigner card C"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:236
+#: lino_xl/lib/beid/choicelists.py:238
 msgid "Foreigner card D"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:240
+#: lino_xl/lib/beid/choicelists.py:242
 msgid "Foreigner card E"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:244
+#: lino_xl/lib/beid/choicelists.py:246
 msgid "Foreigner card E+"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:246
+#: lino_xl/lib/beid/choicelists.py:248
 msgid "Foreigner card F"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:250
+#: lino_xl/lib/beid/choicelists.py:252
 msgid "Foreigner card F+"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:256
+#: lino_xl/lib/beid/choicelists.py:258
 msgid "Registration certificate (Orange card)"
 msgstr ""
 
@@ -846,6 +850,10 @@ msgstr ""
 
 #: lino_xl/lib/beid/mixins.py:297
 msgid "Failed to fix malformed SSIN '{got}' of '{obj}'."
+msgstr ""
+
+#: lino_xl/lib/beid/views.py:38
+msgid "Abandoned after {} seconds"
 msgstr ""
 
 #: lino_xl/lib/bevat/choicelists.py:29

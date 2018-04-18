@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-04-16 08:24+0200\n"
+"POT-Creation-Date: 2018-04-18 14:22+0200\n"
 "PO-Revision-Date: 2018-03-20 16:26+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
@@ -575,7 +575,11 @@ msgstr "Succès"
 msgid "Find or create card holder from eID card"
 msgstr "Lire carte eID et localiser ou créer le déteneur"
 
-#: lino_xl/lib/beid/actions.py:350
+#: lino_xl/lib/beid/actions.py:343
+msgid "No card data found."
+msgstr ""
+
+#: lino_xl/lib/beid/actions.py:352
 #, python-format
 msgid ""
 "There is more than one client with national id %(national_id)s in our "
@@ -584,39 +588,39 @@ msgstr ""
 "Il y a plus d'un client avec NN %(national_id)s dans notre base de "
 "données."
 
-#: lino_xl/lib/beid/actions.py:380 lino_xl/lib/beid/actions.py:392
+#: lino_xl/lib/beid/actions.py:382 lino_xl/lib/beid/actions.py:394
 #, fuzzy, python-format
 msgid "New client %s has been created"
 msgstr "Client %s a été créé"
 
-#: lino_xl/lib/beid/actions.py:394
+#: lino_xl/lib/beid/actions.py:396
 #, python-format
 msgid "Create new client %s : Are you sure?"
 msgstr "D'accord pour créer nouveau bénéficiaire %s?"
 
-#: lino_xl/lib/beid/actions.py:399
+#: lino_xl/lib/beid/actions.py:401
 #, python-format
 msgid ""
 "Cannot create new client because there is already a person named %s in "
 "our database."
 msgstr "Il y a déjà une personne nommée %s dans notre base de données."
 
-#: lino_xl/lib/beid/actions.py:403 lino_xl/lib/beid/actions.py:410
+#: lino_xl/lib/beid/actions.py:405 lino_xl/lib/beid/actions.py:412
 msgid "Oops!"
 msgstr "Oups!"
 
-#: lino_xl/lib/beid/actions.py:406
+#: lino_xl/lib/beid/actions.py:408
 #, python-format
 msgid ""
 "Cannot create new client because there is more than one person named %s "
 "in our database."
 msgstr "Il y a plus d'une personne nommée %s dans notre base de données."
 
-#: lino_xl/lib/beid/actions.py:429
+#: lino_xl/lib/beid/actions.py:431
 msgid "Update card holder data from eID card"
 msgstr "Lire carte eID et mettre à jour ce déteneur"
 
-#: lino_xl/lib/beid/actions.py:455
+#: lino_xl/lib/beid/actions.py:457
 #, python-format
 msgid "National IDs %s and %s don't match "
 msgstr ""
@@ -685,47 +689,47 @@ msgstr "Type de carte eID"
 msgid "eID card types"
 msgstr "Types de carte eID"
 
-#: lino_xl/lib/beid/choicelists.py:216
+#: lino_xl/lib/beid/choicelists.py:216 lino_xl/lib/beid/choicelists.py:217
 msgid "Belgian citizen"
 msgstr "Citoyen belge"
 
-#: lino_xl/lib/beid/choicelists.py:218
+#: lino_xl/lib/beid/choicelists.py:219 lino_xl/lib/beid/choicelists.py:220
 msgid "Kids card (< 12 year)"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:224
+#: lino_xl/lib/beid/choicelists.py:226
 msgid "Foreigner card A"
 msgstr "Étranger A (Séjour temporaire)"
 
-#: lino_xl/lib/beid/choicelists.py:228
+#: lino_xl/lib/beid/choicelists.py:230
 msgid "Foreigner card B"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:232
+#: lino_xl/lib/beid/choicelists.py:234
 msgid "Foreigner card C"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:236
+#: lino_xl/lib/beid/choicelists.py:238
 msgid "Foreigner card D"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:240
+#: lino_xl/lib/beid/choicelists.py:242
 msgid "Foreigner card E"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:244
+#: lino_xl/lib/beid/choicelists.py:246
 msgid "Foreigner card E+"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:246
+#: lino_xl/lib/beid/choicelists.py:248
 msgid "Foreigner card F"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:250
+#: lino_xl/lib/beid/choicelists.py:252
 msgid "Foreigner card F+"
 msgstr ""
 
-#: lino_xl/lib/beid/choicelists.py:256
+#: lino_xl/lib/beid/choicelists.py:258
 msgid "Registration certificate (Orange card)"
 msgstr "Attestation d’immatriculation (Carte orange)"
 
@@ -804,6 +808,10 @@ msgstr ""
 
 #: lino_xl/lib/beid/mixins.py:297
 msgid "Failed to fix malformed SSIN '{got}' of '{obj}'."
+msgstr ""
+
+#: lino_xl/lib/beid/views.py:38
+msgid "Abandoned after {} seconds"
 msgstr ""
 
 #: lino_xl/lib/bevat/choicelists.py:29
