@@ -1,124 +1,15 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
-
 
 from lino.api import dd, _
 
 
 class CivilStates(dd.ChoiceList):
-    """The global list of **civil states** that a client can have.  This
-    is the list of choices for the :attr:`civil_state
-    <lino_welfare.modlib.pcsw.models.Client.civil_state>` field of a
-    :class:`Client <lino_welfare.modlib.pcsw.models.Client>`.
-
-    **The four official civil states** according to Belgian law are:
-
-    .. attribute:: single
-
-        célibataire : vous n’avez pas de partenaire auquel vous êtes
-        officiellement lié
-
-    .. attribute:: married
-
-        marié(e) : vous êtes légalement marié
-
-    .. attribute:: widowed
-
-        veuf (veuve) / Verwitwet : vous êtes légalement marié mais
-        votre partenaire est décédé
-
-    .. attribute:: divorced
-
-        divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu
-
-    **Some institutions define additional civil states** for people
-    who are officially still married but at different degrees of
-    separation:
-
-    .. attribute:: de_facto_separated
-
-        De facto separated (Séparé de fait, faktisch getrennt)
-
-        Des conjoints sont séparés de fait lorsqu'ils ne respectent
-        plus le devoir de cohabitation. Leur mariage n'est cependant
-        pas dissous.
-
-        La notion de séparation de fait n'est pas définie par la
-        loi. Toutefois, le droit en tient compte dans différents
-        domaines, par exemple en matière fiscale ou en matière de
-        sécurité sociale (assurance maladie invalidité, allocations
-        familiales, chômage, pension, accidents du travail, maladies
-        professionnelles).
-
-    .. attribute:: separated
-
-        Legally separated, aka "Separated as to property" (Séparé de
-        corps et de biens, Getrennt von Tisch und Bett)
-
-        La séparation de corps et de biens est une procédure
-        judiciaire qui, sans dissoudre le mariage, réduit les droits
-        et devoirs réciproques des conjoints.  Le devoir de
-        cohabitation est supprimé.  Les biens sont séparés.  Les
-        impôts sont perçus de la même manière que dans le cas d'un
-        divorce. Cette procédure est devenue très rare.
-
-    **Another unofficial civil state** (but relevant in certain
-    situations) is:
-
-    .. attribute:: cohabitating
-
-        Cohabitating (cohabitant, zusammenlebend)
-
-        Vous habitez avec votre partenaire et c’est
-        reconnu légalement.
-
-    Sources for above: `belgium.be
-    <http://www.belgium.be/fr/famille/couple/divorce_et_separation/separation_de_fait/>`__,
-    `gouv.qc.ca
-    <http://www4.gouv.qc.ca/EN/Portail/Citoyens/Evenements/separation-divorce/Pages/separation-fait.aspx>`__,
-    `wikipedia.org <https://en.wikipedia.org/wiki/Cohabitation>`__
-
-    """
     required_roles = dd.login_required(dd.SiteStaff)
     verbose_name = _("Civil state")
     verbose_name_plural = _("Civil states")
-
-    @classmethod
-    def old2new(cls, old):
-        """
-        **Migration rules** (October 2015) to remove some obsolete choices:
-
-        - 13 (Single cohabitating) becomes :attr:`cohabitating`
-        - 18 (Single with child) becomes :attr:`single`
-        - 21 (Married (living alone)) becomes :attr:`separated_de_facto`
-        - 22 (Married (living with another partner)) becomes :attr:`separated_de_facto`
-        - 33 (Widow cohabitating) becomes :attr:`widowed`
-
-        """
-        if old == '13':
-            return cls.cohabitating
-        if old == '18':
-            return cls.single
-        if old == '21':
-            return cls.separated_de_facto
-        if old == '22':
-            return cls.separated_de_facto
-        if old == '33':
-            return cls.widowed
-        return cls.get_by_value(old)
-
-    @classmethod
-    def to_python(cls, value):
-        """This will call :meth:`old2new` when loading data from previous
-        version. Can be removed when all production sites have been
-        migrated.
-
-        """
-        if value:
-            return cls.old2new(value)
-        return None
 
 add = CivilStates.add_item
 add('10', _("Single"), 'single')
@@ -148,20 +39,6 @@ add('60', _("Cohabitating"), 'cohabitating')
 
 
 class ResidenceTypes(dd.ChoiceList):
-    """The list of Belgian resident registers
-    (Einwohnerregister, Registre de résidents).
-
-    https://en.wikipedia.org/wiki/Resident_registration
-
-    ======================= =========================== =======================
-    de                      fr                          nl
-    ======================= =========================== =======================
-    Bevölkerungsregister    Registre de la population   Bevolkingsregister
-    Fremdenregister         Registre des étrangers      Vreemdelingenregister
-    Warteregister           Registre d'attente
-    ======================= =========================== =======================
-
-    """
     verbose_name = _("Resident register")
     verbose_name_plural = _("Resident registers")
 
@@ -172,52 +49,18 @@ add('3', _("Waiting register"))
 
 
 class BeIdCardTypes(dd.ChoiceList):
-    """A list of Belgian identity card types.
-
-    Didn't yet find any official reference document.
-    
-    The eID applet returns a field `documentType` which contains a
-    numeric code.  For example 1 is for "Belgian citizen", 6 for "Kids
-    card",...
-    
-    The eID viewer, when saving a card as xml file, doesn't save these
-    values nowhere, it saves a string equivalent (1 becomes
-    "belgian_citizen", 6 becomes "kids_card", 17 becomes
-    "foreigner_f", 16 becomes "foreigner_e_plus",...
-    
-    Sources:
-
-    - [1] `kuleuven.be <https://securehomes.esat.kuleuven.be/~decockd/wiki/bin/view.cgi/EidForums/ForumEidCards0073>`__
-    - [2] The `be.fedict.commons.eid.consumer.DocumentType <http://code.google.com/p/eid-applet/source/browse/trunk/eid-applet-service/src/main/java/be/fedict/eid/applet/service/DocumentType.java>`__ enum.
-
-    - http://www.adde.be/joomdoc/guides/les-titres-de-sejours-en-belgique-guide-pratique-dec12-g-aussems-pdf/download
-
-
-    Excerpts from [1]:
-    
-    - Johan: A document type of 7 is used for bootstrap cards -- What
-      is a bootstrap card (maybe some kind of test card?)  Danny: A
-      bootstrap card was an eID card that was used in the early start
-      of the eID card introduction to bootstrap the computers at the
-      administration. This type is no longer issued.
-    
-    - Johan: A document type of 8 is used for a
-      "habilitation/machtigings" card -- Is this for refugees or
-      asylum seekers? Danny: A habilitation/machtigings card was aimed
-      at civil servants. This type is also no longer used.
-
-    """
 
     required_roles = dd.login_required(dd.SiteStaff)
     verbose_name = _("eID card type")
     verbose_name_plural = _("eID card types")
+    old2new = {'1' : '01', '6': '06'}
 
 add = BeIdCardTypes.add_item
-add('1', _("Belgian citizen"), "belgian_citizen")
-add('01', _("Belgian citizen"), "belgian_citizen0")
+# add('1', _("Belgian citizen"), "belgian_citizen")
+add('01', _("Belgian citizen"), "belgian_citizen")
 # ,de=u"Belgischer Staatsbürger",fr=u"Citoyen belge"),
-add('6', _("Kids card (< 12 year)"), "kids_card")
-add('06', _("Kids card (< 12 year)"), "kids_card0")
+add('06', _("Kids card (< 12 year)"), "kids_card")
+#add('06', _("Kids card (< 12 year)"), "kids_card0")
 #,de=u"Kind unter 12 Jahren"),
 
 #~ add('8', _("Habilitation"))

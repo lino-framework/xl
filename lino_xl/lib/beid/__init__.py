@@ -3,18 +3,8 @@
 #
 # License: BSD (see file COPYING for details)
 """
-Defines actions for reading electronic ID smartcards.
+Read Belgian eID cards and store that data in the database.
 
-Installing this package makes sense only if there is exactly one
-subclass of the :class:`BeIdCardHolder` model mixin among your
-application's models.
-
-.. autosummary::
-   :toctree:
-
-    choicelists
-    mixins
-    models
 """
 
 # When this plugin is installed, you can still easily disable it by
