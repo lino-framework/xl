@@ -178,8 +178,8 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
                 
     def after_ui_save(self, ar, cw):
         super(Coaching, self).after_ui_save(ar, cw)
-        if self.update_primary():
-                    ar.set_response(refresh_all=True)
+        if self.adapt_primary():
+            ar.set_response(refresh_all=True)
         #~ return kw
 
     #~ def get_row_permission(self,user,state,ba):
