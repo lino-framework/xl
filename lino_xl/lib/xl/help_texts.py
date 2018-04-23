@@ -34,41 +34,6 @@ BeIdCardHolder."""),
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
     'lino_xl.lib.beid.Plugin.read_only_simulate' : _("""Whether to just simulate."""),
-    'lino_xl.lib.beid.CivilStates' : _("""The global list of civil states that a client can have.  This
-is the list of choices for the civil_state field of a
-Client."""),
-    'lino_xl.lib.beid.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
-officiellement lié"""),
-    'lino_xl.lib.beid.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
-    'lino_xl.lib.beid.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
-votre partenaire est décédé"""),
-    'lino_xl.lib.beid.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
-    'lino_xl.lib.beid.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
-    'lino_xl.lib.beid.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
-corps et de biens, Getrennt von Tisch und Bett)"""),
-    'lino_xl.lib.beid.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
-    'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers
-(Einwohnerregister, Registre de résidents)."""),
-    'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
-    'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
-Currently only Belgian eid cards are tested.
-Concrete subclasses must also inherit from lino.mixins.Born."""),
-    'lino_xl.lib.beid.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
-is not validated directly because that would cause problems
-with legacy data where SSINs need manual control. See also
-BeIdCardHolderChecker."""),
-    'lino_xl.lib.beid.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
-countries.Country which should
-contain also entries for refugee statuses."""),
-    'lino_xl.lib.beid.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
-    'lino_xl.lib.beid.BeIdCardHolder.validate_national_id' : _("""Whether to validate the national_id immediately before
-saving a record.  If this is False, the national_id
-might contain invalid values which would then cause data
-problems."""),
-    'lino_xl.lib.beid.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
-(see BeIdCardHolder.national_id), but this checker reports
-them."""),
-    'lino_xl.lib.beid.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
     'lino_xl.lib.bevat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.bevats.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.blogs.Entry' : _("""A blog entry is a short article with a title, published on a given
@@ -545,6 +510,36 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
+Currently only Belgian eid cards are tested.
+Concrete subclasses must also inherit from lino.mixins.Born."""),
+    'lino_xl.lib.beid.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
+is not validated directly because that would cause problems
+with legacy data where SSINs need manual control. See also
+BeIdCardHolderChecker."""),
+    'lino_xl.lib.beid.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
+countries.Country which should
+contain also entries for refugee statuses."""),
+    'lino_xl.lib.beid.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
+    'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
+    'lino_xl.lib.beid.CivilStates' : _("""The global list of civil states that a client can have.  This
+is the list of choices for the civil_state field of a
+Client."""),
+    'lino_xl.lib.beid.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
+officiellement lié"""),
+    'lino_xl.lib.beid.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
+    'lino_xl.lib.beid.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
+votre partenaire est décédé"""),
+    'lino_xl.lib.beid.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
+    'lino_xl.lib.beid.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
+    'lino_xl.lib.beid.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
+corps et de biens, Getrennt von Tisch und Bett)"""),
+    'lino_xl.lib.beid.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
+    'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers
+(Einwohnerregister, Registre de résidents)."""),
+    'lino_xl.lib.beid.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
+(see BeIdCardHolder.national_id), but this checker reports
+them."""),
     'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
