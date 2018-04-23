@@ -9,7 +9,7 @@ Actions used to read Belgian eID cards.
 See unit tests in :mod:`lino_welfare.tests.test_beid`.
 
 """
-
+import six
 import logging
 logger = logging.getLogger(__name__)
 
@@ -222,7 +222,7 @@ class BaseBeIdReadCardAction(dd.Action):
             #~ print 20121117, repr(data['picture'])
             #~ kw.update(picture_data_encoded=data['picture'])
 
-        if isinstance(data.date_of_birth, basestring):
+        if isinstance(data.date_of_birth, six.string_types):
             data.date_of_birth = IncompleteDate.parse(data.date_of_birth)
             # IncompleteDate(
             #     *data.date_of_birth.split('-'))
