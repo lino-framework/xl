@@ -286,7 +286,7 @@ class BaseBeIdReadCardAction(dd.Action):
         msg = _("Click OK to apply the following changes for %s") % obj
         msg = simulate_wrap(msg)
         msg += ' :<br/>'
-        msg += '\n<br/>'.join(diffs)
+        msg += '\n<br/>'.join(sorted(diffs))
 
         def yes(ar2):
             msg = _("%s has been saved.") % dd.obj2unicode(obj)
