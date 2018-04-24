@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-04-18 14:22+0200\n"
-"PO-Revision-Date: 2018-04-18 14:24+0200\n"
+"PO-Revision-Date: 2018-04-24 18:09+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -4287,16 +4287,15 @@ msgstr "%s ist"
 
 #: lino_xl/lib/households/models.py:606
 msgid "Join an existing household"
-msgstr ""
+msgstr "Bestehendem Haushalt beitreten"
 
 #: lino_xl/lib/households/models.py:607
-#, fuzzy
 msgid "or"
-msgstr "Mehr"
+msgstr "oder"
 
 #: lino_xl/lib/households/models.py:610
 msgid "create a new one"
-msgstr ""
+msgstr "einen neuen erstellen"
 
 #: lino_xl/lib/households/fixtures/std.py:21
 #: lino_xl/lib/humanlinks/fixtures/demo.py:34
