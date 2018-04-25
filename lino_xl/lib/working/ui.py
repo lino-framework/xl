@@ -217,6 +217,11 @@ class SessionsByTicket(Sessions):
         return ar.html_text(E.div(*elems))
 
 
+class SessionsBySite(Sessions):
+    master_key = 'ticket__site'
+    column_names = 'start_date summary start_time end_time  '\
+                   'break_time duration user is_fixing *'
+    
 class MySessions(Sessions):
     column_names = 'start_date start_time end_time '\
                    'break_time duration ticket_no ticket__site summary *'
@@ -507,6 +512,44 @@ class TicketsByReport(Tickets, DurationReport):
         qs = super(TicketsByReport, self).get_request_queryset(ar)
         for obj in qs:
             sar = SessionsByTicket.request(
+                master_instance=obj, param_values=spv)
+            load_sessions(obj, sar)
+            # obj._invested_time = compute_invested_time(
+            #     obj, start_date=mi.start_date, end_date=mi.end_date,
+            #     user=mi.user)
+            if obj._root2tot.get(TOTAL_KEY):
+                yield obj
+
+from lino_xl.lib.tickets.ui import Sites
+
+class SitesByReport(Sites, DurationReport):
+    """The list of tickets mentioned in a service report."""
+    master = 'working.ServiceReport'
+    # column_names = "summary id reporter project product site state
+    # invested_time"
+    column_names_template = "name description {vcolumns}"
+    order_by = ['name']
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        mi = ar.master_instance
+        if mi is None:
+            return
+        pv = ar.param_values
+
+        pv.update(start_date=mi.start_date, end_date=mi.end_date)
+        pv.update(interesting_for=mi.interesting_for)
+        pv.update(observed_event=TicketEvents.working)
+
+        spv = dict(start_date=mi.start_date, end_date=mi.end_date)
+        spv.update(observed_event=dd.PeriodEvents.started)
+        spv.update(user=mi.user)
+        # qs = super(SitesByReport, self).get_request_queryset(ar)
+        
+        qs = rt.models.tickets.Site.objects.filter(
+            company=mi.interesting_for)
+        for obj in qs:
+            sar = SessionsBySite.request(
                 master_instance=obj, param_values=spv)
             load_sessions(obj, sar)
             # obj._invested_time = compute_invested_time(
