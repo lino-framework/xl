@@ -492,7 +492,7 @@ class TicketsByReport(Tickets, DurationReport):
     master = 'working.ServiceReport'
     # column_names = "summary id reporter project product site state
     # invested_time"
-    column_names_template = "id overview project state {vcolumns}"
+    column_names_template = "id overview site state {vcolumns}"
     order_by = ['id']
 
     @classmethod
