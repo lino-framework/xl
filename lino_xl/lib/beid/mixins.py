@@ -3,13 +3,14 @@
 #
 # License: BSD (see file COPYING for details)
 
+# from builtins import str
 
 import logging
 logger = logging.getLogger(__name__)
 
-import os
-import yaml
-import base64
+# import os
+# import yaml
+# import base64
 
 from unipath import Path
 
@@ -21,20 +22,20 @@ from django.core.exceptions import ValidationError
 
 from lino.core.utils import get_field
 
-from lino.core.diff import ChangeWatcher
+# from lino.core.diff import ChangeWatcher
 
 from etgen.html import E
-from lino.utils import AttrDict
+# from lino.utils import AttrDict
 
-from lino.api import dd, rt
+from lino.api import dd
 
 
 from lino.utils import ssin
-from lino.utils import join_words
-from lino.utils import IncompleteDate
-from lino_xl.lib.contacts.utils import street2kw
+# from lino.utils import join_words
+# from lino.utils import IncompleteDate
+# from lino_xl.lib.contacts.utils import street2kw
 from lino.modlib.checkdata.choicelists import Checker
-from .roles import BeIdUser
+# from .roles import BeIdUser
 
 from .actions import BeIdReadCardAction, FindByBeIdAction
 from .actions import get_image_parts, get_image_path
@@ -187,9 +188,8 @@ class BeIdCardHolder(dd.Model):
             old = getattr(self, fldname)
             if old != new:
                 diffs.append(
-                    "%s : %s -> %s" % (
-                        unicode(fld.verbose_name), dd.obj2str(old),
-                        dd.obj2str(new)))
+                    "{} : {} -> {}".format(
+                        fld.verbose_name, dd.obj2str(old), dd.obj2str(new)))
                 setattr(self, fld.name, new)
         return objects, diffs
 

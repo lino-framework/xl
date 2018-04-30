@@ -277,6 +277,8 @@ class ToggleChoice(dd.Action):
         question=dd.ForeignKey("polls.Question"),
         choice=dd.ForeignKey("polls.Choice"),
     )
+    params_layout = 'question\nchoice'  # Py3 would otherwise display
+                                        # them in arbitrary order
     no_params_window = True
 
     def run_from_ui(self, ar, **kw):
