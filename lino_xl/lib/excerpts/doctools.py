@@ -1,18 +1,19 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
+# Copyright 2017-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
-"""A function for usage in a :rst:dir:`django2rst` directive.
+"""
+A function for usage in a :rst:dir:`django2rst` directive.
 
 This is used to generate the list of demo excerpts in the following
 page:
 
 - http://de.welfare.lino-framework.org/excerpts.html
-
 """
 
 from __future__ import unicode_literals
 from __future__ import print_function
+from builtins import str
 
 import os
 import shutil
@@ -74,7 +75,7 @@ def show_excerpts(severe=True):
         collect(o)
 
     def asli(et, items):
-        s = unicode(et)
+        s = str(et)
         s += " : " + ', '.join(
             "`%(owner)s <../%(tail)s>`__" % kw % kw for kw in items)
         return s
