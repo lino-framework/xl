@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Installs standard values for :mod:`lino_xl.lib.cal`, including a
@@ -24,7 +24,7 @@ from lino.api import dd, rt, _
 
 
 def objects():
-    cal = rt.modules.cal
+    cal = rt.models.cal
     add = Instantiator('cal.Priority', 'ref').build
     yield add('1', **dd.babel_values('name', en=u"very urgent", de=u"sehr dringend",   fr=u"très urgent", et=u"väga kiire"))
     yield add('3', **dd.babel_values('name', en=u"urgent", de=u"dringend",   fr=u"urgent", et="kiire"))
@@ -42,7 +42,6 @@ def objects():
         d = d.replace(month=4, day=1, year=d.year-1)
     settings.SITE.site_config.update(
         site_calendar=general, hide_events_before=d)
-    yield settings.SITE.site_config
     
     
     # yield settings.SITE.site_config
@@ -57,7 +56,7 @@ def objects():
     yield event_type(
         transparent=True, **dd.str2kw('name', _("Internal")))
 
-    RecurrentEvent = rt.modules.cal.RecurrentEvent
+    RecurrentEvent = rt.models.cal.RecurrentEvent
     add = Instantiator(RecurrentEvent, event_type=holidays).build
 
     def holiday(month, day, en, de, fr, et=None):

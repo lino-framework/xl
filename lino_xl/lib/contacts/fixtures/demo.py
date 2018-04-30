@@ -34,7 +34,6 @@ def site_company_objects():
     yield rumma
 
     settings.SITE.site_config.update(site_company=rumma)
-    yield settings.SITE.site_config
 
 def objects():
 
