@@ -57,5 +57,5 @@ def objects():
     EventType = rt.models.notes.EventType
     system_note = EventType(**dd.str2kw('name', _("System note")))
     yield system_note
-    settings.SITE.site_config.system_note_type = system_note
+    settings.SITE.site_config.update(system_note_type=system_note)
     yield settings.SITE.site_config

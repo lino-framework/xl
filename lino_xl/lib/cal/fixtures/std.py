@@ -42,6 +42,7 @@ def objects():
         d = d.replace(month=4, day=1, year=d.year-1)
     settings.SITE.site_config.update(
         site_calendar=general, hide_events_before=d)
+    yield settings.SITE.site_config
     
     
     # yield settings.SITE.site_config
