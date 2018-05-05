@@ -251,7 +251,7 @@ class Item(dd.Model):
         if self.plan.journal is None:
             raise Warning(_("No journal specified"))
         ITEM_MODEL = dd.resolve_model(dd.plugins.invoicing.item_model)
-        M = ITEM_MODEL._meta.get_field('voucher').rel.to
+        M = ITEM_MODEL._meta.get_field('voucher').remote_field.to
         invoice = M(partner=self.partner, journal=self.plan.journal,
                     voucher_date=self.plan.today,
                     user=ar.get_user(),
