@@ -13,17 +13,16 @@
 
 from __future__ import unicode_literals
 
-import sys
-PY2 = sys.version_info[0] == 2
-PY3 = sys.version_info[0] == 3
+# import sys
+# PY2 = sys.version_info[0] == 2
 
-# install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
-install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint']
+install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
+# install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint']
 
-if PY2:
-    install_requires.append('appy')
-else:
-    install_requires.append('appypod')
+# if PY2:
+#     install_requires.append('appy')
+# else:
+#     install_requires.append('appy-python-3-luc')
 
 SETUP_INFO = dict(
     name='lino-xl',
