@@ -19,6 +19,7 @@ their *number*.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from django.conf import settings
 from django.db import models
@@ -542,14 +543,16 @@ class Tickets(dd.Table):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = list(super(Tickets, cls).get_simple_parameters())
-        s += ['end_user',  # 'assigned_to',
-              'state',
-              'project',
-              'topic', 'site', 'priority']
+        for p in super(Tickets, cls).get_simple_parameters():
+            yield p
+        yield 'end_user'
+        yield 'state'
+        yield 'project'
+        yield 'topic'
+        yield 'site'
+        yield 'priority'
         if not dd.is_installed('votes'):
-            s.append('assigned_to')
-        return s
+            yield 'assigned_to'
 
     @classmethod
     def get_queryset(self, ar, **filter):
@@ -901,23 +904,46 @@ class MyTickets(My, Tickets):
         return kw
 
 class MyTicketsToWork(Tickets):
-        """Show all active tickets reported by me."""
-        label = _("Tickets to work")
-        required_roles = dd.login_required(Reporter)
-        order_by = ["priority", "-id"]
-        column_names = 'overview:50 workflow_buttons:30 *'
-        params_layout = """
-        user end_user site project state
-        start_date end_date observed_event topic show_active"""
-        params_panel_hidden = True
+    """Show all active tickets assigned to me."""
+    label = _("Tickets to work")
+    required_roles = dd.login_required(Reporter)
+    order_by = ["state", "priority", "-id"]
+    column_names = 'overview:50 workflow_buttons:30 *'
+    params_layout = """
+    user end_user site project state
+    start_date end_date observed_event topic show_active"""
+    params_panel_hidden = True
+    slave_grid_format = 'summary'
 
-        @classmethod
-        def param_defaults(self, ar, **kw):
-            kw = super(MyTicketsToWork, self).param_defaults(ar, **kw)
-            kw.update(show_todo=dd.YesNo.yes)
-            kw.update(assigned_to=ar.get_user())
-            # kw.update(show_standby=dd.YesNo.no)
-            return kw
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyTicketsToWork, self).param_defaults(ar, **kw)
+        kw.update(show_active=dd.YesNo.yes)
+        # kw.update(show_todo=dd.YesNo.yes)
+        kw.update(assigned_to=ar.get_user())
+        return kw
+
+    @classmethod
+    def get_slave_summary(self, obj, ar):
+        # every element of `items` is a tuple `(state,
+        # list-of-objects)`.  in ar are ordered by state. we just group
+        # them 
+        items = []
+        ci = None
+        for obj in ar:
+            btn = obj.obj2href(ar)
+            if ci is not None and ci[0] is obj.state:
+                ci[1].append(btn)
+            else:
+                ci = (obj.state, [btn])
+                items.append(ci)
+
+        # now render them as a UL containing on LI per item
+        items = [E.li(str(i[0]), ' : ', *join_elems(i[1], ", "))
+                 for i in items]
+
+        return E.ul(*items)
+
 
 
 # class InterestingTickets(ActiveTickets):
