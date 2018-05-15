@@ -1047,9 +1047,9 @@ class MySites(Sites):
         kw.update(watcher=ar.get_user())
         return kw
 
-def get_summary_columns(hours=True):
+def get_summary_columns():
     for ts in TicketStates.get_list_items():
-        if hours or ts.active:
+        if ts.active:
             k = ts.get_summary_field()
             if k is not None:
                 yield k
@@ -1061,7 +1061,7 @@ class MySitesDashboard(MySites):
     @classmethod
     def setup_columns(cls):
         cls.column_names = "overview "
-        cls.column_names += ' '.join(get_summary_columns(False))
+        cls.column_names += ' '.join(get_summary_columns())
 
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)

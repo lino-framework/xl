@@ -407,11 +407,9 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
              UploadController, mixins.Referrable):
 
     quick_search_fields = "summary description ref"
-
     workflow_state_field = 'state'
-
     create_session_on_create = True
-
+    disable_author_assign = False
 
     class Meta:
         app_label = 'tickets'

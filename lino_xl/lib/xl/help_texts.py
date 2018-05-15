@@ -407,7 +407,7 @@ or ToDo)."""),
     'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
 or ToDo)."""),
     'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
-    'lino_xl.lib.tickets.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
+    'lino_xl.lib.tickets.Tickets.has_site' : _("""Show only (or hide) tickets which have a site assigned."""),
     'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
     'lino_xl.lib.tickets.Tickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
@@ -423,7 +423,7 @@ equivalent to those having their state set to new."""),
     'lino_xl.lib.tickets.ActiveTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
     'lino_xl.lib.tickets.MyTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
     'lino_xl.lib.tickets.MyTicketsToWork.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tim2lino.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.tim2lino.Plugin.languages' : _("""The language distribution used in the database to import. Mandatory
@@ -1198,7 +1198,7 @@ not change anymore."""),
     'lino_xl.lib.tickets.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
 publicly visible anywhere."""),
     'lino_xl.lib.tickets.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
-    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work. It is a concrete
+    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work.  It is a concrete
 question or problem handled formulated by a user."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for
 managing it."""),
@@ -1220,7 +1220,7 @@ version."""),
 and 100."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
-project.  See ReportingTypes."""),
+site.  See ReportingTypes."""),
     'lino_xl.lib.tickets.TicketStates' : _("""The state of a ticket (new, open, closed, ...)"""),
     'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response so
 far.
