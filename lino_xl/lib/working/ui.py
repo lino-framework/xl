@@ -592,68 +592,6 @@ class ProjectsByReport(Projects, DurationReport):
             if obj._root2tot.get(TOTAL_KEY):
                 yield obj
             
-    @classmethod
-    def old_get_request_queryset(self, ar):
-        Tickets = rt.modules.tickets.Tickets
-        mi = ar.master_instance
-        if mi is None:
-            return
-
-            
-        def worked_time(**spv):
-            tot = Duration()
-            tickets = []
-            spv = mi.get_tickets_parameters(**spv)
-            spv.update(observed_event=TicketEvents.working)
-            sar = Tickets.request(param_values=spv)
-            for ticket in sar:
-                ttot = compute_invested_time(
-                    ticket, start_date=mi.start_date, end_date=mi.end_date,
-                    user=mi.user)
-                if ttot:
-                    tot += ttot
-                    tickets.append(ticket)
-            return tot, tickets
-
-        projects_list = []
-        children_time = {}
-
-        qs = super(ProjectsByReport, self).get_request_queryset(ar)
-        for prj in qs:
-            tot, tickets = worked_time(project=prj)
-            prj._tickets = tickets
-            prj._invested_time = tot
-            projects_list.append(prj)
-            if tot:
-                p = prj.parent
-                while p is not None:
-                    cht = children_time.get(p.id, Duration())
-                    children_time[p.id] = cht + tot
-                    p = p.parent
-
-        # compute children_time for each project
-        for prj in projects_list:
-            prj._children_time = children_time.get(prj.id, Duration())
-            # p = prj.parent
-            # ct = Duration()
-            # while p is not None:
-            #     ct += children_time.get(p.id, Duration())
-
-        # remove projects that have no time at all
-        def f(prj):
-            return prj._invested_time or prj._children_time
-        projects_list = filter(f, projects_list)
-
-        # add an unsaved Project for the tickets without project:
-        tot, tickets = worked_time(has_project=dd.YesNo.no)
-        if tot:
-            prj = rt.modules.tickets.Project(name="(no project)")
-            prj._tickets = tickets
-            prj._invested_time = tot
-            prj._children_time = Duration()
-            projects_list.append(prj)
-        return projects_list
-
     @dd.displayfield(_("Tickets"))
     def active_tickets(cls, obj, ar):
         lst = []
@@ -735,13 +673,13 @@ class SummariesBySite(Summaries):
         cls.column_names = "year active_tickets "
         cls.column_names += ' '.join(get_summary_columns())
 
-from lino_xl.lib.tickets.ui import MySites
+# from lino_xl.lib.tickets.ui import MySites
 
-class MySitesDashboard(MySites):
-    label = _("Sites Overview")
+# class MySitesDashboard(MySites):
+#     label = _("Sites Overview")
 
-    @classmethod
-    def setup_columns(cls):
-        cls.column_names = "overview "
-        cls.column_names += ' '.join(get_summary_columns(False))
+#     @classmethod
+#     def setup_columns(cls):
+#         cls.column_names = "overview "
+#         cls.column_names += ' '.join(get_summary_columns(False))
 

@@ -72,4 +72,3 @@ class Plugin(ad.Plugin):
         super(Plugin, self).get_dashboard_items(user)
         if user.authenticated:
             yield self.site.models.working.WorkedHours
-            yield self.site.models.working.MySitesDashboard

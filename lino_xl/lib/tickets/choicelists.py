@@ -106,7 +106,7 @@ add('20', pgettext("ticket state", "Open"), 'opened', active=True, show_in_todo=
 # add('21', _("Sticky"), 'sticky', active=True)
 add('22', _("Started"), 'started', active=True, show_in_todo=True)
 add('30', _("Sleeping"), 'sleeping')
-add('40', _("Ready"), 'ready')
+add('40', _("Ready"), 'ready', active=True)
 add('50', _("Closed"), 'closed')
 add('60', _("Refused"), 'cancelled')
 # TicketStates.default_value = 'new'

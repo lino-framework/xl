@@ -139,22 +139,22 @@ class Project(mixins.DateRange, TimeInvestment,
     def __str__(self):
         return self.ref or self.name
 
-    @dd.displayfield(_("Activity overview"))
-    def activity_overview(self, ar):
-        if ar is None:
-            return ''
-        TicketsByProject = rt.modules.tickets.TicketsByProject
-        elems = []
-        for tst in (TicketStates.objects()):
-            pv = dict(state=tst)
-            sar = ar.spawn(
-                TicketsByProject, master_instance=self, param_values=pv)
-            num = sar.get_total_count()
-            if num > 0:
-                elems += [
-                    "{0}: ".format(tst.text),
-                    sar.ar2button(label=str(num))]
-        return E.p(*elems)
+    # @dd.displayfield(_("Activity overview"))
+    # def activity_overview(self, ar):
+    #     if ar is None:
+    #         return ''
+    #     TicketsByProject = rt.modules.tickets.TicketsByProject
+    #     elems = []
+    #     for tst in (TicketStates.objects()):
+    #         pv = dict(state=tst)
+    #         sar = ar.spawn(
+    #             TicketsByProject, master_instance=self, param_values=pv)
+    #         num = sar.get_total_count()
+    #         if num > 0:
+    #             elems += [
+    #                 "{0}: ".format(tst.text),
+    #                 sar.ar2button(label=str(num))]
+    #     return E.p(*elems)
 
     # def save(self, *args, **kwargs):
     #     root = self.parent
