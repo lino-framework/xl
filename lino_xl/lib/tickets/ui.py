@@ -612,6 +612,7 @@ class Tickets(dd.Table):
                 qs = qs.filter(vote__isnull=True).distinct()
 
         else:
+            # NB: assigned_to is a simple parameter field
             if pv.not_assigned_to:
                 qs = qs.exclude(assigned_to=pv.not_assigned_to)
 
