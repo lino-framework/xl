@@ -146,12 +146,12 @@ class DemandsByDemander(Demands):
     importance
     """
 
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         """Customized :meth:`summary view
-        <lino.core.actors.Actor.get_slave_summary>` for this table.
+        <lino.core.actors.Actor.get_table_summary>` for this table.
 
         """
         sar = self.request_from(ar, master_instance=obj)
@@ -177,7 +177,7 @@ class OffersByDemander(Offers):
     master = dd.plugins.faculties.demander_model
     column_names = '*'
     order_by = ["affinity"]
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     
 
     @classmethod
@@ -194,9 +194,9 @@ class OffersByDemander(Offers):
         return Offer.objects.filter(faculty__in=needed)
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         """Customized :meth:`summary view
-        <lino.core.actors.Actor.get_slave_summary>` for this table.
+        <lino.core.actors.Actor.get_table_summary>` for this table.
 
         """
         sar = self.request_from(ar, master_instance=obj)

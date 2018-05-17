@@ -137,7 +137,7 @@ class DeploymentsByMilestone(Deployments):
 # class DeploymentsByProject(DeploymentsByMilestone):
 #     master = 'tickets.Project'
 #     master_key = None
-#     slave_grid_format = "html"
+#     display_mode = "html"
 
 #     @classmethod
 #     def get_filter_kw(self, ar, **kw):
@@ -151,7 +151,7 @@ class DeploymentsByMilestone(Deployments):
 # class DeploymentsByCompetence(DeploymentsByProject):
 #     master = 'tickets.Competence'
 #     master_key = None
-#     slave_grid_format = "html"
+#     display_mode = "html"
 
 #     @classmethod
 #     def get_filter_kw(self, ar, **kw):
@@ -173,13 +173,13 @@ class DeploymentsByTicket(Deployments):
     remark
     """, window_size=(60, 15))
     
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     stay_in_grid = True
 
     @classmethod
-    def get_slave_summary(cls, obj, ar):
+    def get_table_summary(cls, obj, ar):
         """Customized :meth:`summary view
-        <lino.core.actors.Actor.get_slave_summary>` for this table.
+        <lino.core.actors.Actor.get_table_summary>` for this table.
 
         """
         sar = cls.request_from(ar, master_instance=obj)

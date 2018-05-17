@@ -44,7 +44,7 @@ class Models(dd.VirtualTable):
     about.FieldsByModel
     """
 
-    slave_grid_format = 'html'
+    display_mode = 'html'
 
     @classmethod
     def get_data_rows(self, ar):
@@ -152,7 +152,7 @@ class Inspector(dd.VirtualTable):
     )
     params_layout = 'inspected show_callables'
     # editable = False
-    # slave_grid_format = 'html'
+    # display_mode = 'html'
 
     @classmethod
     def get_inspected(self, name):

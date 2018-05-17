@@ -813,12 +813,12 @@ class ExcerptsByOwner(Excerpts):
     label = _("Existing excerpts")
     column_names = "build_time excerpt_type user project *"
     order_by = ['-build_time', 'id']
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     auto_fit_column_widths = True
     MORE_LIMIT = 5
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         items = []
 
         def add(title, flt):

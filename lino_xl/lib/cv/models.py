@@ -109,7 +109,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     column_names = "language native spoken written cef_level"
     required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
-    slave_grid_format = "summary"
+    display_mode = "summary"
     window_size  = (70, 15)
     detail_layout = dd.DetailLayout("""
     language 
@@ -139,8 +139,8 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
         # return str(obj.language)
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for this table.
 
         """

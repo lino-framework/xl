@@ -154,14 +154,14 @@ class LinksByHuman(Links):
     <lino.core.actors.dbtable.Table.master_key>`.
 
     It is also a cool usage example for the
-    :meth:`lino.core.actors.dbtable.Table.get_slave_summary` method.
+    :meth:`lino.core.actors.dbtable.Table.get_table_summary` method.
 
     """
     label = _("Human Links")
     required_roles = dd.login_required(ContactsUser)
     master = config.person_model
     column_names = 'parent type_as_parent:10 child'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     addable_link_types = (
         LinkTypes.parent, LinkTypes.adoptive_parent,
@@ -185,8 +185,8 @@ class LinksByHuman(Links):
             'child__birth_date', 'parent__birth_date')
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for :class:`LinksByHuman`.
 
         """

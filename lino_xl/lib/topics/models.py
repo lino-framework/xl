@@ -170,7 +170,7 @@ class InterestsByController(Interests):
     order_by = ["topic"]
     column_names = 'topic *'
     stay_in_grid = True
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     # detail_layout = dd.DetailLayout("""
     # owner_type
     # owner_id
@@ -179,9 +179,9 @@ class InterestsByController(Interests):
     # """, window_size=(60, 15))
     
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         """Implements :meth:`summary view
-        <lino.core.actors.Actor.get_slave_summary>`.
+        <lino.core.actors.Actor.get_table_summary>`.
 
         """
         sar = self.request_from(ar, master_instance=obj)

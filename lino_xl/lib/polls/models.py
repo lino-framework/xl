@@ -384,10 +384,10 @@ class ResponsesByPoll(Responses):
 class ResponsesByPartner(Responses):
     master_key = 'partner'
     column_names = 'date user state remark *'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         if obj is None:
             return
 
@@ -573,7 +573,7 @@ class AnswersByResponse(dd.VirtualTable):
     column_names = 'question:40 answer_buttons:30 remark:20 *'
     variable_row_height = True
     auto_fit_column_widths = True
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     # workflow_state_field = 'state'
 
     remark = AnswerRemarkField()
@@ -587,7 +587,7 @@ class AnswersByResponse(dd.VirtualTable):
             yield AnswersByResponseRow(response, q)
 
     @classmethod
-    def get_slave_summary(self, response, ar):
+    def get_table_summary(self, response, ar):
         """Presents this response as a table with one row per question and one
         column for each response of the same poll.  The answers for
         this response are editable if this response is not registered.

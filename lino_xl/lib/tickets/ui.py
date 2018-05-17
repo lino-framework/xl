@@ -201,7 +201,7 @@ class ProjectsByPerson(Projects):
 #     # column_names = 'priority project tickets_overview *'
 #     params_panel_hidden = True
 #     # editable = False
-#     slave_grid_format = "html"  # (doesn't work) TODO #1594 
+#     display_mode = "html"  # (doesn't work) TODO #1594 
     
 #     insert_layout = """
 #     project 
@@ -253,13 +253,13 @@ if False:
         remark
         """
 
-        slave_grid_format = "summary"
+        display_mode = "summary"
 
         @classmethod
-        def get_slave_summary(self, obj, ar):
+        def get_table_summary(self, obj, ar):
             """The summary view for this table.
 
-            Implements :meth:`lino.core.actors.Actor.get_slave_summary`.
+            Implements :meth:`lino.core.actors.Actor.get_table_summary`.
 
             """
             sar = self.request_from(ar, master_instance=obj)
@@ -306,7 +306,7 @@ class LinksByTicket(Links):
     required_roles = dd.login_required(Triager)
     master = 'tickets.Ticket'
     column_names = 'parent type_as_parent:10 child'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -319,8 +319,8 @@ class LinksByTicket(Links):
             'child__modified', 'parent__modified')
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for :class:`LinksByTicket`.
 
         """
@@ -701,7 +701,7 @@ class DuplicatesByTicket(Tickets):
     (i.e. whose `duplicate_of` field points to this ticket.
 
     """
-    slave_grid_format = 'html'
+    display_mode = 'html'
     label = _("Duplicates")
     master_key = 'duplicate_of'
     column_names = "overview state *"
@@ -752,12 +752,12 @@ class UnassignedTickets(Tickets):
 class TicketsByEndUser(Tickets):
     master_key = 'end_user'
     column_names = ("overview:50 workflow_buttons * ")
-    # slave_grid_format = "summary"
+    # display_mode = "summary"
     required_roles = dd.login_required(TicketsReader)
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for this table.
 
         """
@@ -906,10 +906,10 @@ class MyTickets(My, Tickets):
 
 class TicketsSummary(Tickets):
     order_by = ["state", "priority", "-id"]
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, master, ar):
+    def get_table_summary(self, master, ar):
         # master is None when called on a master table.
         if master is None:
             sar = ar
@@ -1114,7 +1114,7 @@ class TicketsBySite(TicketsSummary):
 #     master_key = None
 #     # required_roles = dd.login_required(Triager)
 #     # column_names = ("overview:50 workflow_buttons upgrade_notes *")
-#     slave_grid_format = "html"
+#     display_mode = "html"
 
 #     @classmethod
 #     def get_filter_kw(self, ar, **kw):

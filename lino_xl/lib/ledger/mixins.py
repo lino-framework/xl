@@ -266,7 +266,7 @@ class ItemsByVoucher(dd.Table):
     master_key = 'voucher'
     order_by = ["seqno"]
     auto_fit_column_widths = True
-    slave_grid_format = 'html'
+    display_mode = 'html'
     preview_limit = 0
 
 class VouchersByPartnerBase(dd.VirtualTable):
@@ -281,7 +281,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
 
     order_by = ["-entry_date", '-id']
     master = 'contacts.Partner'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     _master_field_name = 'partner'
     _voucher_base = PartnerRelated
@@ -318,7 +318,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
         return row.state
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
 
         elems = []
         sar = self.request(master_instance=obj)

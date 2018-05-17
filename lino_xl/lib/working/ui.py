@@ -162,10 +162,10 @@ class SessionsByTicket(Sessions):
     master_key = 'ticket'
     column_names = 'start_date summary start_time end_time  '\
                    'break_time duration user is_fixing *'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         if ar is None:
             return ''
         elems = []

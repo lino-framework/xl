@@ -349,7 +349,7 @@ from lino_xl.lib.ledger.mixins import ItemsByVoucher
 # class ItemsByVoucher(ItemsByVoucher):
 #     suggest = ShowSuggestions()
 #     suggestions_table = None  # 'finan.SuggestionsByJournalEntry'
-    # slave_grid_format = 'html'
+    # display_mode = 'html'
     # preview_limit = 0
     # label = _("Content")
 

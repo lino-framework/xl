@@ -355,7 +355,7 @@ class AllVotes(Votes):
 #     label = _("Votes")
 #     master_key = 'project'
 #     column_names = 'votable user workflow_buttons *'
-#     slave_grid_format = 'summary'
+#     display_mode = 'summary'
 #     stay_in_grid = True
 
     
@@ -423,7 +423,7 @@ class VotesByVotable(Votes):
     column_names = 'user workflow_buttons mail_mode *'
     # show_detail_navigator = False
     # hide_top_toolbar = True
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     # exclude_vote_states = 'author'
     stay_in_grid = True
 
@@ -443,9 +443,9 @@ class VotesByVotable(Votes):
     """
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         """Customized :meth:`summary view
-        <lino.core.actors.Actor.get_slave_summary>` for this table.
+        <lino.core.actors.Actor.get_table_summary>` for this table.
 
         """
         sar = self.request_from(ar, master_instance=obj)

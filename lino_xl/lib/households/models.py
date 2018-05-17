@@ -431,7 +431,7 @@ class SiblingsByPerson(Members):
     # column_names = 'person role start_date end_date *'
     order_by = ['birth_date']
     auto_fit_column_widths = True
-    # slave_grid_format = 'summary'
+    # display_mode = 'summary'
     window_size = (100, 20)
 
     @classmethod
@@ -469,7 +469,7 @@ class SiblingsByPerson(Members):
         return super(SiblingsByPerson, self).get_filter_kw(ar, **kw)
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         # For every child, we want to display its relationship to
         # every parent of this household.
         sar = self.request(master_instance=obj)
@@ -568,11 +568,11 @@ class MembersByPerson(Members):
     """
     # auto_fit_column_widths = True
     # hide_columns = 'id'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     stay_in_grid = True
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         sar = self.request(master_instance=obj)
         elems = []
         # n = sar.get_total_count()
