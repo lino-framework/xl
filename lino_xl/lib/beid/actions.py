@@ -341,6 +341,7 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
             data = AttrDict(data)
             if not data.success:
                 raise Warning(_("No card data found."))
+            print("20180518", data)
             attrs = self.card2client(data)
         else:
             data = yaml2dict(ar.request.POST)
