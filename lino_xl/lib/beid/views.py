@@ -30,12 +30,15 @@ def load_card_data(uuid):
             # dd.logger.info("20180412 json.load({}) returned {}".format(
             #     fn, rv))
             return rv
+            # raise Warning(
+            #     _("Got invalid card data {} from eidreader.").format(rv))
+        
         except IOError as e:
             # dd.logger.info("20180412 {} : {}".format(fn, e))
             time.sleep(1)
             count += 1
             if count > timeout:
-                raise Exception(_("Abandoned after {} seconds").format(
+                raise Warning(_("Abandoned after {} seconds").format(
                     timeout))
                 # rv = dict(success=False)
                 # break
@@ -49,7 +52,8 @@ class EidStore(View):
     
     def post(self, request, uuid, **kw):
         # uuid = request.POST.get('uuid')
-        card_data = request.POST  # ['card_data']
+        card_data = request.POST.get('card_data')
+        # card_data = json.loads(card_data)
         
         # msg = "20180412 raw data {}".format(request.body)
         # dd.logger.info(msg)
@@ -62,7 +66,8 @@ class EidStore(View):
         # pth = join(pth, uuid)
         try:
             fp = open(fn, 'w')
-            json.dump(card_data, fp)
+            fp.write(card_data)
+            # json.dump(card_data, fp)
             fp.close()
         except IOError as e:
             dd.logger.warning(

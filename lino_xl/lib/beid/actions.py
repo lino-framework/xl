@@ -10,6 +10,7 @@ See unit tests in :mod:`lino_welfare.tests.test_beid`.
 
 """
 import six
+from builtins import str
 import logging
 logger = logging.getLogger(__name__)
 
@@ -22,6 +23,7 @@ from django.conf import settings
 import dateparser
 
 from lino.core.diff import ChangeWatcher
+from lino.core.constants import parse_boolean
 from lino.utils import AttrDict
 from lino.api import dd, rt, _
 from lino.utils import ssin
@@ -51,7 +53,7 @@ def get_image_path(card_number):
 
 def simulate_wrap(msg):
     if dd.plugins.beid.read_only_simulate:
-        msg = "(%s:) %s" % (unicode(_("Simulation")), msg)
+        msg = "(%s:) %s" % (str(_("Simulation")), msg)
     return msg
 
 def yaml2dict(data):
@@ -278,7 +280,7 @@ class BaseBeIdReadCardAction(dd.Action):
 
         if len(diffs) == 0:
             return self.goto_client_response(
-                ar, obj, _("Client %s is up-to-date") % unicode(obj))
+                ar, obj, _("Client %s is up-to-date") % str(obj))
 
         oldobj = obj
         watcher = ChangeWatcher(obj)
@@ -339,9 +341,17 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
         if settings.SITE.beid_protocol:
             data = load_card_data(ar.request.POST['uuid'])
             data = AttrDict(data)
+
+            # quick hack to fix #2393. a better solution would be to
+            # make eidreader not POST every key-value using requests
+            # but to send a single field card_data which would be a
+            # json encoded dict.
+            # if isinstance(data.success, six.string_types):
+            #     data.success = parse_boolean(data.success.lower())
             if not data.success:
-                raise Warning(_("No card data found."))
-            print("20180518", data)
+                raise Warning(_("No card data found: {}").format(
+                    data.message))
+            # print("20180518", data)
             attrs = self.card2client(data)
         else:
             data = yaml2dict(ar.request.POST)
