@@ -815,7 +815,7 @@ class TicketsToTriage(Tickets):
     required_roles = dd.login_required(Triager)
     button_label = _("Triage")
     order_by = "priority -id".split()
-    column_names = 'overview:50 priority topic:10 #user:10 project:10 ' \
+    column_names = 'overview:50 priority topic:10 #user:10 ' \
                    '#assigned_to:10 ticket_type:10 workflow_buttons:40 *'
     params_panel_hidden = True
 
