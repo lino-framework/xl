@@ -63,7 +63,7 @@ class DueMovement(object):
         #     flt.update(project=self.project)
         # else:
         #     flt.update(project__isnull=True)
-        # qs = rt.modules.ledger.Movement.objects.filter(**flt)
+        # qs = rt.models.ledger.Movement.objects.filter(**flt)
         # for mvt in qs.order_by('voucher__date'):
         #     self.collect(mvt)
 
@@ -74,7 +74,7 @@ class DueMovement(object):
     def collect_all(self):
         flt = dict(
             partner=self.partner, account=self.account, match=self.match)
-        for mvt in rt.modules.ledger.Movement.objects.filter(**flt):
+        for mvt in rt.models.ledger.Movement.objects.filter(**flt):
             self.collect(mvt)
             
     def collect(self, mvt):
@@ -189,13 +189,13 @@ def get_due_movements(dc, **flt):
 
 def check_clearings_by_account(account, matches=[]):
     # not used. See blog/2017/0802.rst
-    qs = rt.modules.ledger.Movement.objects.filter(
+    qs = rt.models.ledger.Movement.objects.filter(
         account=account).order_by('match')
     check_clearings(qs, matches)
     on_ledger_movement.send(sender=account.__class__, instance=account)
     
 def check_clearings_by_partner(partner, matches=[]):
-    qs = rt.modules.ledger.Movement.objects.filter(
+    qs = rt.models.ledger.Movement.objects.filter(
         partner=partner).order_by('match')
     check_clearings(qs, matches)
     on_ledger_movement.send(sender=partner.__class__, instance=partner)

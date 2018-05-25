@@ -13,7 +13,7 @@ from lino.api import rt
 
 def objects():
 
-    for o in rt.modules.contacts.Partner.objects.all():
+    for o in rt.models.contacts.Partner.objects.all():
         o.update_dupable_words()
 
     return []

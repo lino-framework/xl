@@ -313,7 +313,7 @@ class LinksByTicket(Links):
         mi = ar.master_instance  # a Person
         if mi is None:
             return
-        Link = rt.modules.tickets.Link
+        Link = rt.models.tickets.Link
         flt = Q(parent=mi) | Q(child=mi)
         return Link.objects.filter(flt).order_by(
             'child__modified', 'parent__modified')

@@ -113,7 +113,7 @@ class PaperType(BabelNamed):
 
     @dd.chooser(simple_values=True)
     def template_choices(cls):
-        bm = rt.modules.printing.BuildMethods.get_system_default()
+        bm = rt.models.printing.BuildMethods.get_system_default()
         return rt.find_template_config_files(
             bm.template_ext, cls.templates_group)
 
@@ -187,7 +187,7 @@ class SalesDocument(VatDocument, Certifiable):
         return TradeTypes.sales
 
     def add_voucher_item(self, product=None, qty=None, **kw):
-        Product = rt.modules.products.Product
+        Product = rt.models.products.Product
         if product is not None:
             if not isinstance(product, Product):
                 product = Product.objects.get(pk=product)

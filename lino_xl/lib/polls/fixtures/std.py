@@ -7,7 +7,7 @@ from lino.api import dd, rt, _
 
 def objects():
 
-    polls = rt.modules.polls
+    polls = rt.models.polls
 
     # yesno = polls.ChoiceSet(name="Yes/No")
     # yield yesno

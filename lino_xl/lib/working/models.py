@@ -365,9 +365,9 @@ def welcome_messages(ar):
     """Yield messages for the welcome page."""
     #todo show all users active sessions
 
-    Session = rt.modules.working.Session
-    # Ticket = rt.modules.tickets.Ticket
-    # TicketStates = rt.modules.tickets.TicketStates
+    Session = rt.models.working.Session
+    # Ticket = rt.models.tickets.Ticket
+    # TicketStates = rt.models.tickets.TicketStates
     me = ar.get_user()
 
     # your open sessions (i.e. those you are busy with)
@@ -412,7 +412,7 @@ dd.add_welcome_handler(welcome_messages)
 if False:  # works, but is not useful
 
     def weekly_reporter(days, ar, start_date, end_date):
-        Session = rt.modules.working.Session
+        Session = rt.models.working.Session
         me = ar.get_user()
         qs = Session.objects.filter(
             user=me, start_date__gte=start_date, end_date__lte=end_date)

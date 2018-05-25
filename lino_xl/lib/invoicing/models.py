@@ -79,7 +79,7 @@ class Plan(UserAuthored):
     @dd.chooser()
     def journal_choices(cls):
         vt = dd.plugins.invoicing.get_voucher_type()
-        return rt.modules.ledger.Journal.objects.filter(voucher_type=vt)
+        return rt.models.ledger.Journal.objects.filter(voucher_type=vt)
 
     def full_clean(self):
         if self.journal is None:
@@ -137,7 +137,7 @@ class Plan(UserAuthored):
         second returned Erna as Pupil, so they were not grouped.
 
         """
-        Item = rt.modules.invoicing.Item
+        Item = rt.models.invoicing.Item
         collected = dict()
         for obj in self.get_invoiceables_for_plan():
             partner = obj.get_invoiceable_partner()
@@ -174,7 +174,7 @@ class Plan(UserAuthored):
     # def execute_plan(self,  ar):
     #     """Create an invoice for the given partner.
     #     """
-    #     InvoiceItem = rt.modules.sales.InvoiceItem
+    #     InvoiceItem = rt.models.sales.InvoiceItem
 
     # @dd.displayfield(_("Actions"))
     # def action_buttons(self, ar):
@@ -395,6 +395,6 @@ def install_start_action(sender=None, **kwargs):
     # vt = get_invoicing_voucher_type()
     vt.table_class.start_invoicing = StartInvoicingForJournal()
 
-    rt.modules.contacts.Partner.start_invoicing = StartInvoicingForPartner()
+    rt.models.contacts.Partner.start_invoicing = StartInvoicingForPartner()
     
 

@@ -39,11 +39,11 @@ class CountryCity(dd.Model):
 
     @dd.chooser()
     def city_choices(cls, country):
-        return rt.modules.countries.Place.get_cities(country)
+        return rt.models.countries.Place.get_cities(country)
 
     @dd.chooser()
     def country_choices(cls):
-        return rt.modules.countries.Country.get_actual_countries()
+        return rt.models.countries.Country.get_actual_countries()
 
     def create_city_choice(self, text):
         """
@@ -51,7 +51,7 @@ class CountryCity(dd.Model):
         Try to auto-create it.
         """
         if self.country is not None:
-            return rt.modules.countries.Place.lookup_or_create(
+            return rt.models.countries.Place.lookup_or_create(
                 'name', text, country=self.country)
 
         raise ValidationError(
@@ -66,7 +66,7 @@ class CountryCity(dd.Model):
 
     def zip_code_changed(self, ar):
         if self.country and self.zip_code:
-            qs = rt.modules.countries.Place.objects.filter(
+            qs = rt.models.countries.Place.objects.filter(
                 country=self.country, zip_code=self.zip_code)
             if qs.count() > 0:
                 self.city = qs[0]
@@ -100,7 +100,7 @@ class CountryRegionCity(CountryCity):
 
     @dd.chooser()
     def region_choices(cls, country):
-        Place = rt.modules.countries.Place
+        Place = rt.models.countries.Place
         if country is not None:
             cd = getattr(CountryDrivers, country.isocode, None)
             if cd:

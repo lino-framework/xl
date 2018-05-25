@@ -101,7 +101,7 @@ class CreateMail(dd.Action):
 
         as_attachment = elem.attach_to_email(ar)
 
-        m = rt.modules.outbox.Mail(
+        m = rt.models.outbox.Mail(
             user=ar.get_user(),
             date=dd.today(),
             subject=elem.get_mailable_subject(),
@@ -110,13 +110,13 @@ class CreateMail(dd.Action):
         m.body = elem.get_mailable_intro(ar)
         m.full_clean()
         m.save()
-        Recipient = rt.modules.outbox.Recipient
+        Recipient = rt.models.outbox.Recipient
         for t, p in elem.get_mailable_recipients():
             r = Recipient(mail=m, type=t, partner=p)
             r.full_clean()
             r.save()
         if as_attachment:
-            a = rt.modules.outbox.Attachment(mail=m, owner=elem)
+            a = rt.models.outbox.Attachment(mail=m, owner=elem)
             a.save()
         ar.goto_instance(m)
         ar.success(**kw)

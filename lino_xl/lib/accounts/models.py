@@ -70,7 +70,7 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
     def full_clean(self, *args, **kw):
         if self.group_id is not None:
             if not self.ref:
-                qs = rt.modules.accounts.Account.objects.all()
+                qs = rt.models.accounts.Account.objects.all()
                 self.ref = str(qs.count() + 1)
             if not self.name:
                 self.name = self.group.name

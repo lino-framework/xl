@@ -81,10 +81,10 @@ class ByJournal(dd.Table):
         if isinstance(trade_type, six.string_types):
             trade_type = TradeTypes.get_by_name(trade_type)
         if isinstance(account, six.string_types):
-            account = rt.modules.accounts.Account.get_by_ref(account)
+            account = rt.models.accounts.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
-        return rt.modules.ledger.Journal(
+        return rt.models.ledger.Journal(
             trade_type=trade_type, voucher_type=vt, **kw)
 
 class PrintableByJournal(ByJournal):
@@ -211,7 +211,7 @@ class ExpectedMovements(dd.VirtualTable):
         if pv.date_until is not None:
             flt.update(value_date__lte=pv.date_until)
         if pv.for_journal is not None:
-            accounts = rt.modules.accounts.Account.objects.filter(
+            accounts = rt.models.accounts.Account.objects.filter(
                 matchrule__journal=pv.for_journal).distinct()
             flt.update(account__in=accounts)
         if pv.from_journal is not None:
@@ -220,7 +220,7 @@ class ExpectedMovements(dd.VirtualTable):
 
     @classmethod
     def get_pk_field(self):
-        return rt.modules.ledger.Movement._meta.pk
+        return rt.models.ledger.Movement._meta.pk
 
     @classmethod
     def get_row_by_pk(cls, ar, pk):
@@ -228,7 +228,7 @@ class ExpectedMovements(dd.VirtualTable):
         #     if i.id == pk:
         #         return i
         # raise Exception("Not found: %s in %s" % (pk, ar))
-        mvt = rt.modules.ledger.Movement.objects.get(pk=pk)
+        mvt = rt.models.ledger.Movement.objects.get(pk=pk)
         dm = DueMovement(cls.get_dc(ar), mvt)
         dm.collect_all()
         return dm
@@ -587,7 +587,7 @@ class DebtorsCreditors(dd.VirtualTable):
         else:   # called from Situation report
             end_date = mi.today
         
-        qs = rt.modules.contacts.Partner.objects.order_by('name')
+        qs = rt.models.contacts.Partner.objects.order_by('name')
         for row in qs:
             row._balance = ZERO
             row._due_date = None

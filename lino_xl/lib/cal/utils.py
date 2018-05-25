@@ -104,12 +104,12 @@ def when_text(d, t=None):
 def update_auto_event(
         autotype, user, date, summary, owner, **defaults):
     return update_auto_component(
-        rt.modules.cal.Event, autotype, user, date, summary, owner, **defaults)
+        rt.models.cal.Event, autotype, user, date, summary, owner, **defaults)
 
 
 def update_auto_task(
         autotype, user, date, summary, owner, **defaults):
-    Task = rt.modules.cal.Task
+    Task = rt.models.cal.Task
     return update_auto_component(
         Task, autotype, user, date, summary, owner, **defaults)
 
@@ -129,7 +129,7 @@ def update_auto_component(
     if settings.SITE.loading_from_dump:
             #~ print "20111014 loading_from_dump"
         return None
-    ContentType = rt.modules.contenttypes.ContentType
+    ContentType = rt.models.contenttypes.ContentType
     ot = ContentType.objects.get_for_model(owner.__class__)
     if date and date >= settings.SITE.today() + datetime.timedelta(days=-7):
         #~ defaults = owner.get_auto_task_defaults(**defaults)

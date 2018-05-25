@@ -4,8 +4,8 @@
 from lino.api import dd, rt, _
 
 def objects():
-    ExcerptType = rt.modules.excerpts.ExcerptType
-    ContentType = rt.modules.contenttypes.ContentType
+    ExcerptType = rt.models.excerpts.ExcerptType
+    ContentType = rt.models.contenttypes.ContentType
 
     yield ExcerptType(
         template="default.weasy.html",

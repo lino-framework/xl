@@ -54,7 +54,7 @@ class ShowSuggestions(dd.Action):
             # logger.info("%s has no suggestions_table", actor)
             return  # don't attach
         if isinstance(actor.suggestions_table, six.string_types):
-            T = rt.modules.resolve(actor.suggestions_table)
+            T = rt.models.resolve(actor.suggestions_table)
             if T is None:
                 raise Exception("No table named %s" % actor.suggestions_table)
             actor.suggestions_table = T

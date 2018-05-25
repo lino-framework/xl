@@ -27,9 +27,9 @@ SUBJECTS = Cycler((
 
 
 def objects():
-    User = rt.modules.users.User
-    Note = rt.modules.notes.Note
-    NoteType = rt.modules.notes.NoteType
+    User = rt.models.users.User
+    Note = rt.models.notes.Note
+    NoteType = rt.models.notes.NoteType
 
     USERS = Cycler(User.objects.all())
     if settings.SITE.project_model is not None:

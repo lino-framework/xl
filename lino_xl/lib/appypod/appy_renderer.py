@@ -111,7 +111,7 @@ class AppyRenderer(OriginalAppyRenderer):
         context.update(settings=settings)
         context.update(sc=settings.SITE.site_config)
         if False:
-            context.update(settings.SITE.modules)
+            context.update(settings.SITE.models)
             # 20150810 removed above line because this "feature"
             # caused the name `jinja` defined above to be overridden.
         kw.update(finalizeFunction=self.finalize_func)

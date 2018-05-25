@@ -112,7 +112,7 @@ class SubscriptionsByCalendar(Subscriptions):
 
 def check_subscription(user, calendar):
     "Check whether the given subscription exists. If not, create it."
-    Subscription = rt.modules.cal.Subscription
+    Subscription = rt.models.cal.Subscription
     if calendar is None:
         return
     try:
@@ -748,7 +748,7 @@ class ConflictingEvents(Events):
     def get_request_queryset(self, ar, **kwargs):
         qs = ar.master_instance.get_conflicting_events()
         if qs is None:
-            return rt.modules.cal.Event.objects.none()
+            return rt.models.cal.Event.objects.none()
         return qs
     
 

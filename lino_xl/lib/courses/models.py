@@ -162,7 +162,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
 
     @dd.chooser()
     def fee_choices(cls, fees_cat):
-        Product = rt.modules.products.Product
+        Product = rt.models.products.Product
         if not fees_cat:
             return Product.objects.none()
         return Product.objects.filter(cat=fees_cat)
@@ -282,7 +282,7 @@ class Course(Reservation, Duplicable, Printable):
         if self.line_id:
             area = self.line.course_area
             if area:
-                table = rt.actors.resolve(area.courses_table)
+                table = rt.models.resolve(area.courses_table)
                 ba = table.detail_action
                 ba = ba.action.defining_actor.detail_action
                 # if ar is None or ba.get_row_permission(ar, self, None):
@@ -323,7 +323,7 @@ class Course(Reservation, Duplicable, Printable):
     def suggest_cal_guests(self, event):
         """Look up enrolments of this course and suggest them as guests."""
         # logger.info("20140314 suggest_guests")
-        Guest = rt.modules.cal.Guest
+        Guest = rt.models.cal.Guest
         Enrolment = rt.models.courses.Enrolment
         if self.line is None:
             return
@@ -410,14 +410,14 @@ class Course(Reservation, Duplicable, Printable):
 
     @property
     def events_by_course(self):
-        ct = rt.modules.contenttypes.ContentType.objects.get_for_model(
+        ct = rt.models.contenttypes.ContentType.objects.get_for_model(
             self.__class__)
-        return rt.modules.cal.Event.objects.filter(
+        return rt.models.cal.Event.objects.filter(
             owner_type=ct, owner_id=self.id)
 
     def get_places_sum(self, today=None, **flt):
         Enrolment = rt.models.courses.Enrolment
-        PeriodEvents = rt.modules.system.PeriodEvents
+        PeriodEvents = rt.models.system.PeriodEvents
         qs = Enrolment.objects.filter(course=self, **flt)
         # see voga.projects.roger.tests.test_max_places
         if today is None:
@@ -451,7 +451,7 @@ class Course(Reservation, Duplicable, Printable):
         return self.get_places_sum(state=EnrolmentStates.requested)
         # pv = dict(start_date=dd.today())
         # pv.update(state=EnrolmentStates.requested)
-        # return rt.actors.courses.EnrolmentsByCourse.request(
+        # return rt.models.courses.EnrolmentsByCourse.request(
         #     self, param_values=pv)
 
     @dd.virtualfield(models.IntegerField(_("Confirmed")))
@@ -459,7 +459,7 @@ class Course(Reservation, Duplicable, Printable):
         return self.get_places_sum(state=EnrolmentStates.confirmed)
         # pv = dict(start_date=dd.today())
         # pv.update(state=EnrolmentStates.confirmed)
-        # return rt.actors.courses.EnrolmentsByCourse.request(
+        # return rt.models.courses.EnrolmentsByCourse.request(
         #     self, param_values=pv)
 
     @dd.virtualfield(models.IntegerField(_("Trying")))
@@ -484,7 +484,7 @@ class Course(Reservation, Duplicable, Printable):
         # if not pv.start_date or not pv.end_date:
         #     return ''
         events = self.events_by_course.order_by('start_date')
-        events = rt.modules.system.PeriodEvents.started.add_filter(events, pv)
+        events = rt.models.system.PeriodEvents.started.add_filter(events, pv)
         return "TODO: copy logic from presence_sheet.wk.html"
 
 
@@ -613,7 +613,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
     def option_choices(cls, course):
         if not course.line or not course.line.options_cat:
             return []
-        Product = rt.modules.products.Product
+        Product = rt.models.products.Product
         return Product.objects.filter(cat=course.line.options_cat)
 
     def get_confirm_veto(self, ar):

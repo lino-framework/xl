@@ -54,7 +54,7 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
     def recent_comments(self, ar):
         if ar is None:
             return ''
-        cls = rt.actors.comments.CommentsByRFC
+        cls = rt.models.comments.CommentsByRFC
         sar = cls.request_from(
             ar, master_instance=self, limit=3)
         chunks = []

@@ -128,7 +128,7 @@ class Household(contacts.Partner):
         self.populate_members.run_from_code(ar)
         
     def add_member(self, person, role=None):
-        mbr = rt.modules.households.Member(
+        mbr = rt.models.households.Member(
             household=self, person=person, role=role)
         mbr.full_clean()
         mbr.save()
@@ -136,7 +136,7 @@ class Household(contacts.Partner):
 
     def members_by_role(self, rolename):
         role = MemberRoles.get_by_name(rolename)
-        # return rt.modules.households.Member.objects.filter(
+        # return rt.models.households.Member.objects.filter(
         #     household=self, role=role)
         return self.member_set.filter(role=role)
 
@@ -309,7 +309,7 @@ class Member(mixins.DateRange, mixins.Human, mixins.Born):
                 else:
                     has_all_fields = False
             if has_all_fields:
-                # M = rt.modules.pcsw.Client
+                # M = rt.models.pcsw.Client
                 M = config.person_model
                 try:
                     obj = M.objects.get(**kw)
@@ -440,7 +440,7 @@ class SiblingsByPerson(Members):
         mi = ar.master_instance  # a Person
         if mi is None:
             return
-        M = rt.modules.households.Member
+        M = rt.models.households.Member
         mbr = M.objects.filter(person=mi)
         if mbr.count() == 1:
             ar.master_household = mbr[0].household
@@ -502,7 +502,7 @@ class SiblingsByPerson(Members):
         if not dd.is_installed('humanlinks'):
             return []
         types = {}  # mapping LinkType -> list of parents
-        for lnk in rt.modules.humanlinks.Link.objects.filter(child=child):
+        for lnk in rt.models.humanlinks.Link.objects.filter(child=child):
                 # child=child, parent=p):
             tt = lnk.type.as_child(lnk.child)
             l = types.setdefault(tt, [])

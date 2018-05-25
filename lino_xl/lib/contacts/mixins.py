@@ -43,13 +43,13 @@ class ContactRelated(dd.Model):
         """
         if company is not None:
             return cls.contact_person_choices_queryset(company)
-        return rt.modules.contacts.Person.objects.order_by(
+        return rt.models.contacts.Person.objects.order_by(
             'last_name', 'first_name')
 
     def get_contact(self):
         if self.contact_person is not None:
             if self.company is not None:
-                roles = rt.modules.contacts.Role.objects.filter(
+                roles = rt.models.contacts.Role.objects.filter(
                     company=self.company, person=self.contact_person)
                 #~ print '20120929 get_contact', roles
                 if roles.count() == 1:
@@ -61,7 +61,7 @@ class ContactRelated(dd.Model):
             return contact
         if self.contact_person is not None:
             if self.company is not None:
-                return rt.modules.contacts.Role(
+                return rt.models.contacts.Role(
                     company=self.company, person=self.contact_person)
             return self.contact_person
         return self.company
@@ -111,7 +111,7 @@ class ContactRelated(dd.Model):
     def contact_person_changed(self, ar):
         #~ print '20120929 contact_person_changed'
         if self.company and not self.contact_person_id:
-            roles = rt.modules.contacts.Role.objects.filter(
+            roles = rt.models.contacts.Role.objects.filter(
                 company=self.company)
             if roles.count() == 1:
                 self.contact_person = roles[0].person
@@ -124,7 +124,7 @@ class ContactRelated(dd.Model):
         Return a queryset of candidate Person objects allowed
         in `contact_person` for a given `company`.
         """
-        return settings.SITE.modules.contacts.Person.objects.filter(
+        return settings.SITE.models.contacts.Person.objects.filter(
             rolesbyperson__company=company).distinct()
 
     def full_clean(self, *args, **kw):
@@ -190,9 +190,9 @@ class PartnerDocument(dd.Model):
     def update_owned_instance(self, other):
         #~ print '20120627 PartnerDocument.update_owned_instance'
         if isinstance(other, dd.ProjectRelated):
-            if isinstance(self.person, rt.modules.contacts.Person):
+            if isinstance(self.person, rt.models.contacts.Person):
                 other.project = self.person
-            elif isinstance(self.company, rt.modules.contacts.Person):
+            elif isinstance(self.company, rt.models.contacts.Person):
                 other.project = self.company
         other.person = self.person
         other.company = self.company
@@ -227,7 +227,7 @@ class OldCompanyContact(dd.Model):
 
     @classmethod
     def contact_choices_queryset(cls, company):
-        return rt.modules.contacts.Role.objects.filter(company=company)
+        return rt.models.contacts.Role.objects.filter(company=company)
 
     def full_clean(self, *args, **kw):
         if self.company:

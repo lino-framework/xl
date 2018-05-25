@@ -115,13 +115,13 @@ class Matching(dd.Model):
     def get_match_choices(cls, journal, partner):
         """This is the general algorithm.
         """
-        matchable_accounts = rt.modules.accounts.Account.objects.filter(
+        matchable_accounts = rt.models.accounts.Account.objects.filter(
             matchrule__journal=journal)
         fkw = dict(account__in=matchable_accounts)
         fkw.update(cleared=False)
         if partner:
             fkw.update(partner=partner)
-        qs = rt.modules.ledger.Movement.objects.filter(**fkw)
+        qs = rt.models.ledger.Movement.objects.filter(**fkw)
         qs = qs.order_by('value_date')
         # qs = qs.distinct('match')
         return qs.values_list('match', flat=True)
@@ -181,7 +181,7 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
     def account_choices(self, voucher):
         if voucher and voucher.journal:
             return voucher.journal.get_allowed_accounts()
-        return rt.modules.accounts.Account.objects.none()
+        return rt.models.accounts.Account.objects.none()
 
 
 def JournalRef(**kw):

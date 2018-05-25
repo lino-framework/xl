@@ -9,7 +9,7 @@ from lino.utils import Cycler
 
 def objects():
 
-    polls = rt.modules.polls
+    polls = rt.models.polls
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
 

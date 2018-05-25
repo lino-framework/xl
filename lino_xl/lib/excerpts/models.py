@@ -232,7 +232,7 @@ We override everything in Excerpt to not call the class method.""")
         model = self.content_type.model_class()
         if not isinstance(obj, model):
             raise Exception("%s is not an instance of %s" % (obj, model))
-        Excerpt = rt.modules.excerpts.Excerpt
+        Excerpt = rt.models.excerpts.Excerpt
         ex = None
         if self.certifying:
             qs = Excerpt.objects.filter(
@@ -573,7 +573,7 @@ class Excerpt(TypedPrintable, UserAuthored,
     @dd.chooser()
     def excerpt_type_choices(cls, owner):
         # logger.info("20150702 %s", owner)
-        qs = rt.modules.excerpts.ExcerptType.objects.order_by('name')
+        qs = rt.models.excerpts.ExcerptType.objects.order_by('name')
         if owner is None:
             # e.g. when choosing on the *parameter* field
             # return qs.filter(content_type__isnull=True)

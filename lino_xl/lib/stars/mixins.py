@@ -15,7 +15,7 @@ from django.db import IntegrityError
 
 def get_favourite(obj, user, **kws):
     if user.authenticated:
-        qs = rt.modules.stars.Star.for_obj(obj, user=user,**kws)
+        qs = rt.models.stars.Star.for_obj(obj, user=user,**kws)
         # if qs.count() == 0:
         #     return None
         # return qs[0]
@@ -38,14 +38,14 @@ class StarObject(dd.Action):
     #     return super(StarObject, self).get_action_permission(ar, obj, state)
 
     def run_from_ui(self, ar, **kw):
-        Star = rt.modules.stars.Star
+        Star = rt.models.stars.Star
         obj = ar.selected_rows[0]
         Star.create_star(obj, ar)
         ar.success(
             _("{0} is now starred.").format(obj), refresh_all=True)
 
     # def create_star(self, obj, ar):
-    #     Star = rt.modules.stars.Star
+    #     Star = rt.models.stars.Star
     #     Star(owner=obj, user=ar.get_user()).save()
 
 class FullStarObject(StarObject):
@@ -59,8 +59,8 @@ class FullStarObject(StarObject):
     # def get_action_permission(self, ar, obj, state):
     #     user = ar.get_user()
     #     if user.authenticated:
-    #         master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
-    #         child_star_qs = rt.modules.stars.Star.for_obj(obj, user=user)
+    #         master_star_qs = rt.models.stars.Star.for_obj(obj, user=user, master__isnull=True)
+    #         child_star_qs = rt.models.stars.Star.for_obj(obj, user=user)
     #         if not (master_star_qs.count() == 0 and child_star_qs.count()):
     #             return False
     #     else:
@@ -80,7 +80,7 @@ class UnstarObject(dd.Action):
     # def get_action_permission(self, ar, obj, state):
     #     user = ar.get_user()
     #     if user.authenticated:
-    #         master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
+    #         master_star_qs = rt.models.stars.Star.for_obj(obj, user=user, master__isnull=True)
     #         if not (master_star_qs.count()):
     #             return False
     #     else:
@@ -95,11 +95,11 @@ class UnstarObject(dd.Action):
 
     def delete_star(self, obj, ar):
         user = ar.get_user()
-        # children_star_qs = rt.modules.stars.Star.for_master(obj, user=user)
+        # children_star_qs = rt.models.stars.Star.for_master(obj, user=user)
         # star = get_favourite(obj, ar.get_user())
         # children_star_qs.delete()
         # ON cascade delete?
-        master_star_qs = rt.modules.stars.Star.for_obj(obj, user=user, master__isnull=True)
+        master_star_qs = rt.models.stars.Star.for_obj(obj, user=user, master__isnull=True)
         master_star_qs.delete()
 
 class Starrable(ChangeNotifier):
@@ -166,7 +166,7 @@ class Starrable(ChangeNotifier):
 
         def add_child_stars(self, master, child,):
             """Add child stars to a master"""
-            Star = rt.modules.stars.Star
+            Star = rt.models.stars.Star
             for star in master.get_stars():
                 try:
                     Star(owner=child, user=star.user, master=star).save()

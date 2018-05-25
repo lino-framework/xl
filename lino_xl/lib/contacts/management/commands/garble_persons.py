@@ -63,9 +63,9 @@ class BelgianDistribution(Distribution):
 class EstonianDistribution(Distribution):
     def __init__(self):
         super(EstonianDistribution, self).__init__()
-        Country = rt.modules.countries.Country
-        Place = rt.modules.countries.Place
-        PlaceTypes = rt.modules.countries.PlaceTypes
+        Country = rt.models.countries.Country
+        Place = rt.models.countries.Place
+        PlaceTypes = rt.models.countries.PlaceTypes
         self.tallinn = Place.objects.get(
             type=PlaceTypes.town, name="Tallinn")
         self.eesti = Country.objects.get(isocode="EE")
@@ -81,8 +81,8 @@ class EstonianDistribution(Distribution):
         yield demo.FEMALE_FIRST_NAMES_ESTONIA
 
     def get_streets(self):
-        Place = rt.modules.countries.Place
-        PlaceTypes = rt.modules.countries.PlaceTypes
+        Place = rt.models.countries.Place
+        PlaceTypes = rt.models.countries.PlaceTypes
         for streetname, linnaosa in demo.streets_of_tallinn():
             t = PlaceTypes.township
             try:
@@ -133,7 +133,7 @@ class Command(BaseCommand):
         dist = build_dist(options.get('distribution'))
 
         User = dd.resolve_model(settings.SITE.user_model)
-        Person = rt.modules.contacts.Person
+        Person = rt.models.contacts.Person
 
         for p in Person.objects.order_by('id'):
             if User.objects.filter(partner=p).count() > 0:

@@ -14,8 +14,8 @@ from lino.api import dd, rt, _
 
 def objects():
 
-    PaperType = rt.modules.sales.PaperType
-    bm = rt.modules.printing.BuildMethods.get_system_default()
+    PaperType = rt.models.sales.PaperType
+    bm = rt.models.printing.BuildMethods.get_system_default()
     yield PaperType(
         template="DefaultLetter" + bm.template_ext,
         **dd.str2kw('name', _("Letter paper")))

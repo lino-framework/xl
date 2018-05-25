@@ -138,15 +138,15 @@ def create_prompt_event(
     ekw.update(user=user)
     if summary:
         ekw.update(summary=summary)
-    event = rt.modules.cal.Event(**ekw)
+    event = rt.models.cal.Event(**ekw)
     event.full_clean()
     event.save()
     if now is None:
         now = timezone.now()
-    rt.modules.cal.Guest(
+    rt.models.cal.Guest(
         event=event,
         partner=partner,
-        state=rt.modules.cal.GuestStates.waiting,
+        state=rt.models.cal.GuestStates.waiting,
         role=guest_role,
         #~ role=settings.SITE.site_config.client_guestrole,
         waiting_since=now
@@ -322,7 +322,7 @@ dd.inject_action(
 
 # @dd.receiver(dd.pre_analyze)
 # def my_guest_workflows(sender=None, **kw):
-#     Guest = rt.modules.cal.Guest
+#     Guest = rt.models.cal.Guest
 
 #     Guest.checkin = CheckinVisitor(sort_index=100)
 #     Guest.receive = ReceiveVisitor(sort_index=101)
@@ -493,7 +493,7 @@ class WaitingVisitors(Visitors):
     @dd.displayfield(
         _('Position'), help_text=_("Position in waiting queue (per agent)"))
     def position(self, obj, ar):
-        n = 1 + rt.modules.cal.Guest.objects.filter(
+        n = 1 + rt.models.cal.Guest.objects.filter(
             #~ waiting_since__isnull=False,
             #~ busy_since__isnull=True,
             state=GuestStates.waiting,

@@ -583,7 +583,7 @@ class AnswersByResponse(dd.VirtualTable):
         response = ar.master_instance
         if response is None:
             return
-        for q in rt.modules.polls.Question.objects.filter(poll=response.poll):
+        for q in rt.models.polls.Question.objects.filter(poll=response.poll):
             yield AnswersByResponseRow(response, q)
 
     @classmethod
@@ -598,8 +598,8 @@ class AnswersByResponse(dd.VirtualTable):
             return
         if response.poll_id is None:
             return
-        AnswerRemarks = rt.modules.polls.AnswerRemarksByAnswer
-        all_responses = rt.modules.polls.Response.objects.filter(
+        AnswerRemarks = rt.models.polls.AnswerRemarksByAnswer
+        all_responses = rt.models.polls.Response.objects.filter(
             poll=response.poll).order_by('date')
         if response.partner:
             all_responses = all_responses.filter(partner=response.partner)
@@ -691,7 +691,7 @@ class AnswersByResponse(dd.VirtualTable):
         if not sar.get_permission():
             return str(obj)
 
-        AnswerChoice = rt.modules.polls.AnswerChoice
+        AnswerChoice = rt.models.polls.AnswerChoice
         for c in cs.choices.all():
             pv.update(choice=c)
             text = str(c)
@@ -717,7 +717,7 @@ class AnswersByResponse(dd.VirtualTable):
     def get_row_by_pk(self, ar, pk):
         response = ar.master_instance
         #~ if response is None: return
-        q = rt.modules.polls.Question.objects.get(pk=pk)
+        q = rt.models.polls.Question.objects.get(pk=pk)
         return AnswersByResponseRow(response, q)
 
     @classmethod
@@ -779,7 +779,7 @@ class AnswersByQuestion(dd.VirtualTable):
         question = ar.master_instance
         if question is None:
             return
-        for r in rt.modules.polls.Response.objects.filter(poll=question.poll):
+        for r in rt.models.polls.Response.objects.filter(poll=question.poll):
             yield AnswersByQuestionRow(r, question)
 
     @dd.displayfield(_("Response"))

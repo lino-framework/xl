@@ -143,7 +143,7 @@ class Project(mixins.DateRange, TimeInvestment,
     # def activity_overview(self, ar):
     #     if ar is None:
     #         return ''
-    #     TicketsByProject = rt.modules.tickets.TicketsByProject
+    #     TicketsByProject = rt.models.tickets.TicketsByProject
     #     elems = []
     #     for tst in (TicketStates.objects()):
     #         pv = dict(state=tst)
@@ -371,14 +371,14 @@ class SpawnTicket(dd.Action):
 
 
     def spawn_ticket(self, ar, p):
-        c = rt.modules.tickets.Ticket(
+        c = rt.models.tickets.Ticket(
             user=ar.get_user(),
             summary=_("New ticket {0} #{1}".format(
                 self.link_type.as_child(), p.id)))
         return c
 
     def make_link(self, ar, new, old):
-        d = rt.modules.tickets.Link(
+        d = rt.models.tickets.Link(
             parent=old, child=new,
             type=self.link_type)
         d.full_clean()
@@ -524,7 +524,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         elif dd.is_installed('stars'):
             star = get_favourite(self, user=user, master=None)
             if star is None:
-                Star = rt.modules.stars.Star
+                Star = rt.models.stars.Star
                 star = Star(owner=self, user=user)
                 star.save()
 

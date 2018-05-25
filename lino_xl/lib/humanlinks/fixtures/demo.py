@@ -24,8 +24,8 @@ from lino.api import dd, rt
 def objects():
 
     Person = dd.resolve_model(dd.plugins.humanlinks.person_model)
-    Link = rt.modules.humanlinks.Link
-    LinkTypes = rt.modules.humanlinks.LinkTypes
+    Link = rt.models.humanlinks.Link
+    LinkTypes = rt.models.humanlinks.LinkTypes
     ar = rt.login()
 
     households = dd.resolve_app('households')

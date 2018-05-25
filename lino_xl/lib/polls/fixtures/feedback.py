@@ -9,7 +9,7 @@ from lino.utils import Cycler
 
 def objects():
 
-    polls = rt.modules.polls
+    polls = rt.models.polls
 
     five = polls.ChoiceSet.objects.get(name="1...5")
     ten = polls.ChoiceSet.objects.get(name="1...10")

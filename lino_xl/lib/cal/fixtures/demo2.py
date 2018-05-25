@@ -26,7 +26,7 @@ from lino.api import dd, rt
 cal = dd.resolve_app('cal')
 Event = dd.resolve_model('cal.Event')
 EventType = dd.resolve_model('cal.EventType')
-# Subscription = rt.modules.cal.Subscription
+# Subscription = rt.models.cal.Subscription
 Calendar = dd.resolve_model('cal.Calendar')
 
 

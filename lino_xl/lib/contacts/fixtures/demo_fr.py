@@ -17,8 +17,8 @@ def objects():
     male_first_names = demonames.MALE_FIRST_NAMES_FRANCE
     female_first_names = demonames.FEMALE_FIRST_NAMES_FRANCE
 
-    Person = rt.modules.contacts.Person
-    Place = rt.modules.countries.Place
+    Person = rt.models.contacts.Person
+    Place = rt.models.countries.Place
 
     CITIES = Cycler(
         Place.objects.filter(country_id='BE', zip_code__startswith='40'))

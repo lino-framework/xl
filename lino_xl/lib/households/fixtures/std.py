@@ -16,7 +16,7 @@ from lino.api import dd, rt
 
 
 def objects():
-    Type = rt.modules.households.Type
+    Type = rt.models.households.Type
 
     yield Type(**dd.str2kw('name', _("Married couple")))
     # Verheiratet / Marié

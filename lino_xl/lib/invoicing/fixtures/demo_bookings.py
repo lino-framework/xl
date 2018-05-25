@@ -27,7 +27,7 @@ def objects():
     if users.count() == 0:
         return
     ses = rt.login(users[0].username)
-    Plan = rt.modules.invoicing.Plan
+    Plan = rt.models.invoicing.Plan
 
     # we don't write invoices the last two months because we want to
     # have something in our invoicing plan.

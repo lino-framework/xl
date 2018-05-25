@@ -228,7 +228,7 @@ def welcome_messages(ar):
     and whose :attr:`nickname <Star.nickname>` is not empty.
 
     """
-    Star = rt.modules.stars.Star
+    Star = rt.models.stars.Star
     qs = Star.objects.filter(user=ar.get_user()).exclude(nickname='')
     if qs.count() > 0:
         chunks = [unicode(_("Your stars are "))]

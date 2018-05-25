@@ -83,7 +83,7 @@ COUNTRIES = {}
 def objects():
 
     n = 0
-    Country = settings.SITE.modules.countries.Country
+    Country = settings.SITE.models.countries.Country
     """
     
     """

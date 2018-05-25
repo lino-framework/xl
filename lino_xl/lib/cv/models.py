@@ -325,7 +325,7 @@ class Training(SectorFunction, EducationEntry):
 
     @dd.chooser()
     def type_choices(cls):
-        return rt.modules.cv.StudyType.objects.filter(is_training=True)
+        return rt.models.cv.StudyType.objects.filter(is_training=True)
 
 
 class Trainings(PeriodTable):
@@ -406,7 +406,7 @@ class Study(EducationEntry):
 
     @dd.chooser()
     def type_choices(cls):
-        return rt.modules.cv.StudyType.objects.filter(is_study=True)
+        return rt.models.cv.StudyType.objects.filter(is_study=True)
 
 
 class Studies(PeriodTable):
@@ -682,7 +682,7 @@ class ExperiencesByDuration(Experiences):
 
 @dd.receiver(dd.post_analyze)
 def set_detail_layouts(sender=None, **kwargs):
-    rt.modules.languages.Languages.set_detail_layout("""
+    rt.models.languages.Languages.set_detail_layout("""
     id iso2 name
     cv.KnowledgesByLanguage
     """)

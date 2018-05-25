@@ -74,7 +74,7 @@ def objects():
             country="EE")
     yield A('HABAEE2X', 'EE522200221013264447')
 
-    tallinn = rt.modules.countries.Place.objects.get(name="Tallinn")
+    tallinn = rt.models.countries.Place.objects.get(name="Tallinn")
     yield C('Ragn-Sells AS', "http://www.ragnsells.ee", country="EE",
             street="Suur-Sõjamäe", street_no=50, street_box="a",
             zip_code="11415",

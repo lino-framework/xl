@@ -233,4 +233,4 @@ dd.inject_field(
 
 @dd.schedule_often(3600)
 def update_all_repos():
-    Repository.update_all_repos.run_from_code(rt.actors.github.Repositories.request())
+    Repository.update_all_repos.run_from_code(rt.models.github.Repositories.request())

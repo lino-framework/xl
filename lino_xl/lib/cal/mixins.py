@@ -291,7 +291,7 @@ class EventGenerator(dd.Model):
             max_events = settings.SITE.site_config.max_auto_events
         else:
             max_events = rset.max_events
-        Event = settings.SITE.modules.cal.Event
+        Event = settings.SITE.models.cal.Event
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
         ignore_before = dd.plugins.cal.ignore_dates_before

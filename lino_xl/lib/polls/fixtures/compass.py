@@ -61,7 +61,7 @@ The freer the market, the freer the people.
 
 def objects():
 
-    polls = rt.modules.polls
+    polls = rt.models.polls
 
     agree = polls.ChoiceSet.objects.get(
         **dd.str2kw('name', _("Agree-Disagree")))

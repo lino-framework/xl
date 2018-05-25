@@ -11,8 +11,8 @@ from lino.utils.mldbc import babeld
 
 
 def objects():
-    ListType = rt.modules.lists.ListType
-    List = rt.modules.lists.List
+    ListType = rt.models.lists.ListType
+    List = rt.models.lists.List
 
     mailing = babeld(ListType, _("Mailing list"))
     yield mailing

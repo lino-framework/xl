@@ -71,7 +71,7 @@ class TimLoader(TimLoader):
 
     def objects(self):
 
-        MemberRoles = rt.modules.households.MemberRoles
+        MemberRoles = rt.models.households.MemberRoles
 
         self.household_roles = {
             'VATER': MemberRoles.head,
@@ -275,5 +275,5 @@ class TimLoader(TimLoader):
             kw.update(body=self.dbfmemo(row.memo))
             kw.update(user=obj.user)
             kw.update(date=obj.start_date)
-            yield rt.modules.notes.Note(**kw)
+            yield rt.models.notes.Note(**kw)
 

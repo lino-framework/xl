@@ -180,7 +180,7 @@ class SessionsByTicket(Sessions):
         # Active sessions:
         active_sessions = []
         session_summaries = E.ul()
-        qs = rt.modules.working.Session.objects.filter(ticket=obj)
+        qs = rt.models.working.Session.objects.filter(ticket=obj)
         tot = Duration()
         for ses in qs:
             d = ses.get_duration()

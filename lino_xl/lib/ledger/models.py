@@ -223,7 +223,7 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         if entry_date is None:  # added 20160531
             entry_date = dd.today()
         fkw = dict(start_date__lte=entry_date, end_date__gte=entry_date)
-        return rt.modules.ledger.AccountingPeriod.objects.filter(**fkw)
+        return rt.models.ledger.AccountingPeriod.objects.filter(**fkw)
 
     @classmethod
     def get_ref_for_date(cls, d):
@@ -277,7 +277,7 @@ class AccountingPeriod(DateRange, mixins.Referrable):
     @classmethod
     def get_default_for_date(cls, d):
         ref = cls.get_ref_for_date(d)
-        obj = rt.modules.ledger.AccountingPeriod.get_by_ref(ref, None)
+        obj = rt.models.ledger.AccountingPeriod.get_by_ref(ref, None)
         if obj is None:
             values = dict(start_date=d.replace(day=1))
             values.update(end_date=last_day_of_month(d))
@@ -451,7 +451,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     def unused_accounting_period_choices(cls, entry_date):
         # deactivated because it also limits the choices of the
         # parameter field (which is a Lino bug)
-        return rt.modules.ledger.AccountingPeriod.get_available_periods(
+        return rt.models.ledger.AccountingPeriod.get_available_periods(
             entry_date)
 
     @dd.chooser()
@@ -465,7 +465,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         if isinstance(trade_type, six.string_types):
             trade_type = TradeTypes.get_by_name(trade_type)
         if isinstance(account, six.string_types):
-            account = rt.modules.accounts.Account.get_by_ref(account)
+            account = rt.models.accounts.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
         return Journal(trade_type=trade_type, voucher_type=vt, **kw)
@@ -646,7 +646,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     def add_voucher_item(self, account=None, **kw):
         if account is not None:
             if isinstance(account, six.string_types):
-                account = rt.modules.accounts.Account.get_by_ref(account)
+                account = rt.models.accounts.Account.get_by_ref(account)
             kw['account'] = account
         kw.update(voucher=self)
         #~ logger.info("20131116 %s",self.items.model)
@@ -745,7 +745,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     def match_link(self, ar):
         if ar is None or not self.match:
             return ''
-        sar = rt.modules.ledger.MovementsByMatch.request(
+        sar = rt.models.ledger.MovementsByMatch.request(
             master_instance=self.match, parent=ar)
         return sar.ar2button(label=self.match)
 
@@ -832,7 +832,7 @@ class MatchRule(dd.Model):
         # always None.
         if journal:
             fkw = {journal.trade_type.name + '_allowed': True}
-            return rt.modules.accounts.Account.objects.filter(**fkw)
+            return rt.models.accounts.Account.objects.filter(**fkw)
         print("20151221 journal is None")
         return []
 

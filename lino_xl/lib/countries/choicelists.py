@@ -13,7 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 class PlaceType(dd.Choice):
 
     def find(self, name):
-        M = rt.modules.countries.Place
+        M = rt.models.countries.Place
         try:
             return M.objects.get(type=self, name=name)
         except M.DoesNotExist:

@@ -28,7 +28,7 @@ class ShowEntriesByDay(dd.Action):
         today = getattr(obj, self.date_field)
         pv = dict(start_date=today)
         pv.update(end_date=today)
-        sar = ar.spawn(rt.actors.cal.EntriesByDay, param_values=pv)
+        sar = ar.spawn(rt.models.cal.EntriesByDay, param_values=pv)
         js = ar.renderer.request_handler(sar)
         ar.set_response(eval_js=js)
 

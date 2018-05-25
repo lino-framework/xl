@@ -177,7 +177,7 @@ class LinksByHuman(Links):
     @classmethod
     def get_request_queryset(self, ar, **filter):
         mi = ar.master_instance  # a Person
-        Link = rt.modules.humanlinks.Link
+        Link = rt.models.humanlinks.Link
         if mi is None:
             return Link.objects.none()
         flt = Q(parent=mi) | Q(child=mi)

@@ -53,7 +53,7 @@ class Country(Country):
 
     @classmethod
     def get_actual_countries(cls):
-        return rt.modules.countries.Country.objects.filter(
+        return rt.models.countries.Country.objects.filter(
             actual_country__isnull=True)
 
 Country.set_widget_options('actual_country', width=20)

@@ -63,7 +63,7 @@ class Invoiceable(dd.Model):
 
         """
         item_model = dd.plugins.invoicing.item_model
-        # item_model = rt.modules.sales.InvoiceItem
+        # item_model = rt.models.sales.InvoiceItem
         kwargs.update(gfk2lookup(item_model.invoiceable, self))
         return item_model.objects.filter(**kwargs)
 

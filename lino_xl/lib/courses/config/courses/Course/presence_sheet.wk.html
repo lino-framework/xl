@@ -24,7 +24,7 @@ table, td, th {
 {%- block main %}
 {{ super() }}
 {% set events = obj.events_by_course.order_by('start_date') %}
-{% set  events = rt.modules.system.PeriodEvents.started.add_filter(events, ar.param_values)%}
+{% set  events = rt.models.system.PeriodEvents.started.add_filter(events, ar.param_values)%}
 
 <table border="1" width="100%">
 <thead>

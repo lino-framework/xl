@@ -655,7 +655,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     def when_html(self, ar):
         if ar is None:
             return ''
-        EntriesByDay = settings.SITE.modules.cal.EntriesByDay
+        EntriesByDay = settings.SITE.models.cal.EntriesByDay
         txt = when_text(self.start_date, self.start_time)
         return EntriesByDay.as_link(ar, self.start_date, txt)
         # return self.obj2href(ar, txt)
