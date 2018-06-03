@@ -13,11 +13,11 @@ from lino.utils.demonames.bel import streets_of_eupen
 
 
 def objects():
-    AddressTypes = rt.modules.addresses.AddressTypes
-    Address = rt.modules.addresses.Address
-    # Partner = rt.modules.contacts.Partner
+    AddressTypes = rt.models.addresses.AddressTypes
+    Address = rt.models.addresses.Address
+    # Partner = rt.models.contacts.Partner
     Partner = dd.plugins.addresses.partner_model
-    Place = rt.modules.countries.Place
+    Place = rt.models.countries.Place
     eupen = Place.objects.get(name__exact='Eupen')
     STREETS = Cycler(streets_of_eupen())
     TYPES = Cycler(AddressTypes.objects())

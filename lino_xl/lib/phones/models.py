@@ -106,10 +106,10 @@ class ContactDetailsByPartner(ContactDetails):
     stay_in_grid = True
     window_size = (80, 20)
 
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
         items = [o.detail_type.as_html(o, sar)
                  for o in sar if not o.end_date]

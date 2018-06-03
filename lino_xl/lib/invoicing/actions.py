@@ -30,7 +30,7 @@ class StartInvoicing(dd.Action):
 
     def run_from_ui(self, ar, **kw):
         options = self.get_options(ar)
-        plan = rt.modules.invoicing.Plan.start_plan(ar.get_user(), **options)
+        plan = rt.models.invoicing.Plan.start_plan(ar.get_user(), **options)
         ar.goto_instance(plan)
 
 
@@ -47,7 +47,7 @@ class StartInvoicingForJournal(StartInvoicing):
 
     def get_options(self, ar):
         jnl = ar.master_instance
-        assert isinstance(jnl, rt.modules.ledger.Journal)
+        assert isinstance(jnl, rt.models.ledger.Journal)
         return dict(journal=jnl, partner=None)
 
 
@@ -63,7 +63,7 @@ class StartInvoicingForPartner(StartInvoicing):
 
     def get_options(self, ar):
         partner = ar.selected_rows[0]
-        assert isinstance(partner, rt.modules.contacts.Partner)
+        assert isinstance(partner, rt.models.contacts.Partner)
         return dict(partner=partner)
 
 

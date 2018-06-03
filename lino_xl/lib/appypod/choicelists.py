@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2016 Luc Saffre
+# Copyright 2009-2018 Saffre & Rumma Ltd
 #
 # License: BSD (see file COPYING for details)
 """Choicelists for `lino_xl.lib.appypod`.
@@ -41,8 +41,12 @@ class AppyBuildMethod(SimpleBuildMethod):
         # we must convert it to a unicode string.
         lang = str(elem.get_print_language()
                    or settings.SITE.DEFAULT_LANGUAGE.django_code)
-        logger.info(u"appy.pod render %s -> %s (language=%r,params=%s",
-                    tpl, target, lang, settings.SITE.appy_params)
+        if False:  # debugging
+            logger.info(
+                u"appy.pod render %s -> %s (language=%r,params=%s",
+                tpl, target, lang, settings.SITE.appy_params)
+        else:
+            logger.info("appy.pod render %s -> %s", tpl, target)
 
         with translation.override(lang):
 

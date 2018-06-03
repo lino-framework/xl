@@ -103,7 +103,7 @@ class Account(dd.Model):
     def statements(self, ar):
         if ar is None or not dd.is_installed('b2c'):
             return ''
-        Account = rt.modules.b2c.Account
+        Account = rt.models.b2c.Account
         try:
             b2c = Account.objects.get(iban=self.iban)
         except Account.DoesNotExist:

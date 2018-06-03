@@ -112,7 +112,7 @@ class SubscriptionsByCalendar(Subscriptions):
 
 def check_subscription(user, calendar):
     "Check whether the given subscription exists. If not, create it."
-    Subscription = rt.modules.cal.Subscription
+    Subscription = rt.models.cal.Subscription
     if calendar is None:
         return
     try:
@@ -399,7 +399,7 @@ class GuestsByPartner(Guests):
     # required_roles = dd.login_required(OfficeUser)
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
-    slave_grid_format = "summary"
+    display_mode = "summary"
     order_by = ['event__start_date', 'event__start_time']
 
     @classmethod
@@ -410,10 +410,10 @@ class GuestsByPartner(Guests):
         return kw
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         """The summary view for this table.
 
-        See :meth:`lino.core.actors.Actor.get_slave_summary`.
+        See :meth:`lino.core.actors.Actor.get_table_summary`.
 
         """
         if ar is None:
@@ -748,7 +748,7 @@ class ConflictingEvents(Events):
     def get_request_queryset(self, ar, **kwargs):
         qs = ar.master_instance.get_conflicting_events()
         if qs is None:
-            return rt.modules.cal.Event.objects.none()
+            return rt.models.cal.Event.objects.none()
         return qs
     
 
@@ -829,15 +829,15 @@ class EntriesByController(Events):
     column_names = 'when_text summary workflow_buttons auto_type user event_type *'
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
-    slave_grid_format = "summary"
+    display_mode = "summary"
     order_by = ["start_date", "start_time", "auto_type", "id"]
     # order_by = ['seqno']
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         """The summary view for this table.
 
-        See :meth:`lino.core.actors.Actor.get_slave_summary`.
+        See :meth:`lino.core.actors.Actor.get_table_summary`.
 
         """
         if ar is None:

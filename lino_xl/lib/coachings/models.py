@@ -168,14 +168,18 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
             return self.user.username + ' / ' + cl.last_name + ' ' + cl.first_name[0]
         return self.user.username + ' / ' + cl.last_name
 
-    def after_ui_save(self, ar, cw):
-        super(Coaching, self).after_ui_save(ar, cw)
+    def adapt_primary(self):
         if self.primary:
             for c in self.client.coachings_by_client.exclude(id=self.id):
                 if c.primary:
                     c.primary = False
                     c.save()
-                    ar.set_response(refresh_all=True)
+                    return True
+                
+    def after_ui_save(self, ar, cw):
+        super(Coaching, self).after_ui_save(ar, cw)
+        if self.adapt_primary():
+            ar.set_response(refresh_all=True)
         #~ return kw
 
     #~ def get_row_permission(self,user,state,ba):

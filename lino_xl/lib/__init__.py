@@ -134,5 +134,6 @@ Experimental and not much used
     events
     families
     properties
+    inspect
 
 """

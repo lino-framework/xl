@@ -44,4 +44,4 @@ class Thirds(dd.Table):
 class ThirdsByController(Thirds):
     master_key = 'owner'
     column_names = "seqno person company id *"
-    slave_grid_format = 'summary'
+    display_mode = 'summary'

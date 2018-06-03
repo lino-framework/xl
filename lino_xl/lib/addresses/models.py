@@ -135,10 +135,10 @@ class AddressesByPartner(Addresses):
     stay_in_grid = True
     window_size = (80, 20)
 
-    # slave_grid_format = 'summary'
+    # display_mode = 'summary'
 
     # @classmethod
-    # def get_slave_summary(self, obj, ar):
+    # def get_table_summary(self, obj, ar):
     #     return obj.get_overview_elems(ar)
 
 

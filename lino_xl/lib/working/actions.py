@@ -71,7 +71,7 @@ class EndThisSession(EndSession):
 
 class EndTicketSession(EndSession):
     def get_sessions(self, ar):
-        Session = rt.modules.working.Session
+        Session = rt.models.working.Session
         for obj in ar.selected_rows:
             ses = Session.objects.get(
                 user=ar.get_user(), ticket=obj.get_ticket(),
@@ -88,7 +88,7 @@ class EndTicketSession(EndSession):
     #         return False
     #     user = ar.get_user()
             
-    #     Session = rt.modules.working.Session
+    #     Session = rt.models.working.Session
     #     qs = Session.objects.filter(
     #         user=user, ticket=obj.get_ticket(), end_time__isnull=True)
     #     if qs.count() == 0:
@@ -117,7 +117,7 @@ class StartTicketSession(WorkerAction):
     #     if not super(StartTicketSession, self).get_action_permission(
     #             ar, obj, state):
     #         return False
-    #     Session = rt.modules.working.Session
+    #     Session = rt.models.working.Session
     #     qs = Session.objects.filter(
     #         user=user, ticket=obj.get_ticket(), end_time__isnull=True)
     #     if qs.count():
@@ -127,7 +127,7 @@ class StartTicketSession(WorkerAction):
     def run_from_ui(self, ar, **kw):
         me = ar.get_user()
         for obj in ar.selected_rows:
-            ses = rt.modules.working.Session(
+            ses = rt.models.working.Session(
                 ticket=obj.get_ticket(), user=me)
             ses.full_clean()
             ses.save()
@@ -187,7 +187,7 @@ class ShowMySessionsByDay(dd.Action):
         today = getattr(obj, self.date_field)
         pv = dict(start_date=today)
         pv.update(end_date=today)
-        sar = ar.spawn(rt.actors.working.MySessionsByDate, param_values=pv)
+        sar = ar.spawn(rt.models.working.MySessionsByDate, param_values=pv)
         js = ar.renderer.request_handler(sar)
         ar.set_response(eval_js=js)
 

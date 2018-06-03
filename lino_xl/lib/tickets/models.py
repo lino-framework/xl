@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -18,7 +18,7 @@ from django.db.models import Q
 from atelier.sphinxconf.base import py2url_txt
 
 from lino import mixins
-from lino.api import dd, rt, _, pgettext
+from lino.api import dd, rt, _, pgettext, gettext
 
 from etgen.html import E, tostring
 from etgen.utils import join_elems, forcetext
@@ -139,22 +139,22 @@ class Project(mixins.DateRange, TimeInvestment,
     def __str__(self):
         return self.ref or self.name
 
-    @dd.displayfield(_("Activity overview"))
-    def activity_overview(self, ar):
-        if ar is None:
-            return ''
-        TicketsByProject = rt.modules.tickets.TicketsByProject
-        elems = []
-        for tst in (TicketStates.objects()):
-            pv = dict(state=tst)
-            sar = ar.spawn(
-                TicketsByProject, master_instance=self, param_values=pv)
-            num = sar.get_total_count()
-            if num > 0:
-                elems += [
-                    "{0}: ".format(tst.text),
-                    sar.ar2button(label=str(num))]
-        return E.p(*elems)
+    # @dd.displayfield(_("Activity overview"))
+    # def activity_overview(self, ar):
+    #     if ar is None:
+    #         return ''
+    #     TicketsByProject = rt.models.tickets.TicketsByProject
+    #     elems = []
+    #     for tst in (TicketStates.objects()):
+    #         pv = dict(state=tst)
+    #         sar = ar.spawn(
+    #             TicketsByProject, master_instance=self, param_values=pv)
+    #         num = sar.get_total_count()
+    #         if num > 0:
+    #             elems += [
+    #                 "{0}: ".format(tst.text),
+    #                 sar.ar2button(label=str(num))]
+    #     return E.p(*elems)
 
     # def save(self, *args, **kwargs):
     #     root = self.parent
@@ -371,14 +371,14 @@ class SpawnTicket(dd.Action):
 
 
     def spawn_ticket(self, ar, p):
-        c = rt.modules.tickets.Ticket(
+        c = rt.models.tickets.Ticket(
             user=ar.get_user(),
             summary=_("New ticket {0} #{1}".format(
                 self.link_type.as_child(), p.id)))
         return c
 
     def make_link(self, ar, new, old):
-        d = rt.modules.tickets.Link(
+        d = rt.models.tickets.Link(
             parent=old, child=new,
             type=self.link_type)
         d.full_clean()
@@ -407,11 +407,9 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
              UploadController, mixins.Referrable):
 
     quick_search_fields = "summary description ref"
-
     workflow_state_field = 'state'
-
     create_session_on_create = True
-
+    disable_author_assign = False
 
     class Meta:
         app_label = 'tickets'
@@ -492,7 +490,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         
     def get_rfc_description(self, ar):
         html = ''
-        
+        _ = gettext
         if self.description:
             # html += tostring(E.b(_("Description")))
             html += ar.parse_memo(self.description)
@@ -526,7 +524,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         elif dd.is_installed('stars'):
             star = get_favourite(self, user=user, master=None)
             if star is None:
-                Star = rt.modules.stars.Star
+                Star = rt.models.stars.Star
                 star = Star(owner=self, user=user)
                 star.save()
 

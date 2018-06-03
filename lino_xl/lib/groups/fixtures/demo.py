@@ -11,7 +11,7 @@ from lino.utils.mldbc import babel_named as named
 def objects():
     Group = rt.models.groups.Group
     User = rt.models.users.User
-    UserTypes = rt.actors.users.UserTypes
+    UserTypes = rt.models.users.UserTypes
 
     yield named(Group, _("Hitchhiker's Guide to the Galaxy"))
     yield named(Group, _("Star Trek"))

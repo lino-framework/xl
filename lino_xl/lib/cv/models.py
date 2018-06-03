@@ -109,7 +109,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     column_names = "language native spoken written cef_level"
     required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
-    slave_grid_format = "summary"
+    display_mode = "summary"
     window_size  = (70, 15)
     detail_layout = dd.DetailLayout("""
     language 
@@ -139,8 +139,8 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
         # return str(obj.language)
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for this table.
 
         """
@@ -325,7 +325,7 @@ class Training(SectorFunction, EducationEntry):
 
     @dd.chooser()
     def type_choices(cls):
-        return rt.modules.cv.StudyType.objects.filter(is_training=True)
+        return rt.models.cv.StudyType.objects.filter(is_training=True)
 
 
 class Trainings(PeriodTable):
@@ -406,7 +406,7 @@ class Study(EducationEntry):
 
     @dd.chooser()
     def type_choices(cls):
-        return rt.modules.cv.StudyType.objects.filter(is_study=True)
+        return rt.models.cv.StudyType.objects.filter(is_study=True)
 
 
 class Studies(PeriodTable):
@@ -682,7 +682,7 @@ class ExperiencesByDuration(Experiences):
 
 @dd.receiver(dd.post_analyze)
 def set_detail_layouts(sender=None, **kwargs):
-    rt.modules.languages.Languages.set_detail_layout("""
+    rt.models.languages.Languages.set_detail_layout("""
     id iso2 name
     cv.KnowledgesByLanguage
     """)

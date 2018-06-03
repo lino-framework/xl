@@ -1,21 +1,16 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
-"""
-Actions and Choicelists used to read Belgian eID cards.
-
-See unit tests in :mod:`lino_welfare.tests.test_beid`.
-
-"""
+# from builtins import str
 
 import logging
 logger = logging.getLogger(__name__)
 
-import os
-import yaml
-import base64
+# import os
+# import yaml
+# import base64
 
 from unipath import Path
 
@@ -27,20 +22,20 @@ from django.core.exceptions import ValidationError
 
 from lino.core.utils import get_field
 
-from lino.core.diff import ChangeWatcher
+# from lino.core.diff import ChangeWatcher
 
 from etgen.html import E
-from lino.utils import AttrDict
+# from lino.utils import AttrDict
 
-from lino.api import dd, rt
+from lino.api import dd
 
 
 from lino.utils import ssin
-from lino.utils import join_words
-from lino.utils import IncompleteDate
-from lino_xl.lib.contacts.utils import street2kw
+# from lino.utils import join_words
+# from lino.utils import IncompleteDate
+# from lino_xl.lib.contacts.utils import street2kw
 from lino.modlib.checkdata.choicelists import Checker
-from .roles import BeIdUser
+# from .roles import BeIdUser
 
 from .actions import BeIdReadCardAction, FindByBeIdAction
 from .actions import get_image_parts, get_image_path
@@ -52,43 +47,10 @@ FEMALE = Path(__file__).parent.child('ly.jpg')
 
 
 class BeIdCardHolder(dd.Model):
-    """Mixin for models which represent an eid card holder.
-    Currently only Belgian eid cards are tested.
-    Concrete subclasses must also inherit from :mod:`lino.mixins.Born`.
-
-    .. attribute:: national_id
-
-        The SSIN. It is a *nullable char field* declared *unique*. It
-        is not validated directly because that would cause problems
-        with legacy data where SSINs need manual control. See also
-        :class:`BeIdCardHolderChecker`.
-
-    .. attribute:: nationality
-
-        The nationality. This is a pointer to
-        :class:`countries.Country
-        <lino_xl.lib.statbel.countries.models.Country>` which should
-        contain also entries for refugee statuses.
-
-        Note that the nationality is *not* being read from eID card
-        because it is stored there as a language and gender specific
-        plain text.
-
-    .. attribute:: image
-
-        Virtual field which displays the picture.
-
-    """
     class Meta:
         abstract = True
 
     validate_national_id = False
-    """Whether to validate the :attr:`national_id` immediately before
-    saving a record.  If this is `False`, the :attr:`national_id`
-    might contain invalid values which would then cause data
-    problems.
-
-    """
 
     # national_id = dd.NullCharField(
     #     max_length=200,
@@ -209,15 +171,15 @@ class BeIdCardHolder(dd.Model):
         return E.div(*elems, **attrs)
 
     def get_beid_diffs(self, attrs):
-        """Return two lists, one with the objects to save, and another with
-        text lines to build a confirmation message explaining which
-        changes are going to be applied after confirmation.
+        
+        # Return two lists, one with the objects to save, and another
+        # with text lines to build a confirmation message explaining
+        # which changes are going to be applied after confirmation.
 
-        The default implemantion is for the simple case where the
-        holder is also a contacts.AddressLocation and the address is
-        within the same database row.
+        # The default implemantion is for the simple case where the
+        # holder is also a contacts.AddressLocation and the address is
+        # within the same database row.
 
-        """
         diffs = []
         objects = [self]
         model = self.__class__  # the holder
@@ -226,9 +188,8 @@ class BeIdCardHolder(dd.Model):
             old = getattr(self, fldname)
             if old != new:
                 diffs.append(
-                    "%s : %s -> %s" % (
-                        unicode(fld.verbose_name), dd.obj2str(old),
-                        dd.obj2str(new)))
+                    "{} : {} -> {}".format(
+                        fld.verbose_name, dd.obj2str(old), dd.obj2str(new)))
                 setattr(self, fld.name, new)
         return objects, diffs
 
@@ -250,7 +211,7 @@ class BeIdCardHolder(dd.Model):
         return get_image_path(self.card_number)
 
     def make_demo_picture(self):
-        """Create a demo picture for this card holder. """
+        # Create a demo picture for this card holder.
         if not self.card_number:
             raise Exception("20150730")
         src = self.mf(MALE, FEMALE)
@@ -266,14 +227,6 @@ class BeIdCardHolder(dd.Model):
 
 
 class BeIdCardHolderChecker(Checker):
-    """Invalid NISSes are not refused à priori using a ValidationError
-    (see :attr:`BeIdCardHolder.national_id`), but this checker reports
-    them.
-
-    Belgian NISSes are stored including the formatting characters (see
-    :mod:`lino.utils.ssin`) in order to guarantee uniqueness.
-
-    """
     model = BeIdCardHolder
     verbose_name = _("Check for invalid SSINs")
 

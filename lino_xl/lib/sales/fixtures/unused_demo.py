@@ -40,7 +40,7 @@ def objects():
             raise Exception("20140127 no journals for %s" % vt)
         PARTNERS = Cycler(Partner.objects.all())
         USERS = Cycler(settings.SITE.user_model.objects.all())
-        PRODUCTS = Cycler(rt.modules.products.Product.objects.all())
+        PRODUCTS = Cycler(rt.models.products.Product.objects.all())
         ITEMCOUNT = Cycler(1, 2, 3)
         for i in range(20):
             jnl = JOURNALS.pop()

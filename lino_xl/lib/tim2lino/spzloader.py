@@ -380,7 +380,7 @@ class TimLoader(TimLoader):
         #     kw.update(body=self.dbfmemo(row.memo))
         #     kw.update(user=obj.user)
         #     kw.update(date=obj.start_date)
-        #     yield rt.modules.notes.Note(**kw)
+        #     yield rt.models.notes.Note(**kw)
 
     def finalize(self):
         for (par1, idpar2) in self.obsolete_list:
@@ -430,7 +430,7 @@ class TimLoader(TimLoader):
                 
     def objects(self):
 
-        Team = rt.modules.teams.Team
+        Team = rt.models.teams.Team
         Country = rt.models.countries.Country
         self.eupen = create(Team, name="Eupen")
         yield self.eupen

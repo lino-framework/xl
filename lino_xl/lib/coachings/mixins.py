@@ -87,7 +87,7 @@ class Coachable(ClientBase):
     def find_appointment(self, ar):
         if ar is None:
             return ''
-        CalendarPanel = rt.actors.extensible.CalendarPanel
+        CalendarPanel = rt.models.extensible.CalendarPanel
         elems = []
         for obj in self.coachings_by_client.all():
             sar = CalendarPanel.request(

@@ -193,7 +193,7 @@ def objects():
                  gender=dd.Genders.male)
 
     nr = 1
-    for p in rt.modules.contacts.Person.objects.filter(city=eupen):
+    for p in rt.models.contacts.Person.objects.filter(city=eupen):
         p.street = STREETS.pop()
         p.stret_no = str(nr)
         p.save()

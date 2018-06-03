@@ -277,6 +277,8 @@ class ToggleChoice(dd.Action):
         question=dd.ForeignKey("polls.Question"),
         choice=dd.ForeignKey("polls.Choice"),
     )
+    params_layout = 'question\nchoice'  # Py3 would otherwise display
+                                        # them in arbitrary order
     no_params_window = True
 
     def run_from_ui(self, ar, **kw):
@@ -382,10 +384,10 @@ class ResponsesByPoll(Responses):
 class ResponsesByPartner(Responses):
     master_key = 'partner'
     column_names = 'date user state remark *'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         if obj is None:
             return
 
@@ -571,7 +573,7 @@ class AnswersByResponse(dd.VirtualTable):
     column_names = 'question:40 answer_buttons:30 remark:20 *'
     variable_row_height = True
     auto_fit_column_widths = True
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     # workflow_state_field = 'state'
 
     remark = AnswerRemarkField()
@@ -581,11 +583,11 @@ class AnswersByResponse(dd.VirtualTable):
         response = ar.master_instance
         if response is None:
             return
-        for q in rt.modules.polls.Question.objects.filter(poll=response.poll):
+        for q in rt.models.polls.Question.objects.filter(poll=response.poll):
             yield AnswersByResponseRow(response, q)
 
     @classmethod
-    def get_slave_summary(self, response, ar):
+    def get_table_summary(self, response, ar):
         """Presents this response as a table with one row per question and one
         column for each response of the same poll.  The answers for
         this response are editable if this response is not registered.
@@ -596,8 +598,8 @@ class AnswersByResponse(dd.VirtualTable):
             return
         if response.poll_id is None:
             return
-        AnswerRemarks = rt.modules.polls.AnswerRemarksByAnswer
-        all_responses = rt.modules.polls.Response.objects.filter(
+        AnswerRemarks = rt.models.polls.AnswerRemarksByAnswer
+        all_responses = rt.models.polls.Response.objects.filter(
             poll=response.poll).order_by('date')
         if response.partner:
             all_responses = all_responses.filter(partner=response.partner)
@@ -689,7 +691,7 @@ class AnswersByResponse(dd.VirtualTable):
         if not sar.get_permission():
             return str(obj)
 
-        AnswerChoice = rt.modules.polls.AnswerChoice
+        AnswerChoice = rt.models.polls.AnswerChoice
         for c in cs.choices.all():
             pv.update(choice=c)
             text = str(c)
@@ -715,7 +717,7 @@ class AnswersByResponse(dd.VirtualTable):
     def get_row_by_pk(self, ar, pk):
         response = ar.master_instance
         #~ if response is None: return
-        q = rt.modules.polls.Question.objects.get(pk=pk)
+        q = rt.models.polls.Question.objects.get(pk=pk)
         return AnswersByResponseRow(response, q)
 
     @classmethod
@@ -777,7 +779,7 @@ class AnswersByQuestion(dd.VirtualTable):
         question = ar.master_instance
         if question is None:
             return
-        for r in rt.modules.polls.Response.objects.filter(poll=question.poll):
+        for r in rt.models.polls.Response.objects.filter(poll=question.poll):
             yield AnswersByQuestionRow(r, question)
 
     @dd.displayfield(_("Response"))

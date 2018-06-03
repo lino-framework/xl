@@ -19,8 +19,8 @@ SEVERE = True
 
 
 def objects():
-    ExcerptType = rt.modules.excerpts.ExcerptType
-    Excerpt = rt.modules.excerpts.Excerpt
+    ExcerptType = rt.models.excerpts.ExcerptType
+    Excerpt = rt.models.excerpts.Excerpt
 
     if not dd.plugins.excerpts.responsible_user:
         return

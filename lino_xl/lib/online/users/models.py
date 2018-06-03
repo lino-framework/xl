@@ -160,7 +160,7 @@ class User(User, Person):
         if a is not None:
             return a
         if self.callme_mode:
-            a = rt.actors.users.OtherUsers.detail_action
+            a = rt.models.users.OtherUsers.detail_action
         if a is not None and a.get_view_permission(ar.get_user().user_type):
             return a
         
@@ -176,7 +176,7 @@ class User(User, Person):
 
     # def get_default_table(self, ar):
     #     tbl = super(User, self).get_default_table(ar)
-    #     return rt.actors.users.OtherUsers
+    #     return rt.models.users.OtherUsers
     
     # def __str__(self):
     #     s = self.get_full_name()

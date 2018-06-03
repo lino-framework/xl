@@ -59,7 +59,7 @@ class Account(BabelDesignated, Sequenced, Referrable):
     def full_clean(self, *args, **kw):
         if self.group_id is not None:
             if not self.ref:
-                qs = rt.modules.ana.Account.objects.all()
+                qs = rt.models.ana.Account.objects.all()
                 self.ref = str(qs.count() + 1)
             if not self.designation:
                 self.designation = self.group.designation

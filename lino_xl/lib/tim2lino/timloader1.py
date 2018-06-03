@@ -58,7 +58,7 @@ Place = dd.resolve_model('countries.Place')
 Person = dd.resolve_model("contacts.Person")
 Company = dd.resolve_model("contacts.Company")
 # Account = dd.resolve_model('accounts.Account')
-Account = rt.modules.accounts.Account
+Account = rt.models.accounts.Account
 Group = dd.resolve_model('accounts.Group')
 Journal = dd.resolve_model('ledger.Journal')
 Movement = dd.resolve_model('ledger.Movement')
@@ -80,7 +80,7 @@ if True:
     lists = dd.resolve_app('lists')
 
 # if dd.is_installed('vat'):    
-#     VatRule = rt.modules.vat.VatRule
+#     VatRule = rt.models.vat.VatRule
 
 
 # def convert_username(name):

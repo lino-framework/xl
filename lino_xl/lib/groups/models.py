@@ -54,7 +54,7 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
     def recent_comments(self, ar):
         if ar is None:
             return ''
-        cls = rt.actors.comments.CommentsByRFC
+        cls = rt.models.comments.CommentsByRFC
         sar = cls.request_from(
             ar, master_instance=self, limit=3)
         chunks = []
@@ -130,10 +130,10 @@ class MembershipsByGroup(Memberships):
     master_key = 'group'
     column_names = "user remark workflow_buttons *"
     stay_in_grid = True
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
         chunks = []
         

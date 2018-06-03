@@ -120,7 +120,7 @@ class EntriesByTeacher(cal.Events):
             return []
         # TODO: build a list of courses, then show entries by course
         qs = super(EntriesByTeacher, self).get_request_queryset(ar, **kwargs)
-        # mycourses = rt.modules.Course.objects.filter(teacher=teacher)
+        # mycourses = rt.models.Course.objects.filter(teacher=teacher)
         qs = qs.filter(course__in=teacher.course_set.all())
         return qs
 
@@ -523,7 +523,7 @@ class Enrolments(dd.Table):
             yield str(_("Also ")) + str(EnrolmentStates.cancelled.text)
         if ar.param_values.course_state:
             yield str(
-                settings.SITE.modules.courses.Course._meta.verbose_name) \
+                settings.SITE.models.courses.Course._meta.verbose_name) \
                 + ' ' + str(ar.param_values.course_state)
         if ar.param_values.author:
             yield str(ar.param_values.author)
@@ -617,7 +617,7 @@ class EnrolmentsByCourse(Enrolments):
                    'remark workflow_buttons *'
     auto_fit_column_widths = True
     # cell_edit = False
-    slave_grid_format = 'html'
+    display_mode = 'html'
 
     insert_layout = """
     pupil

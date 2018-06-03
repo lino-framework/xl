@@ -63,7 +63,7 @@ class ContactDetailsOwner(Contactable, Phonable):
                 
         def get_overview_elems(self, ar):
             # elems = super(ContactDetailsOwner, self).get_overview_elems(ar)
-            yield rt.models.phones.ContactDetailsByPartner.get_slave_summary(
+            yield rt.models.phones.ContactDetailsByPartner.get_table_summary(
                 self, ar)
 
     else:

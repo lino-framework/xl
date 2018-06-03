@@ -17,7 +17,7 @@ class SpecialType(dd.Choice):
 
     def get_notes(self, **kw):
         """Return a queryset with the uploads of this shortcut."""
-        return rt.modules.notes.Note.objects.filter(
+        return rt.models.notes.Note.objects.filter(
             type__special_type=self, **kw)
 
 

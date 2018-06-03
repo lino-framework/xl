@@ -118,7 +118,7 @@ class PlaceGenerator(InstanceGenerator):
     def __init__(self):
         super(PlaceGenerator, self).__init__()
         self.prev_obj = None
-        EE = rt.modules.countries.Country.objects.get(isocode="EE")
+        EE = rt.models.countries.Country.objects.get(isocode="EE")
 
         for pt in PlaceTypes.objects():
             self.add_instantiator(

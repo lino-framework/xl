@@ -2,8 +2,7 @@
 # Copyright 2008-2016 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
-"""Adds a note type "Default", an event type "System event". The
-latter is also registered as :attr:`SiteConfig.system_note_type`.
+"""Adds a note type "Default".
 
 """
 

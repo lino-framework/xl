@@ -93,20 +93,15 @@ class Booking(ContactRelated, Reservation):
         return "%s %s" % (dd.babelattr(et, 'event_label'), i)
 
     def before_auto_event_save(self, event):
-        """Sets room and start_time for automatic events.
-
-        See also :meth:`EventGenerator.before_auto_event_save
-        <lino_xl.lib.cal.models.EventGenerator.before_auto_event_save>`.
+        """Sets room for automatic events.
 
         """
-        #~ logger.info("20131008 before_auto_event_save")
         assert not settings.SITE.loading_from_dump
         assert event.owner == self
+        super(Booking, self).before_auto_event_save(event)
         if event.is_user_modified():
             return
         event.room = self.room
-        event.start_time = self.start_time
-        event.end_time = self.end_time
 
     @classmethod
     def get_registrable_fields(cls, site):

@@ -9,13 +9,14 @@ from django.db import models
 from django.utils import timezone
 
 from lino import mixins
-from lino.api import dd, rt, _
+from lino.api import dd, rt, _, gettext
 
 from etgen.html import E
 from lino.utils.quantities import Duration
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.summaries.mixins import Summary
+from lino.modlib.about.choicelists import TimeZones
 
 from lino_xl.lib.cal.mixins import Started, Ended
 from lino_xl.lib.excerpts.mixins import Certifiable
@@ -64,6 +65,10 @@ class Session(UserAuthored, Started, Ended, Workable):
 
     reporting_type = ReportingTypes.field(blank=True)
     is_fixing = models.BooleanField(_("Fixing"), default=False)
+    if settings.USE_TZ:
+        time_zone = TimeZones.field()
+    else:
+        time_zone = dd.DummyField()
     
     end_session = EndThisSession()
     show_today = ShowMySessionsByDay('start_date')
@@ -80,7 +85,21 @@ class Session(UserAuthored, Started, Ended, Workable):
     def get_ticket(self):
         return self.ticket
     
+    def on_create(self, ar):
+        super(Session, self).on_create(ar)
+        if settings.USE_TZ:
+            self.time_zone = self.user.time_zone or \
+                             rt.models.about.TimeZones.default
+        
+    def get_time_zone(self):
+        return self.time_zone
+    
     def full_clean(self, *args, **kwargs):
+        if self.user_id and not self.time_zone:
+            # can be removed when all pilot sites have migrated:
+            self.time_zone = self.user.time_zone or \
+                             rt.models.about.TimeZones.default
+            
         if not settings.SITE.loading_from_dump:
             if self.start_time is None:
                 self.set_datetime('start', timezone.now())
@@ -168,7 +187,7 @@ dd.update_field(
 
 Session.set_widget_options('ticket__id', label=_("Ticket #"))
 Session.set_widget_options('ticket_no', width=8)
-
+Session.set_widget_options('break_time', hide_sum=True)
 
 
 @dd.python_2_unicode_compatible
@@ -346,9 +365,9 @@ def welcome_messages(ar):
     """Yield messages for the welcome page."""
     #todo show all users active sessions
 
-    Session = rt.modules.working.Session
-    # Ticket = rt.modules.tickets.Ticket
-    # TicketStates = rt.modules.tickets.TicketStates
+    Session = rt.models.working.Session
+    # Ticket = rt.models.tickets.Ticket
+    # TicketStates = rt.models.tickets.TicketStates
     me = ar.get_user()
 
     # your open sessions (i.e. those you are busy with)
@@ -358,7 +377,8 @@ def welcome_messages(ar):
         return
     for ses in qs:
         if ses.user not in working:
-            working[ses.user] = [ar.obj2html(ses.user), _(" is working on: ")]
+            working[ses.user] = [ar.obj2html(ses.user),
+                                 gettext(" is working on: ")]
         txt = unicode(ses.ticket)
         working[ses.user].append(
             ar.obj2html(ses.ticket, txt, title=getattr(ses.ticket,'summary',"") or
@@ -392,7 +412,7 @@ dd.add_welcome_handler(welcome_messages)
 if False:  # works, but is not useful
 
     def weekly_reporter(days, ar, start_date, end_date):
-        Session = rt.modules.working.Session
+        Session = rt.models.working.Session
         me = ar.get_user()
         qs = Session.objects.filter(
             user=me, start_date__gte=start_date, end_date__lte=end_date)

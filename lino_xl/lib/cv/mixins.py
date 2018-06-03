@@ -166,7 +166,7 @@ class SectorFunction(dd.Model):
     @dd.chooser()
     def function_choices(cls, sector):
         if sector is None:
-            return rt.modules.cv.Function.objects.all()
+            return rt.models.cv.Function.objects.all()
         return sector.function_set.all()
 
 

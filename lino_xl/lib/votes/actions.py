@@ -11,9 +11,9 @@ from .roles import SimpleVotesUser
 class VoteAction(dd.Action):
     def goto_vote(self, obj, ar):
         if obj.user == ar.get_user():
-            da = rt.actors.votes.MyVotes.detail_action
+            da = rt.models.votes.MyVotes.detail_action
         else:
-            da = rt.actors.votes.VotesByVotable.detail_action
+            da = rt.models.votes.VotesByVotable.detail_action
         # da = ar.actor.detail_action
         ar.goto_instance(obj, detail_action=da)
 
@@ -91,7 +91,7 @@ class VotableEditVote(EditVote):
         # print(20170116, vote)
         self.goto_vote(vote, ar)
         
-        # da = rt.actors.votes.VotesByVotable.detail_action
+        # da = rt.models.votes.VotesByVotable.detail_action
         # ar.goto_instance(vote, detail_action=da)
 
 

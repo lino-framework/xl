@@ -34,7 +34,7 @@ class DemoTest(TestCase):
     maxDiff = None
 
     def test_01(self):
-        etypes = settings.SITE.modules.events.Type.objects.order_by('id')
+        etypes = settings.SITE.models.events.Type.objects.order_by('id')
         #~ dbutils.set_language('de')
         with translation.override('de'):
             lst = [unicode(obj) for obj in etypes]

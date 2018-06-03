@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -9,7 +9,8 @@ Actions used to read Belgian eID cards.
 See unit tests in :mod:`lino_welfare.tests.test_beid`.
 
 """
-
+import six
+from builtins import str
 import logging
 logger = logging.getLogger(__name__)
 
@@ -19,8 +20,10 @@ import base64
 
 from unipath import Path
 from django.conf import settings
+import dateparser
 
 from lino.core.diff import ChangeWatcher
+from lino.core.constants import parse_boolean
 from lino.utils import AttrDict
 from lino.api import dd, rt, _
 from lino.utils import ssin
@@ -30,15 +33,16 @@ from lino_xl.lib.contacts.utils import street2kw
 
 from .roles import BeIdUser
 from .choicelists import BeIdCardTypes
+from .views import load_card_data
 
 def get_image_parts(card_number):
     return ("beid", card_number + ".jpg")
 
 
 def get_image_path(card_number):
-    """Return the full path of the image file on the server. This may be
+    """
+    Return the full path of the image file on the server. This may be
     used by printable templates.
-
     """
     if card_number:
         parts = get_image_parts(card_number)
@@ -49,9 +53,31 @@ def get_image_path(card_number):
 
 def simulate_wrap(msg):
     if dd.plugins.beid.read_only_simulate:
-        msg = "(%s:) %s" % (unicode(_("Simulation")), msg)
+        msg = "(%s:) %s" % (str(_("Simulation")), msg)
     return msg
 
+def yaml2dict(data):
+    raw_data = data['card_data']
+    if not '\n' in raw_data:
+        # a one-line string means that some error occured (e.g. no
+        # card in reader). of course we want to show this to the
+        # user.
+        raise Warning(raw_data)
+
+    #~ print cd
+    attd = AttrDict(yaml.load(raw_data))
+    #~ raise Exception("20131108 cool: %s" % cd)
+    if dd.plugins.beid.data_collector_dir:
+        card_number = str(attd.cardNumber)
+        logger.info("Gonna write raw eid card data: %r", raw_data)
+        fn = os.path.join(
+            dd.plugins.beid.data_collector_dir,
+            card_number + '.txt')
+        file(fn, "w").write(raw_data.encode('utf-8'))
+        logger.info("Wrote eid card data to file %s", fn)
+
+    return attd
+        
 
 class BaseBeIdReadCardAction(dd.Action):
     """Common base for all "Read eID card" actions
@@ -62,12 +88,18 @@ class BaseBeIdReadCardAction(dd.Action):
     required_roles = dd.login_required(BeIdUser)
     preprocessor = 'Lino.beid_read_card_processor'
     http_method = 'POST'
-    sorry_msg = _("Sorry, I cannot handle that case: %s")
+    # if settings.SITE.beid_protocol is None:
+    #     preprocessor = 'Lino.beid_read_card_processor'
+    #     http_method = 'POST'
+    # else:
+    #     js_handler = 'Lino.beid_read_card'
 
+    sorry_msg = _("Sorry, I cannot handle that case: %s")
+    
     def get_view_permission(self, user_type):
         """Make invisible when :attr:`lino.core.site.Site.use_java` is
 `False`."""
-        if not settings.SITE.use_java:
+        if not settings.SITE.use_java and not settings.SITE.beid_protocol:
             return False
         return super(BaseBeIdReadCardAction, self).get_view_permission(user_type)
 
@@ -84,22 +116,13 @@ class BaseBeIdReadCardAction(dd.Action):
         return super(
             BaseBeIdReadCardAction, self).attach_to_actor(actor, name)
 
-    def card2client(self, data):
-        """Convert the data coming from the card into database fields to be
+    def card2client_java(self, data):
+        """
+        Convert the data coming from the card into database fields to be
         stored in the card holder.
-
         """
         kw = dict()
-        raw_data = data['card_data']
-        if not '\n' in raw_data:
-            # a one-line string means that some error occured (e.g. no
-            # card in reader). of course we want to show this to the
-            # user.
-            raise Warning(raw_data)
-
-        #~ print cd
-        data = AttrDict(yaml.load(raw_data))
-        #~ raise Exception("20131108 cool: %s" % cd)
+        # raw_data = data['card_data']
 
         kw.update(national_id=ssin.format_ssin(str(data.nationalNumber)))
         kw.update(first_name=data.firstName or '')
@@ -166,13 +189,85 @@ class BaseBeIdReadCardAction(dd.Action):
             return rv
         kw.update(card_type=doctype2cardtype(data.documentType))
 
-        if dd.plugins.beid.data_collector_dir:
-            logger.info("Gonna write raw eid card data: %r", raw_data)
-            fn = os.path.join(
-                dd.plugins.beid.data_collector_dir,
-                card_number + '.txt')
-            file(fn, "w").write(raw_data.encode('utf-8'))
-            logger.info("Wrote eid card data to file %s", fn)
+        return kw
+
+    def card2client(self, data):
+        """
+        Convert the data coming from the card into database fields to be
+        stored in the card holder.
+        """
+        kw = dict()
+        # raw_data = data['card_data']
+
+        kw.update(national_id=ssin.format_ssin(str(data.national_number)))
+        kw.update(first_name=data.firstnames or '')
+        kw.update(
+            middle_name=data.first_letter_of_third_given_name or '')
+        kw.update(last_name=data.surname or '')
+
+        card_number = str(data.card_number)
+
+        if data.PHOTO_FILE:
+            if not card_number:
+                raise Exception("20150730 photo data but no card_number ")
+            fn = get_image_path(card_number)
+            if fn.exists():
+                logger.warning("Overwriting existing image file %s.", fn)
+            try:
+                fp = open(fn, 'wb')
+                # fp.write(data.PHOTO_FILE)
+                fp.write(base64.b64decode(data.PHOTO_FILE))
+                fp.close()
+            except IOError as e:
+                logger.warning("Failed to store image file %s : %s", fn, e)
+                
+            #~ print 20121117, repr(data['picture'])
+            #~ kw.update(picture_data_encoded=data['picture'])
+
+        if isinstance(data.date_of_birth, six.string_types):
+            data.date_of_birth = IncompleteDate.parse(data.date_of_birth)
+            # IncompleteDate(
+            #     *data.date_of_birth.split('-'))
+        kw.update(birth_date=data.date_of_birth)
+        kw.update(card_valid_from=dateparser.parse(
+            data.validity_begin_date).date())
+        kw.update(card_valid_until=dateparser.parse(
+            data.validity_end_date).date())
+
+        kw.update(card_number=card_number)
+        kw.update(card_issuer=data.issuing_municipality)
+        if data.nobility:
+            kw.update(noble_condition=data.nobility)
+        if data.address_street_and_number:
+            kw = street2kw(data.address_street_and_number, **kw)
+        if data.address_zip:
+            kw.update(zip_code=str(data.address_zip))
+        if data.location_of_birth:
+            kw.update(birth_place=data.location_of_birth)
+            
+        pk = data.eidreader_country
+        country = rt.models.countries.Country.objects.get(isocode=pk)
+        kw.update(country=country)
+        if data.address_municipality:
+            kw.update(city=rt.models.countries.Place.lookup_or_create(
+                'name', data.address_municipality, country=country))
+
+        msg1 = "BeIdReadCardToClientAction %s" % kw.get('national_id')
+        def sex2gender(sex):
+            c0 = sex[0].upper()
+            if c0 == 'M':
+                return dd.Genders.male
+            if c0 in 'FWV':
+                return dd.Genders.female
+            logger.warning("%s : invalid gender code %r", msg1, sex)
+        kw.update(gender=sex2gender(data.gender))
+
+        def doctype2cardtype(dt):
+            #~ if dt == 1: return BeIdCardTypes.get_by_value("1")
+            rv = BeIdCardTypes.get_by_value(str(dt))
+            # logger.info("20130103 documentType %r --> %r", dt, rv)
+            return rv
+        kw.update(card_type=doctype2cardtype(data.document_type))
 
         return kw
 
@@ -185,7 +280,7 @@ class BaseBeIdReadCardAction(dd.Action):
 
         if len(diffs) == 0:
             return self.goto_client_response(
-                ar, obj, _("Client %s is up-to-date") % unicode(obj))
+                ar, obj, _("Client %s is up-to-date") % str(obj))
 
         oldobj = obj
         watcher = ChangeWatcher(obj)
@@ -193,7 +288,7 @@ class BaseBeIdReadCardAction(dd.Action):
         msg = _("Click OK to apply the following changes for %s") % obj
         msg = simulate_wrap(msg)
         msg += ' :<br/>'
-        msg += '\n<br/>'.join(diffs)
+        msg += '\n<br/>'.join(sorted(diffs))
 
         def yes(ar2):
             msg = _("%s has been saved.") % dd.obj2unicode(obj)
@@ -227,12 +322,12 @@ NAMES = tuple('last_name middle_name first_name'.split())
 
 
 class FindByBeIdAction(BaseBeIdReadCardAction):
-    """Read an eID card without being on a precise holder. Either show the
-    holder or ask to create a new holder.
+    """
+    Read an eID card, then either show the existing holder or ask to
+    create a new holder.
 
     This is a list action, usually called from a quicklink or a main
     menu item.
-
     """
 
     help_text = _("Find or create card holder from eID card")
@@ -243,7 +338,24 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
     # debug_permissions = "20150129"
 
     def run_from_ui(self, ar, **kw):
-        attrs = self.card2client(ar.request.POST)
+        if settings.SITE.beid_protocol:
+            data = load_card_data(ar.request.POST['uuid'])
+            data = AttrDict(data)
+
+            # quick hack to fix #2393. a better solution would be to
+            # make eidreader not POST every key-value using requests
+            # but to send a single field card_data which would be a
+            # json encoded dict.
+            # if isinstance(data.success, six.string_types):
+            #     data.success = parse_boolean(data.success.lower())
+            if not data.success:
+                raise Warning(_("No card data found: {}").format(
+                    data.message))
+            # print("20180518", data)
+            attrs = self.card2client(data)
+        else:
+            data = yaml2dict(ar.request.POST)
+            attrs = self.card2client_java(data)
         holder_model = dd.plugins.beid.holder_model
         qs = holder_model.objects.filter(national_id=attrs['national_id'])
         if qs.count() > 1:
@@ -316,21 +428,30 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
 
 
 class BeIdReadCardAction(BaseBeIdReadCardAction):
-    """Read eId card and store the data on the selected holder.
+    """
+    Read eId card and store the data on the selected holder.
 
     This is a row action (called on a given holder).
 
     When the selected holder has an empty `national_id`, and when
     there is no holder yet with that `national_id` in the database,
     then we want to update the existing holder from the card.
-
     """
     sort_index = 90
     icon_name = 'vcard'
     help_text = _("Update card holder data from eID card")
 
     def run_from_ui(self, ar, **kw):
-        attrs = self.card2client(ar.request.POST)
+
+        if settings.SITE.beid_protocol:
+            data = load_card_data(ar.request.POST['uuid'])
+            data = AttrDict(data)
+            attrs = self.card2client(data)
+        else:
+            data = yaml2dict(ar.request.POST)
+            attrs = self.card2client_java(data)
+        
+        # attrs = self.card2client(yaml2dict(ar.request.POST))
         row = ar.selected_rows[0]
         holder_model = dd.plugins.beid.holder_model
         qs = holder_model.objects.filter(

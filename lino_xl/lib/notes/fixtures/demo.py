@@ -27,9 +27,9 @@ SUBJECTS = Cycler((
 
 
 def objects():
-    User = rt.modules.users.User
-    Note = rt.modules.notes.Note
-    NoteType = rt.modules.notes.NoteType
+    User = rt.models.users.User
+    Note = rt.models.notes.Note
+    NoteType = rt.models.notes.NoteType
 
     USERS = Cycler(User.objects.all())
     if settings.SITE.project_model is not None:
@@ -57,5 +57,5 @@ def objects():
     EventType = rt.models.notes.EventType
     system_note = EventType(**dd.str2kw('name', _("System note")))
     yield system_note
-    settings.SITE.site_config.system_note_type = system_note
-    yield settings.SITE.site_config
+    # print("20180502 notes.fixtures.demo calls update")
+    settings.SITE.site_config.update(system_note_type=system_note)

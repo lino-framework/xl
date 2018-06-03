@@ -32,7 +32,7 @@ class BoardDecision(UserAuthored):
 
     @dd.chooser()
     def board_choices(self, decision_date):
-        qs = rt.modules.boards.Board.objects.all()
+        qs = rt.models.boards.Board.objects.all()
         if decision_date:
             qs = dd.PeriodEvents.active.add_filter(qs, decision_date)
         return qs

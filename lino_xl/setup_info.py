@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2018 Luc Saffre
+# Copyright 2009-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 # ~ Note that this module may not have a docstring because any
@@ -13,17 +13,16 @@
 
 from __future__ import unicode_literals
 
-import sys
-PY2 = sys.version_info[0] == 2
-PY3 = sys.version_info[0] == 3
+# import sys
+# PY2 = sys.version_info[0] == 2
 
-# install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
-install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint']
+install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
+# install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint']
 
-if PY2:
-    install_requires.append('appy')
-else:
-    install_requires.append('appypod')
+# if PY2:
+#     install_requires.append('appy')
+# else:
+#     install_requires.append('appy-python-3-luc')
 
 SETUP_INFO = dict(
     name='lino-xl',
@@ -174,6 +173,7 @@ lino_xl.lib.sales
 lino_xl.lib.sales.fixtures
 lino_xl.lib.sepa
 lino_xl.lib.inbox
+lino_xl.lib.inspect
 lino_xl.lib.invoicing
 lino_xl.lib.invoicing.fixtures
 lino_xl.lib.sepa.fixtures

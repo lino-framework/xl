@@ -39,8 +39,8 @@ class CreatePostings(dd.Action):
 
     def run_from_ui(self, ar, **kw):
 
-        Posting = rt.modules.postings.Posting
-        PostingStates = rt.modules.postings.PostingStates
+        Posting = rt.models.postings.Posting
+        PostingStates = rt.models.postings.PostingStates
 
         elem = ar.selected_rows[0]
         recs = tuple(elem.get_postable_recipients())
@@ -79,7 +79,7 @@ class Postable(dd.Model):
         return []
 
     def get_recipients(self):
-        Posting = rt.modules.postings.Posting
+        Posting = rt.models.postings.Posting
         qs = Posting.objects.filter(
             owner_id=self.pk, owner_type=ContentType.get_for_model(self.__class__))
         return qs.values('partner')

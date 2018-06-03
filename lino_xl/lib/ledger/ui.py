@@ -81,10 +81,10 @@ class ByJournal(dd.Table):
         if isinstance(trade_type, six.string_types):
             trade_type = TradeTypes.get_by_name(trade_type)
         if isinstance(account, six.string_types):
-            account = rt.modules.accounts.Account.get_by_ref(account)
+            account = rt.models.accounts.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
-        return rt.modules.ledger.Journal(
+        return rt.models.ledger.Journal(
             trade_type=trade_type, voucher_type=vt, **kw)
 
 class PrintableByJournal(ByJournal):
@@ -211,7 +211,7 @@ class ExpectedMovements(dd.VirtualTable):
         if pv.date_until is not None:
             flt.update(value_date__lte=pv.date_until)
         if pv.for_journal is not None:
-            accounts = rt.modules.accounts.Account.objects.filter(
+            accounts = rt.models.accounts.Account.objects.filter(
                 matchrule__journal=pv.for_journal).distinct()
             flt.update(account__in=accounts)
         if pv.from_journal is not None:
@@ -220,7 +220,7 @@ class ExpectedMovements(dd.VirtualTable):
 
     @classmethod
     def get_pk_field(self):
-        return rt.modules.ledger.Movement._meta.pk
+        return rt.models.ledger.Movement._meta.pk
 
     @classmethod
     def get_row_by_pk(cls, ar, pk):
@@ -228,7 +228,7 @@ class ExpectedMovements(dd.VirtualTable):
         #     if i.id == pk:
         #         return i
         # raise Exception("Not found: %s in %s" % (pk, ar))
-        mvt = rt.modules.ledger.Movement.objects.get(pk=pk)
+        mvt = rt.models.ledger.Movement.objects.get(pk=pk)
         dm = DueMovement(cls.get_dc(ar), mvt)
         dm.collect_all()
         return dm
@@ -406,7 +406,7 @@ class AccountBalances(dd.Table):
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
     column_names = "description old_d old_c empty_column:1 during_d during_c empty_column:1 new_d new_c"
-    slave_grid_format = 'html'
+    display_mode = 'html'
     abstract = True
     params_panel_hidden = False
     use_as_default_table = False
@@ -568,7 +568,7 @@ class DebtorsCreditors(dd.VirtualTable):
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
     column_names = "age due_date partner partner_id balance vouchers"
-    slave_grid_format = 'html'
+    display_mode = 'html'
     abstract = True
 
     parameters = mixins.Today()
@@ -587,7 +587,7 @@ class DebtorsCreditors(dd.VirtualTable):
         else:   # called from Situation report
             end_date = mi.today
         
-        qs = rt.modules.contacts.Partner.objects.order_by('name')
+        qs = rt.models.contacts.Partner.objects.order_by('name')
         for row in qs:
             row._balance = ZERO
             row._due_date = None
@@ -911,7 +911,7 @@ class MovementsByVoucher(Movements):
     column_names = 'account project partner debit credit match_link cleared *'
     sum_text_column = 3
     # auto_fit_column_widths = True
-    slave_grid_format = "html"
+    display_mode = "html"
     order_by = dd.plugins.ledger.remove_dummy(
         'value_date', 'account__ref', 'partner', 'project', 'id')
     
@@ -920,8 +920,8 @@ class MovementsByPartner(Movements):
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'partner'
-    # slave_grid_format = "html"
-    slave_grid_format = "summary"
+    # display_mode = "html"
+    display_mode = "summary"
     # auto_fit_column_widths = True
     # order_by = ['-value_date', 'voucher__id', 'account__ref']
     order_by = dd.plugins.ledger.remove_dummy(
@@ -956,8 +956,8 @@ class MovementsByPartner(Movements):
         return E.p(*join_elems(elems, " / "))
 
     @classmethod
-    def get_slave_summary(cls, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(cls, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for this table.
 
         """
@@ -983,7 +983,7 @@ class MovementsByProject(MovementsByPartner):
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'project'
-    slave_grid_format = "html"
+    display_mode = "html"
     order_by = ['-value_date', 'partner', 'id']
 
     @classmethod
@@ -1032,7 +1032,7 @@ class MovementsByAccount(Movements):
     debit credit match_link *'
     # order_by = ['-value_date']
     # auto_fit_column_widths = True
-    slave_grid_format = "html"
+    display_mode = "html"
     # order_by = ['-value_date', 'account__ref', 'project', 'id']
     order_by = dd.plugins.ledger.remove_dummy(
         '-value_date', 'partner__name', 'project', 'id')

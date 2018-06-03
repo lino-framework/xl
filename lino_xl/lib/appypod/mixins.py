@@ -45,7 +45,7 @@ class PrintTableAction(actions.Action):
         settings.SITE.makedirs_if_missing(os.path.dirname(mf.name))
         self.appy_render(ar, mf.name)
         ar.set_response(success=True)
-        ar.set_response(open_url=mf.url)
+        ar.set_response(open_url=mf.get_url(ar.request))
         #~ return http.HttpResponseRedirect(mf.url)
         #~ return kw
 

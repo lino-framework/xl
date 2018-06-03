@@ -186,9 +186,11 @@ class EventGenerator(dd.Model):
         if settings.SITE.loading_from_dump:
             #~ print "20111014 loading_from_dump"
             return 0
+        rset = self.update_cal_rset()
         wanted, unwanted = self.get_wanted_auto_events(ar)
-        # dd.logger.info(
-        #     "20171130 get_wanted_auto_events() returned %s", unwanted)
+        # ar.info(
+        #     "20171130 get_wanted_auto_events() returned %s, %s",
+        #     wanted, unwanted)
         count = len(wanted)
         # current = 0
 
@@ -199,62 +201,25 @@ class EventGenerator(dd.Model):
         #     for e in wanted.values()])
         # dd.logger.info('20161015 ' + msg)
 
+        # ar.info("%d wanted and %d unwanted events", count, len(unwanted))
+
         for ee in unwanted.values():
             if not ee.is_user_modified():
                 ee.delete()
                 count += 1
 
+        # import pdb ; pdb.set_trace()
+        
         # create new Events for remaining wanted
         for we in wanted.values():
-            self.before_auto_event_save(we)
+            if not we.is_user_modified():
+                rset.before_auto_event_save(we)
             we.save()
             we.after_ui_save(ar, None)
         #~ logger.info("20130528 update_auto_events done")
         return count
 
-    def compare_auto_event(self, obj, ae):
-        original_state = dict(obj.__dict__)
-        summary = force_text(ae.summary)
-        if obj.summary != summary:
-            obj.summary = summary
-        if obj.user != ae.user:
-            obj.user = ae.user
-        if obj.start_date != ae.start_date:
-            obj.start_date = ae.start_date
-        if obj.end_date != ae.end_date:
-            obj.end_date = ae.end_date
-        if obj.start_time != ae.start_time:
-            obj.start_time = ae.start_time
-        if obj.end_time != ae.end_time:
-            obj.end_time = ae.end_time
-        if obj.event_type != ae.event_type:
-            obj.event_type = ae.event_type
-        if obj.room != ae.room:
-            obj.room = ae.room
-        self.before_auto_event_save(obj)
-        if obj.__dict__ != original_state:
-            obj.save()
-
     def setup_auto_event(self, obj):
-        pass
-
-    def before_auto_event_save(self, obj):
-        """Called for automatically generated events after their automatic
-        fields have been set and before the event is saved.  This
-        allows for additional application-specific automatic fields.
-
-        E.g. the :attr:`room` field in :mod:`lino_xl.lib.courses`.
-
-        :class:`EventGenerator`
-        by default manages the following **automatic event fields**:
-
-        - :attr:`auto_type``
-        - :attr:`user`
-        - :attr:`summary`
-        - :attr:`start_date`, :attr:`start_time`
-        - :attr:`end_date`, :attr:`end_time`
-
-        """
         pass
 
     def get_wanted_auto_events(self, ar):
@@ -280,6 +245,8 @@ class EventGenerator(dd.Model):
         # event. This is where the algorithm will start.
         event_no = 0
         date = None
+        # if qs.count():
+        #     raise Exception("20180321 {}".format(qs.count()))
         for ee in qs:
             if ee.is_user_modified():
                 event_no = ee.auto_type
@@ -302,33 +269,6 @@ class EventGenerator(dd.Model):
         
         for ee in qs:
             unwanted[ee.auto_type] = ee
-            
-            # we = wanted.pop(ee.auto_type, None)
-            # if we is None:
-            #     # there is an unwanted event in the database
-            #     if not ee.is_user_modified():
-            #         unwanted.add(ee)
-            #     #~ else:
-            #         #~ e.auto_type = None
-            #         #~ e.save()
-            # elif ee.is_user_modified():
-            #     if ee.start_date != we.start_date:
-            #         subsequent = ', '.join([str(x.auto_type)
-            #                                for x in wanted.values()])
-            #         delta = ee.start_date - we.start_date
-            #         ar.debug(
-            #             "%d has been moved from %s to %s: "
-            #             "move subsequent dates (%s) by %s"
-            #             % (
-            #                 ee.auto_type, we.start_date,
-            #                 ee.start_date, subsequent, delta))
-            #         for se in wanted.values():
-            #             # ov = se.start_date
-            #             se.start_date += delta
-            #             # ar.debug("%d : %s -> %s" % (
-            #             #     se.auto_type, ov, se.start_date))
-            # else:
-            #     self.compare_auto_event(ee, we)
 
         event_type = self.update_cal_event_type()
         if event_type is None:
@@ -351,18 +291,24 @@ class EventGenerator(dd.Model):
             max_events = settings.SITE.site_config.max_auto_events
         else:
             max_events = rset.max_events
-        Event = settings.SITE.modules.cal.Event
+        Event = settings.SITE.models.cal.Event
         ar.info("Generating events between %s and %s (max. %s).",
                 date, until, max_events)
         ignore_before = dd.plugins.cal.ignore_dates_before
         user = self.get_events_user()
+        # if max_events is not None and event_no >= max_events:
+        #     raise Exception("20180321")
         with translation.override(self.get_events_language()):
             while max_events is None or event_no < max_events:
                 if date > until:
-                    ar.info("Reached upper date limit %s", until)
+                    ar.info("Reached upper date limit %s for %s",
+                            until, event_no)
                     break
                 event_no += 1
-                if ignore_before is None or date >= ignore_before:
+                if ignore_before and date < ignore_before:
+                    ar.info("Ignore %d because it is before %s",
+                            event_no, ignore_before)
+                else:
                     we = Event(
                         auto_type=event_no,
                         user=user,
@@ -377,6 +323,8 @@ class EventGenerator(dd.Model):
                     self.setup_auto_event(we)
                     date = self.resolve_conflicts(we, ar, rset, until)
                     if date is None:
+                        ar.info("Could not resolve conflicts for %s",
+                                event_no)
                         return wanted, unwanted
                     ee = unwanted.pop(event_no, None)
                     if ee is None:
@@ -386,9 +334,8 @@ class EventGenerator(dd.Model):
                             "%s has been moved from %s to %s."
                             % (ee.summary, date, ee.start_date))
                         date = ee.start_date
-
                     else:
-                        self.compare_auto_event(ee, we)
+                        rset.compare_auto_event(ee, we)
                         # we don't need to add it to wanted because
                         # compare_auto_event() saves any changes
                         # immediately.
@@ -396,7 +343,7 @@ class EventGenerator(dd.Model):
                 date = rset.get_next_suggested_date(ar, date)
                 date = rset.find_start_date(date)
                 if date is None:
-                    ar.info("Could not find next date.")
+                    ar.info("Could not find next date after %s.", event_no)
                     break
         return wanted, unwanted
 
@@ -488,8 +435,8 @@ class EventGenerator(dd.Model):
             return rset.every_unit.get_date_formatter()
         return day_and_month
 
-class RecurrenceSet(Started, Ended):
 
+class RecurrenceSet(Started, Ended):
 
     class Meta:
         abstract = True
@@ -567,7 +514,7 @@ class RecurrenceSet(Started, Ended):
     @dd.displayfield(_("When"))
     def weekdays_text(self, ar):
         if self.every_unit == Recurrencies.once:
-            if self.end_date:
+            if self.end_date and self.end_date != self.start_date:
                 return _("{0}-{1}").format(
                     dd.fds(self.start_date), dd.fds(self.end_date))
                 # return _("From {0} until {1}").format(
@@ -599,10 +546,10 @@ class RecurrenceSet(Started, Ended):
 
         """
         ev.start_date = newdate
-        if self.end_date is None:
+        if self.end_date is None or self.end_date == self.start_date:
             ev.end_date = None
         else:
-            duration = self.end_date - newdate
+            duration = self.end_date - self.start_date
             ev.end_date = newdate + duration
             
     def get_next_alt_date(self, ar, date):
@@ -651,6 +598,57 @@ class RecurrenceSet(Started, Ended):
             #~ logger.info('20130529 is_available_on(%s) -> %s -> %s',date,wd,rv)
             return rv
         return True
+
+    def compare_auto_event(self, obj, ae):
+        original_state = dict(obj.__dict__)
+        summary = force_text(ae.summary)
+        if obj.summary != summary:
+            obj.summary = summary
+        if obj.user != ae.user:
+            obj.user = ae.user
+        if obj.start_date != ae.start_date:
+            obj.start_date = ae.start_date
+        if obj.end_date != ae.end_date:
+            obj.end_date = ae.end_date
+        if obj.start_time != ae.start_time:
+            obj.start_time = ae.start_time
+        if obj.end_time != ae.end_time:
+            obj.end_time = ae.end_time
+        if obj.event_type != ae.event_type:
+            obj.event_type = ae.event_type
+        if obj.room != ae.room:
+            obj.room = ae.room
+        if not obj.is_user_modified():
+            self.before_auto_event_save(obj)
+        if obj.__dict__ != original_state:
+            obj.save()
+
+    def before_auto_event_save(self, event):
+        """
+        Called for automatically generated events after their automatic
+        fields have been set and before the event is saved.  This
+        allows for additional application-specific automatic fields.
+
+        E.g. the :attr:`room` field in :mod:`lino_xl.lib.rooms`.
+
+        :class:`EventGenerator`
+        by default manages the following **automatic event fields**:
+
+        - :attr:`auto_type``
+        - :attr:`user`
+        - :attr:`summary`
+        - :attr:`start_date`, 
+
+        NB: also :attr:`start_time` :attr:`end_date`, :attr:`end_time`?
+
+        """
+        if self.end_date and self.end_date != self.start_date:
+            duration = self.end_date - self.start_date
+            event.end_date = event.start_date + duration
+            # if "Weekends" in str(event.owner):
+            #     dd.logger.info("20180321 %s", self.end_date)
+        else:
+            event.end_date = None
 
 dd.update_field(RecurrenceSet, 'start_date', default=dd.today)
 
@@ -711,7 +709,6 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
         #~ super(Reservation,self).after_ui_save(ar)
         #~ if self.state.editable:
             #~ self.update_reminders(ar)
-
 
 class Component(Started,
                 mixins.ProjectRelated,

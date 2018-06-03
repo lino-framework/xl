@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 
 help_texts = {
     'lino_xl.lib.addresses.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.addresses.mixins.AddressOwner' : _("""Base class for the "addressee" of any address."""),
+    'lino_xl.lib.addresses.AddressOwner' : _("""Base class for the "addressee" of any address."""),
     'lino_xl.lib.addresses.Address' : _("""Inherits fields from
 lino_xl.lib.countries.CountryRegionCity (country, region,
 city. zip_code) and lino_xl.lib.contacts.AddresssLocation
@@ -23,8 +23,8 @@ for appy.pod."""),
     'lino_xl.lib.appypod.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
     'lino_xl.lib.appypod.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
     'lino_xl.lib.appypod.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
-    'lino_xl.lib.appypod.mixins.PrintTableAction' : _("""Show this table as a pdf document"""),
-    'lino_xl.lib.appypod.mixins.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
+    'lino_xl.lib.appypod.PrintTableAction' : _("""Show this table as a pdf document"""),
+    'lino_xl.lib.appypod.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
 model which implements
 Addressable."""),
     'lino_xl.lib.beid.Plugin' : _("""See lino.core.Plugin."""),
@@ -34,48 +34,13 @@ BeIdCardHolder."""),
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
     'lino_xl.lib.beid.Plugin.read_only_simulate' : _("""Whether to just simulate."""),
-    'lino_xl.lib.beid.CivilStates' : _("""The global list of civil states that a client can have.  This
-is the list of choices for the civil_state field of a
-Client."""),
-    'lino_xl.lib.beid.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
-officiellement lié"""),
-    'lino_xl.lib.beid.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
-    'lino_xl.lib.beid.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
-votre partenaire est décédé"""),
-    'lino_xl.lib.beid.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
-    'lino_xl.lib.beid.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
-    'lino_xl.lib.beid.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
-corps et de biens, Getrennt von Tisch und Bett)"""),
-    'lino_xl.lib.beid.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
-    'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers
-(Einwohnerregister, Registre de résidents)."""),
-    'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
-Currently only Belgian eid cards are tested.
-Concrete subclasses must also inherit from lino.mixins.Born."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
-is not validated directly because that would cause problems
-with legacy data where SSINs need manual control. See also
-BeIdCardHolderChecker."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
-countries.Country which should
-contain also entries for refugee statuses."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolder.validate_national_id' : _("""Whether to validate the national_id immediately before
-saving a record.  If this is False, the national_id
-might contain invalid values which would then cause data
-problems."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
-(see BeIdCardHolder.national_id), but this checker reports
-them."""),
-    'lino_xl.lib.beid.mixins.BeIdCardHolderChecker.model' : _("""alias of BeIdCardHolder"""),
     'lino_xl.lib.bevat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.bevats.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.blogs.Entry' : _("""A blog entry is a short article with a title, published on a given
 date and time by a given user."""),
     'lino_xl.lib.blogs.LatestEntries' : _("""Show the most recent blog entries."""),
     'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.boards.mixins.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
+    'lino_xl.lib.boards.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
 lino_welfare.modlib.aids.mixins.Confirmation."""),
     'lino_xl.lib.boards.Member' : _("""A Member is when a given ml.contacts.Person
 belongs to a given Board."""),
@@ -123,20 +88,20 @@ lino_xl.lib.excerpts.fixtures.demo2."""),
     'lino_xl.lib.excerpts.Shortcuts' : _("""The list of excerpt shortcut fields.  An excerpt shortcut field is
 a virtual display field with actions for quickly managing, from a
 given database object, the excerpt for this object of a given type."""),
-    'lino_xl.lib.excerpts.mixins.ClearPrinted' : _("""Action to clear the print cache (i.e. the generated printable
+    'lino_xl.lib.excerpts.ClearPrinted' : _("""Action to clear the print cache (i.e. the generated printable
 document)."""),
-    'lino_xl.lib.excerpts.mixins.Certifiable' : _("""Any model which inherits from this mixin becomes "certifiable".
+    'lino_xl.lib.excerpts.Certifiable' : _("""Any model which inherits from this mixin becomes "certifiable".
 That is:"""),
-    'lino_xl.lib.excerpts.mixins.Certifiable.printed' : _("""Displays information about when this certifiable has been printed.
+    'lino_xl.lib.excerpts.Certifiable.printed' : _("""Displays information about when this certifiable has been printed.
 Clicking on it will display the excerpt pointed to by
 printed_by."""),
-    'lino_xl.lib.excerpts.mixins.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
-    'lino_xl.lib.excerpts.mixins.ExcerptTitle' : _("""Mixin for models like
+    'lino_xl.lib.excerpts.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
+    'lino_xl.lib.excerpts.ExcerptTitle' : _("""Mixin for models like
 lino_welfare.modlib.aids.models.AidType and
 lino_xl.lib.courses.models.Line."""),
-    'lino_xl.lib.excerpts.mixins.ExcerptTitle.name' : _("""The designation of this row as seen by the user e.g. when
+    'lino_xl.lib.excerpts.ExcerptTitle.name' : _("""The designation of this row as seen by the user e.g. when
 selecting an instance of this model."""),
-    'lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
+    'lino_xl.lib.excerpts.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
 One field for every language.
 If this is empty, then name is used."""),
     'lino_xl.lib.excerpts.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
@@ -237,16 +202,16 @@ father (mother). [thefreedictionary]"""),
     'lino_xl.lib.invoicing.Plugin.item_model' : _("""The database model into which invoiceable objects should create
 invoice items.  Default value refers to
 sales.InvoiceItem."""),
-    'lino_xl.lib.invoicing.actions.StartInvoicing' : _("""Base for StartInvoicingForJournal,
+    'lino_xl.lib.invoicing.StartInvoicing' : _("""Base for StartInvoicingForJournal,
 StartInvoicingForPartner."""),
-    'lino_xl.lib.invoicing.actions.StartInvoicingForJournal' : _("""Start an invoicing plan for this journal."""),
-    'lino_xl.lib.invoicing.actions.StartInvoicingForPartner' : _("""Start an invoicing plan for this partner."""),
-    'lino_xl.lib.invoicing.actions.ToggleSelection' : _("""Invert selection status for all suggestions."""),
-    'lino_xl.lib.invoicing.mixins.Invoiceable' : _("""Mixin for things that are "invoiceable", i.e. for which a customer
+    'lino_xl.lib.invoicing.StartInvoicingForJournal' : _("""Start an invoicing plan for this journal."""),
+    'lino_xl.lib.invoicing.StartInvoicingForPartner' : _("""Start an invoicing plan for this partner."""),
+    'lino_xl.lib.invoicing.ToggleSelection' : _("""Invert selection status for all suggestions."""),
+    'lino_xl.lib.invoicing.Invoiceable' : _("""Mixin for things that are "invoiceable", i.e. for which a customer
 is going to receive an invoice."""),
-    'lino_xl.lib.invoicing.mixins.Invoiceable.invoicings' : _("""A simple GenericRelation
+    'lino_xl.lib.invoicing.Invoiceable.invoicings' : _("""A simple GenericRelation
 to all invoice items pointing to this enrolment."""),
-    'lino_xl.lib.invoicing.mixins.Invoiceable.invoiceable_date_field' : _("""The name of the field which holds the invoiceable date.  Must be
+    'lino_xl.lib.invoicing.Invoiceable.invoiceable_date_field' : _("""The name of the field which holds the invoiceable date.  Must be
 set by subclasses."""),
     'lino_xl.lib.invoicing.Plan' : _("""An invoicing plan is a rather temporary database object which
 represents the plan of a given user to have Lino generate a series
@@ -296,13 +261,13 @@ online_registration."""),
     'lino_xl.lib.online.users.User.user_state' : _("""The registration state of this user."""),
     'lino_xl.lib.outbox.RecipientTypes' : _("""A list of possible values for the type field of a
 Recipient."""),
-    'lino_xl.lib.outbox.mixins.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
+    'lino_xl.lib.outbox.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
 Concrete examples are cal.EventType, cal.GuestRole,
 notes.NoteType."""),
-    'lino_xl.lib.outbox.mixins.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
+    'lino_xl.lib.outbox.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
 being typed by this MailableType. Example:"""),
-    'lino_xl.lib.outbox.mixins.CreateMail' : _("""Creates an outbox mail and displays it."""),
-    'lino_xl.lib.outbox.mixins.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
+    'lino_xl.lib.outbox.CreateMail' : _("""Creates an outbox mail and displays it."""),
+    'lino_xl.lib.outbox.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
 must also inherit from mixins.Printable or some subclass
 thereof."""),
     'lino_xl.lib.outbox.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
@@ -311,10 +276,10 @@ thereof."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
     'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.postings.mixins.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
+    'lino_xl.lib.postings.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
 be one Posting for each recipient."""),
-    'lino_xl.lib.postings.mixins.Postable' : _("""Mixin for models that provide a "Post" button."""),
+    'lino_xl.lib.postings.Postable' : _("""Mixin for models that provide a "Post" button."""),
     'lino_xl.lib.postings.PostingStates' : _("""List of possible values for the state field of a 
 Posting."""),
     'lino_xl.lib.postings.Posting' : _("""A Posting is the fact that a letter or other item 
@@ -403,14 +368,14 @@ document."""),
     'lino_xl.lib.sepa.fields.UppercaseTextField' : _("""A custom CharField that accepts only uppercase caracters."""),
     'lino_xl.lib.sepa.fields.BICField' : _("""Database field used to store a BIC."""),
     'lino_xl.lib.sepa.fields.IBANField' : _("""Database field used to store an IBAN."""),
-    'lino_xl.lib.sepa.mixins.BankAccount' : _("""Adds a field bank_account and its chooser."""),
-    'lino_xl.lib.sepa.mixins.Payable' : _("""Model mixin for database objects that are considered payable
+    'lino_xl.lib.sepa.BankAccount' : _("""Adds a field bank_account and its chooser."""),
+    'lino_xl.lib.sepa.Payable' : _("""Model mixin for database objects that are considered payable
 transactions. To be combined with some mixin which defines a
 field partner."""),
-    'lino_xl.lib.sepa.mixins.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
-    'lino_xl.lib.sepa.mixins.Payable.title' : _("""A char field with a description for this transaction."""),
-    'lino_xl.lib.sepa.mixins.BankAccountChecker' : _("""Checks for the following data problems:"""),
-    'lino_xl.lib.sepa.mixins.BankAccountChecker.model' : _("""alias of BankAccount"""),
+    'lino_xl.lib.sepa.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
+    'lino_xl.lib.sepa.Payable.title' : _("""A char field with a description for this transaction."""),
+    'lino_xl.lib.sepa.BankAccountChecker' : _("""Checks for the following data problems:"""),
+    'lino_xl.lib.sepa.BankAccountChecker.model' : _("""alias of BankAccount"""),
     'lino_xl.lib.sepa.Account' : _("""A bank account related to a given Partner."""),
     'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported
 statement for this account. Clicking on this date will open
@@ -442,7 +407,7 @@ or ToDo)."""),
     'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
 or ToDo)."""),
     'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
-    'lino_xl.lib.tickets.Tickets.has_project' : _("""Show only (or hide) tickets which have a project assigned."""),
+    'lino_xl.lib.tickets.Tickets.has_site' : _("""Show only (or hide) tickets which have a site assigned."""),
     'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
     'lino_xl.lib.tickets.Tickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
@@ -458,7 +423,7 @@ equivalent to those having their state set to new."""),
     'lino_xl.lib.tickets.ActiveTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
     'lino_xl.lib.tickets.MyTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
     'lino_xl.lib.tickets.MyTicketsToWork.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tim2lino.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.tim2lino.Plugin.languages' : _("""The language distribution used in the database to import. Mandatory
@@ -482,9 +447,9 @@ resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
 resolve it at startup into an item of VatClasses."""),
     'lino_xl.lib.vatless.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.vatless.mixins.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
+    'lino_xl.lib.vatless.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
-    'lino_xl.lib.vatless.mixins.PartnerDetailMixin.ledger' : _("""Shows the tables vatless.VouchersByPartner and
+    'lino_xl.lib.vatless.PartnerDetailMixin.ledger' : _("""Shows the tables vatless.VouchersByPartner and
 ledger.MovementsByPartner."""),
     'lino_xl.lib.vatless.AccountInvoice.auto_compute_totals' : _("""Set this to True on subclasses who compute their totals
 automatically, i.e. which have the field amount disabled."""),
@@ -500,8 +465,8 @@ lino_xl.lib.sales.models.AccountInvoice)."""),
 which represents a votable in your application.  Default value is
 'tickets.Ticket' (referring to
 lino_xl.lib.tickets.models.Ticket)."""),
-    'lino_xl.lib.votes.actions.CreateVote' : _("""Define your vote about this object."""),
-    'lino_xl.lib.votes.actions.VotableEditVote' : _("""Edit your vote about this object."""),
+    'lino_xl.lib.votes.CreateVote' : _("""Define your vote about this object."""),
+    'lino_xl.lib.votes.VotableEditVote' : _("""Edit your vote about this object."""),
     'lino_xl.lib.votes.VoteState' : _("""The state of a vote."""),
     'lino_xl.lib.votes.VoteState.vote_name' : _("""Translatable text. How a vote is called when in this state."""),
     'lino_xl.lib.votes.VoteStates' : _("""The list of possible states of a vote.  This is used as choicelist
@@ -511,7 +476,7 @@ field of a vote."""),
 author vote for every author of a ticket (see
 get_vote_raters)."""),
     'lino_xl.lib.votes.VoteStates.item_class' : _("""alias of VoteState"""),
-    'lino_xl.lib.votes.mixins.Votable' : _("""Base class for models that can be used as
+    'lino_xl.lib.votes.Votable' : _("""Base class for models that can be used as
 lino_xl.lib.votes.Plugin.votable_model."""),
     'lino_xl.lib.votes.Vote' : _("""A vote is when a user has an opinion or interest about a given
 ticket (or any other votable)."""),
@@ -545,6 +510,36 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
+Currently only Belgian eid cards are tested.
+Concrete subclasses must also inherit from lino.mixins.Born."""),
+    'lino_xl.lib.beid.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
+is not validated directly because that would cause problems
+with legacy data where SSINs need manual control. See also
+BeIdCardHolderChecker."""),
+    'lino_xl.lib.beid.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
+countries.Country which should
+contain also entries for refugee statuses."""),
+    'lino_xl.lib.beid.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
+    'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
+    'lino_xl.lib.beid.CivilStates' : _("""The global list of civil states that a client can have.  This
+is the list of choices for the civil_state field of a
+Client."""),
+    'lino_xl.lib.beid.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
+officiellement lié"""),
+    'lino_xl.lib.beid.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
+    'lino_xl.lib.beid.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
+votre partenaire est décédé"""),
+    'lino_xl.lib.beid.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
+    'lino_xl.lib.beid.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
+    'lino_xl.lib.beid.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
+corps et de biens, Getrennt von Tisch und Bett)"""),
+    'lino_xl.lib.beid.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
+    'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers
+(Einwohnerregister, Registre de résidents)."""),
+    'lino_xl.lib.beid.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
+(see BeIdCardHolder.national_id), but this checker reports
+them."""),
     'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
@@ -602,6 +597,8 @@ and local modifications will be sent back to the remote calendar."""),
     'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
 can see the EntriesByRoom that happened (or will happen)
 there.  A Room has a multilingual name."""),
+    'lino_xl.lib.cal.Room.name' : _("""The designation of the room. This should (but is not required
+to) be unique."""),
     'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
     'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
     'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
@@ -652,10 +649,12 @@ state."""),
     'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
 See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.RecurrenceSet.max_events' : _("""Maximum number of calendar entries to generate."""),
     'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
 weekdays where the recurrence occurs."""),
     'lino_xl.lib.cal.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
 lino.modlib.courses.models.Course."""),
+    'lino_xl.lib.cal.Reservation.max_date' : _("""Don't generate calendar entries beyond this date."""),
     'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
     'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
 choicelist."""),
@@ -675,6 +674,11 @@ Default value is 5 years after today."""),
 calendar functionality which can be given to anonymous users,
 as done e.g. by vilma."""),
     'lino_xl.lib.cal.GuestOperator' : _("""Can see presences and guests of a calendar entry."""),
+    'lino_xl.lib.cal.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
+    'lino_xl.lib.cal.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
+    'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of
+days allowed by their type."""),
+    'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
     'lino_xl.lib.clients.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
     'lino_xl.lib.clients.ClientBase' : _("""Base class for a client. The model specified as
 client_model must implement this."""),
@@ -815,6 +819,10 @@ invoice. There is one such checkbox for every trade type
 exist only when the ledger plugin
 is installed as well.  See also the
 get_allowed_accounts method."""),
+    'lino_xl.lib.accounts.Account.needs_ana' : _("""Whether transactions on this account require the user to also
+specify an analytic account."""),
+    'lino_xl.lib.accounts.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
+account."""),
     'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
     'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
     'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
@@ -924,6 +932,7 @@ empty."""),
     'lino_xl.lib.ledger.Movement.match_link' : _("""A virtual field which shows a clickable variant of the match
 string. Clicking it will open a table with all movements
 having that match."""),
+    'lino_xl.lib.ledger.Movement.ana_account' : _("""The analytic account to move together with this transactions."""),
     'lino_xl.lib.ledger.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
     'lino_xl.lib.ledger.Voucher.state' : _("""The workflow state of this voucher. Choices are defined in
 VoucherStates"""),
@@ -1129,6 +1138,8 @@ teacher in a given room to speak about a given subject."""),
     'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
     'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
 this field empty if the meetings last less than one day."""),
+    'lino_xl.lib.courses.Course.max_date' : _("""Don't generate meeting having their start date beyond this
+date."""),
     'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
 in this course."""),
     'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
@@ -1187,7 +1198,7 @@ not change anymore."""),
     'lino_xl.lib.tickets.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
 publicly visible anywhere."""),
     'lino_xl.lib.tickets.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
-    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work. It is a concrete
+    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work.  It is a concrete
 question or problem handled formulated by a user."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for
 managing it."""),
@@ -1209,7 +1220,7 @@ version."""),
 and 100."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
-project.  See ReportingTypes."""),
+site.  See ReportingTypes."""),
     'lino_xl.lib.tickets.TicketStates' : _("""The state of a ticket (new, open, closed, ...)"""),
     'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response so
 far.
@@ -1368,7 +1379,7 @@ and qty."""),
     'lino_xl.lib.vat.VatRegime.item_vat' : _("""Whether unit prices are VAT included or not."""),
     'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes.  Each item is an instance of
 VatRegime."""),
-    'lino_xl.lib.vat.mixins.VatDeclaration' : _("""Abstract base class for VAT declarations."""),
+    'lino_xl.lib.vat.VatDeclaration' : _("""Abstract base class for VAT declarations."""),
     'lino_xl.lib.vat.DeclarationField' : _("""Base class for all fields of VAT declarations."""),
     'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of other declaration
 fields to be observed by this field."""),

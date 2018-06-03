@@ -193,10 +193,10 @@ class EntriesByController(Entries):
     master_key = 'owner'
     column_names = "pub_date title user *"
     order_by = ["-pub_date"]
-    slave_grid_format = "summary"
+    display_mode = "summary"
 
     @classmethod
-    def get_slave_summary(self, mi, ar):
+    def get_table_summary(self, mi, ar):
         if ar is None:
             return ''
         sar = self.request_from(ar, master_instance=mi)
@@ -234,10 +234,10 @@ class LatestEntries(Entries):
     column_names = "pub_date title user *"
     order_by = ["-pub_date"]
     filter = models.Q(pub_date__isnull=False)
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(cls, obj, ar, max_num=10, **context):
+    def get_table_summary(cls, obj, ar, max_num=10, **context):
         
         context = ar.get_printable_context(**context)
         qs = rt.models.blogs.Entry.objects.filter(pub_date__isnull=False)

@@ -70,11 +70,11 @@ class CommitsByRepository(Commits):
 class CommitsByTicket(Commits):
     master_key = 'ticket'
     column_names = 'repository summary user url'
-    slave_grid_format = "summary"
+    display_mode = "summary"
     # stay_in_grid = True
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
         items = []
         for c in sar:

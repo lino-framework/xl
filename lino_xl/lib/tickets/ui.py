@@ -19,6 +19,7 @@ their *number*.
 """
 
 from __future__ import unicode_literals
+from builtins import str
 
 from django.conf import settings
 from django.db import models
@@ -67,7 +68,7 @@ class TicketTypes(dd.Table):
 
 
 class ProjectDetail(dd.DetailLayout):
-    main = "general #deploy.DeploymentsByProject TicketsByProject more"
+    main = "general #deploy.DeploymentsByProject more"
 
     general = dd.Panel("""
     ref name
@@ -200,7 +201,7 @@ class ProjectsByPerson(Projects):
 #     # column_names = 'priority project tickets_overview *'
 #     params_panel_hidden = True
 #     # editable = False
-#     slave_grid_format = "html"  # (doesn't work) TODO #1594 
+#     display_mode = "html"  # (doesn't work) TODO #1594 
     
 #     insert_layout = """
 #     project 
@@ -252,13 +253,13 @@ if False:
         remark
         """
 
-        slave_grid_format = "summary"
+        display_mode = "summary"
 
         @classmethod
-        def get_slave_summary(self, obj, ar):
+        def get_table_summary(self, obj, ar):
             """The summary view for this table.
 
-            Implements :meth:`lino.core.actors.Actor.get_slave_summary`.
+            Implements :meth:`lino.core.actors.Actor.get_table_summary`.
 
             """
             sar = self.request_from(ar, master_instance=obj)
@@ -305,21 +306,21 @@ class LinksByTicket(Links):
     required_roles = dd.login_required(Triager)
     master = 'tickets.Ticket'
     column_names = 'parent type_as_parent:10 child'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
     def get_request_queryset(self, ar):
         mi = ar.master_instance  # a Person
         if mi is None:
             return
-        Link = rt.modules.tickets.Link
+        Link = rt.models.tickets.Link
         flt = Q(parent=mi) | Q(child=mi)
         return Link.objects.filter(flt).order_by(
             'child__modified', 'parent__modified')
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for :class:`LinksByTicket`.
 
         """
@@ -454,9 +455,9 @@ class Tickets(dd.Table):
 
         Show only (or hide) tickets that are assigned to somebody.
 
-    .. attribute:: has_project
+    .. attribute:: has_site
 
-        Show only (or hide) tickets which have a project assigned.
+        Show only (or hide) tickets which have a site assigned.
 
     .. attribute:: feasable_by
 
@@ -528,28 +529,30 @@ class Tickets(dd.Table):
                         "least one deployment")),
         show_active=dd.YesNo.field(_("Active"), blank=True),
         show_todo=dd.YesNo.field(_("To do"), blank=True),
-        has_project=dd.YesNo.field(_("Has project"), blank=True),
+        has_site=dd.YesNo.field(_("Has site"), blank=True),
         show_private=dd.YesNo.field(_("Private"), blank=True),
         has_ref=dd.YesNo.field(_("Has reference"), blank=True)
     )
 
     params_layout = """
-    user end_user assigned_to not_assigned_to interesting_for site project state priority deployed_to
-    has_project show_assigned show_active show_deployed show_todo show_private
+    user end_user assigned_to not_assigned_to interesting_for site state priority deployed_to
+    #has_site show_assigned show_active show_deployed show_todo show_private
     start_date end_date observed_event topic has_ref"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
 
     @classmethod
     def get_simple_parameters(cls):
-        s = list(super(Tickets, cls).get_simple_parameters())
-        s += ['end_user',  # 'assigned_to',
-              'state',
-              'project',
-              'topic', 'site', 'priority']
+        for p in super(Tickets, cls).get_simple_parameters():
+            yield p
+        yield 'end_user'
+        yield 'state'
+        yield 'project'
+        yield 'topic'
+        yield 'site'
+        yield 'priority'
         if not dd.is_installed('votes'):
-            s.append('assigned_to')
-        return s
+            yield 'assigned_to'
 
     @classmethod
     def get_queryset(self, ar, **filter):
@@ -609,6 +612,7 @@ class Tickets(dd.Table):
                 qs = qs.filter(vote__isnull=True).distinct()
 
         else:
+            # NB: assigned_to is a simple parameter field
             if pv.not_assigned_to:
                 qs = qs.exclude(assigned_to=pv.not_assigned_to)
 
@@ -640,12 +644,12 @@ class Tickets(dd.Table):
         elif pv.show_todo == dd.YesNo.yes:
             qs = qs.filter(state__in=todo_states)
 
-        if pv.has_project == dd.YesNo.no:
+        if pv.has_site == dd.YesNo.no:
             # qs = qs.filter(votes_by_ticket__project__isnull=True)
-            qs = qs.filter(project__isnull=True)
-        elif pv.has_project == dd.YesNo.yes:
+            qs = qs.filter(site__isnull=True)
+        elif pv.has_site == dd.YesNo.yes:
             # qs = qs.filter(votes_by_ticket__project__isnull=False)
-            qs = qs.filter(project__isnull=False)
+            qs = qs.filter(site__isnull=False)
 
         # if pv.show_standby == dd.YesNo.no:
         #     qs = qs.filter(standby=False)
@@ -697,7 +701,7 @@ class DuplicatesByTicket(Tickets):
     (i.e. whose `duplicate_of` field points to this ticket.
 
     """
-    slave_grid_format = 'html'
+    display_mode = 'html'
     label = _("Duplicates")
     master_key = 'duplicate_of'
     column_names = "overview state *"
@@ -748,12 +752,12 @@ class UnassignedTickets(Tickets):
 class TicketsByEndUser(Tickets):
     master_key = 'end_user'
     column_names = ("overview:50 workflow_buttons * ")
-    # slave_grid_format = "summary"
+    # display_mode = "summary"
     required_roles = dd.login_required(TicketsReader)
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_slave_summary>`
+    def get_table_summary(self, obj, ar):
+        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
         for this table.
 
         """
@@ -811,7 +815,7 @@ class TicketsToTriage(Tickets):
     required_roles = dd.login_required(Triager)
     button_label = _("Triage")
     order_by = "priority -id".split()
-    column_names = 'overview:50 priority topic:10 #user:10 project:10 ' \
+    column_names = 'overview:50 priority topic:10 #user:10 ' \
                    '#assigned_to:10 ticket_type:10 workflow_buttons:40 *'
     params_panel_hidden = True
 
@@ -900,24 +904,56 @@ class MyTickets(My, Tickets):
         # kw.update(show_standby=dd.YesNo.no)
         return kw
 
-class MyTicketsToWork(Tickets):
-        """Show all active tickets reported by me."""
-        label = _("Tickets to work")
-        required_roles = dd.login_required(Reporter)
-        order_by = ["priority", "-id"]
-        column_names = 'overview:50 workflow_buttons:30 *'
-        params_layout = """
-        user end_user site project state
-        start_date end_date observed_event topic show_active"""
-        params_panel_hidden = True
+class TicketsSummary(Tickets):
+    order_by = ["state", "priority", "-id"]
+    display_mode = 'summary'
 
-        @classmethod
-        def param_defaults(self, ar, **kw):
-            kw = super(MyTicketsToWork, self).param_defaults(ar, **kw)
-            kw.update(show_todo=dd.YesNo.yes)
-            kw.update(assigned_to=ar.get_user())
-            # kw.update(show_standby=dd.YesNo.no)
-            return kw
+    @classmethod
+    def get_table_summary(self, master, ar):
+        # master is None when called on a master table.
+        if master is None:
+            sar = ar
+        else:
+            sar = self.request_from(ar, master_instance=master)
+            
+        # every element of `items` is a tuple `(state,
+        # list-of-objects)`.  in ar are ordered by state. we just group
+        # them 
+        items = []
+        ci = None
+            
+        for obj in sar:  # self.get_request_queryset(ar):
+            btn = obj.obj2href(ar)
+            if ci is not None and ci[0] is obj.state:
+                ci[1].append(btn)
+            else:
+                ci = (obj.state, [btn])
+                items.append(ci)
+
+        # now render them as a UL containing on LI per item
+        items = [E.li(str(i[0]), ' : ', *join_elems(i[1], ", "))
+                 for i in items]
+
+        return E.ul(*items)
+
+class MyTicketsToWork(TicketsSummary):
+    """Show all active tickets assigned to me."""
+    label = _("Tickets to work")
+    required_roles = dd.login_required(Reporter)
+    column_names = 'overview:50 workflow_buttons:30 *'
+    params_layout = """
+    user end_user site project state
+    start_date end_date observed_event topic show_active"""
+    params_panel_hidden = True
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyTicketsToWork, self).param_defaults(ar, **kw)
+        kw.update(show_active=dd.YesNo.yes)
+        # kw.update(show_todo=dd.YesNo.yes)
+        kw.update(assigned_to=ar.get_user())
+        return kw
+
 
 
 # class InterestingTickets(ActiveTickets):
@@ -1000,45 +1036,6 @@ class Sites(dd.Table):
 
         return qs
 
-    # @dd.requestfield(_("New Tickets"))
-    # def new_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.new, show_active=None))
-
-    # @dd.requestfield(_("Tickets To Talk"))
-    # def talk_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.talk, show_active=None))
-
-    # @dd.requestfield(_("Open Tickets"))
-    # def open_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.opened, show_active=None))
-
-    # @dd.requestfield(_("Started Tickets"))
-    # def started_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.started, show_active=None))
-
-    # @dd.requestfield(_("Sleeping Tickets"))
-    # def sleeping_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.sleeping, show_active=None))
-
-    # @dd.requestfield(_("Ready Tickets"))
-    # def ready_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.ready, show_active=None))
-
-    # @dd.requestfield(_("Closed Tickets"))
-    # def closed_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.closed, show_active=None))
-
-    # @dd.requestfield(_("Cancelled Tickets"))
-    # def cancelled_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(state=TicketStates.cancelled, show_active=None))
-
-    # @dd.requestfield(_("Active Tickets"))
-    # def active_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.yes))
-
-    # @dd.requestfield(_("InActive Tickets"))
-    # def inactive_tickets(self, obj, ar):
-    #     return TicketsBySite.request(obj, param_values=dict(show_active=dd.YesNo.no))
 
 
 
@@ -1051,10 +1048,21 @@ class MySites(Sites):
         kw.update(watcher=ar.get_user())
         return kw
 
-# class MySitesDashboard(MySites):
-#     label = _("Sites Overview")
-#     column_names = """overview new_tickets talk_tickets opened_tickets started_tickets sleeping_tickets ready_tickets closed_tickets cancelled_tickets #active_tickets #inactive_tickets """
-#     # TODO: above fails if TicketStates is locally modified
+def get_summary_columns():
+    for ts in TicketStates.get_list_items():
+        if ts.active:
+            k = ts.get_summary_field()
+            if k is not None:
+                yield k
+    
+
+class MySitesDashboard(MySites):
+    label = _("Sites Overview")
+
+    @classmethod
+    def setup_columns(cls):
+        cls.column_names = "overview "
+        cls.column_names += ' '.join(get_summary_columns())
 
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)
@@ -1065,11 +1073,11 @@ class AllSites(Sites):
 #     column_names = "name remark *"
 
 
-class TicketsBySite(Tickets):
-    label = _("Known problems")
+class TicketsBySite(TicketsSummary):
+    # label = _("Known problems")
     master_key = 'site'
     column_names = ("priority overview:50 workflow_buttons *")
-    order_by = ["priority", "-id"]
+    # order_by = ["priority", "-id"]
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -1081,32 +1089,32 @@ class TicketsBySite(Tickets):
         # kw.update(observed_event=TicketEvents.todo)
         return kw
 
-class TicketsByProject(Tickets):
-    master_key = 'project'
-    required_roles = dd.login_required(Triager)
-    column_names = ("priority overview:50 workflow_buttons *")
-    order_by = ["priority", "-id"]
+# class TicketsByProject(Tickets):
+#     master_key = 'project'
+#     required_roles = dd.login_required(Triager)
+#     column_names = ("priority overview:50 workflow_buttons *")
+#     order_by = ["priority", "-id"]
 
 
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(TicketsByProject, self).param_defaults(ar, **kw)
-        # mi = ar.master_instance
-        # if mi is None or mi.project is None:
-        #     return kw
-        # print("20170318 master instance is", mi)
-        # kw.update(not_assigned_to=mi)
-        # kw.update(deployed_to=mi.project)
-        # kw.update(show_assigned=dd.YesNo.no)
-        kw.update(show_active=dd.YesNo.yes)
-        return kw
+#     @classmethod
+#     def param_defaults(self, ar, **kw):
+#         kw = super(TicketsByProject, self).param_defaults(ar, **kw)
+#         # mi = ar.master_instance
+#         # if mi is None or mi.project is None:
+#         #     return kw
+#         # print("20170318 master instance is", mi)
+#         # kw.update(not_assigned_to=mi)
+#         # kw.update(deployed_to=mi.project)
+#         # kw.update(show_assigned=dd.YesNo.no)
+#         kw.update(show_active=dd.YesNo.yes)
+#         return kw
     
 # class TicketsByCompetence(TicketsByProject):
 #     master = 'tickets.Competence'
 #     master_key = None
 #     # required_roles = dd.login_required(Triager)
 #     # column_names = ("overview:50 workflow_buttons upgrade_notes *")
-#     slave_grid_format = "html"
+#     display_mode = "html"
 
 #     @classmethod
 #     def get_filter_kw(self, ar, **kw):

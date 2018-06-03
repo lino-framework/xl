@@ -310,7 +310,7 @@ class MailsByController(Mails):
     master_key = 'owner'
     auto_fit_column_widths = True
     #~ label = _("Postings")
-    #~ slave_grid_format = 'summary'
+    #~ display_mode = 'summary'
 
 
 class MailsByUser(Mails):
@@ -392,7 +392,7 @@ class Attachments(dd.Table):
 class AttachmentsByMail(Attachments):
     required_roles = dd.login_required(OfficeUser)
     master_key = 'mail'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
 
 class AttachmentsByController(Attachments):

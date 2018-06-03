@@ -28,7 +28,7 @@ def payment_terms():
     def PT(name, ref, **kwargs):
         kwargs['ref'] = ref
         kwargs = dd.str2kw('name', name, **kwargs)
-        return rt.modules.ledger.PaymentTerm(**kwargs)
+        return rt.models.ledger.PaymentTerm(**kwargs)
     
     yield PT(_("Payment in advance"), "PIA")
     yield PT(_("Payment seven days after invoice date"), "07", days=7)

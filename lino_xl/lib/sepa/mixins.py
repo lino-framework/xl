@@ -44,7 +44,7 @@ class BankAccount(dd.Model):
 
     def partner_changed(self, ar):
         # dd.logger.info("20160329 BankAccount.partner_changed")
-        Account = rt.modules.sepa.Account
+        Account = rt.models.sepa.Account
         qs = Account.objects.filter(partner=self.get_partner(), primary=True)
         if qs.count() == 1:
             self.bank_account = qs[0]
@@ -61,7 +61,7 @@ class BankAccount(dd.Model):
         # dd.logger.info(
         #     "20160329 bank_account_choices %s, %s", partner, project)
         partner = partner or project
-        return rt.modules.sepa.Account.objects.filter(
+        return rt.models.sepa.Account.objects.filter(
             partner=partner).order_by('iban')
 
     def get_bank_account(self):

@@ -232,7 +232,7 @@ We override everything in Excerpt to not call the class method.""")
         model = self.content_type.model_class()
         if not isinstance(obj, model):
             raise Exception("%s is not an instance of %s" % (obj, model))
-        Excerpt = rt.modules.excerpts.Excerpt
+        Excerpt = rt.models.excerpts.Excerpt
         ex = None
         if self.certifying:
             qs = Excerpt.objects.filter(
@@ -573,7 +573,7 @@ class Excerpt(TypedPrintable, UserAuthored,
     @dd.chooser()
     def excerpt_type_choices(cls, owner):
         # logger.info("20150702 %s", owner)
-        qs = rt.modules.excerpts.ExcerptType.objects.order_by('name')
+        qs = rt.models.excerpts.ExcerptType.objects.order_by('name')
         if owner is None:
             # e.g. when choosing on the *parameter* field
             # return qs.filter(content_type__isnull=True)
@@ -693,7 +693,7 @@ def post_init_excerpt(sender, instance=None, **kwargs):
                                 settings.SITE.DEFAULT_LANGUAGE.django_code
 
 
-if has_davlink:
+if has_davlink or settings.SITE.webdav_protocol:
 
     class ExcerptDetail(dd.DetailLayout):
         # window_size = (80, 20)
@@ -813,12 +813,12 @@ class ExcerptsByOwner(Excerpts):
     label = _("Existing excerpts")
     column_names = "build_time excerpt_type user project *"
     order_by = ['-build_time', 'id']
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
     auto_fit_column_widths = True
     MORE_LIMIT = 5
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         items = []
 
         def add(title, flt):

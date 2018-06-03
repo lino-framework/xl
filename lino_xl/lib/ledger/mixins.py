@@ -115,13 +115,13 @@ class Matching(dd.Model):
     def get_match_choices(cls, journal, partner):
         """This is the general algorithm.
         """
-        matchable_accounts = rt.modules.accounts.Account.objects.filter(
+        matchable_accounts = rt.models.accounts.Account.objects.filter(
             matchrule__journal=journal)
         fkw = dict(account__in=matchable_accounts)
         fkw.update(cleared=False)
         if partner:
             fkw.update(partner=partner)
-        qs = rt.modules.ledger.Movement.objects.filter(**fkw)
+        qs = rt.models.ledger.Movement.objects.filter(**fkw)
         qs = qs.order_by('value_date')
         # qs = qs.distinct('match')
         return qs.values_list('match', flat=True)
@@ -181,7 +181,7 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
     def account_choices(self, voucher):
         if voucher and voucher.journal:
             return voucher.journal.get_allowed_accounts()
-        return rt.modules.accounts.Account.objects.none()
+        return rt.models.accounts.Account.objects.none()
 
 
 def JournalRef(**kw):
@@ -266,7 +266,7 @@ class ItemsByVoucher(dd.Table):
     master_key = 'voucher'
     order_by = ["seqno"]
     auto_fit_column_widths = True
-    slave_grid_format = 'html'
+    display_mode = 'html'
     preview_limit = 0
 
 class VouchersByPartnerBase(dd.VirtualTable):
@@ -281,7 +281,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
 
     order_by = ["-entry_date", '-id']
     master = 'contacts.Partner'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     _master_field_name = 'partner'
     _voucher_base = PartnerRelated
@@ -318,7 +318,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
         return row.state
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
 
         elems = []
         sar = self.request(master_instance=obj)

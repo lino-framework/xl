@@ -29,7 +29,7 @@ class Milestone(dd.Model):
         #         if dd.is_installed('stars'):
         #             star = get_favourite(wish.ticket, user=user)
         #             if star is None:
-        #                 Star = rt.modules.stars.Star
+        #                 Star = rt.models.stars.Star
         #                 star = Star(owner=wish.ticket, user=user)
         #                 star.save()
 

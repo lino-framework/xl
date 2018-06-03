@@ -162,10 +162,10 @@ class SessionsByTicket(Sessions):
     master_key = 'ticket'
     column_names = 'start_date summary start_time end_time  '\
                    'break_time duration user is_fixing *'
-    slave_grid_format = 'summary'
+    display_mode = 'summary'
 
     @classmethod
-    def get_slave_summary(self, obj, ar):
+    def get_table_summary(self, obj, ar):
         if ar is None:
             return ''
         elems = []
@@ -180,7 +180,7 @@ class SessionsByTicket(Sessions):
         # Active sessions:
         active_sessions = []
         session_summaries = E.ul()
-        qs = rt.modules.working.Session.objects.filter(ticket=obj)
+        qs = rt.models.working.Session.objects.filter(ticket=obj)
         tot = Duration()
         for ses in qs:
             d = ses.get_duration()
@@ -217,6 +217,11 @@ class SessionsByTicket(Sessions):
         return ar.html_text(E.div(*elems))
 
 
+class SessionsBySite(Sessions):
+    master_key = 'ticket__site'
+    column_names = 'start_date summary start_time end_time  '\
+                   'break_time duration user is_fixing *'
+    
 class MySessions(Sessions):
     column_names = 'start_date start_time end_time '\
                    'break_time duration ticket_no ticket__site summary *'
@@ -487,7 +492,7 @@ class TicketsByReport(Tickets, DurationReport):
     master = 'working.ServiceReport'
     # column_names = "summary id reporter project product site state
     # invested_time"
-    column_names_template = "id overview project state {vcolumns}"
+    column_names_template = "id overview site state {vcolumns}"
     order_by = ['id']
 
     @classmethod
@@ -507,6 +512,44 @@ class TicketsByReport(Tickets, DurationReport):
         qs = super(TicketsByReport, self).get_request_queryset(ar)
         for obj in qs:
             sar = SessionsByTicket.request(
+                master_instance=obj, param_values=spv)
+            load_sessions(obj, sar)
+            # obj._invested_time = compute_invested_time(
+            #     obj, start_date=mi.start_date, end_date=mi.end_date,
+            #     user=mi.user)
+            if obj._root2tot.get(TOTAL_KEY):
+                yield obj
+
+from lino_xl.lib.tickets.ui import Sites
+
+class SitesByReport(Sites, DurationReport):
+    """The list of tickets mentioned in a service report."""
+    master = 'working.ServiceReport'
+    # column_names = "summary id reporter project product site state
+    # invested_time"
+    column_names_template = "name description {vcolumns}"
+    order_by = ['name']
+
+    @classmethod
+    def get_request_queryset(self, ar):
+        mi = ar.master_instance
+        if mi is None:
+            return
+        pv = ar.param_values
+
+        pv.update(start_date=mi.start_date, end_date=mi.end_date)
+        pv.update(interesting_for=mi.interesting_for)
+        pv.update(observed_event=TicketEvents.working)
+
+        spv = dict(start_date=mi.start_date, end_date=mi.end_date)
+        spv.update(observed_event=dd.PeriodEvents.started)
+        spv.update(user=mi.user)
+        # qs = super(SitesByReport, self).get_request_queryset(ar)
+        
+        qs = rt.models.tickets.Site.objects.filter(
+            company=mi.interesting_for)
+        for obj in qs:
+            sar = SessionsBySite.request(
                 master_instance=obj, param_values=spv)
             load_sessions(obj, sar)
             # obj._invested_time = compute_invested_time(
@@ -549,68 +592,6 @@ class ProjectsByReport(Projects, DurationReport):
             if obj._root2tot.get(TOTAL_KEY):
                 yield obj
             
-    @classmethod
-    def old_get_request_queryset(self, ar):
-        Tickets = rt.modules.tickets.Tickets
-        mi = ar.master_instance
-        if mi is None:
-            return
-
-            
-        def worked_time(**spv):
-            tot = Duration()
-            tickets = []
-            spv = mi.get_tickets_parameters(**spv)
-            spv.update(observed_event=TicketEvents.working)
-            sar = Tickets.request(param_values=spv)
-            for ticket in sar:
-                ttot = compute_invested_time(
-                    ticket, start_date=mi.start_date, end_date=mi.end_date,
-                    user=mi.user)
-                if ttot:
-                    tot += ttot
-                    tickets.append(ticket)
-            return tot, tickets
-
-        projects_list = []
-        children_time = {}
-
-        qs = super(ProjectsByReport, self).get_request_queryset(ar)
-        for prj in qs:
-            tot, tickets = worked_time(project=prj)
-            prj._tickets = tickets
-            prj._invested_time = tot
-            projects_list.append(prj)
-            if tot:
-                p = prj.parent
-                while p is not None:
-                    cht = children_time.get(p.id, Duration())
-                    children_time[p.id] = cht + tot
-                    p = p.parent
-
-        # compute children_time for each project
-        for prj in projects_list:
-            prj._children_time = children_time.get(prj.id, Duration())
-            # p = prj.parent
-            # ct = Duration()
-            # while p is not None:
-            #     ct += children_time.get(p.id, Duration())
-
-        # remove projects that have no time at all
-        def f(prj):
-            return prj._invested_time or prj._children_time
-        projects_list = filter(f, projects_list)
-
-        # add an unsaved Project for the tickets without project:
-        tot, tickets = worked_time(has_project=dd.YesNo.no)
-        if tot:
-            prj = rt.modules.tickets.Project(name="(no project)")
-            prj._tickets = tickets
-            prj._invested_time = tot
-            prj._children_time = Duration()
-            projects_list.append(prj)
-        return projects_list
-
     @dd.displayfield(_("Tickets"))
     def active_tickets(cls, obj, ar):
         lst = []
@@ -628,6 +609,10 @@ class ServiceReports(dd.Table):
     required_roles = dd.login_required(Worker)
 
     model = "working.ServiceReport"
+    insert_layout = """
+    start_date end_date 
+    interesting_for
+    """
     detail_layout = """
     start_date end_date user interesting_for ticket_state printed
     company contact_person
@@ -688,13 +673,13 @@ class SummariesBySite(Summaries):
         cls.column_names = "year active_tickets "
         cls.column_names += ' '.join(get_summary_columns())
 
-from lino_xl.lib.tickets.ui import MySites
+# from lino_xl.lib.tickets.ui import MySites
 
-class MySitesDashboard(MySites):
-    label = _("Sites Overview")
+# class MySitesDashboard(MySites):
+#     label = _("Sites Overview")
 
-    @classmethod
-    def setup_columns(cls):
-        cls.column_names = "overview "
-        cls.column_names += ' '.join(get_summary_columns(False))
+#     @classmethod
+#     def setup_columns(cls):
+#         cls.column_names = "overview "
+#         cls.column_names += ' '.join(get_summary_columns(False))
 

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -14,6 +14,7 @@ from django.db.models import Q
 from django.conf import settings
 from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
+from django.core.exceptions import ValidationError
 from django.utils import timezone
 
 from lino import mixins
@@ -289,12 +290,6 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
     description = dd.RichTextField(
         _("Description"), blank=True, format='html')
 
-    def before_auto_event_save(self, obj):
-        if self.end_date:  # and self.end_date != self.start_date:
-            duration = self.end_date - self.start_date
-            obj.end_date = obj.start_date + duration
-        super(RecurrentEvent, self).before_auto_event_save(obj)
-
     # def on_create(self,ar):
         # super(RecurrentEvent,self).on_create(ar)
         # self.event_type = settings.SITE.site_config.holiday_event_type
@@ -406,6 +401,25 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if when:
             s = "{} ({})".format(s, when)
         return s
+
+    def duration_veto(obj):
+        if obj.end_date is None:
+            return
+        et = obj.event_type
+        if et is None:
+            return
+        duration = obj.end_date - obj.start_date
+        # print (20161222, duration.days, et.max_days)
+        if duration.days > et.max_days:
+            return _(
+                "Event lasts {0} days but only {1} are allowed.").format(
+                    duration.days, et.max_days)
+
+    def full_clean(self, *args, **kw):
+        msg = self.duration_veto()
+        if msg is not None:
+            raise ValidationError(str(msg))
+        super(Event, self).full_clean(*args, **kw)
 
     def get_change_observers(self):
         # implements ChangeNotifier
@@ -641,7 +655,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     def when_html(self, ar):
         if ar is None:
             return ''
-        EntriesByDay = settings.SITE.modules.cal.EntriesByDay
+        EntriesByDay = settings.SITE.models.cal.EntriesByDay
         txt = when_text(self.start_date, self.start_time)
         return EntriesByDay.as_link(ar, self.start_date, txt)
         # return self.obj2href(ar, txt)
@@ -687,6 +701,12 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             self.summary = self.owner.update_cal_summary(
                 self.event_type, self.auto_type)
 
+    # def save(self, *args, **kwargs):
+    #     if "Weekends" in str(self.owner):
+    #         if not self.end_date:
+    #             raise Exception("20180321")
+    #     super(Event, self).save(*args, **kwargs)
+
 dd.update_field(Event, 'user', verbose_name=_("Responsible user"))
 
 
@@ -697,13 +717,6 @@ class EntryChecker(Checker):
             EntryChecker, self).get_responsible_user(obj)
     
 class EventGuestChecker(EntryChecker):
-    """Check for calendar entries without participants.
-
-    :message:`No participants although N suggestions exist.` --
-    This is probably due to some problem in the past, so we repair
-    this by adding the suggested guests.
-
-    """
     verbose_name = _("Entries without participants")
 
     def get_checkdata_problems(self, obj, fix=False):
@@ -723,9 +736,6 @@ EventGuestChecker.activate()
 
 
 class ConflictingEventsChecker(EntryChecker):
-    """Check whether this entry conflicts with other events.
-
-    """
     verbose_name = _("Check for conflicting calendar entries")
 
     def get_checkdata_problems(self, obj, fix=False):
@@ -743,13 +753,6 @@ ConflictingEventsChecker.activate()
 
 
 class ObsoleteEventTypeChecker(EntryChecker):
-    """Check whether the type of this calendar entry should be updated.
-
-    This can happen when the configuration has changed and there are
-    automatic entries which had been generated using the old
-    configuration.
-
-    """
     verbose_name = _("Obsolete event type of generated entries")
 
     def get_checkdata_problems(self, obj, fix=False):
@@ -773,31 +776,23 @@ class ObsoleteEventTypeChecker(EntryChecker):
 ObsoleteEventTypeChecker.activate()
 
 
-class LongEntryChecker(EntryChecker):
-    """Check for entries which last longer than the maximum number of days
-    allowed by their type.
+DONT_FIX_LONG_ENTRIES = False
 
-    """
+class LongEntryChecker(EntryChecker):
     verbose_name = _("Too long-lasting calendar entries")
     model = Event
 
     def get_checkdata_problems(self, obj, fix=False):
-        if obj.end_date is None:
-            return
-        et = obj.event_type
-        if et is None:
-            return
-        duration = obj.end_date - obj.start_date
-        
-        # print (20161222, duration.days, et.max_days)
-        if duration.days > et.max_days:
-            msg = _("Event lasts {0} days but only {1} are allowed.").format(
-                duration.days, et.max_days)
-            yield (True, msg)
-            if fix:
-                obj.end_date = None
-                obj.full_clean()
-                obj.save()
+        msg = obj.duration_veto()
+        if msg is not None:
+            if DONT_FIX_LONG_ENTRIES:
+                yield (False, msg)
+            else:
+                yield (True, msg)
+                if fix:
+                    obj.end_date = None
+                    obj.full_clean()
+                    obj.save()
 
 LongEntryChecker.activate()
 

@@ -8,7 +8,7 @@ from lino.api import rt, dd
 
 
 def objects():
-    SessionType = rt.modules.working.SessionType
+    SessionType = rt.models.working.SessionType
     yield SessionType(id=1, name="Default")
 
     ServiceReport = rt.models.working.ServiceReport

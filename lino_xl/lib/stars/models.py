@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -22,6 +22,7 @@ from lino.core.gfks import gfk2lookup
 
 # from lino.modlib.gfks.fields import GenericForeignKey, GenericForeignKeyIdField
 
+@dd.python_2_unicode_compatible
 class Star(UserAuthored, Controllable):
     """Represents the fact that a given database object is starred by a
     given User.
@@ -152,8 +153,8 @@ class Star(UserAuthored, Controllable):
         if ar is None: return None
         return ar.obj2html(self.master.owner) if self.master is not None else ""
 
-    # def __str__(self):
-    #     return self.master.owner
+    def __str__(self):
+        return _("{} starring {}").format(self.user, self.owner)
 
 dd.update_field(Star, 'user', verbose_name=_("User"), blank=False, null=False)
 dd.update_field(Star, 'owner', verbose_name=_("Starred object"))
@@ -202,6 +203,7 @@ class StarsByController(Stars):
     label = _("Starred by")
     master_key = 'owner'
     column_names = "user *"
+    display_mode = 'summary'
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -226,7 +228,7 @@ def welcome_messages(ar):
     and whose :attr:`nickname <Star.nickname>` is not empty.
 
     """
-    Star = rt.modules.stars.Star
+    Star = rt.models.stars.Star
     qs = Star.objects.filter(user=ar.get_user()).exclude(nickname='')
     if qs.count() > 0:
         chunks = [unicode(_("Your stars are "))]

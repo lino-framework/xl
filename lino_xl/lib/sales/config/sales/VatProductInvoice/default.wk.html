@@ -24,7 +24,7 @@ This is a sales invoice.
 <div>
 {% block body %}
 {% if False %}
-{{as_table(rt.modules.sales.ItemsByInvoicePrint.request(master_instance=obj))}}
+{{as_table(rt.models.sales.ItemsByInvoicePrint.request(master_instance=obj))}}
 {% else %}
 <table border="1" width="100%">
 <tr>

@@ -28,7 +28,7 @@ class AddressOwner(AddressLocation):
     if dd.is_installed('addresses'):
 
         def get_address_by_type(self, address_type):
-            Address = rt.modules.addresses.Address
+            Address = rt.models.addresses.Address
             try:
                 return Address.objects.get(
                     partner=self, address_type=address_type)

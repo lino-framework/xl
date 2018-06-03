@@ -107,7 +107,7 @@ class Competence(UserAuthored, Sequenced):
 
     # @dd.chooser()
     # def topic_choices(cls, faculty):
-    #     Topic = rt.modules.topics.Topic
+    #     Topic = rt.models.topics.Topic
     #     if not faculty or not faculty.topic_group:
     #         return Topic.objects.none()
     #     return Topic.objects.filter(topic_group=faculty.topic_group)

@@ -147,7 +147,7 @@ class SpawnTicketFromWish(SpawnTicket):
         return wish.ticket
 
     def spawn_ticket(self, ar, p):
-        t = rt.modules.tickets.Ticket(
+        t = rt.models.tickets.Ticket(
             user=ar.get_user(),
             summary=ar.action_param_values.summary,
             description=ar.action_param_values.description)
@@ -256,7 +256,7 @@ class Deployment(Sequenced, Workable):
             return ''
         l = super(Deployment, self).get_workflow_buttons(ar)
 
-        sar = rt.actors.comments.CommentsByRFC.insert_action.request_from(ar)
+        sar = rt.models.comments.CommentsByRFC.insert_action.request_from(ar)
 
         owner = ContentType.objects.get(app_label='tickets', model="ticket")
         # sar.bound_action.icon_name = None

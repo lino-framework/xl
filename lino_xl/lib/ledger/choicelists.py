@@ -114,7 +114,7 @@ class VoucherType(dd.Choice):
 
         """
         kwargs.update(voucher_type=self)
-        return rt.modules.ledger.Journal.objects.filter(**kwargs)
+        return rt.models.ledger.Journal.objects.filter(**kwargs)
 
 
 class VoucherTypes(dd.ChoiceList):

@@ -104,27 +104,27 @@ class TimLoader(object):
         # wer eine nationalregisternummer hat ist eine Person, selbst wenn er
         # auch eine MwSt-Nummer hat.
         if True:  # must convert them manually
-            return rt.modules.contacts.Company
+            return rt.models.contacts.Company
         prt = row.idprt
         if prt == 'O':
-            return rt.modules.contacts.Company
+            return rt.models.contacts.Company
         elif prt == 'L':
-            return rt.modules.lists.List
+            return rt.models.lists.List
         elif prt == 'P':
-            return rt.modules.contacts.Person
+            return rt.models.contacts.Person
         elif prt == 'F':
-            return rt.modules.households.Household
+            return rt.models.households.Household
         # dd.logger.warning("Unhandled PAR->IdPrt %r",prt)
 
     def dc2lino(self, dc):
         if dc == "D":
-            return rt.modules.accounts.DEBIT
+            return rt.models.accounts.DEBIT
         elif dc == "C":
-            return rt.modules.accounts.CREDIT
+            return rt.models.accounts.CREDIT
         elif dc == "A":
-            return rt.modules.accounts.DEBIT
+            return rt.models.accounts.DEBIT
         elif dc == "E":
-            return rt.modules.accounts.CREDIT
+            return rt.models.accounts.CREDIT
         raise Exception("Invalid D/C value %r" % dc)
 
     def create_users(self):
@@ -144,7 +144,7 @@ class TimLoader(object):
 
     def after_gen_load(self):
         return
-        Account = rt.modules.accounts.Account
+        Account = rt.models.accounts.Account
         sc = dict()
         for k, v in dd.plugins.tim2lino.siteconfig_accounts.items():
             sc[k] = Account.get_by_ref(v)
@@ -178,9 +178,9 @@ class TimLoader(object):
     def load_jnl_alias(self, row, **kw):
         vcl = None
         if row.alias == 'VEN':
-            vat = rt.modules.vat
-            ledger = rt.modules.ledger
-            sales = rt.modules.sales
+            vat = rt.models.vat
+            ledger = rt.models.ledger
+            sales = rt.models.sales
             if row.idctr == 'V':
                 kw.update(trade_type=vat.TradeTypes.sales)
                 kw.update(journal_group=ledger.JournalGroups.sales)
@@ -192,10 +192,10 @@ class TimLoader(object):
             else:
                 raise Exception("Invalid JNL->IdCtr '{0}'".format(row.idctr))
         elif row.alias == 'FIN':
-            vat = rt.modules.vat
-            finan = rt.modules.finan
-            ledger = rt.modules.ledger
-            accounts = rt.modules.accounts
+            vat = rt.models.vat
+            finan = rt.models.finan
+            ledger = rt.models.ledger
+            accounts = rt.models.accounts
             idgen = row.idgen.strip()
             kw.update(journal_group=ledger.JournalGroups.financial)
             if idgen:
