@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Database models for this plugin.
 """
@@ -15,9 +15,9 @@ from etgen.html import E
 
 
 class Repository(dd.Model):
-    """A **Repository** is a git username and repo name,
-    along with an o-auth token to allow for more then 60 requests to
-    github an hour
+    """
+    A **Repository** is a git username and repo name, along with an
+    o-auth token to allow for more then 60 requests to github an hour.
 
     .. attribute:: user_name
 
@@ -36,7 +36,6 @@ class Repository(dd.Model):
         because github doesn't provide a way for a token to have
         read only status, we recommend not using this module with
         private repos unless you are sure that the token is secure.
-
     """
 
     class Meta:
@@ -104,6 +103,10 @@ class Repository(dd.Model):
 
 class Commit(Created, Authored):
     """A **Commit** is a git commit sha and other relevant data.
+
+    .. attribute:: repository
+
+        The repository where this change was committed.
 
     .. attribute:: url
 
