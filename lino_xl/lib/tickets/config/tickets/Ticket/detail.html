@@ -34,7 +34,7 @@
 {{memo(obj.description)}}
 {% for comm in rt.models.comments.comments_by_owner(obj) %}
 <ul>
-{{rt.actors.comments.Comments.as_li(comm, ar)}}
+{{rt.models.comments.Comments.as_li(comm, ar)}}
 </ul>
 {% endfor %}
 {% endif %}
