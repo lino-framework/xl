@@ -184,7 +184,8 @@ class Site(ContactRelated, Starrable):
 
     description = dd.RichTextField(_("Description"), blank=True)
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
-    name = models.CharField(_("Designation"), max_length=200)
+    name = models.CharField(
+        _("Designation"), max_length=200, unique=True)
 
     reporting_type = ReportingTypes.field(blank=True)
         
@@ -200,12 +201,48 @@ class Site(ContactRelated, Starrable):
     def __str__(self):
         return self.name
 
+    def get_change_observers(self):
+        for s in rt.models.tickets.Subscription.objects.filter(site=self):
+            yield (s.user, s.user.mail_mode)
+
 
 dd.update_field(
     Site, 'company', verbose_name=_("Client"))
 dd.update_field(
     Site, 'contact_person', verbose_name=_("Contact person"))
 
+@dd.python_2_unicode_compatible
+class Subscription(UserAuthored):
+
+    class Meta:
+        app_label = 'tickets'
+        verbose_name = _("Subscription")
+        verbose_name_plural = _("Subscriptions")
+
+    site = dd.ForeignKey(
+        'tickets.Site',
+        related_name='subscriptions_by_site')
+    primary = models.BooleanField(
+        _("Primary"), default=False)
+
+    allow_cascaded_delete = ['site', 'user']
+
+    def __str__(self):
+        return self.address_location(', ')
+
+    def after_ui_save(self, ar, cw):
+        super(Subscription, self).after_ui_save(ar, cw)
+        mi = self.user
+        if mi is None:
+            return
+        if self.primary:
+            for o in self.__class__.objects.filter(user=mi).exclude(id=self.id):
+                if o.primary:
+                    o.primary = False
+                    o.save()
+                    ar.set_response(refresh_all=True)
+
+        
 
 # @dd.python_2_unicode_compatible
 # class Competence(UserAuthored, Prioritized):
@@ -513,28 +550,14 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             if not self.project.private:
                 self.private = False
 
-    def add_change_watcher(self, user):
-        if user is None:
-            return
-        user = user.get_as_user()
-        if user is None:
-            return
-        if dd.is_installed('votes'):
-            self.set_auto_vote(user, VoteStates.watching)
-        elif dd.is_installed('stars'):
-            star = get_favourite(self, user=user, master=None)
-            if star is None:
-                Star = rt.models.stars.Star
-                star = Star(owner=self, user=user)
-                star.save()
+    def get_change_owner(self):
+        return self.site
 
     def on_worked(self, session):
         """This is automatically called when a work session has been created
         or modified.
 
         """
-        self.add_change_watcher(session.user)
-        
         if self.fixed_since is None and session.is_fixing and session.end_time:
             self.fixed_since = session.get_datetime('end')
         
@@ -550,7 +573,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         or modified.
 
         """
-        self.add_change_watcher(comment.user)
         self.touch()
 
 
