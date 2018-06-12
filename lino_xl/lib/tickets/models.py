@@ -216,8 +216,8 @@ class Subscription(UserAuthored):
 
     class Meta:
         app_label = 'tickets'
-        verbose_name = _("Subscription")
-        verbose_name_plural = _("Subscriptions")
+        verbose_name = _("Site subscription")
+        verbose_name_plural = _("Site subscriptions")
 
     site = dd.ForeignKey(
         'tickets.Site',
@@ -228,7 +228,7 @@ class Subscription(UserAuthored):
     allow_cascaded_delete = ['site', 'user']
 
     def __str__(self):
-        return self.address_location(', ')
+        return "{}@{}".format(self.user, self.site)
 
     def after_ui_save(self, ar, cw):
         super(Subscription, self).after_ui_save(ar, cw)
