@@ -5,17 +5,15 @@
 """
 Import legacy data from TIM (second step). 
 
-Much legacy data is already in Lino, (first imported by
-:mod:`spzloader` and then manually reviewed), now we parse the legacy
-database once more, adding more data.
+Much legacy data is already in Lino (first imported by
+:mod:`spzloader` and then manually reviewed and maintained), now we
+parse the legacy database once more, adding more data:
 
-- import DLS.DBF as calendar entries
-- import DLP.DBF as calendar guests
-- Therapie E130280 : nicht Harry sondern Daniel müsste Therapeut
-  sein. Falsch importiert.
-- No de GSM, Date naissance, Geschlecht n'ont pas été importés
-- Rechnungsempfänger und Krankenkasse importieren : pro Patient, nicht
-  pro Einschreibung.
+- import DLS.FOX as calendar entries
+- import DLP.FOX as calendar guests
+- import certain fields from PAR.FOX
+
+
 """
 from __future__ import unicode_literals
 from builtins import str
@@ -49,6 +47,7 @@ Course = rt.models.courses.Course
 Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
+Country = rt.models.countries.Country
 
 Account = dd.resolve_model('accounts.Account')
 
@@ -164,6 +163,19 @@ class TimLoader(TimLoader):
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 self.store(kw, professional_state=v)
                 
+        if issubclass(cl, Client):
+            v = row.idnat
+            if v:
+                try:
+                    obj = Country.objects.get(pk=v)
+                except Country.DoesNotExist:
+                    dd.logger.info("Create new %s : %s", obj, kw)
+                    obj = create(Country, name=v)
+                    yield obj
+                    dd.logger.info("Inserted new country %s ", obj)
+                    return
+                self.store(kw, nationality=obj)
+            
         if issubclass(cl, (Client, Household)):
             v = row.tarif
             if v:
