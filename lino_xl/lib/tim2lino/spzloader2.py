@@ -292,7 +292,8 @@ class TimLoader(TimLoader):
             pk = int(pk[1:])
         elif pk.startswith('S'):
             team = self.stvith
-            pk = int(pk[1:]) + 100000
+            pk = int(pk[1:]) + 1000000
+            # Cannot import duplicate session 104877
         if not pk:
             return
 
@@ -370,6 +371,8 @@ class TimLoader(TimLoader):
 
         # yield self.load_dbf('PLP')
 
+        yield self.load_dbf('PAR')
+        
         if True:  # temporarily deactivaed
             Event = rt.models.cal.Event
             Event.objects.all().delete()
@@ -379,5 +382,4 @@ class TimLoader(TimLoader):
             Guest.objects.all().delete()
             yield self.load_dbf('DLP')
             
-        yield self.load_dbf('PAR')
             
