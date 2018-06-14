@@ -169,7 +169,6 @@ class TimLoader(TimLoader):
                 try:
                     obj = Country.objects.get(pk=v)
                 except Country.DoesNotExist:
-                    dd.logger.info("Create new %s : %s", obj, kw)
                     obj = create(Country, name=v)
                     yield obj
                     dd.logger.info("Inserted new country %s ", obj)
