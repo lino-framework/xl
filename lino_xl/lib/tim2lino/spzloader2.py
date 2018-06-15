@@ -51,6 +51,7 @@ import datetime
 from dateutil import parser as dateparser
 
 from django.core.exceptions import ValidationError
+from django.db import DEFAULT_DB_ALIAS
 
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
@@ -486,7 +487,7 @@ class TimLoader(TimLoader):
 
         def bulkdel(*models):
             for m in models:
-                m.objects.all()._raw_delete(None)
+                m.objects.all()._raw_delete(DEFAULT_DB_ALIAS)
 
         bulkdel(Guest, Event)
         bulkdel(ClientContact, Enrolment, Course)
