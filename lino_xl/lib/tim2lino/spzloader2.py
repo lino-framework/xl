@@ -484,14 +484,13 @@ class TimLoader(TimLoader):
         # yield super(TimLoader, self).objects()
         # yield self.load_dbf('PLP')
 
-        Guest.objects.all()._raw_delete()
-        Event.objects.all()._raw_delete()
-        ClientContact.objects.all()._raw_delete()
-        Enrolment.objects.all()._raw_delete()
-        Course.objects.all()._raw_delete()
-        Topic.objects.all()._raw_delete()
-        Interest.objects.all()._raw_delete()
-        Note.objects.all()._raw_delete()
+        def bulkdel(*models):
+            for m in models:
+                m.objects.all()._raw_delete(None)
+
+        bulkdel(Guest, Event)
+        bulkdel(ClientContact, Enrolment, Course)
+        bulkdel(Topic, Interest, Note)
         
         yield self.load_dbf('PAR')
 
