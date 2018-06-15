@@ -136,6 +136,8 @@ class TimLoader(TimLoader):
             name = row.firme.strip() + ' ' + row.vorname.strip()
             prt = row.idprt
             if prt == "T":
+                if Course.objects.filter(id=obj.id).exists():
+                    return
                 kw = dict(name=name, line=self.other_groups, id=obj.id)
                 kw.update(ref=row.idpar.strip())
                 for user in self.get_users(row):
@@ -147,6 +149,8 @@ class TimLoader(TimLoader):
             yield obj
             
             if prt == "G":
+                if Course.objects.filter(id=obj.id).exists():
+                    return
                 kw = dict(
                     name=name, line=self.life_groups, id=obj.id,
                     partner_id=obj.id)
@@ -158,6 +162,8 @@ class TimLoader(TimLoader):
                 return
             for user in self.get_users(row):
                 if prt == "P":
+                    if Course.objects.filter(id=obj.id).exists():
+                        return
                     therapy = Course(
                         line=self.therapies,
                         partner_id=obj.id,
