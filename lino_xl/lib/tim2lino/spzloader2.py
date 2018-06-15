@@ -416,18 +416,18 @@ class TimLoader(TimLoader):
 
         # yield self.load_dbf('PLP')
 
+        Guest = rt.models.cal.Guest
+        Guest.objects.all().delete()
+        
+        Event = rt.models.cal.Event
+        Event.objects.all().delete()
+        
         ClientContact.objects.all().delete()
-        Course.objects.all().delete()
         Enrolment.objects.all().delete()
+        Course.objects.all().delete()
+        
         yield self.load_dbf('PAR')
-        
-        if True:  # temporarily deactivaed
-            Event = rt.models.cal.Event
-            Event.objects.all().delete()
-            yield self.load_dbf('DLS')
-        
-            Guest = rt.models.cal.Guest
-            Guest.objects.all().delete()
-            yield self.load_dbf('DLP')
+        yield self.load_dbf('DLS')
+        yield self.load_dbf('DLP')
             
             
