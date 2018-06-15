@@ -415,8 +415,9 @@ class TimLoader(TimLoader):
 
         # yield self.load_dbf('PLP')
 
-        rt.models.courses.Course.objects.all().delete()
-        rt.models.courses.Enrolment.objects.all().delete()
+        ClientContact.objects.all().delete()
+        Course.objects.all().delete()
+        Enrolment.objects.all().delete()
         yield self.load_dbf('PAR')
         
         if True:  # temporarily deactivaed
