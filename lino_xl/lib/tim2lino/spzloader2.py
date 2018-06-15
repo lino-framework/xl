@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2018 Luc Saffre
+# Copyright 2017-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -13,7 +13,36 @@ parse the legacy database once more, adding more data:
 - import DLP.FOX as calendar guests
 - import certain fields from PAR.FOX
 
+This loader deletes all existing calendar entries and presences before
+importing them from TIM.
 
+In the project direcory on their production server I have a script
+:file:`tl2.py`::
+
+    from lino_xl.lib.tim2lino.spzloader2 import TimLoader
+    from django.core.mail import mail_admins
+    TimLoader.run()
+    mail_admins("TimLoader2 done", "tl2.py has finished")
+
+That script runs for quite some time. So I invoke it using nohup to
+avoid having it killed when my terminal closes::
+
+    $ nohup python manage.py run tl2.py &
+    [1] 18804
+    $ nohup: ignoring input and appending output to ‘nohup.out’
+
+I can afterwards check that the process is running::
+
+    $ ps -uf
+    USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+    lsaffre  18576  0.0  0.2  23424  5380 pts/0    Ss   04:11   0:00 -bash
+    lsaffre  18804 88.6 40.9 1029360 843084 pts/0  R    04:20   8:27  \_ python manage.py run tl2.py
+    lsaffre  18881  0.0  0.1  19100  2508 pts/0    R+   04:29   0:00  \_ ps -uf
+  
+I can also watch the :xfile:`lino.log` while the script is running.
+
+And when the script has finished, I can see the results in the
+:xfile:`nohup.out` file. Also in :xfile:`lino.log`.
 """
 from __future__ import unicode_literals
 from builtins import str
@@ -167,11 +196,11 @@ class TimLoader(TimLoader):
             v = row.idnat
             if v:
                 try:
-                    obj = Country.objects.get(pk=v)
+                    obj = Country.objects.get(isocode=v)
                 except Country.DoesNotExist:
-                    obj = create(Country, name=v)
+                    obj = create(Country, name=v, isocode=v)
                     yield obj
-                    dd.logger.info("Inserted new country %s ", obj)
+                    dd.logger.info("Inserted new country %s ", v)
                     return
                 self.store(kw, nationality=obj)
             
