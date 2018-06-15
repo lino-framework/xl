@@ -238,10 +238,10 @@ class TimLoader(TimLoader):
                     kw, client_state=ClientStates.auto_closed)
                 dd.logger.info(
                     "%s : invalid PAR->Stand %s", row, row.stand)
-                return
+                #return
 
-        if not kw:
-            return
+        # if not kw:
+        #     return
         try:
             obj = cl.objects.get(pk=pk)
         except cl.DoesNotExist:
@@ -430,7 +430,7 @@ class TimLoader(TimLoader):
             prj = Course.objects.get(ref=idpar)
         except Course.DoesNotExist:
             dd.logger.warning(
-                "Cannot import MSG %s : no course ref %s", row, idpar)
+                "Cannot import PPR %s : no course ref %s", row, idpar)
             return
         # idpar = self.par_pk(row.idpar.strip())
         # if idpar is None:
