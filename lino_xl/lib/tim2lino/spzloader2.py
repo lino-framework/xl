@@ -490,8 +490,8 @@ class TimLoader(TimLoader):
                 m.objects.all()._raw_delete(DEFAULT_DB_ALIAS)
 
         bulkdel(Guest, Event)
-        bulkdel(ClientContact, Enrolment, Course)
         bulkdel(Topic, Interest, Note)
+        bulkdel(ClientContact, Enrolment, Course)
         
         yield self.load_dbf('PAR')
 
