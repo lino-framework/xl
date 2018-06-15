@@ -230,7 +230,7 @@ class TimLoader(TimLoader):
         except cl.DoesNotExist:
             try:
                 obj = Partner.objects.get(pk=pk)
-            except cl.DoesNotExist:
+            except Partner.DoesNotExist:
                 dd.logger.info("Create new %s : %s", obj, kw)
                 yield cl(**kw)
                 return
