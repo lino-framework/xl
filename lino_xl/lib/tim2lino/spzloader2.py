@@ -95,6 +95,15 @@ Link = rt.models.humanlinks.Link
 LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
+List = rt.models.lists.List
+Member = rt.models.lists.Member
+Topic = rt.models.topics.Topic
+Interest = rt.models.topics.Interest
+Note = rt.models.notes.Note
+Guest = rt.models.cal.Guest
+Event = rt.models.cal.Event
+
+
 
 class TimLoader(TimLoader):
 
@@ -282,8 +291,6 @@ class TimLoader(TimLoader):
             return None
     
     def load_dlp(self, row, **kw):
-        Event = rt.models.cal.Event
-        Guest = rt.models.cal.Guest
         pk = row.iddls.strip()
         if not pk:
             return
@@ -327,8 +334,6 @@ class TimLoader(TimLoader):
                 
 
     def load_dls(self, row, **kw):
-        Course = rt.models.courses.Course
-        Event = rt.models.cal.Event
         pk = row.iddls.strip()
         # if not row.idpin.strip():
         #     return
@@ -401,33 +406,98 @@ class TimLoader(TimLoader):
         obj = Event(**kw)
         yield obj
 
+
+    def load_prb(self, row, **kw):
+        kw = dict(
+            id=row.idprb.strip(),
+            name=row.name1.strip(),
+            ref=row.ref.strip() or None)
+        if Topic.objects.filter(pk=kw['id']).exists():
+            return
+        if Topic.objects.filter(ref=kw['ref']).exists():
+            return
+        yield Topic(**kw)
+        
+    def load_ppr(self, row, **kw):
+        idprb = row.idprb.strip()
+        if not idprb:
+            return
+        if not Topic.objects.filter(id=idprb).exists():
+            return
+        idpar = row.idpar.strip()
+        try:
+            prj = Course.objects.get(ref=idpar)
+        except Course.DoesNotExist:
+            dd.logger.warning(
+                "Cannot import MSG %s : no course ref %s", row, idpar)
+            return
+        # idpar = self.par_pk(row.idpar.strip())
+        # if idpar is None:
+        #     return
+        # try:
+        #     par = Partner.objects.get(id=idpar)
+        # except Partner.DoesNotExist:
+        #     return
+        yield Interest(owner=prj, topic_id=idprb)
+        
+    def load_msg(self, row, **kw):
+        idpar = row.idpar.strip()
+        try:
+            prj = Course.objects.get(ref=idpar)
+        except Course.DoesNotExist:
+            dd.logger.warning(
+                "Cannot import MSG %s : no course ref %s", row, idpar)
+            return
+        mt, new = rt.models.notes.NoteType.objects.get_or_create(
+            name=row.type.strip())
+            
+        # idpar = self.par_pk(row.idpar.strip())
+        # if idpar is None:
+        #     return
+        if row.date is None:
+            return
+        # try:
+        #     prj = Course.objects.get(partner__id=idpar)
+        # except Course.DoesNotExist:
+        #     prj = None
+        # except Course.MultipleObjectsReturned:
+        #     prj = None
+        yield Note(
+            project=prj,
+            type=mt,
+            user=self.get_user(row.idusr),
+            date=row.date,
+            time=row.time.strip(),
+            subject=row.titre.strip(),
+            body=self.dbfmemo(row.texte))
+        
+        
+
                 
     def objects(self):
-
-        
         # yield Country(isocode='LU', **dd.str2kw('name', _("Luxemburg")))
         # yield Country(isocode='PL', **dd.str2kw('name', _("Poland")))
         # yield Country(isocode='AU', **dd.str2kw('name', _("Austria")))
         # yield Country(isocode='US', short_code='USA',
         #               **dd.str2kw('name', _("United States")))
         # yield self.load_dbf('USR')
-        
         # yield super(TimLoader, self).objects()
-
         # yield self.load_dbf('PLP')
 
-        Guest = rt.models.cal.Guest
-        Guest.objects.all().delete()
-        
-        Event = rt.models.cal.Event
-        Event.objects.all().delete()
-        
-        ClientContact.objects.all().delete()
-        Enrolment.objects.all().delete()
-        Course.objects.all().delete()
+        Guest.objects.all()._raw_delete()
+        Event.objects.all()._raw_delete()
+        ClientContact.objects.all()._raw_delete()
+        Enrolment.objects.all()._raw_delete()
+        Course.objects.all()._raw_delete()
+        Topic.objects.all()._raw_delete()
+        Interest.objects.all()._raw_delete()
+        Note.objects.all()._raw_delete()
         
         yield self.load_dbf('PAR')
+
+        yield self.load_dbf('PRB')
+        yield self.load_dbf('PPR')
+        yield self.load_dbf('MSG')
+
         yield self.load_dbf('DLS')
         yield self.load_dbf('DLP')
-            
-            
