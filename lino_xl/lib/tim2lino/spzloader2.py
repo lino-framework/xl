@@ -231,8 +231,13 @@ class TimLoader(TimLoader):
             try:
                 obj = Partner.objects.get(pk=pk)
             except Partner.DoesNotExist:
-                dd.logger.info("Create new %s(**%s)", cl.__name__, kw)
-                yield cl(**kw)
+                dd.logger.info("Create new %s %s(**%s)",
+                               cl.__name__, pk, kw)
+                # yield cl(**kw)
+                for obj in super(TimLoader, self).load_par(row):
+                    for k, v in kw.items():
+                        setattr(obj, k, v)
+                    yield obj
                 return
             dd.logger.info("Insert MTI child %s : %s", obj, kw)
             insert_child(obj, cl, True, **kw)
