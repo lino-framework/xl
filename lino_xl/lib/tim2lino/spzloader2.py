@@ -65,7 +65,7 @@ from .spzloader import TimLoader
 from .timloader1 import convert_gender
 
 Person = dd.resolve_model("contacts.Person")
-Company = dd.resolve_model("contacts.Company")
+# Company = dd.resolve_model("contacts.Company")
 RoleType = dd.resolve_model("contacts.RoleType")
 Role = dd.resolve_model("contacts.Role")
 Household = rt.models.households.Household
@@ -85,6 +85,7 @@ working = dd.resolve_app('working')
 User = rt.models.users.User
 UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
+Company = rt.models.contacts.Company
 # Coaching = rt.models.coachings.Coaching
 
 # lists_Member = rt.models.lists.Member
@@ -205,6 +206,11 @@ class TimLoader(TimLoader):
                 self.store(kw, nationality=obj)
             
         if issubclass(cl, (Client, Household)):
+            
+            v = self.get_partner(Partner, row.zahler)
+            if v:
+                kw.update(invoice_recipient=v)
+            
             v = row.tarif
             if v:
                 v = rt.models.tera.PartnerTariffs.get_by_value(v)
@@ -248,6 +254,18 @@ class TimLoader(TimLoader):
         for k, v in kw.items():
             setattr(obj, k, v)
         yield obj
+
+        v = self.get_partner(Company, row.kkasse)
+        if v:
+            cct = rt.models.clients.ClientContactType.objects.get(pk=1)
+            yield rt.models.clients.ClientContact(
+                type=cct, client=obj, company=v)
+        
+        v = self.get_partner(Person, row.hausarzt)
+        if v:
+            cct = rt.models.clients.ClientContactType.objects.get(pk=2)
+            yield rt.models.clients.ClientContact(
+                type=cct, client=obj, contact_person=v)
         
 
     # def load_pls(self, row, **kw):
@@ -255,15 +273,6 @@ class TimLoader(TimLoader):
     #     kw.update(name=row.name)
     #     return List(**kw)
 
-    def get_user(self, idusr=None):
-        try:
-            return User.objects.get(username=idusr.strip().lower())
-        except User.DoesNotExist:
-            return None
-
-    def create_users(self):
-        pass
-        
     def get_partner(self, model, idpar):
         pk = self.par_pk(idpar.strip())
         try:
@@ -280,7 +289,7 @@ class TimLoader(TimLoader):
         if pk.startswith('E'):
             pk = int(pk[1:])
         elif pk.startswith('S'):
-            pk = int(pk[1:]) + 100000
+            pk = int(pk[1:]) + 1000000
 
         try:
             kw.update(event=Event.objects.get(pk=pk))
@@ -406,6 +415,8 @@ class TimLoader(TimLoader):
 
         # yield self.load_dbf('PLP')
 
+        rt.models.courses.Course.objects.all().delete()
+        rt.models.courses.Enrolment.objects.all().delete()
         yield self.load_dbf('PAR')
         
         if True:  # temporarily deactivaed

@@ -82,7 +82,7 @@ class TimLoader(TimLoader):
         self.therapies = create_row(Line, name=a.text, course_area=a)
         
     def get_users(self, row):
-        for idusr in (row.idusr1, row.idusr2, row.idusr3):
+        for idusr in (row.idusr2, row.idusr1, row.idusr3):
             user = self.get_user(idusr)
             if user is not None:
                 yield user
