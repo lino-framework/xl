@@ -495,9 +495,9 @@ class TimLoader(TimLoader):
         
         yield self.load_dbf('PAR')
 
+        yield self.load_dbf('DLS')
+        yield self.load_dbf('DLP')
+        
         yield self.load_dbf('PRB')
         yield self.load_dbf('PPR')
         yield self.load_dbf('MSG')
-
-        yield self.load_dbf('DLS')
-        yield self.load_dbf('DLP')
