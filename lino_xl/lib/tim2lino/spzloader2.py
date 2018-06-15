@@ -72,6 +72,7 @@ Household = rt.models.households.Household
 Product = dd.resolve_model('products.Product')
 # List = dd.resolve_model('lists.List')
 Client = rt.models.tera.Client
+ClientContact = rt.models.clients.ClientContact
 Course = rt.models.courses.Course
 Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
