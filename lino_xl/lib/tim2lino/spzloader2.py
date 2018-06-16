@@ -242,29 +242,36 @@ class TimLoader(TimLoader):
 
         # if not kw:
         #     return
+        partner = None
         try:
-            obj = cl.objects.get(pk=pk)
+            partner = cl.objects.get(pk=pk)
+            for k, v in kw.items():
+                setattr(partner, k, v)
+            dd.logger.info(
+                "Update existing %s %s : %s", cl.__name__, pk, kw)
         except cl.DoesNotExist:
             try:
-                obj = Partner.objects.get(pk=pk)
+                partner = Partner.objects.get(pk=pk)
             except Partner.DoesNotExist:
                 dd.logger.info("Create new %s %s from %s (**%s)",
                                cl.__name__, pk, row, kw)
-                # yield cl(**kw)
-                for obj in super(TimLoader, self).load_par(row):
-                    if isinstance(obj, cl):
-                        for k, v in kw.items():
-                            setattr(obj, k, v)
+            else:
+                dd.logger.info(
+                    "Specialize partner %s to %s (%s)",
+                    pk, cl.__name__, kw)
+                insert_child(partner, cl, True, **kw)
+                partner = True
+
+        # super.load_par(row) usually yields one partner and one
+        # course.  we don't want to modify existing partners, but we
+        # want to re-create the course objects.
+        
+        for obj in super(TimLoader, self).load_par(row):
+            if isinstance(obj, cl):
+                if partner is None:
                     yield obj
-                return
-            dd.logger.info("Insert MTI child %s : %s", obj, kw)
-            insert_child(obj, cl, True, **kw)
-            # dd.logger.info("%s %s does not exist", cl, pk)
-            return
-        dd.logger.info("Update existing %s : %s", obj, kw)
-        for k, v in kw.items():
-            setattr(obj, k, v)
-        yield obj
+            else:
+                yield obj
 
         v = self.get_partner(Company, row.kkasse)
         if v:
