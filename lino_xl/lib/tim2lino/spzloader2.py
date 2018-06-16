@@ -239,8 +239,12 @@ class TimLoader(TimLoader):
             
             v = row.tarif
             if v:
-                v = rt.models.tera.PartnerTariffs.get_by_value(v)
-                partner.tariff = v
+                t = rt.models.tera.PartnerTariffs.get_by_value(v)
+                if t is None:
+                    dd.logger.warning(
+                        "Cannot handle tariff {}".format(v))
+                else:
+                    partner.tariff = t
 
             ClientStates = rt.models.clients.ClientStates
             v = row.stand
