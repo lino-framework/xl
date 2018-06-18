@@ -103,6 +103,7 @@ Topic = rt.models.topics.Topic
 Interest = rt.models.topics.Interest
 Note = rt.models.notes.Note
 Guest = rt.models.cal.Guest
+GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 
 
@@ -368,6 +369,14 @@ class TimLoader(TimLoader):
         except Event.DoesNotExist:
             dd.logger.warning("Unknown DLP->IdDls %s", pk)
             return
+
+        etat = row.etat.strip()
+        if etat == "S":
+            kw.update(state=GuestStates.present)
+        elif etat == "A":
+            kw.update(state=GuestStates.excused)
+        elif etat == "V":
+            kw.update(state=GuestStates.absent)
         
         idpar = row.idpar.strip()
         p = self.get_partner(Person, idpar)
