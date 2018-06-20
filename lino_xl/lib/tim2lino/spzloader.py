@@ -5,7 +5,7 @@
 """
 
 Import legacy data from TIM (including households, ...).
-An extension of :mod:`tim2lino <lino_xl.lib.tim2lino.fixtures.tim2lino>`.
+An extension of :mod:`tim2lino <lino_xl.lib.tim2lino.tim2lino>`.
 
 
 """
@@ -82,7 +82,7 @@ class TimLoader(TimLoader):
         self.therapies = create_row(Line, name=a.text, course_area=a)
         
     def get_users(self, row):
-        for idusr in (row.idusr1, row.idusr2, row.idusr3):
+        for idusr in (row.idusr2, row.idusr1, row.idusr3):
             user = self.get_user(idusr)
             if user is not None:
                 yield user
@@ -136,6 +136,10 @@ class TimLoader(TimLoader):
             name = row.firme.strip() + ' ' + row.vorname.strip()
             prt = row.idprt
             if prt == "T":
+                # if Course.objects.filter(id=obj.id).exists():
+                #     return
+                # if Course.objects.filter(ref=row.idpar.strip()).exists():
+                #     return
                 kw = dict(name=name, line=self.other_groups, id=obj.id)
                 kw.update(ref=row.idpar.strip())
                 for user in self.get_users(row):
@@ -147,6 +151,10 @@ class TimLoader(TimLoader):
             yield obj
             
             if prt == "G":
+                # if Course.objects.filter(id=obj.id).exists():
+                #     return
+                # if Course.objects.filter(ref=row.idpar.strip()).exists():
+                #     return
                 kw = dict(
                     name=name, line=self.life_groups, id=obj.id,
                     partner_id=obj.id)
@@ -158,6 +166,10 @@ class TimLoader(TimLoader):
                 return
             for user in self.get_users(row):
                 if prt == "P":
+                    # if Course.objects.filter(id=obj.id).exists():
+                    #     return
+                    # if Course.objects.filter(ref=row.idpar.strip()).exists():
+                    #     return
                     therapy = Course(
                         line=self.therapies,
                         partner_id=obj.id,

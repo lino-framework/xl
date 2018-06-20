@@ -232,6 +232,7 @@ class TimLoader(object):
                 fn = os.path.join(fn, self.archive_name)
         fn = os.path.join(fn, tableName)
         fn += dd.plugins.tim2lino.dbf_table_ext
+        count = 0
         if dd.plugins.tim2lino.use_dbf_py:
             dd.logger.info("Loading %s...", fn)
             import dbf  # http://pypi.python.org/pypi/dbf/
@@ -246,6 +247,7 @@ class TimLoader(object):
                 if not dbf.is_deleted(record):
                     try:
                         yield row2obj(record)
+                        count += 1
                     except Exception as e:
                         traceback.print_exc()
                         dd.logger.warning(
@@ -265,6 +267,7 @@ class TimLoader(object):
                 d = AttrDict(d)
                 try:
                     yield row2obj(d)
+                    count += 1
                 except Exception as e:
                     dd.logger.warning(
                         "Failed to load record %s from %s : %s",
@@ -283,12 +286,15 @@ class TimLoader(object):
                         i = row2obj(dbfrow)
                         if i is not None:
                             yield settings.TIM2LINO_LOCAL(tableName, i)
+                            count += 1
                     except Exception as e:
                         traceback.print_exc()
                         dd.logger.warning(
                             "Failed to load record %s : %s", dbfrow, e)
             f.close()
 
+        dd.logger.info(
+            "{} rows have been loaded from {}.".format(count, fn))
         self.after_load(tableName)
 
     def after_load(self, tableName):

@@ -994,7 +994,8 @@ class TicketsByReporter(Tickets):
 class SiteDetail(dd.DetailLayout):
     bottom_left = """
     description
-    stars.StarsByController"""
+    tickets.SubscriptionsBySite
+    """
     bottom = """
         bottom_left:30 TicketsBySite
         """
@@ -1006,6 +1007,18 @@ class SiteDetail(dd.DetailLayout):
     main = """general meetings.MeetingsBySite"""
 
 
+class Subscriptions(dd.Table):
+    required_roles = dd.login_required(Reporter)
+    model = 'tickets.Subscription'
+    
+class SubscriptionsBySite(Subscriptions):
+    master_key = 'site'
+    column_names = 'user primary'
+    
+class SubscriptionsByUser(Subscriptions):
+    master_key = 'user'
+    column_names = 'site primary'
+    
 class Sites(dd.Table):
     # required_roles = set()  # also for anonymous
     required_roles = dd.login_required(Reporter)
@@ -1030,9 +1043,9 @@ class Sites(dd.Table):
         pv = ar.param_values
 
         if pv.watcher:
-            sqs = rt.models.stars.Star.for_model('tickets.Site', user=pv.watcher)
-            stared_ticket_ids = sqs.values_list('owner_id')
-            qs = qs.filter(pk__in=stared_ticket_ids)
+            sqs = rt.models.tickets.Subscription.objects.filter(user=pv.watcher)
+            subscribed_sites = sqs.values_list('site')
+            qs = qs.filter(pk__in=subscribed_sites)
 
         return qs
 
