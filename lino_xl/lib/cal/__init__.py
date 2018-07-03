@@ -71,6 +71,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.EventTypes')
         m.add_action('cal.EventPolicies')
         m.add_action('cal.RemoteCalendars')
+        m.add_action('cal.DailyPlannerRows')
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
@@ -90,5 +91,6 @@ class Plugin(ad.Plugin):
             yield self.site.models.cal.MyEntries
             yield self.site.models.cal.MyOverdueAppointments
             yield self.site.models.cal.MyUnconfirmedAppointments
+            yield self.site.models.cal.DailyPlanner
         else:
             yield self.site.models.cal.PublicEntries

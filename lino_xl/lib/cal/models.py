@@ -21,7 +21,7 @@ from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
 from .choicelists import (
-    DurationUnits, Recurrencies, Weekdays, AccessClasses)
+    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
 from .utils import setkw, dt2kw, when_text
 
 from lino.modlib.checkdata.choicelists import Checker
@@ -76,6 +76,102 @@ register_calendartype('local', LocalCalendar())
 register_calendartype('google', GoogleCalendar())
 
 
+class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
+    
+    class Meta:
+        app_label = 'cal'
+        abstract = dd.is_abstract_model(__name__, 'PlannerRow')
+        verbose_name = _("Planner row")
+        verbose_name_plural = _("Planner rows")
+        ordering = ['start_time']
+
+    start_time = models.TimeField(
+        blank=True, null=True,
+        verbose_name=_("Start time"))
+    end_time = models.TimeField(
+        blank=True, null=True,
+        verbose_name=_("End time"))
+
+
+from lino.mixins.periods import ObservedDateRange
+from etgen.html import E
+from lino.utils import join_elems
+
+class DailyPlannerRows(dd.Table):
+    model = 'cal.DailyPlannerRow'
+    column_names = "seqno designation start_time end_time"
+    required_roles = dd.login_required(OfficeStaff)
+
+class DailyPlanner(DailyPlannerRows):
+
+    parameters = dict(
+        date=models.DateField(
+                _("Date"), help_text=_("Date to show")),
+        user=dd.ForeignKey('users.User', null=True, blank=True))
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(DailyPlanner, cls).param_defaults(ar, **kw)
+        kw.update(date=dd.today())
+        # kw.update(end_date=dd.today())
+        # kw.update(user=ar.get_user())
+        return kw
+    
+    @classmethod
+    def setup_columns(self):
+        names = ''
+        for i, vf in enumerate(self.get_ventilated_columns()):
+            self.add_virtual_field('vc' + str(i), vf)
+            names += ' ' + vf.name + ':20'
+
+        self.column_names = "overview {}".format(names)
+        
+        #~ logger.info("20131114 setup_columns() --> %s",self.column_names)
+
+    @classmethod
+    def get_ventilated_columns(cls):
+
+        def fmt(e):
+            t = str(e.start_time)[:5]
+            u = e.user
+            if u is None:
+                return "{} {}".format(
+                    t, e.room)
+                return t
+            u = u.initials or u.username or str(u)
+            return "{} {}".format(t, u)
+        
+
+        def w(pc, verbose_name):
+            def func(fld, obj, ar):
+                # obj is the DailyPlannerRow instance
+                pv = ar.param_values
+                qs = Event.objects.filter(event_type__planner_column=pc)
+                if pv.user:
+                    qs = qs.filter(user=pv.user)
+                if pv.date:
+                    qs = qs.filter(start_date=pv.date)
+                if obj.start_time:
+                    qs = qs.filter(start_time__gte=obj.start_time,
+                                   start_time__isnull=False)
+                if obj.end_time:
+                    qs = qs.filter(start_time__lt=obj.end_time,
+                                   start_time__isnull=False)
+                if not obj.start_time and not obj.end_time:
+                    qs = qs.filter(start_time__isnull=True)
+                qs = qs.order_by('start_time')
+                chunks = [e.obj2href(ar, fmt(e)) for e in qs]
+                return E.p(*join_elems(chunks))
+            return dd.VirtualField(dd.HtmlBox(verbose_name), func)
+            
+        for pc in PlannerColumns.objects():
+            yield w(pc, six.text_type(pc))
+
+
+
+    
+
+    
 class RemoteCalendar(mixins.Sequenced):
 
     class Meta:
@@ -161,6 +257,8 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
     max_days = models.PositiveIntegerField(
         _("Maximum days"), default=1)
     transparent = models.BooleanField(_("Transparent"), default=False)
+
+    planner_column = PlannerColumns.field(blank=True)
 
     def __str__(self):
         # when selecting an Event.event_type it is more natural to

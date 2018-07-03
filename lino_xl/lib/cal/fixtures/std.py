@@ -25,6 +25,7 @@ from lino.api import dd, rt, _
 
 def objects():
     cal = rt.models.cal
+    PlannerColumns = cal.PlannerColumns
     add = Instantiator('cal.Priority', 'ref').build
     yield add('1', **dd.babel_values('name', en=u"very urgent", de=u"sehr dringend",   fr=u"très urgent", et=u"väga kiire"))
     yield add('3', **dd.babel_values('name', en=u"urgent", de=u"dringend",   fr=u"urgent", et="kiire"))
@@ -48,12 +49,16 @@ def objects():
 
     event_type = Instantiator('cal.EventType').build
     holidays = event_type(
+        planner_column=PlannerColumns.external,
         is_appointment=False,
         all_rooms=True, **dd.str2kw('name', _("Holidays")))
     yield holidays
-    meeting = event_type(**dd.str2kw('name', _("Meeting")))
+    meeting = event_type(
+        planner_column=PlannerColumns.external,
+        **dd.str2kw('name', _("Meeting")))
     yield meeting    
     yield event_type(
+        planner_column=PlannerColumns.internal,
         transparent=True, **dd.str2kw('name', _("Internal")))
 
     RecurrentEvent = rt.models.cal.RecurrentEvent
@@ -136,5 +141,10 @@ def objects():
 
     exam_policy = Instantiator('cal.EventPolicy').build
     yield exam_policy(**dd.str2kw('name', _("Other")))
+
+    DPR = rt.models.cal.DailyPlannerRow
+    yield DPR(end_time="12:00", **dd.str2kw('designation', _("AM")))
+    yield DPR(start_time="12:00", **dd.str2kw('designation', _("PM")))
+    yield DPR(**dd.str2kw('designation', _("All day")))
 
         
