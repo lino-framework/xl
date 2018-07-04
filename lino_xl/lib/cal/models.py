@@ -83,7 +83,7 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
         abstract = dd.is_abstract_model(__name__, 'PlannerRow')
         verbose_name = _("Planner row")
         verbose_name_plural = _("Planner rows")
-        ordering = ['start_time']
+        ordering = ['seqno']
 
     start_time = models.TimeField(
         blank=True, null=True,
@@ -103,7 +103,7 @@ class DailyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 class DailyPlanner(DailyPlannerRows):
-
+    editable = False
     parameters = dict(
         date=models.DateField(
                 _("Date"), help_text=_("Date to show")),
