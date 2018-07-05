@@ -47,7 +47,7 @@ class Session(UserAuthored, Started, Ended, Workable):
 
     ticket = dd.ForeignKey(
         dd.plugins.working.ticket_model,
-        related_name="sessions_by_ticket")
+        related_name="sessions_by_ticket", null=True, blank=True)
 
     session_type = dd.ForeignKey(
         'working.SessionType', null=True, blank=True)
