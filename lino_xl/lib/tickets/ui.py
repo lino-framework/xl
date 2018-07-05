@@ -717,8 +717,8 @@ class RefTickets(Tickets):
     label = _("Reference Tickets")
     required_roles = dd.login_required(Triager)
 
-    column_names = 'id ref:20 summary:50 user:10 topic #faculty ' \
-                   'workflow_buttons:30 project:10 *'
+    column_names = 'id ref:20 summary:50 user:10 site:10 ' \
+                   'workflow_buttons:30 *'
     order_by = ["ref"]
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -788,21 +788,21 @@ class TicketsByTopic(Tickets):
     column_names = "summary state  *"
 
 
-# class PublicTickets(Tickets):
-#     label = _("Public tickets")
-#     order_by = ["-priority", "-id"]
-#     column_names = 'overview:50 ticket_type:10 topic:10 priority:3 *'
-#     # filter = Q(assigned_to=None)
+class PublicTickets(Tickets):
+    label = _("Public tickets")
+    order_by = ["-id"]
+    column_names = 'overview:50 ticket_type:10 site:10 *'
+    # filter = Q(assigned_to=None)
 
-#     @classmethod
-#     def param_defaults(self, ar, **kw):
-#         kw = super(PublicTickets, self).param_defaults(ar, **kw)
-#         # kw.update(show_assigned=dd.YesNo.no)
-#         kw.update(show_private=dd.YesNo.no)
-#         # kw.update(show_active=dd.YesNo.yes)
-#         # kw.update(show_closed=dd.YesNo.no)
-#         kw.update(state=TicketStates.opened)
-#         return kw
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(PublicTickets, self).param_defaults(ar, **kw)
+        # kw.update(show_assigned=dd.YesNo.no)
+        kw.update(show_private=dd.YesNo.no)
+        # kw.update(show_active=dd.YesNo.yes)
+        # kw.update(show_closed=dd.YesNo.no)
+        kw.update(state=TicketStates.opened)
+        return kw
 
 
 class TicketsToTriage(Tickets):

@@ -86,6 +86,6 @@ class Plugin(ad.Plugin):
             yield self.site.models.tickets.MySitesDashboard
             # yield self.site.models.tickets.MyTicketsToWork #in noi
             yield self.site.models.tickets.TicketsToTriage
-        # else:
-        #     yield self.site.models.tickets.PublicTickets
+        else:
+            yield self.site.models.tickets.PublicTickets
     

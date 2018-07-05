@@ -1,16 +1,20 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2018 Rumma & Ko Ltd
 
-"""An extension to :mod:`lino_xl.lib.cal` which uses the `Extensible
+"""
+An extension to :mod:`lino_xl.lib.cal` which uses the `Extensible
 <http://ext.ensible.com>`_ calendar library to add a special "Calendar
 Panel" view of your calendar events.
+
+This plugin is deprecated since Lino is migrating away from ExtJS.
+See also Brians blog post `End of the Line
+<http://ext.ensible.com/blog/2016/06/end-of-the-line/>`__.
 
 Using this plugin in your application requires you to either publish
 your application under a license compatible with the GNU GPL license
 v3, or to purchase a commercial licence from Extensible.  See
 `Extensible Licensing Overview
 <http://ext.ensible.com/products/licensing/>`__.
-
 """
 
 from lino.api import ad
