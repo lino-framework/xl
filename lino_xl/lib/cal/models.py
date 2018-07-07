@@ -131,6 +131,8 @@ class DailyPlanner(DailyPlannerRows):
     @classmethod
     def get_ventilated_columns(cls):
 
+        Event = rt.models.cal.Event
+
         def fmt(e):
             t = str(e.start_time)[:5]
             u = e.user
