@@ -1,22 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""Database models for this plugin.
-
-A **Project** is something into which somebody (the `partner`) invests
-time, energy and money.  The partner can be either external or the
-runner of the site.  Projects form a tree: each Project can have a
-`parent` (another Project for which it is a sub-project).
-
-A **Ticket** is a concrete question or problem formulated by a a user.
-A Ticket is always related to one and only one Project.  It may be
-related to other tickets which may belong to other projects.
-
-Projects are handled by their *name* while Tickets are handled by
-their *number*.
-
-"""
 
 from __future__ import unicode_literals
 from builtins import str
@@ -176,119 +160,6 @@ class ProjectsByPerson(Projects):
     column_names = "ref name *"
 
 
-# class Competences(dd.Table):
-#     required_roles = dd.login_required(TicketsUser)
-#     model = 'tickets.Competence'
-#     order_by = ['-priority', 'project__ref']
-
-#     detail_layout = """
-#     project user priority 
-#     remark
-#     TicketsByCompetence:40 deploy.MilestonesByCompetence:20 #deploy.DeploymentsByCompetence 
-#     """
-
-    # detail_layout = dd.DetailLayout("""
-    # project user priority 
-    # TicketsByCompetence
-    # """, window_size=(40, 'auto'))
-
-# class AllCompetences(Competences):
-#     required_roles = dd.login_required(TicketsStaff)
-    
-# class MyCompetences(My, Competences):
-#     label = _("My projects")
-#     column_names = 'priority overview #project remark *'
-#     # column_names = 'priority project tickets_overview *'
-#     params_panel_hidden = True
-#     # editable = False
-#     display_mode = "html"  # (doesn't work) TODO #1594 
-    
-#     insert_layout = """
-#     project 
-#     priority 
-#     remark
-#     """
-
-# class CompetencesByProject(Competences):
-#     master_key = 'project'
-#     order_by = ["user__username"]
-#     column_names = 'user workflow_buttons:30 *'
-    
-#     insert_layout = """
-#     user
-#     priority 
-#     remark
-#     """
-
-if False:
-    
-    class Wishes(dd.Table):
-        model = 'tickets.Wish'
-        required_roles = dd.login_required(Reporter)
-
-        insert_layout = """
-        ticket 
-        project
-        priority 
-        """
-
-    class AllWishes(Wishes):
-        required_roles = dd.login_required(TicketsStaff)
-
-
-    class WishesByProject(Wishes):
-        master_key = 'project'
-        order_by = ["priority"]
-        column_names = 'priority ticket remark *'
-        insert_layout = None
-
-
-
-    class WishesByTicket(Wishes):
-        master_key = 'ticket'
-        order_by = ["project__ref"]
-        column_names = 'project *'
-        insert_layout = """
-        project
-        remark
-        """
-
-        display_mode = "summary"
-
-        @classmethod
-        def get_table_summary(self, obj, ar):
-            """The summary view for this table.
-
-            Implements :meth:`lino.core.actors.Actor.get_table_summary`.
-
-            """
-            sar = self.request_from(ar, master_instance=obj)
-            chunks = []
-            items = [o.obj2href(ar) for o in sar]
-            if len(items) > 0:
-                chunks += join_elems(items, ", ")
-            sar = self.insert_action.request_from(sar)
-            if sar.get_permission():
-                chunks.append(sar.ar2button())
-            return E.p(*chunks)
-
-
-
-# class MyWishes(My, Wishes):
-#     order_by = ["priority"]
-#     column_names = 'priority ticket project workflow_buttons:30 *'
-#     # @classmethod
-#     # def setup_request(self, ar):
-#     #     u = ar.get_user()
-#     #     if u.person:
-#     #         qs = rt.models.contacts.Role.objects.filter(person=u.person)
-#     #         if qs.count() == 1:
-#     #             ar.master_instance = qs[0].company
-#     #     super(MyWishes, self).setup_request(ar)
-    
-
-    
-
 
 class Links(dd.Table):
     model = 'tickets.Link'
@@ -431,39 +302,6 @@ class TicketDetail(dd.DetailLayout):
 
 
 class Tickets(dd.Table):
-    """Global list of all tickets.
-
-    .. attribute:: site
-
-        Select a site if you want to see only tickets for this site.
-
-    .. attribute:: show_private
-
-        Show only (or hide) tickets that are marked private.
-
-    .. attribute:: show_todo
-
-        Show only (or hide) tickets which are todo (i.e. state is New
-        or ToDo).
-
-    .. attribute:: show_active
-
-        Show only (or hide) tickets which are active (i.e. state is Talk
-        or ToDo).
-
-    .. attribute:: show_assigned
-
-        Show only (or hide) tickets that are assigned to somebody.
-
-    .. attribute:: has_site
-
-        Show only (or hide) tickets which have a site assigned.
-
-    .. attribute:: feasable_by
-
-        Show only tickets for which the given supplier is competent.
-
-    """
     required_roles = dd.login_required(Searcher)
     # label = _("All tickets")
     # required_roles = set()  # also for anonymous
@@ -697,10 +535,6 @@ class AllTickets(Tickets):
 
 
 class DuplicatesByTicket(Tickets):
-    """Shows the tickets which are marked as duplicates of this
-    (i.e. whose `duplicate_of` field points to this ticket.
-
-    """
     display_mode = 'html'
     label = _("Duplicates")
     master_key = 'duplicate_of'
@@ -711,9 +545,6 @@ class DuplicatesByTicket(Tickets):
 
 
 class RefTickets(Tickets):
-    """
-    Tickets that have a reference.
-    """
     label = _("Reference Tickets")
     required_roles = dd.login_required(Triager)
 
@@ -806,11 +637,6 @@ class PublicTickets(Tickets):
 
 
 class TicketsToTriage(Tickets):
-    """List of tickets that need to be triaged.  Currently this is
-    equivalent to those having their state set to :attr:`new
-    <lino_xl.lib.tickets.choicelists.TicketStates.new>`.
-
-    """
     label = _("Tickets to triage")
     required_roles = dd.login_required(Triager)
     button_label = _("Triage")
@@ -843,33 +669,7 @@ class TicketsToTalk(Tickets):
         return kw
 
 
-# class TicketsToDo(Tickets):
-#     """Shows a list of tickets "to do". This means attributed to me and
-#     in an active state.
-
-#     """
-#     label = _("Tickets to do")
-#     required_roles = dd.login_required()
-#     order_by = ["-priority", "-deadline", "-id"]
-#     column_names = 'overview:50 priority deadline user end_user ' \
-#                    'workflow_buttons:40 *'
-#     params_layout = """
-#     user end_user assigned_to site project state 
-#     start_date end_date observed_event topic feasable_by"""
-
-#     @classmethod
-#     def param_defaults(self, ar, **kw):
-#         kw = super(TicketsToDo, self).param_defaults(ar, **kw)
-#         # kw.update(state=TicketStates.todo)
-#         kw.update(show_todo=dd.YesNo.yes)
-#         kw.update(assigned_to=ar.get_user())
-#         return kw
-
-
 class ActiveTickets(Tickets):
-    """Show all tickets that are in an active state.
-
-    """
     label = _("Active tickets")
     required_roles = dd.login_required(Triager)
     order_by = ["-id"]
@@ -886,7 +686,6 @@ class ActiveTickets(Tickets):
         return kw
 
 class MyTickets(My, Tickets):
-    """Show all active tickets reported by me."""
     label = _("My tickets")
     required_roles = dd.login_required(Reporter)
     order_by = ["priority", "-id"]
@@ -937,7 +736,6 @@ class TicketsSummary(Tickets):
         return E.ul(*items)
 
 class MyTicketsToWork(TicketsSummary):
-    """Show all active tickets assigned to me."""
     label = _("Tickets to work")
     required_roles = dd.login_required(Reporter)
     column_names = 'overview:50 workflow_buttons:30 *'
@@ -954,41 +752,6 @@ class MyTicketsToWork(TicketsSummary):
         kw.update(assigned_to=ar.get_user())
         return kw
 
-
-
-# class InterestingTickets(ActiveTickets):
-#     label = _("Interesting tickets")
-
-#     @classmethod
-#     def param_defaults(self, ar, **kw):
-#         kw = super(InterestingTickets, self).param_defaults(ar, **kw)
-#         # kw.update(interesting_for=ar.get_user())
-#         return kw
-
-
-# class TicketsByPartner(Tickets):
-#     master_key = 'partner'
-#     column_names = "summary project user *"
-
-
-class TicketsFixed(Tickets):
-    label = _("Fixed tickets")
-    master_key = 'fixed_for'
-    column_names = "id summary user *"
-    editable = False
-
-
-class TicketsReported(Tickets):
-    label = _("Reported tickets")
-    master_key = 'reported_for'
-    column_names = "id summary user *"
-    editable = False
-
-
-class TicketsByReporter(Tickets):
-    label = _("Reported tickets ")
-    master_key = 'user'
-    column_names = "id summary:60 workflow_buttons:20 *"
 
 
 class SiteDetail(dd.DetailLayout):
@@ -1101,86 +864,4 @@ class TicketsBySite(TicketsSummary):
         # kw.update(end_date=dd.today())
         # kw.update(observed_event=TicketEvents.todo)
         return kw
-
-# class TicketsByProject(Tickets):
-#     master_key = 'project'
-#     required_roles = dd.login_required(Triager)
-#     column_names = ("priority overview:50 workflow_buttons *")
-#     order_by = ["priority", "-id"]
-
-
-#     @classmethod
-#     def param_defaults(self, ar, **kw):
-#         kw = super(TicketsByProject, self).param_defaults(ar, **kw)
-#         # mi = ar.master_instance
-#         # if mi is None or mi.project is None:
-#         #     return kw
-#         # print("20170318 master instance is", mi)
-#         # kw.update(not_assigned_to=mi)
-#         # kw.update(deployed_to=mi.project)
-#         # kw.update(show_assigned=dd.YesNo.no)
-#         kw.update(show_active=dd.YesNo.yes)
-#         return kw
-    
-# class TicketsByCompetence(TicketsByProject):
-#     master = 'tickets.Competence'
-#     master_key = None
-#     # required_roles = dd.login_required(Triager)
-#     # column_names = ("overview:50 workflow_buttons upgrade_notes *")
-#     display_mode = "html"
-
-#     @classmethod
-#     def get_filter_kw(self, ar, **kw):
-#         # print("20170316 {}".format(ar.master_instance))
-#         # kw.update(votes_by_ticket__project=ar.master_instance.project)
-#         if ar.master_instance is not None:
-#             kw.update(project=ar.master_instance.project)
-#         return kw
-    
-
-# class MyKnownProblems(Tickets):
-#     """For users whose `user_site` is set, show the known problems on
-#     their site.
-
-#     """
-#     required_roles = dd.login_required()
-#     label = _("My known problems")
-#     abstract = not dd.is_installed('contacts')
-
-#     # @classmethod
-#     # def get_master_instance(self, ar, model, pk):
-#     #     u = ar.get_user()
-#     #     return u.user_site
-
-#     @classmethod
-#     def get_request_queryset(self, ar):
-#         u = ar.get_user()
-#         # print "20150910", u.user_site
-#         if not u.user_site:
-#             ar.no_data_text = _("Only for users whose `user_site` is set.")
-#             return self.model.objects.none()
-#         return super(MyKnownProblems, self).get_request_queryset(ar)
-
-#     @classmethod
-#     def param_defaults(self, ar, **kw):
-#         u = ar.get_user()
-#         kw = super(MyKnownProblems, self).param_defaults(ar, **kw)
-#         if u.user_site:
-#             kw.update(interesting_for=u.user_site.partner)
-#         kw.update(end_date=dd.demo_date())
-#         kw.update(observed_event=TicketEvents.todo)
-#         return kw
-
-#     @classmethod
-#     def get_welcome_messages(cls, ar, **kw):
-#         sar = ar.spawn(cls)
-#         count = sar.get_total_count()
-#         if count > 0:
-#             msg = _("There are {0} known problems for {1}.")
-#             msg = msg.format(count, ar.get_user().user_site)
-#             yield ar.href_to_request(sar, msg)
-
-
-
-
 

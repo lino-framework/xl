@@ -399,32 +399,6 @@ given User."""),
     'lino_xl.lib.tickets.roles.Triager' : _("""A user who is responsible for triaging new tickets."""),
     'lino_xl.lib.tickets.roles.Reporter' : _("""A user who can create new tickets and edit their own tickets."""),
     'lino_xl.lib.tickets.roles.TicketsStaff' : _("""Can configure tickets functionality."""),
-    'lino_xl.lib.tickets.Tickets' : _("""Global list of all tickets."""),
-    'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
-    'lino_xl.lib.tickets.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
-    'lino_xl.lib.tickets.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
-or ToDo)."""),
-    'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
-or ToDo)."""),
-    'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
-    'lino_xl.lib.tickets.Tickets.has_site' : _("""Show only (or hide) tickets which have a site assigned."""),
-    'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
-    'lino_xl.lib.tickets.Tickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
-(i.e. whose duplicate_of field points to this ticket."""),
-    'lino_xl.lib.tickets.DuplicatesByTicket.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.DuplicatesByTicket.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.RefTickets' : _("""Tickets that have a reference."""),
-    'lino_xl.lib.tickets.RefTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.TicketsToTriage' : _("""List of tickets that need to be triaged.  Currently this is
-equivalent to those having their state set to new."""),
-    'lino_xl.lib.tickets.TicketsToTriage.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.ActiveTickets' : _("""Show all tickets that are in an active state."""),
-    'lino_xl.lib.tickets.ActiveTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
-    'lino_xl.lib.tickets.MyTickets.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
-    'lino_xl.lib.tickets.MyTicketsToWork.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.tim2lino.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.tim2lino.Plugin.languages' : _("""The language distribution used in the database to import. Mandatory
 parameter. No default value."""),
@@ -574,6 +548,11 @@ users or external parties)."""),
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
     'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
+    'lino_xl.lib.cal.DailyPlanner' : _("""The daily planner actor."""),
+    'lino_xl.lib.cal.PlannerColumns' : _("""A choicelist that defines the columns to appear in the daily
+planner. This list can be modified locally."""),
+    'lino_xl.lib.cal.DailyPlannerRow' : _("""A database object that represents one row of the daily planner.
+The default configuration has "AM", "PM" and "All day"."""),
     'lino_xl.lib.cal.Calendar.color' : _("""The color to use for entries of this calendar (in
 lino_xl.lib.extensible)."""),
     'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
@@ -1198,10 +1177,8 @@ not change anymore."""),
     'lino_xl.lib.tickets.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
 publicly visible anywhere."""),
     'lino_xl.lib.tickets.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
-    'lino_xl.lib.tickets.Ticket' : _("""A Ticket is the smallest unit of work.  It is a concrete
-question or problem handled formulated by a user."""),
-    'lino_xl.lib.tickets.Ticket.user' : _("""The user who entered this ticket and is responsible for
-managing it."""),
+    'lino_xl.lib.tickets.Ticket.user' : _("""The author. The user who reported this ticket to the database
+and is responsible for managing it."""),
     'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
     'lino_xl.lib.tickets.Ticket.assigned_to' : _("""The user who is working on this ticket."""),
     'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates"""),
@@ -1221,7 +1198,28 @@ and 100."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 site.  See ReportingTypes."""),
-    'lino_xl.lib.tickets.TicketStates' : _("""The state of a ticket (new, open, closed, ...)"""),
+    'lino_xl.lib.tickets.Tickets' : _("""Base class for all tables of all tickets."""),
+    'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
+    'lino_xl.lib.tickets.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
+    'lino_xl.lib.tickets.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
+or ToDo)."""),
+    'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
+or ToDo)."""),
+    'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
+    'lino_xl.lib.tickets.Tickets.has_site' : _("""Show only (or hide) tickets which have a site assigned."""),
+    'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
+    'lino_xl.lib.tickets.AllTickets' : _("""Shows all tickets."""),
+    'lino_xl.lib.tickets.RefTickets' : _("""Shows all tickets that have a reference."""),
+    'lino_xl.lib.tickets.PublicTickets' : _("""Shows all public tickets."""),
+    'lino_xl.lib.tickets.TicketsToTriage' : _("""Shows tickets that need to be triaged.  Currently this is
+equivalent to those having their state set to new."""),
+    'lino_xl.lib.tickets.ActiveTickets' : _("""Show all tickets that are in an active state."""),
+    'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
+(i.e. whose duplicate_of field points to this ticket."""),
+    'lino_xl.lib.tickets.TicketsSummary' : _("""Abstract base class for ticket tables with a summary."""),
+    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
+    'lino_xl.lib.tickets.TicketStates' : _("""The choicelist of possible values for the state of a ticket."""),
     'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response so
 far.
 The ticket needs to be triaged."""),
@@ -1246,7 +1244,7 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Subscription.site' : _("""The site."""),
     'lino_xl.lib.tickets.Subscription.user' : _("""The user."""),
     'lino_xl.lib.tickets.Subscription.primary' : _("""Whether this is the primary subscription of this user."""),
-    'lino_xl.lib.tickets.LinkTypes' : _("""The possible values of a lino_xl.lib.tickets.Link."""),
+    'lino_xl.lib.tickets.LinkTypes' : _("""The possible values of a Link."""),
     'lino_xl.lib.tickets.LinkTypes.requires' : _("""The parent ticket requires the child ticket."""),
     'lino_xl.lib.tickets.LinkTypes.triggers' : _("""The parent ticket triggers the child ticket."""),
     'lino_xl.lib.tickets.LinkTypes.deploys' : _("""The parent ticket is a deployment which deploys the child ticket."""),
