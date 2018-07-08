@@ -1094,6 +1094,13 @@ years."""),
 given date to be cleared.  This is useful e.g. when you want
 to keep legacy invoices in your database but not their
 payments."""),
+    'lino_xl.lib.ledger.AccountBalances' : _("""A table which shows a list of general ledger accounts during the
+observed period, showing their old and new balances and the sum of
+debit and credit movements."""),
+    'lino_xl.lib.ledger.AccountingPeriodRange' : _("""A parameter panel with two fields:"""),
+    'lino_xl.lib.ledger.AccountingPeriodRange.start_period' : _("""Start of observed period range."""),
+    'lino_xl.lib.ledger.AccountingPeriodRange.end_period' : _("""Optional end of observed period range.  Leave empty to
+consider only the Start period."""),
     'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
     'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
