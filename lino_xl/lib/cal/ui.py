@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -514,7 +514,7 @@ class EventTypes(dd.Table):
     start_date max_days id
     # type url_template username password
     #build_method #template email_template attach_to_email
-    is_appointment all_rooms locks_user transparent max_conflicting 
+    is_appointment all_rooms locks_user transparent max_conflicting planner_column
     EntriesByType
     """
 

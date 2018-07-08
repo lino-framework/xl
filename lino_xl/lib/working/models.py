@@ -96,7 +96,7 @@ class Session(UserAuthored, Started, Ended, Workable):
     
     def full_clean(self, *args, **kwargs):
         if self.user_id and not self.time_zone:
-            # can be removed when all pilot sites have migrated:
+            # can be removed when all production sites have migrated:
             self.time_zone = self.user.time_zone or \
                              rt.models.about.TimeZones.default
             
