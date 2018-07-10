@@ -216,7 +216,7 @@ class TimLoader(TimLoader):
                 if cl is Client:
                     # A Partner cannot be parent for a Client
                     insert_child(partner, Person, True)
-                    partner = Client.objects.get(pk=pk)
+                    partner = Person.objects.get(pk=pk)
                 insert_child(partner, cl, True)
                 partner = cl.objects.get(pk=pk)
 
