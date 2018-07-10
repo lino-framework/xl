@@ -459,6 +459,13 @@ class SessionsByReport(Sessions, DurationReport):
     #         yield ses
 
     @classmethod
+    def get_row_by_pk(cls, ar, pk): # fixes #2434
+        obj = super(SessionsByReport, cls).get_row_by_pk(ar, pk)
+        if obj is not None:
+            load_sessions(obj, [obj])
+        return obj
+        
+    @classmethod
     def get_request_queryset(self, ar):
         mi = ar.master_instance
         if mi is None:
