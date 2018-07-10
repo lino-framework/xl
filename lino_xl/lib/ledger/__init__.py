@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
 
 """This is Lino's standard plugin for General Ledger.
 See :doc:`/specs/cosi/ledger`.
@@ -32,12 +31,58 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.accounts', 'lino.modlib.weasyprint']
 
     currency_symbol = "€"
+    """
+    Temporary approach until we add support for multiple
+    currencies.
+    """
+    
     use_pcmn = False
+    """
+    Whether to use the PCMN notation.
+
+    PCMN stands for "plan compatable minimum normalisé" and is a
+    standardized nomenclature for accounts used in France and
+    Belgium.
+
+    """
     project_model = None
+    """
+    Leave this to `None` for normal behaviour.  Set this to a
+    string of the form `'<app_label>.<ModelName>'` if you want to
+    add an additional field `project` to all models which inherit
+    from :class:`lino_xl.lib.ledger.ProjectRelated`.
+    """
+    
     intrusive_menu = False
+    """
+    Whether the plugin should integrate into the application's
+    main menu in an intrusive way.  Intrusive means that the main
+    menu gets one top-level item per journal group.
+
+    The default behaviour is `False`, meaning that these items are
+    gathered below a single item "Accounting".
+    """
+    
     start_year = 2012
+    """
+    An integer with the calendar year in which this site starts
+    working.
+
+    This is used to fill the default list of :class:`FiscalYears`,
+    and by certain fixtures for generating demo invoices.
+    """
+    
     fix_y2k = False
+    """
+    Whether to use a Y2K compatible representation for fiscal years.
+    """
+    
     force_cleared_until = None
+    """
+    Force all movements on vouchers with entry_date until the given
+    date to be *cleared*.  This is useful e.g. when you want to keep
+    legacy invoices in your database but not their payments.
+    """
 
     def on_site_startup(self, site):
         if site.the_demo_date is not None:

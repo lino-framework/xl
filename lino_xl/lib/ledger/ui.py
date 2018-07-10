@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -19,7 +19,7 @@ from django.db import models
 from django.db.models import Q, F, OuterRef, Subquery, Sum
 from django.db.models.expressions import RawSQL
 
-from lino.api import dd, rt, _
+from lino.api import dd, rt, _, gettext
 from lino import mixins
 from lino.utils.report import Report
 from etgen.html import E
@@ -385,6 +385,13 @@ class AccountingPeriodRange(dd.ParameterPanel):
                 verbose_name=verbose_name_end))
         super(AccountingPeriodRange, self).__init__(**kwargs)
 
+    def check_values(self, pv):
+        if not pv.start_period:
+            raise Warning(_("Select at least a start period"))
+        if pv.end_period:
+            if str(pv.start_period) > str(pv.end_period):
+                raise Warning(_("End period must be after start period"))
+                
     def get_title_tags(self, ar):
         pv = ar.param_values
         if pv.start_period:
@@ -397,11 +404,6 @@ class AccountingPeriodRange(dd.ParameterPanel):
             yield str(_("All periods"))
             
 class AccountBalances(dd.Table):
-    """A table which shows a list of general ledger accounts during the
-    observed period, showing their old and new balances and the sum of
-    debit and credit movements.
-
-    """
     editable = False
     required_roles = dd.login_required(AccountingReader)
     auto_fit_column_widths = True
@@ -723,6 +725,7 @@ class AccountingReport(Report):
     params_layout = """
     start_period end_period with_balances with_activity
     with_general""" # setup_parameters will add names here
+    build_method = 'appypdf'
 
     @classmethod
     def setup_parameters(cls, fields):
@@ -737,9 +740,10 @@ class AccountingReport(Report):
     @classmethod
     def get_story(cls, self, ar):
         pv = ar.param_values
-        if not pv.start_period:
-            yield E.p(_("Select at least a start period"))
-            return
+        cls.check_params(pv)
+        # if not pv.start_period:
+        #     yield E.p(gettext("Select at least a start period"))
+        #     return
         bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
         balances = []
         if pv.with_general:
@@ -757,16 +761,11 @@ class AccountingReport(Report):
         #     balances.append(SupplierAccountsBalance)
         if pv.with_balances:
             for sar in balances:
-                yield E.h1(sar.get_title())
+                yield E.h1(str(sar.get_title()))
                 yield sar
                 # yield E.h1(B.label)
                 # yield B.request(param_values=bpv)
 
-    # def get_build_method(self):
-    #     return 'appypdf'
-        # return rt.models.printing.BuildMethods.appypdf
-
-    build_method = 'appypdf'
 
 # MODULE_LABEL = dd.plugins.accounts.verbose_name
 

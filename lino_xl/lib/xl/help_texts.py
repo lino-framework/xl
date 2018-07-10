@@ -1076,24 +1076,13 @@ end_period to the parameter fields."""),
     'lino_xl.lib.ledger.DueMovement.match' : _("""The common match string of these movments"""),
     'lino_xl.lib.ledger.DueMovement.dc' : _("""Whether I mean my debts and payments (towards that partner)
 or those of the partner (towards me)."""),
-    'lino_xl.lib.ledger.Plugin.currency_symbol' : _("""Temporary approach until we add support for multiple
-currencies."""),
-    'lino_xl.lib.ledger.Plugin.use_pcmn' : _("""Whether to use the PCMN notation."""),
-    'lino_xl.lib.ledger.Plugin.project_model' : _("""Leave this to None for normal behaviour.  Set this to a
-string of the form '<app_label>.<ModelName>' if you want to
-add an additional field project to all models which inherit
-from lino_xl.lib.ledger.ProjectRelated."""),
-    'lino_xl.lib.ledger.Plugin.intrusive_menu' : _("""Whether the plugin should integrate into the application's
-main menu in an intrusive way.  Intrusive means that the main
-menu gets one top-level item per journal group."""),
-    'lino_xl.lib.ledger.Plugin.start_year' : _("""An integer with the calendar year in which this site starts
-working."""),
-    'lino_xl.lib.ledger.Plugin.fix_y2k' : _("""Whether to use a Y2K compatible representation for fiscal
-years."""),
-    'lino_xl.lib.ledger.Plugin.force_cleared_until' : _("""Force all movements on vouchers with entry_date until the
-given date to be cleared.  This is useful e.g. when you want
-to keep legacy invoices in your database but not their
-payments."""),
+    'lino_xl.lib.ledger.AccountBalances' : _("""A table which shows a list of general ledger accounts during the
+observed period, showing their old and new balances and the sum of
+debit and credit movements."""),
+    'lino_xl.lib.ledger.AccountingPeriodRange' : _("""A parameter panel with two fields:"""),
+    'lino_xl.lib.ledger.AccountingPeriodRange.start_period' : _("""Start of observed period range."""),
+    'lino_xl.lib.ledger.AccountingPeriodRange.end_period' : _("""Optional end of observed period range.  Leave empty to
+consider only the Start period."""),
     'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
     'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
