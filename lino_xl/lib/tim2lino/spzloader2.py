@@ -570,6 +570,7 @@ class TimLoader(TimLoader):
         bulkdel(ClientContact, Enrolment, Course)
         
         yield self.load_dbf('PAR')
+        yield self.load_dbf('PLP')
 
         yield self.load_dbf('DLS')
         yield self.load_dbf('DLP')
