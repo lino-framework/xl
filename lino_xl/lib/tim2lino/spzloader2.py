@@ -105,6 +105,7 @@ Note = rt.models.notes.Note
 Guest = rt.models.cal.Guest
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
+EventType = rt.models.cal.EventType
 
 
 
@@ -409,6 +410,12 @@ class TimLoader(TimLoader):
             return
         yield o
                 
+    def get_event_type(self, pk):
+        pk = int(pk)
+        try:
+            return EventType.objects.get(pk=pk)
+        except EventType.DoesNotExist:
+            return create_row(EventType, name=str(pk), pk=pk)
 
     def load_dls(self, row, **kw):
         pk = row.iddls.strip()
@@ -450,6 +457,13 @@ class TimLoader(TimLoader):
             
         kw.update(user=u)
         kw.update(id=pk)
+
+        iddla = row.iddla.strip()
+        if iddla:
+            dla = self.get_event_type(iddla)
+            kw.update(event_type=dla)
+        
+        
         # if row.idprj.strip():
         #     kw.update(project_id=int(row.idprj))
             # kw.update(partner_id=PRJPAR.get(int(row.idprj),None))
