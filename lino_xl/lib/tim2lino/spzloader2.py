@@ -282,8 +282,8 @@ class TimLoader(TimLoader):
                 partner.client_state = v
             else:
                 partner.client_state = ClientStates.auto_closed
-                dd.logger.info(
-                    "%s : invalid PAR->Stand %s", row, row.stand)
+                # dd.logger.info(
+                #     "%s : invalid PAR->Stand %s", row, row.stand)
 
         if isinstance(partner, Client):
             v = row.idnat
@@ -345,7 +345,9 @@ class TimLoader(TimLoader):
                 if row.date2 and row.date2 > row.date1:
                     # avoid "Date period ends before it started."
                     kw.update(end_date=row.date2)
-            kw.update(state=EnrolmentStates.get_by_value(row.stand))
+            kw.update(
+                state=EnrolmentStates.get_by_value(row.stand) \
+                or EnrolmentStates.confirmed)
             yield Enrolment(pupil=partner, course=therapy, **kw)
 
 
