@@ -274,6 +274,8 @@ class TimLoader(TimLoader):
             self.obsolete_list.append(
                 (partner, self.par_pk(idpar2)))
             
+        yield partner
+
         if prt == "T":
             # a therapeutic group generates only a course (no partner
             # and no enrolment). Enrolments are added later from PLP.
@@ -285,8 +287,6 @@ class TimLoader(TimLoader):
                 break
             yield Course(**kw)
             return
-
-        yield partner
 
         if prt == "G":
             if not isinstance(partner, Household):
