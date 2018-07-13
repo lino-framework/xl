@@ -301,16 +301,18 @@ class TimLoader(TimLoader):
         
         yield partner
 
+        # a therapeutic group (IdPrt=="T") generates only a course (no
+        # partner and no enrolment). Enrolments are added later from
+        # PLP.
         if prt == "T":
-            # a therapeutic group generates only a course (no partner
-            # and no enrolment). Enrolments are added later from PLP.
+        # if isinstance(partner, Course):
             
-            kw = dict(name=name, line=self.other_groups, id=partner.id)
-            kw.update(ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
-            yield Course(**kw)
+            # kw = dict(name=name, line=self.other_groups, id=partner.id)
+            # kw.update(ref=ref)
+            # for user in self.get_users(row):
+            #     kw.update(teacher=user)
+            #     break
+            # yield Course(**kw)
             return
 
         if prt == "G":
