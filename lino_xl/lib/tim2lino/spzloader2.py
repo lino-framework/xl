@@ -222,13 +222,24 @@ class TimLoader(TimLoader):
                 insert_child(partner, cl, True)
                 partner = cl.objects.get(pk=pk)
 
-        if row.gsm:
-            partner.gsm = row.gsm
-            
-        v = self.get_partner(Partner, row.zahler)
-        if v:
-            yield SalesRule(partner=partner, invoice_recipient=v)
 
+        if isinstance(partner, Partner):
+            if row.gsm:
+                partner.gsm = row.gsm
+
+            v = self.get_partner(Partner, row.zahler)
+            if v:
+                yield SalesRule(partner=partner, invoice_recipient=v)
+                
+            if row.idpar.startswith('E'):
+                partner.team = self.eupen
+            elif row.idpar.startswith('S'):
+                partner.team = self.stvith
+            idpar2 = row.idpar2.strip()
+            if row.idpar != idpar2 and idpar2:
+                self.obsolete_list.append(
+                    (partner, self.par_pk(idpar2)))
+            
         if issubclass(cl, Person):
             v = row.gebdat
             if isinstance(v, basestring):
@@ -264,16 +275,30 @@ class TimLoader(TimLoader):
                 dd.logger.info(
                     "%s : invalid PAR->Stand %s", row, row.stand)
 
+        if isinstance(partner, Client):
+            v = row.idnat
+            if v:
+                try:
+                    obj = Country.objects.get(isocode=v)
+                except Country.DoesNotExist:
+                    obj = create(Country, name=v, isocode=v)
+                    yield obj
+                    dd.logger.info("Inserted new country %s ", v)
+                    return
+                partner.nationality = obj
+        
+            v = self.get_partner(Company, row.kkasse)
+            if v:
+                cct = rt.models.clients.ClientContactType.objects.get(pk=1)
+                yield rt.models.clients.ClientContact(
+                    type=cct, client=partner, company=v)
 
-        if row.idpar.startswith('E'):
-            partner.team = self.eupen
-        elif row.idpar.startswith('S'):
-            partner.team = self.stvith
-        idpar2 = row.idpar2.strip()
-        if row.idpar != idpar2 and idpar2:
-            self.obsolete_list.append(
-                (partner, self.par_pk(idpar2)))
-            
+            v = self.get_partner(Person, row.hausarzt)
+            if v:
+                cct = rt.models.clients.ClientContactType.objects.get(pk=2)
+                yield rt.models.clients.ClientContact(
+                    type=cct, client=partner, contact_person=v)
+        
         yield partner
 
         if prt == "T":
@@ -325,30 +350,6 @@ class TimLoader(TimLoader):
             kw.update(state=EnrolmentStates.get_by_value(row.stand))
             yield Enrolment(pupil=partner, course=therapy, **kw)
 
-        if isinstance(partner, Client):
-            v = row.idnat
-            if v:
-                try:
-                    obj = Country.objects.get(isocode=v)
-                except Country.DoesNotExist:
-                    obj = create(Country, name=v, isocode=v)
-                    yield obj
-                    dd.logger.info("Inserted new country %s ", v)
-                    return
-                partner.nationality = obj
-        
-            v = self.get_partner(Company, row.kkasse)
-            if v:
-                cct = rt.models.clients.ClientContactType.objects.get(pk=1)
-                yield rt.models.clients.ClientContact(
-                    type=cct, client=partner, company=v)
-
-            v = self.get_partner(Person, row.hausarzt)
-            if v:
-                cct = rt.models.clients.ClientContactType.objects.get(pk=2)
-                yield rt.models.clients.ClientContact(
-                    type=cct, client=partner, contact_person=v)
-        
 
     # def load_pls(self, row, **kw):
     #     kw.update(ref=row.idpls.strip())
