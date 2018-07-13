@@ -180,13 +180,16 @@ class TimLoader(TimLoader):
         elif prt == 'G':  # Lebensgruppen
             return Household
         elif prt == 'T':  # Therapeutische Gruppen
-            return Household  # List
+            return # Household  # List
         #~ dblogger.warning("Unhandled PAR->IdPrt %r",prt)
 
     def load_par(self, row):
         # Every PAR potentially yields a partner, a course and an
         # enrolment.  we re-create all courses and enrolments from
-        # scratch but don't modify existing partners
+        # scratch but don't modify existing partners a therapeutic
+        # group (IdPrt=="T") generates only a course (no partner and
+        # no enrolment). Enrolments for T and G are added later from
+        # PLP.
         
         # kw = dict()
         pk = self.par_pk(row.idpar)
@@ -194,11 +197,19 @@ class TimLoader(TimLoader):
         prt = row.idprt
         ref = row.idpar.strip()
         
-        cl = self.par_class(row)
-        if cl is None:
-            dd.logger.info("Cannot handle %s : par_class is None", row)
+        if prt == "T":
+            
+            kw = dict(name=name, line=self.other_groups, id=partner.id)
+            kw.update(ref=ref)
+            for user in self.get_users(row):
+                kw.update(teacher=user)
+                break
+            yield Course(**kw)
             return
 
+        cl = self.par_class(row)
+        if cl is None:
+            return
         partner = None
         try:
             partner = cl.objects.get(pk=pk)
@@ -230,7 +241,7 @@ class TimLoader(TimLoader):
             v = self.get_partner(Partner, row.zahler)
             if v:
                 yield SalesRule(partner=partner, invoice_recipient=v)
-                
+
             if row.idpar.startswith('E'):
                 partner.team = self.eupen
             elif row.idpar.startswith('S'):
@@ -239,7 +250,7 @@ class TimLoader(TimLoader):
             if row.idpar != idpar2 and idpar2:
                 self.obsolete_list.append(
                     (partner, self.par_pk(idpar2)))
-            
+
         if issubclass(cl, Person):
             v = row.gebdat
             if isinstance(v, basestring):
@@ -247,14 +258,14 @@ class TimLoader(TimLoader):
             v = row.sexe
             if v:
                 partner.gender = convert_gender(v)
-                
+
             v = row.beruf
             if v:
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 partner.professional_state = v
-                
+
         if issubclass(cl, (Client, Household)):
-            
+
             v = row.tarif
             if v:
                 t = rt.models.tera.PartnerTariffs.get_by_value(v)
@@ -286,7 +297,7 @@ class TimLoader(TimLoader):
                     dd.logger.info("Inserted new country %s ", v)
                     return
                 partner.nationality = obj
-        
+
             v = self.get_partner(Company, row.kkasse)
             if v:
                 cct = rt.models.clients.ClientContactType.objects.get(pk=1)
@@ -298,22 +309,8 @@ class TimLoader(TimLoader):
                 cct = rt.models.clients.ClientContactType.objects.get(pk=2)
                 yield rt.models.clients.ClientContact(
                     type=cct, client=partner, contact_person=v)
-        
-        yield partner
 
-        # a therapeutic group (IdPrt=="T") generates only a course (no
-        # partner and no enrolment). Enrolments are added later from
-        # PLP.
-        if prt == "T":
-        # if isinstance(partner, Course):
-            
-            # kw = dict(name=name, line=self.other_groups, id=partner.id)
-            # kw.update(ref=ref)
-            # for user in self.get_users(row):
-            #     kw.update(teacher=user)
-            #     break
-            # yield Course(**kw)
-            return
+        yield partner
 
         if prt == "G":
             if not isinstance(partner, Household):
