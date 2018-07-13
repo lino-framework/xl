@@ -485,7 +485,7 @@ class ProductDocItem(QtyVatItemBase, Bleached):
         return tt.get_product_base_account(self.product)
         # return self.voucher.journal.chart.get_account_by_ref(ref)
 
-    def discount_changed(self, ar):
+    def discount_changed(self, ar=None):
         if not self.product:
             return
 
@@ -515,7 +515,7 @@ class ProductDocItem(QtyVatItemBase, Bleached):
                 catalog_price * (HUNDRED - self.discount) / HUNDRED)
         self.unit_price_changed(ar)
 
-    def product_changed(self, ar):
+    def product_changed(self, ar=None):
         if self.product:
             self.title = self.product.name
             self.description = self.product.description
