@@ -103,6 +103,7 @@ class DailyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 class DailyPlanner(DailyPlannerRows):
+    label = _("Daily planner")
     editable = False
     parameters = dict(
         date=models.DateField(

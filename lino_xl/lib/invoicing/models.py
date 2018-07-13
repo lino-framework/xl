@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -141,6 +141,9 @@ class Plan(UserAuthored):
         collected = dict()
         for obj in self.get_invoiceables_for_plan():
             partner = obj.get_invoiceable_partner()
+            if partner is None:
+                raise Exception("{!r} has no invoice recipient".format(
+                    obj))
             idate = obj.get_invoiceable_date()
             item = collected.get(partner.pk, None)
             if item is None:

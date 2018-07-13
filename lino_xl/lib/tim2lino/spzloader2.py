@@ -106,7 +106,7 @@ Guest = rt.models.cal.Guest
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
-
+SalesRule = rt.models.sales.SalesRule
 
 
 class TimLoader(TimLoader):
@@ -237,11 +237,11 @@ class TimLoader(TimLoader):
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 partner.professional_state=v
                 
+        v = self.get_partner(Partner, row.zahler)
+        if v:
+            yield SalesRule(partner=partner, invoice_recipient=v)
+
         if issubclass(cl, (Client, Household)):
-            
-            v = self.get_partner(Partner, row.zahler)
-            if v:
-                partner.invoice_recipient = v
             
             v = row.tarif
             if v:

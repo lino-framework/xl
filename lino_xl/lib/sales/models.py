@@ -20,6 +20,7 @@ from lino.core import actions
 from etgen.html import E
 from lino.utils.mldbc.mixins import BabelNamed
 from lino.modlib.notify.utils import body_subject_to_elems
+from lino.mixins import Sequenced
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.vat.utils import add_vat, remove_vat, HUNDRED
@@ -55,42 +56,15 @@ TradeTypes.sales.update(
 #     partner_account_field_name='clearings_account',
 #     partner_account_field_label=_("Clearings account"))
 
-from lino_xl.lib.contacts.models import Partners
+# from lino_xl.lib.contacts.models import Partners
 
-class PartnersByInvoiceRecipient(Partners):
-    label = _("Invoice senders")
-    master_key = 'invoice_recipient'
-    column_names = 'name id address_column *'
-    window_size = (50, 15)
-    params_panel_hidden = True
+# class PartnersByInvoiceRecipient(Partners):
+#     label = _("Invoice senders")
+#     master_key = 'invoice_recipient'
+#     column_names = 'name id address_column *'
+#     window_size = (50, 15)
+#     params_panel_hidden = True
     
-
-dd.inject_field(
-    'contacts.Partner', 'invoice_recipient',
-    dd.ForeignKey(
-        'contacts.Partner',
-        verbose_name=_("Invoicing address"),
-        blank=True, null=True,
-        help_text=_("Redirect to another partner all invoices which "
-                    "should go to this partner.")))
-
-dd.inject_action(
-    'contacts.Partner',
-    show_invoice_partners=dd.ShowSlaveTable(
-        PartnersByInvoiceRecipient))
-
-
-dd.inject_field(
-    'contacts.Partner', 'paper_type',
-    dd.ForeignKey('sales.PaperType', null=True, blank=True))
-
-
-# class Channels(dd.ChoiceList):
-#     label = _("Channel")
-# add = Channels.add_item
-# add('P', _("Paper"), 'paper')
-# add('E', _("E-mail"), 'email')
-
 
 class PaperType(BabelNamed):
     """Which paper (document template) to use when printing an invoice.
@@ -124,6 +98,50 @@ class PaperTypes(dd.Table):
     column_names = 'name template *'
 
 
+
+class SalesRule(dd.Model):
+    class Meta:
+        app_label = 'sales'
+        abstract = dd.is_abstract_model(__name__, 'SalesRule')
+        verbose_name = _("Sales rule")
+        verbose_name_plural = _("Sales rules")
+
+    allow_cascaded_delete = 'partner'
+
+    partner = dd.OneToOneField('contacts.Partner', primary_key=True)
+    invoice_recipient = dd.ForeignKey(
+        'contacts.Partner',
+        verbose_name=_("Invoicing address"),
+        related_name='salesrules_by_recipient',
+        blank=True, null=True,
+        help_text=_("Redirect to another partner all invoices which "
+                    "should go to this partner."))
+    paper_type = dd.ForeignKey(
+        'sales.PaperType', null=True, blank=True)
+
+
+
+class SalesRules(dd.Table):
+    model = 'sales.SalesRule'
+    required_roles = dd.login_required(LedgerStaff)
+    detail_layout = dd.DetailLayout("""
+    partner
+    invoice_recipient
+    paper_type
+    """, window_size=(40, 'auto'))
+
+class SalesRulesByInvoiceRecipient(SalesRules):
+    master_key = 'invoice_recipient'
+
+
+dd.inject_action(
+    'contacts.Partner',
+    show_invoice_partners=dd.ShowSlaveTable(
+        SalesRulesByInvoiceRecipient))
+
+    
+
+
 # class InvoiceStates(dd.Workflow):
 #     """List of the possible values for the state of an :class:`Invoice`.
 
@@ -155,6 +173,9 @@ class SalesDocument(VatDocument, Certifiable):
 
     """
 
+    class Meta:
+        abstract = True
+
     auto_compute_totals = True
 
     print_items_table = None
@@ -164,9 +185,6 @@ class SalesDocument(VatDocument, Certifiable):
     :class:`ItemsByInvoicePrintNoQtyColumn`
 
     """
-
-    class Meta:
-        abstract = True
 
     language = dd.LanguageField()
 
@@ -203,9 +221,14 @@ class SalesDocument(VatDocument, Certifiable):
         :meth:`lino_xl.lib.excerpts.mixins.Certifiable.get_excerpt_templates`.
 
         """
-        pt = self.paper_type or self.partner.paper_type
+        pt = self.paper_type or get_paper_type(self.partner)
         if pt and pt.template:
             return [pt.template]
+
+def get_paper_type(obj):
+    sr = getattr(obj, 'salesrule', None)
+    if sr:
+        return sr.paper_type
 
 
 class SalesDocuments(PartnerVouchers):
@@ -696,7 +719,7 @@ class ProductDetailMixin(dd.DetailLayout):
 
 class PartnerDetailMixin(dd.DetailLayout):
     sales = dd.Panel("""
-    invoice_recipient vat_regime payment_term paper_type
+    salesrule__invoice_recipient vat_regime payment_term salesrule__paper_type
     sales.InvoicesByPartner
     """, label=dd.plugins.sales.verbose_name)
 

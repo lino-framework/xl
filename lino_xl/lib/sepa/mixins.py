@@ -73,7 +73,8 @@ class BankAccount(dd.Model):
 
 
 class Payable(PartnerRelated):
-    """Model mixin for database objects that are considered *payable
+    """
+    Model mixin for database objects that are considered *payable
     transactions*. To be combined with some mixin which defines a
     field `partner`.
 
@@ -91,7 +92,6 @@ class Payable(PartnerRelated):
     .. attribute:: title
 
        A char field with a description for this transaction.
-
     """
     class Meta:
         abstract = True

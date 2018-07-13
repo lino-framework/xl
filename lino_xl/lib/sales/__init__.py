@@ -1,4 +1,4 @@
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -44,3 +44,4 @@ class Plugin(ad.Plugin):
         # m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('sales.Invoices')
         m.add_action('sales.InvoiceItems')
+        m.add_action('sales.SalesRules')
