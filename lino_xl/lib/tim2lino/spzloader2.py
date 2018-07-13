@@ -198,8 +198,7 @@ class TimLoader(TimLoader):
         ref = row.idpar.strip()
         
         if prt == "T":
-            
-            kw = dict(name=name, line=self.other_groups, id=partner.id)
+            kw = dict(name=name, line=self.other_groups, id=pk)
             kw.update(ref=ref)
             for user in self.get_users(row):
                 kw.update(teacher=user)
