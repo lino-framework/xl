@@ -237,10 +237,6 @@ class TimLoader(TimLoader):
             if row.gsm:
                 partner.gsm = row.gsm
 
-            v = self.get_partner(Partner, row.zahler)
-            if v:
-                yield SalesRule(partner=partner, invoice_recipient=v)
-
             if row.idpar.startswith('E'):
                 partner.team = self.eupen
             elif row.idpar.startswith('S'):
@@ -298,6 +294,11 @@ class TimLoader(TimLoader):
                 partner.nationality = obj
 
         yield partner
+
+        if isinstance(partner, Partner):
+            v = self.get_partner(Partner, row.zahler)
+            if v:
+                yield SalesRule(partner=partner, invoice_recipient=v)
 
         if isinstance(partner, Client):
             v = self.get_partner(Company, row.kkasse)
