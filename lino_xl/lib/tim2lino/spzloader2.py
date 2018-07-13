@@ -297,6 +297,9 @@ class TimLoader(TimLoader):
                     return
                 partner.nationality = obj
 
+        yield partner
+
+        if isinstance(partner, Client):
             v = self.get_partner(Company, row.kkasse)
             if v:
                 cct = rt.models.clients.ClientContactType.objects.get(pk=1)
@@ -308,8 +311,6 @@ class TimLoader(TimLoader):
                 cct = rt.models.clients.ClientContactType.objects.get(pk=2)
                 yield rt.models.clients.ClientContact(
                     type=cct, client=partner, contact_person=v)
-
-        yield partner
 
         if prt == "G":
             if not isinstance(partner, Household):
