@@ -99,47 +99,6 @@ class PaperTypes(dd.Table):
 
 
 
-class SalesRule(dd.Model):
-    class Meta:
-        app_label = 'sales'
-        abstract = dd.is_abstract_model(__name__, 'SalesRule')
-        verbose_name = _("Sales rule")
-        verbose_name_plural = _("Sales rules")
-
-    allow_cascaded_delete = 'partner'
-
-    partner = dd.OneToOneField('contacts.Partner', primary_key=True)
-    invoice_recipient = dd.ForeignKey(
-        'contacts.Partner',
-        verbose_name=_("Invoicing address"),
-        related_name='salesrules_by_recipient',
-        blank=True, null=True,
-        help_text=_("Redirect to another partner all invoices which "
-                    "should go to this partner."))
-    paper_type = dd.ForeignKey(
-        'sales.PaperType', null=True, blank=True)
-
-
-
-class SalesRules(dd.Table):
-    model = 'sales.SalesRule'
-    required_roles = dd.login_required(LedgerStaff)
-    detail_layout = dd.DetailLayout("""
-    partner
-    invoice_recipient
-    paper_type
-    """, window_size=(40, 'auto'))
-
-class SalesRulesByInvoiceRecipient(SalesRules):
-    master_key = 'invoice_recipient'
-
-
-dd.inject_action(
-    'contacts.Partner',
-    show_invoice_partners=dd.ShowSlaveTable(
-        SalesRulesByInvoiceRecipient))
-
-    
 
 
 # class InvoiceStates(dd.Workflow):

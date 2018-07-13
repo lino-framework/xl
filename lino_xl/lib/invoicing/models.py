@@ -35,6 +35,49 @@ from .actions import (UpdatePlan, ToggleSelection, StartInvoicing,
                       ExecuteItem)
 
 
+class SalesRule(dd.Model):
+    class Meta:
+        app_label = 'invoicing'
+        abstract = dd.is_abstract_model(__name__, 'SalesRule')
+        verbose_name = _("Sales rule")
+        verbose_name_plural = _("Sales rules")
+
+    allow_cascaded_delete = 'partner'
+
+    partner = dd.OneToOneField('contacts.Partner', primary_key=True)
+    invoice_recipient = dd.ForeignKey(
+        'contacts.Partner',
+        verbose_name=_("Invoicing address"),
+        related_name='salesrules_by_recipient',
+        blank=True, null=True,
+        help_text=_("Redirect to another partner all invoices which "
+                    "should go to this partner."))
+    paper_type = dd.ForeignKey(
+        'sales.PaperType', null=True, blank=True)
+
+
+
+class SalesRules(dd.Table):
+    model = 'invoicing.SalesRule'
+    required_roles = dd.login_required(LedgerStaff)
+    detail_layout = dd.DetailLayout("""
+    partner
+    invoice_recipient
+    paper_type
+    """, window_size=(40, 'auto'))
+
+class PartnersByInvoiceRecipient(SalesRules):
+    master_key = 'invoice_recipient'
+    column_names = "partner partner__id partner__address_column *"
+
+
+dd.inject_action(
+    'contacts.Partner',
+    show_invoice_partners=dd.ShowSlaveTable(
+        PartnersByInvoiceRecipient))
+
+
+
 @dd.python_2_unicode_compatible
 class Plan(UserAuthored):
     """An **invoicing plan** is a rather temporary database object which

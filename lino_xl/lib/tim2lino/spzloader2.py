@@ -79,6 +79,7 @@ Course = rt.models.courses.Course
 Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
+EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
 
 Account = dd.resolve_model('accounts.Account')
@@ -106,7 +107,7 @@ Guest = rt.models.cal.Guest
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
-SalesRule = rt.models.sales.SalesRule
+SalesRule = rt.models.invoicing.SalesRule
 
 
 class TimLoader(TimLoader):
@@ -184,8 +185,8 @@ class TimLoader(TimLoader):
 
     def load_par(self, row):
         # Every PAR potentially yields a partner, a course and an
-        # enrolment.  we want to re-create courses and enrolments from
-        # scratch but don't want to modify existing partners
+        # enrolment.  we re-create all courses and enrolments from
+        # scratch but don't modify existing partners
         
         # kw = dict()
         pk = self.par_pk(row.idpar)
@@ -224,23 +225,23 @@ class TimLoader(TimLoader):
         if row.gsm:
             partner.gsm = row.gsm
             
-        if issubclass(cl, Person):
-            v = row.gebdat
-            if isinstance(v, basestring):
-                partner.birth_date=dateparser.parse(v.strip())
-            v = row.sexe
-            if v:
-                partner.gender=convert_gender(v)
-                
-            v = row.beruf
-            if v:
-                v = rt.models.tera.ProfessionalStates.get_by_value(v)
-                partner.professional_state=v
-                
         v = self.get_partner(Partner, row.zahler)
         if v:
             yield SalesRule(partner=partner, invoice_recipient=v)
 
+        if issubclass(cl, Person):
+            v = row.gebdat
+            if isinstance(v, basestring):
+                partner.birth_date = dateparser.parse(v.strip())
+            v = row.sexe
+            if v:
+                partner.gender = convert_gender(v)
+                
+            v = row.beruf
+            if v:
+                v = rt.models.tera.ProfessionalStates.get_by_value(v)
+                partner.professional_state = v
+                
         if issubclass(cl, (Client, Household)):
             
             v = row.tarif
@@ -275,7 +276,7 @@ class TimLoader(TimLoader):
             
         if prt == "T":
             # a therapeutic group generates only a course (no partner
-            # and no enrolment)
+            # and no enrolment). Enrolments are added later from PLP.
             
             kw = dict(name=name, line=self.other_groups, id=partner.id)
             kw.update(ref=ref)
@@ -321,6 +322,7 @@ class TimLoader(TimLoader):
                 if row.date2 and row.date2 > row.date1:
                     # avoid "Date period ends before it started."
                     kw.update(end_date=row.date2)
+            kw.update(state=EnrolmentStates.get_by_value(row.stand))
             yield Enrolment(pupil=partner, course=therapy, **kw)
 
         if isinstance(partner, Client):
