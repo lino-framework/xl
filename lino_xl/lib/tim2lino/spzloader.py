@@ -409,7 +409,8 @@ class TimLoader(TimLoader):
             if par2 is None:
                 continue
 
-            if True:
+            if False:   # temporary test to see whether the enrolments
+                        # get deleted
                 par1.obsoletes = par2
                 par1.full_clean()
                 par1.save()
@@ -455,7 +456,8 @@ class TimLoader(TimLoader):
                 par1.save()
                 dd.logger.warning("Failed to delete {} : {}".format(
                     par1, e))
-        super(TimLoader, self).finalize()
+                
+        # super(TimLoader, self).finalize()
         
                 
     def objects(self):

@@ -314,7 +314,7 @@ class TimLoader(object):
                 for so in self.expand(o):
                     yield so
         else:
-            logger.warning("Ignored unknown object %r", obj)
+            dd.logger.warning("Ignored unknown object %r", obj)
 
 
     def objects(self):
@@ -335,5 +335,7 @@ class TimLoader(object):
         for o in self.expand(self.objects()):
             o.full_clean()
             o.save()
+            # temporary:
+            dd.logger.info("Saved %s", dd.obj2str(o))
         self.finalize()
     
