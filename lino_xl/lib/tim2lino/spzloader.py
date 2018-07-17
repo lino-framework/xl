@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -18,7 +18,7 @@ from builtins import str
 from lino.utils.instantiator import create_row
 from lino.api import dd, rt, _
 from lino.utils.instantiator import create
-
+from django.core.exceptions import ValidationError
 
 from .timloader1 import TimLoader
 
@@ -408,20 +408,24 @@ class TimLoader(TimLoader):
             if par2 is None:
                 continue
 
-            def replace(model, k):
+            def replace(model, k, delete=False):
                 for obj in model.objects.filter(**{k: par1}):
                     setattr(obj, k, par2)
-                    obj.full_clean()
-                    obj.save()
+                    try:
+                        obj.full_clean()
+                        obj.save()
+                    except ValidationError:
+                        if delete:
+                            obj.delete()
 
             # replace(Coaching, 'client')
 
             if isinstance(par1, Person):
-                replace(Enrolment, 'pupil')
+                replace(Enrolment, 'pupil', True)
                 replace(rt.models.households.Member, 'person')
                 replace(rt.models.humanlinks.Link, 'parent')
                 replace(rt.models.humanlinks.Link, 'child')
-                replace(rt.models.cal.Guest, 'partner')
+                replace(rt.models.cal.Guest, 'partner', True)
                 replace(rt.models.clients.ClientContact, 'client')
 
             if isinstance(par1, Client):
