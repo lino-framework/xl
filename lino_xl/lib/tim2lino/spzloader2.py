@@ -240,11 +240,12 @@ class TimLoader(TimLoader):
                 partner.team = self.eupen
             elif row.idpar.startswith('S'):
                 partner.team = self.stvith
-            idpar2 = row.idpar2.strip()
-            if idpar2 and (row.idpar.strip() != idpar2):
-                idpar2 = self.par_pk(idpar2)
-                if idpar2 is not None:
-                    self.obsolete_list.append((partner, idpar2))
+            if False:  # temporarily deactivated
+                idpar2 = row.idpar2.strip()
+                if idpar2 and (row.idpar.strip() != idpar2):
+                    idpar2 = self.par_pk(idpar2)
+                    if idpar2 is not None:
+                        self.obsolete_list.append((partner, idpar2))
 
         if issubclass(cl, Person):
             v = row.gebdat
