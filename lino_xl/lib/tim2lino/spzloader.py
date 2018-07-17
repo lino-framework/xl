@@ -395,7 +395,7 @@ class TimLoader(TimLoader):
         #     yield rt.models.notes.Note(**kw)
 
     def finalize(self):
-        dd.info("Deleting %d obsolete partners", len(self.obsolete_list))
+        dd.logger.info("Deleting %d obsolete partners", len(self.obsolete_list))
         for (par1, idpar2) in self.obsolete_list:
             par2 = None
             try:
@@ -419,7 +419,7 @@ class TimLoader(TimLoader):
                         if delete:
                             obj.delete()
                         else:
-                            dd.warning(
+                            dd.logger.warning(
                                 "Couldn't change obsolete %s to %s: %s",
                                 k, par2, e)
 
