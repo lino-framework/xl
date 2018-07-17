@@ -125,10 +125,10 @@ class TimLoader(TimLoader):
                 obj.team = self.eupen
             elif row.idpar.startswith('S'):
                 obj.team = self.stvith
-            idpar2 = row.idpar2.strip()
-            if idpar2 and row.idpar != idpar2:
-                self.obsolete_list.append(
-                    (obj, self.par_pk(idpar2)))
+            # idpar2 = row.idpar2.strip()
+            # if idpar2 and row.idpar != idpar2:
+            #     self.obsolete_list.append(
+            #         (obj, self.par_pk(idpar2)))
             # if isinstance(obj, Partner):
             #     obj.isikukood = row['regkood'].strip()
             #     obj.created = row['datcrea']
@@ -395,6 +395,7 @@ class TimLoader(TimLoader):
         #     yield rt.models.notes.Note(**kw)
 
     def finalize(self):
+        dd.info("Deleting %d obsolete partners", len(self.obsolete_list))
         for (par1, idpar2) in self.obsolete_list:
             par2 = None
             try:
@@ -414,9 +415,13 @@ class TimLoader(TimLoader):
                     try:
                         obj.full_clean()
                         obj.save()
-                    except ValidationError:
+                    except ValidationError as e:
                         if delete:
                             obj.delete()
+                        else:
+                            dd.warning(
+                                "Couldn't change obsolete %s to %s: %s",
+                                k, par2, e)
 
             # replace(Coaching, 'client')
 

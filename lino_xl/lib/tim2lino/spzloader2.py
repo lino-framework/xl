@@ -129,7 +129,6 @@ class TimLoader(TimLoader):
         self.other_groups = Line.objects.filter(
             course_area=CourseAreas.default).order_by('id')[0]
         
-        
         self.imported_sessions = set([])
         # self.obsolete_list = []
         # plptypes = dict()
@@ -242,9 +241,10 @@ class TimLoader(TimLoader):
             elif row.idpar.startswith('S'):
                 partner.team = self.stvith
             idpar2 = row.idpar2.strip()
-            if row.idpar != idpar2 and idpar2:
-                self.obsolete_list.append(
-                    (partner, self.par_pk(idpar2)))
+            if idpar2 and (row.idpar.strip() != idpar2):
+                idpar2 = self.par_pk(idpar2)
+                if idpar2 is not None:
+                    self.obsolete_list.append((partner, idpar2))
 
         if issubclass(cl, Person):
             v = row.gebdat
