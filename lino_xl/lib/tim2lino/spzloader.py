@@ -409,6 +409,15 @@ class TimLoader(TimLoader):
             if par2 is None:
                 continue
 
+            if True:
+                par1.obsoletes = par2
+                par1.full_clean()
+                par1.save()
+                dd.logger.warning("Failed to delete {} : {}".format(
+                    par1, e))
+                continue
+            
+
             def replace(model, k, delete=False):
                 for obj in model.objects.filter(**{k: par1}):
                     setattr(obj, k, par2)
