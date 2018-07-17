@@ -413,8 +413,6 @@ class TimLoader(TimLoader):
                 par1.obsoletes = par2
                 par1.full_clean()
                 par1.save()
-                dd.logger.warning("Failed to delete {} : {}".format(
-                    par1, e))
                 continue
             
 
