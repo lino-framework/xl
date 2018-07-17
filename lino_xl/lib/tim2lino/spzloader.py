@@ -126,7 +126,7 @@ class TimLoader(TimLoader):
             elif row.idpar.startswith('S'):
                 obj.team = self.stvith
             idpar2 = row.idpar2.strip()
-            if row.idpar != idpar2 and idpar2:
+            if idpar2 and row.idpar != idpar2:
                 self.obsolete_list.append(
                     (obj, self.par_pk(idpar2)))
             # if isinstance(obj, Partner):
@@ -164,8 +164,8 @@ class TimLoader(TimLoader):
                     break
                 yield Course(**kw)
                 return
-            for user in self.get_users(row):
-                if prt == "P":
+            if prt == "P":
+                for user in self.get_users(row):
                     # if Course.objects.filter(id=obj.id).exists():
                     #     return
                     # if Course.objects.filter(ref=row.idpar.strip()).exists():
@@ -184,9 +184,9 @@ class TimLoader(TimLoader):
                             kw.update(end_date=row.date2)
                     yield Enrolment(pupil=obj, course=therapy, **kw)
                     return
-                else:
-                    dd.logger.warning(
-                        "No coaching for non-client %s", obj)
+            else:
+                dd.logger.warning(
+                    "No coaching for non-client %s", obj)
 
     # def load_pls(self, row, **kw):
     #     kw.update(ref=row.idpls.strip())
@@ -421,6 +421,8 @@ class TimLoader(TimLoader):
                 replace(rt.models.households.Member, 'person')
                 replace(rt.models.humanlinks.Link, 'parent')
                 replace(rt.models.humanlinks.Link, 'child')
+                replace(rt.models.cal.Guest, 'partner')
+                replace(rt.models.clients.ClientContact, 'client')
 
             if isinstance(par1, Client):
                 replace(Course, 'partner')

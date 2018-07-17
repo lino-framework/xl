@@ -296,9 +296,13 @@ class TimLoader(TimLoader):
         yield partner
 
         if isinstance(partner, Partner):
-            v = self.get_partner(Partner, row.zahler)
-            if v:
-                yield SalesRule(partner=partner, invoice_recipient=v)
+            if row.zahler.strip():
+                v = self.get_partner(Partner, row.zahler)
+                if v:
+                    yield SalesRule(partner=partner, invoice_recipient=v)
+                else:
+                    dd.logger.info(
+                        "Could not import zahler %s", row.zahler)
 
         if isinstance(partner, Client):
             v = self.get_partner(Company, row.kkasse)
@@ -351,6 +355,7 @@ class TimLoader(TimLoader):
                 state=EnrolmentStates.get_by_value(row.stand) \
                 or EnrolmentStates.confirmed)
             yield Enrolment(pupil=partner, course=therapy, **kw)
+            dd.logger.info("Created enrolment for therapy %s", partner)
 
 
     # def load_pls(self, row, **kw):

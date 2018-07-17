@@ -47,6 +47,8 @@ class ClientContact(ClientContactBase):
     #~ type = ClientContactTypes.field(blank=True)
     client = dd.ForeignKey(client_model)
     remark = models.TextField(_("Remarks"), blank=True)  # ,null=True)
+    
+    # allow_cascaded_delete = 'client'
 
     def full_clean(self, *args, **kw):
         if not self.remark and not self.type \
