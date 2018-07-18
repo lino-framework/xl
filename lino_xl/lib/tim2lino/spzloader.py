@@ -409,14 +409,6 @@ class TimLoader(TimLoader):
             if par2 is None:
                 continue
 
-            if False:   # temporary test to see whether the enrolments
-                        # get deleted
-                par1.obsoletes = par2
-                par1.full_clean()
-                par1.save()
-                continue
-            
-
             def replace(model, k, delete=False):
                 for obj in model.objects.filter(**{k: par1}):
                     setattr(obj, k, par2)
