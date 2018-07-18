@@ -67,8 +67,12 @@ class SalesRules(dd.Table):
     """, window_size=(40, 'auto'))
 
 class PartnersByInvoiceRecipient(SalesRules):
+    help_text = _("Show partners having this as invoice recipient.")
+    details_of_master_template = _("%(master)s used as invoice recipient")
+    button_text = "♚"  # 265A
     master_key = 'invoice_recipient'
     column_names = "partner partner__id partner__address_column *"
+    window_size = (80, 20)
 
 
 dd.inject_action(
