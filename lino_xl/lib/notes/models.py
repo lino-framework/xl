@@ -231,7 +231,7 @@ class NoteDetail(dd.DetailLayout):
 
 class Notes(dd.Table):
     #required_roles = dd.login_required((OfficeUser, OfficeOperator))
-    required_roles = dd.login_required(NotesUser)
+    required_roles = dd.login_required((OfficeStaff, NotesUser))
     model = 'notes.Note'
     detail_layout = 'notes.NoteDetail'
     column_names = "date time id user event_type type project subject * body"

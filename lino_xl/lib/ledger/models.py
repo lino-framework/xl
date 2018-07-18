@@ -313,8 +313,8 @@ class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
 
     class Meta:
         app_label = 'ledger'
-        verbose_name = _("Payment Term")
-        verbose_name_plural = _("Payment Terms")
+        verbose_name = _("Payment term")
+        verbose_name_plural = _("Payment terms")
 
     days = models.IntegerField(_("Days"), default=0)
     months = models.IntegerField(_("Months"), default=0)

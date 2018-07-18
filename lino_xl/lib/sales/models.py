@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -404,7 +404,7 @@ class Invoices(SalesDocuments):
     order_by = ["-id"]
     # order_by = ["journal", "accounting_period__year", "number"]
     column_names = "id entry_date partner total_incl user *"
-    detail_layout = InvoiceDetail()
+    detail_layout = 'sales.InvoiceDetail'
     insert_layout = dd.InsertLayout("""
     partner entry_date
     subject
@@ -548,6 +548,17 @@ class InvoiceItem(ProductDocItem, SequencedVoucherItem):
     # ship_date = models.DateField(_("Shipment date"), blank=True, null=True)
 
 
+class InvoiceItemDetail(dd.DetailLayout):
+    main = """
+    seqno product discount
+    unit_price qty total_base total_vat total_incl
+    title
+    description"""
+
+    window_size = (80, 20)    
+    
+
+
 class InvoiceItems(dd.Table):
     """Shows all sales invoice items."""
     model = 'sales.InvoiceItem'
@@ -556,11 +567,7 @@ class InvoiceItems(dd.Table):
     column_names = "product title discount unit_price qty total_incl *"
     # hidden_columns = "seqno description total_base total_vat"
 
-    detail_layout = dd.DetailLayout("""
-    seqno product discount
-    unit_price qty total_base total_vat total_incl
-    title
-    description""", window_size=(80, 20))
+    detail_layout = 'sales.InvoiceItemDetail'
 
     insert_layout = """
     product discount qty
