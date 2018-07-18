@@ -192,8 +192,8 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
 
     @classmethod
     def setup_parameters(cls, fields):
-        fields.update(
-            observed_event=PartnerEvents.field(
+        fields.setdefault(
+            'observed_event', PartnerEvents.field(
                 blank=True,
                 help_text=_("Extended filter criteria")))
         super(Partner, cls).setup_parameters(fields)
