@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
+# Copyright 2017-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Model mixins for this plugin.
 """
@@ -8,8 +8,7 @@ from builtins import str
 
 from django.db.models import Q
 
-from lino.api import dd, rt
-from etgen.html import E
+from lino.api import dd, _
 from .choicelists import EnrolmentStates
 
 
@@ -36,7 +35,8 @@ class Enrollable(dd.Model):
     @classmethod
     def setup_parameters(cls, fields):
         fields.update(
-            enrolment_state=EnrolmentStates.field(blank=True),
+            enrolment_state=EnrolmentStates.field(
+                blank=True, verbose_name=_("Enrolment state")),
             course=dd.ForeignKey(
                 'courses.Course', blank=True, null=True))
 
