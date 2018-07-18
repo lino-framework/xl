@@ -30,7 +30,10 @@ from lino.modlib.notify.mixins import ChangeNotifier
 from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
-from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
+# from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
+from lino.modlib.office.roles import OfficeStaff
+
+from .roles import NotesUser
 
 from lino.modlib.notify.choicelists import MessageTypes
 MessageTypes.add_item('notes', dd.plugins.notes.verbose_name)
@@ -227,7 +230,8 @@ class NoteDetail(dd.DetailLayout):
 
 
 class Notes(dd.Table):
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    #required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(NotesUser)
     model = 'notes.Note'
     detail_layout = 'notes.NoteDetail'
     column_names = "date time id user event_type type project subject * body"
