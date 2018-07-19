@@ -6,6 +6,7 @@
 
 from __future__ import unicode_literals
 from builtins import str
+from collections import OrderedDict
 
 from django.conf import settings
 from django.db import models
@@ -13,6 +14,7 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
+from lino.utils.format_date import monthname
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
@@ -822,6 +824,46 @@ class EntriesByRoom(Events):
     master_key = 'room'
 
 
+# from etgen.html import Table, tostring
+
+class Year(object):
+    def __init__(self, year):
+        self.year = year
+        self.months = [[] for i in range(12)]
+
+    
+class Calendar(object):
+    def __init__(self):
+        self.years = OrderedDict()
+
+    def collect(self, d, elems):
+        if d.year in self.years:
+            y = self.years[d.year]
+        else:
+            y = Year(d.year)
+            self.years[d.year] = y
+        lst = y.months[d.month-1]
+        if len(lst):
+            lst.append(' ')
+        lst.extend(elems)
+
+    def to_html(self, ar):
+        # t = Table()
+        # t.add_header_row("", *[monthname(m+1) for m in range(12)])
+        rows = []
+        cells = [E.th("")] + [E.th(monthname(m+1)) for m in range(12)]
+        # print(''.join([tostring(c) for c in cells]))
+        rows.append(E.tr(*cells))
+        for y in self.years.values():
+            cells = [E.td(str(y.year), width="4%")]
+            for m in y.months:
+                # every m is a list of etree elems
+                cells.append(E.td(*m, width="8%", **ar.renderer.cellattrs))
+            # print(str(y.year) +":" + ''.join([tostring(c) for c in cells]))
+            rows.append(E.tr(*cells))
+        return E.table(*rows, **ar.renderer.tableattrs)
+
+
 class EntriesByController(Events):
     required_roles = dd.login_required((OfficeOperator, OfficeUser))
     # required_roles = dd.login_required(OfficeUser)
@@ -844,32 +886,45 @@ class EntriesByController(Events):
             return ''
         sar = self.request_from(ar, master_instance=obj)
 
-        fmt = obj.get_date_formatter()
+        # fmt = obj.get_date_formatter()
+        fmt = obj.get_cal_entry_formatter()
 
-        elems = []
-        
-        coll = {}
+        group_coll = OrderedDict()  # None, weekly, monthly
+        state_coll = {}
+        cal = Calendar()
         for evt in sar:
             # if len(elems) > 0:
             #     elems.append(', ')
-            elems.append(' ')
-            if evt.auto_type:
-                # elems.append("({}) ".format(evt.auto_type))
-                elems.append("{}: ".format(evt.auto_type))
-
-            lbl = fmt(evt.start_date)
-            if evt.state.button_text:
-                lbl = "{0}{1}".format(lbl, evt.state.button_text)
-            elems.append(ar.obj2html(evt, lbl))
-
-            if evt.state in coll:
-                coll[evt.state] += 1
+            if evt.state in state_coll:
+                state_coll[evt.state] += 1
             else:
-                coll[evt.state] = 1
-                
+                state_coll[evt.state] = 1
+
+            if True:
+                cal.collect(evt.start_date, fmt(evt, ar))
+            else:
+                grp, e = fmt(evt, ar)
+                lst = group_coll.setdefault(grp, [])
+                if len(lst):
+                    lst.append(', ')
+                lst.append(e)
+
+        if True:
+            elems = [cal.to_html(ar)]
+        else:    
+            elems = []
+            items = []
+            for grp, lst in group_coll.items():
+                items.append(E.li(grp, *lst))
+
+            if len(items) == 1:
+                elems.append(E.p(*items))
+            elif len(items) > 1:
+                elems.append(E.ul(*items))
+
         ul = []
         for st in EntryStates.get_list_items():
-            ul.append(_("{} : {}").format(st, coll.get(st, 0)))
+            ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
         toolbar = []
         toolbar += join_elems(ul, sep=', ')
         # elems = join_elems(ul, sep=E.br)

@@ -32,6 +32,8 @@ from .workflows import EntryStates
 from .utils import day_and_month
 from .actions import UpdateAllGuests
 
+from lino.utils.format_date import fdmy
+
 def format_time(t):
     if t is None:
         return ''
@@ -429,11 +431,38 @@ class EventGenerator(dd.Model):
 
         return []
 
-    def get_date_formatter(self):
-        rset = self.update_cal_rset()
-        if rset and rset.every_unit:
-            return rset.every_unit.get_date_formatter()
-        return day_and_month
+    def get_cal_entry_formatter(self):
+        show_auto_num = False
+        def fmt(evt, ar):
+            d = evt.start_date
+            if show_auto_num and evt.auto_type:
+                yield str(evt.auto_type)+":"
+            yield ar.obj2html(evt, str(d.day))
+            if evt.state.button_text:
+                yield str(evt.state.button_text)
+            # return (fdmy(d) + ": ", ar.obj2html(evt, lbl))
+        return fmt
+                
+    # def get_date_formatter(self):
+    #     rset = self.update_cal_rset()
+    #     if rset and rset.every_unit:
+    #         return rset.every_unit.get_date_formatter()
+    #     return day_and_month
+
+    # def format_cal_entry(self, evt, fmt, ar):
+    #     """
+    #     Yield a list of etree elements to represent the given calendar
+    #     entry `evt`.
+    #     """
+    #     if evt.auto_type:
+    #         # elems.append("({}) ".format(evt.auto_type))
+    #         yield "{}: ".format(evt.auto_type)
+
+    #     lbl = fmt(evt.start_date)
+    #     if evt.state.button_text:
+    #         lbl = "{0}{1}".format(lbl, evt.state.button_text)
+    #     yield ar.obj2html(evt, lbl)
+    
 
 
 class RecurrenceSet(Started, Ended):
