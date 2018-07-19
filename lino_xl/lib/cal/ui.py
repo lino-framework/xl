@@ -832,7 +832,7 @@ class Year(object):
         self.months = [[] for i in range(12)]
 
     
-class Calendar(object):
+class CalendarRenderer(object):
     def __init__(self):
         self.years = OrderedDict()
 
@@ -891,7 +891,7 @@ class EntriesByController(Events):
 
         group_coll = OrderedDict()  # None, weekly, monthly
         state_coll = {}
-        cal = Calendar()
+        cal = CalendarRenderer()
         for evt in sar:
             # if len(elems) > 0:
             #     elems.append(', ')
