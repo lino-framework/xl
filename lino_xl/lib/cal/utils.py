@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -30,6 +30,7 @@ from django.utils.encoding import force_text
 
 from lino.utils.format_date import format_date
 from lino.utils.format_date import fds
+from lino.utils.format_date import day_and_month, day_and_weekday
 
 from lino.api import rt
 
@@ -45,7 +46,7 @@ def dt2kw(dt, name, **d):
 
     Examples:
     
-    >>> dt = datetime.datetime(2013,12,25,17,15,00)
+    >>> dt = datetime.datetime(2013, 12, 25, 17, 15, 0)
     >>> dt2kw(dt,'foo') == {'foo_date': datetime.date(2013, 12, 25), 'foo_time': datetime.time(17, 15)}
     True
 
@@ -179,8 +180,4 @@ def update_reminder(type, owner, user, orig, msg, num, unit):
         msg,
         owner)
 
-def day_and_month(d):
-    if d is None:
-        return "-"
-    return d.strftime("%d.%m.")
 

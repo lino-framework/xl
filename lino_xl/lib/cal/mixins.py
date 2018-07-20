@@ -29,7 +29,7 @@ from lino.modlib.notify.mixins import ChangeNotifier
 from .choicelists import Recurrencies, Weekdays, AccessClasses
 
 from .workflows import EntryStates
-from .utils import day_and_month
+from .utils import day_and_month, day_and_weekday
 from .actions import UpdateAllGuests
 
 from lino.utils.format_date import fdmy
@@ -431,17 +431,18 @@ class EventGenerator(dd.Model):
 
         return []
 
-    def get_cal_entry_formatter(self):
+    @classmethod
+    def get_cal_entry_renderer(cls, fmt):
         show_auto_num = False
-        def fmt(evt, ar):
+        def renderer(evt, ar):
             d = evt.start_date
             if show_auto_num and evt.auto_type:
                 yield str(evt.auto_type)+":"
-            yield ar.obj2html(evt, str(d.day))
+            yield ar.obj2html(evt, fmt(d))
             if evt.state.button_text:
                 yield str(evt.state.button_text)
             # return (fdmy(d) + ": ", ar.obj2html(evt, lbl))
-        return fmt
+        return renderer
                 
     # def get_date_formatter(self):
     #     rset = self.update_cal_rset()

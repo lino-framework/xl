@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2018 Rumma & Ko Ltd
-#
 # License: BSD (see file COPYING for details)
 
 
@@ -15,6 +14,7 @@ from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
 from lino.utils.format_date import monthname
+from lino.utils.format_date import day_and_month, day_and_weekday
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
@@ -413,26 +413,22 @@ class GuestsByPartner(Guests):
 
     @classmethod
     def get_table_summary(self, obj, ar):
-        """The summary view for this table.
-
-        See :meth:`lino.core.actors.Actor.get_table_summary`.
-
-        """
         if ar is None:
             return ''
         sar = self.request_from(ar, master_instance=obj)
 
         elems = []
+        fmt = rt.models.cal.EventGenerator.get_cal_entry_renderer(
+            day_and_month)
         for guest in sar:
-            if guest.event.owner:
-                fmt = guest.event.owner.get_date_formatter()
-            else:
-                fmt = dd.fds
-            lbl = fmt(guest.event.start_date)
-            if guest.state.button_text:
-                lbl = "{0}{1}".format(lbl, guest.state.button_text)
-            elems.append(ar.obj2html(guest.event, lbl))
-        elems = join_elems(elems, sep=', ')
+            if len(elems):
+                elems.append(', ')
+            elems.extend(fmt(guest.event, ar))
+            # lbl = fmt(guest.event.start_date)
+            # if guest.state.button_text:
+            #     lbl = "{0}{1}".format(lbl, guest.state.button_text)
+            # elems.append(ar.obj2html(guest.event, lbl))
+        # elems = join_elems(elems, sep=', ')
         return ar.html_text(E.div(*elems))
         # return E.div(class_="htmlText", *elems)
 
@@ -848,20 +844,29 @@ class CalendarRenderer(object):
         lst.extend(elems)
 
     def to_html(self, ar):
-        # t = Table()
-        # t.add_header_row("", *[monthname(m+1) for m in range(12)])
-        rows = []
-        cells = [E.th("")] + [E.th(monthname(m+1)) for m in range(12)]
-        # print(''.join([tostring(c) for c in cells]))
-        rows.append(E.tr(*cells))
-        for y in self.years.values():
-            cells = [E.td(str(y.year), width="4%")]
-            for m in y.months:
-                # every m is a list of etree elems
-                cells.append(E.td(*m, width="8%", **ar.renderer.cellattrs))
-            # print(str(y.year) +":" + ''.join([tostring(c) for c in cells]))
+        if len(self.years) == 1:
+            y = self.years.values()[0]
+            items = []
+            for m, lst in enumerate(y.months):
+                if len(lst):
+                    items.append(E.li(
+                        monthname(m+1)+" "+str(y.year), ": ", *lst))
+            return E.ul(*items)
+        if len(self.years) > 1:
+            rows = []
+            cells = [E.th("")] + [E.th(monthname(m+1)) for m in range(12)]
+            # print(''.join([tostring(c) for c in cells]))
             rows.append(E.tr(*cells))
-        return E.table(*rows, **ar.renderer.tableattrs)
+            for y in self.years.values():
+                cells = [E.td(str(y.year), width="4%")]
+                for m in y.months:
+                    # every m is a list of etree elems
+                    cells.append(E.td(*m, width="8%", **ar.renderer.cellattrs))
+                # print(str(y.year) +":" + ''.join([tostring(c) for c in cells]))
+                rows.append(E.tr(*cells))
+            return E.table(*rows, **ar.renderer.tableattrs)
+        return E.p()
+        
 
 
 class EntriesByController(Events):
@@ -877,18 +882,11 @@ class EntriesByController(Events):
 
     @classmethod
     def get_table_summary(self, obj, ar):
-        """The summary view for this table.
-
-        See :meth:`lino.core.actors.Actor.get_table_summary`.
-
-        """
         if ar is None:
             return ''
         sar = self.request_from(ar, master_instance=obj)
 
-        # fmt = obj.get_date_formatter()
-        fmt = obj.get_cal_entry_formatter()
-
+        fmt = obj.get_cal_entry_renderer(day_and_weekday)
         group_coll = OrderedDict()  # None, weekly, monthly
         state_coll = {}
         cal = CalendarRenderer()
