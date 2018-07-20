@@ -258,7 +258,7 @@ class TimLoader(TimLoader):
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar1", row)
                 return
-            p2 = self.get_partner(Person, row.idpar2)
+            p2 = self.get_partner(Client, row.idpar2)
             if p2 is None:
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar2", row)
@@ -272,7 +272,7 @@ class TimLoader(TimLoader):
                 dd.logger.warning(
                     "Ignored PLP %s : Invalid idpar1", row)
                 return
-            p2 = self.get_partner(Person, row.idpar2)
+            p2 = self.get_partner(Client, row.idpar2)
             if p2 is None:
                 dd.logger.warning(
                     "Ignored PLP %s : Invalid idpar2", row)
