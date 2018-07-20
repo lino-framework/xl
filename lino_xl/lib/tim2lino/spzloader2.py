@@ -107,6 +107,7 @@ Guest = rt.models.cal.Guest
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
+EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
 
 
@@ -422,6 +423,14 @@ class TimLoader(TimLoader):
             return
         yield o
                 
+    def get_event_state(self, v):
+        if v == "S":
+            return EntryStates.took_place
+        if v == "V":
+            return EntryStates.missed
+        if v == "A":
+            return EntryStates.cancelled
+        
     def get_event_type(self, pk):
         pk = int(pk)
         try:
@@ -474,6 +483,10 @@ class TimLoader(TimLoader):
         if iddla:
             dla = self.get_event_type(iddla)
             kw.update(event_type=dla)
+        
+        v = row.etat.strip()
+        if v:
+            kw.update(state=self.get_event_state(v))
         
         
         # if row.idprj.strip():
