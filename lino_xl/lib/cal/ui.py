@@ -827,32 +827,65 @@ class Year(object):
         self.year = year
         self.months = [[] for i in range(12)]
 
-    
+PLAIN_MODE = 0
+UL_MODE = 1
+TABLE_MODE = 2
+
 class CalendarRenderer(object):
     def __init__(self):
         self.years = OrderedDict()
+        self.mode = PLAIN_MODE
 
-    def collect(self, d, elems):
+    def collect(self, d, evt):
         if d.year in self.years:
             y = self.years[d.year]
         else:
             y = Year(d.year)
             self.years[d.year] = y
-        lst = y.months[d.month-1]
-        if len(lst):
-            lst.append(' ')
-        lst.extend(elems)
+        y.months[d.month-1].append(evt)
+
+    def analyze_view(self, max_months=6):
+        count1 = count2 = 0
+        nyears = 0
+        for y in self.years.values():
+            nmonths = 0
+            for m in y.months:
+                if len(m):
+                    nmonths += 1
+                    count1 += 1
+                    if len(m) > 1:
+                        count2 += 1
+            if nmonths:
+                nyears += 1
+                        
+        if count1 > max_months:
+            self.mode = TABLE_MODE
+        else:
+        # elif count2:
+            self.mode = UL_MODE
 
     def to_html(self, ar):
-        if len(self.years) == 1:
-            y = self.years.values()[0]
-            items = []
-            for m, lst in enumerate(y.months):
-                if len(lst):
-                    items.append(E.li(
-                        monthname(m+1)+" "+str(y.year), ": ", *lst))
-            return E.ul(*items)
-        if len(self.years) > 1:
+        self.analyze_view()
+        get_rnd = rt.models.cal.EventGenerator.get_cal_entry_renderer
+        if self.mode == TABLE_MODE:
+            sep = ' '
+            fmt = get_rnd(day_and_weekday)
+        elif self.mode == UL_MODE:
+            sep = ' '
+            fmt = get_rnd(day_and_weekday)
+        elif self.mode == PLAIN_MODE:
+            sep = ', '
+            fmt = get_rnd(dd.fds)
+            
+        def xxx(list_of_entries):
+            elems = []
+            for e in list_of_entries:
+                if len(elems):
+                    elems.append(sep)
+                elems.extend(fmt(e, ar))
+            return elems
+        
+        if self.mode == TABLE_MODE:
             rows = []
             cells = [E.th("")] + [E.th(monthname(m+1)) for m in range(12)]
             # print(''.join([tostring(c) for c in cells]))
@@ -861,11 +894,32 @@ class CalendarRenderer(object):
                 cells = [E.td(str(y.year), width="4%")]
                 for m in y.months:
                     # every m is a list of etree elems
-                    cells.append(E.td(*m, width="8%", **ar.renderer.cellattrs))
+                    cells.append(E.td(*xxx(m), width="8%", **ar.renderer.cellattrs))
                 # print(str(y.year) +":" + ''.join([tostring(c) for c in cells]))
                 rows.append(E.tr(*cells))
             return E.table(*rows, **ar.renderer.tableattrs)
-        return E.p()
+        
+        if self.mode == UL_MODE:
+            items = []
+            for y in self.years.values():
+                for m, lst in enumerate(y.months):
+                    if len(lst):
+                        items.append(E.li(
+                            monthname(m+1), " ", str(y.year), ": ", *xxx(lst)))
+            return E.ul(*items)
+        
+        if self.mode == PLAIN_MODE:
+            elems = []
+            for y in self.years.values():
+                for lst in y.months:
+                    if len(lst):
+                        if len(elems):
+                            elems.append(sep)
+                        elems.extend(xxx(lst))
+            return E.p(*elems)
+        
+        raise Exception("20180720")
+        
         
 
 
@@ -886,8 +940,6 @@ class EntriesByController(Events):
             return ''
         sar = self.request_from(ar, master_instance=obj)
 
-        fmt = obj.get_cal_entry_renderer(day_and_weekday)
-        group_coll = OrderedDict()  # None, weekly, monthly
         state_coll = {}
         cal = CalendarRenderer()
         for evt in sar:
@@ -898,27 +950,9 @@ class EntriesByController(Events):
             else:
                 state_coll[evt.state] = 1
 
-            if True:
-                cal.collect(evt.start_date, fmt(evt, ar))
-            else:
-                grp, e = fmt(evt, ar)
-                lst = group_coll.setdefault(grp, [])
-                if len(lst):
-                    lst.append(', ')
-                lst.append(e)
+            cal.collect(evt.start_date, evt)
 
-        if True:
-            elems = [cal.to_html(ar)]
-        else:    
-            elems = []
-            items = []
-            for grp, lst in group_coll.items():
-                items.append(E.li(grp, *lst))
-
-            if len(items) == 1:
-                elems.append(E.p(*items))
-            elif len(items) > 1:
-                elems.append(E.ul(*items))
+        elems = [cal.to_html(ar)]
 
         ul = []
         for st in EntryStates.get_list_items():
