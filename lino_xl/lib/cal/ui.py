@@ -858,11 +858,12 @@ class CalendarRenderer(object):
             if nmonths:
                 nyears += 1
                         
-        if count1 > max_months:
+        if count1 <= max_months:
+            self.mode = UL_MODE
+        elif count2:
             self.mode = TABLE_MODE
         else:
-        # elif count2:
-            self.mode = UL_MODE
+            self.mode = PLAIN_MODE
 
     def to_html(self, ar):
         self.analyze_view()
