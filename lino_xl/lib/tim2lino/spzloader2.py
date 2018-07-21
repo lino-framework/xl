@@ -193,6 +193,8 @@ class TimLoader(TimLoader):
         
         # kw = dict()
         pk = self.par_pk(row.idpar)
+        if pk is None:
+            return
         name = row.firme.strip() + ' ' + row.vorname.strip()
         prt = row.idprt
         ref = row.idpar.strip()
@@ -368,6 +370,8 @@ class TimLoader(TimLoader):
 
     def get_partner(self, model, idpar):
         pk = self.par_pk(idpar.strip())
+        if pk is None:
+            return None
         try:
             return model.objects.get(pk=pk)
         except model.DoesNotExist:
