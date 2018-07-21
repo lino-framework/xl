@@ -336,6 +336,6 @@ class TimLoader(object):
             o.full_clean()
             o.save()
             # temporary:
-            dd.logger.info("Saved %s", dd.obj2str(o))
+            # dd.logger.info("Saved %s", dd.obj2str(o))
         self.finalize()
     
