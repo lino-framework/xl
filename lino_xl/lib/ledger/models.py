@@ -75,7 +75,7 @@ class Journal(mixins.BabelNamed,
         _("Printed document designation"), max_length=100, blank=True)
     dc = DebitOrCreditField(_("Primary booking direction"))
     yearly_numbering = models.BooleanField(
-        _("Yearly numbering"), default=False)
+        _("Yearly numbering"), default=True)
     must_declare = models.BooleanField(default=True)
     # invert_due_dc = models.BooleanField(
     #     _("Invert booking direction"),
