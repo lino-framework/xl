@@ -242,13 +242,13 @@ class InvoiceDetail(dd.DetailLayout):
     total_incl
     """
 
-    topleft = """id entry_date #voucher_date partner
+    topleft = """number entry_date #voucher_date partner
     payment_term due_date your_ref vat_regime
     workflow_buttons user
     """
 
     ledger = dd.Panel("""
-    journal accounting_period number narration
+    journal accounting_period id narration
     ledger.MovementsByVoucher
     """, label=_("Ledger"))
 
