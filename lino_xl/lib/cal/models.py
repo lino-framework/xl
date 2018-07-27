@@ -517,6 +517,9 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                     duration.days, et.max_days)
 
     def full_clean(self, *args, **kw):
+        if self.event_type.max_days == 1:
+            # avoid "Abandoning with 297 unsaved instances"
+            self.end_date = None
         msg = self.duration_veto()
         if msg is not None:
             raise ValidationError(str(msg))
