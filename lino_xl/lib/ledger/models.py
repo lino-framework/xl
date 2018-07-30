@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -33,6 +33,10 @@ from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
 from lino_xl.lib.accounts.fields import DebitOrCreditField
+from lino_xl.lib.contacts.choicelists import PartnerEvents
+from lino.modlib.system.choicelists import ObservedEvent
+
+
 
 from .utils import get_due_movements, check_clearings_by_partner
 from .choicelists import (FiscalYears, VoucherTypes, VoucherStates,
@@ -41,6 +45,8 @@ from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObserv
 from .roles import VoucherSupervisor
 # from .mixins import FKMATCH
 from .ui import *
+
+
 
 
 @dd.python_2_unicode_compatible
@@ -69,7 +75,7 @@ class Journal(mixins.BabelNamed,
         _("Printed document designation"), max_length=100, blank=True)
     dc = DebitOrCreditField(_("Primary booking direction"))
     yearly_numbering = models.BooleanField(
-        _("Yearly numbering"), default=False)
+        _("Yearly numbering"), default=True)
     must_declare = models.BooleanField(default=True)
     # invert_due_dc = models.BooleanField(
     #     _("Invert booking direction"),
@@ -307,8 +313,8 @@ class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
 
     class Meta:
         app_label = 'ledger'
-        verbose_name = _("Payment Term")
-        verbose_name_plural = _("Payment Terms")
+        verbose_name = _("Payment term")
+        verbose_name_plural = _("Payment terms")
 
     days = models.IntegerField(_("Days"), default=0)
     months = models.IntegerField(_("Months"), default=0)
@@ -907,3 +913,20 @@ class VoucherChecker(Checker):
 
             
 VoucherChecker.activate()
+
+
+class PartnerHasOpenMovements(ObservedEvent):
+    text = _("Has open movements")
+
+    def add_filter(self, qs, pv):
+        qs = qs.filter(movement__cleared=False)
+        if pv.end_date:
+            qs = qs.filter(movement__value_date__lte=pv.end_date)
+        if pv.start_date:
+            qs = qs.filter(movement__value_date__gte=pv.start_date)
+        return qs.distinct()
+
+PartnerEvents.add_item_instance(
+    PartnerHasOpenMovements("has_open_movements"))
+
+

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -18,7 +18,7 @@ from builtins import str
 from lino.utils.instantiator import create_row
 from lino.api import dd, rt, _
 from lino.utils.instantiator import create
-
+from django.core.exceptions import ValidationError
 
 from .timloader1 import TimLoader
 
@@ -125,10 +125,10 @@ class TimLoader(TimLoader):
                 obj.team = self.eupen
             elif row.idpar.startswith('S'):
                 obj.team = self.stvith
-            idpar2 = row.idpar2.strip()
-            if row.idpar != idpar2 and idpar2:
-                self.obsolete_list.append(
-                    (obj, self.par_pk(idpar2)))
+            # idpar2 = row.idpar2.strip()
+            # if idpar2 and row.idpar != idpar2:
+            #     self.obsolete_list.append(
+            #         (obj, self.par_pk(idpar2)))
             # if isinstance(obj, Partner):
             #     obj.isikukood = row['regkood'].strip()
             #     obj.created = row['datcrea']
@@ -164,8 +164,8 @@ class TimLoader(TimLoader):
                     break
                 yield Course(**kw)
                 return
-            for user in self.get_users(row):
-                if prt == "P":
+            if prt == "P":
+                for user in self.get_users(row):
                     # if Course.objects.filter(id=obj.id).exists():
                     #     return
                     # if Course.objects.filter(ref=row.idpar.strip()).exists():
@@ -184,9 +184,9 @@ class TimLoader(TimLoader):
                             kw.update(end_date=row.date2)
                     yield Enrolment(pupil=obj, course=therapy, **kw)
                     return
-                else:
-                    dd.logger.warning(
-                        "No coaching for non-client %s", obj)
+            else:
+                dd.logger.warning(
+                    "No coaching for non-client %s", obj)
 
     # def load_pls(self, row, **kw):
     #     kw.update(ref=row.idpls.strip())
@@ -258,7 +258,7 @@ class TimLoader(TimLoader):
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar1", row)
                 return
-            p2 = self.get_partner(Person, row.idpar2)
+            p2 = self.get_partner(Client, row.idpar2)
             if p2 is None:
                 dd.logger.debug(
                     "Ignored PLP %s : Invalid idpar2", row)
@@ -272,7 +272,7 @@ class TimLoader(TimLoader):
                 dd.logger.warning(
                     "Ignored PLP %s : Invalid idpar1", row)
                 return
-            p2 = self.get_partner(Person, row.idpar2)
+            p2 = self.get_partner(Client, row.idpar2)
             if p2 is None:
                 dd.logger.warning(
                     "Ignored PLP %s : Invalid idpar2", row)
@@ -395,6 +395,7 @@ class TimLoader(TimLoader):
         #     yield rt.models.notes.Note(**kw)
 
     def finalize(self):
+        dd.logger.info("Deleting %d obsolete partners", len(self.obsolete_list))
         for (par1, idpar2) in self.obsolete_list:
             par2 = None
             try:
@@ -408,19 +409,29 @@ class TimLoader(TimLoader):
             if par2 is None:
                 continue
 
-            def replace(model, k):
+            def replace(model, k, delete=False):
                 for obj in model.objects.filter(**{k: par1}):
                     setattr(obj, k, par2)
-                    obj.full_clean()
-                    obj.save()
+                    try:
+                        obj.full_clean()
+                        obj.save()
+                    except ValidationError as e:
+                        if delete:
+                            obj.delete()
+                        else:
+                            dd.logger.warning(
+                                "Couldn't change obsolete %s to %s: %s",
+                                k, par2, e)
 
             # replace(Coaching, 'client')
 
             if isinstance(par1, Person):
-                replace(Enrolment, 'pupil')
+                replace(Enrolment, 'pupil', True)
                 replace(rt.models.households.Member, 'person')
                 replace(rt.models.humanlinks.Link, 'parent')
                 replace(rt.models.humanlinks.Link, 'child')
+                replace(rt.models.cal.Guest, 'partner', True)
+                replace(rt.models.clients.ClientContact, 'client')
 
             if isinstance(par1, Client):
                 replace(Course, 'partner')
@@ -437,7 +448,8 @@ class TimLoader(TimLoader):
                 par1.save()
                 dd.logger.warning("Failed to delete {} : {}".format(
                     par1, e))
-        super(TimLoader, self).finalize()
+                
+        # super(TimLoader, self).finalize()
         
                 
     def objects(self):

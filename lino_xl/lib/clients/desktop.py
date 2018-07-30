@@ -54,8 +54,18 @@ class ClientContactsByCompany(ClientContacts):
     required_roles = dd.login_required()
     master_key = 'company'
     column_names = 'client contact_person remark *'
-    label = _("Client contacts")
+    help_text = _("Show client contacts using this as organization.")
     auto_fit_column_widths = True
+    button_text = "♞"  # 265E
+
+class ClientContactsByPerson(ClientContacts):
+    required_roles = dd.login_required()
+    master_key = 'contact_person'
+    column_names = 'company client remark *'
+    help_text = _("Show client contacts using this as contact person.")
+    details_of_master_template = _("%(master)s used as invoice recipient")
+    auto_fit_column_widths = True
+    button_text = "♞"  # 265E
 
 
 contacts = dd.resolve_app('contacts')

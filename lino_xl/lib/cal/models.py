@@ -103,6 +103,7 @@ class DailyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 class DailyPlanner(DailyPlannerRows):
+    label = _("Daily planner")
     editable = False
     parameters = dict(
         date=models.DateField(
@@ -167,7 +168,7 @@ class DailyPlanner(DailyPlannerRows):
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
             
         for pc in PlannerColumns.objects():
-            yield w(pc, six.text_type(pc))
+            yield w(pc, pc.text)
 
 
 
@@ -516,6 +517,10 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                     duration.days, et.max_days)
 
     def full_clean(self, *args, **kw):
+        et = self.event_type
+        if et and et.max_days == 1:
+            # avoid "Abandoning with 297 unsaved instances"
+            self.end_date = None
         msg = self.duration_veto()
         if msg is not None:
             raise ValidationError(str(msg))
@@ -853,7 +858,7 @@ ConflictingEventsChecker.activate()
 
 
 class ObsoleteEventTypeChecker(EntryChecker):
-    verbose_name = _("Obsolete event type of generated entries")
+    verbose_name = _("Obsolete generated calendar entries")
 
     def get_checkdata_problems(self, obj, fix=False):
         if not obj.auto_type:

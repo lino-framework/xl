@@ -1,11 +1,11 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2018 Rumma & Ko Ltd
-#
 # License: BSD (see file COPYING for details)
 
 
 from __future__ import unicode_literals
 from builtins import str
+from collections import OrderedDict
 
 from django.conf import settings
 from django.db import models
@@ -13,6 +13,8 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
+from lino.utils.format_date import monthname
+from lino.utils.format_date import day_and_month, day_and_weekday
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
@@ -411,26 +413,22 @@ class GuestsByPartner(Guests):
 
     @classmethod
     def get_table_summary(self, obj, ar):
-        """The summary view for this table.
-
-        See :meth:`lino.core.actors.Actor.get_table_summary`.
-
-        """
         if ar is None:
             return ''
         sar = self.request_from(ar, master_instance=obj)
 
         elems = []
+        fmt = rt.models.cal.EventGenerator.get_cal_entry_renderer(
+            day_and_month)
         for guest in sar:
-            if guest.event.owner:
-                fmt = guest.event.owner.get_date_formatter()
-            else:
-                fmt = dd.fds
-            lbl = fmt(guest.event.start_date)
-            if guest.state.button_text:
-                lbl = "{0}{1}".format(lbl, guest.state.button_text)
-            elems.append(ar.obj2html(guest.event, lbl))
-        elems = join_elems(elems, sep=', ')
+            if len(elems):
+                elems.append(', ')
+            elems.extend(fmt(guest.event, ar))
+            # lbl = fmt(guest.event.start_date)
+            # if guest.state.button_text:
+            #     lbl = "{0}{1}".format(lbl, guest.state.button_text)
+            # elems.append(ar.obj2html(guest.event, lbl))
+        # elems = join_elems(elems, sep=', ')
         return ar.html_text(E.div(*elems))
         # return E.div(class_="htmlText", *elems)
 
@@ -822,6 +820,110 @@ class EntriesByRoom(Events):
     master_key = 'room'
 
 
+# from etgen.html import Table, tostring
+
+class Year(object):
+    def __init__(self, year):
+        self.year = year
+        self.months = [[] for i in range(12)]
+
+PLAIN_MODE = 0
+UL_MODE = 1
+TABLE_MODE = 2
+
+class CalendarRenderer(object):
+    def __init__(self):
+        self.years = OrderedDict()
+        self.mode = PLAIN_MODE
+
+    def collect(self, d, evt):
+        if d.year in self.years:
+            y = self.years[d.year]
+        else:
+            y = Year(d.year)
+            self.years[d.year] = y
+        y.months[d.month-1].append(evt)
+
+    def analyze_view(self, max_months=6):
+        count1 = count2 = 0
+        nyears = 0
+        for y in self.years.values():
+            nmonths = 0
+            for m in y.months:
+                if len(m):
+                    nmonths += 1
+                    count1 += 1
+                    if len(m) > 1:
+                        count2 += 1
+            if nmonths:
+                nyears += 1
+                        
+        if count1 <= max_months:
+            self.mode = UL_MODE
+        elif count2:
+            self.mode = TABLE_MODE
+        else:
+            self.mode = PLAIN_MODE
+
+    def to_html(self, ar):
+        self.analyze_view()
+        get_rnd = rt.models.cal.EventGenerator.get_cal_entry_renderer
+        if self.mode == TABLE_MODE:
+            sep = ' '
+            fmt = get_rnd(day_and_weekday)
+        elif self.mode == UL_MODE:
+            sep = ' '
+            fmt = get_rnd(day_and_weekday)
+        elif self.mode == PLAIN_MODE:
+            sep = ', '
+            fmt = get_rnd(dd.fds)
+            
+        def xxx(list_of_entries):
+            elems = []
+            for e in list_of_entries:
+                if len(elems):
+                    elems.append(sep)
+                elems.extend(fmt(e, ar))
+            return elems
+        
+        if self.mode == TABLE_MODE:
+            rows = []
+            cells = [E.th("")] + [E.th(monthname(m+1)) for m in range(12)]
+            # print(''.join([tostring(c) for c in cells]))
+            rows.append(E.tr(*cells))
+            for y in self.years.values():
+                cells = [E.td(str(y.year), width="4%")]
+                for m in y.months:
+                    # every m is a list of etree elems
+                    cells.append(E.td(*xxx(m), width="8%", **ar.renderer.cellattrs))
+                # print(str(y.year) +":" + ''.join([tostring(c) for c in cells]))
+                rows.append(E.tr(*cells))
+            return E.table(*rows, **ar.renderer.tableattrs)
+        
+        if self.mode == UL_MODE:
+            items = []
+            for y in self.years.values():
+                for m, lst in enumerate(y.months):
+                    if len(lst):
+                        items.append(E.li(
+                            monthname(m+1), " ", str(y.year), ": ", *xxx(lst)))
+            return E.ul(*items)
+        
+        if self.mode == PLAIN_MODE:
+            elems = []
+            for y in self.years.values():
+                for lst in y.months:
+                    if len(lst):
+                        if len(elems):
+                            elems.append(sep)
+                        elems.extend(xxx(lst))
+            return E.p(*elems)
+        
+        raise Exception("20180720")
+        
+        
+
+
 class EntriesByController(Events):
     required_roles = dd.login_required((OfficeOperator, OfficeUser))
     # required_roles = dd.login_required(OfficeUser)
@@ -835,41 +937,27 @@ class EntriesByController(Events):
 
     @classmethod
     def get_table_summary(self, obj, ar):
-        """The summary view for this table.
-
-        See :meth:`lino.core.actors.Actor.get_table_summary`.
-
-        """
         if ar is None:
             return ''
         sar = self.request_from(ar, master_instance=obj)
 
-        fmt = obj.get_date_formatter()
-
-        elems = []
-        
-        coll = {}
+        state_coll = {}
+        cal = CalendarRenderer()
         for evt in sar:
             # if len(elems) > 0:
             #     elems.append(', ')
-            elems.append(' ')
-            if evt.auto_type:
-                # elems.append("({}) ".format(evt.auto_type))
-                elems.append("{}: ".format(evt.auto_type))
-
-            lbl = fmt(evt.start_date)
-            if evt.state.button_text:
-                lbl = "{0}{1}".format(lbl, evt.state.button_text)
-            elems.append(ar.obj2html(evt, lbl))
-
-            if evt.state in coll:
-                coll[evt.state] += 1
+            if evt.state in state_coll:
+                state_coll[evt.state] += 1
             else:
-                coll[evt.state] = 1
-                
+                state_coll[evt.state] = 1
+
+            cal.collect(evt.start_date, evt)
+
+        elems = [cal.to_html(ar)]
+
         ul = []
         for st in EntryStates.get_list_items():
-            ul.append(_("{} : {}").format(st, coll.get(st, 0)))
+            ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
         toolbar = []
         toolbar += join_elems(ul, sep=', ')
         # elems = join_elems(ul, sep=E.br)

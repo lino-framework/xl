@@ -554,8 +554,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         pupil_model, related_name="enrolments_by_pupil")
     request_date = models.DateField(
         _("Date of request"), default=dd.today)
-    state = EnrolmentStates.field(
-        default=EnrolmentStates.as_callable('requested'))
+    state = EnrolmentStates.field(default='requested')
     places = models.PositiveIntegerField(
         pgettext("in a course", "Places used"),
         help_text=("The number of participants in this enrolment."),

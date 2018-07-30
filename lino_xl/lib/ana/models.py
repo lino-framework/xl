@@ -1,11 +1,10 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
+# Copyright 2017-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
 
 from django.db import models
-from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ValidationError
 
@@ -226,9 +225,6 @@ class InvoiceItem(AccountVoucherItem, VatItemBase):
 
 
 class InvoiceDetail(dd.DetailLayout):
-    """The detail layout used by :class:`Invoices`.
-
-    """
     main = "general ledger"
 
     general = dd.Panel("""
@@ -242,13 +238,13 @@ class InvoiceDetail(dd.DetailLayout):
     total_incl
     """
 
-    topleft = """id entry_date #voucher_date partner
+    topleft = """number entry_date #voucher_date partner
     payment_term due_date your_ref vat_regime
     workflow_buttons user
     """
 
     ledger = dd.Panel("""
-    journal accounting_period number narration
+    journal accounting_period id narration
     ledger.MovementsByVoucher
     """, label=_("Ledger"))
 
@@ -263,7 +259,7 @@ class Invoices(PartnerVouchers):
     model = 'ana.AnaAccountInvoice'
     order_by = ["-id"]
     column_names = "entry_date number_with_year partner total_incl user id *"
-    detail_layout = InvoiceDetail()
+    detail_layout = 'ana.InvoiceDetail'
     insert_layout = """
     journal partner
     entry_date total_incl
@@ -320,6 +316,7 @@ class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
 class ItemsByInvoice(ItemsByVoucher):
     model = 'ana.InvoiceItem'
     column_names = "account title ana_account vat_class total_base total_vat total_incl *"
+    display_mode = 'grid'
 
 
 

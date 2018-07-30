@@ -79,6 +79,7 @@ Course = rt.models.courses.Course
 Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
+EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
 
 Account = dd.resolve_model('accounts.Account')
@@ -106,7 +107,8 @@ Guest = rt.models.cal.Guest
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
-
+EntryStates = rt.models.cal.EntryStates
+SalesRule = rt.models.invoicing.SalesRule
 
 
 class TimLoader(TimLoader):
@@ -127,7 +129,6 @@ class TimLoader(TimLoader):
         Line = rt.models.courses.Line
         self.other_groups = Line.objects.filter(
             course_area=CourseAreas.default).order_by('id')[0]
-        
         
         self.imported_sessions = set([])
         # self.obsolete_list = []
@@ -179,25 +180,37 @@ class TimLoader(TimLoader):
         elif prt == 'G':  # Lebensgruppen
             return Household
         elif prt == 'T':  # Therapeutische Gruppen
-            return Household  # List
+            return # Household  # List
         #~ dblogger.warning("Unhandled PAR->IdPrt %r",prt)
 
     def load_par(self, row):
         # Every PAR potentially yields a partner, a course and an
-        # enrolment.  we want to re-create courses and enrolments from
-        # scratch but don't want to modify existing partners
+        # enrolment.  we re-create all courses and enrolments from
+        # scratch but don't modify existing partners a therapeutic
+        # group (IdPrt=="T") generates only a course (no partner and
+        # no enrolment). Enrolments for T and G are added later from
+        # PLP.
         
         # kw = dict()
         pk = self.par_pk(row.idpar)
+        if pk is None:
+            return
         name = row.firme.strip() + ' ' + row.vorname.strip()
         prt = row.idprt
         ref = row.idpar.strip()
         
-        cl = self.par_class(row)
-        if cl is None:
-            dd.logger.info("Cannot handle %s : par_class is None", row)
+        if prt == "T":
+            kw = dict(name=name, line=self.other_groups, id=pk)
+            kw.update(ref=ref)
+            for user in self.get_users(row):
+                kw.update(teacher=user)
+                break
+            yield Course(**kw)
             return
 
+        cl = self.par_class(row)
+        if cl is None:
+            return
         partner = None
         try:
             partner = cl.objects.get(pk=pk)
@@ -221,28 +234,36 @@ class TimLoader(TimLoader):
                 insert_child(partner, cl, True)
                 partner = cl.objects.get(pk=pk)
 
-        if row.gsm:
-            partner.gsm = row.gsm
-            
+
+        if isinstance(partner, Partner):
+            if row.gsm:
+                partner.gsm = row.gsm
+
+            if row.idpar.startswith('E'):
+                partner.team = self.eupen
+            elif row.idpar.startswith('S'):
+                partner.team = self.stvith
+            idpar2 = row.idpar2.strip()
+            if idpar2 and (row.idpar.strip() != idpar2):
+                idpar2 = self.par_pk(idpar2)
+                if idpar2 is not None:
+                    self.obsolete_list.append((partner, idpar2))
+
         if issubclass(cl, Person):
             v = row.gebdat
             if isinstance(v, basestring):
-                partner.birth_date=dateparser.parse(v.strip())
+                partner.birth_date = dateparser.parse(v.strip())
             v = row.sexe
             if v:
-                partner.gender=convert_gender(v)
-                
+                partner.gender = convert_gender(v)
+
             v = row.beruf
             if v:
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
-                partner.professional_state=v
-                
+                partner.professional_state = v
+
         if issubclass(cl, (Client, Household)):
-            
-            v = self.get_partner(Partner, row.zahler)
-            if v:
-                partner.invoice_recipient = v
-            
+
             v = row.tarif
             if v:
                 t = rt.models.tera.PartnerTariffs.get_by_value(v)
@@ -260,32 +281,46 @@ class TimLoader(TimLoader):
                 partner.client_state = v
             else:
                 partner.client_state = ClientStates.auto_closed
-                dd.logger.info(
-                    "%s : invalid PAR->Stand %s", row, row.stand)
+                # dd.logger.info(
+                #     "%s : invalid PAR->Stand %s", row, row.stand)
 
-
-        if row.idpar.startswith('E'):
-            partner.team = self.eupen
-        elif row.idpar.startswith('S'):
-            partner.team = self.stvith
-        idpar2 = row.idpar2.strip()
-        if row.idpar != idpar2 and idpar2:
-            self.obsolete_list.append(
-                (partner, self.par_pk(idpar2)))
-            
-        if prt == "T":
-            # a therapeutic group generates only a course (no partner
-            # and no enrolment)
-            
-            kw = dict(name=name, line=self.other_groups, id=partner.id)
-            kw.update(ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
-            yield Course(**kw)
-            return
+        if isinstance(partner, Client):
+            v = row.idnat
+            if v:
+                try:
+                    obj = Country.objects.get(isocode=v)
+                except Country.DoesNotExist:
+                    obj = create(Country, name=v, isocode=v)
+                    yield obj
+                    dd.logger.info("Inserted new country %s ", v)
+                    return
+                partner.nationality = obj
 
         yield partner
+
+        partner.propagate_contact_details()
+
+        if isinstance(partner, Partner):
+            if row.zahler.strip():
+                v = self.get_partner(Partner, row.zahler)
+                if v:
+                    yield SalesRule(partner=partner, invoice_recipient=v)
+                else:
+                    dd.logger.info(
+                        "Could not import zahler %s", row.zahler)
+
+        if isinstance(partner, Client):
+            v = self.get_partner(Company, row.kkasse)
+            if v:
+                cct = rt.models.clients.ClientContactType.objects.get(pk=1)
+                yield rt.models.clients.ClientContact(
+                    type=cct, client=partner, company=v)
+
+            v = self.get_partner(Person, row.hausarzt)
+            if v:
+                cct = rt.models.clients.ClientContactType.objects.get(pk=2)
+                yield rt.models.clients.ClientContact(
+                    type=cct, client=partner, contact_person=v)
 
         if prt == "G":
             if not isinstance(partner, Household):
@@ -321,32 +356,12 @@ class TimLoader(TimLoader):
                 if row.date2 and row.date2 > row.date1:
                     # avoid "Date period ends before it started."
                     kw.update(end_date=row.date2)
+            kw.update(
+                state=EnrolmentStates.get_by_value(row.stand) \
+                or EnrolmentStates.confirmed)
             yield Enrolment(pupil=partner, course=therapy, **kw)
+            dd.logger.info("Created enrolment for therapy %s", partner)
 
-        if isinstance(partner, Client):
-            v = row.idnat
-            if v:
-                try:
-                    obj = Country.objects.get(isocode=v)
-                except Country.DoesNotExist:
-                    obj = create(Country, name=v, isocode=v)
-                    yield obj
-                    dd.logger.info("Inserted new country %s ", v)
-                    return
-                partner.nationality = obj
-        
-            v = self.get_partner(Company, row.kkasse)
-            if v:
-                cct = rt.models.clients.ClientContactType.objects.get(pk=1)
-                yield rt.models.clients.ClientContact(
-                    type=cct, client=partner, company=v)
-
-            v = self.get_partner(Person, row.hausarzt)
-            if v:
-                cct = rt.models.clients.ClientContactType.objects.get(pk=2)
-                yield rt.models.clients.ClientContact(
-                    type=cct, client=partner, contact_person=v)
-        
 
     # def load_pls(self, row, **kw):
     #     kw.update(ref=row.idpls.strip())
@@ -355,6 +370,8 @@ class TimLoader(TimLoader):
 
     def get_partner(self, model, idpar):
         pk = self.par_pk(idpar.strip())
+        if pk is None:
+            return None
         try:
             return model.objects.get(pk=pk)
         except model.DoesNotExist:
@@ -410,6 +427,14 @@ class TimLoader(TimLoader):
             return
         yield o
                 
+    def get_event_state(self, v):
+        if v == "S":
+            return EntryStates.took_place
+        if v == "V":
+            return EntryStates.missed
+        if v == "A":
+            return EntryStates.cancelled
+        
     def get_event_type(self, pk):
         pk = int(pk)
         try:
@@ -462,6 +487,10 @@ class TimLoader(TimLoader):
         if iddla:
             dla = self.get_event_type(iddla)
             kw.update(event_type=dla)
+        
+        v = row.etat.strip()
+        if v:
+            kw.update(state=self.get_event_state(v))
         
         
         # if row.idprj.strip():
@@ -579,7 +608,7 @@ class TimLoader(TimLoader):
             for m in models:
                 m.objects.all()._raw_delete(DEFAULT_DB_ALIAS)
 
-        bulkdel(Guest, Event)
+        bulkdel(Guest, Event, SalesRule)
         bulkdel(Interest, Topic, Note)
         bulkdel(ClientContact, Enrolment, Course)
         

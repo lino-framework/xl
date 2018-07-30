@@ -65,3 +65,4 @@ class Plugin(Plugin):
         mg = site.plugins.vat
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('invoicing.AllPlans')
+        m.add_action('invoicing.SalesRules')

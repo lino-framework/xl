@@ -84,24 +84,23 @@ GuestStates.present_states = set([
 #~ add = GuestStates.add_item
 #~ add('21', _("Waiting"),'waiting')
 
+# We inject three fields to cal.Guest.
+# Documentation and help_text are in book/docs/specs/cal.rst
 dd.inject_field(
     'cal.Guest', 'waiting_since',
     models.DateTimeField(
         _("Waiting since"),
-        editable=False, blank=True, null=True,
-        help_text=_("Time when the visitor arrived (checked in).")))
+        editable=False, blank=True, null=True))
 dd.inject_field(
     'cal.Guest', 'busy_since',
     models.DateTimeField(
         _("Waiting until"),
-        editable=False, blank=True, null=True,
-        help_text=_("Time when the visitor was received by agent.")))
+        editable=False, blank=True, null=True))
 dd.inject_field(
     'cal.Guest', 'gone_since',
     models.DateTimeField(
         _("Present until"),
-        editable=False, blank=True, null=True,
-        help_text=_("Time when the visitor left (checked out).")))
+        editable=False, blank=True, null=True))
 
 
 dd.inject_field(

@@ -319,13 +319,13 @@ class QtyVatItemBase(VatItemBase):
     unit_price = dd.PriceField(_("Unit price"), blank=True, null=True)
     qty = dd.QuantityField(_("Quantity"), blank=True, null=True)
 
-    def unit_price_changed(self, ar):
+    def unit_price_changed(self, ar=None):
         self.reset_totals(ar)
 
-    def qty_changed(self, ar):
+    def qty_changed(self, ar=None):
         self.reset_totals(ar)
 
-    def reset_totals(self, ar):
+    def reset_totals(self, ar=None):
         super(QtyVatItemBase, self).reset_totals(ar)
         # if not self.voucher.auto_compute_totals:
         #     if self.qty:

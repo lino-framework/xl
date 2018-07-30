@@ -192,8 +192,8 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
 
     @classmethod
     def setup_parameters(cls, fields):
-        fields.update(
-            observed_event=PartnerEvents.field(
+        fields.setdefault(
+            'observed_event', PartnerEvents.field(
                 blank=True,
                 help_text=_("Extended filter criteria")))
         super(Partner, cls).setup_parameters(fields)
@@ -292,7 +292,7 @@ class Partners(dd.Table):
     column_names = "name email * id"
     order_by = ['name', 'id']
     parameters = ObservedDateRange()
-    detail_layout = PartnerDetail()
+    detail_layout = 'contacts.PartnerDetail'
     insert_layout = """
     name
     #language email
@@ -383,7 +383,7 @@ class Persons(Partners):
     column_names = (
         "name_column:20 address_column email "
         "phone:10 gsm:10 id language:10 *")
-    detail_layout = PersonDetail()
+    detail_layout = 'contacts.PersonDetail'
 
     insert_layout = """
     first_name last_name
@@ -443,7 +443,7 @@ class Companies(Partners):
     column_names = (
         "name_column:20 address_column email "
         "phone:10 gsm:10 id language:10 *")
-    detail_layout = CompanyDetail()
+    detail_layout = 'contacts.CompanyDetail'
     insert_layout = """
     name
     #language:20 email:40
@@ -573,15 +573,6 @@ dd.inject_field(
         verbose_name=_("Next partner id"),
         help_text=_("The next automatic id for any new partner.")))
 
-
-def unused_site_setup(site):
-
-    site.modules.countries.Places.set_detail_layout("""
-    name country
-    type parent zip_code id
-    PlacesByPlace
-    contacts.PartnersByCity
-    """)
 
 
 @dd.receiver(dd.pre_analyze)

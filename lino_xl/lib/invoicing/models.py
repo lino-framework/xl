@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -33,6 +33,53 @@ from .actions import (UpdatePlan, ToggleSelection, StartInvoicing,
                       StartInvoicingForJournal,
                       StartInvoicingForPartner, ExecutePlan,
                       ExecuteItem)
+
+
+class SalesRule(dd.Model):
+    class Meta:
+        app_label = 'invoicing'
+        abstract = dd.is_abstract_model(__name__, 'SalesRule')
+        verbose_name = _("Sales rule")
+        verbose_name_plural = _("Sales rules")
+
+    allow_cascaded_delete = 'partner'
+
+    partner = dd.OneToOneField('contacts.Partner', primary_key=True)
+    invoice_recipient = dd.ForeignKey(
+        'contacts.Partner',
+        verbose_name=_("Invoicing address"),
+        related_name='salesrules_by_recipient',
+        blank=True, null=True,
+        help_text=_("Redirect to another partner all invoices which "
+                    "should go to this partner."))
+    paper_type = dd.ForeignKey(
+        'sales.PaperType', null=True, blank=True)
+
+
+
+class SalesRules(dd.Table):
+    model = 'invoicing.SalesRule'
+    required_roles = dd.login_required(LedgerStaff)
+    detail_layout = dd.DetailLayout("""
+    partner
+    invoice_recipient
+    paper_type
+    """, window_size=(40, 'auto'))
+
+class PartnersByInvoiceRecipient(SalesRules):
+    help_text = _("Show partners having this as invoice recipient.")
+    details_of_master_template = _("%(master)s used as invoice recipient")
+    button_text = "♚"  # 265A
+    master_key = 'invoice_recipient'
+    column_names = "partner partner__id partner__address_column *"
+    window_size = (80, 20)
+
+
+dd.inject_action(
+    'contacts.Partner',
+    show_invoice_partners=dd.ShowSlaveTable(
+        PartnersByInvoiceRecipient))
+
 
 
 @dd.python_2_unicode_compatible
@@ -141,6 +188,9 @@ class Plan(UserAuthored):
         collected = dict()
         for obj in self.get_invoiceables_for_plan():
             partner = obj.get_invoiceable_partner()
+            if partner is None:
+                raise Exception("{!r} has no invoice recipient".format(
+                    obj))
             idate = obj.get_invoiceable_date()
             item = collected.get(partner.pk, None)
             if item is None:
