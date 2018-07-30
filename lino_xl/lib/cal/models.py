@@ -858,7 +858,7 @@ ConflictingEventsChecker.activate()
 
 
 class ObsoleteEventTypeChecker(EntryChecker):
-    verbose_name = _("Obsolete event type of generated entries")
+    verbose_name = _("Obsolete generated calendar entries")
 
     def get_checkdata_problems(self, obj, fix=False):
         if not obj.auto_type:
