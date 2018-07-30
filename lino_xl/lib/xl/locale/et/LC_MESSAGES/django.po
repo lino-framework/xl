@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
 "PO-Revision-Date: 2017-04-22 15:48+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: et\n"
@@ -1331,12 +1331,12 @@ msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:122
 #, fuzzy
-msgid "external"
+msgid "External"
 msgstr "Nimetus"
 
-#: lino_xl/lib/cal/choicelists.py:123
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
 #, fuzzy
-msgid "internal"
+msgid "Internal"
 msgstr "Nimetus"
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
@@ -1973,11 +1973,6 @@ msgstr "Täna"
 #: lino_xl/lib/cal/fixtures/std.py:58 lino_xl/lib/meetings/models.py:64
 msgid "Meeting"
 msgstr ""
-
-#: lino_xl/lib/cal/fixtures/std.py:62
-#, fuzzy
-msgid "Internal"
-msgstr "Nimetus"
 
 #: lino_xl/lib/cal/fixtures/std.py:96
 #, fuzzy
@@ -13008,4 +13003,7 @@ msgstr "Administraator"
 
 #~ msgid "Obsolete event type of generated entries"
 #~ msgstr ""
+
+#~ msgid "internal"
+#~ msgstr "Nimetus"
 

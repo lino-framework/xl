@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -1344,12 +1344,12 @@ msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:122
 #, fuzzy
-msgid "external"
+msgid "External"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/cal/choicelists.py:123
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
 #, fuzzy
-msgid "internal"
+msgid "Internal"
 msgstr "Bestätigung"
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
@@ -2006,11 +2006,6 @@ msgstr "als"
 #, fuzzy
 msgid "Meeting"
 msgstr "Omschrijving"
-
-#: lino_xl/lib/cal/fixtures/std.py:62
-#, fuzzy
-msgid "Internal"
-msgstr "Bestätigung"
 
 #: lino_xl/lib/cal/fixtures/std.py:96
 msgid "Easter sunday"
@@ -17998,4 +17993,7 @@ msgstr ""
 
 #~ msgid "Obsolete event type of generated entries"
 #~ msgstr ""
+
+#~ msgid "internal"
+#~ msgstr "Bestätigung"
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino 1.6.14\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
 "PO-Revision-Date: 2014-06-06 11:29+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: es\n"
@@ -1258,11 +1258,11 @@ msgid "Planner column"
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:122
-msgid "external"
+msgid "External"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:123
-msgid "internal"
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
+msgid "Internal"
 msgstr ""
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
@@ -1873,10 +1873,6 @@ msgstr ""
 
 #: lino_xl/lib/cal/fixtures/std.py:58 lino_xl/lib/meetings/models.py:64
 msgid "Meeting"
-msgstr ""
-
-#: lino_xl/lib/cal/fixtures/std.py:62
-msgid "Internal"
 msgstr ""
 
 #: lino_xl/lib/cal/fixtures/std.py:96
@@ -17110,5 +17106,11 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Obsolete event type of generated entries"
+#~ msgstr ""
+
+#~ msgid "external"
+#~ msgstr ""
+
+#~ msgid "internal"
 #~ msgstr ""
 

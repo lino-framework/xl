@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
-"PO-Revision-Date: 2018-07-30 05:51+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
+"PO-Revision-Date: 2018-07-30 07:06+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -1275,11 +1275,11 @@ msgid "Planner column"
 msgstr "Tagesplanerkolonne"
 
 #: lino_xl/lib/cal/choicelists.py:122
-msgid "external"
+msgid "External"
 msgstr "Extern"
 
-#: lino_xl/lib/cal/choicelists.py:123
-msgid "internal"
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
+msgid "Internal"
 msgstr "Intern"
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
@@ -1421,7 +1421,7 @@ msgstr "Endet um"
 
 #: lino_xl/lib/cal/models.py:106
 msgid "Daily planner"
-msgstr ""
+msgstr "Tagesplaner"
 
 #: lino_xl/lib/cal/config/cal/Event/detail.html:11 lino_xl/lib/cal/models.py:110
 #: lino_xl/lib/events/models.py:78 lino_xl/lib/notes/models.py:158
@@ -1898,11 +1898,6 @@ msgstr "Feiertage"
 msgid "Meeting"
 msgstr "Versammlung"
 
-#: lino_xl/lib/cal/fixtures/std.py:62
-#, fuzzy
-msgid "Internal"
-msgstr "DSBE"
-
 #: lino_xl/lib/cal/fixtures/std.py:96
 msgid "Easter sunday"
 msgstr "Ostersonntag"
@@ -1952,18 +1947,16 @@ msgid "Once after 10 days"
 msgstr "Einmal nach 10 Tagen"
 
 #: lino_xl/lib/cal/fixtures/std.py:146
-#, fuzzy
 msgid "AM"
-msgstr "Name"
+msgstr "Vormittags"
 
 #: lino_xl/lib/cal/fixtures/std.py:147
 msgid "PM"
-msgstr ""
+msgstr "Nachmittags"
 
 #: lino_xl/lib/cal/fixtures/std.py:148
-#, fuzzy
 msgid "All day"
-msgstr "ganztags"
+msgstr "Ganztags"
 
 #: lino_xl/lib/cal/workflows/__init__.py:36
 msgid "Task states"
@@ -11793,3 +11786,6 @@ msgstr "Verwalter"
 
 #~ msgid "Client contacts"
 #~ msgstr "Klientenkontakte"
+
+#~ msgid "internal"
+#~ msgstr "Intern"

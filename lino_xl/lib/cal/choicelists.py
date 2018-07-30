@@ -119,5 +119,5 @@ add('30', _('Public'), 'public')
 class PlannerColumns(dd.ChoiceList):
     verbose_name = _("Planner column")
 add = PlannerColumns.add_item
-add('10', _('external'), 'external')
-add('20', _('internal'), 'internal')
+add('10', _('External'), 'external')
+add('20', _('Internal'), 'internal')

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
 "PO-Revision-Date: 2013-06-15 18:57-0300\n"
 "Last-Translator: Flavio Gondin <flvgondin@gmail.com>\n"
 "Language: pt_BR\n"
@@ -1363,12 +1363,12 @@ msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:122
 #, fuzzy
-msgid "external"
+msgid "External"
 msgstr "Confirmação"
 
-#: lino_xl/lib/cal/choicelists.py:123
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
 #, fuzzy
-msgid "internal"
+msgid "Internal"
 msgstr "Confirmação"
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
@@ -2040,11 +2040,6 @@ msgstr "jours"
 #, fuzzy
 msgid "Meeting"
 msgstr "Envoi postal"
-
-#: lino_xl/lib/cal/fixtures/std.py:62
-#, fuzzy
-msgid "Internal"
-msgstr "Confirmação"
 
 #: lino_xl/lib/cal/fixtures/std.py:96
 #, fuzzy
@@ -18491,4 +18486,7 @@ msgstr "Administrador"
 
 #~ msgid "Obsolete event type of generated entries"
 #~ msgstr ""
+
+#~ msgid "internal"
+#~ msgstr "Confirmação"
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
-"PO-Revision-Date: 2018-07-30 05:51+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
+"PO-Revision-Date: 2018-07-30 07:09+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -1305,12 +1305,12 @@ msgid "Planner column"
 msgstr "Colonne planificateur"
 
 #: lino_xl/lib/cal/choicelists.py:122
-msgid "external"
-msgstr "externe"
+msgid "External"
+msgstr "Externe"
 
-#: lino_xl/lib/cal/choicelists.py:123
-msgid "internal"
-msgstr "interne"
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
+msgid "Internal"
+msgstr "Interne"
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
 #: lino_xl/lib/cal/ui.py:360
@@ -1947,11 +1947,6 @@ msgstr "Jours fériés"
 msgid "Meeting"
 msgstr "Réunion"
 
-#: lino_xl/lib/cal/fixtures/std.py:62
-#, fuzzy
-msgid "Internal"
-msgstr "Intégration"
-
 #: lino_xl/lib/cal/fixtures/std.py:96
 msgid "Easter sunday"
 msgstr "Pâques"
@@ -2005,18 +2000,16 @@ msgid "Once after 10 days"
 msgstr ""
 
 #: lino_xl/lib/cal/fixtures/std.py:146
-#, fuzzy
 msgid "AM"
-msgstr "Nom"
+msgstr "Avant-midi"
 
 #: lino_xl/lib/cal/fixtures/std.py:147
 msgid "PM"
-msgstr ""
+msgstr "Après-midi"
 
 #: lino_xl/lib/cal/fixtures/std.py:148
-#, fuzzy
 msgid "All day"
-msgstr "journée entière"
+msgstr "Journée entière"
 
 #: lino_xl/lib/cal/workflows/__init__.py:36
 #, fuzzy
@@ -11933,3 +11926,6 @@ msgstr "Administrateur"
 
 #~ msgid "Obsolete event type of generated entries"
 #~ msgstr "Entrées calendrier avec type obsolète"
+
+#~ msgid "internal"
+#~ msgstr "interne"

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino-xl 17.10.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-07-30 05:50+0300\n"
+"POT-Creation-Date: 2018-07-30 06:52+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1257,11 +1257,11 @@ msgid "Planner column"
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:122
-msgid "external"
+msgid "External"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:123
-msgid "internal"
+#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/fixtures/std.py:62
+msgid "Internal"
 msgstr ""
 
 #: lino_xl/lib/cal/mixins.py:51 lino_xl/lib/cal/ui.py:207
@@ -1872,10 +1872,6 @@ msgstr ""
 
 #: lino_xl/lib/cal/fixtures/std.py:58 lino_xl/lib/meetings/models.py:64
 msgid "Meeting"
-msgstr ""
-
-#: lino_xl/lib/cal/fixtures/std.py:62
-msgid "Internal"
 msgstr ""
 
 #: lino_xl/lib/cal/fixtures/std.py:96

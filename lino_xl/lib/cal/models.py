@@ -168,7 +168,7 @@ class DailyPlanner(DailyPlannerRows):
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
             
         for pc in PlannerColumns.objects():
-            yield w(pc, six.text_type(pc))
+            yield w(pc, pc.text)
 
 
 
