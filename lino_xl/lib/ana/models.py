@@ -169,6 +169,8 @@ class MakeCopy(dd.Action):
                         pv.account = qs[0].account
                     if not pv.ana_account:
                         pv.ana_account = qs[0].ana_account
+            if not pv.account.needs_ana:
+                pv.ana_account = None
             item = new.add_voucher_item(
                 total_incl=pv.total_incl, account=pv.account,
                 ana_account=pv.ana_account)
