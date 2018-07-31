@@ -162,13 +162,17 @@ class MakeCopy(dd.Action):
         new.full_clean()
         new.save()
         if pv.total_incl:
-            if not pv.account or not pv.ana_account:
+            if pv.account:
+                if not pv.ana_account:
+                    pv.ana_account = pv.account.ana_account
+            else:
                 qs = obj.items.all()
                 if qs.count():
-                    if not pv.account:
-                        pv.account = qs[0].account
+                    pv.account = qs[0].account
                     if not pv.ana_account:
                         pv.ana_account = qs[0].ana_account
+            if not pv.account.needs_ana:
+                pv.ana_account = None
             item = new.add_voucher_item(
                 total_incl=pv.total_incl, account=pv.account,
                 ana_account=pv.ana_account)
