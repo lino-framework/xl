@@ -51,7 +51,7 @@ def objects():
             #     continue
             # if not p.vat_regime:
             #     continue
-            va = VatAreas.get_for_country(p.country.isocode)
+            va = VatAreas.get_for_country(p.country)
             if va is None:
                 continue
             rule = VatRules.get_vat_rule(

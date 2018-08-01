@@ -498,7 +498,7 @@ class ProductDocItem(QtyVatItemBase, Bleached):
         rule = self.get_vat_rule(tt)
         if rule is None:
             return
-        va = VatAreas.get_for_country(dd.plugins.countries.country_code)
+        va = VatAreas.get_for_country()
         cat_rule = VatRules.get_vat_rule(
             va, tt, get_default_vat_regime(), self.get_vat_class(tt),
             dd.today())

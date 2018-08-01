@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -129,16 +129,16 @@ def objects():
     
     if dd.is_installed('ana'):
         kwargs.update(needs_ana=True)
-        ANA_ACCS = Cycler(rt.models.ana.Account.objects.all())
+        # ANA_ACCS = Cycler(rt.models.ana.Account.objects.all())
         
-    if dd.is_installed('ana'):
-        kwargs.update(ana_account=ANA_ACCS.pop())
+    # if dd.is_installed('ana'):
+    #     kwargs.update(ana_account=ANA_ACCS.pop())
     yield CommonAccounts.purchase_of_goods.create_object(**kwargs)
-    if dd.is_installed('ana'):
-        kwargs.update(ana_account=ANA_ACCS.pop())
+    # if dd.is_installed('ana'):
+    #     kwargs.update(ana_account=ANA_ACCS.pop())
     yield CommonAccounts.purchase_of_services.create_object(**kwargs)
-    if dd.is_installed('ana'):
-        del kwargs['ana_account']
+    # if dd.is_installed('ana'):
+    #     del kwargs['ana_account']
     yield CommonAccounts.purchase_of_investments.create_object(**kwargs)
 
     yield Group('7', 'incomes', "Produits", "Erträge", "Revenues", "Tulud")

@@ -34,7 +34,7 @@ def objects():
 
     for obj in rt.models.contacts.Partner.objects.filter(
             country__isnull=False):
-        va = VatAreas.get_for_country(obj.country.isocode)
+        va = VatAreas.get_for_country(obj.country)
         regs = va2regimes.get(va)
         obj.vat_regime = regs.pop()
         yield obj

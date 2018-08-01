@@ -76,7 +76,7 @@ class PartnerRelated(dd.Model):
         return self.partner
     recipient = property(get_recipient)
 
-    def partner_changed(self, ar):
+    def partner_changed(self, ar=None):
         # does nothing but we need it so that subclasses like
         # BankAccount can call super().partner_changed()
         pass

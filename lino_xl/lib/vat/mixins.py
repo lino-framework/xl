@@ -223,7 +223,9 @@ class VatDocument(ProjectRelated, VatTotal):
         if new.name == 'registered':
             self.compute_totals()
         elif new.name == 'draft':
-            pass
+            self.total_base = None
+            self.total_vat = None
+            self.total_incl = None
         super(VatDocument, self).before_state_change(ar, old, new)
 
 
@@ -260,7 +262,7 @@ class VatItemBase(VoucherItem, VatTotal):
         # country = self.voucher.partner.country or \
         #           dd.plugins.countries.get_my_country()
         vat_area = VatAreas.get_for_country(
-            self.voucher.partner.country.isocode)
+            self.voucher.partner.country)
         return VatRules.get_vat_rule(
             vat_area,
             trade_type=tt,

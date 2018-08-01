@@ -180,7 +180,7 @@ class MakeCopy(dd.Action):
             item.full_clean()
             item.save()
         else:
-            for olditem in obj.items.all():
+            for olditem in obj.items.order_by('seqno'):
                 # ikw = dict()
                 # for k in self.copy_item_fields:
                 #     ikw[k] = getattr(olditem, k)
@@ -226,6 +226,15 @@ class InvoiceItem(AccountVoucherItem, VatItemBase):
 
     def get_ana_account(self):
         return self.ana_account
+
+    def account_changed(self, ar=None):
+        if self.account_id:
+            if self.account.needs_ana:
+                self.ana_account = self.account.ana_account
+            else:
+                self.ana_account = None
+            
+    
 
 
 class InvoiceDetail(dd.DetailLayout):
