@@ -444,10 +444,28 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         return dd.babelattr(self.journal, 'printed_name')
 
     def get_partner(self):
-        """Raturn the partner related to this voucher. Overridden by
-        PartnerRelated vouchers."""
+        """
+        Return the partner related to this voucher. Overridden by
+        PartnerRelated vouchers.
+        """
         return None
 
+    def after_ui_save(self, ar, cw):
+        super(Voucher, self).after_ui_save(ar, cw)
+        p = self.get_partner()
+        if p is None:
+            return
+        tt = self.get_trade_type()
+        account = tt.get_partner_invoice_account(p)
+        if account is None:
+            return
+        if self.items.exists():
+            return
+        i = self.add_voucher_item(account=account)
+        i.full_clean()
+        i.save()
+
+        
     @classmethod
     def get_journals(cls):
         vt = VoucherTypes.get_for_model(cls)
