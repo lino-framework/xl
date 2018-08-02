@@ -184,6 +184,24 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
         return rt.models.accounts.Account.objects.none()
 
 
+def set_partner_invoice_account(sender, instance=None, **kwargs):
+    if instance.account:
+        return
+    if not instance.voucher:
+        return
+    p = instance.voucher.partner
+    if not p:
+        return
+    tt = instance.voucher.get_trade_type()
+    instance.account = tt.get_partner_invoice_account(p)
+
+@dd.receiver(dd.post_analyze)
+def on_post_analyze(sender, **kw):
+    for m in rt.models_by_base(AccountVoucherItem):
+        dd.post_init.connect(set_partner_invoice_account, sender=m)
+    
+
+
 def JournalRef(**kw):
     # ~ kw.update(blank=True,null=True) # Django Ticket #12708
     kw.update(related_name="%(app_label)s_%(class)s_set_by_journal")
