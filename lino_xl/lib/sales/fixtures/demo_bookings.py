@@ -49,7 +49,7 @@ def objects():
             if VatRules.get_vat_rule(va, tt, default=False):
                 areas.add(va)
         for obj in Country.objects.all():
-            if VatAreas.get_for_country(obj.isocode) in areas:
+            if VatAreas.get_for_country(obj) in areas:
                 yield obj
 
     USERS = Cycler(settings.SITE.user_model.objects.all())

@@ -484,6 +484,16 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.ana.MakeCopy.entry_date' : _("""The entry date of the invoice to create."""),
+    'lino_xl.lib.ana.MakeCopy.partner' : _("""The partner of the invoice to create."""),
+    'lino_xl.lib.ana.MakeCopy.subject' : _("""The subject of the invoice to create."""),
+    'lino_xl.lib.ana.MakeCopy.your_ref' : _("""The "your reference" of the invoice to create."""),
+    'lino_xl.lib.ana.MakeCopy.total_incl' : _("""The total amount of the invoice to create.  Leave blank if you
+want to copy all rows."""),
+    'lino_xl.lib.ana.MakeCopy.account' : _("""The general account to use for the item of the invoice if you
+specified a total amount."""),
+    'lino_xl.lib.ana.MakeCopy.ana_account' : _("""The analytical account to use for the item of the invoice if
+you specified a total amount."""),
     'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
 Currently only Belgian eid cards are tested.
 Concrete subclasses must also inherit from lino.mixins.Born."""),

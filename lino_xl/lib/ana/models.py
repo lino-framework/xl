@@ -114,7 +114,7 @@ class MakeCopy(dd.Action):
     label = _("Make copy")
     show_in_workflow = True
     show_in_bbar = False
-    copy_item_fields = set('account ana_account total_incl'.split())
+    copy_item_fields = set('account ana_account total_incl seqno'.split())
     
     parameters = dict(
         partner=dd.ForeignKey('contacts.Partner'),
@@ -147,6 +147,8 @@ class MakeCopy(dd.Action):
         return kw
 
     def run_from_ui(self, ar, **kw):
+      # raise Warning("20180802")
+
         VoucherStates = rt.models.ledger.VoucherStates
         obj = ar.selected_rows[0]
         pv = ar.action_param_values
@@ -162,6 +164,9 @@ class MakeCopy(dd.Action):
         new.full_clean()
         new.save()
         if pv.total_incl:
+            if not pv.account:
+                tt = obj.journal.trade_type
+                pv.account = tt.get_partner_invoice_account(pv.partner)
             if pv.account:
                 if not pv.ana_account:
                     pv.ana_account = pv.account.ana_account
@@ -175,6 +180,7 @@ class MakeCopy(dd.Action):
                 pv.ana_account = None
             item = new.add_voucher_item(
                 total_incl=pv.total_incl, account=pv.account,
+                seqno=1,
                 ana_account=pv.ana_account)
             item.total_incl_changed(ar)
             item.full_clean()
@@ -197,6 +203,7 @@ class MakeCopy(dd.Action):
         new.save()
         ar.goto_instance(new)
         ar.success()
+        
 
 
 class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
@@ -217,15 +224,27 @@ class InvoiceItem(AccountVoucherItem, VatItemBase):
     title = models.CharField(_("Description"), max_length=200, blank=True)
 
     def full_clean(self, *args, **kwargs):
-        if self.account_id and self.account.needs_ana:
-            if not self.ana_account:
-                self.ana_account = self.account.ana_account
-                if not self.ana_account:
-                    raise ValidationError("No analytic account")
         super(InvoiceItem, self).full_clean(*args, **kwargs)
+        if self.account_id and self.account.needs_ana:
+            if not self.ana_account_id:
+                if self.account.ana_account_id:
+                    self.ana_account = self.account.ana_account
 
     def get_ana_account(self):
         return self.ana_account
+
+    def account_changed(self, ar=None):
+        if self.account_id:
+            if self.account.needs_ana:
+                # if the general account an analytic one but has no
+                # default value (needs_ana is checked but ana_account
+                # empty), leave the current one.
+                if self.account.ana_account:
+                    self.ana_account = self.account.ana_account
+            else:
+                self.ana_account = None
+            
+    
 
 
 class InvoiceDetail(dd.DetailLayout):

@@ -34,7 +34,11 @@ class VatAreas(dd.ChoiceList):
     EU_COUNTRY_CODES = set("BE FR DE NL LU EE DK NO SE IT".split())
     
     @classmethod
-    def get_for_country(cls, isocode):
+    def get_for_country(cls, country=None):
+        if country is None:
+            isocode = dd.plugins.countries.country_code
+        else:
+            isocode = country.isocode
         if isocode == dd.plugins.countries.country_code:
             return cls.national
         if isocode in cls.EU_COUNTRY_CODES:

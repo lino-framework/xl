@@ -1,9 +1,15 @@
+# -*- coding: UTF-8 -*-
+# Copyright 2016-2018 Rumma & Ko Ltd
+# License: BSD (see file COPYING for details)
+
 from lino.api import rt, _
 from lino.utils.mldbc import babeld
+from lino.utils import Cycler
 
 def objects():
     Account = rt.models.ana.Account
     Group = rt.models.ana.Group
+    GenAccount = rt.models.accounts.Account
     
     def x(ref, name):
         if len(ref) == 4:
@@ -45,3 +51,12 @@ def objects():
     yield x("5100", _("Wages"))
     yield x("5200", _("Transport"))
     yield x("5300", _("Other costs"))
+
+    ANA_ACCS = Cycler(Account.objects.all())
+    
+    qs = GenAccount.objects.filter(needs_ana=True).order_by('ref')
+    for i, ga in enumerate(qs):
+        if (i+1) % 3:
+            ga.ana_account = ANA_ACCS.pop()
+            ga.full_clean()
+            ga.save()

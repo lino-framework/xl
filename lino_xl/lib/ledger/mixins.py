@@ -76,7 +76,7 @@ class PartnerRelated(dd.Model):
         return self.partner
     recipient = property(get_recipient)
 
-    def partner_changed(self, ar):
+    def partner_changed(self, ar=None):
         # does nothing but we need it so that subclasses like
         # BankAccount can call super().partner_changed()
         pass
@@ -182,6 +182,24 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
         if voucher and voucher.journal:
             return voucher.journal.get_allowed_accounts()
         return rt.models.accounts.Account.objects.none()
+
+
+def set_partner_invoice_account(sender, instance=None, **kwargs):
+    if instance.account:
+        return
+    if not instance.voucher:
+        return
+    p = instance.voucher.partner
+    if not p:
+        return
+    tt = instance.voucher.get_trade_type()
+    instance.account = tt.get_partner_invoice_account(p)
+
+@dd.receiver(dd.post_analyze)
+def on_post_analyze(sender, **kw):
+    for m in rt.models_by_base(AccountVoucherItem):
+        dd.post_init.connect(set_partner_invoice_account, sender=m)
+    
 
 
 def JournalRef(**kw):
