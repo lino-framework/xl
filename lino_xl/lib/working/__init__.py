@@ -55,7 +55,7 @@ class Plugin(ad.Plugin):
         m.add_action('working.MySessions')
         m.add_action('working.ServiceReports')
         # m.add_action('working.MySessionsByDate')
-        # m.add_action('working.WorkedHours')
+        m.add_action('working.WorkedHours')
 
     def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()

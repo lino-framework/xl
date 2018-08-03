@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import six
@@ -324,8 +324,10 @@ MySessionsByDate.column_names = (
 from lino.core.tables import VentilatedColumns
 
 class WorkedHours(dd.VentilatingTable):
-    """A table showing one row per day with a summary view of the sesions
-    on that day."""
+    """
+    A table showing one row per day with a summary view of the sesions
+    on that day.
+    """
     required_roles = dd.login_required(Worker)
     label = _("Worked hours")
     hide_zero_rows = True
@@ -566,46 +568,46 @@ class SitesByReport(Sites, DurationReport):
                 yield obj
 
 
-class ProjectsByReport(Projects, DurationReport):
-    """The list of projects mentioned in a service report.
+# class ProjectsByReport(Projects, DurationReport):
+#     """The list of projects mentioned in a service report.
     
-    """
-    master = 'working.ServiceReport'
-    column_names_template = "ref name active_tickets {vcolumns}"
-    order_by = ['ref']
+#     """
+#     master = 'working.ServiceReport'
+#     column_names_template = "ref name active_tickets {vcolumns}"
+#     order_by = ['ref']
 
-    @classmethod
-    def get_request_queryset(self, ar):
+#     @classmethod
+#     def get_request_queryset(self, ar):
 
-        mi = ar.master_instance
-        if mi is None:
-            return
+#         mi = ar.master_instance
+#         if mi is None:
+#             return
         
-        pv = ar.param_values
-        pv.update(start_date=mi.start_date, end_date=mi.end_date)
-        pv.update(interesting_for=mi.interesting_for)
+#         pv = ar.param_values
+#         pv.update(start_date=mi.start_date, end_date=mi.end_date)
+#         pv.update(interesting_for=mi.interesting_for)
        
-        spv = dict(start_date=mi.start_date, end_date=mi.end_date)
-        spv.update(observed_event=dd.PeriodEvents.started)
-        spv.update(user=mi.user)
+#         spv = dict(start_date=mi.start_date, end_date=mi.end_date)
+#         spv.update(observed_event=dd.PeriodEvents.started)
+#         spv.update(user=mi.user)
         
-        qs = super(ProjectsByReport, self).get_request_queryset(ar)
-        for obj in qs:
-            # spv.update(project=obj)
-            sar = Sessions.request(
-                param_values=spv,
-                filter=Q(ticket__project=obj))
-            load_sessions(obj, sar)
-            if obj._root2tot.get(TOTAL_KEY):
-                yield obj
+#         qs = super(ProjectsByReport, self).get_request_queryset(ar)
+#         for obj in qs:
+#             # spv.update(project=obj)
+#             sar = Sessions.request(
+#                 param_values=spv,
+#                 filter=Q(ticket__project=obj))
+#             load_sessions(obj, sar)
+#             if obj._root2tot.get(TOTAL_KEY):
+#                 yield obj
             
-    @dd.displayfield(_("Tickets"))
-    def active_tickets(cls, obj, ar):
-        lst = []
-        for ticket in obj._tickets:
-            lst.append(ar.obj2html(
-                ticket, text="#%d" % ticket.id, title=six.text_type(ticket)))
-        return E.p(*join_elems(lst, ', '))
+#     @dd.displayfield(_("Tickets"))
+#     def active_tickets(cls, obj, ar):
+#         lst = []
+#         for ticket in obj._tickets:
+#             lst.append(ar.obj2html(
+#                 ticket, text="#%d" % ticket.id, title=six.text_type(ticket)))
+#         return E.p(*join_elems(lst, ', '))
 
 
 

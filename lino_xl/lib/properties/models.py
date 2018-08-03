@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -30,7 +30,7 @@ from lino.core.roles import SiteStaff
 from lino.api import dd, rt
 from lino import mixins
 
-from lino.core.choicelists import get_choicelist, choicelist_choices
+from lino.core.kernel import get_choicelist, choicelist_choices
 
 MULTIPLE_VALUES_SEP = ','
 
