@@ -16,7 +16,7 @@ from .roles import SkillsStaff
 
 class SkillTypes(dd.Table):
     required_roles = dd.login_required(dd.SiteStaff)
-    model = 'faculties.SkillType'
+    model = 'skills.SkillType'
     stay_in_grid = True
     detail_layout = """
     id name
@@ -28,7 +28,7 @@ class SkillTypes(dd.Table):
     """
 
 class Skills(dd.Table):
-    model = 'faculties.Faculty'
+    model = 'skills.Skill'
     # order_by = ["ref", "name"]
     stay_in_grid = True
     detail_layout = """
@@ -72,7 +72,7 @@ class SkillsByType(Skills):
     master_key = 'skill_type' 
 
 class Offers(dd.Table):
-    model = 'faculties.Competence'
+    model = 'skills.Competence'
     required_roles = dd.login_required(dd.SiteStaff)
     # required_roles = dd.login_required(SocialStaff)
     column_names = 'id user faculty description affinity *'
@@ -106,7 +106,7 @@ class MyOffers(My, Offers):
 
 
 class Demands(dd.Table):
-    model = 'faculties.Demand'
+    model = 'skills.Demand'
     required_roles = dd.login_required(dd.SiteStaff)
     # required_roles = dd.login_required(SocialStaff)
     column_names = 'id demander skill importance *'
@@ -174,7 +174,7 @@ class DemandsByDemander(Demands):
 
 class OffersByDemander(Offers):
     required_roles = dd.login_required()
-    master = dd.plugins.faculties.demander_model
+    master = dd.plugins.skills.demander_model
     column_names = '*'
     order_by = ["affinity"]
     display_mode = 'summary'
@@ -182,8 +182,8 @@ class OffersByDemander(Offers):
 
     @classmethod
     def get_request_queryset(self, ar):
-        Offer = rt.models.faculties.Competence
-        Demand = rt.models.faculties.Demand
+        Offer = rt.models.skills.Competence
+        Demand = rt.models.skills.Demand
         ticket = ar.master_instance
         if ticket is None:
             return Offer.objects.none()
@@ -216,9 +216,9 @@ class OffersByDemander(Offers):
 class AssignableWorkersByTicket(Users):
     # model = 'users.User'
     use_as_default_table = False
-    # model = 'faculties.Competence'
-    master = dd.plugins.faculties.demander_model  # 'tickets.Ticket'
-    column_names = 'username #faculties_competence_set_by_user__affinity *'
+    # model = 'skills.Competence'
+    master = dd.plugins.skills.demander_model  # 'tickets.Ticket'
+    column_names = 'username #skills_competence_set_by_user__affinity *'
     label = _("Assignable workers")
     # required_roles = dd.login_required(Triager)
 
@@ -228,7 +228,7 @@ class AssignableWorkersByTicket(Users):
         if ticket is None:
             return rt.models.users.User.objects.none()
 
-        # rt.models.faculties.Competence.objects.filter(
+        # rt.models.skills.Competence.objects.filter(
         #     faculty=ticket.faculty)
         qs = rt.models.users.User.objects.all()
         # qs = super(
@@ -237,15 +237,15 @@ class AssignableWorkersByTicket(Users):
         topic = ticket.get_topic()
         if topic:
             qs = qs.filter(
-                faculties_competence_set_by_user__topic=topic)
+                skills_competence_set_by_user__topic=topic)
         cond = models.Q()
-        for dem in rt.models.faculties.Demand.objects.filter(
+        for dem in rt.models.skills.Demand.objects.filter(
                 demander=ticket):
-            faculties = dem.skill.get_parental_line()
+            skills = dem.skill.get_parental_line()
             cond |= models.Q(
-                faculties_competence_set_by_user__faculty__in=faculties)
+                skills_competence_set_by_user__faculty__in=skills)
         qs = qs.filter(cond)
-        qs = qs.order_by('faculties_competence_set_by_user__affinity')
+        qs = qs.order_by('skills_competence_set_by_user__affinity')
         return qs
 
 
@@ -260,7 +260,7 @@ if dd.is_installed('tickets'):
         which I am competent.
 
         """
-        master = dd.plugins.faculties.end_user_model
+        master = dd.plugins.skills.end_user_model
         label = _("Where I can help")
         required_roles = dd.login_required(Reporter)
         column_names = 'overview:50 needed_skills ' \

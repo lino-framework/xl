@@ -1,19 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015 Luc Saffre
-#
+# Copyright 2015-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""Choicelists for :mod:`lino_xl.lib.notes`.
-
-.. autosummary::
-
-"""
 
 from lino.api import dd, rt, _
 
 
 class SpecialType(dd.Choice):
-    """Represents a special note type."""
 
     def get_notes(self, **kw):
         """Return a queryset with the uploads of this shortcut."""
@@ -22,10 +14,6 @@ class SpecialType(dd.Choice):
 
 
 class SpecialTypes(dd.ChoiceList):
-    """The list of special note types which have been declared on this
-    Site.
-
-    """
     verbose_name = _("Special note type")
     verbose_name_plural = _("Special note types")
     item_class = SpecialType

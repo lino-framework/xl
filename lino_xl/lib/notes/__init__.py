@@ -1,16 +1,13 @@
-# Copyright 2013-2017 Luc Saffre
-#
+# Copyright 2013-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 """
-Adds a multipurpose model "Note"
+Adds a multipurpose concept of "Note". See :doc:`/specs/notes`.
 
 .. autosummary::
    :toctree:
 
-   choicelists
-   models
    fixtures.demo
    fixtures.std
 

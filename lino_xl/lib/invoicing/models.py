@@ -2,10 +2,6 @@
 # Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Database models for `lino_xl.lib.invoicing`.
-
-"""
 
 from __future__ import unicode_literals
 from builtins import str
@@ -84,28 +80,6 @@ dd.inject_action(
 
 @dd.python_2_unicode_compatible
 class Plan(UserAuthored):
-    """An **invoicing plan** is a rather temporary database object which
-    represents the plan of a given user to have Lino generate a series
-    of invoices.
-
-    .. attribute:: user
-    .. attribute:: journal
-
-        The journal where to create invoices.  When this field is
-        empty, you can fill the plan with suggestions but cannot
-        execute the plan.
-
-    .. attribute:: max_date
-    .. attribute:: today
-    .. attribute:: partner
-
-    .. attribute:: update_plan
-    .. attribute:: execute_plan
-
-        Execute this plan, i.e. create an invoice for each selected
-        suggestion.
-
-    """
     class Meta:
         app_label = 'invoicing'
         abstract = dd.is_abstract_model(__name__, 'Plan')
@@ -143,17 +117,6 @@ class Plan(UserAuthored):
 
     @classmethod
     def start_plan(cls, user, **options):
-        """Start an invoicing plan for the given `user` on the database object
-        defined by `k` and `v`. Where `k` is the name of the field
-        used to select the plan (e.g. `'partner'` or `'journal'`) and
-        `v` is the value for that field.
-
-        This will either create a new plan, or check whether the
-        currently existing plan for this user was for the same
-        database object. If it was for another object, then clear all
-        items.
-
-        """
         try:
             plan = cls.objects.get(user=user)
             changed = False
@@ -173,17 +136,6 @@ class Plan(UserAuthored):
         return plan
 
     def fill_plan(self, ar):
-        """Add items to this plan, one for each invoice to generate.
-
-        This also groups the invoiceables by their invoiceable
-        partner.
-
-        Note a case we had (20171007) : One enrolment for Alfons whose
-        invoice_recipient points to Erna, a second enrolment for Erna
-        directly. The first enrolment returned Erna as Partner, the
-        second returned Erna as Pupil, so they were not grouped.
-
-        """
         Item = rt.models.invoicing.Item
         collected = dict()
         for obj in self.get_invoiceables_for_plan():
@@ -247,32 +199,6 @@ class Plan(UserAuthored):
 
 @dd.python_2_unicode_compatible
 class Item(dd.Model):
-    """The items of an invoicing plan are called **suggestions**.
-
-    .. attribute:: plan
-    .. attribute:: partner
-    .. attribute:: preview
-    
-        A textual preview of the invoiceable items to be included in
-        the invoice.
-
-
-    .. attribute:: amount
-    .. attribute:: invoice
-
-        The invoice that has been generated. This field is empty for
-        new items. When an item has been executed, this field points
-        to the generated invoice.
-
-    .. attribute:: workflow_buttons
-
-    The following fields are maybe not important:
-
-    .. attribute:: first_date
-    .. attribute:: last_date
-    .. attribute:: number_of_invoiceables
-
-    """
     class Meta:
         app_label = 'invoicing'
         abstract = dd.is_abstract_model(__name__, 'Item')
@@ -296,8 +222,6 @@ class Item(dd.Model):
     exec_item = ExecuteItem()
 
     def create_invoice(self,  ar):
-        """Create the invoice corresponding to this item of the plan.
-        """
         if self.plan.journal is None:
             raise Warning(_("No journal specified"))
         ITEM_MODEL = dd.resolve_model(dd.plugins.invoicing.item_model)
