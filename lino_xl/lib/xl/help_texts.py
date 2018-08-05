@@ -743,6 +743,8 @@ example, if you enter "087/12.34.56" as a phone number, then a
 search for phone number containing "1234" will not find it."""),
     'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.Partner.purchase_account' : _("""The general account to suggest as default value in purchase
+invoices from this partner."""),
     'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
     'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
 See also lino.tutorial.human."""),
@@ -1043,15 +1045,22 @@ paid some invoice for you, and later you pay that money back
 to his account."""),
     'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
     'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
+    'lino_xl.lib.ledger.TradeType.partner_account' : _("""The common account that points to the partner account for this
+trade type, i.e.  the account into which the total amount of
+partner vouchers (base + VAT) and their payments should be
+booked."""),
+    'lino_xl.lib.ledger.TradeType.base_account' : _("""The common account that points to the base account for this
+trade type, i.e.  the account into which the base amount of
+any operation should be booked."""),
+    'lino_xl.lib.ledger.TradeType.product_base_field' : _("""The name and label of the base account field to be
+injected on the Product database model."""),
     'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
 Product
 database model."""),
-    'lino_xl.lib.ledger.TradeType.partner_account_field' : _("""The name and label of the Partner account field to
-be defined for this trade type on the SiteConfig database model."""),
-    'lino_xl.lib.ledger.TradeType.base_account_field' : _("""The name and label of the Base account field to
-be defined for this trade type on the SiteConfig database model."""),
     'lino_xl.lib.ledger.TradeType.vat_account_field' : _("""The name and label of the VAT account field to be
 defined for this trade type on the SiteConfig database model."""),
+    'lino_xl.lib.ledger.TradeType.invoice_account_field' : _("""The name and label of the invoice account field to
+be injected on the Partner database model."""),
     'lino_xl.lib.ledger.SequencedVoucherItem' : _("""A VoucherItem which also inherits from
 lino.mixins.sequenced.Sequenced."""),
     'lino_xl.lib.ledger.AccountVoucherItem' : _("""Abstract base class for voucher items which point to an account."""),

@@ -367,6 +367,15 @@ class TimLoader(TimLoader):
             # dblogger.info("20131116 ACCOUNT %s ",obj)
             yield obj
 
+    def get_account(self, idgen):
+        idgen = idgen.strip()
+        if not idgen:
+            return None
+        try:
+            return accounts.Account.objects.get(ref=idgen)
+        except accounts.Account.DoesNotExist:
+            return None
+        
     def load_fin(self, row, **kw):
         jnl, year, number = row2jnl(row)
         if jnl is None:
@@ -641,6 +650,9 @@ class TimLoader(TimLoader):
 
         if 'idreg' in row:
             self.store(kw, vat_regime=vat_regime(row.idreg.strip()))
+            
+        if 'idgen' in row:
+            self.store(kw, purchase_account=self.get_account(row.idgen))
             
         if issubclass(cl, Company):
             # cl = Company

@@ -160,26 +160,13 @@ class TradeType(dd.Choice):
     dc = DEBIT
 
     def get_base_account(self):
-        """
-        Return the account into which the base amount of any operation
-        should be booked.
-        """
         return self.base_account.get_object()
 
     def get_partner_account(self):
-        """
-        Return the account into which the total amount of partner vouchers
-        (base + VAT) and their payment should be booked.
-        """
         if self.partner_account:
             return self.partner_account.get_object()
 
     def get_product_base_account(self, product):
-        """Return the account
-        into which the **base amount** of any operation should be
-        booked.
-
-        """
         if self.base_account_field_name is None:
             return self.base_account.get_object()
             # raise Exception("%s has no base_account_field_name" % self)
@@ -187,19 +174,11 @@ class TradeType(dd.Choice):
             self.base_account.get_object()
 
     def get_partner_invoice_account(self, partner):
-        """
-        Return the account to use as default value for account invoice
-        items.
-        """
         if self.invoice_account_field_name is None:
             return None
         return getattr(partner, self.invoice_account_field_name, None)
 
     def get_catalog_price(self, product):
-        """
-        Return the catalog price of the given product for operations with
-        this trade type.
-        """
         return getattr(product, self.price_field_name)
 
     def get_allowed_accounts(self, **kw):
@@ -212,7 +191,7 @@ class TradeTypes(dd.ChoiceList):
     verbose_name = _("Trade type")
     verbose_name_plural = _("Trade types")
     item_class = TradeType
-    help_text = _("The type of trade: usually either `sales` or `purchases`.")
+    help_text = _("The type of trade, e.g. 'sales' or 'purchases' or 'wages'.")
 
 TradeTypes.add_item(
     'S', _("Sales"), 'sales', dc=CREDIT,
@@ -222,8 +201,8 @@ TradeTypes.add_item(
     'P', _("Purchases"), 'purchases', dc=DEBIT,
     base_account=CommonAccounts.purchase_of_goods,
     partner_account=CommonAccounts.suppliers,
-    invoice_account_field_name='invoice_account',
-    invoice_account_field_label=_("Purchase invoice account")
+    invoice_account_field_name='purchase_account',
+    invoice_account_field_label=_("Purchase account")
 )
 TradeTypes.add_item(
     'W', _("Wages"), 'wages', dc=DEBIT,
