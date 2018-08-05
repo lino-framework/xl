@@ -249,6 +249,12 @@ class TimLoader(TimLoader):
                 if idpar2 is not None:
                     self.obsolete_list.append((partner, idpar2))
 
+            ga = self.get_account(row.idgen)
+            if ga is not None:
+                partner.purchase_account = ga
+            
+                    
+
         if issubclass(cl, Person):
             v = row.gebdat
             if isinstance(v, basestring):
