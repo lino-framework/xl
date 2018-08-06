@@ -60,7 +60,7 @@ class Session(UserAuthored, Started, Ended, Workable):
     #     verbose_name=_("Break Time"))
     break_time = dd.DurationField(_("Break Time"), blank=True, null=True)
     faculty = dd.ForeignKey(
-        'faculties.Faculty', related_name="sessions_by_faculty",
+        'skills.Skill', related_name="sessions_by_faculty",
         blank=True, null=True)
 
     reporting_type = ReportingTypes.field(blank=True)

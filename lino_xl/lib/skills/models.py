@@ -2,7 +2,7 @@
 # Copyright 2011-2017 Luc Saffre
 # License: BSD (see file COPYING for details)
 
-"""Database models for :mod:`lino_xl.lib.faculties`.
+"""Database models for :mod:`lino_xl.lib.skills`.
 
 """
 
@@ -29,8 +29,8 @@ class SkillType(BabelNamed):
         ordering = ['name']
 
 
-# class Faculty(BabelNamed, Hierarchical, Sequenced, Referrable):
-class Faculty(BabelNamed, Hierarchical, Sequenced):
+# class Skill(BabelNamed, Hierarchical, Sequenced, Referrable):
+class Skill(BabelNamed, Hierarchical, Sequenced):
     """A **skill** is a knowledge or ability which can be
     required in order to work e.g. on some ticket, and which
     individual users can have (offer) or not.
@@ -50,7 +50,7 @@ class Faculty(BabelNamed, Hierarchical, Sequenced):
             "A number between -{0} and +{0}.").format(MAX_WEIGHT))
 
     skill_type = dd.ForeignKey(
-        'faculties.SkillType', null=True, blank=True)
+        'skills.SkillType', null=True, blank=True)
 
     remarks = dd.RichTextField(_("Remarks"), blank=True)
     
@@ -61,7 +61,7 @@ class Faculty(BabelNamed, Hierarchical, Sequenced):
     #                 "specifying additional options."))
 
 
-dd.update_field(Faculty, 'parent', verbose_name=_("Parent skill"))
+dd.update_field(Skill, 'parent', verbose_name=_("Parent skill"))
 
 
 class Competence(UserAuthored, Sequenced):
@@ -82,13 +82,13 @@ class Competence(UserAuthored, Sequenced):
         verbose_name_plural = _("Skill offers")
         unique_together = ['end_user', 'faculty']
 
-    faculty = dd.ForeignKey('faculties.Faculty')
+    faculty = dd.ForeignKey('skills.Skill')
     end_user = dd.ForeignKey(
-        dd.plugins.faculties.end_user_model,
+        dd.plugins.skills.end_user_model,
         verbose_name=_("End user"),
         blank=True, null=True)
     # supplier = dd.ForeignKey(
-    #     dd.plugins.faculties.supplier_model,
+    #     dd.plugins.skills.supplier_model,
     #     verbose_name=_("Supplier"),
     #     blank=True, null=True)
     affinity = models.IntegerField(
@@ -102,7 +102,7 @@ class Competence(UserAuthored, Sequenced):
     # topic = dd.ForeignKey(
     #     'topics.Topic', blank=True, null=True,
     #     verbose_name=_("Option"),
-    #     help_text=_("Some faculties can require additional "
+    #     help_text=_("Some skills can require additional "
     #                 "options for a competence."))
 
     # @dd.chooser()
@@ -151,9 +151,9 @@ class Demand(dd.Model):
         # unique_together = ['user', 'faculty', 'topic']
         unique_together = ['demander', 'skill']
 
-    skill = dd.ForeignKey('faculties.Faculty')
+    skill = dd.ForeignKey('skills.Skill')
     demander = dd.ForeignKey(
-        dd.plugins.faculties.demander_model,
+        dd.plugins.skills.demander_model,
         verbose_name=_("Demander"),
         blank=True, null=True)
     importance = models.IntegerField(
@@ -164,6 +164,6 @@ class Demand(dd.Model):
 # if dd.is_installed('tickets'):
 #     dd.inject_field(
 #         'tickets.Ticket', 'faculty',
-#         dd.ForeignKey("faculties.Faculty", blank=True, null=True))
+#         dd.ForeignKey("skills.Skill", blank=True, null=True))
 
 

@@ -21,7 +21,7 @@ from lino.utils import join_words
 from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
-from lino_xl.lib.faculties.mixins import Feasible
+from lino_xl.lib.skills.mixins import Feasible
 from lino.modlib.printing.mixins import Printable
 # from lino_xl.lib.excerpts.mixins import Certifiable
 #from lino_xl.lib.googleapi_people.models import GooglePeople

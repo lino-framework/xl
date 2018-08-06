@@ -112,6 +112,8 @@ class VerifyUser(dd.Action):
 class User(User, Person):
 
     """
+    Adds the following database fields to the User model.
+
     .. attribute:: callme_mode
 
         Whether other users can see my contact data.

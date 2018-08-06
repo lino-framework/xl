@@ -188,7 +188,7 @@ lino_xl.lib.deploy
 lino_xl.lib.deploy.fixtures
 lino_xl.lib.tickets
 lino_xl.lib.tickets.fixtures
-lino_xl.lib.faculties
+lino_xl.lib.skills
 lino_xl.lib.working
 lino_xl.lib.working.fixtures
 lino_xl.lib.online

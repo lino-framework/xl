@@ -30,7 +30,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.users.mixins import UserAuthored, Assignable
 from lino.modlib.comments.mixins import Commentable
 from lino_xl.lib.excerpts.mixins import Certifiable
-from lino_xl.lib.faculties.mixins import Feasible
+from lino_xl.lib.skills.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.working.mixins import Workable
@@ -456,7 +456,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     project = dd.ForeignKey(
         'tickets.Project', blank=True, null=True,
         related_name="tickets_by_project")
-    site = dd.ForeignKey(site_model, blank=True, null=True)
+    site = dd.ForeignKey(site_model, blank=True, null=True,
+                         related_name="tickets_by_site")
     topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
     summary = models.CharField(
@@ -544,11 +545,11 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             self.duplicate_of = None
         # print "20150523b on_create", self.reporter
         super(Ticket, self).full_clean()
-        if self.project:
-            # if not self.assigned_to and self.project.assign_to:
-            #     self.assigned_to = self.project.assign_to
-            if not self.project.private:
-                self.private = False
+        # if self.project:
+        #     # if not self.assigned_to and self.project.assign_to:
+        #     #     self.assigned_to = self.project.assign_to
+        #     if not self.project.private:
+        #         self.private = False
 
     def get_change_owner(self):
         return self.site

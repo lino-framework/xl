@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Adds the notions of "skills", including offers and demands thereof.
 
@@ -16,17 +16,6 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    """.. attribute:: demander_model
-
-        The model of objects to be used as :attr:`demander
-        <lino_xl.lib.faculties.models.Demand.demander>` of skill
-        demands. 
-
-        In :ref:`noi` this points to :class:`Ticket
-        <lino_xl.lib.tickets.models.Ticket>`.
-
-
-    """
 
     verbose_name = _("Skills")
 
@@ -38,6 +27,11 @@ class Plugin(ad.Plugin):
 
     # demander_model = 'tickets.Ticket'
     demander_model = 'contacts.Person'
+    """
+    The model of objects to be used as :attr:`demander
+    <lino_xl.lib.skills.Demand.demander>` of skill
+    demands. 
+    """
     # demander_model = 'contacts.Partner'
     # demander_model = 'comments.Comment'
     # supplier_model = 'contacts.Person'
@@ -61,29 +55,29 @@ class Plugin(ad.Plugin):
         mg = self.get_menu_group()
         # mg = site.plugins.tickets
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        # m.add_action('faculties.Faculties')
-        # m.add_action('faculties.Competences')
-        m.add_action('faculties.MyOffers')
+        # m.add_action('skills.Skills')
+        # m.add_action('skills.Competences')
+        m.add_action('skills.MyOffers')
 
     def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('faculties.TopLevelSkills')
-        m.add_action('faculties.AllSkills')
-        m.add_action('faculties.SkillTypes')
+        m.add_action('skills.TopLevelSkills')
+        m.add_action('skills.AllSkills')
+        m.add_action('skills.SkillTypes')
 
     def setup_explorer_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        # m.add_action('faculties.Competences')
-        m.add_action('faculties.Offers')
-        m.add_action('faculties.Demands')
+        # m.add_action('skills.Competences')
+        m.add_action('skills.Offers')
+        m.add_action('skills.Demands')
 
     def get_dashboard_items(self, user):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
         if user.authenticated:
             if self.site.is_installed('tickets'):
-                yield self.site.models.faculties.SuggestedTicketsByEndUser
-            yield self.site.models.faculties.TopLevelSkills
+                yield self.site.models.skills.SuggestedTicketsByEndUser
+            yield self.site.models.skills.TopLevelSkills
                 

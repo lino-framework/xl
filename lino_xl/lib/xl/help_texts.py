@@ -140,20 +140,6 @@ this."""),
     'lino_xl.lib.extensible.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
     'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
-    'lino_xl.lib.faculties.Plugin' : _("""The model of objects to be used as demander of skill
-demands."""),
-    'lino_xl.lib.faculties.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
-which I am competent."""),
-    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
-    'lino_xl.lib.faculties.SuggestedTicketsByEndUser.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.faculties.Competence' : _("""A skill offer is when a given user is declared to have a
-given skill."""),
-    'lino_xl.lib.faculties.Demand' : _("""A Skill demand is when a given demander declares to need a
-given skill."""),
-    'lino_xl.lib.faculties.Demand.importance' : _("""How important this skill is for this demand."""),
-    'lino_xl.lib.faculties.Faculty' : _("""A skill is a knowledge or ability which can be
-required in order to work e.g. on some ticket, and which
-individual users can have (offer) or not."""),
     'lino_xl.lib.families.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.families.CoupleField' : _("""An editable virtual field that looks like a FK to a contacts.Person
 but is stored as a Couple instance."""),
@@ -199,34 +185,6 @@ father (mother). [thefreedictionary]"""),
     'lino_xl.lib.humanlinks.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
     'lino_xl.lib.humanlinks.LinksByHuman.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
     'lino_xl.lib.humanlinks.LinksByHuman.model' : _("""alias of Link"""),
-    'lino_xl.lib.invoicing.Plugin.item_model' : _("""The database model into which invoiceable objects should create
-invoice items.  Default value refers to
-sales.InvoiceItem."""),
-    'lino_xl.lib.invoicing.StartInvoicing' : _("""Base for StartInvoicingForJournal,
-StartInvoicingForPartner."""),
-    'lino_xl.lib.invoicing.StartInvoicingForJournal' : _("""Start an invoicing plan for this journal."""),
-    'lino_xl.lib.invoicing.StartInvoicingForPartner' : _("""Start an invoicing plan for this partner."""),
-    'lino_xl.lib.invoicing.ToggleSelection' : _("""Invert selection status for all suggestions."""),
-    'lino_xl.lib.invoicing.Invoiceable' : _("""Mixin for things that are "invoiceable", i.e. for which a customer
-is going to receive an invoice."""),
-    'lino_xl.lib.invoicing.Invoiceable.invoicings' : _("""A simple GenericRelation
-to all invoice items pointing to this enrolment."""),
-    'lino_xl.lib.invoicing.Invoiceable.invoiceable_date_field' : _("""The name of the field which holds the invoiceable date.  Must be
-set by subclasses."""),
-    'lino_xl.lib.invoicing.Plan' : _("""An invoicing plan is a rather temporary database object which
-represents the plan of a given user to have Lino generate a series
-of invoices."""),
-    'lino_xl.lib.invoicing.Plan.journal' : _("""The journal where to create invoices.  When this field is
-empty, you can fill the plan with suggestions but cannot
-execute the plan."""),
-    'lino_xl.lib.invoicing.Plan.execute_plan' : _("""Execute this plan, i.e. create an invoice for each selected
-suggestion."""),
-    'lino_xl.lib.invoicing.Item' : _("""The items of an invoicing plan are called suggestions."""),
-    'lino_xl.lib.invoicing.Item.preview' : _("""A textual preview of the invoiceable items to be included in
-the invoice."""),
-    'lino_xl.lib.invoicing.Item.invoice' : _("""The invoice that has been generated. This field is empty for
-new items. When an item has been executed, this field points
-to the generated invoice."""),
     'lino_xl.lib.ledger.fields.DcAmountField' : _("""An editable virtual PriceField to get and set both database fields
 amount and dc at once. It may be used only on
 models which also defines these two fields."""),
@@ -234,18 +192,6 @@ models which also defines these two fields."""),
 users."""),
     'lino_xl.lib.lists.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.notes.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.notes.SpecialType' : _("""Represents a special note type."""),
-    'lino_xl.lib.notes.SpecialTypes' : _("""The list of special note types which have been declared on this
-Site."""),
-    'lino_xl.lib.notes.SpecialTypes.item_class' : _("""alias of SpecialType"""),
-    'lino_xl.lib.notes.NoteTypes' : _("""Displays all rows of NoteType."""),
-    'lino_xl.lib.notes.NoteTypes.model' : _("""alias of NoteType"""),
-    'lino_xl.lib.notes.EventType' : _("""A possible choice for Note.event_type."""),
-    'lino_xl.lib.notes.EventTypes' : _("""List of all Event Types."""),
-    'lino_xl.lib.notes.EventTypes.model' : _("""alias of EventType"""),
-    'lino_xl.lib.notes.Note' : _("""A note is a dated and timed document written by its author (a
-user). For example a report of a meeting or a phone call, or just
-some observation.  Notes are usually meant for internal use."""),
     'lino_xl.lib.online.users.UserStates' : _("""The list of possible choices for the state field
 of a User."""),
     'lino_xl.lib.online.users.MarkUserActive' : _("""Activate this user. This requires that the user has confirmed their
@@ -255,6 +201,7 @@ verifcation code, and that a username and password are set."""),
     'lino_xl.lib.online.users.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
 checks certain things before accepting the new user."""),
     'lino_xl.lib.online.users.VerifyUser' : _("""Enter your verification code."""),
+    'lino_xl.lib.online.users.User' : _("""Adds the following database fields to the User model."""),
     'lino_xl.lib.online.users.User.callme_mode' : _("""Whether other users can see my contact data."""),
     'lino_xl.lib.online.users.User.verification_code' : _("""A random string set for every new user. Used for
 online_registration."""),
@@ -388,6 +335,18 @@ included to a detail window on partner."""),
     'lino_xl.lib.sepa.roles.SepaUser' : _("""Can see imported statements and movements per partner."""),
     'lino_xl.lib.sepa.roles.SepaStaff' : _("""Can see imported statements and movements also globally in the
 :menuselection`Explorer` menu."""),
+    'lino_xl.lib.skills.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
+which I am competent."""),
+    'lino_xl.lib.skills.SuggestedTicketsByEndUser.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
+    'lino_xl.lib.skills.SuggestedTicketsByEndUser.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
+    'lino_xl.lib.skills.Competence' : _("""A skill offer is when a given user is declared to have a
+given skill."""),
+    'lino_xl.lib.skills.Demand' : _("""A Skill demand is when a given demander declares to need a
+given skill."""),
+    'lino_xl.lib.skills.Demand.importance' : _("""How important this skill is for this demand."""),
+    'lino_xl.lib.skills.Skill' : _("""A skill is a knowledge or ability which can be
+required in order to work e.g. on some ticket, and which
+individual users can have (offer) or not."""),
     'lino_xl.lib.stars.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.stars.Star' : _("""Represents the fact that a given database object is starred by a
 given User."""),
@@ -484,6 +443,12 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
+    'lino_xl.lib.ana.Account.group' : _("""The analytic account group this account belongs to."""),
+    'lino_xl.lib.ana.Group.ref' : _("""The unique reference."""),
+    'lino_xl.lib.ana.AnaAccountInvoice.make_copy' : _("""The MakeCopy action."""),
+    'lino_xl.lib.ana.MakeCopy' : _("""You can simplify manual recording of invoices using the ⁂
+button which creates an invoice using an existing invoice as template."""),
     'lino_xl.lib.ana.MakeCopy.entry_date' : _("""The entry date of the invoice to create."""),
     'lino_xl.lib.ana.MakeCopy.partner' : _("""The partner of the invoice to create."""),
     'lino_xl.lib.ana.MakeCopy.subject' : _("""The subject of the invoice to create."""),
@@ -737,6 +702,8 @@ example, if you enter "087/12.34.56" as a phone number, then a
 search for phone number containing "1234" will not find it."""),
     'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.Partner.purchase_account' : _("""The general account to suggest as default value in purchase
+invoices from this partner."""),
     'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
     'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
 See also lino.tutorial.human."""),
@@ -1037,13 +1004,20 @@ paid some invoice for you, and later you pay that money back
 to his account."""),
     'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
     'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
+    'lino_xl.lib.ledger.TradeType.partner_account' : _("""The common account that points to the partner account for this
+trade type, i.e.  the account into which the total amount of
+partner vouchers (base + VAT) and their payments should be
+booked."""),
+    'lino_xl.lib.ledger.TradeType.invoice_account_field' : _("""The name and label of the invoice account field to
+be injected on the Partner database model."""),
+    'lino_xl.lib.ledger.TradeType.base_account' : _("""The common account that points to the base account for this
+trade type, i.e.  the account into which the base amount of
+any operation should be booked."""),
+    'lino_xl.lib.ledger.TradeType.product_base_field' : _("""The name and label of the base account field to be
+injected on the Product database model."""),
     'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
 Product
 database model."""),
-    'lino_xl.lib.ledger.TradeType.partner_account_field' : _("""The name and label of the Partner account field to
-be defined for this trade type on the SiteConfig database model."""),
-    'lino_xl.lib.ledger.TradeType.base_account_field' : _("""The name and label of the Base account field to
-be defined for this trade type on the SiteConfig database model."""),
     'lino_xl.lib.ledger.TradeType.vat_account_field' : _("""The name and label of the VAT account field to be
 defined for this trade type on the SiteConfig database model."""),
     'lino_xl.lib.ledger.SequencedVoucherItem' : _("""A VoucherItem which also inherits from

@@ -213,6 +213,7 @@ class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
 
     make_copy = MakeCopy()
 
+        
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:
         app_label = 'ana'

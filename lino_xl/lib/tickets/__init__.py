@@ -46,8 +46,8 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.PublicTickets')
         m.add_action('tickets.MyTickets')
         # m.add_action('tickets.MyTicketsToWork') #In noi
-        if site.is_installed('faculties'):
-            m.add_action('faculties.SuggestedTicketsByEndUser')
+        if site.is_installed('skills'):
+            m.add_action('skills.SuggestedTicketsByEndUser')
         # m.add_action('tickets.TicketsToDo')
         # m.add_action('tickets.MyOwnedTickets')
         m.add_action('tickets.ActiveTickets')

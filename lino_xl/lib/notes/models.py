@@ -2,12 +2,6 @@
 # Copyright 2009-2018 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
-"""
-Database models for `lino_xl.lib.notes`.
-
-.. autosummary::
-
-"""
 
 import logging
 logger = logging.getLogger(__name__)
@@ -24,7 +18,7 @@ from lino import mixins
 from etgen.html import E
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
-from lino_xl.lib.faculties.mixins import Feasible
+from lino_xl.lib.skills.mixins import Feasible
 from lino.modlib.users.mixins import My, UserAuthored
 from lino.modlib.notify.mixins import ChangeNotifier
 from lino.modlib.uploads.mixins import UploadController
@@ -43,13 +37,6 @@ from .choicelists import SpecialTypes
 
 
 class NoteType(mixins.BabelNamed, PrintableType, MailableType):
-    """
-    .. attribute:: name
-    .. attribute:: important
-    .. attribute:: remark
-    .. attribute:: special_type
-
-    """
     templates_group = 'notes/Note'
 
     class Meta:
@@ -66,9 +53,6 @@ class NoteType(mixins.BabelNamed, PrintableType, MailableType):
 
 class NoteTypes(dd.Table):
 
-    """
-    Displays all rows of :class:`NoteType`.
-    """
     model = 'notes.NoteType'
     required_roles = dd.login_required(OfficeStaff)
     #~ label = _("Note types")
@@ -90,13 +74,6 @@ class NoteTypes(dd.Table):
 
 class EventType(mixins.BabelNamed):
 
-    """
-    A possible choice for :attr:`Note.event_type`.
-
-    .. attribute:: remark
-    .. attribute:: body
-
-    """
     class Meta:
         app_label = 'notes'
         verbose_name = pgettext_lazy(u"notes", u"Event Type")
@@ -107,9 +84,6 @@ class EventType(mixins.BabelNamed):
 
 class EventTypes(dd.Table):
 
-    """
-    List of all Event Types.
-    """
     model = 'notes.EventType'
     required_roles = dd.login_required(OfficeStaff)
     column_names = 'name *'
@@ -132,19 +106,6 @@ class Note(TypedPrintable,
            ChangeNotifier,
            UploadController,
            Mailable):
-    """
-    A **note** is a dated and timed document written by its author (a
-    user). For example a report of a meeting or a phone call, or just
-    some observation.  Notes are usually meant for internal use.
-
-    .. attribute:: date
-    .. attribute:: time
-    .. attribute:: type
-    .. attribute:: event_type
-    .. attribute:: subject
-    .. attribute:: body
-    .. attribute:: language
-    """
 
     manager_roles_required = dd.login_required(OfficeStaff)
 
@@ -286,7 +247,6 @@ class NotesByPerson(NotesByX):
     column_names = "date time event_type type subject user *"
 
 
-# system = dd.resolve_app('system')
 
 dd.inject_field(
     'system.SiteConfig',

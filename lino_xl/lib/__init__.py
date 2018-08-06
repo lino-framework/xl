@@ -1,4 +1,4 @@
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """These are the plugins included with Lino XL.
@@ -30,7 +30,7 @@ Groupware
     topics
     deploy
     tickets
-    faculties
+    skills
     working
     votes
 

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -24,31 +24,11 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 
 class Invoiceable(dd.Model):
-    """Mixin for things that are "invoiceable", i.e. for which a customer
-    is going to receive an invoice.
-
-    .. attribute:: invoice
-
-    .. attribute:: invoicings
-
-        A simple `GenericRelation
-        <https://docs.djangoproject.com/ja/1.9/ref/contrib/contenttypes/#reverse-generic-relations>`_
-        to all invoice items pointing to this enrolment.
-
-        This is preferred over :meth:`get_invoicings`.
-
-    """
 
     invoiceable_date_field = ''
-    """The name of the field which holds the invoiceable date.  Must be
-    set by subclasses.
-
-    """
 
     class Meta:
         abstract = True
-
-    # invoice = dd.ForeignKey('sales.VatProductInvoice', blank=True, null=True)
 
     invoicings = GenericRelation(
         dd.plugins.invoicing.item_model,
@@ -56,12 +36,6 @@ class Invoiceable(dd.Model):
         object_id_field='invoiceable_id')
 
     def get_invoicings(self, **kwargs):
-        """Get a queryset with the invoicings which point to this enrolment.
-
-        This is deprecated. Preferred way is to use
-        :attr:`invoicings`.
-
-        """
         item_model = dd.plugins.invoicing.item_model
         # item_model = rt.models.sales.InvoiceItem
         kwargs.update(gfk2lookup(item_model.invoiceable, self))
@@ -82,24 +56,12 @@ class Invoiceable(dd.Model):
         return [i]
 
     def get_invoiceable_product(self, plan):
-        """To be implemented by subclasses.  Return the product to put into
-        the invoice item.
-
-        """
         return None
 
     def get_invoiceable_qty(self):
-        """To be implemented by subclasses.  Return the quantity to put into
-        the invoice item.
-
-        """
         return None
 
     def get_invoiceable_title(self, invoice=None):
-        """Return the title to put into the invoice item.  May be overridden
-        by subclasses.
-
-        """
         return unicode(self)
 
     def get_invoiceable_amount(self):
@@ -119,11 +81,6 @@ class Invoiceable(dd.Model):
 
     @classmethod
     def get_invoiceables_for_plan(cls, plan, partner=None):
-        """Yield a sequence of invoiceables (of this class) for the given
-        plan.  If a `partner` is given, use it as an additional filter
-        condition.
-
-        """
         raise NotImplementedError()
 
     def setup_invoice_item(self, item):
