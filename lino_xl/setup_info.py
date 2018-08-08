@@ -26,7 +26,7 @@ install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='17.10.0',
+    version='18.04.0',
     install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",
@@ -227,7 +227,7 @@ SETUP_INFO.update(message_extractors={
 })
 
 SETUP_INFO.update(package_data=dict())
-SETUP_INFO.update(include_package_data=True, zip_safe=False)
+# SETUP_INFO.update(include_package_data=True, zip_safe=False)
 
 
 def add_package_data(package, *patterns):
@@ -237,7 +237,11 @@ def add_package_data(package, *patterns):
     return l
 
 
-add_package_data('lino_xl.lib.mailbox', 'fixtures/team.mbox')
+add_package_data('lino_xl.lib.mailbox', 'fixtures/*.mbox')
+add_package_data('lino_xl.lib.tickets', 'fixtures/*.tsv')
+add_package_data('lino_xl.lib.beid', 'static/eidreader/*.jar')
+add_package_data('lino_xl.lib.beid', 'static/eidreader/*.jnlp')
+add_package_data('lino_xl.lib.beid', '*.jpg')
 
 # add_package_data('lino_xl', 'config/*.odt')
 # add_package_data('lino_xl.lib.cal', 'config/*.odt')
