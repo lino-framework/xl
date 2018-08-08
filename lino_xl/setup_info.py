@@ -226,16 +226,18 @@ SETUP_INFO.update(message_extractors={
     ],
 })
 
-# SETUP_INFO.update(package_data=dict())
+SETUP_INFO.update(package_data=dict())
 SETUP_INFO.update(include_package_data=True, zip_safe=False)
 
 
-# def add_package_data(package, *patterns):
-#     package = str(package)
-#     l = SETUP_INFO['package_data'].setdefault(package, [])
-#     l.extend(patterns)
-#     return l
+def add_package_data(package, *patterns):
+    package = str(package)
+    l = SETUP_INFO['package_data'].setdefault(package, [])
+    l.extend(patterns)
+    return l
 
+
+add_package_data('lino_xl.lib.mailbox', 'fixtures/team.mbox')
 
 # add_package_data('lino_xl', 'config/*.odt')
 # add_package_data('lino_xl.lib.cal', 'config/*.odt')
