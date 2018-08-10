@@ -1,5 +1,5 @@
 global-include *.txt *.rst *.js *.css *.html \
   *.csv *.xml \
   *.odt \
-  *.mo
+  *.mo *.eml *.tsv *.mbox *.jnlp *.jar *.dtl
 
