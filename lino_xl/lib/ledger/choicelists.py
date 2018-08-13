@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""Choicelists for this plugin.
-
-"""
 
 from django.conf import settings
 from django.db import models
