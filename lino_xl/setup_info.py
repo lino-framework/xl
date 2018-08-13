@@ -26,7 +26,7 @@ install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint', 'appy']
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='17.10.0',
+    version='18.04.0',
     install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",
@@ -226,8 +226,10 @@ SETUP_INFO.update(message_extractors={
     ],
 })
 
-# SETUP_INFO.update(package_data=dict())
 SETUP_INFO.update(include_package_data=True, zip_safe=False)
+
+
+# SETUP_INFO.update(package_data=dict())
 
 
 # def add_package_data(package, *patterns):
@@ -235,8 +237,43 @@ SETUP_INFO.update(include_package_data=True, zip_safe=False)
 #     l = SETUP_INFO['package_data'].setdefault(package, [])
 #     l.extend(patterns)
 #     return l
-
-
+#
+#
+# add_package_data('lino_xl.lib.mailbox', 'fixtures/*.mbox')
+# add_package_data('lino_xl.lib.tickets', 'fixtures/*.tsv')
+# add_package_data('lino_xl.lib.tickets', 'config/tickets/Site/*.html')
+# add_package_data('lino_xl.lib.tickets', 'config/tickets/Ticket/*.html')
+# add_package_data('lino_xl.lib.tickets', 'config/tickets/Ticket/*.eml')
+# add_package_data('lino_xl.lib.beid', 'config/beid/*.js')
+# add_package_data('lino_xl.lib.beid', 'static/eidreader/*.jar')
+# add_package_data('lino_xl.lib.beid', 'static/eidreader/*.jnlp')
+# add_package_data('lino_xl.lib.beid', '*.jpg')
+# add_package_data('lino_xl.lib.finan', 'config/finan/PaymentOrder/*.*')
+# add_package_data('lino_xl.lib.finan', 'config/finan/BankStatement/*.dtl')
+# add_package_data('lino_xl.lib.finan', 'templates/*.html')
+# add_package_data('lino_xl.lib.countries', 'fixtures/*.xml')
+# add_package_data('lino_xl.lib.countries', 'fixtures/*.csv')
+# add_package_data('lino_xl.lib.contacts', 'config/contacts/Person/*.odt')
+# add_package_data('lino_xl.lib.contacts', 'templates/*.html')
+# add_package_data('lino_xl.lib.working', 'config/working/ServiceReport/*.html')
+# add_package_data('lino_xl.lib.sales', 'config/sales/VatProductInvoice/*.html')
+# add_package_data('lino_xl.lib.sales', 'config/sales/VatProductInvoice/*.odt')
+# add_package_data('lino_xl.lib.pisa', 'config/*.html')
+# add_package_data('lino_xl.lib.pages', 'config/pages/*.html')
+# add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
+# add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
+# add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.html')
+# add_package_data('lino_xl.lib.notes', 'templates/notes/Note/*.html')
+# add_package_data('lino_xl.lib.notes', 'templates/*.html')
+# add_package_data('lino_xl.lib.lists', 'config/lists/List/*.html')
+# add_package_data('lino_xl.lib.ledger', 'config/contacts/Partner/*.html')
+# add_package_data('lino_xl.lib.ledger', 'config/ledger/Situation/*.odt')
+# add_package_data('lino_xl.lib.excerpts', 'config/excerpts/Excerpt/*.odt')
+# add_package_data('lino_xl.lib.excerpts', 'config/excerpts/Excerpt/*.html')
+# add_package_data('lino_xl.lib.deploy', 'config/deploy/Milestone/*.html')
+# add_package_data('lino_xl.lib.extensible', 'config/snippets/*.js')
+# add_package_data('lino_xl.lib.sepa', 'config/iban/*.js')
+#
 # add_package_data('lino_xl', 'config/*.odt')
 # add_package_data('lino_xl.lib.cal', 'config/*.odt')
 # add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
@@ -244,6 +281,6 @@ SETUP_INFO.update(include_package_data=True, zip_safe=False)
 # # add_package_data('lino_xl.lib.notes', 'config/notes/Note/*.odt')
 # # add_package_data('lino_xl.lib.outbox', 'config/outbox/Mail/*.odt')
 
-# # l = add_package_data('lino_xl.lib.lino_startup')
-# # for lng in 'de fr et nl'.split():
-# #     l.append('lino/modlib/lino_startup/locale/%s/LC_MESSAGES/*.mo' % lng)
+# l = add_package_data('lino_xl.lib.xl')
+# for lng in 'de es fr et nl pt pt-br'.split():
+#     l.append('lino/modlib/xl/locale/%s/LC_MESSAGES/*.mo' % lng)
