@@ -243,7 +243,10 @@ class VatDocument(ProjectRelated, VatTotal):
         tt = self.journal.trade_type
         account = tt.get_partner_invoice_account(self.partner)
         if account is None:
-            account = CommonAccounts.purchase_of_services.get_object()
+            account = tt.get_base_account()
+            if account is None:
+                raise Warning(
+                    _("Base account for {} is not configured").format(tt))
         kw = dict()
         if dd.is_installed('ana') and account.needs_ana:
             kw['ana_account'] = account.ana_account
