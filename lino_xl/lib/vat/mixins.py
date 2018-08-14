@@ -18,6 +18,7 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import myround
+from lino_xl.lib.accounts.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
 from lino_xl.lib.ledger.mixins import PeriodRange
 from lino_xl.lib.ledger.models import Voucher
@@ -237,10 +238,12 @@ class VatDocument(ProjectRelated, VatTotal):
                 self.vat_regime = get_default_vat_regime()
 
     def update_item(self):
+        if self.pk is None:
+            return
         tt = self.journal.trade_type
         account = tt.get_partner_invoice_account(self.partner)
         if account is None:
-            return
+            account = CommonAccounts.purchase_of_services.get_object()
         kw = dict()
         if dd.is_installed('ana') and account.needs_ana:
             kw['ana_account'] = account.ana_account
@@ -258,10 +261,13 @@ class VatDocument(ProjectRelated, VatTotal):
         item.save()
 
         
+    def partner_changed(self, ar=None):
+        self.vat_regime = None
+        self.fill_defaults()
+        if self.edit_totals and not self.items_edited:
+            self.update_item()
+        
     def after_ui_save(self, ar, cw):
-        """
-        After editing a grid cell automatically show new invoice totals.
-        """
         if self.edit_totals and not self.items_edited:
             self.update_item()
         return super(VatDocument, self).after_ui_save(ar, cw)
