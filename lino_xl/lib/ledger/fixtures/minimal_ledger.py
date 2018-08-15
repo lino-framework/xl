@@ -249,6 +249,6 @@ def objects():
             if a:
                 yield MatchRule(journal=jnl, account=a)
         elif jnl.trade_type:
-            a = jnl.trade_type.get_partner_account()
+            a = jnl.trade_type.get_main_account()
             if a:
                 yield MatchRule(journal=jnl, account=a)

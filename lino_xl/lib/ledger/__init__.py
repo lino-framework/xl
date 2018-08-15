@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 """This is Lino's standard plugin for General Ledger.
-See :doc:`/specs/cosi/ledger`.
+See :doc:`/specs/ledger`.
 
 .. autosummary::
     :toctree:

@@ -43,28 +43,7 @@ TradeTypes.sales.update(
     price_field_label=_("Sales price"),
     base_account_field_name='sales_account',
     base_account_field_label=_("Sales Base account"))
-    # vat_account_field_name='sales_vat_account',
-    # vat_account_field_label=_("Sales VAT account"),
-    # partner_account_field_name='clients_account',
-    # partner_account_field_label=_("Clients account"))
 
-# TradeTypes.wages.update(
-#     partner_account_field_name='wages_account',
-#     partner_account_field_label=_("Wages account"))
-
-# TradeTypes.clearings.update(
-#     partner_account_field_name='clearings_account',
-#     partner_account_field_label=_("Clearings account"))
-
-# from lino_xl.lib.contacts.models import Partners
-
-# class PartnersByInvoiceRecipient(Partners):
-#     label = _("Invoice senders")
-#     master_key = 'invoice_recipient'
-#     column_names = 'name id address_column *'
-#     window_size = (50, 15)
-#     params_panel_hidden = True
-    
 
 class PaperType(BabelNamed):
     """Which paper (document template) to use when printing an invoice.

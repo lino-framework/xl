@@ -2,12 +2,15 @@
 # Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
+from builtins import str
 
 from django.conf import settings
 from django.db import models
 from django.utils.translation import string_concat
 
-from lino.api import dd, rt, _
+from etgen.html import E
+
+from lino.api import dd, rt, _, gettext
 
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT
 from lino_xl.lib.accounts.choicelists import CommonAccounts
@@ -147,7 +150,7 @@ class VoucherTypes(dd.ChoiceList):
 class TradeType(dd.Choice):
     price_field_name = None
     price_field_label = None
-    partner_account = None
+    main_account = None
     base_account = None
     base_account_field_name = None
     base_account_field_label = None
@@ -158,9 +161,9 @@ class TradeType(dd.Choice):
     def get_base_account(self):
         return self.base_account.get_object()
 
-    def get_partner_account(self):
-        if self.partner_account:
-            return self.partner_account.get_object()
+    def get_main_account(self):
+        if self.main_account:
+            return self.main_account.get_object()
 
     def get_product_base_account(self, product):
         if self.base_account_field_name is None:
@@ -181,6 +184,17 @@ class TradeType(dd.Choice):
         kw[self.name + '_allowed'] = True
         return rt.models.accounts.Account.objects.filter(**kw)
         
+def ca_fmt(ar, ca):
+    if ar is None or ca is None:
+        return ''
+    elems = []
+    obj = ca.get_object()
+    if obj is None:
+        elems.append(gettext("(undefined)"))
+    else:
+        elems.append(ar.obj2html(obj))
+    elems.append(u" ({})".format(ca))
+    return E.div(*elems)
 
 class TradeTypes(dd.ChoiceList):
     required_roles = dd.login_required(LedgerStaff)
@@ -188,26 +202,75 @@ class TradeTypes(dd.ChoiceList):
     verbose_name_plural = _("Trade types")
     item_class = TradeType
     help_text = _("The type of trade, e.g. 'sales' or 'purchases' or 'wages'.")
+    column_names = "value name text main_account base_account "\
+                   "product_account_field invoice_account_field"
+
+    @dd.displayfield(_("Main account"))
+    def main_account(cls, tt, ar):
+        return ca_fmt(ar, tt.main_account)
+            
+    @dd.displayfield(_("Base account"))
+    def base_account(cls, tt, ar):
+        return ca_fmt(ar, tt.base_account)
+            
+    @dd.displayfield(_("Product account field"))
+    def product_account_field(cls, tt, ar):
+        if tt.base_account_field_name:
+            return u"{} ({})".format(
+                tt.base_account_field_label, tt.base_account_field_name)
+        
+    @dd.displayfield(_("Price field"))
+    def product_price_field(cls, tt, ar):
+        if tt.price_field_name:
+            return u"{} ({})".format(
+                tt.price_field_label, tt.price_field_name)
+        
+    @dd.displayfield(_("Invoice account field"))
+    def invoice_account_field(cls, tt, ar):
+        if tt.invoice_account_field_name:
+            return u"{} ({})".format(
+                tt.invoice_account_field_label, tt.invoice_account_field_name)
+        
+    # @dd.displayfield(_("Description"))
+    # def description(cls, tt, ar):
+    #     if ar is None:
+    #         return ''
+    #     elems = []
+    #     if tt.base_account:
+    #         elems += [gettext("Default base account"), ": "]
+    #         elems += [str(tt.base_account)]
+    #         elems += [" (", ar.obj2html(tt.get_base_account()), ")"]
+    #     if tt.base_account_field_name:
+    #         if len(elems): elems.append(", ")
+    #         elems += [gettext("Product base account field"), ": "]
+    #         elems += [str(tt.base_account_field_name)]
+    #     if tt.invoice_account_field_name:
+    #         if len(elems): elems.append(", ")
+    #         elems += [gettext("Invoice account field"), ": "]
+    #         elems += [str(tt.invoice_account_field_name)]
+    #     return E.div(*elems)
+        
+    
 
 TradeTypes.add_item(
     'S', _("Sales"), 'sales', dc=CREDIT,
     base_account=CommonAccounts.sales,
-    partner_account=CommonAccounts.customers)
+    main_account=CommonAccounts.customers)
 TradeTypes.add_item(
     'P', _("Purchases"), 'purchases', dc=DEBIT,
     base_account=CommonAccounts.purchase_of_goods,
-    partner_account=CommonAccounts.suppliers,
+    main_account=CommonAccounts.suppliers,
     invoice_account_field_name='purchase_account',
     invoice_account_field_label=_("Purchase account")
 )
 TradeTypes.add_item(
     'W', _("Wages"), 'wages', dc=DEBIT,
     base_account=CommonAccounts.wages,
-    partner_account=CommonAccounts.employees)
+    main_account=CommonAccounts.employees)
 TradeTypes.add_item(
     'T', _("Taxes"), 'taxes', dc=DEBIT,
     base_account=CommonAccounts.due_taxes,
-    partner_account=CommonAccounts.tax_offices)
+    main_account=CommonAccounts.tax_offices)
 TradeTypes.add_item('C', _("Clearings"), 'clearings', dc=DEBIT)
 TradeTypes.add_item('B', _("Bank payment orders"), 'bank_po', dc=DEBIT)
 

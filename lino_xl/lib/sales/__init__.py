@@ -3,7 +3,7 @@
 
 
 """Adds functionality for handling sales.
-See :doc:`/specs/cosi/sales`.
+See :doc:`/specs/sales`.
 
 
 .. autosummary::
