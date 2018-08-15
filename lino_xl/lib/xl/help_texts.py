@@ -441,6 +441,51 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
+    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts."""),
+    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
+accounts."""),
+    'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
+    'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for "something
+where you can place money and retrieve it later"."""),
+    'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
+it."""),
+    'lino_xl.lib.accounts.Account.group' : _("""The account group to which this account belongs.  Points to
+an instance of Group.  If this field is empty, the
+account won't appear in certain reports."""),
+    'lino_xl.lib.accounts.Account.seqno' : _("""The sequence number of this account within its group."""),
+    'lino_xl.lib.accounts.Account.ref' : _("""An optional unique name which can be used to reference a given
+account."""),
+    'lino_xl.lib.accounts.Account.type' : _("""The account type of this account.  This points to an item of
+CommonAccounts."""),
+    'lino_xl.lib.accounts.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
+    'lino_xl.lib.accounts.Account.default_amount' : _("""The default amount to book in bank statements or journal
+entries when this account has been selected manually. The
+default booking direction is that of the type."""),
+    'lino_xl.lib.accounts.Account.FOO_allowed' : _("""These checkboxes indicate whether this account can be used on
+an item of a purchases (or sales or wages or FOO)
+invoice. There is one such checkbox for every trade type
+(TradeTypes).  They
+exist only when the ledger plugin
+is installed as well.  See also the
+get_allowed_accounts method."""),
+    'lino_xl.lib.accounts.Account.needs_ana' : _("""Whether transactions on this account require the user to also
+specify an analytic account."""),
+    'lino_xl.lib.accounts.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
+account."""),
+    'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
+    'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
+    'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
+together with its booking direction (debit or credit)."""),
+    'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
+    'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
+    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
+    'lino_xl.lib.accounts.BalanceSheet' : _("""A balance sheet or statement of financial position is a
+summary of the financial balances of an organisation."""),
+    'lino_xl.lib.accounts.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
+DEBIT or CREDIT."""),
+    'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
+    'lino_xl.lib.accounts.Plugin' : _("""The max_length of the Reference field of an account."""),
     'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
     'lino_xl.lib.ana.Account.group' : _("""The analytic account group this account belongs to."""),
     'lino_xl.lib.ana.Group.ref' : _("""The unique reference."""),
@@ -748,51 +793,70 @@ lino_xl.lib.contacts.models.Role object."""),
 Adds two fields 'partner' and 'person' to this model, making it
 something that refers to a "partner".  person means a "contact
 person" for the partner."""),
-    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
-    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts."""),
-    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
-accounts."""),
-    'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
-    'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for "something
-where you can place money and retrieve it later"."""),
-    'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
-it."""),
-    'lino_xl.lib.accounts.Account.group' : _("""The account group to which this account belongs.  Points to
-an instance of Group.  If this field is empty, the
-account won't appear in certain reports."""),
-    'lino_xl.lib.accounts.Account.seqno' : _("""The sequence number of this account within its group."""),
-    'lino_xl.lib.accounts.Account.ref' : _("""An optional unique name which can be used to reference a given
-account."""),
-    'lino_xl.lib.accounts.Account.type' : _("""The account type of this account.  This points to an item of
-CommonAccounts."""),
-    'lino_xl.lib.accounts.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
-    'lino_xl.lib.accounts.Account.default_amount' : _("""The default amount to book in bank statements or journal
-entries when this account has been selected manually. The
-default booking direction is that of the type."""),
-    'lino_xl.lib.accounts.Account.FOO_allowed' : _("""These checkboxes indicate whether this account can be used on
-an item of a purchases (or sales or wages or FOO)
-invoice. There is one such checkbox for every trade type
-(TradeTypes).  They
-exist only when the ledger plugin
-is installed as well.  See also the
-get_allowed_accounts method."""),
-    'lino_xl.lib.accounts.Account.needs_ana' : _("""Whether transactions on this account require the user to also
-specify an analytic account."""),
-    'lino_xl.lib.accounts.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
-account."""),
-    'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
-    'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
-    'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
-together with its booking direction (debit or credit)."""),
-    'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
-    'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
-    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
-    'lino_xl.lib.accounts.BalanceSheet' : _("""A balance sheet or statement of financial position is a
-summary of the financial balances of an organisation."""),
-    'lino_xl.lib.accounts.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
-DEBIT or CREDIT."""),
-    'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
-    'lino_xl.lib.accounts.Plugin' : _("""The max_length of the Reference field of an account."""),
+    'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
+    'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
+in Country."""),
+    'lino_xl.lib.countries.PlaceTypes' : _("""A choicelist of possible place types."""),
+    'lino_xl.lib.countries.CountryCity' : _("""Model mixin that adds two fields country and city and defines
+a context-sensitive chooser for city, a create_city_choice
+method, ..."""),
+    'lino_xl.lib.countries.CountryCity.city' : _("""The locality, i.e. usually a village, city or town."""),
+    'lino_xl.lib.countries.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
+    'lino_xl.lib.countries.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
+    'lino_xl.lib.countries.AddressLocation.addr1' : _("""Address line before street"""),
+    'lino_xl.lib.countries.AddressLocation.street_prefix' : _("""Text to print before name of street, but to ignore for sorting."""),
+    'lino_xl.lib.countries.AddressLocation.street' : _("""Name of street, without house number."""),
+    'lino_xl.lib.countries.AddressLocation.street_no' : _("""House number."""),
+    'lino_xl.lib.countries.AddressLocation.street_box' : _("""Text to print after street number on the same line."""),
+    'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
+    'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
+one-line string."""),
+    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
+teacher in a given room to speak about a given subject."""),
+    'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
+    'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
+this field empty if the meetings last less than one day."""),
+    'lino_xl.lib.courses.Course.max_date' : _("""Don't generate meeting having their start date beyond this
+date."""),
+    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
+in this course."""),
+    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
+    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
+    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
+    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
+    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible
+manager).  Compare MyCoursesGiven."""),
+    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
+Compare MyActivities."""),
+    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
+    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
+    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
+given course."""),
+    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
+    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
+participant."""),
+    'lino_xl.lib.courses.Enrolments' : _("""Base class for all tables that show Enrolment."""),
+    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
+    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
+    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
+    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
+    'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show all enrolments of a given course."""),
+    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
+configurable list of categories."""),
+    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
+e.g. when selecting the line."""),
+    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
+    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
+line.  Leave empty to use the site's default (defined by
+body_template on the
+lino_xl.lib.excerpts.models.ExcerptType for
+Course)"""),
+    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+application defines several variants of
+EnrolmentsByPupil."""),
+    'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
+Enrolment."""),
     'lino_xl.lib.finan.JournalEntry' : _("""This is the model for "journal entries" ("operations diverses")."""),
     'lino_xl.lib.finan.BankStatement' : _("""A bank statement is a document issued by the bank, which
 reports all transactions which occured on a given account during a
@@ -958,6 +1022,33 @@ partners with the following columns:"""),
 Inherits from DebtorsCreditors."""),
     'lino_xl.lib.ledger.Creditors' : _("""Shows partners who give us some form of credit.
 Inherits from DebtorsCreditors."""),
+    'lino_xl.lib.ledger.TradeTypes' : _("""The choicelist with the trade types defined for this
+application."""),
+    'lino_xl.lib.ledger.TradeTypes.sales' : _("""A sale transaction is when you write an invoice to a customer
+and then expect the customer to pay it."""),
+    'lino_xl.lib.ledger.TradeTypes.purchases' : _("""A purchase transaction is when you get an invoice from a
+provider who expects you to pay it."""),
+    'lino_xl.lib.ledger.TradeTypes.wages' : _("""A wage transaction is when you write a payroll (declare the
+fact that you owe some wage to an employee) and later pay it
+(e.g. via a payment order)."""),
+    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he
+paid some invoice for you, and later you pay that money back
+to his account."""),
+    'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
+    'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
+    'lino_xl.lib.ledger.TradeType.main_account' : _("""The common account into which the total amount of partner
+vouchers (base + taxes) and their payments should be booked."""),
+    'lino_xl.lib.ledger.TradeType.base_account' : _("""The common account into which the base amount of any operation
+should be booked."""),
+    'lino_xl.lib.ledger.TradeType.invoice_account_field_name' : _("""The name of a field to be injected on the Partner model which points to an
+account to be used instead of the default
+base_account."""),
+    'lino_xl.lib.ledger.TradeType.base_account_field_name' : _("""The name of a field to be injected on the Product database model which
+points to an account to be used instead of the default
+base_account."""),
+    'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
+Product database
+model."""),
     'lino_xl.lib.ledger.FiscalYears' : _("""A choicelist with the fiscal years available in this database."""),
     'lino_xl.lib.ledger.JournalGroups' : _("""The list of possible journal groups."""),
     'lino_xl.lib.ledger.JournalGroups.sales' : _("""For sales journals."""),
@@ -989,35 +1080,6 @@ invoice."""),
 usually be deregistered anymore. This state is not visible in
 the default configuration. In order to make it usable, you
 must define a custom workflow for VoucherStates."""),
-    'lino_xl.lib.ledger.TradeTypes' : _("""A choicelist with the trade types defined for this application."""),
-    'lino_xl.lib.ledger.TradeTypes.sales' : _("""A sale transaction is when you write an invoice to a customer
-and then expect the customer to pay it."""),
-    'lino_xl.lib.ledger.TradeTypes.purchases' : _("""A purchase transaction is when you get an invoice from a
-provider who expects you to pay it."""),
-    'lino_xl.lib.ledger.TradeTypes.wages' : _("""A wage transaction is when you write a payroll (declare the
-fact that you owe some wage to an employee) and later pay it
-(e.g. via a payment order)."""),
-    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he
-paid some invoice for you, and later you pay that money back
-to his account."""),
-    'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
-    'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
-    'lino_xl.lib.ledger.TradeType.partner_account' : _("""The common account that points to the partner account for this
-trade type, i.e.  the account into which the total amount of
-partner vouchers (base + VAT) and their payments should be
-booked."""),
-    'lino_xl.lib.ledger.TradeType.invoice_account_field' : _("""The name and label of the invoice account field to
-be injected on the Partner database model."""),
-    'lino_xl.lib.ledger.TradeType.base_account' : _("""The common account that points to the base account for this
-trade type, i.e.  the account into which the base amount of
-any operation should be booked."""),
-    'lino_xl.lib.ledger.TradeType.product_base_field' : _("""The name and label of the base account field to be
-injected on the Product database model."""),
-    'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
-Product
-database model."""),
-    'lino_xl.lib.ledger.TradeType.vat_account_field' : _("""The name and label of the VAT account field to be
-defined for this trade type on the SiteConfig database model."""),
     'lino_xl.lib.ledger.SequencedVoucherItem' : _("""A VoucherItem which also inherits from
 lino.mixins.sequenced.Sequenced."""),
     'lino_xl.lib.ledger.AccountVoucherItem' : _("""Abstract base class for voucher items which point to an account."""),
@@ -1068,70 +1130,6 @@ debit and credit movements."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.start_period' : _("""Start of observed period range."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.end_period' : _("""Optional end of observed period range.  Leave empty to
 consider only the Start period."""),
-    'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
-    'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
-in Country."""),
-    'lino_xl.lib.countries.PlaceTypes' : _("""A choicelist of possible place types."""),
-    'lino_xl.lib.countries.CountryCity' : _("""Model mixin that adds two fields country and city and defines
-a context-sensitive chooser for city, a create_city_choice
-method, ..."""),
-    'lino_xl.lib.countries.CountryCity.city' : _("""The locality, i.e. usually a village, city or town."""),
-    'lino_xl.lib.countries.CountryRegionCity' : _("""Adds a region field to a CountryCity."""),
-    'lino_xl.lib.countries.AddressLocation' : _("""A mixin for models which contain a postal address location."""),
-    'lino_xl.lib.countries.AddressLocation.addr1' : _("""Address line before street"""),
-    'lino_xl.lib.countries.AddressLocation.street_prefix' : _("""Text to print before name of street, but to ignore for sorting."""),
-    'lino_xl.lib.countries.AddressLocation.street' : _("""Name of street, without house number."""),
-    'lino_xl.lib.countries.AddressLocation.street_no' : _("""House number."""),
-    'lino_xl.lib.countries.AddressLocation.street_box' : _("""Text to print after street number on the same line."""),
-    'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
-    'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
-one-line string."""),
-    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
-teacher in a given room to speak about a given subject."""),
-    'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
-    'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
-this field empty if the meetings last less than one day."""),
-    'lino_xl.lib.courses.Course.max_date' : _("""Don't generate meeting having their start date beyond this
-date."""),
-    'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
-in this course."""),
-    'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
-    'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
-    'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
-    'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
-    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
-    'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible
-manager).  Compare MyCoursesGiven."""),
-    'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
-Compare MyActivities."""),
-    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
-    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
-    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
-given course."""),
-    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
-    'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
-participant."""),
-    'lino_xl.lib.courses.Enrolments' : _("""Base class for all tables that show Enrolment."""),
-    'lino_xl.lib.courses.AllEnrolments' : _("""Show global list of all enrolments."""),
-    'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
-    'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
-    'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
-    'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show all enrolments of a given course."""),
-    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
-configurable list of categories."""),
-    'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
-e.g. when selecting the line."""),
-    'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),
-    'lino_xl.lib.courses.Line.body_template' : _("""The body template to use when printing an activity of this
-line.  Leave empty to use the site's default (defined by
-body_template on the
-lino_xl.lib.excerpts.models.ExcerptType for
-Course)"""),
-    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
-application defines several variants of
-EnrolmentsByPupil."""),
-    'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
-Enrolment."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
