@@ -562,14 +562,6 @@ class Excerpt(TypedPrintable, UserAuthored,
     def get_print_language(self):
         return self.language
 
-    def unused_on_create(self, ar):
-        # replaced by signal below
-        super(Excerpt, self).on_create(ar)
-        if not self.owner_id:
-            if self.project:
-                self.owner = self.project
-        self.language = self.owner.get_print_language()
-
     @dd.chooser()
     def excerpt_type_choices(cls, owner):
         # logger.info("20150702 %s", owner)
@@ -657,6 +649,7 @@ class Excerpt(TypedPrintable, UserAuthored,
         super(Excerpt, cls).on_analyze(site)
 
 
+#TODO: why not use full_clean() for the following?        
 @dd.receiver(post_init, sender=Excerpt)
 def post_init_excerpt(sender, instance=None, **kwargs):
     """This is called for every new Excerpt object and it sets certain
@@ -689,8 +682,9 @@ def post_init_excerpt(sender, instance=None, **kwargs):
         if not self.language:
             rec = self.recipient
             if rec is not None:
-                self.language = rec.get_print_language() or \
-                                settings.SITE.DEFAULT_LANGUAGE.django_code
+                self.language = rec.get_print_language()
+        if not self.language:
+            self.language = settings.SITE.DEFAULT_LANGUAGE.django_code
 
 
 if has_davlink or settings.SITE.webdav_protocol:

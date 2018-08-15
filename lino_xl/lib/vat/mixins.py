@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -9,6 +9,7 @@ from __future__ import print_function
 from decimal import Decimal
 
 from django.conf import settings
+from django.db import models
 # from django.core.exceptions import ValidationError
 
 from lino.utils import SumCollector
@@ -17,6 +18,7 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import myround
+from lino_xl.lib.accounts.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
 from lino_xl.lib.ledger.mixins import PeriodRange
 from lino_xl.lib.ledger.models import Voucher
@@ -28,17 +30,17 @@ from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 DECLARED_IN = False
 
 class PartnerDetailMixin(dd.DetailLayout):
-    """Defines a panel :attr:`ledger`, to be added as a tab panel to your
+    """
+    Defines a panel :attr:`ledger`, to be added as a tab panel to your
     layout's `main` element.
 
     .. attribute:: ledger
 
         Shows the tables `VouchersByPartner` and `MovementsByPartner`.
-
     """
     if dd.is_installed('ledger'):
         ledger = dd.Panel("""
-        payment_term
+        payment_term purchase_account
         vat.VouchersByPartner
         ledger.MovementsByPartner
         """, label=dd.plugins.ledger.verbose_name)
@@ -55,6 +57,7 @@ def get_default_vat_class():
 
 
 class VatTotal(dd.Model):
+    # abstract base class for both voucher and item
     class Meta:
         abstract = True
 
@@ -65,21 +68,24 @@ class VatTotal(dd.Model):
 
     _total_fields = set('total_vat total_base total_incl'.split())
     # For internal use.  This is the list of field names to disable
-    # when `auto_compute_totals` is True.
+    # when `edit_totals` is False.
 
-    auto_compute_totals = False
+    edit_totals = True
 
     # def get_trade_type(self):
     #     raise NotImplementedError()
 
     def disabled_fields(self, ar):
         fields = super(VatTotal, self).disabled_fields(ar)
-        if self.auto_compute_totals:
-            fields |= self._total_fields
-        else:
+        if self.edit_totals:
             rule = self.get_vat_rule(self.get_trade_type())
-            if rule is not None and not rule.can_edit:
+            if rule is None:
                 fields.add('total_vat')
+                fields.add('total_base')
+            elif not rule.can_edit:
+                fields.add('total_vat')
+        else:
+            fields |= self._total_fields
         return fields
 
     def reset_totals(self, ar):
@@ -96,7 +102,7 @@ class VatTotal(dd.Model):
                 return
 
         rule = self.get_vat_rule(self.get_trade_type())
-        # dd.logger.info("20150128 %r", rule)
+        # dd.logger.info("20180813 %r", rule)
         if rule is None:
             self.total_incl = None
             self.total_vat = None
@@ -127,30 +133,46 @@ class VatTotal(dd.Model):
         else:
             self.total_base = myround(self.total_incl / (ONE + rule.rate))
             self.total_vat = myround(self.total_incl - self.total_base)
+            
 
+class ComputeSums(dd.Action):
+    help_text = _("Compute sums")
+    button_text = "Σ"
+    custom_handler = True
+    readonly = False
+    
+    def get_action_permission(self, ar, obj, st):
+        # if ar.data_iterator is None:
+        #     return False
+        if not super(ComputeSums, self).get_action_permission(ar, obj, st):
+            return False
+        return True
 
+    def run_from_ui(self, ar, **kw):
+        obj = ar.selected_rows[0]
+        obj.compute_totals()
+        obj.full_clean()
+        obj.save()
+        ar.success(refresh=True)
+        
+        
 class VatDocument(ProjectRelated, VatTotal):
-    auto_compute_totals = True
+    edit_totals = True
 
-    refresh_after_item_edit = False
+    # refresh_after_item_edit = False
 
     class Meta:
         abstract = True
 
     vat_regime = VatRegimes.field()
+    items_edited = models.BooleanField(default=False)
+    compute_sums = ComputeSums()
 
     @classmethod
     def get_registrable_fields(cls, site):
         for f in super(VatDocument, cls).get_registrable_fields(site):
             yield f
         yield 'vat_regime'
-
-    if False:
-        # this didn't work as expected because __init__() is called
-        # also when an existing instance is being retrieved from database
-        def __init__(self, *args, **kw):
-            super(VatDocument, self).__init__(*args, **kw)
-            self.item_vat = settings.SITE.get_item_vat(self)
 
     def compute_totals(self):
         if self.pk is None:
@@ -162,9 +184,9 @@ class VatDocument(ProjectRelated, VatTotal):
                 base += i.total_base
             if i.total_vat is not None:
                 vat += i.total_vat
-        self.total_base = base
-        self.total_vat = vat
-        self.total_incl = vat + base
+        self.total_base = myround(base)
+        self.total_vat = myround(vat)
+        self.total_incl = myround(vat + base)
 
     def get_payable_sums_dict(self):
         # implements sepa.mixins.Payable
@@ -215,17 +237,58 @@ class VatDocument(ProjectRelated, VatTotal):
             if not self.vat_regime:
                 self.vat_regime = get_default_vat_regime()
 
+    def update_item(self):
+        if self.pk is None:
+            return
+        tt = self.journal.trade_type
+        account = tt.get_partner_invoice_account(self.partner)
+        if account is None:
+            account = tt.get_base_account()
+            if account is None:
+                raise Warning(
+                    _("Base account for {} is not configured").format(tt))
+        kw = dict()
+        if dd.is_installed('ana') and account.needs_ana:
+            kw['ana_account'] = account.ana_account
+        kw['account'] = account
+        kw['total_incl'] = self.total_incl
+        qs = self.items.all()
+        if qs.count():
+            item = qs[0]
+            for k, v in kw.items():
+                setattr(item, k, v)
+        else:
+            item = self.add_voucher_item(seqno=1, **kw)
+        item.total_incl_changed(None)
+        item.full_clean()
+        item.save()
+
+        
+    def partner_changed(self, ar=None):
+        self.vat_regime = None
+        self.fill_defaults()
+        if self.edit_totals and not self.items_edited:
+            self.update_item()
+        
+    def after_ui_save(self, ar, cw):
+        if self.edit_totals and not self.items_edited:
+            self.update_item()
+        return super(VatDocument, self).after_ui_save(ar, cw)
+        
+        
     def full_clean(self, *args, **kw):
         super(VatDocument, self).full_clean(*args, **kw)
-        self.compute_totals()
+        if not self.edit_totals:
+            self.compute_totals()
 
     def before_state_change(self, ar, old, new):
         if new.name == 'registered':
             self.compute_totals()
         elif new.name == 'draft':
-            self.total_base = None
-            self.total_vat = None
-            self.total_incl = None
+            if not self.edit_totals:
+                self.total_base = None
+                self.total_vat = None
+                self.total_incl = None
         super(VatDocument, self).before_state_change(ar, old, new)
 
 
@@ -235,6 +298,14 @@ class VatItemBase(VoucherItem, VatTotal):
         abstract = True
 
     vat_class = VatClasses.field(blank=True, default=get_default_vat_class)
+
+    def delete(self, **kw):
+        super(VatItemBase, self).delete(**kw)
+        v = self.voucher
+        if v.edit_totals and v.items_edited:
+            if not v.items.exists():
+                v.items_edited = False
+                v.save()
 
     def get_trade_type(self):
         return self.voucher.get_trade_type()
@@ -285,7 +356,8 @@ class VatItemBase(VoucherItem, VatTotal):
             self.total_base_changed(ar)
 
     def reset_totals(self, ar):
-        if not self.voucher.auto_compute_totals:
+        # if self.voucher.items_edited:
+        if self.voucher.edit_totals:
             total = Decimal()
             for item in self.voucher.items.exclude(id=self.id):
                 total += item.total_incl
@@ -305,11 +377,14 @@ class VatItemBase(VoucherItem, VatTotal):
         After editing a grid cell automatically show new invoice totals.
         """
         kw = super(VatItemBase, self).after_ui_save(ar, cw)
-        if self.voucher.refresh_after_item_edit:
-            ar.set_response(refresh_all=True)
-            self.voucher.compute_totals()
-            self.voucher.full_clean()
+        if self.voucher.edit_totals and not self.voucher.items_edited:
+            self.voucher.items_edited = True
             self.voucher.save()
+        # if self.voucher.refresh_after_item_edit:
+        #     ar.set_response(refresh_all=True)
+        #     self.voucher.compute_totals()
+        #     self.voucher.full_clean()
+        #     self.voucher.save()
         return kw
 
 
@@ -329,7 +404,7 @@ class QtyVatItemBase(VatItemBase):
 
     def reset_totals(self, ar=None):
         super(QtyVatItemBase, self).reset_totals(ar)
-        # if not self.voucher.auto_compute_totals:
+        # if self.voucher.edit_totals:
         #     if self.qty:
         #         if self.voucher.item_vat:
         #             self.unit_price = self.total_incl / self.qty

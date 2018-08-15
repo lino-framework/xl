@@ -384,8 +384,6 @@ resolve it at startup into an item of VatClasses."""),
 layout's main element."""),
     'lino_xl.lib.vatless.PartnerDetailMixin.ledger' : _("""Shows the tables vatless.VouchersByPartner and
 ledger.MovementsByPartner."""),
-    'lino_xl.lib.vatless.AccountInvoice.auto_compute_totals' : _("""Set this to True on subclasses who compute their totals
-automatically, i.e. which have the field amount disabled."""),
     'lino_xl.lib.vatless.InvoiceItem' : _("""An item of an AccountInvoice."""),
     'lino_xl.lib.vatless.ItemsByInvoice' : _("""This is the "content" part of an invoice."""),
     'lino_xl.lib.vatless.ItemsByProjectInvoice' : _("""Like ItemsByInvoice, but in a project invoice we don't

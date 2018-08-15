@@ -135,7 +135,7 @@ class SalesDocument(VatDocument, Certifiable):
     class Meta:
         abstract = True
 
-    auto_compute_totals = True
+    edit_totals = False
 
     print_items_table = None
     """Which table (column layout) to use in the printed document.

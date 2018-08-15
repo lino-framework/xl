@@ -146,6 +146,9 @@ class MakeCopy(dd.Action):
         # kw.update(total_incl=obj.total_incl)
         return kw
 
+    # def partner_changed(self, ar, obj, **kw):
+    #     pass
+    
     def run_from_ui(self, ar, **kw):
       # raise Warning("20180802")
 
@@ -212,6 +215,8 @@ class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
         verbose_name_plural = _("Analytic invoices")
 
     make_copy = MakeCopy()
+    # probably no longer needed because now we have
+    # VatDocument.items_edited
 
         
 class InvoiceItem(AccountVoucherItem, VatItemBase):

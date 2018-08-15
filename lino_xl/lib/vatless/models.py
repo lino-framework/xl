@@ -44,25 +44,21 @@ class AccountInvoice(BankAccount, Payable, Voucher, Matching, ProjectRelated):
     amount = dd.PriceField(_("Amount"), blank=True, null=True)
 
     _total_fields = set(['amount'])
-    """The list of field names to disable when `auto_compute_totals` is
-    True.
+    """The list of field names to disable when `edit_totals` is
+    False.
 
     """
 
-    auto_compute_totals = True
-    """Set this to `True` on subclasses who compute their totals
-    automatically, i.e. which have the field :attr:`amount` disabled.
-
-    """
+    edit_totals = False
 
     def disabled_fields(self, ar):
-        """Disable all three total fields if `auto_compute_totals` is set,
+        """Disable all three total fields if `edit_totals` is False,
         otherwise disable :attr:`total_vat` if
         :attr:`VatRule.can_edit` is False.
 
         """
         fields = super(AccountInvoice, self).disabled_fields(ar)
-        if self.auto_compute_totals:
+        if not self.edit_totals:
             fields |= self._total_fields
         return fields
 

@@ -17,8 +17,8 @@ from lino_xl.lib.accounts.utils import DCLABELS, ZERO
 
 
 class VatClasses(dd.ChoiceList):
-    verbose_name = _("VAT Class")
-    verbose_name_plural = _("VAT Classes")
+    verbose_name = _("VAT class")
+    verbose_name_plural = _("VAT classes")
     required_roles = dd.login_required(LedgerStaff)
 
 add = VatClasses.add_item
@@ -416,7 +416,8 @@ class VatRules(dd.ChoiceList):
     verbose_name = _("VAT rule")
     verbose_name_plural = _("VAT rules")
     item_class = VatRule
-    
+    column_names = "value text description"
+
     @classmethod
     def get_vat_rule(
             cls, vat_area,
@@ -447,4 +448,19 @@ class VatRules(dd.ChoiceList):
                 raise Warning(msg)
         return default
 
+    @dd.displayfield(_("Description"))
+    def description(cls, rule, ar):
+        if ar is None:
+            return ''
+        lst = []
+        lst.append(str(rule.rate))
+        lst.append(str(rule.trade_type))
+        lst.append(str(rule.vat_regime))
+        lst.append(str(rule.vat_area))
+        lst.append(str(rule.vat_class))
+        lst.append(str(rule.vat_account))
+        lst.append(str(rule.vat_returnable))
+        lst.append(str(rule.vat_returnable_account))
+        return ', '.join(lst)
 
+    
