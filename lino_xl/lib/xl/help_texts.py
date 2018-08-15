@@ -280,36 +280,6 @@ partner."""),
 guests. Ask confirmation naming the guests who need to check out."""),
     'lino_xl.lib.rooms.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.sales.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.sales.PaperType' : _("""Which paper (document template) to use when printing an invoice."""),
-    'lino_xl.lib.sales.SalesDocument' : _("""Common base class for orders.Order and VatProductInvoice."""),
-    'lino_xl.lib.sales.SalesDocument.print_items_table' : _("""Which table (column layout) to use in the printed document."""),
-    'lino_xl.lib.sales.VatProductInvoice' : _("""A sales invoice is a legal document which describes that something
-(the invoice items) has been sold to a given partner. The partner
-can be either a private person or an organization."""),
-    'lino_xl.lib.sales.VatProductInvoice.balance_before' : _("""The balance of previous payments or debts. On a printed
-invoice, this amount should be mentioned and added to the
-invoice's amount in order to get the total amount to pay."""),
-    'lino_xl.lib.sales.VatProductInvoice.balance_to_pay' : _("""The balance of all movements matching this invoice."""),
-    'lino_xl.lib.sales.VatProductInvoice.print_items_table' : _("""alias of ItemsByInvoicePrint"""),
-    'lino_xl.lib.sales.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose voucher_type must be
-VatProductInvoice)"""),
-    'lino_xl.lib.sales.InvoicesByJournal.master' : _("""alias of lino_xl.lib.ledger.models.Journal"""),
-    'lino_xl.lib.sales.InvoicesByJournal.model' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.DueInvoices' : _("""Shows all due product invoices."""),
-    'lino_xl.lib.sales.DueInvoices.model' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.ProductDocItem' : _("""Mixin for voucher items which potentially refer to a product."""),
-    'lino_xl.lib.sales.ProductDocItem.description' : _("""A multi-line rich text to be printed in the resulting printable
-document."""),
-    'lino_xl.lib.sales.InvoiceItem' : _("""An item of a sales invoice."""),
-    'lino_xl.lib.sales.InvoiceItems' : _("""Shows all sales invoice items."""),
-    'lino_xl.lib.sales.InvoiceItems.model' : _("""alias of InvoiceItem"""),
-    'lino_xl.lib.sales.ItemsByInvoicePrint' : _("""The table used to render items in a printable document."""),
-    'lino_xl.lib.sales.ItemsByInvoicePrint.description_print' : _("""TODO: write more about it."""),
-    'lino_xl.lib.sales.ItemsByInvoicePrint.master' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.ItemsByInvoicePrint.model' : _("""alias of InvoiceItem"""),
-    'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn' : _("""Alternative column layout to be used when printing an invoice."""),
-    'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn.master' : _("""alias of VatProductInvoice"""),
-    'lino_xl.lib.sales.ItemsByInvoicePrintNoQtyColumn.model' : _("""alias of InvoiceItem"""),
     'lino_xl.lib.sepa.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.sepa.fields.UppercaseTextFieldElement' : _("""A CharFieldElement which accepts only upper-case characters."""),
     'lino_xl.lib.sepa.fields.UppercaseTextField' : _("""A custom CharField that accepts only uppercase caracters."""),
@@ -1295,6 +1265,15 @@ their start_date
 is either empty or before the first day of this month or year,
 and if their end_date is either empty or
 after the first day of this month or year."""),
+    'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
+amounts (not products, quantities, discounts)."""),
+    'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
+    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
+voucher_type
+must be VatAccountInvoice)"""),
+    'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
+    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
+    'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
     'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose vat_regime is
 intra-Community."""),
     'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose vat_regime is
@@ -1319,15 +1298,6 @@ movement into the vat_returnable_account."""),
     'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
 field is empty, then VAT will be added to the base account."""),
     'lino_xl.lib.vat.VatRules' : _("""The table of all VatRule objects."""),
-    'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
-amounts (not products, quantities, discounts)."""),
-    'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
-    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
-voucher_type
-must be VatAccountInvoice)"""),
-    'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
-    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
-    'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
     'lino_xl.lib.vat.VatTotal' : _("""Model mixin which defines the fields total_incl,
 total_base and total_vat."""),
     'lino_xl.lib.vat.VatTotal.total_incl' : _("""The amount VAT included."""),
@@ -1335,11 +1305,12 @@ total_base and total_vat."""),
     'lino_xl.lib.vat.VatTotal.total_vat' : _("""The amount of VAT."""),
     'lino_xl.lib.vat.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
     'lino_xl.lib.vat.VatDocument.partner' : _("""Mandatory field to be defined in another class."""),
-    'lino_xl.lib.vat.VatDocument.refresh_after_item_edit' : _("""The total fields of an invoice are currently not automatically
-updated each time an item is modified.  Users must click the
-Save or the Register button to see the invoices totals."""),
     'lino_xl.lib.vat.VatDocument.vat_regime' : _("""The VAT regime to be used in this document.  A pointer to
 VatRegimes."""),
+    'lino_xl.lib.vat.VatDocument.compute_sums' : _("""Calls ComputeSums for this document."""),
+    'lino_xl.lib.vat.VatDocument.edit_totals' : _("""Whether the user usually wants to edit the total amount or
+not."""),
+    'lino_xl.lib.vat.ComputeSums' : _("""Compute the sum fields of a VatDocument based on its items."""),
     'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatTotal."""),
     'lino_xl.lib.vat.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
 VatClasses."""),

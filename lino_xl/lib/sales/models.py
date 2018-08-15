@@ -2,57 +2,34 @@
 # Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""Database models for `lino_xl.lib.sales`.
-
-"""
-
 from __future__ import unicode_literals
 
-from decimal import Decimal
-
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
 
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 from lino.core import actions
 from etgen.html import E
 from lino.utils.mldbc.mixins import BabelNamed
 from lino.modlib.notify.utils import body_subject_to_elems
-from lino.mixins import Sequenced
 
-from lino_xl.lib.excerpts.mixins import Certifiable
-from lino_xl.lib.vat.utils import add_vat, remove_vat, HUNDRED
-from lino_xl.lib.vat.mixins import QtyVatItemBase, VatDocument
-from lino_xl.lib.vat.mixins import get_default_vat_regime, myround
-from lino_xl.lib.vat.choicelists import VatAreas, VatRules
 from lino_xl.lib.sepa.mixins import Payable
 from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
-from lino.mixins.bleached import Bleached
-from lino.mixins import Monthly
 from lino_xl.lib.ledger.roles import LedgerStaff, LedgerUser
+from .mixins import SalesDocument, ProductDocItem
 
 
 TradeTypes.sales.update(
     price_field_name='sales_price',
     price_field_label=_("Sales price"),
     base_account_field_name='sales_account',
-    base_account_field_label=_("Sales Base account"))
+    base_account_field_label=_("Sales account"))
 
 
 class PaperType(BabelNamed):
-    """Which paper (document template) to use when printing an invoice.
-
-    First use case is to differentiate between invoices to get printed
-    either on a company letterpaper for expedition via paper mail or
-    into an email-friendly pdf file.
-
-    """
 
     templates_group = 'sales/VatProductInvoice'
 
@@ -78,202 +55,94 @@ class PaperTypes(dd.Table):
 
 
 
-
-
-# class InvoiceStates(dd.Workflow):
-#     """List of the possible values for the state of an :class:`Invoice`.
-
-#     """
-#     pass
-
-# add = InvoiceStates.add_item
-# add('10', _("Draft"), 'draft', editable=True)
-# add('20', _("Registered"), 'registered', editable=False)
-# add('30', _("Signed"), 'signed', editable=False)
-# add('40', _("Sent"), 'sent', editable=False)
-# add('50', _("Paid"), 'paid', editable=False)
-
-
-# @dd.receiver(dd.pre_analyze)
-# def sales_workflow(sender=None, **kw):
-#     InvoiceStates.registered.add_transition(
-#         _("Register"), states='draft', icon_name='accept')
-#     InvoiceStates.draft.add_transition(
-#         _("Deregister"), states="registered", icon_name='pencil')
-#     # InvoiceStates.submitted.add_transition(_("Submit"),states="registered")
-
-class SalesDocument(VatDocument, Certifiable):
-    """Common base class for `orders.Order` and :class:`VatProductInvoice`.
-
-    Subclasses must either add themselves a `date` field (as does
-    Order) or inherit it from Voucher (as does VatProductInvoice)
-
-
-    """
-
-    class Meta:
-        abstract = True
-
-    edit_totals = False
-
-    print_items_table = None
-    """Which table (column layout) to use in the printed document.
-
-    :class:`ItemsByInvoicePrint`
-    :class:`ItemsByInvoicePrintNoQtyColumn`
-
-    """
-
-    language = dd.LanguageField()
-
-    subject = models.CharField(_("Subject line"), max_length=200, blank=True)
-    intro = models.TextField("Introductive Text", blank=True)
-    
-    paper_type = dd.ForeignKey('sales.PaperType', null=True, blank=True)
-    # channel = Channels.field(default=Channels.as_callable('paper'))
-
-    def get_printable_type(self):
-        return self.journal
-
-    def get_print_language(self):
-        return self.language or self.partner.language or \
-            dd.get_default_language()
-
-    def get_trade_type(self):
-        return TradeTypes.sales
-
-    def add_voucher_item(self, product=None, qty=None, **kw):
-        Product = rt.models.products.Product
-        if product is not None:
-            if not isinstance(product, Product):
-                product = Product.objects.get(pk=product)
-            # if qty is None:
-                # qty = Duration(1)
-        kw['product'] = product
-
-        kw['qty'] = qty
-        return super(SalesDocument, self).add_voucher_item(**kw)
-
-    def get_excerpt_templates(self, bm):
-        """Overrides
-        :meth:`lino_xl.lib.excerpts.mixins.Certifiable.get_excerpt_templates`.
-
-        """
-        pt = self.paper_type or get_paper_type(self.partner)
-        if pt and pt.template:
-            return [pt.template]
-
-def get_paper_type(obj):
-    sr = getattr(obj, 'salesrule', None)
-    if sr:
-        return sr.paper_type
-
-
 class SalesDocuments(PartnerVouchers):
     pass
 
-class MakeCopy(dd.Action):
-    button_text = u"\u2042"  # ASTERISM (⁂)
+# class MakeCopy(dd.Action):
+#     button_text = u"\u2042"  # ASTERISM (⁂)
     
-    label = _("Make copy")
-    show_in_workflow = True
-    show_in_bbar = False
-    copy_item_fields = set('product total_incl unit_price qty'.split())
+#     label = _("Make copy")
+#     show_in_workflow = True
+#     show_in_bbar = False
+#     copy_item_fields = set('product total_incl unit_price qty'.split())
     
-    parameters = dict(
-        partner=dd.ForeignKey('contacts.Partner'),
-        product=dd.ForeignKey('products.Product', blank=True),
-        subject=models.CharField(
-            _("Subject"), max_length=200, blank=True),
-        your_ref=models.CharField(
-            _("Your ref"), max_length=200, blank=True),
-        entry_date=models.DateField(_("Entry date")),
-        total_incl=dd.PriceField(_("Total incl VAT"), blank=True),
-    )
-    params_layout = """
-    entry_date partner
-    your_ref
-    subject
-    product total_incl
-    """
+#     parameters = dict(
+#         partner=dd.ForeignKey('contacts.Partner'),
+#         product=dd.ForeignKey('products.Product', blank=True),
+#         subject=models.CharField(
+#             _("Subject"), max_length=200, blank=True),
+#         your_ref=models.CharField(
+#             _("Your ref"), max_length=200, blank=True),
+#         entry_date=models.DateField(_("Entry date")),
+#         total_incl=dd.PriceField(_("Total incl VAT"), blank=True),
+#     )
+#     params_layout = """
+#     entry_date partner
+#     your_ref
+#     subject
+#     product total_incl
+#     """
 
-    def action_param_defaults(self, ar, obj, **kw):
-        kw = super(MakeCopy, self).action_param_defaults(ar, obj, **kw)
-        kw.update(your_ref=obj.your_ref)
-        kw.update(subject=obj.subject)
-        kw.update(entry_date=obj.entry_date)
-        kw.update(partner=obj.partner)
-        # qs = obj.items.all()
-        # if qs.count():
-        #     kw.update(product=qs[0].product)
-        # kw.update(total_incl=obj.total_incl)
-        return kw
+#     def action_param_defaults(self, ar, obj, **kw):
+#         kw = super(MakeCopy, self).action_param_defaults(ar, obj, **kw)
+#         kw.update(your_ref=obj.your_ref)
+#         kw.update(subject=obj.subject)
+#         kw.update(entry_date=obj.entry_date)
+#         kw.update(partner=obj.partner)
+#         # qs = obj.items.all()
+#         # if qs.count():
+#         #     kw.update(product=qs[0].product)
+#         # kw.update(total_incl=obj.total_incl)
+#         return kw
 
-    def run_from_ui(self, ar, **kw):
-        VoucherStates = rt.models.ledger.VoucherStates
-        obj = ar.selected_rows[0]
-        pv = ar.action_param_values
-        kw = dict(
-            journal=obj.journal,
-            user=ar.get_user(),
-            partner=pv.partner, entry_date=pv.entry_date,
-            subject=pv.subject,
-            your_ref=pv.your_ref)
+#     def run_from_ui(self, ar, **kw):
+#         VoucherStates = rt.models.ledger.VoucherStates
+#         obj = ar.selected_rows[0]
+#         pv = ar.action_param_values
+#         kw = dict(
+#             journal=obj.journal,
+#             user=ar.get_user(),
+#             partner=pv.partner, entry_date=pv.entry_date,
+#             subject=pv.subject,
+#             your_ref=pv.your_ref)
 
-        new = obj.__class__(**kw)
-        new.fill_defaults()
-        new.full_clean()
-        new.save()
-        if pv.total_incl:
-            if not pv.product:
-                qs = obj.items.all()
-                if qs.count():
-                    pv.product = qs[0].product
-            item = new.add_voucher_item(
-                total_incl=pv.total_incl, product=pv.product)
-            item.total_incl_changed(ar)
-            item.full_clean()
-            item.save()
-        else:
-            for olditem in obj.items.all():
-                # ikw = dict()
-                # for k in self.copy_item_fields:
-                #     ikw[k] = getattr(olditem, k)
-                ikw = { k: getattr(olditem, k)
-                        for k in self.copy_item_fields}
-                item = new.add_voucher_item(**ikw)
-                item.total_incl_changed(ar)
-                item.full_clean()
-                item.save()
+#         new = obj.__class__(**kw)
+#         new.fill_defaults()
+#         new.full_clean()
+#         new.save()
+#         if pv.total_incl:
+#             if not pv.product:
+#                 qs = obj.items.all()
+#                 if qs.count():
+#                     pv.product = qs[0].product
+#             item = new.add_voucher_item(
+#                 total_incl=pv.total_incl, product=pv.product)
+#             item.total_incl_changed(ar)
+#             item.full_clean()
+#             item.save()
+#         else:
+#             for olditem in obj.items.all():
+#                 # ikw = dict()
+#                 # for k in self.copy_item_fields:
+#                 #     ikw[k] = getattr(olditem, k)
+#                 ikw = { k: getattr(olditem, k)
+#                         for k in self.copy_item_fields}
+#                 item = new.add_voucher_item(**ikw)
+#                 item.total_incl_changed(ar)
+#                 item.full_clean()
+#                 item.save()
             
-        new.full_clean()
-        new.register_voucher(ar)
-        new.state = VoucherStates.registered
-        new.save()
-        ar.goto_instance(new)
-        ar.success()
+#         new.full_clean()
+#         new.register_voucher(ar)
+#         new.state = VoucherStates.registered
+#         new.save()
+#         ar.goto_instance(new)
+#         ar.success()
 
 
 
 
 class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
-    """A sales invoice is a legal document which describes that something
-    (the invoice items) has been sold to a given partner. The partner
-    can be either a private person or an organization.
-
-    Inherits from :class:`lino_xl.lib.ledger.models.Voucher`.
-
-    .. attribute:: balance_before
-
-       The balance of previous payments or debts. On a printed
-       invoice, this amount should be mentioned and added to the
-       invoice's amount in order to get the total amount to pay.
-
-    .. attribute:: balance_to_pay
-
-       The balance of all movements matching this invoice.
-
-    """
     class Meta:
         app_label = 'sales'
         abstract = dd.is_abstract_model(__name__, 'VatProductInvoice')
@@ -282,25 +151,7 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
 
     quick_search_fields = "partner__name subject"
 
-    make_copy = MakeCopy()
-
-    # order = dd.ForeignKey('orders.Order', blank=True, null=True)
-
-    # def full_clean(self, *args, **kw):
-    #     if self.due_date is None:
-    #         if self.payment_term is not None:
-    #             self.due_date = self.payment_term.get_due_date(
-    #                 self.voucher_date)
-    #     # SalesDocument.before_save(self)
-    #     # ledger.LedgerDocumentMixin.before_save(self)
-    #     super(VatProductInvoice, self).full_clean(*args, **kw)
-
-    # def before_state_change(self,ar,old,new):
-        # if new.name == 'registered':
-            # self.compute_totals()
-        # elif new.name == 'draft':
-            # pass
-        # super(VatProductInvoice,self).before_state_change(ar,old,new)
+    # make_copy = MakeCopy()
 
     @classmethod
     def get_registrable_fields(cls, site):
@@ -315,13 +166,6 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
         # yield 'item_vat'
 
     def get_print_items(self, ar):
-        """
-        For usage in an appy template::
-
-            do text
-            from table(obj.get_print_items(ar))
-
-        """
         return self.print_items_table.request(self)
 
     @dd.virtualfield(dd.PriceField(_("Balance to pay")))
@@ -335,7 +179,6 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
 
     @dd.virtualfield(dd.PriceField(_("Balance before")))
     def balance_before(self, ar):
-        """"""
         Movement = rt.models.ledger.Movement
         qs = Movement.objects.filter(
             partner=self.get_partner(),
@@ -404,10 +247,6 @@ class Invoices(SalesDocuments):
 
 
 class InvoicesByJournal(Invoices, ByJournal):
-    """Shows all invoices of a given journal (whose `voucher_type` must be
-    :class:`VatProductInvoice`)
-
-    """
     quick_search_fields = "partner subject"
     order_by = ["-accounting_period__year", "-number"]
     params_panel_hidden = True
@@ -422,7 +261,6 @@ class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
 
 
 class DueInvoices(Invoices):
-    """Shows all due product invoices."""
     label = _("Due invoices")
     order_by = ["due_date"]
 
@@ -436,83 +274,8 @@ class DueInvoices(Invoices):
         kw.update(cleared=dd.YesNo.no)
         return kw
 
-class ProductDocItem(QtyVatItemBase, Bleached):
-    """Mixin for voucher items which potentially refer to a product.
-
-    .. attribute:: product
-    .. attribute:: description
-
-       A multi-line rich text to be printed in the resulting printable
-       document.
-
-    .. attribute:: discount
-
-    """
-    class Meta:
-        abstract = True
-
-    bleached_fields = ['description']
-
-    product = dd.ForeignKey('products.Product', blank=True, null=True)
-    description = dd.RichTextField(
-        _("Description"), blank=True, null=True)
-    discount = dd.PercentageField(_("Discount"), blank=True, null=True)
-
-    def get_base_account(self, tt):
-        # if self.product is None:
-        #     return tt.get_base_account()
-        return tt.get_product_base_account(self.product)
-        # return self.voucher.journal.chart.get_account_by_ref(ref)
-
-    def discount_changed(self, ar=None):
-        if not self.product:
-            return
-
-        tt = self.voucher.get_trade_type()
-        catalog_price = tt.get_catalog_price(self.product)
-
-        if catalog_price is None:
-            return
-        # assert self.vat_class == self.product.vat_class
-        rule = self.get_vat_rule(tt)
-        if rule is None:
-            return
-        va = VatAreas.get_for_country()
-        cat_rule = VatRules.get_vat_rule(
-            va, tt, get_default_vat_regime(), self.get_vat_class(tt),
-            dd.today())
-        if cat_rule is None:
-            return
-        if rule.rate != cat_rule.rate:
-            catalog_price = remove_vat(catalog_price, cat_rule.rate)
-            catalog_price = add_vat(catalog_price, cat_rule.rate)
-
-        if self.discount is None:
-            self.unit_price = myround(catalog_price)
-        else:
-            self.unit_price = myround(
-                catalog_price * (HUNDRED - self.discount) / HUNDRED)
-        self.unit_price_changed(ar)
-
-    def product_changed(self, ar=None):
-        if self.product:
-            self.title = self.product.name
-            self.description = self.product.description
-            if self.qty is None:
-                self.qty = Decimal("1")
-            self.discount_changed(ar)
-
-    def full_clean(self):
-        super(ProductDocItem, self).full_clean()
-        if self.total_incl and not self.product:
-            tt = self.voucher.get_trade_type()
-            if self.get_base_account(tt) is None:
-                raise ValidationError(
-                    _("You must specify a product if there is an amount."))
-
 
 class InvoiceItem(ProductDocItem, SequencedVoucherItem):
-    """An item of a sales invoice."""
     class Meta:
         app_label = 'sales'
         abstract = dd.is_abstract_model(__name__, 'InvoiceItem')
@@ -565,13 +328,6 @@ class ItemsByInvoice(InvoiceItems):
 
 
 class ItemsByInvoicePrint(ItemsByInvoice):
-    """The table used to render items in a printable document.
-
-    .. attribute:: description_print
-
-        TODO: write more about it.
-
-    """
     column_names = "description_print unit_price qty total_incl"
     include_qty_in_description = False
 
@@ -593,8 +349,6 @@ class ItemsByInvoicePrint(ItemsByInvoice):
                 
 
 class ItemsByInvoicePrintNoQtyColumn(ItemsByInvoicePrint):
-    """Alternative column layout to be used when printing an invoice.
-    """
     column_names = "description_print total_incl"
     include_qty_in_description = True
     hide_sums = True
