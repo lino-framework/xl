@@ -70,7 +70,7 @@ class VatTotal(dd.Model):
     # For internal use.  This is the list of field names to disable
     # when `edit_totals` is False.
 
-    edit_totals = True
+    # edit_totals = True
 
     # def get_trade_type(self):
     #     raise NotImplementedError()
