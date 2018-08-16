@@ -70,7 +70,7 @@ class VatTotal(dd.Model):
     # For internal use.  This is the list of field names to disable
     # when `edit_totals` is False.
 
-    # edit_totals = True
+    edit_totals = True
 
     # def get_trade_type(self):
     #     raise NotImplementedError()
@@ -157,7 +157,6 @@ class ComputeSums(dd.Action):
         
         
 class VatDocument(ProjectRelated, VatTotal):
-    edit_totals = True
 
     # refresh_after_item_edit = False
 
@@ -245,11 +244,11 @@ class VatDocument(ProjectRelated, VatTotal):
         tt = self.journal.trade_type
         account = tt.get_partner_invoice_account(self.partner)
         if account is None:
-            account = tt.get_base_account()
+            account = CommonAccounts.waiting.get_object()
             if account is None:
                 raise Warning(
-                    _("Base account for {} ({}) is not configured").format(
-                        tt, tt.base_account))
+                    _("{} is not configured").format(
+                        CommonAccounts.waiting))
         kw = dict()
         if dd.is_installed('ana') and account.needs_ana:
             kw['ana_account'] = account.ana_account

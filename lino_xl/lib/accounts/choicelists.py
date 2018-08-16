@@ -195,6 +195,8 @@ add('4511', _("VAT returnable"), 'vat_returnable', 'liabilities', False)
 add('4512', _("VAT deductible"), 'vat_deductible', 'liabilities', False)
 add('4513', _("VAT declared"), 'due_taxes', 'liabilities', False)
 
+add('4900', _("Waiting"), 'waiting', 'liabilities', True)
+
 add('5500', _("BestBank"), 'best_bank', 'assets', False)
 add('5700', _("Cash"), 'cash', 'assets', False)
 

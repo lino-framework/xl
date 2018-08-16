@@ -412,7 +412,8 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
     'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
-    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts."""),
+    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts.
+It defines two additional attributes:"""),
     'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
 accounts."""),
     'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
@@ -1288,7 +1289,7 @@ VatRegimes."""),
     'lino_xl.lib.vat.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
 stored as 0.20 (not 20)."""),
     'lino_xl.lib.vat.VatRule.can_edit' : _("""Whether the VAT amount can be modified by the user. This applies
-only for documents with VatTotal.auto_compute_totals set
+only for documents with VatDocument.edit_totals set
 to False."""),
     'lino_xl.lib.vat.VatRule.vat_account' : _("""The general account where VAT is to be booked."""),
     'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is "returnable" (i.e. not to be paid to or by the
@@ -1304,18 +1305,26 @@ total_base and total_vat."""),
     'lino_xl.lib.vat.VatTotal.total_base' : _("""The amount VAT excluded."""),
     'lino_xl.lib.vat.VatTotal.total_vat' : _("""The amount of VAT."""),
     'lino_xl.lib.vat.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
-    'lino_xl.lib.vat.VatDocument.partner' : _("""Mandatory field to be defined in another class."""),
+    'lino_xl.lib.vat.VatDocument.edit_totals' : _("""Whether the user usually wants to edit the total amount or
+not."""),
+    'lino_xl.lib.vat.VatDocument.project' : _("""Pointer to a lino_xl.lib.ledger.Plugin.project_model."""),
+    'lino_xl.lib.vat.VatDocument.partner' : _("""Mandatory field to be defined in the implementing class."""),
+    'lino_xl.lib.vat.VatDocument.items_edited' : _("""An automatically managed boolean field which says whether the
+user has manually edited the items of this document.  If this
+is False and edit_totals is True, Lino will
+automatically update the only invoice item according to
+partner and vat_regime and total_incl."""),
     'lino_xl.lib.vat.VatDocument.vat_regime' : _("""The VAT regime to be used in this document.  A pointer to
 VatRegimes."""),
     'lino_xl.lib.vat.VatDocument.compute_sums' : _("""Calls ComputeSums for this document."""),
-    'lino_xl.lib.vat.VatDocument.edit_totals' : _("""Whether the user usually wants to edit the total amount or
-not."""),
-    'lino_xl.lib.vat.ComputeSums' : _("""Compute the sum fields of a VatDocument based on its items."""),
-    'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatTotal."""),
+    'lino_xl.lib.vat.ComputeSums' : _("""Compute the sum fields of a VatDocument based on its
+items."""),
+    'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatDocument."""),
     'lino_xl.lib.vat.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
 VatClasses."""),
-    'lino_xl.lib.vat.QtyVatItemBase' : _("""Model mixin for items of a VatTotal, adds unit_price
-and qty."""),
+    'lino_xl.lib.vat.QtyVatItemBase' : _("""Model mixin for items of a VatTotal.  Extends
+VatItemBase by adding unit_price and qty."""),
+    'lino_xl.lib.vat.QtyVatItemBase.unit_price' : _("""The unit price for this item."""),
     'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
     'lino_xl.lib.vat.VatClasses' : _("""The global list of VAT classes."""),
     'lino_xl.lib.vat.VatColumns' : _("""The global list of VAT columns."""),

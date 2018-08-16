@@ -47,7 +47,21 @@ from .roles import VoucherSupervisor
 from .ui import *
 
 
+class LedgerInfo(dd.Model):
+    class Meta:
+        app_label = 'ledger'
 
+    allow_cascaded_delete = 'user'
+    user = dd.OneToOneField('users.User', primary_key=True)
+    entry_date = models.DateField(
+        _("Last entry date"), null=True, blank=True)
+    
+    @classmethod
+    def get_for_user(cls, user):
+        try:
+            return cls.objects.get(user=user)
+        except cls.DoesNotExist:
+            return cls(user=user)
 
 @dd.python_2_unicode_compatible
 class Journal(mixins.BabelNamed,
@@ -343,7 +357,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         verbose_name_plural = _("Vouchers")
 
     journal = JournalRef()
-    entry_date = models.DateField(_("Entry date"), default=dd.today)
+    entry_date = models.DateField(_("Entry date"))
     voucher_date = models.DateField(_("Voucher date"))
     accounting_period = dd.ForeignKey(
         'ledger.AccountingPeriod', blank=True)
@@ -412,6 +426,8 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         return super(Voucher, model).quick_search_filter(search_text, prefix)
 
     def full_clean(self, *args, **kwargs):
+        if self.entry_date is None:
+            self.entry_date = dd.today()
         if self.voucher_date is None:
             self.voucher_date = self.entry_date
         if not self.accounting_period_id:
@@ -421,11 +437,24 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             self.number = self.journal.get_next_number(self)
         super(Voucher, self).full_clean(*args, **kwargs)
 
+    def on_create(self, ar):
+        super(Voucher, self).on_create(ar)
+        if self.entry_date is None:
+            if ar is None:
+                self.entry_date = dd.today()
+            else:
+                info = LedgerInfo.get_for_user(ar.get_user())
+                self.entry_date = info.entry_date or dd.today()
+        
     def entry_date_changed(self, ar):
         self.accounting_period = AccountingPeriod.get_default_for_date(
             self.entry_date)
         self.voucher_date = self.entry_date
         self.accounting_period_changed(ar)
+        info = LedgerInfo.get_for_user(ar.get_user())
+        info.entry_date = self.entry_date
+        info.full_clean()
+        info.save()
 
     def accounting_period_changed(self, ar):
         """If user changes the :attr:`accounting_period`, then the `number`
