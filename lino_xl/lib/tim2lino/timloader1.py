@@ -419,19 +419,19 @@ class TimLoader(TimLoader):
             if row.idctr == ('V'):
                 kw.update(partner_id=self.par_pk(row.idcpt.strip()))
                 kw.update(
-                    account=vat.TradeTypes.sales.get_partner_account())
+                    account=vat.TradeTypes.sales.get_main_account())
             elif row.idctr == ('E'):
                 kw.update(partner_id=self.par_pk(row.idcpt.strip()))
                 kw.update(
-                    account=vat.TradeTypes.purchases.get_partner_account())
+                    account=vat.TradeTypes.purchases.get_main_account())
             elif row.idctr == ('G'):
                 kw.update(partner_id=self.par_pk(row.idcpt.strip()))
                 kw.update(
-                    account=vat.TradeTypes.wages.get_partner_account())
+                    account=vat.TradeTypes.wages.get_main_account())
             elif row.idctr == ('S'):
                 kw.update(partner_id=self.par_pk(row.idcpt.strip()))
                 kw.update(
-                    account=vat.TradeTypes.clearings.get_partner_account())
+                    account=vat.TradeTypes.clearings.get_main_account())
             else:
                 a = Account.objects.get(ref=row.idcpt.strip())
                 kw.update(account=a)

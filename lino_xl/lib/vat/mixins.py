@@ -157,7 +157,6 @@ class ComputeSums(dd.Action):
         
         
 class VatDocument(ProjectRelated, VatTotal):
-    edit_totals = True
 
     # refresh_after_item_edit = False
 
@@ -175,7 +174,7 @@ class VatDocument(ProjectRelated, VatTotal):
         yield 'vat_regime'
 
     def compute_totals(self):
-        if self.pk is None:
+        if self.pk is None or not self.state.editable:
             return
         base = Decimal()
         vat = Decimal()
@@ -238,15 +237,18 @@ class VatDocument(ProjectRelated, VatTotal):
                 self.vat_regime = get_default_vat_regime()
 
     def update_item(self):
-        if self.pk is None:
+        if self.pk is None or not self.state.editable:
+            return
+        if self.items_edited or not self.edit_totals:
             return
         tt = self.journal.trade_type
         account = tt.get_partner_invoice_account(self.partner)
         if account is None:
-            account = tt.get_base_account()
+            account = CommonAccounts.waiting.get_object()
             if account is None:
                 raise Warning(
-                    _("Base account for {} is not configured").format(tt))
+                    _("{} is not configured").format(
+                        CommonAccounts.waiting))
         kw = dict()
         if dd.is_installed('ana') and account.needs_ana:
             kw['ana_account'] = account.ana_account
@@ -267,12 +269,10 @@ class VatDocument(ProjectRelated, VatTotal):
     def partner_changed(self, ar=None):
         self.vat_regime = None
         self.fill_defaults()
-        if self.edit_totals and not self.items_edited:
-            self.update_item()
+        # self.update_item()  # called by after_ui_save()
         
     def after_ui_save(self, ar, cw):
-        if self.edit_totals and not self.items_edited:
-            self.update_item()
+        self.update_item()
         return super(VatDocument, self).after_ui_save(ar, cw)
         
         

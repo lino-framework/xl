@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015-2017 Luc Saffre
+# Copyright 2015-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -9,7 +9,7 @@ demo data.
 Thanks to `www.mobilefish.com
 <http://www.mobilefish.com/services/random_iban_generator/random_iban_generator.php>`_.
 
-This is being tested in :doc:`/specs/cosi/iban`.
+This is being tested in :doc:`/specs/iban`.
 
 """
 

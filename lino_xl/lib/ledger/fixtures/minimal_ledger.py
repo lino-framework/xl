@@ -44,6 +44,14 @@ def objects():
     JournalGroups = rt.models.ledger.JournalGroups
     Company = rt.models.contacts.Company
 
+    def group(ref, type, name):
+        global current_group
+        current_group = rt.models.accounts.Group(
+            ref=ref,
+            account_type=AccountTypes.get_by_name(type),
+            **dd.str2kw('name', name))
+        return current_group
+    
     def Group(ref, type, fr, de, en, et=None):
         if et is None:
             et = en
@@ -61,52 +69,34 @@ def objects():
             ref=ca.value,
             type=ca)
 
-    yield Group('10', 'capital', "Capital", "Kapital", "Capital", "Kapitaal")
+    # yield Group('10', 'capital', "Capital", "Kapital", "Capital", "Kapitaal")
+
+    yield group('10', 'capital', _("Capital"))
 
     yield Group('40', 'assets',
-                "Créances commerciales",
+                "Créances et dettes commerciales",
                 "Forderungen aus Lieferungen und Leistungen",
-                "Commercial receivable(?)")
+                "Commercial assets & liabilities")
 
     yield CommonAccounts.customers.create_object(group=current_group)
-    # if sales:
-    #     settings.SITE.site_config.update(clients_account=obj)
-    
     yield CommonAccounts.suppliers.create_object(group=current_group)
     
-    yield CommonAccounts.due_taxes.create_object(group=current_group)
-
-    # if vat:
-    #     settings.SITE.site_config.update(suppliers_account=obj)
-
-    yield CommonAccounts.tax_offices.create_object(group=current_group)
-    # if vat:
-    #     settings.SITE.site_config.update(tax_offices_account=obj)
-
-    yield CommonAccounts.pending_po.create_object(group=current_group)
+    # yield Group('45', 'assets', "TVA à payer",
+    #             "Geschuldete MWSt", "VAT to pay", "Käibemaksukonto")
     
-    yield Group('45', 'assets', "TVA à payer",
-                "Geschuldete MWSt", "VAT to pay", "Käibemaksukonto")
+    yield group('47', 'assets', _("Tax office"))
     
     yield CommonAccounts.vat_due.create_object(group=current_group)
     yield CommonAccounts.vat_returnable.create_object(group=current_group)
     yield CommonAccounts.vat_deductible.create_object(group=current_group)
+    yield CommonAccounts.due_taxes.create_object(group=current_group)
+    yield CommonAccounts.tax_offices.create_object(group=current_group)
     
-    # yield Account(VAT_DUE_ACCOUNT, 'incomes',
-    #               "TVA due",
-    #               "Geschuldete MWSt",
-    #               "VAT due", "Käibemaks maksta", clearable=True)
-    # yield Account(VAT_RETURNABLE_ACCOUNT, 'assets',
-    #               "TVA à retourner",
-    #               "Rückzahlbare MWSt",
-    #               "VAT returnable", "Käibemaks tagastada", clearable=True)
-    # yield Account(
-    #     VAT_DEDUCTIBLE_ACCOUT, 'assets',
-    #     "TVA déductible",
-    #     "Abziehbare MWSt",
-    #     "VAT deductible", "Enammakstud käibemaks",
-    #     clearable=True)
-
+    yield group('49', 'assets', _("Other assets & liabilities"))
+    
+    yield CommonAccounts.pending_po.create_object(group=current_group)
+    yield CommonAccounts.waiting.create_object(group=current_group)
+    
     # PCMN 55
     yield Group('55', 'assets',
                 "Institutions financières", "Finanzinstitute", "Banks")
@@ -249,6 +239,6 @@ def objects():
             if a:
                 yield MatchRule(journal=jnl, account=a)
         elif jnl.trade_type:
-            a = jnl.trade_type.get_partner_account()
+            a = jnl.trade_type.get_main_account()
             if a:
                 yield MatchRule(journal=jnl, account=a)

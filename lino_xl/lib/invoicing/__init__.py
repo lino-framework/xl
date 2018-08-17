@@ -6,7 +6,7 @@
 Adds functionality for **invoicing**, i.e. automatically generating
 invoices from data in the database.
 
-See :doc:`/specs/cosi/invoicing`.
+See :doc:`/specs/invoicing`.
 
 .. autosummary::
     :toctree:

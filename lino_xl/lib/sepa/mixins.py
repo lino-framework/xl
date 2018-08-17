@@ -159,10 +159,10 @@ class Payable(PartnerRelated):
                 None, acc_tuple, prj, self.journal.dc, amount, **kw)
             counter_sums.collect(prj, amount)
 
-        acc = self.get_trade_type().get_partner_account()
+        acc = self.get_trade_type().get_main_account()
         if acc is None:
             if len(counter_sums.items()):
-                raise Exception("No partner account for {}".format(
+                raise Exception("No main account for {}".format(
                     self.get_trade_type()))
         else:
             for prj, amount in counter_sums.items():

@@ -197,7 +197,7 @@ class ExpectedMovements(dd.VirtualTable):
         # if pv is None:
         #     raise Exception("No pv in %s" % ar)
         if pv.trade_type:
-            flt.update(account=pv.trade_type.get_partner_account())
+            flt.update(account=pv.trade_type.get_main_account())
         if pv.partner:
             flt.update(partner=pv.partner)
         if pv.account:
@@ -546,7 +546,7 @@ class PartnerBalancesByTradeType(AccountBalances):
         tt = ar.master_instance
         if tt is None:
             return
-        a = tt.get_partner_account()
+        a = tt.get_main_account()
         return dict(partner=OuterRef('pk'), account=a)
 
     @dd.displayfield(_("Ref"))

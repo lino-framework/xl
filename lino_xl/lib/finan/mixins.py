@@ -215,7 +215,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         # if not match.balance:
         #     raise Exception("20151117")
         if match.trade_type:
-            self.account = match.trade_type.get_partner_account()
+            self.account = match.trade_type.get_main_account()
         if self.account_id is None:
             self.account = match.account
         self.dc = match.dc

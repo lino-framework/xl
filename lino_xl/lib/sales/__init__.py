@@ -1,15 +1,13 @@
 # Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 """Adds functionality for handling sales.
-See :doc:`/specs/cosi/sales`.
+See :doc:`/specs/sales`.
 
 
 .. autosummary::
     :toctree:
 
-    models
     fixtures.std
     fixtures.demo_bookings
 

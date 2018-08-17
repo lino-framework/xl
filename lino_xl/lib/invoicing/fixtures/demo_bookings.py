@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Creates montly invoicing plans and executes them.
