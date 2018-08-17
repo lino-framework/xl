@@ -411,12 +411,6 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
-    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
-    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts.
-It defines two additional attributes:"""),
-    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
-accounts."""),
-    'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
     'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for "something
 where you can place money and retrieve it later"."""),
     'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
@@ -450,6 +444,12 @@ account."""),
 together with its booking direction (debit or credit)."""),
     'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
     'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
+    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
+accounts."""),
+    'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
+    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
+    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts.
+It defines two additional attributes:"""),
     'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
     'lino_xl.lib.accounts.BalanceSheet' : _("""A balance sheet or statement of financial position is a
 summary of the financial balances of an organisation."""),
@@ -899,11 +899,7 @@ financial voucher."""),
     'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
-    'lino_xl.lib.ledger.AccountingReport' : _("""A combined report which produces a series of reports for a given
-period as one action."""),
-    'lino_xl.lib.ledger.MatchRule' : _("""A match rule specifies that a movement into given account can
-be cleared using a given journal."""),
-    'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger."""),
+    'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger.  See Overview."""),
     'lino_xl.lib.ledger.Movement.value_date' : _("""The date at which this movement is to be entered into the
 ledger.  This is usually the voucher's entry_date, except
 e.g. for bank statements where each item can have its own
@@ -940,17 +936,6 @@ to be assigned to. The default value is determined from
 entry_date."""),
     'lino_xl.lib.ledger.Voucher.narration' : _("""A short explanation which ascertains the subject matter of
 this journal entry."""),
-    'lino_xl.lib.ledger.PaymentTerm' : _("""The payment term of an invoice is a convention on how the invoice
-should be paid."""),
-    'lino_xl.lib.ledger.PaymentTerm.days' : _("""Number of days to add to voucher_date."""),
-    'lino_xl.lib.ledger.PaymentTerm.months' : _("""Number of months to add to voucher_date."""),
-    'lino_xl.lib.ledger.PaymentTerm.end_of_month' : _("""Whether to move voucher_date to the end of month."""),
-    'lino_xl.lib.ledger.PaymentTerm.printed_text' : _("""Used in sales/VatProductInvoice/trailer.html as
-follows:"""),
-    'lino_xl.lib.ledger.AccountingPeriod' : _("""An accounting period is the smallest time slice to be observed
-(declare) in accounting reports. Usually it corresponds to one
-month. Except for some small companies which declare per
-quarter."""),
     'lino_xl.lib.ledger.Journal' : _("""A journal is a named sequence of numbered vouchers."""),
     'lino_xl.lib.ledger.Journal.trade_type' : _("""Pointer to TradeTypes."""),
     'lino_xl.lib.ledger.Journal.voucher_type' : _("""Pointer to an item of VoucherTypes."""),
@@ -969,6 +954,23 @@ this journal."""),
     'lino_xl.lib.ledger.Journal.auto_fill_suggestions' : _("""Whether to automatically fill voucher item from due payments
 of the partner when entering a financial voucher."""),
     'lino_xl.lib.ledger.Journal.template' : _("""See PrintableType.template."""),
+    'lino_xl.lib.ledger.LedgerInfo' : _("""A little model which holds ledger specific information per user."""),
+    'lino_xl.lib.ledger.LedgerInfo.user' : _("""OneToOneField pointing to the user."""),
+    'lino_xl.lib.ledger.LedgerInfo.entry_date' : _("""The last value this user typed as entry_date of a voucher.  It is the default value
+for every new voucher."""),
+    'lino_xl.lib.ledger.MatchRule' : _("""A match rule specifies that a movement into given account can
+be cleared using a given journal."""),
+    'lino_xl.lib.ledger.PaymentTerm' : _("""The payment term of an invoice is a convention on how the
+invoice should be paid."""),
+    'lino_xl.lib.ledger.PaymentTerm.days' : _("""Number of days to add to voucher_date."""),
+    'lino_xl.lib.ledger.PaymentTerm.months' : _("""Number of months to add to voucher_date."""),
+    'lino_xl.lib.ledger.PaymentTerm.end_of_month' : _("""Whether to move voucher_date to the end of month."""),
+    'lino_xl.lib.ledger.PaymentTerm.printed_text' : _("""Used in sales/VatProductInvoice/trailer.html as
+follows:"""),
+    'lino_xl.lib.ledger.AccountingPeriod' : _("""An accounting period is the smallest time slice to be observed
+(declare) in accounting reports. Usually it corresponds to one
+month. Except for some small companies which declare per
+quarter."""),
     'lino_xl.lib.ledger.Journals' : _("""The default table showing all instances of Journal."""),
     'lino_xl.lib.ledger.ByJournal' : _("""Mixin for journal-based tables of vouchers."""),
     'lino_xl.lib.ledger.Vouchers' : _("""The base table for all tables working on Voucher."""),
@@ -1101,6 +1103,8 @@ debit and credit movements."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.start_period' : _("""Start of observed period range."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.end_period' : _("""Optional end of observed period range.  Leave empty to
 consider only the Start period."""),
+    'lino_xl.lib.ledger.AccountingReport' : _("""A combined report which produces a series of reports for a given
+period as one action."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
