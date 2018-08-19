@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -195,7 +195,7 @@ add('4511', _("VAT returnable"), 'vat_returnable', 'liabilities', False)
 add('4512', _("VAT deductible"), 'vat_deductible', 'liabilities', False)
 add('4513', _("VAT declared"), 'due_taxes', 'liabilities', False)
 
-add('4900', _("Waiting"), 'waiting', 'liabilities', True)
+add('4900', _("Waiting account"), 'waiting', 'liabilities', True)
 
 add('5500', _("BestBank"), 'best_bank', 'assets', False)
 add('5700', _("Cash"), 'cash', 'assets', False)
