@@ -70,19 +70,18 @@ class Postable(dd.Model):
     class Meta:
         abstract = True
 
-    create_postings = CreatePostings()
+    if dd.is_installed('postings'):
+        create_postings = CreatePostings()
 
-    #~ def print_from_posting(self,posting,ar,**kw):
-        #~ return ar.error("Not implemented")
+        def get_postable_recipients(self):
+            return []
 
-    def get_postable_recipients(self):
-        return []
-
-    def get_recipients(self):
-        Posting = rt.models.postings.Posting
-        qs = Posting.objects.filter(
-            owner_id=self.pk, owner_type=ContentType.get_for_model(self.__class__))
-        return qs.values('partner')
-        #~ state=PostingStates.ready)
+        def get_recipients(self):
+            Posting = rt.models.postings.Posting
+            qs = Posting.objects.filter(
+                owner_id=self.pk, owner_type=ContentType.get_for_model(
+                    self.__class__))
+            return qs.values('partner')
+            #~ state=PostingStates.ready)
 
 
