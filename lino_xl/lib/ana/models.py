@@ -296,6 +296,9 @@ class Invoices(PartnerVouchers):
     # start_at_bottom = True
 
 
+class InvoicesByPartner(Invoices):
+    master_key = 'partner'
+    
 class InvoicesByJournal(ByJournal, Invoices):
     """Shows all invoices of a given journal (whose
     :attr:`voucher_type<lino_xl.lib.ledger.models.Journal.voucher_type>`
