@@ -411,41 +411,6 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
-    'lino_xl.lib.accounts.Account' : _("""An account is the most abstract representation for "something
-where you can place money and retrieve it later"."""),
-    'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
-it."""),
-    'lino_xl.lib.accounts.Account.ref' : _("""An optional unique name which can be used to reference a given
-account."""),
-    'lino_xl.lib.accounts.Account.type' : _("""The account type of this account.  This points to an item of
-CommonAccounts."""),
-    'lino_xl.lib.accounts.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
-    'lino_xl.lib.accounts.Account.default_amount' : _("""The default amount to book in bank statements or journal
-entries when this account has been selected manually. The
-default booking direction is that of the type."""),
-    'lino_xl.lib.accounts.Account.FOO_allowed' : _("""These checkboxes indicate whether this account can be used on
-an item of a purchases (or sales or wages or FOO)
-invoice. There is one such checkbox for every trade type
-(TradeTypes).  They
-exist only when the ledger plugin
-is installed as well.  See also the
-get_allowed_accounts method."""),
-    'lino_xl.lib.accounts.Account.needs_ana' : _("""Whether transactions on this account require the user to also
-specify an analytic account."""),
-    'lino_xl.lib.accounts.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
-account."""),
-    'lino_xl.lib.accounts.Account.sheet_item' : _("""Pointer to the item of the balance sheet or income statement
-that will report the movements of this account."""),
-    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
-    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts.
-It defines two additional attributes:"""),
-    'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
-together with its booking direction (debit or credit)."""),
-    'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
-    'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
-    'lino_xl.lib.accounts.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
-DEBIT or CREDIT."""),
-    'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
     'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
     'lino_xl.lib.ana.Account.group' : _("""The analytic account group this account belongs to."""),
     'lino_xl.lib.ana.Group.ref' : _("""The unique reference."""),
@@ -891,6 +856,41 @@ financial voucher."""),
     'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
+    'lino_xl.lib.ledger.Account' : _("""An account is the most abstract representation for "something
+where you can place money and retrieve it later"."""),
+    'lino_xl.lib.ledger.Account.name' : _("""The multilingual designation of this account, as the users see
+it."""),
+    'lino_xl.lib.ledger.Account.ref' : _("""An optional unique name which can be used to reference a given
+account."""),
+    'lino_xl.lib.ledger.Account.type' : _("""The account type of this account.  This points to an item of
+CommonAccounts."""),
+    'lino_xl.lib.ledger.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
+    'lino_xl.lib.ledger.Account.default_amount' : _("""The default amount to book in bank statements or journal
+entries when this account has been selected manually. The
+default booking direction is that of the type."""),
+    'lino_xl.lib.ledger.Account.FOO_allowed' : _("""These checkboxes indicate whether this account can be used on
+an item of a purchases (or sales or wages or FOO)
+invoice. There is one such checkbox for every trade type
+(TradeTypes).  They
+exist only when the ledger plugin
+is installed as well.  See also the
+get_allowed_accounts method."""),
+    'lino_xl.lib.ledger.Account.needs_ana' : _("""Whether transactions on this account require the user to also
+specify an analytic account."""),
+    'lino_xl.lib.ledger.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
+account."""),
+    'lino_xl.lib.ledger.Account.sheet_item' : _("""Pointer to the item of the balance sheet or income statement
+that will report the movements of this account."""),
+    'lino_xl.lib.ledger.CommonAccounts' : _("""The global list of common accounts."""),
+    'lino_xl.lib.ledger.CommonAccount' : _("""The base class for items of :CommonAccounts.
+It defines two additional attributes:"""),
+    'lino_xl.lib.ledger.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
+together with its booking direction (debit or credit)."""),
+    'lino_xl.lib.ledger.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
+    'lino_xl.lib.ledger.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
+    'lino_xl.lib.ledger.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
+DEBIT or CREDIT."""),
+    'lino_xl.lib.ledger.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
     'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger.  See Overview."""),
     'lino_xl.lib.ledger.Movement.value_date' : _("""The date at which this movement is to be entered into the
 ledger.  This is usually the voucher's entry_date, except
@@ -1047,7 +1047,7 @@ must define a custom workflow for VoucherStates."""),
     'lino_xl.lib.ledger.SequencedVoucherItem' : _("""A VoucherItem which also inherits from
 lino.mixins.sequenced.Sequenced."""),
     'lino_xl.lib.ledger.AccountVoucherItem' : _("""Abstract base class for voucher items which point to an account."""),
-    'lino_xl.lib.ledger.AccountVoucherItem.account' : _("""ForeignKey pointing to the account (accounts.Account) that is to be moved."""),
+    'lino_xl.lib.ledger.AccountVoucherItem.account' : _("""ForeignKey pointing to the account (ledger.Account) that is to be moved."""),
     'lino_xl.lib.ledger.VoucherItem' : _("""Base class for items of a voucher."""),
     'lino_xl.lib.ledger.VoucherItem.voucher' : _("""Pointer to the voucher which contains this item.  Non
 nullable.  The voucher must be a subclass of

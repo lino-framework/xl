@@ -11,14 +11,14 @@ from __future__ import unicode_literals
 # from django.db import models
 # from django.conf import settings
 #from django.utils.translation import string_concat
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 
 from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
 from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas, VatRules
-from lino_xl.lib.accounts.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import CommonAccounts
 
 NAT = VatAreas.national
 EU = VatAreas.eu

@@ -35,7 +35,7 @@ Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
 
-Account = dd.resolve_model('accounts.Account')
+Account = dd.resolve_model('ledger.Account')
 
 working = dd.resolve_app('working')
 

@@ -28,12 +28,12 @@ class Plugin(ad.Plugin):
             self.site.site_locale = 'de_BE.utf-8'
 
     def setup_config_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('sheets.Items')
         
     def setup_explorer_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('sheets.Entries')
 

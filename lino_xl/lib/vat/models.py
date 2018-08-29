@@ -17,7 +17,7 @@ from lino.modlib.system.choicelists import PeriodEvents
 
 from lino.api import dd, rt, _
 
-from .utils import ZERO
+from lino_xl.lib.ledger.utils import ZERO
 from .choicelists import VatClasses, VatRegimes, VatColumns, VatAreas, VatRules
 from .mixins import VatDocument, VatItemBase
 
@@ -74,7 +74,7 @@ dd.inject_field(
 dd.inject_field(
     'ledger.Movement', 'vat_class', VatClasses.field(blank=True))
 
-dd.inject_field('accounts.Account',
+dd.inject_field('ledger.Account',
                 'vat_column',
                 VatColumns.field(blank=True, null=True))
 

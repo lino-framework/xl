@@ -10,9 +10,10 @@ from django.core.exceptions import ValidationError
 
 from lino.mixins.bleached import Bleached
 from lino_xl.lib.excerpts.mixins import Certifiable
+from lino_xl.lib.ledger.utils import HUNDRED
 from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.vat.mixins import QtyVatItemBase, VatDocument
-from lino_xl.lib.vat.utils import add_vat, remove_vat, HUNDRED
+from lino_xl.lib.vat.utils import add_vat, remove_vat
 from lino_xl.lib.vat.mixins import get_default_vat_regime, myround
 from lino_xl.lib.vat.choicelists import VatAreas, VatRules
 

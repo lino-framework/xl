@@ -104,7 +104,7 @@ class Matching(dd.Model):
     def get_match_choices(cls, journal, partner):
         """This is the general algorithm.
         """
-        matchable_accounts = rt.models.accounts.Account.objects.filter(
+        matchable_accounts = rt.models.ledger.Account.objects.filter(
             matchrule__journal=journal)
         fkw = dict(account__in=matchable_accounts)
         fkw.update(cleared=False)
@@ -160,7 +160,7 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
         abstract = True
 
     account = dd.ForeignKey(
-        'accounts.Account',
+        'ledger.Account',
         related_name="%(app_label)s_%(class)s_set_by_account")
 
     def get_base_account(self, tt):
@@ -170,7 +170,7 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
     def account_choices(self, voucher):
         if voucher and voucher.journal:
             return voucher.journal.get_allowed_accounts()
-        return rt.models.accounts.Account.objects.none()
+        return rt.models.ledger.Account.objects.none()
 
 
 # def set_partner_invoice_account(sender, instance=None, **kwargs):

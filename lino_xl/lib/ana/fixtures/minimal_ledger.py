@@ -9,7 +9,7 @@ from lino.utils import Cycler
 def objects():
     Account = rt.models.ana.Account
     Group = rt.models.ana.Group
-    GenAccount = rt.models.accounts.Account
+    GenAccount = rt.models.ledger.Account
     
     def x(ref, name):
         if len(ref) == 4:

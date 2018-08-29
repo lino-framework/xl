@@ -162,7 +162,6 @@ lino_xl.lib.topics
 lino_xl.lib.userstats
 lino_xl.lib.xl
 
-lino_xl.lib.accounts
 lino_xl.lib.finan
 lino_xl.lib.finan.fixtures
 lino_xl.lib.ledger

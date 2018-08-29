@@ -82,7 +82,7 @@ Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
 
-Account = dd.resolve_model('accounts.Account')
+Account = dd.resolve_model('ledger.Account')
 
 working = dd.resolve_app('working')
 

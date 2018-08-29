@@ -25,13 +25,30 @@ from lino.utils.report import Report
 from etgen.html import E
 from lino.utils import join_elems
 
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
-
-from .utils import Balance, DueMovement, get_due_movements
+from .utils import DEBIT, CREDIT, ZERO
+from .utils import Balance
 from .choicelists import TradeTypes, VoucherTypes, JournalGroups
 from .choicelists import VoucherStates
 from .mixins import JournalRef
 from .roles import AccountingReader, LedgerUser, LedgerStaff
+
+
+class Accounts(dd.Table):
+    model = 'ledger.Account'
+    required_roles = dd.login_required(LedgerStaff)
+    order_by = ['ref']
+    column_names = "ref name *"
+    insert_layout = """
+    ref sheet_item
+    name
+    """
+    detail_layout = """
+    ref common_account sheet_item id
+    name
+    needs_partner:30 clearable:30 default_amount:10 #default_dc
+    ledger.MovementsByAccount
+    """
+
 
 
 class JournalDetail(dd.DetailLayout):
@@ -81,7 +98,7 @@ class ByJournal(dd.Table):
         if isinstance(trade_type, six.string_types):
             trade_type = TradeTypes.get_by_name(trade_type)
         if isinstance(account, six.string_types):
-            account = rt.models.accounts.Account.get_by_ref(account)
+            account = rt.models.ledger.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
         return rt.models.ledger.Journal(
@@ -177,7 +194,7 @@ class ExpectedMovements(dd.VirtualTable):
         from_journal=dd.ForeignKey('ledger.Journal', blank=True),
         for_journal=dd.ForeignKey(
             'ledger.Journal', blank=True, verbose_name=_("Clearable by")),
-        account=dd.ForeignKey('accounts.Account', blank=True),
+        account=dd.ForeignKey('ledger.Account', blank=True),
         partner=dd.ForeignKey('contacts.Partner', blank=True),
         project=dd.ForeignKey(dd.plugins.ledger.project_model, blank=True),
         show_sepa=dd.YesNo.field(blank=True),
@@ -211,12 +228,12 @@ class ExpectedMovements(dd.VirtualTable):
         if pv.date_until is not None:
             flt.update(value_date__lte=pv.date_until)
         if pv.for_journal is not None:
-            accounts = rt.models.accounts.Account.objects.filter(
+            accounts = rt.models.ledger.Account.objects.filter(
                 matchrule__journal=pv.for_journal).distinct()
             flt.update(account__in=accounts)
         if pv.from_journal is not None:
             flt.update(voucher__journal=pv.from_journal)
-        return get_due_movements(cls.get_dc(ar), **flt)
+        return rt.models.ledger.get_due_movements(cls.get_dc(ar), **flt)
 
     @classmethod
     def get_pk_field(self):
@@ -229,7 +246,7 @@ class ExpectedMovements(dd.VirtualTable):
         #         return i
         # raise Exception("Not found: %s in %s" % (pk, ar))
         mvt = rt.models.ledger.Movement.objects.get(pk=pk)
-        dm = DueMovement(cls.get_dc(ar), mvt)
+        dm = rt.models.ledger.DueMovement(cls.get_dc(ar), mvt)
         dm.collect_all()
         return dm
 
@@ -284,7 +301,7 @@ class ExpectedMovements(dd.VirtualTable):
     def project(self, row, ar):
         return row.project
 
-    @dd.virtualfield(dd.ForeignKey('accounts.Account'))
+    @dd.virtualfield(dd.ForeignKey('ledger.Account'))
     def account(self, row, ar):
         return row.account
 
@@ -295,7 +312,7 @@ class ExpectedMovements(dd.VirtualTable):
 
 
 class DebtsByAccount(ExpectedMovements):
-    master = 'accounts.Account'
+    master = 'ledger.Account'
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -309,7 +326,7 @@ class DebtsByAccount(ExpectedMovements):
         ar.param_values.trade_type = None
         return super(DebtsByAccount, cls).get_data_rows(ar, **flt)
 
-dd.inject_action('accounts.Account', due=dd.ShowSlaveTable(DebtsByAccount))
+dd.inject_action('ledger.Account', due=dd.ShowSlaveTable(DebtsByAccount))
 
 
 class DebtsByPartner(ExpectedMovements):
@@ -523,7 +540,7 @@ class AccountBalances(dd.Table):
 class GeneralAccountBalances(AccountBalances):
 
     label = _("General Account Balances")
-    model = 'accounts.Account'
+    model = 'ledger.Account'
     # order_by = ['group__ref', 'ref']
     order_by = ['ref']
 
@@ -588,7 +605,7 @@ class DebtorsCreditors(dd.VirtualTable):
             end_date = ar.param_values.today
         else:   # called from Situation report
             end_date = mi.today
-        
+        get_due_movements = rt.models.ledger.get_due_movements
         qs = rt.models.contacts.Partner.objects.order_by('name')
         for row in qs:
             row._balance = ZERO
@@ -767,21 +784,6 @@ class AccountingReport(Report):
                 # yield B.request(param_values=bpv)
 
 
-# MODULE_LABEL = dd.plugins.accounts.verbose_name
-
-# def site_setup(site):
-#     c = site.modules.contacts
-#     for T in (c.Partners, c.Companies, c.Persons):
-#         if not hasattr(T.detail_layout, 'ledger'):
-#             T.add_detail_tab(
-#                 "ledger",
-#                 """
-#                 ledger.VouchersByPartner
-#                 ledger.MovementsByPartner
-#                 """,
-#                 label=MODULE_LABEL)
-
-
 class Movements(dd.Table):
     """
     The base table for all tables working on :class:`Movement`.
@@ -808,7 +810,7 @@ class Movements(dd.Table):
         partner=dd.ForeignKey('contacts.Partner', blank=True, null=True),
         project=dd.ForeignKey(
             dd.plugins.ledger.project_model, blank=True, null=True),
-        account=dd.ForeignKey('accounts.Account', blank=True, null=True),
+        account=dd.ForeignKey('ledger.Account', blank=True, null=True),
         journal=JournalRef(blank=True),
         cleared=dd.YesNo.field(_("Show cleared movements"), blank=True))
     params_layout = """

@@ -7,8 +7,8 @@ from django.core.exceptions import ValidationError
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
-from lino_xl.lib.accounts.fields import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO
+from lino_xl.lib.ledger.models import DebitOrCreditField
 from lino_xl.lib.ledger.mixins import VoucherItem, SequencedVoucherItem
 from lino_xl.lib.ledger.mixins import ProjectRelated, Matching
 from etgen.html import E
@@ -28,7 +28,7 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
         abstract = True
 
     item_account = dd.ForeignKey(
-        'accounts.Account',
+        'ledger.Account',
         verbose_name=_("Default account"),
         blank=True, null=True)
     item_remark = models.CharField(
@@ -103,7 +103,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     dc = DebitOrCreditField()
     remark = models.CharField(
         _("Your reference"), max_length=200, blank=True)
-    account = dd.ForeignKey('accounts.Account', blank=True, null=True)
+    account = dd.ForeignKey('ledger.Account', blank=True, null=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
     quick_search_fields = 'remark account__ref account__name partner__name'

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -7,8 +7,11 @@
 
 
 """
-
+from builtins import str
+from django.db import models
 from lino.api import dd, _
+from lino.core.store import BooleanStoreField
+from .utils import DCLABELS
 
 
 # def MatchField(verbose_name=None, **kwargs):
@@ -56,3 +59,22 @@ class DcAmountField(dd.VirtualField):
         if obj.dc == self.dc:
             return obj.amount
         return None
+
+class DebitOrCreditStoreField(BooleanStoreField):
+
+    def format_value(self, ar, v):
+        return str(DCLABELS[v])
+
+
+class DebitOrCreditField(models.BooleanField):
+
+    lino_atomizer_class = DebitOrCreditStoreField
+
+    def __init__(self, *args, **kw):
+        kw.setdefault('help_text',
+                      _("Debit (not checked) or Credit (checked)"))
+        # kw.setdefault('default', None)
+        models.BooleanField.__init__(self, *args, **kw)
+
+
+    

@@ -41,8 +41,8 @@ from lino.utils import dblogger
 from lino.utils import dpy
 from lino.mixins import Created
 
-from lino_xl.lib.accounts.choicelists import AccountTypes
-from lino_xl.lib.accounts.utils import ZERO
+from lino_xl.lib.sheets.choicelists import CommonItems
+from lino_xl.lib.ledger.utils import ZERO
 
 from lino.core.utils import obj2str
 from lino.core.utils import is_valid_email
@@ -57,8 +57,7 @@ Country = dd.resolve_model('countries.Country')
 Place = dd.resolve_model('countries.Place')
 Person = dd.resolve_model("contacts.Person")
 Company = dd.resolve_model("contacts.Company")
-# Account = dd.resolve_model('accounts.Account')
-Account = rt.models.accounts.Account
+Account = rt.models.ledger.Account
 Group = dd.resolve_model('accounts.Group')
 Journal = dd.resolve_model('ledger.Journal')
 Movement = dd.resolve_model('ledger.Movement')
@@ -72,7 +71,6 @@ if True:
     vat = dd.resolve_app('vat')
     sales = dd.resolve_app('sales')
     ledger = dd.resolve_app('ledger')
-    accounts = dd.resolve_app('accounts')
     products = dd.resolve_app('products')
     contacts = dd.resolve_app('contacts')
     finan = dd.resolve_app('finan')
@@ -129,12 +127,12 @@ def vat_regime(idreg):
 
 def pcmn2type(idgen):
     if idgen[0] == '6':
-        return AccountTypes.expenses
+        return CommonItems.expenses
     if idgen[0] == '7':
-        return AccountTypes.incomes
+        return CommonItems.incomes
     if idgen[0] == '4':
-        return AccountTypes.liabilities
-    return AccountTypes.assets
+        return CommonItems.liabilities
+    return CommonItems.assets
 
 
 def tim2bool(x):
@@ -372,8 +370,8 @@ class TimLoader(TimLoader):
         if not idgen:
             return None
         try:
-            return accounts.Account.objects.get(ref=idgen)
-        except accounts.Account.DoesNotExist:
+            return ledger.Account.objects.get(ref=idgen)
+        except ledger.Account.DoesNotExist:
             return None
         
     def load_fin(self, row, **kw):

@@ -12,41 +12,44 @@ import six
 
 from builtins import str
 
-import logging
-logger = logging.getLogger(__name__)
-
 import datetime
 from dateutil.relativedelta import relativedelta
 
 from django.db import models
+from django.conf import settings
+from django.dispatch import Signal
 
 from atelier.utils import last_day_of_month
 
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.utils import mti
-from etgen.html import E
+from lino.utils import SumCollector
+
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.checkdata.choicelists import Checker
 
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
-from lino_xl.lib.accounts.fields import DebitOrCreditField
 from lino_xl.lib.contacts.choicelists import PartnerEvents
 from lino.modlib.system.choicelists import ObservedEvent
 from lino_xl.lib.excerpts.mixins import Certifiable
 
 
 
-from .utils import get_due_movements, check_clearings_by_partner
+# from .utils import get_due_movements, check_clearings_by_partner
 from .choicelists import (VoucherTypes, VoucherStates,
                           PeriodStates, JournalGroups, TradeTypes)
 from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable, PeriodRange
+from .choicelists import CommonAccounts
+from .utils import DEBIT, CREDIT, DCLABELS, ZERO
+
 from .roles import VoucherSupervisor
 from .roles import LedgerStaff
 # from .mixins import FKMATCH
 from .ui import *
+from .fields import DebitOrCreditField
+
 
 
 class LedgerInfo(dd.Model):
@@ -85,7 +88,7 @@ class Journal(mixins.BabelNamed,
         _("Fill suggestions"), default=True)
     force_sequence = models.BooleanField(
         _("Force chronological sequence"), default=False)
-    account = dd.ForeignKey('accounts.Account', blank=True, null=True)
+    account = dd.ForeignKey('ledger.Account', blank=True, null=True)
     partner = dd.ForeignKey('contacts.Company', blank=True, null=True)
     printed_name = dd.BabelCharField(
         _("Printed document designation"), max_length=100, blank=True)
@@ -142,7 +145,7 @@ class Journal(mixins.BabelNamed,
         if self.trade_type:
             return self.trade_type.get_allowed_accounts(**kw)
         # kw.update(chart=self.chart)
-        return rt.models.accounts.Account.objects.filter(**kw)
+        return rt.models.ledger.Account.objects.filter(**kw)
 
     def get_next_number(self, voucher):
         # ~ self.save() # 20131005 why was this?
@@ -421,13 +424,42 @@ class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
 
 
 @dd.python_2_unicode_compatible
+class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
+    ref_max_length = settings.SITE.plugins.ledger.ref_length
+
+    class Meta:
+        verbose_name = _("Account")
+        verbose_name_plural = _("Accounts")
+        ordering = ['ref']
+        app_label = 'ledger'
+
+    sheet_item = dd.ForeignKey('sheets.Item', null=True, blank=True)
+    common_account = CommonAccounts.field(blank=True)
+    needs_partner = models.BooleanField(_("Needs partner"), default=False)
+    clearable = models.BooleanField(_("Clearable"), default=False)
+    # default_dc = DebitOrCreditField(_("Default booking direction"))
+    default_amount = dd.PriceField(
+        _("Default amount"), blank=True, null=True)
+
+    def __str__(self):
+        return "(%(ref)s) %(title)s" % dict(
+            ref=self.ref,
+            title=settings.SITE.babelattr(self, 'name'))
+    
+    @dd.chooser()
+    def sheet_item_choices(cls):
+        return rt.models.sheets.Item.get_usable_items()
+
+
+
+@dd.python_2_unicode_compatible
 class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     manager_roles_required = dd.login_required(VoucherSupervisor)
     
     class Meta:
-        app_label = 'ledger'
         verbose_name = _("Voucher")
         verbose_name_plural = _("Vouchers")
+        app_label = 'ledger'
 
     journal = JournalRef()
     entry_date = models.DateField(_("Entry date"))
@@ -583,7 +615,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         if isinstance(trade_type, six.string_types):
             trade_type = TradeTypes.get_by_name(trade_type)
         if isinstance(account, six.string_types):
-            account = rt.models.accounts.Account.get_by_ref(account)
+            account = rt.models.ledger.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
         return Journal(trade_type=trade_type, voucher_type=vt, **kw)
@@ -701,7 +733,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         account, ana_account = acc_tuple
         if account is None and item is not None:
             raise Warning("No account specified for {}".format(item))
-        if not isinstance(account, rt.models.accounts.Account):
+        if not isinstance(account, rt.models.ledger.Account):
             raise Warning("{} is not an Account object".format(account))
         kw['voucher'] = self
         kw['account'] = account
@@ -742,14 +774,14 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
 
     #~ def add_voucher_item(self,account=None,**kw):
         #~ if account is not None:
-            #~ if not isinstance(account,accounts.Account):
+            #~ if not isinstance(account,ledger.Account):
             #~ if isinstance(account,six.string_types):
                 #~ account = self.journal.chart.get_account_by_ref(account)
             #~ kw['account'] = account
     def add_voucher_item(self, account=None, **kw):
         if account is not None:
             if isinstance(account, six.string_types):
-                account = rt.models.accounts.Account.get_by_ref(account)
+                account = rt.models.ledger.Account.get_by_ref(account)
             kw['account'] = account
         kw.update(voucher=self)
         #~ logger.info("20131116 %s",self.items.model)
@@ -788,7 +820,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     seqno = models.IntegerField(_("Seq.No."))
 
-    account = dd.ForeignKey('accounts.Account')
+    account = dd.ForeignKey('ledger.Account')
     amount = dd.PriceField(default=0)
     dc = DebitOrCreditField()
 
@@ -923,7 +955,7 @@ class MatchRule(dd.Model):
         verbose_name_plural = _("Match rules")
         unique_together = ['account', 'journal']
 
-    account = dd.ForeignKey('accounts.Account')
+    account = dd.ForeignKey('ledger.Account')
     journal = JournalRef()
 
     @dd.chooser()
@@ -933,14 +965,14 @@ class MatchRule(dd.Model):
         # always None.
         if journal:
             fkw = {journal.trade_type.name + '_allowed': True}
-            return rt.models.accounts.Account.objects.filter(**fkw)
+            return rt.models.ledger.Account.objects.filter(**fkw)
         print("20151221 journal is None")
         return []
 
 
 for tt in TradeTypes.objects():
     dd.inject_field(
-        'accounts.Account',
+        'ledger.Account',
         tt.name + '_allowed',
         models.BooleanField(verbose_name=tt.text, default=False))
 
@@ -1024,4 +1056,198 @@ class PartnerHasOpenMovements(ObservedEvent):
 PartnerEvents.add_item_instance(
     PartnerHasOpenMovements("has_open_movements"))
 
+on_ledger_movement = Signal(['instance'])
+
+
+class DueMovement(object):
+    def __init__(self, dc, mvt):
+        self.dc = dc
+        # self.match = mvt.get_match()
+        self.match = mvt.match
+        self.partner = mvt.partner
+        self.account = mvt.account
+        self.project = mvt.project
+        self.pk = self.id = mvt.id
+        self.obj2href = mvt.obj2href
+
+        self.debts = []
+        self.payments = []
+        self.balance = ZERO
+        self.due_date = None
+        self.trade_type = None
+        self.has_unsatisfied_movement = False
+        self.has_satisfied_movement = False
+        self.bank_account = None
+
+        # self.collect(mvt)
+
+        # flt = dict(partner=self.partner, account=self.account,
+        #            match=self.match)
+        # if self.project:
+        #     flt.update(project=self.project)
+        # else:
+        #     flt.update(project__isnull=True)
+        # qs = rt.models.ledger.Movement.objects.filter(**flt)
+        # for mvt in qs.order_by('voucher__date'):
+        #     self.collect(mvt)
+
+    def __repr__(self):
+        return "{0} {1} {2}".format(
+            dd.obj2str(self.partner), self.match, self.balance)
+
+    def collect_all(self):
+        flt = dict(
+            partner=self.partner, account=self.account, match=self.match)
+        for mvt in rt.models.ledger.Movement.objects.filter(**flt):
+            self.collect(mvt)
+            
+    def collect(self, mvt):
+        """Add the given movement to the list of movements that are being
+        cleared by this DueMovement.
+
+        """
+        # dd.logger.info("20160604 collect %s", mvt)
+        if mvt.cleared:
+            self.has_satisfied_movement = True
+        else:
+            self.has_unsatisfied_movement = True
+
+        voucher = mvt.voucher.get_mti_leaf()
+        due_date = voucher.get_due_date()
+        if self.due_date is None or due_date < self.due_date:
+            self.due_date = due_date
+            
+        if self.trade_type is None:
+            self.trade_type = voucher.get_trade_type()
+        if mvt.dc == self.dc:
+            self.debts.append(mvt)
+            self.balance += mvt.amount
+            bank_account = voucher.get_bank_account()
+            if bank_account is not None:
+                if self.bank_account != bank_account:
+                    self.bank_account = bank_account
+                elif self.bank_account != bank_account:
+                    raise Exception("More than one bank account")
+            # else:
+            #     dd.logger.info(
+            #         "20150810 no bank account for {0}".format(voucher))
+
+        else:
+            self.payments.append(mvt)
+            self.balance -= mvt.amount
+
+    def unused_check_clearings(self):
+        """Check whether involved movements are cleared or not, and update
+        their :attr:`cleared` field accordingly.
+
+        """
+        cleared = self.balance == ZERO
+        if cleared:
+            if not self.has_unsatisfied_movement:
+                return
+        else:
+            if not self.has_satisfied_movement:
+                return
+        for m in self.debts + self.payments:
+            if m.cleared != cleared:
+                m.cleared = cleared
+                m.save()
+
+
+def get_due_movements(dc, **flt):
+    """Analyze the movements corresponding to the given filter condition
+    `flt` and yield a series of :class:`DueMovement` objects which
+    --if they were booked-- would satisfy the given movements.
+
+    This is the data source for :class:`ExpectedMovements
+    <lino_xl.lib.ledger.ui.ExpectedMovements>` and subclasses.
+    
+    There will be at most one :class:`DueMovement` per (account,
+    partner, match), each of them grouping the movements with same
+    partner, account and match.
+
+    The balances of the :class:`DueMovement` objects will be positive
+    or negative depending on the specified `dc`.
+
+    Generates and yields a list of the :class:`DueMovement` objects
+    specified by the filter criteria.
+
+    Arguments:
+
+    :dc: (boolean): The caller must specify whether he means the debts
+         and payments *towards the partner* or *towards myself*.
+
+    :flt: Any keyword argument is forwarded to Django's `filter()
+          <https://docs.djangoproject.com/en/dev/ref/models/querysets/#filter>`_
+          method in order to specifiy which :class:`Movement` objects
+          to consider.
+
+    """
+    if dc is None:
+        return
+    qs = rt.models.ledger.Movement.objects.filter(**flt)
+    qs = qs.filter(account__clearable=True)
+    # qs = qs.exclude(match='')
+    qs = qs.order_by(*dd.plugins.ledger.remove_dummy(
+        'value_date', 'account__ref', 'partner', 'project', 'id'))
+    
+    
+    matches_by_account = dict()
+    matches = []
+    for mvt in qs:
+        k = (mvt.account, mvt.partner, mvt.project, mvt.match)
+        # k = (mvt.account, mvt.partner, mvt.project, mvt.get_match())
+        dm = matches_by_account.get(k)
+        if dm is None:
+            dm = DueMovement(dc, mvt)
+            matches_by_account[k] = dm
+            matches.append(dm)
+        dm.collect(mvt)
+        # matches = matches_by_account.setdefault(k, set())
+        # m = mvt.match or mvt
+        # if m not in matches:
+        #     matches.add(m)
+        #     yield DueMovement(dc, mvt)
+    return matches
+
+
+def check_clearings_by_account(account, matches=[]):
+    # not used. See blog/2017/0802.rst
+    qs = rt.models.ledger.Movement.objects.filter(
+        account=account).order_by('match')
+    check_clearings(qs, matches)
+    on_ledger_movement.send(sender=account.__class__, instance=account)
+    
+def check_clearings_by_partner(partner, matches=[]):
+    qs = rt.models.ledger.Movement.objects.filter(
+        partner=partner).order_by('match')
+    check_clearings(qs, matches)
+    on_ledger_movement.send(sender=partner.__class__, instance=partner)
+    
+def check_clearings(qs, matches=[]):
+    """Check whether involved movements are cleared or not, and update
+    their :attr:`cleared` field accordingly.
+
+    """
+    qs = qs.select_related('voucher', 'voucher__journal')
+    if len(matches):
+        qs = qs.filter(match__in=matches)
+    sums = SumCollector()
+    for mvt in qs:
+        # k = (mvt.get_match(), mvt.account)
+        k = (mvt.match, mvt.account)
+        mvt_dc = mvt.dc
+        # if mvt.voucher.journal.invert_due_dc:
+        #     mvt_dc = mvt.dc
+        # else:
+        #     mvt_dc = not mvt.dc
+        if mvt_dc == DEBIT:
+            sums.collect(k, mvt.amount)
+        else:
+            sums.collect(k, - mvt.amount)
+
+    for k, balance in sums.items():
+        match, account = k
+        sat = (balance == ZERO)
+        qs.filter(account=account, match=match).update(cleared=sat)
 

@@ -99,10 +99,8 @@ Accounting stuff
 .. autosummary::
    :toctree:
 
-    accounts
-    sales
     ledger
-    finan
+    sales
     finan
     tim2lino
     sepa

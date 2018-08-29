@@ -12,8 +12,7 @@ from etgen.html import E
 
 from lino.api import dd, rt, _, gettext
 
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT
-from lino_xl.lib.accounts.choicelists import CommonAccounts
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 from .roles import LedgerStaff
 
 
@@ -30,42 +29,6 @@ add('40', _("Financial"), 'financial')
 add('50', _("VAT"), 'vat')
 
 
-# class FiscalYear(dd.Choice):
-#     pass
-
-
-# class FiscalYears(dd.ChoiceList):
-
-#     required_roles = dd.login_required(LedgerStaff)
-#     item_class = FiscalYear
-#     verbose_name = _("Fiscal Year")
-#     verbose_name_plural = _("Fiscal Years")
-#     # ~ preferred_width = 4 # would be 2 otherwise
-#     max_length = 8
-
-#     @classmethod
-#     def year2value(cls, year):
-#         if dd.plugins.ledger.fix_y2k:
-#             if year < 2000:
-#                 return str(year)[-2:]
-#             elif year < 2010:
-#                 return "A" + str(year)[-1]
-#             elif year < 2020:
-#                 return "B" + str(year)[-1]
-#             elif year < 2030:
-#                 return "C" + str(year)[-1]
-#             else:
-#                 raise Exception(20160304)
-#         return str(year)[2:]
-
-#     @classmethod
-#     def from_int(cls, year):
-#         return cls.get_by_value(cls.year2value(year))
-
-#     @classmethod
-#     def from_date(cls, date):
-#         return cls.from_int(date.year)
-
 
 class PeriodStates(dd.Workflow):
     pass
@@ -73,6 +36,94 @@ class PeriodStates(dd.Workflow):
 add = PeriodStates.add_item
 add('10', _("Open"), 'open')
 add('20', _("Closed"), 'closed')
+
+
+class CommonAccount(dd.Choice):
+    show_values = True
+    clearable = False
+    needs_partner = False
+    # sheet_item = ''  # filled by lino_xl.lib.sheets if installed
+    _instance = None
+    
+    def __init__(self, value, text, name, clearable, **kwargs):
+        # the class attribute `name` ís used as value
+        super(CommonAccount, self).__init__(value, text, name, **kwargs)
+        # self.sheet_item = CommonItems.get_by_name(actype)
+        # self.clearable = clearable
+        self.clearable = clearable
+        self.needs_partner = clearable
+
+    def create_object(self, **kwargs):
+        kwargs.update(dd.str2kw('name', self.text))
+        kwargs.update(clearable=self.clearable)
+        kwargs.update(needs_partner=self.needs_partner)
+        kwargs.update(common_account=self)
+        # if dd.is_installed('sheets'):
+        #     kwargs.update(sheet_item=self.sheet_item.get_object())
+        # else:
+        #     kwargs.pop('sheet_item', None)
+        return rt.models.ledger.Account(
+            ref=self.value, **kwargs)
+    
+    def get_object(self):
+        # return rt.models.ledger.Account.objects.get(ref=self.value)
+        if self._instance is None:
+            Account = rt.models.ledger.Account
+            try:
+                self._instance = Account.objects.get(common_account=self)
+            except Account.DoesNotExist:
+                return None
+        return self._instance
+
+
+class CommonAccounts(dd.ChoiceList):
+    verbose_name = _("Common account")
+    verbose_name_plural = _("Common accounts")
+    item_class = CommonAccount
+    column_names = 'value name text clearable db_object'
+    required_roles = dd.login_required(LedgerStaff)
+
+    # @dd.virtualfield(models.CharField(_("Sheet item"), max_length=20))
+    # def sheet_item(cls, choice, ar):
+    #     return choice.sheet_item
+
+    @dd.virtualfield(dd.ForeignKey('ledger.Account'))
+    def db_object(cls, choice, ar):
+        return choice.get_object()
+
+    @dd.virtualfield(models.BooleanField(_("Clearable")))
+    def clearable(cls, choice, ar):
+        return choice.clearable
+
+
+add = CommonAccounts.add_item
+
+add('1000', _("Net income (loss)"),   'net_income_loss', True)
+add('4000', _("Customers"),   'customers', True)
+add('4300', _("Pending Payment Orders"), 'pending_po', True)
+add('4400', _("Suppliers"),   'suppliers', True)
+add('4500', _("Employees"),   'employees', True)
+add('4600', _("Tax Offices"), 'tax_offices', True)
+
+add('4510', _("VAT due"), 'vat_due', False)
+add('4511', _("VAT returnable"), 'vat_returnable', False)
+add('4512', _("VAT deductible"), 'vat_deductible', False)
+add('4513', _("VAT declared"), 'due_taxes', False)
+
+add('4900', _("Waiting account"), 'waiting', True)
+
+add('5500', _("BestBank"), 'best_bank', False)
+add('5700', _("Cash"), 'cash', False)
+
+add('6040', _("Purchase of goods"), 'purchase_of_goods', False)
+add('6010', _("Purchase of services"), 'purchase_of_services', False)
+add('6020', _("Purchase of investments"), 'purchase_of_investments', False)
+
+add('6300', _("Wages"), 'wages', False)
+add('6900', _("Net income"), 'net_income', False)
+
+add('7000', _("Sales"), 'sales', False)
+add('7900', _("Net loss"), 'net_loss', False)
 
 
 class VoucherType(dd.Choice):
@@ -182,7 +233,7 @@ class TradeType(dd.Choice):
 
     def get_allowed_accounts(self, **kw):
         kw[self.name + '_allowed'] = True
-        return rt.models.accounts.Account.objects.filter(**kw)
+        return rt.models.ledger.Account.objects.filter(**kw)
         
 def ca_fmt(ar, ca):
     if ar is None or ca is None:
@@ -292,7 +343,7 @@ def inject_tradetype_fields(sender, **kw):
             dd.inject_field(
                 'contacts.Partner', tt.invoice_account_field_name,
                 dd.ForeignKey(
-                    'accounts.Account',
+                    'ledger.Account',
                     verbose_name=tt.invoice_account_field_label,
                     on_delete=models.PROTECT,
                     related_name='partners_by_' + tt.invoice_account_field_name,
@@ -301,7 +352,7 @@ def inject_tradetype_fields(sender, **kw):
             dd.inject_field(
                 'products.Product', tt.base_account_field_name,
                 dd.ForeignKey(
-                    'accounts.Account',
+                    'ledger.Account',
                     verbose_name=tt.base_account_field_label,
                     on_delete=models.PROTECT,
                     related_name='products_by_' + tt.base_account_field_name,

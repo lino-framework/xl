@@ -19,7 +19,6 @@ See :doc:`/specs/ledger`.
 
 from __future__ import unicode_literals
 
-import datetime
 from django.utils.functional import lazystr
 
 from lino.api import ad, _
@@ -27,13 +26,18 @@ from lino.api import ad, _
 
 class Plugin(ad.Plugin):
 
-    verbose_name = _("Ledger")
-    needs_plugins = ['lino_xl.lib.accounts', 'lino.modlib.weasyprint']
+    verbose_name = _("Accounting")
+    needs_plugins = ['lino.modlib.weasyprint', 'lino_xl.lib.xl']
+
+    ref_length = 20
+    """
+    The `max_length` of the `Reference` field of an account.
+    """
 
     currency_symbol = "€"
     """
-    Temporary approach until we add support for multiple
-    currencies.
+    Temporary approach until we add support for multiple currencies.
+    See also :meth:`lino.core.site.Site.format_currency`.
     """
     
     use_pcmn = False
@@ -86,7 +90,7 @@ class Plugin(ad.Plugin):
 
     def setup_main_menu(self, site, user_type, m):
         if not self.intrusive_menu:
-            mg = site.plugins.accounts
+            mg = site.plugins.ledger
             m = m.add_menu(mg.app_label, mg.verbose_name)
 
         Journal = site.models.ledger.Journal
@@ -100,7 +104,7 @@ class Plugin(ad.Plugin):
                                 params=dict(master_instance=jnl))
 
     def setup_reports_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         # m.add_action('ledger.Situation')
         # m.add_action('ledger.ActivityReport')
@@ -112,17 +116,18 @@ class Plugin(ad.Plugin):
         m.add_action('ledger.Creditors')
 
     def setup_config_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('ledger.Accounts')
         m.add_action('ledger.Journals')
         m.add_action('ledger.FiscalYears')
         m.add_action('ledger.AccountingPeriods')
         m.add_action('ledger.PaymentTerms')
 
     def setup_explorer_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('accounts.CommonAccounts')
+        m.add_action('ledger.CommonAccounts')
         m.add_action('ledger.MatchRules')
         m.add_action('ledger.AllVouchers')
         m.add_action('ledger.VoucherTypes')

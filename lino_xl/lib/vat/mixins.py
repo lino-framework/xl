@@ -18,13 +18,13 @@ from lino.api import dd, rt, _
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import myround
-from lino_xl.lib.accounts.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
 from lino_xl.lib.ledger.mixins import PeriodRange
 from lino_xl.lib.ledger.models import Voucher
+from lino_xl.lib.ledger.utils import ZERO, ONE
 from lino_xl.lib.sepa.mixins import Payable
 
-from .utils import ZERO, ONE
 from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
 DECLARED_IN = False

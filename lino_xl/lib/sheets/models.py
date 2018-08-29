@@ -14,8 +14,8 @@ from lino.api import dd, rt, _
 from lino.mixins import Referrable
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.utils.mldbc.mixins import BabelDesignated
-from lino_xl.lib.accounts.fields import DebitOrCreditField
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
+from lino_xl.lib.ledger.models import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.mixins import SequencedVoucherItem

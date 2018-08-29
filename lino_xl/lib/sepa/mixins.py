@@ -147,7 +147,7 @@ class Payable(PartnerRelated):
             # acc_tuple is a tuple (account, ana_account)
             if not isinstance(acc_tuple, tuple):
                 raise Exception("Not a tuple: {}".format(acc_tuple))
-            if not isinstance(acc_tuple[0], rt.models.accounts.Account):
+            if not isinstance(acc_tuple[0], rt.models.ledger.Account):
                 raise Exception("Not an account: {}".format(acc_tuple[0]))
             if has_vat:
                 kw.update(

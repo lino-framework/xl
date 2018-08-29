@@ -11,7 +11,7 @@ from django.db import models
 # from django.core.exceptions import ValidationError
 
 from etgen.html import E, join_elems
-from lino_xl.lib.accounts.utils import ZERO, DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import ZERO, DEBIT, CREDIT
 from lino_xl.lib.ledger.fields import DcAmountField
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff

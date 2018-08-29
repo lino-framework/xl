@@ -13,7 +13,7 @@ from etgen.html import E, forcetext
 from lino_xl.lib.ledger.roles import LedgerStaff
 from lino_xl.lib.ledger.choicelists import TradeTypes
 
-from lino_xl.lib.accounts.utils import DCLABELS, ZERO
+from lino_xl.lib.ledger.utils import DCLABELS, ZERO
 
 
 class VatClasses(dd.ChoiceList):

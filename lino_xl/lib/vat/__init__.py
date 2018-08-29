@@ -59,7 +59,7 @@ class Plugin(ad.Plugin):
                 self.default_vat_class)
 
     def setup_reports_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         # mg = site.plugins.vat
         # mg = self
         m = m.add_menu(mg.app_label, mg.verbose_name)

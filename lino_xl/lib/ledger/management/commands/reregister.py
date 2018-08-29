@@ -26,7 +26,7 @@ from django.core.management.base import BaseCommand  # CommandError
 from lino.api import dd, rt
 
 from lino.core.requests import BaseRequest
-from lino_xl.lib.ledger.utils import check_clearings_by_partner
+from lino_xl.lib.ledger.models import check_clearings_by_partner
 
 
 def puts(msg):

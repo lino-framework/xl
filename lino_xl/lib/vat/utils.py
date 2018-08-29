@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Utility functions for VAT.
@@ -24,13 +24,6 @@
 
 from __future__ import division
 from __future__ import unicode_literals
-
-from decimal import Decimal
-from lino_xl.lib.accounts.utils import ZERO
-
-HUNDRED = Decimal('100.00')
-ONE = Decimal('1.00')
-
 
 def add_vat(base, rate):
     "Add to the given base amount `base` the VAT of rate `rate`."

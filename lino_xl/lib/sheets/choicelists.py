@@ -6,8 +6,8 @@ from django.db import models
 
 from lino.api import dd, rt, _
 from lino_xl.lib.ledger.roles import LedgerStaff
-from lino_xl.lib.accounts.fields import DebitOrCreditField
-from lino_xl.lib.accounts.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.models import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 
 
 class SheetTypes(dd.ChoiceList):
@@ -44,7 +44,7 @@ class CommonItem(dd.Choice):
             return rt.models.sheets.Item(ref=self.value, **kwargs)
 
         def get_object(self):
-            # return rt.models.accounts.Account.objects.get(ref=self.value)
+            # return rt.models.ledger.Account.objects.get(ref=self.value)
             if self._instance is None:
                 Item = rt.models.sheets.Item
                 try:

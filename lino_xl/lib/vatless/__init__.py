@@ -33,7 +33,7 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.countries', 'lino_xl.lib.ledger']
 
     def setup_explorer_menu(self, site, user_type, m):
-        mg = site.plugins.accounts
+        mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('vatless.Invoices')
 

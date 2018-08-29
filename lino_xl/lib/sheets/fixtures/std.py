@@ -8,7 +8,7 @@ Sets the :attr:`sheet_item` of common accounts.
 """
 
 from lino_xl.lib.sheets.choicelists import CommonItems
-from lino_xl.lib.accounts.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import CommonAccounts
 
 
 def objects():

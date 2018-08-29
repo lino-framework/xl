@@ -118,7 +118,7 @@ from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
     
 #     parameters = dict(
 #         partner=dd.ForeignKey('contacts.Partner'),
-#         account=dd.ForeignKey('accounts.Account', blank=True),
+#         account=dd.ForeignKey('ledger.Account', blank=True),
 #         ana_account=dd.ForeignKey('ana.Account', blank=True),
 #         subject=models.CharField(
 #             _("Subject"), max_length=200, blank=True),
@@ -356,11 +356,11 @@ dd.inject_field(
     dd.ForeignKey('ana.Account', blank=True, null=True))
 
 dd.inject_field(
-    'accounts.Account', 'ana_account',
+    'ledger.Account', 'ana_account',
     dd.ForeignKey('ana.Account', blank=True, null=True))
 
 dd.inject_field(
-    'accounts.Account', 'needs_ana',
+    'ledger.Account', 'needs_ana',
     models.BooleanField(_("Needs analytical account"), default=False))
 
 # if dd.is_installed('vat'):

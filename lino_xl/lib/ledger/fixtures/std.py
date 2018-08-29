@@ -7,7 +7,7 @@
 Populates a  default list of *payment terms*.
 
 Populates *accounts* from
-:class:`lino_xl.lib.accounts.CommonAccounts`, creating a minimal
+:class:`lino_xl.lib.ledger.CommonAccounts`, creating a minimal
 accounts chart.
 
 
@@ -28,7 +28,7 @@ import datetime
 from django.conf import settings
 
 from lino.api import dd, rt, _
-from lino_xl.lib.accounts.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import CommonAccounts
 
 def update(ci, **kwargs):
     obj = ci.get_object()

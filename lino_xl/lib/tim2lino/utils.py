@@ -14,6 +14,7 @@ from django.db import models
 from atelier.utils import AttrDict
 from lino.api import dd, rt
 from lino.utils import dbfreader
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 
 
 class TimLoader(object):
@@ -118,13 +119,13 @@ class TimLoader(object):
 
     def dc2lino(self, dc):
         if dc == "D":
-            return rt.models.accounts.DEBIT
+            return DEBIT
         elif dc == "C":
-            return rt.models.accounts.CREDIT
+            return CREDIT
         elif dc == "A":
-            return rt.models.accounts.DEBIT
+            return DEBIT
         elif dc == "E":
-            return rt.models.accounts.CREDIT
+            return CREDIT
         raise Exception("Invalid D/C value %r" % dc)
 
     def create_users(self):
@@ -144,7 +145,7 @@ class TimLoader(object):
 
     def after_gen_load(self):
         return
-        Account = rt.models.accounts.Account
+        Account = rt.models.ledger.Account
         sc = dict()
         for k, v in dd.plugins.tim2lino.siteconfig_accounts.items():
             sc[k] = Account.get_by_ref(v)
@@ -195,11 +196,10 @@ class TimLoader(object):
             vat = rt.models.vat
             finan = rt.models.finan
             ledger = rt.models.ledger
-            accounts = rt.models.accounts
             idgen = row.idgen.strip()
             kw.update(journal_group=ledger.JournalGroups.financial)
             if idgen:
-                kw.update(account=accounts.Account.get_by_ref(idgen))
+                kw.update(account=ledger.Account.get_by_ref(idgen))
                 if idgen.startswith('58'):
                     kw.update(trade_type=vat.TradeTypes.purchases)
                     vcl = finan.PaymentOrder

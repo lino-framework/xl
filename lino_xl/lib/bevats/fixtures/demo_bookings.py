@@ -21,7 +21,7 @@ from lino.api import dd, rt
 from lino_xl.lib.vat.choicelists import VatColumns
 from lino.utils.dates import AMONTH
 # from lino_xl.lib.ledger.accounts import *
-from lino_xl.lib.accounts.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import CommonAccounts
 
 
 
@@ -49,8 +49,6 @@ def objects():
     Journal = rt.models.ledger.Journal
     Company = rt.models.contacts.Company
     Declaration = rt.models.bevats.Declaration
-    # DeclarationFields = rt.models.declarations.DeclarationFields
-    # Account = rt.models.accounts.Account
 
     # m = import_module(dd.plugins.declarations.country_module)
     # from lino_xl.lib.declarations.be import demo_objects

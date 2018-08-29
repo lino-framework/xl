@@ -49,7 +49,7 @@ if DECLARED_IN:
                     dd.ForeignKey(Declaration,
                                   blank=True, null=True))
 
-# dd.inject_field('accounts.Account',
+# dd.inject_field('ledger.Account',
 #                 'declaration_field',
 #                 DeclarationFields.field(blank=True, null=True))
 

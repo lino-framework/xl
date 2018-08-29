@@ -30,7 +30,7 @@ Product = dd.resolve_model('products.Product')
 List = dd.resolve_model('lists.List')
 Member = dd.resolve_model('lists.Member')
 households_Member = dd.resolve_model('households.Member')
-Account = dd.resolve_model('accounts.Account')
+Account = dd.resolve_model('ledger.Account')
 
 tickets = dd.resolve_app('tickets')
 working = dd.resolve_app('working')
