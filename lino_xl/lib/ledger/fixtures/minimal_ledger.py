@@ -6,7 +6,6 @@
 """
 Creates minimal accounting demo data:
 
-- a minimal accounts chart
 - some journals
 
 
@@ -14,16 +13,11 @@ Creates minimal accounting demo data:
 
 from __future__ import unicode_literals
 
-import logging
-logger = logging.getLogger(__name__)
-
-
-from django.conf import settings
 from lino.api import dd, rt, _
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT
-from lino_xl.lib.ledger import choicelists as pcmn
-from lino_xl.lib.accounts.choicelists import CommonAccounts, AccountTypes
-from lino.utils import Cycler
+# from lino_xl.lib.ledger import choicelists as pcmn
+from lino_xl.lib.accounts.choicelists import CommonAccounts
+# from lino.utils import Cycler
 
 #accounts = dd.resolve_app('accounts')
 vat = dd.resolve_app('vat')
@@ -35,108 +29,10 @@ bevats = dd.resolve_app('bevats')
 #~ partners = dd.resolve_app('partners')
 
 
-
-current_group = None
-
-
 def objects():
 
     JournalGroups = rt.models.ledger.JournalGroups
     Company = rt.models.contacts.Company
-
-    def group(ref, type, name):
-        global current_group
-        current_group = rt.models.accounts.Group(
-            ref=ref,
-            account_type=AccountTypes.get_by_name(type),
-            **dd.str2kw('name', name))
-        return current_group
-    
-    def Group(ref, type, fr, de, en, et=None):
-        if et is None:
-            et = en
-        global current_group
-        current_group = rt.models.accounts.Group(
-            ref=ref,
-            account_type=AccountTypes.get_by_name(type),
-            **dd.babel_values('name', de=de, fr=fr, en=en, et=et))
-        return current_group
-
-    def Account(ca):
-        # kw.update(dd.babel_values('name', de=de, fr=fr, en=en, et=et))
-        return rt.models.accounts.Account(
-            group=current_group,
-            ref=ca.value,
-            type=ca)
-
-    # yield Group('10', 'capital', "Capital", "Kapital", "Capital", "Kapitaal")
-
-    yield group('10', 'capital', _("Capital"))
-
-    yield Group('40', 'assets',
-                "Créances et dettes commerciales",
-                "Forderungen aus Lieferungen und Leistungen",
-                "Commercial assets & liabilities")
-
-    yield CommonAccounts.customers.create_object(group=current_group)
-    yield CommonAccounts.suppliers.create_object(group=current_group)
-    
-    # yield Group('45', 'assets', "TVA à payer",
-    #             "Geschuldete MWSt", "VAT to pay", "Käibemaksukonto")
-    
-    yield group('47', 'assets', _("Tax office"))
-    
-    yield CommonAccounts.vat_due.create_object(group=current_group)
-    yield CommonAccounts.vat_returnable.create_object(group=current_group)
-    yield CommonAccounts.vat_deductible.create_object(group=current_group)
-    yield CommonAccounts.due_taxes.create_object(group=current_group)
-    yield CommonAccounts.tax_offices.create_object(group=current_group)
-    
-    yield group('49', 'assets', _("Other assets & liabilities"))
-    
-    yield CommonAccounts.pending_po.create_object(group=current_group)
-    yield CommonAccounts.waiting.create_object(group=current_group)
-    
-    # PCMN 55
-    yield Group('55', 'assets',
-                "Institutions financières", "Finanzinstitute", "Banks")
-    yield CommonAccounts.best_bank.create_object(group=current_group)
-    yield CommonAccounts.cash.create_object(group=current_group)
-    
-    # yield Group('58', 'assets',
-    #             "Transactions en cours", "Laufende Transaktionen",
-    #             "Running transactions")
-    
-    # yield Account(PO_BESTBANK_ACCOUNT, 'bank_accounts',
-    #               "Ordres de paiement Bestbank",
-    #               "Zahlungsaufträge Bestbank",
-    #               "Payment Orders Bestbank",
-    #               "Maksekorraldused Parimpank", clearable=True)
-
-    yield Group('6', 'expenses', u"Charges", u"Aufwendungen", "Expenses", "Kulud")
-
-    kwargs = dict(purchases_allowed=True, group=current_group)
-    
-    if dd.is_installed('ana'):
-        kwargs.update(needs_ana=True)
-        # ANA_ACCS = Cycler(rt.models.ana.Account.objects.all())
-        
-    # if dd.is_installed('ana'):
-    #     kwargs.update(ana_account=ANA_ACCS.pop())
-    yield CommonAccounts.purchase_of_goods.create_object(**kwargs)
-    # if dd.is_installed('ana'):
-    #     kwargs.update(ana_account=ANA_ACCS.pop())
-    yield CommonAccounts.purchase_of_services.create_object(**kwargs)
-    # if dd.is_installed('ana'):
-    #     del kwargs['ana_account']
-    yield CommonAccounts.purchase_of_investments.create_object(**kwargs)
-
-    yield Group('7', 'incomes', "Produits", "Erträge", "Revenues", "Tulud")
-    kwargs = dict(sales_allowed=True, group=current_group)
-    yield CommonAccounts.sales.create_object(**kwargs)
-    
-    # if sales:
-    #     settings.SITE.site_config.update(sales_account=obj)
 
     # JOURNALS
 
@@ -146,12 +42,12 @@ def objects():
     else:
         MODEL = vat.VatAccountInvoice
     kw.update(trade_type='sales')
-    kw.update(ref="SLS", dc=DEBIT)
+    kw.update(ref="SLS", dc=CREDIT)
     kw.update(printed_name=_("Invoice"))
     kw.update(dd.str2kw('name', _("Sales invoices")))
     yield MODEL.create_journal(**kw)
 
-    kw.update(ref="SLC", dc=CREDIT)
+    kw.update(ref="SLC", dc=DEBIT)
     kw.update(dd.str2kw('name', _("Sales credit notes")))
     kw.update(printed_name=_("Credit note"))
     yield MODEL.create_journal(**kw)
@@ -159,7 +55,7 @@ def objects():
     kw.update(journal_group=JournalGroups.purchases)
     kw.update(trade_type='purchases', ref="PRC")
     kw.update(dd.str2kw('name', _("Purchase invoices")))
-    kw.update(dc=CREDIT)
+    kw.update(dc=DEBIT)
     if dd.is_installed('ana'):
         yield rt.models.ana.AnaAccountInvoice.create_journal(**kw)
     else:
@@ -182,32 +78,24 @@ def objects():
             partner=bestbank,
             account=CommonAccounts.pending_po.get_object(),
             ref="PMO")
-        kw.update(dc=CREDIT)
+        kw.update(dc=DEBIT)
         yield finan.PaymentOrder.create_journal(**kw)
 
         kw = dict(journal_group=JournalGroups.financial)
         # kw.update(trade_type='')
-        kw.update(dc=DEBIT)
+        kw.update(dc=CREDIT)
         kw.update(account=CommonAccounts.cash.get_object(), ref="CSH")
         kw.update(dd.str2kw('name', _("Cash")))
-        # kw = dd.babel_values(
-        #     'name', en="Cash",
-        #     de="Kasse", fr="Caisse",
-        #     et="Kassa")
         yield finan.BankStatement.create_journal(**kw)
 
         kw.update(dd.str2kw('name', _("Bestbank")))
         kw.update(account=CommonAccounts.best_bank.get_object(), ref="BNK")
-        kw.update(dc=DEBIT)
+        kw.update(dc=CREDIT)
         yield finan.BankStatement.create_journal(**kw)
 
         kw.update(dd.str2kw('name', _("Miscellaneous Journal Entries")))
-        # kw = dd.babel_values(
-        #     'name', en="Miscellaneous Journal Entries",
-        #     de="Diverse Buchungen", fr="Opérations diverses",
-        #     et="Muud operatsioonid")
         kw.update(account=CommonAccounts.cash.get_object(), ref="MSC")
-        kw.update(dc=DEBIT)
+        kw.update(dc=CREDIT)
         yield finan.JournalEntry.create_journal(**kw)
 
     for m in (bevat, bevats):
@@ -217,8 +105,8 @@ def objects():
         kw.update(trade_type='taxes')
         kw.update(dd.str2kw('name', _("VAT declarations")))
         kw.update(must_declare=False)
-        kw.update(account=CommonAccounts.due_taxes.get_object(),
-                  ref=m.DEMO_JOURNAL_NAME, dc=CREDIT)
+        kw.update(account=CommonAccounts.due_taxes.get_object())
+        kw.update(ref=m.DEMO_JOURNAL_NAME, dc=DEBIT)
         yield m.Declaration.create_journal(**kw)
 
     payments = []

@@ -4,7 +4,6 @@
 .. autosummary::
    :toctree:
 
-    choicelists
     models
     desktop
     fixtures.demo_bookings

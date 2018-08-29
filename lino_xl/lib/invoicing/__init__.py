@@ -44,7 +44,7 @@ class Plugin(Plugin):
         # from lino.core.utils import resolve_model
         # model = resolve_model(self.voucher_model)
         # return self.site.modules.ledger.VoucherTypes.get_for_model(model)
-        return self.site.modules.ledger.VoucherTypes.get_for_model(
+        return self.site.models.ledger.VoucherTypes.get_for_model(
             self.voucher_model)
 
     def setup_main_menu(config, site, user_type, m):

@@ -15,6 +15,9 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.xl']  # translations
 
     ref_length = 20
+    """
+    The `max_length` of the `Reference` field of an account.
+    """
 
     def __init__(self, *args):
         super(Plugin, self).__init__(*args)
@@ -32,7 +35,7 @@ ad.configure_plugins("accounts", ref_length=%r)
             for ch in site.modules.accounts.AccountCharts.items():
                 m.add_action(
                     site.modules.accounts.GroupsByChart, master_instance=ch)
-        m.add_action('accounts.Groups')
+        # m.add_action('accounts.Groups')
         m.add_action('accounts.Accounts')
 
     # def setup_explorer_menu(self, site, user_type, m):

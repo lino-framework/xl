@@ -35,14 +35,16 @@ from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
 from lino_xl.lib.accounts.fields import DebitOrCreditField
 from lino_xl.lib.contacts.choicelists import PartnerEvents
 from lino.modlib.system.choicelists import ObservedEvent
+from lino_xl.lib.excerpts.mixins import Certifiable
 
 
 
 from .utils import get_due_movements, check_clearings_by_partner
-from .choicelists import (FiscalYears, VoucherTypes, VoucherStates,
+from .choicelists import (VoucherTypes, VoucherStates,
                           PeriodStates, JournalGroups, TradeTypes)
-from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable
+from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable, PeriodRange
 from .roles import VoucherSupervisor
+from .roles import LedgerStaff
 # from .mixins import FKMATCH
 from .ui import *
 
@@ -222,7 +224,6 @@ class Journal(mixins.BabelNamed,
 #
 #
 
-
 @dd.python_2_unicode_compatible
 class AccountingPeriod(DateRange, mixins.Referrable):
     class Meta:
@@ -233,8 +234,8 @@ class AccountingPeriod(DateRange, mixins.Referrable):
 
     preferred_foreignkey_width = 10
     
-    state = PeriodStates.field(default=PeriodStates.as_callable('open'))
-    year = FiscalYears.field(blank=True)
+    state = PeriodStates.field(default='open')
+    year = dd.ForeignKey('ledger.FiscalYear', blank=True, null=True)
     remark = models.CharField(_("Remark"), max_length=250, blank=True)
 
     @classmethod
@@ -265,11 +266,14 @@ class AccountingPeriod(DateRange, mixins.Referrable):
                 return y + "{:0>2}".format(d.month)
 
         """
-        if dd.plugins.ledger.fix_y2k:
-            return FiscalYears.from_int(d.year).value \
-                + "{:0>2}".format(d.month)
+        y = FiscalYear.year2ref(d.year)
+        return "{}-{:0>2}".format(y, d.month)
+        
+        # if dd.plugins.ledger.fix_y2k:
+        #     return rt.models.ledger.FiscalYear.from_int(d.year).ref \
+        #         + "{:0>2}".format(d.month)
 
-        return "{0.year}-{0.month:0>2}".format(d)
+        # return "{0.year}-{0.month:0>2}".format(d)
 
     """The template used for building the :attr:`ref` of an
     :class:`AccountingPeriod`.
@@ -311,7 +315,7 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         if self.start_date is None:
             self.start_date = dd.today().replace(day=1)
         if not self.year:
-            self.year = FiscalYears.from_date(self.start_date)
+            self.year = FiscalYear.from_date(self.start_date, None)
         super(AccountingPeriod, self).full_clean(*args, **kwargs)
 
     def __str__(self):
@@ -321,6 +325,75 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         return self.ref
 
 AccountingPeriod.set_widget_options('ref', width=6)
+
+
+@dd.python_2_unicode_compatible
+class FiscalYear(DateRange, mixins.Referrable, Certifiable):
+
+    class Meta:
+        app_label = 'ledger'
+        verbose_name = _("Fiscal year")
+        verbose_name_plural = _("Fiscal years")
+        ordering = ['ref']
+
+    preferred_foreignkey_width = 10
+    
+    state = PeriodStates.field(default='open')
+    
+    @classmethod
+    def get_certifiable_fields(cls):
+        return 'start_date end_date ref'
+    
+    @classmethod
+    def year2ref(cls, year):
+        if dd.plugins.ledger.fix_y2k:
+            if year < 2000:
+                return str(year)[-2:]
+            elif year < 3000:
+                return chr(int(str(year)[-3:-1])+65) + str(year)[-1]
+            else:
+                raise Exception("20180827")
+            # elif year < 2010:
+            #     return "A" + str(year)[-1]
+            # elif year < 2020:
+            #     return "B" + str(year)[-1]
+            # elif year < 2030:
+            #     return "C" + str(year)[-1]
+            # else:
+                # raise Exception(20160304)
+        # return str(year)[2:]
+        return str(year)
+
+    @classmethod
+    def from_int(cls, year, *args):
+        ref = cls.year2ref(year)
+        return cls.get_by_ref(ref, *args)
+    
+    @classmethod
+    def create_from_year(cls, year):
+        ref = cls.year2ref(year)
+        return cls(
+            ref=ref, start_date=datetime.date(year, 1, 1),
+            end_date=datetime.date(year, 12, 31))
+        # obj.full_clean()
+        # obj.save()
+        # return obj
+
+    @classmethod
+    def from_date(cls, date, *args):
+        return cls.from_int(date.year, *args)
+
+    def __str__(self):
+        return self.ref
+
+class FiscalYears(dd.Table):
+    model = 'ledger.FiscalYear'
+    required_roles = dd.login_required(LedgerStaff)
+    detail_layout = """
+    ref id
+    start_date end_date printed
+    """
+
   
 class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
               
@@ -421,7 +494,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             kw = {
                 prefix + 'number': int(search_text),
                 prefix + 'accounting_period__year':
-                FiscalYears.from_date(dd.today())}
+                FiscalYear.from_date(dd.today())}
             return models.Q(**kw)
         return super(Voucher, model).quick_search_filter(search_text, prefix)
 
@@ -457,10 +530,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         info.save()
 
     def accounting_period_changed(self, ar):
-        """If user changes the :attr:`accounting_period`, then the `number`
-        might need to change.
-
-        """
         self.number = self.journal.get_next_number(self)
 
     def get_due_date(self):
@@ -473,10 +542,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         return dd.babelattr(self.journal, 'printed_name')
 
     def get_partner(self):
-        """
-        Return the partner related to this voucher. Overridden by
-        PartnerRelated vouchers.
-        """
         return None
 
     def after_ui_save(self, ar, cw):
@@ -603,13 +668,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         self.do_and_clear(doit, do_clear)
 
     def do_and_clear(self, func, do_clear):
-        """Delete all movements of this voucher, then run the given callable
-        `func`, passing it a set with all partners who had at least
-        one movement in this voucher. The function is expected to add
-        more partners to this set.  Then call `check_clearings` for
-        all these partners.
-
-        """
         existing_mvts = self.movement_set.all()
         partners = set()
         # accounts = set()
@@ -639,14 +697,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         raise NotImplementedError()
 
     def create_movement(self, item, acc_tuple, project, dc, amount, **kw):
-        """Create a movement for this voucher.
-
-        The specified `item` may be `None` if this the movement is
-        caused by more than one item. It is used by
-        :class:`DatedFinancialVoucher
-        <lino_xl.lib.finan.mixins.DatedFinancialVoucher>`.
-
-        """
         # dd.logger.info("20151211 ledger.create_movement()")
         account, ana_account = acc_tuple
         if account is None and item is not None:
@@ -767,14 +817,12 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     @dd.virtualfield(dd.PriceField(_("Debit")))
     def debit(self, ar):
         if self.dc:
-            return None
-        return self.amount
+            return self.amount
 
     @dd.virtualfield(dd.PriceField(_("Credit")))
     def credit(self, ar):
-        if self.dc:
+        if not self.dc:
             return self.amount
-        return None
 
     @dd.displayfield(_("Voucher"))
     def voucher_link(self, ar):

@@ -1,4 +1,4 @@
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -271,7 +271,7 @@ class FinancialVouchers(dd.Table):
     params_panel_hidden = True
     order_by = ["id", "entry_date"]
     parameters = dict(
-        pyear=ledger.FiscalYears.field(blank=True),
+        pyear=dd.ForeignKey('ledger.FiscalYear', blank=True),
         #~ ppartner=dd.ForeignKey('contacts.Partner',blank=True,null=True),
         pjournal=ledger.JournalRef(blank=True))
     params_layout = "pjournal pyear"

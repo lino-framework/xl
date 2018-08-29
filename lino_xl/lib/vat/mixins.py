@@ -416,23 +416,6 @@ class QtyVatItemBase(VatItemBase):
 
 
 class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
-    """Abstract base class for VAT declarations.
-
-    A **VAT declaration** is when a company declares to its government
-    how much sales and purchases they've done during a given period.
-
-    A VAT declaration is a computed summary of ledger movements in an
-    **observed period**, but it is also itself a ledger voucher which
-    generates new movements in its own period.
-
-    :class:`lino_xl.lib.sepa.Payable`
-    :class:`lino_xl.lib.ledger.Voucher`
-    :class:`lino_xl.lib.excerpts.Certifiable`
-    :class:`lino_xl.lib.ledger.PeriodRange`
-
-    .. attribute:: accounting_period
-
-    """
 
     class Meta:
         abstract = True
@@ -533,14 +516,6 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
         
     def get_payable_sums_dict(self):
-        """
-        Implements
-        :meth:`lino_xl.lib.sepa.Payable.get_payable_sums_dict`.
-
-        As a side effect this updates values in the computed fields of
-        this declaration.
-
-        """
         fields = self.fields_list.get_list_items()
         payable_sums = SumCollector()
         sums = dict()  # field sums

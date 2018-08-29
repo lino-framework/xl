@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from django.db import models
@@ -9,44 +9,10 @@ from django.utils.translation import ugettext_lazy as _
 from lino.api import dd, rt
 from lino import mixins
 
-# from lino.core.roles import SiteStaff
 from lino_xl.lib.ledger.roles import LedgerStaff
 
-from .choicelists import AccountTypes, CommonAccounts
+from .choicelists import CommonAccounts
 from .utils import DEBIT, CREDIT, DCLABELS, ZERO
-
-
-class Group(mixins.BabelNamed):
-    class Meta:
-        verbose_name = _("Account Group")
-        verbose_name_plural = _("Account Groups")
-
-    # ref = dd.NullCharField(
-    #     max_length=settings.SITE.plugins.accounts.ref_length, unique=True)
-    ref = models.CharField(
-        max_length=settings.SITE.plugins.accounts.ref_length,
-        blank=True, null=True, unique=True)
-    account_type = AccountTypes.field(blank=True)
-    # help_text = dd.RichTextField(_("Introduction"),format="html",blank=True)
-
-
-class Groups(dd.Table):
-    model = 'accounts.Group'
-    required_roles = dd.login_required(LedgerStaff)
-    order_by = ['ref']
-    column_names = 'ref name account_type *'
-
-    insert_layout = """
-    name
-    account_type ref
-    """
-
-    detail_layout = """
-    ref name
-    account_type id
-    #help_text
-    AccountsByGroup
-    """
 
 
 @dd.python_2_unicode_compatible
@@ -58,8 +24,7 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
         verbose_name_plural = _("Accounts")
         ordering = ['ref']
 
-    group = dd.ForeignKey('accounts.Group', blank=True, null=True)
-    type = AccountTypes.field()  # blank=True)
+    sheet_item = dd.ForeignKey('sheets.Item', null=True, blank=True)
     common_account = CommonAccounts.field(blank=True)
     needs_partner = models.BooleanField(_("Needs partner"), default=False)
     clearable = models.BooleanField(_("Clearable"), default=False)
@@ -67,46 +32,30 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
     default_amount = dd.PriceField(
         _("Default amount"), blank=True, null=True)
 
-    def full_clean(self, *args, **kw):
-        if self.group_id is not None:
-            if not self.ref:
-                qs = rt.models.accounts.Account.objects.all()
-                self.ref = str(qs.count() + 1)
-            if not self.name:
-                self.name = self.group.name
-            self.type = self.group.account_type
-
-        # if self.default_dc is None:
-        #     self.default_dc = self.type.dc
-        super(Account, self).full_clean(*args, **kw)
-
     def __str__(self):
         return "(%(ref)s) %(title)s" % dict(
             ref=self.ref,
             title=settings.SITE.babelattr(self, 'name'))
+    
+    @dd.chooser()
+    def sheet_item_choices(cls):
+        return rt.models.sheets.Item.get_usable_items()
 
 
 class Accounts(dd.Table):
     model = 'accounts.Account'
     required_roles = dd.login_required(LedgerStaff)
     order_by = ['ref']
-    column_names = "ref name group *"
+    column_names = "ref name *"
     insert_layout = """
-    ref group type
+    ref sheet_item
     name
     """
     detail_layout = """
-    ref group type common_account id
+    ref common_account sheet_item id
     name
     needs_partner:30 clearable:30 default_amount:10 #default_dc
     ledger.MovementsByAccount
     """
-
-
-class AccountsByGroup(Accounts):
-    required_roles = dd.login_required()
-    master_key = 'group'
-    column_names = "ref name *"
-
 
 

@@ -186,6 +186,8 @@ lino_xl.lib.vatless
 
 lino_xl.lib.deploy
 lino_xl.lib.deploy.fixtures
+lino_xl.lib.sheets
+lino_xl.lib.sheets.fixtures
 lino_xl.lib.tickets
 lino_xl.lib.tickets.fixtures
 lino_xl.lib.skills

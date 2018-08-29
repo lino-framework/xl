@@ -231,7 +231,7 @@ class SiteSummary(Summary):
         verbose_name = _("Site summary")
         verbose_name_plural = _("Site summaries")
 
-    summary_period = 'timeless'
+    summary_period = 'yearly'
     master = dd.ForeignKey('tickets.Site')
 
     active_tickets = models.IntegerField(_("Active tickets"))

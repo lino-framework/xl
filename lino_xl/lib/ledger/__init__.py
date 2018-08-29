@@ -84,16 +84,6 @@ class Plugin(ad.Plugin):
     legacy invoices in your database but not their payments.
     """
 
-    def on_site_startup(self, site):
-        if site.the_demo_date is not None:
-            if self.start_year > site.the_demo_date.year:
-                raise Exception(
-                    "plugins.ledger.start_year is after the_demo_date")
-        FiscalYears = site.modules.ledger.FiscalYears
-        today = site.the_demo_date or datetime.date.today()
-        for y in range(self.start_year, today.year + 6):
-            FiscalYears.add_item(FiscalYears.year2value(y), str(y))
-
     def setup_main_menu(self, site, user_type, m):
         if not self.intrusive_menu:
             mg = site.plugins.accounts
@@ -125,6 +115,7 @@ class Plugin(ad.Plugin):
         mg = site.plugins.accounts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('ledger.Journals')
+        m.add_action('ledger.FiscalYears')
         m.add_action('ledger.AccountingPeriods')
         m.add_action('ledger.PaymentTerms')
 
@@ -136,7 +127,6 @@ class Plugin(ad.Plugin):
         m.add_action('ledger.AllVouchers')
         m.add_action('ledger.VoucherTypes')
         m.add_action('ledger.AllMovements')
-        m.add_action('ledger.FiscalYears')
         m.add_action('ledger.TradeTypes')
         m.add_action('ledger.JournalGroups')
 

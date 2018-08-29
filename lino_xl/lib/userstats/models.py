@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2018 Luc Saffre
+# Copyright 2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from builtins import object
@@ -35,14 +35,14 @@ class UserStat(Summary):
     def get_summary_collectors(self):
         # last_day_of_month(sd)
         qs = rt.models.users.User.objects.filter(username__isnull=False)
-
         if self.year:
             qs = PeriodEvents.active.add_filter(
                 qs, datetime.date(self.year, self.month or 1, 1))
-        yield (self.add_from_user, qs)
 
-    def add_from_user(self, obj):
-        self.active_users += 1
+        def add_from_user(obj):
+            self.active_users += 1
+        yield (add_from_user, qs)
+
 
 
 class UserStats(dd.Table):

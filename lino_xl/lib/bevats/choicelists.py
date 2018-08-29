@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Declaration fields.
-"""
 
 from __future__ import unicode_literals
 
@@ -64,25 +61,25 @@ wfld = DeclarationFields.add_writable_field
 
 # II. Opérations à déclarer (montant hors TVA)
 
-mfld("71", CREDIT, '71', _("Intracom supplies"))
-mfld("72", CREDIT, '72', _("New vehicles"))
-mfld("73", CREDIT, '73', _("Excised products"))
-mfld("75", CREDIT, '75', _("Intracom services"))
-mfld("76", CREDIT, '76', _("Other operations"))
-mfld("77", DEBIT, '71 72 73 75',
+mfld("71", DEBIT, '71', _("Intracom supplies"))
+mfld("72", DEBIT, '72', _("New vehicles"))
+mfld("73", DEBIT, '73', _("Excised products"))
+mfld("75", DEBIT, '75', _("Intracom services"))
+mfld("76", DEBIT, '76', _("Other operations"))
+mfld("77", CREDIT, '71 72 73 75',
      _("Credit notes on 71, 72, 73 and 75"), both_dc=False)
-mfld("78", CREDIT, '76',
+mfld("78", DEBIT, '76',
      _("Credit notes on 76"), both_dc=False)
 
 # III. Taxes dues et régularisations de la taxe
 
-mfld("80", DEBIT, '54',
+mfld("80", CREDIT, '54',
      _("Due VAT for 71...76"), is_payable=True)
-wfld("81", DEBIT, None, _("Miscellaneous corrections due"),
+wfld("81", CREDIT, None, _("Miscellaneous corrections due"),
      is_payable=True)
-wfld("82", CREDIT, None, _("Miscellaneous corrections returnable"),
+wfld("82", DEBIT, None, _("Miscellaneous corrections returnable"),
      is_payable=True)
 
-sfld("83", DEBIT, None, _("Total to pay"), "80 81 82")
+sfld("83", CREDIT, None, _("Total to pay"), "80 81 82")
 
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

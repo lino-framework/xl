@@ -30,41 +30,41 @@ add('40', _("Financial"), 'financial')
 add('50', _("VAT"), 'vat')
 
 
-class FiscalYear(dd.Choice):
-    pass
+# class FiscalYear(dd.Choice):
+#     pass
 
 
-class FiscalYears(dd.ChoiceList):
+# class FiscalYears(dd.ChoiceList):
 
-    required_roles = dd.login_required(LedgerStaff)
-    item_class = FiscalYear
-    verbose_name = _("Fiscal Year")
-    verbose_name_plural = _("Fiscal Years")
-    # ~ preferred_width = 4 # would be 2 otherwise
-    max_length = 8
+#     required_roles = dd.login_required(LedgerStaff)
+#     item_class = FiscalYear
+#     verbose_name = _("Fiscal Year")
+#     verbose_name_plural = _("Fiscal Years")
+#     # ~ preferred_width = 4 # would be 2 otherwise
+#     max_length = 8
 
-    @classmethod
-    def year2value(cls, year):
-        if dd.plugins.ledger.fix_y2k:
-            if year < 2000:
-                return str(year)[-2:]
-            elif year < 2010:
-                return "A" + str(year)[-1]
-            elif year < 2020:
-                return "B" + str(year)[-1]
-            elif year < 2030:
-                return "C" + str(year)[-1]
-            else:
-                raise Exception(20160304)
-        return str(year)[2:]
+#     @classmethod
+#     def year2value(cls, year):
+#         if dd.plugins.ledger.fix_y2k:
+#             if year < 2000:
+#                 return str(year)[-2:]
+#             elif year < 2010:
+#                 return "A" + str(year)[-1]
+#             elif year < 2020:
+#                 return "B" + str(year)[-1]
+#             elif year < 2030:
+#                 return "C" + str(year)[-1]
+#             else:
+#                 raise Exception(20160304)
+#         return str(year)[2:]
 
-    @classmethod
-    def from_int(cls, year):
-        return cls.get_by_value(cls.year2value(year))
+#     @classmethod
+#     def from_int(cls, year):
+#         return cls.get_by_value(cls.year2value(year))
 
-    @classmethod
-    def from_date(cls, date):
-        return cls.from_int(date.year)
+#     @classmethod
+#     def from_date(cls, date):
+#         return cls.from_int(date.year)
 
 
 class PeriodStates(dd.Workflow):

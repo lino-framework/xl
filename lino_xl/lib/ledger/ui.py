@@ -28,7 +28,7 @@ from lino.utils import join_elems
 from lino_xl.lib.accounts.utils import DEBIT, CREDIT, ZERO
 
 from .utils import Balance, DueMovement, get_due_movements
-from .choicelists import TradeTypes, FiscalYears, VoucherTypes, JournalGroups
+from .choicelists import TradeTypes, VoucherTypes, JournalGroups
 from .choicelists import VoucherStates
 from .mixins import JournalRef
 from .roles import AccountingReader, LedgerUser, LedgerStaff
@@ -124,7 +124,7 @@ class Vouchers(dd.Table):
     order_by = ["entry_date", "number"]
     column_names = "entry_date number *"
     parameters = dict(
-        year=FiscalYears.field(blank=True),
+        year=dd.ForeignKey('ledger.FiscalYear', blank=True),
         journal=JournalRef(blank=True))
     params_layout = "journal start_period end_period state user"
 
@@ -187,7 +187,7 @@ class ExpectedMovements(dd.VirtualTable):
 
     @classmethod
     def get_dc(cls, ar=None):
-        return DEBIT
+        return CREDIT
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -318,7 +318,7 @@ class DebtsByPartner(ExpectedMovements):
 
     @classmethod
     def get_dc(cls, ar=None):
-        return CREDIT
+        return DEBIT
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -653,7 +653,7 @@ class Debtors(DebtorsCreditors):
     label = _("Debtors")
     help_text = _("List of partners who are in debt towards us "
                   "(usually customers).")
-    d_or_c = CREDIT
+    d_or_c = DEBIT
 
 
 class Creditors(DebtorsCreditors):
@@ -661,7 +661,7 @@ class Creditors(DebtorsCreditors):
     help_text = _("List of partners who are giving credit to us "
                   "(usually suppliers).")
 
-    d_or_c = DEBIT
+    d_or_c = CREDIT
 
 ##
 
@@ -803,7 +803,7 @@ class Movements(dd.Table):
 
     editable = False
     parameters = mixins.ObservedDateRange(
-        year=FiscalYears.field(blank=True),
+        year=dd.ForeignKey('ledger.FiscalYear', blank=True),
         journal_group=JournalGroups.field(blank=True),
         partner=dd.ForeignKey('contacts.Partner', blank=True, null=True),
         project=dd.ForeignKey(
@@ -930,7 +930,7 @@ class MovementsByPartner(Movements):
     def param_defaults(cls, ar, **kw):
         kw = super(MovementsByPartner, cls).param_defaults(ar, **kw)
         # kw.update(cleared=dd.YesNo.no)
-        kw.update(year='')
+        kw.update(year=None)
         return kw
 
     @classmethod
@@ -989,7 +989,7 @@ class MovementsByProject(MovementsByPartner):
     def param_defaults(cls, ar, **kw):
         kw = super(MovementsByPartner, cls).param_defaults(ar, **kw)
         kw.update(cleared=dd.YesNo.no)
-        kw.update(year='')
+        kw.update(year=None)
         return kw
 
     @dd.displayfield(_("Description"))
@@ -1041,7 +1041,7 @@ class MovementsByAccount(Movements):
         kw = super(MovementsByAccount, cls).param_defaults(ar, **kw)
         if ar.master_instance is not None and ar.master_instance.clearable:
             kw.update(cleared=dd.YesNo.no)
-            kw.update(year='')
+            kw.update(year=None)
         return kw
 
     @dd.displayfield(_("Description"))

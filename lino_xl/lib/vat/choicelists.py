@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -91,26 +91,6 @@ class VatRegimes(dd.ChoiceList):
 
 # @dd.python_2_unicode_compatible
 class DeclarationField(dd.Choice):
-    """
-    Base class for all fields of VAT declarations.
-
-    .. attribute:: both_dc
-    .. attribute:: editable
-    .. attribute:: fieldnames
-
-       An optional space-separated list of names of other declaration
-       fields to be observed by this field.
-                   
-    .. attribute:: vat_regimes
-    .. attribute:: vat_classes
-    .. attribute:: vat_columns
-                   
-    .. attribute:: exclude_vat_regimes
-    .. attribute:: exclude_vat_classes
-    .. attribute:: exclude_vat_columns
-    .. attribute:: is_payable
-    
-    """
     editable = False
     vat_regimes = None
     exclude_vat_regimes = None
@@ -208,8 +188,6 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_columns) == 0:
                 self.vat_columns = None
-            
-            
             
         super(DeclarationField, self).attach(choicelist)
             
@@ -336,10 +314,11 @@ class DeclarationFieldsBase(dd.ChoiceList):
         def x(label, lst, xlst):
             if lst is None:
                 return
-            spec = ' '.join([i.name or i.value for i in lst])
+            lst = sorted([i.name or i.value for i in lst])
+            spec = ' '.join(lst)
             if xlst is not None:
-                spec += ' ' + ' '.join([
-                    "!"+(i.name or i.value) for i in xlst])
+                xlst = sorted(["!"+(i.name or i.value) for i in xlst])
+                spec += ' ' + ' '.join(xlst)
             spec = spec.strip()
             if spec:
                 elems.extend([label, " ", spec, E.br()])
@@ -358,7 +337,7 @@ class DeclarationFieldsBase(dd.ChoiceList):
         if fld.observed_fields:
             elems += [
                 _("Sum of"), ' ',
-                ' '.join([i.name for i in fld.observed_fields]),
+                ' '.join(sorted([i.name for i in fld.observed_fields])),
                 E.br()]
 
         return E.div(*forcetext(elems))

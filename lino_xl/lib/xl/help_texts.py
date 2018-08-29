@@ -415,10 +415,6 @@ must resolve using resolve_states."""),
 where you can place money and retrieve it later"."""),
     'lino_xl.lib.accounts.Account.name' : _("""The multilingual designation of this account, as the users see
 it."""),
-    'lino_xl.lib.accounts.Account.group' : _("""The account group to which this account belongs.  Points to
-an instance of Group.  If this field is empty, the
-account won't appear in certain reports."""),
-    'lino_xl.lib.accounts.Account.seqno' : _("""The sequence number of this account within its group."""),
     'lino_xl.lib.accounts.Account.ref' : _("""An optional unique name which can be used to reference a given
 account."""),
     'lino_xl.lib.accounts.Account.type' : _("""The account type of this account.  This points to an item of
@@ -438,25 +434,18 @@ get_allowed_accounts method."""),
 specify an analytic account."""),
     'lino_xl.lib.accounts.Account.ana_account' : _("""Which analytic account to suggest for transactions on this
 account."""),
-    'lino_xl.lib.accounts.Group' : _("""A group of accounts."""),
-    'lino_xl.lib.accounts.Groups' : _("""The global table of all account groups."""),
+    'lino_xl.lib.accounts.Account.sheet_item' : _("""Pointer to the item of the balance sheet or income statement
+that will report the movements of this account."""),
+    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
+    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts.
+It defines two additional attributes:"""),
     'lino_xl.lib.accounts.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
 together with its booking direction (debit or credit)."""),
     'lino_xl.lib.accounts.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
     'lino_xl.lib.accounts.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
-    'lino_xl.lib.accounts.AccountTypes' : _("""The global list of account types or top-level
-accounts."""),
-    'lino_xl.lib.accounts.AccountType' : _("""The base class for items of :AccountTypes."""),
-    'lino_xl.lib.accounts.CommonAccounts' : _("""The global list of common accounts."""),
-    'lino_xl.lib.accounts.CommonAccount' : _("""The base class for items of :CommonAccounts.
-It defines two additional attributes:"""),
-    'lino_xl.lib.accounts.Sheet' : _("""Base class for a financial statement."""),
-    'lino_xl.lib.accounts.BalanceSheet' : _("""A balance sheet or statement of financial position is a
-summary of the financial balances of an organisation."""),
     'lino_xl.lib.accounts.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
 DEBIT or CREDIT."""),
     'lino_xl.lib.accounts.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
-    'lino_xl.lib.accounts.Plugin' : _("""The max_length of the Reference field of an account."""),
     'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
     'lino_xl.lib.ana.Account.group' : _("""The analytic account group this account belongs to."""),
     'lino_xl.lib.ana.Group.ref' : _("""The unique reference."""),
@@ -505,8 +494,11 @@ corps et de biens, Getrennt von Tisch und Bett)"""),
 them."""),
     'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
+    'lino_xl.lib.bevats.VatRegimes' : _("""The lino_xl.lib.betvats plugin redefines the list of VAT
+regimes:"""),
+    'lino_xl.lib.bevats.VatColumns' : _("""The lino_xl.lib.betvats plugin redefines the list of VAT
+columns:"""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
-    'lino_xl.lib.bevats.DeclarationFields' : _("""Implements lino_xl.lib.vat.DeclarationFields."""),
     'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
 Only start_date is mandatory."""),
     'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
@@ -931,12 +923,11 @@ mandatory pointer to a Journal instance."""),
 journalized or booked."""),
     'lino_xl.lib.ledger.Voucher.voucher_date' : _("""The date on the voucher (i.e. when it has been issued by its
 emitter)."""),
-    'lino_xl.lib.ledger.Voucher.accounting_period' : _("""The accounting period and fiscal year to which this entry is
-to be assigned to. The default value is determined from
-entry_date."""),
+    'lino_xl.lib.ledger.Voucher.accounting_period' : _("""The accounting period to which this entry is to be assigned
+to.  The default value is determined from entry_date."""),
     'lino_xl.lib.ledger.Voucher.narration' : _("""A short explanation which ascertains the subject matter of
 this journal entry."""),
-    'lino_xl.lib.ledger.Journal' : _("""A journal is a named sequence of numbered vouchers."""),
+    'lino_xl.lib.ledger.Journal' : _("""Fields:"""),
     'lino_xl.lib.ledger.Journal.trade_type' : _("""Pointer to TradeTypes."""),
     'lino_xl.lib.ledger.Journal.voucher_type' : _("""Pointer to an item of VoucherTypes."""),
     'lino_xl.lib.ledger.Journal.journal_group' : _("""Pointer to an item of JournalGroups."""),
@@ -1022,7 +1013,7 @@ base_account."""),
     'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
 Product database
 model."""),
-    'lino_xl.lib.ledger.FiscalYears' : _("""A choicelist with the fiscal years available in this database."""),
+    'lino_xl.lib.ledger.FiscalYears' : _("""The fiscal years available in this database."""),
     'lino_xl.lib.ledger.JournalGroups' : _("""The list of possible journal groups."""),
     'lino_xl.lib.ledger.JournalGroups.sales' : _("""For sales journals."""),
     'lino_xl.lib.ledger.JournalGroups.purchases' : _("""For purchases journals."""),
@@ -1263,6 +1254,16 @@ instances."""),
     'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
     'lino_xl.lib.polls.PollStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.polls.ResponseStates' : _("""The list of possible states of a Response."""),
+    'lino_xl.lib.sheets.SheetTypes' : _("""The global list of sheet types ."""),
+    'lino_xl.lib.sheets.SheetTypes.balance' : _("""A balance sheet or statement of financial position is a
+summary of the financial balances of an organisation."""),
+    'lino_xl.lib.sheets.SheetTypes.results' : _("""https://en.wikipedia.org/wiki/Statement_of_comprehensive_income#Requirements_of_IFRS"""),
+    'lino_xl.lib.sheets.CommonItems' : _("""The global list of common sheet items ."""),
+    'lino_xl.lib.sheets.CommonItem.value' : _("""Corresponds to the ref field in Item"""),
+    'lino_xl.lib.sheets.Item' : _("""In this table the uer can configure their local list of items for
+both sheet types."""),
+    'lino_xl.lib.sheets.Entry' : _("""An entry is the computed value of given item for a given
+fiscal year."""),
     'lino_xl.lib.userstats.UserStat' : _("""A Summary on
 SiteConfig."""),
     'lino_xl.lib.userstats.UserStat.active_users' : _("""The number of active users. A user is considered active if

@@ -337,7 +337,6 @@ class AnalyticAccountBalances(AccountBalances):
 
                   
 
-
 VoucherTypes.add_item_lazy(InvoicesByJournal)
 
 class PrintableInvoicesByJournal(PrintableByJournal, Invoices):

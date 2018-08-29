@@ -1,13 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""Model mixins for `lino_xl.lib.ledger`.
-
-.. autosummary::
-
-"""
 
 from __future__ import unicode_literals
 from builtins import str
@@ -21,11 +15,6 @@ from etgen.html import E
 
 from .choicelists import VoucherTypes
 from .roles import LedgerUser
-
-# from etgen.html import E
-# from lino.modlib.notify.utils import rich_text_to_elems
-
-# FKMATCH = False
 
 if dd.is_installed('ledger'):
     project_model = dd.plugins.ledger.project_model
