@@ -816,12 +816,12 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     @dd.virtualfield(dd.PriceField(_("Debit")))
     def debit(self, ar):
-        if self.dc:
+        if self.dc is DEBIT:
             return self.amount
 
     @dd.virtualfield(dd.PriceField(_("Credit")))
     def credit(self, ar):
-        if not self.dc:
+        if self.dc is CREDIT:
             return self.amount
 
     @dd.displayfield(_("Voucher"))

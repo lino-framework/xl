@@ -7,8 +7,8 @@ from lino.api import _
 
 ZERO = Decimal(0)
 
-DEBIT = True
-CREDIT = False
+DEBIT = False
+CREDIT = True
 
 DCLABELS = {
     DEBIT: _("Debit"),
