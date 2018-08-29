@@ -110,6 +110,7 @@ Accounting stuff
     bevat
     bevats
     ana
+    sheets
 
 Differentiator packages
 =======================

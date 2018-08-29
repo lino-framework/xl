@@ -913,6 +913,9 @@ empty."""),
 string. Clicking it will open a table with all movements
 having that match."""),
     'lino_xl.lib.ledger.Movement.ana_account' : _("""The analytic account to move together with this transactions."""),
+    'lino_xl.lib.ledger.MovementsByPartner' : _("""The summary of this table displays the balance. A negative number
+means that we owe money to this partner, a positive numvber means
+that this partner owes us money."""),
     'lino_xl.lib.ledger.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
     'lino_xl.lib.ledger.Voucher.state' : _("""The workflow state of this voucher. Choices are defined in
 VoucherStates"""),
