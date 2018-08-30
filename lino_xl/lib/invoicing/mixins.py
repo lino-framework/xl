@@ -13,11 +13,7 @@ from __future__ import unicode_literals
 import logging
 logger = logging.getLogger(__name__)
 
-from decimal import Decimal
-
-ZERO = Decimal()
-
-from lino.api import dd, rt
+from lino.api import dd
 from lino.core.gfks import gfk2lookup
 
 from django.contrib.contenttypes.fields import GenericRelation

@@ -18,14 +18,14 @@ from django.utils import translation
 from lino.modlib.gfks.fields import GenericForeignKeyIdField
 from lino.core.gfks import GenericForeignKey, ContentType
 
-from lino.modlib.users.mixins import UserAuthored, My
+from lino.modlib.users.mixins import UserPlan, My
 
 # from lino_xl.lib.ledger.choicelists import VoucherTypes
 
 from lino.api import dd, rt, _
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from .mixins import Invoiceable
-from .actions import (UpdatePlan, ToggleSelection, StartInvoicing,
+from .actions import (ToggleSelection, StartInvoicing,
                       StartInvoicingForJournal,
                       StartInvoicingForPartner, ExecutePlan,
                       ExecuteItem)
@@ -79,7 +79,7 @@ dd.inject_action(
 
 
 @dd.python_2_unicode_compatible
-class Plan(UserAuthored):
+class Plan(UserPlan):
     class Meta:
         app_label = 'invoicing'
         abstract = dd.is_abstract_model(__name__, 'Plan')
@@ -87,13 +87,10 @@ class Plan(UserAuthored):
         verbose_name_plural = _("Invoicing plans")
 
     journal = dd.ForeignKey('ledger.Journal', blank=True, null=True)
-    today = models.DateField(
-        _("Invoicing date"), default=dd.today)
     max_date = models.DateField(
         _("Invoiceables until"), null=True, blank=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
-    update_plan = UpdatePlan()
     execute_plan = ExecutePlan()
     start_invoicing = StartInvoicing()
 
@@ -115,26 +112,10 @@ class Plan(UserAuthored):
                 if obj.get_invoiceable_product(self) is not None:
                     yield obj
 
-    @classmethod
-    def start_plan(cls, user, **options):
-        try:
-            plan = cls.objects.get(user=user)
-            changed = False
-            for k, v in options.items():
-                if getattr(plan, k) != v:
-                    changed = True
-                    setattr(plan, k, v)
-            if 'today' not in options:
-                if plan.today != dd.today():
-                    plan.today = dd.today()
-                    changed = True
-            if changed:
-                plan.items.all().delete()
-        except cls.DoesNotExist:
-            plan = cls(user=user, **options)
-        plan.save()
-        return plan
-
+    def update_plan(self, ar):
+        self.items.all().delete()
+        self.fill_plan(ar)
+        
     def fill_plan(self, ar):
         Item = rt.models.invoicing.Item
         collected = dict()
@@ -173,21 +154,6 @@ class Plan(UserAuthored):
             item.number_of_invoiceables += 1
             item.save()
 
-    # def execute_plan(self,  ar):
-    #     """Create an invoice for the given partner.
-    #     """
-    #     InvoiceItem = rt.models.sales.InvoiceItem
-
-    # @dd.displayfield(_("Actions"))
-    # def action_buttons(self, ar):
-    #     if ar is None:
-    #         return ''
-    #     elems = []
-    #     elems.append(ar.instance_action_button(self.toggle_selections))
-    #     elems = join_elems(*elems, sep=", ")
-    #     return E.p(*elems)
-    #     # return obj.partner.show_invoiceables.as_button(ar)
-    #     # return obj.partner.create_invoice.as_button(ar)
 
     toggle_selections = ToggleSelection()
 

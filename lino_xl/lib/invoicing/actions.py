@@ -21,7 +21,8 @@ class StartInvoicing(dd.Action):
 
     def run_from_ui(self, ar, **kw):
         options = self.get_options(ar)
-        plan = rt.models.invoicing.Plan.start_plan(ar.get_user(), **options)
+        plan = rt.models.invoicing.Plan.start_plan(
+            ar.get_user(), **options)
         ar.goto_instance(plan)
 
 
@@ -42,17 +43,6 @@ class StartInvoicingForPartner(StartInvoicing):
         partner = ar.selected_rows[0]
         assert isinstance(partner, rt.models.contacts.Partner)
         return dict(partner=partner)
-
-
-class UpdatePlan(dd.Action):
-    label = _("Update plan")
-    icon_name = 'lightning'
-
-    def run_from_ui(self, ar, **kw):
-        plan = ar.selected_rows[0]
-        plan.items.all().delete()
-        plan.fill_plan(ar)
-        ar.success(refresh=True)
 
 
 class ExecutePlan(dd.Action):
@@ -80,7 +70,7 @@ class ExecuteItem(ExecutePlan):
     def run_from_ui(self, ar, **kw):
         for item in ar.selected_rows:
             if item.invoice_id:
-                raise Warning("Invoice was already generated")
+                raise Warning(_("Invoice was already generated"))
             item.create_invoice(ar)
         ar.success(refresh=True)
 
