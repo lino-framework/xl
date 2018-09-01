@@ -149,10 +149,7 @@ class Entry(SimpleSummary):
                     # ignore sums for which there is no item
                     pass
                 ref = ref[:-1]
-        entrys = {}
-        entrys.update(collector)
-        entrys.update(sums)
-        for entry in entrys.values():
+        for entry in list(collector.values()) + list(sums.values()):
             if entry.value:
                 entry.full_clean()
                 entry.save()
