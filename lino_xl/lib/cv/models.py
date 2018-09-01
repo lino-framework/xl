@@ -29,6 +29,7 @@ from __future__ import unicode_literals
 
 from builtins import str
 
+import six
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
@@ -93,7 +94,7 @@ class LanguageKnowledge(dd.Model):
         elif self.written > '1':
             return _(u"%s (w)") % self.language
         else:
-            return unicode(self.language)
+            return six.text_type(self.language)
 
 
 class LanguageKnowledges(dd.Table):
@@ -321,7 +322,7 @@ class Training(SectorFunction, EducationEntry):
         verbose_name=_("Certificates"))
 
     def __str__(self):
-        return unicode(self.type)
+        return six.text_type(self.type)
 
     @dd.chooser()
     def type_choices(cls):
@@ -402,7 +403,7 @@ class Study(EducationEntry):
     # success = models.BooleanField(verbose_name=_("Success"), default=False)
 
     def __str__(self):
-        return unicode(self.type)
+        return six.text_type(self.type)
 
     @dd.chooser()
     def type_choices(cls):
@@ -619,7 +620,7 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
         verbose_name=_("Termination reason"))
 
     def __str__(self):
-        return unicode(self.title)
+        return six.text_type(self.title)
 
 
 class Experiences(PeriodTable):

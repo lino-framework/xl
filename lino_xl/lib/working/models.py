@@ -372,14 +372,14 @@ def welcome_messages(ar):
 
     # your open sessions (i.e. those you are busy with)
     qs = Session.objects.filter(end_time__isnull=True)
-    working = {me:[E.b(unicode(_("You are busy with ")))]}
+    working = {me:[E.b(six.text_type(_("You are busy with ")))]}
     if qs.count() == 0:
         return
     for ses in qs:
         if ses.user not in working:
             working[ses.user] = [ar.obj2html(ses.user),
                                  gettext(" is working on: ")]
-        txt = unicode(ses.ticket)
+        txt = six.text_type(ses.ticket)
         working[ses.user].append(
             ar.obj2html(ses.ticket, txt, title=getattr(ses.ticket,'summary',"") or
                                                getattr(ses.ticket,'name',"")))
