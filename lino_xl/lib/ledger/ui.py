@@ -3,11 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""User interface definitions for this plugin.
-
-
-"""
-
 from __future__ import unicode_literals
 from builtins import str
 import six
@@ -433,18 +428,6 @@ class AccountBalances(dd.Table):
     parameters = AccountingPeriodRange()
     params_layout = "start_period end_period"
     
-    # parameters = mixins.Yearly(
-    #     # include_vat = models.BooleanField(
-    #     #     verbose_name=dd.plugins.vat.verbose_name),
-    # )
-
-    # params_layout = "start_date end_date"
-    
-    @classmethod
-    def new_balance(cls, row):
-        return Balance(row.old_d, row.old_c) + Balance(
-            row.during_d, row.during_c)
-
     @classmethod
     def rowmvtfilter(self):
         raise NotImplementedError()
@@ -499,13 +482,38 @@ class AccountBalances(dd.Table):
         # print("20170930 {}".format(qs.query))
         return qs
 
+    @classmethod
+    def new_balance(cls, row):
+        return Balance(row.old_d, row.old_c) + Balance(
+            row.during_d, row.during_c)
+
+    @classmethod
+    def normal_dc(cls, row, ar):
+        # raise NotImplementedError()
+        return DEBIT  # row.normal_dc
+
     @dd.displayfield(_("Reference"))
     def ref(self, row, ar):
         return row.ref
 
     @dd.displayfield(_("Description"))
     def description(self, row, ar):
+        # print(20180831, ar.renderer, ar.user)
         return row.obj2href(ar)
+
+    @dd.virtualfield(dd.PriceField(_("Old balance")))
+    def old_dc(self, row, ar):
+        return Balance(row.old_d, row.old_c).value(
+            self.normal_dc(row, ar))
+
+    @dd.virtualfield(dd.PriceField(_("Movements")))
+    def during_dc(self, row, ar):
+        return Balance(row.during_d, row.during_c).value(
+            self.normal_dc(row, ar))
+
+    @dd.virtualfield(dd.PriceField(_("New balance")))
+    def new_dc(self, row, ar):
+        return self.new_balance(row).value(self.normal_dc(row, ar))
 
     @dd.virtualfield(dd.PriceField(_("Debit before")))
     def old_d(self, row, ar):
@@ -531,28 +539,31 @@ class AccountBalances(dd.Table):
     def new_c(self, row, ar):
         return self.new_balance(row).c
     
-    @dd.displayfield("")
+    @dd.displayfield("", max_length=0)
     def empty_column(self, row, ar):
         return ''
 
     
 
-class GeneralAccountBalances(AccountBalances):
+class GeneralAccountBalances(AccountBalances, Accounts):
 
     label = _("General Account Balances")
-    model = 'ledger.Account'
+    # model = 'ledger.Account'
     # order_by = ['group__ref', 'ref']
     order_by = ['ref']
 
     @classmethod
     def rowmvtfilter(self, ar):
         return dict(account=OuterRef('pk'))
-    
 
-class PartnerBalancesByTradeType(AccountBalances):
+contacts = dd.resolve_app('contacts')
+# from lino_xl.lib.contacts.desktop import Partners
+# print "20180831", dir(contacts)
+
+class PartnerBalancesByTradeType(AccountBalances, contacts.Partners):
     
-    model = 'contacts.Partner'
     order_by = ['name', 'id']
+    column_names = "description old_dc during_d during_c new_dc"
 
     @classmethod
     def get_title_base(self, ar):
@@ -569,6 +580,14 @@ class PartnerBalancesByTradeType(AccountBalances):
     @dd.displayfield(_("Ref"))
     def ref(self, row, ar):
         return str(row.pk)
+    
+    @classmethod
+    def normal_dc(cls, row, ar):
+        tt = ar.master_instance
+        if tt is None:
+            return DEBIT
+        return tt.dc
+
     
 # class CustomerAccountsBalance(PartnerAccountsBalance):
 #     label = _("Customer Accounts Balance")
@@ -734,24 +753,32 @@ class AccountingReport(Report):
     params_panel_hidden = False
     parameters = AccountingPeriodRange(
         with_general = models.BooleanField(
-            verbose_name=_("General"), default=True),
+            verbose_name=_("General accounts"), default=True),
         with_balances = models.BooleanField(
-            verbose_name=_("Balances"), default=True),
+            verbose_name=_("Balance lists"), default=True),
         with_activity = models.BooleanField(
-            verbose_name=_("Activity"), default=True))
-    params_layout = """
-    start_period end_period with_balances with_activity
-    with_general""" # setup_parameters will add names here
+            verbose_name=_("Activity lists"), default=True))
     build_method = 'appypdf'
 
     @classmethod
     def setup_parameters(cls, fields):
+        params_layout = """
+        start_period end_period with_balances with_activity with_general"""
+        
+        if dd.is_installed('ana'):
+            k = 'with_analytic'
+            fields[k] = models.BooleanField(
+                verbose_name=_("Analytic accounts"), default=True)
+            params_layout += ' ' + k
+        
+        params_layout += '\n'
         for tt in TradeTypes.get_list_items():
             k = 'with_'+tt.name
             fields[k] = models.BooleanField(
                 verbose_name=tt.text, default=True)
-            cls.params_layout += ' ' + k
-        # cls.params_layout += ' go_button'
+            params_layout += ' ' + k
+        # params_layout += ' go_button'
+        cls.params_layout = params_layout
         super(AccountingReport, cls).setup_parameters(fields)
         
     @classmethod
@@ -764,14 +791,19 @@ class AccountingReport(Report):
         bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
         balances = []
         if pv.with_general:
-            balances.append(GeneralAccountBalances.request(
-                param_values=bpv))
+            balances.append(ar.spawn(
+                GeneralAccountBalances, param_values=bpv))
+        if dd.is_installed('ana'):
+            if pv.with_analytic:
+                balances.append(ar.spawn(
+                    rt.models.ana.AnalyticAccountBalances,
+                    param_values=bpv))
         for tt in TradeTypes.get_list_items():
             k = 'with_'+tt.name
             if pv[k]:
-                balances.append(
-                    PartnerBalancesByTradeType.request(
-                        master_instance=tt, param_values=bpv))
+                balances.append(ar.spawn(
+                    PartnerBalancesByTradeType,
+                    master_instance=tt, param_values=bpv))
         # if pv.with_sales:
         #     balances.append(CustomerAccountsBalance)
         # if pv.with_purchases:

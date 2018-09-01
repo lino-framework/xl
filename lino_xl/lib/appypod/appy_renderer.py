@@ -95,13 +95,11 @@ class AppyRenderer(OriginalAppyRenderer):
         self.ar.renderer = settings.SITE.plugins.jinja.renderer
         #~ context.update(appy_renderer=self)
         context.update(restify=self.restify_func)
-        context.update(html=self.html_func)
-        # context.update(E=E)
-        # context.update(Decimal=Decimal)
-        context.update(jinja=self.jinja_func)
+        context.update(html=self.insert_html)
+        context.update(jinja=self.insert_jinja)
         context.update(table=self.insert_table)
-        context.update(as_odt=self.as_odt)
         context.update(story=self.insert_story)
+        context.update(as_odt=self.as_odt)
         #~ context.update(html2odf=html2odf)
         context.update(ehtml=html2odf)
         context.update(toxml=toxml)
@@ -121,7 +119,7 @@ class AppyRenderer(OriginalAppyRenderer):
         self.my_automaticstyles = []
         self.my_styles = []
 
-    def jinja_func(self, template_name, **kwargs):
+    def insert_jinja(self, template_name, **kwargs):
 
         #saved_renderer = self.ar.renderer
         assert template_name.endswith('.html'), "20160726"
@@ -135,10 +133,10 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ print 20130910, template, dir(self)
         html = template.render(self.contentParser.env.context)
         #self.ar.renderer = saved_renderer
-        return self.html_func(html)
+        return self.insert_html(html)
         #~ print 20130910, html
         #~ return self.renderXhtml(html,**kw)
-        # context.update(html=self.html_func)
+        # context.update(html=self.insert_html)
         # except Exception as e:
         #     #self.ar.renderer = saved_renderer
         #     import traceback
@@ -162,10 +160,13 @@ class AppyRenderer(OriginalAppyRenderer):
         return self.renderXhtml(html, **kw)
         #~ return renderer.renderXhtml(html.encode('utf-8'),**kw)
 
-    def html_func(self, html, **kw):
+    def insert_html(self, html, **kw):
         """
-        Insert a chunk of HTML (not XHTML).
-        This might be provided as a string or as an etree element.
+        Insert a chunk of HTML (not XHTML) provided as a string or as an
+        etree element.
+
+        This is the function that gets called when a template contains a
+        ``do text from html(...)`` statement.
         """
 
         if html is None or html == '':
@@ -183,7 +184,7 @@ class AppyRenderer(OriginalAppyRenderer):
         except Exception as e:
             raise Exception(
                 "20150923 html2xhtml(%r) failed: %s" % (html, e))
-        # logger.info("20160330 html_func() got:<<<\n%s\n>>>", html)
+        # dd.logger.info("20180831 insert_html() got:<<<\n%s\n>>>", html)
         # print(__file__, ">>>")
         # print(html)
         # print("<<<", __file__)
@@ -275,6 +276,7 @@ class AppyRenderer(OriginalAppyRenderer):
         """
         This is the function that gets called when a template contains a
         ``do text from table(...)`` statement.
+
         """
         if True:
             return self.insert_table_(*args, **kw)
@@ -308,6 +310,7 @@ class AppyRenderer(OriginalAppyRenderer):
             width_specs = ["%d*" % (w * 100 / tw) for w in widths]
         else:
             width_specs = ["%dmm" % (table_width * w / tw) for w in widths]
+        # raise Exception("20180831 {}".format(width_specs))
 
         doc = OpenDocumentText()
 

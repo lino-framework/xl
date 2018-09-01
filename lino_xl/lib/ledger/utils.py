@@ -59,6 +59,12 @@ class Balance(object):
         c2 = o.c or ZERO
         return Balance(d1+d2, c1+c2)
 
+    def value(self, dc):
+        if dc is DEBIT:
+            return self.d - self.c
+        else:
+            return self.c - self.d
+    
 
 def myround(d):
     return d.quantize(CENT, rounding=ROUND_HALF_UP)

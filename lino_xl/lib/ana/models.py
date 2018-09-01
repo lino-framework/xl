@@ -16,6 +16,8 @@ from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import AccountBalances
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
+from lino_xl.lib.ledger.fields import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DEBIT
 
 
 class Group(BabelDesignated, Referrable):
@@ -54,6 +56,8 @@ class Account(BabelDesignated, Sequenced, Referrable):
 
     group = dd.ForeignKey(
         'ana.Group', verbose_name=_("Group"), blank=True, null=True)
+    # normal_dc = DebitOrCreditField(
+    #     _("Normal booking direction"), default=DEBIT)
 
     def full_clean(self, *args, **kw):
         if self.group_id is not None:
@@ -317,22 +321,27 @@ class InvoicesByJournal(ByJournal, Invoices):
     entry_date total_incl
     """
 
-class AnalyticAccountBalances(AccountBalances):
+from django.db.models import OuterRef
+
+class AnalyticAccountBalances(AccountBalances, Accounts):
 
     label = _("Analytic Account Balances")
+    model = 'ana.Account'
+    order_by = ['ref']
 
-    @classmethod
-    def get_request_queryset(self, ar, **filter):
-        return rt.models.ana.Account.objects.order_by(
-            'group__ref', 'ref')
+    # @classmethod
+    # def get_request_queryset(self, ar, **filter):
+    #     return rt.models.ana.Account.objects.order_by(
+    #         'group__ref', 'ref')
 
     @classmethod
     def rowmvtfilter(self, row):
-        return dict(ana_account=row)
+        # return dict(ana_account=row)
+        return dict(ana_account=OuterRef('pk'))
 
-    @dd.displayfield(_("Ref"))
-    def ref(self, row, ar):
-        return ar.obj2html(row.group)
+    # @dd.displayfield(_("Ref"))
+    # def ref(self, row, ar):
+    #     return ar.obj2html(row.group)
 
 
                   

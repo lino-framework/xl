@@ -33,7 +33,7 @@ class PrintTableActionPisa(PrintTableAction):
 
     def as_html_table(self, ar):
         t = xghtml.Table()
-        ar.dump2html(t, ar.data_iterator)
+        ar.dump2html(t, ar.data_iterator, header_links=False)
 
         return xghtml.tostring(t.as_element())
 

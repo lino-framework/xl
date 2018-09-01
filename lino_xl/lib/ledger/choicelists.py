@@ -304,18 +304,18 @@ class TradeTypes(dd.ChoiceList):
     
 
 TradeTypes.add_item(
-    'S', _("Sales"), 'sales', dc=CREDIT,
+    'S', _("Sales"), 'sales', dc=DEBIT,
     base_account=CommonAccounts.sales,
     main_account=CommonAccounts.customers)
 TradeTypes.add_item(
-    'P', _("Purchases"), 'purchases', dc=DEBIT,
+    'P', _("Purchases"), 'purchases', dc=CREDIT,
     base_account=CommonAccounts.purchase_of_goods,
     main_account=CommonAccounts.suppliers,
     invoice_account_field_name='purchase_account',
     invoice_account_field_label=_("Purchase account")
 )
 TradeTypes.add_item(
-    'W', _("Wages"), 'wages', dc=DEBIT,
+    'W', _("Wages"), 'wages', dc=CREDIT,
     base_account=CommonAccounts.wages,
     main_account=CommonAccounts.employees)
 TradeTypes.add_item(
