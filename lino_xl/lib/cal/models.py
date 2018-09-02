@@ -686,12 +686,12 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if event.user is not None and event.user != ar.get_user():
             if event.access_class == AccessClasses.show_busy:
                 s = _("Busy")
-            s = event.user.username + ': ' + unicode(s)
+            s = event.user.username + ': ' + six.string_types(s)
         elif settings.SITE.project_model is not None \
                 and event.project is not None:
-            s += " " + unicode(_("with")) + " " + unicode(event.project)
+            s += " " + six.string_types(_("with")) + " " + six.string_types(event.project)
         if event.state:
-            s = ("(%s) " % unicode(event.state)) + s
+            s = ("(%s) " % six.string_types(event.state)) + s
         n = event.guest_set.all().count()
         if n:
             s = ("[%d] " % n) + s
@@ -1068,7 +1068,7 @@ if False:  # removed 20160610 because it is probably not used
 
         def run_from_ui(self, ar, **kw):
             user = ar.selected_rows[0]
-            dd.logger.info("Updating reminders for %s", unicode(user))
+            dd.logger.info("Updating reminders for %s", six.string_types(user))
             n = update_reminders_for_user(user, ar)
             msg = _("%(num)d reminders for %(user)s have been updated."
                     ) % dict(user=user, num=n)

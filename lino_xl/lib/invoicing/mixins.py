@@ -11,6 +11,9 @@ from __future__ import unicode_literals
 
 
 import logging
+
+import six
+
 logger = logging.getLogger(__name__)
 
 from lino.api import dd
@@ -58,7 +61,7 @@ class Invoiceable(dd.Model):
         return None
 
     def get_invoiceable_title(self, invoice=None):
-        return unicode(self)
+        return six.string_types(self)
 
     def get_invoiceable_amount(self):
         return None

@@ -7,6 +7,8 @@
 """
 
 from builtins import str
+
+import six
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
@@ -28,7 +30,7 @@ class Third(mixins.Sequenced, contacts.PartnerDocument, Controllable):
 
     def summary_row(self, ar, **kw):
         #~ s = ui.href_to(self)
-        return ["(", unicode(self.seqno), ") "] + list(contacts.PartnerDocument.summary_row(self, ar, **kw))
+        return ["(", six.string_types(self.seqno), ") "] + list(contacts.PartnerDocument.summary_row(self, ar, **kw))
 
     def __str__(self):
         return str(self.seqno)

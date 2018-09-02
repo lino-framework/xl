@@ -6,6 +6,9 @@
 
 
 import logging
+
+import six
+
 logger = logging.getLogger(__name__)
 
 
@@ -164,6 +167,6 @@ class Mailable(dd.Model):
         created.
 
         """
-        return unicode(self)
+        return six.string_types(self)
 
 

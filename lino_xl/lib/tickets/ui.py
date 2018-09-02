@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 from builtins import str
 
+import six
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
@@ -230,7 +231,7 @@ class LinksByTicket(Links):
 
         items = []
         for lnktype, lst in tbt.items():
-            items.append(E.li(unicode(lnktype), ": ", *join_elems(lst, ', ')))
+            items.append(E.li(six.string_types(lnktype), ": ", *join_elems(lst, ', ')))
         elems = []
         if len(items) > 0:
             # elems += join_elems(items)
