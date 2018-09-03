@@ -284,6 +284,15 @@ class VatDocument(ProjectRelated, VatTotal):
     def before_state_change(self, ar, old, new):
         if new.name == 'registered':
             self.compute_totals()
+            
+            self.items_edited = True
+            # Above line is because an automatically filled invoice
+            # item should not change anymore once the invoice has been
+            # registered.  For example if the partner's
+            # purchase_account changed and you unregister an old
+            # invoice, Lino must not automatically replace the account
+            # of that invoice.
+            
         elif new.name == 'draft':
             if not self.edit_totals:
                 self.total_base = None
