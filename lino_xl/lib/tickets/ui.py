@@ -231,7 +231,7 @@ class LinksByTicket(Links):
 
         items = []
         for lnktype, lst in tbt.items():
-            items.append(E.li(six.string_types(lnktype), ": ", *join_elems(lst, ', ')))
+            items.append(E.li(six.text_type(lnktype), ": ", *join_elems(lst, ', ')))
         elems = []
         if len(items) > 0:
             # elems += join_elems(items)

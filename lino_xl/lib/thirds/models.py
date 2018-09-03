@@ -30,7 +30,7 @@ class Third(mixins.Sequenced, contacts.PartnerDocument, Controllable):
 
     def summary_row(self, ar, **kw):
         #~ s = ui.href_to(self)
-        return ["(", six.string_types(self.seqno), ") "] + list(contacts.PartnerDocument.summary_row(self, ar, **kw))
+        return ["(", six.text_type(self.seqno), ") "] + list(contacts.PartnerDocument.summary_row(self, ar, **kw))
 
     def __str__(self):
         return str(self.seqno)

@@ -167,6 +167,6 @@ class Mailable(dd.Model):
         created.
 
         """
-        return six.string_types(self)
+        return six.text_type(self)
 
 

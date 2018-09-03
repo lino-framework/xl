@@ -61,7 +61,7 @@ class Invoiceable(dd.Model):
         return None
 
     def get_invoiceable_title(self, invoice=None):
-        return six.string_types(self)
+        return six.text_type(self)
 
     def get_invoiceable_amount(self):
         return None
