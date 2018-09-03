@@ -6,12 +6,11 @@ from builtins import str
 import datetime
 
 from django.db import models
-from django.db.models.functions import Length
 
 from etgen.html import E
 
 from lino.api import dd, rt, _
-from lino.mixins import Referrable
+from lino.mixins import StructuredReferrable
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.utils.mldbc.mixins import BabelDesignated
 from lino_xl.lib.ledger.models import DebitOrCreditField
@@ -29,7 +28,7 @@ from .choicelists import SheetTypes, CommonItems
 
 DEMO_JOURNAL_NAME = "BAL"
 
-class Item(BabelDesignated, Referrable):
+class Item(BabelDesignated, StructuredReferrable):
     class Meta:
         app_label = 'sheets'
         verbose_name = _("Sheet item")
@@ -41,23 +40,11 @@ class Item(BabelDesignated, Referrable):
     dc = DebitOrCreditField(_("Booking direction"))
     sheet_type = SheetTypes.field()
     common_item = CommonItems.field(blank=True)
-    mirror_ref = models.CharField()
     mirror_ref = models.CharField(
         _("Mirror"), max_length=ref_max_length,
         blank=True, null=True)
 
-    @classmethod
-    def get_usable_items(cls):
-        return cls.objects.annotate(
-            ref_len=Length('ref')).filter(
-                ref_len=dd.plugins.sheets.ref_length)
     
-    def get_choices_text(self, request, actor, field):
-        return "{} {}".format(self.ref, self)
-
-    def is_heading(self):
-        return len(self.ref) < dd.plugins.sheets.ref_length
-
 
 class Entry(SimpleSummary):
     
@@ -188,15 +175,6 @@ class Entry(SimpleSummary):
     #     ref = u' ' * (len(ref)-1) + ref
     #     return ref
 
-    @dd.displayfield(_("Description"), max_length=50)
-    def description(self, ar):
-        s = self.item.ref
-        s = u' ' * (len(s)-1) + s
-        s += " " + str(self.item)
-        if self.item.is_heading():
-            s = E.b(s)
-        return s
-    
 Entry.set_widget_options('value', hide_sum=True)
 
         
@@ -238,7 +216,7 @@ class BalanceByYear(Entries):
     master_key = 'master'
     # order_by = ['item__ref']
     # column_names = 'item_ref item activa passiva'
-    column_names = 'description activa passiva'
+    column_names = 'item__description activa passiva'
     filter = models.Q(item__sheet_type=SheetTypes.balance)
 
 class ResultsByYear(Entries):
@@ -246,7 +224,7 @@ class ResultsByYear(Entries):
     master_key = 'master'
     # order_by = ['item__ref']
     # column_names = 'item_ref item expenses revenues'
-    column_names = 'description expenses revenues'
+    column_names = 'item__description expenses revenues'
     filter = models.Q(item__sheet_type=SheetTypes.results)
 
     

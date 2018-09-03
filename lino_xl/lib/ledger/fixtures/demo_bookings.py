@@ -110,6 +110,7 @@ def objects():
                 journal=JOURNAL_P, partner=story[0], user=USERS.pop(),
                 voucher_date=vd,
                 payment_term=PAYMENT_TERMS.pop(),
+                items_edited=True,
                 entry_date=vd + delta(days=1))
             yield invoice
             for account, amount in story[1]:
