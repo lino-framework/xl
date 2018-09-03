@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import string_concat
+from lino.api import string_concat
 
 from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from lino_xl.lib.appypod.mixins import PrintLabelsAction

@@ -12,7 +12,7 @@ from builtins import str
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import string_concat
+from lino.api import string_concat
 
 from etgen.html import E
 from lino.api import dd

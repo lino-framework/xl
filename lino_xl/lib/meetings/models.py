@@ -33,7 +33,7 @@ from lino_xl.lib.tickets.mixins import Milestone
 # from lino_xl.lib.excerpts.mixins import Certifiable
 # from lino_xl.lib.excerpts.mixins import ExcerptTitle
 # from lino.modlib.users.mixins import UserAuthored
-from django.utils.translation import string_concat
+from lino.api import string_concat
 from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.stars.mixins import Starrable
 # from lino_xl.lib.cal.choicelists import Recurrencies

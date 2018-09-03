@@ -6,7 +6,7 @@ from builtins import str
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import string_concat
+from lino.api import string_concat
 
 from etgen.html import E
 
