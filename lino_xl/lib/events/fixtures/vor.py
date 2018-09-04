@@ -35,7 +35,7 @@ def event(type, date, name, name_nl, name_fr, *features, **kw):
     e.full_clean()
     e.save()
     if features:
-        e.features = features
+        e.features.set(features)
     if cities:
         for name in cities:
             stage = Stage(event=e, city=get_city(name))

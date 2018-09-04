@@ -16,7 +16,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
-from lino.api import string_concat
+from django.utils.text import format_lazy
 
 from lino.api import dd, rt
 from lino import mixins
@@ -219,7 +219,7 @@ class Course(Reservation, Duplicable, Printable):
     print_presence_sheet = PrintPresenceSheet()
     print_presence_sheet_html = PrintPresenceSheet(
         build_method='weasy2html',
-        label=string_concat(_("Presence sheet"), _(" (HTML)")))
+        label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
 
     @dd.displayfield(_("Print"))
     def print_actions(self, ar):

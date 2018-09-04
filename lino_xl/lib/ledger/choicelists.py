@@ -6,7 +6,7 @@ from builtins import str
 
 from django.conf import settings
 from django.db import models
-from lino.api import string_concat
+from django.utils.text import format_lazy
 
 from etgen.html import E
 
@@ -137,7 +137,7 @@ class VoucherType(dd.Choice):
         if text is None:
             # text = model._meta.verbose_name + ' (%s)' % dd.full_model_name(model)
             # text = model._meta.verbose_name + ' (%s.%s)' % (
-            text = string_concat(model._meta.verbose_name, " (", value, ")")
+            text = format_lazy(u"{} ({})",model._meta.verbose_name, value)
         #     model.__module__, model.__name__)
         name = None
         super(VoucherType, self).__init__(value, text, name)

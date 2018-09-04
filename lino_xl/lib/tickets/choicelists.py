@@ -6,7 +6,7 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
-from lino.api import string_concat
+from django.utils.text import format_lazy
 from django.db import models
 from django.conf import settings
 

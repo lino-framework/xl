@@ -123,7 +123,7 @@ class SpawnTicketFromWish(SpawnTicket):
         summary=Ticket._meta.get_field('summary'),
         # just get_field fails with choser error
         enduser=dd.ForeignKey(
-            Ticket._meta.get_field('end_user').remote_field.to,
+            Ticket._meta.get_field('end_user').remote_field.model,
             verbose_name=_("End user"), blank=True,),
         # Rich Editor doesn't work all the time...
         # Seems to work better with basic editor

@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from lino.api import string_concat
+from django.utils.text import format_lazy
 
 from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from lino_xl.lib.appypod.mixins import PrintLabelsAction
@@ -101,7 +101,7 @@ class List(BabelDesignated, mixins.Referrable, Printable):
     print_members = PrintMembers()
     print_members_html = PrintMembers(
         build_method='weasy2html',
-        label=string_concat(_("Members"), _(" (HTML)")))
+        label=format_lazy(u"{}{}",_("Members"), _(" (HTML)")))
 
     @dd.displayfield(_("Print"))
     def print_actions(self, ar):

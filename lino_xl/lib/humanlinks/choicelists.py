@@ -13,7 +13,7 @@ from __future__ import print_function
 
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
-from lino.api import string_concat
+from django.utils.text import format_lazy
 from lino_xl.lib.contacts.roles import ContactsStaff
 
 from lino.api import dd
@@ -34,7 +34,7 @@ class LinkType(dd.Choice):
         # text = string_concat(
         #     mptext, ' (', fptext, ') / ', mctext, ' (', fctext, ')')
         # text = string_concat(mctext, ' (', fctext, ')')
-        text = string_concat(mptext, ' (', fptext, ')')
+        text = format_lazy(u"{}({})",mptext, fptext)
         # text = "%s (%s) / %s (%s)" % (mptext, fptext, mctext, fctext)
         super(LinkType, self).__init__(value, text, name, **kw)
 

@@ -11,7 +11,7 @@ ZERO = Decimal()
 
 from django.db import models
 
-from lino.api import string_concat
+from django.utils.text import format_lazy
 from django.utils import translation
 
 # from etgen.html import E, join_elems
@@ -191,7 +191,7 @@ class Item(dd.Model):
         if self.plan.journal is None:
             raise Warning(_("No journal specified"))
         ITEM_MODEL = dd.resolve_model(dd.plugins.invoicing.item_model)
-        M = ITEM_MODEL._meta.get_field('voucher').remote_field.to
+        M = ITEM_MODEL._meta.get_field('voucher').remote_field.model
         invoice = M(partner=self.partner, journal=self.plan.journal,
                     voucher_date=self.plan.today,
                     user=ar.get_user(),
@@ -284,13 +284,13 @@ dd.inject_field(
     'invoiceable_type', dd.ForeignKey(
         ContentType,
         blank=True, null=True,
-        verbose_name=string_concat(invoiceable_label, ' ', _('(type)'))))
+        verbose_name=format_lazy(u"{} {}",invoiceable_label, _('(type)'))))
 dd.inject_field(
     dd.plugins.invoicing.item_model,
     'invoiceable_id', GenericForeignKeyIdField(
         'invoiceable_type',
         blank=True, null=True,
-        verbose_name=string_concat(invoiceable_label, ' ', _('(object)'))))
+        verbose_name=format_lazy(u"{} {}",invoiceable_label, _('(object)'))))
 dd.inject_field(
     dd.plugins.invoicing.item_model,
     'invoiceable', GenericForeignKey(
