@@ -23,26 +23,25 @@ from atelier.utils import last_day_of_month
 
 from lino.api import dd, rt, _
 from lino import mixins
+from lino.mixins import BabelNamed, Sequenced, StructuredReferrable
+
 from lino.utils import mti
 from lino.utils import SumCollector
-
 from lino.mixins.periods import DateRange
+
+from lino.modlib.system.choicelists import ObservedEvent
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.contacts.choicelists import PartnerEvents
-from lino.modlib.system.choicelists import ObservedEvent
-from lino_xl.lib.excerpts.mixins import Certifiable
-
-
 
 # from .utils import get_due_movements, check_clearings_by_partner
 from .choicelists import (VoucherTypes, VoucherStates,
                           PeriodStates, JournalGroups, TradeTypes)
 from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable, PeriodRange
 from .choicelists import CommonAccounts
-from .utils import DEBIT, CREDIT, DCLABELS, ZERO
+from .utils import DEBIT, CREDIT, ZERO, Balance
 
 from .roles import VoucherSupervisor
 from .roles import LedgerStaff
@@ -243,7 +242,7 @@ class AccountingPeriod(DateRange, mixins.Referrable):
 
     @classmethod
     def get_available_periods(cls, entry_date):
-        """Return a queryset of peruiods available for booking."""
+        """Return a queryset of periods available for booking."""
         if entry_date is None:  # added 20160531
             entry_date = dd.today()
         fkw = dict(start_date__lte=entry_date, end_date__gte=entry_date)
@@ -331,7 +330,7 @@ AccountingPeriod.set_widget_options('ref', width=6)
 
 
 @dd.python_2_unicode_compatible
-class FiscalYear(DateRange, mixins.Referrable, Certifiable):
+class FiscalYear(DateRange, mixins.Referrable):
 
     class Meta:
         app_label = 'ledger'
@@ -342,10 +341,6 @@ class FiscalYear(DateRange, mixins.Referrable, Certifiable):
     preferred_foreignkey_width = 10
     
     state = PeriodStates.field(default='open')
-    
-    @classmethod
-    def get_certifiable_fields(cls):
-        return 'start_date end_date ref'
     
     @classmethod
     def year2ref(cls, year):
@@ -392,10 +387,11 @@ class FiscalYear(DateRange, mixins.Referrable, Certifiable):
 class FiscalYears(dd.Table):
     model = 'ledger.FiscalYear'
     required_roles = dd.login_required(LedgerStaff)
-    detail_layout = """
-    ref id
-    start_date end_date printed
-    """
+    column_names = "ref start_date end_date state *"
+    # detail_layout = """
+    # ref id
+    # start_date end_date 
+    # """
 
   
 class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
@@ -423,8 +419,8 @@ class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
         return d
 
 
-@dd.python_2_unicode_compatible
-class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
+# @dd.python_2_unicode_compatible
+class Account(StructuredReferrable, BabelNamed, Sequenced):
     ref_max_length = settings.SITE.plugins.ledger.ref_length
 
     class Meta:
@@ -441,10 +437,10 @@ class Account(mixins.BabelNamed, mixins.Sequenced, mixins.Referrable):
     default_amount = dd.PriceField(
         _("Default amount"), blank=True, null=True)
 
-    def __str__(self):
-        return "(%(ref)s) %(title)s" % dict(
-            ref=self.ref,
-            title=settings.SITE.babelattr(self, 'name'))
+    # def __str__(self):
+    #     return "(%(ref)s) %(title)s" % dict(
+    #         ref=self.ref,
+    #         title=settings.SITE.babelattr(self, 'name'))
     
     @dd.chooser()
     def sheet_item_choices(cls):
@@ -1250,4 +1246,7 @@ def check_clearings(qs, matches=[]):
         match, account = k
         sat = (balance == ZERO)
         qs.filter(account=account, match=match).update(cleared=sat)
+
+
+        
 

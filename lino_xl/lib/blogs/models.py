@@ -50,10 +50,6 @@ class EntryType(mixins.BabelNamed):
         return self.name
 
 
-# def html_text(s):
-#     return '<div class="htmlText">' + s + '</div>'
-
-
 class EntryTypes(dd.Table):
     model = 'blogs.EntryType'
     # column_names = 'name build_method template *'

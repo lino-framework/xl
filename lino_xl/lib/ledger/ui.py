@@ -7,24 +7,20 @@ from __future__ import unicode_literals
 from builtins import str
 import six
 
-import logging
-logger = logging.getLogger(__name__)
-
 from django.db import models
-from django.db.models import Q, F, OuterRef, Subquery, Sum
-from django.db.models.expressions import RawSQL
+from django.db.models import OuterRef, Subquery, Sum
 
-from lino.api import dd, rt, _, gettext
+from lino.api import dd, rt, _
 from lino import mixins
 from lino.utils.report import Report
 from etgen.html import E
 from lino.utils import join_elems
 
+from .mixins import JournalRef
 from .utils import DEBIT, CREDIT, ZERO
 from .utils import Balance
 from .choicelists import TradeTypes, VoucherTypes, JournalGroups
 from .choicelists import VoucherStates
-from .mixins import JournalRef
 from .roles import AccountingReader, LedgerUser, LedgerStaff
 
 
@@ -745,75 +741,74 @@ class Situation(Report):
 #         CustomerAccountsBalance,
 #         SupplierAccountsBalance)
 
-    
-class AccountingReport(Report):
-    label = _("Accounting Report")
-    auto_apply_params = False
-    required_roles = dd.login_required(AccountingReader)
-    params_panel_hidden = False
-    parameters = AccountingPeriodRange(
-        with_general = models.BooleanField(
-            verbose_name=_("General accounts"), default=True),
-        with_balances = models.BooleanField(
-            verbose_name=_("Balance lists"), default=True),
-        with_activity = models.BooleanField(
-            verbose_name=_("Activity lists"), default=True))
-    build_method = 'appypdf'
+# class AccountingReport(Report):
+#     label = _("Accounting Report")
+#     auto_apply_params = False
+#     required_roles = dd.login_required(AccountingReader)
+#     params_panel_hidden = False
+#     parameters = AccountingPeriodRange(
+#         with_general = models.BooleanField(
+#             verbose_name=_("General accounts"), default=True),
+#         with_balances = models.BooleanField(
+#             verbose_name=_("Balance lists"), default=True),
+#         with_activity = models.BooleanField(
+#             verbose_name=_("Activity lists"), default=True))
+#     build_method = 'appypdf'
 
-    @classmethod
-    def setup_parameters(cls, fields):
-        params_layout = """
-        start_period end_period with_balances with_activity with_general"""
+#     @classmethod
+#     def setup_parameters(cls, fields):
+#         params_layout = """
+#         start_period end_period with_balances with_activity with_general"""
         
-        if dd.is_installed('ana'):
-            k = 'with_analytic'
-            fields[k] = models.BooleanField(
-                verbose_name=_("Analytic accounts"), default=True)
-            params_layout += ' ' + k
+#         if dd.is_installed('ana'):
+#             k = 'with_analytic'
+#             fields[k] = models.BooleanField(
+#                 verbose_name=_("Analytic accounts"), default=True)
+#             params_layout += ' ' + k
         
-        params_layout += '\n'
-        for tt in TradeTypes.get_list_items():
-            k = 'with_'+tt.name
-            fields[k] = models.BooleanField(
-                verbose_name=tt.text, default=True)
-            params_layout += ' ' + k
-        # params_layout += ' go_button'
-        cls.params_layout = params_layout
-        super(AccountingReport, cls).setup_parameters(fields)
+#         params_layout += '\n'
+#         for tt in TradeTypes.get_list_items():
+#             k = 'with_'+tt.name
+#             fields[k] = models.BooleanField(
+#                 verbose_name=tt.text, default=True)
+#             params_layout += ' ' + k
+#         # params_layout += ' go_button'
+#         cls.params_layout = params_layout
+#         super(AccountingReport, cls).setup_parameters(fields)
         
-    @classmethod
-    def get_story(cls, self, ar):
-        pv = ar.param_values
-        cls.check_params(pv)
-        # if not pv.start_period:
-        #     yield E.p(gettext("Select at least a start period"))
-        #     return
-        bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
-        balances = []
-        if pv.with_general:
-            balances.append(ar.spawn(
-                GeneralAccountBalances, param_values=bpv))
-        if dd.is_installed('ana'):
-            if pv.with_analytic:
-                balances.append(ar.spawn(
-                    rt.models.ana.AnalyticAccountBalances,
-                    param_values=bpv))
-        for tt in TradeTypes.get_list_items():
-            k = 'with_'+tt.name
-            if pv[k]:
-                balances.append(ar.spawn(
-                    PartnerBalancesByTradeType,
-                    master_instance=tt, param_values=bpv))
-        # if pv.with_sales:
-        #     balances.append(CustomerAccountsBalance)
-        # if pv.with_purchases:
-        #     balances.append(SupplierAccountsBalance)
-        if pv.with_balances:
-            for sar in balances:
-                yield E.h1(str(sar.get_title()))
-                yield sar
-                # yield E.h1(B.label)
-                # yield B.request(param_values=bpv)
+#     @classmethod
+#     def get_story(cls, self, ar):
+#         pv = ar.param_values
+#         cls.check_params(pv)
+#         # if not pv.start_period:
+#         #     yield E.p(gettext("Select at least a start period"))
+#         #     return
+#         bpv = dict(start_period=pv.start_period, end_period=pv.end_period)
+#         balances = []
+#         if pv.with_general:
+#             balances.append(ar.spawn(
+#                 GeneralAccountBalances, param_values=bpv))
+#         if dd.is_installed('ana'):
+#             if pv.with_analytic:
+#                 balances.append(ar.spawn(
+#                     rt.models.ana.AnalyticAccountBalances,
+#                     param_values=bpv))
+#         for tt in TradeTypes.get_list_items():
+#             k = 'with_'+tt.name
+#             if pv[k]:
+#                 balances.append(ar.spawn(
+#                     PartnerBalancesByTradeType,
+#                     master_instance=tt, param_values=bpv))
+#         # if pv.with_sales:
+#         #     balances.append(CustomerAccountsBalance)
+#         # if pv.with_purchases:
+#         #     balances.append(SupplierAccountsBalance)
+#         if pv.with_balances:
+#             for sar in balances:
+#                 yield E.h1(str(sar.get_title()))
+#                 yield sar
+#                 # yield E.h1(B.label)
+#                 # yield B.request(param_values=bpv)
 
 
 class Movements(dd.Table):
@@ -1008,7 +1003,6 @@ class MovementsByPartner(Movements):
 
         elems.append(ar.href_to_request(sar, txt))
         return ar.html_text(E.div(*elems))
-        # return E.div(class_="htmlText", *elems)
 
 
 class MovementsByProject(MovementsByPartner):

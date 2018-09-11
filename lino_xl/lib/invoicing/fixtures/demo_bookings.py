@@ -33,7 +33,7 @@ def objects():
     # have something in our invoicing plan.
     today = datetime.date(dd.plugins.ledger.start_year, 1, 1)
     while today < dd.demo_date(-60):
-        plan = Plan.start_plan(ses.get_user(), today=today)
+        plan = Plan.run_start_plan(ses.get_user(), today=today)
         yield plan
         plan.fill_plan(ses)
         # for i in plan.items.all()[:9]:

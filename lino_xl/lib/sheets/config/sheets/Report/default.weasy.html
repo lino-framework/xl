@@ -1,0 +1,15 @@
+{% extends "excerpts/base.weasy.html" %}
+{%- block pagesize %}portrait{%- endblock %}
+
+{%- block main %}
+{{ super() }}
+
+<div class="footer_div">{{this.excerpt_type}}</div>
+
+<p class="EnhancedPar">
+{{obj.start_period}}{% if obj.end_period %}-{{obj.end_period}}{% endif %}
+</p>
+
+{{ar.show_story(obj.get_story(ar), header_level=2)}}
+
+{%- endblock %}

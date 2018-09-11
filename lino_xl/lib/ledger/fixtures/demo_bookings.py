@@ -65,7 +65,7 @@ def objects():
 
     JOURNAL_P = Journal.objects.get(ref="PRC")
     if dd.is_installed('ana'):
-        ANA_ACCS = Cycler(rt.models.ana.Account.objects.all())
+        ANA_ACCS = Cycler(rt.models.ana.Account.get_usable_items())
     ACCOUNTS = Cycler(JOURNAL_P.get_allowed_accounts())
     AMOUNTS = Cycler([Decimal(x) for x in
                       "20 29.90 39.90 99.95 199.95 599.95 1599.99".split()])

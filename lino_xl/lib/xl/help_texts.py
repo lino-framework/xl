@@ -83,60 +83,8 @@ that ISO code in lino_xl.lib.countries.models.Country."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.excerpts.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.excerpts.Plugin.responsible_user' : _("""The username of the user responsible for monitoring the excerpts
-system. This is currently used only by
+system.  This is currently used only by
 lino_xl.lib.excerpts.fixtures.demo2."""),
-    'lino_xl.lib.excerpts.Shortcuts' : _("""The list of excerpt shortcut fields.  An excerpt shortcut field is
-a virtual display field with actions for quickly managing, from a
-given database object, the excerpt for this object of a given type."""),
-    'lino_xl.lib.excerpts.ClearPrinted' : _("""Action to clear the print cache (i.e. the generated printable
-document)."""),
-    'lino_xl.lib.excerpts.Certifiable' : _("""Any model which inherits from this mixin becomes "certifiable".
-That is:"""),
-    'lino_xl.lib.excerpts.Certifiable.printed' : _("""Displays information about when this certifiable has been printed.
-Clicking on it will display the excerpt pointed to by
-printed_by."""),
-    'lino_xl.lib.excerpts.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
-    'lino_xl.lib.excerpts.ExcerptTitle' : _("""Mixin for models like
-lino_welfare.modlib.aids.models.AidType and
-lino_xl.lib.courses.models.Line."""),
-    'lino_xl.lib.excerpts.ExcerptTitle.name' : _("""The designation of this row as seen by the user e.g. when
-selecting an instance of this model."""),
-    'lino_xl.lib.excerpts.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
-One field for every language.
-If this is empty, then name is used."""),
-    'lino_xl.lib.excerpts.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
-Excerpt.excerpt_type which points to an ExcerptType
-instance."""),
-    'lino_xl.lib.excerpts.ExcerptType.name' : _("""The designation of this excerpt type.
-One field for every language."""),
-    'lino_xl.lib.excerpts.ExcerptType.content_type' : _("""The database model for which this excerpt type is to be used."""),
-    'lino_xl.lib.excerpts.ExcerptType.build_method' : _("""See lino.modlib.printing.mixins.PrintableType.build_method."""),
-    'lino_xl.lib.excerpts.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
-    'lino_xl.lib.excerpts.ExcerptType.body_template' : _("""The body template to use when printing an excerpt of this type."""),
-    'lino_xl.lib.excerpts.ExcerptType.email_template' : _("""The template to use when sending this an excerpt of this type
-by email."""),
-    'lino_xl.lib.excerpts.ExcerptType.shortcut' : _("""Optional pointer to a shortcut field.  If this is not empty, then
-the given shortcut field will manage excerpts of this type."""),
-    'lino_xl.lib.excerpts.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
-    'lino_xl.lib.excerpts.ExcerptTypes.model' : _("""alias of ExcerptType"""),
-    'lino_xl.lib.excerpts.CreateExcerpt' : _("""Create an excerpt in order to print this data record."""),
-    'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
-situation."""),
-    'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
-    'lino_xl.lib.excerpts.Excerpt.owner' : _("""The object being printed by this excerpt.
-See Controllable.owner."""),
-    'lino_xl.lib.excerpts.Excerpt.company' : _("""The optional company of the recipient of this
-excerpt.  See ContactRelated.company."""),
-    'lino_xl.lib.excerpts.Excerpt.contact_person' : _("""The optional contact person of the recipient of this
-excerpt.  See ContactRelated.contact_person."""),
-    'lino_xl.lib.excerpts.Excerpt.recipient' : _("""The recipient of this excerpt.  See
-ContactRelated.recipient"""),
-    'lino_xl.lib.excerpts.Excerpt.language' : _("""The language used for printing this excerpt."""),
-    'lino_xl.lib.excerpts.Excerpts' : _("""Base class for all tables on Excerpt."""),
-    'lino_xl.lib.excerpts.Excerpts.model' : _("""alias of Excerpt"""),
-    'lino_xl.lib.excerpts.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
-this."""),
-    'lino_xl.lib.excerpts.ExcerptsByOwner.model' : _("""alias of Excerpt"""),
     'lino_xl.lib.extensible.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.extensible.Plugin.calendar_start_hour' : _("""The time at which the CalendarPanel's daily view starts."""),
     'lino_xl.lib.extensible.Plugin.calendar_end_hour' : _("""The time at which the CalendarPanel's daily view ends."""),
@@ -785,6 +733,57 @@ application defines several variants of
 EnrolmentsByPupil."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
+    'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
+situation."""),
+    'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
+    'lino_xl.lib.excerpts.Excerpt.owner' : _("""The object being printed by this excerpt.
+See Controllable.owner."""),
+    'lino_xl.lib.excerpts.Excerpt.company' : _("""The optional company of the recipient of this
+excerpt.  See ContactRelated.company."""),
+    'lino_xl.lib.excerpts.Excerpt.contact_person' : _("""The optional contact person of the recipient of this
+excerpt.  See ContactRelated.contact_person."""),
+    'lino_xl.lib.excerpts.Excerpt.recipient' : _("""The recipient of this excerpt.  See
+ContactRelated.recipient"""),
+    'lino_xl.lib.excerpts.Excerpt.language' : _("""The language used for printing this excerpt."""),
+    'lino_xl.lib.excerpts.Excerpts' : _("""Base class for all tables on Excerpt."""),
+    'lino_xl.lib.excerpts.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
+this."""),
+    'lino_xl.lib.excerpts.ExcerptsByProject' : _("""Only used if lino.core.site.Site.project_model is set."""),
+    'lino_xl.lib.excerpts.ExcerptType' : _("""The type of an excerpt. Every excerpt has a mandatory field
+Excerpt.excerpt_type which points to an ExcerptType
+instance."""),
+    'lino_xl.lib.excerpts.ExcerptType.name' : _("""The designation of this excerpt type.
+One field for every language."""),
+    'lino_xl.lib.excerpts.ExcerptType.content_type' : _("""The database model for which this excerpt type is to be used."""),
+    'lino_xl.lib.excerpts.ExcerptType.build_method' : _("""See lino.modlib.printing.mixins.PrintableType.build_method."""),
+    'lino_xl.lib.excerpts.ExcerptType.template' : _("""The main template to be used when printing an excerpt of this type."""),
+    'lino_xl.lib.excerpts.ExcerptType.body_template' : _("""The body template to use when printing an excerpt of this type."""),
+    'lino_xl.lib.excerpts.ExcerptType.email_template' : _("""The template to use when sending this an excerpt of this type
+by email."""),
+    'lino_xl.lib.excerpts.ExcerptType.shortcut' : _("""Optional pointer to a shortcut field.  If this is not empty, then
+the given shortcut field will manage excerpts of this type."""),
+    'lino_xl.lib.excerpts.ExcerptTypes' : _("""Displays all rows of ExcerptType."""),
+    'lino_xl.lib.excerpts.Certifiable' : _("""Any model which inherits from this mixin becomes "certifiable"."""),
+    'lino_xl.lib.excerpts.Certifiable.printed' : _("""Displays information about when this certifiable has been printed.
+Clicking on it will display the excerpt pointed to by
+printed_by."""),
+    'lino_xl.lib.excerpts.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
+    'lino_xl.lib.excerpts.ExcerptTitle' : _("""Mixin for models like
+lino_welfare.modlib.aids.models.AidType and
+lino_xl.lib.courses.models.Line."""),
+    'lino_xl.lib.excerpts.ExcerptTitle.name' : _("""The designation of this row as seen by the user e.g. when
+selecting an instance of this model."""),
+    'lino_xl.lib.excerpts.ExcerptTitle.excerpt_title' : _("""The text to print as title in confirmations.
+One field for every language.
+If this is empty, then name is used."""),
+    'lino_xl.lib.excerpts.Shortcuts' : _("""A choicelists of excerpt shortcut fields.  An excerpt shortcut
+field is a virtual display field with actions for quickly
+managing, from a given database object, the excerpt for this
+object of a given type."""),
+    'lino_xl.lib.excerpts.CreateExcerpt' : _("""Create an excerpt in order to print this data record."""),
+    'lino_xl.lib.excerpts.ClearPrinted' : _("""Clear any previously generated printable document.  Mark this
+object as not printed. A subsequent call to print will generate a
+new cache file."""),
     'lino_xl.lib.finan.JournalEntry' : _("""This is the model for "journal entries" ("operations diverses")."""),
     'lino_xl.lib.finan.BankStatement' : _("""A bank statement is a document issued by the bank, which
 reports all transactions which occured on a given account during a
@@ -1097,8 +1096,6 @@ debit and credit movements."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.start_period' : _("""Start of observed period range."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.end_period' : _("""Optional end of observed period range.  Leave empty to
 consider only the Start period."""),
-    'lino_xl.lib.ledger.AccountingReport' : _("""A combined report which produces a series of reports for a given
-period as one action."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
@@ -1265,8 +1262,8 @@ summary of the financial balances of an organisation."""),
     'lino_xl.lib.sheets.CommonItem.value' : _("""Corresponds to the ref field in Item"""),
     'lino_xl.lib.sheets.Item' : _("""In this table the uer can configure their local list of items for
 both sheet types."""),
-    'lino_xl.lib.sheets.Entry' : _("""An entry is the computed value of given item for a given
-fiscal year."""),
+    'lino_xl.lib.sheets.ItemEntry' : _("""An entry is the computed value of given item for a given
+report."""),
     'lino_xl.lib.userstats.UserStat' : _("""A Summary on
 SiteConfig."""),
     'lino_xl.lib.userstats.UserStat.active_users' : _("""The number of active users. A user is considered active if

@@ -8,8 +8,21 @@ table {
     width: 100%;
 }
 table, td, th {
-    border: 1px solid black;
+  border: 1px solid black;
+  padding: 5px;
 }
+
+.text-cell {
+    text-align: left;
+    vertical-align: top;
+}
+
+.number-cell {
+    text-align: right;
+    vertical-align: top;
+}
+
+
 body { 
     font-family: "Liberation sans", "arial";
     font-size: 10pt;
@@ -22,10 +35,13 @@ p {
 
 @page {
     margin: 10mm; margin-top: 15mm; margin-bottom: 15mm; 
-    size: landscape;
+    size:{%- block pagesize %}landscape{%- endblock %};
     @bottom-right {
+        vertical-align: top;
         content: counter(page) "/" counter(pages);
     }
+    font-family: "Liberation sans", "arial";
+    font-size: 10pt;
 }
 
 

@@ -7,27 +7,30 @@ from __future__ import unicode_literals
 
 from lino.api import dd, rt, _
 
+from lino.modlib.users.mixins import StartPlan
+# class StartInvoicing(dd.Action):
+#     show_in_bbar = False
+#     icon_name = 'basket'
+#     sort_index = 52
+#     label = _("Create invoices")
+#     select_rows = False
+#     http_method = 'POST'
 
-class StartInvoicing(dd.Action):
-    show_in_bbar = False
-    icon_name = 'basket'
-    sort_index = 52
+#     def get_options(self, ar):
+#         return {}
+
+#     def run_from_ui(self, ar, **kw):
+#         options = self.get_options(ar)
+#         plan = rt.models.invoicing.Plan.start_plan(
+#             ar.get_user(), **options)
+#         ar.goto_instance(plan)
+
+class StartInvoicing(StartPlan):
     label = _("Create invoices")
-    select_rows = False
-    http_method = 'POST'
-
-    def get_options(self, ar):
-        return {}
-
-    def run_from_ui(self, ar, **kw):
-        options = self.get_options(ar)
-        plan = rt.models.invoicing.Plan.start_plan(
-            ar.get_user(), **options)
-        ar.goto_instance(plan)
-
+    icon_name = 'basket'
+    show_in_bbar = True
 
 class StartInvoicingForJournal(StartInvoicing):
-    show_in_bbar = True
 
     def get_options(self, ar):
         jnl = ar.master_instance
@@ -36,7 +39,6 @@ class StartInvoicingForJournal(StartInvoicing):
 
 
 class StartInvoicingForPartner(StartInvoicing):
-    show_in_bbar = True
     select_rows = True
 
     def get_options(self, ar):

@@ -5,75 +5,76 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import ValidationError
+# from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
 
-from lino.mixins import Referrable, Sequenced
+from lino.mixins import Referrable, Sequenced, StructuredReferrable
 from lino.utils.mldbc.mixins import BabelDesignated
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import AccountBalances
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
-from lino_xl.lib.ledger.fields import DebitOrCreditField
-from lino_xl.lib.ledger.utils import DEBIT
+# from lino_xl.lib.ledger.fields import DebitOrCreditField
+# from lino_xl.lib.ledger.utils import DEBIT
 
 
-class Group(BabelDesignated, Referrable):
-    ref_max_length = 10
-    class Meta:
-        verbose_name = _("Analytical account group")
-        verbose_name_plural = _("Analytical account groups")
+# class Group(BabelDesignated, Referrable):
+#     ref_max_length = 10
+#     class Meta:
+#         verbose_name = _("Analytical account group")
+#         verbose_name_plural = _("Analytical account groups")
 
 
-class Groups(dd.Table):
-    model = 'ana.Group'
-    required_roles = dd.login_required(LedgerStaff)
-    stay_in_grid = True
-    order_by = ['ref']
-    column_names = 'ref designation *'
+# class Groups(dd.Table):
+#     model = 'ana.Group'
+#     required_roles = dd.login_required(LedgerStaff)
+#     stay_in_grid = True
+#     order_by = ['ref']
+#     column_names = 'ref designation *'
 
-    insert_layout = """
-    designation
-    ref
-    """
+#     insert_layout = """
+#     designation
+#     ref
+#     """
 
-    detail_layout = """
-    ref designation id
-    AccountsByGroup
-    """
+#     detail_layout = """
+#     ref designation id
+#     AccountsByGroup
+#     """
 
 
-@dd.python_2_unicode_compatible
-class Account(BabelDesignated, Sequenced, Referrable):
-    ref_max_length = 10
+# @dd.python_2_unicode_compatible
+class Account(StructuredReferrable, BabelDesignated, Sequenced):
+    ref_max_length = settings.SITE.plugins.ana.ref_length
 
     class Meta:
         verbose_name = _("Analytical account")
         verbose_name_plural = _("Analytical accounts")
         ordering = ['ref']
 
-    group = dd.ForeignKey(
-        'ana.Group', verbose_name=_("Group"), blank=True, null=True)
+    # group = dd.ForeignKey(
+    #     'ana.Group', verbose_name=_("Group"), blank=True, null=True)
     # normal_dc = DebitOrCreditField(
     #     _("Normal booking direction"), default=DEBIT)
 
-    def full_clean(self, *args, **kw):
-        if self.group_id is not None:
-            if not self.ref:
-                qs = rt.models.ana.Account.objects.all()
-                self.ref = str(qs.count() + 1)
-            if not self.designation:
-                self.designation = self.group.designation
+    # def full_clean(self, *args, **kw):
+    #     if self.group_id is not None:
+    #         if not self.ref:
+    #             qs = rt.models.ana.Account.objects.all()
+    #             self.ref = str(qs.count() + 1)
+    #         if not self.designation:
+    #             self.designation = self.group.designation
 
-        # if self.default_dc is None:
-        #     self.default_dc = self.type.dc
-        super(Account, self).full_clean(*args, **kw)
+    #     # if self.default_dc is None:
+    #     #     self.default_dc = self.type.dc
+    #     super(Account, self).full_clean(*args, **kw)
 
-    def __str__(self):
-        return "({ref}) {title}".format(
-            ref=self.ref, title=dd.babelattr(self, 'designation'))
+    # def __str__(self):
+    #     return "({ref}) {title}".format(
+    #         ref=self.ref, title=dd.babelattr(self, 'designation'))
 
 
 class Accounts(dd.Table):
@@ -81,23 +82,15 @@ class Accounts(dd.Table):
     required_roles = dd.login_required(LedgerStaff)
     stay_in_grid = True
     order_by = ['ref']
-    column_names = "ref designation group *"
+    column_names = "ref designation *"
     insert_layout = """
+    ref 
     designation
-    ref group
     """
     detail_layout = """
-    ref designation
-    group id
+    ref designation id
     ana.MovementsByAccount
     """
-
-
-class AccountsByGroup(Accounts):
-    required_roles = dd.login_required()
-    master_key = 'group'
-    column_names = "ref designation *"
-
 
 
 class MovementsByAccount(dd.Table):

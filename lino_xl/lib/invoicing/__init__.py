@@ -51,7 +51,7 @@ class Plugin(Plugin):
         mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         # m.add_action('invoicing.MyPlans')
-        m.add_action('invoicing.Plan', action='start_invoicing')
+        m.add_action('invoicing.Plan', action='start_plan')
 
     def setup_explorer_menu(self, site, user_type, m):
         mg = site.plugins.vat

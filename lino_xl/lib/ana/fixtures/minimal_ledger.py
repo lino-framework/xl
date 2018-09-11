@@ -8,24 +8,25 @@ from lino.utils import Cycler
 
 def objects():
     Account = rt.models.ana.Account
-    Group = rt.models.ana.Group
+    # Group = rt.models.ana.Group
     GenAccount = rt.models.ledger.Account
     
     def x(ref, name):
-        if len(ref) == 4:
-            kwargs = dict(ref=ref)
-            ref = ref[:-1]
-            while len(ref):
-                try:
-                    grp = Group.get_by_ref(ref)
-                    kwargs.update(group=grp)
-                    break
-                except Group.DoesNotExist:
-                    pass
-                ref = ref[:-1]
-            return babeld(Account, name, **kwargs)
-        else:
-            return babeld(Group, name, ref=ref)
+        return babeld(Account, name, ref=ref)
+        # if len(ref) == 4:
+        #     kwargs = dict(ref=ref)
+        #     ref = ref[:-1]
+        #     while len(ref):
+        #         try:
+        #             grp = Group.get_by_ref(ref)
+        #             kwargs.update(group=grp)
+        #             break
+        #         except Group.DoesNotExist:
+        #             pass
+        #         ref = ref[:-1]
+        #     return babeld(Account, name, **kwargs)
+        # else:
+        #     return babeld(Group, name, ref=ref)
         
     yield x("1", _("Operation costs"))
     yield x("1100", _("Wages"))
@@ -52,7 +53,7 @@ def objects():
     yield x("5200", _("Transport"))
     yield x("5300", _("Other costs"))
 
-    ANA_ACCS = Cycler(Account.objects.all())
+    ANA_ACCS = Cycler(Account.get_usable_items().order_by('ref'))
     
     qs = GenAccount.objects.filter(needs_ana=True).order_by('ref')
     for i, ga in enumerate(qs):

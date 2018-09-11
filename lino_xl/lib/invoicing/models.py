@@ -6,23 +6,19 @@
 from __future__ import unicode_literals
 from builtins import str
 
-from decimal import Decimal
-ZERO = Decimal()
-
 from django.db import models
-
 from django.utils.text import format_lazy
 from django.utils import translation
 
 # from etgen.html import E, join_elems
-from lino.modlib.gfks.fields import GenericForeignKeyIdField
 from lino.core.gfks import GenericForeignKey, ContentType
-
+from lino.modlib.gfks.fields import GenericForeignKeyIdField
 from lino.modlib.users.mixins import UserPlan, My
 
 # from lino_xl.lib.ledger.choicelists import VoucherTypes
 
 from lino.api import dd, rt, _
+from lino_xl.lib.ledger.utils import ZERO
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from .mixins import Invoiceable
 from .actions import (ToggleSelection, StartInvoicing,
@@ -92,7 +88,8 @@ class Plan(UserPlan):
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
     execute_plan = ExecutePlan()
-    start_invoicing = StartInvoicing()
+    start_plan = StartInvoicing()  # Overrides users.StartPlan just
+                                   # for the label
 
     @dd.chooser()
     def journal_choices(cls):
@@ -112,8 +109,11 @@ class Plan(UserPlan):
                 if obj.get_invoiceable_product(self) is not None:
                     yield obj
 
-    def update_plan(self, ar):
+    def reset_plan(self):
         self.items.all().delete()
+        
+    def update_plan(self, ar):
+        self.reset_plan()
         self.fill_plan(ar)
         
     def fill_plan(self, ar):

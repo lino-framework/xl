@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-This defines the :class:`Certifiable` model mixin.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -22,13 +18,9 @@ from lino.api import dd
 
 
 class ClearPrinted(dd.Action):
-    """Action to clear the print cache (i.e. the generated printable
-document)."""
     sort_index = 51
     label = _('Clear print cache')
     icon_name = 'printer_delete'
-    help_text = _("Mark this object as not printed. A subsequent "
-                  "call to print will generate a new cache file.")
 
     # def get_action_permission(self, ar, obj, state):
     #     if obj.printed_by_id is None:
@@ -55,46 +47,6 @@ document)."""
 
 
 class Certifiable(Printable):
-    """Any model which inherits from this mixin becomes "certifiable".
-    That is:
-
-      - it has a `printed_by` field and a corresponding virtual field
-        `printed` which point to the excerpt that is the "definitive"
-        ("Certifying") printout of this object.
-
-      - It may define a list of "certifiable" fields.
-        See :meth:`get_certifiable_fields`.
-
-    Usage example::
-
-        from lino_xl.lib.excerpts.mixins import Certifiable
-
-        class MyModel(dd.UserAuthored, Certifiable, dd.Duplicable):
-            ...
-
-    The :mod:`lino_xl.lib.excerpts.fixtures.std` fixture automatically
-    creates a certifying :class:`ExcerptType` instance for every model
-    which inherits from :class:`Certifiable`.
-
-
-    .. attribute:: printed
-
-      Displays information about when this certifiable has been printed.
-      Clicking on it will display the excerpt pointed to by
-      :attr:`printed_by`.
-
-    .. attribute:: printed_by
-
-      ForeignKey to the :class:`Excerpt` which certifies this instance.
-
-      A :class:`Certifiable` is considered "certified" when this this is
-      not `None`.
-
-      Note that this field is a nullable ForeignKey with `on_delete
-      <https://docs.djangoproject.com/en/1.11/ref/models/fields/#django.db.models.ForeignKey.on_delete>`__
-      set to ``SET_NULL``.
-
-    """
     class Meta:
         abstract = True
 
@@ -120,11 +72,6 @@ class Certifiable(Printable):
             return s
 
         def on_duplicate(self, ar, master):
-            """After duplicating e.g. a budget which had been printed, we don't
-            want the duplicate point to the same
-            excerpt. :meth:`lino.mixins.duplicable.Duplicable.on_duplicate`.
-
-            """
             super(Certifiable, self).on_duplicate(ar, master)
             self.printed_by = None
 
@@ -139,18 +86,6 @@ class Certifiable(Printable):
         @classmethod
         def get_certifiable_fields(cls):
             """
-            Expected to return a string with a space-separated list of field
-            names.  These files will automaticaly become disabled (readonly)
-            when the document is "certified". The default implementation
-            returns an empty string, which means that no field will become
-            disabled when the row is "certified".
-
-            For example::
-
-              @classmethod
-              def get_certifiable_fields(cls):
-                  return 'date user title'
-
             """
             return ''
 
@@ -172,39 +107,13 @@ class Certifiable(Printable):
                 obj.delete()
 
         def get_excerpt_title(self):
-            """A string to be used in templates as the title of the certifying
-            document.
-
-            """
             return str(self)
 
         def get_excerpt_templates(self, bm):
-            """Return either `None` or a list of template names to be used when
-            printing an excerpt controlled by this object.
-
-            """
             return None
 
 
 class ExcerptTitle(BabelNamed):
-    """Mixin for models like
-    :class:`lino_welfare.modlib.aids.models.AidType` and
-    :class:`lino_xl.lib.courses.models.Line`.
-
-    .. attribute:: name
-
-        The designation of this row as seen by the user e.g. when
-        selecting an instance of this model.
-
-        One field for every :attr:`language <lino.core.site.Site.language>`.
-
-    .. attribute:: excerpt_title
-
-        The text to print as title in confirmations.
-        One field for every :attr:`language <lino.core.site.Site.language>`.
-        If this is empty, then :attr:`name` is used.
-
-    """
     class Meta:
         abstract = True
 

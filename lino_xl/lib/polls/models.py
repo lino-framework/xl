@@ -659,7 +659,6 @@ class AnswersByResponse(dd.VirtualTable):
             ht.add_body_row(*cells, **cellattrs)
 
         return ar.html_text(ht.as_element())
-        # return E.div(ht.as_element(), class_="htmlText")
 
     @dd.displayfield(_("My answer"))
     def answer_buttons(self, obj, ar):
@@ -707,7 +706,7 @@ class AnswersByResponse(dd.VirtualTable):
             sar.set_action_param_values(**pv)
             e = sar.ar2button(obj.response, text, style="text-decoration:none")
             elems.append(e)
-        return E.span(*join_elems(elems), **{'class':"htmlText"})
+        return ar.html_text(E.span(*join_elems(elems)))
 
     @classmethod
     def get_pk_field(self):
@@ -732,12 +731,12 @@ class AnswersByResponse(dd.VirtualTable):
         else:
             txt = obj.question.title
 
-        attrs = {'class': "htmlText"}
+        attrs = {}
         if obj.question.details:
             attrs.update(title=obj.question.details)
         if obj.question.is_heading:
             txt = E.b(txt, **attrs)
-        return E.span(txt, **attrs)
+        return ar.html_text(E.span(txt, **attrs))
 
 
 @dd.python_2_unicode_compatible

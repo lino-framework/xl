@@ -86,11 +86,18 @@ def objects():
         content_type=ContentType.objects.get_for_model(Partner),
         **dd.str2kw('name', _("Payment reminder")))
 
-    yield ExcerptType(
-        template="annual_report.weasy.html",
-        build_method='weasy2pdf',
-        content_type=ContentType.objects.get_for_model(FiscalYear),
-        **dd.str2kw('name', _("Annual report")))
+    # yield ExcerptType(
+    #     template="annual_report.weasy.html",
+    #     build_method='weasy2pdf',
+    #     content_type=ContentType.objects.get_for_model(FiscalYear),
+    #     **dd.str2kw('name', _("Annual report")))
+
+    # yield ExcerptType(
+    #     template="annual_report.weasy.html",
+    #     build_method='weasy2pdf',
+    #     content_type=ContentType.objects.get_for_model(
+    #         rt.models.ledger.Report),
+    #     **dd.str2kw('name', _("Annual report")))
 
     yield payment_terms()
 
@@ -109,4 +116,16 @@ def objects():
 
     kwargs = dict(sales_allowed=True)
     yield update(CommonAccounts.sales, **kwargs)
+    
+
+    # add some header accounts
+    Account = rt.models.ledger.Account
+    def account(ref, designation):
+        return Account(ref=ref, **dd.str2kw('name', designation))
+    yield account("4", _("Commercial assets & liabilities"))
+    yield account("5", _("Financial assets & liabilities"))
+    yield account("6", _("Expenses"))
+    yield account("60", _("Operation costs"))
+    yield account("61", _("Wages"))
+    yield account("7", _("Revenues"))
     

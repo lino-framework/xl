@@ -29,7 +29,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Accounting")
     needs_plugins = ['lino.modlib.weasyprint', 'lino_xl.lib.xl']
 
-    ref_length = 20
+    ref_length = 4  # 20
     """
     The `max_length` of the `Reference` field of an account.
     """
@@ -108,7 +108,7 @@ class Plugin(ad.Plugin):
         m = m.add_menu(mg.app_label, mg.verbose_name)
         # m.add_action('ledger.Situation')
         # m.add_action('ledger.ActivityReport')
-        m.add_action('ledger.AccountingReport')
+        # m.add_action('ledger.AccountingReport')
         # m.add_action('ledger.GeneralAccountBalances')
         # m.add_action('ledger.CustomerAccountBalances')
         # m.add_action('ledger.SupplierAccountBalances')

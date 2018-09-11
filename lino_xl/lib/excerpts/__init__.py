@@ -1,39 +1,20 @@
-# Copyright 2013-2017 Luc Saffre
+# Copyright 2013-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
-"""Provides a framework for configuring and generating printable
+"""
+Provides a framework for configuring and generating printable
 documents called "database excerpts".
 
 See also :doc:`/specs/excerpts`.
 
-
-Lino does not automatically add an action per model to make the
-excerpt history visible from a model. If you want this, add yourself
-your preferred variant.
-
-This can be either using a :class:`ShowSlaveTable
-<lino.core.actions.ShowSlaveTable>` button in the toolbar::
-
-    show_excerpts = dd.ShowSlaveTable('excerpts.ExcerptsByOwner')
-    show_excerpts = dd.ShowSlaveTable('excerpts.ExcerptsByProject')
-
-Or by adding :class:`excerpts.ExcerptsByOwner <ExcerptsByOwner>` or
-:class:`excerpts.ExcerptsByProject <ExcerptsByProject>` (or both, or
-your own subclass of one of them) to the :attr:`detail_layout
-<lino.core.actors.Actor.detail_layout>`.
-
 .. autosummary::
    :toctree:
 
-   models
-   mixins
-   choicelists
    roles
    doctools
    fixtures.std
    fixtures.demo2
-
 """
 
 from lino import ad
@@ -52,8 +33,9 @@ class Plugin(ad.Plugin):
     # _default_template_handlers = {}
 
     responsible_user = None
-    """The username of the user responsible for monitoring the excerpts
-    system. This is currently used only by
+    """
+    The username of the user responsible for monitoring the excerpts
+    system.  This is currently used only by
     :mod:`lino_xl.lib.excerpts.fixtures.demo2`.
     """
 

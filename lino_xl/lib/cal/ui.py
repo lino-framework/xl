@@ -430,7 +430,6 @@ class GuestsByPartner(Guests):
             # elems.append(ar.obj2html(guest.event, lbl))
         # elems = join_elems(elems, sep=', ')
         return ar.html_text(E.div(*elems))
-        # return E.div(class_="htmlText", *elems)
 
 class MyPresences(Guests):
     required_roles = dd.login_required(OfficeUser)

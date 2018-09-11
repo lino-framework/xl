@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
-"""
-Database models for this plugin.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -57,45 +53,6 @@ from .roles import ExcerptsUser, ExcerptsStaff
 
 
 class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
-    """The type of an excerpt. Every excerpt has a mandatory field
-    :attr:`Excerpt.excerpt_type` which points to an :class:`ExcerptType`
-    instance.
-    
-    .. attribute:: name
-
-        The designation of this excerpt type.
-        One field for every :attr:`language <lino.core.site.Site.language>`.
-
-    .. attribute:: content_type
-
-        The database model for which this excerpt type is to be used.
-
-    .. attribute:: build_method
-
-        See :attr:`lino.modlib.printing.mixins.PrintableType.build_method`.
-
-    .. attribute:: template
- 
-        The main template to be used when printing an excerpt of this type.
-
-    .. attribute:: body_template
-
-        The body template to use when printing an excerpt of this type.
-
-    .. attribute:: email_template
-
-        The template to use when sending this an excerpt of this type
-        by email.
-
-    .. attribute:: shortcut
-
-        Optional pointer to a shortcut field.  If this is not empty, then
-        the given shortcut field will manage excerpts of this type.
-
-        See also :class:`Shortcuts`.
-        See also :class:`lino_xl.lib.excerpts.choicelists.Shortcuts`.
-
-    """
     # templates_group = 'excerpts/Excerpt'
 
     class Meta:
@@ -283,9 +240,6 @@ We override everything in Excerpt to not call the class method.""")
 
 
 class ExcerptTypes(dd.Table):
-    """
-    Displays all rows of :class:`ExcerptType`.
-    """
     model = 'excerpts.ExcerptType'
     required_roles = dd.login_required(ExcerptsStaff)
     column_names = ("content_type_display primary certifying name "
@@ -318,8 +272,6 @@ class ExcerptTypes(dd.Table):
 
 
 class CreateExcerpt(dd.Action):
-    """Create an excerpt in order to print this data record.
-    """
     icon_name = 'printer'
     label = _('Print')
     sort_index = 50  # like "Print"
@@ -389,53 +341,6 @@ class BodyTemplateContentField(dd.VirtualField):
 class Excerpt(TypedPrintable, UserAuthored,
               Controllable, mixins.ProjectRelated,
               ContactRelated, Mailable, Postable):
-    """A printable document that describes some aspect of the current
-    situation.
-
-    .. attribute:: excerpt_type
-
-        The type of this excerpt (ForeignKey to :class:`ExcerptType`).
-
-    .. attribute:: owner
-
-      The object being printed by this excerpt.
-      See :attr:`Controllable.owner
-      <lino.modlib.gfks.mixins.Controllable.owner>`.
-
-    .. attribute:: company
-
-      The optional company of the :attr:`recipient` of this
-      excerpt.  See :attr:`ContactRelated.company
-      <lino_xl.lib.contacts.mixins.ContactRelated.company>`.
-
-    .. attribute:: contact_person
-
-      The optional contact person of the :attr:`recipient` of this
-      excerpt.  See :attr:`ContactRelated.contact_person
-      <lino_xl.lib.contacts.mixins.ContactRelated.contact_person>`.
-
-    .. attribute:: recipient
-
-      The recipient of this excerpt.  See
-      :attr:`ContactRelated.recipient
-      <lino_xl.lib.contacts.mixins.ContactRelated.recipient>`
-
-    .. attribute:: language
-
-      The language used for printing this excerpt.
-
-    .. attribute:: date
-
-    .. attribute:: time
-
-    .. method:: get_address_html
-
-        See
-        :meth:`lino_xl.lib.contacts.mixins.ContactRelated.get_address_html`.
-
-        Return the address of the :attr:`recipient` of this excerpt.
-
-    """
 
     manager_roles_required = dd.login_required(OfficeStaff)
     # manager_level_field = 'office_level'
@@ -596,7 +501,6 @@ class Excerpt(TypedPrintable, UserAuthored,
         with translation.override(lang):
             ctx = self.get_printable_context(ar)
             return ar.html_text(ctx['body'])
-            # return '<div class="htmlText">%s</div>' % ctx['body']
 
     def before_printable_build(self, bm):
         super(Excerpt, self).before_printable_build(bm)
@@ -652,14 +556,6 @@ class Excerpt(TypedPrintable, UserAuthored,
 #TODO: why not use full_clean() for the following?        
 @dd.receiver(post_init, sender=Excerpt)
 def post_init_excerpt(sender, instance=None, **kwargs):
-    """This is called for every new Excerpt object and it sets certain
-    default values.
-
-    For the default language, note that the :attr:`owner` overrides
-    the :attr:`recipient`. This rule is important e.g. for printing
-    aid confirmations in Lino Welfare.
-
-    """
     self = instance
     if not self.owner_id:
         # When creating an Excerpt by double-clicking in
@@ -728,7 +624,6 @@ if dd.is_installed('contacts'):
 
 
 class Excerpts(dd.Table):
-    """Base class for all tables on :class:`Excerpt`."""
     # label = _("Excerpts history")
     icon_name = 'script'
     required_roles = dd.login_required((ExcerptsUser, OfficeOperator))
@@ -797,10 +692,6 @@ class ExcerptsByType(Excerpts):
 
             
 class ExcerptsByOwner(Excerpts):
-    """Shows all excerpts whose :attr:`owner <Excerpt.owner>` field is
-    this.
-
-    """
     
     master_key = 'owner'
     help_text = _("History of excerpts based on this data record.")
@@ -870,19 +761,6 @@ else:
 
 @dd.receiver(dd.pre_analyze)
 def set_excerpts_actions(sender, **kw):
-    """
-    Installs (1) print management actions on models for which there is
-    an excerpt type and (2) the excerpt shortcut fields defined in
-    :class:`lino_xl.lib.excerpts.choicelists.Shortcuts`.
-
-    Note that excerpt types for a model with has MTI children, the
-    action will be installed on children as well.  For example a
-    :class:`lino_avanti.lib.avanti.Client` in
-    :mod:`lino_book.projects.adg` can get printed either as a
-    :xfile:`TermsConditions.odt` or as a :xfile:`final
-    report.body.html`.
-
-    """
     # logger.info("20180114 %s.set_excerpts_actions()", __name__)
     # in case ExcerptType is overridden
     ExcerptType = sender.modules.excerpts.ExcerptType

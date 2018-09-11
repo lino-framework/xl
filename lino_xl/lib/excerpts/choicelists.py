@@ -1,12 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2016 Luc Saffre
-#
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""
-This defines the :class:`Shortcuts` choicelist.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -26,14 +20,6 @@ class Shortcut(dd.Choice):
 
 
 class Shortcuts(dd.ChoiceList):
-    """The list of excerpt shortcut fields.  An excerpt shortcut field is
-a virtual display field with actions for quickly managing, from a
-given database object, the excerpt for this object of a given type.
-
-These virtual fields are being installed during pre_analyze by
-:func:`lino_xl.lib.excerpts.models.set_excerpts_actions`.
-
-    """
     verbose_name = _("Excerpt shortcut")
     verbose_name_plural = _("Excerpt shortcuts")
     item_class = Shortcut
