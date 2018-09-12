@@ -15,7 +15,7 @@ from lino.mixins import StructuredReferrable, Story
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.utils.mldbc.mixins import BabelDesignated
 from lino_xl.lib.ledger.models import DebitOrCreditField
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, Balance
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, Balance,myround
 from lino_xl.lib.ledger.choicelists import TradeTypes
 #from lino_xl.lib.ledger.models import Voucher
 #from lino_xl.lib.ledger.mixins import SequencedVoucherItem
@@ -54,7 +54,7 @@ class Collector(object):
         self.rowmvtfilter[outer_link] = OuterRef('pk')
         self.fkname = fkname
         self.fk = model._meta.get_field(fkname)
-        self.outer_model = self.fk.rel.to
+        self.outer_model = self.fk.remote_field.model
         self.outer_link = outer_link
         # self.outer_link = self.outer_model._meta.model_name
         # print(20180905, self.outer_link)
@@ -78,8 +78,8 @@ class Collector(object):
         old = Balance(obj.old_d, obj.old_c)
         kwargs.update(old_d = old.d)
         kwargs.update(old_c = old.c)
-        kwargs.update(during_d = obj.during_d)
-        kwargs.update(during_c = obj.during_c)
+        kwargs.update(during_d = myround(obj.during_d or ZERO)) #In Django2, does not respect the decimal_places for the output_field in the aggregation functions.
+        kwargs.update(during_c = myround(obj.during_c or ZERO))
         return self.entry_model(**kwargs)
         
     def compute_sums(self, report):
@@ -94,6 +94,10 @@ class Collector(object):
             kw.update(during_c=models.Sum('during_c'))
             d = qs.aggregate(**kw)
             if d['old_d'] or d['old_c'] or d['during_d'] or d['during_c']:
+                if d['during_d']:
+                    d['during_d'] = myround(d['during_d'])
+                if d['during_c']:
+                    d['during_c'] = myround(d['during_c'])
                 d['report'] = report
                 d[self.fkname] = obj
                 collect.append(self.entry_model(**d))
