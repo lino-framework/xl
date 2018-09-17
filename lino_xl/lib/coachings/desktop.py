@@ -5,6 +5,7 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
+from django.utils import six
 from lino.api import dd, _
 from lino import mixins
 
@@ -105,19 +106,19 @@ class Coachings(dd.Table):
         pv = ar.param_values
 
         if pv.observed_event:
-            yield unicode(pv.observed_event)
+            yield six.text_type(pv.observed_event)
 
         if pv.coached_by:
-            s = unicode(self.parameters['coached_by'].verbose_name) + \
-                ' ' + unicode(pv.coached_by)
+            s = six.text_type(self.parameters['coached_by'].verbose_name) + \
+                ' ' + six.text_type(pv.coached_by)
             if pv.and_coached_by:
-                s += " %s %s" % (unicode(_('and')),
+                s += " %s %s" % (six.text_type(_('and')),
                                  pv.and_coached_by)
             yield s
 
         if pv.primary_coachings:
-            yield unicode(self.parameters['primary_coachings'].verbose_name) \
-                + ' ' + unicode(pv.primary_coachings)
+            yield six.text_type(self.parameters['primary_coachings'].verbose_name) \
+                + ' ' + six.text_type(pv.primary_coachings)
 
     @classmethod
     def get_create_permission(self, ar):
