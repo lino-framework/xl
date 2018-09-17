@@ -21,7 +21,7 @@ from django.conf import settings
 from lino.modlib.notify.actions import NotifyingAction
 from lino.api import dd
 
-from ..workflows import EntryStates, GuestStates
+from ..choicelists import EntryStates, GuestStates
 
 add = EntryStates.add_item
 # add('40', _("Notified"), 'published', edit_guests=True,

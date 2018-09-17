@@ -9,7 +9,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from lino.api import dd, rt, _
 from lino.core.gfks import gfk2lookup
-from .workflows import EntryStates, GuestStates
+from .choicelists import EntryStates, GuestStates
 
 
 

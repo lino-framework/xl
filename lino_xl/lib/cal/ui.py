@@ -21,9 +21,9 @@ from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 from lino.utils import join_elems
 from etgen.html import E
 
-from .workflows import TaskStates
-from .workflows import GuestStates
-from .workflows import EntryStates
+from .choicelists import TaskStates
+from .choicelists import GuestStates
+from .choicelists import EntryStates
 from .choicelists import AccessClasses
 from .mixins import daterange_text
 from .utils import when_text
@@ -1068,7 +1068,7 @@ class OverdueAppointments(Events):
     def param_defaults(self, ar, **kw):
         kw = super(OverdueAppointments, self).param_defaults(ar, **kw)
         kw.update(observed_event=EventEvents.pending)
-        kw.update(end_date=settings.SITE.today())
+        kw.update(end_date=settings.SITE.today(-1))
         kw.update(show_appointments=dd.YesNo.yes)
         return kw
 

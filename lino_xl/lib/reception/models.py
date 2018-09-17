@@ -51,7 +51,7 @@ from lino.api import dd, rt
 cal = dd.resolve_app('cal')
 system = dd.resolve_app('system')
 
-from lino_xl.lib.cal.workflows import GuestStates, EntryStates
+from lino_xl.lib.cal.choicelists import GuestStates, EntryStates
 from lino.modlib.notify.actions import NotifyingAction
 from lino.modlib.office.roles import OfficeUser, OfficeOperator
 

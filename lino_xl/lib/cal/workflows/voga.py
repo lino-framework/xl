@@ -17,7 +17,7 @@ from lino_xl.lib.cal.workflows import *
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 
-from ..workflows import GuestStates, EntryStates
+from ..choicelists import GuestStates, EntryStates
 
 
 class MarkEventTookPlace(dd.ChangeStateAction):
@@ -99,6 +99,19 @@ GuestStates.invited.add_transition(
     # help_text=_("Reset state to invited."))
 
 # sender.modules.cal.Event.find_next_date = FindNextDate()
+
+"""
+
+The transitions from a "final" state to another final state
+(e.g. "took place" to "cancelled") exist just in case the user clicked
+the wrong button.  Theoretically it is irritating to have this
+possibility given because it suggests that some state change is still
+expected.  They can go away for applications where the state field is
+editable and where the users know how to use it. For example in
+:ref:`avanti` it isn't easily accessible.
+
+
+"""
 
 # EntryStates.suggested.add_transition(
 # "?",

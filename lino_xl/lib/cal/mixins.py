@@ -26,9 +26,7 @@ from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.notify.mixins import ChangeNotifier
 
-from .choicelists import Recurrencies, Weekdays, AccessClasses
-
-from .workflows import EntryStates
+from .choicelists import Recurrencies, Weekdays, AccessClasses, EntryStates
 from .utils import day_and_month, day_and_weekday
 from .actions import UpdateAllGuests
 

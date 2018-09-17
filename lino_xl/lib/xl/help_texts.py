@@ -44,13 +44,6 @@ date and time by a given user."""),
 lino_welfare.modlib.aids.mixins.Confirmation."""),
     'lino_xl.lib.boards.Member' : _("""A Member is when a given ml.contacts.Person
 belongs to a given Board."""),
-    'lino_xl.lib.cal.workflows.TaskStates' : _("""Possible values for the state of a Task. The list of
-choices for the Task.state field. By default it contains
-the following values (which can be redefined in
-workflows_module):"""),
-    'lino_xl.lib.cal.workflows.EntryStates' : _("""The possible states of a calendar entry."""),
-    'lino_xl.lib.cal.workflows.GuestStates' : _("""Possible values for the state of a Guest. The list of choices for
-the Guest.state field."""),
     'lino_xl.lib.cal.workflows.feedback.InvitationFeedback' : _("""Base class for actions that give feedback to an invitation."""),
     'lino_xl.lib.cal.workflows.feedback.AcceptInvitation' : _("""Accept this invitation."""),
     'lino_xl.lib.cal.workflows.feedback.MarkPresent' : _("""Mark this participant as present at the event."""),
@@ -731,6 +724,10 @@ Course)"""),
     'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
 application defines several variants of
 EnrolmentsByPupil."""),
+    'lino_xl.lib.courses.CourseAreas.courses_table' : _("""Which table to use for showing courses in this course area."""),
+    'lino_xl.lib.courses.CourseAreas.manage_presences' : _("""The default value True means that presences are managed
+individually per guest.  Set this to False if Lino should
+consider every guest automatically as present."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current

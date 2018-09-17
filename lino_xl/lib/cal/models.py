@@ -20,10 +20,6 @@ from django.utils import timezone
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
-from .choicelists import (
-    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
-from .utils import setkw, dt2kw, when_text
-
 from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.printing.mixins import Printable
@@ -32,7 +28,10 @@ from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
-from .workflows import (TaskStates, EntryStates, GuestStates)
+from .choicelists import (
+    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
+
+from .choicelists import (TaskStates, EntryStates, GuestStates)
 from .actions import UpdateGuests
     
 from .mixins import Component
@@ -41,6 +40,7 @@ from .mixins import Ended
 from .mixins import MoveEntryNext, UpdateEntries, UpdateEntriesByEvent
 from .actions import ShowEntriesByDay
 
+from .utils import setkw, dt2kw, when_text
 from .ui import ConflictingEvents
 
 DEMO_START_YEAR = 2013

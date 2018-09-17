@@ -76,9 +76,15 @@ add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 
 
 class CourseArea(dd.Choice):
+
+    manage_presences = True
+    courses_table = 'courses.Courses'
+    
     def __init__(
-            self, value, text, name, courses_table='courses.Courses'):
+            self, value, text, name,
+            courses_table='courses.Courses', manage_presences=True):
         self.courses_table = courses_table
+        self.manage_presences = manage_presences
         super(CourseArea, self).__init__(value, text, name)
 
 
@@ -89,7 +95,16 @@ class CourseAreas(dd.ChoiceList):
     verbose_name = _("Layout")
     verbose_name_plural = _("Course layouts")
     item_class = CourseArea
+    column_names = "value name text courses_table manage_presences"
     
+    @dd.virtualfield(models.BooleanField(_("Manage presences")))
+    def manage_presences(cls, choice, ar):
+        return choice.manage_presences
+
+    @dd.virtualfield(models.CharField(_("Table")))
+    def courses_table(cls, choice, ar):
+        return str(choice.courses_table)
+
 
 add = CourseAreas.add_item
 try:
