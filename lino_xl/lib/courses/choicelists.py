@@ -77,15 +77,14 @@ add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 
 class CourseArea(dd.Choice):
 
-    manage_presences = True
+    force_guest_states = False
     courses_table = 'courses.Courses'
     
     def __init__(
             self, value, text, name,
-            courses_table='courses.Courses', manage_presences=True):
+            courses_table='courses.Courses', **kwargs):
         self.courses_table = courses_table
-        self.manage_presences = manage_presences
-        super(CourseArea, self).__init__(value, text, name)
+        super(CourseArea, self).__init__(value, text, name, **kwargs)
 
 
 class CourseAreas(dd.ChoiceList):
@@ -95,11 +94,12 @@ class CourseAreas(dd.ChoiceList):
     verbose_name = _("Layout")
     verbose_name_plural = _("Course layouts")
     item_class = CourseArea
-    column_names = "value name text courses_table manage_presences"
+    column_names = "value name text courses_table force_guest_states"
+    required_roles = dd.login_required(dd.SiteAdmin)
     
-    @dd.virtualfield(models.BooleanField(_("Manage presences")))
-    def manage_presences(cls, choice, ar):
-        return choice.manage_presences
+    @dd.virtualfield(models.BooleanField(_("Force guest states")))
+    def force_guest_states(cls, choice, ar):
+        return choice.force_guest_states
 
     @dd.virtualfield(models.CharField(_("Table")))
     def courses_table(cls, choice, ar):

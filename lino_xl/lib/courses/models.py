@@ -102,8 +102,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
         verbose_name = pgettext("singular form", "Activity line")
         verbose_name_plural = pgettext("plural form", 'Activity lines')
 
-    course_area = CourseAreas.field(
-        default=CourseAreas.as_callable('default'))
+    course_area = CourseAreas.field(default='default')
     # default=CourseAreas.get_lazy('default')
     topic = dd.ForeignKey(Topic, blank=True, null=True)
     description = dd.BabelTextField(_("Description"), blank=True)

@@ -76,7 +76,7 @@ class Plugin(ad.Plugin):
         m.add_action('courses.AllActivities')
         m.add_action('courses.AllEnrolments')
         m.add_action('courses.EnrolmentStates')
-        # m.add_action('courses.CourseAreas')
+        m.add_action('courses.CourseAreas')
 
     def get_dashboard_items(self, user):
         for x in super(Plugin, self).get_dashboard_items(user):

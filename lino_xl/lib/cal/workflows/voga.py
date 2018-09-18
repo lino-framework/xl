@@ -24,6 +24,8 @@ class MarkEventTookPlace(dd.ChangeStateAction):
     required_states = 'suggested draft cancelled'
     
     def before_execute(self, ar, obj):
+        if obj.force_guest_states():
+            return
         qs = obj.guest_set.filter(state=GuestStates.invited)
         count = qs.count()
         if count > 0:

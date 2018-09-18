@@ -664,6 +664,9 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     def is_user_modified(self):
         return self.state != EntryStates.suggested
 
+    def force_guest_states(self):
+        return False
+
     def after_ui_save(self, ar, cw):
         super(Event, self).after_ui_save(ar, cw)
         self.update_guests.run_from_code(ar)
@@ -672,11 +675,24 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         super(Event, self).before_state_change(ar, old, new)
         if new.noauto:
             self.auto_type = None
+        if new.guest_state and self.force_guest_states:
+            for obj in self.guest_set.exclude(state=new.guest_state):
+                obj.state = new.guest_state
+                obj.full_clean()
+                obj.save()
         
     def suggest_guests(self):
-        if self.owner:
-            for obj in self.owner.suggest_cal_guests(self):
-                yield obj
+        done = set()
+        for o in (self.owner, self.project):
+            if isinstance(o, EventGenerator):
+                if o in done:
+                    continue
+                done.add(o)
+                for obj in o.suggest_cal_guests(self):
+                    yield obj
+        # if self.owner:
+        #     for obj in self.owner.suggest_cal_guests(self):
+        #         yield obj
 
     def get_event_summary(event, ar):
         # from django.utils.translation import ugettext as _
@@ -920,7 +936,7 @@ class Guest(Printable):
     partner = dd.ForeignKey(dd.plugins.cal.partner_model)
     role = dd.ForeignKey(
         'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
-    state = GuestStates.field(default=GuestStates.as_callable('invited'))
+    state = GuestStates.field(default='invited')
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     # Define a `user` property because we want to use

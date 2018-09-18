@@ -405,6 +405,8 @@ class TimLoader(TimLoader):
             kw.update(state=GuestStates.excused)
         elif etat == "V":
             kw.update(state=GuestStates.absent)
+        else:
+            kw.update(state=GuestStates.present)
         
         idpar = row.idpar.strip()
         p = self.get_partner(Person, idpar)
