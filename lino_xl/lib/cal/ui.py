@@ -574,8 +574,7 @@ class EventDetail(dd.DetailLayout):
     start end #all_day assigned_to #duration #state
     room project owner workflow_buttons
     # owner created:20 modified:20
-    # description
-    GuestsByEvent #outbox.MailsByController
+    description GuestsByEvent #outbox.MailsByController
     """
 
 
@@ -603,7 +602,7 @@ class Events(dd.Table):
 
     order_by = ["start_date", "start_time", "id"]
 
-    detail_layout = EventDetail()
+    detail_layout = 'cal.EventDetail'
     insert_layout = """
     start_date start_time end_date end_time
     summary

@@ -433,7 +433,7 @@ class CompanyDetail(PartnerDetail):
     remarks contacts.RolesByCompany
     """
 
-    name_box = "prefix:10 name type:30"
+    name_box = "prefix:10 name:30"
 
 
 class Companies(Partners):
@@ -447,7 +447,7 @@ class Companies(Partners):
     insert_layout = """
     name
     #language:20 email:40
-    type id
+    type #id
     """
 
 #~ class List(Partner):

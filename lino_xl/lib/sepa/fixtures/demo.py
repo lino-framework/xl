@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -12,7 +12,7 @@ These are real data randomly collected from Internet.
 from __future__ import unicode_literals
 
 from lino.utils.instantiator import Instantiator
-from lino.api import rt
+from lino.api import rt, dd
 
 
 Company = Instantiator('contacts.Company', 'name url').build
@@ -27,6 +27,8 @@ class Adder(object):
         # make the first account of every company primary
 
     def add_company(self, name, url, **kw):
+        if not dd.is_installed('vat'):
+            kw.pop('vat_id', None)
         obj = Company(name=name, url=url, **kw)
         if VatRegimes.is_installed():
             if obj.country.isocode == 'BE':

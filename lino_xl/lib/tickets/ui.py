@@ -705,7 +705,8 @@ class MyTickets(My, Tickets):
         return kw
 
 class TicketsSummary(Tickets):
-    order_by = ["state", "priority", "-id"]
+    # order_by = ["state", "priority", "-id"]
+    order_by = ["priority", "-id"]
     display_mode = 'summary'
 
     @classmethod
@@ -720,15 +721,24 @@ class TicketsSummary(Tickets):
         # list-of-objects)`.  in ar are ordered by state. we just group
         # them 
         items = []
-        ci = None
+        items_by_state = dict()
+        # ci = None
             
         for obj in sar:  # self.get_request_queryset(ar):
             btn = obj.obj2href(ar)
-            if ci is not None and ci[0] is obj.state:
-                ci[1].append(btn)
+            if obj.state in items_by_state:
+                lst = items_by_state[obj.state]
             else:
-                ci = (obj.state, [btn])
-                items.append(ci)
+                lst = []
+                items_by_state[obj.state] = lst
+                items.append((obj.state, lst))
+            lst.append(btn)
+            
+            # if ci is not None and ci[0] is obj.state:
+            #     ci[1].append(btn)
+            # else:
+            #     ci = (obj.state, [btn])
+            #     items.append(ci)
 
         # now render them as a UL containing on LI per item
         items = [E.li(str(i[0]), ' : ', *join_elems(i[1], ", "))
