@@ -1,10 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2018 Luc Saffre
-#
+# Copyright 2009-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-import logging
-logger = logging.getLogger(__name__)
+from builtins import str
 
 from django.conf import settings
 from django.db import models
@@ -12,10 +10,11 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy
 from django.utils import timezone
 
+from etgen.html import E
 from lino.api import dd, rt, gettext
 from lino import mixins
+from lino.utils import join_elems
 
-from etgen.html import E
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.modlib.gfks.mixins import Controllable
 from lino_xl.lib.skills.mixins import Feasible
@@ -135,6 +134,8 @@ class Note(TypedPrintable,
     language = dd.LanguageField()
 
     def __str__(self):
+        if self.event_type_id:
+            return u'%s #%s' % (self.event_type, self.pk)
         return u'%s #%s' % (self._meta.verbose_name, self.pk)
 
     def summary_row(self, ar, **kw):
@@ -220,6 +221,21 @@ class NotesByX(Notes):
     abstract = True
     column_names = "date time event_type type subject user *"
     order_by = ["-date", "-time"]
+    display_mode = 'summary'
+
+    @classmethod
+    def summary_row(cls, ar, obj, **kwargs):
+        # s = super(NotesByX, cls).summary_row(ar, obj)
+        s = [dd.fds(obj.date)]
+        if obj.time is not None:
+            s += [" ", obj.time.strftime(
+                settings.SITE.time_format_strftime)]
+        s+= [" ", obj.obj2href(ar)]
+        if obj.user != ar.get_user():
+            s += [' (', obj.user.initials or str(obj.user), ")"]
+        if obj.subject:
+            s += [' ', obj.subject]
+        return s
 
 if settings.SITE.project_model is not None:
 
@@ -230,17 +246,14 @@ if settings.SITE.project_model is not None:
 
 class NotesByOwner(NotesByX):
     master_key = 'owner'
-    column_names = "date time event_type type subject user *"
 
 
 class NotesByCompany(NotesByX):
     master_key = 'company'
-    column_names = "date time event_type type subject user *"
 
 
 class NotesByPerson(NotesByX):
     master_key = 'contact_person'
-    column_names = "date time event_type type subject user *"
 
 
 
