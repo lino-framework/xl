@@ -77,7 +77,7 @@ add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 
 class CourseArea(dd.Choice):
 
-    force_guest_states = False
+    # force_guest_states = False
     courses_table = 'courses.Courses'
     
     def __init__(
@@ -94,12 +94,12 @@ class CourseAreas(dd.ChoiceList):
     verbose_name = _("Layout")
     verbose_name_plural = _("Course layouts")
     item_class = CourseArea
-    column_names = "value name text courses_table force_guest_states"
+    column_names = "value name text courses_table #force_guest_states"
     required_roles = dd.login_required(dd.SiteAdmin)
     
-    @dd.virtualfield(models.BooleanField(_("Force guest states")))
-    def force_guest_states(cls, choice, ar):
-        return choice.force_guest_states
+    # @dd.virtualfield(models.BooleanField(_("Force guest states")))
+    # def force_guest_states(cls, choice, ar):
+    #     return choice.force_guest_states
 
     @dd.virtualfield(models.CharField(_("Table")))
     def courses_table(cls, choice, ar):

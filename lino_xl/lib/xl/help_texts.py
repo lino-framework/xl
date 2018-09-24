@@ -424,6 +424,12 @@ the same time."""),
 all entries on that day (EntriesByDay)."""),
     'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
+    'lino_xl.lib.cal.EntryStates' : _("""The possible states of a calendar entry.
+Stored in the state field."""),
+    'lino_xl.lib.cal.EntryState.edit_guests' : _("""Whether presences are editable when the entry is in this
+state."""),
+    'lino_xl.lib.cal.EntryState.guest_state' : _("""Force the given guest state for all guests when an entry is
+set to this state."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
     'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
@@ -454,12 +460,13 @@ given event."""),
     'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
     'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
     'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
-    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence."""),
+    'lino_xl.lib.cal.Guest.state' : _("""The state of this presence.  See GuestStates."""),
     'lino_xl.lib.cal.Guest.waiting_since' : _("""Time when the visitor arrived (checked in)."""),
     'lino_xl.lib.cal.Guest.busy_since' : _("""Time when the visitor was received by agent."""),
     'lino_xl.lib.cal.Guest.gone_since' : _("""Time when the visitor left (checked out)."""),
     'lino_xl.lib.cal.GuestRole' : _("""The role of a guest expresses what the partner is going to do there."""),
     'lino_xl.lib.cal.GuestRoles' : _("""Global table of guest roles."""),
+    'lino_xl.lib.cal.GuestStates' : _("""Global choicelist of possible guest states."""),
     'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
 lino_xl.lib.cal.management.commands.watch_calendars,
 and local modifications will be sent back to the remote calendar."""),
@@ -476,6 +483,8 @@ It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to do something
 (and optionally wants to get reminded about it)."""),
     'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
+    'lino_xl.lib.cal.TaskStates' : _("""Possible values for the state of a Task. The list of
+choices for the Task.state field."""),
     'lino_xl.lib.cal.Tasks' : _("""Global table of all tasks for all users."""),
     'lino_xl.lib.cal.TasksByUser' : _("""Shows the list of tasks for this user."""),
     'lino_xl.lib.cal.MyTasks' : _("""Shows my tasks whose start date is today or in the future."""),
@@ -724,10 +733,11 @@ Course)"""),
     'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
 application defines several variants of
 EnrolmentsByPupil."""),
-    'lino_xl.lib.courses.CourseAreas.courses_table' : _("""Which table to use for showing courses in this course area."""),
-    'lino_xl.lib.courses.CourseAreas.manage_presences' : _("""The default value True means that presences are managed
-individually per guest.  Set this to False if Lino should
-consider every guest automatically as present."""),
+    'lino_xl.lib.courses.CourseAreas' : _("""The global choicelist of course areas.  Every choice is an
+instance of CourseArea."""),
+    'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
+    'lino_xl.lib.courses.CourseArea.force_guest_states' : _("""Whether guest states are forced, i.e. automatically set for
+all guests based on the calendar entry's state."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current

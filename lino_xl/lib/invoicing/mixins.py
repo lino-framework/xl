@@ -24,7 +24,7 @@ from django.contrib.contenttypes.fields import GenericRelation
 
 class Invoiceable(dd.Model):
 
-    invoiceable_date_field = ''
+    invoiceable_date_field = None
 
     class Meta:
         abstract = True
@@ -34,6 +34,16 @@ class Invoiceable(dd.Model):
         content_type_field='invoiceable_type',
         object_id_field='invoiceable_id')
 
+    @classmethod
+    def on_analyze(cls, site):
+        super(Invoiceable, cls).on_analyze(site)
+        de = cls.get_data_elem(cls.invoiceable_date_field)
+        def get_invoiceable_date(self):
+            return de.value_from_object(self)
+        cls.get_invoiceable_date = get_invoiceable_date
+        # if isinstance(cls.invoiceable_date_field, six.string_types):
+        #     cls.invoiceable_date_field = 
+            
     def get_invoicings(self, **kwargs):
         item_model = dd.plugins.invoicing.item_model
         # item_model = rt.models.sales.InvoiceItem
@@ -75,8 +85,10 @@ class Invoiceable(dd.Model):
     def get_invoiceable_paper_type(self):
         return None
 
-    def get_invoiceable_date(self):
-        return getattr(self, self.invoiceable_date_field)
+    # def get_invoiceable_date(self):
+    #     # return self.invoiceable_date_field.value_from_object(self)
+    #     return self.invoiceable_date_field
+    #     # return getattr(self, self.invoiceable_date_field)
 
     @classmethod
     def get_invoiceables_for_plan(cls, plan, partner=None):

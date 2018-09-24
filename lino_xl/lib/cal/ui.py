@@ -502,16 +502,16 @@ class MyGuests(Guests):
 class EventTypes(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
     model = 'cal.EventType'
-    column_names = "name *"
+    column_names = "name planner_column is_appointment force_guest_states all_rooms *"
 
     detail_layout = """
     name
     event_label
     # description
-    start_date max_days id
+    start_date max_days id planner_column
     # type url_template username password
     #build_method #template email_template attach_to_email
-    is_appointment all_rooms locks_user transparent max_conflicting planner_column
+    is_appointment force_guest_states all_rooms locks_user transparent max_conflicting
     EntriesByType
     """
 

@@ -246,6 +246,7 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
     is_appointment = models.BooleanField(_("Appointment"), default=True)
     all_rooms = models.BooleanField(_("Locks all rooms"), default=False)
     locks_user = models.BooleanField(_("Locks the user"), default=False)
+    force_guest_states = models.BooleanField(_("Force guest states"), default=False)
 
     start_date = models.DateField(
         verbose_name=_("Start date"),
@@ -664,9 +665,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     def is_user_modified(self):
         return self.state != EntryStates.suggested
 
-    def force_guest_states(self):
-        return False
-
     def after_ui_save(self, ar, cw):
         super(Event, self).after_ui_save(ar, cw)
         self.update_guests.run_from_code(ar)
@@ -675,7 +673,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         super(Event, self).before_state_change(ar, old, new)
         if new.noauto:
             self.auto_type = None
-        if new.guest_state and self.force_guest_states:
+        if new.guest_state and self.event_type_id and self.event_type.force_guest_states:
             for obj in self.guest_set.exclude(state=new.guest_state):
                 obj.state = new.guest_state
                 obj.full_clean()

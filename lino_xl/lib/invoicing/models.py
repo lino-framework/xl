@@ -112,7 +112,7 @@ class Plan(UserPlan):
     def reset_plan(self):
         self.items.all().delete()
         
-    def update_plan(self, ar):
+    def run_update_plan(self, ar):
         self.reset_plan()
         self.fill_plan(ar)
         
