@@ -1,4 +1,4 @@
-{% if settings.SITE.beid_protocol %}
+{% if settings.SITE.plugins.beid.urlhandler_prefix %}
 
 function uuid() {
   // Copied from https://gist.github.com/jcxplorer/823878
@@ -17,7 +17,7 @@ function uuid() {
 Lino.beid_read_card_processor = function() {
     // var card = {}
     var my_id = uuid();
-    var url = "{{settings.SITE.beid_protocol}}://" + window.location.origin + "/eid/" + my_id;
+    var url = "{{settings.SITE.plugins.beid.urlhandler_prefix}}" + window.location.origin + "/eid/" + my_id;
     var popup = window.open(url);
     popup.close();
     return { uuid: my_id };

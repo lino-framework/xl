@@ -99,7 +99,8 @@ class BaseBeIdReadCardAction(dd.Action):
     def get_view_permission(self, user_type):
         """Make invisible when :attr:`lino.core.site.Site.use_java` is
 `False`."""
-        if not settings.SITE.use_java and not settings.SITE.beid_protocol:
+        # if not settings.SITE.use_java and not settings.SITE.beid_protocol:
+        if not dd.plugins.beid.urlhandler_prefix:
             return False
         return super(BaseBeIdReadCardAction, self).get_view_permission(user_type)
 
@@ -338,7 +339,8 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
     # debug_permissions = "20150129"
 
     def run_from_ui(self, ar, **kw):
-        if settings.SITE.beid_protocol:
+        # if settings.SITE.beid_protocol:
+        if dd.plugins.beid.urlhandler_prefix:
             data = load_card_data(ar.request.POST['uuid'])
             data = AttrDict(data)
 
@@ -354,6 +356,7 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
             # print("20180518", data)
             attrs = self.card2client(data)
         else:
+            raise Exception("No longer maintained")
             data = yaml2dict(ar.request.POST)
             attrs = self.card2client_java(data)
         holder_model = dd.plugins.beid.holder_model
@@ -443,11 +446,13 @@ class BeIdReadCardAction(BaseBeIdReadCardAction):
 
     def run_from_ui(self, ar, **kw):
 
-        if settings.SITE.beid_protocol:
+        if dd.plugins.beid.urlhandler_prefix:
+        # if settings.SITE.beid_protocol:
             data = load_card_data(ar.request.POST['uuid'])
             data = AttrDict(data)
             attrs = self.card2client(data)
         else:
+            raise Exception("No longer maintained")
             data = yaml2dict(ar.request.POST)
             attrs = self.card2client_java(data)
         

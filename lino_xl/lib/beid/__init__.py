@@ -54,6 +54,34 @@ class Plugin(ad.Plugin):  # was: use_eidreader
     eidreader_timeout = 15
     read_only_simulate = False
 
+    urlhandler_prefix = 'beid://'
+    """
+    Set this to a string to be passed to eidreader by the
+    Javascript beid_card_processor() function.
+
+    Default value is ``'beid://'`` which should work in a standard
+    usage.
+
+    You can disable eidreader functionality by saying::
+
+       SITE.plugins.beid.urlhandler_prefix = None
+
+    You can tell Lino to use another URL protocol than ``beid`` by
+    saying::
+
+       SITE.plugins.beid.urlhandler_prefix = 'mybeid://'  
+
+    Of if all client machines need to authenticate to a proxy with
+    HTTP basic auth, you can say::
+
+       SITE.plugins.beid.urlhandler_prefix = 'beid://username:password@'
+
+    See `python-requests docs
+    <http://docs.python-requests.org/en/master/user/advanced/#proxies>`__
+    for additional information.  Other authentication methods for
+    proxies are currently not supported.
+    """
+
     def on_site_startup(self, kernel):
         
         from lino_xl.lib.beid.mixins import BeIdCardHolder
@@ -88,10 +116,10 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         raise Exception(msg)
 
         
-    def get_body_lines(self, site, request):
+    def unused_get_body_lines(self, site, request):
         if not site.use_java:
             return
-        if site.beid_protocol:
+        if self.url_prefix:
             return
         # p = self.build_media_url('EIDReader.jar')
         # p = self.build_media_url('eidreader.jnlp')
