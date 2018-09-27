@@ -8,14 +8,17 @@ from lino.core.roles import UserRole, SiteUser, SiteAdmin
 
 
 class PollsUser(UserRole):
+    "Can see polls and create new responses."
     pass
 
 
 class PollsStaff(PollsUser):
+    "Can create new polls."
     pass
 
 
 class PollsAdmin(PollsStaff, SiteAdmin):
+    "Can configure polls functionality."
     pass
 
 
