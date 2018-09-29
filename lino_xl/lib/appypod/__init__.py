@@ -1,8 +1,8 @@
-# Copyright 2014-2017 Luc Saffre
-#
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""This plugin adds a series of build methods for generating printable
+"""
+This plugin adds a series of build methods for generating printable
 documents using LibreOffice.
 
 It also adds a generic button to "print" any table as PDF using
@@ -25,7 +25,7 @@ advantages:
 - Templates are `.odt` files (not `.html`), meaning that end-users
   dare to edit them more easily.
 
-See also :ref:`lino.admin.appypod`.
+See also :ref:`lino.admin.appypod` and :doc:`/specs/appypod`.
 
 .. rubric:: Templates
 
@@ -71,7 +71,6 @@ See also :ref:`lino.admin.appypod`.
     choicelists
     mixins
     models
-
 """
 
 from lino.api import ad, _

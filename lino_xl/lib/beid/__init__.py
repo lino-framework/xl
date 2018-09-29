@@ -68,16 +68,6 @@ class Plugin(ad.Plugin):  # was: use_eidreader
 
        SITE.plugins.beid.urlhandler_prefix = 'mybeid://'  
 
-    Or if all client machines need to authenticate to a proxy with
-    HTTP basic auth, you can say::
-
-       SITE.plugins.beid.urlhandler_prefix = 'beid://username:password@'
-
-    See `python-requests docs
-    <http://docs.python-requests.org/en/master/user/advanced/#proxies>`__
-    for additional information.  Other authentication methods for
-    proxies are currently not supported.
-
     You can disable eidreader functionality by saying::
 
        SITE.plugins.beid.urlhandler_prefix = None
