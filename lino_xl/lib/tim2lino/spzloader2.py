@@ -286,7 +286,7 @@ class TimLoader(TimLoader):
             if v:
                 partner.client_state = v
             else:
-                partner.client_state = ClientStates.auto_closed
+                partner.client_state = ClientStates.cancelled
                 # dd.logger.info(
                 #     "%s : invalid PAR->Stand %s", row, row.stand)
 
