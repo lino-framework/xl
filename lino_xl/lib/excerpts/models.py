@@ -38,8 +38,10 @@ from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.users.choicelists import SiteAdmin
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 
-davlink = settings.SITE.plugins.get('davlink', None)
-has_davlink = davlink is not None and settings.SITE.use_java
+# davlink = settings.SITE.plugins.get('davlink', None)
+# has_davlink = davlink is not None and settings.SITE.use_java
+has_davlink = False
+
 
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.contacts.mixins import ContactRelated
