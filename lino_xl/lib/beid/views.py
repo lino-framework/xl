@@ -34,10 +34,11 @@ def load_card_data(uuid):
             #     _("Got invalid card data {} from eidreader.").format(rv))
         
         except IOError as e:
-            # dd.logger.info("20180412 {} : {}".format(fn, e))
             time.sleep(1)
             count += 1
             if count > timeout:
+                dd.logger.info("20181002 abandoned reading %s : %s",
+                               fn, e)
                 raise Warning(_("Abandoned after {} seconds").format(
                     timeout))
                 # rv = dict(success=False)
