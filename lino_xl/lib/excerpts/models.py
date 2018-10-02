@@ -5,7 +5,7 @@
 
 from __future__ import unicode_literals
 from __future__ import print_function
-import six
+# import six
 
 import logging
 logger = logging.getLogger(__name__)
@@ -17,7 +17,7 @@ ONE_WEEK = datetime.timedelta(days=7)
 ONE_DAY = datetime.timedelta(days=1)
 
 from django.utils.translation import ugettext_lazy as _
-from django.utils import translation
+from django.utils import translation, six
 from django.conf import settings
 from django.db import models
 from django.db.utils import OperationalError, ProgrammingError
@@ -415,7 +415,7 @@ class Excerpt(TypedPrintable, UserAuthored,
         if ptype is None:
             raise Exception("20140520 Must have excerpt_type.")
         grp = ptype.content_type.model_class().get_template_group()
-        return [grp, 'excerpts']
+        return [grp, u'excerpts']
 
     def filename_root(self):
         # mainly because otherwise we would need to move files around on
@@ -770,7 +770,7 @@ def set_excerpts_actions(sender, **kw):
 
     try:
         etypes = [(obj, obj.content_type)
-                  for obj in ExcerptType.objects.all()]
+                  for obj in ExcerptType.objects.all().order_by('id')]
     except (OperationalError, ProgrammingError, UnresolvedChoice) as e:
         dd.logger.debug("Failed to set excerpts actions : %s", e)
         # Happens e.g. when the database has not yet been migrated
