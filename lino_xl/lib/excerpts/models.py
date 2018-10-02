@@ -770,7 +770,7 @@ def set_excerpts_actions(sender, **kw):
 
     try:
         etypes = [(obj, obj.content_type)
-                  for obj in ExcerptType.objects.all().order_by('id')]
+                  for obj in ExcerptType.objects.all().order_by('id') ]
     except (OperationalError, ProgrammingError, UnresolvedChoice) as e:
         dd.logger.debug("Failed to set excerpts actions : %s", e)
         # Happens e.g. when the database has not yet been migrated
