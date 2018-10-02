@@ -27,8 +27,8 @@ def load_card_data(uuid):
             fp = open(fn)
             rv = json.load(fp)
             fp.close()
-            # dd.logger.info("20180412 json.load({}) returned {}".format(
-            #     fn, rv))
+            dd.logger.info("20181002 json.load({}) returned {}".format(
+                fn, rv))
             return rv
             # raise Warning(
             #     _("Got invalid card data {} from eidreader.").format(rv))
@@ -72,8 +72,8 @@ class EidStore(View):
         except IOError as e:
             dd.logger.warning(
                 "Failed to store data to file %s : %s", fn, e)
-        # msg = "20180412 wrote {} {}".format(fn, card_data)
-        # dd.logger.info(msg)
+        msg = "20181002 wrote {} : {}".format(fn, card_data)
+        dd.logger.info(msg)
         # username = request.POST.get('username')
         # return http.HttpResponseRedirect(target)
         return json_response(dict(success=True, message="OK"))
