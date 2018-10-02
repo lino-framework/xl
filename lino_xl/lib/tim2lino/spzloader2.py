@@ -588,7 +588,7 @@ class TimLoader(TimLoader):
         # except Course.MultipleObjectsReturned:
         #     prj = None
         mt, new = rt.models.notes.NoteType.objects.get_or_create(
-            name=row.type.strip())
+            name=row.type.strip().upper())
         if new:
             yield mt
         yield Note(
