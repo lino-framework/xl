@@ -58,7 +58,7 @@ class Prioritized(dd.Model):
     class Meta:
         abstract = True
     #priority = models.SmallIntegerField(_("Priority"), default=100)
-    priority = Priorities.field(default=Priorities.as_callable('normal'))
+    priority = Priorities.field(default='normal')
 
 class TimeInvestment(Commentable):
     class Meta:
