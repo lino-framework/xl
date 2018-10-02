@@ -286,7 +286,7 @@ class TimLoader(TimLoader):
             if v:
                 partner.client_state = v
             else:
-                partner.client_state = ClientStates.auto_closed
+                partner.client_state = ClientStates.cancelled
                 # dd.logger.info(
                 #     "%s : invalid PAR->Stand %s", row, row.stand)
 
@@ -576,9 +576,6 @@ class TimLoader(TimLoader):
             dd.logger.warning(
                 "Cannot import MSG %s : no course ref %s", row, idpar)
             return
-        mt, new = rt.models.notes.NoteType.objects.get_or_create(
-            name=row.type.strip())
-            
         # idpar = self.par_pk(row.idpar.strip())
         # if idpar is None:
         #     return
@@ -590,14 +587,21 @@ class TimLoader(TimLoader):
         #     prj = None
         # except Course.MultipleObjectsReturned:
         #     prj = None
-        yield Note(
+        kw = dict(
             project=prj,
-            type=mt,
             user=self.get_user(row.idusr),
             date=row.date,
             time=row.time.strip(),
             subject=row.titre.strip(),
             body=self.dbfmemo(row.texte))
+        mtname = row.type.strip().upper()
+        if mtname:
+            mt, new = rt.models.notes.NoteType.objects.get_or_create(
+                name=mtname)
+            if new:
+                yield mt
+            kw.update(type=mt)
+        yield Note(**kw)
         
         
 

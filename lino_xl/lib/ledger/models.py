@@ -317,7 +317,8 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         if self.start_date is None:
             self.start_date = dd.today().replace(day=1)
         if not self.year:
-            self.year = FiscalYear.from_date(self.start_date, None)
+            self.year = FiscalYear.get_or_create_from_date(
+                self.start_date)
         super(AccountingPeriod, self).full_clean(*args, **kwargs)
 
     def __str__(self):
@@ -378,8 +379,13 @@ class FiscalYear(DateRange, mixins.Referrable):
         # return obj
 
     @classmethod
-    def from_date(cls, date, *args):
-        return cls.from_int(date.year, *args)
+    def get_or_create_from_date(cls, date):
+        obj = cls.from_int(date.year, None)
+        if obj is None:
+            obj = cls.create_from_year(date.year)
+            obj.full_clean()
+            obj.save()
+        return obj
 
     def __str__(self):
         return self.ref
@@ -522,7 +528,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             kw = {
                 prefix + 'number': int(search_text),
                 prefix + 'accounting_period__year':
-                FiscalYear.from_date(dd.today())}
+                FiscalYear.get_or_create_from_date(dd.today())}
             return models.Q(**kw)
         return super(Voucher, model).quick_search_filter(search_text, prefix)
 
@@ -665,7 +671,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         Delete any existing movements and re-create them
         """
         # dd.logger.info("20151211 cosi.Voucher.register_voucher()")
-        # self.year = FiscalYears.from_date(self.entry_date)
+        # self.year = FiscalYears.get_or_create_from_date(self.entry_date)
         # dd.logger.info("20151211 movement_set.all().delete()")
 
         def doit(partners):
