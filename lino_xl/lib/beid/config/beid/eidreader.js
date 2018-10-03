@@ -20,7 +20,7 @@ Lino.beid_read_card_processor = function() {
     var url = "{{settings.SITE.plugins.beid.urlhandler_prefix}}" + window.location.origin + "/eid/" + my_id;
     console.log("Gonna open", url);
     var popup = window.open(url);
-    // popup.close();
+    popup.close();
     return { uuid: my_id };
     
     // var xhttp = new XMLHttpRequest();
