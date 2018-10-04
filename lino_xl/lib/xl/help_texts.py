@@ -16,17 +16,6 @@ Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
     'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of lino_xl.lib.addresses.mixins.AddressOwner"""),
-    'lino_xl.lib.appypod.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.appypod.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
-for appy.pod."""),
-    'lino_xl.lib.appypod.AppyOdtBuildMethod' : _("""Generates .odt files from .odt templates."""),
-    'lino_xl.lib.appypod.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
-    'lino_xl.lib.appypod.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
-    'lino_xl.lib.appypod.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
-    'lino_xl.lib.appypod.PrintTableAction' : _("""Show this table as a pdf document"""),
-    'lino_xl.lib.appypod.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
-model which implements
-Addressable."""),
     'lino_xl.lib.beid.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.beid.Plugin.holder_model' : _("""The one and only model on this site which implements
 BeIdCardHolder."""),
@@ -34,10 +23,14 @@ BeIdCardHolder."""),
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
     'lino_xl.lib.beid.Plugin.read_only_simulate' : _("""Whether to just simulate."""),
+    'lino_xl.lib.beid.Plugin.urlhandler_prefix' : _("""Set this to a string to be passed by the
+beid_card_processor() Javascript function to the URL
+protocol handler responsible for running eidreader."""),
     'lino_xl.lib.bevat.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.bevats.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.blogs.Entry' : _("""A blog entry is a short article with a title, published on a given
 date and time by a given user."""),
+    'lino_xl.lib.blogs.Entry.on_create' : _("""Sets the pub_date and pub_time to now."""),
     'lino_xl.lib.blogs.LatestEntries' : _("""Show the most recent blog entries."""),
     'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.boards.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
@@ -63,12 +56,32 @@ countries there is a mandatory intermediate field."""),
     'lino_xl.lib.countries.Plugin.country_code' : _("""The 2-letter ISO code of the country where the site owner is
 located.  This may not be empty, and there must be a country with
 that ISO code in lino_xl.lib.countries.models.Country."""),
+    'lino_xl.lib.countries.Plugin.get_my_country' : _("""Return the Country instance configured by
+country_code."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
     'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
     'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
     'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
     'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
+    'lino_xl.lib.courses.Course.before_auto_event_save' : _("""Set room and start_time/end_time for automatic events."""),
+    'lino_xl.lib.courses.Course.get_detail_action' : _("""Custom get_detail_action because the
+detail_layout to use depends on the course's line's
+course_area."""),
+    'lino_xl.lib.courses.Course.get_events_user' : _("""The user of generated events is not the course manager (author) but
+the teacher."""),
+    'lino_xl.lib.courses.Course.suggest_cal_guests' : _("""Look up enrolments of this course and suggest them as guests."""),
+    'lino_xl.lib.courses.Course.update_cal_from' : _("""Note: if recurrency is weekly or per_weekday, actual start may be
+later than self.start_date"""),
+    'lino_xl.lib.courses.Enrolment.create_pupil_choice' : _("""Called when an unknown pupil name was given.
+Try to auto-create it."""),
+    'lino_xl.lib.courses.Enrolment.get_body_template' : _("""Overrides lino.core.model.Model.get_body_template()."""),
+    'lino_xl.lib.courses.Enrolment.get_confirm_veto' : _("""Called from ConfirmEnrolment.  If this
+returns something else than None, then the enrolment won't
+be confirmed and the return value will be displayed to the
+user."""),
+    'lino_xl.lib.courses.Enrolment.is_guest_for' : _("""Return True if the pupil of this enrolment should be invited to
+the given event."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
@@ -96,12 +109,15 @@ adult."""),
 http://www.belgium.be/fr/famille/couple/cohabitation/"""),
     'lino_xl.lib.households.Household' : _("""A Household is a Partner who represents several Persons living together.
 A Household has a list of members."""),
+    'lino_xl.lib.households.Household.get_full_name' : _("""Overrides
+lino_xl.lib.contacts.models.Partner.get_full_name()."""),
     'lino_xl.lib.households.Household.full_name' : _("""Overrides
 lino_xl.lib.contacts.models.Partner.get_full_name()."""),
     'lino_xl.lib.households.Member' : _("""A household membership represents the fact that a given person
 is (or has been) part of a given household."""),
     'lino_xl.lib.households.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
     'lino_xl.lib.households.Member.end_date' : _("""Until when this membership exists."""),
+    'lino_xl.lib.households.Member.full_clean' : _("""Copy data fields from child"""),
     'lino_xl.lib.households.SiblingsByPerson' : _("""Displays the siblings of a given person in that person's active
 household."""),
     'lino_xl.lib.households.SiblingsByPerson.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
@@ -155,11 +171,16 @@ notes.NoteType."""),
     'lino_xl.lib.outbox.MailableType.templates_group' : _("""Should contain a string "<app_label>/<Model>" of the Mailable
 being typed by this MailableType. Example:"""),
     'lino_xl.lib.outbox.CreateMail' : _("""Creates an outbox mail and displays it."""),
+    'lino_xl.lib.outbox.CreateMail.get_action_permission' : _("""This action is not available:"""),
     'lino_xl.lib.outbox.Mailable' : _("""Mixin for models that provide a "Post" button.  A Mailable model
 must also inherit from mixins.Printable or some subclass
 thereof."""),
+    'lino_xl.lib.outbox.Mailable.get_mailable_subject' : _("""Return the content of the subject field for the email to be
+created."""),
     'lino_xl.lib.outbox.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
+    'lino_xl.lib.outbox.Recipient.get_row_permission' : _("""Recipients of a Mail may not be edited if the Mail is read-only."""),
     'lino_xl.lib.outbox.SendMail' : _("""Sends an outbox.Mail as an email."""),
+    'lino_xl.lib.outbox.Mail.get_row_permission' : _("""Mails may not be edited after they have been sent."""),
     'lino_xl.lib.outbox.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
     'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
@@ -195,6 +216,7 @@ certain value."""),
     'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
     'lino_xl.lib.reception.CheckinVisitor' : _("""Mark this visitor as arrived."""),
+    'lino_xl.lib.reception.CheckinVisitor.get_notify_recipients' : _("""Yield a list of users to be notified."""),
     'lino_xl.lib.reception.ReceiveVisitor' : _("""The "Receive" action on a Guest."""),
     'lino_xl.lib.reception.CheckoutVisitor' : _("""The "Checkout" action on a Guest."""),
     'lino_xl.lib.reception.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
@@ -227,11 +249,22 @@ guests. Ask confirmation naming the guests who need to check out."""),
     'lino_xl.lib.sepa.fields.BICField' : _("""Database field used to store a BIC."""),
     'lino_xl.lib.sepa.fields.IBANField' : _("""Database field used to store an IBAN."""),
     'lino_xl.lib.sepa.BankAccount' : _("""Adds a field bank_account and its chooser."""),
+    'lino_xl.lib.sepa.BankAccount.get_bank_account' : _("""Implements
+Voucher.get_bank_account."""),
     'lino_xl.lib.sepa.Payable' : _("""Model mixin for database objects that are considered payable
 transactions. To be combined with some mixin which defines a
 field partner."""),
     'lino_xl.lib.sepa.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
     'lino_xl.lib.sepa.Payable.title' : _("""A char field with a description for this transaction."""),
+    'lino_xl.lib.sepa.Payable.get_payable_sums_dict' : _("""To be implemented by subclasses.  Expected to return a dict which
+maps 4-tuples (acc_tuple, project, vat_class, vat_regime) to
+the amount. 
+acc_tuple is a tuple (general_account, analytic_account),
+vat_class
+is a lino_xl.lib.vat.VatClasses
+and vat_regime a lino_xl.lib.vat.VatRegimes."""),
+    'lino_xl.lib.sepa.Payable.get_wanted_movements' : _("""Implements
+lino_xl.lib.ledger.Voucher.get_wanted_movements()."""),
     'lino_xl.lib.sepa.BankAccountChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.sepa.BankAccountChecker.model' : _("""alias of BankAccount"""),
     'lino_xl.lib.sepa.Account' : _("""A bank account related to a given Partner."""),
@@ -290,11 +323,17 @@ plugin."""),
 resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
 resolve it at startup into an item of VatClasses."""),
+    'lino_xl.lib.vat.Plugin.get_vat_class' : _("""Return the VAT class to be used for given trade type and given
+invoice item. Return value must be an item of
+lino_xl.lib.vat.VatClasses."""),
     'lino_xl.lib.vatless.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.vatless.PartnerDetailMixin' : _("""Defines a panel ledger, to be added as a tab panel to your
 layout's main element."""),
     'lino_xl.lib.vatless.PartnerDetailMixin.ledger' : _("""Shows the tables vatless.VouchersByPartner and
 ledger.MovementsByPartner."""),
+    'lino_xl.lib.vatless.AccountInvoice.disabled_fields' : _("""Disable all three total fields if edit_totals is False,
+otherwise disable total_vat if
+VatRule.can_edit is False."""),
     'lino_xl.lib.vatless.InvoiceItem' : _("""An item of an AccountInvoice."""),
     'lino_xl.lib.vatless.ItemsByInvoice' : _("""This is the "content" part of an invoice."""),
     'lino_xl.lib.vatless.ItemsByProjectInvoice' : _("""Like ItemsByInvoice, but in a project invoice we don't
@@ -320,6 +359,12 @@ get_vote_raters)."""),
     'lino_xl.lib.votes.VoteStates.item_class' : _("""alias of VoteState"""),
     'lino_xl.lib.votes.Votable' : _("""Base class for models that can be used as
 lino_xl.lib.votes.Plugin.votable_model."""),
+    'lino_xl.lib.votes.Votable.get_vote_raters' : _("""Yield or return a list of the users who are allowed to rate the
+votes on this votable."""),
+    'lino_xl.lib.votes.Votable.get_favourite' : _("""Return the vote of the given user about this votable, or None if no
+vote exists."""),
+    'lino_xl.lib.votes.Votable.set_author_votes' : _("""Verify that every vote rater has a vote."""),
+    'lino_xl.lib.votes.Votable.after_ui_create' : _("""Automatically call set_author_votes() after creation."""),
     'lino_xl.lib.votes.Vote' : _("""A vote is when a user has an opinion or interest about a given
 ticket (or any other votable)."""),
     'lino_xl.lib.votes.Vote.votable' : _("""The ticket (or other votable) being voted."""),
@@ -329,6 +374,7 @@ ticket (or any other votable)."""),
     'lino_xl.lib.votes.Vote.rating' : _("""How the ticket author rates my help on this ticket."""),
     'lino_xl.lib.votes.Vote.remark' : _("""Why I am interested in this ticket."""),
     'lino_xl.lib.votes.Vote.nickname' : _("""My nickname for this ticket. Optional."""),
+    'lino_xl.lib.votes.Vote.on_create' : _("""Set the default vote state,"""),
     'lino_xl.lib.votes.Votes' : _("""Table parameters:"""),
     'lino_xl.lib.votes.Votes.observed_event' : _("""There are two class attributes for defining a filter conditions
 which canot be removed by the user:"""),
@@ -368,6 +414,24 @@ want to copy all rows."""),
 specified a total amount."""),
     'lino_xl.lib.ana.MakeCopy.ana_account' : _("""The analytical account to use for the item of the invoice if
 you specified a total amount."""),
+    'lino_xl.lib.appypod.AppyBuildMethod' : _("""Base class for Build Methods that use .odt templates designed
+for appy.pod."""),
+    'lino_xl.lib.appypod.AppyOdtBuildMethod' : _("""Generates .odt files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyPdfBuildMethod' : _("""Generates .pdf files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyRtfBuildMethod' : _("""Generates .rtf files from .odt templates."""),
+    'lino_xl.lib.appypod.AppyDocBuildMethod' : _("""Generates .doc files from .odt templates."""),
+    'lino_xl.lib.appypod.PrintTableAction' : _("""Show this table as a pdf document."""),
+    'lino_xl.lib.appypod.PrintLabelsAction' : _("""Add this action to your table, which is expected to execute on a
+model which implements
+Addressable."""),
+    'lino_xl.lib.appypod.PrintLabelsAction.get_recipients' : _("""Return an iterator over the recipients for which we want to
+print labels."""),
+    'lino_xl.lib.appypod.AppyRenderer' : _("""The extended appy.pod.renderer used by Lino."""),
+    'lino_xl.lib.appypod.AppyRenderer.insert_html' : _("""Insert a chunk of HTML (not XHTML) provided as a string or as an
+etree element."""),
+    'lino_xl.lib.appypod.AppyRenderer.insert_table' : _("""This is the function that gets called when a template contains a
+do text from table(...) statement."""),
+    'lino_xl.lib.appypod.AppyRenderer.story2odt' : _("""Yield a sequence of ODT chunks (as utf8 encoded strings)."""),
     'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
 Currently only Belgian eid cards are tested.
 Concrete subclasses must also inherit from lino.mixins.Born."""),
@@ -424,12 +488,31 @@ the same time."""),
 all entries on that day (EntriesByDay)."""),
     'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
+    'lino_xl.lib.cal.Event.get_conflicting_events' : _("""Return a QuerySet of calendar entries that conflict with this one.
+Must work also when called on an unsaved instance.
+May return None to indicate an empty queryset.
+Applications may override this to add specific conditions."""),
+    'lino_xl.lib.cal.Event.has_conflicting_events' : _("""Whether this entry has any conflicting entries."""),
+    'lino_xl.lib.cal.Event.suggest_guests' : _("""Yield the list of unsaved Guest instances to be added
+to this entry.  This method is called from
+update_guests()."""),
+    'lino_xl.lib.cal.Event.get_event_summary' : _("""How this event should be summarized in contexts where possibly
+another user is looking (i.e. currently in invitations of
+guests, or in the extensible calendar panel)."""),
+    'lino_xl.lib.cal.Event.before_ui_save' : _("""Mark the entry as "user modified" by setting a default state.
+This is important because EventGenerators may not modify any
+user-modified Events."""),
+    'lino_xl.lib.cal.Event.auto_type_changed' : _("""Called when the number of this automatically generated entry
+(auto_type ) has changed."""),
+    'lino_xl.lib.cal.Event.get_calendar' : _("""Returns the Calendar which contains this entry, or
+None if no subscription is found."""),
     'lino_xl.lib.cal.EntryStates' : _("""The possible states of a calendar entry.
 Stored in the state field."""),
     'lino_xl.lib.cal.EntryState.edit_guests' : _("""Whether presences are editable when the entry is in this
 state."""),
     'lino_xl.lib.cal.EntryState.guest_state' : _("""Force the given guest state for all guests when an entry is
-set to this state."""),
+set to this state and when
+EventType.force_guest_states is True."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
     'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
@@ -441,6 +524,8 @@ users or external parties)."""),
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
     'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
+    'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether guest states should be forced to those defined by the
+entry state."""),
     'lino_xl.lib.cal.DailyPlanner' : _("""The daily planner actor."""),
     'lino_xl.lib.cal.PlannerColumns' : _("""A choicelist that defines the columns to appear in the daily
 planner. This list can be modified locally."""),
@@ -450,6 +535,15 @@ The default configuration has "AM", "PM" and "All day"."""),
 lino_xl.lib.extensible)."""),
     'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
     'lino_xl.lib.cal.EventGenerator.do_update_events' : _("""See UpdateEntries."""),
+    'lino_xl.lib.cal.EventGenerator.get_wanted_auto_events' : _("""Return a tuple of two dicts of "wanted" and "unwanted" events."""),
+    'lino_xl.lib.cal.EventGenerator.care_about_conflicts' : _("""Whether this event generator should try to resolve conflicts
+(in resolve_conflicts())"""),
+    'lino_xl.lib.cal.EventGenerator.resolve_conflicts' : _("""Check whether given entry we conflicts with other entries
+and move it to a new date if necessary. Returns (a) the
+entry's start_date if there is no conflict, (b) the
+next available alternative date if the entry conflicts with
+other existing entries and should be moved, or (c) None if
+there are conflicts but no alternative date could be found."""),
     'lino_xl.lib.cal.UpdateEntries' : _("""Generate or update the automatic events controlled by this object."""),
     'lino_xl.lib.cal.UpdateEntriesByEvent' : _("""Update all events of this series."""),
     'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
@@ -496,6 +590,8 @@ calendar entries."""),
 entries."""),
     'lino_xl.lib.cal.RecurrentEvent.name' : _("""See lino.utils.mldbc.mixins.BabelNamed.name."""),
     'lino_xl.lib.cal.RecurrentEvent.every_unit' : _("""Inherited from RecurrentSet.every_unit."""),
+    'lino_xl.lib.cal.RecurrentEvent.care_about_conflicts' : _("""Recurrent events don't care about conflicts. A holiday won't move
+just because some other event has been created before on that date."""),
     'lino_xl.lib.cal.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
     'lino_xl.lib.cal.UpdateGuests' : _("""Populate or update the list of participants for this calendar
 entry according to the suggestions."""),
@@ -536,6 +632,9 @@ lino.modlib.courses.models.Course."""),
     'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
     'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
 choicelist."""),
+    'lino_xl.lib.cal.DurationUnit.add_duration' : _("""Return a date or datetime obtained by adding value
+times this unit to the specified value orig.
+Returns None is orig is empty."""),
     'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the
 lino_xl.lib.cal.Event.duration_unit field of a calendar
 entry."""),
@@ -582,6 +681,13 @@ given period."""),
     'lino_xl.lib.coachings.Coachings' : _("""The Coachings table in a clients detail."""),
     'lino_xl.lib.coachings.Coachable' : _("""Base class for coachable client. The model specified as
 client_model must implement this."""),
+    'lino_xl.lib.coachings.Coachable.get_coachings' : _("""Return a queryset with the coachings of this client. If
+period is not None, it must be a tuple of two date
+objects. Any additional arguments are applied as filter of the
+queryset."""),
+    'lino_xl.lib.coachings.Coachable.get_primary_coach' : _("""Return the one and only primary coach of this client (or
+None if there's less or more than one)."""),
+    'lino_xl.lib.coachings.Coachable.setup_auto_event' : _("""Implements EventGenerator.setup_auto_event."""),
     'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
 types of responsibilities. For example in welfare they
 differentiate between "General Social Service" and "Integration
@@ -689,6 +795,8 @@ method, ..."""),
     'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
     'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
+    'lino_xl.lib.countries.AddressLocation.address_location' : _("""Return the plain text postal address location part.  Lines are
+separated by linesep which defaults to "\\n"."""),
     'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
 teacher in a given room to speak about a given subject."""),
     'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
@@ -752,6 +860,8 @@ excerpt.  See ContactRelated.contact_person."""),
     'lino_xl.lib.excerpts.Excerpt.recipient' : _("""The recipient of this excerpt.  See
 ContactRelated.recipient"""),
     'lino_xl.lib.excerpts.Excerpt.language' : _("""The language used for printing this excerpt."""),
+    'lino_xl.lib.excerpts.Excerpt.get_address_html' : _("""See
+lino_xl.lib.contacts.mixins.ContactRelated.get_address_html()."""),
     'lino_xl.lib.excerpts.Excerpts' : _("""Base class for all tables on Excerpt."""),
     'lino_xl.lib.excerpts.ExcerptsByOwner' : _("""Shows all excerpts whose owner field is
 this."""),
@@ -775,6 +885,17 @@ the given shortcut field will manage excerpts of this type."""),
 Clicking on it will display the excerpt pointed to by
 printed_by."""),
     'lino_xl.lib.excerpts.Certifiable.printed_by' : _("""ForeignKey to the Excerpt which certifies this instance."""),
+    'lino_xl.lib.excerpts.Certifiable.on_duplicate' : _("""After duplicating e.g. a budget which had been printed, we don't
+want the duplicate point to the same
+excerpt. lino.mixins.duplicable.Duplicable.on_duplicate()."""),
+    'lino_xl.lib.excerpts.Certifiable.get_certifiable_fields' : _("""A class method. Expected to return a string with a
+space-separated list of field names.  These files will
+automaticaly become disabled (readonly) when the document is
+"certified". The default implementation returns an empty
+string, which means that no field will become disabled when
+the row is "certified"."""),
+    'lino_xl.lib.excerpts.Certifiable.get_excerpt_templates' : _("""Return either None or a list of template names to be used
+when printing an excerpt controlled by this object."""),
     'lino_xl.lib.excerpts.ExcerptTitle' : _("""Mixin for models like
 lino_welfare.modlib.aids.models.AidType and
 lino_xl.lib.courses.models.Line."""),
@@ -936,6 +1057,15 @@ emitter)."""),
 to.  The default value is determined from entry_date."""),
     'lino_xl.lib.ledger.Voucher.narration' : _("""A short explanation which ascertains the subject matter of
 this journal entry."""),
+    'lino_xl.lib.ledger.Voucher.do_and_clear' : _("""Delete all movements of this voucher, then run the given
+callable func, passing it a set with all partners who had at
+least one movement in this voucher. The function is expected
+to add more partners to this set.  Then call check_clearings
+for all these partners."""),
+    'lino_xl.lib.ledger.Voucher.get_partner' : _("""Return the partner related to this voucher.  Overridden by
+PartnerRelated vouchers."""),
+    'lino_xl.lib.ledger.Voucher.get_wanted_movements' : _("""Subclasses must implement this.  Supposed to return or yield a
+list of unsaved Movement instances."""),
     'lino_xl.lib.ledger.Journal' : _("""Fields:"""),
     'lino_xl.lib.ledger.Journal.trade_type' : _("""Pointer to TradeTypes."""),
     'lino_xl.lib.ledger.Journal.voucher_type' : _("""Pointer to an item of VoucherTypes."""),
@@ -1022,6 +1152,13 @@ base_account."""),
     'lino_xl.lib.ledger.TradeType.price_field' : _("""The name and label of the price field to be defined on the
 Product database
 model."""),
+    'lino_xl.lib.ledger.TradeType.get_product_base_account' : _("""Return the account into which the base amount of any
+operation of this rete type should be booked."""),
+    'lino_xl.lib.ledger.TradeType.get_catalog_price' : _("""Return the catalog price of the given product for operations
+with this trade type."""),
+    'lino_xl.lib.ledger.TradeType.get_partner_invoice_account' : _("""Return the account to use as default value for account invoice
+items.  This is the invoice_account_field of the given
+partner and can be None."""),
     'lino_xl.lib.ledger.FiscalYears' : _("""The fiscal years available in this database."""),
     'lino_xl.lib.ledger.JournalGroups' : _("""The list of possible journal groups."""),
     'lino_xl.lib.ledger.JournalGroups.sales' : _("""For sales journals."""),
@@ -1217,6 +1354,12 @@ on the ticket."""),
     'lino_xl.lib.working.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
     'lino_xl.lib.working.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
     'lino_xl.lib.working.Workable' : _("""Base class for things that workers can work on."""),
+    'lino_xl.lib.working.Workable.is_workable_for' : _("""Return True if the given user can start a working session on this
+object."""),
+    'lino_xl.lib.working.Workable.on_worked' : _("""This is automatically called when a work session has been created
+or modified."""),
+    'lino_xl.lib.working.Workable.start_session' : _("""See StartTicketSession."""),
+    'lino_xl.lib.working.Workable.end_session' : _("""See EndTicketSession."""),
     'lino_xl.lib.working.ServiceReport' : _("""A service report is a document used in various discussions with
 a stakeholder."""),
     'lino_xl.lib.working.ServiceReport.user' : _("""This can be empty and will then show the working time of all
@@ -1316,6 +1459,27 @@ total_base and total_vat."""),
     'lino_xl.lib.vat.VatTotal.total_incl' : _("""The amount VAT included."""),
     'lino_xl.lib.vat.VatTotal.total_base' : _("""The amount VAT excluded."""),
     'lino_xl.lib.vat.VatTotal.total_vat' : _("""The amount of VAT."""),
+    'lino_xl.lib.vat.VatTotal.get_trade_type' : _("""Subclasses of VatTotal must implement this method."""),
+    'lino_xl.lib.vat.VatTotal.get_vat_rule' : _("""Return the VAT rule for this voucher or voucher item. Called
+when user edits a total field in the document header when
+edit_totals is True."""),
+    'lino_xl.lib.vat.VatTotal.total_base_changed' : _("""Called when user has edited the total_base field.  If
+total_base has been set to blank, then Lino fills it using
+reset_totals(). If user has entered a value, compute
+total_vat and total_incl from this value using
+the vat rate. If there is no VatRule, total_incl and
+total_vat are set to None."""),
+    'lino_xl.lib.vat.VatTotal.total_vat_changed' : _("""Called when user has edited the total_vat field.  If it has been
+set to blank, then Lino fills it using
+reset_totals(). If user has entered a value, compute
+total_incl. If there is no VatRule, total_incl is
+set to None."""),
+    'lino_xl.lib.vat.VatTotal.total_incl_changed' : _("""Called when user has edited the total_incl field.  If total_incl
+has been set to blank, then Lino fills it using
+reset_totals(). If user enters a value, compute
+total_base and total_vat from this value using
+the vat rate. If there is no VatRule, total_incl should be
+disabled, so this method will never be called."""),
     'lino_xl.lib.vat.VatDocument' : _("""Abstract base class for invoices, offers and other vouchers."""),
     'lino_xl.lib.vat.VatDocument.edit_totals' : _("""Whether the user usually wants to edit the total amount or
 not."""),
@@ -1334,6 +1498,7 @@ items."""),
     'lino_xl.lib.vat.VatItemBase' : _("""Model mixin for items of a VatDocument."""),
     'lino_xl.lib.vat.VatItemBase.vat_class' : _("""The VAT class to be applied for this item. A pointer to
 VatClasses."""),
+    'lino_xl.lib.vat.VatItemBase.get_vat_rule' : _("""Return the VatRule which applies for this item."""),
     'lino_xl.lib.vat.QtyVatItemBase' : _("""Model mixin for items of a VatTotal.  Extends
 VatItemBase by adding unit_price and qty."""),
     'lino_xl.lib.vat.QtyVatItemBase.unit_price' : _("""The unit price for this item."""),
@@ -1345,6 +1510,8 @@ VatItemBase by adding unit_price and qty."""),
     'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes.  Each item is an instance of
 VatRegime."""),
     'lino_xl.lib.vat.VatDeclaration' : _("""Abstract base class for VAT declarations."""),
+    'lino_xl.lib.vat.VatDeclaration.get_payable_sums_dict' : _("""Implements
+lino_xl.lib.sepa.Payable.get_payable_sums_dict()."""),
     'lino_xl.lib.vat.DeclarationField' : _("""Base class for all fields of VAT declarations."""),
     'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of other declaration
 fields to be observed by this field."""),

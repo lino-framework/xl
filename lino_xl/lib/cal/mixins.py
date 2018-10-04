@@ -442,11 +442,11 @@ class EventGenerator(dd.Model):
             # return (fdmy(d) + ": ", ar.obj2html(evt, lbl))
         return renderer
                 
-    # def get_date_formatter(self):
-    #     rset = self.update_cal_rset()
-    #     if rset and rset.every_unit:
-    #         return rset.every_unit.get_date_formatter()
-    #     return day_and_month
+    def get_date_formatter(self):
+        rset = self.update_cal_rset()
+        if rset and rset.every_unit:
+            return rset.every_unit.get_date_formatter()
+        return day_and_month
 
     # def format_cal_entry(self, evt, fmt, ar):
     #     """
