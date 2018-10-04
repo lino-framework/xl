@@ -141,16 +141,6 @@ class TimLoader(TimLoader):
             course_area=CourseAreas.default).order_by('id')[0]
         
         
-    def par_pk(self, pk):
-        try:
-            if pk.startswith('E'):
-                return 1000000 + int(pk[1:])
-            elif pk.startswith('S'):
-                return 2000000 + int(pk[1:])
-            return int(pk)
-        except ValueError:
-            return None
-
     def par_class(self, data):
         prt = data.idprt
         if prt == 'L':  # Lieferant
@@ -172,6 +162,16 @@ class TimLoader(TimLoader):
         elif prt == 'T':  # Therapeutische Gruppen
             return # Household  # List
         #~ dblogger.warning("Unhandled PAR->IdPrt %r",prt)
+
+    def par_pk(self, pk):
+        try:
+            if pk.startswith('E'):
+                return 1000000 + int(pk[1:])
+            elif pk.startswith('S'):
+                return 2000000 + int(pk[1:])
+            return int(pk)
+        except ValueError:
+            return None
 
     def get_partner(self, model, idpar):
         pk = self.par_pk(idpar.strip())
@@ -196,6 +196,7 @@ class TimLoader(TimLoader):
         kw.update(number=number)
         kw.update(vat_regime=VatRegimes.normal)
         # kw.update(id=pk)
+
         partner = self.get_partner(Partner, row.idpar)
         if partner is None:
             raise Exception("No partner id {0} in {1}".format(row.idpar, row))
