@@ -27,18 +27,18 @@ def load_card_data(uuid):
             fp = open(fn)
             rv = json.load(fp)
             fp.close()
-            dd.logger.info("20181002 json.load({}) returned {}".format(
-                fn, rv))
+            # dd.logger.info("20181002 json.load({}) returned {}".format(
+            #     fn, rv))
             return rv
             # raise Warning(
             #     _("Got invalid card data {} from eidreader.").format(rv))
         
-        except IOError as e:
+        except IOError:
             time.sleep(1)
             count += 1
             if count > timeout:
-                dd.logger.info("20181002 abandoned reading %s : %s",
-                               fn, e)
+                # dd.logger.info("20181002 abandoned reading %s : %s",
+                #                fn, e)
                 raise Warning(_("Abandoned after {} seconds").format(
                     timeout))
                 # rv = dict(success=False)
@@ -70,8 +70,8 @@ class EidStore(View):
             fp.write(card_data)
             # json.dump(card_data, fp)
             fp.close()
-            msg = "20181002 wrote {} : {}".format(fn, card_data)
-            dd.logger.info(msg)
+            # msg = "20181002 wrote {} : {}".format(fn, card_data)
+            # dd.logger.info(msg)
             return json_response(dict(success=True, message="OK"))
         except IOError as e:
             dd.logger.warning(

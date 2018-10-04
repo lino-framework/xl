@@ -404,7 +404,7 @@ class TimLoader(TimLoader):
         elif etat == "A":
             kw.update(state=GuestStates.excused)
         elif etat == "V":
-            kw.update(state=GuestStates.absent)
+            kw.update(state=GuestStates.missing)
         else:
             kw.update(state=GuestStates.present)
         

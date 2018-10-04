@@ -215,8 +215,9 @@ class Course(Reservation, Duplicable, Printable):
     enrolments_until = models.DateField(
         _("Enrolments until"), blank=True, null=True)
 
-    print_presence_sheet = PrintPresenceSheet()
+    print_presence_sheet = PrintPresenceSheet(show_in_bbar=False)
     print_presence_sheet_html = PrintPresenceSheet(
+        show_in_bbar=False,
         build_method='weasy2html',
         label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
 
