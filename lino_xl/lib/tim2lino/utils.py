@@ -332,15 +332,23 @@ class TimLoader(object):
         
         """
         self = cls(settings.SITE.legacy_data_path)
-        count = 0
+        counts = {}
         for o in self.expand(self.objects()):
             o.full_clean()
             o.save()
-            count += 1
+            if o.__class__ in counts:
+                counts[o.__class__] += 1
+            else:
+                counts[o.__class__] = 1
             # temporary:
             # dd.logger.info("Saved %s", dd.obj2str(o))
         self.finalize()
-        dd.logger.info(
-            "{} objects have been saved.".format(count))
+        if counts:
+            for m in sorted(counts.keys()):
+                dd.logger.info(
+                    "%d objects in %s have been imported.", counts[m], m)
+        else:
+            dd.logger.info("No objects have been imported.")
+        
         
     
