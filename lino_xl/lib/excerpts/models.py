@@ -8,11 +8,13 @@ from __future__ import print_function
 # import six
 
 import logging
+
 logger = logging.getLogger(__name__)
 
 from os.path import join, dirname
 
 import datetime
+
 ONE_WEEK = datetime.timedelta(days=7)
 ONE_DAY = datetime.timedelta(days=1)
 
@@ -27,7 +29,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from lino.api import dd, rt ,gettext
+from lino.api import dd, rt, gettext
 from lino import mixins
 from etgen.html import E
 from lino.utils import join_elems
@@ -41,7 +43,6 @@ from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 # davlink = settings.SITE.plugins.get('davlink', None)
 # has_davlink = davlink is not None and settings.SITE.use_java
 has_davlink = False
-
 
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.contacts.mixins import ContactRelated
@@ -296,7 +297,6 @@ class CreateExcerpt(dd.Action):
 
 
 class BodyTemplateContentField(dd.VirtualField):
-
     editable = True
 
     def __init__(self, *args, **kw):
@@ -335,6 +335,7 @@ class BodyTemplateContentField(dd.VirtualField):
         logger.info("Wrote body_template_content %s", local_file)
         open(local_file, "w").write(value)
 
+
 ##
 ##
 
@@ -343,7 +344,6 @@ class BodyTemplateContentField(dd.VirtualField):
 class Excerpt(TypedPrintable, UserAuthored,
               Controllable, mixins.ProjectRelated,
               ContactRelated, Mailable, Postable):
-
     manager_roles_required = dd.login_required(OfficeStaff)
     # manager_level_field = 'office_level'
     allow_cascaded_delete = "owner"
@@ -462,7 +462,7 @@ class Excerpt(TypedPrintable, UserAuthored,
     #     return rec
 
     # recipient = property(get_recipient)
-        
+
     def get_printable_type(self):
         return self.excerpt_type
 
@@ -508,7 +508,7 @@ class Excerpt(TypedPrintable, UserAuthored,
         super(Excerpt, self).before_printable_build(bm)
         if self.owner is not None:
             return self.owner.before_printable_build(bm)
-        
+
     def get_printable_context(self, ar=None, **kw):
         """Adds a series of names to the context used when rendering printable
         documents.  Extends
@@ -533,7 +533,7 @@ class Excerpt(TypedPrintable, UserAuthored,
             if tplname and ar is not None:
                 body = settings.SITE.plugins.jinja.render_jinja(
                     ar, tplname, kw)
-            
+
                 # env = settings.SITE.plugins.jinja.renderer.jinja_env
                 # template = env.get_template(tplname)
                 # # logger.info("body template %s (%s)", tplname, template)
@@ -555,7 +555,7 @@ class Excerpt(TypedPrintable, UserAuthored,
         super(Excerpt, cls).on_analyze(site)
 
 
-#TODO: why not use full_clean() for the following?        
+# TODO: why not use full_clean() for the following?
 @dd.receiver(post_init, sender=Excerpt)
 def post_init_excerpt(sender, instance=None, **kwargs):
     self = instance
@@ -575,7 +575,7 @@ def post_init_excerpt(sender, instance=None, **kwargs):
 
     if not self.language:
         if self.owner_id and self.owner:  # owner might still be None
-                                          # if it is a broken GFK
+            # if it is a broken GFK
             self.language = self.owner.get_print_language()
         if not self.language:
             rec = self.recipient
@@ -618,7 +618,6 @@ else:
         """
 
 if dd.is_installed('contacts'):
-
     dd.update_field(Excerpt, 'company',
                     verbose_name=_("Recipient (Organization)"))
     dd.update_field(Excerpt, 'contact_person',
@@ -673,7 +672,7 @@ class Excerpts(dd.Table):
 
 
 # class ExcerptsByX(Excerpts):
-    # window_size = (70, 20)
+# window_size = (70, 20)
 
 
 class AllExcerpts(Excerpts):
@@ -692,9 +691,8 @@ class ExcerptsByType(Excerpts):
     column_names = "build_time owner project user *"
     order_by = ['-build_time', 'id']
 
-            
+
 class ExcerptsByOwner(Excerpts):
-    
     master_key = 'owner'
     help_text = _("History of excerpts based on this data record.")
     label = _("Existing excerpts")
@@ -746,9 +744,9 @@ if settings.SITE.project_model is None:
     class ExcerptsByProject(object):
         pass
         # needed for building blog
-        
+
 else:
-    
+
     class ExcerptsByProject(ExcerptsByOwner):
         master_key = 'project'
         column_names = "build_time excerpt_type user owner *"
@@ -770,7 +768,7 @@ def set_excerpts_actions(sender, **kw):
 
     try:
         etypes = [(obj, obj.content_type)
-                  for obj in ExcerptType.objects.all().order_by('id') ]
+                  for obj in ExcerptType.objects.all().order_by('id')]
     except (OperationalError, ProgrammingError, UnresolvedChoice) as e:
         dd.logger.debug("Failed to set excerpts actions : %s", e)
         # Happens e.g. when the database has not yet been migrated
@@ -825,7 +823,7 @@ def set_excerpts_actions(sender, **kw):
                         obj, sar, ba, "%s (%d)" % (_("All"), n),
                         icon_name=None)
                     items.append(btn)
-    
+
                 ia = getattr(obj, et.get_action_name())
                 btn = ar.instance_action_button(
                     ia, _("Create"), icon_name=None)
@@ -840,8 +838,6 @@ def set_excerpts_actions(sender, **kw):
                     txt = ExcerptsByOwner.format_excerpt(ex)
                     items.append(ar.obj2html(ex, txt))
             return E.div(*join_elems(items, ', '))
-    
+
         vf = dd.VirtualField(dd.DisplayField(i.text), f)
         dd.inject_field(i.model_spec, i.name, vf)
-
-
