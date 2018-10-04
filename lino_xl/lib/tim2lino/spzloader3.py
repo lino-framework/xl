@@ -201,8 +201,8 @@ class TimLoader(TimLoader):
             raise Exception("No partner id {0} in {1}".format(row.idpar, row))
         else:
             kw.update(partner=partner)
-        if row.idprj.strip():
-            kw.update(project_id=int(row.idprj.strip()))
+        # if row.idprj.strip():
+        #     kw.update(project_id=int(row.idprj.strip()))
         # kw.update(discount=mton(row.remise))
         kw.update(entry_date=row.date)
         kw.update(voucher_date=row.date)
