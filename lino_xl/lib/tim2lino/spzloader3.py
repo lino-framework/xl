@@ -208,7 +208,7 @@ class TimLoader(TimLoader):
         kw.update(voucher_date=row.date)
         kw.update(user=self.get_user(row.auteur))
         kw.update(total_excl=mton(row.mont))
-        kw.update(total_vat=mton(row.montt))
+        # kw.update(total_vat=mton(row.montt))
         kw.update(match=row.match.strip())
         doc = jnl.create_voucher(**kw)
         # doc.partner = partner
