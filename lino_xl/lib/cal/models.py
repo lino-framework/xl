@@ -31,7 +31,7 @@ from lino.modlib.office.roles import OfficeStaff
 from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
 
-from .choicelists import (TaskStates, EntryStates, GuestStates)
+from .choicelists import TaskStates, EntryStates, GuestStates
 from .actions import UpdateGuests
     
 from .mixins import Component
