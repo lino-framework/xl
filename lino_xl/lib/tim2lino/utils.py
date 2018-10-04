@@ -332,10 +332,15 @@ class TimLoader(object):
         
         """
         self = cls(settings.SITE.legacy_data_path)
+        count = 0
         for o in self.expand(self.objects()):
             o.full_clean()
             o.save()
+            count += 1
             # temporary:
             # dd.logger.info("Saved %s", dd.obj2str(o))
         self.finalize()
+        dd.logger.info(
+            "{} objects have been saved.".format(count))
+        
     
