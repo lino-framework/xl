@@ -199,14 +199,14 @@ class TimLoader(TimLoader):
 
         # reduce to first partner using the Course.ref which contains
         # the old partner id:
-        course = Course.get_by_ref(row.idpar.strip())
+        course = Course.get_by_ref(row.idpar.strip(), None)
         if course is None:
-            dd.logger.warning(
-                "Cannot import invoice %s %s because therapy %s is missing",
-                jnl.ref, number, row.idpar.strip())
-        partner = course.partner
-        if partner is None:
             partner = self.get_partner(Partner, row.idpar)
+            # dd.logger.warning(
+            #     "Cannot import invoice %s %s because therapy %s is missing",
+            #     jnl.ref, number, row.idpar.strip())
+        else:
+            partner = course.partner
         if partner is None:
             raise Exception("No partner id {0} in {1}".format(row.idpar, row))
         else:
@@ -270,15 +270,15 @@ class TimLoader(TimLoader):
         kw.update(unit_price=mton(row.prixu))
         kw.update(qty=qton(row.qte))
         kw.update(title=row.desig.strip())
-        vc = tax2vat(row.idtax)
-        kw.update(vat_class=vc)
+        # vc = tax2vat(row.idtax)
+        # kw.update(vat_class=vc)
         mb = mton(row.cmont)
         # mv = mton(row.montt)
         kw.update(total_base=mb)
+        kw.update(total_incl=mb)
         # kw.update(total_vat=mv)
         # if mb is not None and mv is not None:
         #     kw.update(total_incl=mb+mv)
-        kw.update(total_incl=mb)
         try:
             yield doc.add_voucher_item(**kw)
         except Exception as e:
