@@ -184,11 +184,11 @@ class TimLoader(TimLoader):
 
     def load_ven(self, row, **kw):
         jnl, year, number = row2jnl(row)
-        if year.ref != '2018':
-            # dd.logger.info("Ignoring row before 2018 (%s, %s)", year, jnl)
-            return
         if jnl is None:
             dd.logger.info("No journal %s (%s)", row.idjnl, row)
+            return
+        if year is None or year.ref != '2018':
+            # dd.logger.info("Ignoring row before 2018 (%s, %s)", year, jnl)
             return
         if jnl.trade_type.name != 'sales':
             return
