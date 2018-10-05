@@ -197,7 +197,15 @@ class TimLoader(TimLoader):
         kw.update(vat_regime=VatRegimes.normal)
         # kw.update(id=pk)
 
-        partner = self.get_partner(Partner, row.idpar)
+        # reduce to first partner using the Course.ref which contains
+        # the old partner id:
+        course = Course.get_by_ref(row.idpar.strip())
+        if course is None:
+            dd.logger.warning(
+                "Cannot import %s %s because therapy %s is missing",
+                jnl.ref, number, row.idpar.strip())
+        # partner = self.get_partner(Partner, row.idpar)
+        partner = course.partner
         if partner is None:
             raise Exception("No partner id {0} in {1}".format(row.idpar, row))
         else:
