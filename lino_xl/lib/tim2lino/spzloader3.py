@@ -236,7 +236,7 @@ class TimLoader(TimLoader):
 
     def load_vnl(self, row, **kw):
         jnl, year, number = row2jnl(row)
-        if year.ref != '2018':
+        if year is None or year.ref != '2018':
             return
         if jnl is None:
             dd.logger.info("No journal %s (%s)", row.idjnl, row)
