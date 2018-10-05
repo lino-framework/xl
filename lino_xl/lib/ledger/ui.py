@@ -354,9 +354,9 @@ class PartnerVouchers(Vouchers):
 
     @classmethod
     def get_simple_parameters(cls):
-        s = list(super(PartnerVouchers, cls).get_simple_parameters())
-        s += ['partner', 'state']
-        return s
+        for s in super(PartnerVouchers, cls).get_simple_parameters():
+            yield s
+        yield 'partner'
 
     @classmethod
     def get_request_queryset(cls, ar, **kwargs):

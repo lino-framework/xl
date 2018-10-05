@@ -184,7 +184,7 @@ class TimLoader(TimLoader):
 
     def load_ven(self, row, **kw):
         jnl, year, number = row2jnl(row)
-        if year < 2018:
+        if year.ref != '2018':
             # dd.logger.info("Ignoring row before 2018 (%s, %s)", year, jnl)
             return
         if jnl is None:
@@ -236,7 +236,7 @@ class TimLoader(TimLoader):
 
     def load_vnl(self, row, **kw):
         jnl, year, number = row2jnl(row)
-        if year < 2018:
+        if year.ref != '2018':
             return
         if jnl is None:
             dd.logger.info("No journal %s (%s)", row.idjnl, row)

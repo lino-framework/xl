@@ -212,7 +212,7 @@ class Activities(dd.Table):
         s = list(super(Activities, cls).get_simple_parameters())
         s.append('line')
         s.append('teacher')
-        s.append('state')
+        # s.append('state')
         # s.add('user')
         return s
 
