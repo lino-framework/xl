@@ -3,15 +3,15 @@
 # License: BSD (see file COPYING for details)
 
 """
-Import legacy data from TIM (thirdsecond step). 
+Import legacy data from TIM (third step). 
 
-Much legacy data is already in Lino (first imported by
-:mod:`spzloader`, then manually reviewed and maintained), then we
+Much legacy data is already in Lino: first imported by
+:mod:`spzloader`, then manually reviewed and maintained, then we
 imported the legacy database once more, adding calendar entries and
 more data about partners.
 
-This loader additionally imports 
-the 2018 sales invoices from TIM to Lino.
+This third loader additionally imports the 2018 sales invoices from
+TIM to Lino.
 
 In the project direcory on their production server I have a script
 :file:`tl3.py`::
@@ -30,7 +30,6 @@ I can then watch the :xfile:`lino.log` while the script is running.
 
 And when the script has finished, I can see the results in the
 :xfile:`nohup.out` file and in :xfile:`lino.log`.
-
 """
 from __future__ import unicode_literals
 from builtins import str
@@ -125,8 +124,8 @@ class TimLoader(TimLoader):
     # archive_name = 'rumma'
     # has_projects = False
     # languages = 'de fr'
-    # etat_registered = "C"¹
-    etat_registered = "¹"
+    etat_registered = "C"
+    # etat_registered = "¹"
     
     def __init__(self, *args, **kwargs):
         super(TimLoader, self).__init__(*args, **kwargs)
