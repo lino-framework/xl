@@ -75,8 +75,8 @@ class MoveEntryNext(dd.MultipleRowAction):
 class UpdateEntries(dd.MultipleRowAction):
     label = _('Update Events')
     button_text = ' ⚡ '  # 26A1
-    help_text = _('Create or update the automatic calendar entries '
-                  'controlled by this generator.')
+    # help_text = _('Create or update the automatic calendar entries '
+    #               'controlled by this generator.')
 
     # icon_name = 'lightning'
     readonly = False
