@@ -202,10 +202,11 @@ class TimLoader(TimLoader):
         course = Course.get_by_ref(row.idpar.strip())
         if course is None:
             dd.logger.warning(
-                "Cannot import %s %s because therapy %s is missing",
+                "Cannot import invoice %s %s because therapy %s is missing",
                 jnl.ref, number, row.idpar.strip())
-        # partner = self.get_partner(Partner, row.idpar)
         partner = course.partner
+        if partner is None:
+            partner = self.get_partner(Partner, row.idpar)
         if partner is None:
             raise Exception("No partner id {0} in {1}".format(row.idpar, row))
         else:
@@ -258,42 +259,31 @@ class TimLoader(TimLoader):
             # return
         # kw.update(document=doc)
         kw.update(seqno=int(row.line.strip()))
-        idart = row.idart.strip()
-        if True:
-            if row.code in ('A', 'F'):
-                kw.update(product=Product.get_by_ref(idart))
-            kw.update(unit_price=mton(row.prixu))
-            kw.update(qty=qton(row.qte))
+        if row.code in ('A', 'F'):
+            idart = row.idart.strip()
+            try:
+                prod = Product.objects.get(pk=idart)
+            except Product.DoesNotExist:
+                prod = Product(pk=idart, name=idart)
+                yield prod
+            kw.update(product=prod)
+        kw.update(unit_price=mton(row.prixu))
+        kw.update(qty=qton(row.qte))
         kw.update(title=row.desig.strip())
         vc = tax2vat(row.idtax)
         kw.update(vat_class=vc)
         mb = mton(row.cmont)
-        mv = mton(row.montt)
+        # mv = mton(row.montt)
         kw.update(total_base=mb)
-        kw.update(total_vat=mv)
-        if mb is not None and mv is not None:
-            kw.update(total_incl=mb+mv)
-        # kw.update(qty=row.idtax.strip())
-        # kw.update(qty=row.montt.strip())
-        # kw.update(qty=row.attrib.strip())
-        # kw.update(date=row.date)
-
-        # check whether we need a vat rule
-        # if mv and mb:
-        #     vatrule = dict(vat_class=vc, vat_regime=doc.vat_regime)
-        #     vatrule.update(
-        #         country=doc.partner.country or
-        #         dd.plugins.countries.get_my_country())
-        #     try:
-        #         VatRule.objects.get(**vatrule)
-        #     except VatRule.DoesNotExist:
-        #         vatrule.update(rate=myround(mv / mb))
-        #         yield VatRule(**vatrule)
+        # kw.update(total_vat=mv)
+        # if mb is not None and mv is not None:
+        #     kw.update(total_incl=mb+mv)
+        kw.update(total_incl=mb)
         try:
             yield doc.add_voucher_item(**kw)
         except Exception as e:
-            dblogger.warning("Failed to load VNL line %s from %s : %s",
-                             row, kw, e)
+            dd.logger.warning("Failed to load VNL %s from %s : %s",
+                              row, kw, e)
 
         
     
