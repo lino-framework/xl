@@ -201,17 +201,13 @@ class TimLoader(TimLoader):
         # reduce to first partner using the Course.ref which contains
         # the old partner id:
         course = Course.get_by_ref(row.idpar.strip(), None)
-        if course is None:
-            partner = self.get_partner(Partner, row.idpar)
-            # dd.logger.warning(
-            #     "Cannot import invoice %s %s because therapy %s is missing",
-            #     jnl.ref, number, row.idpar.strip())
-        else:
+        if course and course.partner:
             partner = course.partner
-        if partner is None:
-            raise Exception("No partner id {0} in {1}".format(row.idpar, row))
         else:
-            kw.update(partner=partner)
+            partner = self.get_partner(Partner, row.idpar)
+            if partner is None:
+                raise Exception("No partner id {0}".format(row.idpar))
+        kw.update(partner=partner)
         # if row.idprj.strip():
         #     kw.update(project_id=int(row.idprj.strip()))
         # kw.update(discount=mton(row.remise))
