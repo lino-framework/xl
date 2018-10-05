@@ -261,11 +261,14 @@ class TimLoader(TimLoader):
         kw.update(seqno=int(row.line.strip()))
         if row.code in ('A', 'F'):
             idart = row.idart.strip()
-            try:
-                prod = Product.objects.get(pk=idart)
-            except Product.DoesNotExist:
-                prod = Product(pk=idart, name=idart)
-                yield prod
+            if idart == "*":
+                prod = Product.objects.get(pk=2)
+            else:
+                try:
+                    prod = Product.objects.get(pk=idart)
+                except Product.DoesNotExist:
+                    prod = Product(pk=idart, name=idart)
+                    yield prod
             kw.update(product=prod)
         kw.update(unit_price=mton(row.prixu))
         kw.update(qty=qton(row.qte))
