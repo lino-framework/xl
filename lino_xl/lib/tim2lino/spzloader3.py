@@ -138,6 +138,8 @@ class TimLoader(TimLoader):
         Line = rt.models.courses.Line
         self.other_groups = Line.objects.filter(
             course_area=CourseAreas.default).order_by('id')[0]
+
+        self.ROOT = User.objects.get(username='luc')
         
         
     def par_class(self, data):
