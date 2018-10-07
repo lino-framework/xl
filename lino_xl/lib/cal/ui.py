@@ -279,6 +279,13 @@ class GuestRoles(dd.Table):
     cal.GuestsByRole
     """
 
+class GuestDetail(dd.DetailLayout):
+    window_size = (60, 'auto')
+    main = """
+    event partner role
+    state remark workflow_buttons
+    # outbox.MailsByController
+    """
 
 class Guests(dd.Table):
     model = 'cal.Guest'
@@ -287,11 +294,7 @@ class Guests(dd.Table):
     column_names = 'partner role workflow_buttons remark event *'
     order_by = ['event__start_date', 'event__start_time']
     stay_in_grid = True
-    detail_layout = """
-    event partner role
-    state remark workflow_buttons
-    # outbox.MailsByController
-    """
+    detail_layout = "cal.GuestDetail"
     insert_layout = dd.InsertLayout("""
     event
     partner
