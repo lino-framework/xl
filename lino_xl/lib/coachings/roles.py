@@ -1,4 +1,4 @@
-# Copyright 2015-2017 Luc Saffre
+# Copyright 2015-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """User roles for `lino_xl.lib.contacts`. """
 
@@ -6,7 +6,8 @@ from lino.core.roles import UserRole
 
 
 class CoachingsUser(UserRole):
-    pass
+    """Can coach clients."""
+
     
 class CoachingsStaff(CoachingsUser):
-    pass
+    """Can configure coaching functionality."""

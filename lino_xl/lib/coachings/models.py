@@ -120,13 +120,13 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
             Q(type__isnull=True) | Q(type=type))
         return qs.order_by("seqno")
 
-    def disabled_fields(self, ar):
-        rv = super(Coaching, self).disabled_fields(ar)
-        if settings.SITE.is_imported_partner(self.client):
-            if self.primary:
-                return self._imported_fields
-            return set(['primary'])
-        return rv
+    # def disabled_fields(self, ar):
+    #     rv = super(Coaching, self).disabled_fields(ar)
+    #     if settings.SITE.is_imported_partner(self.client):
+    #         if self.primary:
+    #             rv |= self._imported_fields
+    #         rv.add('primary')
+    #     return rv
 
     def on_create(self, ar):
         """

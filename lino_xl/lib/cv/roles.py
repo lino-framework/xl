@@ -1,4 +1,4 @@
-# Copyright 2015 Luc Saffre
+# Copyright 2015-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -7,10 +7,10 @@ from lino.core.roles import UserRole
 
 
 class CareerUser(UserRole):
-    text = _("CV user")
+    """Has access to career functionality"""
 
 
 class CareerStaff(CareerUser):
-    text = _("CV staff")
+    """Can configure career functionality."""
 
 
