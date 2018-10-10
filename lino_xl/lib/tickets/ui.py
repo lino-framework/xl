@@ -303,7 +303,7 @@ class TicketDetail(dd.DetailLayout):
 
 
 class Tickets(dd.Table):
-    required_roles = dd.login_required(Searcher)
+    required_roles = dd.login_required(Reporter)
     # label = _("All tickets")
     # required_roles = set()  # also for anonymous
     model = 'tickets.Ticket'
