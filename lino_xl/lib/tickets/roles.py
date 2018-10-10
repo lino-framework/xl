@@ -10,17 +10,17 @@ class TicketsReader(UserRole):
     pass
 
 class Searcher(UserRole):    
-    """A user who can see all tickets.
+    """Can see all tickets.
 
     """
 
 class Triager(UserRole):
-    """A user who is responsible for triaging new tickets.
+    """Is responsible for triaging new tickets.
 
     """
 
 class Reporter(UserRole):
-    """A user who can create new tickets and edit their own tickets.
+    """Can create new tickets and edit their own tickets.
 
     """
 

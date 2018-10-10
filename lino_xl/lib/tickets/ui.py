@@ -782,7 +782,7 @@ class SiteDetail(dd.DetailLayout):
 
 
 class Subscriptions(dd.Table):
-    required_roles = dd.login_required(Reporter)
+    required_roles = dd.login_required(TicketsStaff)
     model = 'tickets.Subscription'
     
 class SubscriptionsBySite(Subscriptions):
