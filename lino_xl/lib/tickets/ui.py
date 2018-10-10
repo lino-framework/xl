@@ -861,6 +861,7 @@ class AllSites(Sites):
 
 
 class TicketsBySite(TicketsSummary):
+    required_roles = dd.login_required(Reporter)
     # label = _("Known problems")
     master_key = 'site'
     column_names = ("priority overview:50 workflow_buttons *")
