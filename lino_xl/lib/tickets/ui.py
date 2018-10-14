@@ -303,7 +303,7 @@ class TicketDetail(dd.DetailLayout):
 
 
 class Tickets(dd.Table):
-    required_roles = dd.login_required(Reporter)
+    required_roles = dd.login_required(Searcher)
     # label = _("All tickets")
     # required_roles = set()  # also for anonymous
     model = 'tickets.Ticket'
@@ -532,7 +532,6 @@ class Tickets(dd.Table):
 class AllTickets(Tickets):
     label = _("All tickets")
     use_paging = True
-    required_roles = dd.login_required(Searcher)
 
 
 class DuplicatesByTicket(Tickets):
@@ -861,7 +860,7 @@ class AllSites(Sites):
 
 
 class TicketsBySite(TicketsSummary):
-    required_roles = dd.login_required(Reporter)
+    required_roles = dd.login_required(Searcher)
     # label = _("Known problems")
     master_key = 'site'
     column_names = ("priority overview:50 workflow_buttons *")
