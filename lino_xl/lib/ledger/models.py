@@ -686,7 +686,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             for m in movements:
                 seqno += 1
                 m.seqno = seqno
-                if fcu and self.entry_date <= fcu:
+                if fcu and self.value_date <= fcu:
                     m.cleared = True
                 m.full_clean()
                 m.save()
@@ -1016,7 +1016,7 @@ class VoucherChecker(Checker):
         for m in obj.get_wanted_movements():
             seqno += 1
             m.seqno = seqno
-            if fcu and obj.entry_date <= fcu:
+            if fcu and obj.value_date <= fcu:
                 m.cleared = True
             m.full_clean()
             wanted[m2k(m)] = m
@@ -1236,7 +1236,7 @@ def check_clearings(qs, matches=[]):
         qs = qs.filter(match__in=matches)
     fcu = dd.plugins.ledger.force_cleared_until
     if fcu:
-        qs = qs.exclude(entry_date__lte=fcu)
+        qs = qs.exclude(value_date__lte=fcu)
     sums = SumCollector()
     for mvt in qs:
         # k = (mvt.get_match(), mvt.account)
