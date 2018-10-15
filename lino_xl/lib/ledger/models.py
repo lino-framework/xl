@@ -686,7 +686,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             for m in movements:
                 seqno += 1
                 m.seqno = seqno
-                if fcu and self.value_date <= fcu:
+                if fcu and m.value_date <= fcu:
                     m.cleared = True
                 m.full_clean()
                 m.save()
@@ -1016,7 +1016,7 @@ class VoucherChecker(Checker):
         for m in obj.get_wanted_movements():
             seqno += 1
             m.seqno = seqno
-            if fcu and obj.value_date <= fcu:
+            if fcu and m.value_date <= fcu:
                 m.cleared = True
             m.full_clean()
             wanted[m2k(m)] = m
