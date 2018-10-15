@@ -1236,7 +1236,7 @@ def check_clearings(qs, matches=[]):
         qs = qs.filter(match__in=matches)
     fcu = dd.plugins.ledger.force_cleared_until
     if fcu:
-        qs = qs.filter(entry_date__gt=fcu)
+        qs = qs.exclude(entry_date__lte=fcu)
     sums = SumCollector()
     for mvt in qs:
         # k = (mvt.get_match(), mvt.account)
