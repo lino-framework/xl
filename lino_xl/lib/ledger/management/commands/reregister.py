@@ -17,12 +17,13 @@
 
 from __future__ import unicode_literals, print_function
 
-# from optparse import make_option
 from clint.textui import progress
-# from clint.textui import puts, progress
 
-from django.core.management.base import BaseCommand  # CommandError
+from django.conf import settings
+from django.core.management.base import BaseCommand, CommandError
+from django.db import DEFAULT_DB_ALIAS
 
+from atelier.utils import confirm
 from lino.api import dd, rt
 
 from lino.core.requests import BaseRequest
@@ -33,7 +34,7 @@ def puts(msg):
     dd.logger.info(msg)
 
 
-def reregister_vouchers(username=None, args=[], simulate=False):
+def reregister_vouchers(args):
     """Called by :manage:`reregister`. See there."""
     Journal = rt.models.ledger.Journal
     VoucherStates = rt.models.ledger.VoucherStates
@@ -41,6 +42,7 @@ def reregister_vouchers(username=None, args=[], simulate=False):
         journals = [Journal.get_by_ref(a) for a in args]
     else:
         journals = Journal.objects.order_by('seqno')
+        rt.models.ledger.Movement.objects.all().delete()
     count = 0
     clear_afterwards = True
     for jnl in journals:
@@ -66,22 +68,36 @@ def reregister_vouchers(username=None, args=[], simulate=False):
 
 
 class Command(BaseCommand):
-    args = "[app1.Model1] [app2.Model2] ..."
+    args = "[jnlref1] [jnlref2] ..."
     help = """
 
     Re-register all ledger vouchers.
 
-    If no arguments are given, run it on all vouchers.
-    Otherwise every positional argument is expected to be a model name in
-    the form `app_label.ModelName`, and only these models are being
-    re-registered.
+    If no arguments are given, run it on all vouchers.  Otherwise
+    every positional argument is expected to be the ref of a journal,
+    and are being re-registered.
+
+    When called with no arguments, all movements are deleted from the
+    database.  This can help if the database contains movments with
+    invalid voucher pointer.
 
     """
 
     def add_arguments(self, parser):
-        parser.add_argument('-s', '--simulate', action='store_true', dest='simulate',
-                            default=False,
-                            help="Don't actually do it. Just simulate."),
+        parser.add_argument('--noinput', action='store_false',
+                            dest='interactive', default=True,
+                            help='Do not prompt for input of any kind.'),
+        # parser.add_argument('-s', '--simulate', action='store_true', dest='simulate',
+        #                     default=False,
+        #                     help="Don't actually do it. Just simulate."),
 
     def handle(self, *args, **options):
-        reregister_vouchers(args=args, simulate=options['simulate'])
+        if options.get('interactive'):
+            using = options.get('database', DEFAULT_DB_ALIAS)
+            dbname = settings.DATABASES[using]['NAME']
+            if not confirm(
+                    "This is going to rebuild all ledger movements "
+                    "in %s. Are you sure (y/n) ?" % dbname):
+                raise CommandError("User abort.")
+            
+        reregister_vouchers(args)
