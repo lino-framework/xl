@@ -668,7 +668,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
 
     def register_voucher(self, ar, do_clear=True):
         """
-        Delete any existing movements and re-create them
+        Delete any existing movements and re-create them.
         """
         # dd.logger.info("20151211 cosi.Voucher.register_voucher()")
         # self.year = FiscalYears.get_or_create_from_date(self.entry_date)
@@ -1234,6 +1234,9 @@ def check_clearings(qs, matches=[]):
     qs = qs.select_related('voucher', 'voucher__journal')
     if len(matches):
         qs = qs.filter(match__in=matches)
+    fcu = dd.plugins.ledger.force_cleared_until
+    if fcu:
+        qs = qs.filter(entry_date__lte=fcu)
     sums = SumCollector()
     for mvt in qs:
         # k = (mvt.get_match(), mvt.account)

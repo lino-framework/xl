@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 by Luc Saffre.
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Defines the :manage:`reregister` admin command:
@@ -17,7 +17,7 @@
 
 from __future__ import unicode_literals, print_function
 
-from optparse import make_option
+# from optparse import make_option
 from clint.textui import progress
 # from clint.textui import puts, progress
 
