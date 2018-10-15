@@ -47,7 +47,6 @@ And when the script has finished, I can see the results in the
 from __future__ import unicode_literals
 from builtins import str
 
-import datetime
 from dateutil import parser as dateparser
 
 from django.core.exceptions import ValidationError
@@ -109,6 +108,7 @@ Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
 EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
+CourseStates = rt.models.courses.CourseStates
 
 
 class TimLoader(TimLoader):
@@ -183,6 +183,10 @@ class TimLoader(TimLoader):
             return # Household  # List
         #~ dblogger.warning("Unhandled PAR->IdPrt %r",prt)
 
+    def get_users(self, row):
+        return (self.get_user(idusr)
+                for idusr in (row.idusr1, row.idusr2, row.idusr3))
+
     def load_par(self, row):
         # Every PAR potentially yields a partner, a course and an
         # enrolment.  we re-create all courses and enrolments from
@@ -202,9 +206,9 @@ class TimLoader(TimLoader):
         if prt == "T":
             kw = dict(name=name, line=self.other_groups, id=pk)
             kw.update(ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
+            kw.update(state=CourseStates.active)
+            u1, u2, u3 = self.get_users(row)
+            kw.update(teacher=u2 or u1)
             yield Course(**kw)
             return
 
@@ -255,10 +259,12 @@ class TimLoader(TimLoader):
             
                     
 
-        if issubclass(cl, Person):
+        if isinstance(partner, Person):
             v = row.gebdat
             if isinstance(v, basestring):
-                partner.birth_date = dateparser.parse(v.strip())
+                v = dateparser.parse(v.strip())
+            if v:
+                partner.birth_date = v
             v = row.sexe
             if v:
                 partner.gender = convert_gender(v)
@@ -268,7 +274,7 @@ class TimLoader(TimLoader):
                 v = rt.models.tera.ProfessionalStates.get_by_value(v)
                 partner.professional_state = v
 
-        if issubclass(cl, (Client, Household)):
+        if isinstance(partner, (Client, Household)):
 
             v = row.tarif
             if v:
@@ -336,9 +342,9 @@ class TimLoader(TimLoader):
                 name=name, line=self.life_groups, id=partner.id,
                 partner_id=partner.id)
             kw.update(ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
+            kw.update(state=CourseStates.active)
+            u1, u2, u3 = self.get_users(row)
+            kw.update(teacher=u2 or u1)
             yield Course(**kw)
         
         if prt == "P":
@@ -351,9 +357,9 @@ class TimLoader(TimLoader):
                 partner_id=partner.id,
                 name=name, id=partner.id,
                 ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
+            kw.update(state=CourseStates.active)
+            u1, u2, u3 = self.get_users(row)
+            kw.update(teacher=u2 or u1)
             therapy = Course(**kw)
             yield therapy
             kw = dict()
@@ -512,6 +518,7 @@ class TimLoader(TimLoader):
             course = Course.get_by_ref(idpar)
         except Course.DoesNotExist:
             course = Course(
+                state=CourseStates.active,
                 ref=idpar, line=self.other_groups)
             dd.logger.info("Created new therapy %s", course)
             yield course

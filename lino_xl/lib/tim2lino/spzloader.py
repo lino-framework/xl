@@ -264,7 +264,7 @@ class TimLoader(TimLoader):
                     "Ignored PLP %s : Invalid idpar2", row)
                 return
             # return lists_Member(list=p1, partner=p2)
-            yield Enrolment(course=p1, pupil=p2)  # 
+            yield Enrolment(course=p1, pupil=p2, state='confirmed')  # 
 
         elif plptype[0] in "78":
             p1 = self.get_partner(Household, row.idpar1)
@@ -298,7 +298,8 @@ class TimLoader(TimLoader):
                 dd.logger.warning(
                     "Ignored PLP %s : no course for idpar1", row)
                 return
-            yield Enrolment(course=p1, pupil=p2, remark=str(role))
+            yield Enrolment(course=p1, pupil=p2, remark=str(role),
+                            state='confirmed')
         elif plptype == "81-":
             return
         dd.logger.debug(
