@@ -183,8 +183,8 @@ class Journal(mixins.BabelNamed,
         if self.dc is None:
             if self.trade_type:
                 self.dc = self.trade_type.dc
-            elif self.account:
-                self.dc = self.account.type.dc
+            # elif self.account:
+            #     self.dc = self.account.type.dc
             else:
                 self.dc = DEBIT  # cannot be NULL
 

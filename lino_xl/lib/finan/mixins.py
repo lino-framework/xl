@@ -187,7 +187,8 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             return
         if self.account.default_amount:
             self.amount = self.account.default_amount
-            self.dc = not self.account.type.dc
+            self.dc = not self.voucher.journal.dc
+            # self.dc = not self.account.type.dc
             return
         if self.voucher.auto_compute_amount:
             total = Decimal()
@@ -241,11 +242,11 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         #     else:
         #         self.amount = ZERO
         if self.dc is None:
-            # self.dc = not self.voucher.journal.dc
-            if self.account is None:
-                self.dc = not self.voucher.journal.dc
-            else:
-                self.dc = not self.account.type.dc
+            self.dc = not self.voucher.journal.dc
+            # if self.account is None:
+            #     self.dc = not self.voucher.journal.dc
+            # else:
+            #     self.dc = not self.account.type.dc
         if self.amount is None:
             # amount can be None e.g. if user entered ''
             self.guess_amount()
