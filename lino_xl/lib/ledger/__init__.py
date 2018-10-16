@@ -81,11 +81,14 @@ class Plugin(ad.Plugin):
     Whether to use a Y2K compatible representation for fiscal years.
     """
     
-    force_cleared_until = None
+    suppress_movements_until = None
     """
-    Force all movements on vouchers with entry_date until the given
-    date to be *cleared*.  This is useful e.g. when you want to keep
-    legacy invoices in your database but not their payments.
+    Don't create any movements before that date.  Vouchers can exist
+    and get registered before that date, but they don't have any
+    influence to the ledger.
+
+    This is useful e.g. when you want to keep legacy vouchers in your
+    database but not their movments.
     """
 
     def setup_main_menu(self, site, user_type, m):
