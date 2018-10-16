@@ -135,7 +135,10 @@ class DailyPlanner(DailyPlannerRows):
         Event = rt.models.cal.Event
 
         def fmt(e):
-            t = str(e.start_time)[:5]
+            if e.start_time:
+                t = str(e.start_time)[:5]
+            else:
+                t = str(e.event_type)
             u = e.user
             if u is None:
                 return "{} {}".format(
