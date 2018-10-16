@@ -684,10 +684,11 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             
             fcu = dd.plugins.ledger.force_cleared_until
             for m in movements:
+                if fcu and m.value_date <= fcu:
+                    continue
                 seqno += 1
                 m.seqno = seqno
-                if fcu and m.value_date <= fcu:
-                    m.cleared = True
+                # m.cleared = True
                 m.full_clean()
                 m.save()
                 if m.partner:
@@ -1014,10 +1015,12 @@ class VoucherChecker(Checker):
         seqno = 0
         fcu = dd.plugins.ledger.force_cleared_until
         for m in obj.get_wanted_movements():
+            if fcu and m.value_date <= fcu:
+                continue
             seqno += 1
             m.seqno = seqno
-            if fcu and m.value_date <= fcu:
-                m.cleared = True
+            # if fcu and m.value_date <= fcu:
+            #     m.cleared = True
             m.full_clean()
             wanted[m2k(m)] = m
 
@@ -1234,9 +1237,9 @@ def check_clearings(qs, matches=[]):
     qs = qs.select_related('voucher', 'voucher__journal')
     if len(matches):
         qs = qs.filter(match__in=matches)
-    fcu = dd.plugins.ledger.force_cleared_until
-    if fcu:
-        qs = qs.exclude(value_date__lte=fcu)
+    # fcu = dd.plugins.ledger.force_cleared_until
+    # if fcu:
+    #     qs = qs.exclude(value_date__lte=fcu)
     sums = SumCollector()
     for mvt in qs:
         # k = (mvt.get_match(), mvt.account)

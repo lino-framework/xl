@@ -278,7 +278,7 @@ class DatedFinancialVoucherItem(FinancialVoucherItem):
         app_label = 'finan'
         abstract = True
 
-    date = models.DateField(blank=True, null=True)
+    date = models.DateField(_("Date"), blank=True, null=True)
 
     def on_create(self, ar):
         super(DatedFinancialVoucherItem, self).on_create(ar)
