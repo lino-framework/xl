@@ -850,13 +850,13 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         return "%s (%s)" % (v, v.entry_date)
 
     @dd.virtualfield(dd.PriceField(
-        _("Debit")), sortable_by=['dc', 'amount'])
+        _("Debit")), sortable_by=['amount', 'value_date'])
     def debit(self, ar):
         if self.dc is DEBIT:
             return self.amount
 
     @dd.virtualfield(dd.PriceField(
-        _("Credit")), sortable_by=['dc', 'amount'])
+        _("Credit")), sortable_by=['-amount', 'value_date'])
     def credit(self, ar):
         if self.dc is CREDIT:
             return self.amount
