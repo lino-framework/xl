@@ -856,7 +856,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
             return self.amount
 
     @dd.virtualfield(dd.PriceField(
-        _("Credit")), sortable_by=['-amount', 'value_date'])
+        _("Credit")), sortable_by=['amount-', 'value_date'])
     def credit(self, ar):
         if self.dc is CREDIT:
             return self.amount
