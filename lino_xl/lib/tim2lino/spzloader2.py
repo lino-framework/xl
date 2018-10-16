@@ -218,7 +218,7 @@ class TimLoader(TimLoader):
         partner = None
         try:
             partner = cl.objects.get(pk=pk)
-            dd.logger.info(
+            dd.logger.debug(
                 "Update existing %s %s from %s", cl.__name__, pk, row)
         except cl.DoesNotExist:
             try:
@@ -372,7 +372,7 @@ class TimLoader(TimLoader):
                 state=EnrolmentStates.get_by_value(row.stand) \
                 or EnrolmentStates.confirmed)
             yield Enrolment(pupil=partner, course=therapy, **kw)
-            dd.logger.info("Created enrolment for therapy %s", partner)
+            dd.logger.debug("Created enrolment for therapy %s", partner)
 
 
     # def load_pls(self, row, **kw):
