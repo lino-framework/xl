@@ -1023,7 +1023,7 @@ together with its booking direction (debit or credit)."""),
     'lino_xl.lib.ledger.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
     'lino_xl.lib.ledger.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
 DEBIT or CREDIT."""),
-    'lino_xl.lib.ledger.DebitOrCreditStoreField' : _("""This is used as lino_atomizer_class for DebitOrCreditField."""),
+    'lino_xl.lib.ledger.DebitOrCreditStoreField' : _("""Uused as lino_atomizer_class for DebitOrCreditField."""),
     'lino_xl.lib.ledger.Movement' : _("""Represents an accounting movement in the ledger.  See Overview."""),
     'lino_xl.lib.ledger.Movement.value_date' : _("""The date at which this movement is to be entered into the
 ledger.  This is usually the voucher's entry_date, except
@@ -1034,6 +1034,8 @@ value date."""),
 blank."""),
     'lino_xl.lib.ledger.Movement.seqno' : _("""Sequential number within a voucher."""),
     'lino_xl.lib.ledger.Movement.account' : _("""Pointer to the Account that is being moved by this movement."""),
+    'lino_xl.lib.ledger.Movement.debit' : _("""Virtual field showing amount if dc is DEBIT."""),
+    'lino_xl.lib.ledger.Movement.credit' : _("""Virtual field showing amount if dc is CREDIT."""),
     'lino_xl.lib.ledger.Movement.match' : _("""Pointer to the Movement that is being cleared by this
 movement."""),
     'lino_xl.lib.ledger.Movement.cleared' : _("""Whether"""),

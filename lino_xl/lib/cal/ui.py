@@ -113,7 +113,7 @@ class SubscriptionsByCalendar(Subscriptions):
 
 
 def check_subscription(user, calendar):
-    "Check whether the given subscription exists. If not, create it."
+    # Check whether the given subscription exists. If not, create it.
     Subscription = rt.models.cal.Subscription
     if calendar is None:
         return
