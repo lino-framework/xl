@@ -120,15 +120,13 @@ class TimLoader(TimLoader):
     
     def __init__(self, *args, **kwargs):
         super(TimLoader, self).__init__(*args, **kwargs)
-        Line = rt.models.courses.Line
         Team = rt.models.teams.Team
         # Country = rt.models.countries.Country
         self.eupen = Team.objects.get(name="Eupen")
         self.stvith = Team.objects.get(name="St. Vith")
 
-        Line = rt.models.courses.Line
-        self.other_groups = Line.objects.filter(
-            course_area=CourseAreas.default).order_by('id')[0]
+        # self.other_groups = Line.objects.filter(
+        #     course_area=CourseAreas.default).order_by('id')[0]
         
         self.imported_sessions = set([])
         # self.obsolete_list = []
@@ -629,7 +627,7 @@ class TimLoader(TimLoader):
 
         bulkdel(Guest, Event, SalesRule)
         bulkdel(Interest, Topic, Note)
-        bulkdel(ClientContact, Enrolment, Course)
+        bulkdel(ClientContact, Enrolment, Course, Line)
         
         yield self.load_dbf('PAR')
         yield self.load_dbf('PLP')

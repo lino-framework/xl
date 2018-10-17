@@ -285,13 +285,13 @@ class CoursesByTeacher(Activities):
     order_by = ['-start_date']
 
 
-class MyActivities(My, Activities):
+class MyCourses(My, Activities):
     column_names = "start_date:8 room name line workflow_buttons *"
     order_by = ['start_date']
     
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(MyActivities, self).param_defaults(ar, **kw)
+        kw = super(MyCourses, self).param_defaults(ar, **kw)
         # kw.update(state=CourseStates.active)
         kw.update(show_active=dd.YesNo.yes)
         return kw
