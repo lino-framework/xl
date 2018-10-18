@@ -73,8 +73,6 @@ class TimLoader(TimLoader):
         plptypes['10'] = LinkTypes.spouse
         plptypes['11'] = LinkTypes.friend
         self.linktypes = plptypes
-
-        Line.objects.all().delete()
         
         
     def get_users(self, row):
