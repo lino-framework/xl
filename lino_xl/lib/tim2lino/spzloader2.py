@@ -55,7 +55,6 @@ from django.db import DEFAULT_DB_ALIAS
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
 from lino.utils.instantiator import create
-from lino.utils.instantiator import create_or_update_row
 from lino.utils.mti import mtichild, insert_child
 from lino.core.gfks import gfk2lookup
 
@@ -687,13 +686,13 @@ class TimLoader(TimLoader):
         bulkdel(Line)
 
         a = CourseAreas.default
-        self.other_groups = create_or_update_row(
+        self.other_groups = create_row(
             Line, name=a.text, course_area=a, ref=a.value)
         a = CourseAreas.life_groups
-        self.life_groups = create_or_update_row(
+        self.life_groups = create_row(
             Line, name=a.text, course_area=a, ref=a.value)
         a = CourseAreas.therapies
-        self.therapies = create_or_update_row(
+        self.therapies = create_row(
             Line, name=a.text, course_area=a, ref=a.value)
         
         
