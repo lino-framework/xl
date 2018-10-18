@@ -38,10 +38,12 @@ cal = dd.resolve_app('cal')
 
 try:
     teacher_model = dd.plugins.courses.teacher_model
+    teacher_label = dd.plugins.courses.teacher_label
     pupil_model = dd.plugins.courses.pupil_model
 except AttributeError:
     # Happens only when Sphinx autodoc imports it and this module is
     # not installed.
+    teacher_label = _("Instructor")
     teacher_model = 'foo.Bar'
     pupil_model = 'foo.Bar'
 
@@ -176,7 +178,7 @@ class Activities(dd.Table):
         line=dd.ForeignKey('courses.Line', blank=True, null=True),
         topic=dd.ForeignKey('courses.Topic', blank=True, null=True),
         teacher=dd.ForeignKey(
-            teacher_model, verbose_name=_("Instructor"),
+            teacher_model, verbose_name=teacher_label,
             blank=True, null=True),
         # user=dd.ForeignKey(
         #     settings.SITE.user_model,

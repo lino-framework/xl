@@ -24,6 +24,10 @@ from lino.api import ad, _
 class Plugin(ad.Plugin):
     verbose_name = _("Activities")
     teacher_model = 'contacts.Person'
+    
+    teacher_label = _("Instructor")
+    """The verbose name of pointers to teacher_model. """
+
     pupil_model = 'contacts.Person'
     pupil_name_fields = "pupil__name"
     needs_plugins = ['lino_xl.lib.cal']

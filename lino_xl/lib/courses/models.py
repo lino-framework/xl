@@ -45,11 +45,13 @@ cal = dd.resolve_app('cal')
 
 try:
     teacher_model = dd.plugins.courses.teacher_model
+    teacher_label = dd.plugins.courses.teacher_label
     pupil_model = dd.plugins.courses.pupil_model
     pupil_name_fields = dd.plugins.courses.pupil_name_fields
 except AttributeError:
     # Happens only when Sphinx autodoc imports it and this module is
     # not installed.
+    teacher_label = _("Instructor")
     teacher_model = 'foo.Bar'
     pupil_model = 'foo.Bar'
     pupil_name_fields = 'foo bar'
@@ -193,7 +195,7 @@ class Course(Reservation, Duplicable, Printable):
 
     teacher = dd.ForeignKey(
         teacher_model,
-        verbose_name=_("Instructor"),
+        verbose_name=teacher_label,
         blank=True, null=True)
 
     #~ room = dd.ForeignKey(Room,blank=True,null=True)
