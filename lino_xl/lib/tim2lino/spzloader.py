@@ -74,6 +74,7 @@ class TimLoader(TimLoader):
         plptypes['10'] = LinkTypes.spouse
         plptypes['11'] = LinkTypes.friend
         self.linktypes = plptypes
+        
         a = CourseAreas.default
         self.other_groups = create_row(
             Line, name=a.text, course_area=a, ref=a.value)

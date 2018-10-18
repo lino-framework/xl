@@ -682,7 +682,7 @@ class TimLoader(TimLoader):
         bulkdel(Guest, Event, SalesRule)
         bulkdel(Interest, Topic, Note)
         bulkdel(Link, households_Member)
-        bulkdel(ClientContact, Enrolment, Course, Line)
+        bulkdel(ClientContact, Enrolment, Course)
         
         yield self.load_dbf('PAR')
         yield self.load_dbf('PLP')
