@@ -15,7 +15,7 @@ import datetime
 from builtins import str
 
 # from lino.utils import mti
-from lino.utils.instantiator import create_row
+from lino.utils.instantiator import create_or_update_row
 from lino.api import dd, rt, _
 from lino.utils.instantiator import create
 from django.core.exceptions import ValidationError
@@ -78,13 +78,13 @@ class TimLoader(TimLoader):
         Line.objects.all().delete()
         
         a = CourseAreas.default
-        self.other_groups = create_row(
+        self.other_groups = create_or_update_row(
             Line, name=a.text, course_area=a, ref=a.value)
         a = CourseAreas.life_groups
-        self.life_groups = create_row(
+        self.life_groups = create_or_update_row(
             Line, name=a.text, course_area=a, ref=a.value)
         a = CourseAreas.therapies
-        self.therapies = create_row(
+        self.therapies = create_or_update_row(
             Line, name=a.text, course_area=a, ref=a.value)
         
     def get_users(self, row):
