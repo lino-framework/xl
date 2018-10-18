@@ -363,7 +363,7 @@ class TimLoader(TimLoader):
 
         yield partner
 
-        partner.propagate_contact_details()
+        # partner.propagate_contact_details()
 
         if isinstance(partner, Partner):
             if row.zahler.strip():
