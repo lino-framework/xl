@@ -345,10 +345,9 @@ class TimLoader(TimLoader):
             # 3 verwitwet   
             # 4 getrennt    
             # 5 geschieden
-            v = row.zivilst
+            v = self.civil_states.get(row.zivilst)
             if v:
-                partner.civil_state = CivilStates.get_by_value(
-                    self.civil_states.get(v))
+                partner.civil_state = CivilStates.get_by_value(v)
             
             v = row.beruf
             if v == '10': v = '11'
