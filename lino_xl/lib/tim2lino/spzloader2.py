@@ -125,9 +125,6 @@ def par2dates(row):
             kw.update(end_date=row.date2)
     return kw
 
-def coursestate(row):
-    return CourseStates.get_by_value(row.stand) or CourseStates.active
-
 def fld2fk(v, model):
     if v:
         try:
@@ -293,7 +290,7 @@ class TimLoader(TimLoader):
             kw = par2dates(row)
             kw.update(
                 state=EnrolmentStates.get_by_value(row.stand) \
-                or EnrolmentStates.confirmed)
+                or EnrolmentStates.inactive)
             yield Enrolment(pupil=partner, course=course, **kw)
             dd.logger.debug("Created enrolment for therapy %s", partner)
         else:
@@ -301,7 +298,10 @@ class TimLoader(TimLoader):
                     
 
         if course is not None:
-            course.state = CourseStates.active
+            v = row.stand
+            if v:
+                course.state = CourseStates.get_by_value(v) \
+                               or CourseStates.inactive
             u1, u2, u3 = self.get_users(row)
             course.teacher = u2 or u1
             
@@ -363,16 +363,16 @@ class TimLoader(TimLoader):
                     
         if isinstance(partner, Client):
             
-            ClientStates = rt.models.clients.ClientStates
-            v = row.stand
-            if v:
-                v = ClientStates.get_by_value(v)
-            if v:
-                partner.client_state = v
-            else:
-                partner.client_state = ClientStates.cancelled
-                # dd.logger.info(
-                #     "%s : invalid PAR->Stand %s", row, row.stand)
+            # ClientStates = rt.models.clients.ClientStates
+            # v = row.stand
+            # if v:
+            #     v = ClientStates.get_by_value(v)
+            # if v:
+            #     partner.client_state = v
+            # else:
+            #     partner.client_state = ClientStates.cancelled
+            #     # dd.logger.info(
+            #     #     "%s : invalid PAR->Stand %s", row, row.stand)
 
             v = row.idnat
             if v:
@@ -582,7 +582,7 @@ class TimLoader(TimLoader):
             course = Course.get_by_ref(idpar)
         except Course.DoesNotExist:
             course = Course(
-                state=CourseStates.active,
+                state=CourseStates.draft,
                 ref=idpar, line=self.other_groups)
             dd.logger.info("Created new therapy %s", course)
             yield course
