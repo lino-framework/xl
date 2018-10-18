@@ -80,7 +80,7 @@ CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
-CivilStates = rt.models.beid.CivilStates
+from lino_xl.lib.beid.choicelists import CivilStates
 
 Account = dd.resolve_model('ledger.Account')
 
