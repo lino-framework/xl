@@ -112,7 +112,7 @@ EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
 CourseStates = rt.models.courses.CourseStates
 TranslatorTypes = rt.models.tera.TranslatorTypes
-ProfessionalState = rt.models.tera.ProfessionalState
+ProfessionalStates = rt.models.tera.ProfessionalStates
 LifeMode = rt.models.tera.LifeMode
 Procurer = rt.models.tera.Procurer
 
