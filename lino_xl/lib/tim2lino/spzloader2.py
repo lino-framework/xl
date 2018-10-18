@@ -126,7 +126,7 @@ def par2dates(row):
     return kw
 
 def coursestate(row):
-    return CourseStates.get_by_value(row.etat)
+    return CourseStates.get_by_value(row.stand) or CourseStates.active
 
 def fld2fk(v, model):
     if v:
