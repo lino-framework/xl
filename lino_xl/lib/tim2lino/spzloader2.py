@@ -111,7 +111,7 @@ EventType = rt.models.cal.EventType
 EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
 CourseStates = rt.models.courses.CourseStates
-TranslatorTypes = rt.models.tera.TranslatorTypes
+TranslatorTypes = rt.models.courses.TranslatorTypes
 ProfessionalStates = rt.models.tera.ProfessionalStates
 LifeMode = rt.models.tera.LifeMode
 Procurer = rt.models.tera.Procurer
@@ -338,9 +338,14 @@ class TimLoader(TimLoader):
         # if isinstance(partner, (Client, Household)):
         if course is not None:
 
+            v = row.attrib
+            if v:
+                if "D" in v:
+                    course.translator_type = TranslatorTypes.interpreter
+                    
             v = row.tarif
             if v:
-                t = rt.models.tera.PartnerTariffs.get_by_value(v)
+                t = rt.models.courses.PartnerTariffs.get_by_value(v)
                 if t is None:
                     dd.logger.warning(
                         "Cannot handle tariff {}".format(v))
@@ -349,25 +354,26 @@ class TimLoader(TimLoader):
 
             v = row.bereich
             if v:
-                t = rt.models.tera.TherapyDomains.get_by_value(v)
+                t = rt.models.courses.TherapyDomains.get_by_value(v)
                 if t is None:
                     dd.logger.warning(
                         "Cannot handle domain {}".format(v))
                 else:
-                    course.domain = t
+                    course.therapy_domain = t
                     
+        if isinstance(partner, Client):
+            
             ClientStates = rt.models.clients.ClientStates
             v = row.stand
             if v:
                 v = ClientStates.get_by_value(v)
             if v:
-                course.client_state = v
+                partner.client_state = v
             else:
-                course.client_state = ClientStates.cancelled
+                partner.client_state = ClientStates.cancelled
                 # dd.logger.info(
                 #     "%s : invalid PAR->Stand %s", row, row.stand)
 
-        if isinstance(partner, Client):
             v = row.idnat
             if v:
                 try:
@@ -378,10 +384,6 @@ class TimLoader(TimLoader):
                     dd.logger.info("Inserted new country %s ", v)
                     return
                 partner.nationality = obj
-            v = row.attrib
-            if v:
-                if "D" in v:
-                    partner.translator_type = TranslatorTypes.interpreter
             # 1 ledig       
             # 2 verheiratet 
             # 3 verwitwet   
