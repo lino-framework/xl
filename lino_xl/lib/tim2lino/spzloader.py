@@ -74,6 +74,8 @@ class TimLoader(TimLoader):
         plptypes['10'] = LinkTypes.spouse
         plptypes['11'] = LinkTypes.friend
         self.linktypes = plptypes
+
+        Line.objects.all().delete()
         
         a = CourseAreas.default
         self.other_groups = create_row(
