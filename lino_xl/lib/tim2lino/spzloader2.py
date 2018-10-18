@@ -156,6 +156,9 @@ class TimLoader(TimLoader):
         #     course_area=CourseAreas.default).order_by('id')[0]
         self.guest_role_patient = GuestRole.objects.get(pk=1)
         
+        self.civil_states = {
+            '1': '01', '2': '20', '3':'30', '4':'50', '5':'40'}
+        
         self.imported_sessions = set([])
         # self.obsolete_list = []
         # plptypes = dict()
@@ -343,10 +346,9 @@ class TimLoader(TimLoader):
             # 4 getrennt    
             # 5 geschieden
             v = row.zivilst
-            civil_states = {
-                '1': '01', '2': '20', '3':'30', '4':'50', '5':'40'}
-            partner.civil_state = CivilStates.get_by_value(
-                civil_states.get(v))
+            if v:
+                partner.civil_state = CivilStates.get_by_value(
+                    self.civil_states.get(v))
             
             v = row.beruf
             if v == '10': v = '11'
