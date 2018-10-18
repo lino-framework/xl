@@ -80,6 +80,7 @@ CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
+CivilStates = rt.models.beid.CivilStates
 
 Account = dd.resolve_model('ledger.Account')
 
@@ -103,14 +104,40 @@ Topic = rt.models.topics.Topic
 Interest = rt.models.topics.Interest
 Note = rt.models.notes.Note
 Guest = rt.models.cal.Guest
+GuestRole = rt.models.cal.GuestRole
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
 EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
 CourseStates = rt.models.courses.CourseStates
+TranslatorTypes = rt.models.tera.TranslatorTypes
+ProfessionalState = rt.models.tera.ProfessionalState
+LifeMode = rt.models.tera.LifeMode
+Procurer = rt.models.tera.Procurer
 
+def par2dates(row):
+    kw = dict()
+    if row.date1:
+        kw.update(start_date=row.date1)
+        if row.date2 and row.date2 > row.date1:
+            # avoid "Date period ends before it started."
+            kw.update(end_date=row.date2)
+    return kw
 
+def coursestate(row):
+    return CourseStates.get_by_value(row.etat)
+
+def fld2fk(v, model):
+    if v:
+        try:
+            p = model.objects.get(id=int(v))
+        except model.DoesNotExist:
+            p = model(designation=v)
+            p.full_clean()
+            p.save()
+        return p
+    
 class TimLoader(TimLoader):
 
     # archived_tables = set('GEN ART VEN VNL JNL FIN FNL'.split())
@@ -127,6 +154,7 @@ class TimLoader(TimLoader):
 
         # self.other_groups = Line.objects.filter(
         #     course_area=CourseAreas.default).order_by('id')[0]
+        self.guest_role_patient = GuestRole.objects.get(pk=1)
         
         self.imported_sessions = set([])
         # self.obsolete_list = []
@@ -204,7 +232,7 @@ class TimLoader(TimLoader):
         if prt == "T":
             kw = dict(name=name, line=self.other_groups, id=pk)
             kw.update(ref=ref)
-            kw.update(state=CourseStates.active)
+            kw.update(state=coursestate(row))
             u1, u2, u3 = self.get_users(row)
             kw.update(teacher=u2 or u1)
             yield Course(**kw)
@@ -305,6 +333,33 @@ class TimLoader(TimLoader):
                     dd.logger.info("Inserted new country %s ", v)
                     return
                 partner.nationality = obj
+            v = row.attrib
+            if v:
+                if "D" in v:
+                    partner.translator_type = TranslatorTypes.interpreter
+            # 1 ledig       
+            # 2 verheiratet 
+            # 3 verwitwet   
+            # 4 getrennt    
+            # 5 geschieden
+            v = row.zivilst
+            civil_states = {
+                '1': '01', '2': '20', '3':'30', '4':'50', '5':'40'}
+            partner.civil_state = CivilStates.get_by_value(
+                civil_states.get(v))
+            
+            v = row.beruf
+            if v == '10': v = '11'
+            elif v == '20': v = '11'
+            elif v == '30': v = '31'
+            elif v == '40': v = '31'
+            partner.professional_state = ProfessionalStates.get_by_value(v)
+
+            partner.procurer = fld2fk(row.vermitt, Procurer)
+            partner.life_mode = fld2fk(row.lebensw, LifeMode)
+
+            if row.vpfl == "X":
+                partner.mandatory = True
 
         yield partner
 
@@ -336,11 +391,12 @@ class TimLoader(TimLoader):
             if not isinstance(partner, Household):
                 msg = "Partner of life group {} is not a household!?"
                 dd.logger.warning(msg.format(pk))
-            kw = dict(
+            kw = par2dates(row)
+            kw.update(
                 name=name, line=self.life_groups, id=partner.id,
                 partner_id=partner.id)
             kw.update(ref=ref)
-            kw.update(state=CourseStates.active)
+            kw.update(state=coursestate(row))
             u1, u2, u3 = self.get_users(row)
             kw.update(teacher=u2 or u1)
             yield Course(**kw)
@@ -350,7 +406,8 @@ class TimLoader(TimLoader):
             #     return
             # if Course.objects.filter(ref=row.idpar.strip()).exists():
             #     return
-            kw = dict(
+            kw = par2dates(row)
+            kw.update(
                 line=self.therapies,
                 partner_id=partner.id,
                 name=name, id=partner.id,
@@ -360,12 +417,7 @@ class TimLoader(TimLoader):
             kw.update(teacher=u2 or u1)
             therapy = Course(**kw)
             yield therapy
-            kw = dict()
-            if row.date1:
-                kw.update(start_date=row.date1)
-                if row.date2 and row.date2 > row.date1:
-                    # avoid "Date period ends before it started."
-                    kw.update(end_date=row.date2)
+            kw = par2dates(row)
             kw.update(
                 state=EnrolmentStates.get_by_value(row.stand) \
                 or EnrolmentStates.confirmed)
@@ -431,6 +483,7 @@ class TimLoader(TimLoader):
                 p = course.partner.person
 
         kw.update(partner=p)
+        kw.update(role=self.guest_role_patient)
         o = Guest(**kw)
         try:
             o.full_clean()

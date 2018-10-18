@@ -615,6 +615,11 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         Product = rt.models.products.Product
         return Product.objects.filter(cat=course.line.options_cat)
 
+    def get_overview_elems(self, ar):
+        if self.course_id:
+            return [self.course.obj2href(ar)]
+        return [self.obj2href(ar)]
+
     def get_confirm_veto(self, ar):
         """Called from :class:`ConfirmEnrolment
         <lino_xl.lib.courses.workflows.ConfirmEnrolment>`.  If this
@@ -670,6 +675,9 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
             list(self.pupil.address_location_lines()),
             sep=', ')
         return E.p(*elems)
+
+dd.update_field(
+    Enrolment, 'overview', verbose_name=Course._meta.verbose_name)    
 
 
 @dd.receiver(dd.post_startup)

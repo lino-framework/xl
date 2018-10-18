@@ -75,11 +75,14 @@ class TimLoader(TimLoader):
         plptypes['11'] = LinkTypes.friend
         self.linktypes = plptypes
         a = CourseAreas.default
-        self.other_groups = create_row(Line, name=a.text, course_area=a)
+        self.other_groups = create_row(
+            Line, name=a.text, course_area=a, ref=a.value)
         a = CourseAreas.life_groups
-        self.life_groups = create_row(Line, name=a.text, course_area=a)
+        self.life_groups = create_row(
+            Line, name=a.text, course_area=a, ref=a.value)
         a = CourseAreas.therapies
-        self.therapies = create_row(Line, name=a.text, course_area=a)
+        self.therapies = create_row(
+            Line, name=a.text, course_area=a, ref=a.value)
         
     def get_users(self, row):
         for idusr in (row.idusr2, row.idusr1, row.idusr3):
