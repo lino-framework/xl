@@ -245,7 +245,7 @@ class TimLoader(TimLoader):
                                    cl.__name__, pk, row)
                     partner = timloader1.TimLoader.load_par(self, row).next()
                 else:
-                    dd.logger.info(
+                    dd.logger.debug(
                         "Specialize partner %s to %s (from %s)",
                         pk, cl.__name__, row)
                     if cl is Client:
