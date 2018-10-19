@@ -452,7 +452,7 @@ class GuestsByPartner(Guests):
     column_names = 'event__when_text workflow_buttons'
     auto_fit_column_widths = True
     display_mode = "summary"
-    order_by = ['event__start_date', 'event__start_time']
+    order_by = ['-event__start_date', '-event__start_time']
 
     @classmethod
     def param_defaults(self, ar, **kw):
