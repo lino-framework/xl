@@ -449,7 +449,7 @@ class GuestsByPartner(Guests):
     master_key = 'partner'
     required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
-    column_names = 'event__when_text workflow_buttons'
+    column_names = 'event__when_text event__overview workflow_buttons'
     auto_fit_column_widths = True
     display_mode = "summary"
     order_by = ['-event__start_date', '-event__start_time']
