@@ -45,8 +45,6 @@ Partner = rt.models.contacts.Partner
 
 # lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
-Link = rt.models.humanlinks.Link
-LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
 
@@ -61,6 +59,7 @@ class TimLoader(TimLoader):
         super(TimLoader, self).__init__(*args, **kwargs)
         self.imported_sessions = set([])
         self.obsolete_list = []
+        LinkTypes = rt.models.humanlinks.LinkTypes
         plptypes = dict()
         plptypes['01'] = LinkTypes.parent
         plptypes['01R'] = None
@@ -217,6 +216,8 @@ class TimLoader(TimLoader):
             return None
     
     def load_plp(self, row, **kw):
+        Link = rt.models.humanlinks.Link
+        # LinkTypes = rt.models.humanlinks.LinkTypes
 
         plptype = row.type.strip()
         if plptype.endswith("-"):
