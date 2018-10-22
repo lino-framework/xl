@@ -627,6 +627,11 @@ class EnrolmentsByCourse(Enrolments):
     request_date user
     """
 
+    label = _("Participants")
+
+    # @classmethod
+    # def get_actor_label(self):
+    #     return rt.models.courses.Enrolment._meta.verbose_name_plural
 
 class EnrolmentsByOption(Enrolments):
     label = _("Enrolments using this option")
