@@ -94,8 +94,8 @@ Company = rt.models.contacts.Company
 
 # lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
-Link = rt.models.humanlinks.Link
-LinkTypes = rt.models.humanlinks.LinkTypes
+# Link = rt.models.humanlinks.Link
+# LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
 List = rt.models.lists.List
@@ -716,7 +716,8 @@ class TimLoader(TimLoader):
 
         bulkdel(Guest, Event, SalesRule)
         bulkdel(Interest, Topic, Note)
-        bulkdel(Link, households_Member)
+        # bulkdel(Link)
+        bulkdel(households_Member)
         bulkdel(ClientContact, Enrolment, Course)
         bulkdel(Line)
 
