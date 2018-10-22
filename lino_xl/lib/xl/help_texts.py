@@ -80,8 +80,6 @@ Try to auto-create it."""),
 returns something else than None, then the enrolment won't
 be confirmed and the return value will be displayed to the
 user."""),
-    'lino_xl.lib.courses.Enrolment.is_guest_for' : _("""Return True if the pupil of this enrolment should be invited to
-the given event."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
@@ -446,19 +444,6 @@ countries.Country which should
 contain also entries for refugee statuses."""),
     'lino_xl.lib.beid.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
     'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
-    'lino_xl.lib.beid.CivilStates' : _("""The global list of civil states that a client can have.  This
-is the list of choices for the civil_state field of a
-Client."""),
-    'lino_xl.lib.beid.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
-officiellement lié"""),
-    'lino_xl.lib.beid.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
-    'lino_xl.lib.beid.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
-votre partenaire est décédé"""),
-    'lino_xl.lib.beid.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
-    'lino_xl.lib.beid.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
-    'lino_xl.lib.beid.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
-corps et de biens, Getrennt von Tisch und Bett)"""),
-    'lino_xl.lib.beid.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
     'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers
 (Einwohnerregister, Registre de résidents)."""),
     'lino_xl.lib.beid.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
@@ -783,6 +768,18 @@ lino_xl.lib.contacts.models.Role object."""),
 Adds two fields 'partner' and 'person' to this model, making it
 something that refers to a "partner".  person means a "contact
 person" for the partner."""),
+    'lino_xl.lib.contacts.CivilStates' : _("""The global list of civil states that a person can have.  The
+field pointing to this list is usually named civil_state."""),
+    'lino_xl.lib.contacts.CivilStates.single' : _("""célibataire : vous n’avez pas de partenaire auquel vous êtes
+officiellement lié"""),
+    'lino_xl.lib.contacts.CivilStates.married' : _("""marié(e) : vous êtes légalement marié"""),
+    'lino_xl.lib.contacts.CivilStates.widowed' : _("""veuf (veuve) / Verwitwet : vous êtes légalement marié mais
+votre partenaire est décédé"""),
+    'lino_xl.lib.contacts.CivilStates.divorced' : _("""divorcé(e) (Geschieden) : votre mariage a été juridiquement dissolu"""),
+    'lino_xl.lib.contacts.CivilStates.de_facto_separated' : _("""De facto separated (Séparé de fait, faktisch getrennt)"""),
+    'lino_xl.lib.contacts.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
+corps et de biens, Getrennt von Tisch und Bett)"""),
+    'lino_xl.lib.contacts.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
     'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
     'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
 in Country."""),
@@ -817,10 +814,10 @@ in this course."""),
     'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
     'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
     'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
-    'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible
+    'lino_xl.lib.courses.MyCourses' : _("""Show the courses authored by me (i.e. where I am the responsible
 manager).  Compare MyCoursesGiven."""),
     'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
-Compare MyActivities."""),
+Compare MyCourses."""),
     'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
     'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
     'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
