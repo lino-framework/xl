@@ -59,19 +59,19 @@ class TimLoader(TimLoader):
         super(TimLoader, self).__init__(*args, **kwargs)
         self.imported_sessions = set([])
         self.obsolete_list = []
-        LinkTypes = rt.models.humanlinks.LinkTypes
-        plptypes = dict()
-        plptypes['01'] = LinkTypes.parent
-        plptypes['01R'] = None
-        plptypes['02'] = LinkTypes.uncle
-        plptypes['02R'] = None
-        plptypes['03'] = LinkTypes.stepparent
-        plptypes['03R'] = None
-        plptypes['04'] = LinkTypes.grandparent
-        plptypes['04R'] = None
-        plptypes['10'] = LinkTypes.spouse
-        plptypes['11'] = LinkTypes.friend
-        self.linktypes = plptypes
+        # LinkTypes = rt.models.humanlinks.LinkTypes
+        # plptypes = dict()
+        # plptypes['01'] = LinkTypes.parent
+        # plptypes['01R'] = None
+        # plptypes['02'] = LinkTypes.uncle
+        # plptypes['02R'] = None
+        # plptypes['03'] = LinkTypes.stepparent
+        # plptypes['03R'] = None
+        # plptypes['04'] = LinkTypes.grandparent
+        # plptypes['04R'] = None
+        # plptypes['10'] = LinkTypes.spouse
+        # plptypes['11'] = LinkTypes.friend
+        # self.linktypes = plptypes
         
         
     def get_users(self, row):
@@ -216,7 +216,7 @@ class TimLoader(TimLoader):
             return None
     
     def load_plp(self, row, **kw):
-        Link = rt.models.humanlinks.Link
+        # Link = rt.models.humanlinks.Link
         # LinkTypes = rt.models.humanlinks.LinkTypes
 
         plptype = row.type.strip()
@@ -424,8 +424,8 @@ class TimLoader(TimLoader):
             if isinstance(par1, Person):
                 replace(Enrolment, 'pupil', True)
                 replace(rt.models.households.Member, 'person')
-                replace(rt.models.humanlinks.Link, 'parent')
-                replace(rt.models.humanlinks.Link, 'child')
+                #replace(rt.models.humanlinks.Link, 'parent')
+                #replace(rt.models.humanlinks.Link, 'child')
                 replace(rt.models.cal.Guest, 'partner', True)
                 replace(rt.models.clients.ClientContact, 'client')
 
