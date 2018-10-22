@@ -361,6 +361,10 @@ class TimLoader(TimLoader):
                 else:
                     course.therapy_domain = t
                     
+            course.procurer = fld2fk(row.vermitt, Procurer)
+            if row.vpfl == "X":
+                course.mandatory = True
+
         if isinstance(partner, Client):
             
             # ClientStates = rt.models.clients.ClientStates
@@ -402,11 +406,6 @@ class TimLoader(TimLoader):
 
             partner.life_mode = fld2fk(row.lebensw, LifeMode)
 
-        if course is not None:
-            course.procurer = fld2fk(row.vermitt, Procurer)
-            if row.vpfl == "X":
-                course.mandatory = True
-
         # partner.propagate_contact_details()
 
         if row.zahler.strip():
@@ -438,10 +437,34 @@ class TimLoader(TimLoader):
         yield course
 
 
-    # def load_pls(self, row, **kw):
-    #     kw.update(ref=row.idpls.strip())
-    #     kw.update(name=row.name)
-    #     return List(**kw)
+    def load_plp(self, row, **kw):
+
+        plptype = row.type.strip()
+        if plptype.endswith("-"):
+            return
+        if not plptype:
+            return
+
+        try:
+            role = GuestRole.objects.get(ref=plptype)
+        except GuestRole.DoesNotExist:
+            role = GuestRole(ref=plptype, name=plptype)
+            yield role
+        try:
+            course = Course.objects.get(ref=row.idpar1)
+        except Course.DoesNotExist:
+            dd.logger.warning(
+                "Ignored PLP %s : Invalid idpar1", row)
+            return
+        try:
+            person = Person.objects.get(pk=self.par_pk(row.idpar2))
+        except Person.DoesNotExist:
+            dd.logger.warning(
+                "Ignored PLP %s : Invalid idpar2", row)
+            return
+        yield Enrolment(course=course, pupil=person, guest_role=role,
+                        state='confirmed')
+
 
     def get_partner(self, model, idpar):
         pk = self.par_pk(idpar.strip())

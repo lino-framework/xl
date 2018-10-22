@@ -627,6 +627,12 @@ class EventDetail(dd.DetailLayout):
     description GuestsByEvent #outbox.MailsByController
     """
 
+class EventInsert(dd.InsertLayout):
+    main = """
+    start_date start_time end_date end_time
+    summary
+    # room priority access_class transparent
+    """
 
 class EventEvents(dd.ChoiceList):
     verbose_name = _("Observed event")
@@ -653,11 +659,7 @@ class Events(dd.Table):
     order_by = ["start_date", "start_time", "id"]
 
     detail_layout = 'cal.EventDetail'
-    insert_layout = """
-    start_date start_time end_date end_time
-    summary
-    # room priority access_class transparent
-    """
+    insert_layout = 'cal.EventInsert'
     detail_html_template = "cal/Event/detail.html"
 
     params_panel_hidden = True

@@ -280,8 +280,9 @@ class GuestRole(mixins.BabelNamed):
 
     class Meta:
         app_label = 'cal'
-        verbose_name = _("Guest Role")
-        verbose_name_plural = _("Guest Roles")
+        verbose_name = _("Guest role")
+        verbose_name_plural = _("Guest roles")
+        abstract = dd.is_abstract_model(__name__, 'GuestRole')
 
 
 def default_color():

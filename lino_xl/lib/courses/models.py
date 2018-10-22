@@ -325,7 +325,6 @@ class Course(Reservation, Duplicable, Printable):
     def suggest_cal_guests(self, event):
         """Look up enrolments of this course and suggest them as guests."""
         # logger.info("20140314 suggest_guests")
-        Guest = rt.models.cal.Guest
         Enrolment = rt.models.courses.Enrolment
         if self.line is None:
             return
@@ -337,14 +336,12 @@ class Course(Reservation, Duplicable, Printable):
         # fkw.update(state__in=states)
         qs = Enrolment.objects.filter(course=self).order_by(
             *[f.name for f in Enrolment.quick_search_fields])
-            # *pupil_name_fields)
         for obj in qs:
-            if obj.is_guest_for(event):
-                yield Guest(
-                    event=event,
-                    partner=obj.pupil,
-                    role=gr)
-
+            # if obj.is_guest_for(event):
+            g = obj.make_guest_for(event)
+            if g is not None:
+                yield g
+                
     def full_clean(self, *args, **kw):
         if self.line_id is not None:
             if self.id is None:
@@ -637,12 +634,26 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
             return _("No places left in %s") % self.course
         #~ return _("Confirmation not implemented")
 
-    def is_guest_for(self, event):
-        """Return `True` if the pupil of this enrolment should be invited to
-        the given event.
+    def get_guest_role(self):
+        if self.course.line:
+            return self.course.line.guest_role
+    
+    def make_guest_for(self, event):
+        if not self.state.uses_a_place:
+            return 
+        gr = self.get_guest_role()
+        if gr is not None:
+            return rt.models.cal.Guest(
+                        event=event,
+                        partner=self.pupil,
+                        role=gr)
 
-        """
-        return self.state.uses_a_place
+    # def is_guest_for(self, event):
+    #     """Return `True` if the pupil of this enrolment should be invited to
+    #     the given event.
+
+    #     """
+    #     return self.state.uses_a_place
 
     def full_clean(self, *args, **kwargs):
         if self.course and self.course.line:
