@@ -692,8 +692,7 @@ class TimLoader(TimLoader):
         mtname = row.type.strip().upper()
         if mtname:
             try:
-                mt = NoteType.objects.get(
-                    name__startswith=mtname)
+                mt = NoteType.objects.get(name=mtname)
             except NoteType.DoesNotExist:
                 mt = NoteType(name=mtname)
                 yield mt

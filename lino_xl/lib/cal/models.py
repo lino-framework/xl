@@ -92,6 +92,7 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
         blank=True, null=True,
         verbose_name=_("End time"))
 
+dd.update_field(DailyPlannerRow, 'overview', verbose_name=_("Time range"))    
 
 from lino.mixins.periods import ObservedDateRange
 from etgen.html import E
