@@ -464,7 +464,7 @@ class TimLoader(TimLoader):
                 "Ignored PLP %s : Invalid idpar2", row)
             return
         yield Enrolment(course=course, pupil=person, guest_role=role,
-                        state='confirmed')
+                        state='confirmed', request_date=course.start_date)
 
 
     def get_partner(self, model, idpar):

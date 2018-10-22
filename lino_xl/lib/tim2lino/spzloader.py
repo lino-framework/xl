@@ -32,6 +32,7 @@ Client = rt.models.tera.Client
 Course = rt.models.courses.Course
 Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
+Course = rt.models.courses.Course
 Enrolment = rt.models.courses.Enrolment
 
 Account = dd.resolve_model('ledger.Account')
@@ -446,6 +447,25 @@ class TimLoader(TimLoader):
                     par1, e))
                 
         super(TimLoader, self).finalize()
+
+        dd.logger.info("Deleting dangling individual therapies")
+        # if there is exactly one therapy for a patient, and if that
+        # therapy has only one enrolment, and if that patient has
+        # enrolments in other therapies as well, then the therapy is
+        # useless
+        
+        for p in Client.objects.all():
+            qs = Course.objects.filter(partner=p)
+            if qs.count() == 1:
+                et = qs[0]
+                qs = Enrolment.objects.filter(pupil=p)
+                qs = qs.exclude(course=et)
+                if qs.count() > 0:
+                    qs = Enrolment.objects.filter(course=et)
+                    if qs.count() == 1:
+                        Enrolment.objects.filter(course=et).delete()
+                        et.delete()
+                    
         
                 
     def objects(self):
