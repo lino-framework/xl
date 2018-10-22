@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-10-21 15:22+0200\n"
+"POT-Creation-Date: 2018-10-22 15:03+0300\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -96,7 +96,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: lino_xl/lib/addresses/models.py:62 lino_xl/lib/blogs/models.py:47
-#: lino_xl/lib/cal/models.py:941
+#: lino_xl/lib/cal/models.py:942
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:79
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:38
 #: lino_xl/lib/courses/models.py:204 lino_xl/lib/courses/models.py:567
@@ -189,8 +189,8 @@ msgstr "Änderungsart"
 
 #: lino_xl/lib/ana/models.py:227 lino_xl/lib/cal/mixins.py:531
 #: lino_xl/lib/cal/mixins.py:759 lino_xl/lib/cal/models.py:221
-#: lino_xl/lib/cal/models.py:248 lino_xl/lib/cal/models.py:303
-#: lino_xl/lib/cal/models.py:396 lino_xl/lib/courses/models.py:110
+#: lino_xl/lib/cal/models.py:248 lino_xl/lib/cal/models.py:304
+#: lino_xl/lib/cal/models.py:397 lino_xl/lib/courses/models.py:110
 #: lino_xl/lib/courses/models.py:203 lino_xl/lib/github/models.py:173
 #: lino_xl/lib/groups/models.py:36 lino_xl/lib/ledger/ui.py:495
 #: lino_xl/lib/ledger/ui.py:906 lino_xl/lib/ledger/ui.py:969
@@ -631,7 +631,7 @@ msgstr "Omschrijving"
 msgid "Germany"
 msgstr ""
 
-#: lino_xl/lib/bevat/choicelists.py:40 lino_xl/lib/tim2lino/spzloader.py:459
+#: lino_xl/lib/bevat/choicelists.py:40 lino_xl/lib/tim2lino/spzloader.py:460
 msgid "Luxemburg"
 msgstr ""
 
@@ -966,7 +966,7 @@ msgstr ""
 msgid "Board members"
 msgstr ""
 
-#: lino_xl/lib/cal/__init__.py:23 lino_xl/lib/cal/models.py:300
+#: lino_xl/lib/cal/__init__.py:23 lino_xl/lib/cal/models.py:301
 #: lino_xl/lib/courses/desktop.py:150 lino_xl/lib/extensible/models.py:104
 #: lino_xl/lib/meetings/desktop.py:64
 msgid "Calendar"
@@ -1186,7 +1186,7 @@ msgid "Stable"
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:193 lino_xl/lib/cal/models.py:266
-#: lino_xl/lib/cal/models.py:474
+#: lino_xl/lib/cal/models.py:475
 msgid "Transparent"
 msgstr ""
 
@@ -1287,8 +1287,8 @@ msgstr ""
 msgid "Times"
 msgstr "Druckdatum"
 
-#: lino_xl/lib/cal/mixins.py:542 lino_xl/lib/cal/models.py:768
-#: lino_xl/lib/cal/models.py:775 lino_xl/lib/events/models.py:120
+#: lino_xl/lib/cal/mixins.py:542 lino_xl/lib/cal/models.py:769
+#: lino_xl/lib/cal/models.py:776 lino_xl/lib/events/models.py:120
 msgid "When"
 msgstr "Wanneer"
 
@@ -1510,236 +1510,236 @@ msgstr ""
 msgid "Guest roles"
 msgstr "Thema"
 
-#: lino_xl/lib/cal/models.py:301
+#: lino_xl/lib/cal/models.py:302
 msgid "Calendars"
 msgstr "Kalenders"
 
-#: lino_xl/lib/cal/models.py:306
+#: lino_xl/lib/cal/models.py:307
 msgid "color"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:317
+#: lino_xl/lib/cal/models.py:318
 #, fuzzy
 msgid "Subscription"
 msgstr "Omschrijving"
 
-#: lino_xl/lib/cal/models.py:318
+#: lino_xl/lib/cal/models.py:319
 #, fuzzy
 msgid "Subscriptions"
 msgstr "Omschrijving"
 
-#: lino_xl/lib/cal/models.py:324
+#: lino_xl/lib/cal/models.py:325
 msgid "The calendar you want to subscribe to."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:327
+#: lino_xl/lib/cal/models.py:328
 msgid "hidden"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:328
+#: lino_xl/lib/cal/models.py:329
 msgid ""
 "Whether this subscription should \"\n"
 "        \"initially be displayed as a hidden calendar."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:335
+#: lino_xl/lib/cal/models.py:336
 #, fuzzy
 msgid "Task"
 msgstr "als"
 
-#: lino_xl/lib/cal/models.py:336
+#: lino_xl/lib/cal/models.py:337
 msgid "Tasks"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:341 lino_xl/lib/ledger/ui.py:266
+#: lino_xl/lib/cal/models.py:342 lino_xl/lib/ledger/ui.py:266
 #: lino_xl/lib/ledger/ui.py:664
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:75
 #: lino_xl/lib/sepa/mixins.py:101
 msgid "Due date"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:344
+#: lino_xl/lib/cal/models.py:345
 #, fuzzy
 msgid "Due time"
 msgstr "Druckdatum"
 
-#: lino_xl/lib/cal/models.py:347
+#: lino_xl/lib/cal/models.py:348
 msgid "Duration value"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:377
+#: lino_xl/lib/cal/models.py:378
 msgid "Recurrency policy"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:378
+#: lino_xl/lib/cal/models.py:379
 #, fuzzy
 msgid "Recurrency policies"
 msgstr "Referenz"
 
-#: lino_xl/lib/cal/models.py:390
+#: lino_xl/lib/cal/models.py:391
 #, fuzzy
 msgid "Recurring event"
 msgstr "Benutzer-Level"
 
-#: lino_xl/lib/cal/models.py:391
+#: lino_xl/lib/cal/models.py:392
 #, fuzzy
 msgid "Recurring events"
 msgstr "Benutzer-Level"
 
-#: lino_xl/lib/cal/models.py:463
+#: lino_xl/lib/cal/models.py:464
 #, fuzzy
 msgid "Calendar entry"
 msgstr "Kalenders"
 
-#: lino_xl/lib/cal/models.py:464 lino_xl/lib/courses/models.py:404
+#: lino_xl/lib/cal/models.py:465 lino_xl/lib/courses/models.py:404
 #, fuzzy
 msgid "Calendar entries"
 msgstr "Kalenders"
 
-#: lino_xl/lib/cal/models.py:479
+#: lino_xl/lib/cal/models.py:480
 msgid "all day"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:504
+#: lino_xl/lib/cal/models.py:505
 #, python-format
 msgid "Unsaved %s"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:519
+#: lino_xl/lib/cal/models.py:520
 msgid "Event lasts {0} days but only {1} are allowed."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:705 lino_xl/lib/reception/models.py:69
+#: lino_xl/lib/cal/models.py:706 lino_xl/lib/reception/models.py:69
 msgid "Busy"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:709
+#: lino_xl/lib/cal/models.py:710
 msgid "with"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:785
+#: lino_xl/lib/cal/models.py:786
 msgid "Link URL"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:789
+#: lino_xl/lib/cal/models.py:790
 #, fuzzy
 msgid "Reminder"
 msgstr "Geschlecht"
 
-#: lino_xl/lib/cal/models.py:832 lino_xl/lib/cal/ui.py:353
+#: lino_xl/lib/cal/models.py:833 lino_xl/lib/cal/ui.py:353
 msgid "Responsible user"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:842
+#: lino_xl/lib/cal/models.py:843
 #, fuzzy
 msgid "Entries without participants"
 msgstr "Bestätigung"
 
-#: lino_xl/lib/cal/models.py:851
+#: lino_xl/lib/cal/models.py:852
 msgid "No participants although {0} suggestions exist."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:861
+#: lino_xl/lib/cal/models.py:862
 msgid "Check for conflicting calendar entries"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:869
+#: lino_xl/lib/cal/models.py:870
 msgid "Event conflicts with {0}."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:871
+#: lino_xl/lib/cal/models.py:872
 msgid "Event conflicts with {0} other events."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:878
+#: lino_xl/lib/cal/models.py:879
 #, fuzzy
 msgid "Obsolete generated calendar entries"
 msgstr "Kalenders"
 
-#: lino_xl/lib/cal/models.py:884
+#: lino_xl/lib/cal/models.py:885
 msgid "Has auto_type but no owner."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:889
+#: lino_xl/lib/cal/models.py:890
 msgid "Event type but {0} (should be {1})."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:904
+#: lino_xl/lib/cal/models.py:905
 #, fuzzy
 msgid "Too long-lasting calendar entries"
 msgstr "Kalenders"
 
-#: lino_xl/lib/cal/models.py:932
+#: lino_xl/lib/cal/models.py:933
 #, fuzzy
 msgid "Presence"
 msgstr "Drucken"
 
-#: lino_xl/lib/cal/models.py:933 lino_xl/lib/cal/ui.py:448
+#: lino_xl/lib/cal/models.py:934 lino_xl/lib/cal/ui.py:448
 #: lino_xl/lib/courses/models.py:477
 #, fuzzy
 msgid "Presences"
 msgstr "Drucken"
 
-#: lino_xl/lib/cal/models.py:939 lino_xl/lib/contacts/models.py:497
+#: lino_xl/lib/cal/models.py:940 lino_xl/lib/contacts/models.py:497
 #: lino_xl/lib/households/choicelists.py:31
 msgid "Role"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:964
+#: lino_xl/lib/cal/models.py:965
 msgid "Event"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:997
+#: lino_xl/lib/cal/models.py:998
 msgid "due date reached"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1014
+#: lino_xl/lib/cal/models.py:1015
 msgid "Default access class"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1015
+#: lino_xl/lib/cal/models.py:1016
 msgid "The default access class for your calendar events and tasks."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1022 lino_xl/lib/cal/models.py:1032
+#: lino_xl/lib/cal/models.py:1023 lino_xl/lib/cal/models.py:1033
 msgid "Default Event Type"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1023
+#: lino_xl/lib/cal/models.py:1024
 msgid "The default event type for your calendar events."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1033
+#: lino_xl/lib/cal/models.py:1034
 msgid "The default type of events on this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1043
+#: lino_xl/lib/cal/models.py:1044
 msgid "Site Calendar"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1044
+#: lino_xl/lib/cal/models.py:1045
 msgid "The default calendar of this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1050
+#: lino_xl/lib/cal/models.py:1051
 msgid "Max automatic events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1052
+#: lino_xl/lib/cal/models.py:1053
 msgid "Maximum number of automatic events to be generated."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1060
+#: lino_xl/lib/cal/models.py:1061
 msgid "Hide events before"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1062
+#: lino_xl/lib/cal/models.py:1063
 msgid ""
 "If this is specified, certain tables show only \n"
 "events after the given date."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1090
+#: lino_xl/lib/cal/models.py:1091
 #, python-format
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr ""
@@ -2923,11 +2923,16 @@ msgstr ""
 msgid "Pending confirmed enrolments"
 msgstr "Benutzer-Level"
 
-#: lino_xl/lib/courses/desktop.py:632
+#: lino_xl/lib/courses/desktop.py:633
+#, fuzzy
+msgid "Participants"
+msgstr "Bestätigung"
+
+#: lino_xl/lib/courses/desktop.py:640
 msgid "Enrolments using this option"
 msgstr ""
 
-#: lino_xl/lib/courses/desktop.py:663
+#: lino_xl/lib/courses/desktop.py:671
 msgid "Status Report"
 msgstr ""
 
@@ -4682,7 +4687,12 @@ msgstr ""
 msgid "module name"
 msgstr ""
 
-#: lino_xl/lib/invoicing/__init__.py:36
+#: lino_xl/lib/invoicing/__init__.py:23
+#, fuzzy
+msgid "Invoicing"
+msgstr "Meine Einstellungen"
+
+#: lino_xl/lib/invoicing/__init__.py:38
 #, fuzzy
 msgid "Invoiced object"
 msgstr "Datenbankfeld"
@@ -5696,11 +5706,11 @@ msgstr "Thema"
 msgid "Client"
 msgstr "EmpfängerEmpfänger"
 
-#: lino_xl/lib/notes/models.py:266
+#: lino_xl/lib/notes/models.py:271
 msgid "Default system note type"
 msgstr ""
 
-#: lino_xl/lib/notes/models.py:267
+#: lino_xl/lib/notes/models.py:272
 msgid ""
 "Note Type used by system notes.\n"
 "If this is empty, then system notes won't create any entry to the Notes "
@@ -7499,16 +7509,16 @@ msgstr ""
 msgid "Import from TIM"
 msgstr ""
 
-#: lino_xl/lib/tim2lino/spzloader.py:460
+#: lino_xl/lib/tim2lino/spzloader.py:461
 #, fuzzy
 msgid "Poland"
 msgstr "Geschlecht"
 
-#: lino_xl/lib/tim2lino/spzloader.py:461
+#: lino_xl/lib/tim2lino/spzloader.py:462
 msgid "Austria"
 msgstr ""
 
-#: lino_xl/lib/tim2lino/spzloader.py:463
+#: lino_xl/lib/tim2lino/spzloader.py:464
 #, fuzzy
 msgid "United States"
 msgstr "Thema"

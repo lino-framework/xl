@@ -115,6 +115,7 @@ TranslatorTypes = rt.models.courses.TranslatorTypes
 ProfessionalStates = rt.models.tera.ProfessionalStates
 LifeMode = rt.models.tera.LifeMode
 Procurer = rt.models.tera.Procurer
+NoteType = rt.models.notes.NoteType
 
 def par2dates(row):
     kw = dict()
@@ -690,9 +691,11 @@ class TimLoader(TimLoader):
             body=self.dbfmemo(row.texte))
         mtname = row.type.strip().upper()
         if mtname:
-            mt, new = rt.models.notes.NoteType.objects.get_or_create(
-                name=mtname)
-            if new:
+            try:
+                mt = NoteType.objects.get(
+                    name__startswith=mtname)
+            except NoteType.DoesNotExist:
+                mt = NoteType(name=mtname)
                 yield mt
             kw.update(type=mt)
         yield Note(**kw)

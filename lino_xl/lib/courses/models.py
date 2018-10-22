@@ -690,7 +690,8 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         return E.p(*elems)
 
 dd.update_field(
-    Enrolment, 'overview', verbose_name=Course._meta.verbose_name)    
+    'courses.Enrolment', 'overview',
+    verbose_name=Course._meta.verbose_name)    
 
 
 @dd.receiver(dd.post_startup)

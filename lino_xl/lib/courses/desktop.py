@@ -609,6 +609,9 @@ class EnrolmentsByPupil(Enrolments):
         kw.update(participants_only=False)
         return kw
 
+    @classmethod
+    def get_actor_label(self):
+        return rt.models.courses.Course._meta.verbose_name_plural
 
 class EnrolmentsByCourse(Enrolments):
     params_panel_hidden = True

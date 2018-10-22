@@ -20,6 +20,8 @@ from lino.api.ad import Plugin, _
 
 class Plugin(Plugin):
 
+    verbose_name = _("Invoicing")
+
     # needs_plugins = ['lino_xl.lib.ledger']
     needs_plugins = ['lino_xl.lib.sales']
 
