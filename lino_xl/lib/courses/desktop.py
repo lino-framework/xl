@@ -610,7 +610,9 @@ class EnrolmentsByPupil(Enrolments):
         return kw
 
     @classmethod
-    def get_actor_label(self):
+    def get_actor_label(cls):
+        if cls._course_area is not None:
+            return cls._course_area.text
         return rt.models.courses.Course._meta.verbose_name_plural
 
 class EnrolmentsByCourse(Enrolments):

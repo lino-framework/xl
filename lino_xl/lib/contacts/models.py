@@ -45,7 +45,7 @@ if dd.plugins.contacts.use_vcard_export:
 # from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
 # from lino.mixins import Contactable, Phonable
 from .roles import SimpleContactsUser, ContactsStaff
-from .choicelists import PartnerEvents
+from .choicelists import PartnerEvents, CivilStates
 
 from lino.mixins.human import name2kw, Human, Born
 
