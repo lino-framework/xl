@@ -18,6 +18,7 @@ from lino.api import dd, rt
 from lino.utils import ONE_DAY
 from etgen.html import E, tostring
 from lino.mixins.periods import Started, Ended
+from lino.core.exceptions import ChangedAPI
 
 from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 from lino.modlib.uploads.mixins import UploadController
@@ -273,7 +274,7 @@ class EventGenerator(dd.Model):
         event_type = self.update_cal_event_type()
         if event_type is None:
             # raise Exception("20170731")
-            ar.warning("No automatic events because event_type is empty")
+            ar.warning(_("No automatic calendar entries because no entry type is configured"))
             return wanted, unwanted
         
         # ar.debug("20140310a %s", date)
@@ -731,7 +732,19 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
 
     def after_state_change(self, ar, old, target_state):
         super(Reservation, self).after_state_change(ar, old, target_state)
-        self.update_reminders(ar)
+        if target_state.auto_update_calendar:
+            self.update_reminders(ar)
+
+    @classmethod
+    def on_analyze(cls, site):
+        super(Reservation, cls).on_analyze(site)
+        ic = cls.workflow_state_field.choicelist
+        if not hasattr(ic, 'auto_update_calendar'):
+            raise ChangedAPI(
+                "workflow_state_field for {} uses {} which "
+                "has no attribute "
+                "auto_update_calendar".format(cls, ic))
+        
 
     #~ def after_ui_save(self,ar):
         #~ super(Reservation,self).after_ui_save(ar)

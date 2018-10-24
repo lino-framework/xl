@@ -37,9 +37,13 @@ class Plugin(ad.Plugin):
         # above code should not fail on February 29 of a leap year.
         self.ignore_dates_after = tod + relativedelta(years=5)
 
-    def on_site_startup(self, site):
-        self.partner_model = site.models.resolve(self.partner_model)
-        super(Plugin, self).on_site_startup(site)
+    # def on_site_startup(self, site):
+    #     self.partner_model = site.models.resolve(self.partner_model)
+    #     super(Plugin, self).on_site_startup(site)
+    #     from lino_xl.lib.cal.mixins import Reservation
+    #     from lino.core.utils import models_by_base
+    #     for m in models_by_base(Reservation):
+    #         state_field = m.get_field()
         
     def setup_main_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)

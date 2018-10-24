@@ -205,8 +205,7 @@ class Course(Reservation, Duplicable, Printable):
 
     quick_search_fields = 'name line__name line__topic__name'
 
-    state = CourseStates.field(
-        default=CourseStates.as_callable('draft'))
+    state = CourseStates.field(default='draft')
 
     max_places = models.PositiveIntegerField(
         pgettext("in a course", "Available places"),

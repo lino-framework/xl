@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -23,6 +23,7 @@ from lino.api import dd
 class CourseStates(dd.Workflow):
     required_roles = dd.login_required(dd.SiteAdmin)
     invoiceable = models.BooleanField(_("invoiceable"), default=True)
+    auto_update_calendar = models.BooleanField(_("Update calendar"), default=True)
 
 add = CourseStates.add_item
 add('10', _("Draft"), 'draft',
