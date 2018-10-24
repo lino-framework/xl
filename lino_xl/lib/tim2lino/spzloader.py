@@ -40,6 +40,7 @@ Account = dd.resolve_model('ledger.Account')
 working = dd.resolve_app('working')
 
 User = rt.models.users.User
+Note = rt.models.notes.Note
 UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
 # Coaching = rt.models.coachings.Coaching
@@ -458,6 +459,8 @@ class TimLoader(TimLoader):
             qs = Course.objects.filter(partner=p)
             if qs.count() == 1:
                 et = qs[0]
+                if Note.objects.filter(project=et).count():
+                    continue
                 qs = Enrolment.objects.filter(pupil=p)
                 qs = qs.exclude(course=et)
                 if qs.count() > 0:
