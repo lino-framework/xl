@@ -801,6 +801,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         # raise NotImplementedError()
 
 Voucher.set_widget_options('number_with_year', width=8)
+Voucher.set_widget_options('number', hide_sum=True)
 
 
 @dd.python_2_unicode_compatible
