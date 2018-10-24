@@ -37,6 +37,18 @@ class SessionType(mixins.BabelNamed):
         verbose_name_plural = _('Session Types')
 
 
+# class Location(mixins.BabelDesignated):
+
+#     class Meta:
+#         app_label = 'working'
+#         verbose_name = _("Location")
+#         verbose_name_plural = _('Locations')
+
+#     time_zone = dd.ForeignKey(
+#         dd.plugins.working.ticket_model,
+#         related_name="sessions_by_ticket")
+
+
 @dd.python_2_unicode_compatible
 class Session(UserAuthored, Started, Ended, Workable):
     class Meta:

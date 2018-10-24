@@ -331,16 +331,6 @@ lino_xl.lib.vat.VatClasses."""),
 layout's main element."""),
     'lino_xl.lib.vatless.PartnerDetailMixin.ledger' : _("""Shows the tables vatless.VouchersByPartner and
 ledger.MovementsByPartner."""),
-    'lino_xl.lib.vatless.AccountInvoice.disabled_fields' : _("""Disable all three total fields if edit_totals is False,
-otherwise disable total_vat if
-VatRule.can_edit is False."""),
-    'lino_xl.lib.vatless.InvoiceItem' : _("""An item of an AccountInvoice."""),
-    'lino_xl.lib.vatless.ItemsByInvoice' : _("""This is the "content" part of an invoice."""),
-    'lino_xl.lib.vatless.ItemsByProjectInvoice' : _("""Like ItemsByInvoice, but in a project invoice we don't
-want to have a project column per item."""),
-    'lino_xl.lib.vatless.InvoicesByJournal' : _("""Shows all simple invoices of a given journal (whose
-Journal.voucher_type must be
-lino_xl.lib.sales.models.AccountInvoice)."""),
     'lino_xl.lib.votes.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.votes.Plugin.votable_model' : _("""The things we are voting about. A string referring to the model
 which represents a votable in your application.  Default value is
