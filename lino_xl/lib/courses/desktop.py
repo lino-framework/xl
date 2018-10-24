@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -17,6 +17,7 @@ ONE = Decimal(1)
 from django.db import models
 from django.db.models import Q
 from django.conf import settings
+from django.utils.text import format_lazy
 
 from lino.api import dd, rt, _
 from lino import mixins
@@ -612,8 +613,13 @@ class EnrolmentsByPupil(Enrolments):
     @classmethod
     def get_actor_label(cls):
         if cls._course_area is not None:
-            return cls._course_area.text
-        return rt.models.courses.Course._meta.verbose_name_plural
+            courses = cls._course_area.text
+        else:
+            courses = rt.models.courses.Course._meta.verbose_name_plural
+        return format_lazy(
+            _("{enrolments} in {courses}"),
+            enrolments=rt.models.courses.Enrolment._meta.verbose_name_plural,
+            courses=courses)
 
 class EnrolmentsByCourse(Enrolments):
     params_panel_hidden = True

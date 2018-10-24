@@ -305,15 +305,19 @@ class TimLoader(TimLoader):
                                or CourseStates.inactive
             u1, u2, u3 = self.get_users(row)
             course.teacher = u2 or u1
+            if row.idpar.startswith('E'):
+                course.team = self.eupen
+            elif row.idpar.startswith('S'):
+                course.team = self.stvith
             
         if isinstance(partner, Partner):
             if row.gsm:
                 partner.gsm = row.gsm
 
-            if row.idpar.startswith('E'):
-                partner.team = self.eupen
-            elif row.idpar.startswith('S'):
-                partner.team = self.stvith
+            # if row.idpar.startswith('E'):
+            #     partner.team = self.eupen
+            # elif row.idpar.startswith('S'):
+            #     partner.team = self.stvith
             idpar2 = row.idpar2.strip()
             if idpar2 and (row.idpar.strip() != idpar2):
                 idpar2 = self.par_pk(idpar2)
