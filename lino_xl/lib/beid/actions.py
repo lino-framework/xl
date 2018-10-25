@@ -341,7 +341,8 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
     def run_from_ui(self, ar, **kw):
         # if settings.SITE.beid_protocol:
         if dd.plugins.beid.urlhandler_prefix:
-            data = load_card_data(ar.request.POST['uuid'])
+            uuid = ar.request.POST['uuid']
+            data = load_card_data(uuid)
             data = AttrDict(data)
 
             # quick hack to fix #2393. a better solution would be to

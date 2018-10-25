@@ -1,11 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
-#
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-"""
-Defines :class:`PrintTableAction` and
-:class:`PrintLabelsAction`
-"""
 
 import os
 from builtins import str
@@ -20,7 +15,6 @@ from .appy_renderer import AppyRenderer
 
 
 class PrintTableAction(actions.Action):
-    "Show this table as a pdf document"
     label = _("Table (landscape)")
     icon_name = 'page_white_acrobat'
     ui5_icon_name = 'sap-icon://pdf-attachment'
@@ -36,9 +30,10 @@ class PrintTableAction(actions.Action):
     # target_file_format = 'odt'  # write to odt to see error messages
                                   # for debugging templates
     combo_group = 'pdf'
+    callable_from = 't'
 
-    def is_callable_from(self, caller):
-        return isinstance(caller, actions.ShowTable)
+    # def is_callable_from(self, caller):
+    #     return isinstance(caller, actions.ShowTable)
 
     def run_from_ui(self, ar, **kw):
         #~ print 20130912
@@ -96,12 +91,6 @@ class PortraitPrintTableAction(PrintTableAction):
 
 class PrintLabelsAction(PrintTableAction):
 
-    """
-    Add this action to your table, which is expected to execute on a
-    model which implements
-    :class:`Addressable <lino.utils.addressable.Addressable>`.
-
-    """
     label = _("Labels")
     help_text = _('Generate mailing labels for these recipients')
     template_name = "appypod/Labels.odt"
@@ -113,25 +102,4 @@ class PrintLabelsAction(PrintTableAction):
         return context
 
     def get_recipients(self, ar):
-        """
-        This is here so you can override it. For example::
-
-            class MyLabelsAction(PrintLabelsAction)
-                # silently ignore all recipients with empty 'street' field
-                def get_recipients(self,ar):
-                    for obj in ar:
-                        if obj.street:
-                            yield obj
-
-        But I personally would rather add a parameters panel so that
-        users can explicitly say whether they want labels for invalid
-        addresses or not::
-
-            class MyTable(dd.Table):
-                parameters = dict(
-                    only_valid_recipients=models.BooleanField(
-                        _("only valid recipients"),default=False
-                    )
-
-        """
         return iter(ar)

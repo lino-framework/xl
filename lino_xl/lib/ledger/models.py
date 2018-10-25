@@ -183,8 +183,8 @@ class Journal(mixins.BabelNamed,
         if self.dc is None:
             if self.trade_type:
                 self.dc = self.trade_type.dc
-            elif self.account:
-                self.dc = self.account.type.dc
+            # elif self.account:
+            #     self.dc = self.account.type.dc
             else:
                 self.dc = DEBIT  # cannot be NULL
 
@@ -317,7 +317,8 @@ class AccountingPeriod(DateRange, mixins.Referrable):
         if self.start_date is None:
             self.start_date = dd.today().replace(day=1)
         if not self.year:
-            self.year = FiscalYear.from_date(self.start_date, None)
+            self.year = FiscalYear.get_or_create_from_date(
+                self.start_date)
         super(AccountingPeriod, self).full_clean(*args, **kwargs)
 
     def __str__(self):
@@ -378,8 +379,13 @@ class FiscalYear(DateRange, mixins.Referrable):
         # return obj
 
     @classmethod
-    def from_date(cls, date, *args):
-        return cls.from_int(date.year, *args)
+    def get_or_create_from_date(cls, date):
+        obj = cls.from_int(date.year, None)
+        if obj is None:
+            obj = cls.create_from_year(date.year)
+            obj.full_clean()
+            obj.save()
+        return obj
 
     def __str__(self):
         return self.ref
@@ -522,7 +528,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             kw = {
                 prefix + 'number': int(search_text),
                 prefix + 'accounting_period__year':
-                FiscalYear.from_date(dd.today())}
+                FiscalYear.get_or_create_from_date(dd.today())}
             return models.Q(**kw)
         return super(Voucher, model).quick_search_filter(search_text, prefix)
 
@@ -662,10 +668,10 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
 
     def register_voucher(self, ar, do_clear=True):
         """
-        Delete any existing movements and re-create them
+        Delete any existing movements and re-create them.
         """
         # dd.logger.info("20151211 cosi.Voucher.register_voucher()")
-        # self.year = FiscalYears.from_date(self.entry_date)
+        # self.year = FiscalYears.get_or_create_from_date(self.entry_date)
         # dd.logger.info("20151211 movement_set.all().delete()")
 
         def doit(partners):
@@ -676,12 +682,13 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             # self.full_clean()
             # self.save()
             
-            fcu = dd.plugins.ledger.force_cleared_until
+            fcu = dd.plugins.ledger.suppress_movements_until
             for m in movements:
+                if fcu and m.value_date <= fcu:
+                    continue
                 seqno += 1
                 m.seqno = seqno
-                if fcu and self.entry_date <= fcu:
-                    m.cleared = True
+                # m.cleared = True
                 m.full_clean()
                 m.save()
                 if m.partner:
@@ -842,17 +849,22 @@ class Movement(ProjectRelated, PeriodRangeObservable):
             return str(self.voucher)
         return "%s (%s)" % (v, v.entry_date)
 
-    @dd.virtualfield(dd.PriceField(_("Debit")))
+    @dd.virtualfield(dd.PriceField(
+        _("Debit")), sortable_by=['amount', 'value_date'])
     def debit(self, ar):
         if self.dc is DEBIT:
             return self.amount
 
-    @dd.virtualfield(dd.PriceField(_("Credit")))
+    @dd.virtualfield(dd.PriceField(
+        _("Credit")), sortable_by=['-amount', 'value_date'])
     def credit(self, ar):
         if self.dc is CREDIT:
             return self.amount
 
-    @dd.displayfield(_("Voucher"))
+    @dd.displayfield(
+        _("Voucher"), sortable_by=[
+            'voucher__journal__ref', 'voucher__accounting_period__year',
+            'voucher__number'])
     def voucher_link(self, ar):
         if ar is None:
             return ''
@@ -870,7 +882,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
             return ''
         return ar.obj2html(p)
 
-    @dd.displayfield(_("Match"))
+    @dd.displayfield(_("Match"), sortable_by=['match'])
     def match_link(self, ar):
         if ar is None or not self.match:
             return ''
@@ -1006,12 +1018,14 @@ class VoucherChecker(Checker):
 
         wanted = dict()
         seqno = 0
-        fcu = dd.plugins.ledger.force_cleared_until
+        fcu = dd.plugins.ledger.suppress_movements_until
         for m in obj.get_wanted_movements():
+            if fcu and m.value_date <= fcu:
+                continue
             seqno += 1
             m.seqno = seqno
-            if fcu and obj.entry_date <= fcu:
-                m.cleared = True
+            # if fcu and m.value_date <= fcu:
+            #     m.cleared = True
             m.full_clean()
             wanted[m2k(m)] = m
 
@@ -1228,6 +1242,9 @@ def check_clearings(qs, matches=[]):
     qs = qs.select_related('voucher', 'voucher__journal')
     if len(matches):
         qs = qs.filter(match__in=matches)
+    # fcu = dd.plugins.ledger.suppress_movements_until
+    # if fcu:
+    #     qs = qs.exclude(value_date__lte=fcu)
     sums = SumCollector()
     for mvt in qs:
         # k = (mvt.get_match(), mvt.account)

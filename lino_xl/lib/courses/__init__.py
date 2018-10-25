@@ -24,6 +24,10 @@ from lino.api import ad, _
 class Plugin(ad.Plugin):
     verbose_name = _("Activities")
     teacher_model = 'contacts.Person'
+    
+    teacher_label = _("Instructor")
+    """The verbose name of pointers to teacher_model. """
+
     pupil_model = 'contacts.Person'
     pupil_name_fields = "pupil__name"
     needs_plugins = ['lino_xl.lib.cal']
@@ -51,7 +55,7 @@ class Plugin(ad.Plugin):
         
     def setup_main_menu(self, site, user_type, main):
         m = main.add_menu(self.app_label, self.verbose_name)
-        m.add_action('courses.MyActivities')
+        m.add_action('courses.MyCourses')
         for ca in site.models.courses.CourseAreas.objects():
             m.add_action(ca.courses_table)
         # m.add_action('courses.BasicCourses')
@@ -83,5 +87,5 @@ class Plugin(ad.Plugin):
             yield x
         if user.authenticated:
             yield self.site.models.courses.MyCoursesGiven
-            yield self.site.models.courses.MyActivities
+            yield self.site.models.courses.MyCourses
         yield self.site.models.courses.StatusReport

@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2018 Saffre & Rumma Ltd
-#
+# Copyright 2009-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-"""Choicelists for `lino_xl.lib.appypod`.
-"""
 
 from __future__ import unicode_literals
 
@@ -25,12 +22,6 @@ except ImportError:
 
 
 class AppyBuildMethod(SimpleBuildMethod):
-    """
-    Base class for Build Methods that use `.odt` templates designed
-    for :term:`appy.pod`.
-    
-    http://appyframework.org/podRenderingTemplates.html
-    """
 
     template_ext = '.odt'
     templates_name = 'appy'  # subclasses use the same templates directory
@@ -72,13 +63,6 @@ class AppyBuildMethod(SimpleBuildMethod):
 
 
 class AppyOdtBuildMethod(AppyBuildMethod):
-    """
-    Generates .odt files from .odt templates.
-    
-    This method doesn't require OpenOffice nor the
-    Python UNO bridge installed
-    (except in some cases like updating fields).
-    """
     target_ext = '.odt'
     cache_name = 'userdocs'
     #~ cache_name = 'webdav'
@@ -86,25 +70,16 @@ class AppyOdtBuildMethod(AppyBuildMethod):
 
 
 class AppyPdfBuildMethod(AppyBuildMethod):
-    """
-    Generates .pdf files from .odt templates.
-    """
     target_ext = '.pdf'
 
 
 class AppyRtfBuildMethod(AppyBuildMethod):
-    """
-    Generates .rtf files from .odt templates.
-    """
     target_ext = '.rtf'
     cache_name = 'userdocs'
     use_webdav = True
 
 
 class AppyDocBuildMethod(AppyBuildMethod):
-    """
-    Generates .doc files from .odt templates.
-    """
     target_ext = '.doc'
     cache_name = 'userdocs'
     use_webdav = True

@@ -45,11 +45,13 @@ cal = dd.resolve_app('cal')
 
 try:
     teacher_model = dd.plugins.courses.teacher_model
+    teacher_label = dd.plugins.courses.teacher_label
     pupil_model = dd.plugins.courses.pupil_model
     pupil_name_fields = dd.plugins.courses.pupil_name_fields
 except AttributeError:
     # Happens only when Sphinx autodoc imports it and this module is
     # not installed.
+    teacher_label = _("Instructor")
     teacher_model = 'foo.Bar'
     pupil_model = 'foo.Bar'
     pupil_name_fields = 'foo bar'
@@ -193,7 +195,7 @@ class Course(Reservation, Duplicable, Printable):
 
     teacher = dd.ForeignKey(
         teacher_model,
-        verbose_name=_("Instructor"),
+        verbose_name=teacher_label,
         blank=True, null=True)
 
     #~ room = dd.ForeignKey(Room,blank=True,null=True)
@@ -215,8 +217,9 @@ class Course(Reservation, Duplicable, Printable):
     enrolments_until = models.DateField(
         _("Enrolments until"), blank=True, null=True)
 
-    print_presence_sheet = PrintPresenceSheet()
+    print_presence_sheet = PrintPresenceSheet(show_in_bbar=False)
     print_presence_sheet_html = PrintPresenceSheet(
+        show_in_bbar=False,
         build_method='weasy2html',
         label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
 
@@ -322,7 +325,6 @@ class Course(Reservation, Duplicable, Printable):
     def suggest_cal_guests(self, event):
         """Look up enrolments of this course and suggest them as guests."""
         # logger.info("20140314 suggest_guests")
-        Guest = rt.models.cal.Guest
         Enrolment = rt.models.courses.Enrolment
         if self.line is None:
             return
@@ -334,14 +336,12 @@ class Course(Reservation, Duplicable, Printable):
         # fkw.update(state__in=states)
         qs = Enrolment.objects.filter(course=self).order_by(
             *[f.name for f in Enrolment.quick_search_fields])
-            # *pupil_name_fields)
         for obj in qs:
-            if obj.is_guest_for(event):
-                yield Guest(
-                    event=event,
-                    partner=obj.pupil,
-                    role=gr)
-
+            # if obj.is_guest_for(event):
+            g = obj.make_guest_for(event)
+            if g is not None:
+                yield g
+                
     def full_clean(self, *args, **kw):
         if self.line_id is not None:
             if self.id is None:
@@ -614,6 +614,11 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         Product = rt.models.products.Product
         return Product.objects.filter(cat=course.line.options_cat)
 
+    def get_overview_elems(self, ar):
+        if self.course_id:
+            return [self.course.obj2href(ar)]
+        return [self.obj2href(ar)]
+
     def get_confirm_veto(self, ar):
         """Called from :class:`ConfirmEnrolment
         <lino_xl.lib.courses.workflows.ConfirmEnrolment>`.  If this
@@ -629,12 +634,26 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
             return _("No places left in %s") % self.course
         #~ return _("Confirmation not implemented")
 
-    def is_guest_for(self, event):
-        """Return `True` if the pupil of this enrolment should be invited to
-        the given event.
+    def get_guest_role(self):
+        if self.course.line:
+            return self.course.line.guest_role
+    
+    def make_guest_for(self, event):
+        if not self.state.uses_a_place:
+            return 
+        gr = self.get_guest_role()
+        if gr is not None:
+            return rt.models.cal.Guest(
+                        event=event,
+                        partner=self.pupil,
+                        role=gr)
 
-        """
-        return self.state.uses_a_place
+    # def is_guest_for(self, event):
+    #     """Return `True` if the pupil of this enrolment should be invited to
+    #     the given event.
+
+    #     """
+    #     return self.state.uses_a_place
 
     def full_clean(self, *args, **kwargs):
         if self.course and self.course.line:
@@ -669,6 +688,10 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
             list(self.pupil.address_location_lines()),
             sep=', ')
         return E.p(*elems)
+
+dd.update_field(
+    'courses.Enrolment', 'overview',
+    verbose_name=Course._meta.verbose_name)    
 
 
 @dd.receiver(dd.post_startup)

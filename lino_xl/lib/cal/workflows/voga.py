@@ -64,16 +64,17 @@ class ResetEvent(dd.ChangeStateAction):
                      "will get lost upon next update "),
                    _("Are you sure?"))
 
+
 GuestStates.clear()
 add = GuestStates.add_item
 # add('10', _("Invited"), 'invited', button_text="☐")
 add('10', _("Invited"), 'invited', button_text="?")
 add('40', _("Present"), 'present', afterwards=True, button_text="☑")
-add('50', _("Absent"), 'absent', afterwards=True, button_text="☉")
+add('50', _("Missing"), 'missing', afterwards=True, button_text="☉")
 add('60', _("Excused"), 'excused', button_text="⚕")
 # add('10', "☐", 'invited')
 # add('40', "☑", 'present', afterwards=True)
-# add('50', "☉", 'absent', afterwards=True)
+# add('50', "☉", 'missing', afterwards=True)
 # add('60', "⚕", 'excused')
 
 
@@ -85,7 +86,7 @@ GuestStates.present.add_transition(
     required_states='invited')
     # help_text=_("Participant was present."))
 
-GuestStates.absent.add_transition(
+GuestStates.missing.add_transition(
     # "☉",  # 2609 SUN
     required_states='invited')
     # help_text=_("Participant was absent."))
@@ -97,7 +98,7 @@ GuestStates.excused.add_transition(
 
 GuestStates.invited.add_transition(
     # "☐",  # BALLOT BOX \u2610
-    required_states='absent present excused')
+    required_states='missing present excused')
     # help_text=_("Reset state to invited."))
 
 # sender.modules.cal.Event.find_next_date = FindNextDate()
@@ -132,7 +133,7 @@ EntryStates.took_place.add_transition(MarkEventTookPlace)
     # required_states='suggested draft cancelled')
     # help_text=_("Event took place."))
     #icon_name='emoticon_smile')
-#~ EntryStates.absent.add_transition(states='published',icon_file='emoticon_unhappy.png')
+#~ EntryStates.missing.add_transition(states='published',icon_file='emoticon_unhappy.png')
 #~ EntryStates.rescheduled.add_transition(_("Reschedule"),
     #~ states='published',icon_file='date_edit.png')
 EntryStates.cancelled.add_transition(

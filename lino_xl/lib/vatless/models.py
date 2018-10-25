@@ -2,13 +2,6 @@
 # Copyright 2015-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""Database models for `lino_xl.lib.vatless`.
-
-
-
-"""
-
 from __future__ import unicode_literals
 
 import logging

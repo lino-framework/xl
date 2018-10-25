@@ -1,15 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Luc Saffre
-#
+# Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Defines :class:`AppyRenderer` (a subclass of
-:class:`appy.pod.renderer.Renderer`, not of
-:class:`lino.core.renderer.Renderer`).
-
-See also :ref:`lino.admin.appy_templates`.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -84,10 +76,6 @@ def cleankw(kw1):
 
 class AppyRenderer(OriginalAppyRenderer):
 
-    """The extended `appy.pod.renderer` used by Lino.
-
-    """
-
     def __init__(self, ar, template, context, result, **kw):
         self.ar = copy(ar)
         # self.ar.renderer = settings.SITE.kernel.html_renderer
@@ -143,9 +131,6 @@ class AppyRenderer(OriginalAppyRenderer):
         #     traceback.print_exc()
 
     def restify_func(self, unicode_string, **kw):
-        """
-
-        """
         if not unicode_string:
             return ''
 
@@ -161,13 +146,6 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ return renderer.renderXhtml(html.encode('utf-8'),**kw)
 
     def insert_html(self, html, **kw):
-        """
-        Insert a chunk of HTML (not XHTML) provided as a string or as an
-        etree element.
-
-        This is the function that gets called when a template contains a
-        ``do text from html(...)`` statement.
-        """
 
         if html is None or html == '':
             # Testing for `if not html:` caused a FutureWarning: The
@@ -212,9 +190,9 @@ class AppyRenderer(OriginalAppyRenderer):
             [toxml(n) for n in self.my_styles]))
 
     def insert_chunk(self, root, leaf, insert_marker, chunk):
-        """post-process specified xml file by inserting a chunk of XML text
+        """
+        post-process specified xml file by inserting a chunk of XML text
         after the specified insert_marker
-
         """
         #~ insert_marker = insert_marker.encode('utf-8')
         #~ chunk = chunk.encode('utf-8')
@@ -247,7 +225,6 @@ class AppyRenderer(OriginalAppyRenderer):
         return e
 
     def story2odt(self, story, *args, **kw):
-        "Yield a sequence of ODT chunks (as utf8 encoded strings)."
         from lino.core.actors import Actor
         from lino.core.tables import TableRequest
         for item in story:
@@ -273,11 +250,6 @@ class AppyRenderer(OriginalAppyRenderer):
         return obj.as_appy_pod_xml(self)
 
     def insert_table(self, *args, **kw):
-        """
-        This is the function that gets called when a template contains a
-        ``do text from table(...)`` statement.
-
-        """
         if True:
             return self.insert_table_(*args, **kw)
         else:

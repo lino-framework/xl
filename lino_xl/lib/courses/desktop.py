@@ -38,10 +38,12 @@ cal = dd.resolve_app('cal')
 
 try:
     teacher_model = dd.plugins.courses.teacher_model
+    teacher_label = dd.plugins.courses.teacher_label
     pupil_model = dd.plugins.courses.pupil_model
 except AttributeError:
     # Happens only when Sphinx autodoc imports it and this module is
     # not installed.
+    teacher_label = _("Instructor")
     teacher_model = 'foo.Bar'
     pupil_model = 'foo.Bar'
 
@@ -176,7 +178,7 @@ class Activities(dd.Table):
         line=dd.ForeignKey('courses.Line', blank=True, null=True),
         topic=dd.ForeignKey('courses.Topic', blank=True, null=True),
         teacher=dd.ForeignKey(
-            teacher_model, verbose_name=_("Instructor"),
+            teacher_model, verbose_name=teacher_label,
             blank=True, null=True),
         # user=dd.ForeignKey(
         #     settings.SITE.user_model,
@@ -212,7 +214,7 @@ class Activities(dd.Table):
         s = list(super(Activities, cls).get_simple_parameters())
         s.append('line')
         s.append('teacher')
-        s.append('state')
+        # s.append('state')
         # s.add('user')
         return s
 
@@ -285,13 +287,13 @@ class CoursesByTeacher(Activities):
     order_by = ['-start_date']
 
 
-class MyActivities(My, Activities):
+class MyCourses(My, Activities):
     column_names = "start_date:8 room name line workflow_buttons *"
     order_by = ['start_date']
     
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(MyActivities, self).param_defaults(ar, **kw)
+        kw = super(MyCourses, self).param_defaults(ar, **kw)
         # kw.update(state=CourseStates.active)
         kw.update(show_active=dd.YesNo.yes)
         return kw
@@ -607,6 +609,11 @@ class EnrolmentsByPupil(Enrolments):
         kw.update(participants_only=False)
         return kw
 
+    @classmethod
+    def get_actor_label(cls):
+        if cls._course_area is not None:
+            return cls._course_area.text
+        return rt.models.courses.Course._meta.verbose_name_plural
 
 class EnrolmentsByCourse(Enrolments):
     params_panel_hidden = True
@@ -625,6 +632,11 @@ class EnrolmentsByCourse(Enrolments):
     request_date user
     """
 
+    label = _("Participants")
+
+    # @classmethod
+    # def get_actor_label(self):
+    #     return rt.models.courses.Enrolment._meta.verbose_name_plural
 
 class EnrolmentsByOption(Enrolments):
     label = _("Enrolments using this option")

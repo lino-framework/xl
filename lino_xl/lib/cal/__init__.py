@@ -30,7 +30,7 @@ class Plugin(ad.Plugin):
     partner_model = 'contacts.Person'
     ignore_dates_before = None
     ignore_dates_after = None
-
+    
     def on_init(self):
         tod = self.site.today()
         # self.ignore_dates_after = tod.replace(year=tod.year+5, day=28)

@@ -47,7 +47,6 @@ And when the script has finished, I can see the results in the
 from __future__ import unicode_literals
 from builtins import str
 
-import datetime
 from dateutil import parser as dateparser
 
 from django.core.exceptions import ValidationError
@@ -81,6 +80,7 @@ CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
+from lino_xl.lib.contacts.choicelists import CivilStates
 
 Account = dd.resolve_model('ledger.Account')
 
@@ -94,8 +94,8 @@ Company = rt.models.contacts.Company
 
 # lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
-Link = rt.models.humanlinks.Link
-LinkTypes = rt.models.humanlinks.LinkTypes
+# Link = rt.models.humanlinks.Link
+# LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
 List = rt.models.lists.List
@@ -104,13 +104,38 @@ Topic = rt.models.topics.Topic
 Interest = rt.models.topics.Interest
 Note = rt.models.notes.Note
 Guest = rt.models.cal.Guest
+GuestRole = rt.models.cal.GuestRole
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
 EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
+CourseStates = rt.models.courses.CourseStates
+TranslatorTypes = rt.models.courses.TranslatorTypes
+ProfessionalStates = rt.models.tera.ProfessionalStates
+LifeMode = rt.models.tera.LifeMode
+Procurer = rt.models.tera.Procurer
+NoteType = rt.models.notes.NoteType
 
+def par2dates(row):
+    kw = dict()
+    if row.date1:
+        kw.update(start_date=row.date1)
+        if row.date2 and row.date2 > row.date1:
+            # avoid "Date period ends before it started."
+            kw.update(end_date=row.date2)
+    return kw
 
+def fld2fk(v, model):
+    if v:
+        try:
+            p = model.objects.get(id=int(v))
+        except model.DoesNotExist:
+            p = model(designation=v)
+            p.full_clean()
+            p.save()
+        return p
+    
 class TimLoader(TimLoader):
 
     # archived_tables = set('GEN ART VEN VNL JNL FIN FNL'.split())
@@ -120,15 +145,17 @@ class TimLoader(TimLoader):
     
     def __init__(self, *args, **kwargs):
         super(TimLoader, self).__init__(*args, **kwargs)
-        Line = rt.models.courses.Line
         Team = rt.models.teams.Team
         # Country = rt.models.countries.Country
         self.eupen = Team.objects.get(name="Eupen")
         self.stvith = Team.objects.get(name="St. Vith")
 
-        Line = rt.models.courses.Line
-        self.other_groups = Line.objects.filter(
-            course_area=CourseAreas.default).order_by('id')[0]
+        # self.other_groups = Line.objects.filter(
+        #     course_area=CourseAreas.default).order_by('id')[0]
+        self.guest_role_patient = GuestRole.objects.get(pk=1)
+        
+        self.civil_states = {
+            '1': '01', '2': '20', '3':'30', '4':'50', '5':'40'}
         
         self.imported_sessions = set([])
         # self.obsolete_list = []
@@ -183,6 +210,10 @@ class TimLoader(TimLoader):
             return # Household  # List
         #~ dblogger.warning("Unhandled PAR->IdPrt %r",prt)
 
+    def get_users(self, row):
+        return (self.get_user(idusr)
+                for idusr in (row.idusr1, row.idusr2, row.idusr3))
+
     def load_par(self, row):
         # Every PAR potentially yields a partner, a course and an
         # enrolment.  we re-create all courses and enrolments from
@@ -199,42 +230,82 @@ class TimLoader(TimLoader):
         prt = row.idprt
         ref = row.idpar.strip()
         
+        cl = self.par_class(row)
+        if cl is None:
+            partner = None
+        else:
+            try:
+                partner = cl.objects.get(pk=pk)
+                dd.logger.debug(
+                    "Update existing %s %s from %s", cl.__name__, pk, row)
+            except cl.DoesNotExist:
+                try:
+                    partner = Partner.objects.get(pk=pk)
+                except Partner.DoesNotExist:
+                    dd.logger.info("Create new %s %s from %s",
+                                   cl.__name__, pk, row)
+                    partner = timloader1.TimLoader.load_par(self, row).next()
+                else:
+                    dd.logger.debug(
+                        "Specialize partner %s to %s (from %s)",
+                        pk, cl.__name__, row)
+                    if cl is Client:
+                        # A Partner cannot be parent for a Client
+                        insert_child(partner, Person, True)
+                        partner = Person.objects.get(pk=pk)
+                    insert_child(partner, cl, True)
+                    partner = cl.objects.get(pk=pk)
+            yield partner  # yield a first time to get the pk
+
         if prt == "T":
             kw = dict(name=name, line=self.other_groups, id=pk)
             kw.update(ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
-            yield Course(**kw)
-            return
+            course = Course(**kw)
+            yield course
 
-        cl = self.par_class(row)
-        if cl is None:
-            return
-        partner = None
-        try:
-            partner = cl.objects.get(pk=pk)
-            dd.logger.info(
-                "Update existing %s %s from %s", cl.__name__, pk, row)
-        except cl.DoesNotExist:
-            try:
-                partner = Partner.objects.get(pk=pk)
-            except Partner.DoesNotExist:
-                dd.logger.info("Create new %s %s from %s",
-                               cl.__name__, pk, row)
-                partner = timloader1.TimLoader.load_par(self, row).next()
-            else:
-                dd.logger.info(
-                    "Specialize partner %s to %s (from %s)",
-                    pk, cl.__name__, row)
-                if cl is Client:
-                    # A Partner cannot be parent for a Client
-                    insert_child(partner, Person, True)
-                    partner = Person.objects.get(pk=pk)
-                insert_child(partner, cl, True)
-                partner = cl.objects.get(pk=pk)
+        elif prt == "G":
+            if not isinstance(partner, Household):
+                msg = "Partner of life group {} is not a household!?"
+                dd.logger.warning(msg.format(pk))
+            kw = par2dates(row)
+            kw.update(
+                name=name, line=self.life_groups, id=partner.id,
+                partner_id=partner.id)
+            kw.update(ref=ref)
+            course = Course(**kw)
+            yield course
+        
+        elif prt == "P":
+            # if Course.objects.filter(id=obj.id).exists():
+            #     return
+            # if Course.objects.filter(ref=row.idpar.strip()).exists():
+            #     return
+            kw = par2dates(row)
+            kw.update(
+                line=self.therapies,
+                partner_id=partner.id,
+                name=name, id=partner.id,
+                ref=ref)
+            course = Course(**kw)
+            yield course
+            kw = par2dates(row)
+            kw.update(
+                state=EnrolmentStates.get_by_value(row.stand) \
+                or EnrolmentStates.inactive)
+            yield Enrolment(pupil=partner, course=course, **kw)
+            dd.logger.debug("Created enrolment for therapy %s", partner)
+        else:
+            course  = None
+                    
 
-
+        if course is not None:
+            v = row.stand
+            if v:
+                course.state = CourseStates.get_by_value(v) \
+                               or CourseStates.inactive
+            u1, u2, u3 = self.get_users(row)
+            course.teacher = u2 or u1
+            
         if isinstance(partner, Partner):
             if row.gsm:
                 partner.gsm = row.gsm
@@ -255,42 +326,59 @@ class TimLoader(TimLoader):
             
                     
 
-        if issubclass(cl, Person):
+        if isinstance(partner, Person):
             v = row.gebdat
             if isinstance(v, basestring):
-                partner.birth_date = dateparser.parse(v.strip())
+                v = dateparser.parse(v.strip())
+            if v:
+                partner.birth_date = v
             v = row.sexe
             if v:
                 partner.gender = convert_gender(v)
 
-            v = row.beruf
+        # if isinstance(partner, (Client, Household)):
+        if course is not None:
+
+            v = row.attrib
             if v:
-                v = rt.models.tera.ProfessionalStates.get_by_value(v)
-                partner.professional_state = v
-
-        if issubclass(cl, (Client, Household)):
-
+                if "D" in v:
+                    course.translator_type = TranslatorTypes.interpreter
+                    
             v = row.tarif
             if v:
-                t = rt.models.tera.PartnerTariffs.get_by_value(v)
+                t = rt.models.courses.PartnerTariffs.get_by_value(v)
                 if t is None:
                     dd.logger.warning(
                         "Cannot handle tariff {}".format(v))
                 else:
-                    partner.tariff = t
+                    course.tariff = t
 
-            ClientStates = rt.models.clients.ClientStates
-            v = row.stand
+            v = row.bereich
             if v:
-                v = ClientStates.get_by_value(v)
-            if v:
-                partner.client_state = v
-            else:
-                partner.client_state = ClientStates.auto_closed
-                # dd.logger.info(
-                #     "%s : invalid PAR->Stand %s", row, row.stand)
+                t = rt.models.courses.TherapyDomains.get_by_value(v)
+                if t is None:
+                    dd.logger.warning(
+                        "Cannot handle domain {}".format(v))
+                else:
+                    course.therapy_domain = t
+                    
+            course.procurer = fld2fk(row.vermitt, Procurer)
+            if row.vpfl == "X":
+                course.mandatory = True
 
         if isinstance(partner, Client):
+            
+            # ClientStates = rt.models.clients.ClientStates
+            # v = row.stand
+            # if v:
+            #     v = ClientStates.get_by_value(v)
+            # if v:
+            #     partner.client_state = v
+            # else:
+            #     partner.client_state = ClientStates.cancelled
+            #     # dd.logger.info(
+            #     #     "%s : invalid PAR->Stand %s", row, row.stand)
+
             v = row.idnat
             if v:
                 try:
@@ -301,19 +389,36 @@ class TimLoader(TimLoader):
                     dd.logger.info("Inserted new country %s ", v)
                     return
                 partner.nationality = obj
+            # 1 ledig       
+            # 2 verheiratet 
+            # 3 verwitwet   
+            # 4 getrennt    
+            # 5 geschieden
+            v = self.civil_states.get(row.zivilst)
+            if v:
+                partner.civil_state = CivilStates.get_by_value(v)
+            
+            v = row.beruf
+            if v == '10': v = '11'
+            elif v == '20': v = '11'
+            elif v == '30': v = '31'
+            elif v == '40': v = '31'
+            partner.professional_state = ProfessionalStates.get_by_value(v)
 
-        yield partner
+            partner.life_mode = fld2fk(row.lebensw, LifeMode)
 
-        partner.propagate_contact_details()
+        # partner.propagate_contact_details()
 
-        if isinstance(partner, Partner):
-            if row.zahler.strip():
-                v = self.get_partner(Partner, row.zahler)
-                if v:
+        if row.zahler.strip():
+            v = self.get_partner(Partner, row.zahler)
+            if v:
+                if isinstance(partner, Partner):
                     yield SalesRule(partner=partner, invoice_recipient=v)
-                else:
-                    dd.logger.info(
-                        "Could not import zahler %s", row.zahler)
+                if course is not None:
+                    course.partner = v
+            else:
+                dd.logger.info(
+                    "Could not import zahler %s", row.zahler)
 
         if isinstance(partner, Client):
             v = self.get_partner(Company, row.kkasse)
@@ -328,51 +433,39 @@ class TimLoader(TimLoader):
                 yield rt.models.clients.ClientContact(
                     type=cct, client=partner, contact_person=v)
 
-        if prt == "G":
-            if not isinstance(partner, Household):
-                msg = "Partner of life group {} is not a household!?"
-                dd.logger.warning(msg.format(pk))
-            kw = dict(
-                name=name, line=self.life_groups, id=partner.id,
-                partner_id=partner.id)
-            kw.update(ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
-            yield Course(**kw)
         
-        if prt == "P":
-            # if Course.objects.filter(id=obj.id).exists():
-            #     return
-            # if Course.objects.filter(ref=row.idpar.strip()).exists():
-            #     return
-            kw = dict(
-                line=self.therapies,
-                partner_id=partner.id,
-                name=name, id=partner.id,
-                ref=ref)
-            for user in self.get_users(row):
-                kw.update(teacher=user)
-                break
-            therapy = Course(**kw)
-            yield therapy
-            kw = dict()
-            if row.date1:
-                kw.update(start_date=row.date1)
-                if row.date2 and row.date2 > row.date1:
-                    # avoid "Date period ends before it started."
-                    kw.update(end_date=row.date2)
-            kw.update(
-                state=EnrolmentStates.get_by_value(row.stand) \
-                or EnrolmentStates.confirmed)
-            yield Enrolment(pupil=partner, course=therapy, **kw)
-            dd.logger.info("Created enrolment for therapy %s", partner)
+        yield partner
+        yield course
 
 
-    # def load_pls(self, row, **kw):
-    #     kw.update(ref=row.idpls.strip())
-    #     kw.update(name=row.name)
-    #     return List(**kw)
+    def load_plp(self, row, **kw):
+
+        plptype = row.type.strip()
+        if plptype.endswith("-"):
+            return
+        if not plptype:
+            return
+
+        try:
+            role = GuestRole.objects.get(ref=plptype)
+        except GuestRole.DoesNotExist:
+            role = GuestRole(ref=plptype, name=plptype)
+            yield role
+        try:
+            course = Course.objects.get(ref=row.idpar1)
+        except Course.DoesNotExist:
+            dd.logger.warning(
+                "Ignored PLP %s : Invalid idpar1", row)
+            return
+        try:
+            person = Person.objects.get(pk=self.par_pk(row.idpar2))
+        except Person.DoesNotExist:
+            dd.logger.warning(
+                "Ignored PLP %s : Invalid idpar2", row)
+            return
+        yield Enrolment(course=course, pupil=person, guest_role=role,
+                        state='confirmed', request_date=course.start_date)
+
 
     def get_partner(self, model, idpar):
         pk = self.par_pk(idpar.strip())
@@ -404,7 +497,7 @@ class TimLoader(TimLoader):
         elif etat == "A":
             kw.update(state=GuestStates.excused)
         elif etat == "V":
-            kw.update(state=GuestStates.absent)
+            kw.update(state=GuestStates.missing)
         else:
             kw.update(state=GuestStates.present)
         
@@ -427,6 +520,7 @@ class TimLoader(TimLoader):
                 p = course.partner.person
 
         kw.update(partner=p)
+        kw.update(role=self.guest_role_patient)
         o = Guest(**kw)
         try:
             o.full_clean()
@@ -512,6 +606,7 @@ class TimLoader(TimLoader):
             course = Course.get_by_ref(idpar)
         except Course.DoesNotExist:
             course = Course(
+                state=CourseStates.draft,
                 ref=idpar, line=self.other_groups)
             dd.logger.info("Created new therapy %s", course)
             yield course
@@ -576,9 +671,6 @@ class TimLoader(TimLoader):
             dd.logger.warning(
                 "Cannot import MSG %s : no course ref %s", row, idpar)
             return
-        mt, new = rt.models.notes.NoteType.objects.get_or_create(
-            name=row.type.strip())
-            
         # idpar = self.par_pk(row.idpar.strip())
         # if idpar is None:
         #     return
@@ -590,14 +682,22 @@ class TimLoader(TimLoader):
         #     prj = None
         # except Course.MultipleObjectsReturned:
         #     prj = None
-        yield Note(
+        kw = dict(
             project=prj,
-            type=mt,
             user=self.get_user(row.idusr),
             date=row.date,
             time=row.time.strip(),
             subject=row.titre.strip(),
             body=self.dbfmemo(row.texte))
+        mtname = row.type.strip().upper()
+        if mtname:
+            try:
+                mt = NoteType.objects.get(name=mtname)
+            except NoteType.DoesNotExist:
+                mt = NoteType(name=mtname)
+                yield mt
+            kw.update(type=mt)
+        yield Note(**kw)
         
         
 
@@ -618,7 +718,21 @@ class TimLoader(TimLoader):
 
         bulkdel(Guest, Event, SalesRule)
         bulkdel(Interest, Topic, Note)
+        # bulkdel(Link)
+        bulkdel(households_Member)
         bulkdel(ClientContact, Enrolment, Course)
+        bulkdel(Line)
+
+        a = CourseAreas.default
+        self.other_groups = create_row(
+            Line, name=a.text, course_area=a, ref=a.value)
+        a = CourseAreas.life_groups
+        self.life_groups = create_row(
+            Line, name=a.text, course_area=a, ref=a.value)
+        a = CourseAreas.therapies
+        self.therapies = create_row(
+            Line, name=a.text, course_area=a, ref=a.value)
+        
         
         yield self.load_dbf('PAR')
         yield self.load_dbf('PLP')

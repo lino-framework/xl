@@ -98,8 +98,8 @@ def objects():
 
         households.Household.create_household(ar, P, P1, divorced)
         hh = households.Household.create_household(ar, P, P2, married)
-        hh.members_by_role('head')[0].set_primary(ar)
-        hh.members_by_role('partner')[0].set_primary(ar)
+        hh.members_by_role('head')[0].set_primary()
+        hh.members_by_role('partner')[0].set_primary()
 
         households.Household.create_household(ar, L, L1, married)
 

@@ -56,30 +56,22 @@ class Plugin(ad.Plugin):  # was: use_eidreader
 
     urlhandler_prefix = 'beid://'
     """
-    Set this to a string to be passed to eidreader by the
-    Javascript beid_card_processor() function.
+    Set this to a string to be passed by the
+    :func:`beid_card_processor` Javascript function to the URL
+    protocol handler responsible for running eidreader.
 
     Default value is ``'beid://'`` which should work in a standard
     usage.
-
-    You can disable eidreader functionality by saying::
-
-       SITE.plugins.beid.urlhandler_prefix = None
 
     You can tell Lino to use another URL protocol than ``beid`` by
     saying::
 
        SITE.plugins.beid.urlhandler_prefix = 'mybeid://'  
 
-    Of if all client machines need to authenticate to a proxy with
-    HTTP basic auth, you can say::
+    You can disable eidreader functionality by saying::
 
-       SITE.plugins.beid.urlhandler_prefix = 'beid://username:password@'
+       SITE.plugins.beid.urlhandler_prefix = None
 
-    See `python-requests docs
-    <http://docs.python-requests.org/en/master/user/advanced/#proxies>`__
-    for additional information.  Other authentication methods for
-    proxies are currently not supported.
     """
 
     def on_site_startup(self, kernel):

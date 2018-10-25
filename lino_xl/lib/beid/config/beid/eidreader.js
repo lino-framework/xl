@@ -18,6 +18,7 @@ Lino.beid_read_card_processor = function() {
     // var card = {}
     var my_id = uuid();
     var url = "{{settings.SITE.plugins.beid.urlhandler_prefix}}" + window.location.origin + "/eid/" + my_id;
+    console.log("Gonna open", url);
     var popup = window.open(url);
     popup.close();
     return { uuid: my_id };

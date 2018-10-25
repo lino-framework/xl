@@ -5,12 +5,14 @@ from lino.core.roles import UserRole
 
 
 class SimpleContactsUser(UserRole):
-    pass
+    """Has limited access to contact data."""
     
 class ContactsUser(SimpleContactsUser):
-    pass
+    """Has full access to contact data."""
+
 
 
 class ContactsStaff(ContactsUser):
-    pass
+    """Has configure contacts functionality."""
+
 

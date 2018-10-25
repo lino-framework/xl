@@ -1,13 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015-2017 Luc Saffre
+# Copyright 2015-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
-"""Actors for `lino_xl.lib.vatless`.
-
-
-
-"""
 
 from __future__ import unicode_literals
 

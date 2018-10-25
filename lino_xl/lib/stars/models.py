@@ -6,7 +6,7 @@
 """Database models for `lino_xl.lib.stars`.
 
 """
-
+from builtins import str
 
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
@@ -217,8 +217,7 @@ class AllStarsByController(Stars):
     column_names = "user master_owner *"
 
 
-from etgen.html import E
-from lino.utils import join_elems
+from etgen.html import E, join_elems
 
 
 def welcome_messages(ar):
@@ -231,7 +230,7 @@ def welcome_messages(ar):
     Star = rt.models.stars.Star
     qs = Star.objects.filter(user=ar.get_user()).exclude(nickname='')
     if qs.count() > 0:
-        chunks = [unicode(_("Your stars are "))]
+        chunks = [str(_("Your stars are "))]
         chunks += join_elems([
             ar.obj2html(obj.owner, obj.nickname or unicode(obj.owner))
             for obj in qs])

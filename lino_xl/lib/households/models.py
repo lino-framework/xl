@@ -342,7 +342,7 @@ class Member(mixins.DateRange, mixins.Human, mixins.Born):
     def disabled_fields(self, ar):
         rv = super(Member, self).disabled_fields(ar)
         if self.person_id:
-            rv = rv | person_fields
+            rv |= person_fields
         #~ logger.info("20130808 pcsw %s", rv)
         return rv
 

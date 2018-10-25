@@ -102,3 +102,4 @@ def objects():
     # date = settings.SITE.demo_date(200)
     # e = Event(start_date=date, summary="Conflicting 1", event_type=ETYPES.pop(), user=USERS.pop())
     # yield e
+

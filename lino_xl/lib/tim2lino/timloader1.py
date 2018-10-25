@@ -196,7 +196,10 @@ def store_date(row, obj, rowattr, objattr):
 
 def year_num(iddoc):
     # TODO: handle data before A.D. 2000
-    year = ledger.FiscalYear.from_int(2000 + int(iddoc[:2]))
+    iyear = 2000 + int(iddoc[:2])
+    if iyear < 2017:
+        return (None, None)
+    year = ledger.FiscalYear.from_int(iyear)
     num = int(iddoc[2:])
     return (year, num)
 

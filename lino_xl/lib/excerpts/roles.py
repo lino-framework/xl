@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 """
@@ -9,7 +9,7 @@ Roles for this plugin.
 from lino.core.roles import UserRole
 
 class ExcerptsUser(UserRole):
-    pass
+    """Can print documents using database excerpts."""
 
 class ExcerptsStaff(ExcerptsUser):
-    pass
+    """Can configure database excerpts functionality."""

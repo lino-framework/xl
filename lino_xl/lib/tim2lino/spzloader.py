@@ -15,7 +15,6 @@ import datetime
 from builtins import str
 
 # from lino.utils import mti
-from lino.utils.instantiator import create_row
 from lino.api import dd, rt, _
 from lino.utils.instantiator import create
 from django.core.exceptions import ValidationError
@@ -33,6 +32,7 @@ Client = rt.models.tera.Client
 Course = rt.models.courses.Course
 Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
+Course = rt.models.courses.Course
 Enrolment = rt.models.courses.Enrolment
 
 Account = dd.resolve_model('ledger.Account')
@@ -40,14 +40,13 @@ Account = dd.resolve_model('ledger.Account')
 working = dd.resolve_app('working')
 
 User = rt.models.users.User
+Note = rt.models.notes.Note
 UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
 # Coaching = rt.models.coachings.Coaching
 
 # lists_Member = rt.models.lists.Member
 households_Member = rt.models.households.Member
-Link = rt.models.humanlinks.Link
-LinkTypes = rt.models.humanlinks.LinkTypes
 households_MemberRoles = rt.models.households.MemberRoles
 
 
@@ -62,24 +61,20 @@ class TimLoader(TimLoader):
         super(TimLoader, self).__init__(*args, **kwargs)
         self.imported_sessions = set([])
         self.obsolete_list = []
-        plptypes = dict()
-        plptypes['01'] = LinkTypes.parent
-        plptypes['01R'] = None
-        plptypes['02'] = LinkTypes.uncle
-        plptypes['02R'] = None
-        plptypes['03'] = LinkTypes.stepparent
-        plptypes['03R'] = None
-        plptypes['04'] = LinkTypes.grandparent
-        plptypes['04R'] = None
-        plptypes['10'] = LinkTypes.spouse
-        plptypes['11'] = LinkTypes.friend
-        self.linktypes = plptypes
-        a = CourseAreas.default
-        self.other_groups = create_row(Line, name=a.text, course_area=a)
-        a = CourseAreas.life_groups
-        self.life_groups = create_row(Line, name=a.text, course_area=a)
-        a = CourseAreas.therapies
-        self.therapies = create_row(Line, name=a.text, course_area=a)
+        # LinkTypes = rt.models.humanlinks.LinkTypes
+        # plptypes = dict()
+        # plptypes['01'] = LinkTypes.parent
+        # plptypes['01R'] = None
+        # plptypes['02'] = LinkTypes.uncle
+        # plptypes['02R'] = None
+        # plptypes['03'] = LinkTypes.stepparent
+        # plptypes['03R'] = None
+        # plptypes['04'] = LinkTypes.grandparent
+        # plptypes['04R'] = None
+        # plptypes['10'] = LinkTypes.spouse
+        # plptypes['11'] = LinkTypes.friend
+        # self.linktypes = plptypes
+        
         
     def get_users(self, row):
         for idusr in (row.idusr2, row.idusr1, row.idusr3):
@@ -223,6 +218,8 @@ class TimLoader(TimLoader):
             return None
     
     def load_plp(self, row, **kw):
+        # Link = rt.models.humanlinks.Link
+        # LinkTypes = rt.models.humanlinks.LinkTypes
 
         plptype = row.type.strip()
         if plptype.endswith("-"):
@@ -264,7 +261,7 @@ class TimLoader(TimLoader):
                     "Ignored PLP %s : Invalid idpar2", row)
                 return
             # return lists_Member(list=p1, partner=p2)
-            yield Enrolment(course=p1, pupil=p2)  # 
+            yield Enrolment(course=p1, pupil=p2, state='confirmed')  # 
 
         elif plptype[0] in "78":
             p1 = self.get_partner(Household, row.idpar1)
@@ -298,7 +295,8 @@ class TimLoader(TimLoader):
                 dd.logger.warning(
                     "Ignored PLP %s : no course for idpar1", row)
                 return
-            yield Enrolment(course=p1, pupil=p2, remark=str(role))
+            yield Enrolment(course=p1, pupil=p2, remark=str(role),
+                            state='confirmed')
         elif plptype == "81-":
             return
         dd.logger.debug(
@@ -428,8 +426,8 @@ class TimLoader(TimLoader):
             if isinstance(par1, Person):
                 replace(Enrolment, 'pupil', True)
                 replace(rt.models.households.Member, 'person')
-                replace(rt.models.humanlinks.Link, 'parent')
-                replace(rt.models.humanlinks.Link, 'child')
+                #replace(rt.models.humanlinks.Link, 'parent')
+                #replace(rt.models.humanlinks.Link, 'child')
                 replace(rt.models.cal.Guest, 'partner', True)
                 replace(rt.models.clients.ClientContact, 'client')
 
@@ -449,7 +447,28 @@ class TimLoader(TimLoader):
                 dd.logger.warning("Failed to delete {} : {}".format(
                     par1, e))
                 
-        # super(TimLoader, self).finalize()
+        super(TimLoader, self).finalize()
+
+        dd.logger.info("Deleting dangling individual therapies")
+        # if there is exactly one therapy for a patient, and if that
+        # therapy has only one enrolment, and if that patient has
+        # enrolments in other therapies as well, then the therapy is
+        # useless
+        
+        for p in Client.objects.all():
+            qs = Course.objects.filter(partner=p)
+            if qs.count() == 1:
+                et = qs[0]
+                if Note.objects.filter(project=et).count():
+                    continue
+                qs = Enrolment.objects.filter(pupil=p)
+                qs = qs.exclude(course=et)
+                if qs.count() > 0:
+                    qs = Enrolment.objects.filter(course=et)
+                    if qs.count() == 1:
+                        Enrolment.objects.filter(course=et).delete()
+                        et.delete()
+                    
         
                 
     def objects(self):

@@ -46,7 +46,7 @@ add('10', _("Invited"), 'invited')
 add('20', _("Accepted"), 'accepted')
 add('30', _("Rejected"), 'rejected')
 add('40', _("Present"), 'present', afterwards=True)
-add('50', _("Absent"), 'absent', afterwards=True)
+add('50', _("Absent"), 'missing', afterwards=True)
 add('60', _("Excused"), 'excused', afterwards=True)
 
 GuestStates.present_states = set([GuestStates.present])
@@ -177,7 +177,7 @@ class CloseMeeting(dd.ChangeStateAction):
 GuestStates.accepted.add_transition(AcceptInvitation)
 GuestStates.rejected.add_transition(RejectInvitation)
 GuestStates.present.add_transition(MarkPresent)
-GuestStates.absent.add_transition(MarkAbsent)
+GuestStates.missing.add_transition(MarkAbsent)
 GuestStates.excused.add_transition(MarkExcused)
 
 

@@ -31,7 +31,7 @@ from lino.modlib.office.roles import OfficeStaff
 from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
 
-from .choicelists import (TaskStates, EntryStates, GuestStates)
+from .choicelists import TaskStates, EntryStates, GuestStates
 from .actions import UpdateGuests
     
 from .mixins import Component
@@ -92,8 +92,9 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
         blank=True, null=True,
         verbose_name=_("End time"))
 
+dd.update_field(DailyPlannerRow, 'overview', verbose_name=_("Time range"))
 
-from lino.mixins.periods import ObservedDateRange
+#from lino.mixins.periods import ObservedDateRange
 from etgen.html import E
 from lino.utils import join_elems
 
@@ -135,7 +136,10 @@ class DailyPlanner(DailyPlannerRows):
         Event = rt.models.cal.Event
 
         def fmt(e):
-            t = str(e.start_time)[:5]
+            if e.start_time:
+                t = str(e.start_time)[:5]
+            else:
+                t = str(e.event_type)
             u = e.user
             if u is None:
                 return "{} {}".format(
@@ -277,8 +281,9 @@ class GuestRole(mixins.BabelNamed):
 
     class Meta:
         app_label = 'cal'
-        verbose_name = _("Guest Role")
-        verbose_name_plural = _("Guest Roles")
+        verbose_name = _("Guest role")
+        verbose_name_plural = _("Guest roles")
+        abstract = dd.is_abstract_model(__name__, 'GuestRole')
 
 
 def default_color():

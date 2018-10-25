@@ -222,6 +222,11 @@ class NotesByX(Notes):
     column_names = "date time event_type type subject user *"
     order_by = ["-date", "-time"]
     display_mode = 'summary'
+    insert_layout = """
+    event_type:25 type:25
+    subject
+    project #company
+    """
 
     @classmethod
     def summary_row(cls, ar, obj, **kwargs):

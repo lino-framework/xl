@@ -209,8 +209,8 @@ class BankStatementItem(DatedFinancialVoucherItem):
         verbose_name = _("Bank Statement item")
         verbose_name_plural = _("Bank Statement items")
     voucher = dd.ForeignKey('finan.BankStatement', related_name='items')
-    debit = DcAmountField(DEBIT, _("Income"))
-    credit = DcAmountField(CREDIT, _("Expense"))
+    debit = DcAmountField(CREDIT, _("Income"))
+    credit = DcAmountField(DEBIT, _("Expense"))
 
 
 class PaymentOrderItem(BankAccount, FinancialVoucherItem):

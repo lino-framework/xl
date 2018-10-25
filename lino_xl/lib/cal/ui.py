@@ -113,7 +113,7 @@ class SubscriptionsByCalendar(Subscriptions):
 
 
 def check_subscription(user, calendar):
-    "Check whether the given subscription exists. If not, create it."
+    # Check whether the given subscription exists. If not, create it.
     Subscription = rt.models.cal.Subscription
     if calendar is None:
         return
@@ -279,19 +279,69 @@ class GuestRoles(dd.Table):
     cal.GuestsByRole
     """
 
+class GuestDetail(dd.DetailLayout):
+    window_size = (60, 'auto')
+    main = """
+    event partner role
+    state remark workflow_buttons
+    # outbox.MailsByController
+    """
 
-class Guests(dd.Table):
+class CalendarView(dd.Table):
+
+    @classmethod
+    def get_table_summary(self, obj, ar):
+        if ar is None:
+            return ''
+        sar = self.request_from(ar, master_instance=obj)
+
+        state_coll = {}
+        cal = CalendarRenderer()
+        for evt in sar:
+            if isinstance(evt, rt.models.cal.Guest):
+                evt = evt.event
+            # if len(elems) > 0:
+            #     elems.append(', ')
+            if evt.state in state_coll:
+                state_coll[evt.state] += 1
+            else:
+                state_coll[evt.state] = 1
+
+            cal.collect(evt.start_date, evt)
+
+        elems = [cal.to_html(ar)]
+
+        ul = []
+        for st in EntryStates.get_list_items():
+            ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
+        toolbar = []
+        toolbar += join_elems(ul, sep=', ')
+        # elems = join_elems(ul, sep=E.br)
+        if isinstance(obj, rt.models.cal.EventGenerator):
+            ar1 = obj.do_update_events.request_from(sar)
+            if ar1.get_permission():
+                btn = ar1.ar2button(obj)
+                toolbar.append(btn)
+
+        ar2 = self.insert_action.request_from(sar)
+        if ar2.get_permission():
+            btn = ar2.ar2button()
+            toolbar.append(btn)
+
+        if len(toolbar):
+            toolbar = join_elems(toolbar, sep=' ')
+            elems.append(E.p(*toolbar))
+
+        return ar.html_text(E.div(*elems))
+    
+class Guests(CalendarView):
     model = 'cal.Guest'
     # required_roles = dd.login_required((OfficeUser, OfficeOperator))
     required_roles = dd.login_required(GuestOperator)
     column_names = 'partner role workflow_buttons remark event *'
     order_by = ['event__start_date', 'event__start_time']
     stay_in_grid = True
-    detail_layout = """
-    event partner role
-    state remark workflow_buttons
-    # outbox.MailsByController
-    """
+    detail_layout = "cal.GuestDetail"
     insert_layout = dd.InsertLayout("""
     event
     partner
@@ -399,10 +449,10 @@ class GuestsByPartner(Guests):
     master_key = 'partner'
     required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
-    column_names = 'event__when_text workflow_buttons'
+    column_names = 'event__when_text event__overview workflow_buttons'
     auto_fit_column_widths = True
     display_mode = "summary"
-    order_by = ['event__start_date', 'event__start_time']
+    order_by = ['-event__start_date', '-event__start_time']
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -411,25 +461,25 @@ class GuestsByPartner(Guests):
         kw.update(end_date=dd.today(7))
         return kw
 
-    @classmethod
-    def get_table_summary(self, obj, ar):
-        if ar is None:
-            return ''
-        sar = self.request_from(ar, master_instance=obj)
+    # @classmethod
+    # def get_table_summary(self, obj, ar):
+    #     if ar is None:
+    #         return ''
+    #     sar = self.request_from(ar, master_instance=obj)
 
-        elems = []
-        fmt = rt.models.cal.EventGenerator.get_cal_entry_renderer(
-            day_and_month)
-        for guest in sar:
-            if len(elems):
-                elems.append(', ')
-            elems.extend(fmt(guest.event, ar))
-            # lbl = fmt(guest.event.start_date)
-            # if guest.state.button_text:
-            #     lbl = "{0}{1}".format(lbl, guest.state.button_text)
-            # elems.append(ar.obj2html(guest.event, lbl))
-        # elems = join_elems(elems, sep=', ')
-        return ar.html_text(E.div(*elems))
+    #     elems = []
+    #     fmt = rt.models.cal.EventGenerator.get_cal_entry_renderer(
+    #         day_and_month)
+    #     for guest in sar:
+    #         if len(elems):
+    #             elems.append(', ')
+    #         elems.extend(fmt(guest.event, ar))
+    #         # lbl = fmt(guest.event.start_date)
+    #         # if guest.state.button_text:
+    #         #     lbl = "{0}{1}".format(lbl, guest.state.button_text)
+    #         # elems.append(ar.obj2html(guest.event, lbl))
+    #     # elems = join_elems(elems, sep=', ')
+    #     return ar.html_text(E.div(*elems))
 
 class MyPresences(Guests):
     required_roles = dd.login_required(OfficeUser)
@@ -577,6 +627,12 @@ class EventDetail(dd.DetailLayout):
     description GuestsByEvent #outbox.MailsByController
     """
 
+class EventInsert(dd.InsertLayout):
+    main = """
+    start_date start_time end_date end_time
+    summary
+    # room priority access_class transparent
+    """
 
 class EventEvents(dd.ChoiceList):
     verbose_name = _("Observed event")
@@ -603,11 +659,7 @@ class Events(dd.Table):
     order_by = ["start_date", "start_time", "id"]
 
     detail_layout = 'cal.EventDetail'
-    insert_layout = """
-    start_date start_time end_date end_time
-    summary
-    # room priority access_class transparent
-    """
+    insert_layout = 'cal.EventInsert'
     detail_html_template = "cal/Event/detail.html"
 
     params_panel_hidden = True
@@ -922,7 +974,7 @@ class CalendarRenderer(object):
         
 
 
-class EntriesByController(Events):
+class EntriesByController(Events, CalendarView):
     required_roles = dd.login_required((OfficeOperator, OfficeUser))
     # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
@@ -933,47 +985,6 @@ class EntriesByController(Events):
     order_by = ["start_date", "start_time", "auto_type", "id"]
     # order_by = ['seqno']
 
-    @classmethod
-    def get_table_summary(self, obj, ar):
-        if ar is None:
-            return ''
-        sar = self.request_from(ar, master_instance=obj)
-
-        state_coll = {}
-        cal = CalendarRenderer()
-        for evt in sar:
-            # if len(elems) > 0:
-            #     elems.append(', ')
-            if evt.state in state_coll:
-                state_coll[evt.state] += 1
-            else:
-                state_coll[evt.state] = 1
-
-            cal.collect(evt.start_date, evt)
-
-        elems = [cal.to_html(ar)]
-
-        ul = []
-        for st in EntryStates.get_list_items():
-            ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
-        toolbar = []
-        toolbar += join_elems(ul, sep=', ')
-        # elems = join_elems(ul, sep=E.br)
-        ar1 = obj.do_update_events.request_from(sar)
-        if ar1.get_permission():
-            btn = ar1.ar2button(obj)
-            toolbar.append(btn)
-
-        ar2 = self.insert_action.request_from(sar)
-        if ar2.get_permission():
-            btn = ar2.ar2button()
-            toolbar.append(btn)
-
-        if len(toolbar):
-            toolbar = join_elems(toolbar, sep=' ')
-            elems.append(E.p(*toolbar))
-
-        return ar.html_text(E.div(*elems))
     
 
 if settings.SITE.project_model:
