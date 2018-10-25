@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-24 22:40+0300\n"
-"PO-Revision-Date: 2018-10-25 20:26+0300\n"
+"PO-Revision-Date: 2018-10-25 20:38+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -1893,7 +1893,7 @@ msgstr "Versammlung beenden"
 
 #: lino_xl/lib/cal/workflows/voga.py:32
 msgid "Cannot mark as {state} because {count} participants are invited."
-msgstr ""
+msgstr "Kann nicht  auf {state} schalten, weil {count} Teilnehmer eingeladen sind."
 
 #: lino_xl/lib/cal/workflows/voga.py:63
 msgid "Any manual changes to your event will get lost upon next update "
