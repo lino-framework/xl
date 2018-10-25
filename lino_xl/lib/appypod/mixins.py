@@ -23,6 +23,8 @@ class PrintTableAction(actions.Action):
     "Show this table as a pdf document"
     label = _("Table (landscape)")
     icon_name = 'page_white_acrobat'
+    ui5_icon_name = 'sap-icon://pdf-attachment'
+
     sort_index = -10
     select_rows = False
     default_format = 'ajax'
