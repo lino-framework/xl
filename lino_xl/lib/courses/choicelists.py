@@ -23,7 +23,7 @@ class CourseState(dd.State):
     is_active = True
     is_editable = True
     is_invoiceable = True
-    auto_update_calendar = True
+    auto_update_calendar = False
 
 class CourseStates(dd.Workflow):
     item_class = CourseState
@@ -31,7 +31,8 @@ class CourseStates(dd.Workflow):
     is_exposed = models.BooleanField(_("Exposed"), default=True)
     is_invoiceable = models.BooleanField(_("Invoiceable"), default=True)
     is_editable = models.BooleanField(_("Editable"), default=True)
-    auto_update_calendar = models.BooleanField(_("Update calendar"), default=True)
+    auto_update_calendar = models.BooleanField(
+        _("Update calendar"), default=False)
     column_names = "value name text is_exposed is_editable is_invoiceable auto_update_calendar"
 
 add = CourseStates.add_item

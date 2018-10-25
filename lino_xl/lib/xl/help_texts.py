@@ -803,7 +803,8 @@ in this course."""),
     'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
     'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
     'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
-    'lino_xl.lib.courses.Activities' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.Courses' : _("""Base table for all activities."""),
+    'lino_xl.lib.courses.Courses.show_exposed' : _("""Whether to show or to hide courses in an exposed state."""),
     'lino_xl.lib.courses.MyCourses' : _("""Show the courses authored by me (i.e. where I am the responsible
 manager).  Compare MyCoursesGiven."""),
     'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
