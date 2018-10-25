@@ -184,15 +184,15 @@ class Activities(dd.Table):
         # user=dd.ForeignKey(
         #     settings.SITE.user_model,
         #     blank=True, null=True),
-        show_active=dd.YesNo.field(
-            _("Active"), blank=True,
-            help_text=_("Whether to show rows in some active state")),
+        show_exposed=dd.YesNo.field(
+            _("Exposed"), blank=True,
+            help_text=_("Whether to show rows in an exposed state")),
         state=CourseStates.field(blank=True),
         can_enroll=dd.YesNo.field(blank=True),
     )
 
     params_layout = """topic line user teacher state 
-    room can_enroll:10 start_date end_date show_active"""
+    room can_enroll:10 start_date end_date show_exposed"""
 
     # simple_parameters = 'line teacher state user'.split()
 
@@ -242,7 +242,7 @@ class Activities(dd.Table):
         qs = PeriodEvents.active.add_filter(qs, pv)
 
         qs = self.model.add_param_filter(
-            qs, show_active=pv.show_active)
+            qs, show_exposed=pv.show_exposed)
         
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
@@ -296,7 +296,7 @@ class MyCourses(My, Activities):
     def param_defaults(self, ar, **kw):
         kw = super(MyCourses, self).param_defaults(ar, **kw)
         # kw.update(state=CourseStates.active)
-        kw.update(show_active=dd.YesNo.yes)
+        kw.update(show_exposed=dd.YesNo.yes)
         return kw
 
 
@@ -366,7 +366,7 @@ class CoursesByTopic(Activities):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
-        kw.update(show_active=dd.YesNo.yes)
+        kw.update(show_exposed=dd.YesNo.yes)
         return kw
 
 

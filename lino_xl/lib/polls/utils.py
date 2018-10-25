@@ -1,12 +1,13 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Luc Saffre
+# Copyright 2013-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from lino.api import dd
 from django.utils.translation import ugettext_lazy as _
-
+from lino.mixins import RegistrableState
+from lino.api import dd
 
 class PollStates(dd.Workflow):
+    item_class = RegistrableState
     verbose_name_plural = _("Poll states")
     required_roles = dd.login_required(dd.SiteStaff)
 
@@ -25,13 +26,14 @@ PollStates.draft.add_transition(
 
 
 class ResponseStates(dd.Workflow):
+    item_class = RegistrableState
     verbose_name_plural = _("Response states")
     required_roles = dd.login_required(dd.SiteStaff)
 
 
 add = ResponseStates.add_item
-add('10', _("Draft"), 'draft', editable=True)
-add('20', _("Registered"), 'registered', editable=False)
+add('10', _("Draft"), 'draft', is_editable=True)
+add('20', _("Registered"), 'registered', is_editable=False)
 
 
 ResponseStates.registered.add_transition(

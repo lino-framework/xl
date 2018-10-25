@@ -316,7 +316,7 @@ class Response(UserAuthored, mixins.Registrable):
 
     poll = dd.ForeignKey('polls.Poll', related_name='responses')
     date = models.DateField(_("Date"), default=dd.today)
-    state = ResponseStates.field(default=ResponseStates.as_callable('draft'))
+    state = ResponseStates.field(default='draft')
     remark = models.TextField(verbose_name=_("My general remark"), blank=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 

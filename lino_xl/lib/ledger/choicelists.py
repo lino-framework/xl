@@ -365,7 +365,7 @@ def inject_tradetype_fields(sender, **kw):
 
 
 class VoucherState(dd.State):
-    editable = False
+    is_editable = False
 
 
 class VoucherStates(dd.Workflow):
@@ -373,10 +373,10 @@ class VoucherStates(dd.Workflow):
 
     @classmethod
     def get_editable_states(cls):
-        return [o for o in cls.objects() if o.editable]
+        return [o for o in cls.objects() if o.is_editable]
 
 add = VoucherStates.add_item
-add('10', _("Draft"), 'draft', editable=True)
+add('10', _("Draft"), 'draft', is_editable=True)
 add('20', _("Registered"), 'registered')
 add('30', _("Signed"), 'signed')
 add('40', _("Cancelled"), 'cancelled')

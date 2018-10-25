@@ -681,6 +681,11 @@ class RecurrenceSet(Started, Ended):
 
 dd.update_field(RecurrenceSet, 'start_date', default=dd.today)
 
+from lino.core.workflows import Workflow
+
+class ReservationStates(Workflow):
+    is_editable = models.BooleanField(_("Editable"), default=True)
+
 
 class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
                   UserAuthored):
@@ -692,17 +697,16 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
     max_date = models.DateField(
         blank=True, null=True,
         verbose_name=_("Generate events until"))
-
-    # no longer needed after 20170826
-    # @classmethod
-    # def setup_parameters(cls, **fields):
-    #     """Adds the :attr:`room` filter parameter field."""
-    #     fld = cls._meta.get_field('room')
-    #     fields.setdefault(
-    #         'room', dd.ForeignKey(
-    #             'cal.Room', verbose_name=fld.verbose_name,
-    #             blank=True, null=True))
-    #     return super(Reservation, cls).setup_parameters(**fields)
+    
+    @classmethod
+    def on_analyze(cls, site):
+        super(Reservation, cls).on_analyze(site)
+        ic = cls.workflow_state_field.choicelist
+        k = 'auto_update_calendar'
+        if not hasattr(ic, k):
+            raise ChangedAPI(
+                "The workflow state field for {} uses {} which "
+                "has no attribute {}".format(cls, ic, k))
 
     @classmethod
     def get_simple_parameters(cls):
@@ -735,21 +739,6 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
         if target_state.auto_update_calendar:
             self.update_reminders(ar)
 
-    @classmethod
-    def on_analyze(cls, site):
-        super(Reservation, cls).on_analyze(site)
-        ic = cls.workflow_state_field.choicelist
-        if not hasattr(ic, 'auto_update_calendar'):
-            raise ChangedAPI(
-                "workflow_state_field for {} uses {} which "
-                "has no attribute "
-                "auto_update_calendar".format(cls, ic))
-        
-
-    #~ def after_ui_save(self,ar):
-        #~ super(Reservation,self).after_ui_save(ar)
-        #~ if self.state.editable:
-            #~ self.update_reminders(ar)
 
 class Component(Started,
                 mixins.ProjectRelated,
