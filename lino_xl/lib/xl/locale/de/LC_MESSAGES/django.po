@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-10-24 22:40+0300\n"
-"PO-Revision-Date: 2018-10-25 20:38+0300\n"
+"PO-Revision-Date: 2018-10-25 20:41+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -1897,7 +1897,7 @@ msgstr "Kann nicht  auf {state} schalten, weil {count} Teilnehmer eingeladen sin
 
 #: lino_xl/lib/cal/workflows/voga.py:63
 msgid "Any manual changes to your event will get lost upon next update "
-msgstr ""
+msgstr "Dadurch gehen manuell Änderungen am Termin verloren."
 
 #: lino_xl/lib/cal/workflows/voga.py:65 lino_xl/lib/courses/desktop.py:558
 #: lino_xl/lib/courses/workflows.py:32 lino_xl/lib/mailbox/models.py:74
