@@ -470,8 +470,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         'ledger.AccountingPeriod', blank=True)
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
-    state = VoucherStates.field(
-        default=VoucherStates.as_callable('draft'))
+    state = VoucherStates.field(default='draft')
     workflow_state_field = 'state'
 
     #~ @classmethod
@@ -760,14 +759,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         b = rt.models.ledger.Movement(**kw)
         return b
 
-    #~ def get_row_permission(self,ar,state,ba):
-        #~ """
-        #~ Only invoices in an editable state may be edited.
-        #~ """
-        #~ if not ba.action.readonly and self.state is not None and not self.state.editable:
-            #~ return False
-        #~ return super(Voucher,self).get_row_permission(ar,state,ba)
-
     def get_mti_leaf(self):
         return mti.get_child(self, self.journal.voucher_type.model)
 
@@ -801,6 +792,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         # raise NotImplementedError()
 
 Voucher.set_widget_options('number_with_year', width=8)
+# Voucher.set_widget_options('number', hide_sum=True)
 
 
 @dd.python_2_unicode_compatible

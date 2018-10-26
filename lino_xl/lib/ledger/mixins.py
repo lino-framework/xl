@@ -137,7 +137,7 @@ class VoucherItem(dd.Model):
         """Items of registered invoices may not be edited
 
         """
-        if not self.voucher.state.editable:
+        if not self.voucher.state.is_editable:
             if not ba.action.readonly:
                 return False
         return super(VoucherItem, self).get_row_permission(ar, state, ba)

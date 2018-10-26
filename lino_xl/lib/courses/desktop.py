@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -17,6 +17,7 @@ ONE = Decimal(1)
 from django.db import models
 from django.db.models import Q
 from django.conf import settings
+from django.utils.text import format_lazy
 
 from lino.api import dd, rt, _
 from lino import mixins
@@ -183,15 +184,15 @@ class Activities(dd.Table):
         # user=dd.ForeignKey(
         #     settings.SITE.user_model,
         #     blank=True, null=True),
-        show_active=dd.YesNo.field(
-            _("Active"), blank=True,
-            help_text=_("Whether to show rows in some active state")),
+        show_exposed=dd.YesNo.field(
+            _("Exposed"), blank=True,
+            help_text=_("Whether to show rows in an exposed state")),
         state=CourseStates.field(blank=True),
         can_enroll=dd.YesNo.field(blank=True),
     )
 
     params_layout = """topic line user teacher state 
-    room can_enroll:10 start_date end_date show_active"""
+    room can_enroll:10 start_date end_date show_exposed"""
 
     # simple_parameters = 'line teacher state user'.split()
 
@@ -241,7 +242,7 @@ class Activities(dd.Table):
         qs = PeriodEvents.active.add_filter(qs, pv)
 
         qs = self.model.add_param_filter(
-            qs, show_active=pv.show_active)
+            qs, show_exposed=pv.show_exposed)
         
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
@@ -295,7 +296,7 @@ class MyCourses(My, Activities):
     def param_defaults(self, ar, **kw):
         kw = super(MyCourses, self).param_defaults(ar, **kw)
         # kw.update(state=CourseStates.active)
-        kw.update(show_active=dd.YesNo.yes)
+        kw.update(show_exposed=dd.YesNo.yes)
         return kw
 
 
@@ -365,7 +366,7 @@ class CoursesByTopic(Activities):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(CoursesByTopic, self).param_defaults(ar, **kw)
-        kw.update(show_active=dd.YesNo.yes)
+        kw.update(show_exposed=dd.YesNo.yes)
         return kw
 
 
@@ -612,8 +613,13 @@ class EnrolmentsByPupil(Enrolments):
     @classmethod
     def get_actor_label(cls):
         if cls._course_area is not None:
-            return cls._course_area.text
-        return rt.models.courses.Course._meta.verbose_name_plural
+            courses = cls._course_area.text
+        else:
+            courses = rt.models.courses.Course._meta.verbose_name_plural
+        return format_lazy(
+            _("{enrolments} in {courses}"),
+            enrolments=rt.models.courses.Enrolment._meta.verbose_name_plural,
+            courses=courses)
 
 class EnrolmentsByCourse(Enrolments):
     params_panel_hidden = True

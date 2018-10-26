@@ -34,7 +34,7 @@ Line = rt.models.courses.Line
 CourseAreas = rt.models.courses.CourseAreas
 Course = rt.models.courses.Course
 Enrolment = rt.models.courses.Enrolment
-
+Event = rt.models.cal.Event
 Account = dd.resolve_model('ledger.Account')
 
 working = dd.resolve_app('working')
@@ -461,6 +461,8 @@ class TimLoader(TimLoader):
                 et = qs[0]
                 if Note.objects.filter(project=et).count():
                     continue
+                if Event.objects.filter(project=et).count():
+                    continue
                 qs = Enrolment.objects.filter(pupil=p)
                 qs = qs.exclude(course=et)
                 if qs.count() > 0:
@@ -468,7 +470,6 @@ class TimLoader(TimLoader):
                     if qs.count() == 1:
                         Enrolment.objects.filter(course=et).delete()
                         et.delete()
-                    
         
                 
     def objects(self):

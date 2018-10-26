@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -19,23 +19,32 @@ from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd
 
+class CourseState(dd.State):
+    is_active = True
+    is_editable = True
+    is_invoiceable = True
+    auto_update_calendar = False
 
 class CourseStates(dd.Workflow):
+    item_class = CourseState
     required_roles = dd.login_required(dd.SiteAdmin)
-    invoiceable = models.BooleanField(_("invoiceable"), default=True)
+    is_exposed = models.BooleanField(_("Exposed"), default=True)
+    is_invoiceable = models.BooleanField(_("Invoiceable"), default=True)
+    is_editable = models.BooleanField(_("Editable"), default=True)
+    auto_update_calendar = models.BooleanField(
+        _("Update calendar"), default=False)
+    column_names = "value name text is_exposed is_editable is_invoiceable auto_update_calendar"
 
 add = CourseStates.add_item
 add('10', _("Draft"), 'draft',
-    editable=True, invoiceable=False, active=True)
+    is_editable=True, is_invoiceable=False, is_exposed=True)
 add('20', _("Started"), 'active',
-    editable=False, invoiceable=True, active=True)
+    is_editable=False, is_invoiceable=True, is_exposed=True)
 add('30', _("Inactive"), 'inactive',
-    editable=False, invoiceable=False, active=False)
+    is_editable=False, is_invoiceable=False, is_exposed=False)
 add('40', _("Closed"), 'closed',
-    editable=False, invoiceable=False, active=False)
+    is_editable=False, is_invoiceable=False, is_exposed=False)
 
-# #~ ACTIVE_COURSE_STATES = set((CourseStates.published,CourseStates.started))
-# ACTIVE_COURSE_STATES = set((CourseStates.registered, CourseStates.started))
 
 
 class EnrolmentStates(dd.Workflow):

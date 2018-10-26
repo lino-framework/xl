@@ -174,7 +174,7 @@ class VatDocument(ProjectRelated, VatTotal):
         yield 'vat_regime'
 
     def compute_totals(self):
-        if self.pk is None or not self.state.editable:
+        if self.pk is None or not self.state.is_editable:
             return
         base = Decimal()
         vat = Decimal()
@@ -237,7 +237,7 @@ class VatDocument(ProjectRelated, VatTotal):
                 self.vat_regime = get_default_vat_regime()
 
     def update_item(self):
-        if self.pk is None or not self.state.editable:
+        if self.pk is None or not self.state.is_editable:
             return
         if self.items_edited or not self.edit_totals:
             return

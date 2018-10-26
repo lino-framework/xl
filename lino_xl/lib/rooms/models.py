@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Luc Saffre
+# Copyright 2013-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -19,18 +19,19 @@ from lino.api import dd, _
 from lino import mixins
 
 from lino_xl.lib.cal.choicelists import Recurrencies
-from lino_xl.lib.cal.mixins import Reservation
+from lino_xl.lib.cal.mixins import Reservation, ReservationStates
 from lino_xl.lib.contacts.mixins import ContactRelated
-from lino.modlib.office.roles import OfficeUser, OfficeStaff
+from lino.modlib.office.roles import OfficeStaff
 
-class BookingStates(dd.Workflow):
+class BookingStates(ReservationStates):
     required_roles = dd.login_required(OfficeStaff)
+    auto_update_calendar = models.BooleanField(_("Update calendar"), default=True)
 
 add = BookingStates.add_item
-add('10', _("Draft"), 'draft', editable=True)
-add('20', _("Option"), 'option', editable=False)
-add('30', _("Registered"), 'registered', editable=False)
-add('40', _("Cancelled"), 'cancelled', editable=False)
+add('10', _("Draft"), 'draft', is_editable=True)
+add('20', _("Option"), 'option', is_editable=False)
+add('30', _("Registered"), 'registered', is_editable=False)
+add('40', _("Cancelled"), 'cancelled', is_editable=False)
 
 
 @dd.receiver(dd.pre_analyze)
@@ -123,7 +124,7 @@ class Booking(ContactRelated, Reservation):
 
     def after_ui_save(self, ar, cw):
         super(Booking, self).after_ui_save(ar, cw)
-        if self.state.editable:
+        if self.state.is_editable:
             self.update_reminders(ar)
 
 

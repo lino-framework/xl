@@ -205,8 +205,7 @@ class Course(Reservation, Duplicable, Printable):
 
     quick_search_fields = 'name line__name line__topic__name'
 
-    state = CourseStates.field(
-        default=CourseStates.as_callable('draft'))
+    state = CourseStates.field(default='draft')
 
     max_places = models.PositiveIntegerField(
         pgettext("in a course", "Available places"),
@@ -241,14 +240,14 @@ class Course(Reservation, Duplicable, Printable):
 
     @classmethod
     def add_param_filter(
-            cls, qs, lookup_prefix='', show_active=None, **kwargs):
+            cls, qs, lookup_prefix='', show_exposed=None, **kwargs):
         qs = super(Course, cls).add_param_filter(qs, **kwargs)
-        active_states = CourseStates.filter(active=True)
+        exposed_states = CourseStates.filter(is_exposed=True)
         fkw = dict()
-        fkw[lookup_prefix + 'state__in'] = active_states
-        if show_active == dd.YesNo.no:
+        fkw[lookup_prefix + 'state__in'] = exposed_states
+        if show_exposed == dd.YesNo.no:
             qs = qs.exclude(**fkw)
-        elif show_active == dd.YesNo.yes:
+        elif show_exposed == dd.YesNo.yes:
             qs = qs.filter(**fkw)
         return qs
         
@@ -582,7 +581,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         qs = rt.models.courses.Course.objects.filter(flt)
         if course_area:
             qs = qs.filter(line__course_area=course_area)
-        enrollable_states = CourseStates.filter(active=True)
+        enrollable_states = CourseStates.filter(is_exposed=True)
         qs = qs.filter(state__in=enrollable_states)
         return qs
 
@@ -690,7 +689,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         return E.p(*elems)
 
 dd.update_field(
-    'courses.Enrolment', 'overview',
+    Enrolment, 'overview',
     verbose_name=Course._meta.verbose_name)    
 
 
