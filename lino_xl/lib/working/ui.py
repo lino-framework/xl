@@ -15,7 +15,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from lino_xl.lib.cal.utils import when_text
 from lino.api import dd, rt, _
 
-from lino_xl.lib.tickets.ui import Tickets, Projects
+from lino_xl.lib.tickets.ui import Tickets
 
 from lino.utils import ONE_DAY
 from etgen.html import E, join_elems
@@ -25,7 +25,7 @@ from lino.mixins.periods import ObservedDateRange
 
 from lino_xl.lib.tickets.roles import Triager, TicketsStaff
 from lino_xl.lib.tickets.choicelists import (
-    TicketEvents, ProjectEvents, TicketStates)
+    TicketEvents, TicketStates)
 
 from .roles import Worker
 from .choicelists import ReportingTypes
@@ -57,24 +57,24 @@ class TicketHasSessions(ObservedEvent):
 TicketEvents.add_item_instance(TicketHasSessions("working"))
 
 
-class ProjectHasSessions(ObservedEvent):
-    text = _("Has been worked on")
+# class ProjectHasSessions(ObservedEvent):
+#     text = _("Has been worked on")
 
-    def add_filter(self, qs, pv):
-        if pv.start_date:
-            qs = qs.filter(
-                tickets_by_project__sessions_by_ticket__start_date__gte=
-                pv.start_date)
-        if pv.end_date:
-            qs = qs.filter(
-                tickets_by_project__sessions_by_ticket__end_date__lte=
-                pv.end_date)
-        qs = qs.annotate(num_sessions=Count(
-            'tickets_by_project__sessions_by_ticket'))
-        qs = qs.filter(num_sessions__gt=0)
-        return qs
+#     def add_filter(self, qs, pv):
+#         if pv.start_date:
+#             qs = qs.filter(
+#                 tickets_by_project__sessions_by_ticket__start_date__gte=
+#                 pv.start_date)
+#         if pv.end_date:
+#             qs = qs.filter(
+#                 tickets_by_project__sessions_by_ticket__end_date__lte=
+#                 pv.end_date)
+#         qs = qs.annotate(num_sessions=Count(
+#             'tickets_by_project__sessions_by_ticket'))
+#         qs = qs.filter(num_sessions__gt=0)
+#         return qs
 
-ProjectEvents.add_item_instance(ProjectHasSessions("working"))
+# ProjectEvents.add_item_instance(ProjectHasSessions("working"))
 
 
 class SessionTypes(dd.Table):
@@ -107,8 +107,8 @@ class Sessions(dd.Table):
     parameters = ObservedDateRange(
         company=dd.ForeignKey(
             'contacts.Company', null=True, blank=True),
-        project=dd.ForeignKey(
-            'tickets.Project', null=True, blank=True),
+        # project=dd.ForeignKey(
+        #     'tickets.Project', null=True, blank=True),
         site=dd.ForeignKey(
             'tickets.Site', null=True, blank=True),
         # ticket=dd.ForeignKey(
@@ -127,7 +127,7 @@ class Sessions(dd.Table):
         return s
 
     params_layout = """
-    start_date end_date observed_event company project
+    start_date end_date observed_event company #project
     user session_type ticket site
     """
     auto_fit_column_widths = True
@@ -140,8 +140,8 @@ class Sessions(dd.Table):
         if ce is not None:
             qs = ce.add_filter(qs, pv)
 
-        if pv.project:
-            qs = qs.filter(ticket__project__in=pv.project.whole_clan())
+        # if pv.project:
+        #     qs = qs.filter(ticket__project__in=pv.project.whole_clan())
 
         if pv.site:
             qs = qs.filter(ticket__site=pv.site)
@@ -305,12 +305,12 @@ class InvestedTime(dd.Table):
         if obj.user is not None:
             lst.append(tpl.format(
                 ensureUtf(_("Author")), ensureUtf(obj.user)))
-        if obj.project is not None:
-            lst.append(tpl.format(
-                ensureUtf(_("Project")), ensureUtf(obj.project)))
-        if obj.topic is not None:
-            lst.append(tpl.format(
-                ensureUtf(_("Topic")), ensureUtf(obj.topic)))
+        # if obj.project is not None:
+        #     lst.append(tpl.format(
+        #         ensureUtf(_("Project")), ensureUtf(obj.project)))
+        # if obj.topic is not None:
+        #     lst.append(tpl.format(
+        #         ensureUtf(_("Topic")), ensureUtf(obj.topic)))
         return E.p(*join_elems(lst, '. '))
 
 
@@ -404,24 +404,6 @@ class WorkedHours(dd.VentilatingTable):
         yield w(TOTAL_KEY, _("Total"))
 
 
-    @classmethod
-    def unused_get_ventilated_columns(cls):
-        Project = rt.models.tickets.Project
-
-        def w(prj, verbose_name):
-            # return a getter function for a RequestField on the given
-            # EntryType.
-
-            def func(fld, obj, ar):
-                return obj._root2tot.get(prj, None)
-
-            return dd.VirtualField(dd.DurationField(verbose_name), func)
-
-        for p in Project.objects.filter(parent__isnull=True).order_by('ref'):
-            yield w(p, six.text_type(p))
-        yield w(None, _("Total"))
-
-
 
 class DurationReport(VentilatedColumns):
     
@@ -499,7 +481,7 @@ class SessionsByReport(Sessions, DurationReport):
 class TicketsByReport(Tickets, DurationReport):
     """The list of tickets mentioned in a service report."""
     master = 'working.ServiceReport'
-    # column_names = "summary id reporter project product site state
+    # column_names = "summary id reporter #project product site state
     # invested_time"
     column_names_template = "id overview site state {vcolumns}"
     order_by = ['id']
@@ -534,7 +516,7 @@ from lino_xl.lib.tickets.ui import Sites
 class SitesByReport(Sites, DurationReport):
     """The list of tickets mentioned in a service report."""
     master = 'working.ServiceReport'
-    # column_names = "summary id reporter project product site state
+    # column_names = "summary id reporter #project product site state
     # invested_time"
     column_names_template = "name description {vcolumns}"
     order_by = ['name']
@@ -567,47 +549,6 @@ class SitesByReport(Sites, DurationReport):
             if obj._root2tot.get(TOTAL_KEY):
                 yield obj
 
-
-# class ProjectsByReport(Projects, DurationReport):
-#     """The list of projects mentioned in a service report.
-    
-#     """
-#     master = 'working.ServiceReport'
-#     column_names_template = "ref name active_tickets {vcolumns}"
-#     order_by = ['ref']
-
-#     @classmethod
-#     def get_request_queryset(self, ar):
-
-#         mi = ar.master_instance
-#         if mi is None:
-#             return
-        
-#         pv = ar.param_values
-#         pv.update(start_date=mi.start_date, end_date=mi.end_date)
-#         pv.update(interesting_for=mi.interesting_for)
-       
-#         spv = dict(start_date=mi.start_date, end_date=mi.end_date)
-#         spv.update(observed_event=dd.PeriodEvents.started)
-#         spv.update(user=mi.user)
-        
-#         qs = super(ProjectsByReport, self).get_request_queryset(ar)
-#         for obj in qs:
-#             # spv.update(project=obj)
-#             sar = Sessions.request(
-#                 param_values=spv,
-#                 filter=Q(ticket__project=obj))
-#             load_sessions(obj, sar)
-#             if obj._root2tot.get(TOTAL_KEY):
-#                 yield obj
-            
-#     @dd.displayfield(_("Tickets"))
-#     def active_tickets(cls, obj, ar):
-#         lst = []
-#         for ticket in obj._tickets:
-#             lst.append(ar.obj2html(
-#                 ticket, text="#%d" % ticket.id, title=six.text_type(ticket)))
-#         return E.p(*join_elems(lst, ', '))
 
 
 

@@ -267,8 +267,8 @@ if dd.is_installed('tickets'):
                        'workflow_buttons:30 *'
         params_panel_hidden = True
         params_layout = """
-        end_user feasable_by site project state
-        show_assigned show_active topic"""
+        end_user feasable_by site #project state
+        show_assigned show_active #topic"""
 
         @classmethod
         def param_defaults(self, ar, **kw):

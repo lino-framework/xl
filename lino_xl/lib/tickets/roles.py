@@ -10,23 +10,24 @@ class TicketsReader(UserRole):
     pass
 
 class Searcher(UserRole):    
-    """Can see all tickets.
-
+    """
+    Can see all tickets.
     """
 
 class Triager(UserRole):
-    """Is responsible for triaging new tickets.
-
+    """
+    Cn modify administrative ticket data like assigned worker, site,
+    ticket type....
     """
 
 class Reporter(UserRole):
-    """Can create new tickets and edit their own tickets.
-
+    """
+    Can create new tickets and edit their own tickets.
     """
 
 
 class TicketsStaff(UserRole):
-    """Can configure tickets functionality.
-
+    """
+    Can configure tickets functionality.
     """
 
