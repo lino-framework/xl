@@ -841,7 +841,7 @@ class MySitesDashboard(MySites):
     def param_defaults(self, ar, **kw):
         kw = super(MySitesDashboard, self).param_defaults(ar, **kw)
         if ar.get_user().user_type.has_required_roles([TicketsStaff]):
-            del kw['watcher']
+            kw['watcher'] = None
         return kw
 
 class AllSites(Sites):
