@@ -64,16 +64,44 @@ class TicketEventModified(ObservedEvent):
 TicketEvents.add_item_instance(TicketEventModified('modified'))
 
 
-class ProjectEvents(dd.ChoiceList):
-    verbose_name = _("Observed event")
-    verbose_name_plural = _("Observed events")
+# class ProjectEvents(dd.ChoiceList):
+#     verbose_name = _("Observed event")
+#     verbose_name_plural = _("Observed events")
     
-ProjectEvents.add_item_instance(PeriodStarted('started'))
-ProjectEvents.add_item_instance(PeriodActive('active'))
-ProjectEvents.add_item_instance(PeriodEnded('ended'))
-ProjectEvents.add_item_instance(TicketEventModified('modified'))
+# ProjectEvents.add_item_instance(PeriodStarted('started'))
+# ProjectEvents.add_item_instance(PeriodActive('active'))
+# ProjectEvents.add_item_instance(PeriodEnded('ended'))
+# ProjectEvents.add_item_instance(TicketEventModified('modified'))
 
 
+class SiteState(dd.State):
+    is_exposed = True
+    
+class SiteStates(dd.Workflow):
+    verbose_name_plural = _("Site states")
+    item_class = SiteState
+    column_names = "value name text button_text is_exposed"
+    is_exposed = models.BooleanField(_("Exposed"), default=False)
+
+add = SiteStates.add_item
+add('10', _("Draft"), 'draft', is_exposed=True,
+    button_text = "⛶")  # SQUARE FOUR CORNERS (U+26F6))
+add('20', _("Active"), 'active', is_exposed=True,
+    button_text = "⚒")  # HAMMER AND PICK (U+2692
+add('30', _("Stable"), 'stable', is_exposed=True,
+    button_text = "☉")  # SUN (U+2609)	
+add('40', _("Sleeping"), 'sleeping',
+    button_text = "☾")  # LAST QUARTER MOON (U+263E)
+add('50', _("Closed"), 'closed',
+    button_text = "☑")  # BALLOT BOX WITH CHECK \u2611)
+
+SiteStates.draft.add_transition()
+SiteStates.active.add_transition()
+SiteStates.stable.add_transition()
+SiteStates.sleeping.add_transition()
+SiteStates.closed.add_transition()
+
+    
 class TicketState(dd.State):
     active = False
     show_in_todo = False
@@ -93,13 +121,8 @@ class TicketStates(dd.Workflow):
     required_roles = dd.login_required(dd.SiteStaff)
     # max_length = 3
 
-
 add = TicketStates.add_item
 
-# add('10', _("Assigned"), 'assigned',
-#     required=dict(states=['', 'active']),
-#     action_name=_("Start"),
-#     help_text=_("Ticket has been assigned to somebody who is assigned on it."))
 add('10', _("New"), 'new', active=True, show_in_todo=True)
 add('15', _("Talk"), 'talk', active=True)
 add('20', pgettext("ticket state", "Open"), 'opened', active=True, show_in_todo=True)

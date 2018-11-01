@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -70,6 +70,7 @@ def objects(refs="PMO BNK"):
 
     Journal = rt.models.ledger.Journal
     Company = rt.models.contacts.Company
+    Movement = rt.models.ledger.Movement
     
     USERS = Cycler(settings.SITE.user_model.objects.all())
     OFFSETS = Cycler(12, 20, 28)
@@ -84,7 +85,8 @@ def objects(refs="PMO BNK"):
     # if qs.count() < 10:
     #     raise Exception("20171009")
     for p in qs:
-        add_demo_account(p)
+        if Movement.objects.filter(partner=p, cleared=False).count():
+            add_demo_account(p)
 
 
     for ref in refs.split():
@@ -141,6 +143,10 @@ def objects(refs="PMO BNK"):
                 #     assert voucher.execution_date is not None
                 voucher.register(REQUEST)
                 voucher.save()
+
+                # for i in voucher.items.all():
+                #     if i.partner:
+                #         yield add_demo_account(i.partner)
 
                 # For payment orders we also write the XML file
                 if ref == 'PMO':

@@ -9,6 +9,7 @@ import six
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.utils.text import format_lazy
 
 from lino import mixins
 from lino.api import dd, rt, _
@@ -19,7 +20,7 @@ from lino_xl.lib.cal.mixins import daterange_text
 from lino.modlib.users.mixins import My
 from lino.utils import join_elems
 
-from .choicelists import TicketEvents, ProjectEvents, TicketStates, LinkTypes, Priorities
+from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities, SiteStates
 
 from .roles import TicketsReader, Reporter, Searcher, Triager, TicketsStaff
 
@@ -34,13 +35,13 @@ end_user_model = dd.plugins.tickets.end_user_model
 #     site_model = None
     
 
-class ProjectTypes(dd.Table):
-    required_roles = dd.login_required(TicketsStaff)
-    model = 'tickets.ProjectType'
-    column_names = 'name *'
-    detail_layout = """id name
-    ProjectsByType
-    """
+# class ProjectTypes(dd.Table):
+#     required_roles = dd.login_required(TicketsStaff)
+#     model = 'tickets.ProjectType'
+#     column_names = 'name *'
+#     detail_layout = """id name
+#     ProjectsByType
+#     """
 
 
 class TicketTypes(dd.Table):
@@ -52,65 +53,65 @@ class TicketTypes(dd.Table):
     """
 
 
-class ProjectDetail(dd.DetailLayout):
-    main = "general #deploy.DeploymentsByProject more"
+# class ProjectDetail(dd.DetailLayout):
+#     main = "general #deploy.DeploymentsByProject more"
 
-    general = dd.Panel("""
-    ref name
-    description #CompetencesByProject
-    """, label=_("General"))
+#     general = dd.Panel("""
+#     ref name
+#     description #CompetencesByProject
+#     """, label=_("General"))
 
-    more = dd.Panel("""
-    parent type reporting_type
-    company assign_to #contact_person #contact_role private closed
-    start_date end_date srcref_url_template changeset_url_template
-    ProjectsByParent #deploy.MilestonesByProject
-    # cal.EntriesByProject
-    """, label=_("More"))
+#     more = dd.Panel("""
+#     parent type reporting_type
+#     company assign_to #contact_person #contact_role private closed
+#     start_date end_date srcref_url_template changeset_url_template
+#     ProjectsByParent #deploy.MilestonesByProject
+#     # cal.EntriesByProject
+#     """, label=_("More"))
 
 
-class Projects(dd.Table):
-    required_roles = dd.login_required(Reporter)
-    model = 'tickets.Project'
-    detail_layout = ProjectDetail()
-    column_names = "ref name parent company private *"
-    order_by = ["ref"]
-    parameters = mixins.ObservedDateRange(
-        observed_event=ProjectEvents.field(blank=True),
-        interesting_for=dd.ForeignKey(
-            'contacts.Partner',
-            verbose_name=_("Interesting for"),
-            blank=True, null=True,
-            help_text=_("Only projects interesting for this partner.")))
-    params_layout = """interesting_for start_date end_date observed_event"""
+# class Projects(dd.Table):
+#     required_roles = dd.login_required(Reporter)
+#     model = 'tickets.Project'
+#     detail_layout = ProjectDetail()
+#     column_names = "ref name parent company private *"
+#     order_by = ["ref"]
+#     parameters = mixins.ObservedDateRange(
+#         observed_event=ProjectEvents.field(blank=True),
+#         interesting_for=dd.ForeignKey(
+#             'contacts.Partner',
+#             verbose_name=_("Interesting for"),
+#             blank=True, null=True,
+#             help_text=_("Only projects interesting for this partner.")))
+#     params_layout = """interesting_for start_date end_date observed_event"""
 
-    @classmethod
-    def get_request_queryset(self, ar):
-        qs = super(Projects, self).get_request_queryset(ar)
-        pv = ar.param_values
+#     @classmethod
+#     def get_request_queryset(self, ar):
+#         qs = super(Projects, self).get_request_queryset(ar)
+#         pv = ar.param_values
 
-        if pv.observed_event:
-            qs = pv.observed_event.add_filter(qs, pv)
+#         if pv.observed_event:
+#             qs = pv.observed_event.add_filter(qs, pv)
 
-        if pv.interesting_for:
-            qs = qs.filter(
-                Q(company=pv.interesting_for))
+#         if pv.interesting_for:
+#             qs = qs.filter(
+#                 Q(company=pv.interesting_for))
             
-        if False:  # pv.interesting_for:
-            qs = qs.filter(
-                Q(tickets_by_project__site__partner=pv.interesting_for) |
-                Q(tickets_by_project__site__partner__isnull=True))
-            interests = pv.interesting_for.interests_by_partner.values(
-                'topic')
-            if len(interests) > 0:
-                qs = qs.filter(
-                    tickets_by_project__topic__in=interests,
-                    tickets_by_project__private=False)
-        return qs
+#         if False:  # pv.interesting_for:
+#             qs = qs.filter(
+#                 Q(tickets_by_project__site__partner=pv.interesting_for) |
+#                 Q(tickets_by_project__site__partner__isnull=True))
+#             interests = pv.interesting_for.interests_by_partner.values(
+#                 'topic')
+#             if len(interests) > 0:
+#                 qs = qs.filter(
+#                     tickets_by_project__topic__in=interests,
+#                     tickets_by_project__private=False)
+#         return qs
 
 
-class AllProjects(Projects):
-    required_roles = dd.login_required(TicketsStaff)
+# class AllProjects(Projects):
+#     required_roles = dd.login_required(TicketsStaff)
 
 
 # class ActiveProjects(Projects):
@@ -132,33 +133,23 @@ class AllProjects(Projects):
 #         return kw
 
 
-class ProjectsByParent(Projects):
-    master_key = 'parent'
-    label = _("Subprojects")
-    column_names = "ref name children_summary *"
+# class ProjectsByParent(Projects):
+#     master_key = 'parent'
+#     label = _("Subprojects")
+#     column_names = "ref name children_summary *"
 
 
-class TopLevelProjects(Projects):
-    label = _("Projects (tree)")
-    required_roles = dd.login_required(TicketsStaff)
-    column_names = 'ref name parent children_summary *'
-    filter = Q(parent__isnull=True)
-    variable_row_height = True
+# class TopLevelProjects(Projects):
+#     label = _("Projects (tree)")
+#     required_roles = dd.login_required(TicketsStaff)
+#     column_names = 'ref name parent children_summary *'
+#     filter = Q(parent__isnull=True)
+#     variable_row_height = True
 
 
-class ProjectsByType(Projects):
-    master_key = 'type'
-    column_names = "ref name *"
-
-
-class ProjectsByCompany(Projects):
-    master_key = 'company'
-    column_names = "ref name *"
-
-
-class ProjectsByPerson(Projects):
-    master_key = 'contact_person'
-    column_names = "ref name *"
+# class ProjectsByType(Projects):
+#     master_key = 'type'
+#     column_names = "ref name *"
 
 
 
@@ -286,7 +277,7 @@ class TicketDetail(dd.DetailLayout):
 
     general1 = """
     summary:40 id:6 user:12 end_user:12
-    site topic project private
+    site topic #project private
     workflow_buttons #assigned_to waiting_for
     """
 
@@ -309,7 +300,7 @@ class Tickets(dd.Table):
     model = 'tickets.Ticket'
     order_by = ["-id"]
     column_names = 'id summary:50 user:10 topic #faculty ' \
-                   'workflow_buttons:30 #site:10 project:10 *' # Site commented to not disturbe care
+                   'workflow_buttons:30 #site:10 #project:10 *' # Site commented to not disturbe care
     detail_layout = 'tickets.TicketDetail'
     insert_layout = """
     summary
@@ -325,7 +316,7 @@ class Tickets(dd.Table):
 
     parameters = mixins.ObservedDateRange(
         observed_event=TicketEvents.field(blank=True),
-        topic=dd.ForeignKey('topics.Topic', blank=True, ),
+        # topic=dd.ForeignKey('topics.Topic', blank=True, ),
         site=dd.ForeignKey(site_model, blank=True),
         end_user=dd.ForeignKey(
             end_user_model,
@@ -352,9 +343,9 @@ class Tickets(dd.Table):
         deployed_to=dd.ForeignKey(
             milestone_model,
             blank=True, null=True),
-        project=dd.ForeignKey(
-            'tickets.Project',
-            blank=True, null=True),
+        # project=dd.ForeignKey(
+        #     'tickets.Project',
+        #     blank=True, null=True),
         state=TicketStates.field(
             blank=True,
             help_text=_("Only rows having this state.")),
@@ -376,7 +367,7 @@ class Tickets(dd.Table):
     params_layout = """
     user end_user assigned_to not_assigned_to interesting_for site state priority deployed_to
     #has_site show_assigned show_active show_deployed show_todo show_private
-    start_date end_date observed_event topic has_ref"""
+    start_date end_date observed_event #topic has_ref"""
 
     # simple_parameters = ('reporter', 'assigned_to', 'state', 'project')
 
@@ -386,8 +377,8 @@ class Tickets(dd.Table):
             yield p
         yield 'end_user'
         yield 'state'
-        yield 'project'
-        yield 'topic'
+        # yield 'project'
+        # yield 'topic'
         yield 'site'
         yield 'priority'
         if not dd.is_installed('votes'):
@@ -396,7 +387,7 @@ class Tickets(dd.Table):
     @classmethod
     def get_queryset(self, ar, **filter):
         return self.model.objects.select_related(
-            'user', 'assigned_to', 'project',
+            'user', 'assigned_to', # 'project',
             'duplicate_of', 'end_user')
         
     @classmethod
@@ -410,26 +401,7 @@ class Tickets(dd.Table):
         if pv.interesting_for:
             qs = qs.filter(
                 Q(site__company=pv.interesting_for))
-                # Q(votes_by_ticket__project__company=pv.interesting_for))
             
-        # if pv.project:
-        #     qs = qs.filter(
-        #         Q(votes_by_ticket__project=pv.project))
-            
-        if False:  # pv.interesting_for:
-
-            interests = pv.interesting_for.interests_by_partner.values(
-                'topic')
-            if len(interests) > 0:
-                qs = qs.filter(
-                    Q(site__partner=pv.interesting_for) |
-                    Q(topic__in=interests, private=False))
-
-        # if pv.show_closed == dd.YesNo.no:
-        #     qs = qs.filter(closed=False)
-        # elif pv.show_closed == dd.YesNo.yes:
-        #     qs = qs.filter(closed=True)
-
         if dd.is_installed('votes'):
             if pv.assigned_to:
                 # qs = qs.filter(
@@ -484,10 +456,8 @@ class Tickets(dd.Table):
             qs = qs.filter(state__in=todo_states)
 
         if pv.has_site == dd.YesNo.no:
-            # qs = qs.filter(votes_by_ticket__project__isnull=True)
             qs = qs.filter(site__isnull=True)
         elif pv.has_site == dd.YesNo.yes:
-            # qs = qs.filter(votes_by_ticket__project__isnull=False)
             qs = qs.filter(site__isnull=False)
 
         # if pv.show_standby == dd.YesNo.no:
@@ -496,12 +466,9 @@ class Tickets(dd.Table):
         #     qs = qs.filter(standby=True)
 
         if pv.show_private == dd.YesNo.no:
-            qs = qs.filter(
-                private=False, project__private=False)
+            qs = qs.filter(private=False)
         elif pv.show_private == dd.YesNo.yes:
-            qs = qs.filter(
-                Q(private=True) |
-                Q(project__private=True))
+            qs = qs.filter(private=True)
 
         if pv.has_ref == dd.YesNo.yes:
             qs = qs.filter(ref__isnull=False)
@@ -561,9 +528,9 @@ class RefTickets(Tickets):
 
 class UnassignedTickets(Tickets):
     if dd.is_installed('votes'):
-        column_names = "summary project user votes_by_ticket *"
+        column_names = "summary site user votes_by_ticket *"
     else:
-        column_names = "summary project user assigned_to *"
+        column_names = "summary site user assigned_to *"
         
     label = _("Unassigned Tickets")
     required_roles = dd.login_required(Triager)
@@ -614,9 +581,9 @@ class TicketsByType(Tickets):
     column_names = "summary state  *"
 
 
-class TicketsByTopic(Tickets):
-    master_key = 'topic'
-    column_names = "summary state  *"
+# class TicketsByTopic(Tickets):
+#     master_key = 'topic'
+#     column_names = "summary state  *"
 
 
 class PublicTickets(Tickets):
@@ -691,8 +658,8 @@ class MyTickets(My, Tickets):
     order_by = ["priority", "-id"]
     column_names = ("priority overview:50 workflow_buttons *")
     params_layout = """
-    user end_user site project state
-    start_date end_date observed_event topic show_active"""
+    user end_user site #project state
+    start_date end_date observed_event #topic show_active"""
     params_panel_hidden = True
 
     @classmethod
@@ -750,8 +717,8 @@ class MyTicketsToWork(TicketsSummary):
     required_roles = dd.login_required(Reporter)
     column_names = 'overview:50 workflow_buttons:30 *'
     params_layout = """
-    user end_user site project state
-    start_date end_date observed_event topic show_active"""
+    user end_user site #project state
+    start_date end_date observed_event #topic show_active"""
     params_panel_hidden = True
 
     @classmethod
@@ -800,26 +767,46 @@ class Sites(dd.Table):
     order_by = ['name']
     # detail_html_template = "tickets/Site/detail.html"
     parameters = dd.ParameterPanel(
-        watcher=dd.ForeignKey('users.User', blank=True, null=True, )
+        watcher=dd.ForeignKey('users.User', blank=True, null=True),
+        show_exposed=dd.YesNo.field(
+            _("Exposed"), blank=True,
+            help_text=_("Whether to show rows in an exposed state")),
+        state=SiteStates.field(blank=True),
     )
 
     insert_layout = """
-    name
+    name ref
+    company
     remark
-    description
+    # description
     """
     detail_layout = 'tickets.SiteDetail'
+    params_layout = """watcher state show_exposed"""
+
+    @classmethod
+    def get_title_tags(self, ar):
+        for t in super(Sites, self).get_title_tags(ar):
+            yield t
+
+        pv = ar.param_values
+        if pv.show_exposed:
+            yield format_lazy(_("{}: {}"), _("Exposed"), pv.show_exposed)
 
     @classmethod
     def get_request_queryset(self, ar):
         qs = super(Sites, self).get_request_queryset(ar)
-        pv = ar.param_values
+        if isinstance(qs, list):
+            return qs
 
+        pv = ar.param_values
         if pv.watcher:
             sqs = rt.models.tickets.Subscription.objects.filter(user=pv.watcher)
             subscribed_sites = sqs.values_list('site')
             qs = qs.filter(pk__in=subscribed_sites)
 
+        qs = self.model.add_param_filter(
+            qs, show_exposed=pv.show_exposed)
+        
         return qs
 
 
@@ -850,6 +837,13 @@ class MySitesDashboard(MySites):
         cls.column_names = "overview "
         cls.column_names += ' '.join(get_summary_columns())
 
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MySitesDashboard, self).param_defaults(ar, **kw)
+        if ar.get_user().user_type.has_required_roles([TicketsStaff]):
+            kw['watcher'] = None
+        return kw
+
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)
 
@@ -858,12 +852,21 @@ class AllSites(Sites):
 #     master_key = 'partner'
 #     column_names = "name remark *"
 
+class SitesByCompany(Sites):
+    master_key = 'company'
+    column_names = "ref name *"
+
+
+class SitesByPerson(Sites):
+    master_key = 'contact_person'
+    column_names = "ref name *"
+
 
 class TicketsBySite(TicketsSummary):
-    required_roles = dd.login_required(Searcher)
+    required_roles = dd.login_required(Reporter)
     # label = _("Known problems")
     master_key = 'site'
-    column_names = ("priority overview:50 workflow_buttons *")
+    column_names = "priority overview:50 ticket_type workflow_buttons *"
     # order_by = ["priority", "-id"]
 
     @classmethod

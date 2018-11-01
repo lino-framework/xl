@@ -64,9 +64,9 @@ class Plugin(ad.Plugin):
     def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
-        m.add_action('tickets.AllProjects')
-        m.add_action('tickets.TopLevelProjects')
-        m.add_action('tickets.ProjectTypes')
+        # m.add_action('tickets.AllProjects')
+        # m.add_action('tickets.TopLevelProjects')
+        # m.add_action('tickets.ProjectTypes')
         m.add_action('tickets.TicketTypes')
         m.add_action('tickets.AllSites')
 
@@ -76,6 +76,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.Projects')
         m.add_action('tickets.Links')
         m.add_action('tickets.TicketStates')
+        m.add_action('tickets.Subscriptions')
         # m.add_action('tickets.AllCompetences')
         # m.add_action('tickets.AllWishes')
         

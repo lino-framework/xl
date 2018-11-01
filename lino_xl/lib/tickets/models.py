@@ -25,20 +25,20 @@ from etgen.utils import join_elems, forcetext
 
 from lino.modlib.notify.choicelists import MessageTypes
 from lino.modlib.uploads.mixins import UploadController
-from lino_xl.lib.cal.mixins import daterange_text
 from lino_xl.lib.contacts.mixins import ContactRelated
-from lino.modlib.users.mixins import UserAuthored, Assignable
+from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.comments.mixins import Commentable
-from lino_xl.lib.excerpts.mixins import Certifiable
+from lino.mixins.ref import Referrable
 from lino_xl.lib.skills.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.votes.choicelists import VoteStates
 from lino_xl.lib.working.mixins import Workable
-from lino_xl.lib.stars.mixins import Starrable, get_favourite
+from lino_xl.lib.stars.mixins import Starrable
 from lino_xl.lib.working.choicelists import ReportingTypes
 
-from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities
-from .roles import Triager
+from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities, SiteStates
+
+from .roles import Triager, TicketsStaff
 
 MessageTypes.add_item('tickets', dd.plugins.tickets.verbose_name)
 
@@ -76,12 +76,12 @@ class TimeInvestment(Commentable):
     #     _("Invested time"), blank=True, null=True, editable=False)
 
 
-class ProjectType(mixins.BabelNamed):
+# class ProjectType(mixins.BabelNamed):
 
-    class Meta:
-        app_label = 'tickets'
-        verbose_name = _("Project Type")
-        verbose_name_plural = _('Project Types')
+#     class Meta:
+#         app_label = 'tickets'
+#         verbose_name = _("Project Type")
+#         verbose_name_plural = _('Project Types')
 
 
 class TicketType(mixins.BabelNamed):
@@ -100,80 +100,83 @@ class TicketType(mixins.BabelNamed):
         #~ verbose_name_plural = _('Repositories')
 
 
+# @dd.python_2_unicode_compatible
+# class Project(mixins.DateRange, TimeInvestment,
+#               mixins.Hierarchical, mixins.Referrable,
+#               ContactRelated):
+#     class Meta:
+#         app_label = 'tickets'
+#         # verbose_name = _("Project")
+#         # verbose_name_plural = _('Projects')
+#         verbose_name = _("Mission")
+#         verbose_name_plural = _('Missions')
+#         abstract = dd.is_abstract_model(__name__, 'Project')
+
+
+#     name = models.CharField(_("Name"), max_length=200)
+#     # parent = dd.ForeignKey(
+#     #     'self', blank=True, null=True, verbose_name=_("Parent"))
+#     assign_to = dd.ForeignKey(
+#         settings.SITE.user_model,
+#         verbose_name=_("Assign tickets to"),
+#         blank=True, null=True,
+#         help_text=_("The user to whom new tickets will be assigned."))
+#     type = dd.ForeignKey('tickets.ProjectType', blank=True, null=True)
+#     description = dd.RichTextField(_("Description"), blank=True)
+#     srcref_url_template = models.CharField(blank=True, max_length=200)
+#     changeset_url_template = models.CharField(blank=True, max_length=200)
+#     # root = dd.ForeignKey(
+#     #     'self', blank=True, null=True, verbose_name=_("Root"))
+#     reporting_type = ReportingTypes.field(blank=True)
+#     # if dd.is_installed('working'):
+#     #     reporting_type = ReportingTypes.field(blank=True)
+#     # else:
+#     #     reporting_type = dd.DummyField()
+#     # milestone = dd.ForeignKey(
+#     #     'deploy.Milestone',
+#     #     related_name='projects_by_milestone', blank=True, null=True)
+
+#     def __str__(self):
+#         return self.ref or self.name
+
+#     # @dd.displayfield(_("Activity overview"))
+#     # def activity_overview(self, ar):
+#     #     if ar is None:
+#     #         return ''
+#     #     TicketsByProject = rt.models.tickets.TicketsByProject
+#     #     elems = []
+#     #     for tst in (TicketStates.objects()):
+#     #         pv = dict(state=tst)
+#     #         sar = ar.spawn(
+#     #             TicketsByProject, master_instance=self, param_values=pv)
+#     #         num = sar.get_total_count()
+#     #         if num > 0:
+#     #             elems += [
+#     #                 "{0}: ".format(tst.text),
+#     #                 sar.ar2button(label=str(num))]
+#     #     return E.p(*elems)
+
+#     # def save(self, *args, **kwargs):
+#     #     root = self.parent
+#     #     while root is not None:
+#     #         if root.parent is None:
+#     #             break
+#     #         else:
+#     #             root = root.parent
+#     #     self.root = root
+#     #     super(Project, self).save(*args, **kwargs)
+
+
 @dd.python_2_unicode_compatible
-class Project(mixins.DateRange, TimeInvestment,
-              mixins.Hierarchical, mixins.Referrable,
-              ContactRelated):
-    class Meta:
-        app_label = 'tickets'
-        # verbose_name = _("Project")
-        # verbose_name_plural = _('Projects')
-        verbose_name = _("Mission")
-        verbose_name_plural = _('Missions')
-        abstract = dd.is_abstract_model(__name__, 'Project')
-
-
-    name = models.CharField(_("Name"), max_length=200)
-    # parent = dd.ForeignKey(
-    #     'self', blank=True, null=True, verbose_name=_("Parent"))
-    assign_to = dd.ForeignKey(
-        settings.SITE.user_model,
-        verbose_name=_("Assign tickets to"),
-        blank=True, null=True,
-        help_text=_("The user to whom new tickets will be assigned."))
-    type = dd.ForeignKey('tickets.ProjectType', blank=True, null=True)
-    description = dd.RichTextField(_("Description"), blank=True)
-    srcref_url_template = models.CharField(blank=True, max_length=200)
-    changeset_url_template = models.CharField(blank=True, max_length=200)
-    # root = dd.ForeignKey(
-    #     'self', blank=True, null=True, verbose_name=_("Root"))
-    reporting_type = ReportingTypes.field(blank=True)
-    # if dd.is_installed('working'):
-    #     reporting_type = ReportingTypes.field(blank=True)
-    # else:
-    #     reporting_type = dd.DummyField()
-    # milestone = dd.ForeignKey(
-    #     'deploy.Milestone',
-    #     related_name='projects_by_milestone', blank=True, null=True)
-
-    def __str__(self):
-        return self.ref or self.name
-
-    # @dd.displayfield(_("Activity overview"))
-    # def activity_overview(self, ar):
-    #     if ar is None:
-    #         return ''
-    #     TicketsByProject = rt.models.tickets.TicketsByProject
-    #     elems = []
-    #     for tst in (TicketStates.objects()):
-    #         pv = dict(state=tst)
-    #         sar = ar.spawn(
-    #             TicketsByProject, master_instance=self, param_values=pv)
-    #         num = sar.get_total_count()
-    #         if num > 0:
-    #             elems += [
-    #                 "{0}: ".format(tst.text),
-    #                 sar.ar2button(label=str(num))]
-    #     return E.p(*elems)
-
-    # def save(self, *args, **kwargs):
-    #     root = self.parent
-    #     while root is not None:
-    #         if root.parent is None:
-    #             break
-    #         else:
-    #             root = root.parent
-    #     self.root = root
-    #     super(Project, self).save(*args, **kwargs)
-
-
-@dd.python_2_unicode_compatible
-class Site(ContactRelated, Starrable):
+class Site(Referrable, ContactRelated, Starrable):
     class Meta:
         app_label = 'tickets'
         verbose_name = pgettext("Ticketing", "Site")
         verbose_name_plural = pgettext("Ticketing", "Sites")
 
+    ref_max_length = 20
+    workflow_state_field = "state"
+    
 #     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 #     # responsible_user = dd.ForeignKey(
 #     #     'users.User', verbose_name=_("Responsible"),
@@ -188,22 +191,49 @@ class Site(ContactRelated, Starrable):
         _("Designation"), max_length=200, unique=True)
 
     reporting_type = ReportingTypes.field(blank=True)
+    
+    deadline = models.DateField(
+        verbose_name=_("Deadline"),
+        blank=True, null=True)
         
-    # def get_children_starrable(self, ar):
-    #     obj = ar.selected_rows[0]
-    #     milestone = dd.resolve_model(milestone_model)
-    #     for x in milestone.objects.filter(**{milestone.site_field_name: obj}):
-    #         yield x
-    #     for x in rt.models.tickets.Ticket.objects.filter(site=obj):
-    #         yield x
-
-
+    state = SiteStates.field(default='draft')
+    
     def __str__(self):
         return self.name
 
     def get_change_observers(self):
         for s in rt.models.tickets.Subscription.objects.filter(site=self):
             yield (s.user, s.user.mail_mode)
+
+    def get_row_permission(self, ar, state, ba):
+        if not super(Site, self).get_row_permission(ar, state, ba):
+            return False
+        if not ar.get_user().user_type.has_required_roles(
+                [TicketsStaff]):
+            return False
+        return True
+        
+    @classmethod
+    def add_param_filter(
+            cls, qs, lookup_prefix='', show_exposed=None, **kwargs):
+        qs = super(Site, cls).add_param_filter(qs, **kwargs)
+        exposed_states = SiteStates.filter(is_exposed=True)
+        fkw = dict()
+        fkw[lookup_prefix + 'state__in'] = exposed_states
+        if show_exposed == dd.YesNo.no:
+            qs = qs.exclude(**fkw)
+        elif show_exposed == dd.YesNo.yes:
+            qs = qs.filter(**fkw)
+        return qs
+        
+    @dd.htmlbox()
+    def parsed_description(self, ar):
+        if ar is None:
+            return ''
+        html = ''
+        if self.description:
+            html += ar.parse_memo(self.description)
+        return html
 
 
 dd.update_field(
@@ -293,38 +323,6 @@ class Subscription(UserAuthored):
 #         elems.append(E.ul(*items))
 #         return E.p(*elems)
 
-
-if False:
-    # @dd.python_2_unicode_compatible
-    class Wish(Prioritized):
-
-        class Meta:
-            app_label = 'tickets'
-            verbose_name = pgettext("Ticketing", "Wish")
-            verbose_name_plural = pgettext("Ticketing", "Wishes")
-
-        ticket = dd.ForeignKey(
-            'tickets.Ticket', related_name='wishes_by_ticket')
-        project = dd.ForeignKey(
-            'tickets.Project', related_name="wishes_by_project")
-        remark = models.CharField(_("Remark"), max_length=200, blank=True)
-        description = dd.RichTextField(_("Description"), blank=True)
-
-        # def __str__(self):
-        #     return pgettext("{} for {}").format(self.project, self.ticket)
-
-
-        # def full_clean(self):
-        #     if not self.project_id:
-        #         self.project = self.votable.get_project_for_vote(self)
-        #     super(Vote, self).full_clean()
-
-        # @dd.chooser()
-        # def project_choices(cls, user):
-        #     Project = rt.models.tickets.Project
-        #     if not user:
-        #         return Project.objects.none()
-        #     return Project.objects.filter(duties_by_project__user=user)
 
     
 # class CloseTicket(dd.Action):
@@ -427,7 +425,7 @@ class SpawnTicket(dd.Action):
     def run_from_ui(self, ar, **kw):
         old = self.get_parent_ticket(ar)
         new = self.spawn_ticket(ar, old)
-        for k in ('project', 'private'):
+        for k in ('site', 'private'):
             setattr(new, k, getattr(old, k))
         new.full_clean()
         new.save_new_instance(ar)
@@ -453,12 +451,13 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         verbose_name = _("Ticket")
         verbose_name_plural = _('Tickets')
         abstract = dd.is_abstract_model(__name__, 'Ticket')
-    project = dd.ForeignKey(
-        'tickets.Project', blank=True, null=True,
-        related_name="tickets_by_project")
+    # project = dd.DummyField()
+    # project = dd.ForeignKey(
+    #     'tickets.Project', blank=True, null=True,
+    #     related_name="tickets_by_project")
     site = dd.ForeignKey(site_model, blank=True, null=True,
                          related_name="tickets_by_site")
-    topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
+    # topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
     summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
@@ -544,12 +543,13 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         if self.id and self.duplicate_of_id == self.id:
             self.duplicate_of = None
         # print "20150523b on_create", self.reporter
+        if not self.site_id:
+            user = self.end_user or self.user
+            qs = rt.models.tickets.Subscription.objects.filter(
+                user=user, primary=True)
+            if qs.count():
+                self.site = qs[0].site
         super(Ticket, self).full_clean()
-        # if self.project:
-        #     # if not self.assigned_to and self.project.assign_to:
-        #     #     self.assigned_to = self.project.assign_to
-        #     if not self.project.private:
-        #         self.private = False
 
     def get_change_owner(self):
         return self.site
@@ -596,8 +596,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 
     def disabled_fields(self, ar):
         rv = super(Ticket, self).disabled_fields(ar)
-        if self.project and not self.project.private:
-            rv.add('private')
+        # if self.project and not self.project.private:
+        #     rv.add('private')
         if not ar.get_user().user_type.has_required_roles([Triager]):
             rv.add('user')
             # rv.add('fixed_since')
@@ -765,57 +765,13 @@ def setup_memo_commands(sender=None, **kwargs):
     sender.kernel.memo_parser.register_django_model(
         'ticket', Ticket, title=lambda obj: obj.summary)
     
-    # def ticket2html(parser, s):
-    #     args = s.split(None, 1)
-    #     if len(args) == 1:
-    #         pk = s
-    #         txt = None
-    #     else:
-    #         pk = args[0]
-    #         txt = args[1]
-            
-    #     ar = parser.context['ar']
-    #     kw = dict()
-    #     # dd.logger.info("20161019 %s", ar.renderer)
-    #     pk = int(pk)
-    #     obj = Ticket.objects.get(pk=pk)
-    #     if txt is None:
-    #         txt = "#{0}".format(obj.id)
-    #         kw.update(title=obj.summary)
-    #     e = ar.obj2html(obj, txt, **kw)
-    #     return tostring(e)
-    #     # url = rnd.get_detail_url(obj)
-    #     # title = obj.summary
-    #     # return '<a href="{0}" title="{2}">{1}</a>'.format(url, text, title)
-
-    # sender.memo_parser.register_command('ticket', ticket2html)
-
-    # def ticket2memo(obj):
-    #     return "[ticket {}] ({})".format(obj.id, obj.summary)
-    # sender.memo_parser.register_renderer(Ticket, ticket2memo)
-
-
     def py2html(parser, s):
         url, txt = py2url_txt(s)
-        # fn = inspect.getsourcefile(obj)
         if url:
             # lines = inspect.getsourcelines(s)
             return '<a href="{0}" target="_blank">{1}</a>'.format(url, txt)
         return "<pre>{}</pre>".format(s)
     sender.kernel.memo_parser.register_command('py', py2html)
-
-
-    # rnd = sender.site.plugins.extjs.renderer
-    
-    # def f(s):
-    #     pk = int(s)
-    #     obj = sender.modules.tickets.Ticket.objects.get(pk=pk)
-    #     url = rnd.get_detail_url(obj)
-    #     text = "#{0}".format(obj.id)
-    #     title = obj.summary
-    #     return '<a href="{0}" title="{2}">{1}</a>'.format(url, text, title)
-
-    # rnd.memo_parser.register_command('ticket', f)
 
 
 from .ui import *
