@@ -233,7 +233,7 @@ class ServiceReport(UserAuthored, ContactRelated, Certifiable, DateRange):
             pv.update(state=self.ticket_state)
         return pv
 
-    
+dd.update_field(ServiceReport, 'user', verbose_name=_("Worker"))
         
 
 class SiteSummary(Summary):

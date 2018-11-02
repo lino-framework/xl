@@ -432,7 +432,7 @@ class SessionsByReport(Sessions, DurationReport):
     master = 'working.ServiceReport'
     
     column_names_template = "start_date start_time end_time break_time " \
-                            "my_description:50 user {vcolumns}"
+                            "my_description:50 user {vcolumns} *"
 
     order_by = ['start_date', 'start_time', 'id']
     
@@ -514,11 +514,10 @@ class TicketsByReport(Tickets, DurationReport):
 from lino_xl.lib.tickets.ui import Sites
 
 class SitesByReport(Sites, DurationReport):
-    """The list of tickets mentioned in a service report."""
     master = 'working.ServiceReport'
     # column_names = "summary id reporter #project product site state
     # invested_time"
-    column_names_template = "name description {vcolumns}"
+    column_names_template = "name parsed_description {vcolumns}"
     order_by = ['name']
 
     @classmethod
@@ -550,6 +549,36 @@ class SitesByReport(Sites, DurationReport):
                 yield obj
 
 
+# from lino.modlib.users.desktop import Users
+
+# class WorkersByReport(Users, DurationReport):
+
+#     @classmethod
+#     def get_request_queryset(self, ar):
+#         mi = ar.master_instance
+#         if mi is None:
+#             return
+#         pv = ar.param_values
+
+#         # pv.update(start_date=mi.start_date, end_date=mi.end_date)
+#         # pv.update(interesting_for=mi.interesting_for)
+#         # pv.update(observed_event=TicketEvents.working)
+
+#         spv = dict(start_date=mi.start_date, end_date=mi.end_date)
+#         spv.update(observed_event=dd.PeriodEvents.started)
+#         spv.update(user=mi.user)
+#         # qs = super(SitesByReport, self).get_request_queryset(ar)
+#         workers = (ut for ut in UserTypes.get_list_items()
+#                    if ut.has_required_roles([Worker]))
+#         qs = rt.models.users.User.objects.filter(
+#             user_type__in=workers)
+#         for obj in qs:
+#             sar = SessionsByUser.request(
+#                 interesting_for=
+#                 master_instance=obj, param_values=spv)
+#             load_sessions(obj, sar)
+#             if obj._root2tot.get(TOTAL_KEY):
+#                 yield obj
 
 
     
@@ -564,7 +593,7 @@ class ServiceReports(dd.Table):
     interesting_for
     """
     detail_layout = """
-    start_date end_date user interesting_for ticket_state printed
+    id start_date end_date user interesting_for ticket_state printed
     company contact_person
     SessionsByReport
     # TicketsByReport
