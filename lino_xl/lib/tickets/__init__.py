@@ -83,7 +83,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         if user.authenticated:
             yield self.site.models.tickets.MyTickets
-            yield self.site.models.tickets.MySitesDashboard
+            yield self.site.models.tickets.MySites
             # yield self.site.models.tickets.MyTicketsToWork #in noi
             yield self.site.models.tickets.TicketsToTriage
         else:

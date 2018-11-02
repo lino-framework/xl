@@ -238,7 +238,7 @@ class MySessionsByDate(MySessions):
     label = _("My sessions by date")
     column_names = (
         'start_time end_time break_time duration summary ticket '
-        'workflow_buttons *')
+        'site_ref workflow_buttons *')
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -251,6 +251,7 @@ class MySessionsByDate(MySessions):
     def create_instance(self, ar, **kw):
         kw.update(start_date=ar.param_values.start_date)
         return super(MySessions, self).create_instance(ar, **kw)
+
 
 
 def load_sessions(self, sar):
@@ -316,10 +317,6 @@ class InvestedTime(dd.Table):
 
 def rpttype2vf(func, rpttype, verbose_name):
     return dd.VirtualField(dd.DurationField(verbose_name), func)
-
-MySessionsByDate.column_names = (
-    'start_time end_time break_time duration summary ticket '
-    'ticket__site workflow_buttons *')
 
 from lino.core.tables import VentilatedColumns
 
@@ -651,14 +648,4 @@ class SummariesBySite(Summaries):
     def setup_columns(cls):
         cls.column_names = "year active_tickets "
         cls.column_names += ' '.join(get_summary_columns())
-
-# from lino_xl.lib.tickets.ui import MySites
-
-# class MySitesDashboard(MySites):
-#     label = _("Sites Overview")
-
-#     @classmethod
-#     def setup_columns(cls):
-#         cls.column_names = "overview "
-#         cls.column_names += ' '.join(get_summary_columns(False))
 

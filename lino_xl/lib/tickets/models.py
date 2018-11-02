@@ -199,7 +199,7 @@ class Site(Referrable, ContactRelated, Starrable):
     state = SiteStates.field(default='draft')
     
     def __str__(self):
-        return self.name
+        return self.ref or self.name
 
     def get_change_observers(self):
         for s in rt.models.tickets.Subscription.objects.filter(site=self):
