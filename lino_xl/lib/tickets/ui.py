@@ -324,14 +324,14 @@ class Tickets(dd.Table):
             blank=True, null=True,
             help_text=_("Only rows concerning this end user.")),
         assigned_to=dd.ForeignKey(
-            end_user_model,
-            # settings.SITE.user_model,
+            # end_user_model,
+            settings.SITE.user_model,
             verbose_name=_("Assigned_to"),
             blank=True, null=True,
             help_text=_("Only tickets with this user assigned.")),
         not_assigned_to=dd.ForeignKey(
-            end_user_model,
-            # settings.SITE.user_model,
+            # end_user_model,
+            settings.SITE.user_model,
             verbose_name=_("Not assigned to"),
             blank=True, null=True,
             help_text=_("Only that this user is not assigned to.")),
