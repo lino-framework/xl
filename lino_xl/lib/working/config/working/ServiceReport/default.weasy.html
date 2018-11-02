@@ -17,6 +17,8 @@ Sites owned by {{obj.interesting_for}}.
 {{ar.show(rt.models.working.SessionsByReport, obj, header_level=2)}}
 {{ar.show(rt.models.working.TicketsByReport, obj, header_level=2)}}
 {{ar.show(rt.models.working.SitesByReport, obj, header_level=2)}}
-{{#ar.show(rt.models.working.WorkersByReport, obj, header_level=2)}}
+{% if False %}
+{{ar.show(rt.models.working.WorkersByReport, obj, header_level=2)}}
+{% endif %}
 
 {%- endblock %}
