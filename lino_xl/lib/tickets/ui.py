@@ -684,8 +684,8 @@ class TicketsSummary(Tickets):
             sar = self.request_from(ar, master_instance=master)
             
         # every element of `items` is a tuple `(state,
-        # list-of-objects)`.  in ar are ordered by state. we just group
-        # them 
+        # list-of-objects)`.  in ar they are ordered by state. we just
+        # group them
         items = []
         items_by_state = dict()
         # ci = None
@@ -811,38 +811,39 @@ class Sites(dd.Table):
 
 
 
-
-class MySites(Sites):
-    label = _("My Sites")
-
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(MySites, self).param_defaults(ar, **kw)
-        kw.update(watcher=ar.get_user())
-        return kw
-
 def get_summary_columns():
     for ts in TicketStates.get_list_items():
         if ts.active:
             k = ts.get_summary_field()
             if k is not None:
                 yield k
-    
 
-class MySitesDashboard(MySites):
-    label = _("Sites Overview")
+class MySites(Sites):
+    label = _("My sites")
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MySites, self).param_defaults(ar, **kw)
+        kw.update(watcher=ar.get_user())
+        kw.update(show_exposed=dd.YesNo.yes)
+        return kw
 
     @classmethod
     def setup_columns(cls):
         cls.column_names = "overview "
         cls.column_names += ' '.join(get_summary_columns())
 
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(MySitesDashboard, self).param_defaults(ar, **kw)
-        if ar.get_user().user_type.has_required_roles([TicketsStaff]):
-            kw['watcher'] = None
-        return kw
+    
+
+# class SitesOverview(MySites):
+#     label = _("Sites Overview")
+
+    # @classmethod
+    # def param_defaults(self, ar, **kw):
+    #     kw = super(MySitesDashboard, self).param_defaults(ar, **kw)
+    #     if ar.get_user().user_type.has_required_roles([TicketsStaff]):
+    #         kw['watcher'] = None
+    #     return kw
 
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)

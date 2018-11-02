@@ -192,6 +192,17 @@ class Session(UserAuthored, Started, Ended, Workable):
             return self.ticket_id
         return self.ticket.obj2href(ar)  # self.ticket_id)
 
+    @dd.displayfield(_("Site"))
+    def site_ref(self, ar):
+        if not self.ticket:
+            return ''
+        site = self.ticket.site
+        if site is None:
+            return ''
+        if ar is None:
+            return str(site)
+        return site.obj2href(ar)
+
 dd.update_field(
     Session, 'user', blank=False, null=False, verbose_name=_("Worker"))
 dd.update_field(
