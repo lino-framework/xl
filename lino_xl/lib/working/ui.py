@@ -237,8 +237,8 @@ class MySessionsByDate(MySessions):
     order_by = ['start_date', 'start_time']
     label = _("My sessions by date")
     column_names = (
-        'start_time end_time break_time duration summary ticket '
-        'site_ref workflow_buttons *')
+        'start_time:5 end_time:5 break_time:6 duration:5 summary ticket '
+        'site_ref:10 workflow_buttons:10 *')
 
     @classmethod
     def param_defaults(self, ar, **kw):

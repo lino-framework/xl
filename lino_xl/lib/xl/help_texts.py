@@ -1329,8 +1329,7 @@ confirmation, documentation,..)"""),
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
     'lino_xl.lib.working.SessionType' : _("""The type of a Session."""),
-    'lino_xl.lib.working.Session' : _("""A Session is when a user works during a given lapse of time on
-a given Ticket."""),
+    'lino_xl.lib.working.Session' : _("""Django model representing a work session."""),
     'lino_xl.lib.working.Session.start_date' : _("""The date when you started to work."""),
     'lino_xl.lib.working.Session.start_time' : _("""The time (in hh:mm) when you started working on this
 session."""),
@@ -1348,10 +1347,10 @@ on the ticket."""),
     'lino_xl.lib.working.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
     'lino_xl.lib.working.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
     'lino_xl.lib.working.Workable' : _("""Base class for things that workers can work on."""),
-    'lino_xl.lib.working.Workable.is_workable_for' : _("""Return True if the given user can start a working session on this
-object."""),
-    'lino_xl.lib.working.Workable.on_worked' : _("""This is automatically called when a work session has been created
-or modified."""),
+    'lino_xl.lib.working.Workable.is_workable_for' : _("""Return True if the given user can start a work session on
+this object."""),
+    'lino_xl.lib.working.Workable.on_worked' : _("""This is automatically called when a work session has been
+created or modified."""),
     'lino_xl.lib.working.Workable.start_session' : _("""See StartTicketSession."""),
     'lino_xl.lib.working.Workable.end_session' : _("""See EndTicketSession."""),
     'lino_xl.lib.working.ServiceReport' : _("""The Django model representing a service report."""),
