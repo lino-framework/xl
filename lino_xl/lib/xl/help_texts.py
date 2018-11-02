@@ -310,13 +310,10 @@ parameter. No default value."""),
     'lino_xl.lib.tim2lino.Plugin.use_dbf_py' : _("""Whether to use Ethan Furman's dbf package to read the file."""),
     'lino_xl.lib.tim2lino.Plugin.dbf_table_ext' : _("""The file extension of TIM tables. Meaningful values are '.DBF' or
 .FOX."""),
-    'lino_xl.lib.topics.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.topics.AddInterestField' : _("""An editable virtual field used for adding an interest to the
-object."""),
-    'lino_xl.lib.topics.TopicGroup' : _("""Currently not used."""),
-    'lino_xl.lib.topics.Interest' : _("""An interest is the fact that a given partner is interested in a
-given topic."""),
-    'lino_xl.lib.topics.Topic' : _("""A topic is something somebody can be interested in."""),
+    'lino_xl.lib.topics.Plugin' : _("""A subclass of Plugin for this
+plugin."""),
+    'lino_xl.lib.topics.Plugin.partner_model' : _("""The Django model used to represent partners in the scope of this
+plugin."""),
     'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
     'lino_xl.lib.vat.Plugin' : _("""The Plugin object for this
 plugin."""),
@@ -1357,10 +1354,13 @@ object."""),
 or modified."""),
     'lino_xl.lib.working.Workable.start_session' : _("""See StartTicketSession."""),
     'lino_xl.lib.working.Workable.end_session' : _("""See EndTicketSession."""),
-    'lino_xl.lib.working.ServiceReport' : _("""A service report is a document used in various discussions with
-a stakeholder."""),
+    'lino_xl.lib.working.ServiceReport' : _("""The Django model representing a service report."""),
     'lino_xl.lib.working.ServiceReport.user' : _("""This can be empty and will then show the working time of all
 users."""),
+    'lino_xl.lib.working.ServiceReport.interesting_for' : _("""Show only tickets on sites assigned to this partner."""),
+    'lino_xl.lib.working.ServiceReport.ticket_state' : _("""Show only tickets having this state."""),
+    'lino_xl.lib.working.ServiceReport.printed' : _("""See lino_xl.lib.exerpts.Certifiable.printed"""),
+    'lino_xl.lib.working.SitesByReport' : _("""The list of tickets mentioned in a service report."""),
     'lino_xl.lib.working.ShowMySessionsByDay' : _("""Show all sessions on the same day."""),
     'lino_xl.lib.working.TicketHasSessions' : _("""Select only tickets for which there has been at least one session
 during the given period."""),
@@ -1411,6 +1411,11 @@ summary of the financial balances of an organisation."""),
 both sheet types."""),
     'lino_xl.lib.sheets.ItemEntry' : _("""An entry is the computed value of given item for a given
 report."""),
+    'lino_xl.lib.topics.Topic' : _("""Django model representing a topic."""),
+    'lino_xl.lib.topics.Interest' : _("""Django model representing an interest."""),
+    'lino_xl.lib.topics.TopicGroup' : _("""This model is deprecated.  We use the Topic.ref for structuring
+topics."""),
+    'lino_xl.lib.topics.TopicGroups' : _("""Currently not used."""),
     'lino_xl.lib.userstats.UserStat' : _("""A Summary on
 SiteConfig."""),
     'lino_xl.lib.userstats.UserStat.active_users' : _("""The number of active users. A user is considered active if

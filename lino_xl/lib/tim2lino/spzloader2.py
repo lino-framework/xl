@@ -51,6 +51,7 @@ from dateutil import parser as dateparser
 
 from django.core.exceptions import ValidationError
 from django.db import DEFAULT_DB_ALIAS
+from django.utils import translation
 
 # from lino.utils import mti
 from lino.utils.instantiator import create_row
@@ -226,7 +227,10 @@ class TimLoader(TimLoader):
         pk = self.par_pk(row.idpar)
         if pk is None:
             return
-        name = row.firme.strip() + ' ' + row.vorname.strip()
+        name = row.firme.strip()
+        if row.name2.strip():
+            name += "-" + row.name2.strip()
+        name += ' ' + row.vorname.strip()
         prt = row.idprt
         ref = row.idpar.strip()
         
@@ -304,7 +308,7 @@ class TimLoader(TimLoader):
                 course.state = CourseStates.get_by_value(v) \
                                or CourseStates.inactive
             u1, u2, u3 = self.get_users(row)
-            course.teacher = u2 or u1
+            course.user = course.teacher = u2 or u1
             if row.idpar.startswith('E'):
                 course.team = self.eupen
             elif row.idpar.startswith('S'):
@@ -728,14 +732,15 @@ class TimLoader(TimLoader):
         bulkdel(Line)
 
         a = CourseAreas.default
-        self.other_groups = create_row(
-            Line, name=a.text, course_area=a, ref=a.value)
-        a = CourseAreas.life_groups
-        self.life_groups = create_row(
-            Line, name=a.text, course_area=a, ref=a.value)
-        a = CourseAreas.therapies
-        self.therapies = create_row(
-            Line, name=a.text, course_area=a, ref=a.value)
+        with translation.override("de"):
+            self.other_groups = create_row(
+                Line, name=a.text, course_area=a, ref=a.value)
+            a = CourseAreas.life_groups
+            self.life_groups = create_row(
+                Line, name=a.text, course_area=a, ref=a.value)
+            a = CourseAreas.therapies
+            self.therapies = create_row(
+                Line, name=a.text, course_area=a, ref=a.value)
         
         
         yield self.load_dbf('PAR')

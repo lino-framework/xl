@@ -273,9 +273,10 @@ class TasksByProject(Tasks):
 class GuestRoles(dd.Table):
     model = 'cal.GuestRole'
     required_roles = dd.login_required(dd.SiteStaff, OfficeUser)
+    order_by = ['ref', 'name', 'id']
+    column_names = "ref name id *"
     detail_layout = """
-    id name
-    #build_method #template #email_template #attach_to_email
+    ref name id
     cal.GuestsByRole
     """
 
@@ -449,7 +450,7 @@ class GuestsByPartner(Guests):
     master_key = 'partner'
     required_roles = dd.login_required(GuestOperator)
     # required_roles = dd.login_required(OfficeUser)
-    column_names = 'event__when_text event__overview workflow_buttons'
+    column_names = 'event__when_text event_summary event__user workflow_buttons'
     auto_fit_column_widths = True
     display_mode = "summary"
     order_by = ['-event__start_date', '-event__start_time']
@@ -552,13 +553,14 @@ class MyGuests(Guests):
 class EventTypes(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
     model = 'cal.EventType'
-    column_names = "name planner_column is_appointment force_guest_states all_rooms *"
+    order_by = ['ref', 'name', 'id']
+    column_names = "ref name planner_column is_appointment force_guest_states all_rooms *"
 
     detail_layout = """
-    name
+    name ref id
     event_label
     # description
-    start_date max_days id planner_column
+    start_date max_days planner_column
     # type url_template username password
     #build_method #template email_template attach_to_email
     is_appointment force_guest_states all_rooms locks_user transparent max_conflicting
@@ -566,7 +568,7 @@ class EventTypes(dd.Table):
     """
 
     insert_layout = dd.InsertLayout("""
-    name
+    name ref
     event_label
     """, window_size=(60, 'auto'))
 

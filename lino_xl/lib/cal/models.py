@@ -28,6 +28,7 @@ from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
+from lino.mixins import Referrable
 from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
 
@@ -235,8 +236,9 @@ class Priority(mixins.BabelNamed):
 
 
 @dd.python_2_unicode_compatible
-class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
+class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     templates_group = 'cal/Event'
+    ref_max_length = 4
 
     class Meta:
         app_label = 'cal'
@@ -276,8 +278,10 @@ class EventType(mixins.BabelNamed, mixins.Sequenced, MailableType):
             or settings.SITE.babelattr(self, 'name')
 
 
-class GuestRole(mixins.BabelNamed):
+class GuestRole(mixins.BabelNamed, Referrable):
     templates_group = 'cal/Guest'
+
+    ref_max_length = 4
 
     class Meta:
         app_label = 'cal'

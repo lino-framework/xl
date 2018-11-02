@@ -128,7 +128,10 @@ class TimLoader(TimLoader):
             #     obj.isikukood = row['regkood'].strip()
             #     obj.created = row['datcrea']
             #     obj.modified = datetime.datetime.now()
-            name = row.firme.strip() + ' ' + row.vorname.strip()
+            name = row.firme.strip()
+            if row.name2.strip():
+                name += "-" + row.name2.strip()
+            name += ' ' + row.vorname.strip()
             prt = row.idprt
             if prt == "T":
                 # if Course.objects.filter(id=obj.id).exists():

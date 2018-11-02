@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Luc Saffre
+# Copyright 2011-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -20,6 +20,7 @@ from lino.utils.instantiator import create_row
 from etgen.html import E
 from lino.modlib.gfks.mixins import Controllable
 from lino.core.gfks import gfk2lookup
+from .roles import TopicsUser
 
 class AddInterestField(dd.VirtualField):
 
@@ -56,7 +57,6 @@ class AddInterestField(dd.VirtualField):
 
 
 class TopicGroup(BabelNamed):
-    """Currently not used. """
 
     class Meta:
         app_label = 'topics'
@@ -71,18 +71,14 @@ class TopicGroups(dd.Table):
     model = 'topics.TopicGroup'
     required_roles = dd.login_required(dd.SiteStaff)
     order_by = ["id"]
-    detail_layout = """
-    id name
-    description
-    TopicsByGroup
-    """
+    # detail_layout = """
+    # id name
+    # description
+    # TopicsByGroup
+    # """
 
 
 class Interest(Controllable):
-    """An **interest** is the fact that a given partner is interested in a
-    given topic.
-
-    """
     class Meta:
         app_label = 'topics'
         verbose_name = _("Interest")
@@ -106,13 +102,6 @@ class Interest(Controllable):
 
 
 class Topic(BabelNamed, Referrable):
-    """A topic is something somebody can be interested in.
-
-    .. attribute:: ref
-    .. attribute:: description
-    
-
-    """
 
     class Meta:
         app_label = 'topics'
@@ -129,12 +118,13 @@ class Topic(BabelNamed, Referrable):
 
 
 class Topics(dd.Table):
+    required_roles = dd.login_required(TopicsUser)
     model = 'topics.Topic'
-    order_by = ["id"]
-    column_names = "ref name topic_group *"
+    order_by = ["ref"]
+    column_names = "ref name *"
 
     insert_layout = """
-    topic_group
+    ref
     name
     """
 
@@ -147,12 +137,13 @@ class Topics(dd.Table):
 class AllTopics(Topics):
     required_roles = dd.login_required(dd.SiteStaff)
 
-class TopicsByGroup(Topics):
-    master_key = 'topic_group'
-    required_roles = dd.login_required(dd.SiteStaff)
+# class TopicsByGroup(Topics):
+#     master_key = 'topic_group'
+#     required_roles = dd.login_required(dd.SiteStaff)
 
 
 class Interests(dd.Table):
+    required_roles = dd.login_required(TopicsUser)
     model = 'topics.Interest'
     column_names = "partner topic *"
 
@@ -180,10 +171,6 @@ class InterestsByController(Interests):
     
     @classmethod
     def get_table_summary(self, obj, ar):
-        """Implements :meth:`summary view
-        <lino.core.actors.Actor.get_table_summary>`.
-
-        """
         sar = self.request_from(ar, master_instance=obj)
         # tags = [str(c.topic) for c in sar]
         tags = [six.text_type(c.topic) for c in sar]
@@ -202,6 +189,6 @@ class InterestsByController(Interests):
 class InterestsByTopic(Interests):
     master_key = 'topic'
     order_by = ["id"]
-    column_names = 'owner *'
+    column_names = 'partner owner *'
 
 

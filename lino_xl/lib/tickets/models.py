@@ -272,6 +272,8 @@ class Subscription(UserAuthored):
                     o.save()
                     ar.set_response(refresh_all=True)
 
+dd.update_field(
+    Subscription, 'user', verbose_name=_("User"))
         
 
 # @dd.python_2_unicode_compatible
