@@ -154,9 +154,6 @@ class User(User, Person):
         self.verification_code = id_generator(12)
         return super(User, self).on_create(ar)
     
-    def is_editable_by_all(self):
-        return self.user_state == UserStates.new
-    
     def get_detail_action(self, ar):
         a = super(User, self).get_detail_action(ar)
         if a is not None:
