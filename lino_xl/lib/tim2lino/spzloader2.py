@@ -246,8 +246,8 @@ class TimLoader(TimLoader):
                 try:
                     partner = Partner.objects.get(pk=pk)
                 except Partner.DoesNotExist:
-                    dd.logger.info("Create new %s %s from %s",
-                                   cl.__name__, pk, row)
+                    dd.logger.debug("Create new %s %s from %s",
+                                    cl.__name__, pk, row)
                     partner = timloader1.TimLoader.load_par(self, row).next()
                 else:
                     dd.logger.debug(
