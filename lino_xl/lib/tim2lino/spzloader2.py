@@ -259,6 +259,8 @@ class TimLoader(TimLoader):
                         partner = Person.objects.get(pk=pk)
                     insert_child(partner, cl, True)
                     partner = cl.objects.get(pk=pk)
+            # PAR->Name2 was not imported in spzloader1
+            partner.name = name
             yield partner  # yield a first time to get the pk
 
         if prt == "T":
