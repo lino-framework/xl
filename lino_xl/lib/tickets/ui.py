@@ -855,7 +855,7 @@ class AllSites(Sites):
 
 class SitesByCompany(Sites):
     master_key = 'company'
-    column_names = "ref name workflow *"
+    column_names = "ref name workflow_buttons *"
 
 
 class SitesByPerson(Sites):
