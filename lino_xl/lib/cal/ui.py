@@ -557,13 +557,12 @@ class EventTypes(dd.Table):
     column_names = "ref name planner_column is_appointment force_guest_states all_rooms *"
 
     detail_layout = """
-    name ref id
+    ref id planner_column 
+    name 
     event_label
     # description
-    start_date max_days planner_column
-    # type url_template username password
-    #build_method #template email_template attach_to_email
-    is_appointment force_guest_states all_rooms locks_user transparent max_conflicting
+    #build_method #template start_date max_days max_conflicting email_template attach_to_email
+    is_appointment force_guest_states all_rooms locks_user transparent
     EntriesByType
     """
 
