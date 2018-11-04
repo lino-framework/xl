@@ -1003,6 +1003,13 @@ if settings.SITE.project_model:
         event_type
         """
 
+    @classmethod
+    def create_instance(cls, ar, **kw):
+        mi = ar.master_instance
+        if mi is not None:
+            kw['project'] = mi
+        return super(EntriesByProject, cls).create_instance(ar, **kw)
+
 
 class OneEvent(Events):
     show_detail_navigator = False
