@@ -836,8 +836,6 @@ EnrolmentsByPupil."""),
     'lino_xl.lib.courses.CourseAreas' : _("""The global choicelist of course areas.  Every choice is an
 instance of CourseArea."""),
     'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
-    'lino_xl.lib.courses.CourseArea.force_guest_states' : _("""Whether guest states are forced, i.e. automatically set for
-all guests based on the calendar entry's state."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
