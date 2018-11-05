@@ -291,29 +291,29 @@ class GuestDetail(dd.DetailLayout):
 class CalendarView(dd.Table):
 
     @classmethod
-    def get_table_summary(self, obj, ar):
+    def get_table_summary(cls, obj, ar):
+        # note that objects can be either Event or Guest. if the view
+        # is called for Guest, we waht to display the guest states
+        # (not the event states). But when user clicks on a date they
+        # want to show the event (even when we are calling from Guest)
         if ar is None:
             return ''
-        sar = self.request_from(ar, master_instance=obj)
-
+        sar = cls.request_from(ar, master_instance=obj)
         state_coll = {}
-        cal = CalendarRenderer()
-        for evt in sar:
-            if isinstance(evt, rt.models.cal.Guest):
-                evt = evt.event
-            # if len(elems) > 0:
-            #     elems.append(', ')
-            if evt.state in state_coll:
-                state_coll[evt.state] += 1
+        cal = CalendarRenderer(cls.model)
+        for obj in sar:
+            if obj.state in state_coll:
+                state_coll[obj.state] += 1
             else:
-                state_coll[evt.state] = 1
+                state_coll[obj.state] = 1
 
-            cal.collect(evt.start_date, evt)
+            cal.collect(obj)
 
         elems = [cal.to_html(ar)]
-
+        # choicelist = EntryStates
+        choicelist = cls.workflow_state_field.choicelist
         ul = []
-        for st in EntryStates.get_list_items():
+        for st in choicelist.get_list_items():
             ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
         toolbar = []
         toolbar += join_elems(ul, sep=', ')
@@ -324,7 +324,7 @@ class CalendarView(dd.Table):
                 btn = ar1.ar2button(obj)
                 toolbar.append(btn)
 
-        ar2 = self.insert_action.request_from(sar)
+        ar2 = cls.insert_action.request_from(sar)
         if ar2.get_permission():
             btn = ar2.ar2button()
             toolbar.append(btn)
@@ -462,25 +462,6 @@ class GuestsByPartner(Guests):
         kw.update(end_date=dd.today(7))
         return kw
 
-    # @classmethod
-    # def get_table_summary(self, obj, ar):
-    #     if ar is None:
-    #         return ''
-    #     sar = self.request_from(ar, master_instance=obj)
-
-    #     elems = []
-    #     fmt = rt.models.cal.EventGenerator.get_cal_entry_renderer(
-    #         day_and_month)
-    #     for guest in sar:
-    #         if len(elems):
-    #             elems.append(', ')
-    #         elems.extend(fmt(guest.event, ar))
-    #         # lbl = fmt(guest.event.start_date)
-    #         # if guest.state.button_text:
-    #         #     lbl = "{0}{1}".format(lbl, guest.state.button_text)
-    #         # elems.append(ar.obj2html(guest.event, lbl))
-    #     # elems = join_elems(elems, sep=', ')
-    #     return ar.html_text(E.div(*elems))
 
 class MyPresences(Guests):
     required_roles = dd.login_required(OfficeUser)
@@ -883,17 +864,23 @@ UL_MODE = 1
 TABLE_MODE = 2
 
 class CalendarRenderer(object):
-    def __init__(self):
+    def __init__(self, model):
         self.years = OrderedDict()
         self.mode = PLAIN_MODE
+        self.model = model
 
-    def collect(self, d, evt):
+    def collect(self, obj):
+        if self.model is rt.models.cal.Guest:
+            d = obj.event.start_date
+        else:
+            d = obj.start_date
+        
         if d.year in self.years:
             y = self.years[d.year]
         else:
             y = Year(d.year)
             self.years[d.year] = y
-        y.months[d.month-1].append(evt)
+        y.months[d.month-1].append(obj)
 
     def analyze_view(self, max_months=6):
         count1 = count2 = 0
@@ -912,29 +899,46 @@ class CalendarRenderer(object):
         if count1 <= max_months:
             self.mode = UL_MODE
         elif count2:
-            self.mode = TABLE_MODE
+            # self.mode = TABLE_MODE
+            self.mode = UL_MODE
         else:
             self.mode = PLAIN_MODE
 
     def to_html(self, ar):
         self.analyze_view()
-        get_rnd = rt.models.cal.EventGenerator.get_cal_entry_renderer
+        
         if self.mode == TABLE_MODE:
             sep = ' '
-            fmt = get_rnd(day_and_weekday)
+            fmt = day_and_weekday
         elif self.mode == UL_MODE:
             sep = ' '
-            fmt = get_rnd(day_and_weekday)
+            fmt = day_and_weekday
         elif self.mode == PLAIN_MODE:
             sep = ', '
-            fmt = get_rnd(dd.fds)
+            fmt = dd.fds
+
+        def rnd(obj, ar):
+            if self.model is rt.models.cal.Guest:
+                d = obj.event.start_date
+                evt = obj.event
+            else:
+                d = obj.start_date
+                evt = obj
+            # if show_auto_num and evt.auto_type:
+            #     yield str(evt.auto_type)+":"
+            yield ar.obj2html(evt, fmt(d))
+            if obj.state.button_text:
+                yield str(obj.state.button_text)
+            # return (fdmy(d) + ": ", ar.obj2html(evt, lbl))
+
+        
             
         def xxx(list_of_entries):
             elems = []
             for e in list_of_entries:
                 if len(elems):
                     elems.append(sep)
-                elems.extend(fmt(e, ar))
+                elems.extend(rnd(e, ar))
             return elems
         
         if self.mode == TABLE_MODE:

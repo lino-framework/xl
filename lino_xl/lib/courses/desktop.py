@@ -315,9 +315,8 @@ class MyCourses(My, Activities):
 class MyCoursesGiven(Activities):
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
-    # master_key = "teacher"
-    column_names = "overview weekdays_text times_text room workflow_buttons *"
-    # detail_layout = 'courses.CourseDetail'
+    column_names = "start_date overview weekdays_text times_text room workflow_buttons *"
+    order_by = ['start_date', 'start_time']
 
     @classmethod
     def param_defaults(self, ar, **kw):
