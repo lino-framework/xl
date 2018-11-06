@@ -246,8 +246,8 @@ class TimLoader(TimLoader):
                 try:
                     partner = Partner.objects.get(pk=pk)
                 except Partner.DoesNotExist:
-                    dd.logger.info("Create new %s %s from %s",
-                                   cl.__name__, pk, row)
+                    dd.logger.debug("Create new %s %s from %s",
+                                    cl.__name__, pk, row)
                     partner = timloader1.TimLoader.load_par(self, row).next()
                 else:
                     dd.logger.debug(
@@ -259,6 +259,8 @@ class TimLoader(TimLoader):
                         partner = Person.objects.get(pk=pk)
                     insert_child(partner, cl, True)
                     partner = cl.objects.get(pk=pk)
+            # PAR->Name2 was not imported in spzloader1
+            partner.name = name
             yield partner  # yield a first time to get the pk
 
         if prt == "T":

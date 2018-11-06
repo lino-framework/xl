@@ -836,8 +836,6 @@ EnrolmentsByPupil."""),
     'lino_xl.lib.courses.CourseAreas' : _("""The global choicelist of course areas.  Every choice is an
 instance of CourseArea."""),
     'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
-    'lino_xl.lib.courses.CourseArea.force_guest_states' : _("""Whether guest states are forced, i.e. automatically set for
-all guests based on the calendar entry's state."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
@@ -1253,6 +1251,7 @@ not change anymore."""),
     'lino_xl.lib.tickets.TimeInvestment.private' : _("""Whether this investment is private, i.e. should not be
 publicly visible anywhere."""),
     'lino_xl.lib.tickets.TimeInvestment.planned_time' : _("""The time (in hours) we plan to work on this project or ticket."""),
+    'lino_xl.lib.tickets.Ticket' : _("""The Django model used to represent a ticket."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The author. The user who reported this ticket to the database
 and is responsible for managing it."""),
     'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
@@ -1274,7 +1273,7 @@ and 100."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 site.  See ReportingTypes."""),
-    'lino_xl.lib.tickets.Tickets' : _("""Base class for all tables of all tickets."""),
+    'lino_xl.lib.tickets.Tickets' : _("""Base class for all tables of tickets."""),
     'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
     'lino_xl.lib.tickets.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
     'lino_xl.lib.tickets.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
@@ -1317,6 +1316,7 @@ needs to be done by the user (e.g. testing,
 confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.TicketStates.done' : _("""The ticket has been done."""),
     'lino_xl.lib.tickets.TicketStates.cancelled' : _("""It has been decided that we won't fix this ticket."""),
+    'lino_xl.lib.tickets.MySites' : _("""Shows the sites for which I have a subscription."""),
     'lino_xl.lib.tickets.Subscription.site' : _("""The site."""),
     'lino_xl.lib.tickets.Subscription.user' : _("""The user."""),
     'lino_xl.lib.tickets.Subscription.primary' : _("""Whether this is the primary subscription of this user."""),

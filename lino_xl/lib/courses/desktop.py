@@ -196,12 +196,24 @@ class Activities(dd.Table):
 
     # simple_parameters = 'line teacher state user'.split()
 
+    @dd.chooser()
+    def line_choices(cls):
+        # dd.logger.info("20181104 line_choices %s", cls)
+        qs = rt.models.courses.Line.objects.all()
+        if cls._course_area:
+            qs = qs.filter(course_area=cls._course_area)
+        return qs
+
     @classmethod
-    def create_instance(self, ar, **kw):
+    def create_instance(cls, ar, **kw):
         # dd.logger.info("20160714 %s", kw)
-        obj = super(Activities, self).create_instance(ar, **kw)
-        if self._course_area is not None:
-            obj.course_area = self._course_area
+        obj = super(Activities, cls).create_instance(ar, **kw)
+        if cls._course_area is not None:
+            obj.course_area = cls._course_area
+            qs = rt.models.courses.Line.objects.filter(
+                course_area=cls._course_area)
+            if qs.count() == 1:
+                obj.line = qs[0]
         return obj
 
     @classmethod
@@ -303,9 +315,8 @@ class MyCourses(My, Activities):
 class MyCoursesGiven(Activities):
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
-    # master_key = "teacher"
-    column_names = "overview weekdays_text times_text room workflow_buttons *"
-    # detail_layout = 'courses.CourseDetail'
+    column_names = "start_date overview weekdays_text times_text room workflow_buttons *"
+    order_by = ['start_date', 'start_time']
 
     @classmethod
     def param_defaults(self, ar, **kw):

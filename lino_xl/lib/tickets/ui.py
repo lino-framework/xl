@@ -764,7 +764,7 @@ class Sites(dd.Table):
     required_roles = dd.login_required(Reporter)
     model = 'tickets.Site'
     column_names = "name company contact_person remark workflow_buttons id *"
-    order_by = ['name']
+    order_by = ['ref', 'name']
     # detail_html_template = "tickets/Site/detail.html"
     parameters = dd.ParameterPanel(
         watcher=dd.ForeignKey('users.User', blank=True, null=True),
@@ -855,7 +855,7 @@ class AllSites(Sites):
 
 class SitesByCompany(Sites):
     master_key = 'company'
-    column_names = "ref name *"
+    column_names = "ref name workflow_buttons *"
 
 
 class SitesByPerson(Sites):

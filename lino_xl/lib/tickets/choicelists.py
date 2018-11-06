@@ -75,7 +75,7 @@ TicketEvents.add_item_instance(TicketEventModified('modified'))
 
 
 class SiteState(dd.State):
-    is_exposed = True
+    is_exposed = False
     
 class SiteStates(dd.Workflow):
     verbose_name_plural = _("Site states")
