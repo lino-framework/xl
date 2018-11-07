@@ -819,7 +819,7 @@ participant."""),
     'lino_xl.lib.courses.PendingRequestedEnrolments' : _("""Show all requested enrolments."""),
     'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
     'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
-    'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show all enrolments of a given course."""),
+    'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show the enrolments of a this course."""),
     'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
 configurable list of categories."""),
     'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
