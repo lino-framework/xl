@@ -24,10 +24,8 @@ import sys
 PY2 = sys.version_info[0] == 2
 if PY2:
     install_requires.append('appy')
-    install_requires.append('weasyprint<0.43')
 else:
-    install_requires.append('weasyprint')
-    
+    pass
 
 SETUP_INFO = dict(
     name='lino-xl',
