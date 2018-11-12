@@ -14,7 +14,7 @@
 from __future__ import unicode_literals
 
 
-install_requires = ['lino', 'odfpy', 'bleach', 'weasyprint']
+install_requires = ['lino', 'odfpy', 'bleach']
 
 # under Python 3, appy is installed using a symbolic link, so we don't
 # declare it in install_requires because otherwise :cmd:`setup.py
@@ -24,7 +24,9 @@ import sys
 PY2 = sys.version_info[0] == 2
 if PY2:
     install_requires.append('appy')
+    install_requires.append('weasyprint < 0.43')
 else:
+    install_requires.append('weasyprint')
     pass
     
 
