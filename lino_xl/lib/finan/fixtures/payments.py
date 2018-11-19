@@ -94,6 +94,7 @@ def objects(refs="PMO BNK"):
         #     continue  # temp 20171007
         jnl = Journal.objects.get(ref=ref)
         sug_table = jnl.voucher_type.table_class.suggestions_table
+        do_fill = sug_table.get_action_by_name('do_fill')
         if ref == 'PMO':
             assert site_company is not None
             if site_company.country is None:
@@ -114,8 +115,7 @@ def objects(refs="PMO BNK"):
             yield voucher
 
             # start action request for do_fill:
-            ba = sug_table.get_action_by_name('do_fill')
-            ar = ba.request(master_instance=voucher)
+            ar = do_fill.request(master_instance=voucher)
             # select all rows:
             suggestions = sug_table.request(voucher)
             ar.selected_rows = list(suggestions)

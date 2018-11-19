@@ -30,6 +30,9 @@ class StartInvoicing(StartPlan):
     icon_name = 'basket'
     show_in_bbar = True
 
+    def get_plan_model(self):
+        return rt.models.invoicing.Plan
+    
 class StartInvoicingForJournal(StartInvoicing):
 
     def get_options(self, ar):
@@ -72,7 +75,9 @@ class ExecuteItem(ExecutePlan):
     def run_from_ui(self, ar, **kw):
         for item in ar.selected_rows:
             if item.invoice_id:
-                raise Warning(_("Invoice was already generated"))
+                raise Warning(
+                    _("Invoice {} was already generated").format(
+                        item.invoice))
             item.create_invoice(ar)
         ar.success(refresh=True)
 

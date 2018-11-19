@@ -18,6 +18,7 @@ from dateutil.relativedelta import relativedelta
 from django.db import models
 from django.conf import settings
 from django.dispatch import Signal
+from django.core.exceptions import ValidationError
 
 from atelier.utils import last_day_of_month
 
@@ -101,6 +102,11 @@ class Journal(mixins.BabelNamed,
     #     default=True)
 
 
+    def refuse_missing_partner(self):
+        if self.account is None:
+            return False
+        return True
+    
     def get_doc_model(self):
         """The model of vouchers in this Journal.
 
@@ -688,7 +694,11 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
                 seqno += 1
                 m.seqno = seqno
                 # m.cleared = True
-                m.full_clean()
+                try:
+                    m.full_clean()
+                except ValidationError as e:
+                    dd.logger.warning("20181116 %s : %s", e, dd.obj2str(m))
+                    return
                 m.save()
                 if m.partner:
                     partners.add(m.partner)
@@ -1210,7 +1220,10 @@ def get_due_movements(dc, **flt):
         # if m not in matches:
         #     matches.add(m)
         #     yield DueMovement(dc, mvt)
-    return matches
+    for m in matches:
+        if m.balance:
+            yield m
+    # return matches
 
 
 def check_clearings_by_account(account, matches=[]):

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2016 Luc Saffre
+# Copyright 2008-2018 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -15,7 +15,7 @@ from django.utils.translation import ugettext_lazy as _
 from lino.api import dd
 from lino import mixins
 
-from .choicelists import DeliveryUnit
+from .choicelists import DeliveryUnit, ProductTypes
 from .roles import ProductsUser, ProductsStaff
 
 vat = dd.resolve_app('vat')
@@ -68,14 +68,23 @@ class Product(mixins.BabelNamed):
         ProductCat, verbose_name=_("Category"),
         blank=True, null=True)
 
-    delivery_unit = DeliveryUnit.field(
-        default=DeliveryUnit.as_callable('piece'))
+    delivery_unit = DeliveryUnit.field(default='piece')
+    product_type = ProductTypes.field(default='default')
 
     if vat:
         vat_class = vat.VatClasses.field(blank=True)
     else:
         vat_class = dd.DummyField()
 
+
+class ProductDetail(dd.DetailLayout):
+
+    main = """
+    id cat #sales_price vat_class delivery_unit
+    name
+    description
+    """
+    
 
 class Products(dd.Table):
     required_roles = dd.login_required(ProductsUser)
@@ -88,11 +97,7 @@ class Products(dd.Table):
     name
     """
 
-    detail_layout = """
-    id cat #sales_price vat_class delivery_unit
-    name
-    description
-    """
+    detail_layout = "products.ProductDetail"
 
 # note: a Site without sales will have to adapt the detail_layout and
 # column_names of Products

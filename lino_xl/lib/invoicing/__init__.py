@@ -50,13 +50,18 @@ class Plugin(Plugin):
             self.voucher_model)
 
     def setup_main_menu(config, site, user_type, m):
-        mg = site.plugins.ledger
+        mg = site.plugins.sales
         m = m.add_menu(mg.app_label, mg.verbose_name)
         # m.add_action('invoicing.MyPlans')
         m.add_action('invoicing.Plan', action='start_plan')
 
+    def setup_config_menu(self, site, user_type, m):
+        mg = site.plugins.sales
+        m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('invoicing.Tariffs')
+        
     def setup_explorer_menu(self, site, user_type, m):
-        mg = site.plugins.vat
+        mg = site.plugins.sales
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('invoicing.AllPlans')
         m.add_action('invoicing.SalesRules')

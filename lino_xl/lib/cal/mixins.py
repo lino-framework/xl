@@ -30,6 +30,7 @@ from lino.modlib.notify.mixins import ChangeNotifier
 from .choicelists import Recurrencies, Weekdays, AccessClasses, EntryStates
 from .utils import day_and_month, day_and_weekday
 from .actions import UpdateAllGuests
+# from .roles import CalendarOperator
 
 from lino.utils.format_date import fdmy
 
@@ -81,6 +82,13 @@ class UpdateEntries(dd.MultipleRowAction):
 
     # icon_name = 'lightning'
     readonly = False
+    # required_roles = dd.login_required(CalendarOperator)
+
+    def get_action_permission(self, ar, obj, state):
+        if not obj.has_auto_events():
+            return False
+        return super(UpdateEntries, self).get_action_permission(
+            ar, obj, state)
 
     def run_on_row(self, obj, ar):
         return obj.update_reminders(ar)
@@ -90,7 +98,9 @@ class UpdateEntriesByEvent(UpdateEntries):
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
             return False
-        return super(UpdateEntriesByEvent, self).get_action_permission(
+        if not obj.owner.has_auto_events():
+            return False
+        return super(UpdateEntries, self).get_action_permission(
             ar, obj, state)
 
     def run_on_row(self, obj, ar):
@@ -138,9 +148,9 @@ class EventGenerator(dd.Model):
         return None
 
     def update_cal_event_type(self):
-        """Return the event_type for the events to generate.  Returning None
-    means: don't generate any events.
-
+        """
+        Return the event_type for the events to generate.  Returning None
+        means: don't generate any events.
         """
         return None
 
@@ -223,19 +233,24 @@ class EventGenerator(dd.Model):
     def setup_auto_event(self, obj):
         pass
 
-    def get_wanted_auto_events(self, ar):
-
-        wanted = dict()
-        unwanted = dict()
+    def has_auto_events(self):
         rset = self.update_cal_rset()
         if rset is None:
-            ar.info("No recurrency set")
-            return wanted, unwanted
+            # ar.info("No recurrency set")
+            return
         
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
         if not rset.every_unit:
-            ar.info("No every_unit")
+            # ar.info("No every_unit")
+            return 
+        return rset
+        
+    def get_wanted_auto_events(self, ar):
+        wanted = dict()
+        unwanted = dict()
+        rset = self.has_auto_events()
+        if rset is None :
             return wanted, unwanted
         
         qs = self.get_existing_auto_events()

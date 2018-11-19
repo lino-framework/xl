@@ -321,6 +321,7 @@ class MyCoursesGiven(Activities):
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyCoursesGiven, self).param_defaults(ar, **kw)
+        kw.update(show_exposed=dd.YesNo.yes)
         u = ar.get_user()
         if isinstance(u, teacher_model):
             pass

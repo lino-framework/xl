@@ -15,6 +15,7 @@ ZERO = Decimal(0)
 CENT = Decimal('.01')
 HUNDRED = Decimal('100.00')
 ONE = Decimal('1.00')
+MAX_AMOUNT = Decimal("9999999.00")
 
 DEBIT = False
 CREDIT = True

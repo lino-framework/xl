@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Luc Saffre
+# Copyright 2013-2018 Rumma & Ko 
 # License: BSD (see file COPYING for details)
 
 
@@ -25,8 +25,12 @@ class Plugin(ad.Plugin):
     """
     verbose_name = _("VAT")
 
-    needs_plugins = ['lino_xl.lib.countries', 'lino_xl.lib.ledger']
-
+    # vat needs ledger but doesn't declare this dependency to avoid
+    # having ledger before sales in menus:
+    
+    needs_plugins = ['lino_xl.lib.countries']
+    # needs_plugins = ['lino_xl.lib.countries', 'lino_xl.lib.ledger']
+    
     default_vat_regime = 'normal'
     """The default VAT regime. If this is specified as a string, Lino will
     resolve it at startup into an item of :class:`VatRegimes
@@ -59,9 +63,10 @@ class Plugin(ad.Plugin):
                 self.default_vat_class)
 
     def setup_reports_menu(self, site, user_type, m):
-        mg = site.plugins.ledger
+        # mg = site.plugins.ledger
         # mg = site.plugins.vat
         # mg = self
+        mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('vat.PrintableInvoicesByJournal')
         m.add_action('vat.IntracomPurchases')
@@ -69,7 +74,8 @@ class Plugin(ad.Plugin):
         
 
     def setup_explorer_menu(self, site, user_type, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
+        mg = self.get_menu_group()
+        m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('vat.VatAreas')
         m.add_action('vat.VatRegimes')
         m.add_action('vat.VatClasses')

@@ -81,6 +81,7 @@ CourseAreas = rt.models.courses.CourseAreas
 Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
+hc_Plan = rt.models.healthcare.Plan
 from lino_xl.lib.contacts.choicelists import CivilStates
 
 Account = dd.resolve_model('ledger.Account')
@@ -436,6 +437,15 @@ class TimLoader(TimLoader):
                 cct = rt.models.clients.ClientContactType.objects.get(pk=1)
                 yield rt.models.clients.ClientContact(
                     type=cct, client=partner, company=v)
+
+                qs = hc_Plan.objects.filter(provider=v).order_by('id')
+                if qs.exists():
+                    hcp = qs.first()
+                else:
+                    hcp = hc_Plan(provider=v, designation=str(v))
+                    yield hcp
+                partner.healthcare_plan = hcp
+                    
 
             v = self.get_partner(Person, row.hausarzt)
             if v:

@@ -110,32 +110,27 @@ The transitions from a "final" state to another final state
 the wrong button.  Theoretically it is irritating to have this
 possibility given because it suggests that some state change is still
 expected.  They can go away for applications where the state field is
-editable and where the users know how to use it. For example in
+editable and where the users know how to use it. But for example in
 :ref:`avanti` it isn't easily accessible.
-
 
 """
 
 # EntryStates.suggested.add_transition(
-# "?",
-# _("Reset"),
+# # "?",
+# # _("Reset"),
 # required_states='draft took_place cancelled')
-# help_text=_("Set to suggested state."))
+# # help_text=_("Set to suggested state."))
 
-EntryStates.draft.add_transition(
+EntryStates.suggested.add_transition(
     ResetEvent, name='reset_event')
     # "\u2610",  # BALLOT BOX
     # required_states='suggested took_place cancelled')
     # help_text=_("Set to draft state."))
 
+EntryStates.draft.add_transition(
+    required_states='suggested cancelled took_place')
+
 EntryStates.took_place.add_transition(MarkEventTookPlace)
-    # "\u2611",  # BALLOT BOX WITH CHECK
-    # required_states='suggested draft cancelled')
-    # help_text=_("Event took place."))
-    #icon_name='emoticon_smile')
-#~ EntryStates.missing.add_transition(states='published',icon_file='emoticon_unhappy.png')
-#~ EntryStates.rescheduled.add_transition(_("Reschedule"),
-    #~ states='published',icon_file='date_edit.png')
 EntryStates.cancelled.add_transition(
     # "\u2609",  # SUN
     # pgettext("calendar event action", "Cancel"),
@@ -143,14 +138,6 @@ EntryStates.cancelled.add_transition(
     # help_text=_("Event was cancelled."),
     required_states='suggested draft took_place')
     # icon_name='cross')
-# EntryStates.omitted.add_transition(
-#     pgettext("calendar event action", "Omit"),
-#     states='suggested draft took_place',
-#     icon_name='date_delete')
-# EntryStates.suggested.add_transition(
-#     _("Reset"),
-#     required_states='draft took_place cancelled',
-#     help_text=_("Reset to 'suggested' state."))
 
 # from lino.api import rt
 # rt.models.cal.Event.define_action(reset_event=ResetEvent())

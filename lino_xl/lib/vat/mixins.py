@@ -355,6 +355,11 @@ class VatItemBase(VoucherItem, VatTotal):
         # self.voucher.full_clean()
         # self.voucher.save()
 
+    def get_amount(self):
+        if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
+            return self.total_incl
+        return self.total_base
+            
     def set_amount(self, ar, amount):
         self.voucher.fill_defaults()
         if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
@@ -420,8 +425,11 @@ class QtyVatItemBase(VatItemBase):
         #         else:
         #             self.unit_price = self.total_base / self.qty
 
-        if self.unit_price is not None and self.qty is not None:
-            self.set_amount(ar, myround(self.unit_price * self.qty))
+        if self.unit_price is not None:
+            if self.qty is None:
+                self.set_amount(ar, myround(self.unit_price))
+            else:
+                self.set_amount(ar, myround(self.unit_price * self.qty))
 
 
 class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):

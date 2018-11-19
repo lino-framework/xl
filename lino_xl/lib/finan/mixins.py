@@ -1,4 +1,4 @@
-# Copyright 2008-2017 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from decimal import Decimal
@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 from lino_xl.lib.excerpts.mixins import Certifiable
 
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO
+from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, MAX_AMOUNT
 from lino_xl.lib.ledger.models import DebitOrCreditField
 from lino_xl.lib.ledger.mixins import VoucherItem, SequencedVoucherItem
 from lino_xl.lib.ledger.mixins import ProjectRelated, Matching
@@ -84,11 +84,13 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
             # kw = dict(seqno=i.seqno, partner=i.partner)
             kw = dict(partner=i.get_partner())
             kw.update(match=i.get_match())
+            if abs(i.amount > MAX_AMOUNT):
+                dd.logger.warning("Oops, %s is too big", i.amount)
+                return (ZERO, [])
             b = self.create_movement(
                 i, (i.account or self.item_account, None),
                 i.project, i.dc, i.amount, **kw)
             movements_and_items.append((b, i))
-
         return amount, movements_and_items
 
 
@@ -253,6 +255,17 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         elif self.amount < 0:
             self.amount = - self.amount
             self.dc = not self.dc
+        if self.account_id:
+            if self.account.needs_partner:
+                if not self.partner_id:
+                    if self.voucher.journal.refuse_missing_partner():
+                        raise ValidationError(
+                            _("Account {} needs a partner"))
+            else:
+                if self.partner_id:
+                    raise ValidationError(
+                        _("Account {} cannot be used with a partner"))
+
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean a %s", self.amount)
         super(FinancialVoucherItem, self).full_clean(*args, **kwargs)
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean b %s", self.amount)

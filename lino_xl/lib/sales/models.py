@@ -10,7 +10,7 @@ from lino.api import dd, rt, _
 from lino.core import actions
 from etgen.html import E
 from lino.utils.mldbc.mixins import BabelNamed
-from lino.modlib.notify.utils import body_subject_to_elems
+from lino.mixins.bleached import body_subject_to_elems
 
 from lino_xl.lib.sepa.mixins import Payable
 from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
@@ -20,7 +20,6 @@ from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 from lino_xl.lib.ledger.roles import LedgerStaff, LedgerUser
 from .mixins import SalesDocument, ProductDocItem
-
 
 TradeTypes.sales.update(
     price_field_name='sales_price',
@@ -52,7 +51,6 @@ class PaperTypes(dd.Table):
     model = 'sales.PaperType'
     required_roles = dd.login_required(LedgerStaff)
     column_names = 'name template *'
-
 
 
 class SalesDocuments(PartnerVouchers):
@@ -146,8 +144,8 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
     class Meta:
         app_label = 'sales'
         abstract = dd.is_abstract_model(__name__, 'VatProductInvoice')
-        verbose_name = _("Product invoice")
-        verbose_name_plural = _("Product invoices")
+        verbose_name = _("Sales invoice")
+        verbose_name_plural = _("Sales invoices")
 
     quick_search_fields = "partner__name subject"
 
@@ -279,8 +277,8 @@ class InvoiceItem(ProductDocItem, SequencedVoucherItem):
     class Meta:
         app_label = 'sales'
         abstract = dd.is_abstract_model(__name__, 'InvoiceItem')
-        verbose_name = _("Product invoice item")
-        verbose_name_plural = _("Product invoice items")
+        verbose_name = _("Sales invoice item")
+        verbose_name_plural = _("Sales invoice items")
 
     voucher = dd.ForeignKey(
         'sales.VatProductInvoice', related_name='items')
@@ -306,7 +304,6 @@ class InvoiceItems(dd.Table):
     model = 'sales.InvoiceItem'
     required_roles = dd.login_required(LedgerStaff)
     auto_fit_column_widths = True
-    column_names = "product title discount unit_price qty total_incl *"
     # hidden_columns = "seqno description total_base total_vat"
 
     detail_layout = 'sales.InvoiceItemDetail'
@@ -324,6 +321,7 @@ class ItemsByInvoice(InvoiceItems):
     master_key = 'voucher'
     order_by = ["seqno"]
     required_roles = dd.login_required(LedgerUser)
+    column_names = "product title discount unit_price qty total_incl *"
 
 
 
@@ -333,10 +331,11 @@ class ItemsByInvoicePrint(ItemsByInvoice):
 
     @dd.displayfield(_("Description"))
     def description_print(cls, self, ar):
-        elems = body_subject_to_elems(ar, self.title, self.description)
+        title = self.title or str(self.product)
+        elems = body_subject_to_elems(ar, title, self.description)
         # dd.logger.info("20160511a %s", cls)
         if cls.include_qty_in_description:
-            if self.qty != 1:
+            if self.qty is not None and self.qty != 1:
                 elems += [
                     " ",
                     _("({qty}*{unit_price}/{unit})").format(

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Luc Saffre
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -17,6 +17,7 @@ from lino.api import dd, rt, _
 from lino.utils import SumCollector
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.ledger.utils import DEBIT
+# from lino_xl.lib.ledger.utils import myround
 
 from lino_xl.lib.ledger.mixins import PartnerRelated
 
@@ -143,6 +144,7 @@ class Payable(PartnerRelated):
         has_vat = dd.is_installed('vat')
         kw = dict()
         for k, amount in item_sums.items():
+            # amount = myround(amount)
             acc_tuple, prj, vat_class, vat_regime = k
             # acc_tuple is a tuple (account, ana_account)
             if not isinstance(acc_tuple, tuple):
@@ -166,6 +168,7 @@ class Payable(PartnerRelated):
                     self.get_trade_type()))
         else:
             for prj, amount in counter_sums.items():
+                # amount = myround(amount)
                 yield self.create_movement(
                     None, (acc, None), prj, not self.journal.dc, amount,
                     partner=partner if acc.needs_partner else None,

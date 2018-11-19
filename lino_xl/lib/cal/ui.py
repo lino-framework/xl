@@ -362,7 +362,7 @@ class Guests(CalendarView):
         event_state=EntryStates.field(
             blank=True,
             verbose_name=_("Event state"),
-            help_text=_("Only rows having this event state.")),
+            help_text=_("Only rows on calendar entries having this state.")),
         guest_state=GuestStates.field(
             blank=True,
             verbose_name=_("Guest state"),

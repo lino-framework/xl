@@ -128,10 +128,10 @@ class ReportEntry(dd.Model):
     show_in_site_search = False
     
     report = dd.ForeignKey('sheets.Report')
-    old_d = dd.PriceField(_("Debit before"), null=True, blank=True)
-    old_c = dd.PriceField(_("Credit before"), null=True, blank=True)
-    during_d = dd.PriceField(_("Debit"), null=True, blank=True)
-    during_c = dd.PriceField(_("Credit"), null=True, blank=True)
+    old_d = dd.PriceField(_("Debit before"), 14, null=True, blank=True)
+    old_c = dd.PriceField(_("Credit before"), 14, null=True, blank=True)
+    during_d = dd.PriceField(_("Debit"), 14, null=True, blank=True)
+    during_c = dd.PriceField(_("Credit"), 14, null=True, blank=True)
     
     def new_balance(self):
         return Balance(self.old_d, self.old_c) + Balance(

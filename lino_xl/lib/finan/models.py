@@ -11,7 +11,8 @@ from django.db import models
 # from django.core.exceptions import ValidationError
 
 from etgen.html import E, join_elems
-from lino_xl.lib.ledger.utils import ZERO, DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import ZERO, DEBIT, CREDIT, MAX_AMOUNT
+
 from lino_xl.lib.ledger.fields import DcAmountField
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
@@ -62,16 +63,21 @@ class ShowSuggestions(dd.Action):
             setattr(self, k, getattr(actor.suggestions_table, k))
         return super(ShowSuggestions, self).attach_to_actor(actor, name)
 
-    # def get_action_permission(self, ar, obj, state):
-        
-    #     return super(ShowSuggestions, self).get_action_permission(
-    #         ar, obj, state)
-
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
         sar = ar.spawn(ar.actor.suggestions_table, master_instance=obj)
         js = ar.renderer.request_handler(sar)
         ar.set_response(eval_js=js)
+
+    def unused_get_action_permission(self, ar, obj, state):
+        # It would more intuitive to show Suggestions only for lines
+        # with a partner.  But there are cases where we use it on an
+        # empty item in order to select suggestions from multiple
+        # partners.
+        if not obj.get_partner():
+            return False
+        return super(ShowSuggestions, self).get_action_permission(
+            ar, obj, state)
 
 
 class JournalEntry(DatedFinancialVoucher, ProjectRelated):
@@ -129,6 +135,9 @@ class PaymentOrder(FinancialVoucher, Printable):
         # TODO: what if the needs_partner of the journal's account
         # is not checked? Shouldn't we raise an error here?
         amount, movements_and_items = self.get_finan_movements()
+        if abs(amount > MAX_AMOUNT):
+            dd.logger.warning("Oops, %s is too big", amount)
+            return
         self.total = - amount
         for m, i in movements_and_items:
             yield m
@@ -187,6 +196,9 @@ class BankStatement(DatedFinancialVoucher):
             warn_jnl_account(self.journal)
         amount, movements_and_items = self.get_finan_movements()
         self.balance2 = self.balance1 + amount
+        if abs(self.balance2) > MAX_AMOUNT:
+            dd.logger.warning("Oops, %s is too big", self.balance2)
+            return
         for m, i in movements_and_items:
             yield m
         yield self.create_movement(

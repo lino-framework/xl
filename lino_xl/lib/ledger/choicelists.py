@@ -16,7 +16,11 @@ from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 from .roles import LedgerStaff
 
 
+class JournalGroup(dd.Choice):
+    menu_group = None
+    
 class JournalGroups(dd.ChoiceList):
+    item_class = JournalGroup
     verbose_name = _("Journal group")
     verbose_name_plural = _("Journal groups")
     required_roles = dd.login_required(LedgerStaff)
@@ -28,6 +32,8 @@ add('30', _("Wages"), 'wages')
 add('40', _("Financial"), 'financial')
 add('50', _("VAT"), 'vat')
 
+if dd.is_installed("sales"):
+    JournalGroups.sales.menu_group = dd.plugins.sales
 
 
 class PeriodStates(dd.Workflow):

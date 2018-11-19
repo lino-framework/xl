@@ -94,12 +94,16 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, user_type, m):
         if not self.intrusive_menu:
             mg = site.plugins.ledger
-            m = m.add_menu(mg.app_label, mg.verbose_name)
+            ledger_menu = m.add_menu(mg.app_label, mg.verbose_name)
 
         Journal = site.models.ledger.Journal
         JournalGroups = site.models.ledger.JournalGroups
-        for grp in JournalGroups.objects():
-            subm = m.add_menu(grp.name, grp.text)
+        for grp in JournalGroups.get_list_items():
+            mg = grp.menu_group
+            if mg is None:
+                subm = ledger_menu.add_menu(grp.name, grp.text)
+            else:
+                subm = m.add_menu(mg.app_label, mg.verbose_name)
             for jnl in Journal.objects.filter(
                     journal_group=grp).order_by('seqno'):
                 subm.add_action(jnl.voucher_type.table_class,

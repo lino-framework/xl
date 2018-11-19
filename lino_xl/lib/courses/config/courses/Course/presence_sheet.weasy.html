@@ -55,7 +55,7 @@ p {
 {%- block main %}
 {{ super() }}
 {% set apv =  ar.action_param_values %}
-{% set events = obj.events_by_course.order_by('start_date') %}
+{% set events = obj.events_by_course().order_by('start_date') %}
 {% set events = rt.models.system.PeriodEvents.started.add_filter(events, apv)%}
 
 

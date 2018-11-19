@@ -1,5 +1,4 @@
-# Copyright 2008-2015 Luc Saffre
-#
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -25,7 +24,11 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.xl']
 
     def setup_main_menu(self, site, user_type, m):
-        m = m.add_menu(self.app_label, self.verbose_name)
+        if site.is_installed('sales'):
+            mg = site.plugins.sales
+        else:
+            mg = self
+        m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('products.Products')
         m.add_action('products.ProductCats')
 

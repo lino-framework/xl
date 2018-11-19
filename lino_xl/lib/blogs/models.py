@@ -78,7 +78,7 @@ class Entry(UserAuthored, Controllable, CombinedDateTime,
     title = models.CharField(_("Heading"), max_length=200, blank=True)
     pub_date = models.DateField(
         _("Publication date"), blank=True, null=True)
-    pub_time = models.TimeField(
+    pub_time = dd.TimeField(
         _("Publication time"), blank=True, null=True)
     entry_type = dd.ForeignKey('blogs.EntryType', blank=True, null=True)
     language = dd.LanguageField()

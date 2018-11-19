@@ -86,10 +86,10 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
         verbose_name_plural = _("Planner rows")
         ordering = ['seqno']
 
-    start_time = models.TimeField(
+    start_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("Start time"))
-    end_time = models.TimeField(
+    end_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("End time"))
 
@@ -345,7 +345,7 @@ class Task(Component):
     due_date = models.DateField(
         blank=True, null=True,
         verbose_name=_("Due date"))
-    due_time = models.TimeField(
+    due_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("Due time"))
     # ~ done = models.BooleanField(_("Done"),default=False) # iCal:COMPLETED
@@ -487,6 +487,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     move_next = MoveEntryNext()
 
     show_conflicting = dd.ShowSlaveTable(ConflictingEvents)
+    allow_merge_action = False
 
     def strftime(self):
         if not self.start_date:
@@ -779,14 +780,15 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         return txt
 
     @dd.displayfield(_("When"), sortable_by=['start_date', 'start_time'])
-    # def linked_date(self, ar):
     def when_html(self, ar):
         if ar is None:
             return ''
-        EntriesByDay = settings.SITE.models.cal.EntriesByDay
         txt = when_text(self.start_date, self.start_time)
-        return EntriesByDay.as_link(ar, self.start_date, txt)
-        # return self.obj2href(ar, txt)
+        if False:  # removed 20181106 because it is irritating and
+                   # nobody uses it.
+            return rt.models.cal.EntriesByDay.as_link(
+                ar, self.start_date, txt)
+        return self.obj2href(ar, txt)
 
     @dd.displayfield(_("Link URL"))
     def url(self, ar):
@@ -946,6 +948,8 @@ class Guest(Printable):
     state = GuestStates.field(default='invited')
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
+    allow_merge_action = False
+    
     # Define a `user` property because we want to use
     # `lino.modlib.users.mixins.My`
     def get_user(self):

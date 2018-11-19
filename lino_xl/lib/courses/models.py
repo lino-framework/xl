@@ -1,14 +1,13 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
 from __future__ import print_function
 from builtins import str
 
-from decimal import Decimal
-ZERO = Decimal()
-ONE = Decimal(1)
+# from decimal import Decimal
+from lino_xl.lib.ledger.utils import ZERO, ONE
 
 from django.db import models
 from django.db.models import Q
@@ -63,10 +62,10 @@ class StartEndTime(dd.Model):
 
     class Meta:
         abstract = True
-    start_time = models.TimeField(
+    start_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("Start Time"))
-    end_time = models.TimeField(
+    end_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("End Time"))
 
@@ -404,14 +403,13 @@ class Course(Reservation, Duplicable, Printable):
     def events_text(self, ar=None):
         return ', '.join([
             day_and_month(e.start_date)
-            for e in self.events_by_course.order_by('start_date')])
+            for e in self.events_by_course().order_by('start_date')])
 
-    @property
-    def events_by_course(self):
+    def events_by_course(self, **kwargs):
         ct = rt.models.contenttypes.ContentType.objects.get_for_model(
             self.__class__)
-        return rt.models.cal.Event.objects.filter(
-            owner_type=ct, owner_id=self.id)
+        kwargs.update(owner_type=ct, owner_id=self.id)
+        return rt.models.cal.Event.objects.filter(**kwargs)
 
     def get_places_sum(self, today=None, **flt):
         Enrolment = rt.models.courses.Enrolment
@@ -481,7 +479,7 @@ class Course(Reservation, Duplicable, Printable):
         pv = ar.param_values
         # if not pv.start_date or not pv.end_date:
         #     return ''
-        events = self.events_by_course.order_by('start_date')
+        events = self.events_by_course().order_by('start_date')
         events = rt.models.system.PeriodEvents.started.add_filter(events, pv)
         return "TODO: copy logic from presence_sheet.wk.html"
 
@@ -530,7 +528,7 @@ class ConfirmedSubmitInsert(dd.SubmitInsert):
 
 @dd.python_2_unicode_compatible
 class Enrolment(UserAuthored, Certifiable, DateRange):
-    invoiceable_date_field = 'request_date'
+    # invoiceable_date_field = 'request_date'
     workflow_state_field = 'state'
     allow_cascaded_copy = 'course'
     manager_roles_required = dd.login_required()

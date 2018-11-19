@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Luc Saffre
+# Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -16,9 +16,15 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from lino import mixins
 
+from etgen.html import E, join_elems, forcetext
+from lino.utils.addressable import Addressable
+from lino.utils.media import TmpMediaFile
 from lino.utils import join_words
 
+from lino.mixins.periods import ObservedDateRange
+from lino.mixins.duplicable import Duplicable
 from lino.modlib.uploads.mixins import UploadController
+
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.skills.mixins import Feasible
@@ -26,10 +32,6 @@ from lino.modlib.printing.mixins import Printable
 # from lino_xl.lib.excerpts.mixins import Certifiable
 #from lino_xl.lib.googleapi_people.models import GooglePeople
 
-from etgen.html import E, join_elems, forcetext
-from lino.utils.addressable import Addressable
-from lino.utils.media import TmpMediaFile
-from lino.mixins.periods import ObservedDateRange
 
 if dd.plugins.contacts.use_vcard_export:
     import vobject
@@ -82,9 +84,8 @@ class ExportVCardFile(dd.Action):
         ar.set_response(open_url=mf.url)
 
     
-
 @dd.python_2_unicode_compatible
-class Partner(ContactDetailsOwner, mixins.Polymorphic,
+class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
               AddressOwner, UploadController, Feasible, Printable):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
@@ -108,6 +109,8 @@ class Partner(ContactDetailsOwner, mixins.Polymorphic,
     quick_search_fields = "prefix name phone gsm"
 
     # print_labels = dd.PrintLabelsAction()
+    
+    allow_merge_action = True
 
     def on_create(self, ar):
         self.language = ar.get_user().language

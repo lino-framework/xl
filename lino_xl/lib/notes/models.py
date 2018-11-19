@@ -116,7 +116,7 @@ class Note(TypedPrintable,
 
     date = models.DateField(
         verbose_name=_('Date'), default=dd.today)
-    time = models.TimeField(
+    time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("Time"),
         default=timezone.now)
