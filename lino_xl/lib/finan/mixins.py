@@ -5,8 +5,8 @@ from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 
+from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.excerpts.mixins import Certifiable
-
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, MAX_AMOUNT
 from lino_xl.lib.ledger.models import DebitOrCreditField
 from lino_xl.lib.ledger.mixins import VoucherItem, SequencedVoucherItem
@@ -255,21 +255,51 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         elif self.amount < 0:
             self.amount = - self.amount
             self.dc = not self.dc
-        if self.account_id:
-            if self.account.needs_partner:
-                if not self.partner_id:
-                    if self.voucher.journal.refuse_missing_partner():
-                        raise ValidationError(
-                            _("Account {} needs a partner"))
-            else:
-                if self.partner_id:
-                    raise ValidationError(
-                        _("Account {} cannot be used with a partner"))
+
+        # temporarily deactivated for data migration
+        # problems = list(FinancialVoucherItemChecker.check_instance(self))
+        # if len(problems):
+        #     p
+        #     raise ValidationError("20181120 {}".format(
+        #         '\n'.join([p[1] for p in problems])))
 
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean a %s", self.amount)
         super(FinancialVoucherItem, self).full_clean(*args, **kwargs)
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean b %s", self.amount)
+        
 
+class FinancialVoucherItemChecker(Checker):
+
+    model = FinancialVoucherItem
+    verbose_name = _("Check for invalid account/partner combination")
+
+    def get_checkdata_problems(self, obj, fix=False):
+        if obj.account_id:
+            if obj.account.needs_partner:
+                if not obj.partner_id:
+                    if obj.voucher.journal.refuse_missing_partner():
+                        yield (False, _("Account {} needs a partner"))
+            else:
+                if obj.partner_id:
+                    yield (False,
+                           _("Account {} cannot be used with a partner"))
+        
+                    # if fix:
+                    #     obj.national_id = expected
+                    #     try:
+                    #         obj.full_clean()
+                    #     except ValidationError as e:
+                    #         msg = _("Failed to fix malformed "
+                    #                 "SSIN '{got}' of '{obj}'.")
+                    #         msg = msg.format(**params)
+                    #         raise Warning(msg)
+                    #     obj.save()
+
+FinancialVoucherItemChecker.activate()
+
+
+    
+    
 
 class DatedFinancialVoucher(FinancialVoucher):
     class Meta:
