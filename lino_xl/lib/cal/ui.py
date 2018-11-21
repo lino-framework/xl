@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 
-from __future__ import unicode_literals
+from __future__ import print_function, unicode_literals
 from builtins import str
 from collections import OrderedDict
 
@@ -147,7 +147,7 @@ class Tasks(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
     stay_in_grid = True
     column_names = 'start_date summary workflow_buttons *'
-    order_by = ["start_date", "start_time"]
+    order_by = ["-start_date", "-start_time"]
 
     detail_layout = """
     start_date due_date id workflow_buttons
@@ -288,59 +288,12 @@ class GuestDetail(dd.DetailLayout):
     # outbox.MailsByController
     """
 
-class CalendarView(dd.Table):
-
-    @classmethod
-    def get_table_summary(cls, obj, ar):
-        # note that objects can be either Event or Guest. if the view
-        # is called for Guest, we waht to display the guest states
-        # (not the event states). But when user clicks on a date they
-        # want to show the event (even when we are calling from Guest)
-        if ar is None:
-            return ''
-        sar = cls.request_from(ar, master_instance=obj)
-        state_coll = {}
-        cal = CalendarRenderer(cls.model)
-        for obj in sar:
-            if obj.state in state_coll:
-                state_coll[obj.state] += 1
-            else:
-                state_coll[obj.state] = 1
-
-            cal.collect(obj)
-
-        elems = [cal.to_html(ar)]
-        # choicelist = EntryStates
-        choicelist = cls.workflow_state_field.choicelist
-        ul = []
-        for st in choicelist.get_list_items():
-            ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
-        toolbar = []
-        toolbar += join_elems(ul, sep=', ')
-        # elems = join_elems(ul, sep=E.br)
-        if isinstance(obj, rt.models.cal.EventGenerator):
-            ar1 = obj.do_update_events.request_from(sar)
-            if ar1.get_permission():
-                btn = ar1.ar2button(obj)
-                toolbar.append(btn)
-
-        ar2 = cls.insert_action.request_from(sar)
-        if ar2.get_permission():
-            btn = ar2.ar2button()
-            toolbar.append(btn)
-
-        if len(toolbar):
-            toolbar = join_elems(toolbar, sep=' ')
-            elems.append(E.p(*toolbar))
-
-        return ar.html_text(E.div(*elems))
-    
-class Guests(CalendarView):
+class Guests(dd.Table):
     model = 'cal.Guest'
     # required_roles = dd.login_required((OfficeUser, OfficeOperator))
     required_roles = dd.login_required(GuestOperator)
     column_names = 'partner role workflow_buttons remark event *'
-    order_by = ['event__start_date', 'event__start_time']
+    order_by = ['-event__start_date', '-event__start_time']
     stay_in_grid = True
     detail_layout = "cal.GuestDetail"
     insert_layout = dd.InsertLayout("""
@@ -372,6 +325,10 @@ class Guests(CalendarView):
     params_layout = """start_date end_date user event_state guest_state
     project partner"""
 
+    @classmethod
+    def get_table_summary(cls, obj, ar):
+        return get_calendar_summary(cls, obj, ar)
+    
     @classmethod
     def get_request_queryset(self, ar, **kwargs):
         qs = super(Guests, self).get_request_queryset(ar, **kwargs)
@@ -465,7 +422,7 @@ class GuestsByPartner(Guests):
 
 class MyPresences(Guests):
     required_roles = dd.login_required(OfficeUser)
-    order_by = ['event__start_date', 'event__start_time']
+    order_by = ['-event__start_date', '-event__start_time']
     label = _("My presences")
     column_names = 'event__start_date event__start_time event_summary role workflow_buttons remark *'
     params_panel_hidden = True
@@ -518,7 +475,7 @@ class MyPendingPresences(MyPresences):
 class MyGuests(Guests):
     label = _("My guests")
     required_roles = dd.login_required(OfficeUser)
-    order_by = ['event__start_date', 'event__start_time']
+    order_by = ['-event__start_date', '-event__start_time']
     column_names = ("event__start_date event__start_time "
                     "event_summary role workflow_buttons remark *")
 
@@ -638,7 +595,7 @@ class Events(dd.Table):
     # end_date end_time
     # """
 
-    order_by = ["start_date", "start_time", "id"]
+    order_by = ["-start_date", "-start_time", "id"]
 
     detail_layout = 'cal.EventDetail'
     insert_layout = 'cal.EventInsert'
@@ -678,8 +635,13 @@ class Events(dd.Table):
     # pending_states = set(EntryStates.filter(fixed=False))
 
     @classmethod
+    def get_table_summary(cls, obj, ar):
+        # print("20181121 get_table_summary", cls)
+        return get_calendar_summary(cls, obj, ar)
+    
+    @classmethod
     def get_request_queryset(self, ar, **kwargs):
-        # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
+        # print("20181121a get_request_queryset", self)
         qs = super(Events, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
@@ -935,7 +897,7 @@ class CalendarRenderer(object):
             
         def xxx(list_of_entries):
             elems = []
-            for e in list_of_entries:
+            for e in reversed(list_of_entries):
                 if len(elems):
                     elems.append(sep)
                 elems.extend(rnd(e, ar))
@@ -977,9 +939,59 @@ class CalendarRenderer(object):
         raise Exception("20180720")
         
         
+def get_calendar_summary(cls, obj, ar):
+    # print("20181121 get_calendar_summary", cls)
+    # note that objects can be either Event or Guest. if the view
+    # is called for Guest, we waht to display the guest states
+    # (not the event states). But when user clicks on a date they
+    # want to show the event even when we are calling from Guest.
+    if ar is None or obj is None:
+        return ''
+    state_coll = {}
+    cal = CalendarRenderer(cls.model)
+    # sar = ar.spawn(parent=ar, master_instance=obj)
+    # sar = ar.actor.request(parent=ar, master_instance=obj)
+    sar = cls.request_from(ar, master_instance=obj)
+    # sar = cls.request(parent=ar, master_instance=obj)
+    # print("20181121 {}".format(ar.actor))
+    # print("20181121 {}".format(cls.get_filter_kw(sar)))
+    # print("20181121 {}".format(len(list(sar))))
+    for obj in sar:
+        if obj.state in state_coll:
+            state_coll[obj.state] += 1
+        else:
+            state_coll[obj.state] = 1
+        cal.collect(obj)
+
+    elems = [cal.to_html(ar)]
+    # choicelist = EntryStates
+    choicelist = cls.workflow_state_field.choicelist
+    ul = []
+    for st in choicelist.get_list_items():
+        ul.append(_("{} : {}").format(st, state_coll.get(st, 0)))
+    toolbar = []
+    toolbar += join_elems(ul, sep=', ')
+    # elems = join_elems(ul, sep=E.br)
+    if isinstance(obj, rt.models.cal.EventGenerator):
+        ar1 = obj.do_update_events.request_from(sar)
+        if ar1.get_permission():
+            btn = ar1.ar2button(obj)
+            toolbar.append(btn)
+
+    ar2 = cls.insert_action.request_from(sar)
+    if ar2.get_permission():
+        btn = ar2.ar2button()
+        toolbar.append(btn)
+
+    if len(toolbar):
+        toolbar = join_elems(toolbar, sep=' ')
+        elems.append(E.p(*toolbar))
+
+    return ar.html_text(E.div(*elems))
+    
 
 
-class EntriesByController(Events, CalendarView):
+class EntriesByController(Events):
     required_roles = dd.login_required((OfficeOperator, OfficeUser))
     # required_roles = dd.login_required(OfficeUser)
     master_key = 'owner'
@@ -987,7 +999,7 @@ class EntriesByController(Events, CalendarView):
     # column_names = 'when_text:20 when_html summary workflow_buttons *'
     auto_fit_column_widths = True
     display_mode = "summary"
-    order_by = ["start_date", "start_time", "auto_type", "id"]
+    order_by = ["-start_date", "-start_time", "auto_type", "id"]
     # order_by = ['seqno']
 
     
