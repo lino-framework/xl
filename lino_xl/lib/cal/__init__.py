@@ -1,5 +1,4 @@
-# Copyright 2013-2017 Luc Saffre
-#
+# Copyright 2013-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """This is Lino's calendar module. See :doc:`/specs/cal`.
@@ -90,9 +89,12 @@ class Plugin(ad.Plugin):
         # m.add_action(RecurrenceSets)
 
     def get_dashboard_items(self, user):
+        from lino.core.dashboard import ActorItem
+        
         if user.authenticated:
             yield self.site.models.cal.MyTasks
-            yield self.site.models.cal.MyEntries
+            yield ActorItem(
+                self.site.models.cal.MyEntries, min_count=None)
             yield self.site.models.cal.MyOverdueAppointments
             yield self.site.models.cal.MyUnconfirmedAppointments
             yield self.site.models.cal.DailyPlanner
