@@ -377,6 +377,19 @@ class TimLoader(TimLoader):
             if row.vpfl == "X":
                 course.mandatory = True
 
+            v = self.get_partner(Company, row.kkasse)
+            if v:
+                qs = hc_Plan.objects.filter(provider=v).order_by('id')
+                if qs.exists():
+                    hcp = qs.first()
+                else:
+                    hcp = hc_Plan(provider=v, designation=str(v))
+                    yield hcp
+                partner.healthcare_plan = hcp
+                    
+
+                
+
         if isinstance(partner, Client):
             
             # ClientStates = rt.models.clients.ClientStates
@@ -437,15 +450,6 @@ class TimLoader(TimLoader):
                 cct = rt.models.clients.ClientContactType.objects.get(pk=1)
                 yield rt.models.clients.ClientContact(
                     type=cct, client=partner, company=v)
-
-                qs = hc_Plan.objects.filter(provider=v).order_by('id')
-                if qs.exists():
-                    hcp = qs.first()
-                else:
-                    hcp = hc_Plan(provider=v, designation=str(v))
-                    yield hcp
-                partner.healthcare_plan = hcp
-                    
 
             v = self.get_partner(Person, row.hausarzt)
             if v:
@@ -681,7 +685,7 @@ class TimLoader(TimLoader):
         #     par = Partner.objects.get(id=idpar)
         # except Partner.DoesNotExist:
         #     return
-        yield Interest(owner=prj, topic_id=idprb)
+        yield Interest(partner=prj, topic_id=idprb)
         
     def load_msg(self, row, **kw):
         idpar = row.idpar.strip()

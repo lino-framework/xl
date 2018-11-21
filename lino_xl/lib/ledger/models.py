@@ -1013,6 +1013,10 @@ class VoucherChecker(Checker):
 
     def get_checkdata_problems(self, obj, fix=False):
         if obj.__class__ is rt.models.ledger.Voucher:
+            if obj.get_mti_leaf() is None:
+                yield (True, _("Voucher without MTI leaf"))
+                obj.movement_set.all().delete()
+                obj.delete()
             return
 
         def m2k(obj):
