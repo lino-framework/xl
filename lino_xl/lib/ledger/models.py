@@ -1114,9 +1114,9 @@ class DueMovement(object):
             self.collect(mvt)
             
     def collect(self, mvt):
-        """Add the given movement to the list of movements that are being
+        """
+        Add the given movement to the list of movements that are being
         cleared by this DueMovement.
-
         """
         # dd.logger.info("20160604 collect %s", mvt)
         if mvt.cleared:
@@ -1125,6 +1125,8 @@ class DueMovement(object):
             self.has_unsatisfied_movement = True
 
         voucher = mvt.voucher.get_mti_leaf()
+        if voucher is None:
+            return
         due_date = voucher.get_due_date()
         if self.due_date is None or due_date < self.due_date:
             self.due_date = due_date
