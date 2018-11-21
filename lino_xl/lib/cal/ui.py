@@ -1102,7 +1102,7 @@ class MyOverdueAppointments(My, OverdueAppointments):
 class MyUnconfirmedAppointments(MyEntries):
     required_roles = dd.login_required(OfficeUser)
     label = _("Unconfirmed appointments")
-    column_names = 'when_text project summary workflow_buttons *'
+    column_names = 'when_html project summary workflow_buttons *'
     auto_fit_column_widths = True
     params_panel_hidden = False
     filter = models.Q(state__in=(EntryStates.suggested, EntryStates.draft))

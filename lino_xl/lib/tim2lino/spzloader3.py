@@ -74,31 +74,18 @@ InvoiceItem = rt.models.sales.InvoiceItem
 
 Account = dd.resolve_model('ledger.Account')
 
-working = dd.resolve_app('working')
-
 User = rt.models.users.User
 UserTypes = rt.models.users.UserTypes
 Partner = rt.models.contacts.Partner
 Company = rt.models.contacts.Company
 # Coaching = rt.models.coachings.Coaching
 
-# lists_Member = rt.models.lists.Member
-households_Member = rt.models.households.Member
-Link = rt.models.humanlinks.Link
-LinkTypes = rt.models.humanlinks.LinkTypes
-households_MemberRoles = rt.models.households.MemberRoles
-
-List = rt.models.lists.List
-Member = rt.models.lists.Member
-Topic = rt.models.topics.Topic
-Interest = rt.models.topics.Interest
 Note = rt.models.notes.Note
 Guest = rt.models.cal.Guest
 GuestStates = rt.models.cal.GuestStates
 Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
 EntryStates = rt.models.cal.EntryStates
-SalesRule = rt.models.invoicing.SalesRule
 from lino_xl.lib.vat.choicelists import VatClasses, VatRegimes
 
 def tax2vat(idtax):

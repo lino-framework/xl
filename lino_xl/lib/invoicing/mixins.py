@@ -245,11 +245,15 @@ class InvoiceGenerator(dd.Model):
     #     #     cls.invoiceable_date_field = 
             
     def get_invoicings(self, **kwargs):
+        # deprecated. use invoicings instead.
         item_model = dd.plugins.invoicing.item_model
         # item_model = rt.models.sales.InvoiceItem
         kwargs.update(gfk2lookup(item_model.invoiceable, self))
         return item_model.objects.filter(**kwargs)
 
+    def get_last_invoicing(self):
+        return self.invoicings.order_by('voucher__voucher_date').last()
+        
     def allow_group_invoices(self):
         return True
 

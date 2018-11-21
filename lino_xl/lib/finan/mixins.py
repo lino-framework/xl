@@ -256,12 +256,11 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             self.amount = - self.amount
             self.dc = not self.dc
 
-        # temporarily deactivated for data migration
-        # problems = list(FinancialVoucherItemChecker.check_instance(self))
-        # if len(problems):
-        #     p
-        #     raise ValidationError("20181120 {}".format(
-        #         '\n'.join([p[1] for p in problems])))
+        if False: # temporarily deactivated for data migration
+            problems = list(FinancialVoucherItemChecker.check_instance(self))
+            if len(problems):
+                raise ValidationError("20181120 {}".format(
+                    '\n'.join([p[1] for p in problems])))
 
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean a %s", self.amount)
         super(FinancialVoucherItem, self).full_clean(*args, **kwargs)
@@ -284,16 +283,6 @@ class FinancialVoucherItemChecker(Checker):
                     yield (False,
                            _("Account {} cannot be used with a partner"))
         
-                    # if fix:
-                    #     obj.national_id = expected
-                    #     try:
-                    #         obj.full_clean()
-                    #     except ValidationError as e:
-                    #         msg = _("Failed to fix malformed "
-                    #                 "SSIN '{got}' of '{obj}'.")
-                    #         msg = msg.format(**params)
-                    #         raise Warning(msg)
-                    #     obj.save()
 
 FinancialVoucherItemChecker.activate()
 

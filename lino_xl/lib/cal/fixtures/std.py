@@ -2,11 +2,16 @@
 # Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Installs standard values for :mod:`lino_xl.lib.cal`, including a
+"""
+Installs standard values for :mod:`lino_xl.lib.cal`, including a
 demo set of holidays.  (TODO: make them more configurable.)
 
 See also :ref:`xl.specs.holidays`.
 
+The default value of
+:attr:`lino.modlib.system.SiteConfig.hide_events_before` is set to
+January 1st (of the current year when demo_date is after April and of
+the previous year when demo_date is before April).
 """
 
 from __future__ import unicode_literals
@@ -38,9 +43,9 @@ def objects():
     # settings.SITE.site_config.site_calendar = general
     d = dd.demo_date()
     if d.month > 4:
-        d = d.replace(month=4, day=1)
+        d = d.replace(month=1, day=1)
     else:
-        d = d.replace(month=4, day=1, year=d.year-1)
+        d = d.replace(month=1, day=1, year=d.year-1)
     settings.SITE.site_config.update(
         site_calendar=general, hide_events_before=d)
     

@@ -281,9 +281,9 @@ class Plan(UserPlan):
     def create_invoice(self, **kwargs):
         ITEM_MODEL = dd.resolve_model(dd.plugins.invoicing.item_model)
         M = ITEM_MODEL._meta.get_field('voucher').remote_field.model
-        kwargs.update(journal=self.journal,
-                  voucher_date=self.today,
-                  entry_date=self.today)
+        kwargs.update(
+            journal=self.journal,
+            entry_date=self.today, voucher_date=self.get_max_date())
         invoice = M(**kwargs)
         invoice.fill_defaults()
         return invoice
