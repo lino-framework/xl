@@ -1007,9 +1007,7 @@ class VoucherChecker(Checker):
     )
 
     def get_checkable_models(self):
-        for m in rt.models_by_base(Voucher):
-            if m is not Voucher:
-                yield m
+        return rt.models_by_base(Voucher)  # also MTI children
 
     def get_checkdata_problems(self, obj, fix=False):
         if obj.__class__ is rt.models.ledger.Voucher:
