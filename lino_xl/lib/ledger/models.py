@@ -1025,21 +1025,24 @@ class VoucherChecker(Checker):
             return obj.seqno
 
         wanted = dict()
-        seqno = 0
-        fcu = dd.plugins.ledger.suppress_movements_until
-        try:
-            for m in obj.get_wanted_movements():
-                if fcu and m.value_date <= fcu:
-                    continue
-                seqno += 1
-                m.seqno = seqno
-                # if fcu and m.value_date <= fcu:
-                #     m.cleared = True
-                m.full_clean()
-                wanted[m2k(m)] = m
-        except Warning as e:
-            yield (False, self.messages['warning'].format(obj, e))
-            return
+        registered_states = (VoucherStates.registered,
+                             VoucherStates.signed)
+        if obj.state in registered_states:
+            seqno = 0
+            fcu = dd.plugins.ledger.suppress_movements_until
+            try:
+                for m in obj.get_wanted_movements():
+                    if fcu and m.value_date <= fcu:
+                        continue
+                    seqno += 1
+                    m.seqno = seqno
+                    # if fcu and m.value_date <= fcu:
+                    #     m.cleared = True
+                    m.full_clean()
+                    wanted[m2k(m)] = m
+            except Warning as e:
+                yield (False, self.messages['warning'].format(obj, e))
+                return
 
         for em in obj.movement_set.order_by('seqno'):
             wm = wanted.pop(m2k(em), None)
