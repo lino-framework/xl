@@ -1003,6 +1003,7 @@ class VoucherChecker(Checker):
         missing=_("Missing movement {0}."),
         unexpected=_("Unexpected movement {0}."),
         diff=_("Movement {0} : {1}"),
+        warning=_("Failed to get movements for {0} : {1}"),
     )
 
     def get_checkable_models(self):
@@ -1023,7 +1024,12 @@ class VoucherChecker(Checker):
         wanted = dict()
         seqno = 0
         fcu = dd.plugins.ledger.suppress_movements_until
-        for m in obj.get_wanted_movements():
+        try:
+            qs = obj.get_wanted_movements()
+        except Warning as e:
+            yield (False, self.messages['warning'].format(obj, e))
+            return
+        for m in qs:
             if fcu and m.value_date <= fcu:
                 continue
             seqno += 1
