@@ -998,12 +998,11 @@ dd.inject_field(
 
 
 class VoucherChecker(Checker):
-    "Check for wrong ledger movements"
-    verbose_name = _("Check integrity of ledger movements")
+    verbose_name = _("Check integrity of ledger vouchers")
     messages = dict(
         missing=_("Missing movement {0}."),
         unexpected=_("Unexpected movement {0}."),
-        diff=_("Movement {0} : {1} {2} != {3}."),
+        diff=_("Movement {0} : {1}"),
     )
 
     def get_checkable_models(self):
@@ -1013,8 +1012,9 @@ class VoucherChecker(Checker):
         if obj.__class__ is rt.models.ledger.Voucher:
             if obj.get_mti_leaf() is None:
                 yield (True, _("Voucher without MTI leaf"))
-                obj.movement_set.all().delete()
-                obj.delete()
+                if fix:
+                    obj.movement_set.all().delete()
+                    obj.delete()
             return
 
         def m2k(obj):
@@ -1033,19 +1033,22 @@ class VoucherChecker(Checker):
             m.full_clean()
             wanted[m2k(m)] = m
 
-        for em in obj.movement_set.all():
+        for em in obj.movement_set.order_by('seqno'):
             wm = wanted.pop(m2k(em), None)
             if wm is None:
                 yield (False, self.messages['unexpected'].format(em))
                 return
+            diffs = []
             for k in ('partner_id', 'account_id', 'dc', 'amount',
                       'value_date'):
                 emv = getattr(em, k)
                 wmv = getattr(wm, k)
                 if emv != wmv:
-                    yield (False, self.messages['diff'].format(
-                        em, k, emv, wmv))
-                    return
+                    diffs.append(u"{} ({}!={})".format(k, emv, wmv))
+            if len(diffs) > 0:
+                yield (False, self.messages['diff'].format(
+                    em, u', '.join(diffs)))
+                return
                     
         if wanted:
             for missing in wanted.values():
