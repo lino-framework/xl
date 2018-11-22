@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2015 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 """Creates a welcome mail for all persons in the database.

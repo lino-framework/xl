@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Luc Saffre
+# Copyright 2016 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 """No longer used. We chose to manually create demo votes in

@@ -1,4 +1,4 @@
-# Copyright 2013-2017 Luc Saffre
+# Copyright 2013-2017 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Provides database models and functionality for managing polls.

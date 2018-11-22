@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2015 Luc Saffre
+# Copyright 2013-2015 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -7,7 +7,7 @@ A rather specialized app used for :mod:`lino.projects.events`.
 """
 
 
-# Copyright 2008-2015 Luc Saffre
+# Copyright 2008-2015 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """

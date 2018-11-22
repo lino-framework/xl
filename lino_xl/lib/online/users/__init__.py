@@ -1,4 +1,4 @@
-# Copyright 2015-2017 Luc Saffre
+# Copyright 2015-2017 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """An extension of :mod:`lino.modlib.users` which adds functionality
 for managing online registration.

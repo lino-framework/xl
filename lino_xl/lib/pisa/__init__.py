@@ -1,4 +1,4 @@
-# Copyright 2014-2016 Luc Saffre
+# Copyright 2014-2016 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Deprecated. We recommend to use :mod:`lino_xl.lib.appypod`

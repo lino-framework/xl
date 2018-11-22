@@ -1,4 +1,4 @@
-# Copyright 2017 Tonis Piip, Luc Saffre
+# Copyright 2017 Tonis Piip, Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 

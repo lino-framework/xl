@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2010-2017 Luc Saffre
+# Copyright 2010-2017 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Some utilities for parsing contact data. See also
