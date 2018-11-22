@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2015 Luc Saffre
+# Copyright 2011-2015 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 "Model mixins for :mod:`lino_xl.lib.outbox`."

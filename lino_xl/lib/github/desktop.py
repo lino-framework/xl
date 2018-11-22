@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-# Copyright 2017 Luc Saffre
+# -*- coding: UTF-8 -*-# Copyright 2017 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 

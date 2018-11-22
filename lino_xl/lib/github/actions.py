@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
+# Copyright 2017 Rumma & Ko Ltd
 
 """
 Actions for `lino_xl.lib.github`.
