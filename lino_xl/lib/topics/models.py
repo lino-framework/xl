@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2018 Rumma & Ko Ltd
-#
 # License: BSD (see file COPYING for details)
 
-"""Database models for :mod:`lino_xl.lib.topics`.
-
-"""
 from __future__ import unicode_literals
 
 import six
@@ -17,7 +13,7 @@ from django.db import models
 
 # from lino.core.utils import comma
 from lino.core.gfks import gfk2lookup
-from lino.mixins import BabelNamed, Referrable
+from lino.mixins import BabelNamed
 from lino.mixins.ref import StructuredReferrable
 from lino.utils import join_elems
 from lino.utils.instantiator import create_row
@@ -183,7 +179,7 @@ class InterestsByPartner(Interests):
         if ar is None:
             yield six.text_type(obj.topic)
         else:
-            yield ar.obj2html(obj, str(obj.topic))
+            yield ar.obj2html(obj, six.text_type(obj.topic))
 
 
 class InterestsByController(Interests):
@@ -204,7 +200,7 @@ class InterestsByController(Interests):
         if ar is None:
             yield six.text_type(obj.topic)
         else:
-            yield ar.obj2html(obj.topic)
+            yield ar.obj2html(obj, six.text_type(obj.topic))
 
     # @classmethod
     # def get_table_summary(self, obj, ar):
