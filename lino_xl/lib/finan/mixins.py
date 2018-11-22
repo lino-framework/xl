@@ -76,7 +76,7 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
         # dd.logger.info("20151211 get_finan_movements()")
         amount = ZERO
         movements_and_items = []
-        for i in self.items.all():
+        for i in self.items.order_by('seqno'):
             if i.dc == self.journal.dc:
                 amount += i.amount
             else:

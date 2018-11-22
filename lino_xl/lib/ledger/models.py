@@ -691,6 +691,9 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
             for m in movements:
                 if fcu and m.value_date <= fcu:
                     continue
+                # if we don't set seqno, Sequenced.full_clean will do
+                # it, but at the price of an additional database
+                # lookup.
                 seqno += 1
                 m.seqno = seqno
                 # m.cleared = True
