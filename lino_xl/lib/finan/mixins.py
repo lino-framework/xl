@@ -161,7 +161,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             self.voucher.journal.dc, **flt))
 
         if len(suggestions) == 0:
-            pass
+            self.match = ""
         elif len(suggestions) == 1:
             self.fill_suggestion(suggestions[0])
         elif ar:
