@@ -653,7 +653,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
     #     return self.state.uses_a_place
 
     def full_clean(self, *args, **kwargs):
-        if self.course and self.course.line:
+        if self.course_id and self.course.line:
             self.course_area = self.course.line.course_area
         super(Enrolment, self).full_clean(*args, **kwargs)
 
@@ -690,6 +690,7 @@ dd.update_field(
     Enrolment, 'overview',
     verbose_name=Course._meta.verbose_name)    
 
+dd.update_field(Enrolment, 'course', blank=True)
 
 @dd.receiver(dd.post_startup)
 def setup_memo_commands(sender=None, **kwargs):
