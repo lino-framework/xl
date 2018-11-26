@@ -921,10 +921,11 @@ class CalendarRenderer(object):
         if self.mode == UL_MODE:
             items = []
             for y in self.years.values():
-                for m, lst in enumerate(y.months):
+                for m, lst in enumerate(reversed(y.months)):
+                    # January is [11], Dec is [0]
                     if len(lst):
                         items.append(E.li(
-                            monthname(m+1), " ", str(y.year), ": ", *xxx(lst)))
+                            monthname(12-m), " ", str(y.year), ": ", *xxx(lst)))
             return E.ul(*items)
         
         if self.mode == PLAIN_MODE:
