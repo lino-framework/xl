@@ -897,7 +897,8 @@ class CalendarRenderer(object):
             
         def xxx(list_of_entries):
             elems = []
-            for e in reversed(list_of_entries):
+            # for e in reversed(list_of_entries):
+            for e in list_of_entries:
                 if len(elems):
                     elems.append(sep)
                 elems.extend(rnd(e, ar))
