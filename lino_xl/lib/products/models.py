@@ -87,6 +87,7 @@ class ProductDetail(dd.DetailLayout):
     
 
 class Products(dd.Table):
+    _product_type = None
     required_roles = dd.login_required(ProductsUser)
     model = 'products.Product'
     order_by = ["id"]
@@ -96,14 +97,26 @@ class Products(dd.Table):
     cat
     name
     """
-
     detail_layout = "products.ProductDetail"
 
-# note: a Site without sales will have to adapt the detail_layout and
-# column_names of Products
+    @classmethod
+    def get_actor_label(cls):
+        pt = cls._product_type or ProductTypes.default
+        return pt.text
+
+    @classmethod
+    def create_instance(cls, ar, **kwargs):
+        kwargs.update(product_type=cls._product_type or ProductTypes.default)
+        return super(Products, cls).create_instance(ar, **kwargs)
+
+    @classmethod
+    def get_queryset(cls, ar, **filter):
+        filter.update(product_type=cls._product_type or ProductTypes.default)
+        return super(Products, cls).get_queryset(ar, **filter)
 
 
 class ProductsByCategory(Products):
     master_key = 'cat'
+
 
 

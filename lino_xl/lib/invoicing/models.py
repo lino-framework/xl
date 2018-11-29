@@ -91,8 +91,8 @@ class Tariff(BabelDesignated):
     class Meta(object):
         app_label = 'invoicing'
         abstract = dd.is_abstract_model(__name__, 'Tariff')
-        verbose_name = _("Tariff")
-        verbose_name_plural = _("Tariffs")
+        verbose_name = _("Flatrate")
+        verbose_name_plural = _("Flatrates")
 
     # allow_cascaded_delete = 'product'
 

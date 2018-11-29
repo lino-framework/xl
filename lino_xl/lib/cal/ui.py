@@ -1074,7 +1074,7 @@ class MyEntriesToday(MyEntries):
 
 
 class MyAssignedEvents(MyEntries):
-    label = _("Events assigned to me")
+    label = _("Appointments assigned to me")
     required_roles = dd.login_required(OfficeUser)
 
     @classmethod
@@ -1089,7 +1089,7 @@ class MyAssignedEvents(MyEntries):
         sar = ar.spawn(cls)
         count = sar.get_total_count()
         if count > 0:
-            txt = _("%d events have been assigned to you.") % count
+            txt = _("{} appointments have been assigned to you.").format(count)
             yield ar.href_to_request(sar, txt)
 
 

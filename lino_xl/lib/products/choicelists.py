@@ -3,11 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
-Choicelists for `lino_xl.lib.products`.
-
-"""
-
 from lino.api import dd, _
 
 
@@ -22,9 +17,13 @@ add('20', _("Piece"), 'piece')
 add('30', _("Kg"), 'kg')
 
 
+class ProductType(dd.Choice):
+    table_name = 'products.Products'
+
 class ProductTypes(dd.ChoiceList):
+    item_class = ProductType
     verbose_name = _("Product type")
     verbose_name_plural = _("Product types")
 
 add = ProductTypes.add_item
-add('100', _("Default"), 'default')
+add('100', _("Products"), 'default')

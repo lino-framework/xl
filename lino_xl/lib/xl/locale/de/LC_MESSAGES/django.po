@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-28 16:00+0200\n"
-"PO-Revision-Date: 2018-11-28 16:02+0200\n"
+"POT-Creation-Date: 2018-11-29 15:14+0200\n"
+"PO-Revision-Date: 2018-11-29 15:14+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -1736,14 +1736,12 @@ msgid "My appointments today"
 msgstr "Meine Termine heute"
 
 #: lino_xl/lib/cal/ui.py:1077
-#, fuzzy
-msgid "Events assigned to me"
-msgstr "%d zugewiesene Termine"
+msgid "Appointments assigned to me"
+msgstr "Mir zugewiesene Termine"
 
 #: lino_xl/lib/cal/ui.py:1092
-#, fuzzy, python-format
-msgid "%d events have been assigned to you."
-msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
+msgid "{} appointments have been assigned to you."
+msgstr "{} Termine wurden dir zugewiesen."
 
 #: lino_xl/lib/cal/ui.py:1098
 msgid "Overdue appointments"
@@ -6418,7 +6416,7 @@ msgstr ""
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:17
 #: lino_xl/lib/skills/models.py:128 lino_xl/lib/stars/models.py:159
-#: lino_xl/lib/tickets/models.py:276 lino_xl/lib/xl/user_types.py:36
+#: lino_xl/lib/tickets/models.py:276 lino_xl/lib/xl/user_types.py:37
 #, fuzzy
 msgid "User"
 msgstr "Benutzer"
@@ -12344,11 +12342,11 @@ msgid ""
 "fields to be observed by this field."
 msgstr ""
 
-#: lino_xl/lib/xl/user_types.py:35
+#: lino_xl/lib/xl/user_types.py:36
 msgid "Anonymous"
 msgstr "Anonym"
 
-#: lino_xl/lib/xl/user_types.py:37
+#: lino_xl/lib/xl/user_types.py:38
 msgid "Administrator"
 msgstr "Verwalter"
 

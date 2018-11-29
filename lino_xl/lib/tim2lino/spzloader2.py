@@ -362,7 +362,7 @@ class TimLoader(TimLoader):
                     dd.logger.warning(
                         "Cannot handle tariff {}".format(v))
                 else:
-                    course.tariff = t
+                    course.partner_tariff = t
 
             v = row.bereich
             if v:

@@ -159,7 +159,7 @@ class InvoicingInfo(object):
             if self.min_asset is None:
                 self.asset_to_buy = - asset
             elif asset > self.min_asset:
-                return # nothing to invoice
+                return  # nothing to invoice
             else:
                 self.asset_to_buy = self.min_asset - asset
 

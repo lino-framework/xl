@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino 1.6.14\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-11-28 16:00+0200\n"
+"POT-Creation-Date: 2018-11-29 15:14+0200\n"
 "PO-Revision-Date: 2014-06-06 11:29+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: es\n"
@@ -1732,12 +1732,11 @@ msgid "My appointments today"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:1077
-msgid "Events assigned to me"
+msgid "Appointments assigned to me"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:1092
-#, python-format
-msgid "%d events have been assigned to you."
+msgid "{} appointments have been assigned to you."
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:1098
@@ -6282,7 +6281,7 @@ msgstr ""
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:17
 #: lino_xl/lib/skills/models.py:128 lino_xl/lib/stars/models.py:159
-#: lino_xl/lib/tickets/models.py:276 lino_xl/lib/xl/user_types.py:36
+#: lino_xl/lib/tickets/models.py:276 lino_xl/lib/xl/user_types.py:37
 msgid "User"
 msgstr ""
 
@@ -12026,11 +12025,11 @@ msgid ""
 "fields to be observed by this field."
 msgstr ""
 
-#: lino_xl/lib/xl/user_types.py:35
+#: lino_xl/lib/xl/user_types.py:36
 msgid "Anonymous"
 msgstr ""
 
-#: lino_xl/lib/xl/user_types.py:37
+#: lino_xl/lib/xl/user_types.py:38
 msgid "Administrator"
 msgstr ""
 
@@ -18334,5 +18333,14 @@ msgstr ""
 #~ msgstr ""
 
 #~ msgid "Topic groups"
+#~ msgstr ""
+
+#~ msgid "%d events have been assigned to you."
+#~ msgstr ""
+
+#~ msgid "%d appointments have been assigned to you."
+#~ msgstr ""
+
+#~ msgid "Events assigned to me"
 #~ msgstr ""
 
