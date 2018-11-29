@@ -186,17 +186,18 @@ class Plan(UserPlan):
                 #     ig))
             if hasattr(partner, 'salesrule'):
                 partner = partner.salesrule.invoice_recipient or partner
-            
+
             invoice = self.create_invoice(
                 partner=partner, user=ar.get_user())
         
             # dd.logger.info("20181114 b", obj)
             info = ig.compute_invoicing_info(max_date)
-            if not info.invoiceable_product:
-                continue
+            # if not info.invoiceable_product:
+            #     continue
             
             invoice_items = list(ig.get_invoice_items(info, invoice, ar))
             if len(invoice_items) == 0:
+                # dd.logger.debug("20181126 no invoice items for %s", ig)
                 continue
 
             if ig.allow_group_invoices():

@@ -6,4 +6,8 @@ from lino.core.roles import UserRole
 
 class NotesUser(UserRole):
     pass
-    
+
+
+class NotesStaff(NotesUser):
+    pass
+

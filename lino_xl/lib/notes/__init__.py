@@ -25,6 +25,7 @@ class Plugin(ad.Plugin):
 
     # needs_plugins = ['lino.modlib.notify']
     needs_plugins = ['lino.modlib.gfks']
+    menu_group = 'office'
 
     def post_site_startup(self, site):
         super(Plugin, self).post_site_startup(site)
@@ -32,19 +33,20 @@ class Plugin(ad.Plugin):
             'note', site.models.notes.Note,
             title=lambda obj: obj.subject)
     
-    def setup_main_menu(config, site, user_type, m):
-        mg = site.plugins.office
+    def setup_main_menu(self, site, user_type, m):
+        mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('notes.MyNotes')
 
-    def setup_config_menu(config, site, user_type, m):
-        mg = site.plugins.office
+    def setup_config_menu(self, site, user_type, m):
+        mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('notes.NoteTypes')
         m.add_action('notes.EventTypes')
 
-    def setup_explorer_menu(config, site, user_type, m):
-        mg = site.plugins.office
+    def setup_explorer_menu(self, site, user_type, m):
+        mg = self.get_menu_group()
+        # mg = site.plugins.office
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('notes.AllNotes')
 

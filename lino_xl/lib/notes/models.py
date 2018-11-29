@@ -26,7 +26,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 # from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 from lino.modlib.office.roles import OfficeStaff
 
-from .roles import NotesUser
+from .roles import NotesUser, NotesStaff
 
 from lino.modlib.notify.choicelists import MessageTypes
 MessageTypes.add_item('notes', dd.plugins.notes.verbose_name)
@@ -189,7 +189,7 @@ class NoteDetail(dd.DetailLayout):
 
 class Notes(dd.Table):
     #required_roles = dd.login_required((OfficeUser, OfficeOperator))
-    required_roles = dd.login_required((OfficeStaff, NotesUser))
+    required_roles = dd.login_required((NotesUser))
     model = 'notes.Note'
     detail_layout = 'notes.NoteDetail'
     column_names = "date time id user event_type type project subject * body"
@@ -197,7 +197,7 @@ class Notes(dd.Table):
 
 
 class AllNotes(Notes):
-    required_roles = dd.login_required(OfficeStaff)
+    required_roles = dd.login_required(NotesStaff)
 
 
 class MyNotes(My, Notes):

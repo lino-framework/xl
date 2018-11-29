@@ -80,9 +80,9 @@ class InvoicingInfo(object):
             max_date = min(max_date, end_date)
         
         product = enr.get_invoiceable_product(max_date)
-        if not product:
-            # dd.logger.info("20181116c no product")
-            return
+        # if not product:
+        #     # dd.logger.info("20181116c no product")
+        #     return
         
         start_date = enr.get_invoiceable_start_date(max_date)
 
@@ -93,10 +93,11 @@ class InvoicingInfo(object):
         # dd.logger.info("20181116 d %s %s", product, self.tariff)
         # if self.tariff is None or (self.tariff.min_asset is None and
         #                            self.tariff.max_asset) is None:
-        if product.tariff is not None:
-            self.number_of_events = product.tariff.number_of_events
-            self.min_asset = product.tariff.min_asset
-            self.max_asset = product.tariff.max_asset
+        tariff = enr.get_invoiceable_tariff(product)
+        if tariff is not None:
+            self.number_of_events = tariff.number_of_events
+            self.min_asset = tariff.min_asset
+            self.max_asset = tariff.max_asset
             # every invoiceable creates one invoicing
             # self.invoiceable_product = product
             # self.invoiceable_qty = enr.get_invoiceable_qty()
@@ -107,7 +108,8 @@ class InvoicingInfo(object):
             'state')
         vstates = state_field.choicelist.get_editable_states()
         qs = enr.invoicings.exclude(voucher__state__in=vstates)
-        qs = qs.filter(product=product)
+        if product is not None:
+            qs = qs.filter(product=product)
         self.invoicings = qs
 
         self.invoiced_events = enr.get_invoiceable_free_events() or 0
@@ -115,9 +117,10 @@ class InvoicingInfo(object):
         for obj in self.invoicings:
             # tariff = getattr(obj.product, 'tariff', None)
             # if tariff:
-            self.invoiced_qty += obj.qty
-            if self.number_of_events:
-                self.invoiced_events += int(obj.qty * self.number_of_events)
+            if obj.qty is not None:
+                self.invoiced_qty += obj.qty
+                if self.number_of_events:
+                    self.invoiced_events += int(obj.qty * self.number_of_events)
             # history.append("".format())
         # print("20160414", self.invoicings, self.invoiced_qty)
 
@@ -185,9 +188,10 @@ class InvoicingInfo(object):
         # used_events = list(self.used_events)
         invoiced = self.used_events[self.invoiced_events:]
         coming = self.used_events[:self.invoiced_events]
-        
-        def fmt(ev):
-            return self.generator.format_invoiceable_event(ev, ar)
+
+        fmt = self.generator.get_invoiceable_event_formatter()
+        # def fmt(ev):
+        #     return self.generator.format_invoiceable_event(ev, ar)
 
         if len(invoiced) > 0:
             elems.append("{0} : ".format(_("Invoiced")))
@@ -304,6 +308,11 @@ class InvoiceGenerator(dd.Model):
     def get_invoiceable_product(self, max_date=None):
         return None
 
+    def get_invoiceable_tariff(self, product=None):
+        if product is not None:
+            return product.tariff
+        return None
+
     def get_invoiceable_end_date(self):
         return self.end_date
 
@@ -318,21 +327,23 @@ class InvoiceGenerator(dd.Model):
         The query must be sorted properly in the order they are to be
         considered for invoicing.
 
-        Events can be instances of any model, but the
-        :meth:`format_invoiceable_event
-        <lino_xl.lib.invoicing.InvoiceGenerator.format_invoiceable_event>`
-        on the invoiceable that generates them must understand them.
+        Events can be instances of any model, but the generator's
+        :meth:`get_invoiceable_event_formatter
+        <lino_xl.lib.invoicing.InvoiceGenerator.get_invoiceable_event_formatter>`
+        must understand them.
         """
         yield self
     
-    def format_invoiceable_event(self, ev, ar=None):
+    def get_invoiceable_event_formatter(self):
         """
-        Format the given event as a HTML etree element.
+        Return a callable which format the given event as a HTML etree element.
         """
-        txt = day_and_month(ev.start_date)
-        if ar is None:
-            return txt
-        return ar.obj2html(ev, txt)
+        def fmt(ev, ar=None):
+            txt = day_and_month(ev.start_date)
+            if ar is None:
+                return txt
+            return ar.obj2html(ev, txt)
+        return fmt
     
     def get_invoiceable_free_events(self):
         return 0
