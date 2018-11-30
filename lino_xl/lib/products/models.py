@@ -3,26 +3,19 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
-Database models for `lino_xl.lib.products`.
-
-"""
-
-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from lino.api import dd
 from lino import mixins
 
-from .choicelists import DeliveryUnit, ProductTypes
+from .choicelists import DeliveryUnits, ProductTypes
 from .roles import ProductsUser, ProductsStaff
 
 vat = dd.resolve_app('vat')
 
 
 class ProductCat(mixins.BabelNamed):
-    """A **product category** is a way to group products."""
 
     class Meta:
         app_label = 'products'
@@ -45,15 +38,6 @@ class ProductCats(dd.Table):
 
 
 class Product(mixins.BabelNamed):
-    """A product is something you can sell or buy.
-
-    .. attribute:: description
-    .. attribute:: cat
-    .. attribute:: delivery_unit
-
-    
-
-    """
 
     class Meta:
         app_label = 'products'
@@ -68,7 +52,7 @@ class Product(mixins.BabelNamed):
         ProductCat, verbose_name=_("Category"),
         blank=True, null=True)
 
-    delivery_unit = DeliveryUnit.field(default='piece')
+    delivery_unit = DeliveryUnits.field(default='piece')
     product_type = ProductTypes.field(default='default')
 
     if vat:

@@ -6,12 +6,11 @@
 from lino.api import dd, _
 
 
-class DeliveryUnit(dd.ChoiceList):
-    """The list of possible delivery units of a product."""
+class DeliveryUnits(dd.ChoiceList):
     verbose_name = _("Delivery unit")
     verbose_name_plural = _("Delivery units")
 
-add = DeliveryUnit.add_item
+add = DeliveryUnits.add_item
 add('10', _("Hour"), 'hour')
 add('20', _("Piece"), 'piece')
 add('30', _("Kg"), 'kg')

@@ -194,8 +194,6 @@ Posting."""),
     'lino_xl.lib.postings.Posting' : _("""A Posting is the fact that a letter or other item 
 has been sent using snail mail."""),
     'lino_xl.lib.products.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.products.ProductCat' : _("""A product category is a way to group products."""),
-    'lino_xl.lib.products.Product' : _("""A product is something you can sell or buy."""),
     'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.properties.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
 like ...?"."""),
