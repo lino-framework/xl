@@ -624,7 +624,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         user.
 
         """
-        if self.course.max_places is None:
+        if self.course_id is None or self.course.max_places is None:
             return  # no veto. unlimited places.
         free = self.course.get_free_places(self.request_date)
         if free <= 0:
