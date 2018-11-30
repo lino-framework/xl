@@ -747,16 +747,16 @@ class TimLoader(TimLoader):
         bulkdel(ClientContact, Enrolment, Course)
         bulkdel(Line)
 
-        a = CourseAreas.default
         with translation.override("de"):
+            a = CourseAreas.default
             self.other_groups = create_row(
-                Line, name=a.text, course_area=a, ref=a.value)
+                Line, name=a.text, course_area=a, ref="TG")
             a = CourseAreas.life_groups
             self.life_groups = create_row(
-                Line, name=a.text, course_area=a, ref=a.value)
+                Line, name=a.text, course_area=a, ref="LG")
             a = CourseAreas.therapies
             self.therapies = create_row(
-                Line, name=a.text, course_area=a, ref=a.value)
+                Line, name=a.text, course_area=a, ref="ET")
         
         
         yield self.load_dbf('PAR')
