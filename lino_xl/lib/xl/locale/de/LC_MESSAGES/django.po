@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-29 15:14+0200\n"
-"PO-Revision-Date: 2018-11-29 15:14+0200\n"
+"POT-Creation-Date: 2018-11-30 04:48+0200\n"
+"PO-Revision-Date: 2018-11-30 04:49+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -4521,14 +4521,12 @@ msgid "Show partners having this as invoice recipient."
 msgstr ""
 
 #: lino_xl/lib/invoicing/models.py:94
-#, fuzzy
-msgid "Tariff"
-msgstr "Favorit"
+msgid "Flatrate"
+msgstr "Pauschale"
 
 #: lino_xl/lib/invoicing/models.py:95
-#, fuzzy
-msgid "Tariffs"
-msgstr "Favoriten"
+msgid "Flatrates"
+msgstr "Pauschalen"
 
 #: lino_xl/lib/invoicing/models.py:103
 msgid "Number of events paid per invoicing."
@@ -5522,7 +5520,7 @@ msgstr ""
 msgid "System note"
 msgstr ""
 
-#: lino_xl/lib/notes/fixtures/std.py:19 lino_xl/lib/products/choicelists.py:30
+#: lino_xl/lib/notes/fixtures/std.py:19
 msgid "Default"
 msgstr "Standardwert"
 
@@ -6037,38 +6035,39 @@ msgstr "Gedruckte Postsendungen"
 msgid "Postings sent"
 msgstr "Ausgegangene Postsendungen"
 
-#: lino_xl/lib/products/__init__.py:22 lino_xl/lib/products/models.py:61
+#: lino_xl/lib/products/__init__.py:21 lino_xl/lib/products/choicelists.py:29
+#: lino_xl/lib/products/models.py:61
 msgid "Products"
 msgstr "Produkte"
 
-#: lino_xl/lib/products/choicelists.py:16
+#: lino_xl/lib/products/choicelists.py:11
 msgid "Delivery unit"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:17
+#: lino_xl/lib/products/choicelists.py:12
 msgid "Delivery units"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:20
+#: lino_xl/lib/products/choicelists.py:15
 #, fuzzy
 msgid "Hour"
 msgstr "Stunden"
 
-#: lino_xl/lib/products/choicelists.py:21
+#: lino_xl/lib/products/choicelists.py:16
 #, fuzzy
 msgid "Piece"
 msgstr "Nichte"
 
-#: lino_xl/lib/products/choicelists.py:22
+#: lino_xl/lib/products/choicelists.py:17
 msgid "Kg"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:26
+#: lino_xl/lib/products/choicelists.py:25
 #, fuzzy
 msgid "Product type"
 msgstr "Belegart"
 
-#: lino_xl/lib/products/choicelists.py:27
+#: lino_xl/lib/products/choicelists.py:26
 #, fuzzy
 msgid "Product types"
 msgstr "Belegarten"
@@ -12505,3 +12504,9 @@ msgstr "Verwalter"
 
 #~ msgid "Topic groups"
 #~ msgstr "Themengruppen"
+
+#~ msgid "Tariff"
+#~ msgstr "Favorit"
+
+#~ msgid "Tariffs"
+#~ msgstr "Favoriten"

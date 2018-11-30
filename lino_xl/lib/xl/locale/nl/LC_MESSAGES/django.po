@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-11-29 15:14+0200\n"
+"POT-Creation-Date: 2018-11-30 04:48+0200\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -4832,13 +4832,13 @@ msgstr ""
 
 #: lino_xl/lib/invoicing/models.py:94
 #, fuzzy
-msgid "Tariff"
+msgid "Flatrate"
 msgstr "Zustand"
 
 #: lino_xl/lib/invoicing/models.py:95
 #, fuzzy
-msgid "Tariffs"
-msgstr "Zustand"
+msgid "Flatrates"
+msgstr "Thema"
 
 #: lino_xl/lib/invoicing/models.py:103
 msgid "Number of events paid per invoicing."
@@ -5884,7 +5884,7 @@ msgstr ""
 msgid "System note"
 msgstr ""
 
-#: lino_xl/lib/notes/fixtures/std.py:19 lino_xl/lib/products/choicelists.py:30
+#: lino_xl/lib/notes/fixtures/std.py:19
 #, fuzzy
 msgid "Default"
 msgstr "Drucken"
@@ -6403,37 +6403,38 @@ msgstr ""
 msgid "Postings sent"
 msgstr ""
 
-#: lino_xl/lib/products/__init__.py:22 lino_xl/lib/products/models.py:61
+#: lino_xl/lib/products/__init__.py:21 lino_xl/lib/products/choicelists.py:29
+#: lino_xl/lib/products/models.py:61
 msgid "Products"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:16
+#: lino_xl/lib/products/choicelists.py:11
 msgid "Delivery unit"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:17
+#: lino_xl/lib/products/choicelists.py:12
 msgid "Delivery units"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:20
+#: lino_xl/lib/products/choicelists.py:15
 msgid "Hour"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:21
+#: lino_xl/lib/products/choicelists.py:16
 #, fuzzy
 msgid "Piece"
 msgstr "Willkommen"
 
-#: lino_xl/lib/products/choicelists.py:22
+#: lino_xl/lib/products/choicelists.py:17
 msgid "Kg"
 msgstr ""
 
-#: lino_xl/lib/products/choicelists.py:26
+#: lino_xl/lib/products/choicelists.py:25
 #, fuzzy
 msgid "Product type"
 msgstr "Letzte Seite"
 
-#: lino_xl/lib/products/choicelists.py:27
+#: lino_xl/lib/products/choicelists.py:26
 #, fuzzy
 msgid "Product types"
 msgstr "Letzte Seite"
@@ -19246,4 +19247,10 @@ msgstr ""
 
 #~ msgid "Events assigned to me"
 #~ msgstr ""
+
+#~ msgid "Tariff"
+#~ msgstr "Zustand"
+
+#~ msgid "Tariffs"
+#~ msgstr "Zustand"
 
