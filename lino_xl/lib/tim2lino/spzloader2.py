@@ -133,7 +133,7 @@ def fld2fk(v, model):
         try:
             p = model.objects.get(id=int(v))
         except model.DoesNotExist:
-            p = model(designation=v)
+            p = model(designation=v, pk=int(v))
             p.full_clean()
             p.save()
         return p
