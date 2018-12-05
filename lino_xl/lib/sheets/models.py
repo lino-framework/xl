@@ -38,7 +38,7 @@ class Item(StructuredReferrable, BabelDesignated):
         abstract = dd.is_abstract_model(__name__, 'Item')
 
     ref_max_length = dd.plugins.sheets.item_ref_width
-    
+
     dc = DebitOrCreditField(_("Booking direction"))
     sheet_type = SheetTypes.field()
     common_item = CommonItems.field(blank=True)
@@ -46,7 +46,7 @@ class Item(StructuredReferrable, BabelDesignated):
         _("Mirror"), max_length=ref_max_length,
         blank=True, null=True)
 
-    
+
 class Collector(object):
     def __init__(self, model, fkname, outer_link, **rowmvtfilter):
         self.entry_model = model
@@ -62,15 +62,15 @@ class Collector(object):
     def get_mvt_filter(self, **flt):
         flt.update(self.rowmvtfilter)
         return flt
-        
+
     def addann(self, kw, name, dc, flt):
         mvts = rt.models.ledger.Movement.objects.filter(dc=dc, **flt)
         mvts = mvts.order_by()
         mvts = mvts.values(self.outer_link)  # this was the important thing
         mvts = mvts.annotate(total=Sum(
-            'amount', output_field=dd.PriceField()))
+            'amount', output_field=dd.PriceField(decimal_places=14)))# For Django2 we need to set decimal_places to 14 which is the max of decimal_places used in ReportEntry fields.
         mvts = mvts.values('total')
-        kw[name] = Subquery(mvts, output_field=dd.PriceField())
+        kw[name] = Subquery(mvts, output_field=dd.PriceField(decimal_places=14))
 
     def create_entry(self, report, obj, **kwargs):
         kwargs.update(report=report)
@@ -81,7 +81,7 @@ class Collector(object):
         kwargs.update(during_d = myround(obj.during_d or ZERO)) #In Django2, does not respect the decimal_places for the output_field in the aggregation functions.
         kwargs.update(during_c = myround(obj.during_c or ZERO))
         return self.entry_model(**kwargs)
-        
+
     def compute_sums(self, report):
         collect = []
         k = self.fkname + '__ref__startswith'
@@ -102,21 +102,21 @@ class Collector(object):
                 d[self.fkname] = obj
                 collect.append(self.entry_model(**d))
                 # print(20180905, d)
-            
+
         for obj in collect:
             obj.full_clean()
             obj.save()
-    
+
 
 class TradeTypeCollector(Collector):
     def __init__(self, tt, *args, **kwargs):
         self.trade_type = tt
         super(TradeTypeCollector, self).__init__(*args, **kwargs)
-        
+
     def create_entry(self, *args, **kwargs):
         kwargs.update(trade_type=self.trade_type)
         return super(TradeTypeCollector, self).create_entry(*args, **kwargs)
-    
+
     def compute_sums(self, report):
         pass
 
@@ -124,19 +124,19 @@ class TradeTypeCollector(Collector):
 class ReportEntry(dd.Model):
     class Meta:
         abstract = True
-        
+
     show_in_site_search = False
-    
+
     report = dd.ForeignKey('sheets.Report')
     old_d = dd.PriceField(_("Debit before"), 14, null=True, blank=True)
     old_c = dd.PriceField(_("Credit before"), 14, null=True, blank=True)
     during_d = dd.PriceField(_("Debit"), 14, null=True, blank=True)
     during_c = dd.PriceField(_("Credit"), 14, null=True, blank=True)
-    
+
     def new_balance(self):
         return Balance(self.old_d, self.old_c) + Balance(
             self.during_d, self.during_c)
-    
+
     def value2html(self, ar):
         txt = dd.format_currency(self.value, False, True)
         if self.item.is_heading():
@@ -144,7 +144,7 @@ class ReportEntry(dd.Model):
             return E.div(E.b(txt), align="right")
         # return txt
         return E.div(txt, align="right")
-    
+
     @dd.virtualfield(dd.PriceField(_("Debit after")))
     def new_d(self, ar):
         return self.new_balance().d
@@ -152,7 +152,7 @@ class ReportEntry(dd.Model):
     @dd.virtualfield(dd.PriceField(_("Credit after")))
     def new_c(self, ar):
         return self.new_balance().c
-    
+
 
 class AccountEntry(ReportEntry):
     class Meta:
@@ -162,7 +162,7 @@ class AccountEntry(ReportEntry):
         verbose_name_plural = _("General account balances")
 
     allow_cascaded_delete = ['account']
-    
+
     account = dd.ForeignKey('ledger.Account')
 
     @dd.displayfield(_("Description"))
@@ -185,7 +185,7 @@ class PartnerEntry(ReportEntry):
 
     partner = dd.ForeignKey('contacts.Partner')
     trade_type = TradeTypes.field()
-    
+
     @dd.displayfield(_("Description"))
     def description(self, ar=None):
         if ar is None:
@@ -228,7 +228,7 @@ class ItemEntry(ReportEntry):
         abstract = dd.is_abstract_model(__name__, 'ItemEntry')
         verbose_name = _("Sheet item entry")
         verbose_name_plural = _("Sheet item entries")
-        
+
     allow_cascaded_delete = ['item']
 
     item = dd.ForeignKey('sheets.Item')
@@ -313,7 +313,7 @@ class AnaAccountEntry(ReportEntry):
     def get_collectors(cls):
         yield Collector(cls, 'ana_account', 'ana_account')
 
-        
+
 
 class Report(UserPlan, PeriodRange, Certifiable, Story):
 
@@ -322,18 +322,18 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
         abstract = dd.is_abstract_model(__name__, 'Report')
         verbose_name = _("Accounting Report")
         verbose_name_plural = _("Accounting Reports")
-        
+
     def check_period_range(self):
         if not self.start_period:
             raise Warning(_("Select at least a start period"))
         if self.end_period:
             if str(self.start_period) > str(self.end_period):
                 raise Warning(_("End period must be after start period"))
-                
+
     @classmethod
     def get_certifiable_fields(cls):
         return 'start_period end_period user'
-    
+
     # def full_clean(self, *args, **kw):
     #     AP = rt.models.ledger.AccountingPeriod
     #     if not self.start_period_id:
@@ -385,11 +385,11 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
             yield AnaAccountEntry
         if dd.is_installed('sheets'):
             yield ItemEntry
-            
+
     def reset_plan(self):
         for em in self.get_entry_models():
             em.objects.filter(report=self).delete()
-            
+
     def run_update_plan(self, ar):
         self.check_period_range()
         for em in self.get_entry_models():
@@ -397,10 +397,13 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
             for coll in em.get_collectors():
                 for obj in self.get_balances_queryset(coll):
                     entry = coll.create_entry(self, obj)
-                    entry.full_clean()
-                    entry.save()
+                    try:
+                        entry.full_clean()
+                        entry.save()
+                    except Exception:
+                        self.get_balances_queryset(coll)
                 coll.compute_sums(self)
-                
+
         # TODO: compute net income/loss or not?
         # nil = CommonItems.net_income_loss.get_object()
         # if collector[nil.ref].value == ZERO:
@@ -422,8 +425,8 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
         #         e = collector[CommonItems.net_loss.value]
         #         assert e.value == ZERO
         #         e.value = - net_income
-        
-            
+
+
     def get_story(self, ar, header_level=None):
         # if header_level is None:
         #     header = None
@@ -452,24 +455,24 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
             ResultsEntriesByReport,
             master_instance=self,
             param_values=dict(sheet_type=SheetTypes.results)))
-        
+
         # for st in SheetTypes.get_list_items():
         #     balances.append(ar.spawn(
         #         ItemEntriesByReport,
         #         master_instance=self,
         #         param_values=dict(sheet_type=st)))
-            
+
         if True:
             for sar in balances:
                 # if header:
                 #     yield header(str(sar.get_title()))
                 yield sar
-                
+
 dd.update_field(Report, 'start_period', null=True)
 
-    
+
 # class Entry(SimpleSummary):
-    
+
 #     class Meta:
 #         app_label = 'sheets'
 #         abstract = dd.is_abstract_model(__name__, 'Entry')
@@ -477,7 +480,7 @@ dd.update_field(Report, 'start_period', null=True)
 #         verbose_name_plural = _("Sheet entries")
 
 #     show_in_site_search = False
-    
+
 #     master = dd.ForeignKey('ledger.FiscalYear')
 #     item = dd.ForeignKey('sheets.Item')
 #     value = dd.PriceField(_("Value"))
@@ -486,12 +489,12 @@ dd.update_field(Report, 'start_period', null=True)
 #     def update_for_master(cls, master):
 #         # a custom update_for_master because here we have multiple
 #         # summary objects per master.
-        
+
 #         cls.objects.filter(master=master).delete()
 
 #         collector = {}
 #         sums = {}
-        
+
 #         for i in rt.models.sheets.Item.objects.all():
 #             obj = cls(item=i, master=master, value=ZERO)
 #             if len(i.ref) == dd.plugins.sheets.ref_length:
@@ -533,7 +536,7 @@ dd.update_field(Report, 'start_period', null=True)
 #                 e = collector[CommonItems.net_loss.value]
 #                 assert e.value == ZERO
 #                 e.value = - net_income
-        
+
 #         for entry in collector.values():
 #             mr = entry.item.mirror_ref
 #             if mr and entry.value < 0:
@@ -544,7 +547,7 @@ dd.update_field(Report, 'start_period', null=True)
 #                 me.value = - obj.value
 #                 entry.value = 0
 #                 # obj.item = rt.models.sheets.Item.objects.get(ref=mr)
-                    
+
 #         for entry in collector.values():
 #             ref = entry.item.ref[:-1]
 #             while len(ref) > 0:
@@ -562,7 +565,7 @@ dd.update_field(Report, 'start_period', null=True)
 #             if entry.value:
 #                 entry.full_clean()
 #                 entry.save()
-            
+
 #     def value2html(self, ar):
 #         txt = dd.format_currency(self.value, False, True)
 #         if self.item.is_heading():
@@ -570,7 +573,7 @@ dd.update_field(Report, 'start_period', null=True)
 #             return E.div(E.b(txt), align="right")
 #         # return txt
 #         return E.div(txt, align="right")
-    
+
 #     @dd.displayfield(_("Activa"), max_length=12)
 #     def activa(self, ar):
 #         if self.item.dc:
@@ -599,7 +602,7 @@ dd.update_field(Report, 'start_period', null=True)
 
 # Entry.set_widget_options('value', hide_sum=True)
 
-        
+
 # class ReportDetail(dd.DetailLayout):
 #     main = "general ledger"
 
@@ -609,15 +612,15 @@ dd.update_field(Report, 'start_period', null=True)
 #     workflow_buttons user
 #     EntriesByReport
 #     """, label=_("General"))
-    
+
 #     ledger = dd.Panel("""
 #     journal accounting_period id narration
 #     ledger.MovementsByVoucher
 #     """, label=_("Ledger"))
 
 
-    
-    
+
+
 class Items(dd.Table):
     required_roles = dd.login_required(LedgerStaff)
     model = 'sheets.Item'
@@ -650,7 +653,7 @@ class Items(dd.Table):
 #     column_names = 'item__description expenses revenues'
 #     filter = models.Q(item__sheet_type=SheetTypes.results)
 
-    
+
 from lino_xl.lib.ledger.ui import Movements
 
 class EntriesByReport(dd.Table):
@@ -658,11 +661,11 @@ class EntriesByReport(dd.Table):
     master_key = 'report'
     column_names = "description:40 old_d old_c during_d during_c new_c new_d"
     details_of_master_template = _("%(details)s")
-    
+
 class AccountEntriesByReport(EntriesByReport):
     model = 'sheets.AccountEntry'
     order_by = ['account__ref']
-    
+
 class PartnerEntriesByReport(EntriesByReport):
     model = 'sheets.PartnerEntry'
     order_by = ['partner__name']
@@ -670,7 +673,7 @@ class PartnerEntriesByReport(EntriesByReport):
 class AnaAcountEntries(dd.Table):
     model = 'sheets.AnaAccountEntry'
     order_by = ['ana_account__ref']
-    
+
 class AnaEntriesByReport(AnaAcountEntries, EntriesByReport):
     pass
 
@@ -681,30 +684,30 @@ class ItemEntriesByReport(EntriesByReport):
     report item old_d old_c during_d during_c
     MovementsByItemEntry
     """
-    
+
     @classmethod
     def get_title(self, ar):
         return str(ar.param_values.sheet_type.text)
-    
+
 class BalanceEntriesByReport(ItemEntriesByReport):
     column_names = "description:40 activa passiva"
-    
+
 class ResultsEntriesByReport(ItemEntriesByReport):
     column_names = "description:40 expenses revenues"
-    
+
 
 # class ReportDetail(dd.DetailLayout):
 #     main = "first #second AnaEntriesByReport ItemEntriesByReport"
-    
+
 #     first = dd.Panel("""
 #     start_period end_period printed
 #     AccountEntriesByReport
 #     """, label=_("First"))
-    
+
 #     # second = dd.Panel("""
 #     # PartnerEntriesByReport
 #     # """, label=_("Second"))
-    
+
 class Reports(dd.Table):
     model = 'sheets.Report'
     # detail_layout = 'ledger.ReportDetail'
@@ -712,11 +715,11 @@ class Reports(dd.Table):
     start_period end_period printed
     body
     """
-    
+
 
 # class MovementsByItem(Movements):
 #     master_key = 'account__sheet_item'
-    
+
 class MovementsByItemEntry(Movements):
     master = 'sheets.ItemEntry'
     @classmethod
@@ -743,6 +746,6 @@ class MovementsByItemEntry(Movements):
 #     entry_date user
 #     start_period end_period
 #     """
-    
+
 # VoucherTypes.add_item_lazy(ReportsByJournal)
 
