@@ -1398,6 +1398,17 @@ instances."""),
     'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
     'lino_xl.lib.polls.PollStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.polls.ResponseStates' : _("""The list of possible states of a Response."""),
+    'lino_xl.lib.products.Product' : _("""A product is something you can sell or buy.  The lino_xl.lib.sales
+plugins injects a sales_price field."""),
+    'lino_xl.lib.products.Product.description' : _("""The description of this product."""),
+    'lino_xl.lib.products.Product.cat' : _("""Pointer to ProductCat"""),
+    'lino_xl.lib.products.Product.delivery_unit' : _("""Pointer to DeliveryUnits"""),
+    'lino_xl.lib.products.Product.vat_class' : _("""The VAT class.  Injected by lino_xl.lib.vat. If that plugin is
+not installed, vat_class is a dummy field."""),
+    'lino_xl.lib.products.ProductCat' : _("""Can be used to group products into "categories".  Categories can be edited by the user."""),
+    'lino_xl.lib.products.ProductTypes' : _("""Can be used to group products into "types".  Types cannot be edited by the
+user.  But every product type can have a layout on its own."""),
+    'lino_xl.lib.products.DeliveryUnits' : _("""The list of possible delivery units of a product."""),
     'lino_xl.lib.sheets.SheetTypes' : _("""The global list of sheet types ."""),
     'lino_xl.lib.sheets.SheetTypes.balance' : _("""A balance sheet or statement of financial position is a
 summary of the financial balances of an organisation."""),
