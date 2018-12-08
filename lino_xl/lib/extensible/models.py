@@ -19,6 +19,7 @@ logger = logging.getLogger(__name__)
 import datetime
 
 from django.conf import settings
+from django.utils import six
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from lino.api import dd, rt
@@ -82,7 +83,7 @@ class ExtSummaryField(dd.VirtualField):
 
     def set_value_in_object(self, request, obj, value):
         if obj.project:
-            s = unicode(obj.project)
+            s = six.text_type(obj.project)
             if value.startswith(s):
                 value = value[len(s):]
         obj.summary = value
@@ -131,7 +132,7 @@ class PanelCalendars(Calendars):
     @dd.displayfield()
     def summary(cls, self, ar):
         #~ return dd.babelattr(self,'name')
-        return unicode(self)
+        return six.text_type(self)
 
     @dd.virtualfield(models.BooleanField(_('Hidden')))
     def is_hidden(cls, self, ar):
@@ -168,7 +169,7 @@ class PanelEvents(Events):
         for t in super(PanelEvents, self).get_title_tags(ar):
             yield t
         if ar.subst_user:
-            yield unicode(ar.subst_user)
+            yield six.text_type(ar.subst_user)
 
     @classmethod
     def parse_req(self, request, rqdata, **kw):
