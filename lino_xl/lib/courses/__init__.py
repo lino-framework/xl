@@ -17,6 +17,7 @@ See :doc:`/specs/courses`.
 
 """
 
+from django.utils.text import format_lazy
 
 from lino.api import ad, _
 
@@ -51,6 +52,15 @@ class Plugin(ad.Plugin):
                 site.logger.warning(
                     "pupil_model must be enrollable but %s isn't", 
                     self.pupil_model)
+
+        # name = site.models.courses.Course._meta.verbose_name
+        # # site.models.courses.CourseStates.verbose_name = format_lazy(_("{} state"), name)
+        # site.models.courses.CourseStates.verbose_name_plural = format_lazy(_("{} states"), name)
+        #
+        # name = site.models.courses.Enrolment._meta.verbose_name
+        # # site.models.courses.EnrolmentStates.verbose_name = format_lazy(_("{} state"), name)
+        # site.models.courses.EnrolmentStates.verbose_name_plural = format_lazy(_("{} states"), name)
+
         super(Plugin, self).on_site_startup(site)
         
     def setup_main_menu(self, site, user_type, main):
@@ -81,6 +91,7 @@ class Plugin(ad.Plugin):
         m.add_action('courses.AllEnrolments')
         m.add_action('courses.EnrolmentStates')
         m.add_action('courses.CourseAreas')
+        m.add_action('courses.CourseStates')
 
     def get_dashboard_items(self, user):
         for x in super(Plugin, self).get_dashboard_items(user):

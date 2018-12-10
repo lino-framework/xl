@@ -256,7 +256,7 @@ class MyTasks(Tasks):
         kw = super(MyTasks, self).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         kw.update(state=TaskStates.todo)
-        kw.update(start_date=settings.SITE.today())
+        # kw.update(start_date=settings.SITE.today())
         kw.update(end_date=settings.SITE.today(
             self.default_end_date_offset))
         return kw

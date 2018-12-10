@@ -24,9 +24,8 @@ class Plugin(ad.Plugin):
     def post_site_startup(self, site):
         self.client_model = site.models.resolve(self.client_model)
         super(Plugin, self).post_site_startup(site)
-
-        site.kernel.memo_parser.register_django_model(
-            'client', self.client_model,
+        rdm = site.kernel.memo_parser.register_django_model
+        rdm('client', self.client_model,
             title=lambda obj: obj.get_full_name())
         
     # def setup_main_menu(self, site, user_type, m):

@@ -139,7 +139,7 @@ class CancelEvent(dd.ChangeStateAction):
 class PublishEvent(dd.ChangeStateAction):
     """Mark this event as published.  All participants have been informed.
 
-    You cannot publish a meeting which lies in the past.
+    (Disabled rule: You cannot publish a meeting which lies in the past.)
 
     """
     label = _("Publish")
@@ -147,7 +147,7 @@ class PublishEvent(dd.ChangeStateAction):
     if settings.SITE.use_silk_icons:
         icon_name = 'accept'
     
-    def get_action_permission(self, ar, obj, state):
+    def unused_get_action_permission(self, ar, obj, state):
         d = obj.end_date or obj.start_date
         if d < dd.today():
             return False
@@ -158,7 +158,7 @@ class PublishEvent(dd.ChangeStateAction):
 class CloseMeeting(dd.ChangeStateAction):
     """The meeting is over and the guests go home.
 
-    You cannot close a meeting which lies in the future.
+    You cannot close a meeting that lies in the future.
 
     """
     label = _("Close meeting")
