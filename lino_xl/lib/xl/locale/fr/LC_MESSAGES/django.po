@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2018-12-10 09:53+0200\n"
-"PO-Revision-Date: 2018-12-10 10:14+0200\n"
+"PO-Revision-Date: 2018-12-10 15:41+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -5891,9 +5891,8 @@ msgid "Home"
 msgstr "Départ"
 
 #: lino_xl/lib/phones/__init__.py:20
-#, fuzzy
 msgid "Contact Details"
-msgstr "Confirmation"
+msgstr "Personne de contact"
 
 #: lino_xl/lib/phones/choicelists.py:50
 msgid "Contact detail type"
@@ -6589,38 +6588,36 @@ msgstr "Utilisateur"
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:32
 #: lino_xl/lib/vat/mixins.py:410
 msgid "Unit price"
-msgstr ""
+msgstr "Prix unitaire"
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:33
 #: lino_xl/lib/vat/mixins.py:411
 msgid "Quantity"
-msgstr ""
+msgstr "Quantité"
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:34
-#, fuzzy
 msgid "Price"
-msgstr "PRix de vente"
+msgstr "Prix de vente"
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/trailer.html:4
-#, fuzzy
 msgid "Date of payment"
-msgstr "Concepts subordonnés"
+msgstr "Date de paiement"
 
 #: lino_xl/lib/sales/fixtures/std.py:21
 msgid "Letter paper"
-msgstr ""
+msgstr "Type de papier"
 
 #: lino_xl/lib/sales/fixtures/std.py:24
 msgid "Blank paper"
-msgstr ""
+msgstr "Papier vierge"
 
 #: lino_xl/lib/sepa/__init__.py:32
 msgid "SEPA"
-msgstr ""
+msgstr "SEPA"
 
 #: lino_xl/lib/sepa/mixins.py:184
 msgid "Check for partner mismatches in bank accounts"
-msgstr ""
+msgstr "Vérifier les asymétries de partenaires dans les comptes bancaires"
 
 #: lino_xl/lib/sepa/mixins.py:187
 msgid "Bank account owner ({0}) differs from partner ({1})"
@@ -7325,7 +7322,7 @@ msgstr ""
 
 #: lino_xl/lib/tickets/ui.py:506
 msgid "Duplicates"
-msgstr ""
+msgstr "Dupliquer"
 
 #: lino_xl/lib/tickets/ui.py:515
 #, fuzzy
@@ -7618,11 +7615,11 @@ msgstr ""
 
 #: lino_xl/lib/vat/mixins.py:65
 msgid "Total incl. VAT"
-msgstr ""
+msgstr "Total taxes inclus"
 
 #: lino_xl/lib/vat/mixins.py:66
 msgid "Total excl. VAT"
-msgstr ""
+msgstr "Total hors taxes"
 
 #: lino_xl/lib/vat/mixins.py:139
 msgid "Compute sums"
@@ -7639,7 +7636,7 @@ msgstr ""
 #: lino_xl/lib/vat/models.py:33 lino_xl/lib/vatless/models.py:30
 #: lino_xl/lib/vatless/ui.py:127
 msgid "Invoices"
-msgstr ""
+msgstr "Factures"
 
 #: lino_xl/lib/vat/models.py:38
 #, fuzzy
