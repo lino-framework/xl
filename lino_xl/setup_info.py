@@ -29,7 +29,7 @@ else:
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='18.11.0',
+    version='18.12.0',
     install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",
@@ -231,8 +231,8 @@ SETUP_INFO.update(message_extractors={
     ],
 })
 
-SETUP_INFO.update(include_package_data=True, zip_safe=False)
-
+# SETUP_INFO.update(include_package_data=True, zip_safe=False)
+SETUP_INFO.update(include_package_data=True)
 
 # SETUP_INFO.update(package_data=dict())
 
