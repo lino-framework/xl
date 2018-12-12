@@ -315,7 +315,7 @@ class MyCourses(My, Activities):
 class MyCoursesGiven(Activities):
     label = _("My courses given")
     required_roles = dd.login_required(CoursesTeacher)
-    column_names = "start_date overview weekdays_text times_text room workflow_buttons *"
+    column_names = "start_date detail_link weekdays_text times_text room workflow_buttons *"
     order_by = ['start_date', 'start_time']
 
     @classmethod
@@ -342,7 +342,7 @@ class MyCoursesGiven(Activities):
 
 class CoursesByLine(Activities):
     master_key = "line"
-    column_names = "overview weekdays_text room times_text teacher *"
+    column_names = "detail_link weekdays_text room times_text teacher *"
     order_by = ['room__name', '-start_date']
     
 
@@ -351,7 +351,7 @@ class CoursesByTopic(Activities):
     master_key = 'line__topic'
     # master = 'courses.Topic'
     order_by = ['-start_date']
-    column_names = "overview weekdays_text:10 times_text:10 "\
+    column_names = "detail_link weekdays_text:10 times_text:10 "\
                    "max_places:8 confirmed "\
                    "free_places requested trying *"
     # column_names = "start_date:8 line:20 room:10 " \
@@ -388,7 +388,7 @@ class CoursesBySlot(Activities):
 
 class DraftCourses(Activities):
     label = _("Draft activities")
-    column_names = 'overview room *'
+    column_names = 'detail_link room *'
     hide_sums = True
 
     @classmethod
@@ -403,7 +403,7 @@ class DraftCourses(Activities):
 class ActiveCourses(Activities):
 
     label = _("Current activities")
-    column_names = 'overview enrolments:8 free_places teacher room *'
+    column_names = 'detail_link enrolments:8 free_places teacher room *'
     hide_sums = True
 
     @classmethod
@@ -417,7 +417,7 @@ class ActiveCourses(Activities):
 class InactiveCourses(Activities):
 
     label = _("Inactive courses")
-    column_names = 'overview enrolments:8 free_places room *'
+    column_names = 'detail_link enrolments:8 free_places room *'
     hide_sums = True
 
     @classmethod
@@ -430,7 +430,7 @@ class InactiveCourses(Activities):
 class ClosedCourses(Activities):
 
     label = _("Closed courses")
-    column_names = 'overview enrolments:8 room *'
+    column_names = 'detail_link enrolments:8 room *'
     hide_sums = True
 
     @classmethod

@@ -127,7 +127,7 @@ class DailyPlanner(DailyPlannerRows):
             self.add_virtual_field('vc' + str(i), vf)
             names += ' ' + vf.name + ':20'
 
-        self.column_names = "clickable_description {}".format(names)
+        self.column_names = "overview {}".format(names)
         
         #~ logger.info("20131114 setup_columns() --> %s",self.column_names)
 

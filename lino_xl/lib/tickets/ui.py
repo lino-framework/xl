@@ -820,7 +820,7 @@ class Sites(dd.Table):
 
 class MySites(Sites):
     label = _("My sites")
-    column_names = "clickable_description workflow_buttons *"
+    column_names = "detail_link parsed_description workflow_buttons *"
 
     @classmethod
     def param_defaults(self, ar, **kw):

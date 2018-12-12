@@ -54,7 +54,7 @@ class TopLevelSkills(Skills):
     label = _("Skills (tree)")
     required_roles = dd.login_required(dd.SiteStaff)
     order_by = ["name"]
-    column_names = 'overview remarks children_summary parent *'
+    column_names = 'detail_link remarks children_summary parent *'
     filter = models.Q(parent__isnull=True)
     variable_row_height = True
 
@@ -62,7 +62,7 @@ class TopLevelSkills(Skills):
 class SkillsByParent(Skills):
     label = _("Child skills")
     master_key = 'parent'
-    column_names = 'seqno overview affinity *'
+    column_names = 'seqno detail_link affinity *'
     order_by = ["seqno"]
     # order_by = ["parent", "seqno"]
     # order_by = ["name"]
@@ -263,7 +263,7 @@ if dd.is_installed('tickets'):
         master = dd.plugins.skills.end_user_model
         label = _("Where I can help")
         required_roles = dd.login_required(Reporter)
-        column_names = 'overview:50 needed_skills ' \
+        column_names = 'detail_link:50 needed_skills ' \
                        'workflow_buttons:30 *'
         params_panel_hidden = True
         params_layout = """

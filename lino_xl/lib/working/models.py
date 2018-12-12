@@ -275,16 +275,16 @@ class SiteSummary(Summary):
         #     k = ts.get_summary_field()
         #     if k is not None:
         #         setattr(self, k, 0)
-        # self.active_tickets = 0
-        # self.inactive_tickets = 0
+        self.active_tickets = 0
+        self.inactive_tickets = 0
             
     def get_summary_collectors(self):
-        # if self.year is None:
-        #     qs = rt.models.tickets.Ticket.objects.filter(site=self.master)
-        #     # qs = qs.filter(
-        #     #     sessions_by_ticket__start_date__year=self.year)
-        #     yield (self.add_from_ticket, qs)
-        #
+        if self.year is None:
+            qs = rt.models.tickets.Ticket.objects.filter(site=self.master)
+            # qs = qs.filter(
+            #     sessions_by_ticket__start_date__year=self.year)
+            yield (self.add_from_ticket, qs)
+
         qs = rt.models.working.Session.objects.filter(
             ticket__site=self.master)
         if self.year:
@@ -292,17 +292,17 @@ class SiteSummary(Summary):
                 start_date__year=self.year)
         yield (self.add_from_session, qs)
     
-    # def add_from_ticket(self, obj):
-    #     ts = obj.state
-    #     k = ts.get_summary_field()
-    #     if k is not None:
-    #         value = getattr(self, k) + 1
-    #         setattr(self, k, value)
-    #     if ts.active:
-    #         self.active_tickets += 1
-    #     else:
-    #         self.inactive_tickets += 1
-    #
+    def add_from_ticket(self, obj):
+        ts = obj.state
+        # k = ts.get_summary_field()
+        # if k is not None:
+        #     value = getattr(self, k) + 1
+        #     setattr(self, k, value)
+        if ts.active:
+            self.active_tickets += 1
+        else:
+            self.inactive_tickets += 1
+
     def add_from_session(self, obj):
         d = obj.get_duration()
         if d:

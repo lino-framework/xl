@@ -227,7 +227,7 @@ class Site(Referrable, ContactRelated, Starrable):
             qs = qs.filter(**fkw)
         return qs
         
-    @dd.htmlbox()
+    @dd.htmlbox(_("Description"))
     def parsed_description(self, ar):
         if ar is None:
             return ''
@@ -250,7 +250,7 @@ class Site(Referrable, ContactRelated, Starrable):
 
 dd.update_field(Site, 'company', verbose_name=_("Client"))
 dd.update_field(Site, 'contact_person', verbose_name=_("Contact person"))
-dd.update_field(Site, 'overview', verbose_name=None)
+# dd.update_field(Site, 'detail_link', verbose_name=_("Site"))
 
 @dd.python_2_unicode_compatible
 class Subscription(UserAuthored):

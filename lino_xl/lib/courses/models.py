@@ -395,6 +395,12 @@ class Course(Reservation, Duplicable, Printable):
             elems.append(self.teacher.obj2href(ar))
         return elems
 
+    # @classmethod
+    # def on_analyze(cls, site):
+    #     super(Course, cls).on_analyze(site)
+    #     dd.update_field(Course, 'detail_link',
+    #                     default=site.models.courses.Course._meta.verbose_name)
+
     #~ @dd.displayfield(_("Where"))
     #~ def where_text(self,ar):
         # ~ return unicode(self.room) # .company.city or self.company)
