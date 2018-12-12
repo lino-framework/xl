@@ -656,7 +656,7 @@ class MyTickets(My, Tickets):
     label = _("My tickets")
     required_roles = dd.login_required(Reporter)
     order_by = ["priority", "-id"]
-    column_names = ("priority overview:50 workflow_buttons *")
+    column_names = "priority summary priority planned_time assigned_to state *"
     params_layout = """
     user end_user site #project state
     start_date end_date observed_event #topic show_active"""
@@ -670,49 +670,49 @@ class MyTickets(My, Tickets):
         # kw.update(show_standby=dd.YesNo.no)
         return kw
 
-class TicketsSummary(Tickets):
-    # order_by = ["state", "priority", "-id"]
-    order_by = ["priority", "-id"]
-    display_mode = 'summary'
+# class TicketsSummary(Tickets):
+#     # order_by = ["state", "priority", "-id"]
+#     order_by = ["priority", "-id"]
+#     display_mode = 'summary'
+#
+#     @classmethod
+#     def get_table_summary(self, master, ar):
+#         # master is None when called on a master table.
+#         if master is None:
+#             sar = ar
+#         else:
+#             sar = self.request_from(ar, master_instance=master)
+#
+#         # every element of `items` is a tuple `(state,
+#         # list-of-objects)`.  in ar they are ordered by state. we just
+#         # group them
+#         items = []
+#         items_by_state = dict()
+#         # ci = None
+#
+#         for obj in sar:  # self.get_request_queryset(ar):
+#             btn = obj.obj2href(ar)
+#             if obj.state in items_by_state:
+#                 lst = items_by_state[obj.state]
+#             else:
+#                 lst = []
+#                 items_by_state[obj.state] = lst
+#                 items.append((obj.state, lst))
+#             lst.append(btn)
+#
+#             # if ci is not None and ci[0] is obj.state:
+#             #     ci[1].append(btn)
+#             # else:
+#             #     ci = (obj.state, [btn])
+#             #     items.append(ci)
+#
+#         # now render them as a UL containing on LI per item
+#         items = [E.li(str(i[0]), ' : ', *join_elems(i[1], ", "))
+#                  for i in items]
+#
+#         return E.ul(*items)
 
-    @classmethod
-    def get_table_summary(self, master, ar):
-        # master is None when called on a master table.
-        if master is None:
-            sar = ar
-        else:
-            sar = self.request_from(ar, master_instance=master)
-            
-        # every element of `items` is a tuple `(state,
-        # list-of-objects)`.  in ar they are ordered by state. we just
-        # group them
-        items = []
-        items_by_state = dict()
-        # ci = None
-            
-        for obj in sar:  # self.get_request_queryset(ar):
-            btn = obj.obj2href(ar)
-            if obj.state in items_by_state:
-                lst = items_by_state[obj.state]
-            else:
-                lst = []
-                items_by_state[obj.state] = lst
-                items.append((obj.state, lst))
-            lst.append(btn)
-            
-            # if ci is not None and ci[0] is obj.state:
-            #     ci[1].append(btn)
-            # else:
-            #     ci = (obj.state, [btn])
-            #     items.append(ci)
-
-        # now render them as a UL containing on LI per item
-        items = [E.li(str(i[0]), ' : ', *join_elems(i[1], ", "))
-                 for i in items]
-
-        return E.ul(*items)
-
-class MyTicketsToWork(TicketsSummary):
+class MyTicketsToWork(Tickets):
     label = _("Tickets to work")
     required_roles = dd.login_required(Reporter)
     column_names = 'overview:50 workflow_buttons:30 *'
@@ -811,15 +811,16 @@ class Sites(dd.Table):
 
 
 
-def get_summary_columns():
-    for ts in TicketStates.get_list_items():
-        if ts.active:
-            k = ts.get_summary_field()
-            if k is not None:
-                yield k
+# def get_summary_columns():
+#     for ts in TicketStates.get_list_items():
+#         if ts.active:
+#             k = ts.get_summary_field()
+#             if k is not None:
+#                 yield k
 
 class MySites(Sites):
     label = _("My sites")
+    column_names = "overview name ref parsed_description remark workflow_buttons *"
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -828,10 +829,10 @@ class MySites(Sites):
         kw.update(show_exposed=dd.YesNo.yes)
         return kw
 
-    @classmethod
-    def setup_columns(cls):
-        cls.column_names = "overview "
-        cls.column_names += ' '.join(get_summary_columns())
+    # @classmethod
+    # def setup_columns(cls):
+    #     cls.column_names = "overview "
+    #     cls.column_names += ' '.join(get_summary_columns())
 
     
 
@@ -863,7 +864,7 @@ class SitesByPerson(Sites):
     column_names = "ref name *"
 
 
-class TicketsBySite(TicketsSummary):
+class TicketsBySite(Tickets):
     required_roles = dd.login_required(Reporter)
     # label = _("Known problems")
     master_key = 'site'

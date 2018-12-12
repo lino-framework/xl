@@ -24,10 +24,9 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.tickets.choicelists import TicketStates
 
 from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
-from .choicelists import ReportingTypes
+from .choicelists import ReportingTypes, ZERO_DURATION
 from .mixins import Workable
 
-ZERO_DURATION = Duration('0:00')
 
 class SessionType(mixins.BabelNamed):
 
@@ -272,20 +271,20 @@ class SiteSummary(Summary):
         for t in ReportingTypes.get_list_items():
             k = t.name + '_hours'
             setattr(self, k, ZERO_DURATION)
-        for ts in TicketStates.get_list_items():
-            k = ts.get_summary_field()
-            if k is not None:
-                setattr(self, k, 0)
-        self.active_tickets = 0
-        self.inactive_tickets = 0
+        # for ts in TicketStates.get_list_items():
+        #     k = ts.get_summary_field()
+        #     if k is not None:
+        #         setattr(self, k, 0)
+        # self.active_tickets = 0
+        # self.inactive_tickets = 0
             
     def get_summary_collectors(self):
-        if self.year is None:
-            qs = rt.models.tickets.Ticket.objects.filter(site=self.master)
-            # qs = qs.filter(
-            #     sessions_by_ticket__start_date__year=self.year)
-            yield (self.add_from_ticket, qs)
-        
+        # if self.year is None:
+        #     qs = rt.models.tickets.Ticket.objects.filter(site=self.master)
+        #     # qs = qs.filter(
+        #     #     sessions_by_ticket__start_date__year=self.year)
+        #     yield (self.add_from_ticket, qs)
+        #
         qs = rt.models.working.Session.objects.filter(
             ticket__site=self.master)
         if self.year:
@@ -293,17 +292,17 @@ class SiteSummary(Summary):
                 start_date__year=self.year)
         yield (self.add_from_session, qs)
     
-    def add_from_ticket(self, obj):
-        ts = obj.state
-        k = ts.get_summary_field()
-        if k is not None:
-            value = getattr(self, k) + 1
-            setattr(self, k, value)
-        if ts.active:
-            self.active_tickets += 1
-        else:
-            self.inactive_tickets += 1
-
+    # def add_from_ticket(self, obj):
+    #     ts = obj.state
+    #     k = ts.get_summary_field()
+    #     if k is not None:
+    #         value = getattr(self, k) + 1
+    #         setattr(self, k, value)
+    #     if ts.active:
+    #         self.active_tickets += 1
+    #     else:
+    #         self.inactive_tickets += 1
+    #
     def add_from_session(self, obj):
         d = obj.get_duration()
         if d:
@@ -318,41 +317,31 @@ class SiteSummary(Summary):
 def inject_summary_fields(sender, **kw):
     SiteSummary = rt.models.working.SiteSummary
     WorkSite = rt.models.tickets.Site
-    
+    Ticket = dd.plugins.working.ticket_model
     for t in ReportingTypes.get_list_items():
         k = t.name + '_hours'
         dd.inject_field(
-            SiteSummary, k, dd.DurationField(
-                t.text, null=True, blank=True))
+            SiteSummary, k, dd.DurationField(t.text, null=True, blank=True))
+        dd.inject_field(
+            Ticket, k, dd.DurationField(t.text, null=True, blank=True))
 
         def make_getter(t):
             k = t.name + '_hours'
             def getter(obj, ar):
-                # if ar is None:
-                #     return ''
                 qs = SiteSummary.objects.filter(
                     master=obj, year__isnull=True)
                 d = qs.aggregate(**{k:models.Sum(k)})
                 n = d[k]
                 return n
-                # if not n:
-                #     return ''
-                # sar = rt.models.working.SessionsBySite.request(
-                #     obj, param_values=dict(
-                #         state=ts, show_active=None))
-                # # n = sar.get_total_count()
-                # url = ar.renderer.request_handler(sar)
-                # if url is None:
-                #     return str(n)
-                # return E.a(str(n), href='javascript:'+url)
             return getter
 
         dd.inject_field(
             WorkSite, k, dd.VirtualField(
                 dd.DurationField(t.text), make_getter(t)))
 
-        
-    for ts in TicketStates.get_list_items():
+
+    if False:  # removed 20181211 because useless
+      for ts in TicketStates.get_list_items():
         k = ts.get_summary_field()
         if k is not None:
             dd.inject_field(

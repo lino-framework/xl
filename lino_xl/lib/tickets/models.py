@@ -28,6 +28,7 @@ from lino.modlib.uploads.mixins import UploadController
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.comments.mixins import Commentable
+from lino.modlib.notify.utils import rich_text_to_elems
 from lino.mixins.ref import Referrable
 from lino_xl.lib.skills.mixins import Feasible
 from lino_xl.lib.votes.mixins import Votable
@@ -235,11 +236,21 @@ class Site(Referrable, ContactRelated, Starrable):
             html += ar.parse_memo(self.description)
         return html
 
+    def get_overview_elems(self, ar):
+        elems = []
+        if self.ref:
+            txt = "{} {}".format(self.ref, self.name)
+        else:
+            txt = self.name
+        elems.append(E.h2(txt))
+        if self.description:
+            elems += rich_text_to_elems(ar, self.description)
+        return elems
 
-dd.update_field(
-    Site, 'company', verbose_name=_("Client"))
-dd.update_field(
-    Site, 'contact_person', verbose_name=_("Contact person"))
+
+dd.update_field(Site, 'company', verbose_name=_("Client"))
+dd.update_field(Site, 'contact_person', verbose_name=_("Contact person"))
+dd.update_field(Site, 'overview', verbose_name=None)
 
 @dd.python_2_unicode_compatible
 class Subscription(UserAuthored):

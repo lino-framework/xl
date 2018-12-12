@@ -5,6 +5,10 @@
 
 from lino.api import dd, _
 
+from lino.utils.quantities import Duration
+
+ZERO_DURATION = Duration('0:00')
+
 class ReportingTypes(dd.ChoiceList):
     verbose_name = _("Reporting type")
     verbose_name_plural = _("Reporting types")

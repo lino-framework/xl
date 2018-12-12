@@ -1,23 +1,24 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Rumma & Ko Ltd
+# Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
-from django.db import models
-from django.utils import timezone
+# from django.db import models
+# from django.utils import timezone
 
 from lino.api import dd, rt, _
 
-from lino.mixins.periods import Monthly
-from lino.modlib.printing.mixins import DirectPrintAction
-from lino.core.roles import SiteUser
-from .roles import Worker
-from lino_xl.lib.tickets.roles import Triager
+# from lino.mixins.periods import Monthly
+# from lino.modlib.printing.mixins import DirectPrintAction
+# from lino.core.roles import SiteUser
+# from .roles import Worker
+# from lino_xl.lib.tickets.roles import Triager
 
 from .actions import StartTicketSession, EndTicketSession
 
 
 class Workable(dd.Model):
+
     class Meta:
         abstract = True
 
@@ -62,4 +63,5 @@ class Workable(dd.Model):
                 ses = rt.models.working.Session(ticket=elem, user=me)
                 ses.full_clean()
                 ses.save()
+
 

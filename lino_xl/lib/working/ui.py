@@ -173,9 +173,9 @@ class SessionsByTicket(Sessions):
         # Button for starting a session from ticket
         sar = obj.start_session.request_from(ar)
         # if ar.renderer.is_interactive and sar.get_permission():
-        if sar.get_permission():
-            btn = sar.ar2button(obj)
-            elems += [E.p(btn)]
+        # if sar.get_permission():
+        #     btn = sar.ar2button(obj)
+        #     elems += [E.p(btn)]
 
         # Active sessions:
         active_sessions = []
@@ -628,11 +628,11 @@ class AllSummaries(Summaries):
 
 
 def get_summary_columns(hours=True):
-    for ts in TicketStates.get_list_items():
-        if hours or ts.active:
-            k = ts.get_summary_field()
-            if k is not None:
-                yield k
+    # for ts in TicketStates.get_list_items():
+    #     if hours or ts.active:
+    #         k = ts.get_summary_field()
+    #         if k is not None:
+    #             yield k
     if True:
         for t in ReportingTypes.get_list_items():
             k = t.name + '_hours'
