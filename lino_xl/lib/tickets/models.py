@@ -600,10 +600,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     #     return rt.models.tickets.Project.objects.all()[0]
             
     def obj2href(self, ar, **kwargs):
-        """Return a tuple (text, attributes) to use when rendering an `<a
-        href>` that points to this object.
-
-        """
         kwargs.update(title=self.summary)
         return ar.obj2html(self, "#{}".format(self.id), **kwargs)
 
