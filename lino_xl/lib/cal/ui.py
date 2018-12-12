@@ -747,7 +747,7 @@ class ConflictingEvents(Events):
 class PublicEntries(Events):
     required_roles = dd.login_required(CalendarReader)
     
-    column_names = 'overview room event_type  *'
+    column_names = 'clickable_description room event_type  *'
     filter = models.Q(access_class=AccessClasses.public)
     
     @classmethod
@@ -1040,7 +1040,7 @@ class OneEvent(Events):
 class MyEntries(Events):
     label = _("My appointments")
     required_roles = dd.login_required(OfficeUser)
-    column_names = 'overview project #event_type #summary workflow_buttons *'
+    column_names = 'clickable_description project #event_type #summary workflow_buttons *'
     auto_fit_column_widths = True
 
     @classmethod
@@ -1111,7 +1111,7 @@ class OverdueAppointments(Events):
 class MyOverdueAppointments(My, OverdueAppointments):
     label = _("My overdue appointments")
     required_roles = dd.login_required(OfficeUser)
-    column_names = 'overview owner event_type workflow_buttons *'
+    column_names = 'clickable_description owner event_type workflow_buttons *'
 
 class MyUnconfirmedAppointments(MyEntries):
     required_roles = dd.login_required(OfficeUser)
