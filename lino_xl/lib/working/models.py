@@ -15,7 +15,7 @@ from etgen.html import E
 from lino.utils.quantities import Duration
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
-from lino.modlib.summaries.mixins import Summary
+from lino.modlib.summaries.mixins import MonthlySlaveSummary
 from lino.modlib.about.choicelists import TimeZones
 
 from lino_xl.lib.cal.mixins import Started, Ended
@@ -246,7 +246,7 @@ class ServiceReport(UserAuthored, ContactRelated, Certifiable, DateRange):
 dd.update_field(ServiceReport, 'user', verbose_name=_("Worker"))
         
 
-class SiteSummary(Summary):
+class SiteSummary(MonthlySlaveSummary):
 
     class Meta:
         app_label = 'working'
@@ -254,6 +254,7 @@ class SiteSummary(Summary):
         verbose_name_plural = _("Site summaries")
 
     summary_period = 'yearly'
+    delete_them_all = True
     master = dd.ForeignKey('tickets.Site')
 
     active_tickets = models.IntegerField(_("Active tickets"))

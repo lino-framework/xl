@@ -10,11 +10,11 @@ from lino.api import dd, rt, _
 
 
 import datetime
-from lino.modlib.summaries.mixins import Summary
+from lino.modlib.summaries.mixins import MonthlySummarized
 # from atelier.utils import last_day_of_month
 from lino.modlib.system.choicelists import PeriodEvents
 
-class UserStat(Summary):
+class UserStat(MonthlySummarized):
     
     class Meta(object):
         app_label = 'userstats'
@@ -22,7 +22,8 @@ class UserStat(Summary):
         verbose_name_plural = _("User Statistics")
 
     summary_period = 'monthly'
-    master = dd.ForeignKey('system.SiteConfig')
+    delete_them_all = True
+    # master = dd.ForeignKey('system.SiteConfig')
     active_users = models.IntegerField(_("Active users"))
     
     def reset_summary_data(self):
