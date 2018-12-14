@@ -489,8 +489,8 @@ state."""),
     'lino_xl.lib.cal.EntryState.guest_state' : _("""Force the given guest state for all guests when an entry is
 set to this state and when
 EventType.force_guest_states is True."""),
-    'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
-    'lino_xl.lib.cal.EventType' : _("""The possible value of the Event.type field."""),
+    'lino_xl.lib.cal.EventType' : _("""Django model representing a calendar entry type. The possible value of
+the Event.type field."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
     'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered as "appointments"
 (i.e. whose time and place have been agreed upon with other
@@ -502,11 +502,13 @@ unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
     'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether guest states should be forced to those defined by the
 entry state."""),
-    'lino_xl.lib.cal.DailyPlanner' : _("""The daily planner actor."""),
+    'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
+    'lino_xl.lib.cal.DailyPlanner' : _("""The virtual table used to render the daily planner."""),
     'lino_xl.lib.cal.PlannerColumns' : _("""A choicelist that defines the columns to appear in the daily
 planner. This list can be modified locally."""),
     'lino_xl.lib.cal.DailyPlannerRow' : _("""A database object that represents one row of the daily planner.
 The default configuration has "AM", "PM" and "All day"."""),
+    'lino_xl.lib.cal.Calendar' : _("""the django model representing a calendar."""),
     'lino_xl.lib.cal.Calendar.color' : _("""The color to use for entries of this calendar (in
 lino_xl.lib.extensible)."""),
     'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
@@ -528,8 +530,7 @@ there are conflicts but no alternative date could be found."""),
     'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
     'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
-    'lino_xl.lib.cal.Guest' : _("""Represents the fact that a given person is expected to attend to a
-given event."""),
+    'lino_xl.lib.cal.Guest' : _("""TODO: Rename this to "Presence"."""),
     'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
     'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
     'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
@@ -612,12 +613,11 @@ choicelist."""),
     'lino_xl.lib.cal.DurationUnit.add_duration' : _("""Return a date or datetime obtained by adding value
 times this unit to the specified value orig.
 Returns None is orig is empty."""),
-    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the
-lino_xl.lib.cal.Event.duration_unit field of a calendar
-entry."""),
+    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the duration_unit
+<lino_xl.lib.cal.Event.duration_unit> field of a calendar entry."""),
     'lino_xl.lib.cal.AccessClasses' : _("""The sitewide list of access classes."""),
     'lino_xl.lib.cal.ShowEntriesByDay' : _("""Show all calendar events of the same day."""),
-    'lino_xl.lib.cal.Component' : _("""Abstract base class for Event and Task."""),
+    'lino_xl.lib.cal.Component' : _("""Model mixin inherited by both Event and Task."""),
     'lino_xl.lib.cal.Component.auto_type' : _("""Contains the sequence number if this is an automatically
 generated component. Otherwise this field is empty."""),
     'lino_xl.lib.cal.Plugin.partner_model' : _("""The model to use as the guest of a presence."""),
