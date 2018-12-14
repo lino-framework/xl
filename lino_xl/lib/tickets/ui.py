@@ -573,9 +573,6 @@ class TicketsByEndUser(Tickets):
         return E.p(*chunks)
 
 
-    
-
-
 class TicketsByType(Tickets):
     master_key = 'ticket_type'
     column_names = "summary state  *"
@@ -653,14 +650,14 @@ class ActiveTickets(Tickets):
         return kw
 
 class MyTickets(My, Tickets):
-    label = _("My tickets")
+    # label = _("My tickets")
     required_roles = dd.login_required(Reporter)
     order_by = ["priority", "-id"]
-    column_names = "priority summary priority planned_time assigned_to state *"
-    params_layout = """
-    user end_user site #project state
-    start_date end_date observed_event #topic show_active"""
+    column_names = "priority detail_link assigned_to planned_time SUMMARY_FIELDS workflow_buttons *"
     params_panel_hidden = True
+    params_layout = """
+    user end_user site #project state priority
+    start_date end_date observed_event #topic #feasable_by show_active"""
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -714,10 +711,11 @@ class MyTickets(My, Tickets):
 
 class MyTicketsToWork(Tickets):
     label = _("Tickets to work")
+    order_by = ["priority", "-id"]
     required_roles = dd.login_required(Reporter)
-    column_names = 'overview:50 workflow_buttons:30 *'
+    column_names = 'priority overview:50 workflow_buttons:30 *'
     params_layout = """
-    user end_user site #project state
+    user end_user site assigned_to #project state
     start_date end_date observed_event #topic show_active"""
     params_panel_hidden = True
 
@@ -763,7 +761,7 @@ class Sites(dd.Table):
     # required_roles = set()  # also for anonymous
     required_roles = dd.login_required(Reporter)
     model = 'tickets.Site'
-    column_names = "name company contact_person remark workflow_buttons id *"
+    column_names = "ref name company remark workflow_buttons id *"
     order_by = ['ref', 'name']
     # detail_html_template = "tickets/Site/detail.html"
     parameters = dd.ParameterPanel(
