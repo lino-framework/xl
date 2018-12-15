@@ -19,13 +19,13 @@ from lino.utils import ONE_DAY
 from etgen.html import E, tostring
 from lino.mixins.periods import Started, Ended
 from lino.core.exceptions import ChangedAPI
-
 from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 from lino.modlib.uploads.mixins import UploadController
-
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.notify.mixins import ChangeNotifier
+
+from lino_xl.lib.xl.choicelists import Priorities
 
 from .choicelists import Recurrencies, Weekdays, AccessClasses, EntryStates
 from .utils import day_and_month, day_and_weekday
@@ -769,6 +769,7 @@ class Component(Started,
 Whether this is private, public or between."""))  # iCal:CLASS
     sequence = models.IntegerField(_("Revision"), default=0)
     auto_type = models.IntegerField(_("No."), null=True, blank=True)
+    priority = Priorities.field(default='normal')
 
     def save(self, *args, **kw):
         if self.user is not None and self.access_class is None:

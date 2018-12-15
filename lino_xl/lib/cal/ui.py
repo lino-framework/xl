@@ -59,11 +59,11 @@ class AllRooms(Rooms):
     required_roles = dd.login_required(OfficeStaff)
 
 
-class Priorities(dd.Table):
-    required_roles = dd.login_required(OfficeStaff)
-    model = 'cal.Priority'
-    column_names = 'name *'
-
+# class Priorities(dd.Table):
+#     required_roles = dd.login_required(OfficeStaff)
+#     model = 'cal.Priority'
+#     column_names = 'name *'
+#
 
 class Calendars(dd.Table):
     required_roles = dd.login_required(OfficeStaff)

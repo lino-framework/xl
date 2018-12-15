@@ -227,12 +227,12 @@ dd.update_field(
 dd.update_field(
     Room, 'contact_person', verbose_name=_("Contact person"))    
 
-class Priority(mixins.BabelNamed):
-    class Meta:
-        app_label = 'cal'
-        verbose_name = _("Priority")
-        verbose_name_plural = _('Priorities')
-    ref = models.CharField(max_length=1)
+# class Priority(mixins.BabelNamed):
+#     class Meta:
+#         app_label = 'cal'
+#         verbose_name = _("Priority")
+#         verbose_name_plural = _('Priorities')
+#     ref = models.CharField(max_length=1)
 
 
 @dd.python_2_unicode_compatible
@@ -479,7 +479,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     transparent = models.BooleanField(_("Transparent"), default=False)
     room = dd.ForeignKey('cal.Room', null=True, blank=True)
-    priority = dd.ForeignKey(Priority, null=True, blank=True)
+    # priority = dd.ForeignKey(Priority, null=True, blank=True)
     state = EntryStates.field(
         default=EntryStates.as_callable('suggested'))
     all_day = ExtAllDayField(_("all day"))

@@ -63,7 +63,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.Calendars')
         # m.add_action('cal.MySubscriptions')
         m.add_action('cal.AllRooms')
-        m.add_action('cal.Priorities')
+        # m.add_action('cal.Priorities')
         m.add_action('cal.RecurrentEvents')
         # m.add_action(AccessClasses)
         # m.add_action(EventStatuses)
