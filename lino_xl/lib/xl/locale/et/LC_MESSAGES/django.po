@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-14 12:40+0200\n"
+"POT-Creation-Date: 2018-12-15 22:39+0200\n"
 "PO-Revision-Date: 2017-04-22 15:48+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: et\n"
@@ -212,8 +212,8 @@ msgstr "Kirjeldus"
 #: lino_xl/lib/finan/models.py:277 lino_xl/lib/mailbox/ui.py:35
 #: lino_xl/lib/meetings/desktop.py:57 lino_xl/lib/polls/models.py:171
 #: lino_xl/lib/polls/models.py:354 lino_xl/lib/rooms/models.py:151
-#: lino_xl/lib/sales/models.py:208 lino_xl/lib/tickets/ui.py:272
-#: lino_xl/lib/tickets/ui.py:744 lino_xl/lib/vat/desktop.py:51
+#: lino_xl/lib/sales/models.py:208 lino_xl/lib/tickets/ui.py:266
+#: lino_xl/lib/tickets/ui.py:738 lino_xl/lib/vat/desktop.py:51
 #: lino_xl/lib/vatless/ui.py:50 lino_xl/lib/vatless/ui.py:65
 msgid "General"
 msgstr "Üld"
@@ -1091,7 +1091,7 @@ msgstr ""
 msgid "Access Class"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:117 lino_xl/lib/tickets/ui.py:363
+#: lino_xl/lib/cal/choicelists.py:117 lino_xl/lib/tickets/ui.py:358
 msgid "Private"
 msgstr ""
 
@@ -1122,7 +1122,7 @@ msgid "Task states"
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:138 lino_xl/lib/deploy/models.py:292
-#: lino_xl/lib/tickets/choicelists.py:120 lino_xl/lib/tickets/ui.py:361
+#: lino_xl/lib/tickets/choicelists.py:111 lino_xl/lib/tickets/ui.py:356
 msgid "To do"
 msgstr ""
 
@@ -1171,7 +1171,7 @@ msgid "Edit participants"
 msgstr "Osavõtja"
 
 #: lino_xl/lib/cal/choicelists.py:192 lino_xl/lib/cal/ui.py:580
-#: lino_xl/lib/tickets/choicelists.py:91
+#: lino_xl/lib/tickets/choicelists.py:82
 msgid "Stable"
 msgstr ""
 
@@ -1195,7 +1195,7 @@ msgstr "Ettepanek"
 #: lino_xl/lib/cal/choicelists.py:211 lino_xl/lib/courses/choicelists.py:39
 #: lino_xl/lib/ledger/choicelists.py:385 lino_xl/lib/meetings/choicelists.py:27
 #: lino_xl/lib/polls/utils.py:16 lino_xl/lib/polls/utils.py:35
-#: lino_xl/lib/rooms/models.py:31 lino_xl/lib/tickets/choicelists.py:87
+#: lino_xl/lib/rooms/models.py:31 lino_xl/lib/tickets/choicelists.py:78
 msgid "Draft"
 msgstr "Kavand"
 
@@ -1344,7 +1344,7 @@ msgstr "Maakond"
 msgid "No."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:806
+#: lino_xl/lib/cal/mixins.py:807
 msgid " at "
 msgstr ""
 
@@ -1435,15 +1435,6 @@ msgstr "Kohalolekud"
 #: lino_xl/lib/rooms/models.py:131 lino_xl/lib/tickets/models.py:252
 msgid "Contact person"
 msgstr "Kontaktisik"
-
-#: lino_xl/lib/cal/models.py:233 lino_xl/lib/tickets/choicelists.py:26
-#: lino_xl/lib/tickets/ui.py:352 lino_xl/lib/votes/models.py:86
-msgid "Priority"
-msgstr ""
-
-#: lino_xl/lib/cal/models.py:234 lino_xl/lib/tickets/choicelists.py:27
-msgid "Priorities"
-msgstr ""
 
 #: lino_xl/lib/cal/models.py:246
 msgid "Calendar entry type"
@@ -1739,7 +1730,7 @@ msgid "Only rows managed by this user."
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:175 lino_xl/lib/cal/ui.py:621
-#: lino_xl/lib/tickets/ui.py:351 lino_xl/lib/votes/models.py:165
+#: lino_xl/lib/tickets/ui.py:346 lino_xl/lib/votes/models.py:165
 msgid "Only rows having this state."
 msgstr ""
 
@@ -1772,13 +1763,13 @@ msgid "My guests"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:577 lino_xl/lib/clients/choicelists.py:17
-#: lino_xl/lib/contacts/choicelists.py:9 lino_xl/lib/tickets/choicelists.py:36
+#: lino_xl/lib/contacts/choicelists.py:9 lino_xl/lib/tickets/choicelists.py:27
 #: lino_xl/lib/votes/choicelists.py:103
 msgid "Observed event"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:578 lino_xl/lib/clients/choicelists.py:18
-#: lino_xl/lib/contacts/choicelists.py:10 lino_xl/lib/tickets/choicelists.py:37
+#: lino_xl/lib/contacts/choicelists.py:10 lino_xl/lib/tickets/choicelists.py:28
 #: lino_xl/lib/votes/choicelists.py:104
 msgid "Observed events"
 msgstr ""
@@ -2029,13 +2020,13 @@ msgstr ""
 msgid "Clients"
 msgstr "Üritused"
 
-#: lino_xl/lib/clients/choicelists.py:23 lino_xl/lib/tickets/choicelists.py:41
+#: lino_xl/lib/clients/choicelists.py:23 lino_xl/lib/tickets/choicelists.py:32
 #: lino_xl/lib/votes/choicelists.py:108
 #, fuzzy
 msgid "Created"
 msgstr "Loo"
 
-#: lino_xl/lib/clients/choicelists.py:36 lino_xl/lib/tickets/choicelists.py:54
+#: lino_xl/lib/clients/choicelists.py:36 lino_xl/lib/tickets/choicelists.py:45
 msgid "Modified"
 msgstr ""
 
@@ -2051,7 +2042,7 @@ msgstr ""
 msgid "Newcomer"
 msgstr ""
 
-#: lino_xl/lib/clients/choicelists.py:74 lino_xl/lib/tickets/choicelists.py:134
+#: lino_xl/lib/clients/choicelists.py:74 lino_xl/lib/tickets/choicelists.py:125
 #, fuzzy
 msgid "Refused"
 msgstr "Ettepanek"
@@ -2274,7 +2265,7 @@ msgstr "Firmaliik"
 msgid "Jargon"
 msgstr ""
 
-#: lino_xl/lib/concepts/models.py:32 lino_xl/lib/tickets/choicelists.py:193
+#: lino_xl/lib/concepts/models.py:32 lino_xl/lib/tickets/choicelists.py:184
 msgid "Obsoletes"
 msgstr ""
 
@@ -2748,8 +2739,8 @@ msgid "Show states"
 msgstr "Rahavoogude aruanne"
 
 #: lino_xl/lib/courses/choicelists.py:31 lino_xl/lib/courses/desktop.py:188
-#: lino_xl/lib/tickets/choicelists.py:84 lino_xl/lib/tickets/ui.py:770
-#: lino_xl/lib/tickets/ui.py:791
+#: lino_xl/lib/tickets/choicelists.py:75 lino_xl/lib/tickets/ui.py:764
+#: lino_xl/lib/tickets/ui.py:785
 #, fuzzy
 msgid "Exposed"
 msgstr "Kohalolekud"
@@ -2765,7 +2756,7 @@ msgid "Update calendar"
 msgstr "Kalender"
 
 #: lino_xl/lib/courses/choicelists.py:41 lino_xl/lib/meetings/choicelists.py:29
-#: lino_xl/lib/tickets/choicelists.py:130
+#: lino_xl/lib/tickets/choicelists.py:121
 msgid "Started"
 msgstr "Alanud"
 
@@ -2775,8 +2766,8 @@ msgid "Inactive"
 msgstr ""
 
 #: lino_xl/lib/courses/choicelists.py:45 lino_xl/lib/ledger/choicelists.py:44
-#: lino_xl/lib/polls/utils.py:18 lino_xl/lib/tickets/choicelists.py:95
-#: lino_xl/lib/tickets/choicelists.py:133 lino_xl/lib/tickets/models.py:68
+#: lino_xl/lib/polls/utils.py:18 lino_xl/lib/tickets/choicelists.py:86
+#: lino_xl/lib/tickets/choicelists.py:124 lino_xl/lib/tickets/models.py:68
 msgid "Closed"
 msgstr "Lõpetatud"
 
@@ -2818,7 +2809,7 @@ msgstr "Müük"
 msgid "Enrolments"
 msgstr "Osavõtud"
 
-#: lino_xl/lib/courses/desktop.py:189 lino_xl/lib/tickets/ui.py:771
+#: lino_xl/lib/courses/desktop.py:189 lino_xl/lib/tickets/ui.py:765
 msgid "Whether to show rows in an exposed state"
 msgstr ""
 
@@ -3463,7 +3454,7 @@ msgid "Aftermath"
 msgstr ""
 
 #: lino_xl/lib/deploy/models.py:127 lino_xl/lib/skills/models.py:88
-#: lino_xl/lib/tickets/models.py:496 lino_xl/lib/tickets/ui.py:323
+#: lino_xl/lib/tickets/models.py:496 lino_xl/lib/tickets/ui.py:318
 msgid "End user"
 msgstr ""
 
@@ -3944,7 +3935,7 @@ msgstr "Maksetingimused"
 
 #: lino_xl/lib/finan/models.py:262 lino_xl/lib/meetings/desktop.py:75
 #: lino_xl/lib/polls/models.py:358 lino_xl/lib/sales/models.py:213
-#: lino_xl/lib/tickets/ui.py:287
+#: lino_xl/lib/tickets/ui.py:281
 #, fuzzy
 msgid "More"
 msgstr "Veel"
@@ -5618,7 +5609,7 @@ msgstr ""
 msgid "Delete {} messages."
 msgstr ""
 
-#: lino_xl/lib/mailbox/ui.py:42 lino_xl/lib/tickets/ui.py:355
+#: lino_xl/lib/mailbox/ui.py:42 lino_xl/lib/tickets/ui.py:350
 #: lino_xl/lib/votes/choicelists.py:77
 msgid "Assigned"
 msgstr ""
@@ -5634,8 +5625,8 @@ msgstr ""
 
 #: lino_xl/lib/meetings/desktop.py:101
 #: lino_xl/lib/online/users/choicelists.py:21 lino_xl/lib/polls/utils.py:17
-#: lino_xl/lib/tickets/choicelists.py:89 lino_xl/lib/tickets/choicelists.py:119
-#: lino_xl/lib/tickets/ui.py:360
+#: lino_xl/lib/tickets/choicelists.py:80 lino_xl/lib/tickets/choicelists.py:110
+#: lino_xl/lib/tickets/ui.py:355
 #, fuzzy
 msgid "Active"
 msgstr "Kuupäev"
@@ -5795,7 +5786,7 @@ msgid "User states"
 msgstr "Kasutaja olekud"
 
 #: lino_xl/lib/online/users/choicelists.py:20
-#: lino_xl/lib/tickets/choicelists.py:126
+#: lino_xl/lib/tickets/choicelists.py:117
 msgid "New"
 msgstr "Uus"
 
@@ -6251,7 +6242,7 @@ msgstr ""
 msgid "Going to create %(num)d postings for %(elem)s"
 msgstr ""
 
-#: lino_xl/lib/postings/models.py:37 lino_xl/lib/tickets/choicelists.py:132
+#: lino_xl/lib/postings/models.py:37 lino_xl/lib/tickets/choicelists.py:123
 msgid "Ready"
 msgstr "Valmis"
 
@@ -7144,82 +7135,61 @@ msgstr ""
 msgid "Tickets"
 msgstr "Lipikud"
 
-#: lino_xl/lib/tickets/choicelists.py:29
-msgid "Critical"
-msgstr ""
-
-#: lino_xl/lib/tickets/choicelists.py:30
-msgid "High"
-msgstr ""
-
-#: lino_xl/lib/tickets/choicelists.py:31
-msgid "Normal"
-msgstr ""
-
-#: lino_xl/lib/tickets/choicelists.py:32
-msgid "Low"
-msgstr ""
-
-#: lino_xl/lib/tickets/choicelists.py:33
-#, fuzzy
-msgid "Very Low"
-msgstr "Iga %s"
-
-#: lino_xl/lib/tickets/choicelists.py:81
+#: lino_xl/lib/tickets/choicelists.py:72
 #, fuzzy
 msgid "Site states"
 msgstr "Kasutaja olekud"
 
-#: lino_xl/lib/tickets/choicelists.py:93 lino_xl/lib/tickets/choicelists.py:131
+#: lino_xl/lib/tickets/choicelists.py:84 lino_xl/lib/tickets/choicelists.py:122
 msgid "Sleeping"
 msgstr "Magab"
 
-#: lino_xl/lib/tickets/choicelists.py:116
+#: lino_xl/lib/tickets/choicelists.py:107
 msgid "Ticket states"
 msgstr "Lipikuolekud"
 
-#: lino_xl/lib/tickets/choicelists.py:127
+#: lino_xl/lib/tickets/choicelists.py:118
 msgid "Talk"
 msgstr "Arutusel"
 
-#: lino_xl/lib/tickets/choicelists.py:128
+#: lino_xl/lib/tickets/choicelists.py:119
 msgctxt "ticket state"
 msgid "Open"
 msgstr "Avatud"
 
-#: lino_xl/lib/tickets/choicelists.py:185
+#: lino_xl/lib/tickets/choicelists.py:176
 msgid "Dependency type"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:186
+#: lino_xl/lib/tickets/choicelists.py:177
 msgid "Dependency types"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:190
+#: lino_xl/lib/tickets/choicelists.py:181
 msgid "Requires"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:190
+#: lino_xl/lib/tickets/choicelists.py:181
 msgid "Required by"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:191
+#: lino_xl/lib/tickets/choicelists.py:182
 msgid "Triggers"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:191
+#: lino_xl/lib/tickets/choicelists.py:182
 msgid "Triggered by"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:192
+#: lino_xl/lib/tickets/choicelists.py:183
 msgid "Suggests"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:192
+#: lino_xl/lib/tickets/choicelists.py:183
 msgid "Suggested by"
 msgstr ""
 
-#: lino_xl/lib/tickets/choicelists.py:193
+#: lino_xl/lib/tickets/choicelists.py:184
 msgid "Obsoleted by"
 msgstr ""
 
@@ -7330,7 +7300,7 @@ msgstr ""
 msgid "assigned to"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:723 lino_xl/lib/tickets/ui.py:168
+#: lino_xl/lib/tickets/models.py:723 lino_xl/lib/tickets/ui.py:162
 msgid "Dependencies"
 msgstr ""
 
@@ -7338,116 +7308,116 @@ msgstr ""
 msgid "Parent"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:262
+#: lino_xl/lib/tickets/ui.py:256
 msgid "Create dependency as "
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:276
+#: lino_xl/lib/tickets/ui.py:270
 msgid "History"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:325
+#: lino_xl/lib/tickets/ui.py:320
 msgid "Only rows concerning this end user."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:329
+#: lino_xl/lib/tickets/ui.py:324
 msgid "Assigned_to"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:331
+#: lino_xl/lib/tickets/ui.py:326
 msgid "Only tickets with this user assigned."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:335
+#: lino_xl/lib/tickets/ui.py:330
 #, fuzzy
 msgid "Not assigned to"
 msgstr "Hind"
 
-#: lino_xl/lib/tickets/ui.py:337
+#: lino_xl/lib/tickets/ui.py:332
 msgid "Only that this user is not assigned to."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:340 lino_xl/lib/working/models.py:224
+#: lino_xl/lib/tickets/ui.py:335 lino_xl/lib/working/models.py:224
 msgid "Interesting for"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:342 lino_xl/lib/working/models.py:226
+#: lino_xl/lib/tickets/ui.py:337 lino_xl/lib/working/models.py:226
 msgid "Only tickets interesting for this partner."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:354
+#: lino_xl/lib/tickets/ui.py:347 lino_xl/lib/votes/models.py:86
+#: lino_xl/lib/xl/choicelists.py:14
+msgid "Priority"
+msgstr ""
+
+#: lino_xl/lib/tickets/ui.py:349
 msgid "Only rows having this priority."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:357
+#: lino_xl/lib/tickets/ui.py:352
 msgid "Deployed"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:358
+#: lino_xl/lib/tickets/ui.py:353
 msgid "Whether to show tickets with at least one deployment"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:362
+#: lino_xl/lib/tickets/ui.py:357
 msgid "Has site"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:364
+#: lino_xl/lib/tickets/ui.py:359
 #, fuzzy
 msgid "Has reference"
 msgstr "Teie viide"
 
-#: lino_xl/lib/tickets/ui.py:500
+#: lino_xl/lib/tickets/ui.py:495
 msgid "All tickets"
 msgstr "Kõik lipikud"
 
-#: lino_xl/lib/tickets/ui.py:506
+#: lino_xl/lib/tickets/ui.py:500
 msgid "Duplicates"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:515
+#: lino_xl/lib/tickets/ui.py:509
 msgid "Reference Tickets"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:535
+#: lino_xl/lib/tickets/ui.py:529
 msgid "Unassigned Tickets"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:587
+#: lino_xl/lib/tickets/ui.py:581
 #, fuzzy
 msgid "Public tickets"
 msgstr "Kõik lipikud"
 
-#: lino_xl/lib/tickets/ui.py:604
+#: lino_xl/lib/tickets/ui.py:598
 msgid "Tickets to triage"
 msgstr "Lipikud sorteerimata"
 
-#: lino_xl/lib/tickets/ui.py:606
+#: lino_xl/lib/tickets/ui.py:600
 msgid "Triage"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:622
+#: lino_xl/lib/tickets/ui.py:616
 msgid "Tickets to talk"
 msgstr "Lipikud arutlusel"
 
-#: lino_xl/lib/tickets/ui.py:637 lino_xl/lib/working/models.py:260
+#: lino_xl/lib/tickets/ui.py:631 lino_xl/lib/working/models.py:260
 msgid "Active tickets"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:653
-#, fuzzy
-msgid "My tickets"
-msgstr "Kõik lipikud"
-
-#: lino_xl/lib/tickets/ui.py:713
+#: lino_xl/lib/tickets/ui.py:707
 #, fuzzy
 msgid "Tickets to work"
 msgstr "Lipikud arutlusel"
 
-#: lino_xl/lib/tickets/ui.py:791
+#: lino_xl/lib/tickets/ui.py:785
 msgid "{}: {}"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:820
+#: lino_xl/lib/tickets/ui.py:814
 #, fuzzy
 msgid "My sites"
 msgstr "Minu Sõnavõtud"
@@ -8016,6 +7986,35 @@ msgstr ""
 
 #: lino_xl/lib/working/ui.py:329
 msgid "Worked hours"
+msgstr ""
+
+#: lino_xl/lib/xl/choicelists.py:15
+msgid "Priorities"
+msgstr ""
+
+#: lino_xl/lib/xl/choicelists.py:17
+msgctxt "Critical"
+msgid "priority"
+msgstr ""
+
+#: lino_xl/lib/xl/choicelists.py:18
+msgctxt "High"
+msgid "priority"
+msgstr ""
+
+#: lino_xl/lib/xl/choicelists.py:19
+msgctxt "Normal"
+msgid "priority"
+msgstr ""
+
+#: lino_xl/lib/xl/choicelists.py:20
+msgctxt "Low"
+msgid "priority"
+msgstr ""
+
+#: lino_xl/lib/xl/choicelists.py:21
+msgctxt "Very Low"
+msgid "priority"
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:7 lino_xl/lib/xl/help_texts.py:19
@@ -14402,4 +14401,22 @@ msgstr "Administraator"
 
 #~ msgid "Abstract base class for Event and Task."
 #~ msgstr ""
+
+#~ msgid "Critical"
+#~ msgstr ""
+
+#~ msgid "High"
+#~ msgstr ""
+
+#~ msgid "Normal"
+#~ msgstr ""
+
+#~ msgid "Low"
+#~ msgstr ""
+
+#~ msgid "Very Low"
+#~ msgstr "Iga %s"
+
+#~ msgid "My tickets"
+#~ msgstr "Kõik lipikud"
 
