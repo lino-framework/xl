@@ -3,25 +3,19 @@
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
-from builtins import str
 
 import six
 from django.conf import settings
-from django.db import models
 from django.db.models import Q
 from django.utils.text import format_lazy
-
+from etgen.html import E
 from lino import mixins
 from lino.api import dd, rt, _
-
-from etgen.html import E
-
-from lino_xl.lib.cal.mixins import daterange_text
 from lino.modlib.users.mixins import My
 from lino.utils import join_elems
 
+from lino_xl.lib.cal.mixins import daterange_text
 from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities, SiteStates
-
 from .roles import TicketsReader, Reporter, Searcher, Triager, TicketsStaff
 
 site_model = dd.plugins.tickets.site_model
@@ -299,6 +293,7 @@ class Tickets(dd.Table):
     # required_roles = set()  # also for anonymous
     model = 'tickets.Ticket'
     order_by = ["-id"]
+    focus_on_quick_search = True
     column_names = 'id summary:50 user:10 topic #faculty ' \
                    'workflow_buttons:30 #site:10 #project:10 *' # Site commented to not disturbe care
     detail_layout = 'tickets.TicketDetail'
@@ -499,7 +494,6 @@ class Tickets(dd.Table):
 class AllTickets(Tickets):
     label = _("All tickets")
     use_paging = True
-
 
 class DuplicatesByTicket(Tickets):
     display_mode = 'html'
