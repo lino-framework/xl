@@ -146,11 +146,11 @@ class Tasks(dd.Table):
     model = 'cal.Task'
     required_roles = dd.login_required(OfficeStaff)
     stay_in_grid = True
-    column_names = 'start_date summary workflow_buttons *'
-    order_by = ["-start_date", "-start_time"]
+    column_names = 'priority start_date summary workflow_buttons *'
+    order_by = ["priority", ""-start_date", "-start_time"]
 
     detail_layout = """
-    start_date due_date id workflow_buttons
+    start_date priority due_date id workflow_buttons
     summary
     user project
     #event_type owner created:20 modified:20
@@ -229,7 +229,7 @@ class Tasks(dd.Table):
 class TasksByController(Tasks):
     master_key = 'owner'
     required_roles = dd.login_required(OfficeUser)
-    column_names = 'start_date summary workflow_buttons id'
+    column_names = 'priority start_date summary workflow_buttons id'
     # hidden_columns = set('owner_id owner_type'.split())
     auto_fit_column_widths = True
 
@@ -242,7 +242,7 @@ class TasksByUser(Tasks):
 class MyTasks(Tasks):
     label = _("My tasks")
     required_roles = dd.login_required(OfficeUser)
-    column_names = 'start_date summary workflow_buttons project'
+    column_names = 'priority start_date summary workflow_buttons project'
     params_panel_hidden = True
     default_end_date_offset = 30
     """Number of days to go into the future. The default value for
@@ -267,7 +267,7 @@ class MyTasks(Tasks):
 class TasksByProject(Tasks):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     master_key = 'project'
-    column_names = 'start_date user summary workflow_buttons *'
+    column_names = 'priority start_date user summary workflow_buttons *'
 
 
 class GuestRoles(dd.Table):
