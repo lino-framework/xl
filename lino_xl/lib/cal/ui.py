@@ -147,7 +147,7 @@ class Tasks(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
     stay_in_grid = True
     column_names = 'priority start_date summary workflow_buttons *'
-    order_by = ["priority", ""-start_date", "-start_time"]
+    order_by = ["priority", "-start_date", "-start_time"]
 
     detail_layout = """
     start_date priority due_date id workflow_buttons
