@@ -31,10 +31,10 @@ def f(name):
 
 TaskStates.todo.add_transition(
     _("Reopen"), required_states='done cancelled important')
-
 TaskStates.done.add_transition(
     required_states='todo started important', icon_name=f('accept'))
 TaskStates.cancelled.add_transition(
     required_states='todo started important', icon_name=f('cancel'))
 TaskStates.important.add_transition(
     required_states='todo started', icon_name=f('lightning'))
+

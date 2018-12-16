@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2018-12-15 22:39+0200\n"
-"PO-Revision-Date: 2018-12-15 22:40+0200\n"
+"POT-Creation-Date: 2018-12-16 06:30+0200\n"
+"PO-Revision-Date: 2018-12-16 06:32+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -7919,29 +7919,29 @@ msgstr "Proposé"
 msgid "Priorities"
 msgstr "Priorités"
 
-#: lino_xl/lib/xl/choicelists.py:17
-msgctxt "Critical"
-msgid "priority"
+#: lino_xl/lib/xl/choicelists.py:18
+msgctxt "priority"
+msgid "Critical"
 msgstr "Critique"
 
-#: lino_xl/lib/xl/choicelists.py:18
-msgctxt "High"
-msgid "priority"
+#: lino_xl/lib/xl/choicelists.py:19
+msgctxt "priority"
+msgid "High"
 msgstr "Haute"
 
-#: lino_xl/lib/xl/choicelists.py:19
-msgctxt "Normal"
-msgid "priority"
+#: lino_xl/lib/xl/choicelists.py:20
+msgctxt "priority"
+msgid "Normal"
 msgstr "Normale"
 
-#: lino_xl/lib/xl/choicelists.py:20
-msgctxt "Low"
-msgid "priority"
+#: lino_xl/lib/xl/choicelists.py:21
+msgctxt "priority"
+msgid "Low"
 msgstr "Basse"
 
-#: lino_xl/lib/xl/choicelists.py:21
-msgctxt "Very Low"
-msgid "priority"
+#: lino_xl/lib/xl/choicelists.py:22
+msgctxt "priority"
+msgid "Very Low"
 msgstr "Très basse"
 
 #: lino_xl/lib/xl/help_texts.py:7 lino_xl/lib/xl/help_texts.py:19
@@ -12673,3 +12673,23 @@ msgstr "Administrateur"
 
 #~ msgid "My tickets"
 #~ msgstr "Adresse de référence"
+
+#~ msgctxt "Critical"
+#~ msgid "priority"
+#~ msgstr "Critique"
+
+#~ msgctxt "High"
+#~ msgid "priority"
+#~ msgstr "Haute"
+
+#~ msgctxt "Normal"
+#~ msgid "priority"
+#~ msgstr "Normale"
+
+#~ msgctxt "Low"
+#~ msgid "priority"
+#~ msgstr "Basse"
+
+#~ msgctxt "Very Low"
+#~ msgid "priority"
+#~ msgstr "Très basse"
