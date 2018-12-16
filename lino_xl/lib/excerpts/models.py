@@ -496,7 +496,8 @@ class Excerpt(TypedPrintable, UserAuthored,
 
     @dd.virtualfield(dd.HtmlBox(_("Preview")))
     def preview(self, ar):
-        if ar is None:
+        if ar is None or self.owner is None:
+            # body templates should not need to test whether obj is defined
             return ''
         lang = self.get_print_language() or \
                settings.SITE.DEFAULT_LANGUAGE.django_code

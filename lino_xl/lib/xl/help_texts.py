@@ -1266,8 +1266,8 @@ ticket has evolved during time, it should reflect the latest
 version."""),
     'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to the ticket which is the cause of this ticket."""),
     'lino_xl.lib.tickets.Ticket.deadline' : _("""Specify that the ticket must be done for a given date."""),
-    'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is. This should be a value between 0
-and 100."""),
+    'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is. Choicelist field pointing to
+lino_xl.lib.xl.Priorities."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 site.  See ReportingTypes."""),
