@@ -550,12 +550,11 @@ there.  A Room has a multilingual name."""),
     'lino_xl.lib.cal.Room.name' : _("""The designation of the room. This should (but is not required
 to) be unique."""),
     'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
-    'lino_xl.lib.cal.Priority' : _("""The priority of a task or entry."""),
-    'lino_xl.lib.cal.Priorities' : _("""List of possible priorities of calendar events."""),
     'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
 It corresponds to what the extensible CalendarPanel calls "Calendars" """),
     'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to do something
 (and optionally wants to get reminded about it)."""),
+    'lino_xl.lib.cal.Task.priority' : _("""How urgent this task is."""),
     'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
     'lino_xl.lib.cal.TaskStates' : _("""Possible values for the state of a Task. The list of
 choices for the Task.state field."""),
@@ -1266,8 +1265,7 @@ ticket has evolved during time, it should reflect the latest
 version."""),
     'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to the ticket which is the cause of this ticket."""),
     'lino_xl.lib.tickets.Ticket.deadline' : _("""Specify that the ticket must be done for a given date."""),
-    'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is. Choicelist field pointing to
-lino_xl.lib.xl.Priorities."""),
+    'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is."""),
     'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 site.  See ReportingTypes."""),
