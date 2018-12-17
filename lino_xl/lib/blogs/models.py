@@ -248,9 +248,18 @@ class LatestEntries(Entries):
             if num >= max_num:
                 break
             context.update(obj=e)
-            s = render(ar, 'blogs/entry.html', context)
+            # s = render(ar, 'blogs/entry.html', context)
+            elems.append(E.h2(e.title or str(e), " ", e.obj2href(
+                ar, u"⏏", **{'style': "text-decoration:none"})))
+            s = ar.parse_memo(e.body_preview)
             tree = etree.parse(StringIO(s), html_parser)
             elems.extend(tree.iter())
+            elems.append(E.p(
+                _("{} by {}").format(dd.fdf(e.pub_date), e.user)))
+            # elems.append(E.p(
+            #     _("{} by {}").format(dd.fdf(e.pub_date), e.user),
+            #     " ", e.obj2href(ar, "(edit)")))
+
         return E.div(*elems)
 
 
