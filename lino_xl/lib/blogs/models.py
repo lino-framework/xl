@@ -9,11 +9,13 @@
 
 from builtins import str
 
+from io import StringIO
+from lxml import etree
+
 from django.conf import settings
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-
 
 from lino.api import dd, rt
 from lino import mixins
@@ -22,13 +24,15 @@ from lino_xl.lib.topics.models import AddInterestField
 from lino.modlib.users.mixins import My, UserAuthored
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
-from lino.core.requests import BaseRequest
+# from lino.core.requests import BaseRequest
 from lino.mixins.bleached import BleachedPreviewBody
-
 from lino.utils import join_elems
 from etgen.html import E
 
 from .roles import BlogsReader
+
+html_parser = etree.HTMLParser()
+
 
 @dd.python_2_unicode_compatible
 class EntryType(mixins.BabelNamed):
@@ -238,15 +242,18 @@ class LatestEntries(Entries):
         context = ar.get_printable_context(**context)
         qs = rt.models.blogs.Entry.objects.filter(pub_date__isnull=False)
         qs = qs.order_by("-pub_date")
-        s = ''
         render = dd.plugins.jinja.render_jinja
+        elems = []
         for num, e in enumerate(qs):
             if num >= max_num:
                 break
             context.update(obj=e)
-            s += render(ar, 'blogs/entry.html', context)
-        return s
-    
+            s = render(ar, 'blogs/entry.html', context)
+            tree = etree.parse(StringIO(s), html_parser)
+            elems.extend(tree.iter())
+        return E.div(*elems)
+
+
     
 # class Taggings(dd.Table):
 #     model = 'blogs.Tagging'
