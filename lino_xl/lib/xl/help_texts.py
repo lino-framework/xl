@@ -246,34 +246,6 @@ guests. Ask confirmation naming the guests who need to check out."""),
     'lino_xl.lib.sepa.fields.UppercaseTextField' : _("""A custom CharField that accepts only uppercase caracters."""),
     'lino_xl.lib.sepa.fields.BICField' : _("""Database field used to store a BIC."""),
     'lino_xl.lib.sepa.fields.IBANField' : _("""Database field used to store an IBAN."""),
-    'lino_xl.lib.sepa.BankAccount' : _("""Adds a field bank_account and its chooser."""),
-    'lino_xl.lib.sepa.BankAccount.get_bank_account' : _("""Implements
-Voucher.get_bank_account."""),
-    'lino_xl.lib.sepa.Payable' : _("""Model mixin for database objects that are considered payable
-transactions. To be combined with some mixin which defines a
-field partner."""),
-    'lino_xl.lib.sepa.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
-    'lino_xl.lib.sepa.Payable.title' : _("""A char field with a description for this transaction."""),
-    'lino_xl.lib.sepa.Payable.get_payable_sums_dict' : _("""To be implemented by subclasses.  Expected to return a dict which
-maps 4-tuples (acc_tuple, project, vat_class, vat_regime) to
-the amount. 
-acc_tuple is a tuple (general_account, analytic_account),
-vat_class
-is a lino_xl.lib.vat.VatClasses
-and vat_regime a lino_xl.lib.vat.VatRegimes."""),
-    'lino_xl.lib.sepa.Payable.get_wanted_movements' : _("""Implements
-lino_xl.lib.ledger.Voucher.get_wanted_movements()."""),
-    'lino_xl.lib.sepa.BankAccountChecker' : _("""Checks for the following data problems:"""),
-    'lino_xl.lib.sepa.BankAccountChecker.model' : _("""alias of BankAccount"""),
-    'lino_xl.lib.sepa.Account' : _("""A bank account related to a given Partner."""),
-    'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported
-statement for this account. Clicking on this date will open
-the B2C account <lino_cosi.lib.b2c.models.Account> with same
-IBAN number."""),
-    'lino_xl.lib.sepa.AccountsByPartner' : _("""Show the bank account(s) defined for a given partner. To be
-included to a detail window on partner."""),
-    'lino_xl.lib.sepa.AccountsByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
-    'lino_xl.lib.sepa.AccountsByPartner.model' : _("""alias of Account"""),
     'lino_xl.lib.sepa.roles.SepaUser' : _("""Can see imported bank statements and movements per partner."""),
     'lino_xl.lib.sepa.roles.SepaStaff' : _("""Can see imported statements and movements also globally in the
 Explorer menu."""),
@@ -1073,6 +1045,7 @@ this journal."""),
     'lino_xl.lib.ledger.Journal.auto_fill_suggestions' : _("""Whether to automatically fill voucher item from due payments
 of the partner when entering a financial voucher."""),
     'lino_xl.lib.ledger.Journal.template' : _("""See PrintableType.template."""),
+    'lino_xl.lib.ledger.Journal.sepa_account' : _("""Your bank account to specify in payment order."""),
     'lino_xl.lib.ledger.LedgerInfo' : _("""A little model which holds ledger specific information per user."""),
     'lino_xl.lib.ledger.LedgerInfo.user' : _("""OneToOneField pointing to the user."""),
     'lino_xl.lib.ledger.LedgerInfo.entry_date' : _("""The last value this user typed as entry_date of a voucher.  It is the default value
@@ -1407,6 +1380,19 @@ not installed, vat_class is a dummy field."""),
     'lino_xl.lib.products.ProductTypes' : _("""Can be used to group products into "types".  Types cannot be edited by the
 user.  But every product type can have a layout on its own."""),
     'lino_xl.lib.products.DeliveryUnits' : _("""The list of possible delivery units of a product."""),
+    'lino_xl.lib.sepa.Account' : _("""A bank account related to a given partner."""),
+    'lino_xl.lib.sepa.Account.partner' : _("""Partner"""),
+    'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported
+statement for this account. Clicking on this date will open
+the B2C account <lino_cosi.lib.b2c.models.Account> with same
+IBAN number."""),
+    'lino_xl.lib.sepa.AccountsByPartner' : _("""Show the bank account(s) defined for a given partner. To be
+included to a detail window on partner."""),
+    'lino_xl.lib.sepa.BankAccount' : _("""Defines a field bank_account and its chooser."""),
+    'lino_xl.lib.sepa.Payable' : _("""Mixin for models that represent payable transactions.  To be combined
+with some mixin which defines a field partner."""),
+    'lino_xl.lib.sepa.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
+    'lino_xl.lib.sepa.Payable.title' : _("""A char field with a description for this transaction."""),
     'lino_xl.lib.sheets.SheetTypes' : _("""The global list of sheet types ."""),
     'lino_xl.lib.sheets.SheetTypes.balance' : _("""A balance sheet or statement of financial position is a
 summary of the financial balances of an organisation."""),

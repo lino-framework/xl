@@ -267,7 +267,7 @@ class MyTasks(Tasks):
 class TasksByProject(Tasks):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     master_key = 'project'
-    column_names = 'priority start_date user summary workflow_buttons *'
+    column_names = 'priority start_date user summary owner workflow_buttons *'
 
 
 class GuestRoles(dd.Table):

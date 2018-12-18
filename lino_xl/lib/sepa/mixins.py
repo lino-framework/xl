@@ -3,11 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
-Model mixins for `lino_xl.lib.sepa`.
-
-"""
-
 from __future__ import unicode_literals
 
 from django.db import models
@@ -23,9 +18,6 @@ from lino_xl.lib.ledger.mixins import PartnerRelated
 
 
 class BankAccount(dd.Model):
-    """
-    Adds a field :attr:`bank_account` and its chooser.
-    """
     class Meta:
         abstract = True
 
@@ -74,26 +66,6 @@ class BankAccount(dd.Model):
 
 
 class Payable(PartnerRelated):
-    """
-    Model mixin for database objects that are considered *payable
-    transactions*. To be combined with some mixin which defines a
-    field `partner`.
-
-    A **payable transaction** is a transaction that is expected to
-    cause a payment.
-
-    .. attribute:: your_ref
-
-    .. attribute:: due_date
-
-    .. attribute:: payment_term
-
-        See :attr:`lino_xl.lib.ledger.mixins.PartnerRelated.payment_term`
-
-    .. attribute:: title
-
-       A char field with a description for this transaction.
-    """
     class Meta:
         abstract = True
 

@@ -2,20 +2,11 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Adds models and tables for managing bank accounts for your
-partners.  It requires the :mod:`lino_xl.lib.ledger` plugin.
-
-The name ``sepa`` is actually irritating because this plugin won't do
-any SEPA transfer. Maybe rename it to ``iban``? OTOH it is needed by
-the SEPA modules :mod:`lino_cosi.lib.b2c` and
-:mod:`lino_cosi.lib.c2b`.
-
+"""See :doc:`/specs/sepa`.
 
 .. autosummary::
    :toctree:
 
-    models
-    mixins
     utils
     fields
     roles

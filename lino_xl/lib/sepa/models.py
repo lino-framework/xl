@@ -1,12 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Rumma & Ko Ltd
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""
-Database models for `lino_xl.lib.sepa`.
-
-"""
 
 from __future__ import unicode_literals
 
@@ -24,24 +19,6 @@ from lino_xl.lib.contacts.roles import ContactsUser
 
 @dd.python_2_unicode_compatible
 class Account(dd.Model):
-    """A bank account related to a given :class:`Partner
-    <lino.modlib.models.contacts.Partner>`.
-
-    One partner can have more than one bank account.
-
-    .. attribute:: statements
-
-        A virtual field which displays the date of the last imported
-        statement for this account. Clicking on this date will open
-        the `B2C account <lino_cosi.lib.b2c.models.Account>` with same
-        IBAN number.
-
-        This field is empty when no B2C Account exists.
-
-        Available only when :mod:`lino_cosi.lib.b2c` is installed as
-        well.
-
-    """
 
     class Meta:
         app_label = 'sepa'
@@ -120,10 +97,6 @@ class Accounts(dd.Table):
 
 
 class AccountsByPartner(Accounts):
-    """Show the bank account(s) defined for a given partner. To be
-    included to a detail window on partner.
-
-    """
     required_roles = dd.login_required((ContactsUser, SepaUser))
     master_key = 'partner'
     column_names = 'iban bic remark primary *'
@@ -138,9 +111,7 @@ class AccountsByPartner(Accounts):
 dd.inject_field(
     'ledger.Journal',
     'sepa_account',
-    dd.ForeignKey('sepa.Account',
-        blank=True, null=True,
-        help_text=_("Your bank account to specify in payment order.")))
+    dd.ForeignKey('sepa.Account', blank=True, null=True))
 
 
     
