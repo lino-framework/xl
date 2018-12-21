@@ -88,26 +88,22 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         self.site.makedirs_if_missing(self.data_cache_dir)
         
         cmc = list(models_by_base(BeIdCardHolder, toplevel_only=True))
-        if len(cmc) == 1:
-            self.holder_model = cmc[0]
-            return
+        if len(cmc) > 1:
+            msg = "There must be exactly one BeIdCardHolder model " \
+                  "in your Site! You have {}. ".format(cmc)
+            raise Exception(msg)
         if len(cmc) == 0:
             self.site.logger.warning(
                 "You have lino_xl.lib.beid installed, "
                 "but there is no implementation of BeIdCardHolder.")
             return
-        msg = "There must be exactly one BeIdCardHolder model " \
-              "in your Site! You have {}. ".format(cmc)
-        # from django.apps import apps
-        # msg += "\nYour models are:\n {}".format(
-        #     '\n'.join([str(m) for m in apps.get_models()]))
-        # from django.conf import settings
-        # msg += "\nYour plugins are:\n {}".format(settings.INSTALLED_APPS)
-        # [p.app_label
-        #       for p in self.site.installed_plugins]))
-        raise Exception(msg)
+        self.holder_model = cmc[0]
+        if self.urlhandler_prefix is not None:
+            if not self.urlhandler_prefix.endswith("://"):
+                msg = "Invalid urlhandler_prefix {} (must end with '://')"
+                raise Exception(msg.format(self.urlhandler_prefix))
+        return
 
-        
     def unused_get_body_lines(self, site, request):
         if not site.use_java:
             return

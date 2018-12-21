@@ -263,14 +263,16 @@ class Course(Reservation, Duplicable, Printable):
     def __str__(self):
         if self.name:
             return self.name
+        if self.line_id is None:
+            line = self._meta.verbose_name
+        else:
+            line = self.line
+
         if self.room is None:
-            return "%s (%s)" % (self.line, dd.fds(self.start_date))
+            return "%s (%s)" % (line, dd.fds(self.start_date))
         # Note that we cannot use super() with
         # python_2_unicode_compatible
-        return "%s (%s %s)" % (
-            self.line,
-            dd.fds(self.start_date),
-            self.room)
+        return "%s (%s %s)" % (line, dd.fds(self.start_date),self.room)
 
     def get_detail_action(self, ar):
         """Custom :meth:`get_detail_action
