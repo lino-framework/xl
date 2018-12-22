@@ -850,10 +850,24 @@ class EventGuestChecker(EntryChecker):
     verbose_name = _("Entries without participants")
 
     def get_checkdata_problems(self, obj, fix=False):
+        if self.event_type_id and self.event_type.force_guest_states:
+            if self.state.guest_state:
+                qs = self.guest_set.exclude(state=self.state.guest_state)
+                if qs.exists():
+                    msg = _("Some guests have another state than {0}")
+                    yield (True, msg.format(self.state.guest_state))
+                    if fix:
+                        for obj in qs:
+                            obj.state = self.state.guest_state
+                            obj.full_clean()
+                            obj.save()
+
         if not obj.state.edit_guests:
             return
-        existing = set([g.partner.pk for g in obj.guest_set.all()])
-        if len(existing) == 0:
+        # existing = set([g.partner.pk for g in obj.guest_set.all()])
+        # if len(existing) == 0:
+        guests = obj.guest_set.all()
+        if not guests.exists():
             suggested = list(obj.suggest_guests())
             if len(suggested) > 0:
                 msg = _("No participants although {0} suggestions exist.")
