@@ -83,6 +83,8 @@ class Interest(Controllable):
         verbose_name = _("Interest")
         verbose_name_plural = _('Interests')
 
+    allow_cascaded_delete = ["topic", "partner"]
+
     topic = dd.ForeignKey(
         'topics.Topic',
         related_name='interests_by_topic')
