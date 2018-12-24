@@ -26,7 +26,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):  # was: use_eidreader
-    """See :class:`lino.core.Plugin`.
+    """The :class:`lino.core.Plugin` for this plugin.
 
     .. attribute:: holder_model
 
