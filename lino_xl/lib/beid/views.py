@@ -14,8 +14,10 @@ import json
 # from django.conf import settings
 from django.views.generic import View
 # from django.core import exceptions
+from lino.utils import AttrDict
 from lino.core.views import json_response
 from lino.api import dd, _
+
 
 def load_card_data(uuid):
     # raise Exception("20180412 {}".format(uuid))
@@ -29,10 +31,23 @@ def load_card_data(uuid):
             fp.close()
             # dd.logger.info("20181002 json.load({}) returned {}".format(
             #     fn, rv))
-            return rv
-            # raise Warning(
-            #     _("Got invalid card data {} from eidreader.").format(rv))
-        
+
+            if 'success' not in rv:
+                raise Warning(
+                    _("Got invalid card data {} from eidreader.").format(rv))
+
+            data = AttrDict(rv)
+            # quick hack to fix #2393. a better solution would be to
+            # make eidreader not POST every key-value using requests
+            # but to send a single field card_data which would be a
+            # json encoded dict.
+            # if isinstance(data.success, six.string_types):
+            #     data.success = parse_boolean(data.success.lower())
+            if not data.success:
+                raise Warning(_("No card data found: {}").format(
+                    data.message))
+            return data
+
         except IOError:
             time.sleep(1)
             count += 1

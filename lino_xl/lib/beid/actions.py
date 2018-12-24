@@ -343,17 +343,6 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
         if dd.plugins.beid.urlhandler_prefix:
             uuid = ar.request.POST['uuid']
             data = load_card_data(uuid)
-            data = AttrDict(data)
-
-            # quick hack to fix #2393. a better solution would be to
-            # make eidreader not POST every key-value using requests
-            # but to send a single field card_data which would be a
-            # json encoded dict.
-            # if isinstance(data.success, six.string_types):
-            #     data.success = parse_boolean(data.success.lower())
-            if not data.success:
-                raise Warning(_("No card data found: {}").format(
-                    data.message))
             # print("20180518", data)
             attrs = self.card2client(data)
         else:
@@ -448,9 +437,7 @@ class BeIdReadCardAction(BaseBeIdReadCardAction):
     def run_from_ui(self, ar, **kw):
 
         if dd.plugins.beid.urlhandler_prefix:
-        # if settings.SITE.beid_protocol:
             data = load_card_data(ar.request.POST['uuid'])
-            data = AttrDict(data)
             attrs = self.card2client(data)
         else:
             raise Exception("No longer maintained")
