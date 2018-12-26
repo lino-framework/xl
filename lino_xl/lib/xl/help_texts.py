@@ -16,7 +16,7 @@ Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
     'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of lino_xl.lib.addresses.mixins.AddressOwner"""),
-    'lino_xl.lib.beid.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.beid.Plugin' : _("""The lino.core.Plugin for this plugin."""),
     'lino_xl.lib.beid.Plugin.holder_model' : _("""The one and only model on this site which implements
 BeIdCardHolder."""),
     'lino_xl.lib.beid.Plugin.data_collector_dir' : _("""When this is a non-empty string containing a directory name on the
