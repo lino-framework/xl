@@ -125,12 +125,12 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
             sc = settings.SITE.site_config
             if sc.next_partner_id is not None:
                 try:
-                    self.__class__.objects.get(id=sc.next_partner_id)
+                    rt.models.contacts.Partner.objects.get(id=sc.next_partner_id)
                     raise ValidationError(
                         "Cannot create partner with id={0}. "
                         "Check your next_partner_id in SiteConfig!".format(
                             sc.next_partner_id))
-                except self.__class__.DoesNotExist:
+                except rt.models.contacts.Partner.DoesNotExist:
                     self.id = sc.next_partner_id
                     sc.next_partner_id += 1
                     sc.save()
