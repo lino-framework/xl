@@ -114,7 +114,7 @@ class IntracomInvoices(PartnerVouchers):
     _trade_type = None
     editable = False
     model = VatDocument
-    column_names = 'detail_pointer partner partner__vat_id vat_regime total_base total_vat total_incl'
+    column_names = 'detail_link partner partner_vat_id vat_regime total_base total_vat total_incl'
     # order_by = ['entry_date', 'partner']
     # order_by = ['entry_date', 'id']
     # order_by = ['entry_date', 'number']
@@ -135,9 +135,16 @@ class IntracomInvoices(PartnerVouchers):
         qs = super(IntracomInvoices, cls).get_request_queryset(ar, **fkw)
         # raise Exception("20170905 {}".format(qs.query))
         return qs
-    
-dd.update_field(
-    IntracomInvoices, 'detail_pointer', verbose_name=_("Invoice"))    
+
+    @dd.virtualfield(dd.ForeignKey('contacts.Partner'))
+    def partner(cls, obj, ar=None):
+        return obj.partner
+
+    @dd.virtualfield('contacts.Partner.vat_id')
+    def partner_vat_id(cls, obj, ar=None):
+        return obj.partner.vat_id
+
+dd.update_field(IntracomInvoices, 'detail_link', verbose_name=_("Invoice"))
     
 class IntracomSales(IntracomInvoices):
     _trade_type = TradeTypes.sales

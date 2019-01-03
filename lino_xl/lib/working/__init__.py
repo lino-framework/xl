@@ -55,7 +55,7 @@ class Plugin(ad.Plugin):
         m.add_action('working.MySessions')
         m.add_action('working.ServiceReports')
         # m.add_action('working.MySessionsByDate')
-        m.add_action('working.WorkedHours')
+        # m.add_action('working.WorkedHours')
 
     def setup_config_menu(self, site, user_type, m):
         p = self.get_menu_group()
@@ -68,7 +68,7 @@ class Plugin(ad.Plugin):
         m.add_action('working.Sessions')
         m.add_action('working.AllSummaries')
 
-    def get_dashboard_items(self, user):
-        super(Plugin, self).get_dashboard_items(user)
-        if user.authenticated:
-            yield self.site.models.working.WorkedHours
+    # def get_dashboard_items(self, user):
+    #     super(Plugin, self).get_dashboard_items(user)
+    #     if user.authenticated:
+    #         yield self.site.models.working.WorkedHours

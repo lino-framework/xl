@@ -29,12 +29,14 @@ class Plugin(ad.Plugin):
     partner_model = 'contacts.Person'
     ignore_dates_before = None
     ignore_dates_after = None
+    beginning_of_time = None
 
     def on_init(self):
         tod = self.site.today()
         # self.ignore_dates_after = tod.replace(year=tod.year+5, day=28)
         # above code should not fail on February 29 of a leap year.
         self.ignore_dates_after = tod + relativedelta(years=5)
+        self.beginning_of_time = tod + relativedelta(years=-5)
 
     # def on_site_startup(self, site):
     #     self.partner_model = site.models.resolve(self.partner_model)
@@ -78,6 +80,7 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
+        m.add_action('cal.Days')
         m.add_action('cal.AllEntries')
         m.add_action('cal.Tasks')
         m.add_action('cal.AllGuests')
@@ -92,6 +95,8 @@ class Plugin(ad.Plugin):
         from lino.core.dashboard import ActorItem
         
         if user.authenticated:
+            # yield self.site.models.cal.LastWeek
+            # yield self.site.models.cal.ComingWeek
             yield self.site.models.cal.MyTasks
             yield ActorItem(
                 self.site.models.cal.MyEntries, min_count=None)

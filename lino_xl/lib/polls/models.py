@@ -544,7 +544,7 @@ class AnswersByResponseRow(object):
         return ', '.join([str(ac.choice) for ac in self.choices])
 
     def obj2href(self, ar):
-        # needed by detail_pointer
+        # needed by detail_link
         return ''
 
 

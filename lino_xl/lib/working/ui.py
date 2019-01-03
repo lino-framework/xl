@@ -252,6 +252,31 @@ class MySessionsByDate(MySessions):
         kw.update(start_date=ar.param_values.start_date)
         return super(MySessions, self).create_instance(ar, **kw)
 
+from lino_xl.lib.cal.models import Day
+
+class MySessionsByDay(MySessionsByDate):
+
+    master = Day
+    # display_mode = "html"
+
+    @classmethod
+    def get_master_instance(cls, ar, model, pk):
+        return model(int(pk))
+
+    @classmethod
+    def get_request_queryset(cls, ar, **flt):
+        mi = ar.master_instance
+        if mi is None:
+            return []
+        pv = ar.param_values
+        pv.update(start_date=mi.date, end_date=mi.date)
+        pv.update(observed_event=dd.PeriodEvents.started)
+        if mi.ar is not None:
+            pv.update(user=mi.ar.get_user())
+        return super(MySessionsByDay, cls).get_request_queryset(ar, **flt)
+
+
+
 
 
 def load_sessions(self, sar):
@@ -320,85 +345,85 @@ def rpttype2vf(func, rpttype, verbose_name):
 
 from lino.core.tables import VentilatedColumns
 
-class WorkedHours(dd.VentilatingTable):
-    """
-    A table showing one row per day with a summary view of the sesions
-    on that day.
-    """
-    required_roles = dd.login_required(Worker)
-    label = _("Worked hours")
-    hide_zero_rows = True
-    parameters = ObservedDateRange(
-        user=dd.ForeignKey('users.User', null=True, blank=True))
-    params_layout = "start_date end_date user"
-    # editable = False
-    auto_fit_column_widths = True
-
-    class Row(object):
-        def __init__(self, ar, day):
-            self.day = day
-            pv = dict(start_date=day, end_date=day)
-            pv.update(observed_event=dd.PeriodEvents.started)
-            pv.update(user=ar.param_values.user)
-            self.sar = ar.spawn(MySessionsByDate, param_values=pv)
-            load_sessions(self, self.sar)
-            
-        def __unicode__(self):
-            return when_text(self.day)
-
-        def __repr__(self):
-            return when_text(self.day)
-
-    @dd.displayfield(_("Description"))
-    def description(self, obj, ar):
-        # pv = dict(start_date=obj.day, end_date=obj.day)
-        # pv.update(observed_event=dd.PeriodEvents.active)
-        # pv.update(user=ar.param_values.user)
-        # sar = ar.spawn(MySessionsByDate, param_values=pv)
-        elems = [obj.sar.ar2button(label=six.text_type(obj))]
-        tickets = [
-            ar.obj2html(t, "#{0}".format(t.id), title=t.summary)
-            for t in obj._tickets]
-        if len(tickets) > 0:
-            elems.append(" (")
-            elems += join_elems(tickets, ', ')
-            elems.append(")")
-        return E.span(*elems)
-
-    @classmethod
-    def get_data_rows(cls, ar):
-        pv = ar.param_values
-        start_date = pv.start_date or dd.today(-7)
-        end_date = pv.end_date or dd.today(7)
-        d = end_date
-        while d > start_date:
-            yield cls.Row(ar, d)
-            d -= ONE_DAY
-
-    @dd.displayfield("Date")
-    def date(cls, row, ar):
-        return dd.fdl(row.day)
-
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(WorkedHours, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today(-7))
-        kw.update(end_date=dd.today())
-        kw.update(user=ar.get_user())
-        return kw
-
-    @classmethod
-    def get_ventilated_columns(cls):
-
-        def w(rpttype, verbose_name):
-            def func(fld, obj, ar):
-                return obj._root2tot.get(rpttype, None)
-            return dd.VirtualField(dd.DurationField(verbose_name), func)
-            
-        for rpttype in ReportingTypes.objects():
-            yield w(rpttype, six.text_type(rpttype))
-        # yield w(None, _("N/A"))
-        yield w(TOTAL_KEY, _("Total"))
+# class WorkedHours(dd.VentilatingTable):
+#     """
+#     A table showing one row per day with a summary view of the sessions
+#     on that day.
+#     """
+#     required_roles = dd.login_required(Worker)
+#     label = _("Worked hours")
+#     hide_zero_rows = True
+#     parameters = ObservedDateRange(
+#         user=dd.ForeignKey('users.User', null=True, blank=True))
+#     params_layout = "start_date end_date user"
+#     # editable = False
+#     auto_fit_column_widths = True
+#
+#     class Row(object):
+#         def __init__(self, ar, day):
+#             self.day = day
+#             pv = dict(start_date=day, end_date=day)
+#             pv.update(observed_event=dd.PeriodEvents.started)
+#             pv.update(user=ar.param_values.user)
+#             self.sar = ar.spawn(MySessionsByDate, param_values=pv)
+#             load_sessions(self, self.sar)
+#
+#         def __unicode__(self):
+#             return when_text(self.day)
+#
+#         def __repr__(self):
+#             return when_text(self.day)
+#
+#     @dd.displayfield(_("Description"))
+#     def description(self, obj, ar):
+#         # pv = dict(start_date=obj.day, end_date=obj.day)
+#         # pv.update(observed_event=dd.PeriodEvents.active)
+#         # pv.update(user=ar.param_values.user)
+#         # sar = ar.spawn(MySessionsByDate, param_values=pv)
+#         elems = [obj.sar.ar2button(label=six.text_type(obj))]
+#         tickets = [
+#             ar.obj2html(t, "#{0}".format(t.id), title=t.summary)
+#             for t in obj._tickets]
+#         if len(tickets) > 0:
+#             elems.append(" (")
+#             elems += join_elems(tickets, ', ')
+#             elems.append(")")
+#         return E.span(*elems)
+#
+#     @classmethod
+#     def get_data_rows(cls, ar):
+#         pv = ar.param_values
+#         start_date = pv.start_date or dd.today(-7)
+#         end_date = pv.end_date or dd.today(7)
+#         d = end_date
+#         while d > start_date:
+#             yield cls.Row(ar, d)
+#             d -= ONE_DAY
+#
+#     @dd.displayfield("Date")
+#     def date(cls, row, ar):
+#         return dd.fdl(row.day)
+#
+#     @classmethod
+#     def param_defaults(cls, ar, **kw):
+#         kw = super(WorkedHours, cls).param_defaults(ar, **kw)
+#         kw.update(start_date=dd.today(-7))
+#         kw.update(end_date=dd.today())
+#         kw.update(user=ar.get_user())
+#         return kw
+#
+#     @classmethod
+#     def get_ventilated_columns(cls):
+#
+#         def w(rpttype, verbose_name):
+#             def func(fld, obj, ar):
+#                 return obj._root2tot.get(rpttype, None)
+#             return dd.VirtualField(dd.DurationField(verbose_name), func)
+#
+#         for rpttype in ReportingTypes.objects():
+#             yield w(rpttype, six.text_type(rpttype))
+#         # yield w(None, _("N/A"))
+#         yield w(TOTAL_KEY, _("Total"))
 
 
 
@@ -648,4 +673,71 @@ class SummariesBySite(Summaries):
     def setup_columns(cls):
         cls.column_names = "year active_tickets "
         cls.column_names += ' '.join(get_summary_columns())
+
+
+
+from lino_xl.lib.cal.models import Day, Days
+
+class Day(Day):
+    def __init__(self, *args, **kwargs):
+        super(Day, self).__init__(*args, **kwargs)
+        self.sar = self.ar.spawn(rt.models.working.MySessionsByDay, master_instance=self)
+        load_sessions(self, self.sar)
+
+class DayDetail(dd.DetailLayout):
+    main = "working.MySessionsByDay cal.PlannerByDay"
+
+
+class WorkedHours(Days, dd.VentilatingTable):
+    label = _("Worked hours")
+    # column_names_template = 'day_number long_date detail_link description {vcolumns}'
+    column_names_template = 'detail_link worked_tickets {vcolumns} *'
+    reverse_sort_order = True
+    model = Day
+    detail_layout = DayDetail()
+
+    @dd.displayfield(_("Worked tickets"))
+    def worked_tickets(self, obj, ar):
+        # pv = dict(start_date=obj.day, end_date=obj.day)
+        # pv.update(observed_event=dd.PeriodEvents.active)
+        # pv.update(user=ar.param_values.user)
+        # sar = ar.spawn(MySessionsByDate, param_values=pv)
+        # elems = [obj.sar.ar2button(label=six.text_type(obj))]
+        elems = []
+        tickets = [
+            ar.obj2html(t, "#{0}".format(t.id), title=t.summary)
+            for t in obj._tickets]
+        if len(tickets) > 0:
+            # elems.append(" (")
+            elems += join_elems(tickets, ', ')
+            # elems.append(")")
+        return E.span(*elems)
+
+    # @dd.displayfield("Date")
+    # def date(cls, row, ar):
+    #     return dd.fdl(row.day)
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(Days, cls).param_defaults(ar, **kw)
+        kw.update(start_date=dd.today(-6))
+        kw.update(end_date=dd.today())
+        kw.update(user=ar.get_user())
+        return kw
+
+    @classmethod
+    def get_ventilated_columns(cls):
+
+        def w(rpttype, verbose_name):
+            def func(fld, obj, ar):
+                return obj._root2tot.get(rpttype, None)
+
+            return dd.VirtualField(dd.DurationField(verbose_name), func)
+
+        for rpttype in ReportingTypes.objects():
+            yield w(rpttype, six.text_type(rpttype))
+        # yield w(None, _("N/A"))
+        yield w(TOTAL_KEY, _("Total"))
+
+
 
