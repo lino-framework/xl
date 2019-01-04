@@ -122,7 +122,8 @@ class Tariff(BabelDesignated):
 class Tariffs(dd.Table):
     required_roles = dd.login_required(LedgerUser)
     model = "invoicing.Tariff"
-    column_names = "designation number_of_events min_asset max_asset"
+    column_names = "designation number_of_events min_asset max_asset *"
+    order_by = ['designation']
 
 
 @dd.python_2_unicode_compatible

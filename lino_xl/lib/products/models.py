@@ -74,7 +74,7 @@ class Products(dd.Table):
     _product_type = None
     required_roles = dd.login_required(ProductsUser)
     model = 'products.Product'
-    order_by = ["id"]
+    order_by = ["name"]
     column_names = "id name cat vat_class *"
 
     insert_layout = """
