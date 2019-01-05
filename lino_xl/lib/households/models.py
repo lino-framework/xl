@@ -216,6 +216,10 @@ class Households(contacts.Partners):
     required_roles = dd.login_required(ContactsUser)
     order_by = ["name"]
     detail_layout = 'households.HouseholdDetail'
+    insert_layout = """
+    type name
+    language
+    """
 
 
 class HouseholdsByType(Households):
