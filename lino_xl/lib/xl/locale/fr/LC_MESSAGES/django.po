@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-01-05 11:10+0200\n"
+"POT-Creation-Date: 2019-01-05 13:03+0200\n"
 "PO-Revision-Date: 2018-12-16 06:32+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
@@ -4648,15 +4648,15 @@ msgstr "Factures vente"
 msgid "Execute plan"
 msgstr ""
 
-#: lino_xl/lib/invoicing/actions.py:65
+#: lino_xl/lib/invoicing/actions.py:66
 msgid "Execute item"
 msgstr ""
 
-#: lino_xl/lib/invoicing/actions.py:79
+#: lino_xl/lib/invoicing/actions.py:80
 msgid "Invoice {} was already generated"
 msgstr ""
 
-#: lino_xl/lib/invoicing/actions.py:86
+#: lino_xl/lib/invoicing/actions.py:87
 #, fuzzy
 msgid "Toggle selections"
 msgstr "secondes"

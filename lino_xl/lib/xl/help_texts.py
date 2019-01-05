@@ -421,9 +421,7 @@ Only start_date is mandatory."""),
     'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
     'lino_xl.lib.cal.Event.assigned_to' : _("""Another user who is expected to take responsibility for this
 entry."""),
-    'lino_xl.lib.cal.Event.event_type' : _("""The type of this entry. Every calendar entry should have this
-field pointing to a given EventType, which holds
-extended configurable information about this entry."""),
+    'lino_xl.lib.cal.Event.event_type' : _("""The type of this calendar entry."""),
     'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
 rules defined by the workflow, that's why we sometimes refer
 to it as the life cycle."""),

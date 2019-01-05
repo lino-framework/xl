@@ -28,12 +28,12 @@ from lino.modlib.users.mixins import StartPlan
 class StartInvoicing(StartPlan):
     label = _("Create invoices")
     icon_name = 'basket'
-    show_in_bbar = True
 
     def get_plan_model(self):
         return rt.models.invoicing.Plan
     
 class StartInvoicingForJournal(StartInvoicing):
+    show_in_bbar = True
 
     def get_options(self, ar):
         jnl = ar.master_instance
@@ -42,6 +42,7 @@ class StartInvoicingForJournal(StartInvoicing):
 
 
 class StartInvoicingForPartner(StartInvoicing):
+    show_in_bbar = True
     select_rows = True
 
     def get_options(self, ar):
@@ -53,6 +54,7 @@ class StartInvoicingForPartner(StartInvoicing):
 class ExecutePlan(dd.Action):
     label = _("Execute plan")
     icon_name = 'money'
+    sort_index = 54
 
     def run_from_ui(self, ar, **kw):
         plan = ar.selected_rows[0]
