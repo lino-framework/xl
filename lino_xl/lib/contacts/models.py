@@ -169,9 +169,10 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
     def get_overview_elems(self, ar):
         elems = []
         buttons = self.get_mti_buttons(ar)
-        # buttons = join_elems(buttons, ', ')
-        elems.append(E.p(str(_("See as ")), *buttons,
-                         style="font-size:8px;text-align:right;padding:3pt;"))
+        if len(buttons) > 1:
+            # buttons = join_elems(buttons, ', ')
+            elems.append(E.p(str(_("See as ")), *buttons,
+                             style="font-size:8px;text-align:right;padding:3pt;"))
         elems += self.get_name_elems(ar)
         elems.append(E.br())
         elems += join_elems(list(self.address_location_lines()), sep=E.br)
@@ -292,14 +293,15 @@ class PartnerDetail(dd.DetailLayout):
 class Partners(dd.Table):
     required_roles = dd.login_required(SimpleContactsUser)
     model = 'contacts.Partner'
-    column_names = "name email * id"
+    column_names = "name id mti_navigator email * "
     order_by = ['name', 'id']
     parameters = ObservedDateRange()
-    detail_layout = 'contacts.PartnerDetail'
-    insert_layout = """
-    name
-    #language email
-    """
+    # detail_layout = 'contacts.PartnerDetail'
+    # removed for #2777 ()
+    # insert_layout = """
+    # name
+    # #language email
+    # """
 
     @classmethod
     def get_queryset(self, ar):

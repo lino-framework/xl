@@ -439,6 +439,14 @@ class ClosedCourses(Activities):
         kw.update(state=CourseStates.closed)
         return kw
 
+class EnrolmentDetail(dd.DetailLayout):
+    main = """
+    request_date user start_date end_date
+    course pupil
+    remark workflow_buttons
+    confirmation_details
+    """
+
 
 class Enrolments(dd.Table):
 
@@ -471,12 +479,7 @@ class Enrolments(dd.Table):
     course pupil
     remark
     """
-    detail_layout = """
-    request_date user start_date end_date
-    course pupil
-    remark workflow_buttons
-    confirmation_details
-    """
+    detail_layout = "courses.EnrolmentDetail"
 
     @classmethod
     def get_known_values(self):
