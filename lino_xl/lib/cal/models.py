@@ -410,7 +410,7 @@ class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     is_appointment = models.BooleanField(_("Appointment"), default=True)
     all_rooms = models.BooleanField(_("Locks all rooms"), default=False)
     locks_user = models.BooleanField(_("Locks the user"), default=False)
-    force_guest_states = models.BooleanField(_("Force guest states"), default=False)
+    force_guest_states = models.BooleanField(_("Automatic presences"), default=False)
 
     start_date = models.DateField(
         verbose_name=_("Start date"),

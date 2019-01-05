@@ -940,6 +940,49 @@ financial voucher."""),
     'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
+    'lino_xl.lib.invoicing.InvoiceGenerator' : _("""Mixin for things that can generate invoices."""),
+    'lino_xl.lib.invoicing.InvoiceGenerator.get_invoiceables_for_plan' : _("""Yield a sequence of invoiceable candidates (objects of this
+class) for the given plan.  If a partner is given, use it as
+an additional filter condition."""),
+    'lino_xl.lib.invoicing.InvoiceGenerator.get_invoiceable_title' : _("""Return the title to put into the invoice item.  May be
+overridden by subclasses."""),
+    'lino_xl.lib.invoicing.InvoiceGenerator.invoicings' : _("""A simple GenericRelation
+to all invoice items pointing to this enrolment."""),
+    'lino_xl.lib.invoicing.InvoiceGenerator.get_invoicings' : _("""Get a queryset with the invoicings which point to this
+enrolment."""),
+    'lino_xl.lib.invoicing.InvoiceGenerator.get_last_invoicing' : _("""Return the last invoicing that was created by this generator.
+According to the invoice's voucher_date."""),
+    'lino_xl.lib.invoicing.Tariff.number_of_events' : _("""Number of calendar events paid per invoicing."""),
+    'lino_xl.lib.invoicing.Tariff.min_asset' : _("""Minimum quantity required to trigger an invoice."""),
+    'lino_xl.lib.invoicing.Plan' : _("""An invoicing plan is a rather temporary database object which
+represents the plan of a given user to have Lino generate a series
+of invoices."""),
+    'lino_xl.lib.invoicing.Plan.user' : _("""The user who manages this plan."""),
+    'lino_xl.lib.invoicing.Plan.today' : _("""This date will be used for the invoices to generate."""),
+    'lino_xl.lib.invoicing.Plan.journal' : _("""The journal where to create invoices.  When this field is
+empty, you can fill the plan with suggestions but cannot
+execute the plan."""),
+    'lino_xl.lib.invoicing.Plan.update_plan' : _("""Update this plan (fill the list of suggestions)."""),
+    'lino_xl.lib.invoicing.Plan.execute_plan' : _("""Execute this plan (create an invoice for each selected suggestion)."""),
+    'lino_xl.lib.invoicing.Plan.start_plan' : _("""Start an invoicing plan for the given user on the database
+object defined by k and v. Where k is the name of the
+field used to select the plan (e.g. 'partner' or
+'journal') and v is the value for that field."""),
+    'lino_xl.lib.invoicing.Plan.fill_plan' : _("""Add items to this plan, one for each invoice to generate."""),
+    'lino_xl.lib.invoicing.Item' : _("""The items of an invoicing plan are called suggestions."""),
+    'lino_xl.lib.invoicing.Item.preview' : _("""A textual preview of the invoiceable items to be included in
+the invoice."""),
+    'lino_xl.lib.invoicing.Item.invoice' : _("""The invoice that has been generated. This field is empty for
+new items. When an item has been executed, this field points
+to the generated invoice."""),
+    'lino_xl.lib.invoicing.StartInvoicing' : _("""Base for StartInvoicingForJournal and
+StartInvoicingForPartner."""),
+    'lino_xl.lib.invoicing.StartInvoicingForJournal' : _("""Start an invoicing plan for this journal."""),
+    'lino_xl.lib.invoicing.StartInvoicingForPartner' : _("""Start an invoicing plan for this partner."""),
+    'lino_xl.lib.invoicing.ExecutePlan' : _("""Execute this invoicing plan.
+Create an invoice for each selected suggestion."""),
+    'lino_xl.lib.invoicing.ExecuteItem' : _("""Create an invoice for this suggestion."""),
+    'lino_xl.lib.invoicing.ToggleSelection' : _("""Invert selection status for all suggestions."""),
     'lino_xl.lib.ledger.Account' : _("""An account is the most abstract representation for "something
 where you can place money and retrieve it later"."""),
     'lino_xl.lib.ledger.Account.name' : _("""The multilingual designation of this account, as the users see
