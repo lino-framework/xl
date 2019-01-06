@@ -112,7 +112,6 @@ Event = rt.models.cal.Event
 EventType = rt.models.cal.EventType
 EntryStates = rt.models.cal.EntryStates
 SalesRule = rt.models.invoicing.SalesRule
-invoicing_Plan = rt.models.invoicing.Plan
 CourseStates = rt.models.courses.CourseStates
 TranslatorTypes = rt.models.courses.TranslatorTypes
 ProfessionalStates = rt.models.tera.ProfessionalStates
@@ -741,7 +740,8 @@ class TimLoader(TimLoader):
             for m in models:
                 m.objects.all()._raw_delete(DEFAULT_DB_ALIAS)
 
-        bulkdel(invoicing_Plan)
+        bulkdel(rt.models.invoicing.Item)
+        bulkdel(rt.models.invoicing.Plan)
         bulkdel(Guest, Event, SalesRule)
         bulkdel(Interest, Topic, Note)
         # bulkdel(Link)

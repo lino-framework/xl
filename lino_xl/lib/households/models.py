@@ -215,6 +215,7 @@ class Households(contacts.Partners):
     model = 'households.Household'
     required_roles = dd.login_required(ContactsUser)
     order_by = ["name"]
+    column_names = "name type address_column *"
     detail_layout = 'households.HouseholdDetail'
     insert_layout = """
     type name

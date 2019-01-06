@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-05 13:43+0200\n"
-"PO-Revision-Date: 2019-01-05 13:45+0200\n"
+"PO-Revision-Date: 2019-01-06 04:32+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -10020,7 +10020,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:745
 msgid "The locality, i.e. usually a village, city or town."
-msgstr ""
+msgstr "Die Ortschaft, d.h. üblicherweise das Dorf oder die Stadt."
 
 #: lino_xl/lib/xl/help_texts.py:746
 msgid "Adds a region field to a CountryCity."
@@ -10682,7 +10682,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:961
 msgid "This date will be used for the invoices to generate."
-msgstr ""
+msgstr "Datum der zu erstellenden Rechnungen."
 
 #: lino_xl/lib/xl/help_texts.py:962
 msgid ""
@@ -10693,11 +10693,11 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:965
 msgid "Update this plan (fill the list of suggestions)."
-msgstr ""
+msgstr "Plan aktualisieren (Vorschläge neu berechnen)."
 
 #: lino_xl/lib/xl/help_texts.py:966
 msgid "Execute this plan (create an invoice for each selected suggestion)."
-msgstr ""
+msgstr "Plan ausführen (Rechnung erstellen für jeden ausgewählten Vorschlag)."
 
 #: lino_xl/lib/xl/help_texts.py:967
 msgid ""

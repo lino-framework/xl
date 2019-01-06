@@ -660,19 +660,12 @@ data as a vcf file."""),
     'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
     'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
 keep contact data (address, phone numbers, ...)."""),
-    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting.
-Subclasses may hide this field and fill it automatically,
-e.g. saving a Person will automatically set her
-name field to "last_name, first_name"."""),
+    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting."""),
     'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
 before the name, for persons this is inserted between first
-name and last name (see
-lino.mixins.human.Human.get_last_name_prefix())."""),
+name and last name."""),
     'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
-    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number.  Note that Lino does not ignore
-formatting characters in phone numbers when searching.  For
-example, if you enter "087/12.34.56" as a phone number, then a
-search for phone number containing "1234" will not find it."""),
+    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number."""),
     'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
     'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
     'lino_xl.lib.contacts.Partner.purchase_account' : _("""The general account to suggest as default value in purchase
@@ -952,16 +945,19 @@ to all invoice items pointing to this enrolment."""),
 enrolment."""),
     'lino_xl.lib.invoicing.InvoiceGenerator.get_last_invoicing' : _("""Return the last invoicing that was created by this generator.
 According to the invoice's voucher_date."""),
+    'lino_xl.lib.invoicing.SalesRule.paper_type' : _("""The default paper type to be used for invoicing."""),
     'lino_xl.lib.invoicing.Tariff.number_of_events' : _("""Number of calendar events paid per invoicing."""),
     'lino_xl.lib.invoicing.Tariff.min_asset' : _("""Minimum quantity required to trigger an invoice."""),
     'lino_xl.lib.invoicing.Plan' : _("""An invoicing plan is a rather temporary database object which
 represents the plan of a given user to have Lino generate a series
 of invoices."""),
     'lino_xl.lib.invoicing.Plan.user' : _("""The user who manages this plan."""),
-    'lino_xl.lib.invoicing.Plan.today' : _("""This date will be used for the invoices to generate."""),
     'lino_xl.lib.invoicing.Plan.journal' : _("""The journal where to create invoices.  When this field is
 empty, you can fill the plan with suggestions but cannot
 execute the plan."""),
+    'lino_xl.lib.invoicing.Plan.today' : _("""This invoice date to be used for the invoices to generate."""),
+    'lino_xl.lib.invoicing.Plan.max_date' : _("""Don't invoice events after this date.  If this is empty, Lino will
+use the day before the invoice date."""),
     'lino_xl.lib.invoicing.Plan.update_plan' : _("""Update this plan (fill the list of suggestions)."""),
     'lino_xl.lib.invoicing.Plan.execute_plan' : _("""Execute this plan (create an invoice for each selected suggestion)."""),
     'lino_xl.lib.invoicing.Plan.start_plan' : _("""Start an invoicing plan for the given user on the database
