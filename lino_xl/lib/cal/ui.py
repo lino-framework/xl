@@ -34,6 +34,11 @@ from .utils import when_text
 from .roles import CalendarReader, GuestOperator
 
 
+def date2pk(date):
+    delta = date - dd.today()
+    return delta.days
+
+
 class RemoteCalendars(dd.Table):
     model = 'cal.RemoteCalendar'
     required_roles = dd.login_required(OfficeStaff)

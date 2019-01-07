@@ -50,17 +50,6 @@ from .ui import ConflictingEvents
 
 DEMO_START_YEAR = 2013
 
-# @dd.virtualfield(models.IntegerField(_("Date id")))
-# def pk_field(obj, ar=None):
-#     return Days.date2pk(obj)
-# PK_FIELD = dd.VirtualField(models.IntegerField(_("Date id")), lambda d: Days.date2pk(d))
-# PK_FIELD.attname = 'id'
-
-def date2pk(date):
-    delta = date - dd.today()
-    return delta.days
-
-
 class CalendarType(object):
 
     def validate_calendar(self, cal):
