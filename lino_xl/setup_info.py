@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2018 Rumma & Ko Ltd
+# Copyright 2009-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 # ~ Note that this module may not have a docstring because any
@@ -29,7 +29,7 @@ else:
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='18.12.5',
+    version='19.1.0',
     install_requires=install_requires,
     tests_require=[],
     description="Lino Extensions Library",
