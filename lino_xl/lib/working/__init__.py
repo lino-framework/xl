@@ -68,7 +68,7 @@ class Plugin(ad.Plugin):
         m.add_action('working.Sessions')
         m.add_action('working.AllSummaries')
 
-    # def get_dashboard_items(self, user):
-    #     super(Plugin, self).get_dashboard_items(user)
-    #     if user.authenticated:
-    #         yield self.site.models.working.WorkedHours
+    def get_dashboard_items(self, user):
+        super(Plugin, self).get_dashboard_items(user)
+        if user.authenticated:
+            yield self.site.models.working.WorkedHours

@@ -414,8 +414,11 @@ regimes:"""),
     'lino_xl.lib.bevats.VatColumns' : _("""The lino_xl.lib.betvats plugin redefines the list of VAT
 columns:"""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
-    'lino_xl.lib.cal.Event.end_time' : _("""These four fields define the duration of this entry.
-Only start_date is mandatory."""),
+    'lino_xl.lib.cal.Event.start_date' : _("""The starting date of this entry.  May not be empty."""),
+    'lino_xl.lib.cal.Event.end_date' : _("""The ending date of this entry. Leave empty for same-day entries."""),
+    'lino_xl.lib.cal.Event.start_time' : _("""The starting time.  If this is empty, the entry is considered a all-day entry."""),
+    'lino_xl.lib.cal.Event.end_time' : _("""The ending time.  If this is before the starting time, and no ending date
+is given, the entry ends the day after."""),
     'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
     'lino_xl.lib.cal.Event.description' : _("""A longer descriptive text."""),
     'lino_xl.lib.cal.Event.user' : _("""The responsible user."""),
@@ -423,12 +426,10 @@ Only start_date is mandatory."""),
 entry."""),
     'lino_xl.lib.cal.Event.event_type' : _("""The type of this calendar entry."""),
     'lino_xl.lib.cal.Event.state' : _("""The state of this entry. The state can change according to
-rules defined by the workflow, that's why we sometimes refer
-to it as the life cycle."""),
-    'lino_xl.lib.cal.Event.transparent' : _("""Indicates that this entry shouldn't prevent other entries at
-the same time."""),
+rules defined by the workflow."""),
+    'lino_xl.lib.cal.Event.transparent' : _("""Whether this entry should allow other entries at the same time."""),
     'lino_xl.lib.cal.Event.when_html' : _("""Shows the date and time of the entry with a link that opens
-all entries on that day (EntriesByDay)."""),
+all entries on that day."""),
     'lino_xl.lib.cal.Event.show_conflicting' : _("""A ShowSlaveTable
 button which opens the ConflictingEvents table for this event."""),
     'lino_xl.lib.cal.Event.update_guests' : _("""Populate or update the list of participants for this calendar

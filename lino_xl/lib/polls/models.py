@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2018 Rumma & Ko Ltd
+# Copyright 2013-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 from builtins import str
 from builtins import object
@@ -15,6 +15,7 @@ from django.utils.translation import pgettext_lazy as pgettext
 from lino.api import dd, rt
 from lino import mixins
 from lino.utils import join_elems
+from lino.core.fields import TableRow
 
 from etgen import html as xghtml
 from etgen.html import E
@@ -517,7 +518,7 @@ class AllAnswerRemarks(AnswerRemarks):
 
 
 @dd.python_2_unicode_compatible
-class AnswersByResponseRow(object):
+class AnswersByResponseRow(TableRow):
     FORWARD_TO_QUESTION = tuple(
         "full_clean after_ui_save disable_delete save_new_instance save_watched_instance delete_instance".split())
 

@@ -80,7 +80,7 @@ class Plugin(ad.Plugin):
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
-        m.add_action('cal.Days')
+        # m.add_action('cal.Days')
         m.add_action('cal.AllEntries')
         m.add_action('cal.Tasks')
         m.add_action('cal.AllGuests')

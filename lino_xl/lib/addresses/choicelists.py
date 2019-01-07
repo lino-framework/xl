@@ -1,5 +1,4 @@
-# Copyright 2014-2015 Rumma & Ko Ltd
-#
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from lino.api import dd, _

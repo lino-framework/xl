@@ -13,6 +13,7 @@ from django.db import models
 from lino.api import dd, rt, _
 from lino import mixins
 from lino.core.roles import Explorer
+from lino.core.fields import TableRow
 from lino.utils.format_date import monthname
 from lino.utils.format_date import day_and_month, day_and_weekday
 from lino.modlib.users.mixins import My
@@ -25,6 +26,8 @@ from .choicelists import TaskStates
 from .choicelists import GuestStates
 from .choicelists import EntryStates
 from .choicelists import AccessClasses
+from .choicelists import PlannerColumns
+
 from .mixins import daterange_text
 from .utils import when_text
 
@@ -1143,4 +1146,231 @@ class EventPolicies(dd.Table):
     # monday tuesday wednesday thursday friday saturday sunday
     # """
 
-    
+
+@dd.python_2_unicode_compatible
+class Day(TableRow):
+
+    def __init__(self, offset=0, ar=None):
+        self.date = dd.today(offset)
+        self.pk = offset
+        self.ar = ar
+
+    def __str__(self):
+        return when_text(self.date)
+
+
+class DayDetail(dd.DetailLayout):
+    main = "cal.PlannerByDay"
+
+
+class Days(dd.VirtualTable):
+    # every "row" is a Day instance. Note that Day can be overridden.
+
+    required_roles = dd.login_required(OfficeUser)
+    column_names = "detail_link *"
+    parameters = mixins.ObservedDateRange(
+        user=dd.ForeignKey('users.User', null=True, blank=True))
+    params_layout = """start_date end_date user"""
+    detail_layout = 'cal.DayDetail'
+    model = 'cal.Day'
+    editable = False
+    reverse_sort_order = False
+    abstract = True
+
+    @dd.virtualfield(models.IntegerField(_("Day number")))
+    def day_number(cls, obj, ar):
+        return obj.pk
+
+    @classmethod
+    def get_pk_field(cls):
+        # return pk_field
+        # return PK_FIELD
+        # return cls.get_data_elem('day_number')
+        return cls.day_number.return_type
+
+    @classmethod
+    def get_row_by_pk(cls, ar, pk):
+        """
+        pk is the offset from beginning_of_time
+        """
+        # return dd.today(int(pk))
+        return cls.model(int(pk), ar)
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        days = []
+        pv = ar.param_values
+        sd = pv.start_date or dd.today()
+        ed = pv.end_date or sd
+        if sd > ed:
+            return []
+        # while sd <= ed:
+        #     days.append(sd)
+        #     sd = sd + relativedelta(days=1)
+
+        if cls.reverse_sort_order:
+            step = -1
+            pk = date2pk(ed)
+        else:
+            pk = date2pk(sd)
+            step = 1
+        while True:  # sd <= ed:
+            # print(20181229, sd)
+            d = cls.model(pk, ar)
+            if d.date > ed or d.date < sd:
+                return days
+            days.append(d)
+            pk += step
+
+    @classmethod
+    def get_disabled_fields(cls, obj, ar):
+        return set()
+
+    # @dd.displayfield(_("Date"))
+    # def detail_pointer(cls, obj, ar):
+    #     # print("20181230 detail_pointer() {}".format(cls))
+    #     a = cls.detail_action
+    #     if ar is None:
+    #         return None
+    #     if a is None:
+    #         return None
+    #     if not a.get_view_permission(ar.get_user().user_type):
+    #         return None
+    #     text = (str(obj),)
+    #     # url = ar.renderer.get_detail_url(cls, cls.date2pk(obj))
+    #     # url = ar.renderer.get_detail_url(cls, obj.pk)
+    #     url = settings.SITE.kernel.default_ui.renderer.get_detail_url(cls, obj.pk)
+    #     return ar.href_button(url, text)
+
+    @dd.displayfield(_("Date"))
+    def long_date(cls, obj, ar=None):
+        if obj is None:
+            return ''
+        return dd.fdl(obj.date)
+
+
+# Day._lino_default_table = Days
+
+# Days.day_number.attname = 'day_number'
+# Days.day_number.return_type.attname = 'day_number'
+
+
+class LastWeek(Days):
+    label = _("Last week")
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(Days, cls).param_defaults(ar, **kw)
+        kw.update(start_date=dd.today(-7))
+        kw.update(end_date=dd.today())
+        return kw
+
+
+class ComingWeek(Days):
+    label = _("Coming week")
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(Days, cls).param_defaults(ar, **kw)
+        kw.update(start_date=dd.today())
+        kw.update(end_date=dd.today(7))
+        return kw
+
+
+class DailyPlannerRows(dd.Table):
+    model = 'cal.DailyPlannerRow'
+    column_names = "seqno designation start_time end_time"
+    required_roles = dd.login_required(OfficeStaff)
+
+
+class DailyPlanner(DailyPlannerRows):
+    required_roles = dd.login_required(OfficeOperator)
+    label = _("Daily planner")
+    editable = False
+    parameters = dict(
+        date=models.DateField(
+            _("Date"), help_text=_("Date to show")),
+        user=dd.ForeignKey('users.User', null=True, blank=True))
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(DailyPlanner, cls).param_defaults(ar, **kw)
+        kw.update(date=dd.today())
+        # kw.update(end_date=dd.today())
+        # kw.update(user=ar.get_user())
+        return kw
+
+    @classmethod
+    def setup_columns(self):
+        names = ''
+        for i, vf in enumerate(self.get_ventilated_columns()):
+            self.add_virtual_field('vc' + str(i), vf)
+            names += ' ' + vf.name + ':20'
+
+        self.column_names = "overview {}".format(names)
+
+        # ~ logger.info("20131114 setup_columns() --> %s",self.column_names)
+
+    @classmethod
+    def get_ventilated_columns(cls):
+
+        Event = rt.models.cal.Event
+
+        def fmt(e):
+            if e.start_time:
+                t = str(e.start_time)[:5]
+            else:
+                t = str(e.event_type)
+            u = e.user
+            if u is None:
+                return "{} {}".format(
+                    t, e.room)
+                return t
+            u = u.initials or u.username or str(u)
+            return "{} {}".format(t, u)
+
+        def w(pc, verbose_name):
+            def func(fld, obj, ar):
+                # obj is the DailyPlannerRow instance
+                pv = ar.param_values
+                qs = Event.objects.filter(event_type__planner_column=pc)
+                if pv.user:
+                    qs = qs.filter(user=pv.user)
+                if pv.date:
+                    qs = qs.filter(start_date=pv.date)
+                if obj.start_time:
+                    qs = qs.filter(start_time__gte=obj.start_time,
+                                   start_time__isnull=False)
+                if obj.end_time:
+                    qs = qs.filter(start_time__lt=obj.end_time,
+                                   start_time__isnull=False)
+                if not obj.start_time and not obj.end_time:
+                    qs = qs.filter(start_time__isnull=True)
+                qs = qs.order_by('start_time')
+                chunks = [e.obj2href(ar, fmt(e)) for e in qs]
+                return E.p(*join_elems(chunks))
+
+            return dd.VirtualField(dd.HtmlBox(verbose_name), func)
+
+        for pc in PlannerColumns.objects():
+            yield w(pc, pc.text)
+
+
+class PlannerByDay(DailyPlanner):
+    master = 'cal.Day'
+    display_mode = "html"
+
+    @classmethod
+    def get_master_instance(cls, ar, model, pk):
+        return model(int(pk))
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        mi = ar.master_instance
+        if mi is None:
+            return []
+        # filter.update()
+        ar.param_values.update(date=mi.date)
+        return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
+
+

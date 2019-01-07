@@ -227,6 +227,10 @@ class HouseholdsByType(Households):
     #~ label = _("Households")
     master_key = 'type'
     #~ column_names = 'person role *'
+    insert_layout = """
+    name
+    language
+    """
 
 
 # class Role(mixins.BabelNamed):
