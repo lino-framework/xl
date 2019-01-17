@@ -1,0 +1,124 @@
+{%- set page_size = 'portrait' -%}
+{%- extends "weasyprint/base.weasy.html" -%}
+
+{%- block header %}
+<div class="header">
+{{obj}}
+</div>
+{%- endblock %}
+
+{%- block footer %}
+<div class="footer_div">
+{{obj}}
+</div>
+{%- endblock %}
+
+
+{%- block main %}
+
+<table width="100%" style="border:none;">
+<tr style="border:none;">
+<td width="40mm" style="border:none;">
+</td>
+<td style="border:none;">
+{{_("Recipient")}}:<br>
+{{obj.recipient.get_address_html()}}
+</td></tr></table>
+
+<br><br><br><br>
+
+<table width=""100%">
+<tr>
+<td>
+{{obj}}
+<br>{{_("Your customer id")}}: {{obj.partner.id}}
+</td>
+<td>
+{{_("Your VAT id")}}: {{obj.partner.vat_no}}
+<br>{{_("Date")}}: {{fdl(obj.voucher_date)}}
+</td></tr></table>
+
+<br><br><br><br>
+
+Wir danken für Ihre Preisanfrage und unterbreiten Ihnen folgendes Angebot:
+
+<br><br><br><br>
+
+{{ super() }}
+
+
+<div>
+{% block body %}
+{% if False %}
+{{as_table(rt.models.sales.ItemsByInvoicePrint.request(master_instance=obj))}}
+{% else %}
+<table border="1" width="100%">
+<tr>
+<td>{{_("Description")}}</td>
+<td>{{_("Unit price")}}</td>
+<td>{{_("Quantity")}}</td>
+<td>{{_("Price")}}</td>
+</tr>
+{% for item in obj.items.order_by('seqno') %}
+<tr>
+<td>
+{% if item.description %}
+<p><b>{{item.title}}</b></p>
+{% if item.description.startswith("<") %}
+{{item.description}}
+{% else %}
+{{restify(item.description)}}
+{% endif %}
+{% else %}
+<p>{{item.title}}</p>
+{% endif %}
+</td>
+<td align="right">
+{{item.unit_price or ''}}
+</td>
+<td align="right">
+{% if item.unit_price %}
+{{item.qty}}
+{% endif %}
+</td>
+<td align="right">
+{{item.total_incl or ''}}
+</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
+</div>
+
+<br><br><br><br>
+
+<p align="right">{{_("Total excl. VAT")}} {{obj.total_base}}</p>
+<p align="right">{{_("VAT")}} {{obj.total_vat}}</p>
+<p align="right">{{_("Total incl. VAT")}} {{obj.total_incl}}</p>
+
+<br><br><br><br>
+
+<div>
+{% block payment %}
+<p class="Default">
+{% if obj.due_date %}
+{{_("Due date")}} : {{fds(obj.due_date)}}
+<br/>
+{% endif %}
+{% if obj.payment_term %}
+{{_("Payment terms")}} : {{obj.payment_term}}
+{% endif %}
+</p>
+
+<p class="Default">
+{{_("With best regards.")}}
+<br>
+{{this.user}}
+</p>
+
+{% endblock %}
+</div>
+
+{%- endblock %}

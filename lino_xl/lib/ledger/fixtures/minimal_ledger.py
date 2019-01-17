@@ -42,7 +42,14 @@ def objects():
     else:
         MODEL = vat.VatAccountInvoice
     kw.update(trade_type='sales')
+    kw.update(ref="OFF", dc=CREDIT)
+    kw.update(printed_name=_("Offer"))
+    kw.update(dd.str2kw('name', _("Offers")))
+    yield MODEL.create_journal(**kw)
+
     kw.update(ref="SLS", dc=CREDIT)
+    kw.update(printed_name=_("Invoice"))
+    kw.update(dd.str2kw('name', _("Sales invoices")))
     kw.update(printed_name=_("Invoice"))
     kw.update(dd.str2kw('name', _("Sales invoices")))
     yield MODEL.create_journal(**kw)

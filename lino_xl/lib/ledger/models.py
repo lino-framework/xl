@@ -79,6 +79,8 @@ class Journal(mixins.BabelNamed,
         verbose_name = _("Journal")
         verbose_name_plural = _("Journals")
 
+    ref_max_length = 5
+
     trade_type = TradeTypes.field(blank=True)
     voucher_type = VoucherTypes.field()
     journal_group = JournalGroups.field()
