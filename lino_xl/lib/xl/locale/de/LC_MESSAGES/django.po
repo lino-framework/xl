@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-01-05 13:43+0200\n"
-"PO-Revision-Date: 2019-01-06 04:32+0200\n"
+"PO-Revision-Date: 2019-01-18 12:20+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -683,7 +683,7 @@ msgstr "Lebenslauf"
 
 #: lino_xl/lib/bevat/choicelists.py:117
 msgid "Services"
-msgstr "Auswahlmöglichkeiten"
+msgstr "Dienstleistungen"
 
 #: lino_xl/lib/bevat/choicelists.py:121
 msgid "CN purchases on operations in 86 and 88"

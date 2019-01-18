@@ -57,16 +57,16 @@ class Plugin(ad.Plugin):
     from :class:`lino_xl.lib.ledger.ProjectRelated`.
     """
     
-    intrusive_menu = False
-    """
-    Whether the plugin should integrate into the application's
-    main menu in an intrusive way.  Intrusive means that the main
-    menu gets one top-level item per journal group.
-
-    The default behaviour is `False`, meaning that these items are
-    gathered below a single item "Accounting".
-    """
-    
+    # intrusive_menu = False
+    # """
+    # Whether the plugin should integrate into the application's
+    # main menu in an intrusive way.  Intrusive means that the main
+    # menu gets one top-level item per journal group.
+    #
+    # The default behaviour is `False`, meaning that these items are
+    # gathered below a single item "Accounting".
+    # """
+    #
     start_year = 2012
     """
     An integer with the calendar year in which this site starts
@@ -92,16 +92,23 @@ class Plugin(ad.Plugin):
     """
 
     def setup_main_menu(self, site, user_type, m):
-        if not self.intrusive_menu:
-            mg = site.plugins.ledger
-            ledger_menu = m.add_menu(mg.app_label, mg.verbose_name)
+        """
+        Add a menu item for every journal.
 
+        Menu items are grouped by journal group.
+
+        If a journal group has a :attr:`menu_group`, then journals are added to
+        the menu of that plugin, otherwise to the menu of the ledger plugin.
+
+        """
         Journal = site.models.ledger.Journal
         JournalGroups = site.models.ledger.JournalGroups
         for grp in JournalGroups.get_list_items():
             mg = grp.menu_group
             if mg is None:
-                subm = ledger_menu.add_menu(grp.name, grp.text)
+                lp = site.plugins.ledger
+                lm = m.add_menu(lp.app_label, lp.verbose_name)
+                subm = lm.add_menu(grp.name, grp.text)
             else:
                 subm = m.add_menu(mg.app_label, mg.verbose_name)
             for jnl in Journal.objects.filter(

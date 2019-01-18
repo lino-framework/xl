@@ -23,6 +23,7 @@ class ProductCat(mixins.BabelNamed):
         verbose_name_plural = _("Product Categories")
         abstract = dd.is_abstract_model(__name__, 'ProductCat')
 
+    product_type = ProductTypes.field(default='default')
     description = models.TextField(blank=True)
 
 
@@ -53,12 +54,20 @@ class Product(mixins.BabelNamed):
         blank=True, null=True)
 
     delivery_unit = DeliveryUnits.field(default='piece')
-    product_type = ProductTypes.field(default='default')
+    product_type = ProductTypes.field()
 
     if vat:
         vat_class = vat.VatClasses.field(blank=True)
     else:
         vat_class = dd.DummyField()
+
+    def full_clean(self):
+        if self.product_type is None:
+            if self.cat_id:
+                self.product_type = self.cat.product_type or ProductTypes.default
+            else:
+                self.product_type = ProductTypes.default
+        super(Product, self).full_clean()
 
 
 class ProductDetail(dd.DetailLayout):
