@@ -68,14 +68,17 @@ SETUP_INFO.update(long_description="""
     src="https://img.shields.io/pypi/l/lino.svg" /></a>
 
 
-The **Lino Extensions Library** is a collection of plugins used by
-many Lino projects.
+The **Lino Extensions Library** is a collection of plugins used by many Lino
+applications. It is considered an integral part of the Lino framework, it is
+maintained, documented and tested along with the core at
+`www.lino-framework.org <http://www.lino-framework.org>`__.
 
-This package is in a separate repository because it adds a given set
-of solutions for "Enterprise" style applications.  It is considered an
-integral part of the Lino framework, it is maintained, documented and
-tested along with the core at `www.lino-framework.org
-<http://www.lino-framework.org>`__.
+- Changes are documented at http://xl.lino-framework.org
+
+- Most documentation is in the Lino Book at http://www.lino-framework.org
+
+- For *introductions* and *commercial information* about Lino 
+  see http://www.saffre-rumma.net
 
 """)
 

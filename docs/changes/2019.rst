@@ -1,0 +1,39 @@
+.. include:: /../../book/docs/shared/include/defs.rst
+.. _xl.changes.2019:
+
+=======================
+Changes 2019 in Lino XL
+=======================
+
+Note: The changes and releases are listed in normal chronological order (oldest
+first).
+
+
+.. contents::
+  :local:
+
+2019-01-04
+==========
+
+We released XL 19.1.0
+
+The fields :attr:`addr2` and :attr:`prefix` are now mostly hidden in forms. We
+consider them obsolete.  :mod:`lino_xl.lib.contacts`.
+
+
+2019-01-21
+==========
+
+New plugin attribute :attr:`lino_xl.lib.tim2lino.Plugin.timloader_kwargs` to be
+used e.g. as follows::
+
+    def setup_plugins(self):
+        self.plugins.tim2lino.configure(
+            languages='de fr',
+            timloader_kwargs=dict(etat_registered="C"))
+        super(Site, self).setup_plugins()
+
+This new feature is not tested because the reason was just a missing "u"
+prefix.
+
+The change notes for :ref:`xl` are now spearated from those of :ref:`lino`.
