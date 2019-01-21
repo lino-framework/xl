@@ -5,24 +5,18 @@
 Changes 2019 in Lino XL
 =======================
 
-Note: The changes and releases are listed in normal chronological order (oldest
-first).
+.. Note: The changes and releases are listed in normal chronological order (oldest
+   first).
 
 
 .. contents::
   :local:
 
-2019-01-04
-==========
-
-We released XL 19.1.0
-
-The fields :attr:`addr2` and :attr:`prefix` are now mostly hidden in forms. We
-consider them obsolete.  :mod:`lino_xl.lib.contacts`.
-
 
 2019-01-21
 ==========
+
+The change notes for :ref:`xl` are now separated from those of :ref:`lino`.
 
 New plugin attribute :attr:`lino_xl.lib.tim2lino.Plugin.timloader_kwargs` to be
 used e.g. as follows::
@@ -36,4 +30,43 @@ used e.g. as follows::
 This new feature is not tested because the reason was just a missing "u"
 prefix.
 
-The change notes for :ref:`xl` are now spearated from those of :ref:`lino`.
+
+2019-01-18
+==========
+
+The categories (:class:`lino_xl.lib.products.ProductCat`) now have a field
+:attr:`product_type <lino_xl.lib.products.ProductCat.product_type>` (i.e. all
+applications that depend on it need to migrate).  This is because I realized
+that categories are not useless.  The difference between the "category" and the
+"type" of a product is that end-users can edit the former while the latter are
+to be provided by the application developer.
+
+I fixed a subtle bug in the :meth:`lino_xl.lib.ledger.Plugin.setup_main_menu`
+method: the Accounting menu came before the Sales menu because a menu for
+"ledger" was being created before looping over the journal groups. I removed an
+unused plugin attribute :attr:`intrusive_menu` (whether a journal group is
+"intrusive" or not now depends on its :attr:`menu_group`).
+
+
+2019-01-17
+==========
+
+The :attr:`ref_max_length <lino.mixins.Referrable.ref_max_length>` for
+:class:`lino_xl.lib.ledger.Journal` is now 5 instead of the default 40.
+
+Printing invoices was broken (since we changed the default build method from
+appy to weasy).  It said "No template found for
+sales/VatProductInvoice/default.weasy.html, excerpts/default.weasy.html". We
+created a new template :xfile:`sales/VatProductInvoice/default.weasy.html` (in
+the :xfile:`config` directory of :mod:`lino_xl.lib.sales`).
+
+
+2019-01-04
+==========
+
+We released XL 19.1.0
+
+The fields :attr:`addr2` and :attr:`prefix` are now mostly hidden in forms. We
+consider them obsolete.  :mod:`lino_xl.lib.contacts`.
+
+
