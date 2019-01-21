@@ -371,7 +371,7 @@ class VatItemBase(VoucherItem, VatTotal):
 
     def reset_totals(self, ar):
         # if self.voucher.items_edited:
-        if self.voucher.edit_totals:
+        if self.voucher.edit_totals and self.voucher.total_incl:
             total = Decimal()
             for item in self.voucher.items.exclude(id=self.id):
                 total += item.total_incl

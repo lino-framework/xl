@@ -13,6 +13,14 @@ Changes 2019 in Lino XL
   :local:
 
 
+2019-01-22
+==========
+
+Fixed a little bug in :mod:`lino_xl.lib.vat` : when you created an invoice in a
+journal with `edit_totals` and leave the total field empty, Lino said
+"TypeError: unsupported operand type(s) for -: 'NoneType' and 'Decimal'"
+
+
 2019-01-21
 ==========
 
