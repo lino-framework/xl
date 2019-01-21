@@ -66,7 +66,15 @@ class Plugin(ad.Plugin):
     """
 
     timloader_module = 'lino_xl.lib.tim2lino.timloader1'
-    
+
+    """The module that contains the TimLoader class to be used by the tim2lino fixture.
+    """
+
+    timloader_kwargs = {}
+
+    """The options to pass as keyword arguments when instantiating the
+    TimLoader class."""
+
     load_listeners = []
 
     # siteconfig_accounts = dict(

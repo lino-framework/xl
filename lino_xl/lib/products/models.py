@@ -61,6 +61,13 @@ class Product(mixins.BabelNamed):
     else:
         vat_class = dd.DummyField()
 
+    @dd.chooser()
+    def cat_choices(self, product_type):
+        qs = rt.models.products.ProductCats.request().data_iterator
+        if product_type is not None:
+            qs = qs.filter(product_type=product_type)
+        return qs
+
     def full_clean(self):
         if self.product_type is None:
             if self.cat_id:

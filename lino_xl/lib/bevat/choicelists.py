@@ -35,7 +35,7 @@ add('31', _("Delay in collection"), 'delayed', EU) # report de perception
 add('40', _("Inside EU"), 'inside', EU)
 add('50', _("Outside EU"), 'outside', INT)
 add('60', _("Exempt"), 'exempt', item_vat=False)
-if False:
+if True:  # tim2lino can need it
     add('70', _("Germany"), 'de')
     add('71', _("Luxemburg"), 'lu')
 

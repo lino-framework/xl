@@ -58,7 +58,7 @@ Place = dd.resolve_model('countries.Place')
 Person = dd.resolve_model("contacts.Person")
 Company = dd.resolve_model("contacts.Company")
 Account = rt.models.ledger.Account
-Group = dd.resolve_model('accounts.Group')
+# Group = dd.resolve_model('accounts.Group')
 Journal = dd.resolve_model('ledger.Journal')
 Movement = dd.resolve_model('ledger.Movement')
 # potentially UnresolvedModel:
@@ -197,9 +197,13 @@ def store_date(row, obj, rowattr, objattr):
 def year_num(iddoc):
     # TODO: handle data before A.D. 2000
     iyear = 2000 + int(iddoc[:2])
-    if iyear < 2017:
+    if iyear < START_YEAR:
         return (None, None)
-    year = ledger.FiscalYear.from_int(iyear)
+    year = ledger.FiscalYear.from_int(iyear, None)
+    if year is None:  # added 20190121
+        year = ledger.FiscalYear.create_from_year(iyear)
+        year.full_clean()
+        year.save()
     num = int(iddoc[2:])
     return (year, num)
 
@@ -325,7 +329,8 @@ class TimLoader(TimLoader):
         if len(idgen) < self.LEN_IDGEN:
             # dclsel = row.dclsel.strip()
             kw.update(ref=idgen)
-            kw.update(account_type=pcmn2type(idgen))
+            # if dd.is_installed('sheets'):
+            #     kw.update(sheet_item=pcmn2type(idgen))
             self.babel2kw('libell', 'name', row, kw)
             # def names2kw(kw,*names):
                 # names = [n.strip() for n in names]
@@ -334,26 +339,27 @@ class TimLoader(TimLoader):
             """TIM accepts empty GEN->Libell fields. In that 
             case we take the ref as name.
             """
-            kw.setdefault('name', idgen)
-            ag = accounts.Group(**kw)
-            self.GROUPS[idgen] = ag
-            yield ag
+            # kw.setdefault('name', idgen)
+            # ag = accounts.Group(**kw)
+            # self.GROUPS[idgen] = ag
+            # yield ag
 
     def load_gen2account(self, row, **kw):
         idgen = row.idgen.strip()
         if not idgen:
             return
         if len(idgen) == self.LEN_IDGEN:
-            ag = None
-            for length in range(len(idgen), 0, -1):
-                # print idgen[:length]
-                ag = self.GROUPS.get(idgen[:length])
-                if ag is not None:
-                    break
+            # ag = None
+            # for length in range(len(idgen), 0, -1):
+            #     # print idgen[:length]
+            #     ag = self.GROUPS.get(idgen[:length])
+            #     if ag is not None:
+            #         break
             # dclsel = row.dclsel.strip()
             kw.update(ref=idgen)
-            kw.update(group=ag)
-            kw.update(type=pcmn2type(idgen))
+            # kw.update(group=ag)
+            # if dd.is_installed('sheets'):
+            #     kw.update(sheet_item=pcmn2type(idgen))
             self.babel2kw('libell', 'name', row, kw)
             kw.update(purchases_allowed=True)
             kw.update(sales_allowed=True)
@@ -461,6 +467,7 @@ class TimLoader(TimLoader):
             dblogger.info("No journal %s (%s)", row.idjnl, row)
             return
         if year < START_YEAR:
+            dblogger.info("Ignore %s %s because year %s <%s", row.idjnl, number, year, START_YEAR)
             return
         kw.update(year=year)
         kw.update(number=number)
@@ -533,8 +540,22 @@ class TimLoader(TimLoader):
                 a = self.vnlg2product(row)
                 if a is not None:
                     kw.update(product=a)
-            kw.update(unit_price=mton(row.prixu))
-            kw.update(qty=qton(row.qte))
+            try:
+                kw.update(unit_price=mton(row.prixu))
+            except Exception:
+                msg = "VNL {} ignore invalid unit_price {}".format(
+                    [jnl.ref, year.ref, number], row.prixu)
+                dblogger.warning(msg)
+            qty = qton(row.qte)
+            # fld = doc.items.model._meta.get_field('qty')
+            qty_fld = sales.InvoiceItem._meta.get_field('qty')
+            try:
+                qty = qty_fld.to_python(qty)
+                kw.update(qty=qty)
+            except Exception:
+                msg = "VNL {} ignore invalid qty {}".format(
+                    [jnl.ref, year.ref, number], qty)
+                dblogger.warning(msg)
         elif isinstance(doc, vat.VatAccountInvoice):
             if row.code == 'G':
                 kw.update(account=idart)
@@ -632,7 +653,10 @@ class TimLoader(TimLoader):
         # the following code needs the top-level (possibly abstract)
         # models:
         from lino_xl.lib.contacts.models import Person, Company
-        from lino_xl.lib.households.models import Household
+        partner_models = (Person, Company)
+        if dd.is_installed('households'):
+            from lino_xl.lib.households.models import Household
+            partner_models = (Person, Company, Household)
 
         self.store(kw, id=self.par_pk(row.idpar))
 
@@ -644,15 +668,17 @@ class TimLoader(TimLoader):
                     row.idpar, row.idprt))
             return
         
-        if issubclass(cl, (Company, Person, Household)):
+        if issubclass(cl, partner_models):
             email = row.email.strip()
             if email and is_valid_email(email):
                 self.store(kw, email=email)
 
-        if 'idreg' in row:
+        # if 'idreg' in row:
+        if row.idreg:
             self.store(kw, vat_regime=vat_regime(row.idreg.strip()))
             
-        if 'idgen' in row:
+        # if 'idgen' in row:
+        if row.idgen:
             self.store(kw, purchase_account=self.get_account(row.idgen))
             
         if issubclass(cl, Company):
@@ -687,11 +713,10 @@ class TimLoader(TimLoader):
                 sex = row.sex
                 self.store(
                     kw, gender=convert_gender(sex))
-        if issubclass(cl, Household):
-            self.store(
-                kw,
-                name=row.firme.strip() + ' ' + row.vorname.strip(),
-            )
+        if dd.is_installed('households'):
+            if issubclass(cl, Household):
+                self.store(
+                    kw,name=row.firme.strip() + ' ' + row.vorname.strip())
         if dd.is_installed('lists') and issubclass(cl, List):
             self.store(kw, designation=row.firme)
         
@@ -712,7 +737,8 @@ class TimLoader(TimLoader):
             if settings.SITE.get_language_info(language):
                 self.store(kw, language=language)
 
-            if 'memo' in row:
+            # if 'memo' in row:
+            if row.memo:
                 self.store(
                     kw, remarks=self.dbfmemo(row.get('memo') or ''))
 
@@ -880,7 +906,7 @@ class TimLoader(TimLoader):
         # from lino.modlib.users import models as users
         # ROOT = users.User.objects.get(username='root')
         # DIM = sales.InvoicingMode.objects.get(name='Default')
-        yield tim.load_dbf('GEN', self.load_gen2group)
+        # yield tim.load_dbf('GEN', self.load_gen2group)
         yield tim.load_dbf('GEN', self.load_gen2account)
 
         yield dpy.FlushDeferredObjects
@@ -905,12 +931,7 @@ class TimLoader(TimLoader):
             yield dpy.FlushDeferredObjects
             settings.SITE.loading_from_dump = False
 
-        """
-        We need a FlushDeferredObjects here because most Project
-        objects don't get saved at the first attempt
-        """
-
-        if False:  # GET_THEM_ALL:
+        if True:  # GET_THEM_ALL:
 
             yield tim.load_dbf('VEN')
             yield tim.load_dbf('VNL')

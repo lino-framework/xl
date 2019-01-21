@@ -27,9 +27,9 @@ class TimLoader(object):
     codepage = 'cp850'
     # codepage = 'cp437'
     # etat_registered = "C"¹
-    etat_registered = "¹"
+    etat_registered = u"¹"
 
-    def __init__(self, dbpath, languages=None):
+    def __init__(self, dbpath, languages=None, **kwargs):
         self.dbpath = dbpath
         self.VENDICT = dict()
         self.FINDICT = dict()
@@ -39,6 +39,9 @@ class TimLoader(object):
         self.must_register = []
         self.must_match = {}
         self.duplicate_zip_codes = dict()
+        for k, v in kwargs.items():
+            assert hasattr(self, k)
+            setattr(self, k, v)
 
     def finalize(self):
         if len(self.duplicate_zip_codes):

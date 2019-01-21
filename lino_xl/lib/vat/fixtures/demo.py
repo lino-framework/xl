@@ -19,7 +19,7 @@ def objects():
     for va in VatAreas.get_list_items():
         regimes = []
         for reg in VatRegimes.get_list_items():
-            if reg.is_allowed_for(va):
+            if reg.is_allowed_for(va) and not reg.name in ('lu', 'de'):
                 if VatRules.get_vat_rule(
                         va, vat_regime=reg, default=False):
                     regimes.append(reg)

@@ -280,6 +280,9 @@ parameter. No default value."""),
     'lino_xl.lib.tim2lino.Plugin.use_dbf_py' : _("""Whether to use Ethan Furman's dbf package to read the file."""),
     'lino_xl.lib.tim2lino.Plugin.dbf_table_ext' : _("""The file extension of TIM tables. Meaningful values are '.DBF' or
 .FOX."""),
+    'lino_xl.lib.tim2lino.Plugin.timloader_module' : _("""The module that contains the TimLoader class to be used by the tim2lino fixture."""),
+    'lino_xl.lib.tim2lino.Plugin.timloader_kwargs' : _("""The options to pass as keyword arguments when instantiating the
+TimLoader class."""),
     'lino_xl.lib.topics.Plugin' : _("""A subclass of Plugin for this
 plugin."""),
     'lino_xl.lib.topics.Plugin.partner_model' : _("""The Django model used to represent partners in the scope of this
@@ -946,6 +949,8 @@ to all invoice items pointing to this enrolment."""),
 enrolment."""),
     'lino_xl.lib.invoicing.InvoiceGenerator.get_last_invoicing' : _("""Return the last invoicing that was created by this generator.
 According to the invoice's voucher_date."""),
+    'lino_xl.lib.invoicing.SalesRule.partner' : _("""The partner to which this sales rule applies."""),
+    'lino_xl.lib.invoicing.SalesRule.invoice_recipient' : _("""The partner who should get the invoices caused by this partner."""),
     'lino_xl.lib.invoicing.SalesRule.paper_type' : _("""The default paper type to be used for invoicing."""),
     'lino_xl.lib.invoicing.Tariff.number_of_events' : _("""Number of calendar events paid per invoicing."""),
     'lino_xl.lib.invoicing.Tariff.min_asset' : _("""Minimum quantity required to trigger an invoice."""),
@@ -1407,16 +1412,16 @@ instances."""),
     'lino_xl.lib.polls.ToggleChoice' : _("""Toggle the given choice for the given question in this response."""),
     'lino_xl.lib.polls.PollStates' : _("""The list of possible states of a Poll."""),
     'lino_xl.lib.polls.ResponseStates' : _("""The list of possible states of a Response."""),
-    'lino_xl.lib.products.Product' : _("""A product is something you can sell or buy.  The lino_xl.lib.sales
-plugins injects a sales_price field."""),
+    'lino_xl.lib.products.Product' : _("""Django model to represent a product."""),
     'lino_xl.lib.products.Product.description' : _("""The description of this product."""),
-    'lino_xl.lib.products.Product.cat' : _("""Pointer to ProductCat"""),
+    'lino_xl.lib.products.Product.product_type' : _("""The type of this product."""),
+    'lino_xl.lib.products.Product.cat' : _("""The category of this product."""),
     'lino_xl.lib.products.Product.delivery_unit' : _("""Pointer to DeliveryUnits"""),
     'lino_xl.lib.products.Product.vat_class' : _("""The VAT class.  Injected by lino_xl.lib.vat. If that plugin is
 not installed, vat_class is a dummy field."""),
-    'lino_xl.lib.products.ProductCat' : _("""Can be used to group products into "categories".  Categories can be edited by the user."""),
-    'lino_xl.lib.products.ProductTypes' : _("""Can be used to group products into "types".  Types cannot be edited by the
-user.  But every product type can have a layout on its own."""),
+    'lino_xl.lib.products.ProductCat' : _("""Django model to represent a product category."""),
+    'lino_xl.lib.products.ProductCat.product_type' : _("""The product type to apply to products of this category."""),
+    'lino_xl.lib.products.ProductTypes' : _("""The list of product types."""),
     'lino_xl.lib.products.DeliveryUnits' : _("""The list of possible delivery units of a product."""),
     'lino_xl.lib.sepa.Account' : _("""A bank account related to a given partner."""),
     'lino_xl.lib.sepa.Account.partner' : _("""Partner"""),
@@ -1471,8 +1476,7 @@ IntracomPurchases"""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),
-    'lino_xl.lib.vat.VatRule.vat_regime' : _("""The regime for which this rule applies. Pointer to
-VatRegimes."""),
+    'lino_xl.lib.vat.VatRule.vat_regime' : _("""The regime for which this rule applies."""),
     'lino_xl.lib.vat.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
 stored as 0.20 (not 20)."""),
     'lino_xl.lib.vat.VatRule.can_edit' : _("""Whether the VAT amount can be modified by the user. This applies
@@ -1522,8 +1526,7 @@ user has manually edited the items of this document.  If this
 is False and edit_totals is True, Lino will
 automatically update the only invoice item according to
 partner and vat_regime and total_incl."""),
-    'lino_xl.lib.vat.VatDocument.vat_regime' : _("""The VAT regime to be used in this document.  A pointer to
-VatRegimes."""),
+    'lino_xl.lib.vat.VatDocument.vat_regime' : _("""The VAT regime to be used in this document."""),
     'lino_xl.lib.vat.VatDocument.compute_sums' : _("""Calls ComputeSums for this document."""),
     'lino_xl.lib.vat.ComputeSums' : _("""Compute the sum fields of a VatDocument based on its
 items."""),

@@ -47,9 +47,7 @@ class SalesRule(dd.Model):
         'contacts.Partner',
         verbose_name=_("Invoicing address"),
         related_name='salesrules_by_recipient',
-        blank=True, null=True,
-        help_text=_("Redirect to another partner all invoices which "
-                    "should go to this partner."))
+        blank=True, null=True)
     paper_type = dd.ForeignKey(
         'sales.PaperType', null=True, blank=True)
 
