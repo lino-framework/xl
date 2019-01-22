@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
@@ -19,6 +19,6 @@ exec(compile(open(fn, "rb").read(), fn, 'exec'))
 
 __version__ = SETUP_INFO['version']
 
-intersphinx_urls = dict(docs="http://www.lino-framework.org")
+intersphinx_urls = dict(docs="http://xl.lino-framework.org")
 srcref_url = 'https://github.com/lino-framework/xl/blob/master/%s'
-
+doc_trees = ['docs']

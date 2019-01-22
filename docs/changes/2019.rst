@@ -20,6 +20,10 @@ Fixed a little bug in :mod:`lino_xl.lib.vat` : when you created an invoice in a
 journal with `edit_totals` and leave the total field empty, Lino said
 "TypeError: unsupported operand type(s) for -: 'NoneType' and 'Decimal'"
 
+Added intersphinx_urls, srcref_url and doc_trees settings to the main module so
+that other doctrees can link to the docs.
+
+
 
 2019-01-21
 ==========
