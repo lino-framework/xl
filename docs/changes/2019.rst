@@ -5,9 +5,9 @@
 Changes 2019 in Lino XL
 =======================
 
-.. Note: The changes and releases are listed in normal chronological order (oldest
-   first).
-
+.. Note: Changes are grouped by date. Every new day gives a new
+   heading. If a release deserves separate release notes, we create a separate
+   document and this file will have a link to it.
 
 .. contents::
   :local:
@@ -23,7 +23,7 @@ journal with `edit_totals` and leave the total field empty, Lino said
 Added intersphinx_urls, srcref_url and doc_trees settings to the main module so
 that other doctrees can link to the docs.
 
-
+Released version 19.1.1
 
 2019-01-21
 ==========
@@ -58,7 +58,6 @@ method: the Accounting menu came before the Sales menu because a menu for
 "ledger" was being created before looping over the journal groups. I removed an
 unused plugin attribute :attr:`intrusive_menu` (whether a journal group is
 "intrusive" or not now depends on its :attr:`menu_group`).
-
 
 2019-01-17
 ==========
