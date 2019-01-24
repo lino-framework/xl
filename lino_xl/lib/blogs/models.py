@@ -253,7 +253,9 @@ class LatestEntries(Entries):
                 ar, u"⏏", **{'style': "text-decoration:none"})))
             s = ar.parse_memo(e.body_preview)
             tree = etree.parse(StringIO(s), html_parser)
-            elems.extend(tree.iter())
+            # elems.extend(tree.iter())
+            # elems.append(tree.iter().next())
+            elems.append(tree.getroot())
             elems.append(E.p(
                 _("{} by {}").format(dd.fdf(e.pub_date), e.user)))
             # elems.append(E.p(

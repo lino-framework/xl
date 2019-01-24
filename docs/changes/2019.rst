@@ -12,6 +12,12 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-01-24
+==========
+
+The field :attr:`lino_xl.lib.contacts.Role.type` had a verbose name "Role"
+which was useless and irritating because "Function" is clear enough and the
+same word as in :menuselection:`Configure --> Contacts --> Functions`.
 
 2019-01-22
 ==========

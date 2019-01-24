@@ -1081,7 +1081,7 @@ vouchers should restart at 1 every year."""),
 vouchers in this journal."""),
     'lino_xl.lib.ledger.Journal.partner' : _("""The partner to use as default partner for all vouchers in this
 journal."""),
-    'lino_xl.lib.ledger.Journal.dc' : _("""The primary booking direction."""),
+    'lino_xl.lib.ledger.Journal.dc' : _("""The primary booking direction (checked means Credit, unchecked Debit)."""),
     'lino_xl.lib.ledger.Journal.auto_check_clearings' : _("""Whether to automatically check and update the 'cleared' status
 of involved transactions when (de)registering a voucher of
 this journal."""),

@@ -287,7 +287,7 @@ class PartnerDetail(dd.DetailLayout):
     """
 
     name_box = "#prefix name"
-    info_box = "id language"
+    info_box = "id:6 language:6"
 
 
 class Partners(dd.Table):
@@ -438,7 +438,7 @@ class CompanyDetail(PartnerDetail):
     remarks contacts.RolesByCompany
     """
 
-    name_box = "prefix:10 name:30"
+    name_box = "#prefix:10 name:40 type:20"
 
 
 class Companies(Partners):
@@ -498,8 +498,7 @@ class Role(dd.Model, Addressable):
 
     type = dd.ForeignKey(
         'contacts.RoleType',
-        blank=True, null=True,
-        verbose_name=_("Role"))
+        blank=True, null=True)
     person = dd.ForeignKey(
         "contacts.Person", related_name='rolesbyperson')
     company = dd.ForeignKey(

@@ -44,11 +44,11 @@ class Accounts(dd.Table):
 
 class JournalDetail(dd.DetailLayout):
     main = """
-    name ref:5 seqno:5
-    voucher_type:30 journal_group:15 build_method:20 template:20 id:5
-    trade_type account partner
+    name ref:5 
+    journal_group:15 voucher_type:20 trade_type:20 seqno:5 id:5
+    account partner build_method:20 template:20 
     dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare
-    printed_name
+    printed_name 
     MatchRulesByJournal
     """
 
