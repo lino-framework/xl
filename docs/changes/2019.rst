@@ -19,6 +19,16 @@ The field :attr:`lino_xl.lib.contacts.Role.type` had a verbose name "Role"
 which was useless and irritating because "Function" is clear enough and the
 same word as in :menuselection:`Configure --> Contacts --> Functions`.
 
+Optimized the detail layout of 
+:class:`lino_xl.lib.ledger.Journal` and 
+the library base class for partner details (:class:`lino_xl.lib.contacts.PartnerDetail`).
+
+Fixed :ticket:`2813` (the summary of :class:`lino_xl.lib.blogs.LatestEntries` 
+inserted an additional line break when rendering links to database objects using 
+a memo command.  Also the German translation did not correctly show date and author 
+of a blog entry in this summary.
+
+
 2019-01-22
 ==========
 
