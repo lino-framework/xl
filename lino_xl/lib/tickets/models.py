@@ -4,42 +4,30 @@
 
 from __future__ import unicode_literals
 
-import six
 from builtins import str
 
-from importlib import import_module
-import inspect
-from collections import OrderedDict
-    
+from atelier.sphinxconf.base import py2url_txt
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
-
-from atelier.sphinxconf.base import py2url_txt
-
+from etgen.html import tostring
+from etgen.utils import join_elems, forcetext
 from lino import mixins
 from lino.api import dd, rt, _, pgettext, gettext
-
-from etgen.html import E, tostring
-from etgen.utils import join_elems, forcetext
-
-from lino.modlib.notify.choicelists import MessageTypes
-from lino.modlib.uploads.mixins import UploadController
-from lino_xl.lib.contacts.mixins import ContactRelated
-from lino.modlib.users.mixins import UserAuthored
-from lino.modlib.comments.mixins import Commentable
-from lino.modlib.notify.utils import rich_text_to_elems
 from lino.mixins.ref import Referrable
+from lino.modlib.comments.mixins import Commentable
+from lino.modlib.notify.choicelists import MessageTypes
+from lino.modlib.notify.utils import rich_text_to_elems
+from lino.modlib.uploads.mixins import UploadController
+from lino.modlib.users.mixins import UserAuthored
+
+from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.skills.mixins import Feasible
-from lino_xl.lib.votes.mixins import Votable
-from lino_xl.lib.votes.choicelists import VoteStates
-from lino_xl.lib.working.mixins import Workable
 from lino_xl.lib.stars.mixins import Starrable
+from lino_xl.lib.votes.choicelists import VoteStates
+from lino_xl.lib.votes.mixins import Votable
 from lino_xl.lib.working.choicelists import ReportingTypes
-
-from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities, SiteStates
-
-from .roles import Triager, TicketsStaff
+from lino_xl.lib.working.mixins import Workable
+from .choicelists import TicketStates, LinkTypes, Priorities, SiteStates
 
 MessageTypes.add_item('tickets', dd.plugins.tickets.verbose_name)
 
@@ -482,7 +470,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     ticket_type = dd.ForeignKey(
         'tickets.TicketType', blank=True, null=True)
     duplicate_of = dd.ForeignKey(
-        'self', blank=True, null=True, verbose_name=_("Duplicate of"))
+        'self', blank=True, null=False, verbose_name=_("Duplicate of"))
 
     # assigned_to = dd.ForeignKey(
     #     settings.SITE.user_model,
@@ -639,6 +627,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             return []
         return site.milestones_by_site.all()
 
+    # @profile
     def get_overview_elems(self, ar):
         """Overrides :meth:`lino.core.model.Model.get_overview_elems`.
         """
