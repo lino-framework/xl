@@ -470,7 +470,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     ticket_type = dd.ForeignKey(
         'tickets.TicketType', blank=True, null=True)
     duplicate_of = dd.ForeignKey(
-        'self', blank=True, null=False, verbose_name=_("Duplicate of"))
+        'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
     # assigned_to = dd.ForeignKey(
     #     settings.SITE.user_model,
