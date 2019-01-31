@@ -1,0 +1,67 @@
+{% extends "courses/Course/base.wk.html" %}
+
+{%- block head %}
+{{ super() }}
+<style type="text/css">
+table {
+    border-collapse: collapse;
+}
+table, td, th {
+    border: 1px solid black;
+}
+@media print {
+  tr.avoid {
+    page-break-inside: avoid !important;
+    
+    margin: 4px 0 4px 0; /* to keep the page break from cutting too
+                            close to the text in the div */ 
+  } 
+}
+</style>
+{%- endblock %}
+
+
+{%- block main %}
+{{ super() }}
+{% set events = obj.events_by_course.order_by('start_date') %}
+{% set  events = rt.models.system.PeriodEvents.started.add_filter(events, ar.param_values)%}
+
+<table border="1" width="100%">
+<thead>
+<tr>
+<td>{{_("No.")}}</td>
+<td>{{_("Participant")}}</td>
+{% for e in  events %}
+<td>{{dd.plugins.courses.day_and_month(e.start_date)}}
+<br/><font size="1">({{e.state}})</font></td>
+{% endfor %}
+<td>{{_("Remark")}}</td>
+</tr>
+</thead>
+
+<tbody>
+{% for enrolment in obj.enrolments %}
+<tr class="avoid">
+<td><b>{{loop.index}}</b></td>
+<td>{{tostring(enrolment.pupil_info)}}</td>
+{% for e in  events %}
+<td>&nbsp;</td>
+{% endfor %}
+<td>{{enrolment.remark}}</td>
+</tr>
+{% endfor %}
+
+{% for i in range(9) %}
+<tr>
+<td><br/><br/></td>
+<td></td>
+{% for e in  events %}
+<td>&nbsp;</td>
+{% endfor %}
+<td></td>
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+{%- endblock %}

@@ -34,3 +34,7 @@ class Plugin(ad.Plugin):
         # m.add_action('products.Products')
         m.add_action('products.ProductCats')
 
+        # mg = site.plugins.sales
+        # m2 = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('products.PriceRules')
+

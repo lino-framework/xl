@@ -573,6 +573,25 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
     def accounting_period_changed(self, ar):
         self.number = self.journal.get_next_number(self)
 
+    def get_detail_action(self, ar):
+        """Custom :meth:`get_detail_action
+        <lino.core.model.Model.get_detail_action>` because the
+        detail_layout to use depends on the journal's voucher type.
+
+        """
+        if self.journal_id:
+            table = self.journal.voucher_type.table_class
+            if table:
+                ba = table.detail_action
+                ba = ba.action.defining_actor.detail_action
+                # if ar is None or ba.get_row_permission(ar, self, None):
+                #     return ba
+                if ar is None or ba.get_view_permission(
+                        ar.get_user().user_type):
+                    return ba
+                return None
+        return super(Voucher, self).get_detail_action(ar)
+
     def get_due_date(self):
         return self.entry_date
 
@@ -600,7 +619,6 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         i.full_clean()
         i.save()
 
-        
     @classmethod
     def get_journals(cls):
         vt = VoucherTypes.get_for_model(cls)

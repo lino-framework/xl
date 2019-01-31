@@ -1,15 +1,16 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma 6 Ko Ltd
+# Copyright 2008-2019 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
-from lino.api import dd
+from lino.api import dd, rt
 from lino import mixins
+from lino.mixins import Sequenced
 
-from .choicelists import DeliveryUnits, ProductTypes
+from .choicelists import DeliveryUnits, ProductTypes, PriceFactors
 from .roles import ProductsUser, ProductsStaff
 
 vat = dd.resolve_app('vat')
@@ -68,6 +69,45 @@ class Product(mixins.BabelNamed):
             qs = qs.filter(product_type=product_type)
         return qs
 
+    @classmethod
+    def get_product_choices(cls, partner):
+        """Return a list of products (fees) that are allowed for the specified partner.
+        """
+        Product = cls
+        qs = Product.objects.filter(product_type=ProductTypes.default)
+        qs = qs.order_by('name')
+        rules = PriceRule.objects.all()
+        for pf in PriceFactors.get_list_items():
+            rules = rules.filter(
+                Q(**{pf.field_name: getattr(partner, pf.field_name)}) |
+                Q(**{pf.field_name + '__isnull': True}))
+        return [p for p in qs if rules.filter(product=p).count() > 0]
+        # TODO: add rules condition as subquery to qs and return the query, not
+        # the list
+
+    @classmethod
+    def get_rule_fee(cls, partner, event_type):
+        if partner is None:
+            return
+        for rule in rt.models.products.PriceRule.objects.order_by('seqno'):
+            ok = True
+            for pf in PriceFactors.get_list_items():
+                rv = getattr(rule, pf.field_name)
+                if rv:
+                    pv = getattr(partner, pf.field_name)
+                    if pv != rv:
+                        # print("20181128a {} != {}".format(rv, pv))
+                        ok = False
+            # if rule.tariff and rule.tariff != tariff:
+            #     # print("20181128b {} != {}".format(rule.tariff, tariff))
+            #     ok = False
+            if rule.event_type and rule.event_type != event_type:
+                # print("20181128c {} != {}".format(rule.event_type, event_type))
+                ok = False
+
+            if ok and rule.fee is not None:
+                return rule.fee
+
     def full_clean(self):
         if self.product_type is None:
             if self.cat_id:
@@ -118,5 +158,38 @@ class Products(dd.Table):
 class ProductsByCategory(Products):
     master_key = 'cat'
 
+
+class PriceRule(Sequenced):
+    class Meta(object):
+        app_label = 'products'
+        abstract = dd.is_abstract_model(__name__, 'PriceRule')
+        verbose_name = _("Price rule")
+        verbose_name_plural = _("Price rules")
+
+    # tariff = PartnerTariffs.field(blank=True)
+    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
+    fee = dd.ForeignKey('products.Product', blank=True, null=True)
+
+
+class PriceRules(dd.Table):
+    model = "products.PriceRule"
+    column_names_tpl = "seqno {factors} #tariff event_type fee *"
+    order_by = ['seqno']
+
+    @classmethod
+    def get_column_names(cls, ar):
+        factors = ' '.join([pf.field_name for pf in PriceFactors.get_list_items()])
+        return cls.column_names_tpl.format(factors=factors)
+
+
+@dd.receiver(dd.pre_analyze)
+def inject_pricefactor_fields(sender, **kw):
+    for pf in PriceFactors.get_list_items():
+        dd.inject_field(
+            'products.PriceRule', pf.field_name,
+            pf.field_cls.field(blank=True))
+        dd.inject_field(
+            'contacts.Partner', pf.field_name,
+            pf.field_cls.field(blank=True))
 
 

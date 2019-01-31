@@ -12,6 +12,16 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-01-31
+==========
+
+.. currentmodule:: lino_xl.lib.products
+
+In :mod:`lino_xl.lib.products` we now have a new model :class:`PriceRule` and a
+new choicelist :class:`PriceFactors` (taken from :mod:`lino_tera.lib.courses`).
+For :ref:`tera` this means a minor data migration: change "courses.PriceRule"
+to "products.PriceRule" in the :xfile:`restore.py` field.
+
 2019-01-24
 ==========
 

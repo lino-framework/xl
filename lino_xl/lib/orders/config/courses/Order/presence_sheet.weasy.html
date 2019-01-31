@@ -1,0 +1,131 @@
+{% extends "courses/Course/base.wk.html" %}
+
+{%- block head %}
+{{ super() }}
+<style type="text/css">
+table {
+    border-collapse: collapse;
+}
+table, td, th {
+    border: 1px solid black;
+}
+body { 
+    font-family: "Liberation sans", "arial";
+    font-size: 10pt;
+}
+
+p { 
+    padding: 0;
+    margin: 0;  
+}
+
+@page {
+    margin: 10mm; margin-top: 15mm; margin-bottom: 15mm; 
+    size: landscape;
+    @bottom-right {
+        content: counter(page) "/" counter(pages);
+    }
+}
+
+
+@media print {
+  tr.avoid {
+    page-break-inside: avoid !important;
+  } 
+}
+@media screen {
+    div.footer_div {
+        display: none;
+    }
+}
+@media print {
+    div.footer_div {
+        position: fixed;
+        bottom: -5mm;
+        width: 100%;
+        border-top: solid 1pt;
+        padding: 2pt;
+    }
+}
+
+</style>
+{%- endblock %}
+
+
+{%- block main %}
+{{ super() }}
+{% set apv =  ar.action_param_values %}
+{% set events = obj.events_by_course().order_by('start_date') %}
+{% set events = rt.models.system.PeriodEvents.started.add_filter(events, apv)%}
+
+
+<div class="footer_div">{{obj}} ({{fds(apv.start_date)}}...{{fds(apv.end_date)}})</div>
+
+
+<table border="1" width="100%">
+<thead>
+<tr>
+<td>{{_("No.")}}</td>
+<td>{{_("Participant")}}</td>
+<td>{{_("Age")}}</td>
+{% for e in  events %}
+<td>{{obj.every_unit.get_date_formatter()(e.start_date)}}
+{% if ar.action_param_values.show_states %}
+<br/><font size="1">{{e.auto_type or ''}} ({{e.state.symbol or e.state.button_text}})</font>
+{% endif %}
+</td>
+{% endfor %}
+{% if ar.action_param_values.show_remarks %}
+<td>{{_("Remark")}}</td>
+{% endif %}
+</tr>
+</thead>
+
+<tbody>
+{% for enrolment in obj.get_enrolments(
+   start_date=ar.action_param_values.start_date,
+   end_date=ar.action_param_values.end_date) %}
+<tr class="avoid">
+<td>{{loop.index}}</td>
+<td>{{tostring(enrolment.pupil_info)}}</td>
+<td>{{enrolment.pupil.age}}</td>
+{% for e in events %}
+<td align="center" valign="middle">
+{%- set guest=rt.models.cal.Guest.objects.filter(
+    partner=enrolment.pupil, event=e).first() -%}
+{%- if guest -%}
+  {{guest.state.button_text or guest.state}}
+  {% if ar.action_param_values.show_remarks %}
+    {{guest.remark}}
+  {%- endif -%}
+{%- elif (enrolment.end_date and e.start_date > enrolment.end_date) 
+    or (enrolment.start_date and e.start_date < enrolment.start_date) -%}
+  X
+{%- else -%}
+  &nbsp;
+{%- endif -%}
+</td>
+{% endfor %}
+{% if ar.action_param_values.show_remarks %}
+<td>{{enrolment.remark}}</td>
+{% endif %}
+</tr>
+{% endfor %}
+
+{% for i in range(9) %}
+<tr>
+<td><br/></td>
+<td></td>
+<td></td>
+{% for e in  events %}
+<td>&nbsp;</td>
+{% endfor %}
+{% if ar.action_param_values.show_remarks %}
+<td></td>
+{% endif %}
+</tr>
+{% endfor %}
+</tbody>
+
+</table>
+{%- endblock %}

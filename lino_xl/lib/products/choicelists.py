@@ -26,3 +26,18 @@ class ProductTypes(dd.ChoiceList):
 
 add = ProductTypes.add_item
 add('100', _("Products"), 'default')
+
+
+class PriceFactor(dd.Choice):
+    field_cls = None
+    def __init__(self, value, cls, name):
+        self.field_cls = cls
+        self.field_name = 'pf_' + name
+        super(PriceFactor, self).__init__(value, cls.verbose_name, name)
+
+class PriceFactors(dd.ChoiceList):
+    item_class = PriceFactor
+    verbose_name = _("Price factor")
+    verbose_name_plural = _("Price factors")
+
+
