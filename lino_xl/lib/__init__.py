@@ -60,6 +60,15 @@ Office
     mailbox
     caldav
 
+ERP
+===
+
+.. autosummary::
+   :toctree:
+
+    products
+    orders
+
 System extensions
 =================
 
@@ -71,6 +80,7 @@ System extensions
     stars
     userstats
 
+
 Miscellaneous
 =============
 
@@ -79,7 +89,6 @@ Miscellaneous
 
     beid
     polls
-    products
     clients
     coachings
     trends
