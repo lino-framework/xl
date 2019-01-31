@@ -23,7 +23,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    verbose_name = _("Activities")
+    verbose_name = _("Orders")
     worker_model = 'contacts.Person'
     worker_name_fields = "worker__name"
     needs_plugins = ['lino_xl.lib.cal']
