@@ -1,19 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Rumma & Ko Ltd
+# Copyright 2013-2019 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for managing courses or other activities.
 
-See :doc:`/specs/courses`.
-
-.. autosummary::
-   :toctree:
-
-   models
-   mixins
-   choicelists
-   workflows
+See :doc:`/specs/orders`.
 
 """
 

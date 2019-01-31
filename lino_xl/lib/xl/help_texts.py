@@ -1423,6 +1423,8 @@ not installed, vat_class is a dummy field."""),
     'lino_xl.lib.products.ProductCat.product_type' : _("""The product type to apply to products of this category."""),
     'lino_xl.lib.products.ProductTypes' : _("""The list of product types."""),
     'lino_xl.lib.products.DeliveryUnits' : _("""The list of possible delivery units of a product."""),
+    'lino_xl.lib.products.PriceFactors' : _("""A choicelist of "price factors"."""),
+    'lino_xl.lib.products.PriceRules' : _("""The list of price rules."""),
     'lino_xl.lib.sepa.Account' : _("""A bank account related to a given partner."""),
     'lino_xl.lib.sepa.Account.partner' : _("""Partner"""),
     'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported
