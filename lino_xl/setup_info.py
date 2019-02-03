@@ -129,6 +129,7 @@ lino_xl.lib.events.fixtures
 lino_xl.lib.events.tests
 lino_xl.lib.excerpts
 lino_xl.lib.excerpts.fixtures
+lino_xl.lib.orders
 lino_xl.lib.extensible
 lino_xl.lib.families
 lino_xl.lib.households
