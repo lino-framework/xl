@@ -45,12 +45,13 @@ class CheckedSubmitInsert(SubmitInsert):
             return
         
         def ok(ar2):
-            self.save_new_instance(ar2, obj)
+            SubmitInsert.run_from_ui(self, ar, **kw)
+            # self.save_new_instance(ar2, obj)
             ar2.success(_("Your request has been registered. "
                           "An email will shortly be sent to {0}"
                           "Please check your emails.").format(
                               obj.email))
-            ar2.set_response(close_window=True)
+            # ar2.set_response(close_window=True)
             # logger.info("20140512 CheckedSubmitInsert")
 
         ok(ar)
