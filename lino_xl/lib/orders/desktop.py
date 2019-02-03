@@ -68,7 +68,7 @@ class OrderDetail(dd.DetailLayout):
     cal.EntriesByController
     """, label=_("Calendar"))
 
-    enrolments_top = 'enrolments_until print_actions:15'
+    enrolments_top = 'print_actions:15'
 
     enrolments = dd.Panel("""
     enrolments_top
@@ -161,6 +161,16 @@ class AllOrders(Orders):
     column_names = "journal number start_date:8 user " \
                    "weekdays_text:10 times_text:10 *"
 
+class OrdersByPartner(Orders):
+    master_key = 'partner'
+    column_names = "start_date:8 journal number user " \
+                   "weekdays_text:10 times_text:10 *"
+    order_by = ['start_date']
+
+class OrdersByRecipient(Orders):
+    master_key = 'invoice_recipient'
+    column_names = "partner start_date:8 journal number user " \
+                   "weekdays_text:10 times_text:10 *"
 
 class MyOrders(My, Orders):
     column_names = "start_date:8 name workflow_buttons *"
@@ -173,13 +183,13 @@ class MyOrders(My, Orders):
         kw.update(show_exposed=dd.YesNo.yes)
         return kw
 
-class EnrolmentDetail(dd.DetailLayout):
-    main = """
-    request_date user start_date end_date
-    order worker
-    remark workflow_buttons
-    confirmation_details
-    """
+# class EnrolmentDetail(dd.DetailLayout):
+#     main = """
+#     #request_date user start_date end_date
+#     order worker
+#     remark workflow_buttons
+#     confirmation_details
+#     """
 
 
 class Enrolments(dd.Table):
@@ -190,15 +200,15 @@ class Enrolments(dd.Table):
     # debug_permissions=20130531
     model = 'orders.Enrolment'
     stay_in_grid = True
-    order_by = ['request_date']
-    column_names = 'request_date order order__state worker workflow_buttons user *'
+    # order_by = ['request_date']
+    column_names = 'order order__state worker workflow_buttons user *'
     # hidden_columns = 'id state'
     insert_layout = """
-    request_date user
-    order worker
+    order
+    worker
     remark
     """
-    detail_layout = "orders.EnrolmentDetail"
+    # detail_layout = "orders.EnrolmentDetail"
 
     # @classmethod
     # def get_title_tags(self, ar):
@@ -220,21 +230,20 @@ class Enrolments(dd.Table):
 class AllEnrolments(Enrolments):
     required_roles = dd.login_required(Explorer)
     order_by = ['-id']
-    column_names = 'id request_date start_date end_date user order worker worker__birth_date worker__age worker__country worker__city worker__gender *'
+    column_names = 'id order worker worker__birth_date worker__age worker__country worker__city worker__gender *'
 
 
 class EnrolmentsByWorker(Enrolments):
     params_panel_hidden = True
     required_roles = dd.login_required(OrdersUser)
     master_key = "worker"
-    column_names = 'request_date order user:10 remark workflow_buttons *'
+    column_names = 'order remark workflow_buttons *'
     auto_fit_column_widths = True
 
     insert_layout = """
     # order_area
     order
     remark
-    request_date user
     """
 
     @classmethod
@@ -259,19 +268,19 @@ class EnrolmentsByOrder(Enrolments):
     required_roles = dd.login_required(OrdersUser)
     # required_roles = dd.login_required(OrdersUser)
     master_key = "order"
-    column_names = 'request_date worker ' \
+    column_names = 'worker guest_role' \
                    'remark workflow_buttons *'
     auto_fit_column_widths = True
     # cell_edit = False
     display_mode = 'html'
 
     insert_layout = """
-    worker
+    worker 
+    guest_role
     remark
-    request_date user
     """
 
-    label = _("Participants")
+    label = _("Workers")
 
     # @classmethod
     # def get_actor_label(self):

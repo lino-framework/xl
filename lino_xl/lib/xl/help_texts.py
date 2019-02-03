@@ -393,16 +393,22 @@ etree element."""),
     'lino_xl.lib.appypod.AppyRenderer.insert_table' : _("""This is the function that gets called when a template contains a
 do text from table(...) statement."""),
     'lino_xl.lib.appypod.AppyRenderer.story2odt' : _("""Yield a sequence of ODT chunks (as utf8 encoded strings)."""),
-    'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
-Currently only Belgian eid cards are tested.
-Concrete subclasses must also inherit from lino.mixins.Born."""),
-    'lino_xl.lib.beid.BeIdCardHolder.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
+    'lino_xl.lib.beid.SSIN' : _("""A mixin that adds two fields national_id and nationality."""),
+    'lino_xl.lib.beid.SSIN.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
 is not validated directly because that would cause problems
 with legacy data where SSINs need manual control. See also
 BeIdCardHolderChecker."""),
-    'lino_xl.lib.beid.BeIdCardHolder.nationality' : _("""The nationality. This is a pointer to
+    'lino_xl.lib.beid.SSIN.nationality' : _("""The nationality. This is a pointer to
 countries.Country which should
 contain also entries for refugee statuses."""),
+    'lino_xl.lib.beid.BeIdCardHolder' : _("""Mixin for models which represent an eid card holder.
+Currently only Belgian eid cards are tested.
+Concrete subclasses must also inherit from lino.mixins.Born."""),
+    'lino_xl.lib.beid.BeIdCardHolder.card_type' : _("""The type of id card."""),
+    'lino_xl.lib.beid.BeIdCardHolder.card_issuer' : _("""The administration who issued this ID card."""),
+    'lino_xl.lib.beid.BeIdCardHolder.noble_condition' : _("""The eventual noble condition of this person."""),
+    'lino_xl.lib.beid.BeIdCardHolder.read_beid' : _("""Update card holder data from eID card"""),
+    'lino_xl.lib.beid.BeIdCardHolder.find_by_beid' : _("""Find or create card holder from eID card"""),
     'lino_xl.lib.beid.BeIdCardHolder.image' : _("""Virtual field which displays the picture."""),
     'lino_xl.lib.beid.BeIdCardTypes' : _("""A list of Belgian identity card types."""),
     'lino_xl.lib.beid.ResidenceTypes' : _("""The list of Belgian resident registers

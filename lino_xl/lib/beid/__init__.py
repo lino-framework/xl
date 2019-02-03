@@ -1,9 +1,10 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
-#
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
 Read Belgian eID cards and store that data in the database.
+
+See :doc:`/specs/beid`.
 
 """
 

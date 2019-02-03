@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
-#
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 # from builtins import str
@@ -46,7 +45,8 @@ MALE = Path(__file__).parent.child('luc.jpg')
 FEMALE = Path(__file__).parent.child('ly.jpg')
 
 
-class BeIdCardHolder(dd.Model):
+class SSIN(dd.Model):
+    # used by lino_presto which does not use beid
     class Meta:
         abstract = True
 
@@ -65,6 +65,22 @@ class BeIdCardHolder(dd.Model):
         # ~ ,validators=[ssin.ssin_validator] # 20121108
     )
 
+    nationality = dd.ForeignKey('countries.Country',
+                                blank=True, null=True,
+                                related_name="%(app_label)s_%(class)s_set_by_nationality",
+                                verbose_name=_("Nationality"))
+
+    def full_clean(self):
+        if self.validate_national_id and self.national_id:
+            self.national_id = ssin.parse_ssin(self.national_id)
+        super(SSIN, self).full_clean()
+
+
+class BeIdCardHolder(SSIN):
+
+    class Meta:
+        abstract = True
+
     birth_country = dd.ForeignKey(
         "countries.Country",
         blank=True, null=True,
@@ -75,10 +91,6 @@ class BeIdCardHolder(dd.Model):
                                    blank=True,
                                    #~ null=True
                                    )
-    nationality = dd.ForeignKey('countries.Country',
-                                blank=True, null=True,
-                                related_name='by_nationality',
-                                verbose_name=_("Nationality"))
     card_number = models.CharField(max_length=20,
                                    blank=True,  # null=True,
                                    verbose_name=_("eID card number"))
@@ -94,7 +106,6 @@ class BeIdCardHolder(dd.Model):
     card_issuer = models.CharField(max_length=50,
                                    blank=True,  # null=True,
                                    verbose_name=_("eID card issuer"))
-    "The administration who issued this ID card."
 
     read_beid = BeIdReadCardAction()
     find_by_beid = FindByBeIdAction()
@@ -123,11 +134,6 @@ class BeIdCardHolder(dd.Model):
             return False
         return True
 
-    def full_clean(self):
-        if self.validate_national_id and self.national_id:
-            self.national_id = ssin.parse_ssin(self.national_id)
-        super(BeIdCardHolder, self).full_clean()
-    
     @dd.displayfield(_("eID card"), default='<br/><br/><br/><br/>')
     def eid_info(self, ar):
         "Display some information about the eID card."
@@ -226,8 +232,8 @@ class BeIdCardHolder(dd.Model):
             logger.info("Demo picture %s is up-to-date", dst)
 
 
-class BeIdCardHolderChecker(Checker):
-    model = BeIdCardHolder
+class SSINChecker(Checker):
+    model = SSIN
     verbose_name = _("Check for invalid SSINs")
 
     def get_checkdata_problems(self, obj, fix=False):
@@ -253,6 +259,6 @@ class BeIdCardHolderChecker(Checker):
                             raise Warning(msg)
                         obj.save()
 
-BeIdCardHolderChecker.activate()
+SSINChecker.activate()
 
 

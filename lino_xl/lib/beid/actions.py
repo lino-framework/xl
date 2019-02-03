@@ -1,12 +1,10 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
 
 """
-Actions used to read Belgian eID cards.
 
-See unit tests in :mod:`lino_welfare.tests.test_beid`.
 
 """
 import six
@@ -323,15 +321,7 @@ NAMES = tuple('last_name middle_name first_name'.split())
 
 
 class FindByBeIdAction(BaseBeIdReadCardAction):
-    """
-    Read an eID card, then either show the existing holder or ask to
-    create a new holder.
 
-    This is a list action, usually called from a quicklink or a main
-    menu item.
-    """
-
-    help_text = _("Find or create card holder from eID card")
     icon_name = 'vcard_add'
     select_rows = False
     # show_in_bbar = False
@@ -421,18 +411,8 @@ class FindByBeIdAction(BaseBeIdReadCardAction):
 
 
 class BeIdReadCardAction(BaseBeIdReadCardAction):
-    """
-    Read eId card and store the data on the selected holder.
-
-    This is a row action (called on a given holder).
-
-    When the selected holder has an empty `national_id`, and when
-    there is no holder yet with that `national_id` in the database,
-    then we want to update the existing holder from the card.
-    """
     sort_index = 90
     icon_name = 'vcard'
-    help_text = _("Update card holder data from eID card")
 
     def run_from_ui(self, ar, **kw):
 

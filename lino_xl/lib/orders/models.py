@@ -69,83 +69,6 @@ class StartEndTime(dd.Model):
 
 
 
-# @dd.python_2_unicode_compatible
-# class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
-#     class Meta:
-#         app_label = 'orders'
-#         abstract = dd.is_abstract_model(__name__, 'Line')
-#         verbose_name = pgettext("singular form", "Activity line")
-#         verbose_name_plural = pgettext("plural form", 'Activity lines')
-#
-#     order_layout = OrderLayouts.field(default='default')
-#     # default=OrderLayouts.get_lazy('default')
-#     description = dd.BabelTextField(_("Description"), blank=True)
-#
-#     every_unit = Recurrencies.field(
-#         _("Recurrency"),
-#         default=Recurrencies.as_callable('weekly'),
-#         blank=True)  # iCal:DURATION
-#     every = models.IntegerField(_("Repeat every"), default=1)
-#
-#     event_type = dd.ForeignKey(
-#         'cal.EventType', null=True, blank=True,
-#         help_text=_(
-#             "The type of calendar entries to be generated. "
-#             "If this is empty, no calendar entries will be generated."))
-#
-#     fee = dd.ForeignKey(
-#         'products.Product',
-#         blank=True, null=True,
-#         verbose_name=_("Attendance fee"),
-#         related_name='lines_by_fee')
-#
-#     guest_role = dd.ForeignKey(
-#         "cal.GuestRole", blank=True, null=True,
-#         verbose_name=_("Manage presences as"),
-#         help_text=_(
-#             "The default guest role for particpants of "
-#             "calendar entries for activities in this series. "
-#             "Leave empty if you don't want any presences management."))
-#
-#     options_cat = dd.ForeignKey(
-#         'products.ProductCat',
-#         verbose_name=_("Options category"),
-#         related_name="orders_lines_by_options_cat",
-#         blank=True, null=True)
-#
-#     fees_cat = dd.ForeignKey(
-#         'products.ProductCat',
-#         verbose_name=_("Fees category"),
-#         related_name="orders_lines_by_fees_cat",
-#         blank=True, null=True)
-#
-#     body_template = models.CharField(
-#         max_length=200,
-#         verbose_name=_("Body template"),
-#         blank=True, help_text="The body template to use when "
-#         "printing a order of this series. "
-#         "Leave empty to use the site's default.")
-#
-#     def __str__(self):
-#         name = dd.babelattr(self, 'name')
-#         if self.ref:
-#             return "{0} ({1})".format(self.ref, name)
-#         return name
-#         # return "{0} #{1}".format(self._meta.verbose_name, self.pk)
-#
-#     @dd.chooser()
-#     def fee_choices(cls, fees_cat):
-#         Product = rt.models.products.Product
-#         if not fees_cat:
-#             return Product.objects.none()
-#         return Product.objects.filter(cat=fees_cat)
-#
-#     @dd.chooser(simple_values=True)
-#     def body_template_choices(cls):
-#         return dd.plugins.jinja.list_templates(
-#             '.body.html',
-#             rt.models.orders.Enrolment.get_template_group(),
-#             'excerpts')
 
 # @dd.python_2_unicode_compatible
 class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
@@ -158,6 +81,16 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
         # verbose_name = _("Event")
         # verbose_name_plural = _('Events')
 
+    partner = dd.ForeignKey(
+        "contacts.Partner",
+        related_name="%(app_label)s_%(class)s_set_by_partner",
+        blank=True, null=True)
+
+    invoice_recipient = dd.ForeignKey(
+        'contacts.Partner',
+        verbose_name=_("Invoicing address"),
+        related_name='orders_by_recipient',
+        blank=True, null=True)
 
     site_field_name = 'room'
 
@@ -165,6 +98,9 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
 
     description = dd.BabelTextField(_("Description"), blank=True)
     remark = models.TextField(_("Remark"), blank=True)
+    max_date = models.DateField(
+        blank=True, null=True,
+        verbose_name=_("Generate events until"))
 
     # quick_search_fields = 'name'
 
@@ -198,6 +134,8 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
         self.state = OrderStates.draft
         super(Order, self).on_duplicate(ar, master)
 
+    def update_cal_until(self):
+        return self.max_date
 
     @classmethod
     def add_param_filter(
