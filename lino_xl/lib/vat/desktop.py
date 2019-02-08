@@ -47,6 +47,7 @@ class InvoiceDetail(dd.DetailLayout):
     general = dd.Panel("""
     id entry_date partner user
     due_date your_ref vat_regime #item_vat
+    uploads.UploadsByController
     ItemsByInvoice:60 totals:20
     """, label=_("General"))
 

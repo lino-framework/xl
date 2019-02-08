@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """This is Lino's standard plugin for General Ledger.
@@ -27,7 +27,7 @@ from lino.api import ad, _
 class Plugin(ad.Plugin):
 
     verbose_name = _("Accounting")
-    needs_plugins = ['lino.modlib.weasyprint', 'lino_xl.lib.xl']
+    needs_plugins = ['lino.modlib.weasyprint', 'lino_xl.lib.xl', 'lino.modlib.uploads']
 
     ref_length = 4  # 20
     """

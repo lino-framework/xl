@@ -33,6 +33,7 @@ from lino.mixins.periods import DateRange
 from lino.modlib.system.choicelists import ObservedEvent
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import PrintableType
+from lino.modlib.uploads.mixins import UploadController
 from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.contacts.choicelists import PartnerEvents
@@ -98,6 +99,7 @@ class Journal(mixins.BabelNamed,
     yearly_numbering = models.BooleanField(
         _("Yearly numbering"), default=True)
     must_declare = models.BooleanField(default=True)
+    uploads_volume = dd.ForeignKey("uploads.Volume", blank=True, null=True)
     # invert_due_dc = models.BooleanField(
     #     _("Invert booking direction"),
     #     help_text=_("Whether to invert booking direction of due movement."),
@@ -463,7 +465,7 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
 
 
 @dd.python_2_unicode_compatible
-class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
+class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable, UploadController):
     manager_roles_required = dd.login_required(VoucherSupervisor)
     
     class Meta:
@@ -823,6 +825,12 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable):
         """
         return None
         # raise NotImplementedError()
+
+
+    def get_uploads_volume(self):
+        if self.journal_id:
+            return self.journal.uploads_volume
+
 
 Voucher.set_widget_options('number_with_year', width=8)
 # Voucher.set_widget_options('number', hide_sum=True)
