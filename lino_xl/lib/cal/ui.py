@@ -44,17 +44,21 @@ class RemoteCalendars(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 
-class Rooms(dd.Table):
-    required_roles = dd.login_required(OfficeStaff)
-    # required_roles = dd.login_required((OfficeStaff, CalendarReader))
-    
-    model = 'cal.Room'
-    detail_layout = """
+class RoomDetail(dd.DetailLayout):
+    main = """
     id name
     company contact_person
     description
     cal.EntriesByRoom
     """
+
+
+class Rooms(dd.Table):
+    required_roles = dd.login_required(OfficeStaff)
+    # required_roles = dd.login_required((OfficeStaff, CalendarReader))
+    
+    model = 'cal.Room'
+    detail_layout = "cal.RoomDetail"
     insert_layout = """
     id name
     company

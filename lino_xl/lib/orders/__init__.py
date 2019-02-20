@@ -29,7 +29,8 @@ class Plugin(ad.Plugin):
     # def setup_main_menu(self, site, user_type, main):
     #     m = main.add_menu(self.app_label, self.verbose_name)
     #     m.add_action('orders.MyOrders')
-
+    #     for i in site.models.orders.OrderAreas.get_list_items():
+    #         m.add_action(i.orders_table)
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)

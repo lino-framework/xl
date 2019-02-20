@@ -13,10 +13,31 @@ Changes 2019 in Lino XL
   :local:
 
 
+2019-02-20
+==========
+
+It is now possible to easily redefine the detail layout for
+:class:`lino_xl.lib.cal.Rooms` by overriding
+:class:`lino_xl.lib.cal.RoomDetail`
+
+2019-02-13
+==========
+
+:meth:`lino_xl.lib.ledger.Voucher.get_wanted_movements` now has a default
+implementation which returns no movements.
+
+
+2019-02-12
+==========
+
+More changes in the :mod:`lino_xl.lib.orders` plugin which is still work in
+progress for :ref:`presto`.
+
+
 2019-02-09
 ==========
 
-Released Lino XL 19.2.0 to PyPi.
+Released Lino XL 19.2.0 to PyPI.
 
 
 2019-02-08

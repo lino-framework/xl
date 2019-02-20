@@ -763,7 +763,8 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable, UploadCon
         return super(Voucher, self).disable_delete(ar)
 
     def get_wanted_movements(self):
-        raise NotImplementedError()
+        return []
+        # raise NotImplementedError()
 
     def create_movement(self, item, acc_tuple, project, dc, amount, **kw):
         # dd.logger.info("20151211 ledger.create_movement()")

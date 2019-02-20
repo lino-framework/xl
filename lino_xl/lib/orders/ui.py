@@ -25,18 +25,17 @@ from lino import mixins
 from lino.core.roles import Explorer
 from lino.utils import join_elems
 from etgen.html import E
-from lino.utils.mti import get_child
-from lino.utils.report import Report
+# from lino.utils.report import Report
 
-from lino.modlib.system.choicelists import PeriodEvents
-from lino.modlib.users.mixins import My
+# from lino.modlib.system.choicelists import PeriodEvents
+# from lino.modlib.users.mixins import My
 
 from lino_xl.lib.ledger.ui import ByJournal
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 
 from .roles import OrdersUser, OrdersStaff
 
-cal = dd.resolve_app('cal')
+# cal = dd.resolve_app('cal')
 
 try:
     worker_model = dd.plugins.orders.worker_model
@@ -56,24 +55,34 @@ class OrderDetail(dd.DetailLayout):
     main = "general cal_tab enrolments"
     
     general = dd.Panel("""
-    journal number start_date start_time end_time end_date
-    workflow_buttons id:8 user
-    name
-    description
+    entry_date room workflow_buttons print_actions:15
+    remark
+    EnrolmentsByOrder ItemsByOrder
     """, label=_("General"))
+
+    first_event_panel = """
+    start_date start_time 
+    end_time end_date
+    """
+
+    repeat_panel = """
+    every_unit every max_events max_date 
+    monday tuesday wednesday thursday friday saturday sunday
+    """
+
     
     cal_tab = dd.Panel("""
-    max_events max_date every_unit every
-    monday tuesday wednesday thursday friday saturday sunday
+    first_event_panel repeat_panel
     cal.EntriesByController
     """, label=_("Calendar"))
 
-    enrolments_top = 'print_actions:15'
+    enrolments_top = 'journal number id:8 user'
 
     enrolments = dd.Panel("""
     enrolments_top
-    EnrolmentsByOrder
-    """, label=_("Enrolments"))
+    # EnrolmentsByOrder
+    description
+    """, label=_("Miscellaneous"))
 
 # Order.detail_layout_class = OrderDetail
 
@@ -83,10 +92,11 @@ class Orders(dd.Table):
     model = 'orders.Order'
     detail_layout = 'orders.OrderDetail'
     insert_layout = """
-    journal 
-    name start_date
+    project
+    user
+    entry_date
     """
-    column_names = "start_date name workflow_buttons *"
+    column_names = "start_date project remark workflow_buttons *"
     order_by = ['-start_date', '-start_time']
     auto_fit_column_widths = True
 
@@ -109,15 +119,15 @@ class Orders(dd.Table):
     #     if self._order_area is not None:
     #         return self._order_area.text
     #     return super(Orders, self).get_actor_label()
-    #
-    # @classmethod
-    # def get_simple_parameters(cls):
-    #     s = list(super(Orders, cls).get_simple_parameters())
-    #     s.append('worker')
-    #     # s.append('state')
-    #     # s.add('user')
-    #     return s
-    #
+
+    @classmethod
+    def get_simple_parameters(cls):
+        s = list(super(Orders, cls).get_simple_parameters())
+        s.append('project')
+        # s.append('order_state')
+        # s.add('user')
+        return s
+
     # @classmethod
     # def get_request_queryset(self, ar, **kwargs):
     #     # dd.logger.info("20160223 %s", self)
@@ -150,38 +160,38 @@ class OrdersByJournal(Orders, ByJournal):
     # _order_area = OrderLayouts.default
     required_roles = dd.login_required(OrdersUser)
     master_key = 'journal'
+    column_names = "number project start_date remark weekdays_text workflow_buttons *"
 
-    # orders_by_line = dd.ShowSlaveTable('orders.OrdersByLine')
 
 VoucherTypes.add_item_lazy(OrdersByJournal)
 
 class AllOrders(Orders):
     # _order_area = None
     required_roles = dd.login_required(Explorer)
-    column_names = "journal number start_date:8 user " \
-                   "weekdays_text:10 times_text:10 *"
+    column_names = "id journal number entry_date:8 workflow_buttons user *"
+    order_by = ['id']
 
-class OrdersByPartner(Orders):
-    master_key = 'partner'
-    column_names = "start_date:8 journal number user " \
+class OrdersByProject(Orders):
+    master_key = 'project'
+    column_names = "entry_date:8 journal number workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
-    order_by = ['start_date']
+    order_by = ['entry_date']
 
 class OrdersByRecipient(Orders):
     master_key = 'invoice_recipient'
-    column_names = "partner start_date:8 journal number user " \
+    column_names = "project entry_date:8 journal number workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
 
-class MyOrders(My, Orders):
-    column_names = "start_date:8 name workflow_buttons *"
-    order_by = ['start_date']
+# class MyOrders(My, Orders):
+#     column_names = "entry_date:8 name id workflow_buttons *"
+#     order_by = ['entry_date']
     
-    @classmethod
-    def param_defaults(self, ar, **kw):
-        kw = super(MyOrders, self).param_defaults(ar, **kw)
-        # kw.update(state=OrderStates.active)
-        kw.update(show_exposed=dd.YesNo.yes)
-        return kw
+    # @classmethod
+    # def param_defaults(self, ar, **kw):
+    #     kw = super(MyOrders, self).param_defaults(ar, **kw)
+    #     # kw.update(state=OrderStates.active)
+    #     kw.update(show_exposed=dd.YesNo.yes)
+    #     return kw
 
 # class EnrolmentDetail(dd.DetailLayout):
 #     main = """
@@ -201,7 +211,7 @@ class Enrolments(dd.Table):
     model = 'orders.Enrolment'
     stay_in_grid = True
     # order_by = ['request_date']
-    column_names = 'order order__state worker workflow_buttons user *'
+    column_names = 'order order__state worker *'
     # hidden_columns = 'id state'
     insert_layout = """
     order
@@ -268,11 +278,11 @@ class EnrolmentsByOrder(Enrolments):
     required_roles = dd.login_required(OrdersUser)
     # required_roles = dd.login_required(OrdersUser)
     master_key = "order"
-    column_names = 'worker guest_role' \
+    column_names = 'worker guest_role ' \
                    'remark workflow_buttons *'
     auto_fit_column_widths = True
     # cell_edit = False
-    display_mode = 'html'
+    # display_mode = 'html'
 
     insert_layout = """
     worker 
@@ -287,38 +297,37 @@ class EnrolmentsByOrder(Enrolments):
     #     return rt.models.orders.Enrolment._meta.verbose_name_plural
 
 
-class OrderItemDetail(dd.DetailLayout):
-    main = """
-    seqno product discount
-    unit_price qty total_base total_vat total_incl
-    title
-    description"""
-
-    window_size = (80, 20)
-
+# class OrderItemDetail(dd.DetailLayout):
+#     main = """
+#     seqno product #discount
+#     #unit_price qty total_base total_vat total_incl
+#     title
+#     description"""
+#
+#     window_size = (80, 20)
+#
 
 class OrderItems(dd.Table):
     """Shows all order items."""
     model = 'orders.OrderItem'
     required_roles = dd.login_required(OrdersStaff)
     auto_fit_column_widths = True
-    # hidden_columns = "seqno description total_base total_vat"
 
-    detail_layout = 'orders.OrderItemDetail'
+    # detail_layout = 'orders.OrderItemDetail'
 
     insert_layout = """
-    product discount qty
-    title
+    product qty
+    remark
     """
 
     stay_in_grid = True
 
 
 class ItemsByOrder(OrderItems):
-    label = _("Content")
+    label = _("Needed per mission")
     master_key = 'voucher'
     order_by = ["seqno"]
     required_roles = dd.login_required(OrdersUser)
-    column_names = "product title discount unit_price qty total_incl *"
+    column_names = "product qty remark *"
 
 

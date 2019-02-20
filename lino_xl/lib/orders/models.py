@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -21,7 +21,7 @@ from lino.api import dd, rt
 from lino import mixins
 
 from etgen.html import E, join_elems, tostring
-from lino.mixins import Referrable
+from lino.mixins import ProjectRelated
 from lino.mixins.human import parse_name
 from lino.mixins.duplicable import Duplicable
 from lino.mixins.periods import DateRange
@@ -37,13 +37,13 @@ from lino_xl.lib.cal.mixins import RecurrenceSet, EventGenerator
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.mixins import SequencedVoucherItem
-from lino_xl.lib.sales.mixins import SalesDocument, ProductDocItem
+# from lino_xl.lib.sales.mixins import SalesDocument, ProductDocItem
+from lino_xl.lib.excerpts.mixins import Certifiable
 
 from lino.utils.dates import DateRangeValue
 
 from .actions import PrintPresenceSheet
-
-cal = dd.resolve_app('cal')
+# from .choicelists import OrderStates, OrderAreas
 
 try:
     worker_model = dd.plugins.orders.worker_model
@@ -54,53 +54,44 @@ except AttributeError:
     worker_model = 'foo.Bar'
     worker_name_fields = 'foo bar'
 
-
-class StartEndTime(dd.Model):
-
-    class Meta:
-        abstract = True
-    start_time = dd.TimeField(
-        blank=True, null=True,
-        verbose_name=_("Start Time"))
-    end_time = dd.TimeField(
-        blank=True, null=True,
-        verbose_name=_("End Time"))
-
-
-
-
+from lino.modlib.uploads.mixins import UploadController
 
 # @dd.python_2_unicode_compatible
-class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
+# class Order(SalesDocument, UserAuthored, UploadController, RecurrenceSet, EventGenerator, Duplicable):
+# class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
+class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, ProjectRelated):
 
     class Meta:
         app_label = 'orders'
         abstract = dd.is_abstract_model(__name__, 'Order')
-        verbose_name = _("Activity")
-        verbose_name_plural = _('Activities')
-        # verbose_name = _("Event")
-        # verbose_name_plural = _('Events')
+        verbose_name = _("Order")
+        verbose_name_plural = _('Orders')
 
-    partner = dd.ForeignKey(
-        "contacts.Partner",
-        related_name="%(app_label)s_%(class)s_set_by_partner",
-        blank=True, null=True)
-
+    # order_area = OrderAreas.field(default='default')
+    # client = dd.ForeignKey(
+    #     "presto.Client",
+    #     related_name="%(app_label)s_%(class)s_set_by_client",
+    #     blank=True, null=True)
+    #
     invoice_recipient = dd.ForeignKey(
         'contacts.Partner',
-        verbose_name=_("Invoicing address"),
+        verbose_name=_("Invoice recipient"),
         related_name='orders_by_recipient',
         blank=True, null=True)
 
     site_field_name = 'room'
 
     # line = dd.ForeignKey('orders.Line')
-
+    # event_type = dd.ForeignKey('cal.EventType', null=True, blank=True)
+    room = dd.ForeignKey('cal.Room', null=True, blank=True)
     description = dd.BabelTextField(_("Description"), blank=True)
     remark = models.TextField(_("Remark"), blank=True)
+    # entry_date = models.DateField(
+    #     verbose_name=_("Entry date"))
     max_date = models.DateField(
         blank=True, null=True,
         verbose_name=_("Generate events until"))
+    # order_state = OrderStates.field(default='draft')
 
     # quick_search_fields = 'name'
 
@@ -109,7 +100,7 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
     #     help_text=("Maximum number of participants"),
     #     blank=True, null=True)
     #
-    name = models.CharField(_("Designation"), max_length=100, blank=True)
+    # name = models.CharField(_("Designation"), max_length=100, blank=True)
     # enrolments_until = models.DateField(
     #     _("Enrolments until"), blank=True, null=True)
     #
@@ -118,6 +109,11 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
         show_in_bbar=False,
         build_method='weasy2html',
         label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
+
+    def full_clean(self, *args, **kwargs):
+        if self.entry_date is None:
+            self.entry_date = dd.today()
+        super(Order, self).full_clean(*args, **kwargs)
 
     @dd.displayfield(_("Print"))
     def print_actions(self, ar):
@@ -130,25 +126,25 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
             self.print_presence_sheet_html))
         return E.p(*join_elems(elems, sep=", "))
 
-    def on_duplicate(self, ar, master):
-        self.state = OrderStates.draft
-        super(Order, self).on_duplicate(ar, master)
-
+    # def on_duplicate(self, ar, master):
+    #     self.state = OrderStates.draft
+    #     super(Order, self).on_duplicate(ar, master)
+    #
     def update_cal_until(self):
         return self.max_date
 
-    @classmethod
-    def add_param_filter(
-            cls, qs, lookup_prefix='', show_exposed=None, **kwargs):
-        qs = super(Order, cls).add_param_filter(qs, **kwargs)
-        exposed_states = OrderStates.filter(is_exposed=True)
-        fkw = dict()
-        fkw[lookup_prefix + 'state__in'] = exposed_states
-        if show_exposed == dd.YesNo.no:
-            qs = qs.exclude(**fkw)
-        elif show_exposed == dd.YesNo.yes:
-            qs = qs.filter(**fkw)
-        return qs
+    # @classmethod
+    # def add_param_filter(
+    #         cls, qs, lookup_prefix='', show_exposed=None, **kwargs):
+    #     qs = super(Order, cls).add_param_filter(qs, **kwargs)
+    #     exposed_states = OrderStates.filter(is_exposed=True)
+    #     fkw = dict()
+    #     fkw[lookup_prefix + 'state__in'] = exposed_states
+    #     if show_exposed == dd.YesNo.no:
+    #         qs = qs.exclude(**fkw)
+    #     elif show_exposed == dd.YesNo.yes:
+    #         qs = qs.filter(**fkw)
+    #     return qs
         
 
     @classmethod
@@ -156,6 +152,9 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
         for f in super(Order, cls).get_registrable_fields(site):
             yield f
         yield 'name'
+
+    def update_cal_rset(self):
+        return self
 
     def update_cal_from(self, ar):
         """Note: if recurrency is weekly or per_weekday, actual start may be
@@ -169,7 +168,8 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
         return self.start_date
 
     def update_cal_event_type(self):
-        return self.event_type
+        if self.room_id:
+            return self.room.event_type
 
     def update_cal_summary(self, et, i):
         if self.every_unit == Recurrencies.once:
@@ -229,24 +229,24 @@ class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
         return rt.models.orders.EnrolmentsByOrder.request(
             self, param_values=pv)
 
-    @dd.virtualfield(dd.HtmlBox(_("Presences")))
-    def presences_box(self, ar):
-        # not finished
-        if ar is None:
-            return ''
-        pv = ar.param_values
-        # if not pv.start_date or not pv.end_date:
-        #     return ''
-        events = self.events_by_order().order_by('start_date')
-        events = rt.models.system.PeriodEvents.started.add_filter(events, pv)
-        return "TODO: copy logic from presence_sheet.wk.html"
+    # @dd.virtualfield(dd.HtmlBox(_("Presences")))
+    # def presences_box(self, ar):
+    #     # not finished
+    #     if ar is None:
+    #         return ''
+    #     pv = ar.param_values
+    #     # if not pv.start_date or not pv.end_date:
+    #     #     return ''
+    #     events = self.events_by_order().order_by('start_date')
+    #     events = rt.models.system.PeriodEvents.started.add_filter(events, pv)
+    #     return "TODO: copy logic from presence_sheet.wk.html"
 
 
 
 # customize fields coming from mixins to override their inherited
 # default verbose_names
-dd.update_field(Order, 'every_unit', default=models.NOT_PROVIDED)
-dd.update_field(Order, 'every', default=models.NOT_PROVIDED)
+# dd.update_field(Order, 'every_unit', default=models.NOT_PROVIDED)
+# dd.update_field(Order, 'every', default=models.NOT_PROVIDED)
 
 
 # ENROLMENT
@@ -270,7 +270,7 @@ class Enrolment(dd.Model):
     quick_search_fields = worker_name_fields
 
     #~ teacher = dd.ForeignKey(Teacher)
-    order = dd.ForeignKey('orders.Order')
+    order = dd.ForeignKey('orders.Order', related_name="enrolments_by_order")
     worker = dd.ForeignKey(worker_model, related_name="enrolments_by_worker")
     guest_role = dd.ForeignKey("cal.GuestRole", blank=True, null=True)
 
@@ -281,21 +281,21 @@ class Enrolment(dd.Model):
         worker = dd.resolve_model(worker_model)
         return worker.objects.all()
 
-    def create_worker_choice(self, text):
-        """
-        Called when an unknown worker name was given.
-        Try to auto-create it.
-        """
-        worker = dd.resolve_model(worker_model)
-        kw = parse_name(text)
-        if len(kw) != 2:
-            raise ValidationError(
-                "Cannot find first and last names in %r to \
-                auto-create worker", text)
-        p = worker(**kw)
-        p.full_clean()
-        p.save()
-        return p
+    # def create_worker_choice(self, text):
+    #     """
+    #     Called when an unknown worker name was given.
+    #     Try to auto-create it.
+    #     """
+    #     worker = dd.resolve_model(worker_model)
+    #     kw = parse_name(text)
+    #     if len(kw) != 2:
+    #         raise ValidationError(
+    #             "Cannot find first and last names in %r to \
+    #             auto-create worker", text)
+    #     p = worker(**kw)
+    #     p.full_clean()
+    #     p.save()
+    #     return p
 
     def get_overview_elems(self, ar):
         if self.order_id:
@@ -364,7 +364,8 @@ def setup_memo_commands(sender=None, **kwargs):
         # title=lambda obj: obj.name
     )
 
-class OrderItem(ProductDocItem, SequencedVoucherItem):
+# class OrderItem(ProductDocItem, SequencedVoucherItem):
+class OrderItem(SequencedVoucherItem):
     class Meta:
         app_label = 'orders'
         abstract = dd.is_abstract_model(__name__, 'OrderItem')
@@ -372,6 +373,12 @@ class OrderItem(ProductDocItem, SequencedVoucherItem):
         verbose_name_plural = _("Order items")
 
     voucher = dd.ForeignKey('orders.Order', related_name='items')
-    title = models.CharField(_("Heading"), max_length=200, blank=True)
+    # title = models.CharField(_("Heading"), max_length=200, blank=True)
+    product = dd.ForeignKey('products.Product', blank=True, null=True)
+    qty = dd.QuantityField(_("Quantity"), blank=True, null=True)
+    # unit_price = dd.PriceField(_("Unit price"), blank=True, null=True)
+    remark = models.TextField(_("Remark"), blank=True)
 
 
+
+from .ui import *
