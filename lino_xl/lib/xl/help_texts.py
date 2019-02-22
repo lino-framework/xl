@@ -423,6 +423,7 @@ regimes:"""),
     'lino_xl.lib.bevats.VatColumns' : _("""The lino_xl.lib.betvats plugin redefines the list of VAT
 columns:"""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
+    'lino_xl.lib.cal.Event' : _("""The Django model which represents a calendar entry."""),
     'lino_xl.lib.cal.Event.start_date' : _("""The starting date of this entry.  May not be empty."""),
     'lino_xl.lib.cal.Event.end_date' : _("""The ending date of this entry. Leave empty for same-day entries."""),
     'lino_xl.lib.cal.Event.start_time' : _("""The starting time.  If this is empty, the entry is considered a all-day entry."""),
@@ -463,8 +464,7 @@ user-modified Events."""),
     'lino_xl.lib.cal.Event.get_calendar' : _("""Returns the Calendar which contains this entry, or
 None if no subscription is found."""),
     'lino_xl.lib.cal.EntryStates' : _("""The list of possible states of a calendar entry."""),
-    'lino_xl.lib.cal.EntryState' : _("""Every choice of EntryStates is an instance of EntryState
-and has some attributes."""),
+    'lino_xl.lib.cal.EntryState' : _("""Every calendar entry state is an instance of this and has some attributes."""),
     'lino_xl.lib.cal.EntryState.edit_guests' : _("""Whether presences are editable when the entry is in this
 state."""),
     'lino_xl.lib.cal.EntryState.guest_state' : _("""Force the given guest state for all guests when an entry is
@@ -583,13 +583,12 @@ weekdays where the recurrence occurs."""),
 lino.modlib.courses.models.Course."""),
     'lino_xl.lib.cal.Reservation.max_date' : _("""Don't generate calendar entries beyond this date."""),
     'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
+    'lino_xl.lib.cal.DurationUnits' : _("""The list of possible duration units defined by this application."""),
     'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
 choicelist."""),
     'lino_xl.lib.cal.DurationUnit.add_duration' : _("""Return a date or datetime obtained by adding value
 times this unit to the specified value orig.
 Returns None is orig is empty."""),
-    'lino_xl.lib.cal.DurationUnits' : _("""A list of possible values for the duration_unit
-<lino_xl.lib.cal.Event.duration_unit> field of a calendar entry."""),
     'lino_xl.lib.cal.AccessClasses' : _("""The sitewide list of access classes."""),
     'lino_xl.lib.cal.ShowEntriesByDay' : _("""Show all calendar events of the same day."""),
     'lino_xl.lib.cal.Component' : _("""Model mixin inherited by both Event and Task."""),
