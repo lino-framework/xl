@@ -462,8 +462,9 @@ user-modified Events."""),
 (auto_type ) has changed."""),
     'lino_xl.lib.cal.Event.get_calendar' : _("""Returns the Calendar which contains this entry, or
 None if no subscription is found."""),
-    'lino_xl.lib.cal.EntryStates' : _("""The possible states of a calendar entry.
-Stored in the state field."""),
+    'lino_xl.lib.cal.EntryStates' : _("""The list of possible states of a calendar entry."""),
+    'lino_xl.lib.cal.EntryState' : _("""Every choice of EntryStates is an instance of EntryState
+and has some attributes."""),
     'lino_xl.lib.cal.EntryState.edit_guests' : _("""Whether presences are editable when the entry is in this
 state."""),
     'lino_xl.lib.cal.EntryState.guest_state' : _("""Force the given guest state for all guests when an entry is
@@ -488,7 +489,7 @@ entry state."""),
 planner. This list can be modified locally."""),
     'lino_xl.lib.cal.DailyPlannerRow' : _("""A database object that represents one row of the daily planner.
 The default configuration has "AM", "PM" and "All day"."""),
-    'lino_xl.lib.cal.Calendar' : _("""the django model representing a calendar."""),
+    'lino_xl.lib.cal.Calendar' : _("""The django model representing a calendar."""),
     'lino_xl.lib.cal.Calendar.color' : _("""The color to use for entries of this calendar (in
 lino_xl.lib.extensible)."""),
     'lino_xl.lib.cal.EventGenerator' : _("""Base class for things that generate a series of events."""),
@@ -510,7 +511,7 @@ there are conflicts but no alternative date could be found."""),
     'lino_xl.lib.cal.Recurrencies' : _("""List of possible choices for a 'recurrency' field."""),
     'lino_xl.lib.cal.Recurrencies.easter' : _("""Repeat events yearly, moving them together with the Easter
 data of that year."""),
-    'lino_xl.lib.cal.Guest' : _("""TODO: Rename this to "Presence"."""),
+    'lino_xl.lib.cal.Guest' : _("""The Django model representing a guest."""),
     'lino_xl.lib.cal.Guest.event' : _("""The calendar event to which this presence applies."""),
     'lino_xl.lib.cal.Guest.partner' : _("""The partner to which this presence applies."""),
     'lino_xl.lib.cal.Guest.role' : _("""The role of this partner in this presence."""),
@@ -521,19 +522,16 @@ data of that year."""),
     'lino_xl.lib.cal.GuestRole' : _("""The role of a guest expresses what the partner is going to do there."""),
     'lino_xl.lib.cal.GuestRoles' : _("""Global table of guest roles."""),
     'lino_xl.lib.cal.GuestStates' : _("""Global choicelist of possible guest states."""),
-    'lino_xl.lib.cal.RemoteCalendar' : _("""Remote calendars will be synchronized by
-lino_xl.lib.cal.management.commands.watch_calendars,
-and local modifications will be sent back to the remote calendar."""),
-    'lino_xl.lib.cal.Room' : _("""A location where calendar entries can happen.  For a given Room you
-can see the EntriesByRoom that happened (or will happen)
-there.  A Room has a multilingual name."""),
-    'lino_xl.lib.cal.Room.name' : _("""The designation of the room. This should (but is not required
-to) be unique."""),
-    'lino_xl.lib.cal.Rooms' : _("""List of rooms where calendar events can happen."""),
-    'lino_xl.lib.cal.Subscription' : _("""A Suscription is when a User subscribes to a Calendar.
-It corresponds to what the extensible CalendarPanel calls "Calendars" """),
-    'lino_xl.lib.cal.Task' : _("""A Task is when a user plans to do something
-(and optionally wants to get reminded about it)."""),
+    'lino_xl.lib.cal.UpdateGuests' : _("""See Event.update_guests()."""),
+    'lino_xl.lib.cal.UpdateAllGuests' : _("""See EventGenerator.update_all_guests()."""),
+    'lino_xl.lib.cal.RemoteCalendar' : _("""Django model for representing a remote calendar."""),
+    'lino_xl.lib.cal.Room' : _("""Django model for representing a room."""),
+    'lino_xl.lib.cal.Room.name' : _("""The designation of the room. This is not required to be unique."""),
+    'lino_xl.lib.cal.Rooms' : _("""Base class for all list of rooms."""),
+    'lino_xl.lib.cal.AllRooms' : _("""Show a list of all rooms."""),
+    'lino_xl.lib.cal.RoomDetail' : _("""The detail layout for Rooms and subclasses."""),
+    'lino_xl.lib.cal.Subscription' : _("""Django model for representing a subscription."""),
+    'lino_xl.lib.cal.Task' : _("""Django model for representing a subscription."""),
     'lino_xl.lib.cal.Task.priority' : _("""How urgent this task is."""),
     'lino_xl.lib.cal.Task.state' : _("""The state of this Task. one of TaskStates."""),
     'lino_xl.lib.cal.TaskStates' : _("""Possible values for the state of a Task. The list of
@@ -552,8 +550,6 @@ entries."""),
     'lino_xl.lib.cal.RecurrentEvent.care_about_conflicts' : _("""Recurrent events don't care about conflicts. A holiday won't move
 just because some other event has been created before on that date."""),
     'lino_xl.lib.cal.RecurrentEvents' : _("""The list of all recurrent events (RecurrentEvent)."""),
-    'lino_xl.lib.cal.UpdateGuests' : _("""See Event.update_guests()."""),
-    'lino_xl.lib.cal.UpdateAllGuests' : _("""See EventGenerator.update_all_guests()."""),
     'lino_xl.lib.cal.Events' : _("""Table which shows all calendar events."""),
     'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be shown.  "Yes" means only
 appointments, "No" means no appointments and leaving it to

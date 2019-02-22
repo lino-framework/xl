@@ -16,7 +16,7 @@ Changes 2019 in Lino XL
 2019-02-22
 ==========
 
-Fixed :tickt:`2811` (UnicodeError when re-reading a beid card where the diff
+Fixed :ticket:`2811` (UnicodeError when re-reading a beid card where the diff
 contained non-ascii chars).
 
 2019-02-20
