@@ -2,7 +2,7 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-# from builtins import str
+from builtins import str
 
 import logging
 logger = logging.getLogger(__name__)
@@ -194,8 +194,8 @@ class BeIdCardHolder(SSIN):
             old = getattr(self, fldname)
             if old != new:
                 diffs.append(
-                    "{} : {} -> {}".format(
-                        fld.verbose_name, dd.obj2str(old), dd.obj2str(new)))
+                    u"{} : {} -> {}".format(
+                        str(fld.verbose_name), dd.obj2str(old), dd.obj2str(new)))
                 setattr(self, fld.name, new)
         return objects, diffs
 

@@ -287,7 +287,11 @@ class BaseBeIdReadCardAction(dd.Action):
         msg = _("Click OK to apply the following changes for %s") % obj
         msg = simulate_wrap(msg)
         msg += ' :<br/>'
-        msg += u'\n<br/>'.join(sorted(diffs))
+        # UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 10: ordinal not in range(128)
+        diffs = [str(i) for i in diffs]
+        diffs = sorted(diffs)
+        msg += u'\n<br/>'.join(diffs)
+        # msg += u'\n<br/>'.join(sorted(diffs))
 
         def yes(ar2):
             msg = _("%s has been saved.") % dd.obj2unicode(obj)
