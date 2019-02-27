@@ -585,6 +585,9 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         flt = Q(enrolments_until__isnull=True)
         flt |= Q(enrolments_until__gte=request_date)
         qs = rt.models.courses.Course.objects.filter(flt)
+        flt = Q(max_date__isnull=True)
+        flt |= Q(max_date__gte=request_date)
+        qs = qs.filter(flt)
         if course_area:
             qs = qs.filter(line__course_area=course_area)
         enrollable_states = CourseStates.filter(is_exposed=True)
