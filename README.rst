@@ -37,11 +37,14 @@ applications. It is considered an integral part of the Lino framework, it is
 maintained, documented and tested along with the core at
 `www.lino-framework.org <http://www.lino-framework.org>`__.
 
-- Changes are documented at http://xl.lino-framework.org
-
-- Most documentation is in the Lino Book at http://www.lino-framework.org
-
-- For *introductions* and *commercial information* about Lino 
-  see http://www.saffre-rumma.net
+- This repository is a part of the Lino framework which is documented as a
+  whole in the `Lino Book <http://www.lino-framework.org>`__. For *introductions*
+  and *commercial information* about Lino see http://www.saffre-rumma.net
+  
+- Please report any issues in the **book** repository:
+  https://github.com/lino-framework/book
+  
+- Changes to this repository are documented at
+  http://xl.lino-framework.org/changes/
 
 
