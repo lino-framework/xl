@@ -33,18 +33,16 @@ The ``lino-xl`` package
 
 
 The **Lino Extensions Library** is a collection of plugins used by many Lino
-applications. It is considered an integral part of the Lino framework, it is
-maintained, documented and tested along with the core at
-`www.lino-framework.org <http://www.lino-framework.org>`__.
+applications. 
 
-- This repository is a part of the Lino framework which is documented as a
-  whole in the `Lino Book <http://www.lino-framework.org>`__. For *introductions*
-  and *commercial information* about Lino see http://www.saffre-rumma.net
+- This repository is considered an integral part of the Lino framework, which is
+  documented as a whole in the `Lino Book
+  <http://www.lino-framework.org/dev/overview.html>`__.
+ 
+- Your feedback is welcome.  Our `community page
+  <http://www.lino-framework.org/community>`__ explains how to contact us.
   
-- Please report any issues in the **book** repository:
-  https://github.com/lino-framework/book
-  
-- Changes to this repository are documented at
+- Changes to this particular repository are listed at
   http://xl.lino-framework.org/changes/
 
 
