@@ -8,49 +8,34 @@
 """
 
 from __future__ import unicode_literals, print_function
-import six
-
-from builtins import str
 
 import datetime
-from dateutil.relativedelta import relativedelta
-
-from django.db import models
-from django.conf import settings
-from django.dispatch import Signal
-from django.core.exceptions import ValidationError
 
 from atelier.utils import last_day_of_month
+from dateutil.relativedelta import relativedelta
+from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.dispatch import Signal
 
-from lino.api import dd, rt, _
-from lino import mixins
+from lino.api import _
 from lino.mixins import BabelNamed, Sequenced, StructuredReferrable
-
-from lino.utils import mti
-from lino.utils import SumCollector
 from lino.mixins.periods import DateRange
-
-from lino.modlib.system.choicelists import ObservedEvent
-from lino.modlib.users.mixins import UserAuthored
-from lino.modlib.printing.mixins import PrintableType
-from lino.modlib.uploads.mixins import UploadController
 from lino.modlib.checkdata.choicelists import Checker
-
+from lino.modlib.printing.mixins import PrintableType
+from lino.modlib.system.choicelists import ObservedEvent
+from lino.modlib.uploads.mixins import UploadController
+from lino.modlib.users.mixins import UserAuthored
+from lino.utils import SumCollector
+from lino.utils import mti
 from lino_xl.lib.contacts.choicelists import PartnerEvents
-
-# from .utils import get_due_movements, check_clearings_by_partner
-from .choicelists import (VoucherTypes, VoucherStates,
-                          PeriodStates, JournalGroups, TradeTypes)
-from .mixins import ProjectRelated, VoucherNumber, JournalRef, PeriodRangeObservable, PeriodRange
 from .choicelists import CommonAccounts
-from .utils import DEBIT, CREDIT, ZERO, Balance
-
+# from .utils import get_due_movements, check_clearings_by_partner
+from .choicelists import (PeriodStates)
+from .fields import DebitOrCreditField
+from .mixins import ProjectRelated, VoucherNumber, PeriodRangeObservable
 from .roles import VoucherSupervisor
-from .roles import LedgerStaff
 # from .mixins import FKMATCH
 from .ui import *
-from .fields import DebitOrCreditField
-
 
 
 class LedgerInfo(dd.Model):
@@ -462,6 +447,25 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
     def sheet_item_choices(cls):
         return rt.models.sheets.Item.get_usable_items()
 
+class ChangeState(dd.Action):
+    """
+    Change the state of the invoice
+    """
+    show_in_bbar = False
+    button_text = 'Change State'
+    # sort_index = 52
+    label = _("Change State")
+    # action_name = "changemystate"
+
+    def run_from_ui(self, ar, **kw):
+        current_invoice = ar.selected_rows[0]
+        if current_invoice.state == VoucherStates.draft:
+            current_invoice.state = VoucherStates.registered
+        elif current_invoice.state == VoucherStates.registered:
+            current_invoice.state = VoucherStates.draft
+        current_invoice.save()
+        ar.set_response(refresh_all=True)
+
 
 
 @dd.python_2_unicode_compatible
@@ -481,6 +485,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable, UploadCon
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
     state = VoucherStates.field(default='draft')
+    changing_state = ChangeState()
     workflow_state_field = 'state'
 
     #~ @classmethod

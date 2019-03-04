@@ -12,6 +12,13 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-04
+==========
+
+Add new action :meth:`lino_xl.lib.ledger.Voucher.changing_state` to the :class:`lino_xl.lib.ledger.Voucher`. This action
+changes the invoice between the two Registered and Draft states. This action can be trigger using the Ctrl+X keyboard
+shortcut. It is defined in the :meth:`lino_xl.lib.ledger.ui.Vouchers.get_actions_hotkeys` .
+
 2019-02-27
 ==========
 

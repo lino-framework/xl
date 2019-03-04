@@ -4,24 +4,24 @@
 
 
 from __future__ import unicode_literals
-from builtins import str
-import six
 
+from builtins import str
+
+import six
 from django.db import models
 from django.db.models import OuterRef, Subquery, Sum
-
-from lino.api import dd, rt, _
-from lino import mixins
-from lino.utils.report import Report
 from etgen.html import E
-from lino.utils import join_elems
 
-from .mixins import JournalRef
-from .utils import DEBIT, CREDIT, ZERO
-from .utils import Balance
+from lino import mixins
+from lino.api import dd, rt, _
+from lino.utils import join_elems
+from lino.utils.report import Report
 from .choicelists import TradeTypes, VoucherTypes, JournalGroups
 from .choicelists import VoucherStates
+from .mixins import JournalRef
 from .roles import AccountingReader, LedgerUser, LedgerStaff
+from .utils import Balance
+from .utils import DEBIT, CREDIT, ZERO
 
 
 class Accounts(dd.Table):
@@ -147,6 +147,15 @@ class Vouchers(dd.Table):
         if pv.journal:
             qs = qs.filter(journal=pv.journal)
         return qs
+
+    @classmethod
+    def get_actions_hotkeys(cls):
+        ba = """Lino.row_action_handler('{}', 'GET', null)""".format('changing_state')
+        actions_hotkeys = [{'key': 'x',
+                            'ctrl': True,
+                            'shift': False,
+                            'ba': ba}]
+        return actions_hotkeys
 
 
 class AllVouchers(Vouchers):
