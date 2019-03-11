@@ -19,6 +19,30 @@ from lino.core.views import json_response
 from lino.api import dd, _
 
 
+def read_card_data_from_file(fn):
+    fp = open(fn)
+    rv = json.load(fp)
+    fp.close()
+    # dd.logger.info("20181002 json.load({}) returned {}".format(
+    #     fn, rv))
+
+    if 'success' not in rv:
+        raise Warning(
+            _("Got invalid card data {} from eidreader.").format(rv))
+
+    data = AttrDict(rv)
+    # quick hack to fix #2393. a better solution would be to
+    # make eidreader not POST every key-value using requests
+    # but to send a single field card_data which would be a
+    # json encoded dict.
+    # if isinstance(data.success, six.string_types):
+    #     data.success = parse_boolean(data.success.lower())
+    if not data.success:
+        raise Warning(_("No card data found: {}").format(
+            data.message))
+    return data
+
+
 def load_card_data(uuid):
     # raise Exception("20180412 {}".format(uuid))
     fn = dd.plugins.beid.data_cache_dir.child(uuid)
@@ -26,28 +50,7 @@ def load_card_data(uuid):
     count = 0
     while True:
         try:
-            fp = open(fn)
-            rv = json.load(fp)
-            fp.close()
-            # dd.logger.info("20181002 json.load({}) returned {}".format(
-            #     fn, rv))
-
-            if 'success' not in rv:
-                raise Warning(
-                    _("Got invalid card data {} from eidreader.").format(rv))
-
-            data = AttrDict(rv)
-            # quick hack to fix #2393. a better solution would be to
-            # make eidreader not POST every key-value using requests
-            # but to send a single field card_data which would be a
-            # json encoded dict.
-            # if isinstance(data.success, six.string_types):
-            #     data.success = parse_boolean(data.success.lower())
-            if not data.success:
-                raise Warning(_("No card data found: {}").format(
-                    data.message))
-            return data
-
+            return read_card_data_from_file(fn)
         except IOError:
             time.sleep(1)
             count += 1

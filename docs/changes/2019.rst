@@ -12,6 +12,15 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-11
+==========
+
+.. currentmodule:: lino_xl.lib.beid
+
+Moved :func:`read_card_data_from_file` out of :func:`load_card_data`. 
+This is just an internal change used for writing test cases.
+
+
 2019-03-04
 ==========
 
