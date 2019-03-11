@@ -20,6 +20,7 @@ Changes 2019 in Lino XL
 Moved :func:`read_card_data_from_file` out of :func:`load_card_data`. 
 This is just an internal change used for writing test cases.
 
+Released XL 19.3.0 to PyPI.
 
 2019-03-04
 ==========
@@ -32,7 +33,7 @@ shortcut. It is defined in the :meth:`lino_xl.lib.ledger.ui.Vouchers.get_actions
 ==========
 
 Courses with a Course.max_date before today are now longer available as choices when creating a new enrolment.
-As  it was already before for Course.enrolments_until
+As it was already before for Course.enrolments_until
 
 
 2019-02-25
