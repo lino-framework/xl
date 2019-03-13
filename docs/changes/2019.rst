@@ -12,8 +12,8 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
-2019-03-11
-==========
+2019-03-11 (v 19.3.1)
+=====================
 
 .. currentmodule:: lino_xl.lib.beid
 
@@ -21,6 +21,11 @@ Moved :func:`read_card_data_from_file` out of :func:`load_card_data`.
 This is just an internal change used for writing test cases.
 
 Released XL 19.3.1 to PyPI.
+
+2019-03-07 (v 19.3.0)
+=====================
+
+Released XL 19.3.0 to PyPI.
 
 2019-03-04
 ==========
