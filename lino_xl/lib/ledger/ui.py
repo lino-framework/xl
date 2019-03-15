@@ -150,12 +150,11 @@ class Vouchers(dd.Table):
 
     @classmethod
     def get_actions_hotkeys(cls):
-        ba = """Lino.row_action_handler('{}', 'GET', null)""".format('changing_state')
-        actions_hotkeys = [{'key': 'x',
-                            'ctrl': True,
-                            'shift': False,
-                            'ba': ba}]
-        return actions_hotkeys
+        return [{'key': 'x',
+                'ctrl': True,
+                'shift': False,
+                'ba': 'changing_state'}]
+
 
 
 class AllVouchers(Vouchers):
