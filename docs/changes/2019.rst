@@ -12,6 +12,20 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-15
+==========
+
+- :mod:`lino_xl.lib.vat` can now be used
+  without also using any of :mod:`lino_xl.lib.bevat` or
+  :mod:`lino_xl.lib.bevats`.
+  It defines a VAT regime ``normal`` and a VAT rule which allows everything.
+
+- :class:`lino_xl.lib.ledger.MatchRule` now has :attr:`allow_cascaded_delete`
+  set to "journal" (when you delete a journal, related match rules should delete
+  automatically)
+
+
+
 2019-03-11 (v 19.3.1)
 =====================
 

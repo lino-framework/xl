@@ -30,7 +30,8 @@ class Adder(object):
         if not dd.is_installed('vat'):
             kw.pop('vat_id', None)
         obj = Company(name=name, url=url, **kw)
-        if VatRegimes.is_installed():
+        # if VatRegimes.is_installed():
+        if dd.is_installed('bevats') or dd.is_installed('bevat'):
             if obj.country.isocode == 'BE':
                 obj.vat_regime = VatRegimes.subject
             else:

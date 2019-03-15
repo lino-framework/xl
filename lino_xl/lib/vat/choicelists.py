@@ -79,13 +79,8 @@ class VatRegimes(dd.ChoiceList):
     item_class = VatRegime
     required_roles = dd.login_required(LedgerStaff)
 
-# NAT = VatAreas.national
-# EU = VatAreas.eu
-
-# add = VatRegimes.add_item
-# add('10', _("Private person"), 'normal')
-# add('20', _("Subject to VAT"), 'subject', NAT)
-# add('30', _("Intra-community"), 'intracom', EU)
+add = VatRegimes.add_item
+add('10', _("Normal"), 'normal')
 # re-populated in bevat and bevats.
 # See also lino_xl.lib.vat.Plugin.default_vat_regime
 
@@ -443,3 +438,6 @@ class VatRules(dd.ChoiceList):
         return ', '.join(lst)
 
     
+add = VatRules.add_item
+add('000')
+

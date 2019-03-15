@@ -1005,6 +1005,8 @@ class MatchRule(dd.Model):
     account = dd.ForeignKey('ledger.Account')
     journal = JournalRef()
 
+    allow_cascaded_delete = "journal"
+
     @dd.chooser()
     def unused_account_choices(self, journal):
         # would be nice, but doesn't work because matchrules are
