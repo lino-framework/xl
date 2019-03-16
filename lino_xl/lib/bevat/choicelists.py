@@ -1,16 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma 6 Ko Ltd
+# Copyright 2012-2019 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""
-Declaration fields.
-"""
 
 from __future__ import unicode_literals
 
-# from django.db import models
-# from django.conf import settings
-#from django.utils.translation import string_concat
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 
 from lino.api import dd, rt, _

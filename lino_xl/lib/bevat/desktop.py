@@ -1,10 +1,5 @@
-# Copyright 2012-2017 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-"""Desktop UI for this plugin.
-
-"""
 
 from __future__ import unicode_literals
 

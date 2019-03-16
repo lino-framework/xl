@@ -12,6 +12,13 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-16
+==========
+
+- :mod:`lino_xl.lib.bevat` has been cleaned up and documented because it will
+  serve as template for the new :mod:`lino_xl.lib.eevat` plugin.
+
+
 2019-03-15
 ==========
 
