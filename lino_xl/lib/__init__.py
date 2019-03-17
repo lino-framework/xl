@@ -118,6 +118,7 @@ Accounting stuff
     vatless
     bevat
     bevats
+    eevat
     ana
     sheets
 

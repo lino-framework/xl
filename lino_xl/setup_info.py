@@ -103,6 +103,8 @@ lino_xl.lib.bevat
 lino_xl.lib.bevat.fixtures
 lino_xl.lib.bevats
 lino_xl.lib.bevats.fixtures
+lino_xl.lib.eevat
+lino_xl.lib.eevat.fixtures
 lino_xl.lib.cal
 lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management
