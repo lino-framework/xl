@@ -14,7 +14,14 @@ Changes 2019 in Lino XL
 
 
 
+2019-03-18
+==========
+
+- New config setting :mod:`lino_xl.lib.vat.Plugin.declaration_plugins`.
+
+
 2019-03-17
+==========
 
 - Added a new plugin :mod:`lino_xl.lib.eevat`.  This is a quickly adapted copy
   of bevat where we just removed the regimes that make no sense in Estonia.  The

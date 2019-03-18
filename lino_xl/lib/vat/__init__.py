@@ -25,12 +25,6 @@ class Plugin(ad.Plugin):
     """
     verbose_name = _("VAT")
 
-    # vat needs ledger but doesn't declare this dependency to avoid
-    # having ledger before sales in menus:
-    
-    needs_plugins = ['lino_xl.lib.countries']
-    # needs_plugins = ['lino_xl.lib.countries', 'lino_xl.lib.ledger']
-    
     default_vat_regime = 'normal'
     """The default VAT regime. If this is specified as a string, Lino will
     resolve it at startup into an item of :class:`VatRegimes
@@ -45,6 +39,18 @@ class Plugin(ad.Plugin):
 
     """
 
+    declaration_plugins = None
+    """The plugins to use for VAT declarations.
+    
+    This can be specified as a list of a string with space-separated names.
+    
+    Available VAT declaration plugins are:
+    :mod:`lino_xl.lib.bevat`
+    :mod:`lino_xl.lib.bevats`
+    :mod:`lino_xl.lib.eevat`
+    
+    """
+
     def get_vat_class(self, tt, item):
         """Return the VAT class to be used for given trade type and given
         invoice item. Return value must be an item of
@@ -52,6 +58,20 @@ class Plugin(ad.Plugin):
 
         """
         return self.default_vat_class
+
+    def get_required_plugins(self):
+
+        yield 'lino_xl.lib.countries'
+
+        # vat needs ledger but doesn't declare this dependency to avoid
+        # having ledger before sales in menus:
+        # yield 'lino_xl.lib.ledger'
+
+        if self.declaration_plugins is not None:
+            if isinstance(self.declaration_plugins, six.string_types):
+                self.declaration_plugins = self.declaration_plugins.split()
+            for i in self.declaration_plugins:
+                yield i
 
     def on_site_startup(self, site):
         vat = site.modules.vat

@@ -84,6 +84,7 @@ user."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.eevat.Plugin' : _("""This is a subclass of lino.core.plugin.Plugin."""),
     'lino_xl.lib.events.Plugin' : _("""See /dev/plugins."""),
     'lino_xl.lib.excerpts.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.excerpts.Plugin.responsible_user' : _("""The username of the user responsible for monitoring the excerpts
@@ -803,6 +804,8 @@ instance of CourseArea."""),
     'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
+    'lino_xl.lib.eevat.Declaration' : _("""A VAT declaration."""),
+    'lino_xl.lib.eevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
 situation."""),
     'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
