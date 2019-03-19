@@ -12,6 +12,9 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-19
+==========
+Released Lino XL 19.3.2 to PyPI.
 
 
 2019-03-18
