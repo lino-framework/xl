@@ -17,6 +17,8 @@ def objects():
     
     def dcl(ca, fld):
         obj = ca.get_object()
+        if obj is None:
+            return
         obj.vat_column = VatColumns.get_by_value(fld)
         return obj
 
