@@ -9,14 +9,16 @@ Configures the vat_column of common accounts.
 
 from __future__ import unicode_literals
 
-from lino_xl.lib.vat.choicelists import VatColumns
 from lino_xl.lib.ledger.choicelists import CommonAccounts
+from lino_xl.lib.vat.choicelists import VatColumns
 
 
 def objects():
-    
+
     def dcl(ca, fld):
         obj = ca.get_object()
+        if obj is None:
+            return
         obj.vat_column = VatColumns.get_by_value(fld)
         return obj
 
