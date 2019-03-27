@@ -24,7 +24,7 @@ add('11', _("Private person (reduced)"), 'reduced', NAT)
 add('20', _("Subject to VAT"), 'subject', NAT)
 add('25', _("Co-contractor"), 'cocontractor', NAT)
 add('30', _("Intra-community"), 'intracom', EU)
-add('31', _("Delay in collection"), 'delayed', EU) # report de perception
+# add('31', _("Delay in collection"), 'delayed', EU) # report de perception
 # add('40', _("Inside EU"), 'inside', EU)
 add('50', _("Outside EU"), 'outside', INT)
 add('60', _("Exempt"), 'exempt', item_vat=False)
@@ -50,13 +50,13 @@ VatRules.clear()
 add = VatRules.add_item
 # country_code = dd.plugins.countries.country_code
 # if country_code == "BE":
-add('010', 'normal',  '0.21', NAT, 'sales',     None,       CommonAccounts.vat_due)
+add('010', 'normal',  '0.20', NAT, 'sales',     None,       CommonAccounts.vat_due)
 add('020', 'reduced', '0.07', NAT, 'sales',     None,       CommonAccounts.vat_due)
-add('030', 'normal',  '0.21', NAT, 'purchases', None,       CommonAccounts.vat_deductible)
+add('030', 'normal',  '0.20', NAT, 'purchases', None,       CommonAccounts.vat_deductible)
 add('040', 'reduced', '0.07', NAT, 'purchases', None,       CommonAccounts.vat_deductible)
-add('050', 'normal',  '0.21', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+add('050', 'normal',  '0.20', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
 add('060', 'reduced', '0.07', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-add('070', 'normal',  '0.21', EU,  'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+add('070', 'normal',  '0.20', EU,  'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
 add('080', 'reduced', '0.07', EU,  'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
 add('900')
 

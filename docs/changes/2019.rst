@@ -12,8 +12,18 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-27 (19.3.3)
+=====================
+
+Minor changes in :mod:`lino_xl.lib.eevat`: VAT rate 20% (not 21%). Removed
+regime "Delay in collection".
+
+Released Lino XL 19.3.3 to PyPI.
+
+
 2019-03-19
 ==========
+
 Released Lino XL 19.3.2 to PyPI.
 
 
