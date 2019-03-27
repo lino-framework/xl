@@ -65,14 +65,12 @@ class DeclarationDetail(dd.DetailLayout):
     F85 
     F86 
     F87 
-    F88
     """
 
     c4 = """
     F54
     F55 
     F56
-    F57
     """
     c5 = """
     F59

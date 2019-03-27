@@ -114,32 +114,32 @@ mfld("84", CREDIT, "81 82 83",
       _("CN purchases on operations in 86 and 88"),
       vat_regimes="intracom", both_dc=False)
 mfld("85", CREDIT, "81 82 83", _("CN purchases on other operations"),
-      vat_regimes="!intracom !delayed")
+      vat_regimes="!intracom")
 mfld("86", DEBIT, "81 82 83",
       _("IC purchases and ABC sales"), 
       vat_regimes="intracom")
 mfld("87", DEBIT, "81 82 83", _("Other purchases in Belgium"),
       vat_regimes="cocontractor")
-mfld("88", DEBIT, "81 82 83", _("IC services"),
-      vat_regimes="delayed")
+# mfld("88", DEBIT, "81 82 83", _("IC services"),
+#       vat_regimes="delayed")
 
 # (IV) DUE TAXES
 
 mfld("54", CREDIT, '54', _("Due VAT for 01, 02 and 03"),
-     vat_regimes="!intracom !delayed !cocontractor", is_payable=True)
+     vat_regimes="!intracom !cocontractor", is_payable=True)
 mfld("55", CREDIT, '54', _("Due VAT for 86 and 88"),
      vat_regimes="intracom", is_payable=True)
 mfld("56", CREDIT, '54',
       _("Due VAT for 87 except those covered by 57"),
      vat_regimes="cocontractor", is_payable=True)
-mfld("57", CREDIT, '54',
-      _("Due VAT for 87 except those covered by 57"),
-      vat_regimes="delayed", is_payable=True)
+# mfld("57", CREDIT, '54',
+#       _("Due VAT for 87 except those covered by 57"),
+#       vat_regimes="delayed", is_payable=True)
 wfld("61", CREDIT, None, _("Miscellaneous corrections due"),
      is_payable=True)
 
 sfld("XX", CREDIT, None, _("Total of due taxes"),
-     "54 55 56 57")
+     "54 55 56")
 
 # (V) DEDUCTIBLE TAXES
 # ...
