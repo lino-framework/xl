@@ -258,11 +258,13 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
             j.url.value = self.url
 
     if dd.is_installed('vat'):
+        # @dd.chooser(instance_values=True)
         @dd.chooser()
         def vat_regime_choices(cls, country):
             from lino_xl.lib.vat.choicelists import VatAreas ,VatRegimes
             vatarea = VatAreas.get_for_country(country)
-            return VatRegimes.filter_choice(vat_area=vatarea)
+            # return VatRegimes.filter_choice(vat_area=vatarea)
+            return VatRegimes.filter(vat_area=vatarea)
 
 
 class PartnerDetail(dd.DetailLayout):

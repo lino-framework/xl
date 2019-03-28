@@ -15,8 +15,11 @@ Changes 2019 in Lino XL
 2019-03-28
 ==========
 
-:ticket:`2924` : Limit choices of vat_regime in
-:class:`lino_xl.lib.contacts.Partner` depending on country and  vat_area.
+.. currentmodule:: lino_xl.lib.contacts
+
+Limit the choices of
+:attr:`Partner.vat_regime` depending on the :attr:`Partner.country`
+and the available :class:`lino_xl.lib.vat.VatRules`. (:ticket:`2924`)
 
 Changes in :mod:`lino_xl.lib.orders` and :mod:`lino_xl.lib.cal` for :ticket:`2776`:
 
