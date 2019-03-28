@@ -15,7 +15,26 @@ Changes 2019 in Lino XL
 2019-03-28
 ==========
 
-Limit choices of vat_regime in :class:`lino_xl.lib.contacts.Partner` depending on country and  vat_area.
+:ticket:`2924` : Limit choices of vat_regime in
+:class:`lino_xl.lib.contacts.Partner` depending on country and  vat_area.
+
+Changes in :mod:`lino_xl.lib.orders` and :mod:`lino_xl.lib.cal` for :ticket:`2776`:
+
+- :attr:`lino_xl.lib.orders.Order.project` and
+  :attr:`lino_xl.lib.orders.Order.invoice_recipient` were missing in OrderDetail.
+
+- :attr:`lino_xl.lib.orders.Order.update_all_guests` caused a UNIQUE error
+  because the workers were being suggested twice.
+
+- Optimized the layout of :class:`lino_xl.lib.cal.EventDetail`
+
+- When a user manually creates an event on a controller
+  (:class:`lino.modlib.gfks.Controllable`), then Lino now also calls
+  :meth:`lino_xl.lib.cal.RecurrenceSet.before_auto_event_save` and
+  :meth:`lino_xl.lib.cal.EventGenerator.auto_cal_event_type` (if the controller
+  is an instance of these)
+
+
 
 2019-03-27 (v19.3.3 and v19.3.4)
 ==================================

@@ -263,6 +263,7 @@ class InvoiceGenerator(dd.Model):
 
     def get_invoice_items(self, info, invoice, ar):
         # every generator produces one invoice item per invoicing plan
+        print("20190328", info.invoiceable_product, info.number_of_events)
         if info.invoiceable_product is None:
             return
 
