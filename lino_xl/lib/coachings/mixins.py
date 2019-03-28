@@ -69,9 +69,9 @@ class Coachable(ClientBase):
     # def get_notify_message_type(self):
     #     return rt.models.notify.MessageTypes.coachings
     
-    def get_change_observers(self):
+    def get_change_observers(self, ar=None):
         # implements lino.modlib.notify.mixins.ChangeNotifier
-        for x in super(Coachable, self).get_change_observers():
+        for x in super(Coachable, self).get_change_observers(ar):
             yield x
         for u in settings.SITE.user_model.objects.filter(
                 coaching_supervisor=True):

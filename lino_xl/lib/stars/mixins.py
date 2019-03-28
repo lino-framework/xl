@@ -146,8 +146,8 @@ class Starrable(ChangeNotifier):
             # else:
             return s
 
-        def get_change_observers(self):
-            for o in super(Starrable, self).get_change_observers():
+        def get_change_observers(self, ar=None):
+            for o in super(Starrable, self).get_change_observers(ar):
                 yield o
             users = set()
             for star in self.get_stars():

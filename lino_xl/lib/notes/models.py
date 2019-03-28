@@ -155,11 +155,11 @@ class Note(TypedPrintable,
     def get_change_owner(self):
         return self.project
     
-    # def get_change_observers(self):
+    # def get_change_observers(self, ar=None):
     #     # in lino_welfare the project is pcsw.Client
     #     prj = self.project
     #     if isinstance(prj, ChangeNotifier):
-    #         for u in prj.get_change_observers():
+    #         for u in prj.get_change_observers(ar):
     #             yield u
 
     def get_change_info(self, ar, cw):

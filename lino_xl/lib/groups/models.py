@@ -44,8 +44,8 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
                 'users.User', blank=True, null=True))
         super(Group, cls).setup_parameters(fields)
 
-    def get_change_observers(self):
-        for x in super(Group, self).get_change_observers():
+    def get_change_observers(self, ar=None):
+        for x in super(Group, self).get_change_observers(ar):
             yield x
         for mbr in self.members.all():
             yield (mbr.user, mbr.user.mail_mode)

@@ -213,8 +213,8 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
     # def get_notify_message_type(self):
     #     return rt.models.notify.MessageTypes.coachings
     
-    # def get_change_observers(self):
-    #     return self.client.get_change_observers()
+    # def get_change_observers(self, ar=None):
+    #     return self.client.get_change_observers(ar)
 
     # def get_notify_observers(self):
     #     yield self.user

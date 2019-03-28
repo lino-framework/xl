@@ -13,6 +13,7 @@ from etgen.html import tostring
 from etgen.utils import join_elems, forcetext
 from lino import mixins
 from lino.api import dd, rt, _, pgettext, gettext
+from lino.core.actions import CreateRow
 from lino.mixins.ref import Referrable
 from lino.modlib.comments.mixins import Commentable
 from lino.modlib.notify.choicelists import MessageTypes
@@ -162,6 +163,7 @@ class Site(Referrable, ContactRelated, Starrable):
         app_label = 'tickets'
         verbose_name = pgettext("Ticketing", "Site")
         verbose_name_plural = pgettext("Ticketing", "Sites")
+        abstract = dd.is_abstract_model(__name__, 'Site')
 
     ref_max_length = 20
     workflow_state_field = "state"
@@ -190,7 +192,7 @@ class Site(Referrable, ContactRelated, Starrable):
     def __str__(self):
         return self.ref or self.name
 
-    def get_change_observers(self):
+    def get_change_observers(self, ar=None):
         for s in rt.models.tickets.Subscription.objects.filter(site=self):
             yield (s.user, s.user.mail_mode)
 

@@ -456,11 +456,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             raise ValidationError(str(msg))
         super(Event, self).full_clean(*args, **kw)
 
-    def get_change_observers(self):
+    def get_change_observers(self, ar=None):
         # implements ChangeNotifier
         if not self.is_user_modified():
             return
-        for x in super(Event, self).get_change_observers():
+        for x in super(Event, self).get_change_observers(ar):
             yield x
         for u in (self.user, self.assigned_to):
             if u is not None:

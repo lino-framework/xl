@@ -51,8 +51,8 @@ class Votable(ChangeNotifier):
                 return None
             return qs[0]
 
-        def get_change_observers(self):
-            for x in super(Votable, self).get_change_observers():
+        def get_change_observers(self, ar=None):
+            for x in super(Votable, self).get_change_observers(ar):
                 yield x
             for vote in rt.models.votes.Vote.objects.filter(votable=self):
                 yield (vote.user, vote.mail_mode or vote.user.mail_mode)
