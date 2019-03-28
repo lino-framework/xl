@@ -14,6 +14,7 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from etgen.html import E, join_elems, forcetext
 
+from .choicelists import CivilStates
 from lino import mixins
 from lino.api import dd, rt, _
 from lino.mixins.duplicable import Duplicable
@@ -26,6 +27,7 @@ from lino.utils.media import TmpMediaFile
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.skills.mixins import Feasible
+
 
 # from lino_xl.lib.excerpts.mixins import Certifiable
 #from lino_xl.lib.googleapi_people.models import GooglePeople
