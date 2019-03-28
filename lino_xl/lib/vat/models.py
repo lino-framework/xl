@@ -4,27 +4,18 @@
 
 
 
-from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import unicode_literals
 
-from django.db import models
 from django.conf import settings
-from django.db.models import Q
-
-from lino.mixins.periods import DateRange
-from lino.mixins import Sequenced
-from lino.modlib.system.choicelists import PeriodEvents
+from django.db import models
 
 from lino.api import dd, rt, _
-
-from lino_xl.lib.ledger.utils import ZERO
-from .choicelists import VatClasses, VatRegimes, VatColumns, VatAreas, VatRules
-from .mixins import VatDocument, VatItemBase
-
-from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.mixins import Matching, AccountVoucherItem
+from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
-from lino_xl.lib.ledger.choicelists import TradeTypes
+from .choicelists import VatClasses, VatRegimes, VatColumns
+from .mixins import VatDocument, VatItemBase
 
 
 class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):

@@ -12,6 +12,11 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-03-28
+==========
+
+Limit choices of vat_regime in :class:`lino_xl.lib.contacts.Partner` depending on country and  vat_area.
+
 2019-03-27 (v19.3.3 and v19.3.4)
 ==================================
 
