@@ -55,6 +55,15 @@ if False:
 dd.inject_field(
     'contacts.Partner', 'vat_regime', VatRegimes.field(blank=True))
 
+
+@dd.chooser()
+def vat_regime_choices(cls, country):
+    vatarea = VatAreas.get_for_country(country)
+    return VatRegimes.filter(vat_area=vatarea)
+
+dd.inject_action(
+    'contacts.Partner',vat_regime_choices=vat_regime_choices)
+
 dd.inject_field(
     'contacts.Partner',
     'vat_id',
