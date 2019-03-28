@@ -15,6 +15,7 @@ from lino_xl.lib.ledger.mixins import Matching, AccountVoucherItem
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
 from .choicelists import VatClasses, VatRegimes, VatColumns
+from .choicelists import VatAreas, VatRules  # make them available for Menu.add_action
 from .mixins import VatDocument, VatItemBase
 
 
