@@ -654,6 +654,29 @@ terminated."""),
     'lino_xl.lib.coachings.CoachingsStaff' : _("""A user who can configure coachings functionality."""),
     'lino_xl.lib.coachings.ClientCoachingsChecker' : _("""Coached clients should not be obsolete.  Only coached clients
 should have active coachings."""),
+    'lino_xl.lib.contacts.Partner' : _("""The Django model used to represent a partner."""),
+    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting."""),
+    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
+before the name, for persons this is inserted between first
+name and last name."""),
+    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
+    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number."""),
+    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
+    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
+    'lino_xl.lib.contacts.Partner.purchase_account' : _("""The general account to suggest as default value in purchase
+invoices from this partner."""),
+    'lino_xl.lib.contacts.Partner.vat_regime' : _("""The default VAT regime to use on invoices for this partner."""),
+    'lino_xl.lib.contacts.Partner.vat_id' : _("""The national VAT identification number of this partner."""),
+    'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
+    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
+See also lino.tutorial.human."""),
+    'lino_xl.lib.contacts.Companies' : _("""An organisation.  The verbose name is "Organization" while the
+internal name is "Company" because the latter easier to type and
+for historical reasons."""),
+    'lino_xl.lib.contacts.Companies.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.Companies.phone' : _("""These fields (and some others) are defined in the base model
+Partner, they are what companies and persons have in
+common."""),
     'lino_xl.lib.contacts.ExportVCardFile' : _("""Download all records as a .vcf file which you can import to another
 contacts application."""),
     'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
@@ -665,28 +688,6 @@ data as a vcf file."""),
     'lino_xl.lib.contacts.ContactsUser' : _("""A user who has access to full contacts functionality."""),
     'lino_xl.lib.contacts.ContactsStaff' : _("""A user who can configure contacts functionality."""),
     'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
-    'lino_xl.lib.contacts.Partner' : _("""A Partner is any physical or moral person for which you want to
-keep contact data (address, phone numbers, ...)."""),
-    'lino_xl.lib.contacts.Partner.name' : _("""The full name of this partner. Used for alphabetic sorting."""),
-    'lino_xl.lib.contacts.Partner.prefix' : _("""An optional name prefix. For organisations this is inserted
-before the name, for persons this is inserted between first
-name and last name."""),
-    'lino_xl.lib.contacts.Partner.email' : _("""The primary email address."""),
-    'lino_xl.lib.contacts.Partner.phone' : _("""The primary phone number."""),
-    'lino_xl.lib.contacts.Partner.gsm' : _("""The primary mobile phone number."""),
-    'lino_xl.lib.contacts.Partner.language' : _("""The language to use when communicating with this partner."""),
-    'lino_xl.lib.contacts.Partner.purchase_account' : _("""The general account to suggest as default value in purchase
-invoices from this partner."""),
-    'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
-    'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
-See also lino.tutorial.human."""),
-    'lino_xl.lib.contacts.Companies' : _("""An organisation.  The verbose name is "Organization" while the
-internal name is "Company" because the latter easier to type and
-for historical reasons."""),
-    'lino_xl.lib.contacts.Companies.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.contacts.Companies.phone' : _("""These fields (and some others) are defined in the base model
-Partner, they are what companies and persons have in
-common."""),
     'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
     'lino_xl.lib.contacts.RoleType' : _("""A function (RoleType) is what a given Person
 can be in a given Company."""),

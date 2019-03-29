@@ -36,7 +36,7 @@ Changes in :mod:`lino_xl.lib.orders` and :mod:`lino_xl.lib.cal` for :ticket:`277
   :meth:`lino_xl.lib.cal.RecurrenceSet.before_auto_event_save` and
   :meth:`lino_xl.lib.cal.EventGenerator.auto_cal_event_type` (if the controller
   is an instance of these)
-
+- The Explorer menu now shows the :class:`lino_xl.lib.products.PriceFactors`.
 
 
 2019-03-27 (v19.3.3 and v19.3.4)

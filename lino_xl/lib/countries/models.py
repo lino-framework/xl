@@ -125,7 +125,8 @@ class Place(Hierarchical, mixins.BabelNamed):
     def type_choices(cls, country):
         if country is not None:
             allowed = country.allowed_city_types()
-            return [(i, t) for i, t in PlaceTypes.choices if i in allowed]
+            #return [(i, t) for i, t in PlaceTypes.choices if i in allowed]
+            return allowed
         return PlaceTypes.choices
 
     def get_choices_text(self, request, actor, field):
