@@ -38,3 +38,8 @@ class Plugin(ad.Plugin):
         # m2 = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('products.PriceRules')
 
+    def setup_explorer_menu(self, site, user_type, m):
+        mg = self.get_menu_group()
+        m = m.add_menu(mg.app_label, mg.verbose_name)
+        m.add_action('products.PriceFactors')
+

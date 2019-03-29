@@ -594,6 +594,38 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     def is_user_modified(self):
         return self.state != EntryStates.suggested
 
+    def before_ui_save(self, ar, **kw):
+        # logger.info("20130528 before_ui_save")
+        if self.state is EntryStates.suggested:
+            self.state = EntryStates.draft
+        super(Event, self).before_ui_save(ar, **kw)
+
+    def on_create(self, ar):
+        if self.event_type is None:
+            self.event_type = ar.user.event_type or \
+                settings.SITE.site_config.default_event_type
+        self.start_date = settings.SITE.today()
+        self.start_time = timezone.now().time()
+        # see also Assignable.on_create()
+        super(Event, self).on_create(ar)
+        if not settings.SITE.loading_from_dump:
+            # print("20190328 before_ui_save", self.is_user_modified())
+            if isinstance(self.owner, RecurrenceSet):
+                self.owner.before_auto_event_save(self)
+            if isinstance(self.owner, EventGenerator):
+                self.event_type = self.owner.update_cal_event_type()
+
+    # def on_create(self,ar):
+        # self.start_date = settings.SITE.today()
+        # self.start_time = datetime.datetime.now().time()
+        # ~ # default user is almost the same as for UserAuthored
+        # ~ # but we take the *real* user, not the "working as"
+        # if self.user_id is None:
+            # u = ar.user
+            # if u is not None:
+                # self.user = u
+        # super(Event,self).on_create(ar)
+
     def after_ui_save(self, ar, cw):
         super(Event, self).after_ui_save(ar, cw)
         self.update_guests.run_from_code(ar)
@@ -639,32 +671,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if n:
             s = ("[%d] " % n) + s
         return s
-
-    def before_ui_save(self, ar, **kw):
-        # logger.info("20130528 before_ui_save")
-        if self.state is EntryStates.suggested:
-            self.state = EntryStates.draft
-        return super(Event, self).before_ui_save(ar, **kw)
-
-    def on_create(self, ar):
-        if self.event_type is None:
-            self.event_type = ar.user.event_type or \
-                settings.SITE.site_config.default_event_type
-        self.start_date = settings.SITE.today()
-        self.start_time = timezone.now().time()
-        # see also Assignable.on_create()
-        super(Event, self).on_create(ar)
-
-    # def on_create(self,ar):
-        # self.start_date = settings.SITE.today()
-        # self.start_time = datetime.datetime.now().time()
-        # ~ # default user is almost the same as for UserAuthored
-        # ~ # but we take the *real* user, not the "working as"
-        # if self.user_id is None:
-            # u = ar.user
-            # if u is not None:
-                # self.user = u
-        # super(Event,self).on_create(ar)
 
     def get_postable_recipients(self):
         """return or yield a list of Partners"""

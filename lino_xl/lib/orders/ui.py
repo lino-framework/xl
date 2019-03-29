@@ -56,6 +56,7 @@ class OrderDetail(dd.DetailLayout):
     
     general = dd.Panel("""
     entry_date room workflow_buttons print_actions:15
+    project invoice_recipient
     remark
     EnrolmentsByOrder ItemsByOrder
     """, label=_("General"))
@@ -279,7 +280,7 @@ class EnrolmentsByOrder(Enrolments):
     # required_roles = dd.login_required(OrdersUser)
     master_key = "order"
     column_names = 'worker guest_role ' \
-                   'remark workflow_buttons *'
+                   'remark #workflow_buttons *'
     auto_fit_column_widths = True
     # cell_edit = False
     # display_mode = 'html'

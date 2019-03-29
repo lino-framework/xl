@@ -53,9 +53,10 @@ class UpdateGuests(dd.Action):
         c = u = d = 0
         # existing = set([g.partner.pk for g in obj.guest_set.all()])
         existing = {g.partner.pk : g for g in obj.guest_set.all()}
-
+        #print("20190328 existing: {}".format(existing))
         # create suggested guest that don't exist
         for sg in obj.suggest_guests():
+            #print("20190328 suggested {}".format(sg))
             eg = existing.pop(sg.partner.pk, None)
             if eg is None:
                 sg.save()

@@ -296,7 +296,8 @@ class GuestDetail(dd.DetailLayout):
     window_size = (60, 'auto')
     main = """
     event partner role
-    state remark workflow_buttons
+    state workflow_buttons
+    remark 
     # outbox.MailsByController
     """
 

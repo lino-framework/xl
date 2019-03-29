@@ -4,31 +4,31 @@
 
 
 from __future__ import unicode_literals
-from builtins import str
-from builtins import object
 
 import os
+from builtins import object
+from builtins import str
 
-from django.db import models
-from django.core.exceptions import ValidationError
 from django.conf import settings
-
-from lino.api import dd, rt, _
-from lino import mixins
-
+from django.core.exceptions import ValidationError
+from django.db import models
 from etgen.html import E, join_elems, forcetext
+
+from .choicelists import CivilStates
+from lino import mixins
+from lino.api import dd, rt, _
+from lino.mixins.duplicable import Duplicable
+from lino.mixins.periods import ObservedDateRange
+from lino.modlib.printing.mixins import Printable
+from lino.modlib.uploads.mixins import UploadController
+from lino.utils import join_words
 from lino.utils.addressable import Addressable
 from lino.utils.media import TmpMediaFile
-from lino.utils import join_words
-
-from lino.mixins.periods import ObservedDateRange
-from lino.mixins.duplicable import Duplicable
-from lino.modlib.uploads.mixins import UploadController
-
 from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.skills.mixins import Feasible
-from lino.modlib.printing.mixins import Printable
+
+
 # from lino_xl.lib.excerpts.mixins import Certifiable
 #from lino_xl.lib.googleapi_people.models import GooglePeople
 
@@ -47,7 +47,7 @@ if dd.plugins.contacts.use_vcard_export:
 # from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
 # from lino.mixins import Contactable, Phonable
 from .roles import SimpleContactsUser, ContactsStaff
-from .choicelists import PartnerEvents, CivilStates
+from .choicelists import PartnerEvents
 
 from lino.mixins.human import name2kw, Human, Born
 
@@ -258,7 +258,8 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
         if self.url:
             j.add('url')
             j.url.value = self.url
-        
+
+
 class PartnerDetail(dd.DetailLayout):
 
     main = """
