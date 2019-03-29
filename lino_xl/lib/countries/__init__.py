@@ -1,9 +1,7 @@
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Defines models and choicelists for managing geographic places.
-
-See :doc:`/specs/countries`.
+"""See :doc:`/specs/countries`.
 
 .. autosummary::
    :toctree:
@@ -17,7 +15,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :doc:`/dev/plugins`."
+    "The countries plugin."
 
     verbose_name = _("Places")
     needs_plugins = ['lino.modlib.office', 'lino_xl.lib.xl']

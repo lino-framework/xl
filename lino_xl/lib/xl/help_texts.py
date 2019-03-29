@@ -45,7 +45,7 @@ belongs to a given Board."""),
     'lino_xl.lib.cal.workflows.feedback.PublishEvent' : _("""Mark this event as published.  All participants have been informed."""),
     'lino_xl.lib.cal.workflows.feedback.CloseMeeting' : _("""The meeting is over and the guests go home."""),
     'lino_xl.lib.concepts.Plugin' : _("""See /dev/plugins."""),
-    'lino_xl.lib.countries.Plugin' : _("""See /dev/plugins."""),
+    'lino_xl.lib.countries.Plugin' : _("""The countries plugin."""),
     'lino_xl.lib.countries.Plugin.hide_region' : _("""Whether to hide the region field in postal addresses.  Set this
 to True if you live in a country like Belgium.  Belgium is
 --despite their constant language disputes-- obviously a very
@@ -736,9 +736,25 @@ votre partenaire est décédé"""),
     'lino_xl.lib.contacts.CivilStates.separated' : _("""Legally separated, aka "Separated as to property" (Séparé de
 corps et de biens, Getrennt von Tisch und Bett)"""),
     'lino_xl.lib.contacts.CivilStates.cohabitating' : _("""Cohabitating (cohabitant, zusammenlebend)"""),
-    'lino_xl.lib.countries.Country' : _("""A "country" or "nation"."""),
-    'lino_xl.lib.countries.Place' : _("""Any kind of named geographic region (except those who have an entry
-in Country."""),
+    'lino_xl.lib.countries.Country' : _("""Django model to represent a country."""),
+    'lino_xl.lib.countries.Country.name' : _("""The designation of this country."""),
+    'lino_xl.lib.countries.Country.isocode' : _("""The two-letter code for this country as defined by ISO 3166-1.
+For countries that no longer exist it may be a 4-letter code."""),
+    'lino_xl.lib.countries.Country.short_code' : _("""A short abbreviation for regional usage. Obsolete."""),
+    'lino_xl.lib.countries.Country.iso3' : _("""The three-letter code for this country as defined by ISO 3166-1."""),
+    'lino_xl.lib.countries.Country.allowed_city_types' : _("""Return the place types that are used in this country."""),
+    'lino_xl.lib.countries.Countries' : _("""The table of all countries."""),
+    'lino_xl.lib.countries.Place' : _("""Django model to represent a place."""),
+    'lino_xl.lib.countries.Place.parent' : _("""The superordinate geographic place of which this place is a part."""),
+    'lino_xl.lib.countries.Place.country' : _("""The country this place is in."""),
+    'lino_xl.lib.countries.Place.type' : _("""The type of this place (whether it's a city. a village, a province...)"""),
+    'lino_xl.lib.countries.Place.get_choices_text' : _("""Extends the default behaviour (which would simply diplay this
+city in the current language) by also adding the name in other
+languages and the type between parentheses."""),
+    'lino_xl.lib.countries.Places' : _("""The table of known geographical places.
+A geographical place can be a city, a town, a suburb,
+a province, a lake... any named geographic entity,
+except for countries because these have their own table."""),
     'lino_xl.lib.countries.PlaceTypes' : _("""A choicelist of possible place types."""),
     'lino_xl.lib.countries.CountryCity' : _("""Model mixin that adds two fields country and city and defines
 a context-sensitive chooser for city, a create_city_choice
@@ -756,6 +772,7 @@ method, ..."""),
 one-line string."""),
     'lino_xl.lib.countries.AddressLocation.address_location' : _("""Return the plain text postal address location part.  Lines are
 separated by linesep which defaults to "\\n"."""),
+    'lino_xl.lib.countries.PlaceChecker' : _("""The name of a geographical place should not consist of only digits."""),
     'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
 teacher in a given room to speak about a given subject."""),
     'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),

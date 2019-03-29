@@ -1,13 +1,12 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
 from builtins import str
 from builtins import object
 
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
@@ -34,30 +33,21 @@ class Country(mixins.BabelNamed):
         ordering = ['isocode']
 
     isocode = models.CharField(
-        max_length=4, primary_key=True,
-        verbose_name=_("ISO code"),
-        help_text=_("""\
-        The two-letter code for this country as defined by ISO 3166-1.
-        For countries that no longer exist it may be a 4-letter code."""))
-    #~ name = models.CharField(max_length=200)
-    #~ name = d.BabelCharField(max_length=200,verbose_name=_("Designation"))
+        max_length=4, primary_key=True,verbose_name=_("ISO code"))
 
     short_code = models.CharField(
         max_length=4, blank=True,
-        verbose_name=_("Short code"),
-        help_text=_("""A short abbreviation for regional usage. Obsolete."""))
+        verbose_name=_("Short code"))
 
     iso3 = models.CharField(
         max_length=3, blank=True,
-        verbose_name=_("ISO-3 code"),
-        help_text=_("The three-letter code for this country "
-                    "as defined by ISO 3166-1."))
+        verbose_name=_("ISO-3 code"))
 
     def allowed_city_types(self):
         cd = getattr(CountryDrivers, self.isocode, None)
         if cd is not None:
             return cd.region_types + cd.city_types
-        return list(PlaceTypes.items())
+        return PlaceTypes.get_list_items()
 
     @classmethod
     def get_actual_countries(cls):
@@ -103,24 +93,6 @@ class Place(Hierarchical, mixins.BabelNamed):
     type = PlaceTypes.field(blank=True)
     show_type = models.BooleanField(_("Show type"), default=False)
     
-    # parent = dd.ForeignKey(
-    #     'self',
-    #     blank=True, null=True,
-    #     verbose_name=_("Part of"),
-    #     help_text=_("The superordinate geographic place "
-    #                 "of which this place is a part."))
-
-    # def get_parents(self, *grandparents):
-    #     if self.parent_id:
-    #         return self.parent.get_parents(self, *grandparents)
-    #     return [self] + list(grandparents)
-
-    # def __str__(self):
-    #     if self.zip_code:
-    #         return "{} {}".format(
-    #             dd.babelattr(self, 'name'), self.zip_code)
-    #     return dd.babelattr(self, 'name')
-    
     @dd.chooser()
     def type_choices(cls, country):
         if country is not None:
@@ -130,11 +102,6 @@ class Place(Hierarchical, mixins.BabelNamed):
         return PlaceTypes.choices
 
     def get_choices_text(self, request, actor, field):
-        """
-        Extends the default behaviour (which would simply diplay this
-        city in the current language) by also adding the name in other
-        languages and the type between parentheses.
-        """
         names = [self.name]
         for lng in settings.SITE.BABEL_LANGS:
             n = getattr(self, 'name' + lng.suffix)
@@ -182,19 +149,10 @@ class Place(Hierarchical, mixins.BabelNamed):
             #~ return country.place_set.order_by('name')
         #~ return cls.city.field.rel.model.objects.order_by('name')
 
-dd.update_field(
-    Place, 'parent', verbose_name=_("Part of"),
-    help_text=_("The superordinate geographic place "
-                "of which this place is a part."))
+dd.update_field(Place, 'parent', verbose_name=_("Part of"))
 
 
 class Places(dd.Table):
-    help_text = _("""
-    The table of known geographical places.
-    A geographical place can be a city, a town, a suburb,
-    a province, a lake... any named geographic entity,
-    except for countries because these have their own table.
-    """)
 
     model = 'countries.Place'
     required_roles = dd.login_required(ContactsStaff)
@@ -221,11 +179,6 @@ class PlacesByCountry(Places):
 
 
 class PlaceChecker(Checker):
-    """The name of a geographical place
-    (:attr:`lino_xl.lib.countries.models.Place.name`) should not
-    consist of only digits.
-
-    """
     model = 'countries.Place'
     verbose_name = _("Check data of geographical places.")
 
