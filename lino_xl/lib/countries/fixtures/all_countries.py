@@ -1,5 +1,5 @@
 # coding: utf-8
-# Copyright 2009-2014 Luc Saffre
+# Copyright 2009-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """This fixture adds all known countries of the world to your
@@ -27,10 +27,10 @@ extends this data by attaching Belgian INS codes to these countries.
 
 from __future__ import print_function
 
+import logging ; logger = logging.getLogger('lino')
+
 import os
 from xml.dom import minidom
-import logging
-logger = logging.getLogger('lino')
 
 from django.conf import settings
 
@@ -84,9 +84,6 @@ def objects():
 
     n = 0
     Country = settings.SITE.models.countries.Country
-    """
-    
-    """
     fn = os.path.join(os.path.dirname(__file__), 'countries.xml')
     logger.debug("Reading %s", fn)
     dom = minidom.parse(fn)
