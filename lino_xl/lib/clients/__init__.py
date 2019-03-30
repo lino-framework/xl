@@ -1,4 +1,4 @@
-# Copyright 2014-2017 Rumma & Ko Ltd
+# Copyright 2014-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -20,6 +20,7 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.contacts']
     
     client_model = 'contacts.Person'
+    """The model to which :attr:`ClientContact.client` points to."""
 
     def post_site_startup(self, site):
         self.client_model = site.models.resolve(self.client_model)

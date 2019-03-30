@@ -773,8 +773,7 @@ one-line string."""),
     'lino_xl.lib.countries.AddressLocation.address_location' : _("""Return the plain text postal address location part.  Lines are
 separated by linesep which defaults to "\\n"."""),
     'lino_xl.lib.countries.PlaceChecker' : _("""The name of a geographical place should not consist of only digits."""),
-    'lino_xl.lib.courses.Course' : _("""A Course is a group of pupils that regularily meet with a given
-teacher in a given room to speak about a given subject."""),
+    'lino_xl.lib.courses.Course' : _("""Database fields:"""),
     'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
     'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
 this field empty if the meetings last less than one day."""),
