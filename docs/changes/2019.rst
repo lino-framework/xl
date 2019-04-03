@@ -12,6 +12,27 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-03
+==========
+
+New attribute
+:attr:`lino_xl.lib.invoicing.EventGenerator.default_invoiceable_qty` with
+default value ``1`` (as it was until now). Now we can change the hard-coded
+default value per application.
+
+New field :attr:`lino_xl.lib.cal.EventType.default_duration`.
+If a calendar entry has a type (:attr:`event_type`) and if that type has a
+default duration (:attr:`EventTypedefault_duration`), Lino will change the
+:attr:`end_time` of an entry when the :attr:`start_date`  is changed.
+
+The :mod:`lino_xl.lib.products` plugin adds one menu entry per product type
+(:attr:`lino_xl.lib.products.ProductTypes`).
+When doing this, until now, it used the label of the
+:attr:`lino_xl.lib.products.ProductType.table_name`, now it uses the
+:attr:`lino_xl.lib.products.ProductType.text`.
+
+
+
 2019-03-28
 ==========
 

@@ -16,7 +16,7 @@ from lino import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.Plugin`."
+    """The config descriptor for this plugin."""
 
     verbose_name = _("Products")
     needs_plugins = ['lino_xl.lib.xl']
@@ -30,7 +30,7 @@ class Plugin(ad.Plugin):
         #     mg = self
         m = m.add_menu(mg.app_label, mg.verbose_name)
         for pt in site.models.products.ProductTypes.get_list_items():
-            m.add_action(pt.table_name)
+            m.add_action(pt.table_name, label=pt.text)
         # m.add_action('products.Products')
         m.add_action('products.ProductCats')
 

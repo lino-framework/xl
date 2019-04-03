@@ -1,8 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2018 Rumma & Ko Ltd
+# Copyright 2016-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
+from django.db import models
 from lino.api import dd, _
 
 
@@ -23,6 +23,12 @@ class ProductTypes(dd.ChoiceList):
     item_class = ProductType
     verbose_name = _("Product type")
     verbose_name_plural = _("Product types")
+    column_names = "value name text table_name *"
+
+    @dd.virtualfield(models.CharField(_("Table name")))
+    def table_name(cls, choice, ar):
+        return choice.table_name
+
 
 add = ProductTypes.add_item
 add('100', _("Products"), 'default')

@@ -189,6 +189,12 @@ class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
 
     planner_column = PlannerColumns.field(blank=True)
 
+    # default_duration = models.TimeField(
+    #     _("Default duration"), blank=True, null=True)
+
+    default_duration = dd.DurationField(
+        _("Default duration"), blank=True, null=True)
+
     def __str__(self):
         # when selecting an Event.event_type it is more natural to
         # have the event_label. It seems that the current `name` field
@@ -448,13 +454,37 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     def full_clean(self, *args, **kw):
         et = self.event_type
+        if et is not None and et.default_duration is not None:
+            if self.start_time is not None and self.end_time is None:
+                dt = self.get_datetime('start') + et.default_duration
+                self.set_datetime('end', dt)
+            elif self.end_time is not None and self.start_time is None:
+                dt = self.get_datetime('end') + et.default_duration
+                self.set_datetime('start', dt)
         if et and et.max_days == 1:
-            # avoid "Abandoning with 297 unsaved instances"
+            # avoid "Abandoning with 297 unsaved instances" when migrating data
+            # that was created before the current rules
             self.end_date = None
         msg = self.duration_veto()
         if msg is not None:
             raise ValidationError(str(msg))
         super(Event, self).full_clean(*args, **kw)
+
+    def start_time_changed(self, ar):
+        et = self.event_type
+        if self.start_time is not None \
+                and et is not None and et.default_duration is not None:
+            dt = self.get_datetime('start') + et.default_duration
+            self.set_datetime('end', dt)
+            # self.end_time = str(self.start_time + et.default_duration)
+
+    def end_time_changed(self, ar):
+        et = self.event_type
+        if self.end_time is not None \
+                and et is not None and et.default_duration is not None:
+            dt = self.get_datetime('end') - et.default_duration
+            self.set_datetime('start', dt)
+            # self.start_time = str(self.end_time - et.default_duration)
 
     def get_change_observers(self, ar=None):
         # implements ChangeNotifier

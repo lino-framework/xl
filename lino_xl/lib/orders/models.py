@@ -377,7 +377,7 @@ class OrderItem(SequencedVoucherItem):
     product = dd.ForeignKey('products.Product', blank=True, null=True)
     qty = dd.QuantityField(_("Quantity"), blank=True, null=True)
     # unit_price = dd.PriceField(_("Unit price"), blank=True, null=True)
-    remark = models.TextField(_("Remark"), blank=True)
+    remark = models.CharField(_("Description"), max_length=200, blank=True)
 
 
 

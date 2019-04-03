@@ -508,7 +508,7 @@ class EventTypes(dd.Table):
     column_names = "ref name planner_column is_appointment force_guest_states all_rooms *"
 
     detail_layout = """
-    ref id planner_column 
+    ref id planner_column default_duration 
     name 
     event_label
     # description
