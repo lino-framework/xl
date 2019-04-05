@@ -60,11 +60,11 @@ def objects():
     yield holidays
     meeting = event_type(
         planner_column=PlannerColumns.external,
-        **dd.str2kw('name', _("Meeting")), default_duration="1:00")
+        **dd.str2kw('name', _("Meeting"), default_duration="1:00"))
     yield meeting    
     yield event_type(
         planner_column=PlannerColumns.internal,
-        transparent=True, **dd.str2kw('name', _("Internal")), default_duration="0:30")
+        transparent=True, **dd.str2kw('name', _("Internal"), default_duration="0:30"))
 
     RecurrentEvent = rt.models.cal.RecurrentEvent
     add = Instantiator(RecurrentEvent, event_type=holidays).build
