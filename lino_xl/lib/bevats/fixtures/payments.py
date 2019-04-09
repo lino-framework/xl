@@ -3,11 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
-Creates demo VAT declarations.
-
-"""
-
 from __future__ import unicode_literals
 
 import datetime
@@ -28,20 +23,20 @@ from lino_xl.lib.ledger.choicelists import CommonAccounts
 # from lino.core.requests import BaseRequest
 REQUEST = settings.SITE.login()  # BaseRequest()
 
-def demo_objects():
-    
-    def dcl(ca, fld):
-        obj = ca.get_object()
-        obj.vat_column = VatColumns.get_by_value(fld)
-        return obj
-
-    yield dcl(CommonAccounts.vat_due, '54')
-    yield dcl(CommonAccounts.vat_deductible, '59')
-    yield dcl(CommonAccounts.vat_returnable, '55')
-    yield dcl(CommonAccounts.purchase_of_goods, '71')
-    yield dcl(CommonAccounts.purchase_of_services, '75')
-    yield dcl(CommonAccounts.purchase_of_investments, '72')
-
+# def demo_objects():
+#
+#     def dcl(ca, fld):
+#         obj = ca.get_object()
+#         obj.vat_column = VatColumns.get_by_value(fld)
+#         return obj
+#
+#     yield dcl(CommonAccounts.vat_due, '54')
+#     yield dcl(CommonAccounts.vat_deductible, '59')
+#     yield dcl(CommonAccounts.vat_returnable, '55')
+#     yield dcl(CommonAccounts.purchase_of_goods, '71')
+#     yield dcl(CommonAccounts.purchase_of_services, '75')
+#     yield dcl(CommonAccounts.purchase_of_investments, '72')
+#
 
 
 def objects():
@@ -53,7 +48,7 @@ def objects():
     # m = import_module(dd.plugins.declarations.country_module)
     # from lino_xl.lib.declarations.be import demo_objects
 
-    yield demo_objects()
+    # yield demo_objects()
 
     office = Company(
         name="Mehrwertsteuer-Kontrollamt Eupen",

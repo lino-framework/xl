@@ -10,7 +10,6 @@
     utils
     fields
     roles
-    fixtures.demo
     fixtures.sample_ibans
 
 """

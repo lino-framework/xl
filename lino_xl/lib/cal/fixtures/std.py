@@ -2,17 +2,6 @@
 # Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Installs standard values for :mod:`lino_xl.lib.cal`, including a
-demo set of holidays.  (TODO: make them more configurable.)
-
-See also :ref:`xl.specs.holidays`.
-
-The default value of
-:attr:`lino.modlib.system.SiteConfig.hide_events_before` is set to
-January 1st (of the current year when demo_date is after April and of
-the previous year when demo_date is before April).
-"""
 
 from __future__ import unicode_literals
 

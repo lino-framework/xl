@@ -1,12 +1,6 @@
 # Copyright 2008-2019 Rumma & Ko Ltd
 """Estonian VAT declarations.  See :doc:`/specs/eevat`.
 
-.. autosummary::
-   :toctree:
-
-    fixtures.std
-    fixtures.demo_bookings
-
 """
 
 from lino import ad

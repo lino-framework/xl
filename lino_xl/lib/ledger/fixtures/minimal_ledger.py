@@ -1,15 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""
-Creates minimal accounting demo data:
-
-- some journals
-
-
-"""
 
 from __future__ import unicode_literals
 
@@ -25,6 +17,7 @@ sales = dd.resolve_app('sales')
 ledger = dd.resolve_app('ledger')
 finan = dd.resolve_app('finan')
 bevat = dd.resolve_app('bevat')
+eevat = dd.resolve_app('eevat')
 bevats = dd.resolve_app('bevats')
 #~ partners = dd.resolve_app('partners')
 
@@ -105,7 +98,7 @@ def objects():
         kw.update(dc=CREDIT)
         yield finan.JournalEntry.create_journal(**kw)
 
-    for m in (bevat, bevats):
+    for m in (bevat, bevats, eevat):
         if not m:
             continue
         kw = dict(journal_group=JournalGroups.vat)

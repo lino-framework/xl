@@ -25,29 +25,49 @@ INT = VatAreas.international
 VatRegimes.clear()
 add = VatRegimes.add_item
 add('10', _("Not subject to VAT"), 'normal')
-add('20', _("Subject to VAT"), 'subject', NAT)
-add('30', _("Intracom services"), 'intracom', EU)
-add('35', _("Intracom supplies"), 'intracom_supp', EU)
-
-VatColumns.clear()
-add = VatColumns.add_item
-add('54', _("VAT due"))
-# add('55', _("VAT returnable"))
-# add('59', _("VAT deductible"))
-add('71', _("Purchase of ware"))
-add('72', _("Purchase of new vehicles"))
-add('73', _("Purchase of excised products"))
-add('75', _("Purchase of services"))
-add('76', _("Other purchase"))
+add('20', _("Subject to VAT"), 'subject', NAT, needs_vat_id=True)
+add('30', _("Intracom services"), 'intracom', EU, needs_vat_id=True)
+add('35', _("Intracom supplies"), 'intracom_supp', EU, needs_vat_id=True)
 
 
 VatRules.clear()
 add = VatRules.add_item
-# country_code = dd.plugins.countries.country_code
-# if country_code == "BE":
-add('010', 'normal',  '0.21', EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
-add('020', 'normal',  '0.21', EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
-add('900')
+add('normal',  '0.21', NAT, 'purchases', 'subject',  CommonAccounts.vat_deductible)
+add('reduced', '0.07', NAT, 'purchases', 'subject',  CommonAccounts.vat_deductible)
+# add('normal',  '0.21', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+# add('reduced', '0.07', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+# add('normal',  '0.21', EU,  'purchases', 'intracom_supp', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+# add('reduced', '0.07', EU,  'purchases', 'intracom_supp', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+add('normal',  '0.21', EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
+add('reduced', '0.07', EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
+add('normal',  '0.21', EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
+add('reduced', '0.07', EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
+add()
+
+# print('\n'.join(["{}:{}".format(i.vat_area, i.vat_regime) for i in VatRules.get_list_items()]))
+# for va in VatAreas.get_list_items():
+#      regimes = []
+#      for reg in VatRegimes.get_list_items():
+#           if reg.is_allowed_for(va) and reg.name not in ('lu', 'de'):
+#                if VatRules.get_vat_rule(
+#                        va, vat_regime=reg, default=False):
+#                     regimes.append(reg)
+#                else:
+#                     print(reg, "not allowed")
+#      if len(regimes) == 0:
+#           raise Exception("20190408 no regimes for {}".format(va))
+#
+
+VatColumns.clear()
+add = VatColumns.add_item
+add('54', _("VAT due"), CommonAccounts.vat_due)
+add('55', _("VAT returnable"), CommonAccounts.vat_returnable)
+add('59', _("VAT deductible"), CommonAccounts.vat_deductible)
+add('71', _("Purchase of ware"), CommonAccounts.purchase_of_goods)
+add('72', _("Purchase of new vehicles"), CommonAccounts.purchase_of_investments)
+add('73', _("Purchase of excised products"))
+add('75', _("Purchase of services"), CommonAccounts.purchase_of_services)
+add('76', _("Other purchase"))
 
 
 class DeclarationFields(DeclarationFieldsBase):

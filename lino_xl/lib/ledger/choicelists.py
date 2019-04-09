@@ -18,7 +18,10 @@ from .roles import LedgerStaff
 
 class JournalGroup(dd.Choice):
     menu_group = None
-    
+    # def __init__(self, value, text, name, menu_group=None, **kwargs):
+    #     self.menu_group = dd.plugins.get(menu_group)
+    #     super(JournalGroup, self).__init__(value, text, name, **kwargs)
+
 class JournalGroups(dd.ChoiceList):
     item_class = JournalGroup
     verbose_name = _("Journal group")
@@ -34,6 +37,7 @@ add('50', _("VAT"), 'vat')
 
 if dd.is_installed("sales"):
     JournalGroups.sales.menu_group = dd.plugins.sales
+    # JournalGroups.purchases.menu_group = dd.plugins.ledger
 
 
 class PeriodStates(dd.Workflow):

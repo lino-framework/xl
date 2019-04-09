@@ -3,23 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""
-Populates a  default list of *payment terms*.
-
-Populates *accounts* from
-:class:`lino_xl.lib.ledger.CommonAccounts`, creating a minimal
-accounts chart.
-
-
-.. xfile:: payment_reminder.body.html
-
-  Defines the body text of a payment reminder.
-
-.. xfile:: base.weasy.html
-.. xfile:: payment_reminder.weasy.html
-
-  Defines the body text of a payment reminder.
-"""
 
 from __future__ import unicode_literals
 

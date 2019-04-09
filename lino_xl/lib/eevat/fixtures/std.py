@@ -13,7 +13,7 @@ from lino_xl.lib.ledger.choicelists import CommonAccounts
 from lino_xl.lib.vat.choicelists import VatColumns
 
 
-def objects():
+def unused_objects():
 
     def dcl(ca, fld):
         obj = ca.get_object()

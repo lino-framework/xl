@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -8,10 +8,10 @@ from __future__ import print_function
 from django.db import models
 from atelier.utils import is_string
 from decimal import Decimal
-from lino.api import dd, _
+from lino.api import dd, _, gettext
 from etgen.html import E, forcetext
 from lino_xl.lib.ledger.roles import LedgerStaff
-from lino_xl.lib.ledger.choicelists import TradeTypes
+from lino_xl.lib.ledger.choicelists import TradeTypes, CommonAccounts
 
 from lino_xl.lib.ledger.utils import DCLABELS, ZERO
 
@@ -27,12 +27,12 @@ add('1', _("Reduced VAT rate"), 'reduced')  # food, books,...
 add('2', _("Normal VAT rate"), 'normal')    # everything else
 
 
+
 class VatAreas(dd.ChoiceList):
     verbose_name = _("VAT area")
     verbose_name_plural = _("VAT areas")
     required_roles = dd.login_required(LedgerStaff)
-    EU_COUNTRY_CODES = set("BE FR DE NL LU EE DK NO SE IT".split())
-    
+
     @classmethod
     def get_for_country(cls, country=None):
         if country is None:
@@ -41,7 +41,7 @@ class VatAreas(dd.ChoiceList):
             isocode = country.isocode
         if isocode == dd.plugins.countries.country_code:
             return cls.national
-        if isocode in cls.EU_COUNTRY_CODES:
+        if isocode in dd.plugins.vat.eu_country_codes:
             return cls.eu
         return cls.international
     
@@ -50,21 +50,42 @@ add('10', _("National"), 'national')
 add('20', _("EU"), 'eu')
 add('30', _("International"), 'international')
 
+class VatColumn(dd.Choice):
+    common_account = None
+
+    def __init__(self, value, text, common_account=None):
+        super(VatColumn, self).__init__(value, text)
+        self.common_account = common_account
+
+
 class VatColumns(dd.ChoiceList):
     # to be populated by bevat, bevats, ...
     verbose_name = _("VAT column")
     verbose_name_plural = _("VAT columns")
     required_roles = dd.login_required(LedgerStaff)
     show_values = True
+    item_class = VatColumn
+    column_names = "value text common_account account"
 
-    
+    @dd.virtualfield(CommonAccounts.field())
+    def common_account(cls, col, ar):
+        return col.common_account
+
+    @dd.virtualfield(dd.ForeignKey('ledger.Account'))
+    def account(cls, col, ar):
+        if col.common_account is not None:
+            return col.common_account.get_object()
+
+
 class VatRegime(dd.Choice):
-    item_vat = True
     vat_area = None
+    needs_vat_id = False
+    item_vat = True
 
-    def __init__(self, value, text, name, vat_area=None, item_vat=True):
+    def __init__(self, value, text, name, vat_area=None, item_vat=True, needs_vat_id=False):
         super(VatRegime, self).__init__(value, text, name)
         self.vat_area = vat_area
+        self.needs_vat_id = needs_vat_id
         self.item_vat = item_vat
 
     def is_allowed_for(self, vat_area):
@@ -76,8 +97,22 @@ class VatRegime(dd.Choice):
 class VatRegimes(dd.ChoiceList):
     verbose_name = _("VAT regime")
     verbose_name_plural = _("VAT regimes")
+    column_names = "value name text vat_area needs_vat_id item_vat"
     item_class = VatRegime
     required_roles = dd.login_required(LedgerStaff)
+
+    @dd.virtualfield(VatAreas.field())
+    def vat_area(cls, regime, ar):
+        return regime.vat_area
+
+    @dd.virtualfield(dd.BooleanField(_("item VAT")))
+    def item_vat(cls, regime, ar):
+        return regime.item_vat
+
+    @dd.virtualfield(dd.BooleanField(_("Needs VAT id")))
+    def needs_vat_id(cls, regime, ar):
+        return regime.needs_vat_id
+
 
 add = VatRegimes.add_item
 add('10', _("Normal"), 'normal')
@@ -179,7 +214,7 @@ class DeclarationField(dd.Choice):
                 if v is None:
                     raise Exception(
                         "Invalid VAT column {} for field {}".format(
-                            v, self.value))
+                            n, self.value))
                 s.add(v)
             if len(self.vat_columns) == 0:
                 self.vat_columns = None
@@ -338,7 +373,6 @@ class DeclarationFieldsBase(dd.ChoiceList):
         return E.div(*forcetext(elems))
     
 
-
 class VatRule(dd.Choice):
 
     start_date = None
@@ -350,19 +384,20 @@ class VatRule(dd.Choice):
     rate = ZERO
     can_edit = False
     vat_account = None
-    vat_returnable = False
+    vat_returnable = None
     vat_returnable_account = None
     
-    def __init__(self, value,
+    def __init__(self,
                  vat_class=None, rate=None,
                  vat_area=None, trade_type=None,
                  vat_regime=None, vat_account=None,
                  vat_returnable_account=None, vat_returnable=None):
-        kw = dict()
+        kw = dict(vat_area=vat_area)
         if rate is not None:
             kw.update(rate=Decimal(rate))
-        if vat_returnable is not None:
-            kw.update(vat_returnable=vat_returnable)
+        if vat_returnable is None:
+            vat_returnable = vat_returnable_account is not None
+        kw.update(vat_returnable=vat_returnable)
         if trade_type:
             kw.update(trade_type=TradeTypes.get_by_name(trade_type))
         if vat_regime:
@@ -375,7 +410,7 @@ class VatRule(dd.Choice):
             kw.update(
                 vat_returnable_account=vat_returnable_account)
         # text = "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
-        super(VatRule, self).__init__(value, value, **kw)
+        super(VatRule, self).__init__(None, None, **kw)
         
     # def __str__(self):
     #     kw = dict(
@@ -386,11 +421,12 @@ class VatRule(dd.Choice):
     #         vat_area=self.vat_area, seqno=self.seqno)
     #     return "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
 
+
 class VatRules(dd.ChoiceList):
     verbose_name = _("VAT rule")
     verbose_name_plural = _("VAT rules")
     item_class = VatRule
-    column_names = "value text description"
+    column_names = "value description"
 
     @classmethod
     def get_vat_rule(
@@ -427,17 +463,28 @@ class VatRules(dd.ChoiceList):
         if ar is None:
             return ''
         lst = []
-        lst.append(str(rule.rate))
-        lst.append(str(rule.trade_type))
-        lst.append(str(rule.vat_regime))
-        lst.append(str(rule.vat_area))
-        lst.append(str(rule.vat_class))
-        lst.append(str(rule.vat_account))
-        lst.append(str(rule.vat_returnable))
-        lst.append(str(rule.vat_returnable_account))
-        return ', '.join(lst)
+        only = []
+        lst.append(gettext("Rate {}".format(rule.rate)))
+        if rule.trade_type is not None:
+            only.append(str(rule.trade_type))
+        if rule.vat_regime is not None:
+            only.append(str(rule.vat_regime))
+        if rule.vat_area is not None:
+            only.append(str(rule.vat_area))
+        if rule.vat_class is not None:
+            only.append(str(rule.vat_class))
+        if len(only):
+            lst.append(gettext("When {}".format(', '.join(only))))
 
-    
-add = VatRules.add_item
-add('000')
+        lst.append(gettext("Book to {}").format(rule.vat_account))
+        if rule.vat_returnable:
+            lst.append(gettext("Returnable to {}").format(rule.vat_returnable_account))
+        return '\n'.join(lst)
+
+
+# we add a single rule with no rate and no conditions, iow any combination is
+# allowed and no vat is applied. The declaration modules will clear this list
+# and fill it with their rules.
+
+VatRules.add_item()
 

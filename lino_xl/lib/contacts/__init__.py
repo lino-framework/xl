@@ -10,8 +10,6 @@ See :doc:`/specs/contacts`.
 
     utils
     dummy
-    fixtures.std
-    fixtures.demo
     fixtures.demo_ee
     fixtures.demo_fr
     management.commands.garble_persons

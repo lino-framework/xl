@@ -8,11 +8,6 @@ invoices from data in the database.
 
 See :doc:`/specs/invoicing`.
 
-.. autosummary::
-    :toctree:
-
-    fixtures.demo_bookings
-
 """
 
 from lino.api.ad import Plugin, _

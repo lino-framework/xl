@@ -3,14 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Creates fictive demo bookings to monthly payment orders and bank
-statements.  Bank statements of last month are not yet entered into
-database
-
-Used e.g. in :mod:`lino_book.projects.apc`.
-
-"""
-
 from __future__ import unicode_literals
 
 import datetime

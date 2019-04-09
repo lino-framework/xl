@@ -2,16 +2,6 @@
 # Copyright 2014 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
-"""
-The `demo` fixture for `humanlinks`
-===================================
-
-Creates two fictive families:
-
-- Hubert & Gaby Frisch-Frogemuth with their children and grand-children
-- 
-
-"""
 
 from __future__ import unicode_literals
 

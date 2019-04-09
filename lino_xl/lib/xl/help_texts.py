@@ -291,11 +291,15 @@ plugin."""),
     'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
     'lino_xl.lib.vat.Plugin' : _("""The Plugin object for this
 plugin."""),
+    'lino_xl.lib.vat.Plugin.eu_country_codes' : _("""A space-separated list of ISO codes that are to be considered part of
+the EU. This is used to define the VAT area of a partner, which in turn
+influences the available VAT regimes.  See
+lino_xl.lib.vat.VatAreas."""),
     'lino_xl.lib.vat.Plugin.default_vat_regime' : _("""The default VAT regime. If this is specified as a string, Lino will
 resolve it at startup into an item of VatRegimes."""),
     'lino_xl.lib.vat.Plugin.default_vat_class' : _("""The default VAT class. If this is specified as a string, Lino will
 resolve it at startup into an item of VatClasses."""),
-    'lino_xl.lib.vat.Plugin.declaration_plugins' : _("""The plugins to use for VAT declarations."""),
+    'lino_xl.lib.vat.Plugin.declaration_plugin' : _("""The plugins to use for VAT declarations."""),
     'lino_xl.lib.vat.Plugin.get_vat_class' : _("""Return the VAT class to be used for given trade type and given
 invoice item. Return value must be an item of
 lino_xl.lib.vat.VatClasses."""),
@@ -420,11 +424,8 @@ Concrete subclasses must also inherit from lino.mixins.Born."""),
 them."""),
     'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
-    'lino_xl.lib.bevats.VatRegimes' : _("""The lino_xl.lib.betvats plugin redefines the list of VAT
-regimes:"""),
-    'lino_xl.lib.bevats.VatColumns' : _("""The lino_xl.lib.betvats plugin redefines the list of VAT
-columns:"""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
+    'lino_xl.lib.bevats.DeclarationFields' : _("""Implements lino_xl.lib.vat.DeclarationFields."""),
     'lino_xl.lib.cal.Event' : _("""The Django model which represents a calendar entry."""),
     'lino_xl.lib.cal.Event.start_date' : _("""The starting date of this entry.  May not be empty."""),
     'lino_xl.lib.cal.Event.end_date' : _("""The ending date of this entry. Leave empty for same-day entries."""),
@@ -823,8 +824,6 @@ instance of CourseArea."""),
     'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
-    'lino_xl.lib.eevat.Declaration' : _("""A VAT declaration."""),
-    'lino_xl.lib.eevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
 situation."""),
     'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
@@ -1503,21 +1502,15 @@ their start_date
 is either empty or before the first day of this month or year,
 and if their end_date is either empty or
 after the first day of this month or year."""),
-    'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
-amounts (not products, quantities, discounts)."""),
-    'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
-    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
-voucher_type
-must be VatAccountInvoice)"""),
-    'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
-    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
-    'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
-    'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose vat_regime is
-intra-Community."""),
-    'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose vat_regime is
-intra-Community."""),
-    'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and
-IntracomPurchases"""),
+    'lino_xl.lib.vat.VatRegime' : _("""Base class for the items of VatRegimes.  Each VAT regime is an
+instance of this and has two properties:"""),
+    'lino_xl.lib.vat.VatRegime.vat_area' : _("""In which VAT area this regime is available.  See VatAreas."""),
+    'lino_xl.lib.vat.VatRegime.item_vat' : _("""Whether unit prices are VAT included or not."""),
+    'lino_xl.lib.vat.VatRegime.needs_vat_id' : _("""Whether this VAT regime requires that partner to have a
+vat_id."""),
+    'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes.  Each item of this list is an instance of
+VatRegime."""),
+    'lino_xl.lib.vat.VatClasses' : _("""The global list of VAT classes."""),
     'lino_xl.lib.vat.VatRule' : _("""A rule which defines how VAT is to be handled for a given invoice
 item."""),
     'lino_xl.lib.vat.VatRule.seqno' : _("""The sequence number."""),
@@ -1535,6 +1528,20 @@ movement into the vat_returnable_account."""),
     'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
 field is empty, then VAT will be added to the base account."""),
     'lino_xl.lib.vat.VatRules' : _("""The table of all VatRule objects."""),
+    'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
+    'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
+amounts (not products, quantities, discounts)."""),
+    'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
+    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
+voucher_type
+must be VatAccountInvoice)"""),
+    'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
+    'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
+    'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
+    'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose VAT regime is Intra-Community."""),
+    'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose VAT regime is Intra-Community."""),
+    'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and
+IntracomPurchases"""),
     'lino_xl.lib.vat.VatTotal' : _("""Model mixin which defines the fields total_incl,
 total_base and total_vat."""),
     'lino_xl.lib.vat.VatTotal.total_incl' : _("""The amount VAT included."""),
@@ -1582,13 +1589,7 @@ VatClasses."""),
     'lino_xl.lib.vat.QtyVatItemBase' : _("""Model mixin for items of a VatTotal.  Extends
 VatItemBase by adding unit_price and qty."""),
     'lino_xl.lib.vat.QtyVatItemBase.unit_price' : _("""The unit price for this item."""),
-    'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
-    'lino_xl.lib.vat.VatClasses' : _("""The global list of VAT classes."""),
     'lino_xl.lib.vat.VatColumns' : _("""The global list of VAT columns."""),
-    'lino_xl.lib.vat.VatRegime' : _("""Base class for choices of VatRegimes."""),
-    'lino_xl.lib.vat.VatRegime.item_vat' : _("""Whether unit prices are VAT included or not."""),
-    'lino_xl.lib.vat.VatRegimes' : _("""The global list of VAT regimes.  Each item is an instance of
-VatRegime."""),
     'lino_xl.lib.vat.VatDeclaration' : _("""Abstract base class for VAT declarations."""),
     'lino_xl.lib.vat.VatDeclaration.get_payable_sums_dict' : _("""Implements
 lino_xl.lib.sepa.Payable.get_payable_sums_dict()."""),

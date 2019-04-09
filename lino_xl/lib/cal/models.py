@@ -24,6 +24,7 @@ from django.utils import timezone
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
+from lino.utils.quantities import Duration
 from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.printing.mixins import Printable
@@ -453,14 +454,17 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                     duration.days, et.max_days)
 
     def full_clean(self, *args, **kw):
+        super(Event, self).full_clean(*args, **kw)
         et = self.event_type
         if et is not None and et.default_duration is not None:
-            if self.start_time is not None and self.end_time is None:
-                dt = self.get_datetime('start') + et.default_duration
-                self.set_datetime('end', dt)
-            elif self.end_time is not None and self.start_time is None:
-                dt = self.get_datetime('end') + et.default_duration
-                self.set_datetime('start', dt)
+            assert isinstance(et.default_duration, Duration)
+            dt = self.get_datetime('start')
+            if dt is not None and self.end_time is None:
+                self.set_datetime('end', dt + et.default_duration)
+            else:
+                dt = self.get_datetime('end')
+                if dt is not None and self.start_time is None:
+                    self.set_datetime('start', dt - et.default_duration)
         if et and et.max_days == 1:
             # avoid "Abandoning with 297 unsaved instances" when migrating data
             # that was created before the current rules
@@ -468,7 +472,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         msg = self.duration_veto()
         if msg is not None:
             raise ValidationError(str(msg))
-        super(Event, self).full_clean(*args, **kw)
 
     def start_time_changed(self, ar):
         et = self.event_type
@@ -496,7 +499,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             if u is not None:
                 yield (u, u.mail_mode)
     
-        
     def has_conflicting_events(self):
         qs = self.get_conflicting_events()
         if qs is None:

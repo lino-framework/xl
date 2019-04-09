@@ -2,13 +2,6 @@
 # Copyright 2009-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Loads a series of default company types.
-
-See :class:`lino_xl.lib.contacts.CompanyType`.
-
-"""
-
 from __future__ import unicode_literals
 from builtins import filter
 

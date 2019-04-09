@@ -135,6 +135,8 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
                     sc.next_partner_id += 1
                     sc.save()
         #~ dd.logger.info("20120327 Partner.save(%s,%s)",args,kw)
+        # if self.name.startswith("Auto "):
+        #     print("20190408 saving {} with vat_id {!r}".format(self, self.vat_id))
         super(Partner, self).save(*args, **kw)
 
     def get_last_name_prefix(self):

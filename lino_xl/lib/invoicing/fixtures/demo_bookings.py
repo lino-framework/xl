@@ -1,15 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2018 Rumma & Ko Ltd
+# Copyright 2016-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Creates montly invoicing plans and executes them.
-
-dd.plugins.ledger.start_year
-
-first ten items
-(i.e. generates ten invoices).
-
-"""
 import datetime
 from lino_xl.lib.cal.choicelists import DurationUnits
 from lino.api import dd, rt

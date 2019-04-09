@@ -133,11 +133,15 @@ class Payable(PartnerRelated):
                 None, acc_tuple, prj, self.journal.dc, amount, **kw)
             counter_sums.collect(prj, amount)
 
+        tt = self.get_trade_type()
+        if tt is None:
+            if len(counter_sums.items()):
+                raise Warning("No trade type for {}".format(self))
+            return
         acc = self.get_trade_type().get_main_account()
         if acc is None:
             if len(counter_sums.items()):
-                raise Exception("No main account for {}".format(
-                    self.get_trade_type()))
+                raise Warning("No main account for {}".format(tt))
         else:
             for prj, amount in counter_sums.items():
                 # amount = myround(amount)

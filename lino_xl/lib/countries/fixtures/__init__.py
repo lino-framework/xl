@@ -5,7 +5,6 @@
 
     all_countries
     be
-    demo
     eesti
     few_countries
     few_cities

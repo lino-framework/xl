@@ -13,8 +13,6 @@ Technical specification see :ref:`lino.specs.households`.
 
     models
     choicelists
-    fixtures.std
-    fixtures.demo
 
 This plugin is being extended by :ref:`welfare` in
 :mod:`lino_welfare.modlib.households`.

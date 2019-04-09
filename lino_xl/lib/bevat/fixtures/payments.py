@@ -2,11 +2,6 @@
 # Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Creates a Belgian VAT office and some VAT declarations.
-
-"""
-
 from __future__ import unicode_literals
 
 import datetime

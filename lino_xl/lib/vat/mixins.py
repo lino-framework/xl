@@ -265,7 +265,11 @@ class VatDocument(ProjectRelated, VatTotal):
         item.full_clean()
         item.save()
 
-        
+    @dd.chooser()
+    def vat_regime_choices(self, partner):
+        return rt.models.vat.get_vat_regime_choices(
+            partner, partner.country, partner.vat_id)
+
     def partner_changed(self, ar=None):
         self.vat_regime = None
         self.fill_defaults()

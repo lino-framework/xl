@@ -6,7 +6,8 @@
 
     models
     desktop
-    fixtures.demo_bookings
+    fixtures.std
+    fixtures.payments
 
 """
 # from importlib import import_module

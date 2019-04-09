@@ -8,9 +8,6 @@
 
     utils
     workflows
-    fixtures.std
-    fixtures.demo
-    fixtures.demo2
 
 """
 
@@ -23,7 +20,7 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ['lino.modlib.gfks', 'lino.modlib.printing',
                      # 'lino.modlib.notify',
-                     'lino_xl.lib.xl']
+                     'lino_xl.lib.xl', 'lino.modlib.checkdata']
 
     # partner_model = 'contacts.Partner'
     partner_model = 'contacts.Person'

@@ -5,9 +5,6 @@
 
 """Adds functionality for receiving emails and storing them in the db.
 
-.. autosummary::
-   :toctree:
-
 """
 
 from lino import ad

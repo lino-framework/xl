@@ -1,15 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2016 Rumma & Ko Ltd
-
-
-"""
-Creates fictive demo bookings about monthly sales.
-
-See also:
-- :mod:`lino_xl.lib.finan.fixtures.demo_bookings`
-- :mod:`lino_xl.lib.ledger.fixtures.demo_bookings`
-
-"""
+# Copyright 2012-2019 Rumma & Ko Ltd
 
 from __future__ import unicode_literals
 
@@ -41,9 +31,9 @@ def objects():
     Product = rt.models.products.Product
     VatProductInvoice = rt.models.sales.VatProductInvoice
     InvoiceItem = rt.models.sales.InvoiceItem
+    Country = rt.models.countries.Country
 
     def get_trade_countries(tt):
-        Country = rt.models.countries.Country
         areas = set()
         for va in VatAreas.get_list_items():
             if VatRules.get_vat_rule(va, tt, default=False):
@@ -113,6 +103,7 @@ def objects():
                 try:
                     item.product_changed(REQUEST)
                 except Exception as e:
+                    # raise
                     msg = "20171006 {} in ({} {!r})".format(
                         e, invoice.partner, invoice.vat_regime)
                     # raise Exception(msg)

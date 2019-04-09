@@ -2,17 +2,6 @@
 # Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""
-Creates fictive demo bookings with monthly purchases.
-
-See also:
-- :mod:`lino_xl.lib.finan.fixtures.demo_bookings`
-- :mod:`lino_xl.lib.sales.fixtures.demo_bookings`
-- :mod:`lino_xl.lib.invoicing.fixtures.demo_bookings`
-
-"""
-
 from __future__ import unicode_literals
 
 import datetime
@@ -44,8 +33,8 @@ def objects():
 
     def func():
         # qs = Company.objects.filter(sepa_accounts__iban__isnull=False)
-        qs = Company.objects.exclude(vat_regime='').filter(
-            country__isnull=False)
+        # qs = Company.objects.exclude(vat_regime='').filter(
+        qs = Company.objects.filter(country__isnull=False)
         for p in qs.order_by('id'):
             # if Journal.objects.filter(partner=p).exists():
             #     continue
@@ -61,7 +50,10 @@ def objects():
     PROVIDERS = Cycler(func())
 
     if len(PROVIDERS) == 0:
-        raise Exception("No providers.")
+        msg = "No providers (using declaration_plugin {}).".format(dd.plugins.vat.declaration_plugin)
+        dd.logger.warning(msg)
+        # raise Exception(msg)
+        return
 
     JOURNAL_P = Journal.objects.get(ref="PRC")
     if dd.is_installed('ana'):
@@ -130,6 +122,7 @@ def objects():
                 try:
                     item.total_incl_changed(REQUEST)
                 except Exception as e:
+                    raise
                     msg = "20171006 {} in ({} {!r})".format(
                         e, invoice.partner, invoice.vat_regime)
                     # raise Exception(msg)

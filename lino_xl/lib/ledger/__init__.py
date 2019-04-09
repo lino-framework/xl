@@ -11,9 +11,6 @@ See :doc:`/specs/ledger`.
     roles
     fields
     management.commands.reregister
-    fixtures.std
-    fixtures.demo
-    fixtures.demo_bookings
 
 """
 

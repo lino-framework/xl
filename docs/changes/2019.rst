@@ -12,6 +12,48 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-09
+==========
+
+New property :attr:`lino_xl.lib.vat.VatRegime.needs_vat_id`. The chooser
+for :attr:`lino_xl.lib.contacts.Partner.vat_regime` now also depends on
+whether the partner has a VAT id or not. The choicelist of the vat_regime
+field of a voucher wasn't yet filtered. New function
+:func:`lino_xl.lib.vat.get_vat_regime_choices` used by both choosers.
+The :class:`lino_xl.lib.vat.VatRegimes` table now shows all these properties.
+
+Changes in :mod:`lino_xl.lib.eevat` : removed regime "Private person
+(reduced)".  The regime "Private person" can now be used for any area.
+Selling to private persons in other countries was not yet allowed.
+
+In :mod:`lino_xl.lib.vat` I changed :attr:`declaration_plugins
+<lino_xl.lib.vat.Plugin.declaration_plugins>` to :attr:`declaration_plugin
+<lino_xl.lib.vat.Plugin.declaration_plugin>` because I realized that you
+can have only one declaration plugin.
+
+New config setting :attr:`eu_country_codes
+<lino_xl.lib.vat.Plugin.eu_country_codes>`, and the list is now complete
+(at least at the moment of writing this).
+
+:class:`lino_xl.lib.sepa.Payable`  now gives a more comprehensible warning
+"No trade type for {}" when the trade type for the voucher is undefined.
+
+I reviewed the :fixture:`demo` fixture of :mod:`lino_xl.lib.contacts`. It has
+become more readable.  It no longer creates cities which don't exist (and
+instead omits partners in these cities). I removed München and Kelmis
+because these are difficult to lookup because their name varies with the
+languages used on the site.  Each contact now has at least a city.
+
+The :fixture:`demo` fixture for :mod:`lino_xl.lib.vat` now sets fictive VAT
+numbers for each company.
+
+Minor changes in the ordering of menu commands.
+
+New property :attr:`lino_xl.lib.vat.VatColumn.common_account` and a new data
+checker to verify that every VAT column has an account configured if it
+requires one.
+
+
 2019-04-03
 ==========
 

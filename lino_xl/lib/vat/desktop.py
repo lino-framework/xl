@@ -18,7 +18,7 @@ from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
 
-from .choicelists import VatRegimes
+from .choicelists import VatRegimes, VatAreas
 
 
 # class VatRules(dd.Table):
@@ -126,11 +126,13 @@ class IntracomInvoices(PartnerVouchers):
     
     @classmethod
     def get_request_queryset(cls, ar, **kwargs):
+        assert not kwargs
         fkw = dict()
         if cls._trade_type is not None:
             fkw.update(journal__trade_type=cls._trade_type)
         regimes = set([r for r in VatRegimes.get_list_items()
-                       if r.name.startswith('intracom')])
+                       if r.vat_area == VatAreas.eu])
+                       # if r.name.startswith('intracom')])
         # (VatRegimes.intracom, VatRegimes.intracom_supp)
         fkw.update(vat_regime__in=regimes)
         qs = super(IntracomInvoices, cls).get_request_queryset(ar, **fkw)

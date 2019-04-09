@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2018 Rumma & Ko 
+# Copyright 2013-2019 Rumma & Ko
 # License: BSD (see file COPYING for details)
 
 
@@ -10,7 +10,6 @@
 
     utils
 
-.. fixtures.novat fixtures.euvatrates
 
 """
 
@@ -24,6 +23,34 @@ class Plugin(ad.Plugin):
 
     """
     verbose_name = _("VAT")
+    # menu_group = "vat"
+
+    needs_plugins = ['lino.modlib.checkdata']
+
+    eu_country_codes = """AT BE BG CY CZ DK DE EE ES FI FR GB GR HU HR IE IT LV
+    LT LU MT NL PO PT RO SE SI SK"""
+
+    """A space-separated list of ISO codes that are to be considered part of
+    the EU. This is used to define the VAT area of a partner, which in turn
+    influences the available VAT regimes.  See
+    :class:`lino_xl.lib.vat.VatAreas`.
+    
+    When a member state leaves or joins the EU (and you have partners there),
+    you can either update your Lino (we plan to keep this list up to date), or
+    you can change it locally. 
+    
+    At site startup this is converted from a string to a set. Duplicate codes
+    are ignored. For example so in your :attr:`layouts_module
+    <lino.core.site.Site.layouts_module>` you may write code like this::
+    
+        if brexit:
+            dd.plugins.vat.eu_country_codes.remove("GB")
+            
+    The :attr:`isocode <lino_xl.lib.countries.Country.isocode>` fields in your
+    :class:`countries.Countries <lino_xl.lib.countries.Countries>` table must
+    match the codes specified here. 
+    
+    """
 
     default_vat_regime = 'normal'
     """The default VAT regime. If this is specified as a string, Lino will
@@ -39,7 +66,7 @@ class Plugin(ad.Plugin):
 
     """
 
-    declaration_plugins = None
+    declaration_plugin = None
     """The plugins to use for VAT declarations.
     
     This can be specified as a list of a string with space-separated names.
@@ -65,16 +92,21 @@ class Plugin(ad.Plugin):
 
         # vat needs ledger but doesn't declare this dependency to avoid
         # having ledger before sales in menus:
-        # yield 'lino_xl.lib.ledger'
+        yield 'lino_xl.lib.ledger'
 
-        if self.declaration_plugins is not None:
-            if isinstance(self.declaration_plugins, six.string_types):
-                self.declaration_plugins = self.declaration_plugins.split()
-            for i in self.declaration_plugins:
-                yield i
+        if self.declaration_plugin is not None:
+            yield self.declaration_plugin
+            # if isinstance(self.declaration_plugins, six.string_types):
+            #     self.declaration_plugins = self.declaration_plugins.split()
+            # for i in self.declaration_plugins:
+            #     yield i
+        for p in super(Plugin, self).get_required_plugins():
+            yield p
 
     def on_site_startup(self, site):
         vat = site.modules.vat
+        if isinstance(self.eu_country_codes, six.string_types):
+            self.eu_country_codes = set(self.eu_country_codes.split())
         if isinstance(self.default_vat_regime, six.string_types):
             self.default_vat_regime = vat.VatRegimes.get_by_name(
                 self.default_vat_regime)
@@ -85,8 +117,8 @@ class Plugin(ad.Plugin):
     def setup_reports_menu(self, site, user_type, m):
         # mg = site.plugins.ledger
         # mg = site.plugins.vat
-        # mg = self
-        mg = self.get_menu_group()
+        mg = self  # don't merge into sales menus for reports
+        # mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('vat.PrintableInvoicesByJournal')
         m.add_action('vat.IntracomPurchases')
@@ -94,7 +126,8 @@ class Plugin(ad.Plugin):
         
 
     def setup_explorer_menu(self, site, user_type, m):
-        mg = self.get_menu_group()
+        mg = self  # don't merge into sales menus for explorer
+        # mg = self.get_menu_group()
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('vat.VatAreas')
         m.add_action('vat.VatRegimes')

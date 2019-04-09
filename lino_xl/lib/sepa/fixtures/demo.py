@@ -1,13 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-"""
-Adds some commonly known partners and their bank accounts.
-These are real data randomly collected from Internet.
-
-"""
 
 from __future__ import unicode_literals
 
@@ -18,7 +11,7 @@ from lino.api import rt, dd
 Company = Instantiator('contacts.Company', 'name url').build
 Account = Instantiator('sepa.Account', 'partner bic iban remark').build
 
-from lino_xl.lib.vat.choicelists import VatRegimes
+# from lino_xl.lib.vat.choicelists import VatRegimes
 
 class Adder(object):
     def __init__(self):
@@ -31,11 +24,11 @@ class Adder(object):
             kw.pop('vat_id', None)
         obj = Company(name=name, url=url, **kw)
         # if VatRegimes.is_installed():
-        if dd.is_installed('bevats') or dd.is_installed('bevat'):
-            if obj.country.isocode == 'BE':
-                obj.vat_regime = VatRegimes.subject
-            else:
-                obj.vat_regime = VatRegimes.intracom
+        # if dd.is_installed('bevats') or dd.is_installed('bevat'):
+        #     if obj.country.isocode == 'BE':
+        #         obj.vat_regime = VatRegimes.subject
+        #     else:
+        #         obj.vat_regime = VatRegimes.intracom
         self.current_partner = obj
         self.primary = True
         return obj
@@ -116,7 +109,7 @@ def objects():
 
     yield C("Leffin Electronics", "",
             email="info@leffin-electronics.be",
-            vat_id="BE0650.238.114",
+            vat_id="BE 0650.238.114",
             street="Schilsweg",
             street_no=80,
             country="BE",

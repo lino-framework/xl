@@ -1,4 +1,4 @@
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
 Adds functionality for managing workting time.
@@ -18,7 +18,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Working time")
 
     needs_plugins = ['lino_noi.lib.noi', 'lino_noi.lib.tickets',
-                     'lino.modlib.summaries']
+                     'lino.modlib.summaries', 'lino.modlib.checkdata']
 
     # project_model = 'tickets.Project'
     # project_model = 'contacts.Partner'

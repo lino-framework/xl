@@ -4,13 +4,6 @@
 """Adds functionality for handling sales.
 See :doc:`/specs/sales`.
 
-
-.. autosummary::
-    :toctree:
-
-    fixtures.std
-    fixtures.demo_bookings
-
 """
 
 from lino.api import ad
@@ -22,7 +15,12 @@ class Plugin(ad.Plugin):
 
     verbose_name = _("Sales")
 
+    # The VAT menu should appear *after* the Sales menu.  But Sales needs VAT
+    # and therefore the VAT menu items will incorporate into the Sales menu.  One
+    # possibility is to remove vat from the needs_plugins of sales.
+
     needs_plugins = ['lino_xl.lib.products', 'lino_xl.lib.vat']
+    # needs_plugins = ['lino_xl.lib.products']
 
     def setup_reports_menu(self, site, user_type, m):
         # mg = site.plugins.ledger

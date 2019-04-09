@@ -3,9 +3,6 @@
 #
 # License: BSD (see file COPYING for details)
 
-"""
-Generates a suite of fictive demo events.
-"""
 
 import logging
 logger = logging.getLogger(__name__)

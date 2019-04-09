@@ -1,18 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2014 Luc Saffre
-#
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-"""
-The `std` fixture for `households`
-==================================
 
-Adds some :class:`household roles <households.Role>`.
-
-"""
-
-from django.utils.translation import ugettext_lazy as _
-
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 
 
 def objects():

@@ -2,10 +2,6 @@
 # Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Creates a Belgian VAT office and some VAT declarations.
-
-"""
 
 from __future__ import unicode_literals
 
@@ -25,9 +21,9 @@ def objects():
     Declaration = rt.models.eevat.Declaration
 
     office = Company(
-        name="Mehrwertsteuer-Kontrollamt Eupen",
-        street="Vervierser Str. 8",
-        country_id="BE", zip_code="4700")
+        name="Maksu- ja Tolliamet",
+        street="Lõõtsa 8a",
+        country_id="EE", zip_code="15176", city="Tallinn")
     yield office
     
     USERS = Cycler(settings.SITE.user_model.objects.all())

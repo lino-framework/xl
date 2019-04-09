@@ -13,7 +13,6 @@ per partner.
     choicelists
     mixins
     models
-    fixtures.demo2
 
 Some unit test cases are
 :mod:`lino.projects.min2.tests.test_addresses`.
@@ -27,6 +26,7 @@ class Plugin(ad.Plugin):
     "See :class:`lino.core.Plugin`."
     verbose_name = _("Addresses")
     partner_model = 'contacts.Partner'
+    needs_plugins = ['lino.modlib.checkdata']
 
     def on_site_startup(self, site):
         super(Plugin, self).on_site_startup(site)

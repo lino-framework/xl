@@ -2,15 +2,6 @@
 # Copyright 2012-2018 Rumma & Ko Ltd
 #
 # License: BSD (see file COPYING for details)
-"""Adds demo data for `households`
-
-Creates some households by marrying a few Persons.
-
-Every third household gets divorced: we put an `end_date` to that
-membership and create another membership for the same person with
-another person.
-
-"""
 
 from django.conf import settings
 from lino.core.utils import resolve_model
