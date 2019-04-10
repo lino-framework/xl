@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2013-2018 Rumma & Ko Ltd
-#
 # License: BSD (see file COPYING for details)
 
 """Database models for `lino_xl.lib.rooms`.

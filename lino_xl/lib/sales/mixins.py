@@ -52,7 +52,6 @@ class SalesDocument(VatDocument, Certifiable):
             # if qty is None:
                 # qty = Duration(1)
         kw['product'] = product
-
         kw['qty'] = qty
         return super(SalesDocument, self).add_voucher_item(**kw)
 

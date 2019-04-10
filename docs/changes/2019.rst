@@ -12,6 +12,17 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-10
+==========
+
+The :attr:`lino_xl.lib.orders.Order.room` field is no longer nullable.
+
+When adding the workers of an order as guests of a calendar entry, Lino no
+longer sorts them by name.  This behaviour came from :mod:`lino_xl.lib.courses`
+where it is useful, but the workers of an order should remain in their natural
+order.
+
+
 2019-04-09
 ==========
 
@@ -83,6 +94,7 @@ When doing this, until now, it used the label of the
 The (:attr:`description <lino_xl.lib.orders.OrderItem.description>`) of an
 order item  is now a single-line :class:`CharField` (not a multi-line
 :class:`RichTextField`)
+
 
 
 2019-03-28

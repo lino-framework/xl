@@ -94,7 +94,7 @@ class Orders(dd.Table):
     detail_layout = 'orders.OrderDetail'
     insert_layout = """
     project
-    user
+    room
     entry_date
     """
     column_names = "start_date project remark workflow_buttons *"
@@ -177,6 +177,11 @@ class OrdersByProject(Orders):
     column_names = "entry_date:8 journal number workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
     order_by = ['entry_date']
+    insert_layout = """
+    room
+    entry_date
+    journal
+    """
 
 class OrdersByRecipient(Orders):
     master_key = 'invoice_recipient'

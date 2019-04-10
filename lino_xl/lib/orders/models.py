@@ -83,7 +83,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
 
     # line = dd.ForeignKey('orders.Line')
     # event_type = dd.ForeignKey('cal.EventType', null=True, blank=True)
-    room = dd.ForeignKey('cal.Room', null=True, blank=True)
+    room = dd.ForeignKey('cal.Room', blank=True)
     description = dd.BabelTextField(_("Description"), blank=True)
     remark = models.TextField(_("Remark"), blank=True)
     # entry_date = models.DateField(
@@ -189,8 +189,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
         """Look up enrolments of this order and suggest them as guests."""
         # logger.info("20140314 suggest_guests")
         Enrolment = rt.models.orders.Enrolment
-        qs = Enrolment.objects.filter(order=self).order_by(
-            *[f.name for f in Enrolment.quick_search_fields])
+        qs = Enrolment.objects.filter(order=self).order_by('id')
         for obj in qs:
             # if obj.is_guest_for(event):
             g = obj.make_guest_for(event)
@@ -377,7 +376,7 @@ class OrderItem(SequencedVoucherItem):
     product = dd.ForeignKey('products.Product', blank=True, null=True)
     qty = dd.QuantityField(_("Quantity"), blank=True, null=True)
     # unit_price = dd.PriceField(_("Unit price"), blank=True, null=True)
-    remark = models.CharField(_("Description"), max_length=200, blank=True)
+    remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
 
 
