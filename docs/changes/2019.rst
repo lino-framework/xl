@@ -57,10 +57,17 @@ requires one.
 2019-04-03
 ==========
 
-New attribute
-:attr:`lino_xl.lib.invoicing.EventGenerator.default_invoiceable_qty` with
-default value ``1`` (as it was until now). Now we can change the hard-coded
-default value per application.
+Invoice generators have a new attribute :attr:`default_invoiceable_qty
+<lino_xl.lib.invoicing.InvoiceGenerator.default_invoiceable_qty>` whose default
+value is ``1`` (as it was until now, but now we can change the hard-coded
+default value per application).
+
+New field :attr:`lino_xl.lib.cal.EventType.default_duration` per calendar entry
+type. If a calendar entry has a type (:attr:`event_type
+<lino_xl.lib.cal.Event.event_type>`) and if that type has a default duration,
+Lino will change the :attr:`end_time` of an entry when the :attr:`start_date`
+is changed (and the :attr:`start_time` when the :attr:`end_date`)
+
 
 New field :attr:`lino_xl.lib.cal.EventType.default_duration`.
 If a calendar entry has a type (:attr:`event_type`) and if that type has a
@@ -73,6 +80,9 @@ When doing this, until now, it used the label of the
 :attr:`lino_xl.lib.products.ProductType.table_name`, now it uses the
 :attr:`lino_xl.lib.products.ProductType.text`.
 
+The (:attr:`description <lino_xl.lib.orders.OrderItem.description>`) of an
+order item  is now a single-line :class:`CharField` (not a multi-line
+:class:`RichTextField`)
 
 
 2019-03-28
