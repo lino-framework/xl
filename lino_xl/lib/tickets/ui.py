@@ -14,6 +14,8 @@ from lino.api import dd, rt, _
 from lino.modlib.users.mixins import My
 from lino.utils import join_elems
 
+from lino.core.gfks import gfk2lookup
+
 from lino_xl.lib.cal.mixins import daterange_text
 from .choicelists import TicketEvents, TicketStates, LinkTypes, Priorities, SiteStates
 from .roles import TicketsReader, Reporter, Searcher, Triager, TicketsStaff
@@ -356,7 +358,22 @@ class Tickets(dd.Table):
         show_todo=dd.YesNo.field(_("To do"), blank=True),
         has_site=dd.YesNo.field(_("Has site"), blank=True),
         show_private=dd.YesNo.field(_("Private"), blank=True),
-        has_ref=dd.YesNo.field(_("Has reference"), blank=True)
+        has_ref=dd.YesNo.field(_("Has reference"), blank=True),
+        last_commenter=dd.ForeignKey(
+            settings.SITE.user_model,
+            verbose_name=_("Commented Last"),
+            blank=True, null=True,
+            help_text=_("Only tickets that have this use commenting last.")),
+        not_last_commenter=dd.ForeignKey(
+            settings.SITE.user_model,
+            verbose_name=_("Not Commented Last"),
+            blank=True, null=True,
+            help_text=_("Only tickets where this use is not the last commenter.")),
+        subscriber=dd.ForeignKey(
+            settings.SITE.user_model,
+            verbose_name=_("Site Subscriber"),
+            blank=True, null=True,
+            help_text=_("Limit tickets to tickets that have a site this user is subscribed to."))
     )
 
     params_layout = """
@@ -376,6 +393,7 @@ class Tickets(dd.Table):
         # yield 'topic'
         yield 'site'
         yield 'priority'
+        yield 'last_commenter'
         if not dd.is_installed('votes'):
             yield 'assigned_to'
 
@@ -478,6 +496,13 @@ class Tickets(dd.Table):
         # pv.start_date: qs = qs.filter(created__gte=pv.start_date) if
         # pv.end_date: qs = qs.filter(created__lte=pv.end_date)
 
+        if pv.not_last_commenter:
+            qs = qs.exclude(last_commenter=pv.not_last_commenter)
+
+        if pv.subscriber:
+            sqs = rt.models.tickets.Subscription.objects.filter(user=pv.subscriber)
+            subscribed_sites = sqs.values_list('site')
+            qs = qs.filter(site__in=subscribed_sites)
         return qs
 
     @classmethod
@@ -624,6 +649,30 @@ class TicketsToTalk(Tickets):
     def param_defaults(self, ar, **kw):
         kw = super(TicketsToTalk, self).param_defaults(ar, **kw)
         kw.update(state=TicketStates.talk)
+        return kw
+
+class TicketsNeedingFeedback(TicketsToTalk):
+    label = _("Tickets waiting for feedback")
+    column_names = "overview:50 priority #deadline last_commenter " \
+                   "workflow_buttons:40 *"
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(TicketsNeedingFeedback, self).param_defaults(ar, **kw)
+        kw.update(not_last_commenter=ar.get_user(),
+                  subscriber=ar.get_user())
+        return kw
+
+class MyTicketsNeedingFeedback(TicketsNeedingFeedback):
+    label = _("My Tickets waiting for feedback")
+    column_names = "overview:50 priority #deadline " \
+                   "workflow_buttons:40 *"
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(MyTicketsNeedingFeedback, self).param_defaults(ar, **kw)
+        kw.update(last_commenter=ar.get_user(),
+                  not_last_commenter=None)
         return kw
 
 

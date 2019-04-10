@@ -527,7 +527,13 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     #     _("Fixed date"), blank=True, null=True)
     # fixed_time = models.TimeField(
     #     _("Fixed time"), blank=True, null=True)
-        
+    last_commenter = dd.ForeignKey(
+        settings.SITE.user_model,
+        related_name='tickets_last_commter',
+        verbose_name=_("Commented Last"),
+        blank=True, null=True,
+        help_text=_("Last user to make a comment"))
+
     def get_rfc_description(self, ar):
         html = ''
         _ = gettext
@@ -573,12 +579,10 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         
 
     def on_commented(self, comment, ar, cw):
-        """This is automatically called when a work session has been created
-        or modified.
-
-        """
+        """This is automatically called when a comment has been created"""
+        self.last_commenter = comment.user
         self.touch()
-
+        self.save()
 
     # def get_project_for_vote(self, vote):
     #     if self.project:
