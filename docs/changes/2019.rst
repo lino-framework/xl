@@ -18,6 +18,8 @@ Changes 2019 in Lino XL
 Override the visible text for the :attr:`lino_xl.lib.vat.VatAccountInvoice.your_ref` 
 field for the purchase invoice. And add this field to the grid panel.
 
+Released Lino XL 19.4.0 to PyPI.
+
 2019-04-10
 ==========
 
