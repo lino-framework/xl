@@ -73,7 +73,7 @@ class Invoices(PartnerVouchers):
 class InvoicesByJournal(Invoices, ByJournal):
     params_layout = "partner state start_period end_period user"
     column_names = "number_with_year voucher_date due_date " \
-        "partner " \
+        "your_ref partner " \
         "total_incl " \
         "total_base total_vat user workflow_buttons *"
                   #~ "ledger_remark:10 " \

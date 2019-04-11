@@ -25,6 +25,10 @@ class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
         verbose_name = _("Invoice")
         verbose_name_plural = _("Invoices")
 
+    # Override the field to change the text for the purchase invoice.
+    your_ref = models.CharField(
+        _("Provider's invoice number"), max_length=200, blank=True)
+
 
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:
