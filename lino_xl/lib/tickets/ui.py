@@ -652,7 +652,7 @@ class TicketsToTalk(Tickets):
         return kw
 
 class TicketsNeedingFeedback(TicketsToTalk):
-    label = _("Tickets waiting for feedback")
+    label = _("Tickets waiting for my feedback")
     column_names = "overview:50 priority #deadline last_commenter " \
                    "workflow_buttons:40 *"
 
