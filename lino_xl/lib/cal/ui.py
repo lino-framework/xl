@@ -1294,7 +1294,7 @@ class DailyPlannerRows(dd.Table):
 
 
 class DailyPlanner(DailyPlannerRows):
-    required_roles = dd.login_required(OfficeOperator)
+    required_roles = dd.login_required(CalendarReader)
     label = _("Daily planner")
     editable = False
     parameters = dict(

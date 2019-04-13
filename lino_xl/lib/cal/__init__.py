@@ -56,6 +56,7 @@ class Plugin(ad.Plugin):
         m.add_action('cal.MyGuests')
         m.add_action('cal.MyPresences')
         m.add_action('cal.MyOverdueAppointments')
+        m.add_action('cal.DailyPlanner')
 
     def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
