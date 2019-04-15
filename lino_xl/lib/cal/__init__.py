@@ -57,6 +57,13 @@ class Plugin(ad.Plugin):
         m.add_action('cal.MyPresences')
         m.add_action('cal.MyOverdueAppointments')
         m.add_action('cal.DailyPlanner')
+        if site.is_installed('presto'):  # temporary
+            # m.add_action('cal.DailyView')
+            a = site.models.cal.DailyView
+            m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action)
+
+        # m.add_action('cal.LastWeek')
+        # m.add_action('cal.ComingWeek')
 
     def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
