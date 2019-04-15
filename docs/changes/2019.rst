@@ -12,6 +12,17 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-15
+==========
+
+The new :class:`lino_xl.lib.cal.DailyView` table shows a
+basic calendar navigator.  Looks promising, though there is more to do. For
+example we also need a WeeklyView and a MonthlyView. They will share the same
+navigator.
+This change requires the newest version of Lino as well.
+The table is currently visible only in :ref:`presto`.
+
+
 2019-04-11
 ==========
 
