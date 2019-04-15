@@ -475,11 +475,11 @@ set to this state and when
 EventType.force_guest_states is True."""),
     'lino_xl.lib.cal.EventType' : _("""Django model representing a calendar entry type. The possible value of
 the Event.type field."""),
-    'lino_xl.lib.cal.EventType.default_duration' : _("""An optional default duration for entries of this type."""),
+    'lino_xl.lib.cal.EventType.default_duration' : _("""An optional default duration for calendar entries of this type."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
-    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered as "appointments"
-(i.e. whose time and place have been agreed upon with other
-users or external parties)."""),
+    'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered "appointments" (i.e. whose
+time and place have been agreed upon with other users or external
+parties)."""),
     'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
     'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
 unavailable for other locking events at the same time."""),
@@ -1415,16 +1415,16 @@ report."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The author. The user who reported this ticket to the database
 and is responsible for managing it."""),
     'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
-    'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates"""),
-    'lino_xl.lib.tickets.Ticket.waiting_for' : _("""What to do next. An unformatted one-line text which describes
-what this ticket is waiting for."""),
-    'lino_xl.lib.tickets.Ticket.upgrade_notes' : _("""A formatted text field meant for writing instructions for the
-hoster's site administrator when doing an upgrade where this
-ticket is being deployed."""),
     'lino_xl.lib.tickets.Ticket.description' : _("""A complete and concise description of the ticket. This should
 describe in more detail what this ticket is about. If the
 ticket has evolved during time, it should reflect the latest
 version."""),
+    'lino_xl.lib.tickets.Ticket.upgrade_notes' : _("""A formatted text field meant for writing instructions for the
+hoster's site administrator when doing an upgrade where this
+ticket is being deployed."""),
+    'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates"""),
+    'lino_xl.lib.tickets.Ticket.waiting_for' : _("""What to do next. An unformatted one-line text which describes
+what this ticket is waiting for."""),
     'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to the ticket which is the cause of this ticket."""),
     'lino_xl.lib.tickets.Ticket.deadline' : _("""Specify that the ticket must be done for a given date."""),
     'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is."""),
@@ -1448,6 +1448,10 @@ or ToDo)."""),
     'lino_xl.lib.tickets.PublicTickets' : _("""Shows all public tickets."""),
     'lino_xl.lib.tickets.TicketsToTriage' : _("""Shows tickets that need to be triaged.  Currently this is
 equivalent to those having their state set to new."""),
+    'lino_xl.lib.tickets.TicketsNeedingFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
+where you are not the last commenter, includes tickets with no comments."""),
+    'lino_xl.lib.tickets.MyTicketsNeedingFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
+where you are the last commenter."""),
     'lino_xl.lib.tickets.ActiveTickets' : _("""Show all tickets that are in an active state."""),
     'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
     'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
@@ -1523,7 +1527,7 @@ to False."""),
     'lino_xl.lib.vat.VatRule.vat_account' : _("""The general account where VAT is to be booked."""),
     'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is "returnable" (i.e. not to be paid to or by the
 partner). Returnable VAT, unlike normal VAT, does not increase
-the total amount of the voucher and causes an additional
+the total amount of the voucher but causes an additional
 movement into the vat_returnable_account."""),
     'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
 field is empty, then VAT will be added to the base account."""),
