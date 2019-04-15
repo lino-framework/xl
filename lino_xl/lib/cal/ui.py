@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -10,7 +10,7 @@ from collections import OrderedDict
 from django.conf import settings
 from django.db import models
 
-from lino.api import dd, rt, _
+from lino.api import dd, rt, _, gettext
 from lino import mixins
 from lino.core.roles import Explorer
 from lino.core.fields import TableRow
@@ -27,11 +27,16 @@ from .choicelists import GuestStates
 from .choicelists import EntryStates
 from .choicelists import AccessClasses
 from .choicelists import PlannerColumns
+from .choicelists import DurationUnits
 
 from .mixins import daterange_text
 from .utils import when_text
 
 from .roles import CalendarReader, GuestOperator
+
+from calendar import Calendar as PythonCalendar
+
+CALENDAR = PythonCalendar()
 
 
 def date2pk(date):
@@ -1168,9 +1173,9 @@ class Day(TableRow):
     def __str__(self):
         return when_text(self.date)
 
-
 class DayDetail(dd.DetailLayout):
-    main = "cal.PlannerByDay"
+    main = "body"
+    body = "navigation:20 cal.PlannerByDay:80"
 
 
 class Days(dd.VirtualTable):
@@ -1191,6 +1196,43 @@ class Days(dd.VirtualTable):
     def day_number(cls, obj, ar):
         return obj.pk
 
+    # @dd.action(label=_("Today"), help_text=_("Go to today"))
+    # def goto_today(self, ar):
+    #     ar.goto_instance(rt.models.cal.Days.get_row_by_pk(ar, "0"))
+    #     return ar.success()
+
+    @dd.htmlbox()
+    def navigation(cls, obj, ar):
+        today = obj.date
+        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
+        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        header = [
+            ar.goto_pk(prev, "<<"), " ",
+            "{} {}".format(monthname(today.month), today.year),
+            " ", ar.goto_pk(next, ">>")]
+        elems = [E.h2(*header, align="center")]
+        rows = []
+        for week in CALENDAR.monthdatescalendar(today.year, today.month):
+            # each week is a list of seven datetime.date objects.
+            cells = []
+            for day in week:
+                pk = cls.date2pk(day)
+                if day == today:
+                    cells.append(E.td(str(day.day)))
+                else:
+                    cells.append(E.td(ar.goto_pk(pk, str(day.day))))
+            rows.append(E.tr(*cells, align="center"))
+        elems.append(E.table(*rows, align="center"))
+        elems.append(E.p(ar.goto_pk(0, gettext("Today")), align="center"))
+        # for o in range(-10, 10):
+        #     elems.append(ar.goto_pk(o, str(o)))
+        #     elems.append(" ")
+        return E.div(*elems)
+
+    @classmethod
+    def date2pk(cls, dt):
+        return (dt - dd.today()).days
+
     @classmethod
     def get_pk_field(cls):
         # return pk_field
@@ -1203,6 +1245,8 @@ class Days(dd.VirtualTable):
         """
         pk is the offset from beginning_of_time
         """
+        #if pk is None:
+        #    pk = "0"
         # return dd.today(int(pk))
         return cls.model(int(pk), ar)
 
@@ -1265,6 +1309,22 @@ class Days(dd.VirtualTable):
 # Days.day_number.return_type.attname = 'day_number'
 
 
+class DailyView(Days):
+    label = _("Daily view")
+    hide_top_toolbar = True
+
+    @classmethod
+    def get_default_action(cls):
+        return dd.ShowDetail(cls.detail_layout)
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(Days, cls).param_defaults(ar, **kw)
+        kw.update(start_date=dd.today(-60))
+        kw.update(end_date=dd.today(90))
+        return kw
+
+
 class LastWeek(Days):
     label = _("Last week")
 
@@ -1294,7 +1354,8 @@ class DailyPlannerRows(dd.Table):
 
 
 class DailyPlanner(DailyPlannerRows):
-    required_roles = dd.login_required(OfficeOperator)
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required(CalendarReader)
     label = _("Daily planner")
     editable = False
     parameters = dict(
@@ -1382,5 +1443,8 @@ class PlannerByDay(DailyPlanner):
         # filter.update()
         ar.param_values.update(date=mi.date)
         return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
+
+
+
 
 

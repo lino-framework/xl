@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2018 Rumma & Ko Ltd
+# Copyright 2016-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -8,22 +8,6 @@ from __future__ import unicode_literals
 from lino.api import dd, rt, _
 
 from lino.modlib.users.mixins import StartPlan
-# class StartInvoicing(dd.Action):
-#     show_in_bbar = False
-#     icon_name = 'basket'
-#     sort_index = 52
-#     label = _("Create invoices")
-#     select_rows = False
-#     http_method = 'POST'
-
-#     def get_options(self, ar):
-#         return {}
-
-#     def run_from_ui(self, ar, **kw):
-#         options = self.get_options(ar)
-#         plan = rt.models.invoicing.Plan.start_plan(
-#             ar.get_user(), **options)
-#         ar.goto_instance(plan)
 
 class StartInvoicing(StartPlan):
     label = _("Create invoices")
@@ -44,6 +28,7 @@ class StartInvoicingForJournal(StartInvoicing):
 class StartInvoicingForPartner(StartInvoicing):
     show_in_bbar = True
     select_rows = True
+    update_after_start = True
 
     def get_options(self, ar):
         partner = ar.selected_rows[0]

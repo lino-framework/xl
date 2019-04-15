@@ -84,7 +84,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
     # line = dd.ForeignKey('orders.Line')
     # event_type = dd.ForeignKey('cal.EventType', null=True, blank=True)
     room = dd.ForeignKey('cal.Room', blank=True)
-    description = dd.BabelTextField(_("Description"), blank=True)
+    description = dd.TextField(_("Description"), blank=True)
     remark = models.TextField(_("Remark"), blank=True)
     # entry_date = models.DateField(
     #     verbose_name=_("Entry date"))

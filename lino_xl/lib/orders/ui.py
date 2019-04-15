@@ -57,7 +57,7 @@ class OrderDetail(dd.DetailLayout):
     general = dd.Panel("""
     entry_date room workflow_buttons print_actions:15
     project invoice_recipient
-    remark
+    description
     EnrolmentsByOrder ItemsByOrder
     """, label=_("General"))
 
@@ -71,7 +71,6 @@ class OrderDetail(dd.DetailLayout):
     monday tuesday wednesday thursday friday saturday sunday
     """
 
-    
     cal_tab = dd.Panel("""
     first_event_panel repeat_panel
     cal.EntriesByController
@@ -81,11 +80,28 @@ class OrderDetail(dd.DetailLayout):
 
     enrolments = dd.Panel("""
     enrolments_top
+    InvoicesByOrder
     # EnrolmentsByOrder
-    description
+    remark 
     """, label=_("Miscellaneous"))
 
 # Order.detail_layout_class = OrderDetail
+
+
+from lino_xl.lib.sales.models import InvoicesByPartner
+
+class InvoicesByOrder(InvoicesByPartner):
+
+    label = _("Sales invoices (of client)")
+
+    @classmethod
+    def get_master_instance(cls, ar, model, pk):
+        # the master instance of InvoicesByPartner must be a Partner, but since
+        # we use this on an order, we get the pk of an order
+        assert model is rt.models.contacts.Partner
+        order = rt.models.orders.Order.objects.get(pk=pk)
+        return order.project
+
 
 class Orders(dd.Table):
     # _order_area = None
