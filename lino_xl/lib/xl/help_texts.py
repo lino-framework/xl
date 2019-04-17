@@ -488,6 +488,9 @@ unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether guest states should be forced to those defined by the
 entry state."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
+    'lino_xl.lib.cal.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
+    'lino_xl.lib.cal.WeeklyView' : _("""Shows a calendar navigator with a configurable weekly view."""),
+    'lino_xl.lib.cal.MonthlyView' : _("""Shows a calendar navigator with a configurable monthly view."""),
     'lino_xl.lib.cal.DailyPlanner' : _("""The virtual table used to render the daily planner."""),
     'lino_xl.lib.cal.PlannerColumns' : _("""A choicelist that defines the columns to appear in the daily
 planner. This list can be modified locally."""),
@@ -1448,7 +1451,7 @@ or ToDo)."""),
     'lino_xl.lib.tickets.PublicTickets' : _("""Shows all public tickets."""),
     'lino_xl.lib.tickets.TicketsToTriage' : _("""Shows tickets that need to be triaged.  Currently this is
 equivalent to those having their state set to new."""),
-    'lino_xl.lib.tickets.TicketsNeedingFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
+    'lino_xl.lib.tickets.TicketsNeedingMyFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
 where you are not the last commenter, includes tickets with no comments."""),
     'lino_xl.lib.tickets.MyTicketsNeedingFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
 where you are the last commenter."""),

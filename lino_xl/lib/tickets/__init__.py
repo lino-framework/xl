@@ -1,4 +1,4 @@
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
 Adds functionality for managing tickets.
@@ -25,9 +25,8 @@ class Plugin(ad.Plugin):
         # 'lino_xl.lib.stars',
         'lino_xl.lib.excerpts',
         # 'lino_xl.lib.deploy',
-        'lino.modlib.comments',
         # 'lino.modlib.changes',
-        'lino_noi.lib.noi']
+        'lino.modlib.comments']
 
     site_model = 'tickets.Site'
     milestone_model = 'meetings.Meeting'

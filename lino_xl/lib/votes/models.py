@@ -389,7 +389,7 @@ class MyOffers(My, Votes):
     label = _("My candidatures")
     column_names = "votable_overview workflow_buttons *"
     filter_vote_states = "candidate"
-    filter_ticket_states = "new talk opened started"
+    filter_ticket_states = "new talk opened working"
     
 
 class MyTasks(My, Votes):
@@ -398,7 +398,7 @@ class MyTasks(My, Votes):
     column_names = "votable_overview workflow_buttons *"
     order_by = ['-priority', '-id']
     filter_vote_states = "assigned done"
-    filter_ticket_states = "opened started talk"
+    filter_ticket_states = "opened working talk"
     
 class MyWatched(My, Votes):
     """Show my votes in state watching"""

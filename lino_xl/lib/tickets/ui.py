@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -651,20 +651,22 @@ class TicketsToTalk(Tickets):
         kw.update(state=TicketStates.talk)
         return kw
 
-class TicketsNeedingFeedback(TicketsToTalk):
-    label = _("Tickets waiting for my feedback")
+
+class TicketsNeedingMyFeedback(TicketsToTalk):
+    label = _("Tickets needing my feedback")
     column_names = "overview:50 priority #deadline last_commenter " \
                    "workflow_buttons:40 *"
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(TicketsNeedingFeedback, self).param_defaults(ar, **kw)
+        kw = super(TicketsNeedingMyFeedback, self).param_defaults(ar, **kw)
         kw.update(not_last_commenter=ar.get_user(),
                   subscriber=ar.get_user())
         return kw
 
-class MyTicketsNeedingFeedback(TicketsNeedingFeedback):
-    label = _("My Tickets waiting for feedback")
+
+class MyTicketsNeedingFeedback(TicketsNeedingMyFeedback):
+    label = _("My tickets needing feedback")
     column_names = "overview:50 priority #deadline " \
                    "workflow_buttons:40 *"
 
