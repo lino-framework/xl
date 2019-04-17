@@ -12,6 +12,11 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-17
+==========
+
+ (:ticket:`2969`) : Fix order of the :class:`lino_xl.lib.cal.Events` table.
+
 2019-04-15
 ==========
 
