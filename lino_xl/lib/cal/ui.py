@@ -1311,18 +1311,18 @@ class Days(dd.VirtualTable):
 
 class DailyView(Days):
     label = _("Daily view")
-    hide_top_toolbar = True
+    # hide_top_toolbar = True
 
     @classmethod
     def get_default_action(cls):
         return dd.ShowDetail(cls.detail_layout)
 
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today(-60))
-        kw.update(end_date=dd.today(90))
-        return kw
+    # @classmethod
+    # def param_defaults(cls, ar, **kw):
+    #     kw = super(Days, cls).param_defaults(ar, **kw)
+    #     kw.update(start_date=dd.today(-60))
+    #     kw.update(end_date=dd.today(90))
+    #     return kw
 
 
 class LastWeek(Days):
