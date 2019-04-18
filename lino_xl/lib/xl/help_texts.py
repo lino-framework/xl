@@ -1436,31 +1436,10 @@ what this ticket is waiting for."""),
 site.  See ReportingTypes."""),
     'lino_xl.lib.tickets.Ticket.site' : _("""The site this ticket belongs to.
 You can select only sites you are subscribed to."""),
-    'lino_xl.lib.tickets.Tickets' : _("""Base class for all tables of tickets."""),
-    'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
-    'lino_xl.lib.tickets.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
-    'lino_xl.lib.tickets.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
-or ToDo)."""),
-    'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
-or ToDo)."""),
-    'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
-    'lino_xl.lib.tickets.Tickets.has_site' : _("""Show only (or hide) tickets which have a site assigned."""),
-    'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
-    'lino_xl.lib.tickets.AllTickets' : _("""Shows all tickets."""),
-    'lino_xl.lib.tickets.RefTickets' : _("""Shows all tickets that have a reference."""),
-    'lino_xl.lib.tickets.PublicTickets' : _("""Shows all public tickets."""),
-    'lino_xl.lib.tickets.TicketsToTriage' : _("""Shows tickets that need to be triaged.  Currently this is
-equivalent to those having their state set to new."""),
-    'lino_xl.lib.tickets.TicketsNeedingMyFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
-where you are not the last commenter, includes tickets with no comments."""),
-    'lino_xl.lib.tickets.MyTicketsNeedingFeedback' : _("""Shows tickets of sites that you are subscribed to which are in state Talk
-where you are the last commenter."""),
-    'lino_xl.lib.tickets.ActiveTickets' : _("""Show all tickets that are in an active state."""),
-    'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
-    'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
-(i.e. whose duplicate_of field points to this ticket."""),
-    'lino_xl.lib.tickets.TicketsSummary' : _("""Abstract base class for ticket tables with a summary."""),
-    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
+    'lino_xl.lib.tickets.TicketType' : _("""The Django model used to represent a ticket type."""),
+    'lino_xl.lib.tickets.TicketType.reporting_type' : _("""Which reporting type to use in a service report.
+See :class:ReportingTypes`."""),
+    'lino_xl.lib.tickets.TicketTypes' : _("""The list of all ticket types."""),
     'lino_xl.lib.tickets.TicketStates' : _("""The choicelist of possible values for the state of a ticket."""),
     'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response so
 far.
@@ -1497,6 +1476,29 @@ confirmation, documentation,..)"""),
     'lino_xl.lib.tickets.Plugin.milestone_model' : _("""The model to be used for representing "milestones". Until
 20170331 this was hard-coded to deploy.Milestone. Now Lino
 Noi uses courses.Course."""),
+    'lino_xl.lib.tickets.Tickets' : _("""Base class for all tables of tickets."""),
+    'lino_xl.lib.tickets.Tickets.site' : _("""Select a site if you want to see only tickets for this site."""),
+    'lino_xl.lib.tickets.Tickets.show_private' : _("""Show only (or hide) tickets that are marked private."""),
+    'lino_xl.lib.tickets.Tickets.show_todo' : _("""Show only (or hide) tickets which are todo (i.e. state is New
+or ToDo)."""),
+    'lino_xl.lib.tickets.Tickets.show_active' : _("""Show only (or hide) tickets which are active (i.e. state is Talk
+or ToDo)."""),
+    'lino_xl.lib.tickets.Tickets.show_assigned' : _("""Show only (or hide) tickets that are assigned to somebody."""),
+    'lino_xl.lib.tickets.Tickets.has_site' : _("""Show only (or hide) tickets which have a site assigned."""),
+    'lino_xl.lib.tickets.Tickets.feasable_by' : _("""Show only tickets for which the given supplier is competent."""),
+    'lino_xl.lib.tickets.AllTickets' : _("""Shows all tickets."""),
+    'lino_xl.lib.tickets.RefTickets' : _("""Shows all tickets that have a reference."""),
+    'lino_xl.lib.tickets.PublicTickets' : _("""Shows all public tickets."""),
+    'lino_xl.lib.tickets.TicketsToTriage' : _("""Shows tickets that need to be triaged.  Currently this is
+equivalent to those having their state set to new."""),
+    'lino_xl.lib.tickets.TicketsNeedingMyFeedback' : _("""Shows tickets that are waiting for my feedback."""),
+    'lino_xl.lib.tickets.MyTicketsNeedingFeedback' : _("""Shows tickets assigned to me and waiting for feedback from others."""),
+    'lino_xl.lib.tickets.ActiveTickets' : _("""Show all tickets that are in an active state."""),
+    'lino_xl.lib.tickets.MyTickets' : _("""Show all active tickets reported by me."""),
+    'lino_xl.lib.tickets.DuplicatesByTicket' : _("""Shows the tickets which are marked as duplicates of this
+(i.e. whose duplicate_of field points to this ticket."""),
+    'lino_xl.lib.tickets.TicketsSummary' : _("""Abstract base class for ticket tables with a summary."""),
+    'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
     'lino_xl.lib.topics.Topic' : _("""Django model representing a topic."""),
     'lino_xl.lib.topics.Interest' : _("""Django model representing an interest."""),
     'lino_xl.lib.topics.TopicGroup' : _("""This model is deprecated.  We use the Topic.ref for structuring
