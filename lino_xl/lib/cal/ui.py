@@ -1252,6 +1252,7 @@ class Days(dd.VirtualTable):
 
     @classmethod
     def get_request_queryset(cls, ar, **filter):
+        return []  # not needed for detail view
         days = []
         pv = ar.param_values
         sd = pv.start_date or dd.today()
@@ -1325,26 +1326,26 @@ class DailyView(Days):
     #     return kw
 
 
-class LastWeek(Days):
-    label = _("Last week")
-
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today(-7))
-        kw.update(end_date=dd.today())
-        return kw
-
-
-class ComingWeek(Days):
-    label = _("Coming week")
-
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today())
-        kw.update(end_date=dd.today(7))
-        return kw
+# class LastWeek(Days):
+#     label = _("Last week")
+#
+#     @classmethod
+#     def param_defaults(cls, ar, **kw):
+#         kw = super(Days, cls).param_defaults(ar, **kw)
+#         kw.update(start_date=dd.today(-7))
+#         kw.update(end_date=dd.today())
+#         return kw
+#
+#
+# class ComingWeek(Days):
+#     label = _("Coming week")
+#
+#     @classmethod
+#     def param_defaults(cls, ar, **kw):
+#         kw = super(Days, cls).param_defaults(ar, **kw)
+#         kw.update(start_date=dd.today())
+#         kw.update(end_date=dd.today(7))
+#         return kw
 
 
 class DailyPlannerRows(dd.Table):
