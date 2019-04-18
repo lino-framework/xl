@@ -15,6 +15,9 @@ Changes 2019 in Lino XL
 2019-04-17
 ==========
 
+Fixed order of the :class:`lino_xl.lib.cal.Events` table.
+(:ticket:`2969`) : 
+
 .. currentmodule:: lino_xl.lib.tickets
 
 A few modifications for :ref:`noi`
@@ -24,8 +27,6 @@ Renamed state "Started" to "Working".
 Bullshit. Removed.
 Renamed :class:`TicketsNeedingFeedback` to :class:`TicketsNeedingMyFeedback`.
 And the labels of the two feedback tables are now more similar to the internal $
-
-
 
 2019-04-15
 ==========

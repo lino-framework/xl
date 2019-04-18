@@ -613,7 +613,7 @@ class Events(dd.Table):
     # end_date end_time
     # """
 
-    order_by = ["-start_date", "-start_time", "id"]
+    order_by = ["start_date", "start_time", "id"]
 
     detail_layout = 'cal.EventDetail'
     insert_layout = 'cal.EventInsert'
