@@ -140,12 +140,3 @@ def objects():
     yield DPR(end_time="12:00", **dd.str2kw('designation', _("AM")))
     yield DPR(start_time="12:00", **dd.str2kw('designation', _("PM")))
     yield DPR(**dd.str2kw('designation', _("All day")))
-
-    DPR = rt.models.cal.WeeklyPlannerRow
-    yield DPR(seqno=1, **dd.str2kw('designation', _("Monday")))
-    yield DPR(seqno=2, **dd.str2kw('designation', _("Tuesday")))
-    yield DPR(seqno=3, **dd.str2kw('designation', _("Wednesday")))
-    yield DPR(seqno=4, **dd.str2kw('designation', _("Thursday")))
-    yield DPR(seqno=5, **dd.str2kw('designation', _("Friday")))
-    yield DPR(seqno=6, **dd.str2kw('designation', _("Saturday")))
-    yield DPR(seqno=7, **dd.str2kw('designation', _("Sunday")))

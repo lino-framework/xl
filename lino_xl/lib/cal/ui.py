@@ -26,7 +26,7 @@ from .choicelists import TaskStates
 from .choicelists import GuestStates
 from .choicelists import EntryStates
 from .choicelists import AccessClasses
-from .choicelists import PlannerColumns
+from .choicelists import PlannerColumns,Weekdays
 from .choicelists import DurationUnits
 
 from .mixins import daterange_text
@@ -1448,7 +1448,7 @@ class PlannerByDay(DailyPlanner):
 
 
 class WeeklyPlannerRows(dd.Table):
-    model = 'cal.WeeklyPlannerRow'
+    model = 'cal.DailyPlannerRow'
     required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
     editable = False
@@ -1496,32 +1496,31 @@ class WeeklyPlannerRows(dd.Table):
             def func(fld, obj, ar):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
-                qs = Event.objects.filter(event_type__planner_column=pc)
+                qs = Event.objects.all()
                 if pv.user:
                     qs = qs.filter(user=pv.user)
                 if ar.rqdata:
                     delata_days = int(ar.rqdata.get('mk', 0))
                     current_day = dd.today() + timedelta(days=delata_days)
                     current_week_day = current_day + \
-                        timedelta(days=obj.seqno - current_day.weekday() - 1)
+                        timedelta(days=int(pc.value) -
+                                  current_day.weekday() - 1)
                     qs = qs.filter(start_date=current_week_day)
-                # elif pv.date:
-                #     qs = qs.filter(start_date=pv.date)
-                # if obj.seqno:
-                #     qs = qs.filter(start_date__week_day=obj.seqno+1,
-                #                    start_date__isnull=False)
-                # if obj.end_time:
-                #     qs = qs.filter(start_time__lt=obj.end_time,
-                #                    start_time__isnull=False)
-                # if not obj.start_time and not obj.end_time:
-                #     qs = qs.filter(start_time__isnull=True)
+                if obj.start_time:
+                    qs = qs.filter(start_time__gte=obj.start_time,
+                                   start_time__isnull=False)
+                if obj.end_time:
+                    qs = qs.filter(start_time__lt=obj.end_time,
+                                   start_time__isnull=False)
+                if not obj.start_time and not obj.end_time:
+                    qs = qs.filter(start_time__isnull=True)
                 qs = qs.order_by('start_time')
                 chunks = [e.obj2href(ar, fmt(e)) for e in qs]
                 return E.p(*join_elems(chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
 
-        for pc in PlannerColumns.objects():
+        for pc in Weekdays.objects():
             yield w(pc, pc.text)
 
 
