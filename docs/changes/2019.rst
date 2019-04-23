@@ -12,6 +12,13 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-22
+==========
+
+:mod:`lino_xl.lib.orders` no longer stores the room per order but expects a
+field room per journal.  Order items and Workers of an order are now deleted in
+cascade with the order.
+
 2019-04-17
 ==========
 

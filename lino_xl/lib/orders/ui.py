@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -55,7 +55,7 @@ class OrderDetail(dd.DetailLayout):
     main = "general cal_tab enrolments"
     
     general = dd.Panel("""
-    entry_date room workflow_buttons print_actions:15
+    entry_date workflow_buttons print_actions:15
     project invoice_recipient
     description
     EnrolmentsByOrder ItemsByOrder
@@ -110,7 +110,7 @@ class Orders(dd.Table):
     detail_layout = 'orders.OrderDetail'
     insert_layout = """
     project
-    room
+    journal
     entry_date
     """
     column_names = "start_date project remark workflow_buttons *"
@@ -178,6 +178,11 @@ class OrdersByJournal(Orders, ByJournal):
     required_roles = dd.login_required(OrdersUser)
     master_key = 'journal'
     column_names = "number project start_date remark weekdays_text workflow_buttons *"
+    insert_layout = """
+    project
+    # journal
+    entry_date
+    """
 
 
 VoucherTypes.add_item_lazy(OrdersByJournal)
@@ -194,9 +199,9 @@ class OrdersByProject(Orders):
                    "weekdays_text:10 times_text:10 *"
     order_by = ['entry_date']
     insert_layout = """
-    room
-    entry_date
+    # project
     journal
+    entry_date
     """
 
 class OrdersByRecipient(Orders):
