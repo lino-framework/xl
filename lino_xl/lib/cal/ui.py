@@ -26,7 +26,7 @@ from .choicelists import TaskStates
 from .choicelists import GuestStates
 from .choicelists import EntryStates
 from .choicelists import AccessClasses
-from .choicelists import PlannerColumns
+from .choicelists import PlannerColumns,Weekdays
 from .choicelists import DurationUnits
 
 from .mixins import daterange_text
@@ -35,6 +35,7 @@ from .utils import when_text
 from .roles import CalendarReader, GuestOperator
 
 from calendar import Calendar as PythonCalendar
+from datetime import timedelta
 
 CALENDAR = PythonCalendar()
 
@@ -613,7 +614,7 @@ class Events(dd.Table):
     # end_date end_time
     # """
 
-    order_by = ["-start_date", "-start_time", "id"]
+    order_by = ["start_date", "start_time", "id"]
 
     detail_layout = 'cal.EventDetail'
     insert_layout = 'cal.EventInsert'
@@ -1252,6 +1253,7 @@ class Days(dd.VirtualTable):
 
     @classmethod
     def get_request_queryset(cls, ar, **filter):
+        return []  # not needed for detail view
         days = []
         pv = ar.param_values
         sd = pv.start_date or dd.today()
@@ -1311,40 +1313,40 @@ class Days(dd.VirtualTable):
 
 class DailyView(Days):
     label = _("Daily view")
-    hide_top_toolbar = True
+    # hide_top_toolbar = True
 
     @classmethod
     def get_default_action(cls):
         return dd.ShowDetail(cls.detail_layout)
 
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today(-60))
-        kw.update(end_date=dd.today(90))
-        return kw
+    # @classmethod
+    # def param_defaults(cls, ar, **kw):
+    #     kw = super(Days, cls).param_defaults(ar, **kw)
+    #     kw.update(start_date=dd.today(-60))
+    #     kw.update(end_date=dd.today(90))
+    #     return kw
 
 
-class LastWeek(Days):
-    label = _("Last week")
-
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today(-7))
-        kw.update(end_date=dd.today())
-        return kw
-
-
-class ComingWeek(Days):
-    label = _("Coming week")
-
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
-        kw.update(start_date=dd.today())
-        kw.update(end_date=dd.today(7))
-        return kw
+# class LastWeek(Days):
+#     label = _("Last week")
+#
+#     @classmethod
+#     def param_defaults(cls, ar, **kw):
+#         kw = super(Days, cls).param_defaults(ar, **kw)
+#         kw.update(start_date=dd.today(-7))
+#         kw.update(end_date=dd.today())
+#         return kw
+#
+#
+# class ComingWeek(Days):
+#     label = _("Coming week")
+#
+#     @classmethod
+#     def param_defaults(cls, ar, **kw):
+#         kw = super(Days, cls).param_defaults(ar, **kw)
+#         kw.update(start_date=dd.today())
+#         kw.update(end_date=dd.today(7))
+#         return kw
 
 
 class DailyPlannerRows(dd.Table):
@@ -1445,6 +1447,123 @@ class PlannerByDay(DailyPlanner):
         return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
 
 
+class WeeklyPlannerRows(dd.Table):
+    model = 'cal.DailyPlannerRow'
+    required_roles = dd.login_required(OfficeStaff)
+    label = _("Weekly planner")
+    editable = False
+    parameters = dict(
+        date=models.DateField(
+            _("Date"), help_text=_("Date to show")),
+        user=dd.ForeignKey('users.User', null=True, blank=True))
+
+    @classmethod
+    def param_defaults(cls, ar, **kw):
+        kw = super(WeeklyPlannerRows, cls).param_defaults(ar, **kw)
+        kw.update(date=dd.today())
+        # kw.update(end_date=dd.today())
+        # kw.update(user=ar.get_user())
+        return kw
+
+    @classmethod
+    def setup_columns(self):
+        names = ''
+        for i, vf in enumerate(self.get_ventilated_columns()):
+            self.add_virtual_field('vc' + str(i), vf)
+            names += ' ' + vf.name + ':20'
+
+        self.column_names = "overview {}".format(names)
+
+    @classmethod
+    def get_ventilated_columns(cls):
+
+        Event = rt.models.cal.Event
+
+        def fmt(e):
+            if e.start_time:
+                t = str(e.start_time)[:5]
+            else:
+                t = str(e.event_type)
+            u = e.user
+            if u is None:
+                return "{} {}".format(
+                    t, e.room)
+                return t
+            u = u.initials or u.username or str(u)
+            return "{} {}".format(t, u)
+
+        def w(pc, verbose_name):
+            def func(fld, obj, ar):
+                # obj is the DailyPlannerRow instance
+                pv = ar.param_values
+                qs = Event.objects.all()
+                if pv.user:
+                    qs = qs.filter(user=pv.user)
+                if ar.rqdata:
+                    delata_days = int(ar.rqdata.get('mk', 0))
+                    current_day = dd.today() + timedelta(days=delata_days)
+                    current_week_day = current_day + \
+                        timedelta(days=int(pc.value) -
+                                  current_day.weekday() - 1)
+                    qs = qs.filter(start_date=current_week_day)
+                if obj.start_time:
+                    qs = qs.filter(start_time__gte=obj.start_time,
+                                   start_time__isnull=False)
+                if obj.end_time:
+                    qs = qs.filter(start_time__lt=obj.end_time,
+                                   start_time__isnull=False)
+                if not obj.start_time and not obj.end_time:
+                    qs = qs.filter(start_time__isnull=True)
+                qs = qs.order_by('start_time')
+                chunks = [e.obj2href(ar, fmt(e)) for e in qs]
+                return E.p(*join_elems(chunks))
+
+            return dd.VirtualField(dd.HtmlBox(verbose_name), func)
+
+        for pc in Weekdays.objects():
+            yield w(pc, pc.text)
 
 
+
+class WeeklyDetail(dd.DetailLayout):
+    main = "body"
+    body = "weeklyNavigation:20 cal.WeeklyPlannerRows:80"
+
+class WeeklyView(Days):
+    label = _("Weekly view")
+    detail_layout = 'cal.WeeklyDetail'
+
+    @classmethod
+    def get_default_action(cls):
+        return dd.ShowDetail(cls.detail_layout)
+
+    @dd.htmlbox()
+    def weeklyNavigation(cls, obj, ar):
+        today = obj.date
+        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
+        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        header = [
+            ar.goto_pk(prev, "<<"), " ",
+            "{} {}".format(monthname(today.month), today.year),
+            " ", ar.goto_pk(next, ">>")]
+        elems = [E.h2(*header, align="center")]
+        rows = []
+        for week in CALENDAR.monthdatescalendar(today.year, today.month):
+            # each week is a list of seven datetime.date objects.
+            cells = []
+            current_week = week[0].isocalendar()[1]
+            cells.append(E.td(str(current_week)))
+            for day in week:
+                pk = cls.date2pk(day)
+                if day.isocalendar()[1] == today.isocalendar()[1]:
+                    cells.append(E.td(str(day.day)))
+                else:
+                    cells.append(E.td(ar.goto_pk(pk, str(day.day))))
+            rows.append(E.tr(*cells, align="center"))
+        elems.append(E.table(*rows, align="center"))
+        elems.append(E.p(ar.goto_pk(0, gettext("This week")), align="center"))
+        # for o in range(-10, 10):
+        #     elems.append(ar.goto_pk(o, str(o)))
+        #     elems.append(" ")
+        return E.div(*elems)
 

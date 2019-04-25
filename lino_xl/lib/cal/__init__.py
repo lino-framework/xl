@@ -62,6 +62,9 @@ class Plugin(ad.Plugin):
             a = site.models.cal.DailyView
             m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action)
 
+            a = site.models.cal.WeeklyView
+            m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action)
+
         # m.add_action('cal.LastWeek')
         # m.add_action('cal.ComingWeek')
 

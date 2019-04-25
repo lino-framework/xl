@@ -12,6 +12,29 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-04-22
+==========
+
+:mod:`lino_xl.lib.orders` no longer stores the room per order but expects a
+field room per journal.  Order items and Workers of an order are now deleted in
+cascade with the order.
+
+2019-04-17
+==========
+
+Fixed order of the :class:`lino_xl.lib.cal.Events` table.
+(:ticket:`2969`) : 
+
+.. currentmodule:: lino_xl.lib.tickets
+
+A few modifications for :ref:`noi`
+:mod:`lino_xl.lib.tickets`:
+Renamed state "Started" to "Working".
+:mod:`lino_xl.lib.tickets` had 'lino_noi.lib.noi' in `needed_plugins`.
+Bullshit. Removed.
+Renamed :class:`TicketsNeedingFeedback` to :class:`TicketsNeedingMyFeedback`.
+And the labels of the two feedback tables are now more similar to the internal $
+
 2019-04-15
 ==========
 

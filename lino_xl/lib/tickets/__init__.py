@@ -1,4 +1,4 @@
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
 Adds functionality for managing tickets.
@@ -17,7 +17,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-
+    """The descriptor for this plugin."""
     verbose_name = _("Tickets")
     # verbose_name = _("Projects")
 
@@ -25,13 +25,23 @@ class Plugin(ad.Plugin):
         # 'lino_xl.lib.stars',
         'lino_xl.lib.excerpts',
         # 'lino_xl.lib.deploy',
-        'lino.modlib.comments',
         # 'lino.modlib.changes',
-        'lino_noi.lib.noi']
+        'lino.modlib.comments']
 
     site_model = 'tickets.Site'
+    """
+    The model to be used for representing "sites". 
+    """
+
     milestone_model = 'meetings.Meeting'
+    """
+    The model to be used for representing "milestones". 
+    """
+
     end_user_model = 'contacts.Partner'
+    """
+    The model to be used for representing "end users". 
+    """
 
     def on_site_startup(self, site):
         self.site_model = site.models.resolve(self.site_model)

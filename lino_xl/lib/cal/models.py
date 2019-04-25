@@ -99,7 +99,6 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
 
 dd.update_field(DailyPlannerRow, 'overview', verbose_name=_("Time range"))
 
-
 class RemoteCalendar(mixins.Sequenced):
 
     class Meta:

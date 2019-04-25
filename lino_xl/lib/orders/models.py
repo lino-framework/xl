@@ -79,11 +79,11 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
         related_name='orders_by_recipient',
         blank=True, null=True)
 
-    site_field_name = 'room'
+    # site_field_name = 'room'
 
     # line = dd.ForeignKey('orders.Line')
     # event_type = dd.ForeignKey('cal.EventType', null=True, blank=True)
-    room = dd.ForeignKey('cal.Room', blank=True)
+    # room = dd.ForeignKey('cal.Room', blank=True)
     description = dd.TextField(_("Description"), blank=True)
     remark = models.TextField(_("Remark"), blank=True)
     # entry_date = models.DateField(
@@ -168,8 +168,8 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
         return self.start_date
 
     def update_cal_event_type(self):
-        if self.room_id:
-            return self.room.event_type
+        if self.journal.room_id:
+            return self.journal.room.event_type
 
     def update_cal_summary(self, et, i):
         if self.every_unit == Recurrencies.once:
@@ -203,7 +203,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
         assert not settings.SITE.loading_from_dump
         assert event.owner == self
         event.order = self
-        event.room = self.room
+        event.room = self.journal.room
         event.start_time = self.start_time
         event.end_time = self.end_time
         super(Order, self).before_auto_event_save(event)
@@ -256,6 +256,7 @@ class Enrolment(dd.Model):
     # invoiceable_date_field = 'request_date'
     # workflow_state_field = 'state'
     allow_cascaded_copy = 'order'
+    allow_cascaded_delete = 'order'
 
     class Meta:
         app_label = 'orders'
@@ -371,6 +372,8 @@ class OrderItem(SequencedVoucherItem):
         verbose_name = _("Order item")
         verbose_name_plural = _("Order items")
 
+    allow_cascaded_delete = 'voucher'
+
     voucher = dd.ForeignKey('orders.Order', related_name='items')
     # title = models.CharField(_("Heading"), max_length=200, blank=True)
     product = dd.ForeignKey('products.Product', blank=True, null=True)
@@ -379,5 +382,7 @@ class OrderItem(SequencedVoucherItem):
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
 
+
+dd.inject_field('ledger.Journal', 'room', dd.ForeignKey('cal.Room', blank=True, null=True))
 
 from .ui import *
