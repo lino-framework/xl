@@ -1201,17 +1201,34 @@ class Days(dd.VirtualTable):
     # def goto_today(self, ar):
     #     ar.goto_instance(rt.models.cal.Days.get_row_by_pk(ar, "0"))
     #     return ar.success()
+    @staticmethod
+    def calender_header(ar):
+        header = "Calendar Type"
+        elems = [E.h2(*header, align="center")]
+        today_url = ar.renderer.js2url("""
+                Lino.cal.DailyView.detail.run(null, {"record_id": 0})
+                """)
+        week_url = ar.renderer.js2url("""
+                        Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
+                        """)
+        elems.append(E.p(ar.renderer.href(today_url, gettext("Day")), align="center"))
+        elems.append(E.p(ar.renderer.href(week_url, gettext("Week")), align="center"))
+        elems.append(E.p(ar.goto_pk(0, gettext("This month")), align="center"))
+        return elems
+
+
 
     @dd.htmlbox()
     def navigation(cls, obj, ar):
         today = obj.date
         prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
         next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        elems = cls.calender_header(ar)
         header = [
             ar.goto_pk(prev, "<<"), " ",
             "{} {}".format(monthname(today.month), today.year),
             " ", ar.goto_pk(next, ">>")]
-        elems = [E.h2(*header, align="center")]
+        elems.append(E.h2(*header, align="center"))
         rows = []
         for week in CALENDAR.monthdatescalendar(today.year, today.month):
             # each week is a list of seven datetime.date objects.
@@ -1542,11 +1559,12 @@ class WeeklyView(Days):
         today = obj.date
         prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
         next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        elems = cls.calender_header(ar)
         header = [
             ar.goto_pk(prev, "<<"), " ",
             "{} {}".format(monthname(today.month), today.year),
             " ", ar.goto_pk(next, ">>")]
-        elems = [E.h2(*header, align="center")]
+        elems.append(E.h2(*header, align="center"))
         rows = []
         for week in CALENDAR.monthdatescalendar(today.year, today.month):
             # each week is a list of seven datetime.date objects.
