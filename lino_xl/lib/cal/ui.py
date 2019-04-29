@@ -1163,30 +1163,7 @@ class EventPolicies(dd.Table):
     # monday tuesday wednesday thursday friday saturday sunday
     # """
 
-Calendarparameters = dict(
-    user=dd.ForeignKey('users.User', null=True, blank=True),
-    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
-    room = dd.ForeignKey('cal.Room', null=True, blank=True),
-    project = fields.ForeignKey(
-        settings.SITE.project_model,
-        blank=True, null=True,
-        related_name="%(app_label)s_%(class)s_set_by_project"),
-    partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
-Calendarparams_layout = """user event_type room project partner"""
 
-def calendar_param_filter(qs,pv):
-    if pv.user:
-        qs = qs.filter(user=pv.user)
-    if pv.event_type:
-        qs = qs.filter(event_type=pv.event_type)
-    if pv.room:
-        qs = qs.filter(room=pv.room)
-    if settings.SITE.project_model is not None and pv.project:
-        qs = qs.filter(project=pv.project)
-    if pv.partner:
-        qs = qs.filter(guest__partner=pv.partner)
-
-    return qs
 
 @dd.python_2_unicode_compatible
 class Day(TableRow):
@@ -1203,6 +1180,40 @@ class DayDetail(dd.DetailLayout):
     main = "body"
     body = "navigation:20 cal.PlannerByDay:80"
 
+class CalView():
+    """
+    Mixin for Calender views:
+    """
+
+    reverse_sort_order = False
+    abstract = False
+
+    parameters = dict(
+        user=dd.ForeignKey('users.User', null=True, blank=True),
+        event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
+        room = dd.ForeignKey('cal.Room', null=True, blank=True),
+        project = fields.ForeignKey(
+            settings.SITE.project_model,
+            blank=True, null=True,
+            related_name="%(app_label)s_%(class)s_set_by_project"),
+        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
+
+    params_layout = """user event_type room project partner"""
+
+    @staticmethod
+    def calendar_param_filter(qs,pv):
+        if pv.user:
+            qs = qs.filter(user=pv.user)
+        if pv.event_type:
+            qs = qs.filter(event_type=pv.event_type)
+        if pv.room:
+            qs = qs.filter(room=pv.room)
+        if settings.SITE.project_model is not None and pv.project:
+            qs = qs.filter(project=pv.project)
+        if pv.partner:
+            qs = qs.filter(guest__partner=pv.partner)
+        return qs
+
 
 class Days(dd.VirtualTable):
     # every "row" is a Day instance. Note that Day can be overridden.
@@ -1214,10 +1225,10 @@ class Days(dd.VirtualTable):
     detail_layout = 'cal.DayDetail'
     model = 'cal.Day'
     editable = False
-    parameters = Calendarparameters
-    params_layout = Calendarparams_layout
-    # reverse_sort_order = False
-    # abstract = True
+    # parameters = Calendarparameters
+    # params_layout = Calendarparams_layout
+    reverse_sort_order = False
+    abstract = True
 
     @dd.virtualfield(models.IntegerField(_("Day number")))
     def day_number(cls, obj, ar):
@@ -1365,7 +1376,7 @@ class Days(dd.VirtualTable):
 # Days.day_number.return_type.attname = 'day_number'
 
 
-class DailyView(Days):
+class DailyView(CalView, Days):
     label = _("Daily view")
     # hide_top_toolbar = True
 
@@ -1401,13 +1412,11 @@ class DailyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 
-class DailyPlanner(DailyPlannerRows):
+class DailyPlanner(CalView ,DailyPlannerRows):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     # required_roles = dd.login_required(CalendarReader)
     label = _("Daily planner")
     editable = False
-    parameters = Calendarparameters
-    params_layout = Calendarparams_layout
     use_detail_params_value = True
     # @classmethod
     # def param_defaults(cls, ar, **kw):
@@ -1451,7 +1460,7 @@ class DailyPlanner(DailyPlannerRows):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.filter(event_type__planner_column=pc)
-                qs = calendar_param_filter(qs,pv)
+                qs = cls.calendar_param_filter(qs,pv)
                 current_day = pv.get('date',dd.today())
                 if current_day:
                     qs = qs.filter(start_date=current_day)
@@ -1495,13 +1504,11 @@ class PlannerByDay(DailyPlanner):
         return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
 
 
-class WeeklyPlannerRows(dd.Table):
+class WeeklyPlannerRows(CalView, dd.Table):
     model = 'cal.DailyPlannerRow'
     required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
     editable = False
-    parameters = Calendarparameters
-    params_layout = Calendarparams_layout
     use_detail_params_value = True
 
     @classmethod
@@ -1544,7 +1551,7 @@ class WeeklyPlannerRows(dd.Table):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.all()
-                qs = calendar_param_filter(qs, pv)
+                qs = cls.calendar_param_filter(qs, pv)
                 
                 if ar.rqdata:
                     delata_days = int(ar.rqdata.get('mk', 0))
@@ -1576,7 +1583,7 @@ class WeeklyDetail(dd.DetailLayout):
     main = "body"
     body = "weeklyNavigation:20 cal.WeeklyPlannerRows:80"
 
-class WeeklyView(Days):
+class WeeklyView(CalView, Days):
     label = _("Weekly view")
     detail_layout = 'cal.WeeklyDetail'
     # parameters = mixins.ObservedDateRange(
