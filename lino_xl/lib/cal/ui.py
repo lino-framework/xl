@@ -1238,36 +1238,91 @@ class Days(dd.VirtualTable):
     # def goto_today(self, ar):
     #     ar.goto_instance(rt.models.cal.Days.get_row_by_pk(ar, "0"))
     #     return ar.success()
+    # @staticmethod
+    # def calender_header(ar):
+    #     header = "Calendar Type"
+    #     elems = [E.h2(*header, align="center")]
+    #     # today_url = ar.renderer.js2url("""
+    #     #         Lino.cal.DailyView.detail.run(null, {"record_id": 0})
+    #     #         """)
+    #     # week_url = ar.renderer.js2url("""
+    #     #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
+    #     #                 """)
+    #     day = Day()
+    #     dayly = ar.spawn(DailyView)
+    #     weekly = ar.spawn(WeeklyView)
+    #     weekly.param_values = dayly.param_values = ar.param_values
+    #     today_url = settings.SITE.kernel.default_renderer.ar2button(dayly,
+    #         day, gettext("Day"), style="", icon_name=None)
+    #     week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
+    #         day, gettext("Week"), style="", icon_name=None)
+    #
+    #     elems.append(E.p(today_url, align="center"))  #
+    #     elems.append(E.p(week_url, align="center"))
+    #     # elems.append(E.p(ar.goto_pk(0, gettext("This month")), align="center")) # No monthly view yet
+    #     return elems
+
+    @classmethod
+    def calendar_navigation(cls, obj, ar, weekly_view=False):
+        today = obj.date
+        dayly, weekly = cls.make_link_funcs(ar)
+        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
+        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        elems = []#cls.calender_header(ar)
+        header = [
+            ar.goto_pk(prev, "<<"), " ", #todo switch these to new form
+            "{} {}".format(monthname(today.month), today.year),
+            " ", ar.goto_pk(next, ">>")] #todo switch these to new form
+        elems.append(E.h2(*header, align="center"))
+        rows = []
+        for week in CALENDAR.monthdatescalendar(today.year, today.month):
+            # each week is a list of seven datetime.date objects.
+            cells = []
+            current_week = week[0].isocalendar()[1]
+            this_week = False
+            for day in week:
+                pk = cls.date2pk(day)
+                link = dayly(Day(pk), str(day.day))
+                if day == today and not weekly_view:
+                    cells.append(E.td(E.b(str(day.day))))
+                else:
+                    cells.append(E.td(link))
+                if day.isocalendar()[1] == today.isocalendar()[1]:
+                    this_week = True
+            else:
+                cells = [
+                            E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(Day(pk), str(current_week)),
+                                 CLASS="cal-week")
+                         ] + cells
+
+
+            rows.append(E.tr(*cells, align="center"))
+        elems.append(E.table(*rows, align="center"))
+        elems.append(E.p(dayly(Day(), gettext("Today")), align="center"))
+        elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
+
+        # for o in range(-10, 10):
+        #     elems.append(ar.goto_pk(o, str(o)))
+        #     elems.append(" ")
+        return E.div(*elems)
+
     @staticmethod
-    def calender_header(ar):
-        header = "Calendar Type"
-        elems = [E.h2(*header, align="center")]
-        # today_url = ar.renderer.js2url("""
-        #         Lino.cal.DailyView.detail.run(null, {"record_id": 0})
-        #         """)
-        # week_url = ar.renderer.js2url("""
-        #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
-        #                 """)
-        day = Day()
-        dayly = ar.spawn(DailyView)
-        weekly = ar.spawn(WeeklyView)
-        weekly.param_values = dayly.param_values = ar.param_values
-        weekly.selected_rows  = dayly.selected_rows = day.pk
+    def make_link_funcs(ar):
+        sar_dayly = ar.spawn(DailyView)
+        sar_weekly = ar.spawn(WeeklyView)
+        sar_weekly.param_values = sar_dayly.param_values = ar.param_values
 
-        today_url = settings.SITE.kernel.default_renderer.ar2button(dayly,
-            day,gettext("Day"),
-        style="", icon_name=None)
-        week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
-            day,gettext("Week"), style="", icon_name=None)
-        elems.append(E.p(today_url, align="center"))  #
-        elems.append(E.p(week_url, align="center"))
-        elems.append(E.p(ar.goto_pk(0, gettext("This month")), align="center"))
-        return elems
-
-
+        def weekly(day, text):
+            return settings.SITE.kernel.default_renderer.ar2button(sar_weekly,day,text, style="", icon_name=None)
+        def dayly(day, text):
+            return settings.SITE.kernel.default_renderer.ar2button(sar_dayly,day,text, style="", icon_name=None)
+        # dayly(Day(cls.date2pk(day)), str(day.day))
+        return dayly, weekly
 
     @dd.htmlbox()
     def navigation(cls, obj, ar):
+        return cls.calendar_navigation(obj, ar)
+
         today = obj.date
         prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
         next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
@@ -1603,32 +1658,5 @@ class WeeklyView(CalView, Days):
 
     @dd.htmlbox()
     def weeklyNavigation(cls, obj, ar):
-        today = obj.date
-        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
-        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
-        elems = cls.calender_header(ar)
-        header = [
-            ar.goto_pk(prev, "<<"), " ",
-            "{} {}".format(monthname(today.month), today.year),
-            " ", ar.goto_pk(next, ">>")]
-        elems.append(E.h2(*header, align="center"))
-        rows = []
-        for week in CALENDAR.monthdatescalendar(today.year, today.month):
-            # each week is a list of seven datetime.date objects.
-            cells = []
-            current_week = week[0].isocalendar()[1]
-            cells.append(E.td(str(current_week)))
-            for day in week:
-                pk = cls.date2pk(day)
-                if day.isocalendar()[1] == today.isocalendar()[1]:
-                    cells.append(E.td(str(day.day)))
-                else:
-                    cells.append(E.td(ar.goto_pk(pk, str(day.day))))
-            rows.append(E.tr(*cells, align="center"))
-        elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(ar.goto_pk(0, gettext("This week")), align="center"))
-        # for o in range(-10, 10):
-        #     elems.append(ar.goto_pk(o, str(o)))
-        #     elems.append(" ")
-        return E.div(*elems)
+        return cls.calendar_navigation(obj, ar, weekly_view=True)
 
