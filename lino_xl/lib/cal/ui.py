@@ -1163,6 +1163,30 @@ class EventPolicies(dd.Table):
     # monday tuesday wednesday thursday friday saturday sunday
     # """
 
+Calendarparameters = dict(
+    user=dd.ForeignKey('users.User', null=True, blank=True),
+    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
+    room = dd.ForeignKey('cal.Room', null=True, blank=True),
+    project = fields.ForeignKey(
+        settings.SITE.project_model,
+        blank=True, null=True,
+        related_name="%(app_label)s_%(class)s_set_by_project"),
+    partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
+Calendarparams_layout = """user event_type room project partner"""
+
+def calendar_param_filter(qs,pv):
+    if pv.user:
+        qs = qs.filter(user=pv.user)
+    if pv.event_type:
+        qs = qs.filter(event_type=pv.event_type)
+    if pv.room:
+        qs = qs.filter(room=pv.room)
+    if settings.SITE.project_model is not None and pv.project:
+        qs = qs.filter(project=pv.project)
+    if pv.partner:
+        qs = qs.filter(guest__partner=pv.partner)
+
+    return qs
 
 @dd.python_2_unicode_compatible
 class Day(TableRow):
@@ -1187,12 +1211,13 @@ class Days(dd.VirtualTable):
     column_names = "detail_link *"
     parameters = mixins.ObservedDateRange(
         user=dd.ForeignKey('users.User', null=True, blank=True))
-    params_layout = """start_date end_date user"""
     detail_layout = 'cal.DayDetail'
     model = 'cal.Day'
     editable = False
-    reverse_sort_order = False
-    abstract = True
+    parameters = Calendarparameters
+    params_layout = Calendarparams_layout
+    # reverse_sort_order = False
+    # abstract = True
 
     @dd.virtualfield(models.IntegerField(_("Day number")))
     def day_number(cls, obj, ar):
@@ -1359,7 +1384,6 @@ class DailyView(Days):
 #         kw.update(end_date=dd.today(7))
 #         return kw
 
-
 class DailyPlannerRows(dd.Table):
     model = 'cal.DailyPlannerRow'
     column_names = "seqno designation start_time end_time"
@@ -1371,18 +1395,16 @@ class DailyPlanner(DailyPlannerRows):
     # required_roles = dd.login_required(CalendarReader)
     label = _("Daily planner")
     editable = False
-    parameters = dict(
-        date=models.DateField(
-            _("Date"), help_text=_("Date to show")),
-        user=dd.ForeignKey('users.User', null=True, blank=True))
-
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(DailyPlanner, cls).param_defaults(ar, **kw)
-        kw.update(date=dd.today())
+    parameters = Calendarparameters
+    params_layout = Calendarparams_layout
+    use_detail_params_value = True
+    # @classmethod
+    # def param_defaults(cls, ar, **kw):
+        # kw = super(DailyPlanner, cls).param_defaults(ar, **kw)
+        # kw.update(date=dd.today())
         # kw.update(end_date=dd.today())
         # kw.update(user=ar.get_user())
-        return kw
+        # return kw
 
     @classmethod
     def setup_columns(self):
@@ -1418,10 +1440,14 @@ class DailyPlanner(DailyPlannerRows):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.filter(event_type__planner_column=pc)
-                if pv.user:
-                    qs = qs.filter(user=pv.user)
-                if pv.date:
-                    qs = qs.filter(start_date=pv.date)
+                qs = calendar_param_filter(qs,pv)
+                current_day = pv.get('date',dd.today())
+                if current_day:
+                    qs = qs.filter(start_date=current_day)
+                # if ar.rqdata:
+                #     delata_days = int(ar.rqdata.get('mk', 0))
+                #     current_day = dd.today() + timedelta(days=delata_days)
+                #     qs = qs.filter(start_date=current_day)
                 if obj.start_time:
                     qs = qs.filter(start_time__gte=obj.start_time,
                                    start_time__isnull=False)
@@ -1463,16 +1489,8 @@ class WeeklyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
     editable = False
-    parameters = dict(
-        user=dd.ForeignKey('users.User', null=True, blank=True),
-        event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
-        room = dd.ForeignKey('cal.Room', null=True, blank=True),
-        project = fields.ForeignKey(
-            settings.SITE.project_model,
-            blank=True, null=True,
-            related_name="%(app_label)s_%(class)s_set_by_project"),
-        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
-    params_layout = """user event_type room project partner"""
+    parameters = Calendarparameters
+    params_layout = Calendarparams_layout
     use_detail_params_value = True
 
     @classmethod
@@ -1515,16 +1533,7 @@ class WeeklyPlannerRows(dd.Table):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.all()
-                if pv.user:
-                    qs = qs.filter(user=pv.user)
-                if pv.event_type:
-                    qs = qs.filter(event_type=pv.event_type)
-                if pv.room:
-                    qs = qs.filter(room=pv.room)
-                if settings.SITE.project_model is not None and pv.project:
-                    qs = qs.filter(project=pv.project)
-                if pv.partner:
-                    qs = qs.filter(guest__partner=pv.partner)
+                qs = calendar_param_filter(qs, pv)
                 
                 if ar.rqdata:
                     delata_days = int(ar.rqdata.get('mk', 0))
@@ -1562,9 +1571,11 @@ class WeeklyView(Days):
     # parameters = mixins.ObservedDateRange(
     #     user=dd.ForeignKey('users.User', null=True, blank=True))
     # params_layout = """start_date end_date user"""
-    parameters = WeeklyPlannerRows.parameters
-    params_layout = WeeklyPlannerRows.params_layout
-    param_defaults = WeeklyPlannerRows.param_defaults
+    # parameters = WeeklyPlannerRows.parameters
+    # params_layout = WeeklyPlannerRows.params_layout
+    # param_defaults = WeeklyPlannerRows.param_defaults
+    # parameters = Calendarparameters
+    # params_layout = Calendarparams_layout
 
 
 
