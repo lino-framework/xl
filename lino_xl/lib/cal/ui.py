@@ -1163,30 +1163,7 @@ class EventPolicies(dd.Table):
     # monday tuesday wednesday thursday friday saturday sunday
     # """
 
-Calendarparameters = dict(
-    user=dd.ForeignKey('users.User', null=True, blank=True),
-    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
-    room = dd.ForeignKey('cal.Room', null=True, blank=True),
-    project = fields.ForeignKey(
-        settings.SITE.project_model,
-        blank=True, null=True,
-        related_name="%(app_label)s_%(class)s_set_by_project"),
-    partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
-Calendarparams_layout = """user event_type room project partner"""
 
-def calendar_param_filter(qs,pv):
-    if pv.user:
-        qs = qs.filter(user=pv.user)
-    if pv.event_type:
-        qs = qs.filter(event_type=pv.event_type)
-    if pv.room:
-        qs = qs.filter(room=pv.room)
-    if settings.SITE.project_model is not None and pv.project:
-        qs = qs.filter(project=pv.project)
-    if pv.partner:
-        qs = qs.filter(guest__partner=pv.partner)
-
-    return qs
 
 @dd.python_2_unicode_compatible
 class Day(TableRow):
@@ -1203,6 +1180,40 @@ class DayDetail(dd.DetailLayout):
     main = "body"
     body = "navigation:20 cal.PlannerByDay:80"
 
+class CalView():
+    """
+    Mixin for Calender views:
+    """
+
+    reverse_sort_order = False
+    abstract = False
+
+    parameters = dict(
+        user=dd.ForeignKey('users.User', null=True, blank=True),
+        event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
+        room = dd.ForeignKey('cal.Room', null=True, blank=True),
+        project = fields.ForeignKey(
+            settings.SITE.project_model,
+            blank=True, null=True,
+            related_name="%(app_label)s_%(class)s_set_by_project"),
+        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
+
+    params_layout = """user event_type room project partner"""
+
+    @staticmethod
+    def calendar_param_filter(qs,pv):
+        if pv.user:
+            qs = qs.filter(user=pv.user)
+        if pv.event_type:
+            qs = qs.filter(event_type=pv.event_type)
+        if pv.room:
+            qs = qs.filter(room=pv.room)
+        if settings.SITE.project_model is not None and pv.project:
+            qs = qs.filter(project=pv.project)
+        if pv.partner:
+            qs = qs.filter(guest__partner=pv.partner)
+        return qs
+
 
 class Days(dd.VirtualTable):
     # every "row" is a Day instance. Note that Day can be overridden.
@@ -1214,10 +1225,10 @@ class Days(dd.VirtualTable):
     detail_layout = 'cal.DayDetail'
     model = 'cal.Day'
     editable = False
-    parameters = Calendarparameters
-    params_layout = Calendarparams_layout
-    # reverse_sort_order = False
-    # abstract = True
+    # parameters = Calendarparameters
+    # params_layout = Calendarparams_layout
+    reverse_sort_order = False
+    abstract = True
 
     @dd.virtualfield(models.IntegerField(_("Day number")))
     def day_number(cls, obj, ar):
@@ -1227,36 +1238,91 @@ class Days(dd.VirtualTable):
     # def goto_today(self, ar):
     #     ar.goto_instance(rt.models.cal.Days.get_row_by_pk(ar, "0"))
     #     return ar.success()
+    # @staticmethod
+    # def calender_header(ar):
+    #     header = "Calendar Type"
+    #     elems = [E.h2(*header, align="center")]
+    #     # today_url = ar.renderer.js2url("""
+    #     #         Lino.cal.DailyView.detail.run(null, {"record_id": 0})
+    #     #         """)
+    #     # week_url = ar.renderer.js2url("""
+    #     #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
+    #     #                 """)
+    #     day = Day()
+    #     dayly = ar.spawn(DailyView)
+    #     weekly = ar.spawn(WeeklyView)
+    #     weekly.param_values = dayly.param_values = ar.param_values
+    #     today_url = settings.SITE.kernel.default_renderer.ar2button(dayly,
+    #         day, gettext("Day"), style="", icon_name=None)
+    #     week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
+    #         day, gettext("Week"), style="", icon_name=None)
+    #
+    #     elems.append(E.p(today_url, align="center"))  #
+    #     elems.append(E.p(week_url, align="center"))
+    #     # elems.append(E.p(ar.goto_pk(0, gettext("This month")), align="center")) # No monthly view yet
+    #     return elems
+
+    @classmethod
+    def calendar_navigation(cls, obj, ar, weekly_view=False):
+        today = obj.date
+        dayly, weekly = cls.make_link_funcs(ar)
+        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
+        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        elems = []#cls.calender_header(ar)
+        header = [
+            ar.goto_pk(prev, "<<"), " ", #todo switch these to new form
+            "{} {}".format(monthname(today.month), today.year),
+            " ", ar.goto_pk(next, ">>")] #todo switch these to new form
+        elems.append(E.h2(*header, align="center"))
+        rows = []
+        for week in CALENDAR.monthdatescalendar(today.year, today.month):
+            # each week is a list of seven datetime.date objects.
+            cells = []
+            current_week = week[0].isocalendar()[1]
+            this_week = False
+            for day in week:
+                pk = cls.date2pk(day)
+                link = dayly(Day(pk), str(day.day))
+                if day == today and not weekly_view:
+                    cells.append(E.td(E.b(str(day.day))))
+                else:
+                    cells.append(E.td(link))
+                if day.isocalendar()[1] == today.isocalendar()[1]:
+                    this_week = True
+            else:
+                cells = [
+                            E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(Day(pk), str(current_week)),
+                                 CLASS="cal-week")
+                         ] + cells
+
+
+            rows.append(E.tr(*cells, align="center"))
+        elems.append(E.table(*rows, align="center"))
+        elems.append(E.p(dayly(Day(), gettext("Today")), align="center"))
+        elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
+
+        # for o in range(-10, 10):
+        #     elems.append(ar.goto_pk(o, str(o)))
+        #     elems.append(" ")
+        return E.div(*elems)
+
     @staticmethod
-    def calender_header(ar):
-        header = "Calendar Type"
-        elems = [E.h2(*header, align="center")]
-        # today_url = ar.renderer.js2url("""
-        #         Lino.cal.DailyView.detail.run(null, {"record_id": 0})
-        #         """)
-        # week_url = ar.renderer.js2url("""
-        #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
-        #                 """)
-        day = Day()
-        dayly = ar.spawn(DailyView)
-        weekly = ar.spawn(WeeklyView)
-        weekly.param_values = dayly.param_values = ar.param_values
-        weekly.selected_rows  = dayly.selected_rows = day.pk
+    def make_link_funcs(ar):
+        sar_dayly = ar.spawn(DailyView)
+        sar_weekly = ar.spawn(WeeklyView)
+        sar_weekly.param_values = sar_dayly.param_values = ar.param_values
 
-        today_url = settings.SITE.kernel.default_renderer.ar2button(dayly,
-            day,gettext("Day"),
-        style="", icon_name=None)
-        week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
-            day,gettext("Week"), style="", icon_name=None)
-        elems.append(E.p(today_url, align="center"))  #
-        elems.append(E.p(week_url, align="center"))
-        elems.append(E.p(ar.goto_pk(0, gettext("This month")), align="center"))
-        return elems
-
-
+        def weekly(day, text):
+            return settings.SITE.kernel.default_renderer.ar2button(sar_weekly,day,text, style="", icon_name=None)
+        def dayly(day, text):
+            return settings.SITE.kernel.default_renderer.ar2button(sar_dayly,day,text, style="", icon_name=None)
+        # dayly(Day(cls.date2pk(day)), str(day.day))
+        return dayly, weekly
 
     @dd.htmlbox()
     def navigation(cls, obj, ar):
+        return cls.calendar_navigation(obj, ar)
+
         today = obj.date
         prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
         next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
@@ -1365,7 +1431,7 @@ class Days(dd.VirtualTable):
 # Days.day_number.return_type.attname = 'day_number'
 
 
-class DailyView(Days):
+class DailyView(CalView, Days):
     label = _("Daily view")
     # hide_top_toolbar = True
 
@@ -1401,13 +1467,11 @@ class DailyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 
-class DailyPlanner(DailyPlannerRows):
+class DailyPlanner(CalView ,DailyPlannerRows):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     # required_roles = dd.login_required(CalendarReader)
     label = _("Daily planner")
     editable = False
-    parameters = Calendarparameters
-    params_layout = Calendarparams_layout
     use_detail_params_value = True
     # @classmethod
     # def param_defaults(cls, ar, **kw):
@@ -1451,7 +1515,7 @@ class DailyPlanner(DailyPlannerRows):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.filter(event_type__planner_column=pc)
-                qs = calendar_param_filter(qs,pv)
+                qs = cls.calendar_param_filter(qs,pv)
                 current_day = pv.get('date',dd.today())
                 if current_day:
                     qs = qs.filter(start_date=current_day)
@@ -1495,13 +1559,11 @@ class PlannerByDay(DailyPlanner):
         return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
 
 
-class WeeklyPlannerRows(dd.Table):
+class WeeklyPlannerRows(CalView, dd.Table):
     model = 'cal.DailyPlannerRow'
     required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
     editable = False
-    parameters = Calendarparameters
-    params_layout = Calendarparams_layout
     use_detail_params_value = True
 
     @classmethod
@@ -1544,7 +1606,7 @@ class WeeklyPlannerRows(dd.Table):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.all()
-                qs = calendar_param_filter(qs, pv)
+                qs = cls.calendar_param_filter(qs, pv)
                 
                 if ar.rqdata:
                     delata_days = int(ar.rqdata.get('mk', 0))
@@ -1576,7 +1638,7 @@ class WeeklyDetail(dd.DetailLayout):
     main = "body"
     body = "weeklyNavigation:20 cal.WeeklyPlannerRows:80"
 
-class WeeklyView(Days):
+class WeeklyView(CalView, Days):
     label = _("Weekly view")
     detail_layout = 'cal.WeeklyDetail'
     # parameters = mixins.ObservedDateRange(
@@ -1596,32 +1658,5 @@ class WeeklyView(Days):
 
     @dd.htmlbox()
     def weeklyNavigation(cls, obj, ar):
-        today = obj.date
-        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
-        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
-        elems = cls.calender_header(ar)
-        header = [
-            ar.goto_pk(prev, "<<"), " ",
-            "{} {}".format(monthname(today.month), today.year),
-            " ", ar.goto_pk(next, ">>")]
-        elems.append(E.h2(*header, align="center"))
-        rows = []
-        for week in CALENDAR.monthdatescalendar(today.year, today.month):
-            # each week is a list of seven datetime.date objects.
-            cells = []
-            current_week = week[0].isocalendar()[1]
-            cells.append(E.td(str(current_week)))
-            for day in week:
-                pk = cls.date2pk(day)
-                if day.isocalendar()[1] == today.isocalendar()[1]:
-                    cells.append(E.td(str(day.day)))
-                else:
-                    cells.append(E.td(ar.goto_pk(pk, str(day.day))))
-            rows.append(E.tr(*cells, align="center"))
-        elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(ar.goto_pk(0, gettext("This week")), align="center"))
-        # for o in range(-10, 10):
-        #     elems.append(ar.goto_pk(o, str(o)))
-        #     elems.append(" ")
-        return E.div(*elems)
+        return cls.calendar_navigation(obj, ar, weekly_view=True)
 
