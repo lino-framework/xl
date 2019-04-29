@@ -14,6 +14,7 @@ from lino.api import dd, rt, _, gettext
 from lino import mixins
 from lino.core.roles import Explorer
 from lino.core.fields import TableRow
+from lino.core import fields
 from lino.utils.format_date import monthname
 from lino.utils.format_date import day_and_month, day_and_weekday
 from lino.modlib.users.mixins import My
@@ -1336,13 +1337,6 @@ class DailyView(Days):
     def get_default_action(cls):
         return dd.ShowDetail(cls.detail_layout)
 
-    # @classmethod
-    # def param_defaults(cls, ar, **kw):
-    #     kw = super(Days, cls).param_defaults(ar, **kw)
-    #     kw.update(start_date=dd.today(-60))
-    #     kw.update(end_date=dd.today(90))
-    #     return kw
-
 
 # class LastWeek(Days):
 #     label = _("Last week")
@@ -1470,16 +1464,23 @@ class WeeklyPlannerRows(dd.Table):
     label = _("Weekly planner")
     editable = False
     parameters = dict(
-        date=models.DateField(
-            _("Date"), help_text=_("Date to show")),
-        user=dd.ForeignKey('users.User', null=True, blank=True))
+        user=dd.ForeignKey('users.User', null=True, blank=True),
+        event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
+        room = dd.ForeignKey('cal.Room', null=True, blank=True),
+        project = fields.ForeignKey(
+            settings.SITE.project_model,
+            blank=True, null=True,
+            related_name="%(app_label)s_%(class)s_set_by_project"),
+        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
+    params_layout = """user event_type room project partner"""
+    use_detail_params_value = True
 
     @classmethod
     def param_defaults(cls, ar, **kw):
         kw = super(WeeklyPlannerRows, cls).param_defaults(ar, **kw)
-        kw.update(date=dd.today())
+        # kw.update(date=dd.today())
         # kw.update(end_date=dd.today())
-        # kw.update(user=ar.get_user())
+        kw.update(user=ar.get_user())
         return kw
 
     @classmethod
@@ -1516,6 +1517,15 @@ class WeeklyPlannerRows(dd.Table):
                 qs = Event.objects.all()
                 if pv.user:
                     qs = qs.filter(user=pv.user)
+                if pv.event_type:
+                    qs = qs.filter(event_type=pv.event_type)
+                if pv.room:
+                    qs = qs.filter(room=pv.room)
+                if settings.SITE.project_model is not None and pv.project:
+                    qs = qs.filter(project=pv.project)
+                if pv.partner:
+                    qs = qs.filter(guest__partner=pv.partner)
+                
                 if ar.rqdata:
                     delata_days = int(ar.rqdata.get('mk', 0))
                     current_day = dd.today() + timedelta(days=delata_days)
@@ -1549,6 +1559,14 @@ class WeeklyDetail(dd.DetailLayout):
 class WeeklyView(Days):
     label = _("Weekly view")
     detail_layout = 'cal.WeeklyDetail'
+    # parameters = mixins.ObservedDateRange(
+    #     user=dd.ForeignKey('users.User', null=True, blank=True))
+    # params_layout = """start_date end_date user"""
+    parameters = WeeklyPlannerRows.parameters
+    params_layout = WeeklyPlannerRows.params_layout
+    param_defaults = WeeklyPlannerRows.param_defaults
+
+
 
     @classmethod
     def get_default_action(cls):
