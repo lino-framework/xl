@@ -88,14 +88,15 @@ class Plugin(ad.Plugin):
     database but not their movments.
     """
 
+    def on_site_startup(self, site):
+        super(Plugin, self).on_site_startup(site)
+        site.models.ledger.CommonAccounts.sort()
+
     def setup_main_menu(self, site, user_type, m):
         """
         Add a menu item for every journal.
 
-        Menu items are grouped by journal group.
-
-        If a journal group has a :attr:`menu_group`, then journals are added to
-        the menu of that plugin, otherwise to the menu of the ledger plugin.
+        Menu items are grouped by journal group. See :class:`lino_xl.lib.ledger.JournalGroups`
 
         """
         Journal = site.models.ledger.Journal
