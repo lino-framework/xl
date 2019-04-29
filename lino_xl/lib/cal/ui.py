@@ -1191,8 +1191,8 @@ class Days(dd.VirtualTable):
     detail_layout = 'cal.DayDetail'
     model = 'cal.Day'
     editable = False
-    # reverse_sort_order = False
-    # abstract = True
+    reverse_sort_order = False
+    abstract = True
 
     @dd.virtualfield(models.IntegerField(_("Day number")))
     def day_number(cls, obj, ar):
