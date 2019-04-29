@@ -1238,12 +1238,15 @@ class Days(dd.VirtualTable):
         #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
         #                 """)
         day = Day()
-        today_url = settings.SITE.kernel.default_renderer.ar2button(ar.spawn(
-            DailyView),
+        dayly = ar.spawn(DailyView)
+        weekly = ar.spawn(WeeklyView)
+        weekly.param_values = dayly.param_values = ar.param_values
+        weekly.selected_rows  = dayly.selected_rows = day.pk
+
+        today_url = settings.SITE.kernel.default_renderer.ar2button(dayly,
             day,gettext("Day"),
         style="", icon_name=None)
-        week_url = settings.SITE.kernel.default_renderer.ar2button(ar.spawn(
-            WeeklyView),
+        week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
             day,gettext("Week"), style="", icon_name=None)
         elems.append(E.p(today_url, align="center"))  #
         elems.append(E.p(week_url, align="center"))
