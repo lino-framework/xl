@@ -140,3 +140,7 @@ def objects():
     yield DPR(end_time="12:00", **dd.str2kw('designation', _("AM")))
     yield DPR(start_time="12:00", **dd.str2kw('designation', _("PM")))
     yield DPR(**dd.str2kw('designation', _("All day")))
+
+    DPR = rt.models.cal.MonthlyPlannerRow
+    for week in range(1,53):
+        yield DPR(week_number=week,**dd.str2kw('designation', str("Week {}".format(week))))

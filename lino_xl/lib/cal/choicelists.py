@@ -32,6 +32,22 @@ WORKDAYS = frozenset([
     Weekdays.get_by_name(k)
     for k in 'monday tuesday wednesday thursday friday'.split()])
 
+class YearMonths(dd.ChoiceList):
+    verbose_name = _("YearMonths")
+add = YearMonths.add_item
+add('1', _('January'), 'january')
+add('2', _('February'), 'february')
+add('3', _('March'), 'march')
+add('4', _('April'), 'april')
+add('5', _('May'), 'may')
+add('6', _('June'), 'june')
+add('7', _('July'), 'july')
+add('8', _('August'), 'august')
+add('9', _('September'), 'september')
+add('10', _('October'), 'october')
+add('11', _('November'), 'november')
+add('12', _('December'), 'december')
+
 
 class DurationUnit(dd.Choice):
 

@@ -99,6 +99,17 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
 
 dd.update_field(DailyPlannerRow, 'overview', verbose_name=_("Time range"))
 
+class MonthlyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
+    
+    class Meta:
+        app_label = 'cal'
+        abstract = dd.is_abstract_model(__name__, 'PlannerRow')
+        verbose_name = _("Planner row")
+        verbose_name_plural = _("Planner rows")
+        ordering = ['seqno']
+
+    week_number = models.PositiveSmallIntegerField("Week number")
+
 class RemoteCalendar(mixins.Sequenced):
 
     class Meta:
