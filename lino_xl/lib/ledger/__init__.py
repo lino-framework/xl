@@ -88,9 +88,10 @@ class Plugin(ad.Plugin):
     database but not their movments.
     """
 
-    def on_site_startup(self, site):
-        super(Plugin, self).on_site_startup(site)
+    def post_site_startup(self, site):
+        super(Plugin, self).post_site_startup(site)
         site.models.ledger.CommonAccounts.sort()
+        site.models.ledger.VoucherTypes.sort()
 
     def setup_main_menu(self, site, user_type, m):
         """
