@@ -1264,6 +1264,7 @@ class Days(dd.VirtualTable):
 
     @classmethod
     def calendar_navigation(cls, obj, ar, weekly_view=False):
+        # todo ensure that the end of the month is always in the view.
         today = obj.date
         dayly, weekly, monthly = cls.make_link_funcs(ar)
         prev_month = Day(cls.date2pk(DurationUnits.months.add_duration(today, -1)))
@@ -1279,7 +1280,6 @@ class Days(dd.VirtualTable):
             current_view(next_view, ">"), " ", current_view(next_month, ">>")]
         elems.append(E.h2(*header, align="center"))
         rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in " MTWTFSS"], align='center')]
-
         for week in CALENDAR.monthdatescalendar(today.year, today.month):
             # each week is a list of seven datetime.date objects.
             cells = []
