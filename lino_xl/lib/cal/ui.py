@@ -1264,17 +1264,23 @@ class Days(dd.VirtualTable):
 
     @classmethod
     def calendar_navigation(cls, obj, ar, weekly_view=False):
+        # todo ensure that the end of the month is always in the view.
         today = obj.date
         dayly, weekly = cls.make_link_funcs(ar)
-        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
-        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
+        prev_month = Day(cls.date2pk(DurationUnits.months.add_duration(today, -1)))
+        next_month = Day(cls.date2pk(DurationUnits.months.add_duration(today, 1)))
+        next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days
+        prev_view = Day(cls.date2pk(next_unit.add_duration(today, -1)))
+        next_view = Day(cls.date2pk(next_unit.add_duration(today, 1)))
+
+        current_view = weekly if weekly_view else dayly
         elems = []#cls.calender_header(ar)
         header = [
-            ar.goto_pk(prev, "<<"), " ", #todo switch these to new form
-            "{} {}".format(monthname(today.month), today.year),
-            " ", ar.goto_pk(next, ">>")] #todo switch these to new form
+            current_view(prev_month, "<<"), " " , current_view(prev_view, "<"),
+            E.span("{} {}".format(monthname(today.month), today.year)),
+            current_view(next_view, ">"), " ", current_view(next_month, ">>")]
         elems.append(E.h2(*header, align="center"))
-        rows = []
+        rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in " MTWTFSS"], align='center')]
         for week in CALENDAR.monthdatescalendar(today.year, today.month):
             # each week is a list of seven datetime.date objects.
             cells = []
@@ -1301,10 +1307,7 @@ class Days(dd.VirtualTable):
         elems.append(E.p(dayly(Day(), gettext("Today")), align="center"))
         elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
 
-        # for o in range(-10, 10):
-        #     elems.append(ar.goto_pk(o, str(o)))
-        #     elems.append(" ")
-        return E.div(*elems)
+        return E.div(*elems, CLASS="lino-nav-cal")
 
     @staticmethod
     def make_link_funcs(ar):
