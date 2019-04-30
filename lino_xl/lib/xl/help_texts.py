@@ -567,7 +567,8 @@ appointments, "No" means no appointments and leaving it to
 blank shows both types of events."""),
     'lino_xl.lib.cal.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
     'lino_xl.lib.cal.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
-"date" column because it shows events of a given date."""),
+"date" column because it shows events of a given date.It is ordred
+with increasing times."""),
     'lino_xl.lib.cal.EntriesByRoom' : _("""Displays the calendar entries at a given Room."""),
     'lino_xl.lib.cal.EntriesByController' : _("""Shows the calendar entries controlled by this database object."""),
     'lino_xl.lib.cal.OneEvent' : _("""Show a single calendar event."""),
@@ -1209,6 +1210,7 @@ with this trade type."""),
 items.  This is the invoice_account_field of the given
 partner and can be None."""),
     'lino_xl.lib.ledger.FiscalYears' : _("""The fiscal years available in this database."""),
+    'lino_xl.lib.ledger.JournalGroup' : _("""The name of another plugin"""),
     'lino_xl.lib.ledger.JournalGroups' : _("""The list of possible journal groups."""),
     'lino_xl.lib.ledger.JournalGroups.sales' : _("""For sales journals."""),
     'lino_xl.lib.ledger.JournalGroups.purchases' : _("""For purchases journals."""),
@@ -1419,49 +1421,31 @@ both sheet types."""),
     'lino_xl.lib.sheets.ItemEntry' : _("""An entry is the computed value of given item for a given
 report."""),
     'lino_xl.lib.tickets.Ticket' : _("""The Django model used to represent a ticket."""),
-    'lino_xl.lib.tickets.Ticket.user' : _("""The author. The user who reported this ticket to the database
-and is responsible for managing it."""),
-    'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help."""),
+    'lino_xl.lib.tickets.Ticket.user' : _("""The author or reporter of this ticket. The user who reported this
+ticket to the database and is responsible for managing it."""),
+    'lino_xl.lib.tickets.Ticket.end_user' : _("""The end user who is asking for help.  This may be an external person
+who is not registered as a system user."""),
+    'lino_xl.lib.tickets.Ticket.assigned_to' : _("""The user who has been assigned to work on this ticket."""),
     'lino_xl.lib.tickets.Ticket.description' : _("""A complete and concise description of the ticket. This should
 describe in more detail what this ticket is about. If the
 ticket has evolved during time, it should reflect the latest
 version."""),
+    'lino_xl.lib.tickets.Ticket.site' : _("""The site this ticket belongs to.
+You can select only sites you are subscribed to."""),
     'lino_xl.lib.tickets.Ticket.upgrade_notes' : _("""A formatted text field meant for writing instructions for the
 hoster's site administrator when doing an upgrade where this
 ticket is being deployed."""),
-    'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates"""),
     'lino_xl.lib.tickets.Ticket.waiting_for' : _("""What to do next. An unformatted one-line text which describes
 what this ticket is waiting for."""),
-    'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to the ticket which is the cause of this ticket."""),
+    'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates."""),
+    'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to another ticket which is regarded as the first occurence of
+the same problem."""),
     'lino_xl.lib.tickets.Ticket.deadline' : _("""Specify that the ticket must be done for a given date."""),
     'lino_xl.lib.tickets.Ticket.priority' : _("""How urgent this ticket is."""),
-    'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates this ticket."""),
+    'lino_xl.lib.tickets.Ticket.rating' : _("""How the author rates the work which has been done on this ticket."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 site.  See ReportingTypes."""),
-    'lino_xl.lib.tickets.Ticket.site' : _("""The site this ticket belongs to.
-You can select only sites you are subscribed to."""),
-    'lino_xl.lib.tickets.TicketStates' : _("""The choicelist of possible values for the state of a ticket."""),
-    'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response so
-far.
-The ticket needs to be triaged."""),
-    'lino_xl.lib.tickets.TicketStates.talk' : _("""Some worker needs discussion with the author.  We don't yet
-know exactly what to do with it."""),
-    'lino_xl.lib.tickets.TicketStates.todo' : _("""The ticket is confirmed and we are working on it.
-It appears in the todo list of somebody (either the assigned
-worker, or our general todo list)"""),
-    'lino_xl.lib.tickets.TicketStates.testing' : _("""The ticket is theoretically done, but we want to confirm this
-somehow, and it is not clear who should do the next step. If
-it is clear that the author should do the testing, then you
-should rather set the ticket to talk. If it is clear
-that you (the assignee) must test it, then leave the ticket at
-todo."""),
-    'lino_xl.lib.tickets.TicketStates.sleeping' : _("""Waiting for some external event. We didn't decide what to do
-with it."""),
-    'lino_xl.lib.tickets.TicketStates.ready' : _("""The ticket is basically done, but some detail still
-needs to be done by the user (e.g. testing,
-confirmation, documentation,..)"""),
-    'lino_xl.lib.tickets.TicketStates.done' : _("""The ticket has been done."""),
-    'lino_xl.lib.tickets.TicketStates.cancelled' : _("""It has been decided that we won't fix this ticket."""),
+    'lino_xl.lib.tickets.TicketStates' : _("""The choicelist for the state of a ticket."""),
     'lino_xl.lib.tickets.Site' : _("""The Django model representing a site."""),
     'lino_xl.lib.tickets.MySites' : _("""Shows the sites for which I have a subscription."""),
     'lino_xl.lib.tickets.Subscription' : _("""The Django model representing a subscription."""),
