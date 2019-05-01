@@ -1263,7 +1263,11 @@ class Days(dd.VirtualTable):
     #     return elems
 
     @classmethod
-    def calendar_navigation(cls, obj, ar, weekly_view=False):
+    def calendar_navigation(cls, obj, ar, mode='day'):
+        weekly_view = bool(mode=='week')
+        day_view = bool(mode=='day')
+        month_view = bool(mode=='month')
+
         # todo ensure that the end of the month is always in the view.
         today = obj.date
         dayly, weekly, monthly = cls.make_link_funcs(ar)
@@ -1272,7 +1276,11 @@ class Days(dd.VirtualTable):
         next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days
         prev_view = Day(cls.date2pk(next_unit.add_duration(today, -1)))
         next_view = Day(cls.date2pk(next_unit.add_duration(today, 1)))
-        current_view = weekly if weekly_view else dayly
+        # current_view = weekly if weekly_view else dayly
+        current_view = dayly
+        if not day_view:
+            current_view = monthly if month_view else weekly
+
         elems = []#cls.calender_header(ar)
 
         # Month div
@@ -1346,7 +1354,7 @@ class Days(dd.VirtualTable):
 
     @dd.htmlbox()
     def navigation(cls, obj, ar):
-        return cls.calendar_navigation(obj, ar)
+        return cls.calendar_navigation(obj, ar,mode='day')
 
         today = obj.date
         prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
@@ -1659,7 +1667,7 @@ class WeeklyView(CalView, Days):
 
     @dd.htmlbox()
     def weeklyNavigation(cls, obj, ar):
-        return cls.calendar_navigation(obj, ar, weekly_view=True)
+        return cls.calendar_navigation(obj, ar, mode='week')
 
 #########################Monthly########################
 class MonthlyPlannerRows(CalView, dd.Table):
@@ -1749,4 +1757,4 @@ class MonthlyView(CalView, Days):
 
     @dd.htmlbox()
     def monthlyNavigation(cls, obj, ar):
-        return cls.calendar_navigation(obj, ar)
+        return cls.calendar_navigation(obj, ar, mode="month")
