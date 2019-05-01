@@ -1478,17 +1478,9 @@ class DailyPlannerRows(dd.Table):
 
 class DailyPlanner(CalView ,DailyPlannerRows):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
-    # required_roles = dd.login_required(CalendarReader)
     label = _("Daily planner")
     editable = False
     use_detail_params_value = True
-    # @classmethod
-    # def param_defaults(cls, ar, **kw):
-        # kw = super(DailyPlanner, cls).param_defaults(ar, **kw)
-        # kw.update(date=dd.today())
-        # kw.update(end_date=dd.today())
-        # kw.update(user=ar.get_user())
-        # return kw
 
     @classmethod
     def setup_columns(self):
@@ -1528,10 +1520,6 @@ class DailyPlanner(CalView ,DailyPlannerRows):
                 current_day = pv.get('date',dd.today())
                 if current_day:
                     qs = qs.filter(start_date=current_day)
-                # if ar.rqdata:
-                #     delata_days = int(ar.rqdata.get('mk', 0))
-                #     current_day = dd.today() + timedelta(days=delata_days)
-                #     qs = qs.filter(start_date=current_day)
                 if obj.start_time:
                     qs = qs.filter(start_time__gte=obj.start_time,
                                    start_time__isnull=False)
@@ -1578,8 +1566,6 @@ class WeeklyPlannerRows(CalView, dd.Table):
     @classmethod
     def param_defaults(cls, ar, **kw):
         kw = super(WeeklyPlannerRows, cls).param_defaults(ar, **kw)
-        # kw.update(date=dd.today())
-        # kw.update(end_date=dd.today())
         kw.update(user=ar.get_user())
         return kw
 
@@ -1704,9 +1690,7 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 t = str(e.event_type)
             u = e.user
             if u is None:
-                return "{} {}".format(
-                    t, e.room)
-                return t
+                return "{} {}".format(t, e.room) if e.room else t
             u = u.initials or u.username or str(u)
             return "{} {}".format(t, u)
 
@@ -1721,8 +1705,13 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, 7 % int(pc.value)), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, fmt(e)) for e in qs]
-                return E.p(*join_elems(chunks))
+                chunks = [E.p(e.obj2href(ar, fmt(e))) for e in qs]
+
+                pk = date2pk(target_day)
+                dayly, weekly, monthly = Days.make_link_funcs(ar)
+                E.h3(str(target_day),align="center")
+                link = dayly(Day(pk),str(target_day) )
+                return E.div(*[link,E.div(*join_elems(chunks))])
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         for pc in Weekdays.objects():
