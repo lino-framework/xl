@@ -1214,6 +1214,17 @@ class CalView():
             qs = qs.filter(guest__partner=pv.partner)
         return qs
 
+    def fmt(e):
+        if e.start_time:
+            t = str(e.start_time)[:5]
+        else:
+            t = str(e.event_type)
+        u = e.user
+        if u is None:
+            return "{} {}".format(t, e.room) if e.room else t
+        u = u.initials or u.username or str(u)
+        return "{} {}".format(t, u)
+
 
 class Days(dd.VirtualTable):
     # every "row" is a Day instance. Note that Day can be overridden.
@@ -1522,23 +1533,17 @@ class DailyPlanner(CalView ,DailyPlannerRows):
 
         Event = rt.models.cal.Event
 
-        def fmt(e):
-            if e.start_time:
-                t = str(e.start_time)[:5]
-            else:
-                t = str(e.event_type)
-            u = e.user
-            if u is None:
-                return "{} {}".format(
-                    t, e.room)
-                return t
-            u = u.initials or u.username or str(u)
-            return "{} {}".format(t, u)
-
         def w(pc, verbose_name):
             def func(fld, obj, ar):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
+                # if ar.rqdata:
+                #     delata_days = int(ar.rqdata.get('mk', 0))
+                #     current_day = dd.today() + timedelta(days=delata_days)
+                # else:
+                #     current_day = dd.today()
+                # qs = Event.objects.all()
+                #I not sure should we use all the objects or start with filter as following !!!
                 qs = Event.objects.filter(event_type__planner_column=pc)
                 qs = cls.calendar_param_filter(qs,pv)
                 current_day = pv.get('date',dd.today())
@@ -1553,7 +1558,7 @@ class DailyPlanner(CalView ,DailyPlannerRows):
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, fmt(e)) for e in qs]
+                chunks = [e.obj2href(ar, cls.fmt(e)) for e in qs]
                 return E.p(*join_elems(chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
@@ -1607,26 +1612,15 @@ class WeeklyPlannerRows(CalView, dd.Table):
 
         Event = rt.models.cal.Event
 
-        def fmt(e):
-            if e.start_time:
-                t = str(e.start_time)[:5]
-            else:
-                t = str(e.event_type)
-            u = e.user
-            if u is None:
-                return "{} {}".format(
-                    t, e.room)
-                return t
-            u = u.initials or u.username or str(u)
-            return "{} {}".format(t, u)
-
         def w(pc, verbose_name):
             def func(fld, obj, ar):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.all()
+                #I not sure should we use all the objects or start with filter as following !!!
+                # qs = Event.objects.filter(event_type__planner_column=pc)
                 qs = cls.calendar_param_filter(qs, pv)
-                
+
                 if ar.rqdata:
                     delata_days = int(ar.rqdata.get('mk', 0))
                     current_day = dd.today() + timedelta(days=delata_days)
@@ -1643,7 +1637,7 @@ class WeeklyPlannerRows(CalView, dd.Table):
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, fmt(e)) for e in qs]
+                chunks = [e.obj2href(ar, cls.fmt(e)) for e in qs]
                 return E.p(*join_elems(chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
@@ -1700,23 +1694,25 @@ class MonthlyPlannerRows(CalView, dd.Table):
             self.add_virtual_field('vc' + str(i), vf)
             names += ' ' + vf.name + ':20'
 
-        self.column_names = "week_number {}".format(names)
+        self.column_names = "{}".format(names)
 
     @classmethod
     def get_ventilated_columns(cls):
 
         Event = rt.models.cal.Event
 
-        def fmt(e):
-            if e.start_time:
-                t = str(e.start_time)[:5]
-            else:
-                t = str(e.event_type)
-            u = e.user
-            if u is None:
-                return "{} {}".format(t, e.room) if e.room else t
-            u = u.initials or u.username or str(u)
-            return "{} {}".format(t, u)
+        def get_week_number(fld, obj, ar):
+            # obj is the MonthlyPlannerRow instance
+            pv = ar.param_values
+            offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
+            current_year = (dd.today() + timedelta(days=offset)).year
+            target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, int(pc.value)), '%G-W%V-%u').date()
+
+            pk = date2pk(target_day)
+            dayly, weekly, monthly = Days.make_link_funcs(ar)
+            # E.h3(str(target_day),align="center")
+            link = weekly(Day(pk),"Week {}".format(str(obj.week_number)) )
+            return E.div(*[link])
 
         def w(pc, verbose_name):
             def func(fld, obj, ar):
@@ -1725,11 +1721,14 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 qs = Event.objects.all()
                 qs = cls.calendar_param_filter(qs, pv)
                 offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
-                current_year = (dd.today() + timedelta(days=offset)).year
-                target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, 7 % int(pc.value)), '%Y-W%W-%w').date()
+                current_day  =(dd.today() + timedelta(days=offset))
+                current_year= current_day.year
+                target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, int(pc.value)), '%G-W%V-%u').date()
+                # target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, int(pc.value)), '%Y-W%W-%w').date()
+                # target_day = CALENDAR.monthdatescalendar(today.year, today.month)[int(pc.value)]
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
-                chunks = [E.p(e.obj2href(ar, fmt(e))) for e in qs]
+                chunks = [E.p(e.obj2href(ar, cls.fmt(e))) for e in qs]
 
                 pk = date2pk(target_day)
                 dayly, weekly, monthly = Days.make_link_funcs(ar)
@@ -1738,9 +1737,9 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 return E.div(*[link,E.div(*join_elems(chunks))])
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
+        yield dd.VirtualField(dd.HtmlBox(gettext("Weeks")), get_week_number)
         for pc in Weekdays.objects():
             yield w(pc, str(pc))
-
 
 
 class MonthlyDetail(dd.DetailLayout):
