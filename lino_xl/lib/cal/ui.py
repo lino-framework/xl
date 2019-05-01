@@ -1274,9 +1274,25 @@ class Days(dd.VirtualTable):
         next_view = Day(cls.date2pk(next_unit.add_duration(today, 1)))
         current_view = weekly if weekly_view else dayly
         elems = []#cls.calender_header(ar)
+
+        # Month div
+        rows, cells = [], []
+        for i, month in enumerate(YearMonths.objects()):
+            # each week is a list of seven datetime.date objects.
+            pk = cls.date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month ))
+            if today.month == int(month.value):
+                cells.append(E.td(E.b(str(month))))
+            else:
+                cells.append(E.td(monthly(Day(pk), str(month))))
+            if (i +1) % 3 == 0:
+                rows.append(E.tr(*cells, align="center"))
+                cells = []
+        monthly_div = E.div(E.table(*rows, align="center"),
+                            CLASS="cal-month-table")
+
         header = [
             current_view(prev_month, "<<"), " " , current_view(prev_view, "<"),
-            E.span("{} {}".format(monthname(today.month), today.year)),
+            E.span(E.span("{} {}".format(monthname(today.month), today.year), E.br(), monthly_div)),
             current_view(next_view, ">"), " ", current_view(next_month, ">>")]
         elems.append(E.h2(*header, align="center"))
         rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in " MTWTFSS"], align='center')]
@@ -1733,28 +1749,4 @@ class MonthlyView(CalView, Days):
 
     @dd.htmlbox()
     def monthlyNavigation(cls, obj, ar):
-        today = obj.date
-        dayly, weekly, monthly = cls.make_link_funcs(ar)
-        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
-        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
-        elems = []
-        header = [
-            ar.goto_pk(prev, "<<"), " ", #todo switch these to new form
-            "{} {}".format(monthname(today.month), today.year),
-            " ", ar.goto_pk(next, ">>")] #todo switch these to new form
-        elems.append(E.h2(*header, align="center"))
-        rows = []
-        for month in YearMonths.objects():
-            # each week is a list of seven datetime.date objects.
-            pk = cls.date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month ))
-            if today.month == int(month.value):
-                cells = [E.td(E.b(str(month)))]
-            else:
-                cells = [E.td(monthly(Day(pk), str(month)))]
-
-            rows.append(E.tr(*cells, align="center"))
-        elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(dayly(Day(), gettext("Today")), align="center"))
-        elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
-        return E.div(*elems)
-
+        return cls.calendar_navigation(obj, ar)
