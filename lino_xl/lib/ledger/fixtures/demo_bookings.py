@@ -25,6 +25,9 @@ from lino_xl.lib.ledger.choicelists import TradeTypes
 
 def objects():
 
+    if not dd.plugins.ledger.purchase_stories:
+        return []
+
     Journal = rt.models.ledger.Journal
     PaymentTerm = rt.models.ledger.PaymentTerm
     Company = rt.models.contacts.Company

@@ -88,6 +88,12 @@ class Plugin(ad.Plugin):
     database but not their movments.
     """
 
+    sales_stories = True
+    """Whether demo fixtures should generate manual sales invoices."""
+
+    purchase_stories = True
+    """Whether demo fixture should generate purchase invoices."""
+
     def post_site_startup(self, site):
         super(Plugin, self).post_site_startup(site)
         site.models.ledger.CommonAccounts.sort()

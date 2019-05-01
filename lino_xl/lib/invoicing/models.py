@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2018 Rumma & Ko Ltd
+# Copyright 2016-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -21,14 +21,17 @@ from lino.modlib.users.mixins import UserPlan, My
 
 # from lino_xl.lib.ledger.choicelists import VoucherTypes
 
+from lino.mixins import Sequenced
 from lino.utils import ONE_DAY
 from lino.api import dd, rt, _
 from lino_xl.lib.ledger.utils import ZERO
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
+
 from .mixins import InvoiceGenerator
 # from .choicelists import InvoicingCycles
+# from .choicelists import InvoicingDepartments
 from .actions import (ToggleSelection, StartInvoicing,
-                      StartInvoicingForJournal,
+                      # StartInvoicingByArea,
                       StartInvoicingForPartner, ExecutePlan,
                       ExecuteItem)
 
@@ -124,22 +127,21 @@ class Tariffs(dd.Table):
     order_by = ['designation']
 
 
-@dd.python_2_unicode_compatible
-class Plan(UserPlan):
+# @dd.python_2_unicode_compatible
+class Area(BabelDesignated, Sequenced):
     class Meta:
         app_label = 'invoicing'
-        abstract = dd.is_abstract_model(__name__, 'Plan')
-        verbose_name = _("Invoicing plan")
-        verbose_name_plural = _("Invoicing plans")
+        abstract = dd.is_abstract_model(__name__, 'Area')
+        verbose_name = _("Invoicing area")
+        verbose_name_plural = _("Invoicing areas")
 
+    # designation = dd.CharField(max_length=100)
     journal = dd.ForeignKey('ledger.Journal', blank=True, null=True)
-    max_date = models.DateField(
-        _("Invoiceables until"), null=True, blank=True)
-    partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
-    execute_plan = ExecutePlan()
-    start_plan = StartInvoicing()  # Overrides users.StartPlan just
-                                   # for the label
+    # start_invoicing = StartInvoicingForArea()
+
+    # def __str__(self):
+    #     return str(self.designation)
 
     @dd.chooser()
     def journal_choices(cls):
@@ -149,9 +151,40 @@ class Plan(UserPlan):
     def full_clean(self):
         if self.journal is None:
             vt = dd.plugins.invoicing.get_voucher_type()
-            jnl_list = vt.get_journals()
-            if len(jnl_list):
-                self.journal = jnl_list[0]
+            self.journal = vt.get_journals().first()
+
+        # if not self.designation:
+        #     self.designation = str(self.journal)
+        super(Area, self).full_clean()
+
+
+class Areas(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
+    model = "invoicing.Area"
+    column_names = "seqno designation journal *"
+
+
+
+@dd.python_2_unicode_compatible
+class Plan(UserPlan):
+    class Meta:
+        app_label = 'invoicing'
+        abstract = dd.is_abstract_model(__name__, 'Plan')
+        verbose_name = _("Invoicing plan")
+        verbose_name_plural = _("Invoicing plans")
+
+    area = dd.ForeignKey('invoicing.Area', blank=True)
+    max_date = models.DateField(
+        _("Invoiceables until"), null=True, blank=True)
+    partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
+
+    execute_plan = ExecutePlan()
+    start_plan = StartInvoicing()
+
+    def full_clean(self):
+        if self.area_id is None:
+            self.area = rt.models.invoicing.Area.objects.first()
+        super(Plan, self).full_clean()
 
     def get_max_date(self):
         if self.max_date:
@@ -172,6 +205,7 @@ class Plan(UserPlan):
         self.fill_plan(ar)
         
     def fill_plan(self, ar):
+        self.full_clean()
         Item = rt.models.invoicing.Item
         collected = dict()
         # dd.logger.info("20181114 a")
@@ -282,7 +316,7 @@ class Plan(UserPlan):
         ITEM_MODEL = dd.resolve_model(dd.plugins.invoicing.item_model)
         M = ITEM_MODEL._meta.get_field('voucher').remote_field.model
         kwargs.update(
-            journal=self.journal,
+            journal=self.area.journal,
             entry_date=self.today, voucher_date=self.get_max_date())
         invoice = M(**kwargs)
         invoice.fill_defaults()
@@ -350,8 +384,10 @@ class Item(dd.Model):
         return ''
     
     def create_invoice(self,  ar):
-        if self.plan.journal is None:
-            raise Warning(_("No journal specified"))
+        if self.plan.area_id is None:
+            raise Warning(_("No area specified"))
+        if self.plan.area.journal is None:
+            raise Warning(_("No journal configured for {}").format(self.plan.area))
         invoice = self.plan.create_invoice(
             partner=self.partner, user=ar.get_user())
         lng = invoice.get_print_language()
@@ -427,7 +463,7 @@ class Item(dd.Model):
 class Plans(dd.Table):
     required_roles = dd.login_required(LedgerUser)
     model = "invoicing.Plan"
-    detail_layout = """user journal today max_date partner
+    detail_layout = """user area today max_date partner
     invoicing.ItemsByPlan
     """
 
@@ -435,6 +471,9 @@ class Plans(dd.Table):
 class MyPlans(My, Plans):
     pass
 
+# class PlansByArea(Plans):
+#     master_key = 'area'
+#     start_invoicing = StartInvoicingByArea()
 
 class AllPlans(Plans):
     required_roles = dd.login_required(LedgerStaff)
@@ -528,9 +567,8 @@ dd.inject_action(
 
 @dd.receiver(dd.pre_analyze)
 def install_start_action(sender=None, **kwargs):
-    vt = dd.plugins.invoicing.get_voucher_type()
-    # vt = get_invoicing_voucher_type()
-    vt.table_class.start_invoicing = StartInvoicingForJournal()
+    # vt = dd.plugins.invoicing.get_voucher_type()
+    # vt.table_class.start_invoicing = StartInvoicingForJournal()
 
     rt.models.contacts.Partner.start_invoicing = StartInvoicingForPartner()
     

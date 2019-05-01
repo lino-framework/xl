@@ -173,7 +173,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
 
     def update_cal_summary(self, et, i):
         if self.every_unit == Recurrencies.once:
-            return self.name
+            return str(self)
         return "%s %s" % (dd.babelattr(et, 'event_label'), i)
 
     # def get_events_user(self):

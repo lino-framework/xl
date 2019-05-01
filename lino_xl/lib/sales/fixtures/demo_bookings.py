@@ -45,8 +45,9 @@ def objects():
     USERS = Cycler(settings.SITE.user_model.objects.all())
 
     qs = Product.objects.order_by('id')
-    if dd.is_installed('invoicing'):
-        pass
+    # if dd.is_installed('invoicing'):
+    if not dd.plugins.ledger.sales_stories:
+        return
     PRODUCTS = Cycler(qs)
     JOURNAL_S = Journal.objects.get(ref="SLS")
 
