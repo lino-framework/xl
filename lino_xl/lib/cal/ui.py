@@ -36,7 +36,7 @@ from .utils import when_text
 from .roles import CalendarReader, GuestOperator
 
 from calendar import Calendar as PythonCalendar
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 CALENDAR = PythonCalendar()
 
@@ -1716,16 +1716,10 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 pv = ar.param_values
                 qs = Event.objects.all()
                 qs = cls.calendar_param_filter(qs, pv)
-                
-                if ar.rqdata:
-                    delata_days = int(ar.rqdata.get('mk', 0))
-                    current_day = dd.today() + timedelta(days=delata_days)
-                    current_week_day = current_day + \
-                        timedelta(days=int(pc.value) -
-                                  current_day.weekday() - 1)
-                    qs = qs.filter(start_date=current_week_day)
-                if obj.week_number:
-                    qs = qs.filter(start_date__week=obj.week_number)
+                offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
+                current_year = (dd.today() + timedelta(days=offset)).year
+                target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, 7 % int(pc.value)), '%Y-W%W-%w').date()
+                qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
                 chunks = [e.obj2href(ar, fmt(e)) for e in qs]
                 return E.p(*join_elems(chunks))
