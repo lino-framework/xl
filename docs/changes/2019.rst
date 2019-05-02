@@ -19,6 +19,8 @@ Changes 2019 in Lino XL
   :class:`lino_xl.lib.topics.Topic` with empty
   :attr:`ref <lino_xl.lib.topics.Topic.ref>` field.
 
+- Orders are now printable.
+
 2019-05-01
 ==========
 
