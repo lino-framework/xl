@@ -42,7 +42,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 
 from lino.utils.dates import DateRangeValue
 
-from .actions import PrintPresenceSheet
+# from .actions import PrintPresenceSheet
 # from .choicelists import OrderStates, OrderAreas
 
 try:
@@ -104,27 +104,27 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
     # enrolments_until = models.DateField(
     #     _("Enrolments until"), blank=True, null=True)
     #
-    print_presence_sheet = PrintPresenceSheet(show_in_bbar=False)
-    print_presence_sheet_html = PrintPresenceSheet(
-        show_in_bbar=False,
-        build_method='weasy2html',
-        label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
+    # print_presence_sheet = PrintPresenceSheet(show_in_bbar=False)
+    # print_presence_sheet_html = PrintPresenceSheet(
+    #     show_in_bbar=False,
+    #     build_method='weasy2html',
+    #     label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
 
     def full_clean(self, *args, **kwargs):
         if self.entry_date is None:
             self.entry_date = dd.today()
         super(Order, self).full_clean(*args, **kwargs)
 
-    @dd.displayfield(_("Print"))
-    def print_actions(self, ar):
-        if ar is None:
-            return ''
-        elems = []
-        elems.append(ar.instance_action_button(
-            self.print_presence_sheet))
-        elems.append(ar.instance_action_button(
-            self.print_presence_sheet_html))
-        return E.p(*join_elems(elems, sep=", "))
+    # @dd.displayfield(_("Print"))
+    # def print_actions(self, ar):
+    #     if ar is None:
+    #         return ''
+    #     elems = []
+    #     elems.append(ar.instance_action_button(
+    #         self.print_presence_sheet))
+    #     elems.append(ar.instance_action_button(
+    #         self.print_presence_sheet_html))
+    #     return E.p(*join_elems(elems, sep=", "))
 
     # def on_duplicate(self, ar, master):
     #     self.state = OrderStates.draft
