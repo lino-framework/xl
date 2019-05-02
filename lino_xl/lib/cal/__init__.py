@@ -56,14 +56,14 @@ class Plugin(ad.Plugin):
         m.add_action('cal.MyGuests')
         m.add_action('cal.MyPresences')
         m.add_action('cal.MyOverdueAppointments')
-        m.add_action('cal.DailyPlanner')
+        # m.add_action('cal.DailyPlanner')
         if site.is_installed('presto'):  # temporary
             # m.add_action('cal.DailyView')
             # a = site.models.cal.DailyView
             # m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action)
 
             a = site.models.cal.WeeklyView
-            m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action,label="Calendar view")
+            m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action, label=_("Calendar view"))
 
         # m.add_action('cal.LastWeek')
         # m.add_action('cal.ComingWeek')
