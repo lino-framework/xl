@@ -1665,15 +1665,27 @@ class WeeklyView(CalView, Days):
         return cls.calendar_navigation(obj, ar, mode='week')
 
 #########################Monthly########################
-class MonthlyPlannerRows(CalView, dd.Table):
-    model = 'cal.MonthlyPlannerRow'
+class MonthlyPlannerRows(CalView, dd.VirtualTable):
+    # model = 'cal.MonthlyPlannerRow'
     required_roles = dd.login_required(OfficeStaff)
     label = _("Monthly planner")
     editable = False
     use_detail_params_value = True
 
+
     @classmethod
-    def get_request_queryset(self, ar, **kwargs):
+    def get_data_rows(self, ar):
+        delata_days = int(ar.rqdata.get('mk', 0)) if ar.rqdata  else 0
+        current_day = dd.today() + timedelta(days=delata_days)
+        weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
+        return weeks
+
+    @dd.displayfield("week_number")
+    def week_number(cls, row, ar):
+        return row[0]
+
+    @classmethod
+    def unused_get_request_queryset(self, ar, **kwargs):
         qs = super(MonthlyPlannerRows, self).get_request_queryset(ar, **kwargs)
         if ar.rqdata:
             delata_days = int(ar.rqdata.get('mk', 0))
@@ -1708,13 +1720,13 @@ class MonthlyPlannerRows(CalView, dd.Table):
             offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
             current_year = (dd.today() + timedelta(days=offset)).year
             target_day = datetime.strptime(
-                "{}-W{}-{}".format(current_year, obj.week_number,  pc.value if pc.value  != "7" else "0" ),
+                "{}-W{}-{}".format(current_year, obj,  pc.value if pc.value  != "7" else "0" ),
                 '%Y-W%W-%w').date()
 
             pk = date2pk(target_day)
             dayly, weekly, monthly = Days.make_link_funcs(ar)
             # E.h3(str(target_day),align="center")
-            link = weekly(Day(pk),"Week {}".format(str(obj.week_number)) )
+            link = weekly(Day(pk),"Week {}".format(str(obj)) )
             return E.div(*[link])
 
         def w(pc, verbose_name):
@@ -1726,7 +1738,7 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
                 current_date = (dd.today() + timedelta(days=offset))
                 target_day = datetime.strptime(
-                    "{}-W{}-{}".format(current_date.year, obj.week_number,
+                    "{}-W{}-{}".format(current_date.year, obj,
                                        pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
