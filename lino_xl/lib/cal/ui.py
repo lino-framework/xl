@@ -1748,8 +1748,8 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                 dayly, weekly, monthly = Days.make_link_funcs(ar)
                 link = E.h3(dayly(Day(pk),str(target_day.day)),align="center")
                 return E.div(*[link,E.div(*join_elems(chunks))],
-                             CLASS="cal-month-cell {}".format(
-                                 "current-month" if current_date.month == target_day.month else "other-month"))
+                             CLASS="cal-month-cell {} {}".format(
+                                 "current-month" if current_date.month == target_day.month else "other-month","current-day" if current_date == target_day else ""))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         yield dd.VirtualField(dd.HtmlBox(gettext("Weeks")), get_week_number)
