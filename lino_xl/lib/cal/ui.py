@@ -1717,17 +1717,20 @@ class MonthlyPlannerRows(CalView, dd.Table):
                 qs = Event.objects.all()
                 qs = cls.calendar_param_filter(qs, pv)
                 offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
-                current_year = (dd.today() + timedelta(days=offset)).year
-                target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, 7 % int(pc.value)), '%Y-W%W-%w').date()
+                current_date = (dd.today() + timedelta(days=offset))
+                target_day = datetime.strptime(
+                    "{}-W{}-{}".format(current_date.year, obj.week_number,
+                                       pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
                 chunks = [E.p(e.obj2href(ar, fmt(e))) for e in qs]
 
                 pk = date2pk(target_day)
                 dayly, weekly, monthly = Days.make_link_funcs(ar)
-                E.h3(str(target_day),align="center")
-                link = dayly(Day(pk),str(target_day) )
-                return E.div(*[link,E.div(*join_elems(chunks))])
+                link = E.h3(dayly(Day(pk),str(target_day.day)),align="center")
+                return E.div(*[link,E.div(*join_elems(chunks))],
+                             CLASS="cal-month-cell {}".format(
+                                 "current-month" if current_date.month == target_day.month else "other-month"))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         for pc in Weekdays.objects():
