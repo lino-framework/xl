@@ -1214,6 +1214,7 @@ class CalView():
             qs = qs.filter(guest__partner=pv.partner)
         return qs
 
+    @staticmethod
     def fmt(e):
         if e.start_time:
             t = str(e.start_time)[:5]
@@ -1706,7 +1707,9 @@ class MonthlyPlannerRows(CalView, dd.Table):
             pv = ar.param_values
             offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
             current_year = (dd.today() + timedelta(days=offset)).year
-            target_day = datetime.strptime("{}-W{}-{}".format(current_year, obj.week_number, int(pc.value)), '%G-W%V-%u').date()
+            target_day = datetime.strptime(
+                "{}-W{}-{}".format(current_year, obj.week_number,  pc.value if pc.value  != "7" else "0" ),
+                '%Y-W%W-%w').date()
 
             pk = date2pk(target_day)
             dayly, weekly, monthly = Days.make_link_funcs(ar)
