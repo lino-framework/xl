@@ -12,6 +12,13 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-05-02
+==========
+
+- Lino now handles topics with an empty reference more elegantly
+  :class:`lino_xl.lib.topics.Topic` with empty
+  :attr:`ref <lino_xl.lib.topics.Topic.ref>` field.
+
 2019-05-01
 ==========
 
