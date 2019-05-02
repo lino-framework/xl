@@ -589,8 +589,8 @@ def post_init_excerpt(sender, instance=None, **kwargs):
 if has_davlink or settings.SITE.webdav_protocol:
 
     class ExcerptDetail(dd.DetailLayout):
-        # window_size = (80, 20)
-        window_size = (80, 'auto')
+        window_size = (80, 20)
+        # window_size = (80, 'auto')
         main = "general config"
         general = dd.Panel(
             """
@@ -608,8 +608,8 @@ if has_davlink or settings.SITE.webdav_protocol:
 else:
 
     class ExcerptDetail(dd.DetailLayout):
-        # window_size = (80, 20)
-        window_size = (80, 'auto')
+        window_size = (80, 13)
+        # window_size = (80, 'auto')
         main = """
         id excerpt_type:25 project
         user:10 build_method
