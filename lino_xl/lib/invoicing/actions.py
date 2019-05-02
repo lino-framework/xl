@@ -9,20 +9,22 @@ from lino.api import dd, rt, _
 
 from lino.modlib.users.mixins import StartPlan
 
+
 class StartInvoicing(StartPlan):
     label = _("Create invoices")
     icon_name = 'basket'
 
     def get_plan_model(self):
         return rt.models.invoicing.Plan
-    
-class StartInvoicingForJournal(StartInvoicing):
-    show_in_bbar = True
 
-    def get_options(self, ar):
-        jnl = ar.master_instance
-        assert isinstance(jnl, rt.models.ledger.Journal)
-        return dict(journal=jnl, partner=None)
+
+# class StartInvoicingByArea(StartInvoicing):
+#     show_in_bbar = True
+#
+#     def get_options(self, ar):
+#         area = ar.master_instance
+#         assert isinstance(area, rt.models.invoicing.Area)
+#         return dict(invoicing_area=area, partner=None)
 
 
 class StartInvoicingForPartner(StartInvoicing):

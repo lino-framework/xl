@@ -55,7 +55,7 @@ class OrderDetail(dd.DetailLayout):
     main = "general cal_tab enrolments"
     
     general = dd.Panel("""
-    entry_date workflow_buttons print_actions:15
+    entry_date workflow_buttons printed #print_actions:15
     project invoice_recipient
     description
     EnrolmentsByOrder ItemsByOrder

@@ -12,6 +12,31 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-05-02
+==========
+
+- Lino now handles topics with an empty reference more elegantly
+  :class:`lino_xl.lib.topics.Topic` with empty
+  :attr:`ref <lino_xl.lib.topics.Topic.ref>` field.
+
+- Orders are now printable.
+
+2019-05-01
+==========
+
+.. currentmodule:: lino_xl.lib.invoicing
+
+Changes in :mod:`lino_xl.lib.invoicing`: Added a new model :class:`Area` to be
+configured by the site admin via :menuselection:`Configure --> Sales -->
+Invoicing areas`. New field :attr:`Plan.area`. Removed field
+:attr:`Plan.journal` (which is replaced by :attr:`Area.journal`). Removed the
+:class:`StartInvoicingForJournal` action which anyway wasn't used by anybody.
+
+
+The :attr:`detail_layout` of :class:`lino_xl.lib.ledger.Journals` is now
+specified as a string. Used by :mod:`lino_presto.lib.ledger` which overrides
+the class.
+
 2019-04-22
 ==========
 

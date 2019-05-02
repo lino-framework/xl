@@ -994,18 +994,17 @@ periods."""),
     'lino_xl.lib.invoicing.InvoicingInfo.used_events' : _("""A list of the "events" used for computing this."""),
     'lino_xl.lib.invoicing.InvoicingInfo.invoiceable_product' : _("""Which fee to apply. If this is None, no invoicing should get
 generated."""),
+    'lino_xl.lib.invoicing.SalesRule' : _("""The Django model used to represent a sales rule."""),
     'lino_xl.lib.invoicing.SalesRule.partner' : _("""The partner to which this sales rule applies."""),
     'lino_xl.lib.invoicing.SalesRule.invoice_recipient' : _("""The partner who should get the invoices caused by this partner."""),
     'lino_xl.lib.invoicing.SalesRule.paper_type' : _("""The default paper type to be used for invoicing."""),
+    'lino_xl.lib.invoicing.Tariff' : _("""The Django model used to represent a flatrate."""),
     'lino_xl.lib.invoicing.Tariff.number_of_events' : _("""Number of calendar events paid per invoicing."""),
     'lino_xl.lib.invoicing.Tariff.min_asset' : _("""Minimum quantity required to trigger an invoice."""),
-    'lino_xl.lib.invoicing.Plan' : _("""An invoicing plan is a rather temporary database object which
-represents the plan of a given user to have Lino generate a series
-of invoices."""),
+    'lino_xl.lib.invoicing.Plan' : _("""The Django model used to represent an invoicing plan."""),
     'lino_xl.lib.invoicing.Plan.user' : _("""The user who manages this plan."""),
-    'lino_xl.lib.invoicing.Plan.journal' : _("""The journal where to create invoices.  When this field is
-empty, you can fill the plan with suggestions but cannot
-execute the plan."""),
+    'lino_xl.lib.invoicing.Plan.journal' : _("""No longer exists. Replaced by area."""),
+    'lino_xl.lib.invoicing.Plan.area' : _("""The invoicing area of this plan."""),
     'lino_xl.lib.invoicing.Plan.today' : _("""This invoice date to be used for the invoices to generate."""),
     'lino_xl.lib.invoicing.Plan.max_date' : _("""Don't invoice events after this date.  If this is empty, Lino will
 use the day before the invoice date."""),
@@ -1016,20 +1015,21 @@ object defined by k and v. Where k is the name of the
 field used to select the plan (e.g. 'partner' or
 'journal') and v is the value for that field."""),
     'lino_xl.lib.invoicing.Plan.fill_plan' : _("""Add items to this plan, one for each invoice to generate."""),
-    'lino_xl.lib.invoicing.Item' : _("""The items of an invoicing plan are called suggestions."""),
+    'lino_xl.lib.invoicing.Item' : _("""The Django model used to represent a item of an invoicing plan."""),
     'lino_xl.lib.invoicing.Item.preview' : _("""A textual preview of the invoiceable items to be included in
 the invoice."""),
     'lino_xl.lib.invoicing.Item.invoice' : _("""The invoice that has been generated. This field is empty for
 new items. When an item has been executed, this field points
 to the generated invoice."""),
-    'lino_xl.lib.invoicing.StartInvoicing' : _("""Base for StartInvoicingForJournal and
-StartInvoicingForPartner."""),
-    'lino_xl.lib.invoicing.StartInvoicingForJournal' : _("""Start an invoicing plan for this journal."""),
+    'lino_xl.lib.invoicing.StartInvoicing' : _("""Start an invoicing plan for the authenticated user."""),
+    'lino_xl.lib.invoicing.StartInvoicingByArea' : _("""Start an invoicing plan for this area."""),
     'lino_xl.lib.invoicing.StartInvoicingForPartner' : _("""Start an invoicing plan for this partner."""),
     'lino_xl.lib.invoicing.ExecutePlan' : _("""Execute this invoicing plan.
 Create an invoice for each selected suggestion."""),
     'lino_xl.lib.invoicing.ExecuteItem' : _("""Create an invoice for this suggestion."""),
     'lino_xl.lib.invoicing.ToggleSelection' : _("""Invert selection status for all suggestions."""),
+    'lino_xl.lib.invoicing.Area' : _("""The Django model used to represent a flatrate."""),
+    'lino_xl.lib.invoicing.Area.journal' : _("""The journal into which invoices are to be generated."""),
     'lino_xl.lib.ledger.Account' : _("""An account is the most abstract representation for "something
 where you can place money and retrieve it later"."""),
     'lino_xl.lib.ledger.Account.name' : _("""The multilingual designation of this account, as the users see

@@ -59,7 +59,7 @@ class Journals(dd.Table):
     order_by = ["seqno"]
     column_names = "ref:5 name trade_type journal_group " \
                    "voucher_type force_sequence * seqno id"
-    detail_layout = JournalDetail()
+    detail_layout = 'ledger.JournalDetail'
     insert_layout = dd.InsertLayout("""
     ref name
     journal_group

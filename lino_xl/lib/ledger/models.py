@@ -698,7 +698,7 @@ class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable, UploadCon
     #         self.deregister_voucher(ar)
     #     super(Voucher, self).before_state_change(ar, old, new)
 
-    def register_voucher(self, ar, do_clear=True):
+    def register_voucher(self, ar=None, do_clear=True):
         """
         Delete any existing movements and re-create them.
         """

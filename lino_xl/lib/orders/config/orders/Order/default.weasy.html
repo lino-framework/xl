@@ -1,0 +1,111 @@
+{% extends "orders/Order/base.weasy.html" %}
+
+{%- block head %}
+{{ super() }}
+<style type="text/css">
+table {
+    border-collapse: collapse;
+}
+table, td, th {
+    border: 1px solid black;
+}
+body { 
+    font-family: "Liberation sans", "arial";
+    font-size: 10pt;
+}
+
+p { 
+    padding: 0;
+    margin: 0;  
+}
+
+@page {
+    margin: 20mm; margin-top: 15mm; margin-bottom: 15mm;
+    size: orientation;
+    @bottom-right {
+        content: counter(page) "/" counter(pages);
+    }
+}
+
+
+@media print {
+  tr.avoid {
+    page-break-inside: avoid !important;
+  } 
+}
+@media screen {
+    div.footer_div {
+        display: none;
+    }
+}
+@media print {
+    div.footer_div {
+        position: fixed;
+        bottom: -5mm;
+        width: 100%;
+        border-top: solid 1pt;
+        padding: 2pt;
+    }
+}
+
+</style>
+{%- endblock %}
+
+
+{%- block main %}
+{{ super() }}
+{% set events = obj.events_by_order().order_by('start_date') %}
+
+<div class="footer_div">{{obj}}</div>
+
+{{obj.description}}
+
+<ul>
+{% for e in events %}
+<li>{{e.auto_type or ''}}
+({{e.state.symbol or e.state.button_text}})
+{{fdl(e.start_date)}} {{str(e.start_time)[:5]}}-{{str(e.end_time)[:5]}}
+{{e.remark}}
+</li>
+{% endfor %}
+</ul>
+
+<table border="1" width="45%">
+<thead><tr>
+<td>{{_("No.")}}</td>
+<td>{{_("Worker")}}</td>
+<td>{{_("Role")}}</td>
+<td>{{_("Remark")}}</td>
+</tr></thead>
+<tbody>
+{% for enrolment in obj.get_enrolments() %}
+<tr class="avoid">
+<td>{{loop.index}}</td>
+<td>{{tostring(enrolment.worker)}}</td>
+<td>{{enrolment.guest_role}}</td>
+<td>{{enrolment.remark}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+<table border="1" width="45%">
+<thead><tr>
+<td>{{_("No.")}}</td>
+<td>{{_("Product")}}</td>
+<td>{{_("Quantity")}}</td>
+<td>{{_("Remark")}}</td>
+</tr></thead>
+<tbody>
+{% for oi in obj.items.all() %}
+<tr class="avoid">
+<td>{{loop.index}}</td>
+<td>{{tostring(oi.product)}}</td>
+<td>{{oi.qty}}</td>
+<td>{{oi.remark}}</td>
+</tr>
+{% endfor %}
+</tbody>
+</table>
+
+{%- endblock %}

@@ -104,7 +104,7 @@ class Interest(Controllable):
 
 # dd.update_field(Interest, 'user', verbose_name=_("User"))
 
-
+# @dd.python_2_unicode_compatible
 class Topic(StructuredReferrable, BabelNamed):
 
     ref_max_length = 5
@@ -121,6 +121,11 @@ class Topic(StructuredReferrable, BabelNamed):
 
     # topic_group = dd.ForeignKey(
     #     'topics.TopicGroup', blank=True, null=True)
+
+    # def __str__(self):
+    #     return "%s %s (%s)" % (
+    #         self.last_name.upper(), self.first_name, self.pk)
+
 
 
 class Topics(dd.Table):
