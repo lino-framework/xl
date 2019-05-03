@@ -1132,20 +1132,8 @@ class CalView():
 
     reverse_sort_order = False
     abstract = False
-
-    # parameters = rt.models.cal.Event.parameters
-        # dict(
-        # user=dd.ForeignKey('users.User', null=True, blank=True),
-        # event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
-        # room = dd.ForeignKey('cal.Room', null=True, blank=True),
-        # project = fields.ForeignKey(
-        #     settings.SITE.project_model,
-        #     blank=True, null=True,
-        #     related_name="%(app_label)s_%(class)s_set_by_project"),
-        # partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
-
-    # params_layout = rt.models.cal.Event.cal_params_layout
-    # calendar_param_filter = rt.models.cal.Event.calendar_param_filter
+    use_detail_param_panel = True
+    params_panel_hidden = False
 
 
     @classmethod
@@ -1153,7 +1141,6 @@ class CalView():
         cls.params_layout = rt.models.cal.Event.cal_params_layout
         cls.parameters = rt.models.cal.Event.parameters
         cls.calendar_param_filter = rt.models.cal.Event.calendar_param_filter
-
         super(CalView, cls).setup_parameters(rt.models.cal.Event.parameters)
 
 
