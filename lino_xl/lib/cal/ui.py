@@ -1141,20 +1141,8 @@ class CalView():
         cls.params_layout = rt.models.cal.Event.cal_params_layout
         cls.parameters = rt.models.cal.Event.parameters
         cls.calendar_param_filter = rt.models.cal.Event.calendar_param_filter
+        cls.fmt = rt.models.cal.Event.__str__
         super(CalView, cls).setup_parameters(rt.models.cal.Event.parameters)
-
-
-    @staticmethod
-    def fmt(e):
-        if e.start_time:
-            t = str(e.start_time)[:5]
-        else:
-            t = str(e.event_type)
-        u = e.user
-        if u is None:
-            return "{} {}".format(t, e.room) if e.room else t
-        u = u.initials or u.username or str(u)
-        return "{} {}".format(t, u)
 
 
 class Days(dd.VirtualTable):

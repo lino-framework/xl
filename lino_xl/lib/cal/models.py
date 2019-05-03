@@ -501,10 +501,21 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             s = self._meta.verbose_name + " #" + str(self.pk)
         else:
             s = _("Unsaved %s") % self._meta.verbose_name
-        when = self.strftime()
-        if when:
-            s = "{} ({})".format(s, when)
+        u = self.user
+        if u is None and self.room:
+            u = self.room
+        u = u.initials or u.username or str(u)
+        s = "{} ({})".format(s, u)
         return s
+        # if e.start_time:
+        #     t = str(e.start_time)[:5]
+        # else:
+        #     t = str(e.event_type)
+        # u = e.user
+        # if u is None:
+        #     return "{} {}".format(t, e.room) if e.room else t
+        # u = u.initials or u.username or str(u)
+        # return "{} {}".format(t, u)
 
     def duration_veto(obj):
         if obj.end_date is None:
