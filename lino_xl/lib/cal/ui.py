@@ -1541,13 +1541,6 @@ class DailyPlanner(CalView ,DailyPlannerRows):
             def func(fld, obj, ar):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
-                # if ar.rqdata:
-                #     delata_days = int(ar.rqdata.get('mk', 0))
-                #     current_day = dd.today() + timedelta(days=delata_days)
-                # else:
-                #     current_day = dd.today()
-                # qs = Event.objects.all()
-                #I not sure should we use all the objects or start with filter as following !!!
                 qs = Event.objects.filter(event_type__planner_column=pc)
                 qs = cls.calendar_param_filter(qs,pv)
                 current_day = pv.get('date',dd.today())
@@ -1729,7 +1722,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
             pk = date2pk(target_day)
             dayly, weekly, monthly = Days.make_link_funcs(ar)
             # E.h3(str(target_day),align="center")
-            link = weekly(Day(pk),"Week {}".format(str(obj)) )
+            link = weekly(Day(pk),_("Week {}").format(str(obj)) )
             return E.div(*[link])
 
         def w(pc, verbose_name):
@@ -1757,7 +1750,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                                  "current-day" if target_day == today else ""))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
-        yield dd.VirtualField(dd.HtmlBox(gettext("Weeks")), get_week_number)
+        yield dd.VirtualField(dd.HtmlBox(_("Weeks")), get_week_number)
         for pc in Weekdays.objects():
             yield w(pc, str(pc))
 
