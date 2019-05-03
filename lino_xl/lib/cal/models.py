@@ -88,7 +88,7 @@ class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
         abstract = dd.is_abstract_model(__name__, 'PlannerRow')
         verbose_name = _("Planner row")
         verbose_name_plural = _("Planner rows")
-        ordering = ['seqno']
+        ordering = ['-seqno']
 
     start_time = dd.TimeField(
         blank=True, null=True,
