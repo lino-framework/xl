@@ -1563,9 +1563,8 @@ class WeeklyPlannerRows(CalView, dd.Table):
                                    start_time__isnull=False)
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
-                    pk = date2pk(current_day)
-                    dayly, weekly, monthly = Days.make_link_funcs(ar)
-                    link = E.h3(str(current_week_day.day),align="center")
+                    link = E.p(str(current_week_day.day) if current_week_day != dd.today() else E.b(str(current_week_day.day))
+                               , align="center")
                 else:
                     link = ''
                 qs = qs.order_by('start_time')
