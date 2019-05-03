@@ -1496,7 +1496,7 @@ class DailyPlanner(CalView ,DailyPlannerRows):
 
 class PlannerByDay(DailyPlanner):
     master = 'cal.Day'
-    display_mode = "html"
+    # display_mode = "html"
 
     @classmethod
     def get_master_instance(cls, ar, model, pk):
@@ -1563,9 +1563,14 @@ class WeeklyPlannerRows(CalView, dd.Table):
                                    start_time__isnull=False)
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
+                    pk = date2pk(current_day)
+                    dayly, weekly, monthly = Days.make_link_funcs(ar)
+                    link = E.h3(str(current_week_day.day),align="center")
+                else:
+                    link = ''
                 qs = qs.order_by('start_time')
                 chunks = [e.obj2href(ar, cls.fmt(e)) for e in qs]
-                return E.p(*join_elems(chunks))
+                return E.div(*join_elems([link] + chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
 
