@@ -1283,9 +1283,10 @@ class Days(dd.VirtualTable):
         # todo ensure that the end of the month is always in the view.
         today = obj.date
         dayly, weekly, monthly = cls.make_link_funcs(ar)
-        prev_month = Day(cls.date2pk(DurationUnits.months.add_duration(today, -1)))
-        next_month = Day(cls.date2pk(DurationUnits.months.add_duration(today, 1)))
-        next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days
+        long_unit = DurationUnits.years if month_view else DurationUnits.months
+        prev_month = Day(cls.date2pk(long_unit.add_duration(today, -1)))
+        next_month = Day(cls.date2pk(long_unit.add_duration(today, 1)))
+        next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
         prev_view = Day(cls.date2pk(next_unit.add_duration(today, -1)))
         next_view = Day(cls.date2pk(next_unit.add_duration(today, 1)))
         # current_view = weekly if weekly_view else dayly
@@ -1324,7 +1325,9 @@ class Days(dd.VirtualTable):
             for day in week:
                 pk = cls.date2pk(day)
                 link = dayly(Day(pk), str(day.day))
-                if day == today and not weekly_view:
+                if day == dd.today():
+                    link = E.b(link, CLASS="cal-nav-today")
+                if day == today and day_view:
                     cells.append(E.td(E.b(str(day.day))))
                 else:
                     cells.append(E.td(link))
@@ -1736,7 +1739,8 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                 qs = Event.objects.all()
                 qs = cls.calendar_param_filter(qs, pv)
                 offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
-                current_date = (dd.today() + timedelta(days=offset))
+                today = dd.today()
+                current_date = (today + timedelta(days=offset))
                 target_day = datetime.strptime(
                     "{}-W{}-{}".format(current_date.year, obj,
                                        pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
@@ -1749,7 +1753,8 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                 link = E.h3(dayly(Day(pk),str(target_day.day)),align="center")
                 return E.div(*[link,E.div(*join_elems(chunks))],
                              CLASS="cal-month-cell {} {}".format(
-                                 "current-month" if current_date.month == target_day.month else "other-month","current-day" if current_date == target_day else ""))
+                                 "current-month" if current_date.month == target_day.month else "other-month",
+                                 "current-day" if target_day == today else ""))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         yield dd.VirtualField(dd.HtmlBox(gettext("Weeks")), get_week_number)
