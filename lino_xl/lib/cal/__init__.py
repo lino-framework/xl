@@ -27,7 +27,6 @@ class Plugin(ad.Plugin):
     ignore_dates_before = None
     ignore_dates_after = None
     beginning_of_time = None
-    CalView = ""
 
     def on_init(self):
         tod = self.site.today()

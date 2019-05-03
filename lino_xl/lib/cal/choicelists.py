@@ -198,6 +198,12 @@ class EntryState(dd.State):
     noauto = False
     guest_state = None
 
+class EventEvents(dd.ChoiceList):
+    verbose_name = _("Observed event")
+    verbose_name_plural = _("Observed events")
+add = EventEvents.add_item
+add('10', _("Stable"), 'stable')
+add('20', _("Unstable"), 'pending')
 
 class EntryStates(dd.Workflow):
     verbose_name_plural = _("Event states")

@@ -29,6 +29,7 @@ from .choicelists import EntryStates
 from .choicelists import AccessClasses
 from .choicelists import PlannerColumns,Weekdays
 from .choicelists import DurationUnits, YearMonths
+from .choicelists import EventEvents
 
 from .mixins import daterange_text
 from .utils import when_text
@@ -593,13 +594,6 @@ class EventInsert(dd.InsertLayout):
     # room priority access_class transparent
     """
 
-class EventEvents(dd.ChoiceList):
-    verbose_name = _("Observed event")
-    verbose_name_plural = _("Observed events")
-add = EventEvents.add_item
-add('10', _("Stable"), 'stable')
-add('20', _("Unstable"), 'pending')
-
 
 class Events(dd.Table):
 
@@ -622,37 +616,18 @@ class Events(dd.Table):
     detail_html_template = "cal/Event/detail.html"
 
     params_panel_hidden = True
-
-    parameters = mixins.ObservedDateRange(
-        user=dd.ForeignKey(settings.SITE.user_model,
-                           verbose_name=_("Managed by"),
-                           blank=True, null=True,
-                           help_text=_("Only rows managed by this user.")),
-        project=dd.ForeignKey(settings.SITE.project_model,
-                              blank=True, null=True),
-        event_type=dd.ForeignKey('cal.EventType', blank=True, null=True),
-        room=dd.ForeignKey('cal.Room', blank=True, null=True),
-        assigned_to=dd.ForeignKey(settings.SITE.user_model,
-                                  verbose_name=_("Assigned to"),
-                                  blank=True, null=True,
-                                  help_text=_(
-                                      "Only events assigned to this user.")),
-        state=EntryStates.field(blank=True,
-                                help_text=_("Only rows having this state.")),
-        # unclear = models.BooleanField(_("Unclear events"))
-        observed_event=EventEvents.field(blank=True),
-        show_appointments=dd.YesNo.field(_("Appointments"), blank=True),
-    )
-
-    params_layout = """
-    start_date end_date observed_event state
-    user assigned_to project event_type room show_appointments
-    """
-    # ~ next = NextDateAction() # doesn't yet work. 20121203
+  # ~ next = NextDateAction() # doesn't yet work. 20121203
 
     # fixed_states = set(EntryStates.filter(fixed=True))
     # pending_states = set([es for es in EntryStates if not es.fixed])
     # pending_states = set(EntryStates.filter(fixed=False))
+
+    @classmethod
+    def setup_parameters(cls, fields):
+        cls.params_layout = rt.models.cal.Event.params_layout
+        cls.parameters = rt.models.cal.Event.parameters
+        super(Events, cls).setup_parameters(rt.models.cal.Event.parameters)
+
 
     @classmethod
     def get_table_summary(cls, obj, ar):
@@ -665,38 +640,8 @@ class Events(dd.Table):
         qs = super(Events, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
 
-        if pv.user:
-            qs = qs.filter(user=pv.user)
-        if pv.assigned_to:
-            qs = qs.filter(assigned_to=pv.assigned_to)
+        return rt.models.cal.Event.calendar_param_filter(qs, pv)
 
-        if settings.SITE.project_model is not None and pv.project:
-            qs = qs.filter(project=pv.project)
-
-        if pv.event_type:
-            qs = qs.filter(event_type=pv.event_type)
-        else:
-            if pv.show_appointments == dd.YesNo.yes:
-                qs = qs.filter(event_type__is_appointment=True)
-            elif pv.show_appointments == dd.YesNo.no:
-                qs = qs.filter(event_type__is_appointment=False)
-
-        if pv.state:
-            qs = qs.filter(state=pv.state)
-
-        if pv.room:
-            qs = qs.filter(room=pv.room)
-
-        if pv.observed_event == EventEvents.stable:
-            qs = qs.filter(state__in=set(EntryStates.filter(fixed=True)))
-        elif pv.observed_event == EventEvents.pending:
-            qs = qs.filter(state__in=set(EntryStates.filter(fixed=False)))
-
-        if pv.start_date:
-            qs = qs.filter(start_date__gte=pv.start_date)
-        if pv.end_date:
-            qs = qs.filter(start_date__lte=pv.end_date)
-        return qs
 
     @classmethod
     def get_title_tags(self, ar):
@@ -1188,31 +1133,29 @@ class CalView():
     reverse_sort_order = False
     abstract = False
 
-    parameters = dict(
-        user=dd.ForeignKey('users.User', null=True, blank=True),
-        event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
-        room = dd.ForeignKey('cal.Room', null=True, blank=True),
-        project = fields.ForeignKey(
-            settings.SITE.project_model,
-            blank=True, null=True,
-            related_name="%(app_label)s_%(class)s_set_by_project"),
-        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
+    # parameters = rt.models.cal.Event.parameters
+        # dict(
+        # user=dd.ForeignKey('users.User', null=True, blank=True),
+        # event_type = dd.ForeignKey('cal.EventType', blank=True, null=True),
+        # room = dd.ForeignKey('cal.Room', null=True, blank=True),
+        # project = fields.ForeignKey(
+        #     settings.SITE.project_model,
+        #     blank=True, null=True,
+        #     related_name="%(app_label)s_%(class)s_set_by_project"),
+        # partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True))
 
-    params_layout = """user event_type room project partner"""
+    # params_layout = rt.models.cal.Event.cal_params_layout
+    # calendar_param_filter = rt.models.cal.Event.calendar_param_filter
 
-    @staticmethod
-    def calendar_param_filter(qs,pv):
-        if pv.user:
-            qs = qs.filter(user=pv.user)
-        if pv.event_type:
-            qs = qs.filter(event_type=pv.event_type)
-        if pv.room:
-            qs = qs.filter(room=pv.room)
-        if settings.SITE.project_model is not None and pv.project:
-            qs = qs.filter(project=pv.project)
-        if pv.partner:
-            qs = qs.filter(guest__partner=pv.partner)
-        return qs
+
+    @classmethod
+    def setup_parameters(cls, fields):
+        cls.params_layout = rt.models.cal.Event.cal_params_layout
+        cls.parameters = rt.models.cal.Event.parameters
+        cls.calendar_param_filter = rt.models.cal.Event.calendar_param_filter
+
+        super(CalView, cls).setup_parameters(rt.models.cal.Event.parameters)
+
 
     @staticmethod
     def fmt(e):

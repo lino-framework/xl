@@ -35,7 +35,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
 from lino.mixins import Referrable
 from .choicelists import (
-    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns)
+    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns, EventEvents)
 
 from .choicelists import TaskStates, EntryStates, GuestStates
 from .actions import UpdateGuests
@@ -413,6 +413,73 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     show_conflicting = dd.ShowSlaveTable(ConflictingEvents)
     allow_merge_action = False
+
+    parameters = mixins.ObservedDateRange(
+        user=dd.ForeignKey(settings.SITE.user_model,
+                           verbose_name=_("Managed by"),
+                           blank=True, null=True,
+                           help_text=_("Only rows managed by this user.")),
+        project=dd.ForeignKey(settings.SITE.project_model,
+                              blank=True, null=True),
+        event_type=dd.ForeignKey('cal.EventType', blank=True, null=True),
+        room=dd.ForeignKey('cal.Room', blank=True, null=True),
+        assigned_to=dd.ForeignKey(settings.SITE.user_model,
+                                  verbose_name=_("Assigned to"),
+                                  blank=True, null=True,
+                                  help_text=_(
+                                      "Only events assigned to this user.")),
+        state=EntryStates.field(blank=True,
+                                help_text=_("Only rows having this state.")),
+        # unclear = models.BooleanField(_("Unclear events"))
+        observed_event=EventEvents.field(blank=True),
+        show_appointments=dd.YesNo.field(_("Appointments"), blank=True),
+        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True)
+
+    )
+
+    params_layout = """
+    start_date end_date observed_event state
+    user assigned_to project event_type room show_appointments
+    """
+
+    cal_params_layout = """user event_type room project partner"""
+
+    @staticmethod
+    def calendar_param_filter(qs,pv):
+        if pv.user:
+            qs = qs.filter(user=pv.user)
+        if pv.assigned_to:
+            qs = qs.filter(assigned_to=pv.assigned_to)
+
+        if settings.SITE.project_model is not None and pv.project:
+            qs = qs.filter(project=pv.project)
+
+        if pv.event_type:
+            qs = qs.filter(event_type=pv.event_type)
+        else:
+            if pv.show_appointments == dd.YesNo.yes:
+                qs = qs.filter(event_type__is_appointment=True)
+            elif pv.show_appointments == dd.YesNo.no:
+                qs = qs.filter(event_type__is_appointment=False)
+
+        if pv.state:
+            qs = qs.filter(state=pv.state)
+
+        if pv.room:
+            qs = qs.filter(room=pv.room)
+
+        if pv.observed_event == EventEvents.stable:
+            qs = qs.filter(state__in=set(EntryStates.filter(fixed=True)))
+        elif pv.observed_event == EventEvents.pending:
+            qs = qs.filter(state__in=set(EntryStates.filter(fixed=False)))
+
+        if pv.start_date:
+            qs = qs.filter(start_date__gte=pv.start_date)
+        if pv.end_date:
+            qs = qs.filter(start_date__lte=pv.end_date)
+        if pv.partner:
+            qs = qs.filter(guest__partner=pv.partner)
+        return qs
 
     def strftime(self):
         if not self.start_date:
