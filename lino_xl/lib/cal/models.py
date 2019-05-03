@@ -504,6 +504,8 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         u = self.user
         if u is None and self.room:
             u = self.room
+        if u is None:
+            return '%s object (%s)' % (self.__class__.__name__, self.pk)
         u = u.initials or u.username or str(u)
         s = "{} ({})".format(s, u)
         return s

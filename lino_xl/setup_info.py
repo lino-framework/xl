@@ -138,6 +138,7 @@ lino_xl.lib.families
 lino_xl.lib.households
 lino_xl.lib.households.fixtures
 lino_xl.lib.healthcare
+lino_xl.lib.healthcare.fixtures
 lino_xl.lib.humanlinks
 lino_xl.lib.humanlinks.fixtures
 lino_xl.lib.lists

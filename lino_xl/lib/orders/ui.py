@@ -55,7 +55,7 @@ class OrderDetail(dd.DetailLayout):
     main = "general cal_tab enrolments"
     
     general = dd.Panel("""
-    entry_date workflow_buttons printed #print_actions:15
+    entry_date narration workflow_buttons printed #print_actions:15
     project invoice_recipient
     description
     EnrolmentsByOrder ItemsByOrder
@@ -195,7 +195,7 @@ class AllOrders(Orders):
 
 class OrdersByProject(Orders):
     master_key = 'project'
-    column_names = "entry_date:8 journal number workflow_buttons user " \
+    column_names = "entry_date:8 detail_link workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
     order_by = ['entry_date']
     insert_layout = """

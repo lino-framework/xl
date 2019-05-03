@@ -12,6 +12,16 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-05-03
+==========
+
+The new calendar view seems ready for a first presentation. Congratulations to
+Tonis and Hamza who implemented this mostly without any assistance by Luc.
+
+Quite some changes in the :mod:`lino_xl.lib.healthcare` plugin.  This plugin
+is in proof-of-concept phase and not yet used in any production site.
+
+
 2019-05-02
 ==========
 

@@ -395,8 +395,10 @@ class InvoicesByPartner(Invoices):
     # model = 'sales.VatProductInvoice'
     order_by = ["-entry_date", '-id']
     master_key = 'partner'
-    column_names = "entry_date journal__ref number total_incl "\
+    column_names = "entry_date detail_link total_incl "\
                    "workflow_buttons *"
+    # column_names = "entry_date journal__ref number total_incl "\
+    #                "workflow_buttons *"
 
 
 # class SalesByPerson(SalesDocuments):
