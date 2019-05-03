@@ -1549,7 +1549,7 @@ class WeeklyPlannerRows(CalView, dd.Table):
                 qs = cls.calendar_param_filter(qs, pv)
 
                 if ar.rqdata:
-                    delata_days = int(ar.rqdata.get('mk', 0))
+                    delata_days = int(ar.rqdata.get('mk', 0) or 0)
                     current_day = dd.today() + timedelta(days=delata_days)
                     current_week_day = current_day + \
                         timedelta(days=int(pc.value) -
@@ -1601,7 +1601,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
 
     @classmethod
     def get_data_rows(self, ar):
-        delata_days = int(ar.rqdata.get('mk', 0)) if ar.rqdata  else 0
+        delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata  else 0
         current_day = dd.today() + timedelta(days=delata_days)
         weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
         return weeks
@@ -1614,7 +1614,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
     def unused_get_request_queryset(self, ar, **kwargs):
         qs = super(MonthlyPlannerRows, self).get_request_queryset(ar, **kwargs)
         if ar.rqdata:
-            delata_days = int(ar.rqdata.get('mk', 0))
+            delata_days = int(ar.rqdata.get('mk', 0) or 0)
             current_day = dd.today() + timedelta(days=delata_days)
             weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
             qs = qs.filter(week_number__in=weeks)
@@ -1643,7 +1643,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
         def get_week_number(fld, obj, ar):
             # obj is the MonthlyPlannerRow instance
             pv = ar.param_values
-            offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
+            offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
             current_year = (dd.today() + timedelta(days=offset)).year
             target_day = datetime.strptime(
                 "{}-W{}-{}".format(current_year, obj,  pc.value if pc.value  != "7" else "0" ),
@@ -1661,7 +1661,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                 pv = ar.param_values
                 qs = Event.objects.all()
                 qs = cls.calendar_param_filter(qs, pv)
-                offset = int(ar.rqdata.get('mk', 0)) if ar.rqdata else 0
+                offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
                 today = dd.today()
                 current_date = (today + timedelta(days=offset))
                 target_day = datetime.strptime(
