@@ -11,31 +11,30 @@ from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from .mixins import HealthcareSubject, Tariffs
 
 
-# @dd.python_2_unicode_compatible
-# class Plan(Referrable):
-#
-#     ref_max_length = 10
-#
-#     class Meta:
-#         app_label = 'healthcare'
-#         abstract = dd.is_abstract_model(__name__, 'Plan')
-#         verbose_name = _("Healthcare plan")
-#         verbose_name_plural = _("Healthcare plans")
-#
-#     provider = dd.ForeignKey(
-#         'contacts.Company',
-#         related_name="healthcare_plans_by_provider",
-#         verbose_name=_("Healthcare provider"),
-#         blank=True, null=True)
-#     tariff = HealthTariffs.field(default="normal")
-#
-#     remark = dd.CharField(_("Remark"), max_length=200, blank=True)
-#
-#     def __str__(self):
-#         if self.ref:
-#             return "{} ({})".format(self.ref, self.provider)
-#         else:
-#             return "{}".format(self.provider)
+@dd.python_2_unicode_compatible
+class Plan(Referrable):
+
+    ref_max_length = 30
+
+    class Meta:
+        app_label = 'healthcare'
+        abstract = dd.is_abstract_model(__name__, 'Plan')
+        verbose_name = _("Healthcare plan")
+        verbose_name_plural = _("Healthcare plans")
+
+    provider = dd.ForeignKey(
+        'contacts.Company',
+        related_name="healthcare_plans_by_provider",
+        verbose_name=_("Provider"),
+        blank=True, null=True)
+
+    remark = dd.CharField(_("Remark"), max_length=200, blank=True)
+
+    def __str__(self):
+        if self.ref:
+            return self.ref
+        else:
+            return str(self.provider)
 
 
 class Situation(DateRange, HealthcareSubject):
@@ -58,13 +57,13 @@ class Rule(Sequenced):
         verbose_name = _("Healthcare rule")
         verbose_name_plural = _("Healthcare rules")
 
-    # plan = dd.ForeignKey('healthcare.Plan')
+    plan = dd.ForeignKey('healthcare.Plan', blank=True, null=True)
 
-    provider = dd.ForeignKey(
-        'contacts.Company',
-        related_name="healthcare_rules_by_provider",
-        verbose_name=_("Healthcare provider"),
-        blank=True, null=True)
+    # provider = dd.ForeignKey(
+    #     'contacts.Company',
+    #     related_name="healthcare_rules_by_provider",
+    #     verbose_name=_("Healthcare provider"),
+    #     blank=True, null=True)
 
     tariff = Tariffs.field(blank=True, verbose_name=_("Tariff"))
 
@@ -81,40 +80,38 @@ class Rule(Sequenced):
         blank=True, null=True)
     
 
-# class Plans(dd.Table):
-#     required_roles = dd.login_required(ContactsStaff)
-#     model = "healthcare.Plan"
-#     column_names = "ref provider remark *"
-#     detail_layout = """
-#     ref provider
-#     remark
-#     RulesByPlan
-#     """
-#     insert_layout = """
-#     ref provider
-#     remark
-#     """
+class Plans(dd.Table):
+    required_roles = dd.login_required(ContactsStaff)
+    model = "healthcare.Plan"
+    column_names = "ref provider remark *"
+    detail_layout = """
+    ref provider
+    remark
+    RulesByPlan
+    """
+    insert_layout = """
+    ref provider
+    remark
+    """
 
 
 class Situations(dd.Table):
     required_roles = dd.login_required(ContactsStaff)
     model = "healthcare.Situation"
 
+
 class SituationsByClient(Situations):
     required_roles = dd.login_required(ContactsUser)
     master_key = "client"
-    column_names = "start_date end_date healthcare_provider healthcare_tariff *"
-
-# class SituationsByPlan(Situations):
-#     master_key = "plan"
-#     column_names = "start_date end_date client *"
+    column_names = "start_date end_date healthcare_plan healthcare_tariff *"
 
 
 class Rules(dd.Table):
     required_roles = dd.login_required(ContactsStaff)
     model = "healthcare.Rule"
-    column_names = "provider tariff client_fee provider_fee *"
+    column_names = "plan tariff client_fee provider_fee *"
 
-# class RulesByPlan(Rules):
-#     column_names = "client_fee provider_fee *"
-    
+class RulesByPlan(Rules):
+    master_key = "plan"
+    column_names = "tariff client_fee provider_fee *"
+

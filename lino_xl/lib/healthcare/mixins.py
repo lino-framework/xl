@@ -18,14 +18,13 @@ class HealthcareSubject(dd.Model):
     class Meta:
         abstract = True
 
-    healthcare_provider = dd.ForeignKey(
-        'contacts.Company',
-        related_name="healthcare_subjects_by_provider",
-        verbose_name=_("Healthcare provider"),
-        blank=True, null=True)
+    # healthcare_provider = dd.ForeignKey(
+    #     'contacts.Company',
+    #     related_name="healthcare_subjects_by_provider",
+    #     verbose_name=_("Healthcare provider"),
+    #     blank=True, null=True)
 
     healthcare_tariff = Tariffs.field(default="normal", verbose_name=_("Tariff"))
 
-    #
-    # healthcare_plan = dd.ForeignKey(
-    #     'healthcare.Plan', blank=True, null=True)
+    healthcare_plan = dd.ForeignKey(
+        'healthcare.Plan', blank=True, null=True)

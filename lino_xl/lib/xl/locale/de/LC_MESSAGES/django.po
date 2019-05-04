@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-04 00:18+0300\n"
-"PO-Revision-Date: 2019-05-04 00:21+0300\n"
+"POT-Creation-Date: 2019-05-04 10:14+0300\n"
+"PO-Revision-Date: 2019-05-04 10:16+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -95,7 +95,8 @@ msgstr "Adresse"
 #: lino_xl/lib/courses/models.py:203 lino_xl/lib/courses/models.py:572
 #: lino_xl/lib/cv/models.py:541 lino_xl/lib/cv/models.py:567
 #: lino_xl/lib/deploy/models.py:184 lino_xl/lib/excerpts/models.py:72
-#: lino_xl/lib/groups/models.py:118 lino_xl/lib/ledger/models.py:236
+#: lino_xl/lib/groups/models.py:118 lino_xl/lib/healthcare/models.py:31
+#: lino_xl/lib/ledger/models.py:236
 #: lino_xl/lib/lists/config/lists/List/list_members.weasy.html:68
 #: lino_xl/lib/lists/models.py:156 lino_xl/lib/notes/models.py:49
 #: lino_xl/lib/notes/models.py:80
@@ -4086,37 +4087,65 @@ msgstr ""
 msgid "OMNIO"
 msgstr ""
 
-#: lino_xl/lib/healthcare/mixins.py:24 lino_xl/lib/healthcare/models.py:66
-msgid "Healthcare provider"
-msgstr "Krankenkasse"
-
-#: lino_xl/lib/healthcare/mixins.py:27
+#: lino_xl/lib/healthcare/mixins.py:27 lino_xl/lib/healthcare/models.py:68
 msgid "Tariff"
 msgstr "Tarif"
 
-#: lino_xl/lib/healthcare/models.py:46
+#: lino_xl/lib/healthcare/models.py:22
+msgid "Healthcare plan"
+msgstr "Krankenkasse"
+
+#: lino_xl/lib/healthcare/models.py:23
+msgid "Healthcare plans"
+msgstr "Krankenkassen"
+
+#: lino_xl/lib/healthcare/models.py:28
+msgid "Provider"
+msgstr "Anbieter"
+
+#: lino_xl/lib/healthcare/models.py:45
 msgid "Healthcare situation"
 msgstr "Krankenkassen-Situation"
 
-#: lino_xl/lib/healthcare/models.py:47
+#: lino_xl/lib/healthcare/models.py:46
 msgid "Healthcare situations"
 msgstr "Krankenkassen-Situationen"
 
-#: lino_xl/lib/healthcare/models.py:58
+#: lino_xl/lib/healthcare/models.py:57
 msgid "Healthcare rule"
 msgstr "Krankenkassen-Regel"
 
-#: lino_xl/lib/healthcare/models.py:59
+#: lino_xl/lib/healthcare/models.py:58
 msgid "Healthcare rules"
 msgstr "Krankenkassen-Regeln"
 
-#: lino_xl/lib/healthcare/models.py:74
+#: lino_xl/lib/healthcare/models.py:73
 msgid "Client fee"
 msgstr "Gebühr Klient"
 
-#: lino_xl/lib/healthcare/models.py:79
+#: lino_xl/lib/healthcare/models.py:78
 msgid "Provider fee"
 msgstr "Gebühr Krankenkasse"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:25
+msgid "Christian HIS"
+msgstr "Christliche Krankenkasse"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:26
+msgid "Neutral HIS"
+msgstr "Neutrale Krankenkasse"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:27
+msgid "Socialist HIS"
+msgstr "Sozialistische Krankenkasse"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:28
+msgid "Liberal HIS"
+msgstr "Liberale Krankenkasse"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:29
+msgid "Libre HIS"
+msgstr "Freie Krankenkasse"
 
 #: lino_xl/lib/households/__init__.py:27 lino_xl/lib/households/models.py:116
 msgid "Households"
@@ -13075,3 +13104,9 @@ msgstr "Verwalter"
 
 #~ msgid "The ticket has been done."
 #~ msgstr "Dokument %s wurde generiert."
+
+#~ msgid "Healthcare provider"
+#~ msgstr "Krankenkasse"
+
+#~ msgid "Libre"
+#~ msgstr "Freie"

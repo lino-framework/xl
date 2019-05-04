@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-05-04 00:18+0300\n"
+"POT-Creation-Date: 2019-05-04 10:14+0300\n"
 "PO-Revision-Date: 2013-06-15 18:57-0300\n"
 "Last-Translator: Flavio Gondin <flvgondin@gmail.com>\n"
 "Language: pt_BR\n"
@@ -105,7 +105,8 @@ msgstr ""
 #: lino_xl/lib/courses/models.py:203 lino_xl/lib/courses/models.py:572
 #: lino_xl/lib/cv/models.py:541 lino_xl/lib/cv/models.py:567
 #: lino_xl/lib/deploy/models.py:184 lino_xl/lib/excerpts/models.py:72
-#: lino_xl/lib/groups/models.py:118 lino_xl/lib/ledger/models.py:236
+#: lino_xl/lib/groups/models.py:118 lino_xl/lib/healthcare/models.py:31
+#: lino_xl/lib/ledger/models.py:236
 #: lino_xl/lib/lists/config/lists/List/list_members.weasy.html:68
 #: lino_xl/lib/lists/models.py:156 lino_xl/lib/notes/models.py:49
 #: lino_xl/lib/notes/models.py:80
@@ -4424,39 +4425,72 @@ msgstr ""
 msgid "OMNIO"
 msgstr ""
 
-#: lino_xl/lib/healthcare/mixins.py:24 lino_xl/lib/healthcare/models.py:66
-msgid "Healthcare provider"
-msgstr ""
-
-#: lino_xl/lib/healthcare/mixins.py:27
+#: lino_xl/lib/healthcare/mixins.py:27 lino_xl/lib/healthcare/models.py:68
 #, fuzzy
 msgid "Tariff"
 msgstr "Début"
 
-#: lino_xl/lib/healthcare/models.py:46
+#: lino_xl/lib/healthcare/models.py:22
+#, fuzzy
+msgid "Healthcare plan"
+msgstr "valeur par défault"
+
+#: lino_xl/lib/healthcare/models.py:23
+#, fuzzy
+msgid "Healthcare plans"
+msgstr "valeur par défault"
+
+#: lino_xl/lib/healthcare/models.py:28
+#, fuzzy
+msgid "Provider"
+msgstr "accomplie"
+
+#: lino_xl/lib/healthcare/models.py:45
 #, fuzzy
 msgid "Healthcare situation"
 msgstr "valeur par défault"
 
-#: lino_xl/lib/healthcare/models.py:47
+#: lino_xl/lib/healthcare/models.py:46
 msgid "Healthcare situations"
 msgstr ""
 
-#: lino_xl/lib/healthcare/models.py:58
+#: lino_xl/lib/healthcare/models.py:57
 msgid "Healthcare rule"
 msgstr ""
 
-#: lino_xl/lib/healthcare/models.py:59
+#: lino_xl/lib/healthcare/models.py:58
 msgid "Healthcare rules"
 msgstr ""
 
-#: lino_xl/lib/healthcare/models.py:74
+#: lino_xl/lib/healthcare/models.py:73
 #, fuzzy
 msgid "Client fee"
 msgstr "Destinataire"
 
-#: lino_xl/lib/healthcare/models.py:79
+#: lino_xl/lib/healthcare/models.py:78
 msgid "Provider fee"
+msgstr ""
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:25
+#, fuzzy
+msgid "Christian HIS"
+msgstr "Description"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:26
+#, fuzzy
+msgid "Neutral HIS"
+msgstr "Général"
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:27
+msgid "Socialist HIS"
+msgstr ""
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:28
+msgid "Liberal HIS"
+msgstr ""
+
+#: lino_xl/lib/healthcare/fixtures/demo.py:29
+msgid "Libre HIS"
 msgstr ""
 
 #: lino_xl/lib/households/__init__.py:27 lino_xl/lib/households/models.py:116
@@ -20919,5 +20953,17 @@ msgstr "Administrador"
 #~ msgid ""
 #~ "Base for StartInvoicingForJournal and\n"
 #~ "StartInvoicingForPartner."
+#~ msgstr ""
+
+#~ msgid "Healthcare provider"
+#~ msgstr ""
+
+#~ msgid "Socialist"
+#~ msgstr ""
+
+#~ msgid "Liberal"
+#~ msgstr ""
+
+#~ msgid "Libre"
 #~ msgstr ""
 
