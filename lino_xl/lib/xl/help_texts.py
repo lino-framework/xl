@@ -967,6 +967,18 @@ financial voucher."""),
     'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
+    'lino_xl.lib.healthcare.Plan.ref' : _("""An identifying name understood by every user of the site."""),
+    'lino_xl.lib.healthcare.Plan.provider' : _("""The provider who will potentially be invoiced for shared costs."""),
+    'lino_xl.lib.healthcare.Tariffs' : _("""The choicelist with healthcare tariffs available in this application."""),
+    'lino_xl.lib.healthcare.Rule' : _("""Note that this part is not yet used on the field.  The client_fee might be
+useless, we must maybe rather inject a checkbox field "healthcare_shared"
+to Product."""),
+    'lino_xl.lib.healthcare.Rule.client_fee' : _("""The product for which this rule applies."""),
+    'lino_xl.lib.healthcare.Rule.provider_fee' : _("""The provider's share of the costs which you will invoice to the
+provider."""),
+    'lino_xl.lib.healthcare.HealthcareSubject' : _("""Model mixin which adds database fields about a given healthcare subject."""),
+    'lino_xl.lib.healthcare.HealthcareSubject.healthcare_plan' : _("""The health care provider."""),
+    'lino_xl.lib.healthcare.HealthcareSubject.healthcare_tariff' : _("""The health care tariff."""),
     'lino_xl.lib.invoicing.InvoiceGenerator' : _("""Mixin for things that can generate invoices."""),
     'lino_xl.lib.invoicing.InvoiceGenerator.default_invoiceable_qty' : _("""The default quantity to invoice"""),
     'lino_xl.lib.invoicing.InvoiceGenerator.get_invoiceable_events' : _("""Return a Django query that represents the invoiceable events."""),

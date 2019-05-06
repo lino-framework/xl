@@ -60,6 +60,7 @@ class SalesDocument(VatDocument, Certifiable):
 
         pt = self.paper_type or get_paper_type(self.partner)
         if pt and pt.template:
+            # print(20190506, pt.template)
             return [pt.template]
 
 def get_paper_type(obj):

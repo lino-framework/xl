@@ -12,6 +12,17 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-05-06
+==========
+
+New field :attr:`invoicing.Plan.min_date` can be used to specify a start date.
+
+:mod:`lino_xl.lib.invoicing` now injects two fields :attr:`invoicing_min_date`
+and :attr:`invoicing_max_date` to the :attr:`voucher_model
+<lino_xl.lib.invoicing.plugin.voucher_model>`. These are set for every
+generated invoice to those specified in the invoicing plan. They can be printed
+on the invoice so the customer sees the invoiced period.
+
 2019-05-03
 ==========
 

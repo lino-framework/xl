@@ -174,8 +174,10 @@ class Plan(UserPlan):
         verbose_name_plural = _("Invoicing plans")
 
     area = dd.ForeignKey('invoicing.Area', blank=True)
+    min_date = models.DateField(
+        _("Invoiceables from"), null=True, blank=True)
     max_date = models.DateField(
-        _("Invoiceables until"), null=True, blank=True)
+        _("until"), null=True, blank=True)
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
     execute_plan = ExecutePlan()
@@ -313,11 +315,14 @@ class Plan(UserPlan):
             item.save()
 
     def create_invoice(self, **kwargs):
-        ITEM_MODEL = dd.resolve_model(dd.plugins.invoicing.item_model)
-        M = ITEM_MODEL._meta.get_field('voucher').remote_field.model
+        # ITEM_MODEL = dd.plugins.invoicing.item_model
+        M = dd.plugins.invoicing.voucher_model
+        # M = ITEM_MODEL._meta.get_field('voucher').remote_field.model
         kwargs.update(
             journal=self.area.journal,
-            entry_date=self.today, voucher_date=self.get_max_date())
+            entry_date=self.today,
+            invoicing_min_date=self.min_date,
+            invoicing_max_date=self.get_max_date())
         invoice = M(**kwargs)
         invoice.fill_defaults()
         return invoice
@@ -463,7 +468,7 @@ class Item(dd.Model):
 class Plans(dd.Table):
     required_roles = dd.login_required(LedgerUser)
     model = "invoicing.Plan"
-    detail_layout = """user area today max_date partner
+    detail_layout = """user area today min_date max_date partner
     invoicing.ItemsByPlan
     """
 
@@ -507,6 +512,13 @@ invoiceable_label = dd.plugins.invoicing.invoiceable_label
 dd.inject_field(
     'products.Product', 'tariff', dd.ForeignKey(
         'invoicing.Tariff', blank=True, null=True))
+
+dd.inject_field(
+    dd.plugins.invoicing.voucher_model, 'invoicing_min_date', dd.DateField(
+        _("Invoiceables from"), blank=True, null=True))
+dd.inject_field(
+    dd.plugins.invoicing.voucher_model, 'invoicing_max_date', dd.DateField(
+        _("until"), blank=True, null=True))
 
 dd.inject_field(
     dd.plugins.invoicing.item_model,

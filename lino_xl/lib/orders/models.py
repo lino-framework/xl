@@ -79,6 +79,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
         related_name='orders_by_recipient',
         blank=True, null=True)
 
+    subject = models.CharField(_("Our reference"), max_length=200, blank=True)
     # site_field_name = 'room'
 
     # line = dd.ForeignKey('orders.Line')

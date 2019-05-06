@@ -35,9 +35,13 @@ class Plugin(Plugin):
 
     def on_site_startup(self, site):
         from lino.core.utils import resolve_model
-        self.voucher_model = resolve_model(self.voucher_model)
         self.item_model = resolve_model(self.item_model)
-        
+        # ivm = self.item_model._meta.get_field('voucher').remote_field.model
+        # if self.voucher_model != ivm:
+        #     raise Exception("voucher_model is {} but should be {}".format(
+        #         self.voucher_model, ivm))
+        self.voucher_model = resolve_model(self.voucher_model)
+
     def get_voucher_type(self):
         # from lino.core.utils import resolve_model
         # model = resolve_model(self.voucher_model)

@@ -434,11 +434,11 @@ class Excerpt(TypedPrintable, UserAuthored,
         return name
 
     def get_print_templates(self, bm, action):
-        """Overrides
-        :meth:`lino.modlib.printing.mixins.Printable.get_print_templates`.
-
-        When printing an excerpt, the controlling database objects
+        """When printing a certifying excerpt, the controlling database object
         gets a chance to decide which template to use.
+
+        Overrides
+        :meth:`lino.modlib.printing.Printable.get_print_templates`.
 
         """
         et = self.excerpt_type
@@ -446,6 +446,7 @@ class Excerpt(TypedPrintable, UserAuthored,
             if isinstance(self.owner, Certifiable):
                 tpls = self.owner.get_excerpt_templates(bm)
                 if tpls is not None:
+                    # print("20190506 Excerpt.get_print_templates()", tpls)
                     return tpls
         return super(Excerpt, self).get_print_templates(bm, action)
         # ptype = self.get_printable_type()

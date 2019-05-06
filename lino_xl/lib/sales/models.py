@@ -11,6 +11,7 @@ from lino.core import actions
 from etgen.html import E
 from lino.utils.mldbc.mixins import BabelNamed
 from lino.mixins.bleached import body_subject_to_elems
+# from lino.mixins.periods import DateRange
 
 from lino_xl.lib.sepa.mixins import Payable
 from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
@@ -213,7 +214,7 @@ class InvoiceDetail(dd.DetailLayout):
     """, label=_("More"))
 
     ledger = dd.Panel("""
-    #voucher_date journal accounting_period number narration
+    #voucher_date journal accounting_period number #narration
     ledger.MovementsByVoucher
     """, label=_("Ledger"))
 
