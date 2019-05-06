@@ -186,22 +186,32 @@ class VoucherTypes(dd.ChoiceList):
     max_length = 100
 
     @classmethod
-    def get_for_model(self, model):
+    def get_for_model(cls, model):
         """
         Return the :class:`VoucherType` for the given model.
         """
-        for o in self.objects():
-            if issubclass(o.model, model):
-                return o
+        return cls.find_unique(lambda i: issubclass(i.model, model))
 
     @classmethod
-    def get_for_table(self, table_class):
+    def get_for_table(cls, table_class):
         """
         Return the :class:`VoucherType` for the given table.
         """
-        for o in self.objects():
-            if issubclass(o.table_class, table_class):
-                return o
+        # return cls.find_unique(lambda i: issubclass(i.table_class, table_class))
+        return cls.find_unique(lambda i: i.table_class is table_class)
+
+    @classmethod
+    def find_unique(cls, func, default=None):
+
+        """Find the unique item which matches the condition. Return default if
+        no item or more than one item matches."""
+        candidates = set()
+        for o in cls.get_list_items():
+            if func(o):
+                candidates.add(o)
+        if len(candidates) == 1:
+            return candidates.pop()
+        return default
 
     # @classmethod
     # def add_item(cls, *args, **kwargs):

@@ -23,6 +23,16 @@ and :attr:`invoicing_max_date` to the :attr:`voucher_model
 generated invoice to those specified in the invoicing plan. They can be printed
 on the invoice so the customer sees the invoiced period.
 
+Fixed a bug in :meth:`VoucherTypes.get_for_model
+<lino_xl.lib.ledger.VoucherTypes.get_for_model>` which caused it to simply
+return the first possible candidate.  But it is possible to have two voucher
+types which use the same model. It is now an error to call
+:meth:`VoucherTypes.get_for_model
+<lino_xl.lib.ledger.VoucherTypes.get_for_model>` (or
+:meth:`VoucherTypes.get_for_table
+<lino_xl.lib.ledger.VoucherTypes.get_for_table>`) with a model (or a table) for
+which we don't have a unique voucher type.
+
 2019-05-03
 ==========
 
