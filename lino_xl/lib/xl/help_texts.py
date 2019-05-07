@@ -492,6 +492,7 @@ unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether guest states should be forced to those defined by the
 entry state."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
+    'lino_xl.lib.cal.CalendarView' : _("""Base class for all calendar views (daily, weekly and monthly)."""),
     'lino_xl.lib.cal.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
     'lino_xl.lib.cal.WeeklyView' : _("""Shows a calendar navigator with a configurable weekly view."""),
     'lino_xl.lib.cal.MonthlyView' : _("""Shows a calendar navigator with a configurable monthly view."""),

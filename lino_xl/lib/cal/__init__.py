@@ -1,4 +1,4 @@
-# Copyright 2013-2018 Rumma & Ko Ltd
+# Copyright 2013-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """This is Lino's calendar module. See :doc:`/specs/cal`.
