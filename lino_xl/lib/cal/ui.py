@@ -1125,7 +1125,7 @@ class DayDetail(dd.DetailLayout):
     main = "body"
     body = "navigation:20 cal.PlannerByDay:80"
 
-class CalView():
+class CalView(object):
     """
     Mixin for Calender views:
     """
