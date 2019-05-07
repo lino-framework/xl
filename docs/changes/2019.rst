@@ -17,6 +17,8 @@ Changes 2019 in Lino XL
 
 Released Lino XL 19.5.0 to PyPI.
 
+Removed the changed handler for :attr:`lino_xl.lib.cal.Event.end_time` because it was irritating.
+
 2019-05-06
 ==========
 
