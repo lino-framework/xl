@@ -581,17 +581,19 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
 
     def start_time_changed(self, ar):
         et = self.event_type
-        if self.start_time is not None \
+        start_time = self.get_datetime('start')
+        if start_time is not None \
                 and et is not None and et.default_duration is not None:
-            dt = self.get_datetime('start') + et.default_duration
+            dt = start_time + et.default_duration
             self.set_datetime('end', dt)
             # self.end_time = str(self.start_time + et.default_duration)
 
     def end_time_changed(self, ar):
         et = self.event_type
-        if self.end_time is not None \
+        end_time = self.get_datetime('end', 'start')
+        if end_time is not None \
                 and et is not None and et.default_duration is not None:
-            dt = self.get_datetime('end') - et.default_duration
+            dt = end_time - et.default_duration
             self.set_datetime('start', dt)
             # self.start_time = str(self.end_time - et.default_duration)
 
