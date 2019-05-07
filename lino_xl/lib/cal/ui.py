@@ -1110,7 +1110,7 @@ class EventPolicies(dd.Table):
 
 
 
-class CalendarView():
+class CalendarView(object):
     """
     Mixin for Calender views:
     """
