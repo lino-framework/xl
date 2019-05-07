@@ -588,14 +588,15 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             self.set_datetime('end', dt)
             # self.end_time = str(self.start_time + et.default_duration)
 
-    def end_time_changed(self, ar):
-        et = self.event_type
-        end_time = self.get_datetime('end', 'start')
-        if end_time is not None \
-                and et is not None and et.default_duration is not None:
-            dt = end_time - et.default_duration
-            self.set_datetime('start', dt)
-            # self.start_time = str(self.end_time - et.default_duration)
+    # removed because this behaviour is irritating
+    # def end_time_changed(self, ar):
+    #     et = self.event_type
+    #     end_time = self.get_datetime('end', 'start')
+    #     if end_time is not None \
+    #             and et is not None and et.default_duration is not None:
+    #         dt = end_time - et.default_duration
+    #         self.set_datetime('start', dt)
+    #         # self.start_time = str(self.end_time - et.default_duration)
 
     def get_change_observers(self, ar=None):
         # implements ChangeNotifier
