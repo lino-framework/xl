@@ -23,8 +23,11 @@ Released Lino XL 19.5.1 to PyPI.
 
 Minor changes in :mod:`lino_xl.lib.cal`:
 The new calendar views are now visible for all applications (no longer only presto).
-The required roles for all calendar views say that
-you must be CalendarUser or CalendarOperator (or both).
+The required_roles for the new calendar views were not yet set as it should. In
+general you must be :class:`lino_xl.lib.cal.CalendarUser` or
+:class:`lino_xl.lib.cal.CalendarOperator` (or both). Note that avanti overrides
+the required_roles of :class:`lino_xl.lib.cal.CalendarView` because they have
+different rules: only users who may see client names may see the calendar.
 The default calendar view is now monthly instead of weekly.
 Restored :meth:`Event.__str__` from previous version.
 Renamed some classes (e.g. "CalView" became "CalendarView").
