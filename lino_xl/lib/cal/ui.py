@@ -1110,26 +1110,12 @@ class EventPolicies(dd.Table):
 
 
 
-@dd.python_2_unicode_compatible
-class Day(TableRow):
-
-    def __init__(self, offset=0, ar=None):
-        self.date = dd.today(offset)
-        self.pk = offset
-        self.ar = ar
-
-    def __str__(self):
-        return when_text(self.date)
-
-class DayDetail(dd.DetailLayout):
-    main = "body"
-    body = "navigation:20 cal.PlannerByDay:80"
-
-class CalView():
+class CalendarView():
     """
     Mixin for Calender views:
     """
 
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     reverse_sort_order = False
     abstract = False
     use_detail_param_panel = True
@@ -1142,13 +1128,30 @@ class CalView():
         cls.parameters = rt.models.cal.Event.parameters
         cls.calendar_param_filter = rt.models.cal.Event.calendar_param_filter
         cls.fmt = rt.models.cal.Event.calendar_fmt
-        super(CalView, cls).setup_parameters(rt.models.cal.Event.parameters)
+        super(CalendarView, cls).setup_parameters(rt.models.cal.Event.parameters)
+
+
+@dd.python_2_unicode_compatible
+class Day(TableRow):
+
+    def __init__(self, offset=0, ar=None):
+        self.date = dd.today(offset)
+        self.pk = offset
+        self.ar = ar
+
+    def __str__(self):
+        return when_text(self.date)
+
+
+class DayDetail(dd.DetailLayout):
+    main = "body"
+    body = "navigation:20 cal.PlannerByDay:80"
 
 
 class Days(dd.VirtualTable):
     # every "row" is a Day instance. Note that Day can be overridden.
 
-    required_roles = dd.login_required(OfficeUser)
+    # required_roles = dd.login_required(OfficeUser)
     column_names = "detail_link *"
     parameters = mixins.ObservedDateRange(
         user=dd.ForeignKey('users.User', null=True, blank=True))
@@ -1179,10 +1182,10 @@ class Days(dd.VirtualTable):
     #     #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
     #     #                 """)
     #     day = Day()
-    #     dayly = ar.spawn(DailyView)
+    #     daily = ar.spawn(DailyView)
     #     weekly = ar.spawn(WeeklyView)
-    #     weekly.param_values = dayly.param_values = ar.param_values
-    #     today_url = settings.SITE.kernel.default_renderer.ar2button(dayly,
+    #     weekly.param_values = daily.param_values = ar.param_values
+    #     today_url = settings.SITE.kernel.default_renderer.ar2button(daily,
     #         day, gettext("Day"), style="", icon_name=None)
     #     week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
     #         day, gettext("Week"), style="", icon_name=None)
@@ -1200,15 +1203,15 @@ class Days(dd.VirtualTable):
 
         # todo ensure that the end of the month is always in the view.
         today = obj.date
-        dayly, weekly, monthly = cls.make_link_funcs(ar)
+        daily, weekly, monthly = cls.make_link_funcs(ar)
         long_unit = DurationUnits.years if month_view else DurationUnits.months
         prev_month = Day(cls.date2pk(long_unit.add_duration(today, -1)))
         next_month = Day(cls.date2pk(long_unit.add_duration(today, 1)))
         next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
         prev_view = Day(cls.date2pk(next_unit.add_duration(today, -1)))
         next_view = Day(cls.date2pk(next_unit.add_duration(today, 1)))
-        # current_view = weekly if weekly_view else dayly
-        current_view = dayly
+        # current_view = weekly if weekly_view else daily
+        current_view = daily
         if not day_view:
             current_view = monthly if month_view else weekly
 
@@ -1242,7 +1245,7 @@ class Days(dd.VirtualTable):
             this_week = False
             for day in week:
                 pk = cls.date2pk(day)
-                link = dayly(Day(pk), str(day.day))
+                link = daily(Day(pk), str(day.day))
                 if day == dd.today():
                     link = E.b(link, CLASS="cal-nav-today")
                 if day == today and day_view:
@@ -1260,7 +1263,7 @@ class Days(dd.VirtualTable):
 
             rows.append(E.tr(*cells, align="center"))
         elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(dayly(Day(), gettext("Today")), align="center"))
+        elems.append(E.p(daily(Day(), gettext("Today")), align="center"))
         elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
         elems.append(E.p(monthly(Day(), gettext("This month")), align="center"))
 
@@ -1271,19 +1274,19 @@ class Days(dd.VirtualTable):
 
     @staticmethod
     def make_link_funcs(ar):
-        sar_dayly = ar.spawn(DailyView)
+        sar_daily = ar.spawn(DailyView)
         sar_weekly = ar.spawn(WeeklyView)
         sar_monthly = ar.spawn(MonthlyView)
-        sar_monthly.param_values = sar_weekly.param_values = sar_dayly.param_values = ar.param_values
+        sar_monthly.param_values = sar_weekly.param_values = sar_daily.param_values = ar.param_values
 
         def weekly(day, text):
             return settings.SITE.kernel.default_renderer.ar2button(sar_weekly,day,text, style="", icon_name=None)
-        def dayly(day, text):
-            return settings.SITE.kernel.default_renderer.ar2button(sar_dayly,day,text, style="", icon_name=None)
+        def daily(day, text):
+            return settings.SITE.kernel.default_renderer.ar2button(sar_daily,day,text, style="", icon_name=None)
         def monthly(day, text):
             return settings.SITE.kernel.default_renderer.ar2button(sar_monthly,day,text, style="", icon_name=None)
-        # dayly(Day(cls.date2pk(day)), str(day.day))
-        return dayly, weekly, monthly
+        # daily(Day(cls.date2pk(day)), str(day.day))
+        return daily, weekly, monthly
 
     @dd.htmlbox()
     def navigation(cls, obj, ar):
@@ -1397,7 +1400,7 @@ class Days(dd.VirtualTable):
 # Days.day_number.return_type.attname = 'day_number'
 
 
-class DailyView(CalView, Days):
+class DailyView(CalendarView, Days):
     label = _("Daily view")
     # hide_top_toolbar = True
 
@@ -1433,8 +1436,8 @@ class DailyPlannerRows(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 
-class DailyPlanner(CalView ,DailyPlannerRows):
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+class DailyPlanner(CalendarView, DailyPlannerRows):
+    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Daily planner")
     editable = False
     use_detail_params_value = True
@@ -1500,16 +1503,16 @@ class PlannerByDay(DailyPlanner):
         return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
 
 #########################Weekly########################"
-class WeeklyPlannerRows(CalView, dd.Table):
+class WeeklyPlanner(CalendarView, dd.Table):
     model = 'cal.DailyPlannerRow'
-    required_roles = dd.login_required(OfficeStaff)
+    # required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
     editable = False
     use_detail_params_value = True
 
     @classmethod
     def param_defaults(cls, ar, **kw):
-        kw = super(WeeklyPlannerRows, cls).param_defaults(ar, **kw)
+        kw = super(WeeklyPlanner, cls).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         return kw
 
@@ -1568,9 +1571,9 @@ class WeeklyPlannerRows(CalView, dd.Table):
 
 class WeeklyDetail(dd.DetailLayout):
     main = "body"
-    body = "weeklyNavigation:20 cal.WeeklyPlannerRows:80"
+    body = "weeklyNavigation:20 cal.WeeklyPlanner:80"
 
-class WeeklyView(CalView, Days):
+class WeeklyView(CalendarView, Days):
     label = _("Weekly view")
     detail_layout = 'cal.WeeklyDetail'
 
@@ -1583,9 +1586,8 @@ class WeeklyView(CalView, Days):
         return cls.calendar_navigation(obj, ar, mode='week')
 
 #########################Monthly########################
-class MonthlyPlannerRows(CalView, dd.VirtualTable):
-    # model = 'cal.MonthlyPlannerRow'
-    required_roles = dd.login_required(OfficeStaff)
+class MonthlyPlanner(CalendarView, dd.VirtualTable):
+    # required_roles = dd.login_required(OfficeStaff)
     label = _("Monthly planner")
     editable = False
     use_detail_params_value = True
@@ -1593,7 +1595,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
 
     @classmethod
     def get_data_rows(self, ar):
-        delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata  else 0
+        delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
         current_day = dd.today() + timedelta(days=delata_days)
         weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
         return weeks
@@ -1604,7 +1606,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
 
     @classmethod
     def unused_get_request_queryset(self, ar, **kwargs):
-        qs = super(MonthlyPlannerRows, self).get_request_queryset(ar, **kwargs)
+        qs = super(MonthlyPlanner, self).get_request_queryset(ar, **kwargs)
         if ar.rqdata:
             delata_days = int(ar.rqdata.get('mk', 0) or 0)
             current_day = dd.today() + timedelta(days=delata_days)
@@ -1614,7 +1616,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
 
     @classmethod
     def param_defaults(cls, ar, **kw):
-        kw = super(MonthlyPlannerRows, cls).param_defaults(ar, **kw)
+        kw = super(MonthlyPlanner, cls).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         return kw
 
@@ -1633,7 +1635,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
         Event = rt.models.cal.Event
 
         def get_week_number(fld, obj, ar):
-            # obj is the MonthlyPlannerRow instance
+            # obj is the MonthlyPlanner instance
             pv = ar.param_values
             offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
             current_year = (dd.today() + timedelta(days=offset)).year
@@ -1642,7 +1644,7 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                 '%Y-W%W-%w').date()
 
             pk = date2pk(target_day)
-            dayly, weekly, monthly = Days.make_link_funcs(ar)
+            daily, weekly, monthly = Days.make_link_funcs(ar)
             # E.h3(str(target_day),align="center")
             link = weekly(Day(pk),_("Week {}").format(str(obj)) )
             return E.div(*[link])
@@ -1661,11 +1663,11 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
                                        pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
-                chunks = [E.p(e.obj2href(ar, cls.fmt(e,pv))) for e in qs]
+                chunks = [E.p(e.obj2href(ar, cls.fmt(e, pv))) for e in qs]
 
                 pk = date2pk(target_day)
-                dayly, weekly, monthly = Days.make_link_funcs(ar)
-                link = E.h3(dayly(Day(pk),str(target_day.day)),align="center")
+                daily, weekly, monthly = Days.make_link_funcs(ar)
+                link = E.h3(daily(Day(pk),str(target_day.day)),align="center")
                 return E.div(*[link,E.div(*join_elems(chunks))],
                              CLASS="cal-month-cell {} {}".format(
                                  "current-month" if current_date.month == target_day.month else "other-month",
@@ -1679,9 +1681,10 @@ class MonthlyPlannerRows(CalView, dd.VirtualTable):
 
 class MonthlyDetail(dd.DetailLayout):
     main = "body"
-    body = "monthlyNavigation:20 cal.MonthlyPlannerRows:80"
+    body = "monthlyNavigation:20 cal.MonthlyPlanner:80"
 
-class MonthlyView(CalView, Days):
+
+class MonthlyView(CalendarView, Days):
     label = _("Monthly view")
     detail_layout = 'cal.MonthlyDetail'
 

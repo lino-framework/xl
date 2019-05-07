@@ -45,6 +45,7 @@ class Plugin(ad.Plugin):
         
     def setup_main_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
+
         m.add_action('cal.MyEntries')  # string spec to allow overriding
         m.add_action('cal.OverdueAppointments')
         m.add_action('cal.MyUnconfirmedAppointments')
@@ -57,16 +58,10 @@ class Plugin(ad.Plugin):
         m.add_action('cal.MyPresences')
         m.add_action('cal.MyOverdueAppointments')
         # m.add_action('cal.DailyPlanner')
-        if site.is_installed('presto'):  # temporary
-            # m.add_action('cal.DailyView')
-            # a = site.models.cal.DailyView
-            # m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action)
 
-            a = site.models.cal.WeeklyView
-            m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action, label=_("Calendar view"))
-
-        # m.add_action('cal.LastWeek')
-        # m.add_action('cal.ComingWeek')
+        # a = site.models.cal.WeeklyView
+        a = site.models.cal.MonthlyView
+        m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action, label=_("Calendar view"))
 
     def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)

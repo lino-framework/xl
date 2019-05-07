@@ -21,6 +21,15 @@ Removed the changed handler for :attr:`lino_xl.lib.cal.Event.end_time` because i
 
 Released Lino XL 19.5.1 to PyPI.
 
+Minor changes in :mod:`lino_xl.lib.cal`:
+The new calendar views are now visible for all applications (no longer only presto).
+The required roles for all calendar views say that
+you must be CalendarUser or CalendarOperator (or both).
+The default calendar view is now monthly instead of weekly.
+Restored :meth:`Event.__str__` from previous version.
+Renamed some classes (e.g. "CalView" became "CalendarView").
+
+
 
 2019-05-06
 ==========

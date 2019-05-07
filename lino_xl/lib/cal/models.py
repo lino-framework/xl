@@ -528,13 +528,16 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             s = self._meta.verbose_name + " #" + str(self.pk)
         else:
             s = _("Unsaved %s") % self._meta.verbose_name
-        u = self.user
-        if u is None and self.room:
-            u = self.room
-        if u is None:
-            return '%s object (%s)' % (self.__class__.__name__, self.pk)
-        u = u.initials or u.username or str(u)
-        s = "{} ({})".format(s, u)
+        when = self.strftime()
+        if when:
+            s = "{} ({})".format(s, when)
+        # u = self.user
+        # if u is None and self.room:
+        #     u = self.room
+        # if u is None:
+        #     return '%s object (%s)' % (self.__class__.__name__, self.pk)
+        # u = u.initials or u.username or str(u)
+        # s = "{} ({})".format(s, u)
         return s
         # if e.start_time:
         #     t = str(e.start_time)[:5]
