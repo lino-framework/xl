@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-06 14:53+0300\n"
-"PO-Revision-Date: 2019-05-06 14:57+0300\n"
+"PO-Revision-Date: 2019-05-08 16:03+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -5970,12 +5970,11 @@ msgstr "Details Bestätigung"
 
 #: lino_xl/lib/phones/choicelists.py:50
 msgid "Contact detail type"
-msgstr ""
+msgstr "Kontaktangabenart"
 
 #: lino_xl/lib/phones/choicelists.py:51
-#, fuzzy
 msgid "Contact detail types"
-msgstr "Details Bestätigung"
+msgstr "Kontaktangabenarten"
 
 #: lino_xl/lib/phones/choicelists.py:55
 #, fuzzy
@@ -5983,9 +5982,8 @@ msgid "E-Mail"
 msgstr "E-Mail senden"
 
 #: lino_xl/lib/phones/choicelists.py:56
-#, fuzzy
 msgid "Mobile"
-msgstr "Bezeichnung"
+msgstr "Handy"
 
 #: lino_xl/lib/phones/choicelists.py:58
 msgid "Website"
@@ -5996,29 +5994,24 @@ msgid "Fax"
 msgstr ""
 
 #: lino_xl/lib/phones/models.py:28
-#, fuzzy
 msgid "Contact detail"
-msgstr "Details Bestätigung"
+msgstr "Kontaktangabe"
 
 #: lino_xl/lib/phones/models.py:29 lino_xl/lib/phones/models.py:104
-#, fuzzy
 msgid "Contact details"
-msgstr "Details Bestätigung"
+msgstr "Kontaktangaben"
 
 #: lino_xl/lib/phones/models.py:39
-#, fuzzy
 msgid "Until"
-msgstr "bis"
+msgstr "Bis"
 
 #: lino_xl/lib/phones/models.py:119
-#, fuzzy
 msgid "No contact details"
-msgstr "Details Bestätigung"
+msgstr "Keine Kontaktangaben"
 
 #: lino_xl/lib/phones/models.py:145
-#, fuzzy
 msgid "Manage contact details"
-msgstr "Details Bestätigung"
+msgstr "Kontaktangaben verwalten"
 
 #: lino_xl/lib/phones/models.py:152
 msgid "Check for mismatches between contact details and owner"
