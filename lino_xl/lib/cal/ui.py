@@ -1237,7 +1237,8 @@ class Days(dd.VirtualTable):
             E.span(E.span("{} {}".format(monthname(today.month), today.year), E.br(), monthly_div)),
             current_view(next_view, ">"), " ", current_view(next_month, ">>")]
         elems.append(E.h2(*header, align="center"))
-        rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in " MTWTFSS"], align='center')]
+        weekdaysFirstLetter = " " + "".join([gettext(week.text)[0] for week in Weekdays.objects()])
+        rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in weekdaysFirstLetter], align='center')]
         for week in CALENDAR.monthdatescalendar(today.year, today.month):
             # each week is a list of seven datetime.date objects.
             cells = []
