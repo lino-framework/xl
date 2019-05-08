@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-05-08 23:33+0300\n"
-"PO-Revision-Date: 2019-05-08 23:34+0300\n"
+"PO-Revision-Date: 2019-05-08 23:49+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -6337,14 +6337,12 @@ msgid "Category"
 msgstr "Kategorie"
 
 #: lino_xl/lib/products/models.py:166
-#, fuzzy
 msgid "Price rule"
-msgstr "Verkaufsregel"
+msgstr "Preisregel"
 
 #: lino_xl/lib/products/models.py:167
-#, fuzzy
 msgid "Price rules"
-msgstr "Verkaufsregeln"
+msgstr "Preisregeln"
 
 #: lino_xl/lib/properties/__init__.py:24 lino_xl/lib/properties/models.py:208
 msgid "Properties"
