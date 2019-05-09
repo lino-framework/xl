@@ -1120,14 +1120,15 @@ class CalendarView(object):
     abstract = False
     use_detail_param_panel = True
     params_panel_hidden = False
+    display_mode = "html"
 
 
     @classmethod
     def setup_parameters(cls, fields):
         cls.params_layout = rt.models.cal.Event.cal_params_layout
         cls.parameters = rt.models.cal.Event.parameters
-        cls.calendar_param_filter = rt.models.cal.Event.calendar_param_filter
-        cls.fmt = rt.models.cal.Event.calendar_fmt
+        cls.calendar_param_filter = staticmethod(rt.models.cal.Event.calendar_param_filter)
+        cls.calendar_fmt = rt.models.cal.Event.calendar_fmt
         super(CalendarView, cls).setup_parameters(rt.models.cal.Event.parameters)
 
 
@@ -1223,7 +1224,10 @@ class Days(dd.VirtualTable):
             # each week is a list of seven datetime.date objects.
             pk = cls.date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month ))
             if today.month == int(month.value):
-                cells.append(E.td(E.b(str(month))))
+                if not month_view:
+                    cells.append(E.td(E.b(monthly(Day(pk), str(month)))))
+                else:
+                    cells.append(E.td(E.b(str(month))))
             else:
                 cells.append(E.td(monthly(Day(pk), str(month))))
             if (i +1) % 3 == 0:
@@ -1477,7 +1481,7 @@ class DailyPlanner(CalendarView, DailyPlannerRows):
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, cls.fmt(e,pv)) for e in qs]
+                chunks = [e.obj2href(ar, cls.calendar_fmt(e,pv)) for e in qs]
                 return E.p(*join_elems(chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
@@ -1524,7 +1528,7 @@ class WeeklyPlanner(CalendarView, dd.Table):
             self.add_virtual_field('vc' + str(i), vf)
             names += ' ' + vf.name + ':20'
 
-        self.column_names = "overview {}".format(names)
+        self.column_names = "overview:4 {}".format(names)
 
     @classmethod
     def get_ventilated_columns(cls):
@@ -1540,13 +1544,12 @@ class WeeklyPlanner(CalendarView, dd.Table):
                 # qs = Event.objects.filter(event_type__planner_column=pc)
                 qs = cls.calendar_param_filter(qs, pv)
 
-                if ar.rqdata:
-                    delata_days = int(ar.rqdata.get('mk', 0) or 0)
-                    current_day = dd.today() + timedelta(days=delata_days)
-                    current_week_day = current_day + \
-                        timedelta(days=int(pc.value) -
-                                  current_day.weekday() - 1)
-                    qs = qs.filter(start_date=current_week_day)
+                delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
+                current_day = dd.today() + timedelta(days=delata_days)
+                current_week_day = current_day + \
+                    timedelta(days=int(pc.value) -
+                              current_day.weekday() - 1)
+                qs = qs.filter(start_date=current_week_day)
                 if obj.start_time:
                     qs = qs.filter(start_time__gte=obj.start_time,
                                    start_time__isnull=False)
@@ -1560,7 +1563,7 @@ class WeeklyPlanner(CalendarView, dd.Table):
                 else:
                     link = ''
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, cls.fmt(e,pv)) for e in qs]
+                chunks = [e.obj2href(ar, cls.calendar_fmt(e,pv)) for e in qs]
                 return E.div(*join_elems([link] + chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
@@ -1596,7 +1599,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
 
     @classmethod
     def get_data_rows(self, ar):
-        delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
+        delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
         current_day = dd.today() + timedelta(days=delata_days)
         weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
         return weeks
@@ -1626,7 +1629,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
         names = ''
         for i, vf in enumerate(self.get_ventilated_columns()):
             self.add_virtual_field('vc' + str(i), vf)
-            names += ' ' + vf.name + ':20'
+            names += ' ' + vf.name + (':20' if i != 0 else ":3")
 
         self.column_names = "{}".format(names)
 
@@ -1647,8 +1650,8 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
             pk = date2pk(target_day)
             daily, weekly, monthly = Days.make_link_funcs(ar)
             # E.h3(str(target_day),align="center")
-            link = weekly(Day(pk),_("Week {}").format(str(obj)) )
-            return E.div(*[link])
+            link = weekly(Day(pk),_("{}").format(str(obj)) )
+            return E.div(*[link], align="center")
 
         def w(pc, verbose_name):
             def func(fld, obj, ar):
@@ -1656,7 +1659,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                 pv = ar.param_values
                 qs = Event.objects.all()
                 qs = cls.calendar_param_filter(qs, pv)
-                offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
+                offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
                 today = dd.today()
                 current_date = (today + timedelta(days=offset))
                 target_day = datetime.strptime(
@@ -1664,11 +1667,14 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                                        pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
-                chunks = [E.p(e.obj2href(ar, cls.fmt(e, pv))) for e in qs]
+                chunks = [E.p(e.obj2href(ar, cls.calendar_fmt(e, pv))) for e in qs]
 
                 pk = date2pk(target_day)
                 daily, weekly, monthly = Days.make_link_funcs(ar)
-                link = E.h3(daily(Day(pk),str(target_day.day)),align="center")
+                header = daily(Day(pk),str(target_day.day))
+                if target_day == today:
+                    header = E.b(header)
+                link = E.div(header,align="center",CLASS="header")
                 return E.div(*[link,E.div(*join_elems(chunks))],
                              CLASS="cal-month-cell {} {}".format(
                                  "current-month" if current_date.month == target_day.month else "other-month",
