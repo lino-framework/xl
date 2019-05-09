@@ -37,7 +37,7 @@ from lino.mixins import Referrable
 from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns, EventEvents)
 
-from .choicelists import TaskStates, EntryStates, GuestStates
+from .choicelists import TaskStates, EntryStates, GuestStates, DisplayColors
 from .actions import UpdateGuests
     
 from .mixins import Component
@@ -140,6 +140,7 @@ class Room(mixins.BabelNamed, ContactRelated):
         verbose_name_plural = _("Rooms")
 
     description = dd.RichTextField(_("Description"), blank=True)
+    display_color = DisplayColors.field(default='blue')
 
 dd.update_field(
     Room, 'company', verbose_name=_("Responsible"))    
@@ -516,7 +517,10 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         # if u is None:
         #     return "{} {}".format(t, self.room) if self.room else t
         # u = u.initials or u.username or str(u)
-        return " ".join(t)
+        fmt= " ".join(t)
+        dd.logger.info(fmt)
+        return "RRRRRRRRRRRRRRRRRR"
+        return E.span(fmt,CLASS="background-blue")
         # return "{} {}".format(t, u)
 
     def __str__(self):

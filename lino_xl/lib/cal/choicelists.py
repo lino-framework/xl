@@ -17,6 +17,13 @@ from lino.utils.format_date import fds
 
 from .utils import day_and_month
 
+class DisplayColors(dd.ChoiceList):
+    verbose_name = _("Display Color")
+add = DisplayColors.add_item
+cssColos = 'red yellow cyan blue magenta'
+for color in cssColos.split():
+    add(color, _(color),color)
+
 class Weekdays(dd.ChoiceList):
     verbose_name = _("Weekday")
 add = Weekdays.add_item

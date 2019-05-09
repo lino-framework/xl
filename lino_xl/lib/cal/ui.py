@@ -55,7 +55,7 @@ class RemoteCalendars(dd.Table):
 class RoomDetail(dd.DetailLayout):
     main = """
     id name
-    company contact_person
+    company contact_person display_color
     description
     cal.EntriesByRoom
     """
@@ -68,7 +68,7 @@ class Rooms(dd.Table):
     model = 'cal.Room'
     detail_layout = "cal.RoomDetail"
     insert_layout = """
-    id name
+    id name display_color
     company
     contact_person
     """
@@ -1677,7 +1677,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         yield dd.VirtualField(dd.HtmlBox(_("Weeks")), get_week_number)
         for pc in Weekdays.objects():
-            yield w(pc, str(pc))
+            yield w(pc, pc.text)
 
 
 class MonthlyDetail(dd.DetailLayout):
