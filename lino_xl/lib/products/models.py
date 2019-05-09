@@ -9,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from lino.api import dd, rt
 from lino import mixins
 from lino.mixins import Sequenced
+from lino.mixins.duplicable import Duplicable
 
 from .choicelists import DeliveryUnits, ProductTypes, PriceFactors
 from .roles import ProductsUser, ProductsStaff
@@ -39,7 +40,7 @@ class ProductCats(dd.Table):
     """
 
 
-class Product(mixins.BabelNamed):
+class Product(mixins.BabelNamed, Duplicable):
 
     class Meta:
         app_label = 'products'

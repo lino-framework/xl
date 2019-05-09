@@ -104,25 +104,6 @@ application.  Default value is 'contacts.Person' (referring to
 lino_xl.lib.contacts.models.Person)."""),
     'lino_xl.lib.households.Plugin.adult_age' : _("""The age (in years) a person needs to have in order to be considered
 adult."""),
-    'lino_xl.lib.households.MemberDependencies' : _("""The list of allowed choices for the charge of a household member."""),
-    'lino_xl.lib.households.MemberRoles' : _("""The list of allowed choices for the (role of a household member."""),
-    'lino_xl.lib.households.Type' : _("""Type of a household.
-http://www.belgium.be/fr/famille/couple/cohabitation/"""),
-    'lino_xl.lib.households.Household' : _("""A Household is a Partner who represents several Persons living together.
-A Household has a list of members."""),
-    'lino_xl.lib.households.Household.get_full_name' : _("""Overrides
-lino_xl.lib.contacts.models.Partner.get_full_name()."""),
-    'lino_xl.lib.households.Household.full_name' : _("""Overrides
-lino_xl.lib.contacts.models.Partner.get_full_name()."""),
-    'lino_xl.lib.households.Member' : _("""A household membership represents the fact that a given person
-is (or has been) part of a given household."""),
-    'lino_xl.lib.households.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
-    'lino_xl.lib.households.Member.end_date' : _("""Until when this membership exists."""),
-    'lino_xl.lib.households.Member.full_clean' : _("""Copy data fields from child"""),
-    'lino_xl.lib.households.SiblingsByPerson' : _("""Displays the siblings of a given person in that person's active
-household."""),
-    'lino_xl.lib.households.SiblingsByPerson.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
-    'lino_xl.lib.households.SiblingsByPerson.model' : _("""alias of Member"""),
     'lino_xl.lib.humanlinks.Plugin' : _("""Extends lino.core.plugin.Plugin."""),
     'lino_xl.lib.humanlinks.Plugin.person_model' : _("""A string referring to the model which represents a human in your
 application.  Default value is 'contacts.Person' (referring to
@@ -980,6 +961,18 @@ provider."""),
     'lino_xl.lib.healthcare.HealthcareSubject' : _("""Model mixin which adds database fields about a given healthcare subject."""),
     'lino_xl.lib.healthcare.HealthcareSubject.healthcare_plan' : _("""The health care provider."""),
     'lino_xl.lib.healthcare.HealthcareSubject.healthcare_tariff' : _("""The health care tariff."""),
+    'lino_xl.lib.households.Household' : _("""Django model to represent a household."""),
+    'lino_xl.lib.households.Household.type' : _("""The type of this household.  See household types"""),
+    'lino_xl.lib.households.Household.create_household' : _("""Create a household with the given head, partner and type."""),
+    'lino_xl.lib.households.Type' : _("""Django model to represent the type of a household."""),
+    'lino_xl.lib.households.Member' : _("""Django model to represent a household membership."""),
+    'lino_xl.lib.households.Member.primary' : _("""Whether this is the primary household of this person.
+Checking this field will automatically disable any other primary memberships."""),
+    'lino_xl.lib.households.Member.start_date' : _("""Since when this membership exists. This is usually empty."""),
+    'lino_xl.lib.households.Member.end_date' : _("""Until when this membership exists."""),
+    'lino_xl.lib.households.PopulateMembers' : _("""Populate household members from data in human links."""),
+    'lino_xl.lib.households.MemberRoles' : _("""The list of allowed choices for the role of a household member."""),
+    'lino_xl.lib.households.MemberDependencies' : _("""The list of allowed choices for the charge of a household member."""),
     'lino_xl.lib.invoicing.InvoiceGenerator' : _("""Mixin for things that can generate invoices."""),
     'lino_xl.lib.invoicing.InvoiceGenerator.default_invoiceable_qty' : _("""The default quantity to invoice"""),
     'lino_xl.lib.invoicing.InvoiceGenerator.get_invoiceable_events' : _("""Return a Django query that represents the invoiceable events."""),

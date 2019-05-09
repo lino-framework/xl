@@ -1,21 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for managing households (i.e. groups of humans
 who live together in a same house).
 
-Technical specification see :ref:`lino.specs.households`.
-
-.. autosummary::
-   :toctree:
-
-    models
-    choicelists
-
-This plugin is being extended by :ref:`welfare` in
-:mod:`lino_welfare.modlib.households`.
+See :doc:`/specs/households`.
 
 """
 

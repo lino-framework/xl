@@ -2,9 +2,6 @@
 # Copyright 2012-2017 Luc Saffre
 #
 # License: BSD (see file COPYING for details)
-"""Database models for `lino_xl.lib.households`.
-
-"""
 
 from __future__ import unicode_literals
 import six
@@ -32,10 +29,6 @@ config = dd.plugins.households
 from .choicelists import child_roles, parent_roles
 
 class Type(mixins.BabelNamed):
-    """
-    Type of a household.
-    http://www.belgium.be/fr/famille/couple/cohabitation/
-    """
     class Meta:
         app_label = 'households'
         verbose_name = _("Household Type")
@@ -105,10 +98,6 @@ class PopulateMembers(dd.Action):
 
 @dd.python_2_unicode_compatible
 class Household(contacts.Partner):
-    """
-    A Household is a Partner who represents several Persons living together.
-    A Household has a list of :class:`members <Member>`.
-    """
     class Meta:
         app_label = 'households'
         abstract = dd.is_abstract_model(__name__, 'Household')
@@ -264,20 +253,6 @@ class HouseholdsByType(Households):
 
 @dd.python_2_unicode_compatible
 class Member(mixins.DateRange, mixins.Human, mixins.Born):
-    """A **household membership** represents the fact that a given person
-    is (or has been) part of a given household.
-
-    .. attribute:: start_date
-
-        Since when this membership exists. This is usually empty.
-
-    .. attribute:: end_date
-
-        Until when this membership exists.
-
-
-    """
-
     class Meta:
         app_label = 'households'
         abstract = dd.is_abstract_model(__name__, 'Member')
@@ -295,13 +270,7 @@ class Member(mixins.DateRange, mixins.Human, mixins.Born):
     dependency = MemberDependencies.field(
         default=MemberDependencies.as_callable('none'))
 
-    primary = models.BooleanField(
-        _("Primary"),
-        default=False,
-        help_text=_(
-            "Whether this is the primary household of this person. "
-            "Checking this field will automatically disable any "
-            "other primary memberships."))
+    primary = models.BooleanField(_("Primary"), default=False)
 
     def full_clean(self):
         """Copy data fields from child"""
@@ -418,20 +387,6 @@ class MembersByHousehold(Members):
 
 
 class SiblingsByPerson(Members):
-    """Displays the siblings of a given person in that person's active
-    household.
-
-    The active household is determined as follows:
-
-      - If the person has only one household, use this.
-      - Otherwise, if one household is marked as primary, use this.
-      - Otherwise, if there is exactly one membership whose end_date is
-        either empty or in the future, take this.
-
-    If no active household can be determined, the panel just displays
-    an apporpriate message.
-
-    """
     label = _("Household composition")
     required_roles = dd.login_required(ContactsUser)
     master = config.person_model
