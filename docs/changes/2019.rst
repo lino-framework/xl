@@ -25,6 +25,9 @@ on class.
 
 Show full description when hovering over the truncated text
 
+Released Lino XL 19.5.3 to PyPI.
+
+
 2019-05-08
 ==========
 
