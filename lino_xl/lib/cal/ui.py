@@ -1146,7 +1146,7 @@ class Day(TableRow):
 
 class DayDetail(dd.DetailLayout):
     main = "body"
-    body = "navigation:20 cal.PlannerByDay:80"
+    body = "navigation:15 cal.PlannerByDay:85"
 
 
 class Days(dd.VirtualTable):
@@ -1454,7 +1454,7 @@ class DailyPlanner(CalendarView, DailyPlannerRows):
             self.add_virtual_field('vc' + str(i), vf)
             names += ' ' + vf.name + ':20'
 
-        self.column_names = "overview {}".format(names)
+        self.column_names = "overview:3 {}".format(names)
 
         # ~ logger.info("20131114 setup_columns() --> %s",self.column_names)
 
@@ -1575,7 +1575,7 @@ class WeeklyPlanner(CalendarView, dd.Table):
 
 class WeeklyDetail(dd.DetailLayout):
     main = "body"
-    body = "weeklyNavigation:20 cal.WeeklyPlanner:80"
+    body = "weeklyNavigation:15 cal.WeeklyPlanner:85"
 
 class WeeklyView(CalendarView, Days):
     label = _("Weekly view")
@@ -1676,12 +1676,12 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                     header = E.b(header)
                 link = E.div(header,align="center",CLASS="header")
 
-                return E.table(E.tr(E.td(*[link,E.div(*join_elems(chunks))], CLASS="cal-month-cell {} {} {}".format(
+                return E.table(E.tr(E.td(*[link,E.div(*join_elems(chunks))])),
+                               CLASS="fixed-table cal-month-cell {} {} {}".format(
                                  "current-month" if current_date.month == target_day.month else "other-month",
                                  "current-day" if target_day == today else "",
-                                 "cal-in-past" if current_date < today else ""
-                             ))),
-                               CLASS="fixed-table")
+                                 "cal-in-past" if target_day < today else ""
+                             ))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         yield dd.VirtualField(dd.HtmlBox(_("Weeks")), get_week_number)
@@ -1691,7 +1691,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
 
 class MonthlyDetail(dd.DetailLayout):
     main = "body"
-    body = "monthlyNavigation:20 cal.MonthlyPlanner:80"
+    body = "monthlyNavigation:15 cal.MonthlyPlanner:85"
 
 
 class MonthlyView(CalendarView, Days):
