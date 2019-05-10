@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -35,7 +35,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
 from lino.mixins import Referrable
 from .choicelists import (
-    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns, EventEvents)
+    DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns, EventEvents, DisplayColors)
 
 from .choicelists import TaskStates, EntryStates, GuestStates
 from .actions import UpdateGuests
@@ -154,7 +154,7 @@ dd.update_field(
 #     ref = models.CharField(max_length=1)
 
 
-@dd.python_2_unicode_compatible
+# @dd.python_2_unicode_compatible
 class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     templates_group = 'cal/Event'
     ref_max_length = 4
@@ -195,12 +195,16 @@ class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     default_duration = dd.DurationField(
         _("Default duration"), blank=True, null=True)
 
-    def __str__(self):
-        # when selecting an Event.event_type it is more natural to
-        # have the event_label. It seems that the current `name` field
-        # is actually never used.
-        return settings.SITE.babelattr(self, 'event_label') \
-            or settings.SITE.babelattr(self, 'name')
+    # in presto the special handling seems wrong: we have "inside work" and
+    # "outside" works, both are shown to the client as "deployment", but when
+    # defining price rules we want to see their real name.
+
+    # def __str__(self):
+    #     # when selecting an Event.event_type it is more natural to
+    #     # have the event_label. It seems that the current `name` field
+    #     # is actually never used.
+    #     return settings.SITE.babelattr(self, 'event_label') \
+    #         or settings.SITE.babelattr(self, 'name')
 
 
 class GuestRole(mixins.BabelNamed, Referrable):
