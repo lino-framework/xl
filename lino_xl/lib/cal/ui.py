@@ -1675,10 +1675,13 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                 if target_day == today:
                     header = E.b(header)
                 link = E.div(header,align="center",CLASS="header")
-                return E.div(*[link,E.div(*join_elems(chunks))],
-                             CLASS="cal-month-cell {} {}".format(
+
+                return E.table(E.tr(E.td(*[link,E.div(*join_elems(chunks))], CLASS="cal-month-cell {} {} {}".format(
                                  "current-month" if current_date.month == target_day.month else "other-month",
-                                 "current-day" if target_day == today else ""))
+                                 "current-day" if target_day == today else "",
+                                 "cal-in-past" if current_date < today else ""
+                             ))),
+                               CLASS="fixed-table")
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
         yield dd.VirtualField(dd.HtmlBox(_("Weeks")), get_week_number)
