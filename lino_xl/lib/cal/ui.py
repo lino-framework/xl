@@ -1667,7 +1667,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                                        pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
-                chunks = [E.p(e.obj2href(ar, cls.calendar_fmt(e, pv))) for e in qs]
+                chunks = [E.p(e.obj2href(ar, cls.calendar_fmt(e, pv), title=rt.models.cal.Event.long_fmt(e, pv))) for e in qs]
 
                 pk = date2pk(target_day)
                 daily, weekly, monthly = Days.make_link_funcs(ar)
