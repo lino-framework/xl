@@ -20,7 +20,7 @@ from .utils import day_and_month
 class DisplayColors(dd.ChoiceList):
     verbose_name = _("Display Color")
 add = DisplayColors.add_item
-cssColos = 'red yellow cyan blue magenta'
+cssColos = 'White Silver Gray Black Red Maroon Yellow Olive Lime Green Aqua Teal Blue Navy Fuchsia Purple'
 for color in cssColos.split():
     add(color, _(color),color)
 

@@ -27,7 +27,7 @@ from lino.modlib.notify.mixins import ChangeNotifier
 
 from lino_xl.lib.xl.choicelists import Priorities
 
-from .choicelists import Recurrencies, Weekdays, AccessClasses, EntryStates
+from .choicelists import Recurrencies, Weekdays, AccessClasses, EntryStates, DisplayColors
 from .utils import day_and_month, day_and_weekday
 from .actions import UpdateAllGuests
 # from .roles import CalendarOperator
@@ -826,4 +826,21 @@ Whether this is private, public or between."""))  # iCal:CLASS
 
 
 #~ Component.owner.verbose_name = _("Automatically created by")
+
+class Colored(dd.Model):
+    """
+    Base class for models that define a color.
+
+    """
+    class Meta(object):
+        abstract = True
+
+    display_color = DisplayColors.field("Color",default='Blue')
+
+    def get_diplay_color(self):
+        """
+        Return the names of the css classes which defines color
+        """
+        return self.display_color
+        
 

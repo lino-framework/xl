@@ -37,10 +37,10 @@ from lino.mixins import Referrable
 from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns, EventEvents)
 
-from .choicelists import TaskStates, EntryStates, GuestStates, DisplayColors
+from .choicelists import TaskStates, EntryStates, GuestStates
 from .actions import UpdateGuests
     
-from .mixins import Component
+from .mixins import Component,Colored
 from .mixins import EventGenerator, RecurrenceSet, Reservation
 from .mixins import Ended
 from .mixins import MoveEntryNext, UpdateEntries, UpdateEntriesByEvent
@@ -132,7 +132,7 @@ class RemoteCalendar(mixins.Sequenced):
         super(RemoteCalendar, self).save(*args, **kw)
 
 
-class Room(mixins.BabelNamed, ContactRelated):
+class Room(mixins.BabelNamed, ContactRelated, Colored):
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Room')
@@ -140,7 +140,6 @@ class Room(mixins.BabelNamed, ContactRelated):
         verbose_name_plural = _("Rooms")
 
     description = dd.RichTextField(_("Description"), blank=True)
-    display_color = DisplayColors.field(default='blue')
 
 dd.update_field(
     Room, 'company', verbose_name=_("Responsible"))    
