@@ -42,8 +42,6 @@ SETUP_INFO = dict(
 
 SETUP_INFO.update(long_description="""
 
-.. raw:: html
-
     <a href="https://travis-ci.org/lino-framework/xl" target="_blank"><img
     src="https://travis-ci.org/lino-framework/xl.svg?branch=master"/></a>
 
