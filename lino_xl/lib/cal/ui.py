@@ -1481,7 +1481,7 @@ class DailyPlanner(CalendarView, DailyPlannerRows):
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, e.calendar_fmt(pv)) for e in qs]
+                chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
                 return E.p(*join_elems(chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
@@ -1563,7 +1563,7 @@ class WeeklyPlanner(CalendarView, dd.Table):
                 else:
                     link = ''
                 qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, e.calendar_fmt(pv)) for e in qs]
+                chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
                 return E.div(*join_elems([link] + chunks))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
@@ -1667,7 +1667,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                                        pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
-                chunks = [E.p(e.obj2href(ar, e.calendar_fmt(pv))) for e in qs]
+                chunks = [E.p(e.obj2href(ar, e.colored_calendar_fmt(pv))) for e in qs]
 
                 pk = date2pk(target_day)
                 daily, weekly, monthly = Days.make_link_funcs(ar)

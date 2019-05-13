@@ -837,10 +837,3 @@ class Colored(dd.Model):
 
     display_color = DisplayColors.field("Color",default='Blue')
 
-    def get_diplay_color(self):
-        """
-        Return the names of the css classes which defines color
-        """
-        return self.display_color
-        
-

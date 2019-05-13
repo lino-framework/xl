@@ -496,6 +496,10 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         else:
             return d
 
+    def get_diplay_color(self):
+        if self.room:
+            return self.room.display_color
+
     def calendar_fmt(self,pv):
         # if pv.user:
         # if pv.assigned_to:
@@ -520,11 +524,19 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         # if u is None:
         #     return "{} {}".format(t, self.room) if self.room else t
         # u = u.initials or u.username or str(u)
-        fmt= " ".join(t)
-        dd.logger.info(fmt)
-        return "RRRRRRRRRRRRRRRRRR"
-        return E.span(fmt,CLASS="background-blue")
+        return E.span(" ".join(t))
         # return "{} {}".format(t, u)
+
+    def colored_calendar_fmt(self,pv):
+        ele = E.span(self.calendar_fmt(pv))
+        data_color = self.get_diplay_color()
+        if data_color:
+            dot  = E.span(u"\u00A0",CLASS="dot")
+            # ele.attrib['style'] = "color: white;background-color: {};".format(data_color)
+            dot.attrib['style'] = "background-color: {};".format(data_color)
+            return E.div(*[dot,ele])
+        else:
+            return E.div(*[ele])
 
     def __str__(self):
         if self.summary:
