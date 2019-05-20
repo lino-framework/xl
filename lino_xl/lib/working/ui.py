@@ -18,7 +18,7 @@ from lino.api import dd, rt, _
 from lino_xl.lib.tickets.ui import Tickets
 
 from lino.utils import ONE_DAY
-from etgen.html import E, join_elems
+from etgen.html import E, join_elems, forcetext
 from lino.utils.quantities import Duration
 from lino.modlib.system.choicelists import ObservedEvent
 from lino.mixins.periods import ObservedDateRange
@@ -258,6 +258,7 @@ class MySessionsByDay(MySessionsByDate):
 
     master = Day
     # display_mode = "html"
+    # use_detail_params_value = True
 
     @classmethod
     def get_master_instance(cls, ar, model, pk):
@@ -272,11 +273,10 @@ class MySessionsByDay(MySessionsByDate):
         pv.update(start_date=mi.date, end_date=mi.date)
         pv.update(observed_event=dd.PeriodEvents.started)
         if mi.ar is not None:
-            pv.update(user=mi.ar.get_user())
+            pv.update(user=mi.ar.get_user() if (mi.ar.param_values is None or
+                                                mi.ar.param_values.user is None
+                                                )else mi.ar.param_values.user)
         return super(MySessionsByDay, cls).get_request_queryset(ar, **flt)
-
-
-
 
 
 def load_sessions(self, sar):
@@ -696,6 +696,11 @@ class WorkedHours(Days, dd.VentilatingTable):
     model = Day
     detail_layout = DayDetail()
 
+    # parameters = Sessions.parameters
+    # params_layout = Sessions.params_layout
+    # use_detail_param_panel = True
+    # params_panel_hidden = False
+
     @dd.displayfield(_("Worked tickets"))
     def worked_tickets(self, obj, ar):
         # pv = dict(start_date=obj.day, end_date=obj.day)
@@ -740,4 +745,11 @@ class WorkedHours(Days, dd.VentilatingTable):
         yield w(TOTAL_KEY, _("Total"))
 
 
-
+    # @dd.displayfield(_("Description"))
+    # def detail_link(cls, obj, ar):
+    #     if ar is None:
+    #         return ''
+    #         # return str(self)
+    #     sar = ar.spawn(cls.detail_action)
+    #     sar.param_values = ar.param_values
+    #     return E.div(settings.SITE.kernel.default_renderer.ar2button(sar, obj ,str(obj), style="", icon_name=None))

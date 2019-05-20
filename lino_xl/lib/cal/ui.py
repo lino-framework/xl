@@ -21,7 +21,7 @@ from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
 from lino.utils import join_elems
-from etgen.html import E
+from etgen.html import E, forcetext
 
 from .choicelists import TaskStates
 from .choicelists import GuestStates
@@ -1299,33 +1299,6 @@ class Days(dd.VirtualTable):
     @dd.htmlbox()
     def navigation(cls, obj, ar):
         return cls.calendar_navigation(obj, ar,mode='day')
-
-        today = obj.date
-        prev = cls.date2pk(DurationUnits.months.add_duration(today, -1))
-        next = cls.date2pk(DurationUnits.months.add_duration(today, 1))
-        elems = cls.calender_header(ar)
-        header = [
-            ar.goto_pk(prev, "<<"), " ",
-            "{} {}".format(monthname(today.month), today.year),
-            " ", ar.goto_pk(next, ">>")]
-        elems.append(E.h2(*header, align="center"))
-        rows = []
-        for week in CALENDAR.monthdatescalendar(today.year, today.month):
-            # each week is a list of seven datetime.date objects.
-            cells = []
-            for day in week:
-                pk = cls.date2pk(day)
-                if day == today:
-                    cells.append(E.td(str(day.day)))
-                else:
-                    cells.append(E.td(ar.goto_pk(pk, str(day.day))))
-            rows.append(E.tr(*cells, align="center"))
-        elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(ar.goto_pk(0, gettext("Today")), align="center"))
-        # for o in range(-10, 10):
-        #     elems.append(ar.goto_pk(o, str(o)))
-        #     elems.append(" ")
-        return E.div(*elems)
 
     @classmethod
     def date2pk(cls, dt):
