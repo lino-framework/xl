@@ -1122,6 +1122,9 @@ class CalendarView(object):
     params_panel_hidden = False
     display_mode = "html"
 
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        return []  # not needed for detail view
 
     @classmethod
     def setup_parameters(cls, fields):
@@ -1347,7 +1350,7 @@ class Days(dd.VirtualTable):
 
     @classmethod
     def get_request_queryset(cls, ar, **filter):
-        return []  # not needed for detail view
+        # return []  # not needed for detail view
         days = []
         pv = ar.param_values
         sd = pv.start_date or dd.today()
