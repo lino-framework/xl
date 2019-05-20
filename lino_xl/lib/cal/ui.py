@@ -1123,10 +1123,6 @@ class CalendarView(object):
     display_mode = "html"
 
     @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        return []  # not needed for detail view
-
-    @classmethod
     def setup_parameters(cls, fields):
         cls.params_layout = rt.models.cal.Event.cal_params_layout
         cls.parameters = rt.models.cal.Event.parameters
@@ -1540,7 +1536,8 @@ class WeeklyPlanner(CalendarView, dd.Table):
                     link = ''
                 qs = qs.order_by('start_time')
                 chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
-                return E.div(*join_elems([link] + chunks))
+                return E.table(E.tr(E.td(E.div(*join_elems([link] + chunks)))),
+                               CLASS="fixed-table")
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
 
