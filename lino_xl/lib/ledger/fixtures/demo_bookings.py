@@ -91,7 +91,7 @@ def objects():
     PAYMENT_TERMS = Cycler(PaymentTerm.objects.all())
     if len(PAYMENT_TERMS) == 0:
         raise Exception("No PAYMENT_TERMS.")
-    
+
     while date < end_date:
 
         for story in PURCHASE_STORIES:
@@ -100,7 +100,7 @@ def objects():
                 cl = rt.models.ana.AnaAccountInvoice
             else:
                 cl = rt.models.vat.VatAccountInvoice
-                
+
             invoice = cl(
                 journal=JOURNAL_P, partner=story[0], user=USERS.pop(),
                 voucher_date=vd,
