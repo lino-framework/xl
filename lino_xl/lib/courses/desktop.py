@@ -653,7 +653,8 @@ class EnrolmentsByCourse(Enrolments):
     request_date user
     """
 
-    label = _("Participants")
+    # label = _("Participants")
+    label = _("Enrolments")
 
     # @classmethod
     # def get_actor_label(self):

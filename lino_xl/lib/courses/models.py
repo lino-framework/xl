@@ -555,7 +555,8 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
     #~ teacher = dd.ForeignKey(Teacher)
     course = dd.ForeignKey('courses.Course')
     pupil = dd.ForeignKey(
-        pupil_model, related_name="enrolments_by_pupil")
+        pupil_model, verbose_name=_("Participant"),
+        related_name="enrolments_by_pupil")
     request_date = models.DateField(
         _("Date of request"), default=dd.today)
     state = EnrolmentStates.field(default='requested')
