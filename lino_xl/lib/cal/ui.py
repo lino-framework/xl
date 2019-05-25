@@ -1115,7 +1115,8 @@ class CalendarView(object):
     Mixin for Calender views:
     """
 
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(OfficeUser)
     reverse_sort_order = False
     abstract = False
     use_detail_param_panel = True

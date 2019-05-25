@@ -12,6 +12,11 @@ Changes 2019 in Lino XL
 .. contents::
   :local:
 
+2019-05-25
+==========
+
+Some subtle optimizations: translations, permissions
+
 2019-05-13
 ==========
 
@@ -19,7 +24,7 @@ Released Lino XL 19.5.4 to PyPI.
 
 A new method :meth:`Event.colored_calendar_fmt
 <lino_xl.lib.cal.Event.colored_calendar_fmt>` is used by the calender.This 
-method could be overrided for new need.
+method could be overridden for new need.
 
 2019-05-10
 ==========
@@ -36,6 +41,11 @@ Show full description when hovering over the truncated text
 
 Released Lino XL 19.5.3 to PyPI.
 
+
+2019-05-09
+==========
+
+New database field :attr:`lino_xl.lib.cal.Room.display_color`.
 
 2019-05-08
 ==========
