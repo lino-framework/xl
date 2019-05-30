@@ -16,6 +16,23 @@ Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
     'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of lino_xl.lib.addresses.mixins.AddressOwner"""),
+    'lino_xl.lib.b2c.Plugin' : _("""See lino.core.plugin.Plugin."""),
+    'lino_xl.lib.b2c.Plugin.import_statements_path' : _("""A path wildcard pointing to xml files which need to get imported."""),
+    'lino_xl.lib.b2c.Plugin.delete_imported_xml_files' : _("""This attribute define whether, Cosi have to delete the SEPA file
+after it get imported."""),
+    'lino_xl.lib.b2c.camt.BankTransaction' : _("""Single transaction that is part of a bank statement."""),
+    'lino_xl.lib.b2c.camt.BankStatement' : _("""A bank statement groups data about several bank transactions."""),
+    'lino_xl.lib.b2c.camt.BankStatement.create_transaction' : _("""Create and append transaction."""),
+    'lino_xl.lib.b2c.camt.CamtParser' : _("""Parser for camt bank statement import files."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse_date' : _(""" "Parse a <Bal> element for a <Dt>."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse_amount' : _("""Parse element that contains Amount and CreditDebitIndicator."""),
+    'lino_xl.lib.b2c.camt.CamtParser.add_value_from_node' : _("""Add value to object from first or all nodes found with xpath."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse_transaction_details' : _("""Parse transaction details (message, party, account...)."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse_transaction' : _("""Parse transaction (entry) node."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse_balance_amounts' : _("""Return opening and closing balance."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse_statement' : _("""Parse a single Stmt node."""),
+    'lino_xl.lib.b2c.camt.CamtParser.check_version' : _("""Validate validity of camt file."""),
+    'lino_xl.lib.b2c.camt.CamtParser.parse' : _("""Parse a camt.052 or camt.053 file."""),
     'lino_xl.lib.beid.Plugin' : _("""The lino.core.Plugin for this plugin."""),
     'lino_xl.lib.beid.Plugin.holder_model' : _("""The one and only model on this site which implements
 BeIdCardHolder."""),
@@ -384,6 +401,9 @@ etree element."""),
     'lino_xl.lib.appypod.AppyRenderer.insert_table' : _("""This is the function that gets called when a template contains a
 do text from table(...) statement."""),
     'lino_xl.lib.appypod.AppyRenderer.story2odt' : _("""Yield a sequence of ODT chunks (as utf8 encoded strings)."""),
+    'lino_xl.lib.b2c.Account' : _("""Django model used to represent an imported bank account."""),
+    'lino_xl.lib.b2c.Statement' : _("""Django model used to represent aa statement of an imported bank account."""),
+    'lino_xl.lib.b2c.Transaction' : _("""Django model used to represent a transaction of an imported bank account."""),
     'lino_xl.lib.beid.SSIN' : _("""A mixin that adds two fields national_id and nationality."""),
     'lino_xl.lib.beid.SSIN.national_id' : _("""The SSIN. It is a nullable char field declared unique. It
 is not validated directly because that would cause problems
@@ -520,6 +540,8 @@ data of that year."""),
     'lino_xl.lib.cal.RemoteCalendar' : _("""Django model for representing a remote calendar."""),
     'lino_xl.lib.cal.Room' : _("""Django model for representing a room."""),
     'lino_xl.lib.cal.Room.name' : _("""The designation of the room. This is not required to be unique."""),
+    'lino_xl.lib.cal.Room.display_color' : _("""The color to use when displaying entries in this room in the calendar
+view."""),
     'lino_xl.lib.cal.Rooms' : _("""Base class for all list of rooms."""),
     'lino_xl.lib.cal.AllRooms' : _("""Show a list of all rooms."""),
     'lino_xl.lib.cal.RoomDetail' : _("""The detail layout for Rooms and subclasses."""),
@@ -576,6 +598,7 @@ weekdays where the recurrence occurs."""),
     'lino_xl.lib.cal.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
 lino.modlib.courses.models.Course."""),
     'lino_xl.lib.cal.Reservation.max_date' : _("""Don't generate calendar entries beyond this date."""),
+    'lino_xl.lib.cal.DisplayColors' : _("""A list of colors to be specified for displaying."""),
     'lino_xl.lib.cal.Weekdays' : _("""A choicelist with the seven days of a week."""),
     'lino_xl.lib.cal.DurationUnits' : _("""The list of possible duration units defined by this application."""),
     'lino_xl.lib.cal.DurationUnit' : _("""Base class for the choices in the DurationUnits
@@ -1412,7 +1435,7 @@ not installed, vat_class is a dummy field."""),
     'lino_xl.lib.sepa.Account.partner' : _("""Partner"""),
     'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported
 statement for this account. Clicking on this date will open
-the B2C account <lino_cosi.lib.b2c.models.Account> with same
+the B2C account <lino_xl.lib.b2c.models.Account> with same
 IBAN number."""),
     'lino_xl.lib.sepa.AccountsByPartner' : _("""Show the bank account(s) defined for a given partner. To be
 included to a detail window on partner."""),

@@ -88,6 +88,8 @@ lino_xl.lib.addresses
 lino_xl.lib.addresses.fixtures
 lino_xl.lib.ana
 lino_xl.lib.ana.fixtures
+lino_xl.lib.b2c
+lino_xl.lib.b2c.fixtures
 lino_xl.lib.appypod
 lino_xl.lib.beid
 lino_xl.lib.blogs

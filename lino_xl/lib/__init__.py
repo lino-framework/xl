@@ -108,6 +108,7 @@ Accounting stuff
 .. autosummary::
    :toctree:
 
+    b2c
     ledger
     sales
     finan
