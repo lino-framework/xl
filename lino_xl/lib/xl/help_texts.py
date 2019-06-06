@@ -138,8 +138,14 @@ father (mother). [thefreedictionary]"""),
     'lino_xl.lib.humanlinks.Link.parent' : _("""Pointer to the person who is "parent"."""),
     'lino_xl.lib.humanlinks.Link.child' : _("""Pointer to the person who is "child"."""),
     'lino_xl.lib.humanlinks.Link.type' : _("""The type of link.  Pointer to LinkTypes."""),
+    'lino_xl.lib.humanlinks.Link.check_autocreate' : _("""Check whether there is a human link of type "parent" between the
+given persons. Create one if not. If the child has already
+another parent of same sex, then it becomes a foster child,
+otherwise a natural child."""),
     'lino_xl.lib.humanlinks.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
     'lino_xl.lib.humanlinks.LinksByHuman.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
+    'lino_xl.lib.humanlinks.LinksByHuman.get_table_summary' : _("""The summary view
+for LinksByHuman."""),
     'lino_xl.lib.humanlinks.LinksByHuman.model' : _("""alias of Link"""),
     'lino_xl.lib.ledger.fields.DcAmountField' : _("""An editable virtual PriceField to get and set both database fields
 amount and dc at once. It may be used only on
@@ -154,6 +160,11 @@ of a User."""),
 verifcation code, and that a username and password are set."""),
     'lino_xl.lib.online.users.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
     'lino_xl.lib.online.users.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
+    'lino_xl.lib.online.users.Person.full_clean' : _("""Set the name field of this person.  This field is visible in the
+Partner's detail but not in the Person's detail and serves for
+sorting when selecting a Partner.  It also serves for quick
+search on Persons."""),
+    'lino_xl.lib.online.users.Person.address_person_lines' : _("""Deserves more documentation."""),
     'lino_xl.lib.online.users.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
 checks certain things before accepting the new user."""),
     'lino_xl.lib.online.users.VerifyUser' : _("""Enter your verification code."""),
@@ -184,6 +195,7 @@ created."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
     'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.postings.dummy.PostingsByController' : _("""alias of lino.core.fields.DummyField"""),
     'lino_xl.lib.postings.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
 be one Posting for each recipient."""),
@@ -266,6 +278,12 @@ given User."""),
     'lino_xl.lib.stars.Star.owner' : _("""The starred database object"""),
     'lino_xl.lib.stars.Star.user' : _("""The starring user (pointer to :class:lino.modlib.users.models.User`"""),
     'lino_xl.lib.stars.Star.master' : _("""The starred object that caused this stared object"""),
+    'lino_xl.lib.stars.Star.for_obj' : _("""Return a queryset of Star instances for the given database
+object."""),
+    'lino_xl.lib.stars.Star.for_model' : _("""Return a queryset of Star instances for the given database
+model."""),
+    'lino_xl.lib.stars.Star.for_master_model' : _("""Return a queryset of master Star instances for the given database
+model."""),
     'lino_xl.lib.teams.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.tickets.Plugin' : _("""The descriptor for this plugin."""),
     'lino_xl.lib.tickets.Plugin.site_model' : _("""The model to be used for representing "sites"."""),
@@ -354,6 +372,7 @@ resolve using resolve_states."""),
     'lino_xl.lib.votes.Votes.filter_ticket_states' : _("""A set of ticket states to require (i.e. to filter upon). This
 must resolve using resolve_states."""),
     'lino_xl.lib.votes.Votes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.Votes.get_detail_title' : _("""Overrides the default beaviour"""),
     'lino_xl.lib.votes.MyVotes' : _("""Show all my votes."""),
     'lino_xl.lib.votes.MyVotes.model' : _("""alias of Vote"""),
     'lino_xl.lib.votes.MyInvitations' : _("""Show my votes in state invited."""),
@@ -365,6 +384,7 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.MyWatched' : _("""Show my votes in state watching"""),
     'lino_xl.lib.votes.MyWatched.model' : _("""alias of Vote"""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
+    'lino_xl.lib.votes.VotesByVotable.get_table_summary' : _("""Customized summary view for this table."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
     'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
@@ -1556,6 +1576,7 @@ movement into the vat_returnable_account."""),
 field is empty, then VAT will be added to the base account."""),
     'lino_xl.lib.vat.VatRules' : _("""The table of all VatRule objects."""),
     'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
+    'lino_xl.lib.vat.VatAreas.get_for_country' : _("""Return the VatArea instance for this country."""),
     'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
 amounts (not products, quantities, discounts)."""),
     'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
