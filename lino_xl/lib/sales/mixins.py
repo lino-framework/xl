@@ -8,7 +8,6 @@ from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 
-from lino.mixins.bleached import Bleached
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import HUNDRED
 from lino_xl.lib.ledger.choicelists import TradeTypes
@@ -69,15 +68,13 @@ def get_paper_type(obj):
         return sr.paper_type
 
 
-class ProductDocItem(QtyVatItemBase, Bleached):
+class ProductDocItem(QtyVatItemBase):
     class Meta:
         abstract = True
 
-    bleached_fields = ['description']
-
     product = dd.ForeignKey('products.Product', blank=True, null=True)
     description = dd.RichTextField(
-        _("Description"), blank=True, null=True)
+        _("Description"), blank=True, null=True, bleached=True)
     discount = dd.PercentageField(_("Discount"), blank=True, null=True)
 
     def get_base_account(self, tt):
