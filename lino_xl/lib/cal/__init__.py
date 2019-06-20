@@ -23,7 +23,7 @@ class Plugin(ad.Plugin):
                      'lino_xl.lib.xl', 'lino.modlib.checkdata']
 
     # partner_model = 'contacts.Partner'
-    partner_model = 'contacts.Person'
+    partner_model = 'contacts.Person'  # TODO: rename to "guest_model"
     ignore_dates_before = None
     ignore_dates_after = None
     beginning_of_time = None

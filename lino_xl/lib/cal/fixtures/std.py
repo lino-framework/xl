@@ -41,9 +41,18 @@ def objects():
     # yield settings.SITE.site_config
 
     event_type = Instantiator('cal.EventType').build
+
+    yield event_type(
+        planner_column=PlannerColumns.external,
+        is_appointment=True,
+        fill_presences=False,
+        max_days=0,
+        **dd.str2kw('name', _("Absences")))
+
     holidays = event_type(
         planner_column=PlannerColumns.external,
         is_appointment=False,
+        max_days=0,
         all_rooms=True, **dd.str2kw('name', _("Holidays")))
     yield holidays
     meeting = event_type(

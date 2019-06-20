@@ -39,7 +39,7 @@ def objects():
 
     #~ if settings.SITE.project_model:
         #~ PROJECTS = Cycler(settings.SITE.project_model.objects.all())
-    ETYPES = Cycler(EventType.objects.filter(is_appointment=True))
+    ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=True))
 
     def s2duration(s):
         h, m = map(int, s.split(':'))
@@ -69,7 +69,6 @@ def objects():
         dict(en='First meeting', de=u"Erstgespräch", fr=u"Première rencontre"),
         dict(en='Interview', de=u"Interview", fr=u"Interview")
     ))
-    #~ for i in range(20):
 
     date = settings.SITE.demo_date(-20)
     for i in range(60):
@@ -92,6 +91,21 @@ def objects():
         e.set_datetime('end', e.get_datetime('start')
                        + DURATIONS.pop())
         yield e
+
+    ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=False))
+    date = settings.SITE.demo_date(-2)
+    s = _("Absent for private reasons")
+    for i in range(10):
+        u = USERS.pop()
+        date += ONE_DAY
+        kw = dict(user=u,
+                  start_date=date,
+                  end_date=date + datetime.timedelta(days=(i%3)+1),
+                  event_type=ETYPES.pop(),
+                  summary=s)
+        kw.update(state=STATES.pop())
+        yield Event(**kw)
+
 
     # # some conflicting events
     # USERS = Cycler(rt.users.User.objects.all())

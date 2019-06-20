@@ -20,6 +20,7 @@ from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
+from django.utils.text import format_lazy
 
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
@@ -172,6 +173,7 @@ class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     all_rooms = models.BooleanField(_("Locks all rooms"), default=False)
     locks_user = models.BooleanField(_("Locks the user"), default=False)
     force_guest_states = models.BooleanField(_("Automatic presences"), default=False)
+    fill_presences = models.BooleanField(_("Fill presences"), default=True)
 
     start_date = models.DateField(
         verbose_name=_("Start date"),
@@ -183,8 +185,7 @@ class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
 
     max_conflicting = models.PositiveIntegerField(
         _("Simultaneous entries"), default=1)
-    max_days = models.PositiveIntegerField(
-        _("Maximum days"), default=1)
+    max_days = models.PositiveIntegerField(_("Maximum days"), default=1)
     transparent = models.BooleanField(_("Transparent"), default=False)
 
     planner_column = PlannerColumns.field(blank=True)
@@ -418,38 +419,41 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     show_conflicting = dd.ShowSlaveTable(ConflictingEvents)
     allow_merge_action = False
 
-    parameters = mixins.ObservedDateRange(
-        user=dd.ForeignKey(settings.SITE.user_model,
-                           verbose_name=_("Managed by"),
-                           blank=True, null=True,
-                           help_text=_("Only rows managed by this user.")),
-        project=dd.ForeignKey(settings.SITE.project_model,
-                              blank=True, null=True),
-        event_type=dd.ForeignKey('cal.EventType', blank=True, null=True),
-        room=dd.ForeignKey('cal.Room', blank=True, null=True),
-        assigned_to=dd.ForeignKey(settings.SITE.user_model,
-                                  verbose_name=_("Assigned to"),
-                                  blank=True, null=True,
-                                  help_text=_(
-                                      "Only events assigned to this user.")),
-        state=EntryStates.field(blank=True,
-                                help_text=_("Only rows having this state.")),
-        # unclear = models.BooleanField(_("Unclear events"))
-        observed_event=EventEvents.field(blank=True),
-        show_appointments=dd.YesNo.field(_("Appointments"), blank=True),
-        partner = dd.ForeignKey(dd.plugins.cal.partner_model,blank=True, null=True)
+    @classmethod
+    def setup_parameters(cls, params):
+        params.update(mixins.ObservedDateRange(
+            user=dd.ForeignKey(settings.SITE.user_model,
+                               verbose_name=_("Managed by"),
+                               blank=True, null=True),
+            event_type=dd.ForeignKey('cal.EventType', blank=True, null=True),
+            room=dd.ForeignKey('cal.Room', blank=True, null=True),
+            project=dd.ForeignKey(settings.SITE.project_model, blank=True, null=True),
+            assigned_to=dd.ForeignKey(settings.SITE.user_model,
+                                      verbose_name=_("Assigned to"),
+                                      blank=True, null=True),
+            state=EntryStates.field(blank=True),
+            # unclear = models.BooleanField(_("Unclear events"))
+            observed_event=EventEvents.field(blank=True),
+            show_appointments=dd.YesNo.field(_("Appointments"), blank=True),
+            presence_guest=dd.ForeignKey(
+                dd.plugins.cal.partner_model, verbose_name=_("Guest"),
+                blank=True, null=True)
+        ))
+        if settings.SITE.project_model:
+            params['project'].help_text = format_lazy(
+                _("Show only entries having this {project}."),
+                project=settings.SITE.project_model._meta.verbose_name)
+        return params
 
-    )
+    # params_layout = """
+    # start_date end_date observed_event state
+    # user assigned_to project event_type room show_appointments
+    # """
 
-    params_layout = """
-    start_date end_date observed_event state
-    user assigned_to project event_type room show_appointments
-    """
+    # cal_params_layout = """user event_type room project presence_guest"""
 
-    cal_params_layout = """user event_type room project partner"""
-
-    @staticmethod
-    def calendar_param_filter(qs,pv):
+    @classmethod
+    def calendar_param_filter(cls, qs, pv):
         if pv.user:
             qs = qs.filter(user=pv.user)
         if pv.assigned_to:
@@ -477,12 +481,19 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         elif pv.observed_event == EventEvents.pending:
             qs = qs.filter(state__in=set(EntryStates.filter(fixed=False)))
 
+        # multi-day entries should appear on each day
         if pv.start_date:
-            qs = qs.filter(start_date__gte=pv.start_date)
+            c1 = Q(start_date__gte=pv.start_date)
+            c2 = Q(start_date__lt=pv.start_date, end_date__isnull=False, end_date__gte=pv.start_date)
+            qs = qs.filter(c1|c2)
         if pv.end_date:
-            qs = qs.filter(start_date__lte=pv.end_date)
-        if pv.partner:
-            qs = qs.filter(guest__partner=pv.partner)
+            c1 = Q(end_date__isnull=True, start_date__lte=pv.end_date)
+            c2 = Q(end_date__isnull=False, end_date__lte=pv.end_date)
+            qs = qs.filter(c1|c2)
+
+            qs = qs.filter(Q(end_date__isnull=True, start_date__lte=pv.end_date)|Q(end_date__gte=pv.end_date))
+        if pv.presence_guest:
+            qs = qs.filter(Q(guest__partner=pv.presence_guest)|Q(event_type__all_rooms=True))
         return qs
 
     def strftime(self):
@@ -576,7 +587,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             return
         duration = obj.end_date - obj.start_date
         # print (20161222, duration.days, et.max_days)
-        if duration.days > et.max_days:
+        if et.max_days and duration.days > et.max_days:
             return _(
                 "Event lasts {0} days but only {1} are allowed.").format(
                     duration.days, et.max_days)
@@ -1030,7 +1041,7 @@ LongEntryChecker.activate()
 
 
 @dd.python_2_unicode_compatible
-class Guest(Printable):
+class Guest(Printable):   # TODO: rename the model to "Presence"
     workflow_state_field = 'state'
     allow_cascaded_delete = ['event']
 
@@ -1044,7 +1055,7 @@ class Guest(Printable):
         unique_together = ['event', 'partner']
 
     event = dd.ForeignKey('cal.Event')
-    partner = dd.ForeignKey(dd.plugins.cal.partner_model)
+    partner = dd.ForeignKey(dd.plugins.cal.partner_model)  # TODO: rename to "guest"
     role = dd.ForeignKey(
         'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
     state = GuestStates.field(default='invited')

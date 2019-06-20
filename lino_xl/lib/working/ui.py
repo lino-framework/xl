@@ -696,6 +696,8 @@ class WorkedHours(Days, dd.VentilatingTable):
     model = Day
     detail_layout = DayDetail()
 
+    params_layout = "user start_date end_date"
+
     # parameters = Sessions.parameters
     # params_layout = Sessions.params_layout
     # use_detail_param_panel = True

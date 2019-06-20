@@ -35,7 +35,7 @@ class ShowEntriesByDay(dd.Action):
 
 class UpdateGuests(dd.Action):
 
-    label = _('Update Guests')
+    label = _('Update presences')
     # icon_name = 'lightning'
     button_text = ' ☷ '  # 2637
     custom_handler = True
@@ -44,12 +44,16 @@ class UpdateGuests(dd.Action):
         if settings.SITE.loading_from_dump:
             return 0
         for obj in ar.selected_rows:
-            if not obj.state.edit_guests:
-                # ar.info("not state.edit_guests")
-                continue
             self.run_on_event(ar, obj)
             
     def run_on_event(self, ar, obj):
+
+        if not obj.state.edit_guests:
+            # ar.info("not state.edit_guests")
+            return
+        if not obj.event_type or not obj.event_type.fill_presences:
+            return
+
         c = u = d = 0
         # existing = set([g.partner.pk for g in obj.guest_set.all()])
         existing = {g.partner.pk : g for g in obj.guest_set.all()}

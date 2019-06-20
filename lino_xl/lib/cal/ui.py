@@ -521,7 +521,7 @@ class EventTypes(dd.Table):
     event_label
     # description
     #build_method #template start_date max_days max_conflicting email_template attach_to_email
-    is_appointment force_guest_states all_rooms locks_user transparent
+    is_appointment force_guest_states fill_presences all_rooms locks_user transparent
     EntriesByType
     """
 
@@ -622,11 +622,14 @@ class Events(dd.Table):
     # pending_states = set([es for es in EntryStates if not es.fixed])
     # pending_states = set(EntryStates.filter(fixed=False))
 
-    @classmethod
-    def setup_parameters(cls, fields):
-        cls.params_layout = rt.models.cal.Event.params_layout
-        cls.parameters = rt.models.cal.Event.parameters
-        super(Events, cls).setup_parameters(rt.models.cal.Event.parameters)
+    params_layout = "user event_type room project presence_guest"
+
+    # 20190620
+    # @classmethod
+    # def setup_parameters(cls, params):
+    #     cls.params_layout = rt.models.cal.Event.params_layout
+    #     params = rt.models.cal.Event.setup_parameters(params)
+    #     return super(Events, cls).setup_parameters(params)
 
 
     @classmethod
@@ -639,7 +642,6 @@ class Events(dd.Table):
         # print("20181121a get_request_queryset", self)
         qs = super(Events, self).get_request_queryset(ar, **kwargs)
         pv = ar.param_values
-
         return rt.models.cal.Event.calendar_param_filter(qs, pv)
 
 
@@ -689,6 +691,10 @@ class Events(dd.Table):
     
 class AllEntries(Events):
     required_roles = dd.login_required(Explorer)
+    params_layout = """
+    start_date end_date observed_event state
+    user assigned_to project event_type room show_appointments
+    """
 
 class EntriesByType(Events):
     master_key = 'event_type'
@@ -1007,6 +1013,10 @@ class MyEntries(Events):
     required_roles = dd.login_required(OfficeUser)
     column_names = 'detail_link project #event_type #summary workflow_buttons *'
     auto_fit_column_widths = True
+    params_layout = """
+    start_date end_date observed_event state
+    user assigned_to project event_type room show_appointments
+    """
 
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -1112,7 +1122,13 @@ class EventPolicies(dd.Table):
 
 class CalendarView(object):
     """
-    Mixin for Calender views:
+    Mixin for Calender views.
+
+    We want all calendar view actors to inherit params_layout from the
+    cal.Events table as defined by the application. But *after* the
+    custom_layout_module has been loaded.  So we override the class_init()
+    method.
+
     """
 
     # required_roles = dd.login_required((OfficeUser, OfficeOperator))
@@ -1124,12 +1140,24 @@ class CalendarView(object):
     display_mode = "html"
 
     @classmethod
-    def setup_parameters(cls, fields):
-        cls.params_layout = rt.models.cal.Event.cal_params_layout
-        cls.parameters = rt.models.cal.Event.parameters
-        cls.calendar_param_filter = staticmethod(rt.models.cal.Event.calendar_param_filter)
+    def class_init(cls):
+        cls.params_layout = rt.models.cal.Events.params_layout
+        # cls.parameters = rt.models.cal.Event.parameters
+        # cls.calendar_param_filter = staticmethod(rt.models.cal.Event.calendar_param_filter)
         # cls.calendar_fmt = rt.models.cal.Event.calendar_fmt
-        super(CalendarView, cls).setup_parameters(rt.models.cal.Event.parameters)
+        super(CalendarView, cls).class_init()
+
+    @classmethod
+    def setup_parameters(cls, params):
+        return rt.models.cal.Event.setup_parameters(params)
+
+    # @classmethod
+    # def setup_parameters(cls, fields):
+    #     cls.params_layout = rt.models.cal.Events.params_layout
+    #     cls.parameters = rt.models.cal.Event.parameters
+    #     cls.calendar_param_filter = staticmethod(rt.models.cal.Event.calendar_param_filter)
+    #     # cls.calendar_fmt = rt.models.cal.Event.calendar_fmt
+    #     super(CalendarView, cls).setup_parameters(rt.models.cal.Event.parameters)
 
 
 @dd.python_2_unicode_compatible
@@ -1441,7 +1469,7 @@ class DailyPlanner(CalendarView, DailyPlannerRows):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.filter(event_type__planner_column=pc)
-                qs = cls.calendar_param_filter(qs,pv)
+                qs = Event.calendar_param_filter(qs, pv)
                 current_day = pv.get('date',dd.today())
                 if current_day:
                     qs = qs.filter(start_date=current_day)
@@ -1515,7 +1543,7 @@ class WeeklyPlanner(CalendarView, dd.Table):
                 qs = Event.objects.all()
                 #I not sure should we use all the objects or start with filter as following !!!
                 # qs = Event.objects.filter(event_type__planner_column=pc)
-                qs = cls.calendar_param_filter(qs, pv)
+                qs = Event.calendar_param_filter(qs, pv)
 
                 delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
                 current_day = dd.today() + timedelta(days=delata_days)
@@ -1632,7 +1660,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                 # obj is the DailyPlannerRow instance
                 pv = ar.param_values
                 qs = Event.objects.all()
-                qs = cls.calendar_param_filter(qs, pv)
+                qs = Event.calendar_param_filter(qs, pv)
                 offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
                 today = dd.today()
                 current_date = (today + timedelta(days=offset))
