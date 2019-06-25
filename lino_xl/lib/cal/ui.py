@@ -1000,6 +1000,39 @@ if settings.SITE.project_model:
         return super(EntriesByProject, cls).create_instance(ar, **kw)
 
 
+
+class EntriesByGuest(Events):
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    master_key = 'guest__partner'
+    auto_fit_column_widths = True
+    stay_in_grid = True
+    column_names = 'when_text user summary workflow_buttons'
+    # column_names = 'when_text user summary workflow_buttons'
+    insert_layout = """
+    start_date start_time end_time
+    summary
+    event_type
+    """
+    display_mode = "summary"
+    order_by = ['-start_date', '-start_time']
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(EntriesByGuest, self).param_defaults(ar, **kw)
+        # kw.update(event_state=EntryStates.took_place)
+        kw.update(end_date=dd.today(7))
+        return kw
+
+    @classmethod
+    def after_create_instance(cls, obj, ar):
+        mi = ar.master_instance
+        if mi is not None:
+            Guest = rt.models.cal.Guest
+            if not Guest.objects.filter(partner=mi, event=obj).exists():
+                Guest.objects.create(partner=mi, event=obj)
+        super(EntriesByGuest, cls).after_create_instance(obj, ar)
+
+
 class OneEvent(Events):
     show_detail_navigator = False
     use_as_default_table = False
