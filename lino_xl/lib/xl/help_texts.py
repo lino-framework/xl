@@ -505,13 +505,15 @@ the Event.type field."""),
     'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered "appointments" (i.e. whose
 time and place have been agreed upon with other users or external
 parties)."""),
-    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration."""),
+    'lino_xl.lib.cal.EventType.max_days' : _("""The maximal number of days allowed as duration. 0 means no limit."""),
     'lino_xl.lib.cal.EventType.locks_user' : _("""Whether calendar entries of this type make the user
 unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.max_conflicting' : _("""How many conflicting events should be tolerated."""),
     'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
-    'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether guest states should be forced to those defined by the
+    'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether presence states should be forced to those defined by the
 entry state."""),
+    'lino_xl.lib.cal.EventType.fill_presences' : _("""Whether presences should be automatically filled for entries of this
+type."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
     'lino_xl.lib.cal.CalendarView' : _("""Base class for all calendar views (daily, weekly and monthly)."""),
     'lino_xl.lib.cal.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
@@ -589,6 +591,13 @@ just because some other event has been created before on that date."""),
     'lino_xl.lib.cal.Events.show_appointments' : _("""Whether only appointments should be shown.  "Yes" means only
 appointments, "No" means no appointments and leaving it to
 blank shows both types of events."""),
+    'lino_xl.lib.cal.Events.presence_guest' : _("""Show only entries that have a presence for the specified guest."""),
+    'lino_xl.lib.cal.Events.project' : _("""Show only entries assigned to this project, where project is defined by
+lino.core.site.Site.project_model."""),
+    'lino_xl.lib.cal.Events.assigned_to' : _("""Show only entries assigned to this user."""),
+    'lino_xl.lib.cal.Events.event_type' : _("""Show only entries having this type."""),
+    'lino_xl.lib.cal.Events.state' : _("""Show only entries having this state."""),
+    'lino_xl.lib.cal.Events.user' : _("""Show only entries having this user as author."""),
     'lino_xl.lib.cal.ConflictingEvents' : _("""Shows events conflicting with this one (the master)."""),
     'lino_xl.lib.cal.EntriesByDay' : _("""This table is usually labelled "Appointments today". It has no
 "date" column because it shows events of a given date.It is ordred
@@ -615,6 +624,8 @@ See specs.cal.automatic_events."""),
     'lino_xl.lib.cal.RecurrenceSet.max_events' : _("""Maximum number of calendar entries to generate."""),
     'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
 weekdays where the recurrence occurs."""),
+    'lino_xl.lib.cal.GuestsByPartner' : _("""Show the calendar entries having this partner as a guest."""),
+    'lino_xl.lib.cal.EntriesByGuest' : _("""Show the calendar entries having this partner as a guest."""),
     'lino_xl.lib.cal.Reservation' : _("""Base class for lino_xl.lib.rooms.models.Booking and
 lino.modlib.courses.models.Course."""),
     'lino_xl.lib.cal.Reservation.max_date' : _("""Don't generate calendar entries beyond this date."""),
