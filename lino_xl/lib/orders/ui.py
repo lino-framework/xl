@@ -61,20 +61,20 @@ class OrderDetail(dd.DetailLayout):
     EnrolmentsByOrder ItemsByOrder
     """, label=_("General"))
 
-    first_event_panel = """
-    start_date start_time 
-    end_time end_date
-    """
-
-    repeat_panel = """
-    every_unit every max_events max_date 
-    monday tuesday wednesday thursday friday saturday sunday
-    """
-
     cal_tab = dd.Panel("""
-    first_event_panel repeat_panel
+    first_entry_panel repeat_panel
     cal.EntriesByController
     """, label=_("Calendar"))
+
+    first_entry_panel = dd.Panel("""
+    start_date start_time 
+    end_time end_date
+    """, label=_("First appointment"))
+
+    repeat_panel = dd.Panel("""
+    every_unit every max_events max_date 
+    monday tuesday wednesday thursday friday saturday sunday
+    """, label=_("Recursion"))
 
     enrolments_top = 'journal number id:8 user'
 
@@ -274,7 +274,7 @@ class EnrolmentsByWorker(Enrolments):
     params_panel_hidden = True
     required_roles = dd.login_required(OrdersUser)
     master_key = "worker"
-    column_names = 'order remark workflow_buttons *'
+    column_names = 'order order__project remark workflow_buttons *'
     auto_fit_column_widths = True
 
     insert_layout = """

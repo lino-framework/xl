@@ -984,7 +984,7 @@ if settings.SITE.project_model:
         master_key = 'project'
         auto_fit_column_widths = True
         stay_in_grid = True
-        column_names = 'when_text user summary workflow_buttons'
+        column_names = 'when_text user summary workflow_buttons *'
         # column_names = 'when_text user summary workflow_buttons'
         insert_layout = """
         start_date start_time end_time

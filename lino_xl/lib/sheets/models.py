@@ -85,7 +85,7 @@ class Collector(object):
     def compute_sums(self, report):
         collect = []
         k = self.fkname + '__ref__startswith'
-        for obj in self.outer_model.get_header_objects():
+        for obj in self.outer_model.get_heading_objects():
             qs = self.entry_model.objects.filter(**{k: obj.ref})
             kw = dict()
             kw.update(old_d=models.Sum('old_d'))
@@ -263,7 +263,6 @@ class ItemEntry(ReportEntry):
         pv = ar.param_values
         if pv.sheet_type:
             yield str(pv.sheet_type)
-
 
     @dd.virtualfield(dd.PriceField(_("Activa")))
     def activa(self, ar):

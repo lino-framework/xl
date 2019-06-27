@@ -115,7 +115,7 @@ class Topic(StructuredReferrable, BabelNamed):
         verbose_name_plural = _("Topics")
         abstract = dd.is_abstract_model(__name__, 'Topic')
 
-    description = dd.BabelTextField(
+    description_text = dd.BabelTextField(
         verbose_name=_("Long description"),
         blank=True, null=True)
 
@@ -141,7 +141,7 @@ class Topics(dd.Table):
 
     detail_layout = """
     id ref name #topic_group
-    description
+    description_text
     topics.InterestsByTopic
     """
 

@@ -273,8 +273,8 @@ class Enrolment(dd.Model):
     #~ teacher = dd.ForeignKey(Teacher)
     order = dd.ForeignKey('orders.Order', related_name="enrolments_by_order")
     worker = dd.ForeignKey(worker_model, related_name="enrolments_by_worker")
-    guest_role = dd.ForeignKey("cal.GuestRole", blank=True, null=True)
-
+    guest_role = dd.ForeignKey("cal.GuestRole", blank=True, null=True,
+                               verbose_name=_("Role in calendar entries"))
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     @dd.chooser()

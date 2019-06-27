@@ -1549,6 +1549,11 @@ equivalent to those having their state set to new."""),
     'lino_xl.lib.tickets.TicketsSummary' : _("""Abstract base class for ticket tables with a summary."""),
     'lino_xl.lib.tickets.MyTicketsToWork' : _("""Show all active tickets assigned to me."""),
     'lino_xl.lib.topics.Topic' : _("""Django model representing a topic."""),
+    'lino_xl.lib.topics.Topic.ref' : _("""The reference."""),
+    'lino_xl.lib.topics.Topic.name' : _("""The designation."""),
+    'lino_xl.lib.topics.Topic.description_text' : _("""Rich text field for a longer multi-line description."""),
+    'lino_xl.lib.topics.Topic.description' : _("""Virtual field which includes the formatted structured reference and the
+description_text."""),
     'lino_xl.lib.topics.Interest' : _("""Django model representing an interest."""),
     'lino_xl.lib.topics.TopicGroup' : _("""This model is deprecated.  We use the Topic.ref for structuring
 topics."""),
