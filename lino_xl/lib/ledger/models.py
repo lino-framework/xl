@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -165,15 +165,19 @@ class Journal(mixins.BabelNamed,
             #~ return self.ref +'%s (%s)' % mixins.BabelNamed.__unicode__(self)
             #~ return self.id +' (%s)' % mixins.BabelNamed.__unicode__(self)
 
-    def save(self, *args, **kw):
-        #~ self.before_save()
-        r = super(Journal, self).save(*args, **kw)
-        self.after_save()
-        return r
+    # def save(self, *args, **kw):
+    #     #~ self.before_save()
+    #     r = super(Journal, self).save(*args, **kw)
+    #     self.after_save()
+    #     return r
 
-    def after_save(self):
-        pass
+    def after_ui_save(self, ar, cw):
+        super(Journal, self).after_ui_save(ar, cw)
+        settings.SITE.kernel.must_build_site_cache()
 
+    # def after_save(self):
+    #     pass
+    #
     def full_clean(self, *args, **kw):
         if self.dc is None:
             if self.trade_type:
