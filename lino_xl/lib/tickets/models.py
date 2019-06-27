@@ -765,17 +765,23 @@ def setup_memo_commands(sender=None, **kwargs):
     # See :doc:`/specs/memo`
 
     Ticket = sender.models.tickets.Ticket
+    mp = sender.kernel.memo_parser
     
-    sender.kernel.memo_parser.register_django_model(
+    mp.register_django_model(
         'ticket', Ticket, title=lambda obj: obj.summary)
-    
+
     def py2html(parser, s):
         url, txt = py2url_txt(s)
         if url:
             # lines = inspect.getsourcelines(s)
             return '<a href="{0}" target="_blank">{1}</a>'.format(url, txt)
         return "<pre>{}</pre>".format(s)
-    sender.kernel.memo_parser.register_command('py', py2html)
+    mp.register_command('py', py2html)
+
+    mp.add_suggester(
+        "#", sender.models.tickets.Ticket.objects.order_by('id'), 'id')
+
+
 
 
 from .ui import *
