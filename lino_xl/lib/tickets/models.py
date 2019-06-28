@@ -769,6 +769,8 @@ def setup_memo_commands(sender=None, **kwargs):
     
     mp.register_django_model(
         'ticket', Ticket, title=lambda obj: obj.summary)
+    mp.add_suggester(
+        "#", sender.models.tickets.Ticket.objects.order_by('id'), 'id')
 
     def py2html(parser, s):
         url, txt = py2url_txt(s)
@@ -777,9 +779,6 @@ def setup_memo_commands(sender=None, **kwargs):
             return '<a href="{0}" target="_blank">{1}</a>'.format(url, txt)
         return "<pre>{}</pre>".format(s)
     mp.register_command('py', py2html)
-
-    mp.add_suggester(
-        "#", sender.models.tickets.Ticket.objects.order_by('id'), 'id')
 
 
 

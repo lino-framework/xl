@@ -18,8 +18,10 @@ from django.core.exceptions import ValidationError
 from django.dispatch import Signal
 
 from lino.api import _
-from lino.mixins import BabelNamed, Sequenced, StructuredReferrable
+from lino.mixins import BabelNamed, Sequenced, StructuredReferrable, Referrable
 from lino.mixins.periods import DateRange
+from lino.mixins.duplicable import Duplicable
+from lino.mixins.registrable import Registrable
 from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.system.choicelists import ObservedEvent
@@ -55,10 +57,7 @@ class LedgerInfo(dd.Model):
             return cls(user=user)
 
 @dd.python_2_unicode_compatible
-class Journal(mixins.BabelNamed,
-              mixins.Sequenced,
-              mixins.Referrable,
-              PrintableType):
+class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
 
     class Meta:
         app_label = 'ledger'
@@ -226,7 +225,7 @@ class Journal(mixins.BabelNamed,
 #
 
 @dd.python_2_unicode_compatible
-class AccountingPeriod(DateRange, mixins.Referrable):
+class AccountingPeriod(DateRange, Referrable):
     class Meta:
         app_label = 'ledger'
         verbose_name = _("Accounting period")
@@ -330,7 +329,7 @@ AccountingPeriod.set_widget_options('ref', width=6)
 
 
 @dd.python_2_unicode_compatible
-class FiscalYear(DateRange, mixins.Referrable):
+class FiscalYear(DateRange, Referrable):
 
     class Meta:
         app_label = 'ledger'
@@ -399,7 +398,7 @@ class FiscalYears(dd.Table):
     # """
 
   
-class PaymentTerm(mixins.BabelNamed, mixins.Referrable):
+class PaymentTerm(BabelNamed, Referrable):
               
 
     class Meta:
@@ -473,7 +472,7 @@ class ChangeState(dd.Action):
 
 
 @dd.python_2_unicode_compatible
-class Voucher(UserAuthored, mixins.Registrable, PeriodRangeObservable, UploadController):
+class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, UploadController):
     manager_roles_required = dd.login_required(VoucherSupervisor)
     
     class Meta:

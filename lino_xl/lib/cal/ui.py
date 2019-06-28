@@ -1171,6 +1171,7 @@ class CalendarView(object):
     use_detail_param_panel = True
     params_panel_hidden = False
     display_mode = "html"
+    hide_top_toolbar = True
 
     @classmethod
     def class_init(cls):
@@ -1281,7 +1282,7 @@ class Days(dd.VirtualTable):
 
         # Month div
         rows, cells = [], []
-        for i, month in enumerate(YearMonths.objects()):
+        for i, month in enumerate(YearMonths.get_list_items()):
             # each week is a list of seven datetime.date objects.
             pk = cls.date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month ))
             if today.month == int(month.value):
@@ -1541,7 +1542,9 @@ class PlannerByDay(DailyPlanner):
         ar.param_values.update(date=mi.date)
         return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
 
-#########################Weekly########################"
+######################### Weekly ########################"
+
+
 class WeeklyPlanner(CalendarView, dd.Table):
     model = 'cal.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
@@ -1624,7 +1627,9 @@ class WeeklyView(CalendarView, Days):
     def weeklyNavigation(cls, obj, ar):
         return cls.calendar_navigation(obj, ar, mode='week')
 
-#########################Monthly########################
+######################### Monthly ########################
+
+
 class MonthlyPlanner(CalendarView, dd.VirtualTable):
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Monthly planner")
@@ -1634,24 +1639,20 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
 
     @classmethod
     def get_data_rows(self, ar):
-        delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
-        current_day = dd.today() + timedelta(days=delata_days)
-        weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
-        return weeks
+        # every row in this table is a "week", i.e. a list of seven datetime.date objects
+        delta_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
+        current_day = dd.today() + timedelta(days=delta_days)
+        # weeks = [week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
+        return CALENDAR.monthdatescalendar(current_day.year, current_day.month)
+        # return weeks
 
-    @dd.displayfield("week_number")
-    def week_number(cls, row, ar):
-        return row[0]
-
-    @classmethod
-    def unused_get_request_queryset(self, ar, **kwargs):
-        qs = super(MonthlyPlanner, self).get_request_queryset(ar, **kwargs)
-        if ar.rqdata:
-            delata_days = int(ar.rqdata.get('mk', 0) or 0)
-            current_day = dd.today() + timedelta(days=delata_days)
-            weeks = [ week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
-            qs = qs.filter(week_number__in=weeks)
-        return qs
+    @dd.displayfield("Week")
+    def week_number(cls, week, ar):
+        label = str(week[0].isocalendar()[1])
+        pk = date2pk(week[0])
+        daily, weekly, monthly = Days.make_link_funcs(ar)
+        link = weekly(Day(pk), label)
+        return E.div(*[link], align="center")
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -1664,42 +1665,27 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
         names = ''
         for i, vf in enumerate(self.get_ventilated_columns()):
             self.add_virtual_field('vc' + str(i), vf)
-            names += ' ' + vf.name + (':20' if i != 0 else ":3")
+            names += ' ' + vf.name + ':20'
+            # names += ' ' + vf.name + (':20' if i != 0 else ":3")
 
-        self.column_names = "{}".format(names)
+        self.column_names = "week_number:3 {}".format(names)
 
     @classmethod
     def get_ventilated_columns(cls):
 
         Event = rt.models.cal.Event
 
-        def get_week_number(fld, obj, ar):
-            # obj is the MonthlyPlanner instance
-            pv = ar.param_values
-            offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else 0
-            current_year = (dd.today() + timedelta(days=offset)).year
-            target_day = datetime.strptime(
-                "{}-W{}-{}".format(current_year, obj,  pc.value if pc.value  != "7" else "0" ),
-                '%Y-W%W-%w').date()
+        def w(pc):
+            verbose_name = pc.text
 
-            pk = date2pk(target_day)
-            daily, weekly, monthly = Days.make_link_funcs(ar)
-            # E.h3(str(target_day),align="center")
-            link = weekly(Day(pk),_("{}").format(str(obj)) )
-            return E.div(*[link], align="center")
-
-        def w(pc, verbose_name):
-            def func(fld, obj, ar):
-                # obj is the DailyPlannerRow instance
+            def func(fld, week, ar):
                 pv = ar.param_values
                 qs = Event.objects.all()
                 qs = Event.calendar_param_filter(qs, pv)
                 offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
                 today = dd.today()
-                current_date = (today + timedelta(days=offset))
-                target_day = datetime.strptime(
-                    "{}-W{}-{}".format(current_date.year, obj,
-                                       pc.value if pc.value != "7" else "0"), '%Y-W%W-%w').date()
+                current_date = dd.today(offset)
+                target_day = week[int(pc.value)-1]
                 qs = qs.filter(start_date=target_day)
                 qs = qs.order_by('start_time')
                 chunks = [E.p(e.obj2href(ar, e.colored_calendar_fmt(pv))) for e in qs]
@@ -1719,9 +1705,9 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                              ))
 
             return dd.VirtualField(dd.HtmlBox(verbose_name), func)
-        yield dd.VirtualField(dd.HtmlBox(_("Weeks")), get_week_number)
-        for pc in Weekdays.objects():
-            yield w(pc, pc.text)
+
+        for pc in Weekdays.get_list_items():
+            yield w(pc)
 
 
 class MonthlyDetail(dd.DetailLayout):
