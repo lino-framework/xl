@@ -1467,7 +1467,7 @@ class DailyPlannerRows(EventsParameters, dd.Table):
 
 
 class DailyPlanner(DailyPlannerRows):
-    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Daily planner")
     editable = False
     use_detail_params_value = True
