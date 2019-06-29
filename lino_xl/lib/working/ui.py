@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import six
@@ -685,23 +685,30 @@ class Day(Day):
         load_sessions(self, self.sar)
 
 class DayDetail(dd.DetailLayout):
-    main = "working.MySessionsByDay cal.PlannerByDay"
+    main = "working.MySessionsByDay"
+    # main = "working.MySessionsByDay cal.PlannerByDay"
 
 
 class WorkedHours(Days, dd.VentilatingTable):
     label = _("Worked hours")
     # column_names_template = 'day_number long_date detail_link description {vcolumns}'
     column_names_template = 'detail_link worked_tickets {vcolumns} *'
-    reverse_sort_order = True
+    # reverse_sort_order = True
     model = Day
     detail_layout = DayDetail()
 
     params_layout = "user start_date end_date"
+    # navigation_mode = "week"
 
     # parameters = Sessions.parameters
     # params_layout = Sessions.params_layout
     # use_detail_param_panel = True
     # params_panel_hidden = False
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        lst = list(super(WorkedHours, cls).get_request_queryset(ar, **filter))
+        return list(reversed(lst))
 
     @dd.displayfield(_("Worked tickets"))
     def worked_tickets(self, obj, ar):
@@ -726,7 +733,7 @@ class WorkedHours(Days, dd.VentilatingTable):
 
     @classmethod
     def param_defaults(cls, ar, **kw):
-        kw = super(Days, cls).param_defaults(ar, **kw)
+        kw = super(WorkedHours, cls).param_defaults(ar, **kw)
         kw.update(start_date=dd.today(-6))
         kw.update(end_date=dd.today())
         kw.update(user=ar.get_user())

@@ -1152,216 +1152,108 @@ class EventPolicies(dd.Table):
     # """
 
 
-
-class CalendarView(object):
-    """
-    Mixin for Calender views.
-
-    We want all calendar view actors to inherit params_layout from the
-    cal.Events table as defined by the application. But *after* the
-    custom_layout_module has been loaded.  So we override the class_init()
-    method.
-
-    """
-
-    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
-    required_roles = dd.login_required(OfficeUser)
-    reverse_sort_order = False
-    abstract = False
-    use_detail_param_panel = True
-    params_panel_hidden = False
-    display_mode = "html"
-    hide_top_toolbar = True
-
-    @classmethod
-    def class_init(cls):
-        cls.params_layout = rt.models.cal.Events.params_layout
-        # cls.parameters = rt.models.cal.Event.parameters
-        # cls.calendar_param_filter = staticmethod(rt.models.cal.Event.calendar_param_filter)
-        # cls.calendar_fmt = rt.models.cal.Event.calendar_fmt
-        super(CalendarView, cls).class_init()
-
-    @classmethod
-    def setup_parameters(cls, params):
-        return rt.models.cal.Event.setup_parameters(params)
-
-    # @classmethod
-    # def setup_parameters(cls, fields):
-    #     cls.params_layout = rt.models.cal.Events.params_layout
-    #     cls.parameters = rt.models.cal.Event.parameters
-    #     cls.calendar_param_filter = staticmethod(rt.models.cal.Event.calendar_param_filter)
-    #     # cls.calendar_fmt = rt.models.cal.Event.calendar_fmt
-    #     super(CalendarView, cls).setup_parameters(rt.models.cal.Event.parameters)
+def weekname(date):
+    return _("Week {1} / {0}").format(*date.isocalendar())
 
 
 @dd.python_2_unicode_compatible
 class Day(TableRow):
 
-    def __init__(self, offset=0, ar=None):
+    def __init__(self, offset=0, ar=None, navigation_mode="day"):
         self.date = dd.today(offset)
         self.pk = offset
         self.ar = ar
+        self.navigation_mode = navigation_mode
 
     def __str__(self):
-        return when_text(self.date)
+        if self.navigation_mode == "day":
+            return when_text(self.date)
+        elif self.navigation_mode == "week":
+            return weekname(self.date)
+        else:
+            return monthname(self.date.month) + " " + str(self.date.year)
 
+    def skipmonth(self, n):
+        return DurationUnits.months.add_duration(self.date, n)
 
 class DayDetail(dd.DetailLayout):
     main = "body"
-    body = "navigation:15 cal.PlannerByDay:85"
+    body = "navigation_panel:15 cal.PlannerByDay:85"
+
+
+def make_link_funcs(ar):
+    sar_daily = ar.spawn(DailyView)
+    sar_weekly = ar.spawn(WeeklyView)
+    sar_monthly = ar.spawn(MonthlyView)
+    sar_monthly.param_values = sar_weekly.param_values = sar_daily.param_values = ar.param_values
+    rnd = settings.SITE.kernel.default_renderer
+
+    def weekly(day, text):
+        return rnd.ar2button(sar_weekly,day,text, style="", icon_name=None)
+
+    def daily(day, text):
+        return rnd.ar2button(sar_daily,day,text, style="", icon_name=None)
+
+    def monthly(day, text):
+        return rnd.ar2button(sar_monthly,day,text, style="", icon_name=None)
+
+    return daily, weekly, monthly
+
+
+class EventsParameters(object):
+
+    @classmethod
+    def class_init(cls):
+        cls.params_layout = rt.models.cal.Events.params_layout
+        super(EventsParameters, cls).class_init()
+
+    @classmethod
+    def setup_parameters(cls, params):
+        return rt.models.cal.Event.setup_parameters(params)
 
 
 class Days(dd.VirtualTable):
-    # every "row" is a Day instance. Note that Day can be overridden.
+    # every row is a Day instance. Note that Day can be overridden.
 
-    # required_roles = dd.login_required(OfficeUser)
+    # required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    required_roles = dd.login_required(OfficeUser)
     column_names = "detail_link *"
     parameters = mixins.ObservedDateRange(
         user=dd.ForeignKey('users.User', null=True, blank=True))
-    detail_layout = 'cal.DayDetail'
     model = 'cal.Day'
     editable = False
-    # parameters = Calendarparameters
-    # params_layout = Calendarparams_layout
-    reverse_sort_order = False
+    navigation_mode = "day"  # or "week" or "month"
     abstract = True
+
+    @classmethod
+    def get_navinfo(cls, ar, day):
+        assert isinstance(day, Day)
+        day.navigation_mode = ar.actor.navigation_mode  # so that str() gives the right formar
+        ni = dict(recno=day.pk, message=str(day))
+
+        if cls.navigation_mode == "month":
+            ni.update(next=date2pk(day.skipmonth(1)))
+            ni.update(prev=date2pk(day.skipmonth(-1)))
+            ni.update(first=day.pk - 365)
+            ni.update(last=day.pk + 365)
+        elif cls.navigation_mode == "week":
+            ni.update(next=day.pk + 7)
+            ni.update(prev=day.pk - 7)
+            ni.update(first=date2pk(day.skipmonth(-1)))
+            ni.update(last=date2pk(day.skipmonth(1)))
+        elif cls.navigation_mode == "day":
+            ni.update(next=day.pk + 1)
+            ni.update(prev=day.pk - 1)
+            ni.update(first=date2pk(day.skipmonth(-1)))
+            ni.update(last=date2pk(day.skipmonth(1)))
+        else:
+            raise Exception("Invalid navigation_mode {}".format(
+                cls.navigation_mode))
+        return ni
 
     @dd.virtualfield(models.IntegerField(_("Day number")))
     def day_number(cls, obj, ar):
         return obj.pk
-
-    # @dd.action(label=_("Today"), help_text=_("Go to today"))
-    # def goto_today(self, ar):
-    #     ar.goto_instance(rt.models.cal.Days.get_row_by_pk(ar, "0"))
-    #     return ar.success()
-    # @staticmethod
-    # def calender_header(ar):
-    #     header = "Calendar Type"
-    #     elems = [E.h2(*header, align="center")]
-    #     # today_url = ar.renderer.js2url("""
-    #     #         Lino.cal.DailyView.detail.run(null, {"record_id": 0})
-    #     #         """)
-    #     # week_url = ar.renderer.js2url("""
-    #     #                 Lino.cal.WeeklyView.detail.run(null, {"record_id": 0})
-    #     #                 """)
-    #     day = Day()
-    #     daily = ar.spawn(DailyView)
-    #     weekly = ar.spawn(WeeklyView)
-    #     weekly.param_values = daily.param_values = ar.param_values
-    #     today_url = settings.SITE.kernel.default_renderer.ar2button(daily,
-    #         day, gettext("Day"), style="", icon_name=None)
-    #     week_url = settings.SITE.kernel.default_renderer.ar2button(weekly,
-    #         day, gettext("Week"), style="", icon_name=None)
-    #
-    #     elems.append(E.p(today_url, align="center"))  #
-    #     elems.append(E.p(week_url, align="center"))
-    #     # elems.append(E.p(ar.goto_pk(0, gettext("This month")), align="center")) # No monthly view yet
-    #     return elems
-
-    @classmethod
-    def calendar_navigation(cls, obj, ar, mode='day'):
-        weekly_view = bool(mode=='week')
-        day_view = bool(mode=='day')
-        month_view = bool(mode=='month')
-
-        # todo ensure that the end of the month is always in the view.
-        today = obj.date
-        daily, weekly, monthly = cls.make_link_funcs(ar)
-        long_unit = DurationUnits.years if month_view else DurationUnits.months
-        prev_month = Day(cls.date2pk(long_unit.add_duration(today, -1)))
-        next_month = Day(cls.date2pk(long_unit.add_duration(today, 1)))
-        next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
-        prev_view = Day(cls.date2pk(next_unit.add_duration(today, -1)))
-        next_view = Day(cls.date2pk(next_unit.add_duration(today, 1)))
-        # current_view = weekly if weekly_view else daily
-        current_view = daily
-        if not day_view:
-            current_view = monthly if month_view else weekly
-
-        elems = []#cls.calender_header(ar)
-
-        # Month div
-        rows, cells = [], []
-        for i, month in enumerate(YearMonths.get_list_items()):
-            # each week is a list of seven datetime.date objects.
-            pk = cls.date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month ))
-            if today.month == int(month.value):
-                if not month_view:
-                    cells.append(E.td(E.b(monthly(Day(pk), str(month)))))
-                else:
-                    cells.append(E.td(E.b(str(month))))
-            else:
-                cells.append(E.td(monthly(Day(pk), str(month))))
-            if (i +1) % 3 == 0:
-                rows.append(E.tr(*cells, align="center"))
-                cells = []
-        monthly_div = E.div(E.table(*rows, align="center"),
-                            CLASS="cal-month-table")
-
-        header = [
-            current_view(prev_month, "<<"), " " , current_view(prev_view, "<"),
-            E.span(E.span("{} {}".format(monthname(today.month), today.year), E.br(), monthly_div)),
-            current_view(next_view, ">"), " ", current_view(next_month, ">>")]
-        elems.append(E.h2(*header, align="center"))
-        weekdaysFirstLetter = " " + "".join([gettext(week.text)[0] for week in Weekdays.objects()])
-        rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in weekdaysFirstLetter], align='center')]
-        for week in CALENDAR.monthdatescalendar(today.year, today.month):
-            # each week is a list of seven datetime.date objects.
-            cells = []
-            current_week = week[0].isocalendar()[1]
-            this_week = False
-            for day in week:
-                pk = cls.date2pk(day)
-                link = daily(Day(pk), str(day.day))
-                if day == dd.today():
-                    link = E.b(link, CLASS="cal-nav-today")
-                if day == today and day_view:
-                    cells.append(E.td(E.b(str(day.day))))
-                else:
-                    cells.append(E.td(link))
-                if day.isocalendar()[1] == today.isocalendar()[1]:
-                    this_week = True
-            else:
-                cells = [
-                            E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(Day(pk), str(current_week)),
-                                 CLASS="cal-week")
-                         ] + cells
-
-
-            rows.append(E.tr(*cells, align="center"))
-        elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(daily(Day(), gettext("Today")), align="center"))
-        elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
-        elems.append(E.p(monthly(Day(), gettext("This month")), align="center"))
-
-        # for o in range(-10, 10):
-        #     elems.append(ar.goto_pk(o, str(o)))
-        #     elems.append(" ")
-        return E.div(*elems, CLASS="lino-nav-cal")
-
-    @staticmethod
-    def make_link_funcs(ar):
-        sar_daily = ar.spawn(DailyView)
-        sar_weekly = ar.spawn(WeeklyView)
-        sar_monthly = ar.spawn(MonthlyView)
-        sar_monthly.param_values = sar_weekly.param_values = sar_daily.param_values = ar.param_values
-
-        def weekly(day, text):
-            return settings.SITE.kernel.default_renderer.ar2button(sar_weekly,day,text, style="", icon_name=None)
-        def daily(day, text):
-            return settings.SITE.kernel.default_renderer.ar2button(sar_daily,day,text, style="", icon_name=None)
-        def monthly(day, text):
-            return settings.SITE.kernel.default_renderer.ar2button(sar_monthly,day,text, style="", icon_name=None)
-        # daily(Day(cls.date2pk(day)), str(day.day))
-        return daily, weekly, monthly
-
-    @dd.htmlbox()
-    def navigation(cls, obj, ar):
-        return cls.calendar_navigation(obj, ar,mode='day')
-
-    @classmethod
-    def date2pk(cls, dt):
-        return (dt - dd.today()).days
 
     @classmethod
     def get_pk_field(cls):
@@ -1378,38 +1270,166 @@ class Days(dd.VirtualTable):
         #if pk is None:
         #    pk = "0"
         # return dd.today(int(pk))
-        return cls.model(int(pk), ar)
+        # if ar is None:
+        #     return cls.model(int(pk))
+        # return cls.model(int(pk), ar.actor.navigation_mode)
+        return cls.model(int(pk), ar, cls.navigation_mode)
 
     @classmethod
     def get_request_queryset(cls, ar, **filter):
-        # return []  # not needed for detail view
-        days = []
-        pv = ar.param_values
-        sd = pv.start_date or dd.today()
-        ed = pv.end_date or sd
-        if sd > ed:
-            return []
-        # while sd <= ed:
-        #     days.append(sd)
-        #     sd = sd + relativedelta(days=1)
+        home = cls.get_row_by_pk(ar, 0)
+        ni = cls.get_navinfo(ar, home)
 
-        if cls.reverse_sort_order:
-            step = -1
-            pk = date2pk(ed)
+        pv = ar.param_values
+        date = pv.start_date or dd.today(ni['first'])
+        last = pv.end_date or dd.today(ni['last'])
+        if cls.navigation_mode == "day":
+            step = lambda x: x + timedelta(days=1)
+        elif cls.navigation_mode == "week":
+            step = lambda x: x + timedelta(days=7)
         else:
-            pk = date2pk(sd)
-            step = 1
-        while True:  # sd <= ed:
-            # print(20181229, sd)
-            d = cls.model(pk, ar)
-            if d.date > ed or d.date < sd:
-                return days
-            days.append(d)
-            pk += step
+            step = lambda x: DurationUnits.months.add_duration(x, 1)
+
+        while date <= last:
+            yield cls.get_row_by_pk(ar, date2pk(date))
+            date = step(date)
+
+        # # return []  # not needed for detail view
+        # days = []
+        # pv = ar.param_values
+        # sd = pv.start_date or dd.today()
+        # ed = pv.end_date or sd
+        # if sd > ed:
+        #     return []
+        # # while sd <= ed:
+        # #     days.append(sd)
+        # #     sd = sd + relativedelta(days=1)
+        #
+        # if cls.reverse_sort_order:
+        #     step = -1
+        #     pk = date2pk(ed)
+        # else:
+        #     pk = date2pk(sd)
+        #     step = 1
+        # while True:  # sd <= ed:
+        #     # print(20181229, sd)
+        #     d = cls.model(pk, ar)
+        #     if d.date > ed or d.date < sd:
+        #         return days
+        #     days.append(d)
+        #     pk += step
+
+
+class CalendarView(Days):
+
+    """
+    Base class for the three calendar views.
+
+    We want all calendar view actors to inherit params_layout from the
+    cal.Events table as defined by the application. But *after* the
+    custom_layout_module has been loaded.  So we override the class_init()
+    method.
+
+    """
+
+    # parameters = Calendarparameters
+    # params_layout = Calendarparams_layout
+    # reverse_sort_order = False
+    abstract = True
+    use_detail_param_panel = True
+    params_panel_hidden = False
+    display_mode = "html"
+    # hide_top_toolbar = True
+    detail_layout = 'cal.DayDetail'
 
     @classmethod
-    def get_disabled_fields(cls, obj, ar):
-        return set()
+    def get_default_action(cls):
+        return dd.ShowDetail(cls.detail_layout)
+
+    @dd.htmlbox()
+    def navigation_panel(cls, obj, ar):
+
+        day_view = bool(cls.navigation_mode == 'day')
+        weekly_view = bool(cls.navigation_mode == 'week')
+        month_view = bool(cls.navigation_mode == 'month')
+
+        # todo ensure that the end of the month is always in the view.
+        today = obj.date
+        daily, weekly, monthly = make_link_funcs(ar)
+        long_unit = DurationUnits.years if month_view else DurationUnits.months
+        prev_month = Day(date2pk(long_unit.add_duration(today, -1)))
+        next_month = Day(date2pk(long_unit.add_duration(today, 1)))
+        next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
+        prev_view = Day(date2pk(next_unit.add_duration(today, -1)))
+        next_view = Day(date2pk(next_unit.add_duration(today, 1)))
+        # current_view = weekly if weekly_view else daily
+        current_view = daily
+        if not day_view:
+            current_view = monthly if month_view else weekly
+
+        elems = [] #cls.calender_header(ar)
+
+        # Month div
+        rows, cells = [], []
+        for i, month in enumerate(YearMonths.get_list_items()):
+            # each week is a list of seven datetime.date objects.
+            pk = date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month))
+            if today.month == int(month.value):
+                if not month_view:
+                    cells.append(E.td(E.b(monthly(Day(pk), str(month)))))
+                else:
+                    cells.append(E.td(E.b(str(month))))
+            else:
+                cells.append(E.td(monthly(Day(pk), str(month))))
+            if (i+1) % 3 == 0:
+                rows.append(E.tr(*cells, align="center"))
+                cells = []
+        monthly_div = E.div(E.table(
+            *rows, align="center"), CLASS="cal-month-table")
+
+        header = [
+            current_view(prev_month, "<<"), " " , current_view(prev_view, "<"),
+            E.span(E.span("{} {}".format(monthname(today.month), today.year), E.br(), monthly_div)),
+            current_view(next_view, ">"), " ", current_view(next_month, ">>")]
+        elems.append(E.h2(*header, align="center"))
+        weekdaysFirstLetter = " " + "".join([gettext(week.text)[0] for week in Weekdays.objects()])
+        rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in weekdaysFirstLetter], align='center')]
+        for week in CALENDAR.monthdatescalendar(today.year, today.month):
+            # each week is a list of seven datetime.date objects.
+            cells = []
+            current_week = week[0].isocalendar()[1]
+            this_week = False
+            for day in week:
+                pk = date2pk(day)
+                link = daily(Day(pk), str(day.day))
+                if day == dd.today():
+                    link = E.b(link, CLASS="cal-nav-today")
+                if day == today and day_view:
+                    cells.append(E.td(E.b(str(day.day))))
+                else:
+                    cells.append(E.td(link))
+                if day.isocalendar()[1] == today.isocalendar()[1]:
+                    this_week = True
+            else:
+                cells = [
+                            E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(Day(pk), str(current_week)),
+                                 CLASS="cal-week")
+                         ] + cells
+            rows.append(E.tr(*cells, align="center"))
+
+        elems.append(E.table(*rows, align="center"))
+        elems.append(E.p(daily(Day(), gettext("Today")), align="center"))
+        elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
+        elems.append(E.p(monthly(Day(), gettext("This month")), align="center"))
+
+        # for o in range(-10, 10):
+        #     elems.append(ar.goto_pk(o, str(o)))
+        #     elems.append(" ")
+        return E.div(*elems, CLASS="lino-nav-cal")
+
+    # @classmethod
+    # def get_disabled_fields(cls, obj, ar):
+    #     return set()
 
     # @dd.displayfield(_("Date"))
     # def detail_pointer(cls, obj, ar):
@@ -1427,56 +1447,26 @@ class Days(dd.VirtualTable):
     #     url = settings.SITE.kernel.default_ui.renderer.get_detail_url(cls, obj.pk)
     #     return ar.href_button(url, text)
 
-    @dd.displayfield(_("Date"))
-    def long_date(cls, obj, ar=None):
-        if obj is None:
-            return ''
-        return dd.fdl(obj.date)
+    # @dd.displayfield(_("Date"))
+    # def long_date(cls, obj, ar=None):
+    #     if obj is None:
+    #         return ''
+    #     return dd.fdl(obj.date)
 
 
-# Day._lino_default_table = Days
 
-# Days.day_number.attname = 'day_number'
-# Days.day_number.return_type.attname = 'day_number'
-
-
-class DailyView(CalendarView, Days):
+class DailyView(EventsParameters, CalendarView):
     label = _("Daily view")
     # hide_top_toolbar = True
 
-    @classmethod
-    def get_default_action(cls):
-        return dd.ShowDetail(cls.detail_layout)
 
-
-# class LastWeek(Days):
-#     label = _("Last week")
-#
-#     @classmethod
-#     def param_defaults(cls, ar, **kw):
-#         kw = super(Days, cls).param_defaults(ar, **kw)
-#         kw.update(start_date=dd.today(-7))
-#         kw.update(end_date=dd.today())
-#         return kw
-#
-#
-# class ComingWeek(Days):
-#     label = _("Coming week")
-#
-#     @classmethod
-#     def param_defaults(cls, ar, **kw):
-#         kw = super(Days, cls).param_defaults(ar, **kw)
-#         kw.update(start_date=dd.today())
-#         kw.update(end_date=dd.today(7))
-#         return kw
-
-class DailyPlannerRows(dd.Table):
+class DailyPlannerRows(EventsParameters, dd.Table):
     model = 'cal.DailyPlannerRow'
     column_names = "seqno designation start_time end_time"
     required_roles = dd.login_required(OfficeStaff)
 
 
-class DailyPlanner(CalendarView, DailyPlannerRows):
+class DailyPlanner(DailyPlannerRows):
     # required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Daily planner")
     editable = False
@@ -1528,10 +1518,11 @@ class DailyPlanner(CalendarView, DailyPlannerRows):
 class PlannerByDay(DailyPlanner):
     master = 'cal.Day'
     # display_mode = "html"
+    navigation_mode = 'day'
 
     @classmethod
     def get_master_instance(cls, ar, model, pk):
-        return model(int(pk))
+        return model(int(pk), ar, cls.navigation_mode)
 
     @classmethod
     def get_request_queryset(cls, ar, **filter):
@@ -1545,7 +1536,7 @@ class PlannerByDay(DailyPlanner):
 ######################### Weekly ########################"
 
 
-class WeeklyPlanner(CalendarView, dd.Table):
+class WeeklyPlanner(EventsParameters, dd.Table):
     model = 'cal.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
@@ -1613,24 +1604,18 @@ class WeeklyPlanner(CalendarView, dd.Table):
 
 class WeeklyDetail(dd.DetailLayout):
     main = "body"
-    body = "weeklyNavigation:15 cal.WeeklyPlanner:85"
+    body = "navigation_panel:15 cal.WeeklyPlanner:85"
 
-class WeeklyView(CalendarView, Days):
+class WeeklyView(EventsParameters, CalendarView):
     label = _("Weekly view")
     detail_layout = 'cal.WeeklyDetail'
+    navigation_mode = "week"
 
-    @classmethod
-    def get_default_action(cls):
-        return dd.ShowDetail(cls.detail_layout)
-
-    @dd.htmlbox()
-    def weeklyNavigation(cls, obj, ar):
-        return cls.calendar_navigation(obj, ar, mode='week')
 
 ######################### Monthly ########################
 
 
-class MonthlyPlanner(CalendarView, dd.VirtualTable):
+class MonthlyPlanner(EventsParameters, dd.VirtualTable):
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Monthly planner")
     editable = False
@@ -1650,7 +1635,9 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
     def week_number(cls, week, ar):
         label = str(week[0].isocalendar()[1])
         pk = date2pk(week[0])
-        daily, weekly, monthly = Days.make_link_funcs(ar)
+        if ar.param_values is None:
+            return None
+        daily, weekly, monthly = make_link_funcs(ar)
         link = weekly(Day(pk), label)
         return E.div(*[link], align="center")
 
@@ -1680,6 +1667,8 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
 
             def func(fld, week, ar):
                 pv = ar.param_values
+                if pv is None:
+                    return
                 qs = Event.objects.all()
                 qs = Event.calendar_param_filter(qs, pv)
                 offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
@@ -1691,7 +1680,7 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
                 chunks = [E.p(e.obj2href(ar, e.colored_calendar_fmt(pv))) for e in qs]
 
                 pk = date2pk(target_day)
-                daily, weekly, monthly = Days.make_link_funcs(ar)
+                daily, weekly, monthly = make_link_funcs(ar)
                 header = daily(Day(pk),str(target_day.day))
                 if target_day == today:
                     header = E.b(header)
@@ -1712,17 +1701,11 @@ class MonthlyPlanner(CalendarView, dd.VirtualTable):
 
 class MonthlyDetail(dd.DetailLayout):
     main = "body"
-    body = "monthlyNavigation:15 cal.MonthlyPlanner:85"
+    body = "navigation_panel:15 cal.MonthlyPlanner:85"
 
 
-class MonthlyView(CalendarView, Days):
+class MonthlyView(EventsParameters, CalendarView):
     label = _("Monthly view")
     detail_layout = 'cal.MonthlyDetail'
+    navigation_mode = "month"
 
-    @classmethod
-    def get_default_action(cls):
-        return dd.ShowDetail(cls.detail_layout)
-
-    @dd.htmlbox()
-    def monthlyNavigation(cls, obj, ar):
-        return cls.calendar_navigation(obj, ar, mode="month")
