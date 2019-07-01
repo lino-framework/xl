@@ -16,6 +16,7 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.dispatch import Signal
+from django.utils.text import format_lazy
 
 from lino.api import _
 from lino.mixins import BabelNamed, Sequenced, StructuredReferrable, Referrable
@@ -1026,7 +1027,10 @@ for tt in TradeTypes.objects():
     dd.inject_field(
         'ledger.Account',
         tt.name + '_allowed',
-        models.BooleanField(verbose_name=tt.text, default=False))
+        models.BooleanField(
+            verbose_name=tt.text, default=False,
+            help_text=format_lazy(
+                _("Whether this account is available for {} transactions."), tt.text)))
 
 
 dd.inject_field(

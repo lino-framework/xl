@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -28,13 +28,13 @@ class Accounts(dd.Table):
     model = 'ledger.Account'
     required_roles = dd.login_required(LedgerStaff)
     order_by = ['ref']
-    column_names = "ref name *"
+    column_names = "description sheet_item needs_partner clearable ref *"
     insert_layout = """
     ref sheet_item
     name
     """
     detail_layout = """
-    ref common_account sheet_item id
+    ref:10 common_account sheet_item id
     name
     needs_partner:30 clearable:30 default_amount:10 #default_dc
     ledger.MovementsByAccount

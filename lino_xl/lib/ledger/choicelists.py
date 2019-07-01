@@ -33,7 +33,9 @@ add('10', _("Sales"), 'sales')
 add('20', _("Purchases"), 'purchases')
 add('30', _("Wages"), 'wages')
 add('40', _("Financial"), 'financial')
+# add('40', _("Money and banks"), 'money')
 add('50', _("VAT"), 'vat')
+add('60', _("Miscellaneous transactions"), 'misc')
 
 if dd.is_installed("sales"):
     JournalGroups.sales.menu_group = dd.plugins.sales
