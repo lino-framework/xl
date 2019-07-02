@@ -500,6 +500,7 @@ class SessionsByReport(Sessions, DurationReport):
             ar.obj2html(t, "#{0}".format(t.id), title=t.summary)]
         return E.p(*elems)
 
+
 class TicketsByReport(Tickets, DurationReport):
     """The list of tickets mentioned in a service report."""
     master = 'working.ServiceReport'
@@ -634,45 +635,54 @@ class ReportsByPartner(ServiceReports):
     master_key = 'interesting_for'
 
 
-class Summaries(dd.Table):
-    """Base class for all tables on :class:`Summary`.
-    """
+class SummaryTable(dd.Table):
+    allow_create = False
+    hide_sums = True
+
+
+
+class SiteSummaries(SummaryTable):
     model = 'working.SiteSummary'
     detail_layout = """
     master year month
     active_tickets inactive_tickets id
     *
     """
-    allow_create = False
-    hide_sums = True
 
 
-class AllSummaries(Summaries):
+class AllSummaries(SiteSummaries):
     """Lists all summary records for all sites."""
     required_roles = dd.login_required(TicketsStaff)
 
 
-def get_summary_columns(hours=True):
-    # for ts in TicketStates.get_list_items():
-    #     if hours or ts.active:
-    #         k = ts.get_summary_field()
-    #         if k is not None:
-    #             yield k
-    if True:
-        for t in ReportingTypes.get_list_items():
-            k = t.name + '_hours'
-            yield k
-
-class SummariesBySite(Summaries):
-    """Lists the summary records for a given site."""
+class SummariesBySite(SiteSummaries):
     master_key = 'master'
     auto_fit_column_widths = True
     required_roles = dd.login_required(Triager)
 
     @classmethod
     def setup_columns(cls):
-        cls.column_names = "year active_tickets "
-        cls.column_names += ' '.join(get_summary_columns())
+        cls.column_names = "year "
+        cls.column_names += ' '.join(cls.model.get_summary_columns())
+
+
+class UserSummaries(SummaryTable):
+    model = 'working.UserSummary'
+    detail_layout = """
+    master year month id
+    *
+    """
+
+
+class SummariesByUser(UserSummaries):
+    master_key = 'master'
+    auto_fit_column_widths = True
+    required_roles = dd.login_required(Triager)
+
+    @classmethod
+    def setup_columns(cls):
+        cls.column_names = "year month "
+        cls.column_names += ' '.join(cls.model.get_summary_columns())
 
 
 

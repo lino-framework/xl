@@ -1,6 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
+
 from __future__ import unicode_literals
 
 
@@ -244,9 +245,58 @@ class ServiceReport(UserAuthored, ContactRelated, Certifiable, DateRange):
         return pv
 
 dd.update_field(ServiceReport, 'user', verbose_name=_("Worker"))
-        
 
-class SiteSummary(MonthlySlaveSummary):
+
+class SummaryBySession(MonthlySlaveSummary):
+    # common base for UserSummary and SiteSummary
+
+    class Meta:
+        abstract = True
+
+    @classmethod
+    def get_summary_columns(cls):
+        for t in ReportingTypes.get_list_items():
+            k = t.name + '_hours'
+            yield k
+
+    def reset_summary_data(self):
+        for t in ReportingTypes.get_list_items():
+            k = t.name + '_hours'
+            setattr(self, k, ZERO_DURATION)
+
+    def add_from_session(self, obj):
+        d = obj.get_duration()
+        if d:
+            rt = obj.get_reporting_type()
+            k = rt.name + '_hours'
+            value = getattr(self, k) + d
+            setattr(self, k, value)
+
+
+class UserSummary(SummaryBySession):
+
+    class Meta:
+        app_label = 'working'
+        verbose_name = _("User summary")
+        verbose_name_plural = _("User summaries")
+
+    summary_period = 'monthly'
+    delete_them_all = True
+    master = dd.ForeignKey('users.User')
+
+    def get_summary_collectors(self):
+        qs = rt.models.working.Session.objects.filter(
+            user=self.master)
+        if self.year:
+            qs = qs.filter(
+                start_date__year=self.year)
+        if self.month:
+            qs = qs.filter(
+                start_date__month=self.month)
+        yield (self.add_from_session, qs)
+
+
+class SiteSummary(SummaryBySession):
 
     class Meta:
         app_label = 'working'
@@ -268,10 +318,16 @@ class SiteSummary(MonthlySlaveSummary):
     # def get_summary_masters(cls):
     #     return rt.models.tickets.Site.objects.order_by('id')
 
+    @classmethod
+    def get_summary_columns(cls):
+        for k in super(SiteSummary, cls).get_summary_columns():
+            yield k
+        yield 'active_tickets'
+        yield 'inactive_tickets'
+
+
     def reset_summary_data(self):
-        for t in ReportingTypes.get_list_items():
-            k = t.name + '_hours'
-            setattr(self, k, ZERO_DURATION)
+        super(SiteSummary, self).reset_summary_data()
         # for ts in TicketStates.get_list_items():
         #     k = ts.get_summary_field()
         #     if k is not None:
@@ -304,25 +360,20 @@ class SiteSummary(MonthlySlaveSummary):
         else:
             self.inactive_tickets += 1
 
-    def add_from_session(self, obj):
-        d = obj.get_duration()
-        if d:
-            rt = obj.get_reporting_type()
-            k = rt.name + '_hours'
-            value = getattr(self, k) + d
-            setattr(self, k, value)
-        
 
 
 @dd.receiver(dd.pre_analyze)
 def inject_summary_fields(sender, **kw):
     SiteSummary = rt.models.working.SiteSummary
+    UserSummary = rt.models.working.UserSummary
     WorkSite = rt.models.tickets.Site
     Ticket = dd.plugins.working.ticket_model
     for t in ReportingTypes.get_list_items():
         k = t.name + '_hours'
         dd.inject_field(
             SiteSummary, k, dd.DurationField(t.text, null=True, blank=True))
+        dd.inject_field(
+            UserSummary, k, dd.DurationField(t.text, null=True, blank=True))
         dd.inject_field(
             Ticket, k, dd.DurationField(t.text, null=True, blank=True))
 
