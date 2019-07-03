@@ -93,8 +93,15 @@ def objects():
         kw.update(dc=CREDIT)
         yield finan.BankStatement.create_journal(**kw)
 
-        kw.update(dd.str2kw('name', _("Miscellaneous Journal Entries")))
+        kw.update(dd.str2kw('name', _("Miscellaneous transactions")))
+        kw.update(journal_group=JournalGroups.misc)
         kw.update(account=CommonAccounts.cash.get_object(), ref="MSC")
+        kw.update(dc=CREDIT)
+        yield finan.JournalEntry.create_journal(**kw)
+
+        kw.update(dd.str2kw('name', _("Salaries")))
+        kw.update(journal_group=JournalGroups.wages)
+        kw.update(account=CommonAccounts.cash.get_object(), ref="SAL")
         kw.update(dc=CREDIT)
         yield finan.JournalEntry.create_journal(**kw)
 

@@ -29,6 +29,7 @@ class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
     your_ref = models.CharField(
         _("Provider's invoice number"), max_length=200, blank=True)
 
+    # show_items = dd.ShowSlaveTable('vat.ItemsByInvoice', show_in_workflow=True)
 
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:

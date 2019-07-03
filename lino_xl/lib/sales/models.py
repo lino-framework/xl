@@ -150,6 +150,8 @@ class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
 
     quick_search_fields = "partner__name subject"
 
+    # show_items = dd.ShowSlaveTable('sales.ItemsByInvoice')
+
     # make_copy = MakeCopy()
 
     @classmethod

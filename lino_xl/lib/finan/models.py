@@ -88,6 +88,8 @@ class JournalEntry(DatedFinancialVoucher, ProjectRelated):
         verbose_name = _("Journal Entry")
         verbose_name_plural = _("Journal Entries")
 
+    # show_items = dd.ShowSlaveTable('finan.ItemsByJournalEntry')
+
     def get_wanted_movements(self):
         # dd.logger.info("20151211 FinancialVoucher.get_wanted_movements()")
         amount, movements_and_items = self.get_finan_movements()
@@ -108,8 +110,8 @@ class PaymentOrder(FinancialVoucher, Printable):
     execution_date = models.DateField(
         _("Execution date"), blank=True, null=True)
 
+    # show_items = dd.ShowSlaveTable('finan.ItemsByPaymentOrder')
     write_xml = WritePaymentsInitiation()
-    #templates_group = ''
 
     @dd.displayfield(_("Print"))
     def print_actions(self, ar):
@@ -170,6 +172,8 @@ class BankStatement(DatedFinancialVoucher):
 
     balance1 = dd.PriceField(_("Old balance"), default=ZERO)
     balance2 = dd.PriceField(_("New balance"), default=ZERO, blank=True)
+
+    # show_items = dd.ShowSlaveTable('finan.ItemsByBankStatement')
 
     def get_previous_voucher(self):
         if not self.journal_id:
@@ -375,6 +379,7 @@ class ItemsByBankStatement(ItemsByVoucher):
     model = 'finan.BankStatementItem'
     column_names = "seqno date partner account match remark debit credit "\
                    "workflow_buttons *"
+    sum_text_column = 2
     suggestions_table = 'finan.SuggestionsByBankStatementItem'
     suggest = ShowSuggestions()
 

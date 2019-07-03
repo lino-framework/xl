@@ -1408,6 +1408,10 @@ during the given period."""),
     'lino_xl.lib.working.ProjectHasSessions' : _("""Select only projects for which there has been at least one session
 during the given period."""),
     'lino_xl.lib.working.Worker' : _("""A user who is candidate for working on a ticket."""),
+    'lino_xl.lib.working.SiteSummary' : _("""An automatically generated record with yearly summary data about a site."""),
+    'lino_xl.lib.working.SummariesBySite' : _("""Shows the summary records for a given site."""),
+    'lino_xl.lib.working.UserSummary' : _("""An automatically generated record with monthly summary data about a user."""),
+    'lino_xl.lib.working.SummariesByUser' : _("""Shows the summary records for a given user."""),
     'lino_xl.lib.office.OfficeUser' : _("""Has access to office functionality like calendar, notes and
 uploads."""),
     'lino_xl.lib.office.OfficeOperator' : _("""Can manage office functionality for other users (but not for
