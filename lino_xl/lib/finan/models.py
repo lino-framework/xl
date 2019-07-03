@@ -372,7 +372,8 @@ from lino_xl.lib.ledger.mixins import ItemsByVoucher
 
 class ItemsByJournalEntry(ItemsByVoucher):
     model = 'finan.JournalEntryItem'
-    column_names = "seqno date partner account:50 match debit credit remark *"
+    column_names = "seqno date partner match account:50 debit credit remark *"
+    sum_text_column = 2
 
 
 class ItemsByBankStatement(ItemsByVoucher):
