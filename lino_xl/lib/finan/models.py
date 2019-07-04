@@ -193,6 +193,10 @@ class BankStatement(DatedFinancialVoucher):
                 #~ logger.info("20131005 prev is %s",prev)
                 self.balance1 = prev.balance2
 
+    def on_duplicate(self, ar, master):
+        self.balance1 = self.balance2 = ZERO
+        super(BankStatement, self).on_duplicate(ar, master)
+
     def get_wanted_movements(self):
         # dd.logger.info("20151211 cosi.BankStatement.get_wanted_movements()")
         a = self.journal.account
@@ -276,9 +280,14 @@ class PaymentOrderDetail(JournalEntryDetail):
 
 class BankStatementDetail(JournalEntryDetail):
     general = dd.Panel("""
-    entry_date number:6 balance1 balance2 workflow_buttons
+    general_left uploads.UploadsByController
     finan.ItemsByBankStatement
     """, label=_("General"))
+
+    general_left = """
+    entry_date number:6 balance1 balance2 
+    narration workflow_buttons 
+    """
 
 
 class FinancialVouchers(dd.Table):
@@ -329,7 +338,7 @@ class BankStatements(FinancialVouchers):
     model = 'finan.BankStatement'
     column_names = "number_with_year entry_date balance1 balance2 " \
                    "accounting_period workflow_buttons *"
-    detail_layout = BankStatementDetail()
+    detail_layout = 'finan.BankStatementDetail'
     insert_layout = """
     entry_date
     balance1

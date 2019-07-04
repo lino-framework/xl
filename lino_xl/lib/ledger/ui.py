@@ -153,7 +153,7 @@ class Vouchers(dd.Table):
         return [{'key': 'x',
                 'ctrl': True,
                 'shift': False,
-                'ba': 'changing_state'}]
+                'ba': 'change_state'}]
 
 
 
@@ -950,6 +950,7 @@ class MovementsByVoucher(Movements):
     display_mode = "html"
     order_by = dd.plugins.ledger.remove_dummy(
         'value_date', 'account__ref', 'partner', 'project', 'id')
+
     
 class MovementsByPartner(Movements):
     """Show the ledger movements of a partner.

@@ -456,9 +456,9 @@ class ChangeState(dd.Action):
     Change the state of the invoice
     """
     show_in_bbar = False
-    button_text = 'Change State'
+    button_text = 'Change state'
     # sort_index = 52
-    label = _("Change State")
+    label = _("Change state")
     # action_name = "changemystate"
 
     def run_from_ui(self, ar, **kw):
@@ -489,7 +489,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
     state = VoucherStates.field(default='draft')
-    changing_state = ChangeState()
+    change_state = ChangeState()
     workflow_state_field = 'state'
 
     #~ @classmethod
@@ -571,6 +571,11 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
                 info = LedgerInfo.get_for_user(ar.get_user())
                 self.entry_date = info.entry_date or dd.today()
         
+    def on_duplicate(self, ar, master):
+        self.number = self.entry_date = self.accounting_period = None
+        self.on_create(ar)
+        super(Voucher, self).on_duplicate(ar, master)
+
     def entry_date_changed(self, ar):
         self.accounting_period = AccountingPeriod.get_default_for_date(
             self.entry_date)

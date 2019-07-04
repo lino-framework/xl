@@ -20,6 +20,9 @@ from django.utils.functional import lazystr
 
 from lino.api import ad, _
 
+UPLOADTYPE_SOURCE_DOCUMENT = 1
+"""Primary key  of upload type "source document" created in :fixture:`std` fixture."""
+
 
 class Plugin(ad.Plugin):
 

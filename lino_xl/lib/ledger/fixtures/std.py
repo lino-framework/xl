@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -12,6 +12,8 @@ from django.conf import settings
 
 from lino.api import dd, rt, _
 from lino_xl.lib.ledger.choicelists import CommonAccounts
+from lino_xl.lib.ledger import UPLOADTYPE_SOURCE_DOCUMENT
+
 
 def update(ci, **kwargs):
     obj = ci.get_object()
@@ -51,6 +53,14 @@ def objects():
     ContentType = rt.models.contenttypes.ContentType
     Partner = rt.models.contacts.Partner
     FiscalYear = rt.models.ledger.FiscalYear
+
+    UploadType = rt.models.uploads.UploadType
+
+    kw = dict()
+    kw.update(max_number=1, wanted=True)
+    kw.update(dd.str2kw('name', _("Source document")))
+    yield UploadType(id=UPLOADTYPE_SOURCE_DOCUMENT, **kw)
+
 
     cfg = dd.plugins.ledger
     site = settings.SITE
