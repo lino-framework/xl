@@ -27,7 +27,7 @@ class Plugin(ad.Plugin):
     #     self.client_model = site.models.resolve(self.client_model)
     #     super(Plugin, self).post_site_startup(site)
 
-    #     site.kernel.memo_parser.register_django_model(
+    #     site.plugins.memo.parser.register_django_model(
     #         'client', self.client_model,
     #         title=lambda obj: obj.get_full_name())
         

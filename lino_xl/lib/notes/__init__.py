@@ -24,14 +24,16 @@ class Plugin(ad.Plugin):
     verbose_name = _("Notes")
 
     # needs_plugins = ['lino.modlib.notify']
-    needs_plugins = ['lino.modlib.gfks']
+    needs_plugins = ['lino.modlib.memo']
     menu_group = 'office'
 
     def post_site_startup(self, site):
         super(Plugin, self).post_site_startup(site)
-        site.kernel.memo_parser.register_django_model(
-            'note', site.models.notes.Note,
-            title=lambda obj: obj.subject)
+
+        if site.is_installed('memo'):
+            site.plugins.memo.parser.register_django_model(
+                'note', site.models.notes.Note,
+                title=lambda obj: obj.subject)
     
     def setup_main_menu(self, site, user_type, m):
         mg = self.get_menu_group()

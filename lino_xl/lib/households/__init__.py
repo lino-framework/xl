@@ -33,7 +33,10 @@ class Plugin(ad.Plugin):
         super(Plugin, self).on_site_startup(site)
         
     def post_site_startup(self, site):
-        rdm = site.kernel.memo_parser.register_django_model
+        if not site.is_installed('memo'):
+            return
+
+        rdm = site.plugins.memo.parser.register_django_model
         rdm('household', site.models.households.Household)
     
     def setup_main_menu(config, site, user_type, m):

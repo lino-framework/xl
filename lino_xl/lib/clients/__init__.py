@@ -25,7 +25,11 @@ class Plugin(ad.Plugin):
     def post_site_startup(self, site):
         self.client_model = site.models.resolve(self.client_model)
         super(Plugin, self).post_site_startup(site)
-        rdm = site.kernel.memo_parser.register_django_model
+
+        if not site.is_installed('memo'):
+            return
+
+        rdm = site.plugins.memo.parser.register_django_model
         rdm('client', self.client_model,
             title=lambda obj: obj.get_full_name())
         

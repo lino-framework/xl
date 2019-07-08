@@ -1,4 +1,4 @@
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for handling sales.
@@ -19,7 +19,7 @@ class Plugin(ad.Plugin):
     # and therefore the VAT menu items will incorporate into the Sales menu.  One
     # possibility is to remove vat from the needs_plugins of sales.
 
-    needs_plugins = ['lino_xl.lib.products', 'lino_xl.lib.vat']
+    needs_plugins = ['lino.modlib.memo', 'lino_xl.lib.products', 'lino_xl.lib.vat']
     # needs_plugins = ['lino_xl.lib.products']
 
     def setup_reports_menu(self, site, user_type, m):

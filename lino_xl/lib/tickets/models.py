@@ -17,7 +17,7 @@ from lino.core.actions import CreateRow
 from lino.mixins.ref import Referrable
 from lino.modlib.comments.mixins import Commentable
 from lino.modlib.notify.choicelists import MessageTypes
-from lino.modlib.notify.utils import rich_text_to_elems
+from lino.modlib.memo.mixins  import rich_text_to_elems
 from lino.modlib.uploads.mixins import UploadController
 from lino.modlib.users.mixins import UserAuthored
 
@@ -764,9 +764,12 @@ class Link(dd.Model):
 def setup_memo_commands(sender=None, **kwargs):
     # See :doc:`/specs/memo`
 
+    if not sender.is_installed('memo'):
+        return
+
     Ticket = sender.models.tickets.Ticket
-    mp = sender.kernel.memo_parser
-    
+    mp = sender.plugins.memo.parser
+
     mp.register_django_model(
         'ticket', Ticket, title=lambda obj: obj.summary)
     mp.add_suggester(

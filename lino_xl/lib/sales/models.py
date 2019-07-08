@@ -10,7 +10,7 @@ from lino.api import dd, rt, _
 from lino.core import actions
 from etgen.html import E
 from lino.utils.mldbc.mixins import BabelNamed
-from lino.mixins.bleached import body_subject_to_elems
+from lino.modlib.memo.mixins import body_subject_to_elems
 # from lino.mixins.periods import DateRange
 
 from lino_xl.lib.sepa.mixins import Payable

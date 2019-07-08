@@ -32,7 +32,9 @@ class Plugin(ad.Plugin):
     with_roles_history = False
 
     def post_site_startup(self, site):
-        rdm = site.kernel.memo_parser.register_django_model
+        if not site.is_installed('memo'):
+            return
+        rdm = site.plugins.memo.parser.register_django_model
         rdm('person', site.models.contacts.Person)
         rdm('company', site.models.contacts.Company)
     

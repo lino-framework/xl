@@ -182,6 +182,9 @@ class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
 def setup_memo_commands(sender=None, **kwargs):
     # See :doc:`/specs/memo`
 
+    if not sender.is_installed('memo'):
+        return
+
     Meeting = sender.models.meetings.Meeting
 
     def cmd(parser, s):
@@ -203,7 +206,7 @@ def setup_memo_commands(sender=None, **kwargs):
         # return str(ar)
         return tostring(e)
 
-    sender.kernel.memo_parser.register_django_model(
+    sender.plugins.memo.parser.register_django_model(
         'meeting', Meeting,
         cmd=cmd,
         # title=lambda obj: obj.name

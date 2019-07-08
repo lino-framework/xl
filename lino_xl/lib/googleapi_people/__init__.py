@@ -35,7 +35,7 @@ class Plugin(ad.Plugin):
 
     # def post_site_startup(self, site):
     #     self.partner_model = site.models.resolve(self.partner_model)
-    #     rdm = site.kernel.memo_parser.register_django_model
+    #     rdm = site.plugins.memo.parser.register_django_model
     #     rdm('partner', site.models.googleapi_people.Partner)
     #     super(Plugin, self).on_site_startup(site)
     #     rdm('company', site.models.contacts.Company)

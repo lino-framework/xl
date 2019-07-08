@@ -25,7 +25,7 @@ from lino.modlib.users.mixins import My, UserAuthored
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
 # from lino.core.requests import BaseRequest
-from lino.mixins.bleached import BleachedPreviewBody
+from lino.modlib.memo.mixins import Previewable
 from lino.utils import join_elems
 from etgen.html import E
 
@@ -68,7 +68,7 @@ class EntryTypes(dd.Table):
 
 @dd.python_2_unicode_compatible
 class Entry(UserAuthored, Controllable, CombinedDateTime,
-            BleachedPreviewBody):
+            Previewable):
 
     """A blog entry is a short article with a title, published on a given
     date and time by a given user.
@@ -251,7 +251,8 @@ class LatestEntries(Entries):
             # s = render(ar, 'blogs/entry.html', context)
             elems.append(E.h2(e.title or str(e), " ", e.obj2href(
                 ar, u"⏏", **{'style': "text-decoration:none"})))
-            s = ar.parse_memo(e.body_preview)
+            # s = ar.parse_memo(e.short_preview)
+            s = e.short_preview
             tree = etree.parse(StringIO(s), html_parser)
             # elems.extend(tree.iter())
             # elems.append(tree.iter().next())

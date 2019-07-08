@@ -336,6 +336,8 @@ dd.update_field(Enrolment, 'order', blank=True)
 @dd.receiver(dd.post_startup)
 def setup_memo_commands(sender=None, **kwargs):
     # See :doc:`/specs/memo`
+    if not sender.is_installed('memo'):
+        return
 
     Order = sender.models.orders.Order
 
@@ -359,7 +361,7 @@ def setup_memo_commands(sender=None, **kwargs):
         # return str(ar)
         return tostring(e)
 
-    sender.kernel.memo_parser.register_django_model(
+    sender.plugins.memo.parser.register_django_model(
         'order', Order,
         cmd=cmd,
         # title=lambda obj: obj.name
