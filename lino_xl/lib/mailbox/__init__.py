@@ -50,6 +50,9 @@ class Plugin(ad.Plugin):
             version = self.site.not_found_msg
         yield ("django_mailbox", version, "https://github.com/CylonOven/django-mailbox")
 
+    def get_requirements(self, site):
+        yield "django-mailbox"
+
 
 
     #list of mboxes that are to be handeled.
