@@ -3,14 +3,18 @@
 """Database models for `lino_xl.lib.mailbox`.
 
 """
-import logging
+import logging ; logger = logging.getLogger(__name__)
 
-logger = logging.getLogger(__name__)
+try:
+    from django_mailbox import models
+except ImportError:
+    pass
 
-from django_mailbox import models
+    # without django_mailbox  this plugin won't work, but it must be importable
+    # for :manage:`configure`.
+
 from django.utils.translation import ugettext_lazy as _
-import django.db.models
-#
+
 from lino.api import dd, rt
 
 #

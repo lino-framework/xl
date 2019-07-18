@@ -42,6 +42,13 @@ class Plugin(ad.Plugin):
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('mailbox.Messages')
 
+    def get_requirements(self, site):
+        # yield "django-mailbox"
+        yield "git+https://github.com/khchine5/django-mailbox.git#egg=django-mailbox"
+
+        """If the unpatched version is used, you get AttributeError: type
+        object 'Message' has no attribute 'collect_virtual_fields'."""
+
     def get_used_libs(self, html=None):
         try:
             #~ import appy
@@ -49,10 +56,6 @@ class Plugin(ad.Plugin):
         except ImportError:
             version = self.site.not_found_msg
         yield ("django_mailbox", version, "https://github.com/CylonOven/django-mailbox")
-
-    def get_requirements(self, site):
-        yield "django-mailbox"
-
 
 
     #list of mboxes that are to be handeled.
