@@ -17,11 +17,15 @@ class Plugin(ad.Plugin):
     verbose_name = _("Appy POD")
 
     def get_requirements(self, site):
-        if six.PY3:
-            # yield "-e svn+https://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
-            yield "svn+https://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
-        else:
-            yield "appy"
+        try:
+            import appy
+            # leave unchanged if it is already installed
+        except ImportError:
+            if six.PY3:
+                # yield "-e svn+https://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
+                yield "svn+https://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
+            else:
+                yield "appy"
 
     def get_used_libs(self, html=None):
         try:

@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Rumma & Ko Ltd
-#
+# Copyright 2013-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for receiving emails and storing them in the db.
@@ -43,11 +42,15 @@ class Plugin(ad.Plugin):
         m.add_action('mailbox.Messages')
 
     def get_requirements(self, site):
-        # yield "django-mailbox"
-        yield "git+https://github.com/khchine5/django-mailbox.git#egg=django-mailbox"
+        try:
+            import django_mailbox
+            # leave unchanged if it is already installed
+        except ImportError:
+            # yield "django-mailbox"
+            yield "git+https://github.com/khchine5/django-mailbox.git#egg=django-mailbox"
 
-        """If the unpatched version is used, you get AttributeError: type
-        object 'Message' has no attribute 'collect_virtual_fields'."""
+        # If the unpatched version is used, you get AttributeError: type
+        # object 'Message' has no attribute 'collect_virtual_fields'.
 
     def get_used_libs(self, html=None):
         try:
