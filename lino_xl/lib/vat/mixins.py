@@ -268,7 +268,7 @@ class VatDocument(ProjectRelated, VatTotal):
     @dd.chooser()
     def vat_regime_choices(self, partner):
         return rt.models.vat.get_vat_regime_choices(
-            partner, partner.country, partner.vat_id)
+            partner.country, partner.vat_id)
 
     def partner_changed(self, ar=None):
         self.vat_regime = None

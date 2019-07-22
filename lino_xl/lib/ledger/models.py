@@ -453,22 +453,26 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
 
 class ChangeState(dd.Action):
     """
-    Change the state of the invoice
+    Toggle the state of the invoice
     """
     show_in_bbar = False
-    button_text = 'Change state'
+    # button_text = _("Toggle state")
     # sort_index = 52
-    label = _("Change state")
+    label = _("Toggle state")
     # action_name = "changemystate"
 
     def run_from_ui(self, ar, **kw):
-        current_invoice = ar.selected_rows[0]
-        if current_invoice.state == VoucherStates.draft:
-            current_invoice.state = VoucherStates.registered
-        elif current_invoice.state == VoucherStates.registered:
-            current_invoice.state = VoucherStates.draft
-        current_invoice.save()
-        ar.set_response(refresh_all=True)
+        obj = ar.selected_rows[0]
+        # print("20190722", obj)
+        if obj.state == VoucherStates.draft:
+            obj.set_workflow_state(ar, ar.actor.workflow_state_field, VoucherStates.registered)
+        elif obj.state == VoucherStates.registered:
+            obj.set_workflow_state(ar, ar.actor.workflow_state_field, VoucherStates.draft)
+        else:
+            raise Warning(_("Cannot toggle from state {}").format(obj.state))
+        # obj.full_clean()
+        # obj.save()
+        ar.set_response(refresh=True)
 
 
 

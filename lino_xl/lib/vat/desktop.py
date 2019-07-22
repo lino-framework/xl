@@ -45,14 +45,14 @@ class InvoiceDetail(dd.DetailLayout):
     """
 
     general = dd.Panel("""
-    id entry_date partner user
+    entry_date number partner user
     due_date your_ref vat_regime #item_vat
     uploads.UploadsByController
     ItemsByInvoice:60 totals:20
     """, label=_("General"))
 
     ledger = dd.Panel("""
-    journal accounting_period number narration
+    journal accounting_period id narration
     ledger.MovementsByVoucher
     """, label=_("Ledger"))
 
