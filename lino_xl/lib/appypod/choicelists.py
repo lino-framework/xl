@@ -18,7 +18,11 @@ from .appy_renderer import AppyRenderer
 try:
     from appy.pod.actions import EvaluationError
 except ImportError:
-    from appy.pod.buffers import EvaluationError
+    try:
+        from appy.pod.buffers import EvaluationError
+    except ImportError:
+        EvaluationError = Exception
+        # Run the python manage.py configure to install appy correctly.
 
 
 class AppyBuildMethod(SimpleBuildMethod):

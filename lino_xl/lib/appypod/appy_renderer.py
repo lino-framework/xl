@@ -17,7 +17,11 @@ from io import open
 
 # from builtins import str
 
-from appy.pod.renderer import Renderer as OriginalAppyRenderer
+try:
+    from appy.pod.renderer import Renderer as OriginalAppyRenderer
+except ImportError:
+    OriginalAppyRenderer = object
+    # Run the python manage.py configure to install appy correctly.
 
 from django.utils.encoding import force_text
 from django.conf import settings
