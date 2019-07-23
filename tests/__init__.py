@@ -34,4 +34,3 @@ class UtilsTests(LinoTestCase):
         self.run_simple_doctests('lino_xl/lib/contacts/utils.py')
 
 
-from . import test_appy_pod
