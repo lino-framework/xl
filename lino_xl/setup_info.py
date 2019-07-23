@@ -14,28 +14,28 @@
 from __future__ import unicode_literals
 
 
-install_requires = ['lino', 'odfpy', 'bleach']
+# install_requires = ['lino', 'odfpy', 'bleach']
 
 # under Python 3, appy is installed using a symbolic link, so we don't
 # declare it in install_requires because otherwise :cmd:`setup.py
 # test` doesn't see it and tries to install it, which fails since appy
 # itself works only on Python 2
-import sys
-PY2 = sys.version_info[0] == 2
-if PY2:
-    install_requires.append('appy')
-else:
-    pass
+# import sys
+# PY2 = sys.version_info[0] == 2
+# if PY2:
+#     install_requires.append('appy')
+# else:
+#     pass
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='19.7.3',
-    install_requires=install_requires,
+    version='19.7.4',
+    install_requires=['lino', 'odfpy'],
     tests_require=[],
     description="Lino Extensions Library",
     license='BSD-2-Clause',
-    author='Luc Saffre',
-    author_email='luc.saffre@gmail.com',
+    author='Rumma & Ko Ltd',
+    author_email='info@saffre-rumma.net',
     url="http://www.lino-framework.org",
     # ~ test_suite = 'lino_xl.test_apps',
     test_suite='tests')
