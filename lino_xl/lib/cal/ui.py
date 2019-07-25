@@ -64,7 +64,7 @@ class RoomDetail(dd.DetailLayout):
 class Rooms(dd.Table):
     required_roles = dd.login_required(OfficeStaff)
     # required_roles = dd.login_required((OfficeStaff, CalendarReader))
-    
+
     model = 'cal.Room'
     detail_layout = "cal.RoomDetail"
     insert_layout = """
@@ -75,7 +75,7 @@ class Rooms(dd.Table):
 
     detail_html_template = "cal/Room/detail.html"
 
-class AllRooms(Rooms):    
+class AllRooms(Rooms):
     required_roles = dd.login_required(OfficeStaff)
 
 
@@ -144,6 +144,34 @@ def check_subscription(user, calendar):
         sub.full_clean()
         sub.save()
 
+def gen_insert_button(actor,header_items, Event, ar, target_day):
+    """Hackish solutuion to not having to recreate a new sub request when generating lots of insert buttons.
+    Stores values in the actor as a cache, and uses id(ar) to check if it's a new request and needs updating.
+    Works by replaceing a known unique value with the correct known value for the insert window."""
+    if ar.get_user().authenticated:
+
+        if (False and getattr(actor, "insert_button",None) is not None
+                and actor.insert_button_ar_id == id(ar)):
+
+            insert_button= actor.insert_button.__copy__()
+        else:
+            # print("Making button")
+            sar = Event.get_default_table().insert_action.request_from(ar)
+        # print(20170217, sar)
+            sar.known_values = dict(
+            start_date="PLACEHOLDER")
+            actor.insert_button = sar.ar2button(None,
+                                # _(" Reply "), icon_name=None
+                                )
+            actor.insert_button_ar_id = id(ar)
+            insert_button = actor.insert_button.__copy__()
+
+
+        insert_button.set("href", insert_button.get("href").replace("PLACEHOLDER", str(target_day)))
+        insert_button = E.span(insert_button , style="float: right;")
+        header_items.append(insert_button)
+        # btn.set("style", "padding-left:10px")
+    return header_items
 
 class UserDetailMixin(dd.DetailLayout):
 
@@ -161,7 +189,7 @@ class UserDetailMixin(dd.DetailLayout):
         label=dd.plugins.cal.verbose_name,
         required_roles=dd.login_required(OfficeUser))
 
-    
+
 class Tasks(dd.Table):
     model = 'cal.Task'
     required_roles = dd.login_required(OfficeStaff)
@@ -349,7 +377,7 @@ class Guests(dd.Table):
     @classmethod
     def get_table_summary(cls, obj, ar):
         return get_calendar_summary(cls, obj, ar)
-    
+
     @classmethod
     def get_request_queryset(self, ar, **kwargs):
         qs = super(Guests, self).get_request_queryset(ar, **kwargs)
@@ -636,7 +664,7 @@ class Events(dd.Table):
     def get_table_summary(cls, obj, ar):
         # print("20181121 get_table_summary", cls)
         return get_calendar_summary(cls, obj, ar)
-    
+
     @classmethod
     def get_request_queryset(self, ar, **kwargs):
         # print("20181121a get_request_queryset", self)
@@ -688,7 +716,7 @@ class Events(dd.Table):
         kw.update(start_date=settings.SITE.site_config.hide_events_before)
         return kw
 
-    
+
 class AllEntries(Events):
     required_roles = dd.login_required(Explorer)
     params_layout = """
@@ -713,14 +741,14 @@ class ConflictingEvents(Events):
         if qs is None:
             return rt.models.cal.Event.objects.none()
         return qs
-    
+
 
 class PublicEntries(Events):
     required_roles = dd.login_required(CalendarReader)
-    
+
     column_names = 'detail_link room event_type  *'
     filter = models.Q(access_class=AccessClasses.public)
-    
+
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(PublicEntries, self).param_defaults(ar, **kw)
@@ -807,7 +835,7 @@ class CalendarRenderer(object):
             d = obj.event.start_date
         else:
             d = obj.start_date
-        
+
         if d.year in self.years:
             y = self.years[d.year]
         else:
@@ -828,7 +856,7 @@ class CalendarRenderer(object):
                         count2 += 1
             if nmonths:
                 nyears += 1
-                        
+
         if count1 <= max_months:
             self.mode = UL_MODE
         elif count2:
@@ -839,7 +867,7 @@ class CalendarRenderer(object):
 
     def to_html(self, ar):
         self.analyze_view()
-        
+
         if self.mode == TABLE_MODE:
             sep = ' '
             fmt = day_and_weekday
@@ -864,8 +892,8 @@ class CalendarRenderer(object):
                 yield str(obj.state.button_text)
             # return (fdmy(d) + ": ", ar.obj2html(evt, lbl))
 
-        
-            
+
+
         def xxx(list_of_entries):
             elems = []
             # for e in reversed(list_of_entries):
@@ -874,7 +902,7 @@ class CalendarRenderer(object):
                     elems.append(sep)
                 elems.extend(rnd(e, ar))
             return elems
-        
+
         if self.mode == TABLE_MODE:
             rows = []
             cells = [E.th("")] + [E.th(monthname(m+1)) for m in range(12)]
@@ -888,7 +916,7 @@ class CalendarRenderer(object):
                 # print(str(y.year) +":" + ''.join([tostring(c) for c in cells]))
                 rows.append(E.tr(*cells))
             return E.table(*rows, **ar.renderer.tableattrs)
-        
+
         if self.mode == UL_MODE:
             items = []
             for y in self.years.values():
@@ -898,7 +926,7 @@ class CalendarRenderer(object):
                         items.append(E.li(
                             monthname(12-m), " ", str(y.year), ": ", *xxx(lst)))
             return E.ul(*items)
-        
+
         if self.mode == PLAIN_MODE:
             elems = []
             for y in self.years.values():
@@ -908,10 +936,10 @@ class CalendarRenderer(object):
                             elems.append(sep)
                         elems.extend(xxx(lst))
             return E.p(*elems)
-        
+
         raise Exception("20180720")
-        
-        
+
+
 def get_calendar_summary(cls, obj, ar):
     # print("20181121 get_calendar_summary", cls)
     # note that objects can be either Event or Guest. if the view
@@ -961,7 +989,7 @@ def get_calendar_summary(cls, obj, ar):
         elems.append(E.p(*toolbar))
 
     return ar.html_text(E.div(*elems))
-    
+
 
 
 class EntriesByController(Events):
@@ -975,7 +1003,7 @@ class EntriesByController(Events):
     order_by = ["-start_date", "-start_time", "auto_type", "id"]
     # order_by = ['seqno']
 
-    
+
 
 if settings.SITE.project_model:
 
@@ -1586,8 +1614,12 @@ class WeeklyPlanner(EventsParameters, dd.Table):
                                    start_time__isnull=False)
                 if not obj.start_time and not obj.end_time:
                     qs = qs.filter(start_time__isnull=True)
-                    link = E.p(str(current_week_day.day) if current_week_day != dd.today() else E.b(str(current_week_day.day))
-                               , align="center")
+                    link = str(current_week_day.day) \
+                        if current_week_day != dd.today() \
+                        else E.b(str(current_week_day.day))
+
+                    link = E.p(*gen_insert_button(cls, [link], Event, ar, current_day),
+                               align="center")
                 else:
                     link = ''
                 qs = qs.order_by('start_time')
@@ -1655,7 +1687,7 @@ class MonthlyPlanner(EventsParameters, dd.VirtualTable):
             names += ' ' + vf.name + ':20'
             # names += ' ' + vf.name + (':20' if i != 0 else ":3")
 
-        self.column_names = "week_number:3 {}".format(names)
+        self.column_names = "week_number:2 {}".format(names)
 
     @classmethod
     def get_ventilated_columns(cls):
@@ -1681,12 +1713,15 @@ class MonthlyPlanner(EventsParameters, dd.VirtualTable):
 
                 pk = date2pk(target_day)
                 daily, weekly, monthly = make_link_funcs(ar)
-                header = daily(Day(pk),str(target_day.day))
+                daily_link = daily(Day(pk),str(target_day.day))
                 if target_day == today:
-                    header = E.b(header)
-                link = E.div(header,align="center",CLASS="header")
+                    daily_link = E.b(daily_link)
 
-                return E.table(E.tr(E.td(*[link,E.div(*join_elems(chunks))])),
+                header_items = [daily_link]
+                header_items = gen_insert_button(cls, header_items, Event, ar, target_day)
+
+                header = E.div(*header_items, align="center",CLASS="header" )
+                return E.table(E.tr(E.td(*[header,E.div(*join_elems(chunks))])),
                                CLASS="fixed-table cal-month-cell {} {} {}".format(
                                  "current-month" if current_date.month == target_day.month else "other-month",
                                  "current-day" if target_day == today else "",
@@ -1697,6 +1732,7 @@ class MonthlyPlanner(EventsParameters, dd.VirtualTable):
 
         for pc in Weekdays.get_list_items():
             yield w(pc)
+
 
 
 class MonthlyDetail(dd.DetailLayout):

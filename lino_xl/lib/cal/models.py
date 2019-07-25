@@ -778,7 +778,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if self.event_type is None:
             self.event_type = ar.user.event_type or \
                 settings.SITE.site_config.default_event_type
-        self.start_date = settings.SITE.today()
+        self.start_date = self.start_date or settings.SITE.today()
         self.start_time = timezone.now().time()
         # see also Assignable.on_create()
         super(Event, self).on_create(ar)
