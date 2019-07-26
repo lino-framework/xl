@@ -150,7 +150,7 @@ def gen_insert_button(actor,header_items, Event, ar, target_day):
     Works by replaceing a known unique value with the correct known value for the insert window."""
     if ar.get_user().authenticated:
 
-        if (False and getattr(actor, "insert_button",None) is not None
+        if (getattr(actor, "insert_button",None) is not None
                 and actor.insert_button_ar_id == id(ar)):
 
             insert_button= actor.insert_button.__copy__()
