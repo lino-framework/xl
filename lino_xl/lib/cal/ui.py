@@ -145,9 +145,9 @@ def check_subscription(user, calendar):
         sub.save()
 
 def gen_insert_button(actor,header_items, Event, ar, target_day):
-    """Hackish solutuion to not having to recreate a new sub request when generating lots of insert buttons.
+    """Hackish solution to not having to recreate a new sub request when generating lots of insert buttons.
     Stores values in the actor as a cache, and uses id(ar) to check if it's a new request and needs updating.
-    Works by replaceing a known unique value with the correct known value for the insert window."""
+    Works by replacing known unique value with the correct known value for the insert window."""
     if ar.get_user().authenticated:
 
         if (getattr(actor, "insert_button",None) is not None
