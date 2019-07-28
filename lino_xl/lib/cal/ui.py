@@ -39,6 +39,8 @@ from .roles import CalendarReader, GuestOperator
 from calendar import Calendar as PythonCalendar
 from datetime import timedelta, datetime
 
+from .actions import InsertEvent
+
 CALENDAR = PythonCalendar()
 
 
@@ -1486,6 +1488,7 @@ class CalendarView(Days):
 class DailyView(EventsParameters, CalendarView):
     label = _("Daily view")
     # hide_top_toolbar = True
+    InsertEvent = InsertEvent()
 
 
 class DailyPlannerRows(EventsParameters, dd.Table):
@@ -1499,6 +1502,7 @@ class DailyPlanner(DailyPlannerRows):
     label = _("Daily planner")
     editable = False
     use_detail_params_value = True
+
 
     @classmethod
     def setup_columns(self):

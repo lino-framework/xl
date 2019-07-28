@@ -32,6 +32,21 @@ class ShowEntriesByDay(dd.Action):
         js = ar.renderer.request_handler(sar)
         ar.set_response(eval_js=js)
 
+class InsertEvent(dd.Action):
+    """Wrapper to insert an event in the daily view cal table.
+    Returns a js to eval which equates to running the insert window action for Events with the correct known values."""
+    label = _("Create new Event")
+    icon_name = 'add'  # if action rendered as toolbar button
+    help_text = _("Create a new Event")
+    show_in_bbar = True
+
+    def run_from_ui(self, ar, **kw):
+        Event = rt.models.cal.Event
+        sar = Event.get_default_table().insert_action.request_from(ar)
+        sar.known_values = dict(
+            start_date=str(ar.selected_rows[0].date))
+        ar.set_response(eval_js=ar.renderer.ar2js(sar, None))
+
 
 class UpdateGuests(dd.Action):
 
@@ -45,7 +60,7 @@ class UpdateGuests(dd.Action):
             return 0
         for obj in ar.selected_rows:
             self.run_on_event(ar, obj)
-            
+
     def run_on_event(self, ar, obj):
 
         if not obj.state.edit_guests:
@@ -80,12 +95,12 @@ class UpdateGuests(dd.Action):
 
 
 class UpdateAllGuests(UpdateGuests):
-    
+
     def run_from_ui(self, ar, **kw):
         Event = rt.models.cal.Event
         gfk = Event._meta.get_field('owner')
         states = EntryStates.filter(fixed=False)
-        
+
         for obj in ar.selected_rows:
             qs = Event.objects.filter(
                 **gfk2lookup(gfk, obj, state__in=states))
