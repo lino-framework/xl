@@ -1618,7 +1618,7 @@ class WeeklyPlanner(EventsParameters, dd.Table):
                         if current_week_day != dd.today() \
                         else E.b(str(current_week_day.day))
 
-                    link = E.p(*gen_insert_button(cls, [link], Event, ar, current_day),
+                    link = E.p(*gen_insert_button(cls, [link], Event, ar, current_week_day),
                                align="center")
                 else:
                     link = ''
