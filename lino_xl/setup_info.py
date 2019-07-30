@@ -29,7 +29,7 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='19.7.4',
+    version='19.7.5',
     install_requires=['lino', 'odfpy'],
     tests_require=[],
     description="Lino Extensions Library",
@@ -67,15 +67,15 @@ SETUP_INFO.update(long_description="""
 
 
 The **Lino Extensions Library** is a collection of plugins used by many Lino
-applications. 
+applications.
 
 - This repository is considered an integral part of the Lino framework, which is
   documented as a whole in the `Lino Book
   <http://www.lino-framework.org/dev/overview.html>`__.
- 
+
 - Your feedback is welcome.  Our `community page
   <http://www.lino-framework.org/community>`__ explains how to contact us.
-  
+
 - API changes to this repository are logged at
   http://www.lino-framework.org/changes/
 
