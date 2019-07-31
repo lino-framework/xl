@@ -1238,22 +1238,19 @@ Inherits from DebtorsCreditors."""),
 Inherits from DebtorsCreditors."""),
     'lino_xl.lib.ledger.TradeTypes' : _("""The choicelist with the trade types defined for this
 application."""),
-    'lino_xl.lib.ledger.TradeTypes.sales' : _("""A sale transaction is when you write an invoice to a customer
-and then expect the customer to pay it."""),
-    'lino_xl.lib.ledger.TradeTypes.purchases' : _("""A purchase transaction is when you get an invoice from a
-provider who expects you to pay it."""),
-    'lino_xl.lib.ledger.TradeTypes.wages' : _("""A wage transaction is when you write a payroll (declare the
-fact that you owe some wage to an employee) and later pay it
-(e.g. via a payment order)."""),
-    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he paid some
-invoice for you, and later you pay that money back to his account.  Or
-the employee collects money for a sales invoice and later returns that
-money to you."""),
+    'lino_xl.lib.ledger.TradeTypes.sales' : _("""When you write an invoice to a customer and when the customer pays it."""),
+    'lino_xl.lib.ledger.TradeTypes.purchases' : _("""When you get an invoice from a provider and when you pay it."""),
+    'lino_xl.lib.ledger.TradeTypes.wages' : _("""When you write a payroll (declare the fact that you owe some wage to an
+employee) and later pay it (e.g. via a payment order)."""),
+    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""When an employee declares that he paid some invoice for you, and later
+you pay that money back to his account.  Or the employee collects money
+for a sales invoice and later returns that money to you.  See
+internal_clearings."""),
     'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
     'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
-    'lino_xl.lib.ledger.TradeType.main_account' : _("""The common account into which the total amount of partner
-vouchers (base + taxes) and their payments should be booked."""),
-    'lino_xl.lib.ledger.TradeType.base_account' : _("""The common account into which the base amount of any operation
+    'lino_xl.lib.ledger.TradeType.main_account' : _("""The common account into which the total amount of partner vouchers (base
++ taxes) and their payments should be booked."""),
+    'lino_xl.lib.ledger.TradeType.base_account' : _("""The default common account into which the base amount of any operation
 should be booked."""),
     'lino_xl.lib.ledger.TradeType.invoice_account_field_name' : _("""The name of a field to be injected on the Partner model which points to an
 account to be used instead of the default
@@ -1481,6 +1478,12 @@ included to a detail window on partner."""),
 with some mixin which defines a field partner."""),
     'lino_xl.lib.sepa.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
     'lino_xl.lib.sepa.Payable.title' : _("""A char field with a description for this transaction."""),
+    'lino_xl.lib.sepa.Payable.get_payable_sums_dict' : _("""To be implemented by subclasses.  Expected to return a dict which maps
+4-tuples (acc_tuple, project, vat_class, vat_regime) to the payable
+amount. acc_tuple is itself a tuple (general_account,
+analytic_account), vat_class is a lino_xl.lib.vat.VatClasses
+choice and vat_regime a lino_xl.lib.vat.VatRegimes choice."""),
+    'lino_xl.lib.sepa.Payable.get_wanted_movements' : _("""Implements lino_xl.lib.ledger.Voucher.get_wanted_movements()."""),
     'lino_xl.lib.sheets.SheetTypes' : _("""The global list of sheet types ."""),
     'lino_xl.lib.sheets.SheetTypes.balance' : _("""A balance sheet or statement of financial position is a
 summary of the financial balances of an organisation."""),
