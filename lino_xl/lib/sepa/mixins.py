@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -12,6 +12,7 @@ from lino.api import dd, rt, _
 from lino.utils import SumCollector
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.ledger.utils import DEBIT
+from lino_xl.lib.ledger.choicelists import TradeTypes
 # from lino_xl.lib.ledger.utils import myround
 
 from lino_xl.lib.ledger.mixins import PartnerRelated
@@ -48,7 +49,7 @@ class BankAccount(dd.Model):
             else:
                 self.bank_account = None
         super(BankAccount, self).partner_changed(ar)
-        
+
     @dd.chooser()
     def bank_account_choices(cls, partner, project):
         # dd.logger.info(
@@ -82,7 +83,7 @@ class Payable(PartnerRelated):
                 self.due_date = self.payment_term.get_due_date(
                     self.voucher_date or self.entry_date)
         super(Payable, self).full_clean()
-        
+
 
     @classmethod
     def get_registrable_fields(cls, site):
@@ -94,21 +95,9 @@ class Payable(PartnerRelated):
         return self.due_date or self.voucher_date
 
     def get_payable_sums_dict(self):
-        """To be implemented by subclasses.  Expected to return a dict which
-        maps 4-tuples `(acc_tuple, project, vat_class, vat_regime)` to
-        the amount. 
-        `acc_tuple` is a tuple `(general_account, analytic_account)`,
-        `vat_class`
-        is a :class:`lino_xl.lib.vat.VatClasses`
-        and `vat_regime` a :class:`lino_xl.lib.vat.VatRegimes`.
-        """
         raise NotImplemented()
 
     def get_wanted_movements(self):
-        """Implements
-        :meth:`lino_xl.lib.ledger.Voucher.get_wanted_movements`.
-
-        """
         item_sums = self.get_payable_sums_dict()
         # logger.info("20120901 get_wanted_movements %s", sums_dict)
         counter_sums = SumCollector()
@@ -126,7 +115,7 @@ class Payable(PartnerRelated):
             if has_vat:
                 kw.update(
                     vat_class=vat_class, vat_regime=vat_regime)
-                
+
             if acc_tuple[0].needs_partner:
                 kw.update(partner=partner)
             yield self.create_movement(
@@ -142,13 +131,29 @@ class Payable(PartnerRelated):
         if acc is None:
             if len(counter_sums.items()):
                 raise Warning("No main account for {}".format(tt))
-        else:
-            for prj, amount in counter_sums.items():
-                # amount = myround(amount)
-                yield self.create_movement(
-                    None, (acc, None), prj, not self.journal.dc, amount,
-                    partner=partner if acc.needs_partner else None,
-                    match=self.get_match())
+            return
+
+        total_amount = 0
+        for prj, amount in counter_sums.items():
+            total_amount += amount
+            yield self.create_movement(
+                None, (acc, None), prj, not self.journal.dc, amount,
+                partner=partner if acc.needs_partner else None,
+                match=self.get_match())
+
+        if dd.plugins.ledger.worker_model \
+                and TradeTypes.clearings.main_account \
+                and self.payment_term_id and self.payment_term.worker:
+            worker = self.payment_term.worker
+            dc = self.journal.dc
+            # undo the credit that was booked to the partner account and book it
+            # to the worker's account:
+            yield self.create_movement(
+                None, (acc, None), None, dc, total_amount,
+                partner=partner, match=self.get_match())
+            yield self.create_movement(
+                None, (TradeTypes.clearings.get_main_account(), None), None, not dc, total_amount,
+                partner=worker, match=self.get_match())
 
 
 class BankAccountChecker(Checker):
@@ -163,7 +168,7 @@ class BankAccountChecker(Checker):
         partners_differ=_(
             "Bank account owner ({0}) differs from partner ({1})"),
     )
-    
+
     def get_checkdata_problems(self, obj, fix=False):
 
         if obj.bank_account:

@@ -34,7 +34,7 @@ from .choicelists import VatRegimes, VatAreas
 
 
 class InvoiceDetail(dd.DetailLayout):
-    
+
     main = "general ledger"
 
     totals = """
@@ -46,7 +46,7 @@ class InvoiceDetail(dd.DetailLayout):
 
     general = dd.Panel("""
     entry_date number partner user
-    due_date your_ref vat_regime #item_vat
+    payment_term due_date your_ref vat_regime #item_vat
     uploads.UploadsByController
     ItemsByInvoice:60 totals:20
     """, label=_("General"))
@@ -121,9 +121,9 @@ class IntracomInvoices(PartnerVouchers):
     # order_by = ['entry_date', 'number']
     order_by = ['number']
     hidden_elements = frozenset(
-        """entry_date journal__trade_type journal number 
+        """entry_date journal__trade_type journal number
         journal__trade_type state user""".split())
-    
+
     @classmethod
     def get_request_queryset(cls, ar, **kwargs):
         assert not kwargs
@@ -148,7 +148,7 @@ class IntracomInvoices(PartnerVouchers):
         return obj.partner.vat_id
 
 dd.update_field(IntracomInvoices, 'detail_link', verbose_name=_("Invoice"))
-    
+
 class IntracomSales(IntracomInvoices):
     _trade_type = TradeTypes.sales
     label = _("Intra-Community sales")
@@ -156,4 +156,3 @@ class IntracomSales(IntracomInvoices):
 class IntracomPurchases(IntracomInvoices):
     _trade_type = TradeTypes.purchases
     label = _("Intra-Community purchases")
-    

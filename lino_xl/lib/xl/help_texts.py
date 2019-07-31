@@ -1205,6 +1205,7 @@ invoice should be paid."""),
     'lino_xl.lib.ledger.PaymentTerm.days' : _("""Number of days to add to voucher_date."""),
     'lino_xl.lib.ledger.PaymentTerm.months' : _("""Number of months to add to voucher_date."""),
     'lino_xl.lib.ledger.PaymentTerm.end_of_month' : _("""Whether to move voucher_date to the end of month."""),
+    'lino_xl.lib.ledger.PaymentTerm.worker' : _("""The worker who pays or collects the invoice using internal_clearings."""),
     'lino_xl.lib.ledger.PaymentTerm.printed_text' : _("""Used in sales/VatProductInvoice/trailer.html as
 follows:"""),
     'lino_xl.lib.ledger.AccountingPeriod' : _("""An accounting period is the smallest time slice to be observed
@@ -1244,9 +1245,10 @@ provider who expects you to pay it."""),
     'lino_xl.lib.ledger.TradeTypes.wages' : _("""A wage transaction is when you write a payroll (declare the
 fact that you owe some wage to an employee) and later pay it
 (e.g. via a payment order)."""),
-    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he
-paid some invoice for you, and later you pay that money back
-to his account."""),
+    'lino_xl.lib.ledger.TradeTypes.clearings' : _("""A clearing transaction is when an employee declares that he paid some
+invoice for you, and later you pay that money back to his account.  Or
+the employee collects money for a sales invoice and later returns that
+money to you."""),
     'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
     'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
     'lino_xl.lib.ledger.TradeType.main_account' : _("""The common account into which the total amount of partner

@@ -46,9 +46,9 @@ class JournalDetail(dd.DetailLayout):
     main = """
     name ref:5
     journal_group:15 voucher_type:20 trade_type:20 seqno:5 id:5
-    account partner build_method:20 template:20 uploads_volume 
+    account partner build_method:20 template:20 uploads_volume
     dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare
-    printed_name 
+    printed_name
     MatchRulesByJournal
     """
 
@@ -98,7 +98,7 @@ class ByJournal(dd.Table):
 class PrintableByJournal(ByJournal):
     editable = False
     params_layout = "journal start_period end_period state"
-    
+
     column_names = "number entry_date partner total_base total_vat total_incl vat_regime *"
 
     @classmethod
@@ -117,9 +117,9 @@ class PaymentTerms(dd.Table):
     required_roles = dd.login_required(LedgerStaff)
     model = 'ledger.PaymentTerm'
     order_by = ["ref"]
-    column_names = "ref name months days end_of_month *"
+    column_names = "ref name months days end_of_month worker *"
     detail_layout = """
-    ref months days end_of_month
+    ref months days end_of_month worker
     name
     printed_text
     """
@@ -407,7 +407,7 @@ class AccountingPeriodRange(dd.ParameterPanel):
         if pv.end_period:
             if str(pv.start_period) > str(pv.end_period):
                 raise Warning(_("End period must be after start period"))
-                
+
     def get_title_tags(self, ar):
         pv = ar.param_values
         if pv.start_period:
@@ -418,7 +418,7 @@ class AccountingPeriodRange(dd.ParameterPanel):
                 yield _("Period {}").format(pv.start_period)
         else:
             yield str(_("All periods"))
-            
+
 class AccountBalances(dd.Table):
     editable = False
     required_roles = dd.login_required(AccountingReader)
@@ -428,10 +428,10 @@ class AccountBalances(dd.Table):
     abstract = True
     params_panel_hidden = False
     use_as_default_table = False
-    
+
     parameters = AccountingPeriodRange()
     params_layout = "start_period end_period"
-    
+
     @classmethod
     def rowmvtfilter(self):
         raise NotImplementedError()
@@ -445,9 +445,9 @@ class AccountBalances(dd.Table):
         sp = pv.start_period or AccountingPeriod.get_default_for_date(
             dd.today())
         ep = pv.end_period or sp
-        
+
         qs = super(AccountBalances, self).get_request_queryset(ar)
-        
+
         flt = self.rowmvtfilter(ar)
         oldflt = dict()
         oldflt.update(flt)
@@ -476,7 +476,7 @@ class AccountBalances(dd.Table):
         addann(kw, 'old_c', CREDIT, oldflt)
         addann(kw, 'during_d', DEBIT, duringflt)
         addann(kw, 'during_c', CREDIT, duringflt)
-        
+
         qs = qs.annotate(**kw)
 
         qs = qs.exclude(
@@ -542,12 +542,12 @@ class AccountBalances(dd.Table):
     @dd.virtualfield(dd.PriceField(_("Credit after")))
     def new_c(self, row, ar):
         return self.new_balance(row).c
-    
+
     @dd.displayfield("", max_length=0)
     def empty_column(self, row, ar):
         return ''
 
-    
+
 
 class GeneralAccountBalances(AccountBalances, Accounts):
 
@@ -565,14 +565,14 @@ contacts = dd.resolve_app('contacts')
 # print "20180831", dir(contacts)
 
 class PartnerBalancesByTradeType(AccountBalances, contacts.Partners):
-    
+
     order_by = ['name', 'id']
     column_names = "description old_dc during_d during_c new_dc"
 
     @classmethod
     def get_title_base(self, ar):
         return _("Partner Account Balances {}").format(ar.master_instance)
-        
+
     @classmethod
     def rowmvtfilter(self, ar):
         tt = ar.master_instance
@@ -584,7 +584,7 @@ class PartnerBalancesByTradeType(AccountBalances, contacts.Partners):
     @dd.displayfield(_("Ref"))
     def ref(self, row, ar):
         return str(row.pk)
-    
+
     @classmethod
     def normal_dc(cls, row, ar):
         tt = ar.master_instance
@@ -592,7 +592,7 @@ class PartnerBalancesByTradeType(AccountBalances, contacts.Partners):
             return DEBIT
         return tt.dc
 
-    
+
 # class CustomerAccountsBalance(PartnerAccountsBalance):
 #     label = _("Customer Accounts Balance")
 #     trade_type = TradeTypes.sales
@@ -767,13 +767,13 @@ class Situation(Report):
 #     def setup_parameters(cls, fields):
 #         params_layout = """
 #         start_period end_period with_balances with_activity with_general"""
-        
+
 #         if dd.is_installed('ana'):
 #             k = 'with_analytic'
 #             fields[k] = models.BooleanField(
 #                 verbose_name=_("Analytic accounts"), default=True)
 #             params_layout += ' ' + k
-        
+
 #         params_layout += '\n'
 #         for tt in TradeTypes.get_list_items():
 #             k = 'with_'+tt.name
@@ -783,7 +783,7 @@ class Situation(Report):
 #         # params_layout += ' go_button'
 #         cls.params_layout = params_layout
 #         super(AccountingReport, cls).setup_parameters(fields)
-        
+
 #     @classmethod
 #     def get_story(cls, self, ar):
 #         pv = ar.param_values
@@ -830,7 +830,7 @@ class Movements(dd.Table):
 
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
-    
+
     model = 'ledger.Movement'
     required_roles = dd.login_required(LedgerUser)
     column_names = 'value_date voucher_link description \
@@ -866,7 +866,7 @@ class Movements(dd.Table):
             qs = qs.filter(value_date__gte=pv.start_date)
         if pv.end_date:
             qs = qs.filter(value_date__lte=pv.end_date)
-            
+
         # if ar.param_values.partner:
         #     qs = qs.filter(partner=ar.param_values.partner)
         # if ar.param_values.paccount:
@@ -951,7 +951,7 @@ class MovementsByVoucher(Movements):
     order_by = dd.plugins.ledger.remove_dummy(
         'value_date', 'account__ref', 'partner', 'project', 'id')
 
-    
+
 class MovementsByPartner(Movements):
     """Show the ledger movements of a partner.
     See also :class:`lino_xl.lib.ledger.models.Movement`.
@@ -1051,7 +1051,7 @@ class MovementsByAccount(Movements):
     """Shows the movements done on a given general account.
 
     See also :class:`lino_xl.lib.ledger.models.Movement`.
-    
+
     .. attribute:: description
 
         A virtual field showing a comma-separated list of the
@@ -1146,5 +1146,3 @@ class MovementsByMatch(Movements):
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
-
-

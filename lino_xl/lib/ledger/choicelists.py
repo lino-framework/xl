@@ -56,7 +56,7 @@ class CommonAccount(dd.Choice):
     needs_partner = False
     # sheet_item = ''  # filled by lino_xl.lib.sheets if installed
     _instance = None
-    
+
     def __init__(self, value, text, name, clearable, **kwargs):
         # the class attribute `name` ís used as value
         super(CommonAccount, self).__init__(value, text, name, **kwargs)
@@ -76,7 +76,7 @@ class CommonAccount(dd.Choice):
         #     kwargs.pop('sheet_item', None)
         return rt.models.ledger.Account(
             ref=self.value, **kwargs)
-    
+
     def get_object(self):
         # return rt.models.ledger.Account.objects.get(ref=self.value)
         if self._instance is None:
@@ -115,6 +115,7 @@ add('4000', _("Customers"),   'customers', True)
 add('4300', _("Pending Payment Orders"), 'pending_po', True)
 add('4400', _("Suppliers"),   'suppliers', True)
 add('4500', _("Employees"),   'employees', True)
+add('4550', _("Internal clearings"), 'clearings', True)
 add('4600', _("Tax Offices"), 'tax_offices', True)
 
 add('4510', _("VAT due"), 'vat_due', False)
@@ -256,7 +257,7 @@ class TradeType(dd.Choice):
     def get_allowed_accounts(self, **kw):
         kw[self.name + '_allowed'] = True
         return rt.models.ledger.Account.objects.filter(**kw)
-        
+
 def ca_fmt(ar, ca):
     if ar is None or ca is None:
         return ''
@@ -281,29 +282,29 @@ class TradeTypes(dd.ChoiceList):
     @dd.displayfield(_("Main account"))
     def main_account(cls, tt, ar):
         return ca_fmt(ar, tt.main_account)
-            
+
     @dd.displayfield(_("Base account"))
     def base_account(cls, tt, ar):
         return ca_fmt(ar, tt.base_account)
-            
+
     @dd.displayfield(_("Product account field"))
     def product_account_field(cls, tt, ar):
         if tt.base_account_field_name:
             return u"{} ({})".format(
                 tt.base_account_field_label, tt.base_account_field_name)
-        
+
     @dd.displayfield(_("Price field"))
     def product_price_field(cls, tt, ar):
         if tt.price_field_name:
             return u"{} ({})".format(
                 tt.price_field_label, tt.price_field_name)
-        
+
     @dd.displayfield(_("Invoice account field"))
     def invoice_account_field(cls, tt, ar):
         if tt.invoice_account_field_name:
             return u"{} ({})".format(
                 tt.invoice_account_field_label, tt.invoice_account_field_name)
-        
+
     # @dd.displayfield(_("Description"))
     # def description(cls, tt, ar):
     #     if ar is None:
@@ -322,8 +323,8 @@ class TradeTypes(dd.ChoiceList):
     #         elems += [gettext("Invoice account field"), ": "]
     #         elems += [str(tt.invoice_account_field_name)]
     #     return E.div(*elems)
-        
-    
+
+
 
 TradeTypes.add_item(
     'S', _("Sales"), 'sales', dc=DEBIT,
@@ -344,7 +345,9 @@ TradeTypes.add_item(
     'T', _("Taxes"), 'taxes', dc=DEBIT,
     base_account=CommonAccounts.due_taxes,
     main_account=CommonAccounts.tax_offices)
-TradeTypes.add_item('C', _("Clearings"), 'clearings', dc=DEBIT)
+TradeTypes.add_item(
+    'C', _("Clearings"), 'clearings', dc=DEBIT,
+    main_account=CommonAccounts.clearings)
 TradeTypes.add_item('B', _("Bank payment orders"), 'bank_po', dc=DEBIT)
 
 # Note that :mod:`lino_xl.lib.sales.models` and/or
@@ -440,5 +443,3 @@ def setup_vat_workflow(sender=None, **kw):
             # _("Cancel"),
             # help_text=_("Cancel"),
             required_states='draft')
-
-

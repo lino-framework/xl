@@ -39,7 +39,7 @@ class Plugin(ad.Plugin):
     Temporary approach until we add support for multiple currencies.
     See also :meth:`lino.core.site.Site.format_currency`.
     """
-    
+
     use_pcmn = False
     """
     Whether to use the PCMN notation.
@@ -56,7 +56,17 @@ class Plugin(ad.Plugin):
     add an additional field `project` to all models which inherit
     from :class:`lino_xl.lib.ledger.ProjectRelated`.
     """
-    
+
+    worker_model = None
+    """
+    The model to use for workers.
+
+    Default value is `None`.  If this is set to a model name (e.g.
+    'contacts.Person'), Lino will add a field
+    :class:`lino_xl.lib.ledger.PaymentTerm.worker`.
+
+    """
+
     # intrusive_menu = False
     # """
     # Whether the plugin should integrate into the application's
@@ -75,12 +85,12 @@ class Plugin(ad.Plugin):
     This is used to fill the default list of :class:`FiscalYears`,
     and by certain fixtures for generating demo invoices.
     """
-    
+
     fix_y2k = False
     """
     Whether to use a Y2K compatible representation for fiscal years.
     """
-    
+
     suppress_movements_until = None
     """
     Don't create any movements before that date.  Vouchers can exist
@@ -101,6 +111,12 @@ class Plugin(ad.Plugin):
         super(Plugin, self).post_site_startup(site)
         site.models.ledger.CommonAccounts.sort()
         site.models.ledger.VoucherTypes.sort()
+        if self.worker_model is not None:
+            self.worker_model = site.models.resolve(self.worker_model)
+
+    # def on_site_startup(self, site):
+        # self.person_model = site.models.resolve(self.person_model)
+        # super(Plugin, self).on_site_startup(site)
 
     def setup_main_menu(self, site, user_type, m):
         """
@@ -162,4 +178,3 @@ class Plugin(ad.Plugin):
         if self.project_model is None:
             lst.remove('project')
         return lst
-

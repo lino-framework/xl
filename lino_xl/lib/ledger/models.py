@@ -33,7 +33,7 @@ from lino.utils import mti
 from lino_xl.lib.contacts.choicelists import PartnerEvents
 from .choicelists import CommonAccounts
 # from .utils import get_due_movements, check_clearings_by_partner
-from .choicelists import (PeriodStates)
+from .choicelists import PeriodStates
 from .fields import DebitOrCreditField
 from .mixins import ProjectRelated, VoucherNumber, PeriodRangeObservable
 from .roles import VoucherSupervisor
@@ -49,7 +49,7 @@ class LedgerInfo(dd.Model):
     user = dd.OneToOneField('users.User', primary_key=True)
     entry_date = models.DateField(
         _("Last entry date"), null=True, blank=True)
-    
+
     @classmethod
     def get_for_user(cls, user):
         try:
@@ -95,7 +95,7 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
         if self.account is None:
             return False
         return True
-    
+
     def get_doc_model(self):
         """The model of vouchers in this Journal.
 
@@ -234,7 +234,7 @@ class AccountingPeriod(DateRange, Referrable):
         ordering = ['ref']
 
     preferred_foreignkey_width = 10
-    
+
     state = PeriodStates.field(default='open')
     year = dd.ForeignKey('ledger.FiscalYear', blank=True, null=True)
     remark = models.CharField(_("Remark"), max_length=250, blank=True)
@@ -269,7 +269,7 @@ class AccountingPeriod(DateRange, Referrable):
         """
         y = FiscalYear.year2ref(d.year)
         return "{}-{:0>2}".format(y, d.month)
-        
+
         # if dd.plugins.ledger.fix_y2k:
         #     return rt.models.ledger.FiscalYear.from_int(d.year).ref \
         #         + "{:0>2}".format(d.month)
@@ -287,7 +287,7 @@ class AccountingPeriod(DateRange, Referrable):
     @classmethod
     def get_periods_in_range(cls, p1, p2):
         return cls.objects.filter(ref__gte=p1.ref, ref__lte=p2.ref)
-    
+
     @classmethod
     def get_period_filter(cls, fieldname, p1, p2, **kwargs):
         if p1 is None:
@@ -339,9 +339,9 @@ class FiscalYear(DateRange, Referrable):
         ordering = ['ref']
 
     preferred_foreignkey_width = 10
-    
+
     state = PeriodStates.field(default='open')
-    
+
     @classmethod
     def year2ref(cls, year):
         if dd.plugins.ledger.fix_y2k:
@@ -366,7 +366,7 @@ class FiscalYear(DateRange, Referrable):
     def from_int(cls, year, *args):
         ref = cls.year2ref(year)
         return cls.get_by_ref(ref, *args)
-    
+
     @classmethod
     def create_from_year(cls, year):
         ref = cls.year2ref(year)
@@ -395,17 +395,18 @@ class FiscalYears(dd.Table):
     column_names = "ref start_date end_date state *"
     # detail_layout = """
     # ref id
-    # start_date end_date 
+    # start_date end_date
     # """
 
-  
+
 class PaymentTerm(BabelNamed, Referrable):
-              
 
     class Meta:
         app_label = 'ledger'
         verbose_name = _("Payment term")
         verbose_name_plural = _("Payment terms")
+
+    ref_max_length = 5
 
     days = models.IntegerField(_("Days"), default=0)
     months = models.IntegerField(_("Months"), default=0)
@@ -413,7 +414,11 @@ class PaymentTerm(BabelNamed, Referrable):
 
     printed_text = dd.BabelTextField(
         _("Printed text"), blank=True, format='plain')
-    
+
+    worker = dd.ForeignKey(
+        dd.plugins.ledger.worker_model, null=True, blank=True,
+        verbose_name=_("Worker"))
+
 
     def get_due_date(self, date1):
         assert isinstance(date1, datetime.date), \
@@ -446,7 +451,7 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
     #     return "(%(ref)s) %(title)s" % dict(
     #         ref=self.ref,
     #         title=settings.SITE.babelattr(self, 'name'))
-    
+
     @dd.chooser()
     def sheet_item_choices(cls):
         return rt.models.sheets.Item.get_usable_items()
@@ -479,7 +484,7 @@ class ChangeState(dd.Action):
 @dd.python_2_unicode_compatible
 class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, UploadController):
     manager_roles_required = dd.login_required(VoucherSupervisor)
-    
+
     class Meta:
         verbose_name = _("Voucher")
         verbose_name_plural = _("Vouchers")
@@ -574,7 +579,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
             else:
                 info = LedgerInfo.get_for_user(ar.get_user())
                 self.entry_date = info.entry_date or dd.today()
-        
+
     def on_duplicate(self, ar, master):
         self.number = self.entry_date = self.accounting_period = None
         self.on_create(ar)
@@ -685,7 +690,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
 
     # def get_voucher_match(self):
     #     return str(self)  # "{0}{1}".format(self.journal.ref, self.number)
-        
+
     def set_workflow_state(self, ar, state_field, newstate):
         """"""
         if newstate.name == 'registered':
@@ -726,7 +731,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
             # dd.logger.info("20151211 gonna save %d movements", len(movements))
             # self.full_clean()
             # self.save()
-            
+
             fcu = dd.plugins.ledger.suppress_movements_until
             for m in movements:
                 if fcu and m.value_date <= fcu:
@@ -771,7 +776,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
                 check_clearings_by_partner(p)
             # for a in accounts:
             #     check_clearings_by_account(a)
-        
+
         # dd.logger.info("20151211 Done cosi.Voucher.register_voucher()")
 
     def disable_delete(self, ar=None):
@@ -865,7 +870,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         verbose_name_plural = _("Movements")
 
     observable_period_field = 'voucher__accounting_period'
-    
+
     voucher = dd.ForeignKey('ledger.Voucher')
 
     partner = dd.ForeignKey(
@@ -1112,13 +1117,13 @@ class VoucherChecker(Checker):
                 yield (False, self.messages['diff'].format(
                     em, u', '.join(diffs)))
                 return
-                    
+
         if wanted:
             for missing in wanted.values():
                 yield (False, self.messages['missing'].format(missing))
                 return
 
-            
+
 VoucherChecker.activate()
 
 
@@ -1180,7 +1185,7 @@ class DueMovement(object):
             partner=self.partner, account=self.account, match=self.match)
         for mvt in rt.models.ledger.Movement.objects.filter(**flt):
             self.collect(mvt)
-            
+
     def collect(self, mvt):
         """
         Add the given movement to the list of movements that are being
@@ -1198,7 +1203,7 @@ class DueMovement(object):
         due_date = voucher.get_due_date()
         if self.due_date is None or due_date < self.due_date:
             self.due_date = due_date
-            
+
         if self.trade_type is None:
             self.trade_type = voucher.get_trade_type()
         if mvt.dc == self.dc:
@@ -1243,7 +1248,7 @@ def get_due_movements(dc, **flt):
 
     This is the data source for :class:`ExpectedMovements
     <lino_xl.lib.ledger.ui.ExpectedMovements>` and subclasses.
-    
+
     There will be at most one :class:`DueMovement` per (account,
     partner, match), each of them grouping the movements with same
     partner, account and match.
@@ -1272,8 +1277,8 @@ def get_due_movements(dc, **flt):
     # qs = qs.exclude(match='')
     qs = qs.order_by(*dd.plugins.ledger.remove_dummy(
         'value_date', 'account__ref', 'partner', 'project', 'id'))
-    
-    
+
+
     matches_by_account = dict()
     matches = []
     for mvt in qs:
@@ -1302,13 +1307,13 @@ def check_clearings_by_account(account, matches=[]):
         account=account).order_by('match')
     check_clearings(qs, matches)
     on_ledger_movement.send(sender=account.__class__, instance=account)
-    
+
 def check_clearings_by_partner(partner, matches=[]):
     qs = rt.models.ledger.Movement.objects.filter(
         partner=partner).order_by('match')
     check_clearings(qs, matches)
     on_ledger_movement.send(sender=partner.__class__, instance=partner)
-    
+
 def check_clearings(qs, matches=[]):
     """Check whether involved movements are cleared or not, and update
     their :attr:`cleared` field accordingly.
@@ -1338,7 +1343,3 @@ def check_clearings(qs, matches=[]):
         match, account = k
         sat = (balance == ZERO)
         qs.filter(account=account, match=match).update(cleared=sat)
-
-
-        
-

@@ -67,7 +67,7 @@ def objects():
             name="Bestbank",
             country=dd.plugins.countries.get_my_country())
         yield bestbank
-        
+
         kw = dict(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("Bestbank Payment Orders")))
         # kw.update(dd.babel_values(
@@ -120,7 +120,7 @@ def objects():
     if finan:
         payments += [finan.BankStatement, finan.JournalEntry,
                      finan.PaymentOrder]
-    
+
     MatchRule = rt.models.ledger.MatchRule
     for jnl in ledger.Journal.objects.all():
         if jnl.voucher_type.model in payments:

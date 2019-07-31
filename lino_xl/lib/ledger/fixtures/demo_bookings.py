@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -12,7 +12,7 @@ from decimal import Decimal
 from django.conf import settings
 from lino.utils import Cycler
 from lino.utils.dates import AMONTH
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.mixins import myround
 
@@ -104,7 +104,7 @@ def objects():
             invoice = cl(
                 journal=JOURNAL_P, partner=story[0], user=USERS.pop(),
                 voucher_date=vd,
-                payment_term=PAYMENT_TERMS.pop(),
+                payment_term=story[0].payment_term or PAYMENT_TERMS.pop(),
                 items_edited=True,
                 entry_date=vd + delta(days=1))
             yield invoice
