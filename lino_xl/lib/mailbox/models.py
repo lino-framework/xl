@@ -11,7 +11,7 @@ except ImportError:
     pass
 
     # without django_mailbox  this plugin won't work, but it must be importable
-    # for :manage:`configure`.
+    # for :manage:`install`.
 
 from django.utils.translation import ugettext_lazy as _
 
