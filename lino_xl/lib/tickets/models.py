@@ -462,7 +462,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                          related_name="tickets_by_site")
     # topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
-    summary = models.CharField(
+    ticket_summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
         blank=False,
         help_text=_("Short summary of the problem."))
