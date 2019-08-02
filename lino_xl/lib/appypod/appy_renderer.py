@@ -44,7 +44,7 @@ from odf.table import (Table, TableColumns, TableColumn,
 
 from lino.utils import isiterable
 from lino.utils.restify import restify
-from lino.utils.html2xhtml import html2xhtml
+from lino.utils.html2xhtml import html2xhtml, HAS_TIDYLIB
 from lino.utils.html2odf import html2odf, toxml
 from etgen.html import iselement, tostring
 from lino.api import dd
@@ -150,7 +150,8 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ return renderer.renderXhtml(html.encode('utf-8'),**kw)
 
     def insert_html(self, html, **kw):
-
+        if not HAS_TIDYLIB:
+            raise Exception("You must install tidylib on your system")
         if html is None or html == '':
             # Testing for `if not html:` caused a FutureWarning: The
             # behavior of this method will change in future versions.
@@ -504,5 +505,3 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ if output_file:
             # ~ doc.save(output_file) # , True)
         #~ return doc
-
-
