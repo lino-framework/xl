@@ -465,6 +465,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 
     test_summary = models.CharField(
         pgettext("sss", "sss"), max_length=200,
+        blank=True,
         help_text=_("Short summary of the problem."))
 
 
