@@ -463,11 +463,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     # topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
 
-    test_summary = models.CharField(
-        pgettext("sss", "sss"), max_length=200,
-        blank=True,
-        help_text=_("Short summary of the problem."))
-
 
     summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
