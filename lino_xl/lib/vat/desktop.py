@@ -70,7 +70,8 @@ class Invoices(PartnerVouchers):
     # start_at_bottom = True
 
 
-class InvoicesByJournal(Invoices, ByJournal):
+class InvoicesByJournal(ByJournal, Invoices):
+    # ByJournal must be before Invoices the get the right order_by
     params_layout = "partner state start_period end_period user"
     column_names = "number_with_year entry_date due_date " \
         "your_ref partner " \
