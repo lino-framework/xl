@@ -1,4 +1,4 @@
-dist: xenial
+dist: bionic
 language: python
 python:
   #- "2.7"
@@ -10,6 +10,7 @@ install:
   - pip install -U pip
   - pip install coveralls
   - # test -e "requirements.$TRAVIS_BRANCH.txt" && ( pip install -r "requirements.$TRAVIS_BRANCH.txt" ) || ( pip install -r requirements.txt )
+  - pip install -r requirements.txt
   - pip install -e .
 
 # command to run tests, e.g. python setup.py test
