@@ -456,6 +456,20 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
     def sheet_item_choices(cls):
         return rt.models.sheets.Item.get_usable_items()
 
+    def after_ui_save(self, ar, cw):
+        super(Account, self).after_ui_save(ar, cw)
+        if cw is None:
+            return
+        old = cw.get_old_value('common_account')
+        new = self.common_account
+        if old != new:
+            if old is not None:
+                old.set_object(None)
+            if new is not None:
+                new.set_object(self)
+
+
+
 class ChangeState(dd.Action):
     """
     Toggle the state of the invoice

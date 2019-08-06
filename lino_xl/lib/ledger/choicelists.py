@@ -77,6 +77,9 @@ class CommonAccount(dd.Choice):
         return rt.models.ledger.Account(
             ref=self.value, **kwargs)
 
+    def set_object(self, obj):
+        self._instance = obj
+
     def get_object(self):
         # return rt.models.ledger.Account.objects.get(ref=self.value)
         if self._instance is None:
