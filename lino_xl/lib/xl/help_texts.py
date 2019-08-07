@@ -1116,8 +1116,11 @@ account."""),
     'lino_xl.lib.ledger.Account.sheet_item' : _("""Pointer to the item of the balance sheet or income statement
 that will report the movements of this account."""),
     'lino_xl.lib.ledger.CommonAccounts' : _("""The global list of common accounts."""),
-    'lino_xl.lib.ledger.CommonAccount' : _("""The base class for items of :CommonAccounts.
-It defines two additional attributes:"""),
+    'lino_xl.lib.ledger.CommonAccount' : _("""The base class for items of :CommonAccounts."""),
+    'lino_xl.lib.ledger.CommonAccount.clearable' : _("""Default value for Account.clearable."""),
+    'lino_xl.lib.ledger.CommonAccount.needs_partner' : _("""Default value for Account.needs_partner."""),
+    'lino_xl.lib.ledger.CommonAccount.get_object' : _("""Return the database object representing this common account."""),
+    'lino_xl.lib.ledger.CommonAccount.set_object' : _("""Set the cached database object representing this common account."""),
     'lino_xl.lib.ledger.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
 together with its booking direction (debit or credit)."""),
     'lino_xl.lib.ledger.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
