@@ -44,7 +44,7 @@ class VatAreas(dd.ChoiceList):
         if isocode in dd.plugins.vat.eu_country_codes:
             return cls.eu
         return cls.international
-    
+
 add = VatAreas.add_item
 add('10', _("National"), 'national')
 add('20', _("EU"), 'eu')
@@ -129,7 +129,7 @@ class DeclarationField(dd.Choice):
     vat_columns = None
     exclude_vat_columns = None
     is_payable = False
-    
+
     def __init__(self, value, dc,
                  vat_columns=None,
                  # is_base,
@@ -143,7 +143,7 @@ class DeclarationField(dd.Choice):
         self.help_text = text
         super(DeclarationField, self).__init__(
             value, "[{}]".format(value), name, **kwargs)
-        
+
         # self.is_base = is_base
         self.fieldnames = fieldnames
         self.vat_regimes = vat_regimes
@@ -180,7 +180,7 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_regimes) == 0:
                 self.vat_regimes = None
-            
+
         if is_string(self.vat_classes):
             vat_classes = self.vat_classes
             self.vat_classes = set()
@@ -199,7 +199,7 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_classes) == 0:
                 self.vat_classes = None
-                
+
         if is_string(self.vat_columns):
             vat_columns = self.vat_columns
             self.vat_columns = set()
@@ -218,15 +218,15 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_columns) == 0:
                 self.vat_columns = None
-            
+
         super(DeclarationField, self).attach(choicelist)
-            
-        
+
+
     def get_model_field(self):
         return dd.PriceField(
             self.text, default=Decimal, editable=self.editable,
             help_text=self.help_text)
-    
+
     # def __str__(self):
     #     # return force_text(self.text, errors="replace")
     #     # return self.text
@@ -234,12 +234,12 @@ class DeclarationField(dd.Choice):
 
     def collect_from_movement(self, dcl, mvt, field_values, payable_sums):
         pass
-    
+
     def collect_from_sums(self, dcl, sums, payable_sums):
         pass
 
 class SumDeclarationField(DeclarationField):
-    
+
     def collect_from_sums(self, dcl, field_values, payable_sums):
         tot = Decimal()
         for f in self.observed_fields:
@@ -249,7 +249,7 @@ class SumDeclarationField(DeclarationField):
             else:
                 tot += v
         field_values[self.name] = tot
-        
+
 class WritableDeclarationField(DeclarationField):
     editable = True
     def collect_from_sums(self, dcl, field_values, payable_sums):
@@ -262,7 +262,7 @@ class WritableDeclarationField(DeclarationField):
                 payable_sums.collect(k, amount)
 
 class MvtDeclarationField(DeclarationField):
-    
+
     def collect_from_movement(self, dcl, mvt, field_values, payable_sums):
         # if not mvt.account.declaration_field in self.observed_fields:
         #     return 0
@@ -297,7 +297,7 @@ class MvtDeclarationField(DeclarationField):
             payable_sums.collect(k, amount)
             # k = (dcl.journal.account, None, None, None)
             # payable_sums.collect(k, amount)
-    
+
 
 # class AccountDeclarationField(MvtDeclarationField):
 #     pass
@@ -313,28 +313,28 @@ class DeclarationFieldsBase(dd.ChoiceList):
     verbose_name_plural = _("Declaration fields")
     item_class = DeclarationField
     column_names = "value name text description *"
-    
-    # @classmethod    
+
+    # @classmethod
     # def add_account_field(cls, *args, **kwargs):
     #     cls.add_item_instance(
     #         AccountDeclarationField(*args, **kwargs))
-        
-    @classmethod    
+
+    @classmethod
     def add_mvt_field(cls, *args, **kwargs):
         cls.add_item_instance(
             MvtDeclarationField(*args, **kwargs))
-        
-    @classmethod    
+
+    @classmethod
     def add_sum_field(cls, *args, **kwargs):
         cls.add_item_instance(
             SumDeclarationField(*args, **kwargs))
 
 
-    @classmethod    
+    @classmethod
     def add_writable_field(cls, *args, **kwargs):
         cls.add_item_instance(
             WritableDeclarationField(*args, **kwargs))
-        
+
 
     @dd.displayfield(_("Description"))
     def description(cls, fld, ar):
@@ -360,7 +360,7 @@ class DeclarationFieldsBase(dd.ChoiceList):
 
         elems += [
             fld.__class__.__name__, ' ',
-            DCLABELS[fld.dc], 
+            DCLABELS[fld.dc],
             "" if fld.both_dc else " only",
             E.br()]
 
@@ -371,7 +371,7 @@ class DeclarationFieldsBase(dd.ChoiceList):
                 E.br()]
 
         return E.div(*forcetext(elems))
-    
+
 
 class VatRule(dd.Choice):
 
@@ -382,11 +382,10 @@ class VatRule(dd.Choice):
     vat_class = None
     vat_regime = None
     rate = ZERO
-    can_edit = False
     vat_account = None
     vat_returnable = None
     vat_returnable_account = None
-    
+
     def __init__(self,
                  vat_class=None, rate=None,
                  vat_area=None, trade_type=None,
@@ -411,7 +410,7 @@ class VatRule(dd.Choice):
                 vat_returnable_account=vat_returnable_account)
         # text = "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
         super(VatRule, self).__init__(None, None, **kw)
-        
+
     # def __str__(self):
     #     kw = dict(
     #         trade_type=self.trade_type,
@@ -450,7 +449,7 @@ class VatRules(dd.ChoiceList):
             return i
         if default is models.NOT_PROVIDED:
             msg = _("No VAT rule for ({!r},{!r},{!r},{!r},{!r})").format(
-                    trade_type, vat_class, vat_area, vat_regime, 
+                    trade_type, vat_class, vat_area, vat_regime,
                     dd.fds(date))
             if False:
                 dd.logger.info(msg)
@@ -487,4 +486,3 @@ class VatRules(dd.ChoiceList):
 # and fill it with their rules.
 
 VatRules.add_item()
-

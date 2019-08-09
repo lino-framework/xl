@@ -36,7 +36,7 @@ class Accounts(dd.Table):
     detail_layout = """
     ref:10 common_account sheet_item id
     name
-    needs_partner:30 clearable:30 default_amount:10 #default_dc
+    needs_partner:30 clearable:30 default_amount:10
     ledger.MovementsByAccount
     """
 

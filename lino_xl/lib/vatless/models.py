@@ -31,24 +31,24 @@ class AccountInvoice(BankAccount, Payable, Voucher, Matching, ProjectRelated):
 
     amount = dd.PriceField(_("Amount"), blank=True, null=True)
 
-    _total_fields = set(['amount'])
-    """The list of field names to disable when `edit_totals` is
-    False.
-
-    """
-
-    edit_totals = False
-
-    def disabled_fields(self, ar):
-        """Disable all three total fields if `edit_totals` is False,
-        otherwise disable :attr:`total_vat` if
-        :attr:`VatRule.can_edit` is False.
-
-        """
-        fields = super(AccountInvoice, self).disabled_fields(ar)
-        if not self.edit_totals:
-            fields |= self._total_fields
-        return fields
+    # _total_fields = set(['amount'])
+    # """The list of field names to disable when `edit_totals` is
+    # False.
+    #
+    # """
+    #
+    # edit_totals = False
+    #
+    # def disabled_fields(self, ar):
+    #     """Disable all three total fields if `edit_totals` is False,
+    #     otherwise disable :attr:`total_vat` if
+    #     :attr:`VatRule.can_edit` is False.
+    #
+    #     """
+    #     fields = super(AccountInvoice, self).disabled_fields(ar)
+    #     if not self.edit_totals:
+    #         fields |= self._total_fields
+    #     return fields
 
     def get_partner(self):
         return self.partner or self.project

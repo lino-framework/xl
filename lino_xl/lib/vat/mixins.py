@@ -61,32 +61,9 @@ class VatTotal(dd.Model):
     class Meta:
         abstract = True
 
-    # price = dd.PriceField(_("Total"),blank=True,null=True)
     total_incl = dd.PriceField(_("Total incl. VAT"), blank=True, null=True)
     total_base = dd.PriceField(_("Total excl. VAT"), blank=True, null=True)
     total_vat = dd.PriceField(_("VAT"), blank=True, null=True)
-
-    _total_fields = set('total_vat total_base total_incl'.split())
-    # For internal use.  This is the list of field names to disable
-    # when `edit_totals` is False.
-
-    edit_totals = True
-
-    # def get_trade_type(self):
-    #     raise NotImplementedError()
-
-    def disabled_fields(self, ar):
-        fields = super(VatTotal, self).disabled_fields(ar)
-        if self.edit_totals:
-            rule = self.get_vat_rule(self.get_trade_type())
-            if rule is None:
-                fields.add('total_vat')
-                fields.add('total_base')
-            elif not rule.can_edit:
-                fields.add('total_vat')
-        else:
-            fields |= self._total_fields
-        return fields
 
     def reset_totals(self, ar):
         pass
@@ -133,14 +110,14 @@ class VatTotal(dd.Model):
         else:
             self.total_base = myround(self.total_incl / (ONE + rule.rate))
             self.total_vat = myround(self.total_incl - self.total_base)
-            
+
 
 class ComputeSums(dd.Action):
     help_text = _("Compute sums")
     button_text = "Σ"
     custom_handler = True
     readonly = False
-    
+
     def get_action_permission(self, ar, obj, st):
         # if ar.data_iterator is None:
         #     return False
@@ -154,8 +131,8 @@ class ComputeSums(dd.Action):
         obj.full_clean()
         obj.save()
         ar.success(refresh=True)
-        
-        
+
+
 class VatDocument(ProjectRelated, VatTotal):
 
     # refresh_after_item_edit = False
@@ -165,6 +142,9 @@ class VatDocument(ProjectRelated, VatTotal):
 
     vat_regime = VatRegimes.field()
     items_edited = models.BooleanField(default=False)
+
+    edit_totals = True
+
     compute_sums = ComputeSums()
 
     @classmethod
@@ -209,7 +189,7 @@ class VatDocument(ProjectRelated, VatTotal):
                 if not rule.vat_account:
                     msg = _("This rule ({}) does not allow any VAT.")
                     raise Warning(msg.format(rule))
-                        
+
                 vat_amount = i.total_vat
                 if rule.vat_returnable:
                     if rule.vat_returnable_account is None:
@@ -274,12 +254,11 @@ class VatDocument(ProjectRelated, VatTotal):
         self.vat_regime = None
         self.fill_defaults()
         # self.update_item()  # called by after_ui_save()
-        
+
     def after_ui_save(self, ar, cw):
         self.update_item()
         return super(VatDocument, self).after_ui_save(ar, cw)
-        
-        
+
     def full_clean(self, *args, **kw):
         super(VatDocument, self).full_clean(*args, **kw)
         if not self.edit_totals:
@@ -288,7 +267,7 @@ class VatDocument(ProjectRelated, VatTotal):
     def before_state_change(self, ar, old, new):
         if new.name == 'registered':
             self.compute_totals()
-            
+
             self.items_edited = True
             # Above line is because an automatically filled invoice
             # item should not change anymore once the invoice has been
@@ -296,7 +275,7 @@ class VatDocument(ProjectRelated, VatTotal):
             # purchase_account changed and you unregister an old
             # invoice, Lino must not automatically replace the account
             # of that invoice.
-            
+
         elif new.name == 'draft':
             if not self.edit_totals:
                 self.total_base = None
@@ -324,6 +303,9 @@ class VatItemBase(VoucherItem, VatTotal):
         return self.voucher.get_trade_type()
 
     def get_vat_class(self, tt):
+        acc = self.get_base_account(tt)
+        if acc and acc.vat_class:
+            return acc.vat_class
         return dd.plugins.vat.get_vat_class(tt, self)
 
     def vat_class_changed(self, ar):
@@ -342,7 +324,7 @@ class VatItemBase(VoucherItem, VatTotal):
             # we store it because there might come more calls, but we
             # don't save it because here's not the place to decide
             # this.
-            
+
         # country = self.voucher.partner.country or \
         #           dd.plugins.countries.get_my_country()
         vat_area = VatAreas.get_for_country(
@@ -351,7 +333,7 @@ class VatItemBase(VoucherItem, VatTotal):
             vat_area,
             trade_type=tt,
             vat_regime=self.voucher.vat_regime,
-            vat_class=self.vat_class, 
+            vat_class=self.vat_class,
             date=self.voucher.entry_date)
 
     # def save(self,*args,**kw):
@@ -363,7 +345,7 @@ class VatItemBase(VoucherItem, VatTotal):
         if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
             return self.total_incl
         return self.total_base
-            
+
     def set_amount(self, ar, amount):
         self.voucher.fill_defaults()
         if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
@@ -440,20 +422,20 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
     class Meta:
         abstract = True
-        
+
     def get_match(self):
         return self.get_default_match()  # no manual match field
 
     def full_clean(self, *args, **kw):
         if self.entry_date:
             AP = rt.models.ledger.AccountingPeriod
-            # declare the previous month by default 
+            # declare the previous month by default
             if not self.start_period_id:
                 self.start_period = AP.get_default_for_date(
                     self.entry_date)
                 # self.start_period = AP.get_default_for_date(
                 #     self.entry_date - AMONTH)
-                
+
             # if not self.start_date:
             #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)
             # if not self.end_date:
@@ -494,7 +476,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
                 mvt.match = self.get_match()
                 mvt.save()
         super(VatDeclaration, self).register_voucher(*args, **kwargs)
-                
+
 
     def deregister_voucher(self, *args, **kwargs):
         if DECLARED_IN:
@@ -502,7 +484,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
                     declared_in=self):
                 doc.declared_in = None
                 doc.save()
-                
+
         if False:  # remove match from declared movements
             flt = self.get_period_filter(
                 'voucher__accounting_period',
@@ -514,11 +496,11 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
             for mvt in qs:
                 mvt.match = ''
                 mvt.save()
-            
+
         # deregister
         super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
-                
-            
+
+
     # def before_state_change(self, ar, old, new):
     #     if new.name == 'register':
     #         self.compute_fields()
@@ -535,7 +517,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
             #~ doc.save()
         #~ super(Declaration,self).deregister(ar)
 
-        
+
     def get_payable_sums_dict(self):
         fields = self.fields_list.get_list_items()
         payable_sums = SumCollector()
@@ -566,7 +548,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
                 # if fld.is_payable:
                 #     print("20170802 after {} {} : {}".format(
                 #         fld, mvt.amount, payable_sums))
-            
+
         for fld in fields:
             fld.collect_from_sums(self, sums, payable_sums)
 

@@ -31,6 +31,10 @@ class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
 
     # show_items = dd.ShowSlaveTable('vat.ItemsByInvoice', show_in_workflow=True)
 
+dd.update_field(VatAccountInvoice, 'total_vat', editable=False)
+dd.update_field(VatAccountInvoice, 'total_base', editable=False)
+
+
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:
         verbose_name = _("Account invoice item")
@@ -39,6 +43,9 @@ class InvoiceItem(AccountVoucherItem, VatItemBase):
     voucher = dd.ForeignKey('vat.VatAccountInvoice', related_name='items')
     title = models.CharField(_("Description"), max_length=200, blank=True)
 
+    def account_changed(self, ar):
+        if self.account and self.account.vat_class:
+            self.vat_class = self.account.vat_class
 
 if False:
     """Install a post_init signal listener for each concrete subclass of
@@ -128,5 +135,3 @@ class VatColumnsChecker(Checker):
                         obj.save()
 
 VatColumnsChecker.activate()
-
-

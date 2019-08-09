@@ -11,10 +11,12 @@ from lino import mixins
 from lino.mixins import Sequenced
 from lino.mixins.duplicable import Duplicable
 
+from lino_xl.lib.vat.choicelists import VatClasses
+
 from .choicelists import DeliveryUnits, ProductTypes, PriceFactors
 from .roles import ProductsUser, ProductsStaff
 
-vat = dd.resolve_app('vat')
+# vat = dd.resolve_app('vat')
 
 
 class ProductCat(mixins.BabelNamed):
@@ -58,10 +60,7 @@ class Product(mixins.BabelNamed, Duplicable):
     delivery_unit = DeliveryUnits.field(default='piece')
     product_type = ProductTypes.field()
 
-    if vat:
-        vat_class = vat.VatClasses.field(blank=True)
-    else:
-        vat_class = dd.DummyField()
+    vat_class = VatClasses.field(blank=True)
 
     @dd.chooser()
     def cat_choices(self, product_type):
@@ -125,7 +124,7 @@ class ProductDetail(dd.DetailLayout):
     name
     description
     """
-    
+
 
 class Products(dd.Table):
     _product_type = None
@@ -192,5 +191,3 @@ def inject_pricefactor_fields(sender, **kw):
         dd.inject_field(
             'contacts.Partner', pf.field_name,
             pf.field_cls.field(blank=True))
-
-

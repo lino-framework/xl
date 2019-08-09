@@ -59,12 +59,12 @@ class SalesDocuments(PartnerVouchers):
 
 # class MakeCopy(dd.Action):
 #     button_text = u"\u2042"  # ASTERISM (⁂)
-    
+
 #     label = _("Make copy")
 #     show_in_workflow = True
 #     show_in_bbar = False
 #     copy_item_fields = set('product total_incl unit_price qty'.split())
-    
+
 #     parameters = dict(
 #         partner=dd.ForeignKey('contacts.Partner'),
 #         product=dd.ForeignKey('products.Product', blank=True),
@@ -130,7 +130,7 @@ class SalesDocuments(PartnerVouchers):
 #                 item.total_incl_changed(ar)
 #                 item.full_clean()
 #                 item.save()
-            
+
 #         new.full_clean()
 #         new.register_voucher(ar)
 #         new.state = VoucherStates.registered
@@ -298,8 +298,8 @@ class InvoiceItemDetail(dd.DetailLayout):
     title
     description"""
 
-    window_size = (80, 20)    
-    
+    window_size = (80, 20)
+
 
 
 class InvoiceItems(dd.Table):
@@ -348,7 +348,7 @@ class ItemsByInvoicePrint(ItemsByInvoice):
         e = E.div(*elems)
         # dd.logger.info("20160704d %s", tostring(e))
         return e
-                
+
 
 class ItemsByInvoicePrintNoQtyColumn(ItemsByInvoicePrint):
     column_names = "description_print total_incl"
@@ -418,12 +418,10 @@ class ProductDetailMixin(dd.DetailLayout):
     sales = dd.Panel("""
     sales.InvoiceItemsByProduct
     """, label=dd.plugins.sales.verbose_name)
-    
+
 
 class PartnerDetailMixin(dd.DetailLayout):
     sales = dd.Panel("""
     salesrule__invoice_recipient vat_regime payment_term salesrule__paper_type
     sales.InvoicesByPartner
     """, label=dd.plugins.sales.verbose_name)
-
-

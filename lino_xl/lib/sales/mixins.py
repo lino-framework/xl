@@ -62,6 +62,11 @@ class SalesDocument(VatDocument, Certifiable):
             # print(20190506, pt.template)
             return [pt.template]
 
+dd.update_field(SalesDocument, 'total_base', editable=False)
+dd.update_field(SalesDocument, 'total_vat', editable=False)
+dd.update_field(SalesDocument, 'total_incl', editable=False)
+
+
 def get_paper_type(obj):
     sr = getattr(obj, 'salesrule', None)
     if sr:
@@ -128,5 +133,3 @@ class ProductDocItem(QtyVatItemBase):
             if self.get_base_account(tt) is None:
                 raise ValidationError(
                     _("You must specify a product if there is an amount."))
-
-

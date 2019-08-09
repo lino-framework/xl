@@ -31,6 +31,8 @@ from lino.modlib.users.mixins import UserAuthored
 from lino.utils import SumCollector
 from lino.utils import mti
 from lino_xl.lib.contacts.choicelists import PartnerEvents
+from lino_xl.lib.vat.choicelists import VatClasses
+
 from .choicelists import CommonAccounts
 # from .utils import get_due_movements, check_clearings_by_partner
 from .choicelists import PeriodStates
@@ -444,8 +446,11 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
     needs_partner = models.BooleanField(_("Needs partner"), default=False)
     clearable = models.BooleanField(_("Clearable"), default=False)
     # default_dc = DebitOrCreditField(_("Default booking direction"))
+    vat_class = VatClasses.field(blank=True)
     default_amount = dd.PriceField(
         _("Default amount"), blank=True, null=True)
+
+
 
     # def __str__(self):
     #     return "(%(ref)s) %(title)s" % dict(
