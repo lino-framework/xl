@@ -34,22 +34,22 @@ class Plugin(ad.Plugin):
     the EU. This is used to define the VAT area of a partner, which in turn
     influences the available VAT regimes.  See
     :class:`lino_xl.lib.vat.VatAreas`.
-    
+
     When a member state leaves or joins the EU (and you have partners there),
     you can either update your Lino (we plan to keep this list up to date), or
-    you can change it locally. 
-    
+    you can change it locally.
+
     At site startup this is converted from a string to a set. Duplicate codes
     are ignored. For example so in your :attr:`layouts_module
     <lino.core.site.Site.layouts_module>` you may write code like this::
-    
+
         if brexit:
             dd.plugins.vat.eu_country_codes.remove("GB")
-            
+
     The :attr:`isocode <lino_xl.lib.countries.Country.isocode>` fields in your
     :class:`countries.Countries <lino_xl.lib.countries.Countries>` table must
-    match the codes specified here. 
-    
+    match the codes specified here.
+
     """
 
     default_vat_regime = 'normal'
@@ -67,15 +67,13 @@ class Plugin(ad.Plugin):
     """
 
     declaration_plugin = None
-    """The plugins to use for VAT declarations.
-    
-    This can be specified as a list of a string with space-separated names.
-    
+    """The plugin to use as your *national VAT implementation*.
+
     Available VAT declaration plugins are:
-    :mod:`lino_xl.lib.bevat`
-    :mod:`lino_xl.lib.bevats`
-    :mod:`lino_xl.lib.eevat`
-    
+    :mod:`lino_xl.lib.bevat`,
+    :mod:`lino_xl.lib.bevats` and
+    :mod:`lino_xl.lib.eevat`.
+
     """
 
     def get_vat_class(self, tt, item):
@@ -123,7 +121,7 @@ class Plugin(ad.Plugin):
         m.add_action('vat.PrintableInvoicesByJournal')
         m.add_action('vat.IntracomPurchases')
         m.add_action('vat.IntracomSales')
-        
+
 
     def setup_explorer_menu(self, site, user_type, m):
         mg = self  # don't merge into sales menus for explorer
@@ -136,4 +134,3 @@ class Plugin(ad.Plugin):
         m.add_action('vat.Invoices')
         m.add_action('vat.VatRules')
         # m.add_action('vat.InvoiceItems')
-

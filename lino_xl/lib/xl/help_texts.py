@@ -1099,6 +1099,7 @@ account."""),
     'lino_xl.lib.ledger.Account.type' : _("""The account type of this account.  This points to an item of
 CommonAccounts."""),
     'lino_xl.lib.ledger.Account.needs_partner' : _("""Whether bookings to this account need a partner specified."""),
+    'lino_xl.lib.ledger.Account.vat_class' : _("""The default VAT class to use for transactions on this account."""),
     'lino_xl.lib.ledger.Account.default_amount' : _("""The default amount to book in bank statements or journal
 entries when this account has been selected manually. The
 default booking direction is that of the type."""),
@@ -1279,8 +1280,8 @@ partner and can be None."""),
     'lino_xl.lib.ledger.JournalGroups.wages' : _("""For wages journals."""),
     'lino_xl.lib.ledger.JournalGroups.financial' : _("""For financial journals (bank statements and cash reports)"""),
     'lino_xl.lib.ledger.PeriodStates' : _("""The list of possible states of an accounting period."""),
-    'lino_xl.lib.ledger.VoucherTypes' : _("""A list of the voucher types available in this application. Items
-are instances of :class:VoucherType`."""),
+    'lino_xl.lib.ledger.VoucherTypes' : _("""The list of voucher types available in this application. Each items
+is an instances of :class:VoucherType`."""),
     'lino_xl.lib.ledger.VoucherType' : _("""Base class for all items of VoucherTypes."""),
     'lino_xl.lib.ledger.VoucherType.model' : _("""The database model used to store vouchers of this type.
 A subclass of lino_xl.lib.ledger.models.Voucher`."""),
@@ -1593,9 +1594,6 @@ item."""),
     'lino_xl.lib.vat.VatRule.vat_regime' : _("""The regime for which this rule applies."""),
     'lino_xl.lib.vat.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
 stored as 0.20 (not 20)."""),
-    'lino_xl.lib.vat.VatRule.can_edit' : _("""Whether the VAT amount can be modified by the user. This applies
-only for documents with VatDocument.edit_totals set
-to False."""),
     'lino_xl.lib.vat.VatRule.vat_account' : _("""The general account where VAT is to be booked."""),
     'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is "returnable" (i.e. not to be paid to or by the
 partner). Returnable VAT, unlike normal VAT, does not increase
@@ -1606,21 +1604,19 @@ field is empty, then VAT will be added to the base account."""),
     'lino_xl.lib.vat.VatRules' : _("""The table of all VatRule objects."""),
     'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
     'lino_xl.lib.vat.VatAreas.get_for_country' : _("""Return the VatArea instance for this country."""),
-    'lino_xl.lib.vat.VatAccountInvoice' : _("""An invoice for which the user enters just the bare accounts and
-amounts (not products, quantities, discounts)."""),
+    'lino_xl.lib.vat.VatAccountInvoice' : _("""Django model for representing  accounting invoices."""),
+    'lino_xl.lib.vat.InvoiceItem' : _("""Django model for representing items of accounting invoices."""),
     'lino_xl.lib.vat.Invoices' : _("""The table of all VatAccountInvoice objects."""),
-    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose
-voucher_type
-must be VatAccountInvoice)"""),
+    'lino_xl.lib.vat.InvoicesByJournal' : _("""Shows all invoices of a given journal (whose voucher_type must be
+VatAccountInvoice)"""),
     'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
     'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
-    'lino_xl.lib.vat.InvoiceItem' : _("""An item of a VatAccountInvoice."""),
     'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose VAT regime is Intra-Community."""),
     'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose VAT regime is Intra-Community."""),
     'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and
 IntracomPurchases"""),
-    'lino_xl.lib.vat.VatTotal' : _("""Model mixin which defines the fields total_incl,
-total_base and total_vat."""),
+    'lino_xl.lib.vat.VatTotal' : _("""Model mixin which defines the database fields total_incl,
+total_base and total_vat and some related behaviour."""),
     'lino_xl.lib.vat.VatTotal.total_incl' : _("""The amount VAT included."""),
     'lino_xl.lib.vat.VatTotal.total_base' : _("""The amount VAT excluded."""),
     'lino_xl.lib.vat.VatTotal.total_vat' : _("""The amount of VAT."""),
