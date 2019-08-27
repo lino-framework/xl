@@ -249,7 +249,7 @@ class Course(Reservation, Duplicable, Printable):
         elif show_exposed == dd.YesNo.yes:
             qs = qs.filter(**fkw)
         return qs
-        
+
 
     @classmethod
     def get_registrable_fields(cls, site):
@@ -293,7 +293,7 @@ class Course(Reservation, Duplicable, Printable):
                     return ba
                 return None
         return super(Course, self).get_detail_action(ar)
-            
+
     def update_cal_from(self, ar):
         """Note: if recurrency is weekly or per_weekday, actual start may be
         later than self.start_date
@@ -341,7 +341,7 @@ class Course(Reservation, Duplicable, Printable):
             g = obj.make_guest_for(event)
             if g is not None:
                 yield g
-                
+
     def full_clean(self, *args, **kw):
         if self.line_id is not None:
             if self.id is None:
@@ -469,7 +469,7 @@ class Course(Reservation, Duplicable, Printable):
     @dd.virtualfield(models.IntegerField(_("Trying")))
     def trying(self, ar):
         return self.get_places_sum(state=EnrolmentStates.trying)
-    
+
     @dd.requestfield(_("Enrolments"))
     def enrolments(self, ar):
         return self.get_enrolments(start_date=dd.today())
@@ -646,10 +646,10 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
     def get_guest_role(self):
         if self.course.line:
             return self.course.line.guest_role
-    
+
     def make_guest_for(self, event):
         if not self.state.uses_a_place:
-            return 
+            return
         gr = self.get_guest_role()
         if gr is not None:
             return rt.models.cal.Guest(
@@ -673,7 +673,9 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         return [self.state.name + bm.template_ext]
 
     def __str__(self):
-        return "%s / %s" % (self.course, self.pupil)
+        if self.course_id and self.pupil_id:
+            return "%s / %s" % (self.course, self.pupil)
+        return "%s / %s" % (self.course_id, self.pupil_id)
 
     def get_print_language(self):
         return self.pupil.language
@@ -700,7 +702,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
 
 dd.update_field(
     Enrolment, 'overview',
-    verbose_name=Course._meta.verbose_name)    
+    verbose_name=Course._meta.verbose_name)
 
 dd.update_field(Enrolment, 'course', blank=True)
 
@@ -738,4 +740,3 @@ def setup_memo_commands(sender=None, **kwargs):
         cmd=cmd,
         # title=lambda obj: obj.name
     )
-
