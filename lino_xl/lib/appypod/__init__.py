@@ -23,7 +23,7 @@ class Plugin(ad.Plugin):
         except ImportError:
             if six.PY3:
                 # yield "-e svn+https://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
-                yield "svn+https://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
+                yield "svn+http://svn.forge.pallavi.be/appy-dev/dev1#egg=appy"
             else:
                 yield "appy"
 
