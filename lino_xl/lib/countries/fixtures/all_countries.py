@@ -5,7 +5,7 @@
 """This fixture adds all known countries of the world to your
 database.
 
-Unlike the official `ISO 3133 <http://www.iso.org/iso/country_codes>`_
+Unlike the official `ISO 3133 <https://www.iso.org/iso-3166-country-codes.html>`_
 it features more languages, and it creates also codes for countries
 that no longer exist.  It is not official at all. See also
 :doc:`/topics/gpdn`.
@@ -127,4 +127,3 @@ def objects():
             yield Country(isocode=code1, name=name)
 
     logger.info("Installed %d countries", n)
-
