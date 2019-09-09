@@ -99,6 +99,9 @@ be confirmed and the return value will be displayed to the
 user."""),
     'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
+    'lino_xl.lib.cv.Plugin.person_model' : _("""The database model to use for representing the person whose career data
+is being stored."""),
+    'lino_xl.lib.cv.Plugin.with_language_history' : _("""Whether language knowledge data should have a history."""),
     'lino_xl.lib.deploy.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.dupable_partners.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.eevat.Plugin' : _("""This is a subclass of lino.core.plugin.Plugin."""),
