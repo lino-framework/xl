@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2019-06-26 16:03+0300\n"
-"PO-Revision-Date: 2019-06-26 16:04+0300\n"
+"PO-Revision-Date: 2019-09-09 06:40+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -2881,18 +2881,16 @@ msgid "My unconfirmed appointments"
 msgstr "Meine unbestätigten Termine"
 
 #: lino_xl/lib/cal/ui.py:1228
-#, fuzzy
 msgid "Day number"
-msgstr "eID-Kartennummer"
+msgstr "Tag Nr."
 
 #: lino_xl/lib/cal/ui.py:1333
 msgid "This week"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:1334
-#, fuzzy
 msgid "This month"
-msgstr "Monat"
+msgstr "Dieser Monat"
 
 #: lino_xl/lib/cal/config/cal/Event/detail.html:11 lino_xl/lib/cal/ui.py:1429
 #: lino_xl/lib/events/models.py:78 lino_xl/lib/finan/mixins.py:313
@@ -2913,25 +2911,22 @@ msgid "Daily planner"
 msgstr "Tagesplaner"
 
 #: lino_xl/lib/cal/ui.py:1548
-#, fuzzy
 msgid "Weekly planner"
-msgstr "Tagesplaner"
+msgstr "Diese Woche"
 
 #: lino_xl/lib/cal/ui.py:1616
 msgid "Weekly view"
 msgstr "Wochenansicht"
 
 #: lino_xl/lib/cal/ui.py:1630
-#, fuzzy
 msgid "Monthly planner"
-msgstr "Tagesplaner"
+msgstr "Monatsplaner"
 
 #: lino_xl/lib/cal/ui.py:1688
 msgid "{}"
 msgstr ""
 
 #: lino_xl/lib/cal/ui.py:1722
-#, fuzzy
 msgid "Weeks"
 msgstr "Wochen"
 
