@@ -19,31 +19,36 @@ from etgen.html import E, join_elems
 from lino.mixins.periods import DateRange
 
 class BiographyOwner(dd.Model):
-    
+
     class Meta:
         abstract = True
 
     _cef_levels = None
     _mother_tongues = None
-    
+
     def load_language_knowledge(self):
         if self._mother_tongues is not None:
             return
         LanguageKnowledge = rt.models.cv.LanguageKnowledge
         self._cef_levels = dict()
         self._mother_tongues = []
-        for lk in LanguageKnowledge.objects.filter(
-                person=self).order_by('id'):
+        qs = LanguageKnowledge.objects.filter(person=self)
+        if dd.plugins.cv.with_language_history:
+            qs = qs.order_by('-observation_date', 'id')
+        else:
+            qs = qs.order_by('id')
+        for lk in qs:
             if lk.native:
                 self._mother_tongues.append(lk.language)
             # if lk.language.iso2 in ("de", "fr", "en"):
             if lk.cef_level is not None:
-                self._cef_levels[lk.language.iso2] = lk.cef_level.value
-        
+                if not lk.language.iso2 in self._cef_levels:
+                    self._cef_levels[lk.language.iso2] = lk.cef_level.value
+
     @dd.htmlbox(_("Language knowledge"))
     def language_knowledge(self, ar):
         return self.get_language_knowledge()
-    
+
     def get_language_knowledge(self, *buttons):
         self.load_language_knowledge()
         lst = []
@@ -60,8 +65,8 @@ class BiographyOwner(dd.Model):
         lst += buttons
         lst = join_elems(lst, E.br)
         return E.p(*lst)
-                
-    
+
+
     @dd.displayfield(_("Mother tongues"))
     def mother_tongues(self, ar):
         self.load_language_knowledge()
@@ -102,7 +107,7 @@ class HowWell(dd.ChoiceList):
 
     """A list of possible answers to questions of type "How well ...?":
     "not at all", "a bit", "moderate", "quite well" and "very well"
-    
+
     which are stored in the database as '0' to '4',
     and whose `__str__()` returns their translated text.
 
@@ -121,11 +126,11 @@ class CefLevel(dd.ChoiceList):
 
     """
     Levels of the Common European Framework (CEF).
-    
+
     | http://www.coe.int/t/dg4/linguistic/CADRE_EN.asp
     | http://www.coe.int/t/dg4/linguistic/Source/ManualRevision-proofread-FINAL_en.pdf
     | http://www.telc.net/en/what-telc-offers/cef-levels/a2/
-    
+
     """
     verbose_name = _("CEF level")
     verbose_name_plural = _("CEF levels")
@@ -203,5 +208,3 @@ class HistoryByPerson(dd.Table):
                 else:
                     obj.start_date = exp.start_date
         return obj
-
-

@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Rumma & Ko Ltd
-#
+# Copyright 2013-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -23,11 +22,16 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino.modlib.languages']
 
     person_model = 'contacts.Person'
+    """The database model to use for representing the person whose career data
+    is being stored."""
+
+    with_language_history = False
+    """Whether language knowledge data should have a history."""
 
     def on_site_startup(self, site):
         self.person_model = site.models.resolve(self.person_model)
         super(Plugin, self).on_site_startup(site)
-        
+
     def setup_config_menu(config, site, user_type, m):
         m = m.add_menu(config.app_label, config.verbose_name)
         # m.add_action('cv.TrainingTypes')
@@ -45,5 +49,3 @@ class Plugin(ad.Plugin):
         m.add_action('cv.AllTrainings')
         m.add_action('cv.Studies')
         m.add_action('cv.Experiences')
-
-

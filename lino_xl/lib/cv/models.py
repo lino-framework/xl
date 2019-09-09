@@ -65,7 +65,8 @@ class LanguageKnowledge(dd.Model):
         app_label = 'cv'
         verbose_name = _("language knowledge")
         verbose_name_plural = _("language knowledges")
-        unique_together = ['person', 'language']
+        unique_together = ['person', 'language', 'observation_date'] \
+            if config.with_language_history else ['person', 'language']
 
     allow_cascaded_delete = ['person']
 
@@ -73,12 +74,17 @@ class LanguageKnowledge(dd.Model):
     language = dd.ForeignKey("languages.Language")
     spoken = HowWell.field(_("Spoken"), blank=True)
     written = HowWell.field(_("Written"), blank=True)
-    spoken_passively = HowWell.field(_("Spoken (passively)"),
-                                     blank=True)
-    written_passively = HowWell.field(_("Written (passively)"),
-                                      blank=True)
+    spoken_passively = HowWell.field(_("Spoken (passively)"), blank=True)
+    written_passively = HowWell.field(_("Written (passively)"), blank=True)
     native = models.BooleanField(_("Mother tongue"), default=False)
     cef_level = CefLevel.field(blank=True)  # ,null=True)
+    has_certificate = models.BooleanField(_("Certificate"), default=False)
+
+    if config.with_language_history:
+        observation_date = models.DateField(
+        _("Observation date"), blank=True, null=True)
+    else:
+        observation_date = dd.DummyField()
 
     def __str__(self):
         if self.language_id is None:
@@ -107,23 +113,25 @@ class AllLanguageKnowledges(LanguageKnowledges):
 class LanguageKnowledgesByPerson(LanguageKnowledges):
     """Shows the languages known by this person."""
     master_key = 'person'
-    column_names = "language native spoken written cef_level"
+    column_names = "language native spoken written cef_level has_certificate observation_date *"
     required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
     display_mode = "summary"
     window_size  = (70, 15)
     detail_layout = dd.DetailLayout("""
-    language 
-    native
+    language
+    native has_certificate
     cef_level
     spoken_passively spoken written
+    observation_date
     """, window_size=(50, 'auto'))
-    
+
     insert_layout = dd.InsertLayout("""
     language
-    native
+    native has_certificate
     cef_level
     spoken_passively spoken written
+    observation_date
     """, window_size=(50, 'auto'))
 
     @classmethod
@@ -133,18 +141,12 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
 
     @classmethod
     def get_detail_title(self, ar, obj):
-        """Overrides the default behaviour.
-
-        """
+        # Overrides the default behaviour.
         return u"{} / {}".format(obj.person, obj.language)
         # return str(obj.language)
 
     @classmethod
     def get_table_summary(self, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
-        for this table.
-
-        """
         sar = self.request_from(ar, master_instance=obj)
         sar = self.insert_action.request_from(sar)
         if sar.get_permission():
@@ -153,14 +155,11 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
         else:
             lst = []
         return obj.get_language_knowledge(*lst)
-        
-
-    
 
 
 class KnowledgesByLanguage(LanguageKnowledges):
     master_key = 'language'
-    column_names = "person native spoken written cef_level"
+    column_names = "person native spoken written cef_level *"
     required_roles = dd.login_required(CareerUser)
 
 
@@ -339,7 +338,7 @@ class Trainings(PeriodTable):
     column_names = "person start_date end_date duration_text type state sector function *"
 
     required_roles = dd.login_required(CareerUser)
-    
+
     detail_layout = """
     person start_date end_date duration_text
     type state #success certificates
@@ -459,7 +458,7 @@ class StudiesByPerson(HistoryByPerson, Studies):
     required_roles = dd.login_required(CareerUser)
     column_names = 'type content start_date end_date duration_text school country \
     state education_level *'
-    
+
     insert_layout = """
     start_date end_date
     type content
@@ -633,7 +632,7 @@ class Experiences(PeriodTable):
     detail_layout = """
     person company country city
     sector function title
-    status duration regime is_training 
+    status duration regime is_training
     start_date end_date duration_text termination_reason
     remarks
     """
@@ -653,10 +652,10 @@ class ExperiencesByFunction(Experiences):
 
 class ExperiencesByPerson(HistoryByPerson, Experiences):
     required_roles = dd.login_required(CareerUser)
-    
+
     column_names = "company country start_date end_date duration_text function \
     status duration termination_reason remarks *"
-    
+
     insert_layout = """
     start_date end_date
     company function
