@@ -63,10 +63,12 @@ class LanguageKnowledge(dd.Model):
     """
     class Meta:
         app_label = 'cv'
-        verbose_name = _("language knowledge")
-        verbose_name_plural = _("language knowledges")
-        unique_together = ['person', 'language', 'observation_date'] \
+        verbose_name = _("Language knowledge")
+        verbose_name_plural = _("Language knowledges")
+        unique_together = ['person', 'language', 'entry_date'] \
             if config.with_language_history else ['person', 'language']
+        ordering = ['-entry_date', '-id'] \
+            if config.with_language_history else ['id']
 
     allow_cascaded_delete = ['person']
 
@@ -81,10 +83,9 @@ class LanguageKnowledge(dd.Model):
     has_certificate = models.BooleanField(_("Certificate"), default=False)
 
     if config.with_language_history:
-        observation_date = models.DateField(
-        _("Observation date"), blank=True, null=True)
+        entry_date = models.DateField(_("Entry date"), default=dd.today)
     else:
-        observation_date = dd.DummyField()
+        entry_date = dd.DummyField()
 
     def __str__(self):
         if self.language_id is None:
@@ -113,7 +114,7 @@ class AllLanguageKnowledges(LanguageKnowledges):
 class LanguageKnowledgesByPerson(LanguageKnowledges):
     """Shows the languages known by this person."""
     master_key = 'person'
-    column_names = "language native spoken written cef_level has_certificate observation_date *"
+    column_names = "language native spoken written cef_level has_certificate entry_date *"
     required_roles = dd.login_required(CareerUser)
     auto_fit_column_widths = True
     display_mode = "summary"
@@ -123,7 +124,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     native has_certificate
     cef_level
     spoken_passively spoken written
-    observation_date
+    entry_date
     """, window_size=(50, 'auto'))
 
     insert_layout = dd.InsertLayout("""
@@ -131,7 +132,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     native has_certificate
     cef_level
     spoken_passively spoken written
-    observation_date
+    entry_date
     """, window_size=(50, 'auto'))
 
     @classmethod
@@ -159,7 +160,7 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
 
 class KnowledgesByLanguage(LanguageKnowledges):
     master_key = 'language'
-    column_names = "person native spoken written cef_level *"
+    column_names = "entry_date person native spoken written cef_level *"
     required_roles = dd.login_required(CareerUser)
 
 

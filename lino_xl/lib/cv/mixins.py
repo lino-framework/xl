@@ -33,10 +33,10 @@ class BiographyOwner(dd.Model):
         self._cef_levels = dict()
         self._mother_tongues = []
         qs = LanguageKnowledge.objects.filter(person=self)
-        if dd.plugins.cv.with_language_history:
-            qs = qs.order_by('-observation_date', 'id')
-        else:
-            qs = qs.order_by('id')
+        # if dd.plugins.cv.with_language_history:
+        #     qs = qs.order_by('-entry_date', 'id')
+        # else:
+        #     qs = qs.order_by('id')
         for lk in qs:
             if lk.native:
                 self._mother_tongues.append(lk.language)
