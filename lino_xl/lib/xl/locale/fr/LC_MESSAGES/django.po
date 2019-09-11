@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2019-09-10 15:10+0300\n"
+"POT-Creation-Date: 2019-09-11 12:12+0300\n"
 "PO-Revision-Date: 2019-05-25 04:38+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
@@ -252,8 +252,8 @@ msgstr "Diplômes"
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:32
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:47
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:52
-#: lino_xl/lib/ledger/choicelists.py:34 lino_xl/lib/ledger/choicelists.py:138
-#: lino_xl/lib/ledger/choicelists.py:344 lino_xl/lib/ledger/fixtures/std.py:122
+#: lino_xl/lib/ledger/choicelists.py:41 lino_xl/lib/ledger/choicelists.py:145
+#: lino_xl/lib/ledger/choicelists.py:351 lino_xl/lib/ledger/fixtures/std.py:122
 msgid "Wages"
 msgstr "Salaires"
 
@@ -1707,32 +1707,32 @@ msgid "Sales basis 3"
 msgstr ""
 
 #: lino_xl/lib/bevat/choicelists.py:55 lino_xl/lib/bevats/choicelists.py:63
-#: lino_xl/lib/eevat/choicelists.py:41 lino_xl/lib/ledger/choicelists.py:124
+#: lino_xl/lib/eevat/choicelists.py:41 lino_xl/lib/ledger/choicelists.py:131
 msgid "VAT due"
 msgstr "TVA dûe"
 
 #: lino_xl/lib/bevat/choicelists.py:56 lino_xl/lib/bevats/choicelists.py:64
-#: lino_xl/lib/eevat/choicelists.py:42 lino_xl/lib/ledger/choicelists.py:125
+#: lino_xl/lib/eevat/choicelists.py:42 lino_xl/lib/ledger/choicelists.py:132
 msgid "VAT returnable"
 msgstr "TVA à retourner"
 
 #: lino_xl/lib/bevat/choicelists.py:57 lino_xl/lib/bevats/choicelists.py:65
-#: lino_xl/lib/eevat/choicelists.py:43 lino_xl/lib/ledger/choicelists.py:126
+#: lino_xl/lib/eevat/choicelists.py:43 lino_xl/lib/ledger/choicelists.py:133
 msgid "VAT deductible"
 msgstr "TVA déductible"
 
 #: lino_xl/lib/bevat/choicelists.py:58 lino_xl/lib/eevat/choicelists.py:44
-#: lino_xl/lib/ledger/choicelists.py:134
+#: lino_xl/lib/ledger/choicelists.py:141
 msgid "Purchase of goods"
 msgstr "Achats de marchandises"
 
 #: lino_xl/lib/bevat/choicelists.py:59 lino_xl/lib/bevats/choicelists.py:69
-#: lino_xl/lib/eevat/choicelists.py:45 lino_xl/lib/ledger/choicelists.py:135
+#: lino_xl/lib/eevat/choicelists.py:45 lino_xl/lib/ledger/choicelists.py:142
 msgid "Purchase of services"
 msgstr "Achats de services"
 
 #: lino_xl/lib/bevat/choicelists.py:60 lino_xl/lib/eevat/choicelists.py:46
-#: lino_xl/lib/ledger/choicelists.py:136
+#: lino_xl/lib/ledger/choicelists.py:143
 msgid "Purchase of investments"
 msgstr "Achats d'investissement"
 
@@ -1849,7 +1849,7 @@ msgstr ""
 
 #: lino_xl/lib/bevat/choicelists.py:138 lino_xl/lib/bevat/choicelists.py:139
 #: lino_xl/lib/bevats/choicelists.py:103 lino_xl/lib/eevat/choicelists.py:154
-#: lino_xl/lib/eevat/choicelists.py:155
+#: lino_xl/lib/eevat/choicelists.py:155 lino_xl/lib/vat/mixins.py:64
 msgid "Total to pay"
 msgstr ""
 
@@ -2287,7 +2287,7 @@ msgid "Done"
 msgstr "accomplie"
 
 #: lino_xl/lib/cal/choicelists.py:166 lino_xl/lib/cal/choicelists.py:256
-#: lino_xl/lib/courses/choicelists.py:79 lino_xl/lib/ledger/choicelists.py:410
+#: lino_xl/lib/courses/choicelists.py:79 lino_xl/lib/ledger/choicelists.py:417
 #: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/rooms/models.py:33
 #: lino_xl/lib/votes/choicelists.py:80
 msgid "Cancelled"
@@ -2359,7 +2359,7 @@ msgid "Suggested"
 msgstr "Proposé"
 
 #: lino_xl/lib/cal/choicelists.py:240 lino_xl/lib/courses/choicelists.py:39
-#: lino_xl/lib/ledger/choicelists.py:407 lino_xl/lib/meetings/choicelists.py:27
+#: lino_xl/lib/ledger/choicelists.py:414 lino_xl/lib/meetings/choicelists.py:27
 #: lino_xl/lib/polls/utils.py:16 lino_xl/lib/polls/utils.py:35
 #: lino_xl/lib/rooms/models.py:30 lino_xl/lib/tickets/choicelists.py:78
 msgid "Draft"
@@ -3918,7 +3918,7 @@ msgstr ""
 msgid "Inactive"
 msgstr ""
 
-#: lino_xl/lib/courses/choicelists.py:45 lino_xl/lib/ledger/choicelists.py:50
+#: lino_xl/lib/courses/choicelists.py:45 lino_xl/lib/ledger/choicelists.py:57
 #: lino_xl/lib/polls/utils.py:18 lino_xl/lib/tickets/choicelists.py:86
 #: lino_xl/lib/tickets/choicelists.py:125 lino_xl/lib/tickets/models.py:57
 msgid "Closed"
@@ -4920,7 +4920,7 @@ msgstr "Mère"
 msgid "Family"
 msgstr "Familly"
 
-#: lino_xl/lib/finan/__init__.py:21 lino_xl/lib/ledger/choicelists.py:35
+#: lino_xl/lib/finan/__init__.py:21 lino_xl/lib/ledger/choicelists.py:42
 msgid "Financial"
 msgstr ""
 
@@ -6043,197 +6043,201 @@ msgstr "Autre"
 msgid "Accounting"
 msgstr "Comptabilité"
 
-#: lino_xl/lib/ledger/choicelists.py:27
+#: lino_xl/lib/ledger/choicelists.py:23
+msgid "No account pointing to {}"
+msgstr ""
+
+#: lino_xl/lib/ledger/choicelists.py:34
 #, fuzzy
 msgid "Journal group"
 msgstr "Pays"
 
-#: lino_xl/lib/ledger/choicelists.py:28
+#: lino_xl/lib/ledger/choicelists.py:35
 #, fuzzy
 msgid "Journal groups"
 msgstr "Groupes de comptes"
 
-#: lino_xl/lib/ledger/choicelists.py:32 lino_xl/lib/ledger/choicelists.py:141
-#: lino_xl/lib/ledger/choicelists.py:333 lino_xl/lib/sales/__init__.py:16
+#: lino_xl/lib/ledger/choicelists.py:39 lino_xl/lib/ledger/choicelists.py:148
+#: lino_xl/lib/ledger/choicelists.py:340 lino_xl/lib/sales/__init__.py:16
 msgid "Sales"
 msgstr "Ventes"
 
-#: lino_xl/lib/ledger/choicelists.py:33 lino_xl/lib/ledger/choicelists.py:337
+#: lino_xl/lib/ledger/choicelists.py:40 lino_xl/lib/ledger/choicelists.py:344
 msgid "Purchases"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:37
+#: lino_xl/lib/ledger/choicelists.py:44
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:98
 #: lino_xl/lib/vat/__init__.py:25 lino_xl/lib/vat/mixins.py:66
 msgid "VAT"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:38
+#: lino_xl/lib/ledger/choicelists.py:45
 #: lino_xl/lib/ledger/fixtures/minimal_ledger.py:96
 #, fuzzy
 msgid "Miscellaneous transactions"
 msgstr "Opérations diverses"
 
-#: lino_xl/lib/ledger/choicelists.py:49 lino_xl/lib/postings/models.py:35
+#: lino_xl/lib/ledger/choicelists.py:56 lino_xl/lib/postings/models.py:35
 msgid "Open"
 msgstr "Ouvert"
 
-#: lino_xl/lib/ledger/choicelists.py:95
+#: lino_xl/lib/ledger/choicelists.py:102
 msgid "Common account"
 msgstr "Compte en commun"
 
-#: lino_xl/lib/ledger/choicelists.py:96
+#: lino_xl/lib/ledger/choicelists.py:103
 msgid "Common accounts"
 msgstr "Comptes communs"
 
-#: lino_xl/lib/ledger/choicelists.py:109 lino_xl/lib/ledger/models.py:447
+#: lino_xl/lib/ledger/choicelists.py:116 lino_xl/lib/ledger/models.py:447
 #, fuzzy
 msgid "Clearable"
 msgstr "Effacer la cache"
 
-#: lino_xl/lib/ledger/choicelists.py:116 lino_xl/lib/sheets/choicelists.py:113
+#: lino_xl/lib/ledger/choicelists.py:123 lino_xl/lib/sheets/choicelists.py:113
 msgid "Net income (loss)"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:117
+#: lino_xl/lib/ledger/choicelists.py:124
 msgid "Customers"
 msgstr "Clients"
 
-#: lino_xl/lib/ledger/choicelists.py:118
+#: lino_xl/lib/ledger/choicelists.py:125
 msgid "Pending Payment Orders"
 msgstr "Ordres de paiement ouverts"
 
-#: lino_xl/lib/ledger/choicelists.py:119 lino_xl/lib/skills/mixins.py:28
+#: lino_xl/lib/ledger/choicelists.py:126 lino_xl/lib/skills/mixins.py:28
 msgid "Suppliers"
 msgstr "Fournisseurs"
 
-#: lino_xl/lib/ledger/choicelists.py:120
+#: lino_xl/lib/ledger/choicelists.py:127
 msgid "Employees"
 msgstr "Employés"
 
-#: lino_xl/lib/ledger/choicelists.py:121
+#: lino_xl/lib/ledger/choicelists.py:128
 #, fuzzy
 msgid "Internal clearings"
 msgstr "Vérifier lettrages"
 
-#: lino_xl/lib/ledger/choicelists.py:122
+#: lino_xl/lib/ledger/choicelists.py:129
 #, fuzzy
 msgid "Tax Offices"
 msgstr "Compte Salaires"
 
-#: lino_xl/lib/ledger/choicelists.py:127
+#: lino_xl/lib/ledger/choicelists.py:134
 msgid "VAT declared"
 msgstr "TVA déclarée"
 
-#: lino_xl/lib/ledger/choicelists.py:129
+#: lino_xl/lib/ledger/choicelists.py:136
 #, fuzzy
 msgid "Waiting account"
 msgstr "Compte en banque"
 
-#: lino_xl/lib/ledger/choicelists.py:131
+#: lino_xl/lib/ledger/choicelists.py:138
 msgid "BestBank"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:132
+#: lino_xl/lib/ledger/choicelists.py:139
 #: lino_xl/lib/ledger/fixtures/minimal_ledger.py:88
 msgid "Cash"
 msgstr "Caisse"
 
-#: lino_xl/lib/ledger/choicelists.py:139 lino_xl/lib/sheets/choicelists.py:120
+#: lino_xl/lib/ledger/choicelists.py:146 lino_xl/lib/sheets/choicelists.py:120
 msgid "Net income"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:142 lino_xl/lib/sheets/choicelists.py:123
+#: lino_xl/lib/ledger/choicelists.py:149 lino_xl/lib/sheets/choicelists.py:123
 msgid "Net loss"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:188
+#: lino_xl/lib/ledger/choicelists.py:195
 #, fuzzy
 msgid "Voucher type"
 msgstr "Type de note"
 
-#: lino_xl/lib/ledger/choicelists.py:189
+#: lino_xl/lib/ledger/choicelists.py:196
 #, fuzzy
 msgid "Voucher types"
 msgstr "Types de note"
 
-#: lino_xl/lib/ledger/choicelists.py:270
+#: lino_xl/lib/ledger/choicelists.py:277
 msgid "(undefined)"
-msgstr ""
-
-#: lino_xl/lib/ledger/choicelists.py:278
-#, fuzzy
-msgid "Trade type"
-msgstr "Type d'organisation"
-
-#: lino_xl/lib/ledger/choicelists.py:279
-#, fuzzy
-msgid "Trade types"
-msgstr "Types de note"
-
-#: lino_xl/lib/ledger/choicelists.py:281
-msgid "The type of trade, e.g. 'sales' or 'purchases' or 'wages'."
 msgstr ""
 
 #: lino_xl/lib/ledger/choicelists.py:285
 #, fuzzy
+msgid "Trade type"
+msgstr "Type d'organisation"
+
+#: lino_xl/lib/ledger/choicelists.py:286
+#, fuzzy
+msgid "Trade types"
+msgstr "Types de note"
+
+#: lino_xl/lib/ledger/choicelists.py:288
+msgid "The type of trade, e.g. 'sales' or 'purchases' or 'wages'."
+msgstr ""
+
+#: lino_xl/lib/ledger/choicelists.py:292
+#, fuzzy
 msgid "Main account"
 msgstr "Compte en banque"
 
-#: lino_xl/lib/ledger/choicelists.py:289
+#: lino_xl/lib/ledger/choicelists.py:296
 #, fuzzy
 msgid "Base account"
 msgstr "Compte Ventes"
 
-#: lino_xl/lib/ledger/choicelists.py:293
+#: lino_xl/lib/ledger/choicelists.py:300
 msgid "Product account field"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:299
+#: lino_xl/lib/ledger/choicelists.py:306
 #, fuzzy
 msgid "Price field"
 msgstr "Séries de cours"
 
-#: lino_xl/lib/ledger/choicelists.py:305
+#: lino_xl/lib/ledger/choicelists.py:312
 #, fuzzy
 msgid "Invoice account field"
 msgstr "Facturable"
 
-#: lino_xl/lib/ledger/choicelists.py:341
+#: lino_xl/lib/ledger/choicelists.py:348
 #, fuzzy
 msgid "Purchase account"
 msgstr "Compte Ventes"
 
-#: lino_xl/lib/ledger/choicelists.py:348
+#: lino_xl/lib/ledger/choicelists.py:355
 #, fuzzy
 msgid "Taxes"
 msgstr "Statuts"
 
-#: lino_xl/lib/ledger/choicelists.py:352
+#: lino_xl/lib/ledger/choicelists.py:359
 msgid "Clearings"
 msgstr "Lettrages"
 
-#: lino_xl/lib/ledger/choicelists.py:354
+#: lino_xl/lib/ledger/choicelists.py:361
 #, fuzzy
 msgid "Bank payment orders"
 msgstr "Rappel de paiement"
 
-#: lino_xl/lib/ledger/choicelists.py:408 lino_xl/lib/polls/utils.py:36
+#: lino_xl/lib/ledger/choicelists.py:415 lino_xl/lib/polls/utils.py:36
 #: lino_xl/lib/rooms/models.py:32
 msgid "Registered"
 msgstr "Enregistré"
 
-#: lino_xl/lib/ledger/choicelists.py:409
+#: lino_xl/lib/ledger/choicelists.py:416
 msgid "Signed"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:417 lino_xl/lib/ledger/choicelists.py:423
-#: lino_xl/lib/ledger/choicelists.py:424 lino_xl/lib/polls/utils.py:40
+#: lino_xl/lib/ledger/choicelists.py:424 lino_xl/lib/ledger/choicelists.py:430
+#: lino_xl/lib/ledger/choicelists.py:431 lino_xl/lib/polls/utils.py:40
 msgid "Register"
 msgstr "Enregistrer"
 
-#: lino_xl/lib/ledger/choicelists.py:419 lino_xl/lib/ledger/choicelists.py:427
-#: lino_xl/lib/ledger/choicelists.py:429 lino_xl/lib/polls/utils.py:42
+#: lino_xl/lib/ledger/choicelists.py:426 lino_xl/lib/ledger/choicelists.py:434
+#: lino_xl/lib/ledger/choicelists.py:436 lino_xl/lib/polls/utils.py:42
 msgid "Deregister"
 msgstr "Réouvrir"
 
@@ -7135,7 +7139,7 @@ msgstr "Séries de cours"
 #: lino_xl/lib/orders/models.py:383
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:59
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:33
-#: lino_xl/lib/vat/mixins.py:397
+#: lino_xl/lib/vat/mixins.py:407
 msgid "Quantity"
 msgstr "Quantité"
 
@@ -8016,7 +8020,7 @@ msgstr ""
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:58
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:32
-#: lino_xl/lib/vat/mixins.py:396
+#: lino_xl/lib/vat/mixins.py:406
 msgid "Unit price"
 msgstr "Prix unitaire"
 
@@ -8031,7 +8035,6 @@ msgid "Total excl. VAT"
 msgstr "Total hors taxes"
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:99
-#: lino_xl/lib/vat/mixins.py:64
 msgid "Total incl. VAT"
 msgstr "Total taxes inclus"
 
@@ -8061,11 +8064,11 @@ msgstr "Papier vierge"
 msgid "SEPA"
 msgstr "SEPA"
 
-#: lino_xl/lib/sepa/mixins.py:165
+#: lino_xl/lib/sepa/mixins.py:166
 msgid "Check for partner mismatches in bank accounts"
 msgstr "Vérifier les asymétries de partenaires dans les comptes bancaires"
 
-#: lino_xl/lib/sepa/mixins.py:168
+#: lino_xl/lib/sepa/mixins.py:169
 msgid "Bank account owner ({0}) differs from partner ({1})"
 msgstr ""
 
@@ -9107,11 +9110,11 @@ msgstr ""
 msgid "Compute sums"
 msgstr ""
 
-#: lino_xl/lib/vat/mixins.py:190
+#: lino_xl/lib/vat/mixins.py:197
 msgid "This rule ({}) does not allow any VAT."
 msgstr ""
 
-#: lino_xl/lib/vat/mixins.py:230
+#: lino_xl/lib/vat/mixins.py:240
 msgid "{} is not configured"
 msgstr ""
 

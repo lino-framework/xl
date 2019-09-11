@@ -39,8 +39,10 @@ add('normal',  '0.21', NAT,  'purchases', None,       CommonAccounts.vat_deducti
 add('reduced', '0.07', NAT,  'purchases', None,       CommonAccounts.vat_deductible)
 add('normal',  '0.21', EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
 add('reduced', '0.07', EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-add('normal',  '0.21', EU,   'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
-add('reduced', '0.07', EU,   'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+# add('normal',  '0.21', EU,   'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+# add('reduced', '0.07', EU,   'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+add('normal',  '0.00', EU,   'sales',     'intracom')
+add('reduced', '0.00', EU,   'sales',     'intracom')
 add('normal',  '0.21', None, 'sales',     None,       CommonAccounts.vat_due)
 add('reduced', '0.07', None, 'sales',     None,       CommonAccounts.vat_due)
 add()
@@ -70,7 +72,7 @@ sfld = DeclarationFields.add_sum_field
 mfld = DeclarationFields.add_mvt_field
 wfld = DeclarationFields.add_writable_field
 
-# (II) sales base 
+# (II) sales base
 mfld("00", CREDIT, '00', _("Sales 0%"))
 mfld("01", CREDIT, '01', _("Sales 6%"))
 mfld("02", CREDIT, '02', _("Sales 12%"))
@@ -92,13 +94,13 @@ mfld("81", DEBIT, '81', _("Ware"))
 mfld("82", DEBIT, '82', _("Services"))
 mfld("83", DEBIT, '83', _("Investments"))
 
-mfld("84", CREDIT, "81 82 83", 
+mfld("84", CREDIT, "81 82 83",
       _("CN purchases on operations in 86 and 88"),
       vat_regimes="intracom", both_dc=False)
 mfld("85", CREDIT, "81 82 83", _("CN purchases on other operations"),
       vat_regimes="!intracom !delayed")
 mfld("86", DEBIT, "81 82 83",
-      _("IC purchases and ABC sales"), 
+      _("IC purchases and ABC sales"),
       vat_regimes="intracom")
 mfld("87", DEBIT, "81 82 83", _("Other purchases in Belgium"),
       vat_regimes="cocontractor")

@@ -450,7 +450,7 @@ Concrete subclasses must also inherit from lino.mixins.Born."""),
     'lino_xl.lib.beid.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
-    'lino_xl.lib.bevat.Declaration' : _("""A VAT declaration."""),
+    'lino_xl.lib.bevat.Declaration' : _("""Django model to represent a Belgian VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
     'lino_xl.lib.bevats.DeclarationFields' : _("""Implements lino_xl.lib.vat.DeclarationFields."""),
@@ -1093,8 +1093,7 @@ Create an invoice for each selected suggestion."""),
     'lino_xl.lib.invoicing.ToggleSelection' : _("""Invert selection status for all suggestions."""),
     'lino_xl.lib.invoicing.Area' : _("""The Django model used to represent a flatrate."""),
     'lino_xl.lib.invoicing.Area.journal' : _("""The journal into which invoices are to be generated."""),
-    'lino_xl.lib.ledger.Account' : _("""An account is the most abstract representation for "something
-where you can place money and retrieve it later"."""),
+    'lino_xl.lib.ledger.Account' : _("""Django model for representing a ledger account."""),
     'lino_xl.lib.ledger.Account.name' : _("""The multilingual designation of this account, as the users see
 it."""),
     'lino_xl.lib.ledger.Account.ref' : _("""An optional unique name which can be used to reference a given
@@ -1597,12 +1596,14 @@ item."""),
     'lino_xl.lib.vat.VatRule.rate' : _("""The VAT rate to be applied. Note that a VAT rate of 20 percent is
 stored as 0.20 (not 20)."""),
     'lino_xl.lib.vat.VatRule.vat_account' : _("""The general account where VAT is to be booked."""),
-    'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is "returnable" (i.e. not to be paid to or by the
-partner). Returnable VAT, unlike normal VAT, does not increase
+    'lino_xl.lib.vat.VatRule.vat_returnable' : _("""Whether VAT is returnable.
+Returnable VAT does not increase
 the total amount of the voucher but causes an additional
-movement into the vat_returnable_account."""),
-    'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If VAT is returnable and this
-field is empty, then VAT will be added to the base account."""),
+movement into the vat_returnable_account.
+See About returnable VAT."""),
+    'lino_xl.lib.vat.VatRule.vat_returnable_account' : _("""Where to book returnable VAT. If this field is empty and
+vat_returnable is True, then VAT will be added to the base
+account. See About returnable VAT."""),
     'lino_xl.lib.vat.VatRules' : _("""The table of all VatRule objects."""),
     'lino_xl.lib.vat.VatAreas' : _("""The global list of VAT areas."""),
     'lino_xl.lib.vat.VatAreas.get_for_country' : _("""Return the VatArea instance for this country."""),

@@ -61,7 +61,7 @@ class VatTotal(dd.Model):
     class Meta:
         abstract = True
 
-    total_incl = dd.PriceField(_("Total incl. VAT"), blank=True, null=True)
+    total_incl = dd.PriceField(_("Total to pay"), blank=True, null=True)
     total_base = dd.PriceField(_("Total excl. VAT"), blank=True, null=True)
     total_vat = dd.PriceField(_("VAT"), blank=True, null=True)
 
@@ -156,16 +156,20 @@ class VatDocument(ProjectRelated, VatTotal):
     def compute_totals(self):
         if self.pk is None or not self.state.is_editable:
             return
+        # print("20190911 compute_totals")
         base = Decimal()
         vat = Decimal()
+        tt = self.get_trade_type()
         for i in self.items.all():
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                vat += i.total_vat
+                rule = i.get_vat_rule(tt)
+                if not rule.vat_returnable:
+                    vat += i.total_vat
         self.total_base = myround(base)
         self.total_vat = myround(vat)
-        self.total_incl = myround(vat + base)
+        self.total_incl = myround(base + vat)
 
     def get_payable_sums_dict(self):
         # implements sepa.mixins.Payable
@@ -195,8 +199,11 @@ class VatDocument(ProjectRelated, VatTotal):
                     if rule.vat_returnable_account is None:
                         acc_tuple = (b, ana_account)
                     else:
-                        acc_tuple = (
-                            rule.vat_returnable_account.get_object(), None)
+                        acc = rule.vat_returnable_account.get_object()
+                        # if acc is None:
+                        #     msg = "No base account for {0} (tt {1}, total_base {2})"
+                        #     raise Warning(msg.format(i, tt, i.total_base))
+                        acc_tuple = (acc, None)
                     sums.collect(
                         (acc_tuple, self.project,
                          i.vat_class, self.vat_regime),

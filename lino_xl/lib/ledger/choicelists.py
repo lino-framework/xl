@@ -15,6 +15,13 @@ from lino.api import dd, rt, _, gettext
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 from .roles import LedgerStaff
 
+class MissingAccount(object):
+    def __init__(self, common_account):
+        self.common_account = common_account
+
+    def __str__(self):
+        return _("No account pointing to {}").format(self.common_account)
+
 
 class JournalGroup(dd.Choice):
     menu_group = None
@@ -87,7 +94,7 @@ class CommonAccount(dd.Choice):
             try:
                 self._instance = Account.objects.get(common_account=self)
             except Account.DoesNotExist:
-                return None
+                self._instance = MissingAccount(self)
         return self._instance
 
 

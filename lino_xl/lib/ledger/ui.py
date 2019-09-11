@@ -919,11 +919,13 @@ class Movements(dd.Table):
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
-            if voucher.narration:
-                elems.append(voucher.narration)
             p = voucher.get_partner()
             if p is not None:
                 elems.append(ar.obj2html(p))
+            if voucher.narration:
+                elems.append(voucher.narration)
+            if voucher.your_ref:
+                elems.append(voucher.your_ref)
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))

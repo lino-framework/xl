@@ -106,17 +106,18 @@ class Payable(PartnerRelated):
         kw = dict()
         for k, amount in item_sums.items():
             # amount = myround(amount)
+            # first item of each tuple k is itself a tuple (account, ana_account)
             acc_tuple, prj, vat_class, vat_regime = k
-            # acc_tuple is a tuple (account, ana_account)
-            if not isinstance(acc_tuple, tuple):
-                raise Exception("Not a tuple: {}".format(acc_tuple))
-            if not isinstance(acc_tuple[0], rt.models.ledger.Account):
-                raise Exception("Not an account: {}".format(acc_tuple[0]))
+            account, ana_account = acc_tuple
+            # if not isinstance(acc_tuple, tuple):
+            #     raise Exception("Not a tuple: {}".format(acc_tuple))
+            if not isinstance(account, rt.models.ledger.Account):
+                raise Exception("Not an account: {}".format(account))
             if has_vat:
                 kw.update(
                     vat_class=vat_class, vat_regime=vat_regime)
 
-            if acc_tuple[0].needs_partner:
+            if account.needs_partner:
                 kw.update(partner=partner)
             yield self.create_movement(
                 None, acc_tuple, prj, self.journal.dc, amount, **kw)
@@ -146,8 +147,8 @@ class Payable(PartnerRelated):
                 and self.payment_term_id and self.payment_term.worker:
             worker = self.payment_term.worker
             dc = self.journal.dc
-            # undo the credit that was booked to the partner account and book it
-            # to the worker's account:
+            # one movement to nullify the credit that was booked to the partner account, 
+            # another movment to book it to the worker's account:
             yield self.create_movement(
                 None, (acc, None), None, dc, total_amount,
                 partner=partner, match=self.get_match())
