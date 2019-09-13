@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -10,7 +10,7 @@ from decimal import Decimal
 
 from django.conf import settings
 from django.db import models
-# from django.core.exceptions import ValidationError
+from django.core.exceptions import ValidationError
 
 from lino.utils import SumCollector
 # from lino.utils.dates import AMONTH, ADAY
@@ -254,8 +254,7 @@ class VatDocument(ProjectRelated, VatTotal):
 
     @dd.chooser()
     def vat_regime_choices(self, partner):
-        return rt.models.vat.get_vat_regime_choices(
-            partner.country, partner.vat_id)
+        return rt.models.vat.get_vat_regime_choices(partner.country)
 
     def partner_changed(self, ar=None):
         self.vat_regime = None
@@ -270,6 +269,11 @@ class VatDocument(ProjectRelated, VatTotal):
         super(VatDocument, self).full_clean(*args, **kw)
         if not self.edit_totals:
             self.compute_totals()
+        if self.vat_regime is not None:
+            if self.vat_regime.needs_vat_id and not self.partner.vat_id:
+                raise ValidationError(
+                    _("Cannot use VAT regime {} for partner without VAT id").format(
+                    self.vat_regime))
 
     def before_state_change(self, ar, old, new):
         if new.name == 'registered':

@@ -69,17 +69,16 @@ dd.inject_field(
     'contacts.Partner', 'vat_regime', VatRegimes.field(blank=True))
 
 
-def get_vat_regime_choices(country=None, vat_id=None):
+def get_vat_regime_choices(country=None):
     vat_area = VatAreas.get_for_country(country)
     # print("20190405", vat_area)
     for r in VatRegimes.get_list_items():
         if vat_area is None or r.vat_area is None or r.vat_area == vat_area:
-            if vat_id or not r.needs_vat_id:
-                yield r
+            yield r
 
 @dd.chooser()
-def partner_vat_regime_choices(cls, country, vat_id):
-    return get_vat_regime_choices(country, vat_id)
+def partner_vat_regime_choices(cls, country):
+    return get_vat_regime_choices(country)
 
 
 dd.inject_action(
