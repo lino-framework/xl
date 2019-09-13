@@ -1,27 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Rumma & Ko Ltd
-#
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Database models for `lino_xl.lib.cv`.
-
-.. autosummary::
-
-- A **Language knowledge** is when a given person knows a given language.
-
-- An **education** entry (fr: Éducation, de: Bildung) is when a given
-  person has followed lessons in a given *school* for a given
-  *period*.  There are two basic types of education: **studies** (fr:
-  Études, de: Studium) and **trainings** (fr: Formation, de:
-  Ausbildung).
-
-- A **Work experience** (fr: Expérience professionnelle, de:
-  Berufserfahrung) is when a given person has worked in a given
-  *organisation* for a given *period*.
-
-.. contents::
-   :local:
-   :depth: 2
 
 """
 
@@ -58,9 +39,6 @@ config = dd.plugins.cv
 
 @dd.python_2_unicode_compatible
 class LanguageKnowledge(dd.Model):
-    """Specifies how well a given person knows a given language.
-
-    """
     class Meta:
         app_label = 'cv'
         verbose_name = _("Language knowledge")
