@@ -72,11 +72,12 @@ class LanguageKnowledge(dd.Model):
             return _("%s (MT)") % (self.language)
         if self.cef_level:
             return u"%s (%s)" % (self.language, self.cef_level)
-        if self.spoken > '1' and self.written > '1':
-            return _(u"%s (s/w)") % self.language
-        elif self.spoken > '1':
-            return _(u"%s (s)") % self.language
-        elif self.written > '1':
+        if self.spoken:
+            if self.written:
+                return _(u"%s (s/w)") % self.language
+            else:
+                return _(u"%s (s)") % self.language
+        elif self.written:
             return _(u"%s (w)") % self.language
         else:
             return six.text_type(self.language)
