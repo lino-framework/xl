@@ -411,7 +411,26 @@ class VatRule(dd.Choice):
         # text = "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
         super(VatRule, self).__init__(None, None, **kw)
 
-    # def __str__(self):
+    def __str__(rule):
+        lst = []
+        only = []
+        lst.append(gettext("VAT rule {}: ".format(rule.value)))
+        if rule.trade_type is not None:
+            only.append(str(rule.trade_type))
+        if rule.vat_regime is not None:
+            only.append(str(rule.vat_regime))
+        if rule.vat_area is not None:
+            only.append(str(rule.vat_area))
+        if rule.vat_class is not None:
+            only.append(str(rule.vat_class))
+        if len(only):
+            lst.append(gettext("if ({}) then".format(', '.join(only))))
+        lst.append(gettext("apply {} %".format(rule.rate)))
+        lst.append(gettext("and book to {}").format(rule.vat_account))
+        if rule.vat_returnable:
+            lst.append(gettext("(return to {})").format(rule.vat_returnable_account))
+        return '\n'.join(lst)
+
     #     kw = dict(
     #         trade_type=self.trade_type,
     #         vat_regime=self.vat_regime,
@@ -459,26 +478,7 @@ class VatRules(dd.ChoiceList):
 
     @dd.displayfield(_("Description"))
     def description(cls, rule, ar):
-        if ar is None:
-            return ''
-        lst = []
-        only = []
-        lst.append(gettext("Rate {}".format(rule.rate)))
-        if rule.trade_type is not None:
-            only.append(str(rule.trade_type))
-        if rule.vat_regime is not None:
-            only.append(str(rule.vat_regime))
-        if rule.vat_area is not None:
-            only.append(str(rule.vat_area))
-        if rule.vat_class is not None:
-            only.append(str(rule.vat_class))
-        if len(only):
-            lst.append(gettext("When {}".format(', '.join(only))))
-
-        lst.append(gettext("Book to {}").format(rule.vat_account))
-        if rule.vat_returnable:
-            lst.append(gettext("Returnable to {}").format(rule.vat_returnable_account))
-        return '\n'.join(lst)
+        return str(rule)
 
 
 # we add a single rule with no rate and no conditions, iow any combination is

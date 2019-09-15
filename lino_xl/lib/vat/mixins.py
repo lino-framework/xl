@@ -84,8 +84,12 @@ class VatTotal(dd.Model):
             self.total_incl = None
             self.total_vat = None
         else:
-            self.total_incl = myround(self.total_base * (ONE + rule.rate))
-            self.total_vat = self.total_incl - self.total_base
+            if rule.vat_returnable:
+                self.total_incl = self.total_base
+                self.total_vat = None
+            else:
+                self.total_vat = myround(self.total_base * rule.rate)
+                self.total_incl = self.total_base + self.total_vat
 
     def total_vat_changed(self, ar):
         if self.total_vat is None:
@@ -95,7 +99,12 @@ class VatTotal(dd.Model):
 
         if self.total_base is None:
             self.total_base = ZERO
-        self.total_incl = self.total_vat + self.total_base
+        rule = self.get_vat_rule(self.get_trade_type())
+        if rule is not None and rule.vat_returnable:
+            self.total_incl = self.total_base
+            self.total_vat = None
+        else:
+            self.total_incl = self.total_vat + self.total_base
 
     def total_incl_changed(self, ar):
         if self.total_incl is None:
@@ -108,8 +117,12 @@ class VatTotal(dd.Model):
             self.total_base = None
             self.total_vat = None
         else:
-            self.total_base = myround(self.total_incl / (ONE + rule.rate))
-            self.total_vat = myround(self.total_incl - self.total_base)
+            if rule.vat_returnable:
+                self.total_base = self.total_incl
+                self.total_vat = None
+            else:
+                self.total_base = myround(self.total_incl / (ONE + rule.rate))
+                self.total_vat = myround(self.total_incl - self.total_base)
 
 
 class ComputeSums(dd.Action):
@@ -159,14 +172,12 @@ class VatDocument(ProjectRelated, VatTotal):
         # print("20190911 compute_totals")
         base = Decimal()
         vat = Decimal()
-        tt = self.get_trade_type()
+        # tt = self.get_trade_type()
         for i in self.items.all():
             if i.total_base is not None:
                 base += i.total_base
             if i.total_vat is not None:
-                rule = i.get_vat_rule(tt)
-                if not rule.vat_returnable:
-                    vat += i.total_vat
+                vat += i.total_vat
         self.total_base = myround(base)
         self.total_vat = myround(vat)
         self.total_incl = myround(base + vat)
@@ -189,12 +200,18 @@ class VatDocument(ProjectRelated, VatTotal):
                 sums.collect(
                     ((b, ana_account), self.project, i.vat_class, self.vat_regime),
                     i.total_base)
-            if i.total_vat and rule is not None:
+
+            if rule is not None:
+                if rule.vat_returnable:
+                    vat_amount = myround(i.total_base * rule.rate)
+                else:
+                    vat_amount = i.total_vat
+                if not vat_amount:
+                    continue
                 if not rule.vat_account:
                     msg = _("This rule ({}) does not allow any VAT.")
                     raise Warning(msg.format(rule))
 
-                vat_amount = i.total_vat
                 if rule.vat_returnable:
                     if rule.vat_returnable_account is None:
                         acc_tuple = (b, ana_account)
@@ -294,6 +311,7 @@ class VatDocument(ProjectRelated, VatTotal):
                 self.total_incl = None
         super(VatDocument, self).before_state_change(ar, old, new)
 
+# dd.update_field(VatDocument, 'total_incl', verbose_name=_("Total to pay"))
 
 class VatItemBase(VoucherItem, VatTotal):
 
@@ -369,13 +387,16 @@ class VatItemBase(VoucherItem, VatTotal):
     def reset_totals(self, ar):
         # if self.voucher.items_edited:
         if self.voucher.edit_totals and self.voucher.total_incl:
-            total = Decimal()
-            for item in self.voucher.items.exclude(id=self.id):
-                total += item.total_incl
-            # if total != self.voucher.total_incl:
-            self.total_incl = self.voucher.total_incl - total
-            self.total_incl_changed(ar)
-
+            rule = self.get_vat_rule(self.get_trade_type())
+            qs = self.voucher.items.exclude(id=self.id)
+            if rule.vat_returnable:
+                total = qs.aggregate(models.Sum('total_base'))['total_base__sum'] or Decimal()
+                self.total_base = self.voucher.total_incl - total
+                self.total_base_changed(ar)
+            else:
+                total = qs.aggregate(models.Sum('total_incl'))['total_incl__sum'] or Decimal()
+                self.total_incl = self.voucher.total_incl - total
+                self.total_incl_changed(ar)
         super(VatItemBase, self).reset_totals(ar)
 
     def before_ui_save(self, ar):
