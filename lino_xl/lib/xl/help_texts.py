@@ -163,11 +163,6 @@ of a User."""),
 verifcation code, and that a username and password are set."""),
     'lino_xl.lib.online.users.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
     'lino_xl.lib.online.users.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
-    'lino_xl.lib.online.users.Person.full_clean' : _("""Set the name field of this person.  This field is visible in the
-Partner's detail but not in the Person's detail and serves for
-sorting when selecting a Partner.  It also serves for quick
-search on Persons."""),
-    'lino_xl.lib.online.users.Person.address_person_lines' : _("""Deserves more documentation."""),
     'lino_xl.lib.online.users.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
 checks certain things before accepting the new user."""),
     'lino_xl.lib.online.users.VerifyUser' : _("""Enter your verification code."""),
@@ -198,7 +193,6 @@ created."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
     'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.postings.dummy.PostingsByController' : _("""alias of lino.core.fields.DummyField"""),
     'lino_xl.lib.postings.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
 be one Posting for each recipient."""),
@@ -871,6 +865,12 @@ instance of CourseArea."""),
     'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
+    'lino_xl.lib.cv.LanguageKnowledge' : _("""Django model to represent a Language knowledge."""),
+    'lino_xl.lib.cv.LanguageKnowledge.person' : _("""The person to which this entry applies."""),
+    'lino_xl.lib.cv.LanguageKnowledge.language' : _("""The language to which this entry applies."""),
+    'lino_xl.lib.cv.LanguageKnowledge.cef_level' : _("""The CEF level. A pointer to a choice of CefLevels"""),
+    'lino_xl.lib.cv.LanguageKnowledge.has_certificate' : _("""Whether this entry is confirmed by a certificate."""),
+    'lino_xl.lib.cv.LanguageKnowledge.entry_date' : _("""When this entry was created."""),
     'lino_xl.lib.excerpts.Excerpt' : _("""A printable document that describes some aspect of the current
 situation."""),
     'lino_xl.lib.excerpts.Excerpt.excerpt_type' : _("""The type of this excerpt (ForeignKey to ExcerptType)."""),
