@@ -17,6 +17,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Appy POD")
 
     def get_requirements(self, site):
+        yield "odfpy"
         try:
             import appy
             # leave unchanged if it is already installed
@@ -34,5 +35,3 @@ class Plugin(ad.Plugin):
         except ImportError:
             version = self.site.not_found_msg
         yield ("Appy", version, "http://appyframework.org/pod.html")
-
-

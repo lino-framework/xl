@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Rumma & Ko Ltd
-#
+# Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -85,13 +83,13 @@ class ContactDetails(dd.Table):
         "value:30 detail_type:10 remark:10 partner id "
         "primary *")
     insert_layout = """
-    detail_type 
+    detail_type
     value
     remark
     """
     detail_layout = dd.DetailLayout("""
     partner
-    detail_type 
+    detail_type
     value
     remark
     """, window_size=(60, 'auto'))
@@ -113,22 +111,22 @@ class ContactDetailsByPartner(ContactDetails):
         sar = self.request_from(ar, master_instance=obj)
         items = [o.detail_type.as_html(o, sar)
                  for o in sar if not o.end_date]
-            
+
         html = []
         if len(items) == 0:
             html += _("No contact details")
         else:
             html += join_elems(items, sep=', ')
-            
+
         ins = self.insert_action.request_from(sar)
         if ins.get_permission():
             # kw = dict(label=u"⊕") # 2295 circled plus
             # kw.update(icon_name=None)
             # # kw.update(
-            # #     style="text-decoration:none; font-size:120%;")  
+            # #     style="text-decoration:none; font-size:120%;")
             # btn = ins.ar2button(**kw)
             btn = ins.ar2button()
-                
+
             # if len(items) > 0:
             #     html.append(E.br())
             html.append(' ')
@@ -143,9 +141,9 @@ class ContactDetailsByPartner(ContactDetails):
         else:
             html.append(E.br())
             html.append(sar.as_button(_("Manage contact details")))
-            
+
         return E.p(*html)
-    
+
 
 
 class ContactDetailsOwnerChecker(Checker):
@@ -154,6 +152,7 @@ class ContactDetailsOwnerChecker(Checker):
     msg_mismatch = _("Field differs from primary item")
     msg_empty = _("Field is empty but primary item exists")
     msg_missing = _("Missing primary item")
+    msg_multiple = _("Multiple primary items for {}")
 
     def get_checkdata_problems(self, obj, fix=False):
         # dd.logger.info("20171013 Checking {}", obj)
@@ -178,5 +177,7 @@ class ContactDetailsOwnerChecker(Checker):
                             kw.update(value=value)
                             cd = ContactDetail(**kw)
                             cd.save()
+                except ContactDetail.MultipleObjectsReturned:
+                    yield (False, self.msg_multiple.format(cdt))
 
 ContactDetailsOwnerChecker.activate()
