@@ -63,15 +63,13 @@ class UpdateGuests(dd.Action):
 
     def run_on_event(self, ar, obj):
 
-        if not obj.state.edit_guests:
-            # ar.info("not state.edit_guests")
-            return
-        if not obj.event_type or not obj.event_type.fill_presences:
+        # existing = set([g.partner.pk for g in obj.guest_set.all()])
+        existing = {g.partner.pk : g for g in obj.guest_set.all()}
+
+        if len(existing) and obj.can_edit_guests_manually():
             return
 
         c = u = d = 0
-        # existing = set([g.partner.pk for g in obj.guest_set.all()])
-        existing = {g.partner.pk : g for g in obj.guest_set.all()}
         #print("20190328 existing: {}".format(existing))
         # create suggested guest that don't exist
         for sg in obj.suggest_guests():

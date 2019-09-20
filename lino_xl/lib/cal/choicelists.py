@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -168,7 +168,7 @@ add('50', _("Cancelled"), 'cancelled')
 
 if not settings.SITE.use_silk_icons:
     TaskStates.todo.button_text = "☐"  # BALLOT BOX \u2610
-    TaskStates.started.button_text = "☉"  # SUN (U+2609)	
+    TaskStates.started.button_text = "☉"  # SUN (U+2609)
     TaskStates.done.button_text = "☑"  # BALLOT BOX WITH CHECK \u2611
     TaskStates.cancelled.button_text = "☒"  # BALLOT BOX WITH X (U+2612)
     TaskStates.important.button_text = "⚠"  # U+26A0
@@ -178,7 +178,7 @@ class GuestState(dd.State):
 
 
 class GuestStates(dd.Workflow):
-    verbose_name_plural = _("Guest states")
+    verbose_name_plural = _("Presence states")
     required_roles = dd.login_required(dd.SiteStaff)
     app_label = 'cal'
     item_class = GuestState
@@ -200,7 +200,7 @@ add('10', _("Invited"), 'invited')
 
 class EntryState(dd.State):
     fixed = False
-    edit_guests = False
+    fill_guests = False
     transparent = False
     noauto = False
     guest_state = None
@@ -213,31 +213,31 @@ add('10', _("Stable"), 'stable')
 add('20', _("Unstable"), 'pending')
 
 class EntryStates(dd.Workflow):
-    verbose_name_plural = _("Event states")
+    verbose_name_plural = _("Entry states")
     required_roles = dd.login_required(dd.SiteStaff)
     app_label = 'cal'
     item_class = EntryState
-    edit_guests = models.BooleanField(_("Edit participants"), default=False)
+    fill_guests = models.BooleanField(_("Fill guests"), default=False)
     fixed = models.BooleanField(_("Stable"), default=False)
     transparent = models.BooleanField(_("Transparent"), default=False)
     noauto = models.BooleanField(_("No auto"), default=False)
     guest_state = GuestStates.field(_("Guest state"), blank=True)
     # editable_states = set()
-    # column_names = "value name text edit_guests"
+    # column_names = "value name text fill_guests"
 
-    # @dd.virtualfield(models.BooleanField("edit_guests"))
-    # def edit_guests(cls,obj,ar):
-        # return obj.edit_guests
+    # @dd.virtualfield(models.BooleanField("fill_guests"))
+    # def fill_guests(cls,obj,ar):
+        # return obj.fill_guests
 
     @classmethod
     def get_column_names(self, ar):
-        return 'value name text button_text edit_guests fixed transparent noauto'
+        return 'value name text button_text fill_guests fixed transparent noauto'
 
 add = EntryStates.add_item
 add('10', _("Suggested"), 'suggested',
-    edit_guests=True,
+    fill_guests=True,
     button_text="?")
-add('20', _("Draft"), 'draft', edit_guests=True,
+add('20', _("Draft"), 'draft', fill_guests=True,
     button_text="☐")  # BALLOT BOX (2610)
 if False:
     add('40', _("Published"), 'published')
@@ -245,7 +245,7 @@ if False:
     add('30', _("Visit"), 'visit')
     add('60', _("Rescheduled"), 'rescheduled', fixed=True)
 add('50', _("Took place"), 'took_place',
-    fixed=True, edit_guests=True,
+    fixed=True, fill_guests=False,
     button_text="☑")  # BALLOT BOX WITH CHECK (2611)
 
 # lino_tera add a state "Missed"
@@ -261,5 +261,3 @@ if False:
     add('75', _("Omitted"), 'omitted', fixed=True, transparent=True,
         button_text="☒")  # BALLOT BOX WITH X (\u2612)
         # button_text="☹")  # 2639
-
-

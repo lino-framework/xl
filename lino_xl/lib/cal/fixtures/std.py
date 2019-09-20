@@ -45,22 +45,27 @@ def objects():
     yield event_type(
         planner_column=PlannerColumns.external,
         is_appointment=True,
-        fill_presences=False,
+        fill_presences=True,
         max_days=0,
         **dd.str2kw('name', _("Absences")))
 
     holidays = event_type(
         planner_column=PlannerColumns.external,
         is_appointment=False,
+        fill_presences=False,
         max_days=0,
         all_rooms=True, **dd.str2kw('name', _("Holidays")))
     yield holidays
     meeting = event_type(
+        is_appointment=True,
+        fill_presences=True,
         planner_column=PlannerColumns.external,
         default_duration="1:00", **dd.str2kw('name', _("Meeting")))
     yield meeting
     yield event_type(
         planner_column=PlannerColumns.internal,
+        is_appointment=False,
+        fill_presences=True,
         transparent=True,
         default_duration="0:30",
         **dd.str2kw('name', _("Internal")))
@@ -149,4 +154,3 @@ def objects():
     yield DPR(end_time="12:00", **dd.str2kw('designation', _("AM")))
     yield DPR(start_time="12:00", **dd.str2kw('designation', _("PM")))
     yield DPR(**dd.str2kw('designation', _("All day")))
-    

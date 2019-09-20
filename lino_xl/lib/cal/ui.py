@@ -335,7 +335,7 @@ class GuestDetail(dd.DetailLayout):
     main = """
     event partner role
     state workflow_buttons
-    remark 
+    remark
     # outbox.MailsByController
     """
 
@@ -446,6 +446,26 @@ class GuestsByEvent(Guests):
     column_names = 'partner role workflow_buttons remark *'
     order_by = ['partner__name', 'partner__id']
 
+    @classmethod
+    def get_create_permission(cls, ar):
+        if not super(GuestsByEvent, cls).get_create_permission(ar):
+            return False
+        mi = ar.master_instance
+        if mi and mi.can_edit_guests_manually():
+            return  True
+        return False
+
+    @classmethod
+    def disable_delete(self, obj, ar):
+        msg = super(GuestsByEvent, cls).disable_delete(obj, ar)
+        if msg is not None:
+            return msg
+        mi = ar.master_instance
+        if mi and mi.can_edit_guests_manually():
+            return None
+        return _("Guests are filled automatically.")
+
+
 
 class GuestsByRole(Guests):
     master_key = 'role'
@@ -546,8 +566,8 @@ class EventTypes(dd.Table):
     column_names = "ref name planner_column is_appointment force_guest_states all_rooms *"
 
     detail_layout = """
-    ref id planner_column default_duration 
-    name 
+    ref id planner_column default_duration
+    name
     event_label
     # description
     #build_method #template start_date max_days max_conflicting email_template attach_to_email
@@ -1748,4 +1768,3 @@ class MonthlyView(EventsParameters, CalendarView):
     label = _("Monthly view")
     detail_layout = 'cal.MonthlyDetail'
     navigation_mode = "month"
-

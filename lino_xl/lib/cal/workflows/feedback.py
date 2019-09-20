@@ -24,13 +24,13 @@ from lino.api import dd
 from ..choicelists import EntryStates, GuestStates
 
 add = EntryStates.add_item
-# add('40', _("Notified"), 'published', edit_guests=True,
-add('40', _("Published"), 'published', edit_guests=True,
+# add('40', _("Notified"), 'published', fill_guests=True,
+add('40', _("Published"), 'published', fill_guests=True,
     fixed=True, button_text="☼")   # WHITE SUN WITH RAYS (U+263C)
 
 # EntryStates.new.button_text ="⛶"  # SQUARE FOUR CORNERS (U+26F6)
-# EntryStates.talk.button_text ="⚔"  # CROSSED SWORDS (U+2694)	
-# EntryStates.opened.button_text = "☉"  # SUN (U+2609)	
+# EntryStates.talk.button_text ="⚔"  # CROSSED SWORDS (U+2694)
+# EntryStates.opened.button_text = "☉"  # SUN (U+2609)
 # # EntryStates.started.button_text="☭"  # HAMMER AND SICKLE (U+262D)
 # EntryStates.started.button_text = "⚒"  # HAMMER AND PICK (U+2692
 # EntryStates.sticky.button_text="♥"  # BLACK HEART SUIT (U+2665)
@@ -99,7 +99,7 @@ class MarkPresent(dd.ChangeStateAction):
     """Mark this participant as present at the event.
 
     """
-    
+
     label = _("Present")
     # required_states = 'invited accepted'
 
@@ -112,13 +112,13 @@ class MarkPresent(dd.ChangeStateAction):
 class MarkAbsent(dd.ChangeStateAction):
     """Mark this participant as absent (without explanation).
 
-    """    
+    """
     label = _("Absent")
 
 class MarkExcused(dd.ChangeStateAction):
     """Mark this participant as absent (with acceptable explanation).
 
-    """    
+    """
     label = _("Excused")
 
 
@@ -146,7 +146,7 @@ class PublishEvent(dd.ChangeStateAction):
     required_states = 'suggested draft'
     if settings.SITE.use_silk_icons:
         icon_name = 'accept'
-    
+
     def unused_get_action_permission(self, ar, obj, state):
         d = obj.end_date or obj.start_date
         if d < dd.today():

@@ -40,7 +40,7 @@ from .choicelists import (
 
 from .choicelists import TaskStates, EntryStates, GuestStates
 from .actions import UpdateGuests
-    
+
 from .mixins import Component,Colored
 from .mixins import EventGenerator, RecurrenceSet, Reservation
 from .mixins import Ended
@@ -83,7 +83,7 @@ register_calendartype('google', GoogleCalendar())
 
 
 class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
-    
+
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'PlannerRow')
@@ -143,9 +143,9 @@ class Room(mixins.BabelNamed, ContactRelated, Colored):
     description = dd.RichTextField(_("Description"), blank=True)
 
 dd.update_field(
-    Room, 'company', verbose_name=_("Responsible"))    
+    Room, 'company', verbose_name=_("Responsible"))
 dd.update_field(
-    Room, 'contact_person', verbose_name=_("Contact person"))    
+    Room, 'contact_person', verbose_name=_("Contact person"))
 
 # class Priority(mixins.BabelNamed):
 #     class Meta:
@@ -173,7 +173,7 @@ class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     all_rooms = models.BooleanField(_("Locks all rooms"), default=False)
     locks_user = models.BooleanField(_("Locks the user"), default=False)
     force_guest_states = models.BooleanField(_("Automatic presences"), default=False)
-    fill_presences = models.BooleanField(_("Fill presences"), default=True)
+    fill_presences = models.BooleanField(_("Fill guests"), default=False)
 
     start_date = models.DateField(
         verbose_name=_("Start date"),
@@ -640,7 +640,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         for u in (self.user, self.assigned_to):
             if u is not None:
                 yield (u, u.mail_mode)
-    
+
     def has_conflicting_events(self):
         qs = self.get_conflicting_events()
         if qs is None:
@@ -670,7 +670,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         # ot = ContentType.objects.get_for_model(RecurrentEvent)
         qs = self.__class__.objects.filter(transparent=False)
         qs = qs.exclude(event_type__transparent=True)
-        
+
         # if self.state.transparent:
         #     # cancelled entries are basically transparent to all
         #     # others. Except if they have an owner, in which case we
@@ -680,7 +680,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         #         return
         #     qs = qs.filter(
         #         owner_id=self.owner_id, owner_type=self.owner_type)
-        
+
         end_date = self.end_date or self.start_date
         flt = Q(start_date=self.start_date, end_date__isnull=True)
         flt |= Q(end_date__isnull=False,
@@ -733,7 +733,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
             # conflicts with any all-room entry (e.g. a holiday).  For
             # generated entries this list extends to roomed entries of
             # the same generator.
-            
+
             if self.event_type is None or not self.event_type.all_rooms:
                 if self.owner_id is None:
                     qs = qs.filter(event_type__all_rooms=True)
@@ -813,7 +813,13 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
                 obj.state = new.guest_state
                 obj.full_clean()
                 obj.save()
-        
+
+    def can_edit_guests_manually(self):
+        if self.state.fill_guests:
+            if self.event_type and self.event_type.fill_presences:
+                return False
+        return True
+
     def suggest_guests(self):
         done = set()
         for o in (self.owner, self.project):
@@ -944,7 +950,7 @@ class EntryChecker(Checker):
     def get_responsible_user(self, obj):
         return obj.user or super(
             EntryChecker, self).get_responsible_user(obj)
-    
+
 class EventGuestChecker(EntryChecker):
     verbose_name = _("Entries without participants")
 
@@ -961,7 +967,7 @@ class EventGuestChecker(EntryChecker):
                             g.full_clean()
                             g.save()
 
-        if not obj.state.edit_guests:
+        if not obj.state.fill_guests:
             return
         # existing = set([g.partner.pk for g in obj.guest_set.all()])
         # if len(existing) == 0:
@@ -1062,7 +1068,7 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     allow_merge_action = False
-    
+
     # Define a `user` property because we want to use
     # `lino.modlib.users.mixins.My`
     def get_user(self):
@@ -1182,7 +1188,7 @@ dd.inject_field(
     models.DateField(
         _("Hide events before"),
         blank=True, null=True,
-        help_text=_("""If this is specified, certain tables show only 
+        help_text=_("""If this is specified, certain tables show only
 events after the given date.""")
     ))
 
@@ -1221,4 +1227,3 @@ if False:  # removed 20160610 because it is probably not used
 
 
 from .ui import *
-

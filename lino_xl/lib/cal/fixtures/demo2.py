@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2016 Rumma & Ko Ltd
-#
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -39,7 +38,9 @@ def objects():
 
     #~ if settings.SITE.project_model:
         #~ PROJECTS = Cycler(settings.SITE.project_model.objects.all())
-    ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=True))
+    # ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=True))
+    qs = EventType.objects.filter(is_appointment=True).exclude(**dd.str2kw('name', _("Absences")))
+    ETYPES = Cycler(qs)
 
     def s2duration(s):
         h, m = map(int, s.split(':'))
@@ -92,7 +93,8 @@ def objects():
                        + DURATIONS.pop())
         yield e
 
-    ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=False))
+    # ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=False))
+    absence = EventType.objects.get(**dd.str2kw('name', _("Absences")))
     date = settings.SITE.demo_date(-2)
     s = _("Absent for private reasons")
     for i in range(10):
@@ -101,7 +103,7 @@ def objects():
         kw = dict(user=u,
                   start_date=date,
                   end_date=date + datetime.timedelta(days=(i%3)+1),
-                  event_type=ETYPES.pop(),
+                  event_type=absence,
                   summary=s)
         kw.update(state=STATES.pop())
         yield Event(**kw)
@@ -113,4 +115,3 @@ def objects():
     # date = settings.SITE.demo_date(200)
     # e = Event(start_date=date, summary="Conflicting 1", event_type=ETYPES.pop(), user=USERS.pop())
     # yield e
-
