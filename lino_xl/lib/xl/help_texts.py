@@ -490,11 +490,21 @@ user-modified Events."""),
 None if no subscription is found."""),
     'lino_xl.lib.cal.EntryStates' : _("""The list of possible states of a calendar entry."""),
     'lino_xl.lib.cal.EntryState' : _("""Every calendar entry state is an instance of this and has some attributes."""),
-    'lino_xl.lib.cal.EntryState.edit_guests' : _("""Whether presences are editable when the entry is in this
-state."""),
+    'lino_xl.lib.cal.EntryState.fill_guests' : _("""Whether the presences of an entry in this state are filled in
+automatically.  If this is True (and if the entry type's
+fill_presences is True as well), the presences cannot be
+modified manually by the used."""),
     'lino_xl.lib.cal.EntryState.guest_state' : _("""Force the given guest state for all guests when an entry is
 set to this state and when
 EventType.force_guest_states is True."""),
+    'lino_xl.lib.cal.EntryState.transparent' : _("""Whether an entry in this state is considered transparent, i.e. dos not
+conflict with other entries at the same moment."""),
+    'lino_xl.lib.cal.EntryState.fixed' : _("""Whether an entry in this state is considered "stable" when
+differentiating between "stable" and "pending" entries."""),
+    'lino_xl.lib.cal.EntryState.noauto' : _("""Whether switching to this state will clear the entry's auto_type
+field, i.e. it is no longer considered an automatically generated entry,
+IOW it "escapes" from its entry generator."""),
+    'lino_xl.lib.cal.EntryState.edit_guests' : _("""Old name for fill_guests."""),
     'lino_xl.lib.cal.EventType' : _("""Django model representing a calendar entry type. The possible value of
 the Event.type field."""),
     'lino_xl.lib.cal.EventType.default_duration' : _("""An optional default duration for calendar entries of this type."""),
@@ -509,8 +519,9 @@ unavailable for other locking events at the same time."""),
     'lino_xl.lib.cal.EventType.transparent' : _("""Allow entries of this type to conflict with other events."""),
     'lino_xl.lib.cal.EventType.force_guest_states' : _("""Whether presence states should be forced to those defined by the
 entry state."""),
-    'lino_xl.lib.cal.EventType.fill_presences' : _("""Whether presences should be automatically filled for entries of this
-type."""),
+    'lino_xl.lib.cal.EventType.fill_presences' : _("""Whether guests should be automatically filled for calendar entries of
+this type."""),
+    'lino_xl.lib.cal.EventType.fill_guests' : _("""Planned name for fill_presences."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
     'lino_xl.lib.cal.CalendarView' : _("""Base class for all calendar views (daily, weekly and monthly)."""),
     'lino_xl.lib.cal.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
