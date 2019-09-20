@@ -2,11 +2,6 @@
 # Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""Database models for this plugin.
-
-"""
-
 from __future__ import unicode_literals, print_function
 
 import datetime
@@ -28,6 +23,7 @@ from lino.modlib.printing.mixins import PrintableType
 from lino.modlib.system.choicelists import ObservedEvent
 from lino.modlib.uploads.mixins import UploadController
 from lino.modlib.users.mixins import UserAuthored
+from lino.core.fields import TableRow
 from lino.utils import SumCollector
 from lino.utils import mti
 from lino_xl.lib.contacts.choicelists import PartnerEvents
@@ -1163,7 +1159,7 @@ PartnerEvents.add_item_instance(
 on_ledger_movement = Signal(['instance'])
 
 
-class DueMovement(object):
+class DueMovement(TableRow):
     def __init__(self, dc, mvt):
         self.dc = dc
         # self.match = mvt.get_match()
