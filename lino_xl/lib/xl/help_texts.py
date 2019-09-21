@@ -451,7 +451,8 @@ them."""),
     'lino_xl.lib.cal.Event' : _("""The Django model which represents a calendar entry."""),
     'lino_xl.lib.cal.Event.start_date' : _("""The starting date of this entry.  May not be empty."""),
     'lino_xl.lib.cal.Event.end_date' : _("""The ending date of this entry. Leave empty for same-day entries."""),
-    'lino_xl.lib.cal.Event.start_time' : _("""The starting time.  If this is empty, the entry is considered a all-day entry."""),
+    'lino_xl.lib.cal.Event.start_time' : _("""The starting time.  If this is empty, the entry is considered a
+all-day entry."""),
     'lino_xl.lib.cal.Event.end_time' : _("""The ending time.  If this is before the starting time, and no ending date
 is given, the entry ends the day after."""),
     'lino_xl.lib.cal.Event.summary' : _("""A one-line descriptive text."""),
@@ -505,8 +506,7 @@ differentiating between "stable" and "pending" entries."""),
 field, i.e. it is no longer considered an automatically generated entry,
 IOW it "escapes" from its entry generator."""),
     'lino_xl.lib.cal.EntryState.edit_guests' : _("""Old name for fill_guests."""),
-    'lino_xl.lib.cal.EventType' : _("""Django model representing a calendar entry type. The possible value of
-the Event.type field."""),
+    'lino_xl.lib.cal.EventType' : _("""Django model representing a calendar entry type."""),
     'lino_xl.lib.cal.EventType.default_duration' : _("""An optional default duration for calendar entries of this type."""),
     'lino_xl.lib.cal.EventType.event_label' : _("""Default text for summary of new entries."""),
     'lino_xl.lib.cal.EventType.is_appointment' : _("""Whether entries of this type are considered "appointments" (i.e. whose
