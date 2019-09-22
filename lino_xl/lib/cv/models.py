@@ -40,6 +40,7 @@ config = dd.plugins.cv
 @dd.python_2_unicode_compatible
 class LanguageKnowledge(dd.Model):
     class Meta:
+        abstract = dd.is_abstract_model(__name__, 'LanguageKnowledge')
         app_label = 'cv'
         verbose_name = _("Language knowledge")
         verbose_name_plural = _("Language knowledges")
@@ -184,6 +185,7 @@ class EducationLevel(StudyOrTraining, mixins.BabelNamed, mixins.Sequenced):
         app_label = 'cv'
         verbose_name = _("Education Level")
         verbose_name_plural = _("Education Levels")
+        abstract = dd.is_abstract_model(__name__, 'EducationLevel')
 
 
 class EducationLevels(dd.Table):
@@ -224,6 +226,7 @@ class StudyType(StudyOrTraining, mixins.BabelNamed):
         app_label = 'cv'
         verbose_name = _("Education Type")
         verbose_name_plural = _("Education Types")
+        abstract = dd.is_abstract_model(__name__, 'StudyType')
 
     education_level = dd.ForeignKey(
         'cv.EducationLevel',
@@ -289,6 +292,7 @@ class Training(SectorFunction, EducationEntry):
         app_label = 'cv'
         verbose_name = _("Training")
         verbose_name_plural = _("Trainings")
+        abstract = dd.is_abstract_model(__name__, 'Training')
 
     content = models.CharField(
         max_length=200,
@@ -369,6 +373,7 @@ class Study(EducationEntry):
         app_label = 'cv'
         verbose_name = _("Study")
         verbose_name_plural = _("Studies")
+        abstract = dd.is_abstract_model(__name__, 'Study')
 
     education_level = dd.ForeignKey(
         'cv.EducationLevel',
@@ -397,13 +402,17 @@ class Studies(PeriodTable):
     model = 'cv.Study'
     order_by = "country city type content".split()
     column_names = "person start_date end_date type content education_level state *"
+    detail_layout = "cv.StudyDetail"
 
-    detail_layout = """
+
+class StudyDetail(dd.DetailLayout):
+    main = """
     person start_date end_date duration_text
     type content education_level state #success
     school country city
     remarks
     """
+    window_size = (60, 10)
 
 
 class StudiesByCountry(Studies):
@@ -454,6 +463,7 @@ class Status(mixins.BabelNamed):
         app_label = 'cv'
         verbose_name = pgettext("work experience", "Status")
         verbose_name_plural = pgettext("work experience", 'Statuses')
+        abstract = dd.is_abstract_model(__name__, 'Status')
 
 
 class Statuses(dd.Table):
@@ -475,6 +485,7 @@ class Regime(mixins.BabelNamed):
         app_label = 'cv'
         verbose_name = _("Work Regime")
         verbose_name_plural = _('Work Regimes')
+        abstract = dd.is_abstract_model(__name__, 'Regime')
 
 
 class Regimes(dd.Table):
@@ -494,6 +505,7 @@ class Duration(mixins.BabelNamed):
         app_label = 'cv'
         verbose_name = _("Contract Duration")
         verbose_name_plural = _('Contract Durations')
+        abstract = dd.is_abstract_model(__name__, 'Duration')
 
 
 class Durations(dd.Table):
@@ -514,6 +526,7 @@ class Sector(mixins.BabelNamed):
         app_label = 'cv'
         verbose_name = _("Job Sector")
         verbose_name_plural = _('Job Sectors')
+        abstract = dd.is_abstract_model(__name__, 'Sector')
 
     remark = models.TextField(
         blank=True,
@@ -540,6 +553,7 @@ class Function(mixins.BabelNamed):
         app_label = 'cv'
         verbose_name = _("Job Function")
         verbose_name_plural = _('Job Functions')
+        abstract = dd.is_abstract_model(__name__, 'Function')
 
     remark = models.TextField(
         blank=True,
@@ -581,6 +595,7 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
         verbose_name = _("Job Experience")
         verbose_name_plural = _("Job Experiences")
         get_latest_by = 'start_date'
+        abstract = dd.is_abstract_model(__name__, 'Experience')
 
     company = models.CharField(max_length=200, verbose_name=_("Company"))
     #~ type = dd.ForeignKey(JobType,verbose_name=_("job type"))

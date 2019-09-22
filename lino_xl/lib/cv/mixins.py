@@ -1,22 +1,20 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Rumma & Ko Ltd
-#
+# Copyright 2013-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-See :mod:`ml.cv`.
-"""
 from __future__ import unicode_literals
 from builtins import str
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as gettext
 
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 from etgen.html import E, join_elems
 
 from lino.mixins.periods import DateRange
+
+NONE = _("Not specified")
 
 class BiographyOwner(dd.Model):
 
@@ -43,7 +41,10 @@ class BiographyOwner(dd.Model):
             # if lk.language.iso2 in ("de", "fr", "en"):
             if lk.cef_level is not None:
                 if not lk.language.iso2 in self._cef_levels:
-                    self._cef_levels[lk.language.iso2] = lk.cef_level.value
+                    lkinfo = str(lk.cef_level.value)
+                    if lk.has_certificate:
+                        lkinfo += " ({})".format(_("Certificate"))
+                    self._cef_levels[lk.language.iso2] = lkinfo
 
     @dd.htmlbox(_("Language knowledge"))
     def language_knowledge(self, ar):
@@ -53,8 +54,8 @@ class BiographyOwner(dd.Model):
         self.load_language_knowledge()
         lst = []
         for lng in settings.SITE.languages:
-            cl = self._cef_levels.get(lng.django_code, "---")
-            lst.append("{}: {}".format(lng.name, cl))
+            lst.append("{}: {}".format(
+                lng.name, self._cef_levels.get(lng.django_code, NONE)))
             # if cl is None:
             #     lst.append("{}: {}".format(lng.name, ))
             # else:
@@ -76,19 +77,19 @@ class BiographyOwner(dd.Model):
     @dd.displayfield()
     def cef_level_de(self, ar):
         self.load_language_knowledge()
-        return self._cef_levels.get('de')
+        return self._cef_levels.get('de', NONE)
 
     # @dd.displayfield(_("CEF level (fr)"))
     @dd.displayfield()
     def cef_level_fr(self, ar):
         self.load_language_knowledge()
-        return self._cef_levels.get('fr')
+        return self._cef_levels.get('fr', NONE)
 
     # @dd.displayfield(_("CEF level (en)"))
     @dd.displayfield()
     def cef_level_en(self, ar):
         self.load_language_knowledge()
-        return self._cef_levels.get('en')
+        return self._cef_levels.get('en', NONE)
 
 
 class EducationEntryStates(dd.ChoiceList):
@@ -134,7 +135,7 @@ class CefLevel(dd.ChoiceList):
     """
     verbose_name = _("CEF level")
     verbose_name_plural = _("CEF levels")
-    show_values = True
+    # show_values = True
 
     #~ @classmethod
     #~ def display_text(cls,bc):
@@ -143,17 +144,28 @@ class CefLevel(dd.ChoiceList):
         #~ return lazy(fn,unicode)(bc)
 
 add = CefLevel.add_item
-add('A0', _("basic language skills"))
-add('A1', _("basic language skills"))
-add('A1+', _("basic language skills"))
-add('A2', _("basic language skills"))
-add('A2+', _("basic language skills"))
-add('B1', _("independent use of language"))
-add('B2', _("independent use of language"))
-add('B2+', _("independent use of language"))
-add('C1', _("proficient use of language"))
-add('C2', _("proficient use of language"))
-add('C2+', _("proficient use of language"))
+add('A0')
+add('A1')
+add('A1+')
+add('A2')
+add('A2+')
+add('B1')
+add('B2')
+add('B2+')
+add('C1')
+add('C2')
+add('C2+')
+# add('A0', _("basic language skills"))
+# add('A1', _("basic language skills"))
+# add('A1+', _("basic language skills"))
+# add('A2', _("basic language skills"))
+# add('A2+', _("basic language skills"))
+# add('B1', _("independent use of language"))
+# add('B2', _("independent use of language"))
+# add('B2+', _("independent use of language"))
+# add('C1', _("proficient use of language"))
+# add('C2', _("proficient use of language"))
+# add('C2+', _("proficient use of language"))
 
 
 class SectorFunction(dd.Model):

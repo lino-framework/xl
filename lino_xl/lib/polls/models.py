@@ -428,7 +428,7 @@ class AnswerChoice(dd.Model):
         # results when serializing.
 
     allow_cascaded_delete = ['response']
-    
+
     response = dd.ForeignKey('polls.Response')
     question = dd.ForeignKey('polls.Question')
     choice = dd.ForeignKey(
@@ -511,7 +511,7 @@ class AllAnswerRemarks(AnswerRemarks):
 #             ar.success(_("%s : nothing to save.") % obj2unicode(elem))
 #         elem.after_ui_save(ar, watcher)
 
-    
+
 #     def delete_instance(self, ar):
 #         pre_ui_delete.send(sender=self, request=ar.request)
 #         self.delete()
@@ -687,7 +687,7 @@ class AnswersByResponse(dd.VirtualTable):
             # toggle buttons since answer cannot be toggled:
             # 20151211
             sar.selected_rows = [obj.response]
-            
+
         if not sar.get_permission():
             return str(obj)
 
@@ -741,7 +741,7 @@ class AnswersByResponse(dd.VirtualTable):
 
 
 @dd.python_2_unicode_compatible
-class AnswersByQuestionRow(object):
+class AnswersByQuestionRow(TableRow):
     FORWARD_TO_RESPONSE = tuple(
         "full_clean after_ui_save disable_delete obj2href".split())
 
@@ -824,5 +824,3 @@ class PollResult(Questions):
             #~ return Answer.objects.filter(question=obj,choice=c)
             return AnswerChoices.request(
                 known_values=dict(question=obj, choice=c))
-
-
