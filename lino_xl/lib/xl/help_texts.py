@@ -1211,6 +1211,9 @@ this journal."""),
 of the partner when entering a financial voucher."""),
     'lino_xl.lib.ledger.Journal.template' : _("""See PrintableType.template."""),
     'lino_xl.lib.ledger.Journal.sepa_account' : _("""Your bank account to specify in payment order."""),
+    'lino_xl.lib.ledger.Journals' : _("""List of all Journals. Accessible via Configure ‣ Accounting
+‣ Journals."""),
+    'lino_xl.lib.ledger.JournalsOverview' : _("""The list of all Journals shown in the dashboard."""),
     'lino_xl.lib.ledger.LedgerInfo' : _("""Django model used to store ledger specific information per user."""),
     'lino_xl.lib.ledger.LedgerInfo.user' : _("""OneToOneField pointing to the user."""),
     'lino_xl.lib.ledger.LedgerInfo.entry_date' : _("""The last value this user typed as entry_date of a voucher.  It is the default value
@@ -1228,7 +1231,6 @@ follows:"""),
 (declare) in accounting reports. Usually it corresponds to one
 month. Except for some small companies which declare per
 quarter."""),
-    'lino_xl.lib.ledger.Journals' : _("""The default table showing all instances of Journal."""),
     'lino_xl.lib.ledger.ByJournal' : _("""Mixin for journal-based tables of vouchers."""),
     'lino_xl.lib.ledger.Vouchers' : _("""The base table for all tables working on Voucher."""),
     'lino_xl.lib.ledger.ExpectedMovements' : _("""A virtual table of DueMovement rows, showing
