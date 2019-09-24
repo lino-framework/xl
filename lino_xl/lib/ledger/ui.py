@@ -18,7 +18,7 @@ from lino.utils import join_elems
 from lino.utils.report import Report
 from .choicelists import TradeTypes, VoucherTypes, JournalGroups
 from .choicelists import VoucherStates
-from .mixins import JournalRef
+from .mixins import JournalRef, PeriodRangeObservable
 from .roles import AccountingReader, LedgerUser, LedgerStaff
 from .utils import Balance
 from .utils import DEBIT, CREDIT, ZERO
@@ -65,6 +65,56 @@ class Journals(dd.Table):
     journal_group
     voucher_type
     """, window_size=(60, 'auto'))
+
+
+class JournalsOverview(Journals):
+    required_roles = dd.login_required(LedgerUser)
+    column_names = "description num_vouchers this_year this_month state_draft warnings *"
+
+    @dd.displayfield(_("Description"))
+    def description(cls, self, ar):
+        elems = []
+        elems.append(str(self))
+        return E.p(*join_elems(elems, " / "))
+
+    @dd.requestfield(_("Total"))
+    def num_vouchers(self, obj, ar):
+        tbl = obj.get_doc_report()
+        return tbl.request(master_instance=obj)
+
+    @dd.requestfield(_("This year"))
+    def this_year(self, obj, ar):
+        tbl = obj.get_doc_report()
+        AccountingPeriod = rt.models.ledger.AccountingPeriod
+        # print(20190924, year)
+        pv = dict()
+        if issubclass(tbl.model, PeriodRangeObservable):
+            pv.update(start_period=AccountingPeriod.get_default_for_date(dd.today().replace(month=1, day=1)))
+            pv.update(end_period=AccountingPeriod.get_default_for_date(dd.today().replace(month=12, day=31)))
+        return tbl.request(master_instance=obj, param_values=pv)
+
+    @dd.requestfield(_("This month"))
+    def this_month(self, obj, ar):
+        tbl = obj.get_doc_report()
+        AccountingPeriod = rt.models.ledger.AccountingPeriod
+        # print(20190924, year)
+        pv = dict()
+        if issubclass(tbl.model, PeriodRangeObservable):
+            pv.update(start_period=AccountingPeriod.get_default_for_date(dd.today()))
+        return tbl.request(master_instance=obj, param_values=pv)
+
+    @dd.requestfield(_("Unfinished"))
+    def state_draft(self, obj, ar):
+        tbl = obj.get_doc_report()
+        pv = dict(state=VoucherStates.draft)
+        return tbl.request(master_instance=obj, param_values=pv)
+
+    @dd.displayfield(_("Warnings"))
+    def warnings(cls, self, ar):
+        elems = []
+        # elems.append(gettext("Everything ok"))
+        return E.p(*join_elems(elems, " / "))
+
 
 class ByJournal(dd.Table):
     # order_by = ["-entry_date", '-id']

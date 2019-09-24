@@ -19,18 +19,19 @@ def objects():
     Journal = rt.models.ledger.Journal
     Company = rt.models.contacts.Company
     Declaration = rt.models.eevat.Declaration
+    Place = rt.models.countries.Place
 
     office = Company(
         name="Maksu- ja Tolliamet",
         street="Lõõtsa 8a",
-        country_id="EE", zip_code="15176", city="Tallinn")
+        country_id="EE", zip_code="15176", city=Place.objects.get(name="Tallinn"))
     yield office
-    
+
     USERS = Cycler(settings.SITE.user_model.objects.all())
     JOURNAL = Journal.objects.get(ref=rt.models.eevat.DEMO_JOURNAL_NAME)
 
     date = datetime.date(dd.plugins.ledger.start_year, 1, 4)
-    end_date = settings.SITE.demo_date(-30) 
+    end_date = settings.SITE.demo_date(-30)
     while date < end_date:
         dcl = Declaration(
             journal=JOURNAL,

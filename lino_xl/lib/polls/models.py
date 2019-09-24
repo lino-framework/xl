@@ -348,15 +348,18 @@ class Response(UserAuthored, mixins.Registrable):
 
 
 class ResponseDetail(dd.DetailLayout):
-    main = "answers more"
+    main = "answers more preview"
     answers = dd.Panel("""
     poll partner date workflow_buttons
-    polls.AnswersByResponse
+    polls.AnswersByResponseEditor
     """, label=_("General"))
     more = dd.Panel("""
     user state
     remark
     """, label=_("More"))
+    preview = dd.Panel("""
+    polls.AnswersByResponsePrint
+    """, label=_("Preview"))
 
 
 class Responses(dd.Table):
@@ -489,32 +492,22 @@ class AnswerRemarksByAnswer(AnswerRemarks):
 class AllAnswerRemarks(AnswerRemarks):
     required_roles = dd.login_required(PollsStaff)
 
-# class VirtualTableRow(object):
+class AnswerRemarkField(dd.VirtualField):
+    editable = True
 
-#     def save_new_instance(elem, ar):
-#         pre_ui_save.send(sender=elem.__class__, instance=elem, ar=ar)
-#         elem.before_ui_save(ar)
-#         elem.save(force_insert=True)
-#         # yes, `on_ui_created` comes *after* save()
-#         on_ui_created.send(elem, request=ar.request)
-#         # elem.after_ui_create(ar)
-#         elem.after_ui_save(ar, None)
+    def __init__(self):
+        t = models.TextField(_("My remark"), blank=True)
+        dd.VirtualField.__init__(self, t, None)
 
-#     def save_watched_instance(elem, ar, watcher):
-#         if watcher.is_dirty():
-#             pre_ui_save.send(sender=elem.__class__, instance=elem, ar=ar)
-#             elem.before_ui_save(ar)
-#             elem.save(force_update=True)
-#             watcher.send_update(ar)
-#             ar.success(_("%s has been updated.") % obj2unicode(elem))
-#         else:
-#             ar.success(_("%s : nothing to save.") % obj2unicode(elem))
-#         elem.after_ui_save(ar, watcher)
+    def set_value_in_object(self, ar, obj, value):
+        #~ e = self.get_entry_from_answer(obj)
+        obj.remark.remark = value
+        obj.remark.save()
 
-
-#     def delete_instance(self, ar):
-#         pre_ui_delete.send(sender=self, request=ar.request)
-#         self.delete()
+    def value_from_object(self, obj, ar):
+        #~ logger.info("20120118 value_from_object() %s",dd.obj2str(obj))
+        #~ e = self.get_entry_from_answer(obj)
+        return obj.remark.remark
 
 
 @dd.python_2_unicode_compatible
@@ -548,36 +541,22 @@ class AnswersByResponseRow(TableRow):
         # needed by detail_link
         return ''
 
+    def get_question_html(obj, ar):
+        if obj.question.number:
+            txt = obj.question.NUMBERED_TITLE_FORMAT % (
+                obj.question.number, obj.question.title)
+        else:
+            txt = obj.question.title
 
-class AnswerRemarkField(dd.VirtualField):
-    editable = True
+        attrs = {}
+        if obj.question.details:
+            attrs.update(title=obj.question.details)
+        if obj.question.is_heading:
+            txt = E.b(txt, **attrs)
+        return E.span(txt, **attrs)
 
-    def __init__(self):
-        t = models.TextField(_("My remark"), blank=True)
-        dd.VirtualField.__init__(self, t, None)
-
-    def set_value_in_object(self, ar, obj, value):
-        #~ e = self.get_entry_from_answer(obj)
-        obj.remark.remark = value
-        obj.remark.save()
-
-    def value_from_object(self, obj, ar):
-        #~ logger.info("20120118 value_from_object() %s",dd.obj2str(obj))
-        #~ e = self.get_entry_from_answer(obj)
-        return obj.remark.remark
-
-
-class AnswersByResponse(dd.VirtualTable):
-    label = _("Answers")
-    editable = True
+class AnswersByResponseBase(dd.VirtualTable):
     master = 'polls.Response'
-    column_names = 'question:40 answer_buttons:30 remark:20 *'
-    variable_row_height = True
-    auto_fit_column_widths = True
-    display_mode = 'summary'
-    # workflow_state_field = 'state'
-
-    remark = AnswerRemarkField()
 
     @classmethod
     def get_data_rows(self, ar):
@@ -588,13 +567,37 @@ class AnswersByResponse(dd.VirtualTable):
             yield AnswersByResponseRow(response, q)
 
     @classmethod
-    def get_table_summary(self, response, ar):
-        """Presents this response as a table with one row per question and one
-        column for each response of the same poll.  The answers for
-        this response are editable if this response is not registered.
-        The answers of other responses are never editable.
+    def get_pk_field(self):
+        return Question._meta.pk
 
-        """
+    @classmethod
+    def get_row_by_pk(self, ar, pk):
+        response = ar.master_instance
+        #~ if response is None: return
+        q = rt.models.polls.Question.objects.get(pk=pk)
+        return AnswersByResponseRow(response, q)
+
+    @classmethod
+    def disable_delete(self, obj, ar):
+        return "Not deletable"
+
+    @dd.displayfield(_("Question"))
+    def question(self, obj, ar):
+        return ar.html_text(obj.get_question_html(ar))
+
+class AnswersByResponseEditor(AnswersByResponseBase):
+    label = _("Answers")
+    editable = True
+    column_names = 'question:40 answer_buttons:30 remark:20 *'
+    variable_row_height = True
+    auto_fit_column_widths = True
+    display_mode = 'summary'
+    # workflow_state_field = 'state'
+
+    remark = AnswerRemarkField()
+
+    @classmethod
+    def get_table_summary(self, response, ar):
         if response is None:
             return
         if response.poll_id is None:
@@ -709,36 +712,31 @@ class AnswersByResponse(dd.VirtualTable):
             elems.append(e)
         return ar.html_text(E.span(*join_elems(elems)))
 
-    @classmethod
-    def get_pk_field(self):
-        return Question._meta.pk
+
+class AnswersByResponsePrint(AnswersByResponseBase):
+    display_mode = "summary"
+    column_names = 'question *'
 
     @classmethod
-    def get_row_by_pk(self, ar, pk):
-        response = ar.master_instance
-        #~ if response is None: return
-        q = rt.models.polls.Question.objects.get(pk=pk)
-        return AnswersByResponseRow(response, q)
+    def get_table_summary(self, response, ar):
+        if response is None:
+            return
+        if response.poll_id is None:
+            return
+        AnswerRemarks = rt.models.polls.AnswerRemarksByAnswer
+        ar.master_instance = response  # must set it because
+                                       # get_data_rows() needs it.
+        items = []
+        for obj in self.get_data_rows(ar):
+            if obj.choices.count() == 0:
+                continue
+            chunks = [obj.get_question_html(ar), " — "]  # unicode em dash
+            chunks += [str(ac.choice) for ac in obj.choices]
+            if obj.remark.remark:
+                chunks.append(" ({})".format(obj.remark.remark))
+            items.append(E.li(*chunks))
 
-    @classmethod
-    def disable_delete(self, obj, ar):
-        return "Not deletable"
-
-    @dd.displayfield(_("Question"))
-    def question(self, obj, ar):
-        if obj.question.number:
-            txt = obj.question.NUMBERED_TITLE_FORMAT % (
-                obj.question.number, obj.question.title)
-        else:
-            txt = obj.question.title
-
-        attrs = {}
-        if obj.question.details:
-            attrs.update(title=obj.question.details)
-        if obj.question.is_heading:
-            txt = E.b(txt, **attrs)
-        return ar.html_text(E.span(txt, **attrs))
-
+        return E.ul(*items)
 
 @dd.python_2_unicode_compatible
 class AnswersByQuestionRow(TableRow):

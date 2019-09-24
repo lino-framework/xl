@@ -178,3 +178,6 @@ class Plugin(ad.Plugin):
         if self.project_model is None:
             lst.remove('project')
         return lst
+
+    def get_dashboard_items(self, user):
+        yield self.site.models.ledger.JournalsOverview

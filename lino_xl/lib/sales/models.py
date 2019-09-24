@@ -251,7 +251,7 @@ class InvoicesByJournal(Invoices, ByJournal):
     quick_search_fields = "partner subject"
     order_by = ["-accounting_period__year", "-number"]
     params_panel_hidden = True
-    params_layout = "partner year state cleared"
+    params_layout = "partner start_period end_period #year state cleared "
     column_names = "number_with_year entry_date due_date " \
         "partner " \
         "total_incl subject:10 " \
