@@ -51,32 +51,31 @@ def load_card_data(uuid):
     while True:
         try:
             return read_card_data_from_file(fn)
-        except IOError:
+        except IOError as e:
+            dd.logger.info("20181002 I/O error reading %s : %s", fn, e)
             time.sleep(1)
             count += 1
             if count > timeout:
-                # dd.logger.info("20181002 abandoned reading %s : %s",
-                #                fn, e)
                 raise Warning(_("Abandoned after {} seconds").format(
                     timeout))
                 # rv = dict(success=False)
                 # break
             # continue
-    
+
 
 class EidStore(View):
     # def get(self, request, uuid, **kw):
     #     print("20180412 GET {} {}".format(uuid, request.GET))
     #     return json_response()
-    
+
     def post(self, request, uuid, **kw):
         # uuid = request.POST.get('uuid')
         card_data = request.POST.get('card_data')
         # card_data = json.loads(card_data)
-        
+
         # msg = "20180412 raw data {}".format(request.body)
         # dd.logger.info(msg)
-        
+
         # if not card_data:
         #     raise Exception("No card_data found in {}".format(
         #         request.POST))
@@ -99,5 +98,3 @@ class EidStore(View):
                 status=502)
         # username = request.POST.get('username')
         # return http.HttpResponseRedirect(target)
-
-        

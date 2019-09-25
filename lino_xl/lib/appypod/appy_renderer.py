@@ -81,6 +81,8 @@ def cleankw(kw1):
 class AppyRenderer(OriginalAppyRenderer):
 
     def __init__(self, ar, template, context, result, **kw):
+        if OriginalAppyRenderer is object:
+            raise Warning("The appy package is not correctly installed.")
         self.ar = copy(ar)
         # self.ar.renderer = settings.SITE.kernel.html_renderer
         # self.ar.renderer = settings.SITE.plugins.bootstrap3.renderer

@@ -21,8 +21,8 @@ Lino.beid_read_card_processor = function() {
     console.log("Gonna open", url);
     var popup = window.open(url);
     popup.close();
-    return { uuid: my_id };
-    
+    return { uuid: my_id, timeout: 2000 };
+
     // var xhttp = new XMLHttpRequest();
     // xhttp.onreadystatechange = function() {
     //     if (this.readyState == 4 && this.status == 200) {
@@ -33,21 +33,20 @@ Lino.beid_read_card_processor = function() {
     // };
     // xhttp.open("GET", "/eid/" + my_id, false);
     // xhttp.send();
-    
+
     // return { card_data: card };
 }
 
 {% else %}
-    
+
 Lino.beid_read_card_processor = function() {
     var card = document.applets.EIDReader.readCard();
     // if (!card) {
     //     Lino.alert("Could not find any card on your reader.");
     //     return null;
-    // } 
+    // }
     // console.log(20140301, card);
     return { card_data: card };
 }
 
 {% endif %}
-
