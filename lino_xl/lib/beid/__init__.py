@@ -67,7 +67,7 @@ class Plugin(ad.Plugin):  # was: use_eidreader
     You can tell Lino to use another URL protocol than ``beid`` by
     saying::
 
-       SITE.plugins.beid.urlhandler_prefix = 'mybeid://'  
+       SITE.plugins.beid.urlhandler_prefix = 'mybeid://'
 
     You can disable eidreader functionality by saying::
 
@@ -75,8 +75,22 @@ class Plugin(ad.Plugin):  # was: use_eidreader
 
     """
 
+    preprocessor_delay = 0
+    """
+
+    Time (in milliseconds) Lino should wait between opening the eidreader URL and
+    sending the actions' AJAX request.
+
+    For example on an nginx server with only one worker process, you can set
+    this to make sure that the client machine has read the card data and sent it
+    to the server *before* you ask the server to process that data::
+
+        preprocessor_delay = 3000
+
+    """
+
     def on_site_startup(self, kernel):
-        
+
         from lino_xl.lib.beid.mixins import BeIdCardHolder
         from lino.core.utils import models_by_base
 
@@ -87,7 +101,7 @@ class Plugin(ad.Plugin):  # was: use_eidreader
             # self.data_cache_dir = join(
             #     self.site.cache_dir, 'media', 'beidtmp')
         self.site.makedirs_if_missing(self.data_cache_dir)
-        
+
         cmc = list(models_by_base(BeIdCardHolder, toplevel_only=True))
         if len(cmc) > 1:
             msg = "There must be exactly one BeIdCardHolder model " \
@@ -130,4 +144,3 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         from . import views
         urls = [ url('^eid/(?P<uuid>.+)', views.EidStore.as_view()) ]
         return urls
-

@@ -21,7 +21,7 @@ Lino.beid_read_card_processor = function() {
     console.log("Gonna open", url);
     var popup = window.open(url);
     popup.close();
-    return { uuid: my_id, timeout: 2000 };
+    return { uuid: my_id, timeout: {{settings.SITE.plugins.beid.preprocessor_delay}} };
 
     // var xhttp = new XMLHttpRequest();
     // xhttp.onreadystatechange = function() {
