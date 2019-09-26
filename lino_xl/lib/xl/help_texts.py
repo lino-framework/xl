@@ -43,6 +43,8 @@ text file in this directory."""),
     'lino_xl.lib.beid.Plugin.urlhandler_prefix' : _("""Set this to a string to be passed by the
 beid_card_processor() Javascript function to the URL
 protocol handler responsible for running eidreader."""),
+    'lino_xl.lib.beid.Plugin.preprocessor_delay' : _("""Time (in milliseconds) Lino should wait between opening the eidreader URL and
+sending the actions' AJAX request."""),
     'lino_xl.lib.bevat.Plugin' : _("""This is a subclass of lino.core.plugin.Plugin."""),
     'lino_xl.lib.bevats.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.blogs.Entry' : _("""A blog entry is a short article with a title, published on a given
