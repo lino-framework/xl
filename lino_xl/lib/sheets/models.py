@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2018 Rumma & Ko Ltd
+# Copyright 2018-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 from builtins import str
 
@@ -126,6 +126,7 @@ class ReportEntry(dd.Model):
         abstract = True
 
     show_in_site_search = False
+    allow_cascaded_delete = ['report']
 
     report = dd.ForeignKey('sheets.Report')
     old_d = dd.PriceField(_("Debit before"), 14, null=True, blank=True)
@@ -161,8 +162,6 @@ class AccountEntry(ReportEntry):
         verbose_name = _("General account balance")
         verbose_name_plural = _("General account balances")
 
-    allow_cascaded_delete = ['account']
-
     account = dd.ForeignKey('ledger.Account')
 
     @dd.displayfield(_("Description"))
@@ -181,7 +180,7 @@ class PartnerEntry(ReportEntry):
         verbose_name = _("Partner balance")
         verbose_name_plural = _("Partner balances")
 
-    allow_cascaded_delete = ['partner']
+    # allow_cascaded_delete = ['partner', 'report']
 
     partner = dd.ForeignKey('contacts.Partner')
     trade_type = TradeTypes.field()
@@ -229,7 +228,7 @@ class ItemEntry(ReportEntry):
         verbose_name = _("Sheet item entry")
         verbose_name_plural = _("Sheet item entries")
 
-    allow_cascaded_delete = ['item']
+    # allow_cascaded_delete = ['item']
 
     item = dd.ForeignKey('sheets.Item')
 
@@ -606,7 +605,7 @@ dd.update_field(Report, 'start_period', null=True)
 #     main = "general ledger"
 
 #     general = dd.Panel("""
-#     number entry_date 
+#     number entry_date
 #     start_period end_period
 #     workflow_buttons user
 #     EntriesByReport
@@ -747,4 +746,3 @@ class MovementsByItemEntry(Movements):
 #     """
 
 # VoucherTypes.add_item_lazy(ReportsByJournal)
-
