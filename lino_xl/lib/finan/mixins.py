@@ -23,7 +23,7 @@ ledger = dd.resolve_app('ledger')
 class FinancialVoucher(ledger.Voucher, Certifiable):
 
     auto_compute_amount = False
-    
+
     class Meta:
         abstract = True
 
@@ -109,10 +109,13 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 
     quick_search_fields = 'remark account__ref account__name partner__name'
-    
+
     @dd.chooser(simple_values=True)
     def match_choices(cls, voucher, partner):
         return cls.get_match_choices(voucher.journal, partner)
+
+    def add_item_from_due(self, obj, **kwargs):
+        return self.voucher.add_item_from_due(obj, **kwargs)
 
     def get_default_match(self):
         """The string to use as `match` when no explicit match is specified on
@@ -127,10 +130,10 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         return self.voucher.items.all()
 
     def match_changed(self, ar):
-        
+
         if not self.match or not self.voucher.journal.auto_fill_suggestions:
             return
-        
+
         flt = dict(match=self.match, cleared=False)
         if not dd.plugins.finan.suggest_future_vouchers:
             flt.update(value_date__lte=self.voucher.entry_date)
@@ -155,7 +158,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             flt.update(match=self.match)
 
         self.collect_suggestions(ar, flt)
-        
+
     def collect_suggestions(self, ar, flt):
         suggestions = list(ledger.get_due_movements(
             self.voucher.journal.dc, **flt))
@@ -166,7 +169,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             self.fill_suggestion(suggestions[0])
         elif ar:
             self.match = _("{} suggestions").format(len(suggestions))
-            
+
             # def ok(ar2):
             #     # self.fill_suggestion(suggestions[0])
             #     # self.set_grouper(suggestions)
@@ -205,8 +208,8 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
                 total = - total
             self.dc = dc
             self.amount = total
-        
-        
+
+
     def get_partner(self):
         return self.partner or self.project
 
@@ -265,7 +268,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean a %s", self.amount)
         super(FinancialVoucherItem, self).full_clean(*args, **kwargs)
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean b %s", self.amount)
-        
+
 
 class FinancialVoucherItemChecker(Checker):
 
@@ -282,13 +285,13 @@ class FinancialVoucherItemChecker(Checker):
                 if obj.partner_id:
                     yield (False,
                            _("Account {} cannot be used with a partner"))
-        
+
 
 FinancialVoucherItemChecker.activate()
 
 
-    
-    
+
+
 
 class DatedFinancialVoucher(FinancialVoucher):
     class Meta:
@@ -305,7 +308,7 @@ class DatedFinancialVoucher(FinancialVoucher):
 
 
 class DatedFinancialVoucherItem(FinancialVoucherItem):
-    
+
     class Meta:
         app_label = 'finan'
         abstract = True
@@ -325,5 +328,3 @@ class DatedFinancialVoucherItem(FinancialVoucherItem):
             obj.last_item_date = self.date
             obj.full_clean()
             obj.save()
-
-
