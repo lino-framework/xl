@@ -453,7 +453,6 @@ class StudiesByPerson(HistoryByPerson, Studies):
     type content
     """
 
-
 # Work Experiences
 
 

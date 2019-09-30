@@ -10,7 +10,7 @@ from django.db import models
 from django.utils.translation import ugettext as gettext
 
 from lino.api import dd, rt, _
-from etgen.html import E, join_elems
+from etgen.html import E, join_elems, forcetext
 
 from lino.mixins.periods import DateRange
 
@@ -220,3 +220,22 @@ class HistoryByPerson(dd.Table):
                 else:
                     obj.start_date = exp.start_date
         return obj
+
+    @classmethod
+    def get_table_summary(cls, mi, ar):
+        if mi is None:
+            return
+        items = []
+        ar = ar.spawn(cls, master_instance=mi, is_on_main_actor=False)
+        for obj in ar:
+            chunks = []
+            for e in cls.get_handle().get_columns():
+                if e.hidden:
+                    continue
+                v = e.field._lino_atomizer.full_value_from_object(obj, ar)
+                if v:
+                    if len(chunks) > 0:
+                        chunks.append(", ")
+                    chunks += [e.get_label(), " ", e.format_value(ar, v)]
+            items.append(E.li(*forcetext(chunks)))
+        return E.li(*items)

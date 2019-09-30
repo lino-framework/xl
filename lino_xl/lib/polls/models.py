@@ -728,12 +728,12 @@ class AnswersByResponsePrint(AnswersByResponseBase):
                                        # get_data_rows() needs it.
         items = []
         for obj in self.get_data_rows(ar):
-            if obj.choices.count() == 0:
+            if len(obj.remark.remark) == 0 and obj.choices.count() == 0:
                 continue
             chunks = [obj.get_question_html(ar), " — "]  # unicode em dash
             chunks += [str(ac.choice) for ac in obj.choices]
             if obj.remark.remark:
-                chunks.append(" ({})".format(obj.remark.remark))
+                chunks.append(" {}".format(obj.remark.remark))
             items.append(E.li(*chunks))
 
         return E.ul(*items)
