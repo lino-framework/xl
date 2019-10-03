@@ -152,7 +152,7 @@ def receive(dbcal, calendar):
                             obj = RecurrenceSet.objects.get(uid=uid)
                             assert obj.calendar == dbcal
                             rs_updated += 1
-                        except RecurrenceSet.DoesNotExist, e:
+                        except RecurrenceSet.DoesNotExist as e:
                         #~ except Exception, e:
                             obj = RecurrenceSet(uid=uid)
                             obj.calendar = dbcal
@@ -191,7 +191,7 @@ def receive(dbcal, calendar):
                         try:
                             obj = Event.objects.get(**get_kw)
                             count_update += 1
-                        except Event.DoesNotExist, e:
+                        except Event.DoesNotExist as e:
                         #~ except Exception, e:
                             obj = Event(**get_kw)
                             obj.user = dbcal.user

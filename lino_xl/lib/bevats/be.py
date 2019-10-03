@@ -13,5 +13,5 @@ and `finances.belgium.be
 from __future__ import unicode_literals
 
 from lino.api import dd, rt, _
-from from lino_xl.lib.bevat.choicelists import  DeclarationFields
+from lino_xl.lib.bevat.choicelists import  DeclarationFields
 

@@ -151,10 +151,10 @@ class Plugin(BeIdPlugin):  # was: use_eid_jslib
                 try:
                     return countries.Country.objects.get(
                         nationalities__icontains=nationality)
-                except countries.Country.DoesNotExist, e:
+                except countries.Country.DoesNotExist as e:
                     logger.warning("%s : no country for nationality %r",
                                    msg1, nationality)
-                except MultipleObjectsReturned, e:
+                except MultipleObjectsReturned as e:
                     logger.warning(
                         "%s : found more than one country for nationality %r",
                         msg1, nationality)
