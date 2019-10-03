@@ -144,22 +144,3 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         from . import views
         urls = [ url('^eid/(?P<uuid>.+)', views.EidStore.as_view()) ]
         return urls
-
-    def get_requirements(self, site):
-        try:
-            import eidreader
-            # leave unchanged if it is already installed
-        except ImportError:
-            # yield "django-mailbox"
-            yield "git+https://github.com/lino-framework/eidreader.git#egg=eidreader"
-
-        # If the unpatched version is used, you get AttributeError: type
-        # object 'Message' has no attribute 'collect_virtual_fields'.
-
-    def get_used_libs(self, html=None):
-        try:
-            from eidreader import __version__ as version
-        except ImportError:
-            version = self.site.not_found_msg
-        yield ("eidreader", version, "https://github.com/lino-framework/eidreader")
-
