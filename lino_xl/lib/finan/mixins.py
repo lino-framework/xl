@@ -1,4 +1,4 @@
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from decimal import Decimal
@@ -157,11 +157,11 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         if self.match:
             flt.update(match=self.match)
 
-        self.collect_suggestions(ar, flt)
+        self.collect_suggestions(ar, models.Q(**flt))
 
     def collect_suggestions(self, ar, flt):
         suggestions = list(ledger.get_due_movements(
-            self.voucher.journal.dc, **flt))
+            self.voucher.journal.dc, flt))
 
         if len(suggestions) == 0:
             self.match = ""

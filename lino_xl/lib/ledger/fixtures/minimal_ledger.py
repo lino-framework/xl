@@ -121,6 +121,9 @@ def objects():
         payments += [finan.BankStatement, finan.JournalEntry,
                      finan.PaymentOrder]
 
+    pending_po = CommonAccounts.pending_po.get_object()
+    wages = CommonAccounts.wages.get_object()
+
     MatchRule = rt.models.ledger.MatchRule
     for jnl in ledger.Journal.objects.all():
         if jnl.voucher_type.model in payments:
@@ -130,10 +133,18 @@ def objects():
             yield MatchRule(
                 journal=jnl,
                 account=CommonAccounts.suppliers.get_object())
-            a = CommonAccounts.wages.get_object()
-            if a:
-                yield MatchRule(journal=jnl, account=a)
+            if wages:
+                yield MatchRule(journal=jnl, account=wages)
+            if jnl.voucher_type.model is not finan.PaymentOrder:
+                if pending_po:
+                    yield MatchRule(journal=jnl, account=pending_po)
         elif jnl.trade_type:
             a = jnl.trade_type.get_main_account()
             if a:
                 yield MatchRule(journal=jnl, account=a)
+        # if jnl.voucher_type.model in payments:
+
+    # pending_po = CommonAccounts.pending_po.get_object()
+    # if pending_po:
+    #     for jnl in ledger.Journal.objects.filter(voucher_type__in=VoucherTypes.finan.BankStatement):
+    #         yield MatchRule(journal=jnl, account=pending_po)

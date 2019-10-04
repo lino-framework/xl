@@ -84,7 +84,6 @@ class Payable(PartnerRelated):
                     self.voucher_date or self.entry_date)
         super(Payable, self).full_clean()
 
-
     @classmethod
     def get_registrable_fields(cls, site):
         for f in super(Payable, cls).get_registrable_fields(site):
@@ -96,6 +95,12 @@ class Payable(PartnerRelated):
 
     def get_payable_sums_dict(self):
         raise NotImplemented()
+
+    def get_movement_description(self, mvt, ar=None):
+        for chunk in super(Payable, self).get_movement_description(mvt, ar):
+            yield chunk
+        if self.your_ref:
+            yield self.your_ref
 
     def get_wanted_movements(self):
         item_sums = self.get_payable_sums_dict()
@@ -147,7 +152,7 @@ class Payable(PartnerRelated):
                 and self.payment_term_id and self.payment_term.worker:
             worker = self.payment_term.worker
             dc = self.journal.dc
-            # one movement to nullify the credit that was booked to the partner account, 
+            # one movement to nullify the credit that was booked to the partner account,
             # another movment to book it to the worker's account:
             yield self.create_movement(
                 None, (acc, None), None, dc, total_amount,

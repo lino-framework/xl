@@ -644,6 +644,17 @@ class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, Uplo
     def get_partner(self):
         return None
 
+    def get_movement_description(self, mvt, ar=None):
+        if ar is None:
+            return
+        if self.narration:
+            yield self.narration
+        p = self.get_partner()
+        if p is not None and p != ar.master_instance:
+            yield ar.obj2html(p)
+        if mvt.partner and mvt.partner != p:
+            yield ar.obj2html(mvt.partner)
+
     def after_ui_save(self, ar, cw):
         super(Voucher, self).after_ui_save(ar, cw)
         p = self.get_partner()
@@ -887,25 +898,16 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     observable_period_field = 'voucher__accounting_period'
 
     voucher = dd.ForeignKey('ledger.Voucher')
-
     partner = dd.ForeignKey(
         'contacts.Partner',
         related_name="%(app_label)s_%(class)s_set_by_partner",
         blank=True, null=True)
-
     seqno = models.IntegerField(_("Seq.No."))
-
     account = dd.ForeignKey('ledger.Account')
     amount = dd.PriceField(default=0)
     dc = DebitOrCreditField()
-
     match = models.CharField(_("Match"), blank=True, max_length=20)
-
-    # match = MatchField(blank=True, null=True)
-
     cleared = models.BooleanField(_("Cleared"), default=False)
-    # 20160327: rename "satisfied" to "cleared"
-
     value_date = models.DateField(_("Value date"), null=True, blank=True)
 
     @dd.chooser(simple_values=True)
@@ -1011,7 +1013,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         if False:
             from lino_xl.lib.cal.utils import day_and_month
             mvts = []
-            for dm in get_due_movements(CREDIT, partner=self.pupil):
+            for dm in get_due_movements(CREDIT, models.Q(partner=self.pupil)):
                 s = dm.match
                 s += " [{0}]".format(day_and_month(dm.due_date))
                 s += " ("
@@ -1256,38 +1258,10 @@ class DueMovement(TableRow):
                 m.save()
 
 
-def get_due_movements(dc, **flt):
-    """Analyze the movements corresponding to the given filter condition
-    `flt` and yield a series of :class:`DueMovement` objects which
-    --if they were booked-- would satisfy the given movements.
-
-    This is the data source for :class:`ExpectedMovements
-    <lino_xl.lib.ledger.ui.ExpectedMovements>` and subclasses.
-
-    There will be at most one :class:`DueMovement` per (account,
-    partner, match), each of them grouping the movements with same
-    partner, account and match.
-
-    The balances of the :class:`DueMovement` objects will be positive
-    or negative depending on the specified `dc`.
-
-    Generates and yields a list of the :class:`DueMovement` objects
-    specified by the filter criteria.
-
-    Arguments:
-
-    :dc: (boolean): The caller must specify whether he means the debts
-         and payments *towards the partner* or *towards myself*.
-
-    :flt: Any keyword argument is forwarded to Django's `filter()
-          <https://docs.djangoproject.com/en/dev/ref/models/querysets/#filter>`_
-          method in order to specifiy which :class:`Movement` objects
-          to consider.
-
-    """
+def get_due_movements(dc, flt):
     if dc is None:
         return
-    qs = rt.models.ledger.Movement.objects.filter(**flt)
+    qs = rt.models.ledger.Movement.objects.filter(flt)
     qs = qs.filter(account__clearable=True)
     # qs = qs.exclude(match='')
     qs = qs.order_by(*dd.plugins.ledger.remove_dummy(
@@ -1330,10 +1304,6 @@ def check_clearings_by_partner(partner, matches=[]):
     on_ledger_movement.send(sender=partner.__class__, instance=partner)
 
 def check_clearings(qs, matches=[]):
-    """Check whether involved movements are cleared or not, and update
-    their :attr:`cleared` field accordingly.
-
-    """
     qs = qs.select_related('voucher', 'voucher__journal')
     if len(matches):
         qs = qs.filter(match__in=matches)

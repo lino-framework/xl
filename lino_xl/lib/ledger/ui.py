@@ -246,10 +246,12 @@ class ExpectedMovements(dd.VirtualTable):
         account=dd.ForeignKey('ledger.Account', blank=True),
         partner=dd.ForeignKey('contacts.Partner', blank=True),
         project=dd.ForeignKey(dd.plugins.ledger.project_model, blank=True),
-        show_sepa=dd.YesNo.field(blank=True),
+        show_sepa=dd.YesNo.field(_("With SEPA"), blank=True),
+        same_dc=dd.YesNo.field(_("Same D/C"), blank=True),
     )
-    params_layout = "trade_type date_until from_journal " \
-                    "for_journal project partner account show_sepa"
+    params_layout = """
+    trade_type date_until from_journal for_journal
+    project partner account show_sepa same_dc"""
 
     @classmethod
     def get_dc(cls, ar=None):
@@ -270,10 +272,17 @@ class ExpectedMovements(dd.VirtualTable):
             flt.update(account=pv.account)
         if pv.project:
             flt.update(project=pv.project)
+
         if pv.show_sepa == dd.YesNo.yes:
             flt.update(partner__sepa_accounts__primary=True)
         elif pv.show_sepa == dd.YesNo.no:
             flt.update(partner__sepa_accounts__primary__isnull=True)
+
+        if pv.same_dc == dd.YesNo.yes:
+            flt.update(dc=cls.get_dc(ar))
+        elif pv.same_dc == dd.YesNo.no:
+            flt.update(dc=not cls.get_dc(ar))
+
         if pv.date_until is not None:
             flt.update(value_date__lte=pv.date_until)
         if pv.for_journal is not None:
@@ -282,7 +291,12 @@ class ExpectedMovements(dd.VirtualTable):
             flt.update(account__in=accounts)
         if pv.from_journal is not None:
             flt.update(voucher__journal=pv.from_journal)
-        return rt.models.ledger.get_due_movements(cls.get_dc(ar), **flt)
+        flt = models.Q(**flt)
+        if ar.quick_search:
+            flt &= rt.models.contacts.Partner.quick_search_filter(
+                ar.quick_search, prefix='partner__')
+
+        return rt.models.ledger.get_due_movements(cls.get_dc(ar), flt)
 
     @classmethod
     def get_pk_field(self):
@@ -686,8 +700,7 @@ class DebtorsCreditors(dd.VirtualTable):
             row._expected = tuple(
                 get_due_movements(
                     self.d_or_c,
-                    partner=row,
-                    value_date__lte=end_date))
+                    models.Q(partner=row, value_date__lte=end_date)))
             for dm in row._expected:
                 row._balance += dm.balance
                 if dm.due_date is not None:
@@ -870,17 +883,6 @@ class Situation(Report):
 
 
 class Movements(dd.Table):
-    """
-    The base table for all tables working on :class:`Movement`.
-    Defines filtering parameters and general behaviour.
-
-    Subclassed by e.g. :class:`AllMovements`,
-    :class:`MovementsByVoucher`,
-    :class:`MovementsByAccount` and :class:`MovementsByPartner`.
-
-    See also :class:`lino_xl.lib.ledger.models.Movement`.
-    """
-
     model = 'ledger.Movement'
     required_roles = dd.login_required(LedgerUser)
     column_names = 'value_date voucher_link description \
@@ -963,19 +965,14 @@ class Movements(dd.Table):
 
     @dd.displayfield(_("Description"))
     def description(cls, self, ar):
+        # raise Exception("20191003")
         if ar is None:
             return ''
         elems = []
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
-            p = voucher.get_partner()
-            if p is not None:
-                elems.append(ar.obj2html(p))
-            if voucher.narration:
-                elems.append(voucher.narration)
-            if voucher.your_ref:
-                elems.append(voucher.your_ref)
+            elems.extend(voucher.get_movement_description(self, ar))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
@@ -1006,7 +1003,6 @@ class MovementsByVoucher(Movements):
 
 class MovementsByPartner(Movements):
     """Show the ledger movements of a partner.
-    See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'partner'
     # display_mode = "html"
@@ -1029,20 +1025,22 @@ class MovementsByPartner(Movements):
 
     @dd.displayfield(_("Description"))
     def description(cls, self, ar):
+        # raise Exception("20191003")
         if ar is None:
             return ''
         elems = []
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
-            if voucher.narration:
-                elems.append(voucher.narration)
-            p = voucher.get_partner()
-            if p is not None and p != ar.master_instance:
-                elems.append(ar.obj2html(p))
+            elems.extend(voucher.get_movement_description(self, ar))
+            # if voucher.narration:
+            #     elems.append(voucher.narration)
+            # p = voucher.get_partner()
+            # if p is not None and p != ar.master_instance:
+            #     elems.append(ar.obj2html(p))
         if self.project:
             elems.append(ar.obj2html(self.project))
-        return E.p(*join_elems(elems, " / "))
+        return E.p(*join_elems(elems, " | "))
 
     @classmethod
     def get_table_summary(cls, obj, ar):
@@ -1083,19 +1081,21 @@ class MovementsByProject(MovementsByPartner):
 
     @dd.displayfield(_("Description"))
     def description(cls, self, ar):
+        # raise Exception("20191003")
         if ar is None:
             return ''
         elems = []
         elems.append(ar.obj2html(self.account))
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
-            if voucher.narration:
-                elems.append(voucher.narration)
-            p = voucher.get_partner()
-            if p is not None:
-                elems.append(ar.obj2html(p))
-            if self.partner and self.partner != p:
-                elems.append(ar.obj2html(self.partner))
+            elems.extend(voucher.get_movement_description(self, ar))
+            # if voucher.narration:
+            #     elems.append(voucher.narration)
+            # p = voucher.get_partner()
+            # if p is not None:
+            #     elems.append(ar.obj2html(p))
+            # if self.partner and self.partner != p:
+            #     elems.append(ar.obj2html(self.partner))
         return E.p(*join_elems(elems, " / "))
 
 
@@ -1140,13 +1140,14 @@ class MovementsByAccount(Movements):
         elems = []
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
-            if voucher.narration:
-                elems.append(voucher.narration)
-            p = voucher.get_partner()
-            if p is not None:
-                elems.append(ar.obj2html(p))
-        if self.partner:
-            elems.append(ar.obj2html(self.partner))
+            elems.extend(voucher.get_movement_description(self, ar))
+        #     if voucher.narration:
+        #         elems.append(voucher.narration)
+        #     p = voucher.get_partner()
+        #     if p is not None:
+        #         elems.append(ar.obj2html(p))
+        # if self.partner:
+        #     elems.append(ar.obj2html(self.partner))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
@@ -1190,11 +1191,12 @@ class MovementsByMatch(Movements):
             elems.append(self.voucher.narration)
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
-            p = voucher.get_partner()
-            if p is not None and p != ar.master_instance:
-                elems.append(ar.obj2html(p))
-            elif self.partner:
-                elems.append(ar.obj2html(self.partner))
+            elems.extend(voucher.get_movement_description(self, ar))
+            # p = voucher.get_partner()
+            # if p is not None and p != ar.master_instance:
+            #     elems.append(ar.obj2html(p))
+            # elif self.partner:
+            #     elems.append(ar.obj2html(self.partner))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))

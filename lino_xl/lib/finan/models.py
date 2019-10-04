@@ -124,7 +124,7 @@ class PaymentOrder(FinancialVoucher, Printable):
 
     def get_wanted_movements(self):
         """Implements
-        :meth:`lino_xl.lib.ledger.models.Voucher.get_wanted_movements`
+        :meth:`lino_xl.lib.ledger.Voucher.get_wanted_movements`
         for payment orders.
 
         The generated movements
@@ -141,13 +141,14 @@ class PaymentOrder(FinancialVoucher, Printable):
             dd.logger.warning("Oops, %s is too big", amount)
             return
         self.total = - amount
+        item_partner = self.journal.partner is None
         for m, i in movements_and_items:
             yield m
-            if acc.needs_partner:
+            if item_partner:
                 yield self.create_movement(
                     i, (acc, None), m.project, not m.dc, m.amount,
                     partner=m.partner, match=i.get_match())
-        if not acc.needs_partner:
+        if not item_partner:
             yield self.create_movement(
                 None, (acc, None), None, not self.journal.dc, amount,
                 partner=self.journal.partner, match=self.get_default_match())
@@ -247,7 +248,7 @@ class PaymentOrderItem(BankAccount, FinancialVoucherItem):
     #     BankAccount.partner_changed(self, ar)
 
     # def full_clean(self, *args, **kwargs):
-        
+
     #     super(PaymentOrderItem, self).full_clean(*args, **kwargs)
 
 # dd.update_field(PaymentOrderItem, 'iban', blank=True)
@@ -285,8 +286,8 @@ class BankStatementDetail(JournalEntryDetail):
     """, label=_("General"))
 
     general_left = """
-    entry_date number:6 balance1 balance2 
-    narration workflow_buttons 
+    entry_date number:6 balance1 balance2
+    narration workflow_buttons
     """
 
 
@@ -400,6 +401,7 @@ class ItemsByPaymentOrder(ItemsByVoucher):
                    "amount remark *"
     suggestions_table = 'finan.SuggestionsByPaymentOrderItem'
     suggest = ShowSuggestions()
+    sum_text_column = 1
 
 
 class FillSuggestionsToVoucher(dd.Action):
@@ -523,6 +525,7 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
     master = 'finan.PaymentOrder'
     # column_names = 'partner match account due_date debts payments balance bank_account *'
     column_names = 'info match due_date debts payments balance *'
+    quick_search_fields = 'info'
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -530,6 +533,7 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
         voucher = ar.master_instance
         if voucher.journal.sepa_account:
             kw.update(show_sepa=dd.YesNo.yes)
+            kw.update(same_dc=dd.YesNo.yes)
         # kw.update(journal=voucher.journal)
         kw.update(date_until=voucher.execution_date or voucher.entry_date)
         # if voucher.journal.trade_type is not None:

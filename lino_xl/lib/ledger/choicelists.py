@@ -358,7 +358,9 @@ TradeTypes.add_item(
 TradeTypes.add_item(
     'C', _("Clearings"), 'clearings', dc=DEBIT,
     main_account=CommonAccounts.clearings)
-TradeTypes.add_item('B', _("Bank payment orders"), 'bank_po', dc=DEBIT)
+TradeTypes.add_item(
+    'B', _("Bank payment orders"), 'bank_po',
+    dc=DEBIT, main_account=CommonAccounts.pending_po)
 
 # Note that :mod:`lino_xl.lib.sales.models` and/or
 # :mod:`lino_xl.lib.ledger.models` (if installed) will modify

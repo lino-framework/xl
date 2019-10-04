@@ -5,6 +5,8 @@
 
 """This package contains the code of the :ref:`xl`.
 
+See :ref:`specs.xl` for the list of plugins.
+
 .. autosummary::
    :toctree:
 

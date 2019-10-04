@@ -948,25 +948,21 @@ object of a given type."""),
     'lino_xl.lib.excerpts.ClearPrinted' : _("""Clear any previously generated printable document.  Mark this
 object as not printed. A subsequent call to print will generate a
 new cache file."""),
-    'lino_xl.lib.finan.JournalEntry' : _("""This is the model for "journal entries" ("operations diverses")."""),
-    'lino_xl.lib.finan.BankStatement' : _("""A bank statement is a document issued by the bank, which
-reports all transactions which occured on a given account during a
-given period."""),
+    'lino_xl.lib.finan.JournalEntry' : _("""Django model to represent a journal entry."""),
+    'lino_xl.lib.finan.BankStatement' : _("""Django model to represent a bank statement."""),
     'lino_xl.lib.finan.BankStatement.balance1' : _("""The old (or start) balance."""),
     'lino_xl.lib.finan.BankStatement.balance2' : _("""The new (or end) balance."""),
-    'lino_xl.lib.finan.PaymentOrder' : _("""A payment order is when a user instructs a bank to execute a
-series of outgoing transactions from a given bank account."""),
+    'lino_xl.lib.finan.PaymentOrder' : _("""Django model to represent a payment order."""),
     'lino_xl.lib.finan.PaymentOrder.entry_date' : _("""The date of the ledger entry."""),
     'lino_xl.lib.finan.PaymentOrder.execution_date' : _("""The execution date of payment order. If this is empty, Lino
 assumes the entry_date when writing the
 pain_001.xml file."""),
     'lino_xl.lib.finan.PaymentOrder.total' : _("""The total amount. This is automatically computed when you register
 de voucher."""),
-    'lino_xl.lib.finan.JournalEntryItem' : _("""An item of a JournalEntry."""),
-    'lino_xl.lib.finan.BankStatementItem' : _("""An item of a BankStatement."""),
-    'lino_xl.lib.finan.PaymentOrderItem' : _("""An item of a PaymentOrder."""),
+    'lino_xl.lib.finan.JournalEntryItem' : _("""Django model to represent an individual item of a journal entry."""),
+    'lino_xl.lib.finan.BankStatementItem' : _("""Django model to represent an individual item of a bank statement."""),
+    'lino_xl.lib.finan.PaymentOrderItem' : _("""Django model to represent an individual item of a payment order."""),
     'lino_xl.lib.finan.FinancialVoucher' : _("""Base class for all financial vouchers:
-Grouper,
 JournalEntry,
 PaymentOrder and
 BankStatement."""),
@@ -1150,8 +1146,7 @@ ledger.  This is usually the voucher's entry_date, except
 e.g. for bank statements where each item can have its own
 value date."""),
     'lino_xl.lib.ledger.Movement.voucher' : _("""Pointer to the Voucher who caused this movement."""),
-    'lino_xl.lib.ledger.Movement.partner' : _("""Pointer to the partner involved in this movement. This may be
-blank."""),
+    'lino_xl.lib.ledger.Movement.partner' : _("""Pointer to the partner involved in this movement."""),
     'lino_xl.lib.ledger.Movement.seqno' : _("""Sequential number within a voucher."""),
     'lino_xl.lib.ledger.Movement.account' : _("""Pointer to the Account that is being moved by this movement."""),
     'lino_xl.lib.ledger.Movement.debit' : _("""Virtual field showing amount if dc is DEBIT."""),
@@ -1168,9 +1163,9 @@ empty."""),
 string. Clicking it will open a table with all movements
 having that match."""),
     'lino_xl.lib.ledger.Movement.ana_account' : _("""The analytic account to move together with this transactions."""),
-    'lino_xl.lib.ledger.MovementsByPartner' : _("""The summary of this table displays the balance. A negative number
-means that we owe money to this partner, a positive numvber means
-that this partner owes us money."""),
+    'lino_xl.lib.ledger.Movements' : _("""The base table for all tables working on Movement.
+Defines filtering parameters and general behaviour."""),
+    'lino_xl.lib.ledger.MovementsByPartner' : _("""The Movements linked to a given partner."""),
     'lino_xl.lib.ledger.Voucher' : _("""A Voucher is a document that represents a monetary transaction."""),
     'lino_xl.lib.ledger.Voucher.state' : _("""The workflow state of this voucher. Choices are defined in
 VoucherStates"""),
@@ -1188,10 +1183,12 @@ this journal entry."""),
     'lino_xl.lib.ledger.Voucher.do_and_clear' : _("""Delete all movements of this voucher, then run the given
 callable func, passing it a set with all partners who had at
 least one movement in this voucher. The function is expected
-to add more partners to this set.  Then call check_clearings
+to add more partners to this set.  Then call check_clearings()
 for all these partners."""),
     'lino_xl.lib.ledger.Voucher.get_partner' : _("""Return the partner related to this voucher.  Overridden by
 PartnerRelated vouchers."""),
+    'lino_xl.lib.ledger.Voucher.get_movement_description' : _("""Generate a series of HTML chunks to be displayed in the
+Movment.description field."""),
     'lino_xl.lib.ledger.Voucher.get_wanted_movements' : _("""Subclasses must implement this.  Supposed to return or yield a
 list of unsaved Movement instances."""),
     'lino_xl.lib.ledger.Journal' : _("""Django model used to store journals. See Overview."""),
@@ -1235,8 +1232,19 @@ month. Except for some small companies which declare per
 quarter."""),
     'lino_xl.lib.ledger.ByJournal' : _("""Mixin for journal-based tables of vouchers."""),
     'lino_xl.lib.ledger.Vouchers' : _("""The base table for all tables working on Voucher."""),
-    'lino_xl.lib.ledger.ExpectedMovements' : _("""A virtual table of DueMovement rows, showing
-all "expected" "movements (payments)"."""),
+    'lino_xl.lib.ledger.ExpectedMovements' : _("""A virtual table of DueMovement rows, showing all "expected"
+"movements (payments)"."""),
+    'lino_xl.lib.ledger.ExpectedMovements.date_until' : _("""Show only movements whose booking date is before or on the given date."""),
+    'lino_xl.lib.ledger.ExpectedMovements.trade_type' : _("""Show only movements in the given trade type."""),
+    'lino_xl.lib.ledger.ExpectedMovements.from_journal' : _("""Show only movements generated by a voucher in the given journal."""),
+    'lino_xl.lib.ledger.ExpectedMovements.for_journal' : _("""Show only movements that may be matched by the given journal (i.e. for
+which a match rule exists)."""),
+    'lino_xl.lib.ledger.ExpectedMovements.account' : _("""Show only movements on the given account."""),
+    'lino_xl.lib.ledger.ExpectedMovements.partner' : _("""Show only movements with the given partner."""),
+    'lino_xl.lib.ledger.ExpectedMovements.project' : _("""Show only movements about the given project."""),
+    'lino_xl.lib.ledger.ExpectedMovements.show_sepa' : _("""Show only movements whose partner has a SEPA account."""),
+    'lino_xl.lib.ledger.ExpectedMovements.same_dc' : _("""Show only movements having the same booking direction as the target
+voucher."""),
     'lino_xl.lib.ledger.DebtsByAccount' : _("""The ExpectedMovements accessible by clicking the "Debts"
 action button on an account."""),
     'lino_xl.lib.ledger.DebtsByPartner' : _("""This is the table being printed in a Payment Reminder.  Usually
@@ -1266,6 +1274,8 @@ employee) and later pay it (e.g. via a payment order)."""),
 you pay that money back to his account.  Or the employee collects money
 for a sales invoice and later returns that money to you.  See
 internal_clearings."""),
+    'lino_xl.lib.ledger.TradeTypes.bank_po' : _("""When you ask your bank to execute a payment, and later the bank debits
+your account."""),
     'lino_xl.lib.ledger.TradeType' : _("""Base class for the choices of TradeTypes."""),
     'lino_xl.lib.ledger.TradeType.dc' : _("""The default booking direction."""),
     'lino_xl.lib.ledger.TradeType.main_account' : _("""The common account into which the total amount of partner vouchers (base
