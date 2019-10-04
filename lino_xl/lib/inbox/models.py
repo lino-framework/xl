@@ -24,7 +24,7 @@ class comment_email():
     def gen_subject(cls, comment,user):
         s = "{comment_id}:{user}"
         f = s.format(comment_id=comment.id, user=user.username)
-        print f
+        print(f)
         return f
     @classmethod
     def parse_subject(self, subject_str):
