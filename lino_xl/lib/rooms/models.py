@@ -71,18 +71,17 @@ class Booking(ContactRelated, Reservation):
     #~ workflow_state_field = 'state'
 
     state = BookingStates.field(default=BookingStates.as_callable('draft'))
-
     event_type = dd.ForeignKey('cal.EventType', null=True, blank=True,
-        help_text=_("""The Event Type to which events will be generated."""))
+        help_text=_("""The calendar entry type of the calendar entries to generate."""))
 
     def __str__(self):
         return u"%s #%s (%s)" % (self._meta.verbose_name, self.pk, self.room)
 
-    def update_cal_from(self, ar):
-        return self.start_date
+    # def update_cal_from(self, ar):
+    #     return self.start_date
 
-    def update_cal_until(self):
-        return self.end_date
+    # def update_cal_until(self):
+    #     return self.end_date
 
     def update_cal_event_type(self):
         return self.event_type
@@ -143,7 +142,7 @@ class BookingDetail(dd.DetailLayout):
     general = dd.Panel("""
     start_date start_time end_date end_time
     room event_type workflow_buttons
-    max_events max_date every_unit every 
+    max_events max_date every_unit every
     monday tuesday wednesday thursday friday saturday sunday
     company contact_person user id:8
     cal.EntriesByController
@@ -208,5 +207,3 @@ class Bookings(dd.Table):
 
 class BookingsByCompany(Bookings):
     master_key = "company"
-
-

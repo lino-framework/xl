@@ -1,15 +1,18 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 from __future__ import unicode_literals
 from builtins import str
 
+from dateutil.rrule import rrule
+
 from django.conf import settings
 from django.db import models
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as gettext
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_text
 
@@ -33,6 +36,15 @@ from .actions import UpdateAllGuests
 # from .roles import CalendarOperator
 
 from lino.utils.format_date import fdmy
+
+
+POSITION_TEXTS = {
+    "1":  _("first"), "-1": _("last"),
+    "2":_("second"), "-2": _("second last"),
+    "3": _("third"), "-3": _("third last"),
+    "4": _("fourth"), "-4": _("fourth last"),
+}
+
 
 def format_time(t):
     if t is None:
@@ -220,7 +232,7 @@ class EventGenerator(dd.Model):
                 count += 1
 
         # import pdb ; pdb.set_trace()
-        
+
         # create new Events for remaining wanted
         for we in wanted.values():
             if not we.is_user_modified():
@@ -238,25 +250,25 @@ class EventGenerator(dd.Model):
         if rset is None:
             # ar.info("No recurrency set")
             return
-        
+
         #~ ar.info("20131020 rset %s",rset)
         #~ if rset and rset.every > 0 and rset.every_unit:
         if not rset.every_unit:
             # ar.info("No every_unit")
-            return 
+            return
         return rset
-        
+
     def get_wanted_auto_events(self, ar):
         wanted = dict()
         unwanted = dict()
         rset = self.has_auto_events()
         if rset is None :
             return wanted, unwanted
-        
+
         qs = self.get_existing_auto_events()
-        
+
         qs = qs.order_by('start_date', 'start_time', 'auto_type')
-        
+
         # Find the existing event before the first unmodified
         # event. This is where the algorithm will start.
         event_no = 0
@@ -282,7 +294,7 @@ class EventGenerator(dd.Model):
         # Loop over existing events to fill the unwanted dict. In the
         # beginning all existing events are unwanted. Afterwards we
         # will pop wanted events from this dict.
-        
+
         for ee in qs:
             unwanted[ee.auto_type] = ee
 
@@ -291,7 +303,7 @@ class EventGenerator(dd.Model):
             # raise Exception("20170731")
             ar.warning(_("No automatic calendar entries because no entry type is configured"))
             return wanted, unwanted
-        
+
         # ar.debug("20140310a %s", date)
         date = rset.find_start_date(date)
         # ar.debug("20140310b %s", date)
@@ -391,14 +403,14 @@ class EventGenerator(dd.Model):
 
             # report success and tell the client to refresh
             ar.success(refresh=True)
-            
+
         ar.confirm(doit, _("Move {} to next available date?").format(we))
 
     def care_about_conflicts(self, we):
         return True
 
     def resolve_conflicts(self, we, ar, rset, until):
-    
+
         date = we.start_date
         if rset == Recurrencies.once:
             return date
@@ -421,7 +433,7 @@ class EventGenerator(dd.Model):
                 msg = ', '.join(conflicts)
                 ar.warning("%s conflicts with %s. ", we, msg)
                 return None
-        
+
             rset.move_event_to(we, date)
         return date
 
@@ -464,7 +476,7 @@ class EventGenerator(dd.Model):
     #     if evt.state.button_text:
     #         lbl = "{0}{1}".format(lbl, evt.state.button_text)
     #     yield ar.obj2html(evt, lbl)
-    
+
 
 
 class RecurrenceSet(Started, Ended):
@@ -480,6 +492,7 @@ class RecurrenceSet(Started, Ended):
         default=Recurrencies.as_callable('monthly'),
         blank=True)  # iCal:DURATION
     every = models.IntegerField(_("Repeat every"), default=1)
+    positions = models.CharField(_("Positions"), blank=True, max_length=50)
 
     monday = models.BooleanField(Weekdays.monday.text, default=False)
     tuesday = models.BooleanField(Weekdays.tuesday.text, default=False)
@@ -546,30 +559,41 @@ class RecurrenceSet(Started, Ended):
     def weekdays_text(self, ar):
         if self.every_unit == Recurrencies.once:
             if self.end_date and self.end_date != self.start_date:
-                return _("{0}-{1}").format(
+                return gettext("{0}-{1}").format(
                     dd.fds(self.start_date), dd.fds(self.end_date))
                 # return _("From {0} until {1}").format(
                 #     dd.fdf(self.start_date), dd.fdf(self.end_date))
-            return _("On {0}").format(dd.fdf(self.start_date))
+            return gettext("On {0}").format(dd.fdf(self.start_date))
         elif self.every_unit == Recurrencies.weekly:
-            weekdays = []
-            for wd in Weekdays.objects():
-                if getattr(self, wd.name):
-                    weekdays.append(str(wd.text))
-            if len(weekdays) == 0:
-                return ''
-            every_text = ', '.join(weekdays)
+            every_text = self.weekdays_text_(', ')
         elif self.every_unit == Recurrencies.daily:
-            every_text = _("day")
+            every_text = gettext("day")
         elif self.every_unit == Recurrencies.monthly:
-            every_text = _("month")
+            if self.positions:
+                positions = []
+                for i in self.positions.split():
+                    positions.append(str(POSITION_TEXTS.get(i, "?!")))
+                every_text = " {} ".format(gettext("and")).join(positions) \
+                    + " " + self.weekdays_text_(_(' or '), _("day")) \
+                    + " " + gettext("of the month")
+            else:
+                every_text = gettext("month")
         elif self.every_unit in (Recurrencies.yearly, Recurrencies.easter):
-            every_text = _("year")
+            every_text = gettext("year")
         else:
             return ''
         if self.every == 1:
-            return _("Every %s") % every_text
-        return _("Every %snd %s") % (self.every, every_text)
+            return gettext("Every %s") % every_text
+        return gettext("Every %snd %s") % (self.every, every_text)
+
+    def weekdays_text_(self, sep, any=''):
+        weekdays = []
+        for wd in Weekdays.get_list_items():
+            if getattr(self, wd.name):
+                weekdays.append(str(wd.text))
+        if len(weekdays) == 0:
+            return any
+        return sep.join(weekdays)
 
     def move_event_to(self, ev, newdate):
         """Move given event to a new date.  Also change `end_date` if
@@ -582,7 +606,7 @@ class RecurrenceSet(Started, Ended):
         else:
             duration = self.end_date - self.start_date
             ev.end_date = newdate + duration
-            
+
     def get_next_alt_date(self, ar, date):
         """Currently always returns date + 1.
 
@@ -597,7 +621,28 @@ class RecurrenceSet(Started, Ended):
         if self.every_unit == Recurrencies.once:
             ar.debug("get_next_suggested_date() once --> None.")
             return None
+
+        if self.positions:
+            bysetpos = [int(i) for i in self.positions.split()]
+            freq = self.every_unit.du_freq
+            if freq is None:
+                # raise Warning("Cannot use position with {}.".format(self.every_unit))
+                return None
+            weekdays = []
+            if self.monday: weekdays.append(0)
+            if self.tuesday: weekdays.append(1)
+            if self.wednesday: weekdays.append(2)
+            if self.thursday : weekdays.append(3)
+            if self.friday : weekdays.append(4)
+            if self.saturday : weekdays.append(5)
+            if self.sunday: weekdays.append(6)
+            return rrule(
+                freq=freq,
+                count=2, dtstart=date+ONE_DAY, interval=self.every,
+                bysetpos=bysetpos, byweekday=weekdays)[0]
+
         if self.every_unit == Recurrencies.per_weekday:
+            # per_weekday is deprecated to by replaced by daily.
             date = date + ONE_DAY
         else:
             date = self.every_unit.add_duration(date, self.every)
@@ -668,7 +713,7 @@ class RecurrenceSet(Started, Ended):
         - :attr:`auto_type``
         - :attr:`user`
         - :attr:`summary`
-        - :attr:`start_date`, 
+        - :attr:`start_date`,
 
         NB: also :attr:`start_time` :attr:`end_date`, :attr:`end_time`?
 
@@ -699,7 +744,7 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
     max_date = models.DateField(
         blank=True, null=True,
         verbose_name=_("Generate events until"))
-    
+
     @classmethod
     def on_analyze(cls, site):
         super(Reservation, cls).on_analyze(site)
@@ -836,4 +881,3 @@ class Colored(dd.Model):
         abstract = True
 
     display_color = DisplayColors.field("Color",default='Blue')
-

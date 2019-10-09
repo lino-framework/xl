@@ -631,6 +631,9 @@ state."""),
     'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
 See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.RecurrenceSet.every' : _("""The frequency of periodic iteration: daily, weekly, monthly or yearly."""),
+    'lino_xl.lib.cal.RecurrenceSet.every_unit' : _("""The interval between each periodic iteration."""),
+    'lino_xl.lib.cal.RecurrenceSet.positions' : _("""Space-separated list of one or several positions within the recurrency cycle."""),
     'lino_xl.lib.cal.RecurrenceSet.max_events' : _("""Maximum number of calendar entries to generate."""),
     'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
 weekdays where the recurrence occurs."""),

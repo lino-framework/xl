@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 
 import datetime
 from dateutil.easter import easter
+from dateutil.rrule import DAILY, WEEKLY, MONTHLY, YEARLY
 
 from django.db import models
 from django.conf import settings
@@ -57,6 +58,8 @@ add('12', _('December'), 'december')
 
 
 class DurationUnit(dd.Choice):
+
+    du_freq = None  #dateutils frequency
 
     def add_duration(unit, orig, value):
         if orig is None:
@@ -122,10 +125,10 @@ class Recurrencies(dd.ChoiceList):
 
 add = Recurrencies.add_item
 add('O', _('once'), 'once')
-add('D', _('daily'), 'daily')
-add('W', _('weekly'), 'weekly')
-add('M', _('monthly'), 'monthly')
-add('Y', _('yearly'), 'yearly')
+add('D', _('daily'), 'daily', du_freq=DAILY)
+add('W', _('weekly'), 'weekly', du_freq=WEEKLY)
+add('M', _('monthly'), 'monthly', du_freq=MONTHLY)
+add('Y', _('yearly'), 'yearly', du_freq=YEARLY)
 add('P', _('per weekday'), 'per_weekday')  # deprecated
 add('E', _('Relative to Easter'), 'easter')
 
