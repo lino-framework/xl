@@ -1369,6 +1369,13 @@ class Days(dd.VirtualTable):
         #     days.append(d)
         #     pk += step
 
+class CalPlannerTable():
+
+    editable = False
+    hide_top_toolbar = True # no selections no toolbar
+    preview_limit = 0       # no paginator & all rows.
+    use_detail_params_value = True # Get PV values from detail view.
+
 
 class CalendarView(Days):
 
@@ -1517,12 +1524,9 @@ class DailyPlannerRows(EventsParameters, dd.Table):
     required_roles = dd.login_required(OfficeStaff)
 
 
-class DailyPlanner(DailyPlannerRows):
+class DailyPlanner(CalPlannerTable, DailyPlannerRows):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Daily planner")
-    editable = False
-    use_detail_params_value = True
-
 
     @classmethod
     def setup_columns(self):
@@ -1588,12 +1592,10 @@ class PlannerByDay(DailyPlanner):
 ######################### Weekly ########################"
 
 
-class WeeklyPlanner(EventsParameters, dd.Table):
+class WeeklyPlanner(CalPlannerTable, EventsParameters,  dd.Table):
     model = 'cal.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
-    editable = False
-    use_detail_params_value = True
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -1671,12 +1673,9 @@ class WeeklyView(EventsParameters, CalendarView):
 ######################### Monthly ########################
 
 
-class MonthlyPlanner(EventsParameters, dd.VirtualTable):
+class MonthlyPlanner(CalPlannerTable, EventsParameters, dd.VirtualTable):
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Monthly planner")
-    editable = False
-    use_detail_params_value = True
-
 
     @classmethod
     def get_data_rows(self, ar):
