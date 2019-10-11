@@ -687,10 +687,11 @@ a given client."""),
     'lino_xl.lib.clients.ClientContact.contact_role' : _("""The role of the contact person in the organization."""),
     'lino_xl.lib.clients.ClientContactType' : _("""A client contact type is the type or "role" which must be
 specified for a given ClientContact."""),
-    'lino_xl.lib.coachings.Coaching' : _("""A Coaching ("Begleitung" in German and "intervention" in French)
-is when a given client is being coached by a given user during a
-given period."""),
-    'lino_xl.lib.coachings.Coachings' : _("""The Coachings table in a clients detail."""),
+    'lino_xl.lib.coachings.Coaching' : _("""Django model to represent a coaching."""),
+    'lino_xl.lib.coachings.Coaching.primary' : _("""Whether this coaching is primary.   Enabling this field will automatically
+make the other coachings non-primary."""),
+    'lino_xl.lib.coachings.Coachings' : _("""A table showing a set of coachings."""),
+    'lino_xl.lib.coachings.CoachingsByClient' : _("""The Coachings table in a clients detail."""),
     'lino_xl.lib.coachings.Coachable' : _("""Base class for coachable client. The model specified as
 client_model must implement this."""),
     'lino_xl.lib.coachings.Coachable.get_coachings' : _("""Return a queryset with the coachings of this client. If
@@ -700,10 +701,7 @@ queryset."""),
     'lino_xl.lib.coachings.Coachable.get_primary_coach' : _("""Return the one and only primary coach of this client (or
 None if there's less or more than one)."""),
     'lino_xl.lib.coachings.Coachable.setup_auto_event' : _("""Implements EventGenerator.setup_auto_event."""),
-    'lino_xl.lib.coachings.CoachingType' : _("""The type of a coaching can be used for expressing different
-types of responsibilities. For example in welfare they
-differentiate between "General Social Service" and "Integration
-Service"."""),
+    'lino_xl.lib.coachings.CoachingType' : _("""Django model to represent a coaching."""),
     'lino_xl.lib.coachings.CoachingType.does_integ' : _("""Whether coachings of this type are to be considered as
 integration work."""),
     'lino_xl.lib.coachings.CoachingEnding' : _("""A Coaching termination reason expresses why a coaching has been

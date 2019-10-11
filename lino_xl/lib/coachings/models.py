@@ -31,7 +31,7 @@ try:
     client_model = dd.plugins.clients.client_model
 except AttributeError:  # for Sphinx autodoc
     client_model = None
-    
+
 INTEG_LABEL = _("Integration")
 GSS_LABEL = _("GSS")  # General Social Service
 
@@ -97,12 +97,7 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
     client = dd.ForeignKey(
         client_model, related_name="coachings_by_client")
     type = dd.ForeignKey('coachings.CoachingType', blank=True, null=True)
-    primary = models.BooleanField(
-        _("Primary"),
-        default=False,
-        help_text=_("""There's at most one primary coach per client. \
-        Enabling this field will automatically make the other \
-        coachings non-primary."""))
+    primary = models.BooleanField(_("Primary"), default=False)
 
     ending = dd.ForeignKey(
         'coachings.CoachingEnding',
@@ -170,12 +165,15 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
 
     def adapt_primary(self):
         if self.primary:
-            for c in self.client.coachings_by_client.exclude(id=self.id):
+            qs = self.client.coachings_by_client.exclude(id=self.id)
+            if dd.plugins.coachings.multiple_primary_coachings:
+                qs = qs.filter(type=self.type)
+            for c in qs:
                 if c.primary:
                     c.primary = False
                     c.save()
                     return True
-                
+
     def after_ui_save(self, ar, cw):
         super(Coaching, self).after_ui_save(ar, cw)
         if self.adapt_primary():
@@ -212,7 +210,7 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
 
     # def get_notify_message_type(self):
     #     return rt.models.notify.MessageTypes.coachings
-    
+
     # def get_change_observers(self, ar=None):
     #     return self.client.get_change_observers(ar)
 
@@ -267,4 +265,3 @@ dd.inject_field(
     models.BooleanField(
         _("Coaching supervisor"),
         default=False))
-
