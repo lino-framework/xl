@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -42,7 +42,7 @@ end_user_model = dd.plugins.tickets.end_user_model
 # else:
 #     site_model = None
 #     milestone_model = None
-    
+
 
 class Prioritized(dd.Model):
     class Meta:
@@ -167,7 +167,7 @@ class Site(Referrable, ContactRelated, Starrable):
 
     ref_max_length = 20
     workflow_state_field = "state"
-    
+
 #     partner = dd.ForeignKey('contacts.Partner', blank=True, null=True)
 #     # responsible_user = dd.ForeignKey(
 #     #     'users.User', verbose_name=_("Responsible"),
@@ -182,13 +182,13 @@ class Site(Referrable, ContactRelated, Starrable):
         _("Designation"), max_length=200, unique=True)
 
     reporting_type = ReportingTypes.field(blank=True)
-    
+
     deadline = models.DateField(
         verbose_name=_("Deadline"),
         blank=True, null=True)
-        
+
     state = SiteStates.field(default='draft')
-    
+
     def __str__(self):
         return self.ref or self.name
 
@@ -203,7 +203,7 @@ class Site(Referrable, ContactRelated, Starrable):
                 [TicketsStaff]):
             return False
         return True
-        
+
     @classmethod
     def add_param_filter(
             cls, qs, lookup_prefix='', show_exposed=None, **kwargs):
@@ -216,7 +216,7 @@ class Site(Referrable, ContactRelated, Starrable):
         elif show_exposed == dd.YesNo.yes:
             qs = qs.filter(**fkw)
         return qs
-        
+
     @dd.htmlbox(_("Description"))
     def parsed_description(self, ar):
         if ar is None:
@@ -275,7 +275,7 @@ class Subscription(UserAuthored):
 
 dd.update_field(
     Subscription, 'user', verbose_name=_("User"))
-        
+
 
 # @dd.python_2_unicode_compatible
 # class Competence(UserAuthored, Prioritized):
@@ -314,7 +314,7 @@ dd.update_field(
 #         for t in Ticket.objects.filter(project=self.project):
 #             # t = vote.votable
 #             tickets_by_state[t.state].add(t)
-            
+
 #         items = []
 #         for st, tickets in tickets_by_state.items():
 #             if len(tickets) > 0:
@@ -327,7 +327,7 @@ dd.update_field(
 #         return E.p(*elems)
 
 
-    
+
 # class CloseTicket(dd.Action):
 #     #label = _("Close ticket")
 #     label = "\u2611"
@@ -572,13 +572,14 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         """
         if self.fixed_since is None and session.is_fixing and session.end_time:
             self.fixed_since = session.get_datetime('end')
-        
+
         self.touch()
-        
+
         self.full_clean()
         self.save()
 
-        
+    def get_comment_group(self):
+        return self.site
 
     def on_commented(self, comment, ar, cw):
         """This is automatically called when a comment has been created"""
@@ -594,7 +595,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     #     if qs.count() > 0:
     #         return qs[0].project
     #     return rt.models.tickets.Project.objects.all()[0]
-            
+
     def obj2href(self, ar, **kwargs):
         kwargs.update(title=self.summary)
         return ar.obj2html(self, "#{}".format(self.id), **kwargs)
@@ -660,7 +661,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 
         return E.p(*forcetext(elems))
         # return E.p(*join_elems(elems, sep=', '))
-            
+
         # if ar.actor.model is self.__class__:
         #     elems += [E.br(), _("{} state:").format(
         #         self._meta.verbose_name), ' ']
@@ -691,7 +692,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                 u = self.end_user.get_as_user()
                 if u is not None:
                     yield u
-       
+
     def is_workable_for(self, user):
         if self.standby or self.closed:
             return False
@@ -699,7 +700,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                 [Triager]):
             return False
         return True
-        
+
 
     @classmethod
     def quick_search_filter(cls, search_text, prefix=''):
