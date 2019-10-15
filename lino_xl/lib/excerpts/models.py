@@ -1,24 +1,16 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
 from __future__ import print_function
-# import six
 
-import logging
-
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from os.path import join, dirname
 
 import datetime
 
-ONE_WEEK = datetime.timedelta(days=7)
-ONE_DAY = datetime.timedelta(days=1)
-
-from django.utils.translation import ugettext_lazy as _
 from django.utils import translation, six
 from django.conf import settings
 from django.db import models
@@ -29,7 +21,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from lino.api import dd, rt, gettext
+from lino.api import dd, rt, gettext, _
 from lino import mixins
 from etgen.html import E
 from lino.utils import join_elems
@@ -53,6 +45,9 @@ from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 from .mixins import Certifiable
 from .choicelists import Shortcuts
 from .roles import ExcerptsUser, ExcerptsStaff
+
+ONE_WEEK = datetime.timedelta(days=7)
+ONE_DAY = datetime.timedelta(days=1)
 
 
 class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):
@@ -399,10 +394,10 @@ class Excerpt(TypedPrintable, UserAuthored,
 
     def __str__(self):
         if self.build_time:
-            return naturaltime(self.build_time)
+            return str(naturaltime(self.build_time))
             # return _("%(owner)s (printed %(time)s)") % dict(
             #     owner=self.owner, time=naturaltime(self.build_time))
-        return _("Unprinted %s #%s") % (self._meta.verbose_name, self.pk)
+        return gettext("Unprinted %s #%s") % (self._meta.verbose_name, self.pk)
 
     def get_mailable_type(self):
         return self.excerpt_type
