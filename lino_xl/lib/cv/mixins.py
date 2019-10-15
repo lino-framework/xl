@@ -236,6 +236,6 @@ class HistoryByPerson(dd.Table):
                 if v:
                     if len(chunks) > 0:
                         chunks.append(", ")
-                    chunks += [e.get_label(), " ", e.format_value(ar, v)]
+                    chunks += [e.get_label(), ": ", E.b(e.format_value(ar, v))]
             items.append(E.li(*forcetext(chunks)))
-        return E.li(*items)
+        return E.ul(*items)

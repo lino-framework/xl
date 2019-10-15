@@ -151,7 +151,7 @@ class PartnerDocument(dd.Model):
 
     company = dd.ForeignKey("contacts.Company", blank=True, null=True)
     person = dd.ForeignKey("contacts.Person", blank=True, null=True)
-    
+
     def get_partner(self):
         if self.company is not None:
             return self.company
@@ -171,7 +171,7 @@ class PartnerDocument(dd.Model):
 
     def summary_row(self, ar, **kw):
         """
-        A :meth:`lino.core.model.Model.summary_row` 
+        A :meth:`lino.core.model.Model.summary_row`
         method for partner documents.
         """
         href_to = ar.obj2html
@@ -242,5 +242,3 @@ class OldCompanyContact(dd.Model):
                     #~ print "20120227 clear contact!"
                     self.contact = None
         super(OldCompanyContact, self).full_clean(*args, **kw)
-
-

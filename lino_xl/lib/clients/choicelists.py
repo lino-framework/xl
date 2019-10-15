@@ -67,7 +67,7 @@ class ClientStates(dd.Workflow):
     required_roles = dd.login_required(ContactsStaff)
     verbose_name_plural = _("Client states")
     default_value = 'newcomer'
-    
+
 
 add = ClientStates.add_item
 add('10', _("Newcomer"), 'newcomer')  # "first contact" in Avanti
@@ -79,12 +79,12 @@ add('50', _("Former"), 'former')
 class KnownContactType(dd.Choice):
     show_values = True
     _instance = None
-    
+
     def create_object(self, **kwargs):
         kwargs.update(dd.str2kw('name', self.text))
         kwargs.update(known_contact_type=self)
         return rt.models.clients.ClientContactType(**kwargs)
-    
+
     def get_object(self):
         if self._instance is None:
             M = rt.models.clients.ClientContactType
@@ -94,13 +94,15 @@ class KnownContactType(dd.Choice):
                 return None
         return self._instance
 
-    def get_contact(self, client):
+    def get_contacts(self, client):
+        M = rt.models.clients.ClientContact
         cct = self.get_object()
         if cct is None:
-            return
-        qs = rt.models.clients.ClientContact.objects.filter(
-            client=client, type=cct)
-        return qs.first()
+            return M.none()
+        return M.objects.filter(client=client, type=cct)
+
+    def get_contact(self, client):
+        return self.get_contacts().first()
 
 
 class KnownContactTypes(dd.ChoiceList):
