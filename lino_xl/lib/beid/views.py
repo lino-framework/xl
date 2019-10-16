@@ -11,8 +11,7 @@ import json
 # from django.conf import settings
 from django.views.generic import View
 # from django.core import exceptions
-from lino.utils import Cycler
-from lino.utils import AttrDict
+from lino.utils import AttrDict, Cycler
 from lino.core.views import json_response
 from lino.api import dd, _
 

@@ -40,6 +40,7 @@ BeIdCardHolder."""),
 server, then Lino writes the raw data of every eid card into a
 text file in this directory."""),
     'lino_xl.lib.beid.Plugin.read_only_simulate' : _("""Whether to just simulate."""),
+    'lino_xl.lib.beid.Plugin.simulate_eidreader_path' : _("""Path for eidreader simulation data."""),
     'lino_xl.lib.beid.Plugin.urlhandler_prefix' : _("""Set this to a string to be passed by the
 beid_card_processor() Javascript function to the URL
 protocol handler responsible for running eidreader."""),
