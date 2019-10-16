@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2018 Rumma 6 Ko Ltd
+# Copyright 2018-2019 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Views for `lino.modlib.bootstrap3`.
-
-"""
 from __future__ import division
 
 from os.path import join
@@ -14,10 +11,13 @@ import json
 # from django.conf import settings
 from django.views.generic import View
 # from django.core import exceptions
+from lino.utils import Cycler
 from lino.utils import AttrDict
 from lino.core.views import json_response
 from lino.api import dd, _
 
+if dd.plugins.beid.simulate_eidreader_path is not None:
+    SIMULATION_FILES = Cycler(dd.plugins.beid.simulate_eidreader_path.listdir())
 
 def read_card_data_from_file(fn):
     fp = open(fn)
@@ -31,12 +31,6 @@ def read_card_data_from_file(fn):
             _("Got invalid card data {} from eidreader.").format(rv))
 
     data = AttrDict(rv)
-    # quick hack to fix #2393. a better solution would be to
-    # make eidreader not POST every key-value using requests
-    # but to send a single field card_data which would be a
-    # json encoded dict.
-    # if isinstance(data.success, six.string_types):
-    #     data.success = parse_boolean(data.success.lower())
     if not data.success:
         raise Warning(_("No card data found: {}").format(
             data.message))
@@ -45,14 +39,17 @@ def read_card_data_from_file(fn):
 
 def load_card_data(uuid):
     # raise Exception("20180412 {}".format(uuid))
-    fn = dd.plugins.beid.data_cache_dir.child(uuid)
+    if dd.plugins.beid.simulate_eidreader_path is None:
+        fn = dd.plugins.beid.data_cache_dir.child(uuid)
+    else:
+        fn = SIMULATION_FILES.pop()
     timeout = dd.plugins.beid.eidreader_timeout
     count = 0
     while True:
         try:
             return read_card_data_from_file(fn)
         except IOError as e:
-            dd.logger.info("20181002 I/O error reading %s : %s", fn, e)
+            dd.logger.info("I/O error reading %s : %s", fn, e)
             time.sleep(1)
             count += 1
             if count > timeout:

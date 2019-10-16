@@ -55,6 +55,15 @@ class Plugin(ad.Plugin):  # was: use_eidreader
     eidreader_timeout = 15
     read_only_simulate = False
 
+    simulate_eidreader_path = None
+    """
+    Path for eidreader simulation data.
+
+    If given, this should be the name of a directory containing files with
+    eidreader data to be used for simulation.
+
+    """
+
     urlhandler_prefix = 'beid://'
     """
     Set this to a string to be passed by the
