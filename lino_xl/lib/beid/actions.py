@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2012-2019 Rumma & Ko Ltd
-#
 # License: BSD (see file COPYING for details)
 
 """
@@ -9,8 +8,7 @@
 """
 import six
 from builtins import str
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 import os
 import yaml
@@ -32,22 +30,6 @@ from lino_xl.lib.contacts.utils import street2kw
 from .roles import BeIdUser
 from .choicelists import BeIdCardTypes
 from .views import load_card_data
-
-def get_image_parts(card_number):
-    return ("beid", card_number + ".jpg")
-
-
-def get_image_path(card_number):
-    """
-    Return the full path of the image file on the server. This may be
-    used by printable templates.
-    """
-    if card_number:
-        parts = get_image_parts(card_number)
-        # return os.path.join(settings.MEDIA_ROOT, *parts)
-        return Path(settings.MEDIA_ROOT).child(*parts)
-    return Path(settings.STATIC_ROOT).child("contacts.Person.jpg")
-
 
 def simulate_wrap(msg):
     if dd.plugins.beid.read_only_simulate:
@@ -75,7 +57,7 @@ def yaml2dict(data):
         logger.info("Wrote eid card data to file %s", fn)
 
     return attd
-        
+
 
 class BaseBeIdReadCardAction(dd.Action):
     """Common base for all "Read eID card" actions
@@ -93,7 +75,7 @@ class BaseBeIdReadCardAction(dd.Action):
     #     js_handler = 'Lino.beid_read_card'
 
     sorry_msg = _("Sorry, I cannot handle that case: %s")
-    
+
     def get_view_permission(self, user_type):
         """Make invisible when :attr:`lino.core.site.Site.use_java` is
 `False`."""
@@ -133,7 +115,7 @@ class BaseBeIdReadCardAction(dd.Action):
         if data.photo:
             if not card_number:
                 raise Exception("20150730 photo data but no card_number ")
-            fn = get_image_path(card_number)
+            fn = dd.plugins.beid.holder_model.card_number_to_image_path(card_number)
             if fn.exists():
                 logger.warning("Overwriting existing image file %s.", fn)
             try:
@@ -142,7 +124,7 @@ class BaseBeIdReadCardAction(dd.Action):
                 fp.close()
             except IOError as e:
                 logger.warning("Failed to store image file %s : %s", fn, e)
-                
+
             #~ print 20121117, repr(data['picture'])
             #~ kw.update(picture_data_encoded=data['picture'])
 
@@ -205,13 +187,16 @@ class BaseBeIdReadCardAction(dd.Action):
         kw.update(last_name=data.surname or '')
 
         card_number = str(data.card_number)
+        holder_model = dd.plugins.beid.holder_model
 
         if data.PHOTO_FILE:
             if not card_number:
                 raise Exception("20150730 photo data but no card_number ")
-            fn = get_image_path(card_number)
-            if fn.exists():
-                logger.warning("Overwriting existing image file %s.", fn)
+
+            fn = holder_model.card_number_to_image_path(card_number)
+            if not fn.exists():
+                # logger.warning("Overwriting existing image file %s.", fn)
+                rt.makedirs_if_missing(os.path.dirname(fn))
             try:
                 fp = open(fn, 'wb')
                 # fp.write(data.PHOTO_FILE)
@@ -219,7 +204,7 @@ class BaseBeIdReadCardAction(dd.Action):
                 fp.close()
             except IOError as e:
                 logger.warning("Failed to store image file %s : %s", fn, e)
-                
+
             #~ print 20121117, repr(data['picture'])
             #~ kw.update(picture_data_encoded=data['picture'])
 
@@ -243,7 +228,7 @@ class BaseBeIdReadCardAction(dd.Action):
             kw.update(zip_code=str(data.address_zip))
         if data.location_of_birth:
             kw.update(birth_place=data.location_of_birth)
-            
+
         pk = data.eidreader_country
         country = rt.models.countries.Country.objects.get(isocode=pk)
         kw.update(country=country)
@@ -267,7 +252,6 @@ class BaseBeIdReadCardAction(dd.Action):
             # logger.info("20130103 documentType %r --> %r", dt, rv)
             return rv
         kw.update(card_type=doctype2cardtype(data.document_type))
-
         return kw
 
     def process_row(self, ar, obj, attrs):
@@ -283,7 +267,7 @@ class BaseBeIdReadCardAction(dd.Action):
 
         oldobj = obj
         watcher = ChangeWatcher(obj)
-        
+
         msg = _("Click OK to apply the following changes for %s") % obj
         msg = simulate_wrap(msg)
         msg += ' :<br/>'
@@ -427,11 +411,10 @@ class BeIdReadCardAction(BaseBeIdReadCardAction):
             raise Exception("No longer maintained")
             data = yaml2dict(ar.request.POST)
             attrs = self.card2client_java(data)
-        
+
         # attrs = self.card2client(yaml2dict(ar.request.POST))
         row = ar.selected_rows[0]
-        holder_model = dd.plugins.beid.holder_model
-        qs = holder_model.objects.filter(
+        qs = dd.plugins.beid.holder_model.objects.filter(
             national_id=attrs['national_id'])
         if not row.national_id and qs.count() == 0:
             row.national_id = attrs['national_id']
@@ -445,5 +428,3 @@ class BeIdReadCardAction(BaseBeIdReadCardAction):
                 _("National IDs %s and %s don't match ") % (
                     row.national_id, attrs['national_id']))
         return self.process_row(ar, row, attrs)
-
-

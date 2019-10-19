@@ -37,7 +37,6 @@ from lino.modlib.checkdata.choicelists import Checker
 # from .roles import BeIdUser
 
 from .actions import BeIdReadCardAction, FindByBeIdAction
-from .actions import get_image_parts, get_image_path
 
 from .choicelists import BeIdCardTypes
 
@@ -177,7 +176,7 @@ class BeIdCardHolder(SSIN):
         return E.div(*elems, **attrs)
 
     def get_beid_diffs(self, attrs):
-        
+
         # Return two lists, one with the objects to save, and another
         # with text lines to build a confirmation message explaining
         # which changes are going to be applied after confirmation.
@@ -207,14 +206,31 @@ class BeIdCardHolder(SSIN):
         # s = '<a href="%s" target="_blank">%s</a>' % (url, s)
         # return s
 
+    @classmethod
+    def get_image_parts(cls, card_number):
+        return ("beid", card_number + ".jpg")
+
+    @classmethod
+    def card_number_to_image_path(cls, card_number):
+        """
+        Return the full path of the image file on the server for the given id card.
+
+        This may be used by printable templates.
+        """
+        if card_number:
+            parts = cls.get_image_parts(card_number)
+            # return os.path.join(settings.MEDIA_ROOT, *parts)
+            return Path(settings.MEDIA_ROOT).child(*parts)
+        return Path(settings.STATIC_ROOT).child("contacts.Person.jpg")
+
     def get_image_url(self, ar):
         if self.card_number:
-            parts = get_image_parts(self.card_number)
+            parts = self.get_image_parts(self.card_number)
             return settings.SITE.build_media_url(*parts)
         return settings.SITE.build_static_url("contacts.Person.jpg")
 
     def get_image_path(self):
-        return get_image_path(self.card_number)
+        return self.card_number_to_image_path(self.card_number)
 
     def make_demo_picture(self):
         # Create a demo picture for this card holder.
@@ -260,5 +276,3 @@ class SSINChecker(Checker):
                         obj.save()
 
 SSINChecker.activate()
-
-
