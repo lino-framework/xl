@@ -456,7 +456,7 @@ class GuestsByEvent(Guests):
         return False
 
     @classmethod
-    def disable_delete(self, obj, ar):
+    def disable_delete(cls, obj, ar):
         msg = super(GuestsByEvent, cls).disable_delete(obj, ar)
         if msg is not None:
             return msg
