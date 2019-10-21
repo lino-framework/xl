@@ -24,6 +24,7 @@ See :doc:`/specs/beid`.
 
 from os.path import join
 from lino.api import ad, _
+from lino.utils import Cycler
 
 
 class Plugin(ad.Plugin):  # was: use_eidreader
@@ -126,6 +127,10 @@ class Plugin(ad.Plugin):  # was: use_eidreader
             if not self.urlhandler_prefix.endswith("://"):
                 msg = "Invalid urlhandler_prefix {} (must end with '://')"
                 raise Exception(msg.format(self.urlhandler_prefix))
+
+        if self.simulate_eidreader_path is not None:
+            self.SIMULATION_FILES = Cycler(self.simulate_eidreader_path.listdir())
+
         return
 
     def unused_get_body_lines(self, site, request):

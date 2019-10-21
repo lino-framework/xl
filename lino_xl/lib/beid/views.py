@@ -11,12 +11,10 @@ import json
 # from django.conf import settings
 from django.views.generic import View
 # from django.core import exceptions
-from lino.utils import AttrDict, Cycler
+from lino.utils import AttrDict
 from lino.core.views import json_response
 from lino.api import dd, _
 
-if dd.plugins.beid.simulate_eidreader_path is not None:
-    SIMULATION_FILES = Cycler(dd.plugins.beid.simulate_eidreader_path.listdir())
 
 def read_card_data_from_file(fn):
     fp = open(fn)
@@ -41,7 +39,7 @@ def load_card_data(uuid):
     if dd.plugins.beid.simulate_eidreader_path is None:
         fn = dd.plugins.beid.data_cache_dir.child(uuid)
     else:
-        fn = SIMULATION_FILES.pop()
+        fn = dd.plugins.beid.SIMULATION_FILES.pop()
     timeout = dd.plugins.beid.eidreader_timeout
     count = 0
     while True:
