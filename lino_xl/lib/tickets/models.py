@@ -180,14 +180,13 @@ class Site(Referrable, ContactRelated, Starrable):
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
     name = models.CharField(
         _("Designation"), max_length=200, unique=True)
-
     reporting_type = ReportingTypes.field(blank=True)
-
     deadline = models.DateField(
         verbose_name=_("Deadline"),
         blank=True, null=True)
 
     state = SiteStates.field(default='draft')
+    group = dd.ForeignKey('groups.Group', null=True, blank=True)
 
     def __str__(self):
         return self.ref or self.name
@@ -563,7 +562,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         super(Ticket, self).full_clean()
 
     def get_change_owner(self):
-        return self.site
+        if self.site_id is not None:
+            return self.site.group or self.site
 
     def on_worked(self, session):
         """This is automatically called when a work session has been created

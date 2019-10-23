@@ -1017,6 +1017,12 @@ financial voucher."""),
     'lino_xl.lib.finan.FillSuggestionsToVoucherItem' : _("""Fill the selected suggestions as items to the voucher. The first
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
+    'lino_xl.lib.groups.Group' : _("""Django model representing a users group."""),
+    'lino_xl.lib.groups.Group.ref' : _("""The reference."""),
+    'lino_xl.lib.groups.Group.name' : _("""The designation in different languages."""),
+    'lino_xl.lib.groups.Group.user' : _("""The owner of the group"""),
+    'lino_xl.lib.groups.Groups' : _("""Shows all groups."""),
+    'lino_xl.lib.groups.Membership' : _("""Django model representing a user membership."""),
     'lino_xl.lib.healthcare.Plan.ref' : _("""An identifying name understood by every user of the site."""),
     'lino_xl.lib.healthcare.Plan.provider' : _("""The provider who will potentially be invoiced for shared costs."""),
     'lino_xl.lib.healthcare.Tariffs' : _("""The choicelist with healthcare tariffs available in this application."""),

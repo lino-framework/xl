@@ -1,13 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Luc Saffre
-#
+# Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""
-Datbase models for this plugin.
-
-"""
 from __future__ import unicode_literals
 from builtins import str
 
@@ -49,7 +43,7 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
             yield x
         for mbr in self.members.all():
             yield (mbr.user, mbr.user.mail_mode)
-    
+
     @dd.displayfield(_("Recent comments"))
     def recent_comments(self, ar):
         if ar is None:
@@ -84,7 +78,7 @@ class Groups(dd.Table):
 
     detail_layout = """
     ref:10 name:60 id
-    description MembershipsByGroup 
+    description MembershipsByGroup
     comments.CommentsByRFC
     """
 
@@ -97,14 +91,14 @@ class Groups(dd.Table):
             qs = qs.filter(
                 Q(members__user=pv.user))
         return qs
-            
 
-    
+
+
 class MyGroups(My, Groups):
     column_names = 'overview:10 recent_comments *'
 
-    
-    
+
+
 @dd.python_2_unicode_compatible
 class Membership(UserAuthored):
 
@@ -120,9 +114,22 @@ class Membership(UserAuthored):
     def __str__(self):
         return _('{} in {}').format(self.user, self.group)
 
+dd.update_field(Membership, "user", verbose_name=_("User"))
 
 class Memberships(dd.Table):
     model = 'groups.Membership'
+    insert_layout = dd.InsertLayout("""
+    user
+    group
+    remark
+    """, window_size=(60, 'auto'))
+
+    detail_layout = dd.DetailLayout("""
+    user
+    group
+    remark
+    """, window_size=(60, 'auto'))
+
 
 
 class MembershipsByGroup(Memberships):
@@ -132,11 +139,20 @@ class MembershipsByGroup(Memberships):
     stay_in_grid = True
     display_mode = 'summary'
 
+    # summary_sep = comma
+
     @classmethod
-    def get_table_summary(self, obj, ar):
+    def summary_row(cls, ar, obj, **kwargs):
+        if ar is None:
+            yield str(obj.user)
+        else:
+            yield ar.obj2html(obj, str(obj.user))
+
+    @classmethod
+    def unused_get_table_summary(self, obj, ar):
         sar = self.request_from(ar, master_instance=obj)
         chunks = []
-        
+
         for mbr in sar:
             chunks.append(ar.obj2html(mbr, str(mbr.user)))
         chunks = join_elems(chunks, ', ')
@@ -159,5 +175,3 @@ class MembershipsByUser(Memberships):
 
 class AllMemberships(Memberships):
     required_roles = dd.login_required(dd.SiteAdmin)
-
-
