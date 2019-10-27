@@ -80,10 +80,6 @@ that ISO code in lino_xl.lib.countries.models.Country."""),
 country_code."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
-    'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
-    'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
-    'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
-    'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
     'lino_xl.lib.courses.Course.before_auto_event_save' : _("""Set room and start_time/end_time for automatic events."""),
     'lino_xl.lib.courses.Course.get_detail_action' : _("""Custom get_detail_action because the
 detail_layout to use depends on the course's line's
@@ -853,7 +849,7 @@ Compare MyCourses."""),
     'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
     'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
 given course."""),
-    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.choicelists.EnrolmentStates."""),
+    'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.EnrolmentStates."""),
     'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
 participant."""),
     'lino_xl.lib.courses.Enrolments' : _("""Base class for all tables that show Enrolment."""),
@@ -862,6 +858,10 @@ participant."""),
     'lino_xl.lib.courses.PendingConfirmedEnrolments' : _("""Show all confirmed enrolments."""),
     'lino_xl.lib.courses.EnrolmentsByPupil' : _("""Show all enrolments of a given pupil."""),
     'lino_xl.lib.courses.EnrolmentsByCourse' : _("""Show the enrolments of a this course."""),
+    'lino_xl.lib.courses.EnrolmentStates' : _("""The list of possible states of an enrolment."""),
+    'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
+    'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
+    'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
     'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
 configurable list of categories."""),
     'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user

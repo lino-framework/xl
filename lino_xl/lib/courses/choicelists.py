@@ -48,29 +48,14 @@ add('40', _("Closed"), 'closed',
 
 
 class EnrolmentStates(dd.Workflow):
-    """The list of possible states of an enrolment.
-
-    The default implementation has the following values:
-    
-    .. attribute:: requested
-    .. attribute:: confirmed
-    .. attribute:: cancelled
-
-        The enrolment was cancelled before it even started.
-
-    .. attribute:: ended
-
-        The enrolment was was successfully ended.
-
-    .. attribute:: abandoned
-
-        The enrolment was abandoned.
-
-    """
     # verbose_name_plural = _("Enrolment states")
     required_roles = dd.login_required(dd.SiteAdmin)
     invoiceable = models.BooleanField(_("invoiceable"), default=True)
     uses_a_place = models.BooleanField(_("Uses a place"), default=True)
+
+    @classmethod
+    def get_column_names(self, ar):
+        return "value name text button_text invoiceable uses_a_place"
 
 add = EnrolmentStates.add_item
 add('10', _("Requested"), 'requested', invoiceable=False, uses_a_place=False)
@@ -88,7 +73,7 @@ class CourseArea(dd.Choice):
 
     # force_guest_states = False
     courses_table = 'courses.Courses'
-    
+
     def __init__(
             self, value, text, name,
             courses_table='courses.Courses', **kwargs):
@@ -105,7 +90,7 @@ class CourseAreas(dd.ChoiceList):
     item_class = CourseArea
     column_names = "value name text courses_table #force_guest_states"
     required_roles = dd.login_required(dd.SiteAdmin)
-    
+
     # @dd.virtualfield(models.BooleanField(_("Force guest states")))
     # def force_guest_states(cls, choice, ar):
     #     return choice.force_guest_states
@@ -121,5 +106,3 @@ try:
 except AttributeError:
     add('C', 'oops, courses not installed', 'default')
 # add('J', _("Journeys"), 'journeys')
-
-
