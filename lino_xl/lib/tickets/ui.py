@@ -29,7 +29,7 @@ end_user_model = dd.plugins.tickets.end_user_model
 #     site_model = dd.plugins.tickets.site_model
 # else:
 #     site_model = None
-    
+
 
 # class ProjectTypes(dd.Table):
 #     required_roles = dd.login_required(TicketsStaff)
@@ -92,7 +92,7 @@ class TicketTypes(dd.Table):
 #         if pv.interesting_for:
 #             qs = qs.filter(
 #                 Q(company=pv.interesting_for))
-            
+
 #         if False:  # pv.interesting_for:
 #             qs = qs.filter(
 #                 Q(tickets_by_project__site__partner=pv.interesting_for) |
@@ -402,7 +402,7 @@ class Tickets(dd.Table):
         return self.model.objects.select_related(
             'user', 'assigned_to', # 'project',
             'duplicate_of', 'end_user')
-        
+
     @classmethod
     def get_request_queryset(self, ar):
         qs = super(Tickets, self).get_request_queryset(ar)
@@ -414,7 +414,7 @@ class Tickets(dd.Table):
         if pv.interesting_for:
             qs = qs.filter(
                 Q(site__company=pv.interesting_for))
-            
+
         if dd.is_installed('votes'):
             if pv.assigned_to:
                 # qs = qs.filter(
@@ -422,7 +422,7 @@ class Tickets(dd.Table):
                 #     Q(votes_by_ticket__end_user=pv.assigned_to)).distinct()
                 qs = qs.filter(
                     votes_by_ticket__user=pv.assigned_to).distinct()
-            
+
             if pv.not_assigned_to:
                 # print(20170318, self, qs.model, pv.not_assigned_to)
                 # qs = qs.exclude(
@@ -444,7 +444,7 @@ class Tickets(dd.Table):
                 qs = qs.filter(assigned_to__isnull=False)
             elif pv.show_assigned == dd.YesNo.yes:
                 qs = qs.filter(assigned_to__isnull=True)
-            
+
         if pv.deployed_to:
             # qs = qs.filter(
             #     Q(votes_by_ticket__user=pv.assigned_to) |
@@ -489,7 +489,7 @@ class Tickets(dd.Table):
             qs = qs.filter(ref__isnull=True)
         # print 20150512, qs.query
         # 1253
-        
+
         # the following caused a RuntimeWarning and was useless since
         # the same filter is applied by
         # pv.observed_event.add_filter(qs, pv) above: if
@@ -550,7 +550,7 @@ class UnassignedTickets(Tickets):
         column_names = "summary site user votes_by_ticket *"
     else:
         column_names = "summary site user assigned_to *"
-        
+
     label = _("Unassigned Tickets")
     required_roles = dd.login_required(Triager)
 
@@ -584,7 +584,7 @@ class TicketsByEndUser(Tickets):
         items = [o.obj2href(ar) for o in sar]
         if len(items) > 0:
             chunks += join_elems(items, ", ")
-            
+
         sar = self.insert_action.request_from(sar)
         if sar.get_permission():
             chunks.append(sar.ar2button())
@@ -783,7 +783,7 @@ class SiteDetail(dd.DetailLayout):
         bottom_left:30 TicketsBySite
         """
     general = dd.Panel("""
-        id name 
+        id name
         company contact_person reporting_type
         workflow_buttons:1 remark
         bottom""", label=_("General"))
@@ -793,15 +793,15 @@ class SiteDetail(dd.DetailLayout):
 class Subscriptions(dd.Table):
     required_roles = dd.login_required(TicketsStaff)
     model = 'tickets.Subscription'
-    
+
 class SubscriptionsBySite(Subscriptions):
     master_key = 'site'
     column_names = 'user primary'
-    
+
 class SubscriptionsByUser(Subscriptions):
     master_key = 'user'
     column_names = 'site primary'
-    
+
 class Sites(dd.Table):
     # required_roles = set()  # also for anonymous
     required_roles = dd.login_required(Reporter)
@@ -843,13 +843,14 @@ class Sites(dd.Table):
 
         pv = ar.param_values
         if pv.watcher:
-            sqs = rt.models.tickets.Subscription.objects.filter(user=pv.watcher)
-            subscribed_sites = sqs.values_list('site')
-            qs = qs.filter(pk__in=subscribed_sites)
+            groups = rt.models.groups.Membership.objects.filter(user=pv.watcher).values_list('group', flat=True)
+            qs = qs.filter(group__in=groups)
+            # sqs = rt.models.tickets.Subscription.objects.filter(user=pv.watcher)
+            # subscribed_sites = sqs.values_list('site')
+            # qs = qs.filter(pk__in=subscribed_sites)
 
-        qs = self.model.add_param_filter(
-            qs, show_exposed=pv.show_exposed)
-        
+        qs = self.model.add_param_filter(qs, show_exposed=pv.show_exposed)
+
         return qs
 
 
@@ -860,6 +861,10 @@ class Sites(dd.Table):
 #             k = ts.get_summary_field()
 #             if k is not None:
 #                 yield k
+
+class SitesByGroup(Sites):
+    master_key = 'group'
+    column_names = "detail_link parsed_description workflow_buttons *"
 
 class MySites(Sites):
     label = _("My sites")
@@ -877,7 +882,7 @@ class MySites(Sites):
     #     cls.column_names = "overview "
     #     cls.column_names += ' '.join(get_summary_columns())
 
-    
+
 
 # class SitesOverview(MySites):
 #     label = _("Sites Overview")
@@ -923,4 +928,3 @@ class TicketsBySite(Tickets):
         # kw.update(end_date=dd.today())
         # kw.update(observed_event=TicketEvents.todo)
         return kw
-

@@ -9,12 +9,14 @@ from builtins import str
 from atelier.sphinxconf.base import py2url_txt
 from django.conf import settings
 from django.db import models
+from django.db.models import Q
 from etgen.html import tostring
 from etgen.utils import join_elems, forcetext
 from lino import mixins
 from lino.api import dd, rt, _, pgettext, gettext
 from lino.core.actions import CreateRow
 from lino.mixins.ref import Referrable
+from lino.mixins.periods import DateRange
 from lino.modlib.comments.mixins import Commentable
 from lino.modlib.notify.choicelists import MessageTypes
 from lino.modlib.memo.mixins  import rich_text_to_elems
@@ -158,7 +160,7 @@ class TicketType(mixins.BabelNamed):
 
 
 @dd.python_2_unicode_compatible
-class Site(Referrable, ContactRelated, Starrable):
+class Site(Referrable, ContactRelated, Starrable, DateRange):
     class Meta:
         app_label = 'tickets'
         verbose_name = pgettext("Ticketing", "Site")
@@ -475,13 +477,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     duplicate_of = dd.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"))
 
-    # assigned_to = dd.ForeignKey(
-    #     settings.SITE.user_model,
-    #     verbose_name=_("Assigned to"),
-    #     related_name="assigned_tickets",
-    #     blank=True, null=True,
-    #     help_text=_("The user who works on this ticket."))
-
     end_user = dd.ForeignKey(
         end_user_model,
         verbose_name=_("End user"),
@@ -554,11 +549,16 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             self.duplicate_of = None
         # print "20150523b on_create", self.reporter
         if not self.site_id:
-            user = self.end_user or self.user
-            qs = rt.models.tickets.Subscription.objects.filter(
-                user=user, primary=True)
+            person = self.end_user or self.user.get_person()
+            qs = rt.models.tickets.Site.objects.filter(contact_person=person)
+            qs = qs.filter(state=SiteStates.active)
+            qs = qs.filter(Q(end_date__isnull=True)|Q(end_date__lte=dd.today()))
+            qs = qs.order_by('-id')
+            # qs = rt.models.tickets.Subscription.objects.filter(
+            #     user=user, primary=True)
             if qs.count():
-                self.site = qs[0].site
+                # self.site = qs[0].site
+                self.site = qs.first()
         super(Ticket, self).full_clean()
 
     def get_change_owner(self):

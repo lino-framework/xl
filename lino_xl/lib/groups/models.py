@@ -171,6 +171,7 @@ class MembershipsByUser(Memberships):
     master_key = 'user'
     column_names = "group remark *"
     order_by = ['group__ref']
+    display_mode = 'summary'
 
 
 class AllMemberships(Memberships):
