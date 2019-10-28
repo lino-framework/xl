@@ -189,6 +189,7 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
 
     state = SiteStates.field(default='draft')
     group = dd.ForeignKey('groups.Group', null=True, blank=True)
+    hours_paid = dd.DurationField(_("Hours paid"), blank=True, null=True)
 
     def __str__(self):
         return self.ref or self.name
@@ -238,7 +239,7 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
             elems += rich_text_to_elems(ar, self.description)
         return elems
 
-
+Site.set_widget_options('hours_paid', width=6)
 dd.update_field(Site, 'company', verbose_name=_("Client"))
 dd.update_field(Site, 'contact_person', verbose_name=_("Contact person"))
 # dd.update_field(Site, 'detail_link', verbose_name=_("Site"))

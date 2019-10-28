@@ -806,7 +806,7 @@ class Sites(dd.Table):
     # required_roles = set()  # also for anonymous
     required_roles = dd.login_required(Reporter)
     model = 'tickets.Site'
-    column_names = "ref name company remark workflow_buttons id *"
+    column_names = "ref name company contact_person remark workflow_buttons id *"
     order_by = ['ref', 'name']
     # detail_html_template = "tickets/Site/detail.html"
     parameters = dd.ParameterPanel(

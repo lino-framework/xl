@@ -221,7 +221,7 @@ class SessionsBySite(Sessions):
     master_key = 'ticket__site'
     column_names = 'start_date summary start_time end_time  '\
                    'break_time duration user is_fixing *'
-    
+
 class MySessions(Sessions):
     column_names = 'start_date start_time end_time '\
                    'break_time duration ticket_no ticket__site summary *'
@@ -428,9 +428,9 @@ from lino.core.tables import VentilatedColumns
 
 
 class DurationReport(VentilatedColumns):
-    
+
     abstract = True
-    
+
     @classmethod
     def get_ventilated_columns(cls):
         # yield the fields to be insered at {vcolumns} in template
@@ -438,7 +438,7 @@ class DurationReport(VentilatedColumns):
             def func(fld, obj, ar):
                 return obj._root2tot.get(rpttype, None)
             return dd.VirtualField(dd.DurationField(verbose_name), func)
-        
+
         # def w(rpttype, verbose_name):
         #     def func(fld, obj, ar):
         #         if obj.get_reporting_type() == rpttype:
@@ -452,17 +452,15 @@ class DurationReport(VentilatedColumns):
 
 class SessionsByReport(Sessions, DurationReport):
     master = 'working.ServiceReport'
-    
+
     column_names_template = "start_date start_time end_time break_time " \
                             "my_description:50 user {vcolumns} *"
 
     order_by = ['start_date', 'start_time', 'id']
-    
-    # @classmethod
-    # def get_data_rows(cls, ar):
-    #     for ses in cls.get_request_queryset(ar):
-    #         load_sessions(ses, [ses])
-    #         yield ses
+
+    @classmethod
+    def get_title_base(self, ar):
+        return Sessions.label
 
     @classmethod
     def get_row_by_pk(cls, ar, pk): # fixes #2434
@@ -470,7 +468,7 @@ class SessionsByReport(Sessions, DurationReport):
         if obj is not None:
             load_sessions(obj, [obj])
         return obj
-        
+
     @classmethod
     def get_request_queryset(self, ar):
         mi = ar.master_instance
@@ -496,7 +494,7 @@ class SessionsByReport(Sessions, DurationReport):
     def my_description(self, obj, ar):
         elems = [obj.summary]
         t = obj.ticket
-        elems += [" ", 
+        elems += [" ",
             ar.obj2html(t, "#{0}".format(t.id), title=t.summary)]
         return E.p(*elems)
 
@@ -508,6 +506,10 @@ class TicketsByReport(Tickets, DurationReport):
     # invested_time"
     column_names_template = "id detail_link end_user site state {vcolumns}"
     order_by = ['id']
+
+    @classmethod
+    def get_title_base(self, ar):
+        return Tickets.label
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -540,8 +542,12 @@ class SitesByReport(Sites, DurationReport):
     master = 'working.ServiceReport'
     # column_names = "summary id reporter #project product site state
     # invested_time"
-    column_names_template = "name parsed_description {vcolumns}"
+    column_names_template = "name parsed_description hours_paid {vcolumns}"
     order_by = ['name']
+
+    @classmethod
+    def get_title_base(self, ar):
+        return Sites.label
 
     @classmethod
     def get_request_queryset(self, ar):
@@ -558,7 +564,7 @@ class SitesByReport(Sites, DurationReport):
         spv.update(observed_event=dd.PeriodEvents.started)
         spv.update(user=mi.user)
         # qs = super(SitesByReport, self).get_request_queryset(ar)
-        
+
         qs = rt.models.tickets.Site.objects.filter(
             company=mi.interesting_for)
         for obj in qs:
@@ -604,7 +610,7 @@ class SitesByReport(Sites, DurationReport):
 #                 yield obj
 
 
-    
+
 
 class ServiceReports(dd.Table):
     """List of service reports."""
@@ -612,7 +618,7 @@ class ServiceReports(dd.Table):
 
     model = "working.ServiceReport"
     insert_layout = """
-    start_date end_date 
+    start_date end_date
     interesting_for
     """
     detail_layout = """
