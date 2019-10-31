@@ -4,8 +4,7 @@
 
 from builtins import str
 
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 # import os
 # import yaml
@@ -19,25 +18,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext
 from django.core.exceptions import ValidationError
 
-from lino.core.utils import get_field
-
-# from lino.core.diff import ChangeWatcher
-
 from etgen.html import E
-# from lino.utils import AttrDict
 
+from lino.core.utils import get_field
+from lino.utils import ssin
+from lino.modlib.checkdata.choicelists import Checker
 from lino.api import dd
 
-
-from lino.utils import ssin
-# from lino.utils import join_words
-# from lino.utils import IncompleteDate
-# from lino_xl.lib.contacts.utils import street2kw
-from lino.modlib.checkdata.choicelists import Checker
-# from .roles import BeIdUser
-
 from .actions import BeIdReadCardAction, FindByBeIdAction
-
 from .choicelists import BeIdCardTypes
 
 MALE = Path(__file__).parent.child('luc.jpg')

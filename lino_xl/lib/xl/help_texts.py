@@ -305,6 +305,7 @@ plugin."""),
     'lino_xl.lib.topics.Plugin.partner_model' : _("""The Django model used to represent partners in the scope of this
 plugin."""),
     'lino_xl.lib.trends.Plugin' : _("""See lino.core.plugins.Plugin."""),
+    'lino_xl.lib.trends.Plugin.subject_model' : _("""The Django model used to represent the "subject" being observed."""),
     'lino_xl.lib.vat.Plugin' : _("""The Plugin object for this
 plugin."""),
     'lino_xl.lib.vat.Plugin.eu_country_codes' : _("""A space-separated list of ISO codes that are to be considered part of
@@ -1606,6 +1607,19 @@ description_text."""),
     'lino_xl.lib.topics.TopicGroup' : _("""This model is deprecated.  We use the Topic.ref for structuring
 topics."""),
     'lino_xl.lib.topics.TopicGroups' : _("""Currently not used."""),
+    'lino_xl.lib.trends.TrendArea' : _("""Represents a possible choice for the trend_area field of a
+TrendStage."""),
+    'lino_xl.lib.trends.TrendStage.trend_area' : _("""Pointer to the TrendArea."""),
+    'lino_xl.lib.trends.TrendStage.subject_column' : _("""Whether this stage should cause subject column to be added ."""),
+    'lino_xl.lib.trends.TrendEvent.subject' : _("""The subject we are talking about."""),
+    'lino_xl.lib.trends.TrendEvent.user' : _("""The user who entered this data."""),
+    'lino_xl.lib.trends.TrendEvent.event_date' : _("""The date when the subject reached the stage."""),
+    'lino_xl.lib.trends.TrendEvent.trend_area' : _("""Pointer to the TrendArea."""),
+    'lino_xl.lib.trends.TrendEvent.trend_stage' : _("""Pointer to the TrendStage."""),
+    'lino_xl.lib.trends.TrendEvent.remark' : _("""A free text field."""),
+    'lino_xl.lib.trends.EventsBySubject' : _("""Shows all trend events of that subject."""),
+    'lino_xl.lib.trends.TrendObservable' : _("""Mixin that should be inherited by the Plugin.subject_model so that
+Lino automatically adds virtual columns for each trend stage having"""),
     'lino_xl.lib.userstats.UserStat' : _("""A Summary on
 SiteConfig."""),
     'lino_xl.lib.userstats.UserStat.active_users' : _("""The number of active users. A user is considered active if
