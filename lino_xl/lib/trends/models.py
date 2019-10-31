@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017 Rumma & Ko Ltd
-#
+# Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-"""Database models for this plugin.
-"""
 
 from __future__ import unicode_literals
 
@@ -22,11 +18,6 @@ from .roles import TrendsStaff, TrendsUser
 
 
 class TrendArea(mixins.BabelNamed):
-
-    """Represents a possible choice for the `trend_area` field of a
-    :class:`TrendStage`.
-
-    """
 
     class Meta:
         app_label = 'trends'
@@ -47,6 +38,8 @@ class TrendAreas(dd.Table):
 
 class TrendStage(mixins.BabelNamed, mixins.Referrable):
 
+    ref_max_length = 20
+
     class Meta:
         app_label = 'trends'
         abstract = dd.is_abstract_model(__name__, 'TrendStage')
@@ -54,13 +47,14 @@ class TrendStage(mixins.BabelNamed, mixins.Referrable):
         verbose_name_plural = _("Trend stages")
 
     trend_area = dd.ForeignKey('trends.TrendArea', blank=True, null=True)
+    subject_column = models.BooleanField(_("Subject column"), default=False)
 
 
 class TrendStages(dd.Table):
     required_roles = dd.login_required(TrendsUser)
     model = 'trends.TrendStage'
-    column_names = 'ref trend_area name *'
-    order_by = ['ref']
+    column_names = 'ref trend_area name subject_column *'
+    order_by = ['ref', 'trend_area', 'name']
     stay_in_grid = True
 
     insert_layout = """
@@ -104,12 +98,18 @@ class TrendEvent(UserAuthored):
         return rt.models.trends.TrendStage.objects.filter(
             trend_area=trend_area)
 
+    def full_clean(self):
+        if self.trend_stage_id:
+            if not self.trend_area_id:
+                self.trend_area = self.trend_stage.trend_area
+        super(TrendEvent, self).full_clean()
+
 
 class TrendEvents(dd.Table):
     required_roles = dd.login_required(TrendsUser)
     model = 'trends.TrendEvent'
     order_by = ['event_date', 'id']
-        
+
 
 class EventsByStage(TrendEvents):
     label = _("Trend events")
@@ -124,5 +124,3 @@ class EventsBySubject(TrendEvents):
 
 class AllTrendEvents(TrendEvents):
     required_roles = dd.login_required(TrendsStaff)
-
-

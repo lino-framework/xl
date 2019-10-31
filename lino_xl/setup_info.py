@@ -192,6 +192,7 @@ lino_xl.lib.sepa.fixtures
 lino_xl.lib.tim2lino
 lino_xl.lib.tim2lino.fixtures
 lino_xl.lib.trends
+lino_xl.lib.trends.fixtures
 lino_xl.lib.vat
 lino_xl.lib.vat.fixtures
 lino_xl.lib.vatless
