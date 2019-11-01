@@ -4,7 +4,7 @@
 
 
 from lino.api import dd, rt
-
+from django.db.utils import OperationalError
 
 class TrendObservable(dd.Model):
     class Meta:
@@ -23,7 +23,10 @@ class TrendObservable(dd.Model):
                 if te is not None:
                     return te.event_date
             return func
-        for ts in rt.models.trends.TrendStage.objects.filter(subject_column=True):
-            name = "trend_date_" + str(ts.id)
-            vf = dd.VirtualField(dd.DateField(str(ts)), w(ts), wildcard_data_elem=True)
-            cls.define_action(**{name: vf})
+        try:
+            for ts in rt.models.trends.TrendStage.objects.filter(subject_column=True):
+                name = "trend_date_" + str(ts.id)
+                vf = dd.VirtualField(dd.DateField(str(ts)), w(ts), wildcard_data_elem=True)
+                cls.define_action(**{name: vf})
+        except OperationalError:
+            pass
