@@ -5,17 +5,6 @@ from django.utils.translation import ugettext_lazy as _
 
 help_texts = {
     'lino_xl.lib.addresses.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.addresses.AddressOwner' : _("""Base class for the "addressee" of any address."""),
-    'lino_xl.lib.addresses.Address' : _("""Inherits fields from
-lino_xl.lib.countries.CountryRegionCity (country, region,
-city. zip_code) and lino_xl.lib.contacts.AddresssLocation
-(street, street_no, ...)"""),
-    'lino_xl.lib.addresses.Address.data_source' : _("""Pointer to choicelists.DataSources."""),
-    'lino_xl.lib.addresses.Address.primary' : _("""Whether this address is the primary address of its owner.
-Setting this field will automatically uncheck any previousl
-primary addresses and update the owner's address fields."""),
-    'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
-    'lino_xl.lib.addresses.AddressOwnerChecker.model' : _("""alias of lino_xl.lib.addresses.mixins.AddressOwner"""),
     'lino_xl.lib.b2c.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.b2c.Plugin.import_statements_path' : _("""A path wildcard pointing to xml files which need to get imported."""),
     'lino_xl.lib.b2c.Plugin.delete_imported_xml_files' : _("""This attribute define whether, Cosi have to delete the SEPA file
@@ -384,6 +373,18 @@ must resolve using resolve_states."""),
     'lino_xl.lib.votes.VotesByVotable.get_table_summary' : _("""Customized summary view for this table."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
     'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.addresses.Address' : _("""Inherits fields from
+lino_xl.lib.countries.CountryRegionCity (country, region,
+city. zip_code) and lino_xl.lib.contacts.AddresssLocation
+(street, street_no, ...)"""),
+    'lino_xl.lib.addresses.Address.data_source' : _("""Pointer to DataSources."""),
+    'lino_xl.lib.addresses.Address.primary' : _("""Whether this address is the primary address of its owner.
+Setting this field will automatically uncheck any previousl
+primary addresses and update the owner's address fields."""),
+    'lino_xl.lib.addresses.Addresses' : _("""Shows all addresses in the database."""),
+    'lino_xl.lib.addresses.AddressesByPartner' : _("""Shows all addresses of this partner."""),
+    'lino_xl.lib.addresses.AddressOwner' : _("""Base class for the "addressee" of any address."""),
+    'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
     'lino_xl.lib.ana.Account.group' : _("""The analytic account group this account belongs to."""),
     'lino_xl.lib.ana.Group.ref' : _("""The unique reference."""),

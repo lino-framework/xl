@@ -1,18 +1,13 @@
-# Copyright 2014-2017 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Adds functionality and models to handle multiple addresses per
-:class:`lino_xl.lib.contacts.models.Partner`. When this module is
-installed, your application usually has a "Manage addresses" button
-per partner.
+"""See :doc:`/specs/addresses`.
+
 
 .. autosummary::
    :toctree:
 
     choicelists
-    mixins
-    models
 
 Some unit test cases are
 :mod:`lino.projects.min2.tests.test_addresses`.
@@ -34,17 +29,16 @@ class Plugin(ad.Plugin):
             return
         from lino_xl.lib.addresses.mixins import AddressOwner
         self.partner_model = site.models.resolve(self.partner_model)
-        
+
         # TODO: raise an exception if the specified model does not
         # implement AddressOwner. Currently it causes failures in book
-        
+
         # if not issubclass(self.partner_model, AddressOwner):
         #     raise Exception("partner_model is not an AddressOwner")
-        
+
     def setup_explorer_menu(self, site, user_type, m):
         # mg = self.get_menu_group()
         mg = site.plugins.contacts
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('addresses.AddressTypes')
         m.add_action('addresses.Addresses')
-

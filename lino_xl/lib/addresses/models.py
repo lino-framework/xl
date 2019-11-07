@@ -1,11 +1,6 @@
-# Copyright 2014-2017 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Database models of `lino_xl.lib.addresses`.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -22,28 +17,6 @@ from .mixins import AddressOwner
 
 @dd.python_2_unicode_compatible
 class Address(AddressLocation):
-    """Inherits fields from
-    :class:`lino_xl.lib.countries.CountryRegionCity` (country, region,
-    city. zip_code) and :class:`lino_xl.lib.contacts.AddresssLocation`
-    (street, street_no, ...)
-
-    .. attribute:: partner
-
-    .. attribute:: address_type
-
-    .. attribute:: data_source
-    
-        Pointer to :class:`choicelists.DataSources`.
-
-        Specifies how this information entered into our database.
-
-    .. attribute:: primary
-    
-        Whether this address is the primary address of its owner.
-        Setting this field will automatically uncheck any previousl
-        primary addresses and update the owner's address fields.
-
-    """
 
     class Meta:
         app_label = 'addresses'
@@ -61,13 +34,7 @@ class Address(AddressLocation):
         related_name='addresses_by_partner')
     remark = dd.CharField(_("Remark"), max_length=50, blank=True)
 
-    primary = models.BooleanField(
-        _("Primary"),
-        default=False,
-        help_text=_(
-            "Checking this field will automatically uncheck any "
-            "previous primary addresses and update "
-            "the partner's address data fields."))
+    primary = models.BooleanField(_("Primary"), default=False)
 
     allow_cascaded_delete = ['partner']
 
@@ -152,19 +119,6 @@ class AddressesByCity(Addresses):
 
 
 class AddressOwnerChecker(Checker):
-    """Checks for the following data problems:
-
-    - :message:`Unique address is not marked primary.` --
-      if there is exactly one :class:`Address` object which just fails to
-      be marked as primary, mark it as primary and return it.
-
-    - :message:`Non-empty address fields, but no address record.`
-      -- if there is no :class:`Address` object, and if the
-      :class:`Partner` has some non-empty address field, create an
-      address record from these, using `AddressTypes.official` as
-      type.
-
-    """
     verbose_name = _("Check for missing or non-primary address records")
     model = AddressOwner
     messages = dict(
@@ -175,7 +129,7 @@ class AddressOwnerChecker(Checker):
         multiple_primary=_("Multiple primary addresses."),
         primary_differs=_("Primary address differs from owner address ({0})."),
     )
-    
+
     def get_checkdata_problems(self, obj, fix=False):
         if not isinstance(obj, dd.plugins.addresses.partner_model):
             return
@@ -197,7 +151,7 @@ class AddressOwnerChecker(Checker):
                     addr.full_clean()
                     addr.save()
             return
-    
+
         def getdiffs(obj, addr):
             diffs = {}
             for k in Address.ADDRESS_FIELDS:
@@ -238,4 +192,3 @@ class AddressOwnerChecker(Checker):
             yield (False, msg)
 
 AddressOwnerChecker.activate()
-    

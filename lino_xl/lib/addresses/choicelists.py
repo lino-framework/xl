@@ -1,4 +1,4 @@
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from lino.api import dd, _
@@ -31,5 +31,3 @@ class DataSources(dd.ChoiceList):
 add = DataSources.add_item
 add('01', _("Manually entered"), 'manually')
 add('02', _("Read from eID"), 'eid')
-
-

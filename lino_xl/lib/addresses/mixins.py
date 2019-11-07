@@ -1,11 +1,6 @@
-# Copyright 2014-2017 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""
-Model mixins for `lino_xl.lib.addresses`.
-
-"""
 
 from __future__ import unicode_literals
 from __future__ import print_function
@@ -19,9 +14,6 @@ from lino_xl.lib.countries.mixins import AddressLocation
 
 
 class AddressOwner(AddressLocation):
-    """Base class for the "addressee" of any address.
-
-    """
     class Meta:
         abstract = True
 
@@ -40,7 +32,7 @@ class AddressOwner(AddressLocation):
         def get_primary_address(self):
             if not isinstance(self, dd.plugins.addresses.partner_model):
                 return super(AddressOwner,self).get_primary_address()
-            
+
             Address = rt.models.addresses.Address
             try:
                 return Address.objects.get(partner=self, primary=True)
@@ -51,12 +43,13 @@ class AddressOwner(AddressLocation):
                     if addr:
                         return addr
                     p = p.get_address_parent()
-                    
+            except Address.MultipleObjectsReturned:
+                return
 
         def before_ui_save(self, ar):
             self.sync_primary_address_()
             super(AddressOwner, self).before_ui_save(ar)
-            
+
         def sync_primary_address(self, ar):
             watcher = ChangeWatcher(self)
             self.sync_primary_address_()
@@ -102,6 +95,6 @@ class AddressOwner(AddressLocation):
 
         def get_overview_elems(self, ar):
             return []
-        
+
     def get_address_parent(self):
         pass
