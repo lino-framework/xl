@@ -1,8 +1,8 @@
 .. _xl:
 
-============
-Lino XL docs
-============
+=======================
+Lino Extensions Library
+=======================
 
 Welcome to the **Lino XL** project homepage.
 
@@ -10,5 +10,3 @@ Welcome to the **Lino XL** project homepage.
 
   from lino_xl import SETUP_INFO
   print(SETUP_INFO['long_description'])
-
-
