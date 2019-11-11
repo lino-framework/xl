@@ -22,7 +22,7 @@ class Plugin(ad.Plugin):
 
     # project_model = 'tickets.Project'
     # project_model = 'contacts.Partner'
-    
+
     ticket_model = 'tickets.Ticket'
     # ticket_model = 'contacts.Partner'
     """
@@ -67,6 +67,7 @@ class Plugin(ad.Plugin):
         m = m.add_menu(p.app_label, p.verbose_name)
         m.add_action('working.Sessions')
         m.add_action('working.AllSummaries')
+        # m.add_action('working.UserSummaries')
 
     def get_dashboard_items(self, user):
         super(Plugin, self).get_dashboard_items(user)
