@@ -29,7 +29,7 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='19.10.3',
+    version='19.11.0',
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
