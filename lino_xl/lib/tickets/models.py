@@ -19,7 +19,7 @@ from lino.mixins.ref import Referrable
 from lino.mixins.periods import DateRange
 from lino.modlib.comments.mixins import Commentable
 from lino.modlib.notify.choicelists import MessageTypes
-from lino.modlib.memo.mixins  import rich_text_to_elems
+from lino.modlib.memo.mixins import rich_text_to_elems
 from lino.modlib.uploads.mixins import UploadController
 from lino.modlib.users.mixins import UserAuthored
 
@@ -86,11 +86,11 @@ class TicketType(mixins.BabelNamed):
 
     reporting_type = ReportingTypes.field(blank=True)
 
-#~ class Repository(UserAuthored):
-    #~ class Meta:
-        #~ verbose_name = _("Repository")
-        #~ verbose_name_plural = _('Repositories')
-
+# class Repository(UserAuthored):
+#     class Meta:
+#         verbose_name = _("Repository")
+#         verbose_name_plural = _('Repositories')
+#
 
 # @dd.python_2_unicode_compatible
 # class Project(mixins.DateRange, TimeInvestment,
@@ -199,12 +199,34 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
             yield (s.user, s.user.mail_mode)
 
     def get_row_permission(self, ar, state, ba):
+        """
+        User has permission if:
+        is tickets staff
+        if a member of it's group
+        is subscribed
+        is contact person
+        is contact person of org
+
+        Currently only checks for is group member and role...
+        """
+
         if not super(Site, self).get_row_permission(ar, state, ba):
             return False
-        if not ar.get_user().user_type.has_required_roles(
-                [TicketsStaff]):
+
+        if ((self.group and self.group.members.filter(user__id=ar.get_user().id).count() == 0)
+                and
+                not ar.get_user().user_type.has_required_roles(
+                    [TicketsStaff])):
             return False
         return True
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        qs = super(Site, cls).get_request_queryset(ar, **filter)
+        if not ar.get_user().user_type.has_required_roles([TicketsStaff]):
+            # pass
+            qs = qs.filter(group__members__user__id=ar.get_user().id)
+        return qs
 
     @classmethod
     def add_param_filter(
@@ -329,7 +351,6 @@ dd.update_field(
 #         return E.p(*elems)
 
 
-
 # class CloseTicket(dd.Action):
 #     #label = _("Close ticket")
 #     label = "\u2611"
@@ -409,7 +430,6 @@ class SpawnTicket(dd.Action):
             link_type.as_child())
         super(SpawnTicket, self).__init__()
 
-
     def spawn_ticket(self, ar, p):
         c = rt.models.tickets.Ticket(
             user=ar.get_user(),
@@ -441,11 +461,11 @@ class SpawnTicket(dd.Action):
         if self.goto_new:
             ar.goto_instance(new)
 
+
 @dd.python_2_unicode_compatible
 class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
              Votable, Starrable, Workable, Prioritized, Feasible,
              UploadController, mixins.Referrable):
-
     quick_search_fields = "summary description ref"
     workflow_state_field = 'state'
     create_session_on_create = True
@@ -456,6 +476,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         verbose_name = _("Ticket")
         verbose_name_plural = _('Tickets')
         abstract = dd.is_abstract_model(__name__, 'Ticket')
+
     # project = dd.DummyField()
     # project = dd.ForeignKey(
     #     'tickets.Project', blank=True, null=True,
@@ -464,7 +485,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                          related_name="tickets_by_site")
     # topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
-
 
     summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
@@ -553,7 +573,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             person = self.end_user or self.user.get_person()
             qs = rt.models.tickets.Site.objects.filter(contact_person=person)
             qs = qs.filter(state=SiteStates.active)
-            qs = qs.filter(Q(end_date__isnull=True)|Q(end_date__lte=dd.today()))
+            qs = qs.filter(Q(end_date__isnull=True) | Q(end_date__lte=dd.today()))
             qs = qs.order_by('-id')
             # qs = rt.models.tickets.Subscription.objects.filter(
             #     user=user, primary=True)
@@ -641,11 +661,11 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     def get_overview_elems(self, ar):
         """Overrides :meth:`lino.core.model.Model.get_overview_elems`.
         """
-        elems = [ ar.obj2html(self) ]  # show full summary
+        elems = [ar.obj2html(self)]  # show full summary
         # elems += [' ({})'.format(self.state.button_text)]
         # elems += [' ', self.state.button_text, ' ']
         if self.user and self.user != ar.get_user():
-            elems += [ ' ', _(" by "), self.user.obj2href(ar)]
+            elems += [' ', _(" by "), self.user.obj2href(ar)]
         if self.end_user_id:
             elems += [' ', _("for"), ' ', self.end_user.obj2href(ar)]
 
@@ -658,7 +678,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                     [vote.user.obj2href(ar) for vote in qs], sep=', ')
         elif getattr(self, "assigned_to", None):
             elems += [", ", _("assigned to"), " ", self.assigned_to.obj2href(ar)]
-
 
         return E.p(*forcetext(elems))
         # return E.p(*join_elems(elems, sep=', '))
@@ -702,7 +721,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             return False
         return True
 
-
     @classmethod
     def quick_search_filter(cls, search_text, prefix=''):
         """
@@ -710,12 +728,20 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         """
         return super(mixins.Referrable, cls).quick_search_filter(search_text, prefix)
 
+    @classmethod
+    def get_request_queryset(cls, ar):
+        qs = super(Ticket, cls).get_request_queryset(ar)
+        if not ar.get_user().user_type.has_required_roles([TicketsStaff]):
+            # pass
+            qs = qs.filter(site__group__members__user__id=ar.get_user().id)
+
+        return qs
+
 # dd.update_field(Ticket, 'user', verbose_name=_("Reporter"))
 
 
 @dd.python_2_unicode_compatible
 class Link(dd.Model):
-
     class Meta:
         app_label = 'tickets'
         verbose_name = _("Dependency")
@@ -785,9 +811,8 @@ def setup_memo_commands(sender=None, **kwargs):
             # lines = inspect.getsourcelines(s)
             return '<a href="{0}" target="_blank">{1}</a>'.format(url, txt)
         return "<pre>{}</pre>".format(s)
+
     mp.register_command('py', py2html)
-
-
 
 
 from .ui import *

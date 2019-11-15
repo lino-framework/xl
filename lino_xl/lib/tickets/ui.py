@@ -399,7 +399,8 @@ class Tickets(dd.Table):
 
     @classmethod
     def get_queryset(self, ar, **filter):
-        return self.model.objects.select_related(
+        qs = super(Tickets, self).get_queryset(ar, **filter)
+        return qs.select_related(
             'user', 'assigned_to', # 'project',
             'duplicate_of', 'end_user')
 
@@ -777,7 +778,6 @@ class MyTicketsToWork(Tickets):
 class SiteDetail(dd.DetailLayout):
     bottom_left = """
     description
-    tickets.SubscriptionsBySite
     """
     bottom = """
         bottom_left:30 TicketsBySite
@@ -848,7 +848,6 @@ class Sites(dd.Table):
             # sqs = rt.models.tickets.Subscription.objects.filter(user=pv.watcher)
             # subscribed_sites = sqs.values_list('site')
             # qs = qs.filter(pk__in=subscribed_sites)
-
         qs = self.model.add_param_filter(qs, show_exposed=pv.show_exposed)
 
         return qs
