@@ -1,4 +1,4 @@
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for managing contacts.
@@ -24,12 +24,14 @@ class Plugin(ad.Plugin):
     verbose_name = _("Contacts")
     needs_plugins = ['lino_xl.lib.countries', 'lino.modlib.system']
 
-    ## settings
-
     region_label = _('Region')
-    
+
     use_vcard_export = False
     with_roles_history = False
+
+    def get_requirements(self, site):
+        if site.plugins.contacts.use_vcard_export:
+            yield 'vobject'
 
     def post_site_startup(self, site):
         if not site.is_installed('memo'):
@@ -37,7 +39,7 @@ class Plugin(ad.Plugin):
         rdm = site.plugins.memo.parser.register_django_model
         rdm('person', site.models.contacts.Person)
         rdm('company', site.models.contacts.Company)
-    
+
     def setup_main_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         # We use the string representations and not the classes because
@@ -56,7 +58,7 @@ class Plugin(ad.Plugin):
         m.add_action('contacts.Partners')
 
 
-            
+
 # @dd.when_prepared('contacts.Person', 'contacts.Company')
 # def hide_region(model):
 #     model.hide_elements('region')

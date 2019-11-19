@@ -28,20 +28,14 @@ from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.skills.mixins import Feasible
 
-
-# from lino_xl.lib.excerpts.mixins import Certifiable
-#from lino_xl.lib.googleapi_people.models import GooglePeople
-
-
 if dd.plugins.contacts.use_vcard_export:
-    import vobject
-    
-# try:
-#     import vobject
-# except ImportError:
-#         raise Exception(
-#             "use_vcard_export is True but vobject is not installed")
-#     vobject = None
+    try:
+        import vobject
+    except ImportError:
+        # silently ignore it because we don't want `inv install` to fail.
+        # raise Exception(
+        #     "use_vcard_export is True but vobject is not installed")
+        vobject = None
 
 
 # from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
@@ -79,11 +73,11 @@ class ExportVCardFile(dd.Action):
                 j = vobject.vCard()
                 obj.fill_vcard(j)
                 wf.write(j.serialize())
-            
+
         ar.set_response(success=True)
         ar.set_response(open_url=mf.url)
 
-    
+
 @dd.python_2_unicode_compatible
 class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
               AddressOwner, UploadController, Feasible, Printable):
@@ -109,7 +103,7 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
     quick_search_fields = "prefix name phone gsm"
 
     # print_labels = dd.PrintLabelsAction()
-    
+
     allow_merge_action = True
 
     def on_create(self, ar):
@@ -142,7 +136,7 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
     def get_last_name_prefix(self):
         # overrides lino.mixins.humans.Human
         return self.prefix
-    
+
     def __str__(self):
         #~ return self.name
         return self.get_full_name()
@@ -228,7 +222,7 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
         """Return the user object that corresponds to this partner.
 
         If the application's User model inherits from Partner, then
-        
+
 
         """
         User = rt.models.users.User
@@ -341,7 +335,7 @@ class Person(Human, Born, Partner):
     def get_after_salutation_words(self):
         if self.prefix:
             yield self.prefix
-            
+
     def full_clean(self, *args, **kw):
         """Set the `name` field of this person.  This field is visible in the
         Partner's detail but not in the Person's detail and serves for
@@ -515,8 +509,8 @@ class Role(dd.Model, Addressable):
     else:
         start_date = dd.DummyField()
         end_date = dd.DummyField()
-        
-    
+
+
     def __str__(self):
         if self.person_id is None:
             return super(Role, self).__str__()
