@@ -733,7 +733,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         qs = super(Ticket, cls).get_queryset(user)
         if not user.user_type.has_required_roles([TicketsStaff]):
             # pass
-            qs = qs.filter(site__group__members__user__id=user.pk)
+            qs = qs.filter(Q(site__group__members__user__id=user.pk) | Q(user=user) | Q(end_user=user)| Q(assigned_to=user))
 
         return qs
 
