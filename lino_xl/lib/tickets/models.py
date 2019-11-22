@@ -221,11 +221,11 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
         return True
 
     @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        qs = super(Site, cls).get_request_queryset(ar, **filter)
-        if not ar.get_user().user_type.has_required_roles([TicketsStaff]):
+    def get_queryset(cls, user):
+        qs = super(Site, cls).get_queryset(user)
+        if not user.user_type.has_required_roles([TicketsStaff]):
             # pass
-            qs = qs.filter(group__members__user__id=ar.get_user().id)
+            qs = qs.filter(group__members__user__id=user.pk)
         return qs
 
     @classmethod
@@ -729,11 +729,11 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         return super(mixins.Referrable, cls).quick_search_filter(search_text, prefix)
 
     @classmethod
-    def get_request_queryset(cls, ar):
-        qs = super(Ticket, cls).get_request_queryset(ar)
-        if not ar.get_user().user_type.has_required_roles([TicketsStaff]):
+    def get_queryset(cls, user):
+        qs = super(Ticket, cls).get_queryset(user)
+        if not user.user_type.has_required_roles([TicketsStaff]):
             # pass
-            qs = qs.filter(site__group__members__user__id=ar.get_user().id)
+            qs = qs.filter(site__group__members__user__id=user.pk)
 
         return qs
 
