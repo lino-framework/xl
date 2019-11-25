@@ -10,6 +10,7 @@ from atelier.sphinxconf.base import py2url_txt
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
+from django.contrib.contenttypes.fields import GenericRelation
 from etgen.html import tostring
 from etgen.utils import join_elems, forcetext
 from lino import mixins
@@ -57,9 +58,7 @@ class TimeInvestment(Commentable):
         abstract = True
 
     closed = models.BooleanField(_("Closed"), default=False)
-    # private = models.BooleanField(_("Private"), default=True)
 
-    # planned_time = models.TimeField(
     planned_time = dd.DurationField(
         _("Planned time"),
         blank=True, null=True)
@@ -190,6 +189,7 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
     state = SiteStates.field(default='draft')
     group = dd.ForeignKey('groups.Group', null=True, blank=True)
     hours_paid = dd.DurationField(_("Hours paid"), blank=True, null=True)
+    private = models.BooleanField(_("Private"), default=False)
 
     def __str__(self):
         return self.ref or self.name
@@ -223,9 +223,10 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
     @classmethod
     def get_queryset(cls, user):
         qs = super(Site, cls).get_queryset(user)
-        if not user.user_type.has_required_roles([TicketsStaff]):
-            # pass
-            qs = qs.filter(group__members__user__id=user.pk)
+        if user.is_anonymous:
+            qs = qs.filter(private=False)
+        elif not user.user_type.has_required_roles([TicketsStaff]):
+            qs = qs.filter(Q(private=False) | Q(group__members__user__id=user.pk)).distinct()
         return qs
 
     @classmethod
@@ -496,7 +497,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     ticket_type = dd.ForeignKey(
         'tickets.TicketType', blank=True, null=True)
     duplicate_of = dd.ForeignKey(
-        'self', blank=True, null=True, verbose_name=_("Duplicate of"))
+        'self', blank=True, null=True, verbose_name=_("Duplicate of"),
+        related_name="duplicated_tickets")
 
     end_user = dd.ForeignKey(
         end_user_model,
@@ -551,6 +553,37 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         blank=True, null=True,
         help_text=_("Last user to make a comment"))
 
+    comments = GenericRelation('comments.Comment',
+        content_type_field='owner_type', object_id_field='owner_id',
+        related_query_name="ticket")
+
+    @classmethod
+    def get_queryset(cls, user):
+        qs = super(Ticket, cls).get_queryset(user)
+        if user.is_anonymous:
+            qs = qs.filter(private=False, site__private=False)
+        elif not user.user_type.has_required_roles([TicketsStaff]):
+            qs = qs.filter(
+                Q(site__group__members__user__id=user.pk) |
+                Q(user=user) | Q(end_user=user)|
+                Q(assigned_to=user)|
+                Q(private=False, site__private=False))
+        return qs
+
+    @classmethod
+    def add_comments_filter(cls, qs, user):
+        # print(20191125, qs.model)
+        if user.is_anonymous:
+            qs = qs.filter(ticket__private=False, ticket__site__private=False).distinct()
+        elif not user.user_type.has_required_roles([TicketsStaff]):
+            qs = qs.filter(
+                Q(ticket__site__group__members__user__id=user.pk) |
+                Q(ticket__user=user) | Q(ticket__end_user=user)|
+                Q(ticket__assigned_to=user)|
+                Q(ticket__private=False, ticket__site__private=False)).distinct()
+            # print(20191125, qs.query)
+        return qs
+
     def get_rfc_description(self, ar):
         html = ''
         _ = gettext
@@ -595,7 +628,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
             self.fixed_since = session.get_datetime('end')
 
         self.touch()
-
         self.full_clean()
         self.save()
 
@@ -728,14 +760,9 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         """
         return super(mixins.Referrable, cls).quick_search_filter(search_text, prefix)
 
-    @classmethod
-    def get_queryset(cls, user):
-        qs = super(Ticket, cls).get_queryset(user)
-        if not user.user_type.has_required_roles([TicketsStaff]):
-            # pass
-            qs = qs.filter(Q(site__group__members__user__id=user.pk) | Q(user=user) | Q(end_user=user)| Q(assigned_to=user))
+# from django.contrib.contenttypes.fields import GenericRelation
+# dd.inject_action('comments.Comment', ticket=GenericRelation(Ticket))
 
-        return qs
 
 # dd.update_field(Ticket, 'user', verbose_name=_("Reporter"))
 
