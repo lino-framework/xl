@@ -8,11 +8,12 @@ from builtins import str
 from django.db import models
 from django.conf import settings
 from django.db.models import Q
+from django.contrib.contenttypes.fields import GenericRelation
 
 from lino.api import dd, rt, _
 from lino import mixins
 from etgen.html import E, join_elems
-from lino.modlib.comments.mixins import Commentable
+from lino.modlib.comments.mixins import Commentable, PrivateCommentsReader
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.mixins import ChangeNotifier
 
@@ -28,6 +29,10 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
 
     description = dd.RichTextField(
         _("Description"), blank=True, format='plain')
+
+    comments = GenericRelation('comments.Comment',
+        content_type_field='owner_type', object_id_field='owner_id',
+        related_query_name="group")
 
 
     @classmethod
@@ -64,6 +69,16 @@ class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
             chunks.append(btn)
 
         return E.div(*chunks)
+
+    @classmethod
+    def get_comments_filter(cls, user):
+        if user.user_type.has_required_roles([PrivateCommentsReader]):
+            return None
+        if user.is_anonymous:
+            return super(Group, cls).get_comments_filter(user)
+        flt = Q(group__members__user=user)
+        flt |= Q(user=user) | Q(private=False)
+        return flt
 
 
 class Groups(dd.Table):

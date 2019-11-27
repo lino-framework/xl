@@ -18,7 +18,7 @@ from lino.api import dd, rt, _, pgettext, gettext
 from lino.core.actions import CreateRow
 from lino.mixins.ref import Referrable
 from lino.mixins.periods import DateRange
-from lino.modlib.comments.mixins import Commentable
+from lino.modlib.comments.mixins import Commentable, PrivateCommentsReader
 from lino.modlib.notify.choicelists import MessageTypes
 from lino.modlib.memo.mixins import rich_text_to_elems
 from lino.modlib.uploads.mixins import UploadController
@@ -221,12 +221,12 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
         return True
 
     @classmethod
-    def get_queryset(cls, user):
-        qs = super(Site, cls).get_queryset(user)
+    def get_user_queryset(cls, user):
+        qs = super(Site, cls).get_user_queryset(user)
         if user.is_anonymous:
             qs = qs.filter(private=False)
         elif not user.user_type.has_required_roles([TicketsStaff]):
-            qs = qs.filter(Q(private=False) | Q(group__members__user__id=user.pk)).distinct()
+            qs = qs.filter(Q(private=False) | Q(group__members__user=user)).distinct()
         return qs
 
     @classmethod
@@ -487,6 +487,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     # topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
     # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
 
+    private = models.BooleanField(_("Private"), default=False)
+
     summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
         blank=False,
@@ -558,8 +560,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         related_query_name="ticket")
 
     @classmethod
-    def get_queryset(cls, user):
-        qs = super(Ticket, cls).get_queryset(user)
+    def get_user_queryset(cls, user):
+        qs = super(Ticket, cls).get_user_queryset(user)
         if user.is_anonymous:
             qs = qs.filter(private=False, site__private=False)
         elif not user.user_type.has_required_roles([TicketsStaff]):
@@ -570,19 +572,36 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                 Q(private=False, site__private=False))
         return qs
 
+    def is_comment_private(self, comment, ar):
+        if self.site_id and self.site.private:
+            return True
+        return self.private
+
     @classmethod
-    def add_comments_filter(cls, qs, user):
-        # print(20191125, qs.model)
+    def get_comments_filter(cls, user):
         if user.is_anonymous:
-            qs = qs.filter(ticket__private=False, ticket__site__private=False).distinct()
-        elif not user.user_type.has_required_roles([TicketsStaff]):
-            qs = qs.filter(
-                Q(ticket__site__group__members__user__id=user.pk) |
-                Q(ticket__user=user) | Q(ticket__end_user=user)|
-                Q(ticket__assigned_to=user)|
-                Q(ticket__private=False, ticket__site__private=False)).distinct()
-            # print(20191125, qs.query)
-        return qs
+            return super(Ticket, cls).get_comments_filter(user)
+        if user.user_type.has_required_roles([PrivateCommentsReader]):
+            return None
+        flt = Q(ticket__site__group__members__user__id=user.pk)
+        flt |= Q(ticket__user=user) | Q(ticket__end_user=user)
+        flt |= Q(ticket__assigned_to=user)
+        flt |= Q(user=user) | Q(private=False)
+        return flt
+
+    # @classmethod
+    # def add_comments_filter(cls, qs, user):
+    #     # note that this requires the related_query_name of the GenericRelation
+    #     if user.is_anonymous:
+    #         qs = qs.filter(ticket__private=False, ticket__site__private=False).distinct()
+    #     elif not user.user_type.has_required_roles([TicketsStaff]):
+    #         qs = qs.filter(
+    #             Q(ticket__site__group__members__user__id=user.pk) |
+    #             Q(ticket__user=user) | Q(ticket__end_user=user)|
+    #             Q(ticket__assigned_to=user)|
+    #             Q(ticket__private=False, ticket__site__private=False)).distinct()
+    #         # print(20191125, qs.query)
+    #     return qs
 
     def get_rfc_description(self, ar):
         html = ''

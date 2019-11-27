@@ -531,5 +531,3 @@ class MyGoneVisitors(My, GoneVisitors):
     """Show my visitors who have gone."""
     required_roles = dd.login_required(OfficeUser)
     label = _("My gone visitors")
-
-
