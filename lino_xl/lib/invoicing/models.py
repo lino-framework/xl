@@ -127,7 +127,7 @@ class Tariffs(dd.Table):
     order_by = ['designation']
 
 
-# @dd.python_2_unicode_compatible
+# 
 class Area(BabelDesignated, Sequenced):
     class Meta:
         app_label = 'invoicing'
@@ -165,7 +165,7 @@ class Areas(dd.Table):
 
 
 
-@dd.python_2_unicode_compatible
+
 class Plan(UserPlan):
     class Meta:
         app_label = 'invoicing'
@@ -338,7 +338,7 @@ class Plan(UserPlan):
 generator_label = _("Generator")
 
 
-@dd.python_2_unicode_compatible
+
 class Item(dd.Model):
     class Meta:
         app_label = 'invoicing'

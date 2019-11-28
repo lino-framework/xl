@@ -27,7 +27,7 @@ from .choicelists import LinkTypes
 config = dd.plugins.humanlinks
 
 
-@dd.python_2_unicode_compatible
+
 class Link(dd.Model):
     """A link between two persons.
 

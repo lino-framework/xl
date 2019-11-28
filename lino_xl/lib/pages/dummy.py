@@ -21,7 +21,7 @@ from lino.api import dd
 DUMMY_PAGES = {}
 
 
-@dd.python_2_unicode_compatible
+
 class DummyPage(AttrDict):
     raw_html = False
     #~ special = False

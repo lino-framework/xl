@@ -81,7 +81,7 @@ class ChoicesBySet(Choices):
     # required_roles = dd.login_required()
 
 
-@dd.python_2_unicode_compatible
+
 class Poll(UserAuthored, mixins.CreatedModified, Referrable):
     class Meta(object):
         app_label = 'polls'
@@ -201,7 +201,7 @@ class MyPolls(My, Polls):
     column_names = 'ref title state *'
 
 
-@dd.python_2_unicode_compatible
+
 class Question(mixins.Sequenced):
     class Meta(object):
         app_label = 'polls'
@@ -306,7 +306,7 @@ class ToggleChoice(dd.Action):
         # dd.logger.info("20140930 %s", obj)
 
 
-@dd.python_2_unicode_compatible
+
 class Response(UserAuthored, mixins.Registrable):
 
     class Meta(object):
@@ -449,7 +449,7 @@ class AnswerChoices(dd.Table):
     model = 'polls.AnswerChoice'
 
 
-@dd.python_2_unicode_compatible
+
 class AnswerRemark(dd.Model):
 
     class Meta(object):
@@ -510,7 +510,7 @@ class AnswerRemarkField(dd.VirtualField):
         return obj.remark.remark
 
 
-@dd.python_2_unicode_compatible
+
 class AnswersByResponseRow(TableRow):
     FORWARD_TO_QUESTION = tuple(
         "full_clean after_ui_save disable_delete save_new_instance save_watched_instance delete_instance".split())
@@ -738,7 +738,7 @@ class AnswersByResponsePrint(AnswersByResponseBase):
 
         return E.ul(*items)
 
-@dd.python_2_unicode_compatible
+
 class AnswersByQuestionRow(TableRow):
     FORWARD_TO_RESPONSE = tuple(
         "full_clean after_ui_save disable_delete obj2href".split())

@@ -33,7 +33,7 @@ from lino.api import dd, rt
 #~ add('100', _('Father'),'father',gender=dd.Genders.male)
 #~ add('101', _('Mother'),'mother',gender=dd.Genders.female)
 
-@dd.python_2_unicode_compatible
+
 class Couple(dd.Model):
 
     class Meta:

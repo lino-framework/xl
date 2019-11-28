@@ -70,7 +70,7 @@ class StartEndTime(dd.Model):
         verbose_name=_("End Time"))
 
 
-@dd.python_2_unicode_compatible
+
 class Slot(mixins.Sequenced, StartEndTime):
 
     class Meta:
@@ -95,7 +95,7 @@ class Topic(mixins.BabelNamed, Printable, Duplicable):
         verbose_name_plural = _('Topics')
 
 
-@dd.python_2_unicode_compatible
+
 class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
     class Meta:
         app_label = 'courses'
@@ -175,7 +175,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
             'excerpts')
 
 
-@dd.python_2_unicode_compatible
+
 class Course(Reservation, Duplicable, Printable):
 
     class Meta:
@@ -534,7 +534,7 @@ class ConfirmedSubmitInsert(dd.SubmitInsert):
         ar.set_response(close_window=True)
 
 
-@dd.python_2_unicode_compatible
+
 class Enrolment(UserAuthored, Certifiable, DateRange):
     # invoiceable_date_field = 'request_date'
     workflow_state_field = 'state'

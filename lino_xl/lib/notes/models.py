@@ -95,7 +95,7 @@ class EventTypes(dd.Table):
     """
 
 
-@dd.python_2_unicode_compatible
+
 class Note(TypedPrintable,
            UserAuthored,
            Controllable,

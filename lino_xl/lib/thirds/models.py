@@ -19,7 +19,7 @@ from lino_xl.lib.contacts import models as contacts
 from lino.modlib.gfks.mixins import Controllable
 
 
-@dd.python_2_unicode_compatible
+
 class Third(mixins.Sequenced, contacts.PartnerDocument, Controllable):
 
     class Meta:

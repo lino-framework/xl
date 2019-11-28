@@ -84,7 +84,7 @@ class Event(mixins.BabelNamed):
     url = models.URLField(blank=True)
 
 
-@dd.python_2_unicode_compatible
+
 class Stage(mixins.Sequenced):
     event = dd.ForeignKey('events.Event', related_name="stages")
     city = dd.ForeignKey('countries.Place', related_name="stages")

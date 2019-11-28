@@ -5,7 +5,7 @@
 from __future__ import unicode_literals
 from __future__ import print_function
 
-from django.utils import six
+import six
 from lino.api import dd, _
 from lino import mixins
 

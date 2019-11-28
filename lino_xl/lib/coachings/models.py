@@ -75,7 +75,7 @@ class CoachingEnding(mixins.BabelNamed, mixins.Sequenced):
                     "coachings of specified type."))
 
 
-@dd.python_2_unicode_compatible
+
 class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier):
 
     class Meta:

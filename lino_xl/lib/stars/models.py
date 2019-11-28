@@ -22,7 +22,7 @@ from lino.core.gfks import gfk2lookup
 
 # from lino.modlib.gfks.fields import GenericForeignKey, GenericForeignKeyIdField
 
-@dd.python_2_unicode_compatible
+
 class Star(UserAuthored, Controllable):
     """Represents the fact that a given database object is starred by a
     given User.

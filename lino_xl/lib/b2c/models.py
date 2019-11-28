@@ -198,7 +198,7 @@ class ImportStatements(dd.Action):
 dd.inject_action('system.SiteConfig', import_b2c=ImportStatements())
 
 
-@dd.python_2_unicode_compatible
+
 class Account(dd.Model):
 
     class Meta:
@@ -232,7 +232,7 @@ class Account(dd.Model):
 PRIMARY_FIELDS = dd.fields_list(Account, 'iban bic')
 
 
-@dd.python_2_unicode_compatible
+
 class Statement(dd.Model):
 
     class Meta:

@@ -17,7 +17,7 @@ from .roles import SepaUser, SepaStaff
 from lino_xl.lib.contacts.roles import ContactsUser
 
 
-@dd.python_2_unicode_compatible
+
 class Account(dd.Model):
 
     class Meta:

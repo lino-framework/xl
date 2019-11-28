@@ -119,7 +119,7 @@ add('10', _("Normal"), 'normal')
 # re-populated in bevat and bevats.
 # See also lino_xl.lib.vat.Plugin.default_vat_regime
 
-# @dd.python_2_unicode_compatible
+# 
 class DeclarationField(dd.Choice):
     editable = False
     vat_regimes = None

@@ -36,7 +36,7 @@ class IBANFieldElement(UppercaseTextFieldElement):
             UppercaseTextFieldElement, self).get_column_options(**kw)
         kw.update(renderer=js_code('Lino.iban_renderer'))
         return kw
-    
+
 
 class UppercaseTextField(models.CharField, dd.CustomField):
     """A custom CharField that accepts only uppercase caracters."""
@@ -56,14 +56,14 @@ class UppercaseTextField(models.CharField, dd.CustomField):
 class BICField(iban_fields.BICField, UppercaseTextField):
     """Database field used to store a BIC. """
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection, context=None):
         return value
 
 
 class IBANField(iban_fields.IBANField, dd.CustomField):
     """Database field used to store an IBAN. """
 
-    def from_db_value(self, value, expression, connection, context):
+    def from_db_value(self, value, expression, connection, context=None):
         return value
 
     def create_layout_elem(self, rnd, cl, *args, **kw):
@@ -72,7 +72,7 @@ class IBANField(iban_fields.IBANField, dd.CustomField):
         #     # cl is the CharFieldElement class of the renderer
         #     return IBANFieldElement(*args, **kw)
         # if isinstance(rnd, bootstrap3.Renderer):
-        
+
 
     def to_python(self, value):
         if isinstance(value, six.string_types):
@@ -81,5 +81,3 @@ class IBANField(iban_fields.IBANField, dd.CustomField):
 
     # def get_column_renderer(self):
     #     return 'Lino.iban_renderer'
-
-

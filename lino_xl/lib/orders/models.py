@@ -56,7 +56,7 @@ except AttributeError:
 
 from lino.modlib.uploads.mixins import UploadController
 
-# @dd.python_2_unicode_compatible
+# 
 # class Order(SalesDocument, UserAuthored, UploadController, RecurrenceSet, EventGenerator, Duplicable):
 # class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
 class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, ProjectRelated):
@@ -252,7 +252,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
 # ENROLMENT
 
 
-@dd.python_2_unicode_compatible
+
 class Enrolment(dd.Model):
     # invoiceable_date_field = 'request_date'
     # workflow_state_field = 'state'

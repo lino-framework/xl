@@ -77,7 +77,7 @@ class Countries(dd.Table):
 from lino.mixins import Hierarchical
 
 
-# @dd.python_2_unicode_compatible
+# 
 class Place(Hierarchical, mixins.BabelNamed):
     class Meta(object):
         verbose_name = _("Place")

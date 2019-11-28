@@ -47,7 +47,7 @@ from .choicelists import MeetingStates
 from lino_xl.lib.tickets.choicelists import TicketStates
 
 
-@dd.python_2_unicode_compatible
+
 class Meeting(Referrable, Milestone, Reservation, Duplicable, Starrable):
     """A Meetings is a list of tickets that are to be discussed with a group of people
     """

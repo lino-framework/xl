@@ -108,7 +108,7 @@ class VerifyUser(dd.Action):
 
     
 
-# @python_2_unicode_compatible
+# 
 #class User(User, Phonable, AddressLocation):
 class User(User, Person):
 

@@ -96,7 +96,7 @@ class PopulateMembers(dd.Action):
             _("Added %d children.") % n, refresh_all=True)
 
 
-@dd.python_2_unicode_compatible
+
 class Household(contacts.Partner):
     class Meta:
         app_label = 'households'
@@ -251,7 +251,7 @@ class HouseholdsByType(Households):
 #     """
 
 
-@dd.python_2_unicode_compatible
+
 class Member(mixins.DateRange, mixins.Human, mixins.Born):
     class Meta:
         app_label = 'households'

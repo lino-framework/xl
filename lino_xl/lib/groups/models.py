@@ -114,7 +114,7 @@ class MyGroups(My, Groups):
 
 
 
-@dd.python_2_unicode_compatible
+
 class Membership(UserAuthored):
 
     class Meta:

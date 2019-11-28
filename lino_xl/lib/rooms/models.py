@@ -60,7 +60,7 @@ def setup_rooms_workflow(sender=None, **kw):
         icon_name='cross')
 
 
-@dd.python_2_unicode_compatible
+
 class Booking(ContactRelated, Reservation):
 
     class Meta:

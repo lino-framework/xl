@@ -19,7 +19,7 @@ from .choicelists import ContactDetailTypes
 from .mixins import ContactDetailsOwner
 
 
-@dd.python_2_unicode_compatible
+
 class ContactDetail(dd.Model):
     class Meta:
         app_label = 'phones'

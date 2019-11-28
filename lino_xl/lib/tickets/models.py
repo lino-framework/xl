@@ -91,7 +91,7 @@ class TicketType(mixins.BabelNamed):
 #         verbose_name_plural = _('Repositories')
 #
 
-# @dd.python_2_unicode_compatible
+#
 # class Project(mixins.DateRange, TimeInvestment,
 #               mixins.Hierarchical, mixins.Referrable,
 #               ContactRelated):
@@ -158,7 +158,7 @@ class TicketType(mixins.BabelNamed):
 #     #     super(Project, self).save(*args, **kwargs)
 
 
-@dd.python_2_unicode_compatible
+
 class Site(Referrable, ContactRelated, Starrable, DateRange):
     class Meta:
         app_label = 'tickets'
@@ -267,7 +267,7 @@ dd.update_field(Site, 'company', verbose_name=_("Client"))
 dd.update_field(Site, 'contact_person', verbose_name=_("Contact person"))
 # dd.update_field(Site, 'detail_link', verbose_name=_("Site"))
 
-@dd.python_2_unicode_compatible
+
 class Subscription(UserAuthored):
 
     class Meta:
@@ -302,7 +302,7 @@ dd.update_field(
     Subscription, 'user', verbose_name=_("User"))
 
 
-# @dd.python_2_unicode_compatible
+#
 # class Competence(UserAuthored, Prioritized):
 
 #     class Meta:
@@ -463,7 +463,7 @@ class SpawnTicket(dd.Action):
             ar.goto_instance(new)
 
 
-@dd.python_2_unicode_compatible
+
 class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
              Votable, Starrable, Workable, Prioritized, Feasible,
              UploadController, mixins.Referrable):
@@ -786,7 +786,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 # dd.update_field(Ticket, 'user', verbose_name=_("Reporter"))
 
 
-@dd.python_2_unicode_compatible
+
 class Link(dd.Model):
     class Meta:
         app_label = 'tickets'

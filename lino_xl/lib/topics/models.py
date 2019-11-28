@@ -76,7 +76,7 @@ class AddInterestField(dd.VirtualField):
 #     # """
 
 
-#@dd.python_2_unicode_compatible    
+#    
 class Interest(Controllable):
     class Meta:
         app_label = 'topics'
@@ -104,7 +104,7 @@ class Interest(Controllable):
 
 # dd.update_field(Interest, 'user', verbose_name=_("User"))
 
-# @dd.python_2_unicode_compatible
+# 
 class Topic(StructuredReferrable, BabelNamed):
 
     ref_max_length = 5

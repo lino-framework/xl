@@ -69,7 +69,7 @@ class ClientBase(ChangeNotifier):
         if pv.client_contact_company:
             yield str(pv.client_contact_company)
 
-@dd.python_2_unicode_compatible
+
 class ClientContactBase(ContactRelated):
 
     class Meta:

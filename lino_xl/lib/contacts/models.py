@@ -78,7 +78,7 @@ class ExportVCardFile(dd.Action):
         ar.set_response(open_url=mf.url)
 
 
-@dd.python_2_unicode_compatible
+
 class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
               AddressOwner, UploadController, Feasible, Printable):
     preferred_foreignkey_width = 20
@@ -484,7 +484,7 @@ class RoleTypes(dd.Table):
     model = 'contacts.RoleType'
 
 
-@dd.python_2_unicode_compatible
+
 class Role(dd.Model, Addressable):
 
     class Meta(object):

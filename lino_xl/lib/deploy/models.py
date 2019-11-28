@@ -46,7 +46,7 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 
 
 
-# @dd.python_2_unicode_compatible
+# 
 # class Milestone(UserAuthored, DateRange, Certifiable):
 #     """A **Milestone** is a named step of evolution on a given Site.  In
 #     Scrum they are called sprints.
@@ -166,7 +166,7 @@ class SpawnTicketFromWish(SpawnTicket):
         super(SpawnTicketFromWish, self).make_link(ar, new, old)
 
 
-@dd.python_2_unicode_compatible
+
 class Deployment(Sequenced, Workable):
     class Meta:
         app_label = 'deploy'

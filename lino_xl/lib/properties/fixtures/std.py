@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2014 Luc Saffre
-#
+# Copyright 2011-2019 Luc Saffre
 # License: BSD (see file COPYING for details)
 
 
@@ -8,6 +7,7 @@ from django.utils.translation import ugettext as _
 
 from lino.utils.instantiator import Instantiator
 from lino.api import dd
+from lino_xl.lib.properties.choicelists import HowWell
 
 
 def objects():
@@ -21,8 +21,8 @@ def objects():
         nl=u"Ja of niet",
     )))
     yield ptype(id=2,
-                choicelist=properties.HowWell.actor_id,
-                default_value=properties.HowWell.default.value,
+                choicelist=HowWell.actor_id,
+                default_value=HowWell.default.value,
                 **dd.babel_values('name', **dict(
                     en="Rating",
                     de=u"Bewertung",

@@ -46,7 +46,7 @@ from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 #     """
 
 
-# @dd.python_2_unicode_compatible
+# 
 class Account(StructuredReferrable, BabelDesignated, Sequenced):
     ref_max_length = settings.SITE.plugins.ana.ref_length
 

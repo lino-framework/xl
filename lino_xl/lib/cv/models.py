@@ -37,7 +37,7 @@ config = dd.plugins.cv
 ##
 
 
-@dd.python_2_unicode_compatible
+
 class LanguageKnowledge(dd.Model):
     class Meta:
         abstract = dd.is_abstract_model(__name__, 'LanguageKnowledge')
@@ -278,7 +278,7 @@ class PeriodTable(dd.Table):
 #
 
 
-@dd.python_2_unicode_compatible
+
 class Training(SectorFunction, EducationEntry):
     """A **training** is an *education entry* with more practical
     priorities than a study. There is no school.
@@ -365,7 +365,7 @@ class TrainingsByPerson(HistoryByPerson, Trainings):
 # Studies
 #
 
-@dd.python_2_unicode_compatible
+
 class Study(EducationEntry):
     """A **study** is an :class:`EducationEntry` at a higher school or university.
     """
@@ -583,7 +583,7 @@ class FunctionsBySector(Functions):
     master_key = 'sector'
 
 
-@dd.python_2_unicode_compatible
+
 class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
     """A **work experience** is when a given person has worked for a given
     period in a given company.

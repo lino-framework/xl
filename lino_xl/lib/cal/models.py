@@ -155,7 +155,7 @@ dd.update_field(
 #     ref = models.CharField(max_length=1)
 
 
-# @dd.python_2_unicode_compatible
+# 
 class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     templates_group = 'cal/Event'
     ref_max_length = 4
@@ -390,7 +390,7 @@ class ExtAllDayField(dd.VirtualField):
         return (obj.start_time is None)
 
 
-@dd.python_2_unicode_compatible
+
 class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
     class Meta:
         app_label = 'cal'
@@ -1046,7 +1046,7 @@ class LongEntryChecker(EntryChecker):
 LongEntryChecker.activate()
 
 
-@dd.python_2_unicode_compatible
+
 class Guest(Printable):   # TODO: rename the model to "Presence"
     workflow_state_field = 'state'
     allow_cascaded_delete = ['event']

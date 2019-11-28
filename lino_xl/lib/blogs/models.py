@@ -34,7 +34,7 @@ from .roles import BlogsReader
 html_parser = etree.HTMLParser()
 
 
-@dd.python_2_unicode_compatible
+
 class EntryType(mixins.BabelNamed):
 
     templates_group = 'blogs/Entry'
@@ -66,7 +66,7 @@ class EntryTypes(dd.Table):
     blogs.EntriesByType
     """
 
-@dd.python_2_unicode_compatible
+
 class Entry(UserAuthored, Controllable, CombinedDateTime,
             Previewable):
 

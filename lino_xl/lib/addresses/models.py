@@ -15,7 +15,7 @@ from .choicelists import AddressTypes, DataSources
 from .mixins import AddressOwner
 
 
-@dd.python_2_unicode_compatible
+
 class Address(AddressLocation):
 
     class Meta:

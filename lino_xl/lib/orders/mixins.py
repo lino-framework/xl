@@ -12,7 +12,7 @@ from lino.api import dd, _
 from .choicelists import EnrolmentStates
 
 
-# @dd.python_2_unicode_compatible
+# 
 # class Enrollable(dd.Model):
 #
 #     class Meta(object):

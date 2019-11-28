@@ -32,7 +32,7 @@ from lino.modlib.printing.mixins import Printable
 from .choicelists import RecipientTypes
 
 
-@dd.python_2_unicode_compatible
+
 class Recipient(dd.Model):
 
     """
@@ -194,7 +194,7 @@ class SendMail(dd.Action):
         ar.success(**kw)
 
 
-@dd.python_2_unicode_compatible
+
 class Mail(UserAuthored, Printable, UploadController,
            mixins.ProjectRelated, Controllable):
 
@@ -347,7 +347,7 @@ class SentByPartner(Mails):
         return qs
 
 
-@dd.python_2_unicode_compatible
+
 class Attachment(Controllable):
 
     allow_cascaded_delete = ['mail']

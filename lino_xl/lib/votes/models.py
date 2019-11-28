@@ -32,7 +32,7 @@ from .actions import EditVote
 
 config = dd.plugins.votes
 
-@dd.python_2_unicode_compatible
+
 class Vote(UserAuthored, Created, Workable):
     """A **vote** is when a user has an opinion or interest about a given
     ticket (or any other votable).

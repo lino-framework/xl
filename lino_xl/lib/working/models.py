@@ -49,7 +49,7 @@ class SessionType(mixins.BabelNamed):
 #         related_name="sessions_by_ticket")
 
 
-@dd.python_2_unicode_compatible
+
 class Session(UserAuthored, Started, Ended, Workable):
     class Meta:
         app_label = 'working'
@@ -213,7 +213,7 @@ Session.set_widget_options('ticket_no', width=8)
 Session.set_widget_options('break_time', hide_sum=True)
 
 
-@dd.python_2_unicode_compatible
+
 class ServiceReport(UserAuthored, ContactRelated, Certifiable, DateRange):
     class Meta:
         app_label = 'working'

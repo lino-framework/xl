@@ -11,7 +11,7 @@ from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from .mixins import HealthcareSubject, Tariffs
 
 
-@dd.python_2_unicode_compatible
+
 class Plan(Referrable):
 
     ref_max_length = 30

@@ -19,7 +19,7 @@ logger = logging.getLogger(__name__)
 import datetime
 
 from django.conf import settings
-from django.utils import six
+import six
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from lino.api import dd, rt

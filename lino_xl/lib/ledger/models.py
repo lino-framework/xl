@@ -55,7 +55,7 @@ class LedgerInfo(dd.Model):
         except cls.DoesNotExist:
             return cls(user=user)
 
-@dd.python_2_unicode_compatible
+
 class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
 
     class Meta:
@@ -223,7 +223,7 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
 #
 #
 
-@dd.python_2_unicode_compatible
+
 class AccountingPeriod(DateRange, Referrable):
     class Meta:
         app_label = 'ledger'
@@ -327,7 +327,7 @@ class AccountingPeriod(DateRange, Referrable):
 AccountingPeriod.set_widget_options('ref', width=6)
 
 
-@dd.python_2_unicode_compatible
+
 class FiscalYear(DateRange, Referrable):
 
     class Meta:
@@ -427,7 +427,7 @@ class PaymentTerm(BabelNamed, Referrable):
         return d
 
 
-# @dd.python_2_unicode_compatible
+# 
 class Account(StructuredReferrable, BabelNamed, Sequenced):
     ref_max_length = settings.SITE.plugins.ledger.ref_length
 
@@ -496,7 +496,7 @@ class ChangeState(dd.Action):
 
 
 
-@dd.python_2_unicode_compatible
+
 class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, UploadController):
     manager_roles_required = dd.login_required(VoucherSupervisor)
 
@@ -886,7 +886,7 @@ Voucher.set_widget_options('number_with_year', width=8)
 # Voucher.set_widget_options('number', hide_sum=True)
 
 
-@dd.python_2_unicode_compatible
+
 class Movement(ProjectRelated, PeriodRangeObservable):
     allow_cascaded_delete = ['voucher']
 

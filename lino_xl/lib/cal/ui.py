@@ -1206,7 +1206,7 @@ def weekname(date):
     return _("Week {1} / {0}").format(*date.isocalendar())
 
 
-@dd.python_2_unicode_compatible
+
 class Day(TableRow):
 
     def __init__(self, offset=0, ar=None, navigation_mode="day"):

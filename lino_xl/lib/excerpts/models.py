@@ -11,7 +11,7 @@ from os.path import join, dirname
 
 import datetime
 
-from django.utils import translation, six
+from django.utils import translation
 from django.conf import settings
 from django.db import models
 from django.db.utils import OperationalError, ProgrammingError
@@ -305,10 +305,7 @@ class BodyTemplateContentField(dd.VirtualField):
         if not fn:
             return "(%s)" % _(
                 "Excerpt type \"%s\" has no body_template") % obj.excerpt_type
-        if six.PY2:
-            return open(fn).read().decode('utf8')
-        else:
-            return open(fn).read()
+        return open(fn).read()
 
     def set_value_in_object(self, ar, obj, value):
         if ar is None or value is None:
@@ -335,7 +332,7 @@ class BodyTemplateContentField(dd.VirtualField):
 ##
 
 
-@dd.python_2_unicode_compatible
+
 class Excerpt(TypedPrintable, UserAuthored,
               Controllable, mixins.ProjectRelated,
               ContactRelated, Mailable, Postable):
@@ -403,7 +400,7 @@ class Excerpt(TypedPrintable, UserAuthored,
         return self.excerpt_type
 
     def get_mailable_subject(self):
-        return six.text_type(self.owner)  # .get_mailable_subject()
+        return str(self.owner)  # .get_mailable_subject()
 
     def get_template_groups(self):
         ptype = self.get_printable_type()
@@ -733,7 +730,7 @@ class ExcerptsByOwner(Excerpts):
 
     @classmethod
     def format_excerpt(self, ex):
-        return six.text_type(ex.excerpt_type)
+        return str(ex.excerpt_type)
 
 
 if settings.SITE.project_model is None:
@@ -752,8 +749,8 @@ else:
         @classmethod
         def format_excerpt(self, ex):
             if ex.owner == ex.project:
-                return six.text_type(ex.excerpt_type)
-            return six.text_type(ex.owner)
+                return str(ex.excerpt_type)
+            return str(ex.owner)
 
 
 @dd.receiver(dd.pre_analyze)
@@ -782,7 +779,7 @@ def set_excerpts_actions(sender, **kw):
                 an = atype.get_action_name()
                 if not hasattr(m, an):
                     m.define_action(**{an: CreateExcerpt(
-                        atype, six.text_type(atype))})
+                        atype, str(atype))})
                 # dd.logger.info("Added print action to %s", m)
 
                 # if atype.certifying and not issubclass(m, Certifiable):

@@ -34,39 +34,7 @@ from lino.core.kernel import get_choicelist, choicelist_choices
 
 MULTIPLE_VALUES_SEP = ','
 
-
-class DoYouLike(dd.ChoiceList):
-    """A list of possible answers to questions of type "How much do you
-    like ...?".
-
-    """
-    verbose_name = _("Do you like?")
-
-add = DoYouLike.add_item
-add('0', _("certainly not"))
-add('1', _("rather not"))
-add('2', _("normally"), "default")
-add('3', _("quite much"))
-add('4', _("very much"))
-
-
-class HowWell(dd.ChoiceList):
-
-    """A list of possible answers to questions of type "How well ...?":
-    "not at all", "a bit", "moderate", "quite well" and "very well"
-    
-    which are stored in the database as '0' to '4',
-    and whose `__str__()` returns their translated text.
-
-    """
-    verbose_name = _("How well?")
-
-add = HowWell.add_item
-add('0', _("not at all"))
-add('1', _("a bit"))
-add('2', _("moderate"), "default")
-add('3', _("quite well"))
-add('4', _("very well"))
+from .choicelists import DoYouLike, HowWell
 
 
 class PropType(mixins.BabelNamed):
@@ -74,12 +42,12 @@ class PropType(mixins.BabelNamed):
     """
     The type of the values that a property accepts.
     Each PropType may (or may not) imply a list of choices.
-    
+
     Examples: of property types:
 
     - Knowledge (Choices: "merely", "acceptable", "good", "very good",...)
     - YesNo (no choices)
-    
+
     """
     class Meta:
         verbose_name = _("Property Type")
@@ -89,8 +57,7 @@ class PropType(mixins.BabelNamed):
 
     choicelist = models.CharField(
         max_length=50, blank=True,
-        verbose_name=_("Choices List"),
-        choices=choicelist_choices())
+        verbose_name=_("Choices List"))
 
     default_value = models.CharField(
         _("default value"),
@@ -112,6 +79,12 @@ class PropType(mixins.BabelNamed):
     """
     not yet supported
     """
+
+    @dd.chooser()
+    def choicelist_choices(cls):
+        # Must be a chooser (not simply a default value on the field) because the
+        # list is not known at startup when models are being imported.
+        return choicelist_choices()
 
     @dd.chooser()
     def default_value_choices(cls, choicelist):
@@ -148,19 +121,19 @@ class PropType(mixins.BabelNamed):
                 PropChoice.objects.filter(type=self).order_by('value')]
 
 
-@dd.python_2_unicode_compatible
+
 class PropChoice(dd.Model):
 
     """A Choice for a given PropType.  `text` is the text to be displayed
     in combo boxes.
-    
+
     `value` is the value to be stored in :attr:`PropValue.value`, it
     must be unique for all PropChoices of a given PropType.
-    
+
     Choices for a given PropType will be sorted on `value` (we might
     make this more customizable if necessary by adding a new field
     `sort_text` and/or an option to sort on text instead of value)
-    
+
     When configuring your property choices, be aware of the fact that
     existing property occurences will *not* change when you change the
     `value` of a property choice.
@@ -211,12 +184,12 @@ class Property(mixins.BabelNamed):
     type = dd.ForeignKey(PropType, verbose_name=_("Property Type"))
 
 
-@dd.python_2_unicode_compatible
+
 class PropertyOccurence(dd.Model):
 
     """A Property Occurence is when a Property occurs, possibly having a
     certain value.
-    
+
     Abstract base class for
     | :class:`lino_welfare.modlib.cv.models.PersonProperty`,
     | :class:`lino_welfare.modlib.cv.models.WantedProperty`,
@@ -283,7 +256,7 @@ class PropGroups(dd.Table):
     required_roles = dd.login_required(dd.SiteStaff)
     model = PropGroup
     detail_layout = """
-    id name 
+    id name
     PropsByGroup
     """
 
@@ -323,5 +296,3 @@ class ChoicesByType(PropChoices):
     master_key = 'type'
     order_by = ['value']
     column_names = 'value text *'
-
-
