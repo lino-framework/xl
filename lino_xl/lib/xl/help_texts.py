@@ -191,22 +191,6 @@ Posting."""),
 has been sent using snail mail."""),
     'lino_xl.lib.products.Plugin' : _("""The config descriptor for this plugin."""),
     'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
-    'lino_xl.lib.properties.DoYouLike' : _("""A list of possible answers to questions of type "How much do you
-like ...?"."""),
-    'lino_xl.lib.properties.HowWell' : _("""A list of possible answers to questions of type "How well ...?":
-"not at all", "a bit", "moderate", "quite well" and "very well" """),
-    'lino_xl.lib.properties.PropType' : _("""The type of the values that a property accepts.
-Each PropType may (or may not) imply a list of choices."""),
-    'lino_xl.lib.properties.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
-in combo boxes."""),
-    'lino_xl.lib.properties.PropGroup' : _("""A Property Group defines a list of Properties that fit together
-under a common name.  Examples of Property Groups: Skills, Soft
-Skills, Obstacles There will be one menu entry per Group."""),
-    'lino_xl.lib.properties.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
-certain value."""),
-    'lino_xl.lib.properties.ChoicesByType' : _("""Lists all PropChoices for a given PropType."""),
-    'lino_xl.lib.properties.ChoicesByType.master' : _("""alias of PropType"""),
-    'lino_xl.lib.properties.ChoicesByType.model' : _("""alias of PropChoice"""),
     'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.reception.Plugin.required_user_groups' : _("""The required user groups for viewing actors of this plugin."""),
     'lino_xl.lib.reception.CheckinVisitor' : _("""Mark this visitor as arrived."""),
@@ -1505,6 +1489,21 @@ not installed, vat_class is a dummy field."""),
     'lino_xl.lib.products.DeliveryUnits' : _("""The list of possible delivery units of a product."""),
     'lino_xl.lib.products.PriceFactors' : _("""A choicelist of "price factors"."""),
     'lino_xl.lib.products.PriceRules' : _("""The list of price rules."""),
+    'lino_xl.lib.properties.PropType' : _("""The type of the values that a property accepts.
+Each PropType may (or may not) imply a list of choices."""),
+    'lino_xl.lib.properties.PropType.default_value' : _("""The default value to set when creating a PropertyOccurence.
+This is currently used only in some fixture..."""),
+    'lino_xl.lib.properties.PropChoice' : _("""A Choice for a given PropType.  text is the text to be displayed
+in combo boxes."""),
+    'lino_xl.lib.properties.PropGroup' : _("""A Property Group defines a list of Properties that fit together
+under a common name.  Examples of Property Groups: Skills, Soft
+Skills, Obstacles There will be one menu entry per Group."""),
+    'lino_xl.lib.properties.Property' : _("""Represents a property."""),
+    'lino_xl.lib.properties.PropertyOccurence' : _("""A Property Occurence is when a Property occurs, possibly having a
+certain value."""),
+    'lino_xl.lib.properties.HowWell' : _("""A list of possible answers to questions of type "How well ...?":
+"not at all", "a bit", "moderate", "quite well" and "very well" """),
+    'lino_xl.lib.properties.DoYouLike' : _("""A list of possible answers to questions of type "How much do you like ...?"."""),
     'lino_xl.lib.sepa.Account' : _("""A bank account related to a given partner."""),
     'lino_xl.lib.sepa.Account.partner' : _("""Partner"""),
     'lino_xl.lib.sepa.Account.statements' : _("""A virtual field which displays the date of the last imported

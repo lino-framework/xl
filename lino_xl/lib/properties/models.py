@@ -1,23 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
-#
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.properties`.
-
-This module is deprecated.
-
-A :class:`PropOccurence` is when a given "property owner" has a given
-:class:`Property`.  "Property owner" can be anything: a person, a
-company, a product, an upload, it depends on the implementation of
-:class:`PropOccurence`.  For example
-:mod:`lino.projects.pcsw.models.PersonProperty`.
-
-A :class:`Property` defines the configuration of a property.
-
-.. autosummary::
-
-"""
 
 from builtins import str
 
@@ -38,17 +22,6 @@ from .choicelists import DoYouLike, HowWell
 
 
 class PropType(mixins.BabelNamed):
-
-    """
-    The type of the values that a property accepts.
-    Each PropType may (or may not) imply a list of choices.
-
-    Examples: of property types:
-
-    - Knowledge (Choices: "merely", "acceptable", "good", "very good",...)
-    - YesNo (no choices)
-
-    """
     class Meta:
         verbose_name = _("Property Type")
         verbose_name_plural = _("Property Types")
@@ -63,10 +36,6 @@ class PropType(mixins.BabelNamed):
         _("default value"),
         max_length=settings.SITE.propvalue_max_length,
         blank=True)
-    """
-    The default value to set when creating a :class:`PropertyOccurence`.
-    This is currently used only in some fixture...
-    """
 
     limit_to_choices = models.BooleanField(
         _("Limit to choices"), default=False)
@@ -123,22 +92,6 @@ class PropType(mixins.BabelNamed):
 
 
 class PropChoice(dd.Model):
-
-    """A Choice for a given PropType.  `text` is the text to be displayed
-    in combo boxes.
-
-    `value` is the value to be stored in :attr:`PropValue.value`, it
-    must be unique for all PropChoices of a given PropType.
-
-    Choices for a given PropType will be sorted on `value` (we might
-    make this more customizable if necessary by adding a new field
-    `sort_text` and/or an option to sort on text instead of value)
-
-    When configuring your property choices, be aware of the fact that
-    existing property occurences will *not* change when you change the
-    `value` of a property choice.
-
-    """
     class Meta:
         verbose_name = _("Property Choice")
         verbose_name_plural = _("Property Choices")
@@ -163,12 +116,6 @@ class PropChoice(dd.Model):
 
 
 class PropGroup(mixins.BabelNamed):
-
-    """A Property Group defines a list of Properties that fit together
-    under a common name.  Examples of Property Groups: Skills, Soft
-    Skills, Obstacles There will be one menu entry per Group.
-
-    """
     class Meta:
         verbose_name = _("Property Group")
         verbose_name_plural = _("Property Groups")
@@ -187,16 +134,6 @@ class Property(mixins.BabelNamed):
 
 class PropertyOccurence(dd.Model):
 
-    """A Property Occurence is when a Property occurs, possibly having a
-    certain value.
-
-    Abstract base class for
-    | :class:`lino_welfare.modlib.cv.models.PersonProperty`,
-    | :class:`lino_welfare.modlib.cv.models.WantedProperty`,
-    | :class:`lino_welfare.modlib.cv.models.AvoidedProperty`,
-    | ...
-
-    """
 
     class Meta:
         abstract = True

@@ -1,14 +1,14 @@
-# Copyright 2008-2015-2018 Rumma & Ko Ltd
-#
+# Copyright 2008-2015-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
-Adds functionality for managing foos.
+Adds functionality for managing properties.
+
+See :doc:`/specs/properties`.
 
 .. autosummary::
    :toctree:
 
-    models
     fixtures.std
     fixtures.demo
 
