@@ -1,11 +1,11 @@
-{%- set page_size = 'portrait' -%}
 {%- extends "weasyprint/base.weasy.html" -%}
+{%- block pagesize %}portrait{%- endblock %}
 
 {%- block main %}
 
 {{ super() }}
 
-Period from {{fdl(obj.start_date)}} 
+Period from {{fdl(obj.start_date)}}
 {% if obj.end_date %}
 to {{fdl(obj.end_date)}}
 {% endif %}.

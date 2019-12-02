@@ -25,7 +25,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("VAT")
     # menu_group = "vat"
 
-    needs_plugins = ['lino.modlib.checkdata']
+    needs_plugins = ['lino.modlib.checkdata', 'lino_xl.lib.excerpts']
 
     eu_country_codes = """AT BE BG CY CZ DK DE EE ES FI FR GB GR HU HR IE IT LV
     LT LU MT NL PO PT RO SE SI SK"""
@@ -86,6 +86,9 @@ class Plugin(ad.Plugin):
 
     def get_required_plugins(self):
 
+        for p in super(Plugin, self).get_required_plugins():
+            yield p
+
         yield 'lino_xl.lib.countries'
 
         # vat needs ledger but doesn't declare this dependency to avoid
@@ -98,8 +101,6 @@ class Plugin(ad.Plugin):
             #     self.declaration_plugins = self.declaration_plugins.split()
             # for i in self.declaration_plugins:
             #     yield i
-        for p in super(Plugin, self).get_required_plugins():
-            yield p
 
     def on_site_startup(self, site):
         vat = site.modules.vat

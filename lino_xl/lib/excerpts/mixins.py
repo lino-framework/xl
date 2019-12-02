@@ -23,7 +23,7 @@ class ClearPrinted(dd.Action):
     icon_name = 'printer_delete'
 
     # def get_action_permission(self, ar, obj, state):
-    #     if obj.printed_by_id is None:
+    #     if obj is not None and obj.printed_by_id is None:
     #         return False
     #     return super(ClearPrinted, self).get_action_permission(
     #         ar, obj, state)
@@ -65,10 +65,12 @@ class Certifiable(Printable):
             # if self._state.adding:
             #     return set()
             s = super(Certifiable, self).disabled_fields(ar)
+            # print("20191202 disabled_fields a", self, self.printed_by_id, s)
             if self.printed_by_id is None:
                 s.add('clear_printed')
             else:
                 s |= self.CERTIFIED_FIELDS
+            # print("20191202 disabled_fields b", self, self.printed_by_id, s)
             return s
 
         def on_duplicate(self, ar, master):
@@ -126,4 +128,3 @@ class ExcerptTitle(BabelNamed):
 
     def get_excerpt_title(self):
         return dd.babelattr(self, 'excerpt_title') or str(self)
-

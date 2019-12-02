@@ -290,6 +290,30 @@ class CreateExcerpt(dd.Action):
         else:
             ar.goto_instance(ex)
 
+# from lino.modlib.printing.actions import ClearCacheAction
+#
+# class DeleteExcerpt(ClearCacheAction):
+#     help_text = "foo"
+#
+#     def get_action_permission(self, ar, obj, state):
+#         # obj may be None when Lino asks whether this action
+#         # should be visible in the UI
+#         print("20191202", obj)
+#         if obj is not None and obj.printed_by_id is None:
+#             print("20191202", obj)
+#             return False
+#         return True
+#         # call super on grandparent, not on ClearCacheAction
+#         # return super(ClearCacheAction, self).get_action_permission(
+#         #     ar, obj, state)
+#
+#     def run_from_ui(self, ar):
+#         print("20191202", ar)
+#         for obj in ar.selected_rows:
+#             print("20191202", obj)
+#             obj.do_clear_cache.run_from_session(ar)
+#
+
 
 class BodyTemplateContentField(dd.VirtualField):
     editable = True
@@ -784,7 +808,7 @@ def set_excerpts_actions(sender, **kw):
 
                 # if atype.certifying and not issubclass(m, Certifiable):
                 #     m.define_action(
-                #         clear_printed=ClearCache())
+                #         clear_printed=DeleteExcerpt())
 
     # An attestable model must also inherit
     # :class:`lino.mixins.printable.BasePrintable` or some subclass
