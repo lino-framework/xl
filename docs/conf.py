@@ -18,7 +18,7 @@ extensions += ['lino.sphinxcontrib.base']
 
 
 from atelier.sphinxconf import interproject
-interproject.configure(globals())
+interproject.configure(globals(), 'lino')
 
 from lino_xl import SETUP_INFO
 
@@ -152,4 +152,3 @@ htmlhelp_basename = 'xl'
 
 extlinks = {}
 extlinks.update(ticket=('http://bugs.saffre-rumma.net/tickets/Ticket/%s', '#'))
-

@@ -1185,7 +1185,7 @@ PartnerRelated vouchers."""),
 Movment.description field."""),
     'lino_xl.lib.ledger.Voucher.get_wanted_movements' : _("""Subclasses must implement this.  Supposed to return or yield a
 list of unsaved Movement instances."""),
-    'lino_xl.lib.ledger.Journal' : _("""Django model used to store journals. See Overview."""),
+    'lino_xl.lib.ledger.Journal' : _("""Django model used to represent a journal."""),
     'lino_xl.lib.ledger.Journal.trade_type' : _("""Pointer to TradeTypes."""),
     'lino_xl.lib.ledger.Journal.voucher_type' : _("""Pointer to an item of VoucherTypes."""),
     'lino_xl.lib.ledger.Journal.journal_group' : _("""Pointer to an item of JournalGroups."""),
