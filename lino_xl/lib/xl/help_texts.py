@@ -1559,6 +1559,26 @@ the same problem."""),
     'lino_xl.lib.tickets.Ticket.reporting_type' : _("""An indication about who is going to pay for work on this
 site.  See ReportingTypes."""),
     'lino_xl.lib.tickets.TicketStates' : _("""The choicelist for the state of a ticket."""),
+    'lino_xl.lib.tickets.TicketStates.new' : _("""Somebody reported this ticket, but there was no response yet. The
+ticket needs to be triaged."""),
+    'lino_xl.lib.tickets.TicketStates.talk' : _("""Some worker needs discussion with the author.  We don't yet
+know exactly what to do with it."""),
+    'lino_xl.lib.tickets.TicketStates.todo' : _("""The ticket is confirmed and we are working on it.
+It appears in the todo list of somebody (either the assigned
+worker, or our general todo list)"""),
+    'lino_xl.lib.tickets.TicketStates.testing' : _("""The ticket is theoretically done, but we want to confirm this
+somehow, and it is not clear who should do the next step. If
+it is clear that the author should do the testing, then you
+should rather set the ticket to talk. If it is clear
+that you (the assignee) must test it, then leave the ticket at
+todo."""),
+    'lino_xl.lib.tickets.TicketStates.sleeping' : _("""Waiting for some external event. We didn't decide what to do
+with it."""),
+    'lino_xl.lib.tickets.TicketStates.ready' : _("""The ticket is basically done, but some detail still
+needs to be done by the user (e.g. testing,
+confirmation, documentation,..)"""),
+    'lino_xl.lib.tickets.TicketStates.done' : _("""The ticket has been done."""),
+    'lino_xl.lib.tickets.TicketStates.cancelled' : _("""It has been decided that we won't fix this ticket."""),
     'lino_xl.lib.tickets.Site' : _("""The Django model representing a site."""),
     'lino_xl.lib.tickets.Sites' : _("""Base class for all Sites tables."""),
     'lino_xl.lib.tickets.MySites' : _("""Shows the sites for which I have a subscription."""),

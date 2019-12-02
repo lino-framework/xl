@@ -75,6 +75,18 @@ class JournalsOverview(Journals):
     def description(cls, self, ar):
         elems = []
         elems.append(str(self))
+        table_class = self.voucher_type.table_class
+        sar = table_class.insert_action.request_from(ar, master_instance=self)
+        # print(20170217, sar)
+        sar.known_values.update(journal=self)
+        # sar.known_values.update(journal=self, user=ar.get_user())
+        if ar.get_user().authenticated:
+            txt = dd.babelattr(self, 'printed_name')
+            # txt = self.voucher_type.model._meta.verbose_name_plural
+            btn = sar.ar2button(None, _("New {}").format(txt), icon_name=None)
+            # btn.set("style", "padding-left:10px")
+            elems.append(btn)
+
         return E.p(*join_elems(elems, " / "))
 
     @dd.requestfield(_("Total"))

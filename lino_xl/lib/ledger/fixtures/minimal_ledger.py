@@ -41,20 +41,21 @@ def objects():
     # yield MODEL.create_journal(**kw)
 
     kw.update(ref="SLS", dc=CREDIT)
-    kw.update(printed_name=_("Invoice"))
-    kw.update(dd.str2kw('name', _("Sales invoices")))
-    kw.update(printed_name=_("Invoice"))
+    kw.update(dd.str2kw('printed_name', _("Invoice")))
+    # kw.update(dd.str2kw('name', _("Sales invoices")))
+    # kw.update(printed_name=_("Invoice"))
     kw.update(dd.str2kw('name', _("Sales invoices")))
     yield MODEL.create_journal(**kw)
 
     kw.update(ref="SLC", dc=DEBIT)
     kw.update(dd.str2kw('name', _("Sales credit notes")))
-    kw.update(printed_name=_("Credit note"))
+    kw.update(dd.str2kw('printed_name', _("Credit note")))
     yield MODEL.create_journal(**kw)
 
     kw.update(journal_group=JournalGroups.purchases)
     kw.update(trade_type='purchases', ref="PRC")
     kw.update(dd.str2kw('name', _("Purchase invoices")))
+    kw.update(dd.str2kw('printed_name', _("Invoice")))
     kw.update(dc=DEBIT)
     if dd.is_installed('ana'):
         yield rt.models.ana.AnaAccountInvoice.create_journal(**kw)
@@ -70,6 +71,7 @@ def objects():
 
         kw = dict(journal_group=JournalGroups.financial)
         kw.update(dd.str2kw('name', _("Bestbank Payment Orders")))
+        kw.update(dd.str2kw('printed_name', _("Payment order")))
         # kw.update(dd.babel_values(
         #     'name', de="Zahlungsaufträge", fr="Ordres de paiement",
         #     en="Payment Orders", et="Maksekorraldused"))
@@ -85,21 +87,25 @@ def objects():
         # kw.update(trade_type='')
         kw.update(dc=CREDIT)
         kw.update(account=CommonAccounts.cash.get_object(), ref="CSH")
-        kw.update(dd.str2kw('name', _("Cash")))
+        kw.update(dd.str2kw('name', _("Cash book")))
+        kw.update(dd.str2kw('printed_name', _("Cash statement")))
         yield finan.BankStatement.create_journal(**kw)
 
         kw.update(dd.str2kw('name', _("Bestbank")))
+        kw.update(dd.str2kw('printed_name', _("Bank statement")))
         kw.update(account=CommonAccounts.best_bank.get_object(), ref="BNK")
         kw.update(dc=CREDIT)
         yield finan.BankStatement.create_journal(**kw)
 
         kw.update(dd.str2kw('name', _("Miscellaneous transactions")))
+        kw.update(dd.str2kw('printed_name', _("Transaction")))
         kw.update(journal_group=JournalGroups.misc)
         kw.update(account=CommonAccounts.cash.get_object(), ref="MSC")
         kw.update(dc=CREDIT)
         yield finan.JournalEntry.create_journal(**kw)
 
-        kw.update(dd.str2kw('name', _("Salaries")))
+        kw.update(dd.str2kw('name', _("Paychecks")))
+        kw.update(dd.str2kw('printed_name', _("Paycheck")))
         kw.update(journal_group=JournalGroups.wages)
         kw.update(account=CommonAccounts.cash.get_object(), ref="SAL")
         kw.update(dc=CREDIT)
@@ -111,6 +117,7 @@ def objects():
         kw = dict(journal_group=JournalGroups.vat)
         kw.update(trade_type='taxes')
         kw.update(dd.str2kw('name', _("VAT declarations")))
+        kw.update(dd.str2kw('printed_name', _("VAT declaration")))
         kw.update(must_declare=False)
         kw.update(account=CommonAccounts.due_taxes.get_object())
         kw.update(ref=m.DEMO_JOURNAL_NAME, dc=DEBIT)
