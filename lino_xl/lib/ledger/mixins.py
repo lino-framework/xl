@@ -20,7 +20,7 @@ if dd.is_installed('ledger'):
     project_model = dd.plugins.ledger.project_model
 else:
     project_model = None
-    
+
 
 class ProjectRelated(dd.Model):
     class Meta:
@@ -188,7 +188,7 @@ class AccountVoucherItem(VoucherItem, SequencedVoucherItem):
 # def on_post_analyze(sender, **kw):
 #     for m in rt.models_by_base(AccountVoucherItem):
 #         dd.post_init.connect(set_partner_invoice_account, sender=m)
-    
+
 
 
 def JournalRef(**kw):
@@ -216,18 +216,17 @@ class PeriodRange(dd.Model):
         verbose_name=_("End period"),
         related_name="%(app_label)s_%(class)s_set_by_end_period")
 
-    
+
     def get_period_filter(self, fieldname, **kwargs):
         return rt.models.ledger.AccountingPeriod.get_period_filter(
             fieldname, self.start_period, self.end_period, **kwargs)
-    
-    
+
+
 class PeriodRangeObservable(dd.Model):
     class Meta:
         abstract = True
-        
-    observable_period_field = 'accounting_period'
 
+    observable_period_field = 'accounting_period'
 
     @classmethod
     def setup_parameters(cls, fields):
@@ -235,7 +234,7 @@ class PeriodRangeObservable(dd.Model):
             start_period=dd.ForeignKey(
                 'ledger.AccountingPeriod',
                 blank=True, null=True,
-                help_text=_("Start of observed period range"),
+                help_text=_("Start of observed period range."),
                 verbose_name=_("Period from")))
         fields.update(
             end_period=dd.ForeignKey(
@@ -243,7 +242,7 @@ class PeriodRangeObservable(dd.Model):
                 blank=True, null=True,
                 help_text=_(
                     "Optional end of observed period range. "
-                    "Leave empty to consider only the Start period."),
+                    "Leave empty to observe only the start period."),
                 verbose_name=_("Period until")))
         super(PeriodRangeObservable, cls).setup_parameters(fields)
 
@@ -266,7 +265,7 @@ class PeriodRangeObservable(dd.Model):
             else:
                 yield "{}..{}".format(pv.start_period, pv.end_period)
 
-                
+
 class ItemsByVoucher(dd.Table):
     label = _("Content")
     required_roles = dd.login_required(LedgerUser)
@@ -278,7 +277,7 @@ class ItemsByVoucher(dd.Table):
 
 class VouchersByPartnerBase(dd.VirtualTable):
     """Shows all ledger vouchers of a given partner.
-    
+
     This is a :class:`lino.core.tables.VirtualTable` with a customized
     slave summary.
 

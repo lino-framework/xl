@@ -1,4 +1,4 @@
-# Copyright 2012-2017 Luc Saffre
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -9,7 +9,7 @@ from lino.api import dd, rt, _
 
 # from etgen.html import E
 
-from .mixins import VatDocument
+from .mixins import VatDocument, VatVoucher
 
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 from lino_xl.lib.ledger.choicelists import TradeTypes
@@ -19,6 +19,7 @@ from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
 
 from .choicelists import VatRegimes, VatAreas
+from .mixins import VatDeclaration
 
 
 # class VatRules(dd.Table):
@@ -112,10 +113,11 @@ class VouchersByPartner(VouchersByPartnerBase):
         return row.total_vat
 
 
-class IntracomInvoices(PartnerVouchers):
+class VatInvoices(PartnerVouchers):
+    abstract = True
     _trade_type = None
     editable = False
-    model = VatDocument
+    model = VatVoucher
     column_names = 'detail_link partner partner_vat_id vat_regime total_base total_vat total_incl'
     # order_by = ['entry_date', 'partner']
     # order_by = ['entry_date', 'id']
@@ -125,20 +127,25 @@ class IntracomInvoices(PartnerVouchers):
         """entry_date journal__trade_type journal number
         journal__trade_type state user""".split())
 
+    parameters = dict(
+        intracom=dd.YesNo.field(_("Show intracom vouchers"), blank=True),
+        **PartnerVouchers.parameters)
+
+    params_layout = "partner project start_period end_period cleared intracom"
+    intracom_regimes = set([
+        r for r in VatRegimes.get_list_items() if r.vat_area == VatAreas.eu])
+
     @classmethod
     def get_request_queryset(cls, ar, **kwargs):
         assert not kwargs
         fkw = dict()
         if cls._trade_type is not None:
             fkw.update(journal__trade_type=cls._trade_type)
-        regimes = set([r for r in VatRegimes.get_list_items()
-                       if r.vat_area == VatAreas.eu])
-                       # if r.name.startswith('intracom')])
-        # (VatRegimes.intracom, VatRegimes.intracom_supp)
-        fkw.update(vat_regime__in=regimes)
-        qs = super(IntracomInvoices, cls).get_request_queryset(ar, **fkw)
+        if ar.param_values.intracom == dd.YesNo.yes:
+            fkw.update(vat_regime__in=cls.intracom_regimes)
+            # note that we cannot use qs.filter() because this table is on an abstract model
+        return super(VatInvoices, cls).get_request_queryset(ar, **fkw)
         # raise Exception("20170905 {}".format(qs.query))
-        return qs
 
     @dd.virtualfield(dd.ForeignKey('contacts.Partner'))
     def partner(cls, obj, ar=None):
@@ -148,7 +155,42 @@ class IntracomInvoices(PartnerVouchers):
     def partner_vat_id(cls, obj, ar=None):
         return obj.partner.vat_id
 
-dd.update_field(IntracomInvoices, 'detail_link', verbose_name=_("Invoice"))
+dd.update_field(VatInvoices, 'detail_link', verbose_name=_("Invoice"))
+
+class ByDeclaration(dd.Table):
+
+    abstract = True
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(ByDeclaration, self).param_defaults(ar, **kw)
+        mi = ar.master_instance
+        if mi is not None:
+            kw.update(start_period=mi.start_period, end_period=mi.end_period)
+        # print("20191205", kw)
+        return kw
+
+
+class SalesByDeclaration(ByDeclaration, VatInvoices):
+    _trade_type = TradeTypes.sales
+    label = _("VAT sales")
+    master = VatDeclaration
+
+class PurchasesByDeclaration(ByDeclaration, VatInvoices):
+    _trade_type = TradeTypes.purchases
+    label = _("VAT purchases")
+    master = VatDeclaration
+
+
+
+class IntracomInvoices(VatInvoices):
+    abstract = True
+
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(IntracomInvoices, self).param_defaults(ar, **kw)
+        kw.update(intracom=dd.YesNo.yes)
+        return kw
 
 class IntracomSales(IntracomInvoices):
     _trade_type = TradeTypes.sales

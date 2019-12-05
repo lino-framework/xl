@@ -46,7 +46,7 @@ from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 #     """
 
 
-# 
+#
 class Account(StructuredReferrable, BabelDesignated, Sequenced):
     ref_max_length = settings.SITE.plugins.ana.ref_length
 
@@ -84,7 +84,7 @@ class Accounts(dd.Table):
     order_by = ['ref']
     column_names = "ref designation *"
     insert_layout = """
-    ref 
+    ref
     designation
     """
     detail_layout = """
@@ -101,18 +101,18 @@ class MovementsByAccount(dd.Table):
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.mixins import Matching, AccountVoucherItem
 from lino_xl.lib.sepa.mixins import Payable
-from lino_xl.lib.vat.mixins import VatDocument, VatItemBase
+from lino_xl.lib.vat.mixins import VatVoucher, VatItemBase
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 
 
 # class MakeCopy(dd.Action):
 #     button_text = u"\u2042"  # ASTERISM (⁂)
-    
+
 #     label = _("Make copy")
 #     show_in_workflow = True
 #     show_in_bbar = False
 #     copy_item_fields = set('account ana_account total_incl seqno'.split())
-    
+
 #     parameters = dict(
 #         partner=dd.ForeignKey('contacts.Partner'),
 #         account=dd.ForeignKey('ledger.Account', blank=True),
@@ -125,10 +125,10 @@ from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 #         total_incl=dd.PriceField(_("Total incl VAT"), blank=True),
 #     )
 #     params_layout = """
-#     entry_date partner 
+#     entry_date partner
 #     your_ref
 #     subject total_incl
-#     account ana_account 
+#     account ana_account
 #     """
 
 #     def action_param_defaults(self, ar, obj, **kw):
@@ -145,7 +145,7 @@ from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 
 #     # def partner_changed(self, ar, obj, **kw):
 #     #     pass
-    
+
 #     def run_from_ui(self, ar, **kw):
 #       # raise Warning("20180802")
 
@@ -196,17 +196,17 @@ from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 #                 item.total_incl_changed(ar)
 #                 item.full_clean()
 #                 item.save()
-            
+
 #         new.full_clean()
 #         new.register_voucher(ar)
 #         new.state = VoucherStates.registered
 #         new.save()
 #         ar.goto_instance(new)
 #         ar.success()
-        
 
 
-class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
+
+class AnaAccountInvoice(VatVoucher, Matching):
     class Meta:
         verbose_name = _("Analytic invoice")
         verbose_name_plural = _("Analytic invoices")
@@ -215,7 +215,7 @@ class AnaAccountInvoice(VatDocument, Payable, Voucher, Matching):
     # probably no longer needed because now we have
     # VatDocument.items_edited
 
-        
+
 class InvoiceItem(AccountVoucherItem, VatItemBase):
     class Meta:
         app_label = 'ana'
@@ -246,8 +246,8 @@ class InvoiceItem(AccountVoucherItem, VatItemBase):
                     self.ana_account = self.account.ana_account
             else:
                 self.ana_account = None
-            
-    
+
+
 
 
 class InvoiceDetail(dd.DetailLayout):
@@ -255,9 +255,9 @@ class InvoiceDetail(dd.DetailLayout):
 
     general = dd.Panel("""
     topleft:60 totals:20
-    ItemsByInvoice 
+    ItemsByInvoice
     """, label=_("General"))
-    
+
     totals = """
     total_base
     total_vat
@@ -295,7 +295,7 @@ class Invoices(PartnerVouchers):
 
 class InvoicesByPartner(Invoices):
     master_key = 'partner'
-    
+
 class InvoicesByJournal(ByJournal, Invoices):
     """Shows all invoices of a given journal (whose
     :attr:`voucher_type<lino_xl.lib.ledger.models.Journal.voucher_type>`
@@ -337,7 +337,7 @@ class AnalyticAccountBalances(AccountBalances, Accounts):
     #     return ar.obj2html(row.group)
 
 
-                  
+
 
 VoucherTypes.add_item_lazy(InvoicesByJournal)
 
@@ -345,7 +345,7 @@ class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
     label = _("Purchase journal (analytic)")
 
 
-    
+
 class ItemsByInvoice(ItemsByVoucher):
     model = 'ana.InvoiceItem'
     column_names = "account title ana_account vat_class total_base total_vat total_incl *"
@@ -366,8 +366,7 @@ dd.inject_field(
     models.BooleanField(_("Needs analytical account"), default=False))
 
 # if dd.is_installed('vat'):
-    
+
 #     dd.inject_field(
 #         'vat.InvoiceItem', 'ana_account',
 #         dd.ForeignKey('ana.Account', blank=True, null=True))
-

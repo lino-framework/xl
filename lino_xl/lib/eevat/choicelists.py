@@ -88,8 +88,12 @@ sfld = DeclarationFields.add_sum_field
 mfld = DeclarationFields.add_mvt_field
 wfld = DeclarationFields.add_writable_field
 
+# https://www.riigiteataja.ee/aktilisa/1060/1201/7010/Lisa%201.pdf#
+
+# value, dc, vat_columns, text
+
 # (II) sales base
-mfld("00", CREDIT, '00', _("Sales 0%"))
+mfld("00", CREDIT, '00', "20% määraga maksustatavad toimingud ja tehingud")
 mfld("01", CREDIT, '01', _("Sales 6%"))
 mfld("02", CREDIT, '02', _("Sales 12%"))
 mfld("03", CREDIT, '03', _("Sales 20%"))

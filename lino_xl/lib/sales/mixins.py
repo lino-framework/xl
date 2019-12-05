@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from __future__ import unicode_literals
@@ -11,7 +11,7 @@ from django.core.exceptions import ValidationError
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import HUNDRED
 from lino_xl.lib.ledger.choicelists import TradeTypes
-from lino_xl.lib.vat.mixins import QtyVatItemBase, VatDocument
+from lino_xl.lib.vat.mixins import QtyVatItemBase, VatVoucher
 from lino_xl.lib.vat.utils import add_vat, remove_vat
 from lino_xl.lib.vat.mixins import get_default_vat_regime, myround
 from lino_xl.lib.vat.choicelists import VatAreas, VatRules
@@ -19,7 +19,7 @@ from lino_xl.lib.vat.choicelists import VatAreas, VatRules
 
 from lino.api import dd, rt, _
 
-class SalesDocument(VatDocument, Certifiable):
+class SalesDocument(VatVoucher, Certifiable):
     class Meta:
         abstract = True
 

@@ -141,7 +141,7 @@ class SalesDocuments(PartnerVouchers):
 
 
 
-class VatProductInvoice(SalesDocument, Payable, Voucher, Matching):
+class VatProductInvoice(SalesDocument, Matching):
     class Meta:
         app_label = 'sales'
         abstract = dd.is_abstract_model(__name__, 'VatProductInvoice')

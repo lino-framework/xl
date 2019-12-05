@@ -427,7 +427,7 @@ class PaymentTerm(BabelNamed, Referrable):
         return d
 
 
-# 
+#
 class Account(StructuredReferrable, BabelNamed, Sequenced):
     ref_max_length = settings.SITE.plugins.ledger.ref_length
 
@@ -497,7 +497,7 @@ class ChangeState(dd.Action):
 
 
 
-class Voucher(UserAuthored, Duplicable, Registrable, PeriodRangeObservable, UploadController):
+class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRangeObservable):
     manager_roles_required = dd.login_required(VoucherSupervisor)
 
     class Meta:

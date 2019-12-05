@@ -446,11 +446,13 @@ class PartnerVouchers(Vouchers):
     def get_request_queryset(cls, ar, **kwargs):
         qs = super(PartnerVouchers, cls).get_request_queryset(ar, **kwargs)
         # movement_set__partner=models.F('partner'))
-        if ar.param_values.cleared == dd.YesNo.yes:
+        pv = ar.param_values
+        if pv.cleared == dd.YesNo.yes:
             qs = qs.exclude(movement__cleared=False)
-        elif ar.param_values.cleared == dd.YesNo.no:
+        elif pv.cleared == dd.YesNo.no:
             qs = qs.filter(movement__cleared=False)
         return qs
+
 
 
 def mvtsum(**fkw):

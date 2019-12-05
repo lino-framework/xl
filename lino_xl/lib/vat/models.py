@@ -17,10 +17,10 @@ from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.sepa.mixins import Payable
 from .choicelists import VatClasses, VatRegimes, VatColumns
 from .choicelists import VatAreas, VatRules  # make them available for Menu.add_action
-from .mixins import VatDocument, VatItemBase
+from .mixins import VatVoucher, VatItemBase
 
 
-class VatAccountInvoice(VatDocument, Payable, Voucher, Matching):
+class VatAccountInvoice(VatVoucher, Matching):
     class Meta:
         verbose_name = _("Invoice")
         verbose_name_plural = _("Invoices")
