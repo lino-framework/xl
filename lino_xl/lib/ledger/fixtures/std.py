@@ -2,10 +2,6 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-
-from __future__ import unicode_literals
-
 import datetime
 
 from django.conf import settings
@@ -31,7 +27,7 @@ def payment_terms():
         kwargs['ref'] = ref
         kwargs = dd.str2kw('name', name, **kwargs)
         return rt.models.ledger.PaymentTerm(**kwargs)
-    
+
     yield PT(_("Payment in advance"), "PIA")
     yield PT(_("Payment seven days after invoice date"), "07", days=7)
     yield PT(_("Payment ten days after invoice date"), "10", days=10)
@@ -39,9 +35,9 @@ def payment_terms():
     yield PT(_("Payment 60 days after invoice date"), "60", days=60)
     yield PT(_("Payment 90 days after invoice date"), "90", days=90)
     yield PT(_("Payment end of month"), "EOM", end_of_month=True)
-    prt = """Prepayment <b>30%</b> 
+    prt = """Prepayment <b>30%</b>
     ({{(obj.total_incl*30)/100}} {{obj.currency}})
-    due on <b>{{fds(obj.due_date)}}</b>, remaining 
+    due on <b>{{fds(obj.due_date)}}</b>, remaining
     {{obj.total_incl - (obj.total_incl*30)/100}} {{obj.currency}}
     due 10 days before delivery.
     """
@@ -100,6 +96,10 @@ def objects():
     for i in CommonAccounts.get_list_items():
         yield i.create_object()
 
+    # delete one account object to get a MissingAccount in tests
+    CommonAccounts.net_loss.get_object().delete()
+    CommonAccounts.net_loss.set_object(None)
+
     kwargs = dict(purchases_allowed=True)
     if dd.is_installed('ana'):
         kwargs.update(needs_ana=True)
@@ -109,7 +109,6 @@ def objects():
 
     kwargs = dict(sales_allowed=True)
     yield update(CommonAccounts.sales, **kwargs)
-    
 
     # add some header accounts
     Account = rt.models.ledger.Account
@@ -121,4 +120,3 @@ def objects():
     yield account("60", _("Operation costs"))
     yield account("61", _("Wages"))
     yield account("7", _("Revenues"))
-    

@@ -164,7 +164,7 @@ class AccountEntry(ReportEntry):
 
     account = dd.ForeignKey('ledger.Account')
 
-    @dd.displayfield(_("Description"))
+    @dd.displayfield(_("Account"))
     def description(self, ar=None):
         # print(20180831, ar.renderer, ar.user)
         return self.account.description
@@ -185,7 +185,7 @@ class PartnerEntry(ReportEntry):
     partner = dd.ForeignKey('contacts.Partner')
     trade_type = TradeTypes.field()
 
-    @dd.displayfield(_("Description"))
+    @dd.displayfield(_("Partner"))
     def description(self, ar=None):
         if ar is None:
             return str(self.partner)
@@ -193,10 +193,14 @@ class PartnerEntry(ReportEntry):
 
     @classmethod
     def get_collectors(cls):
+        # raise Exception("20191206 {}".format(list(TradeTypes.get_list_items())))
         for tt in TradeTypes.get_list_items():
             a = tt.get_main_account()
-            yield TradeTypeCollector(
-                tt, cls, 'partner', 'partner', account=a)
+            if isinstance(a, rt.models.ledger.Account):  # might be MissingAccount
+                yield TradeTypeCollector(
+                    tt, cls, 'partner', 'partner', account=a)
+            #else:
+            #    raise Exception("20191206 {} is not an account".format(a))
 
     @classmethod
     def setup_parameters(cls, fields):
@@ -298,12 +302,12 @@ class AnaAccountEntry(ReportEntry):
     class Meta:
         app_label = 'sheets'
         abstract = dd.is_abstract_model(__name__, 'AnaAccountEntry')
-        verbose_name = _("Analytic account balance")
-        verbose_name_plural = _("Analytic account balances")
+        verbose_name = _("Analytic accounts balance")
+        verbose_name_plural = _("Analytic accounts balances")
 
     ana_account = dd.ForeignKey('ana.Account')
 
-    @dd.displayfield(_("Description"))
+    @dd.displayfield(_("Account"))
     def description(self, ar=None):
         return self.ana_account.description
 

@@ -540,23 +540,6 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
         super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
 
 
-    # def before_state_change(self, ar, old, new):
-    #     if new.name == 'register':
-    #         self.compute_fields()
-    #     elif new.name == 'draft':
-    #     super(Declaration, self).before_state_change(ar, old, new)
-
-    #~ def register(self,ar):
-        #~ self.compute_fields()
-        #~ super(Declaration,self).register(ar)
-        #~
-    #~ def deregister(self,ar):
-        #~ for doc in ledger.Voucher.objects.filter(declared_in=self):
-            #~ doc.declared_in = None
-            #~ doc.save()
-        #~ super(Declaration,self).deregister(ar)
-
-
     def get_payable_sums_dict(self):
         fields = self.fields_list.get_list_items()
         payable_sums = SumCollector()

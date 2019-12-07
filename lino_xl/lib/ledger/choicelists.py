@@ -22,6 +22,9 @@ class MissingAccount(object):
     def __str__(self):
         return _("No account pointing to {}").format(self.common_account)
 
+    def __repr__(self):
+        return "{}({})".format(self.__class__.__name__, repr(self.common_account))
+
 
 class JournalGroup(dd.Choice):
     menu_group = None
@@ -111,7 +114,10 @@ class CommonAccounts(dd.ChoiceList):
 
     @dd.virtualfield(dd.ForeignKey('ledger.Account'))
     def db_object(cls, choice, ar):
-        return choice.get_object()
+        obj = choice.get_object()
+        if obj is None or isinstance(obj, MissingAccount):
+            return None
+        return obj
 
     @dd.virtualfield(models.BooleanField(_("Clearable")))
     def clearable(cls, choice, ar):
@@ -276,7 +282,8 @@ def ca_fmt(ar, ca):
     if obj is None:
         elems.append(gettext("(undefined)"))
     else:
-        elems.append(ar.obj2html(obj))
+        # elems.append(ar.obj2html(obj))
+        elems.append(str(obj))
     elems.append(u" ({})".format(ca))
     return E.div(*elems)
 

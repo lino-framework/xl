@@ -1352,16 +1352,14 @@ PaymentTerm."""),
     'lino_xl.lib.ledger.ProjectRelated.project' : _("""Pointer to the "project". This field exists only if the
 project_model setting is
 nonempty."""),
-    'lino_xl.lib.ledger.PeriodRange' : _("""Model mixin for objects that consider, cover or observe a range of
-accounting periods."""),
-    'lino_xl.lib.ledger.PeriodRange.start_period' : _("""The period which marks the beginning of the range to
-consider."""),
+    'lino_xl.lib.ledger.PeriodRange' : _("""Model mixin for objects that cover a range of accounting periods."""),
+    'lino_xl.lib.ledger.PeriodRange.start_period' : _("""The period which marks the beginning of the range to cover."""),
     'lino_xl.lib.ledger.PeriodRange.end_period' : _("""Leave empty if you want only one period (specified in
 start_period). If this is non-empty, all periods
-between and including these two are to be considered."""),
-    'lino_xl.lib.ledger.PeriodRangeObservable' : _("""Model mixin for objects that can be filtered by a range of
-accounting periods. This adds two fields start_period and
-end_period to the parameter fields."""),
+between and including these two are covered."""),
+    'lino_xl.lib.ledger.PeriodRangeObservable' : _("""Model mixin for objects that can be filtered by a range of accounting
+periods. This adds two parameter fields
+start_period and end_period to every table on this model."""),
     'lino_xl.lib.ledger.ItemsByVoucher' : _("""Shows the items of this voucher."""),
     'lino_xl.lib.ledger.DueMovement' : _("""A volatile object representing a group of matching movements."""),
     'lino_xl.lib.ledger.DueMovement.match' : _("""The common match string of these movments"""),
@@ -1679,6 +1677,10 @@ account. See About returnable VAT."""),
 VatAccountInvoice)"""),
     'lino_xl.lib.vat.PrintableInvoicesByJournal' : _("""Purchase journal"""),
     'lino_xl.lib.vat.InvoiceDetail' : _("""The detail layout used by Invoices."""),
+    'lino_xl.lib.vat.SalesByDeclaration' : _("""Show a list of all sales invoices whose VAT regime is Intra-Community."""),
+    'lino_xl.lib.vat.PurchasesByDeclaration' : _("""Show a list of all purchase invoices whose VAT regime is Intra-Community."""),
+    'lino_xl.lib.vat.VatInvoices' : _("""Common base class for SalesByDeclaration and
+PurchasesByDeclaration"""),
     'lino_xl.lib.vat.IntracomSales' : _("""Show a list of all sales invoices whose VAT regime is Intra-Community."""),
     'lino_xl.lib.vat.IntracomPurchases' : _("""Show a list of all purchase invoices whose VAT regime is Intra-Community."""),
     'lino_xl.lib.vat.IntracomInvoices' : _("""Common base class for IntracomSales and

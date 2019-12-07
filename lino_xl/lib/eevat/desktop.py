@@ -34,49 +34,45 @@ class DeclarationDetail(dd.DetailLayout):
 
     values = dd.Panel("""
     partner user workflow_buttons
-    c2 c2b c2c c3 c3b c4 c5
-    F61 F62 FXX FYY F71
+    c1 c2 c3 c4
     # VouchersByDeclaration
     # vat.SalesByDeclaration vat.PurchasesByDeclaration
     vat.SalesByDeclaration vat.PurchasesByDeclaration
     """, label=_("Values"))
 
-    c2="""
-    F00
-    F01
-    F02
-    F03
+    c1 = """
+    F1
+    F2
+    F3
+    F31
+    F311
+    F32
+    F321
     """
-    c2b="""
-    # F44
-    F45
-    F46
-    """
-    c2c="""
-    F47
-    F48
-    F49
+
+    c2 = """
+    F4
+    F41
+    F5
+    F51
+    F52
+    F53
+    F54
     """
     c3 = """
-    F81
-    F82
-    F83
-    F84
-    """
-    c3b = """
-    F85
-    F86
-    F87
+    F6
+    F61
+    F7
+    F71
     """
 
     c4 = """
-    F54
-    F55
-    F56
-    """
-    c5 = """
-    F59
-    F64
+    F8
+    F9
+    F10
+    F11
+    F12
+    F13
     """
 
     # fields="""
@@ -106,6 +102,6 @@ class Declarations(dd.Table):
 class DeclarationsByJournal(ledger.ByJournal, Declarations):
     params_panel_hidden = True
     #master = journals.Journal
-    column_names = "number_with_year entry_date start_period end_period accounting_period FXX FYY F71 workflow_buttons *"
+    column_names = "number_with_year entry_date start_period end_period accounting_period F12 F13 workflow_buttons *"
 
 ledger.VoucherTypes.add_item_lazy(DeclarationsByJournal)
