@@ -27,7 +27,7 @@ def objects():
 
     ses = rt.login(dd.plugins.excerpts.responsible_user)
 
-    for et in ExcerptType.objects.all():
+    for et in ExcerptType.objects.all().order_by('id'):
         model = et.content_type.model_class()
         qs = model.get_printable_demo_objects()
         # if issubclass(model, Certifiable):
@@ -61,4 +61,3 @@ def objects():
                 traceback.print_exc()
                 dd.logger.warning(
                     "20160311 failed to render %s : %s", obj, e)
-
