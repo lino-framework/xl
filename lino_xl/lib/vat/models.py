@@ -102,12 +102,6 @@ dd.inject_field('ledger.Account',
 
 class VatColumnsChecker(Checker):
     # model = 'system.SiteConfig'
-    """
-    This is an unbound data checker
-    (:attr:`lino.modlib.checkdata.Checker.model` is `None`), i.e. the checker
-    is unbound, i.e. the problem messages aren't bound to a particular
-    database object.
-    """
 
     verbose_name = _("Check VAT columns configuration.")
 

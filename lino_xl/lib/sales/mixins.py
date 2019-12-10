@@ -88,6 +88,11 @@ class ProductDocItem(QtyVatItemBase):
         return tt.get_product_base_account(self.product)
         # return self.voucher.journal.chart.get_account_by_ref(ref)
 
+    def get_default_vat_class(self, tt):
+        if self.product and self.product.vat_class:
+            return self.product.vat_class
+        return super(ProductDocItem, self).get_default_vat_class(tt)
+
     def discount_changed(self, ar=None):
         if not self.product:
             return
@@ -103,7 +108,7 @@ class ProductDocItem(QtyVatItemBase):
             return
         va = VatAreas.get_for_country()
         cat_rule = VatRules.get_vat_rule(
-            va, tt, get_default_vat_regime(), self.get_vat_class(tt),
+            va, tt, get_default_vat_regime(), self.vat_class,
             dd.today())
         if cat_rule is None:
             return

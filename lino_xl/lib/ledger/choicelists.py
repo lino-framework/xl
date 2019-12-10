@@ -127,18 +127,19 @@ class CommonAccounts(dd.ChoiceList):
 add = CommonAccounts.add_item
 
 add('1000', _("Net income (loss)"),   'net_income_loss', True)
+
 add('4000', _("Customers"),   'customers', True)
+add('4100', _("Suppliers"),   'suppliers', True)
+add('4200', _("Employees"),   'employees', True)
 add('4300', _("Pending Payment Orders"), 'pending_po', True)
-add('4400', _("Suppliers"),   'suppliers', True)
-add('4500', _("Employees"),   'employees', True)
-add('4550', _("Internal clearings"), 'clearings', True)
-add('4600', _("Tax Offices"), 'tax_offices', True)
+add('4500', _("Tax Offices"), 'tax_offices', True)
 
 add('4510', _("VAT due"), 'vat_due', False)
-add('4511', _("VAT returnable"), 'vat_returnable', False)
-add('4512', _("VAT deductible"), 'vat_deductible', False)
+add('4520', _("VAT deductible"), 'vat_deductible', False)
+add('4530', _("VAT returnable"), 'vat_returnable', False)
 add('4513', _("VAT declared"), 'due_taxes', False)
 
+add('4800', _("Internal clearings"), 'clearings', True)
 add('4900', _("Waiting account"), 'waiting', True)
 
 add('5500', _("BestBank"), 'best_bank', False)

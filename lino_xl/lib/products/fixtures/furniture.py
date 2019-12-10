@@ -1,13 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2014 Rumma & Ko Ltd
-#
+# Copyright 2009-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-
 from lino.utils.instantiator import Instantiator
+from lino_xl.lib.products.choicelists import ProductTypes
 
-from lino.api import dd
+from lino.api import dd, _
 
 
 def objects():
@@ -16,19 +14,22 @@ def objects():
     product = Instantiator('products.Product', "sales_price cat").build
 
     furniture = productcat(
-        id=1, **dd.babel_values(
+        id=1, product_type=ProductTypes.default, **dd.babel_values(
             'name',
             en="Furniture", et="Mööbel", de="Möbel", fr="Meubles"))
     yield furniture
     # print "foo", furniture.id, furniture
     hosting = productcat(
-        id=2, **dd.babel_values(
+        id=2, product_type=ProductTypes.default, **dd.babel_values(
             'name',
             en="Website Hosting",
             et="Veebimajutus",
             de="Website-Hosting",
             fr="Hébergement de sites Internet"))
     yield hosting
+
+    other = productcat(id=3, **dd.str2kw('name', _("Other")))
+    yield other
 
     kw = dd.babel_values('name',
                       en="Wooden table",
@@ -107,3 +108,6 @@ Produit de l'année 2008.""",
         et="Pilditöötlus ja kodulehtede sisuhaldustööd",
         de="Bildbearbeitung und Unterhalt Website",
         fr="Traitement d'images et maintenance site existant"))
+
+    yield product("29.90", 3, **dd.str2kw('name', _("Book"), vat_class="reduced"))
+    yield product("1.40", 3, **dd.str2kw('name', _("Stamp"), vat_class="exempt"))

@@ -22,9 +22,13 @@ class VatClasses(dd.ChoiceList):
     required_roles = dd.login_required(LedgerStaff)
 
 add = VatClasses.add_item
-add('0', _("Exempt from VAT"), 'exempt')    # post stamps, ...
-add('1', _("Reduced VAT rate"), 'reduced')  # food, books,...
-add('2', _("Normal VAT rate"), 'normal')    # everything else
+add('010', _("Goods at normal VAT rate"), 'goods')    # everything else
+add('020', _("Goods at reduced VAT rate"), 'reduced')  # food, books,...
+add('030', _("Goods exempt from VAT"), 'exempt')    # post stamps, ...
+add('100', _("Services"), 'services')
+add('200', _("Investments"), 'investments')
+add('210', _("Real estate"), 'real_estate')
+add('220', _("Vehicles"), 'vehicles')
 
 
 
@@ -119,7 +123,7 @@ add('10', _("Normal"), 'normal')
 # re-populated in bevat and bevats.
 # See also lino_xl.lib.vat.Plugin.default_vat_regime
 
-# 
+#
 class DeclarationField(dd.Choice):
     editable = False
     vat_regimes = None
@@ -129,7 +133,7 @@ class DeclarationField(dd.Choice):
     vat_columns = None
     exclude_vat_columns = None
     is_payable = False
-
+    # value dc vat_columns text fieldnames both_dc vat_regimes vat_classes
     def __init__(self, value, dc,
                  vat_columns=None,
                  # is_base,
@@ -374,7 +378,6 @@ class DeclarationFieldsBase(dd.ChoiceList):
 
 
 class VatRule(dd.Choice):
-
     start_date = None
     end_date= None
     vat_area = None

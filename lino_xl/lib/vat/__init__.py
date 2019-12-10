@@ -59,7 +59,7 @@ class Plugin(ad.Plugin):
 
     """
 
-    default_vat_class = 'normal'
+    default_vat_class = 'services'
     """The default VAT class. If this is specified as a string, Lino will
     resolve it at startup into an item of :class:`VatClasses
     <lino_xl.lib.vat.VatClasses>`.

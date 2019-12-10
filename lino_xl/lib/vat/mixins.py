@@ -52,8 +52,8 @@ def get_default_vat_regime():
     return dd.plugins.vat.default_vat_regime
 
 
-def get_default_vat_class():
-    return dd.plugins.vat.default_vat_class
+# def get_default_vat_class():
+#     return dd.plugins.vat.default_vat_class
 
 
 class VatTotal(dd.Model):
@@ -325,7 +325,7 @@ class VatItemBase(VoucherItem, VatTotal):
     class Meta:
         abstract = True
 
-    vat_class = VatClasses.field(blank=True, default=get_default_vat_class)
+    vat_class = VatClasses.field(blank=True)  # , default=get_default_vat_class)
 
     def delete(self, **kw):
         super(VatItemBase, self).delete(**kw)
@@ -338,7 +338,7 @@ class VatItemBase(VoucherItem, VatTotal):
     def get_trade_type(self):
         return self.voucher.get_trade_type()
 
-    def get_vat_class(self, tt):
+    def get_default_vat_class(self, tt):
         acc = self.get_base_account(tt)
         if acc and acc.vat_class:
             return acc.vat_class
@@ -356,7 +356,7 @@ class VatItemBase(VoucherItem, VatTotal):
 
     def get_vat_rule(self, tt):
         if self.vat_class is None:
-            self.vat_class = self.get_vat_class(tt)
+            self.vat_class = self.get_default_vat_class(tt)
             # we store it because there might come more calls, but we
             # don't save it because here's not the place to decide
             # this.
@@ -405,6 +405,11 @@ class VatItemBase(VoucherItem, VatTotal):
                 self.total_incl = self.voucher.total_incl - total
                 self.total_incl_changed(ar)
         super(VatItemBase, self).reset_totals(ar)
+
+    def full_clean(self):
+        if self.vat_class is None:
+            self.vat_class = self.get_default_vat_class(self.get_trade_type())
+        super(VatItemBase, self).full_clean()
 
     def before_ui_save(self, ar):
         if self.total_incl is None:
@@ -590,3 +595,10 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
         # self.full_clean()
         # self.save()
         return payable_sums
+
+    def print_declared_values(self):
+        # used in doctests
+        for fld in self.fields_list.get_list_items():
+            v = getattr(self, fld.name)
+            if v:
+                print("[{}] {} : {}".format(fld.value, fld.help_text, v))

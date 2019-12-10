@@ -25,7 +25,7 @@ if DECLARED_IN:
 #         required_roles = set([1])
 
 class DeclarationDetail(dd.DetailLayout):
-    main = "info values"
+    main = "info values vat.MovementsByDeclaration"
 
     info = dd.Panel("""
     start_period end_period entry_date accounting_period

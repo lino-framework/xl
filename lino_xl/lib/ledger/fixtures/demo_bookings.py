@@ -20,7 +20,7 @@ from lino_xl.lib.vat.mixins import myround
 REQUEST = settings.SITE.login()  # BaseRequest()
 MORE_THAN_A_MONTH = datetime.timedelta(days=40)
 
-from lino_xl.lib.vat.choicelists import VatAreas, VatRules
+from lino_xl.lib.vat.choicelists import VatAreas, VatRules, VatClasses
 from lino_xl.lib.ledger.choicelists import TradeTypes
 
 def objects():
@@ -89,6 +89,7 @@ def objects():
     # print(20151216, START_YEAR, settings.SITE.demo_date(), end_date - date)
 
     PAYMENT_TERMS = Cycler(PaymentTerm.objects.all())
+    VAT_CLASSES = Cycler(VatClasses.get_list_items())
     if len(PAYMENT_TERMS) == 0:
         raise Exception("No PAYMENT_TERMS.")
 
@@ -120,6 +121,7 @@ def objects():
                     (amount * INFLATION_RATE * (date.year - START_YEAR))
                 item = model(voucher=invoice,
                              account=account,
+                             vat_class=VAT_CLASSES.pop(),
                              total_incl=myround(amount) +
                              AMOUNT_DELTAS.pop(), **kwargs)
                 try:

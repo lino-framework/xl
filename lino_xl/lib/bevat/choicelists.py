@@ -33,18 +33,24 @@ if True:  # tim2lino can need it
     add('71', _("Luxemburg"), 'lu')
 
 
+VAT_CLASSES_AND_RATES = [("services", "0.21"), ("goods", "0.21"), ("reduced", "0.07")]
 VatRules.clear()
 add = VatRules.add_item
-add('normal',  '0.21', NAT,  'purchases', None,       CommonAccounts.vat_deductible)
-add('reduced', '0.07', NAT,  'purchases', None,       CommonAccounts.vat_deductible)
-add('normal',  '0.21', EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-add('reduced', '0.07', EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+for vat_class, rate in VAT_CLASSES_AND_RATES:
+    add(vat_class,  rate, NAT,  'purchases', None,       CommonAccounts.vat_deductible)
+    add(vat_class,  rate, EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+    add(vat_class,  rate, None, 'sales',     None,       CommonAccounts.vat_due)
+
+# add('normal',  '0.21', NAT,  'purchases', None,       CommonAccounts.vat_deductible)
+# add('reduced', '0.07', NAT,  'purchases', None,       CommonAccounts.vat_deductible)
+# add('normal',  '0.21', EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
+# add('reduced', '0.07', EU,   'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
 # add('normal',  '0.21', EU,   'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
 # add('reduced', '0.07', EU,   'sales',     'intracom', CommonAccounts.vat_due, CommonAccounts.vat_returnable)
-add('normal',  '0.00', EU,   'sales',     'intracom')
-add('reduced', '0.00', EU,   'sales',     'intracom')
-add('normal',  '0.21', None, 'sales',     None,       CommonAccounts.vat_due)
-add('reduced', '0.07', None, 'sales',     None,       CommonAccounts.vat_due)
+# add('normal',  '0.00', EU,   'sales',     'intracom')
+# add('reduced', '0.00', EU,   'sales',     'intracom')
+# add('normal',  '0.21', None, 'sales',     None,       CommonAccounts.vat_due)
+# add('reduced', '0.07', None, 'sales',     None,       CommonAccounts.vat_due)
 add()
 
 
@@ -60,7 +66,6 @@ add('59', _("VAT deductible"), CommonAccounts.vat_deductible)
 add('81', _("Purchase of goods"), CommonAccounts.purchase_of_goods)
 add('82', _("Purchase of services"), CommonAccounts.purchase_of_services)
 add('83', _("Purchase of investments"), CommonAccounts.purchase_of_investments)
-
 
 
 

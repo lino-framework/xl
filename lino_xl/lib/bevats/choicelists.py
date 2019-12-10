@@ -29,20 +29,14 @@ add('20', _("Subject to VAT"), 'subject', NAT, needs_vat_id=True)
 add('30', _("Intracom services"), 'intracom', EU, needs_vat_id=True)
 add('35', _("Intracom supplies"), 'intracom_supp', EU, needs_vat_id=True)
 
-
+VAT_CLASSES_AND_RATES = [("services", "0.21"), ("goods", "0.21"), ("reduced", "0.07")]
 VatRules.clear()
 add = VatRules.add_item
-add('normal',  '0.21', NAT, 'purchases', 'subject',  CommonAccounts.vat_deductible)
-add('reduced', '0.07', NAT, 'purchases', 'subject',  CommonAccounts.vat_deductible)
-# add('normal',  '0.21', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-# add('reduced', '0.07', EU,  'purchases', 'intracom', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-# add('normal',  '0.21', EU,  'purchases', 'intracom_supp', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-# add('reduced', '0.07', EU,  'purchases', 'intracom_supp', CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-add('normal',  '0.21', EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
-add('reduced', '0.07', EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
-add('normal',  '0.21', EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
-add('reduced', '0.07', EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
-add()
+for vat_class, rate in VAT_CLASSES_AND_RATES:
+    add(vat_class,  rate, NAT, 'purchases', 'subject',  CommonAccounts.vat_deductible)
+    add(vat_class,  rate, EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
+    add(vat_class,  rate, EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
+add()  # allow any other combination with rate 0
 
 # print('\n'.join(["{}:{}".format(i.vat_area, i.vat_regime) for i in VatRules.get_list_items()]))
 # for va in VatAreas.get_list_items():

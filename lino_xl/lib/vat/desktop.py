@@ -1,17 +1,13 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
-
 from lino.api import dd, rt, _
 
 # from etgen.html import E
+# from django.db.models import Q
 
-from .mixins import VatDocument, VatVoucher
 
-from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
+from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal, Movements
 from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
@@ -19,7 +15,7 @@ from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
 
 from .choicelists import VatRegimes, VatAreas
-from .mixins import VatDeclaration
+from .mixins import VatDeclaration, VatDocument, VatVoucher
 
 
 # class VatRules(dd.Table):
@@ -169,6 +165,13 @@ class ByDeclaration(dd.Table):
             kw.update(start_period=mi.start_period, end_period=mi.end_period)
         # print("20191205", kw)
         return kw
+
+class MovementsByDeclaration(ByDeclaration, Movements):
+    label = _("Declared movements")
+    master = VatDeclaration
+    exclude = dict(vat_class="")
+    column_names = "value_date voucher_link description debit credit vat_class vat_regime *"
+
 
 
 class SalesByDeclaration(ByDeclaration, VatInvoices):

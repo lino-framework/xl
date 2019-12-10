@@ -44,11 +44,10 @@ def objects():
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
 
-    qs = Product.objects.order_by('id')
     # if dd.is_installed('invoicing'):
     if not dd.plugins.ledger.sales_stories:
         return
-    PRODUCTS = Cycler(qs)
+    PRODUCTS = Cycler(Product.objects.order_by('id'))
     JOURNAL_S = Journal.objects.get(ref="SLS")
 
 
@@ -67,7 +66,7 @@ def objects():
     if len(CUSTOMERS) == 0:
         raise Exception("20171006 no customers ({})".format(
             len(list(get_trade_countries(TradeTypes.sales)))))
-    
+
     # CUSTOMERS = Cycler(Person.objects.filter(
     #     gender=dd.Genders.male).order_by('id'))
     # assert Person.objects.count() > 0

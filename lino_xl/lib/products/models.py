@@ -59,7 +59,6 @@ class Product(mixins.BabelNamed, Duplicable):
 
     delivery_unit = DeliveryUnits.field(default='piece')
     product_type = ProductTypes.field()
-
     vat_class = VatClasses.field(blank=True)
 
     @dd.chooser()
@@ -109,6 +108,7 @@ class Product(mixins.BabelNamed, Duplicable):
                 return rule.fee
 
     def full_clean(self):
+        # print("20191210", self.name, self.vat_class)
         if self.product_type is None:
             if self.cat_id:
                 self.product_type = self.cat.product_type or ProductTypes.default
