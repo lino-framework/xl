@@ -271,7 +271,7 @@ class InvoiceDetail(dd.DetailLayout):
 
     ledger = dd.Panel("""
     journal accounting_period id narration
-    ledger.MovementsByVoucher
+    vat.MovementsByVoucher
     """, label=_("Ledger"))
 
 

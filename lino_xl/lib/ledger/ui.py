@@ -1007,7 +1007,7 @@ class MovementsByVoucher(Movements):
     See also :class:`lino_xl.lib.ledger.models.Movement`.
     """
     master_key = 'voucher'
-    column_names = 'account project partner debit credit vat_class match_link cleared *'
+    column_names = 'account project partner debit credit match_link cleared *'
     sum_text_column = 3
     # auto_fit_column_widths = True
     display_mode = "html"

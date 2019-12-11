@@ -7,12 +7,13 @@ from lino.api import dd, rt, _
 # from django.db.models import Q
 
 
-from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal, Movements
-from lino_xl.lib.ledger.choicelists import TradeTypes
-from lino_xl.lib.ledger.choicelists import VoucherTypes
+from lino_xl.lib.ledger.ui import (
+    PartnerVouchers, ByJournal, PrintableByJournal,
+    Movements, MovementsByVoucher)
+
+from lino_xl.lib.ledger.choicelists import TradeTypes, VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
-from lino_xl.lib.ledger.mixins import ItemsByVoucher
-from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
+from lino_xl.lib.ledger.mixins import ItemsByVoucher, VouchersByPartnerBase
 
 from .choicelists import VatRegimes, VatAreas
 from .mixins import VatDeclaration, VatDocument, VatVoucher
@@ -50,7 +51,7 @@ class InvoiceDetail(dd.DetailLayout):
 
     ledger = dd.Panel("""
     journal accounting_period id narration
-    ledger.MovementsByVoucher
+    vat.MovementsByVoucher
     """, label=_("Ledger"))
 
 
@@ -107,6 +108,9 @@ class VouchersByPartner(VouchersByPartnerBase):
     @dd.virtualfield('vat.VatAccountInvoice.total_vat')
     def total_vat(self, row, ar):
         return row.total_vat
+
+class MovementsByVoucher(MovementsByVoucher):
+    column_names = 'account project partner debit credit vat_class match_link cleared *'
 
 
 class VatInvoices(PartnerVouchers):

@@ -1479,6 +1479,7 @@ instances."""),
     'lino_xl.lib.products.Product.delivery_unit' : _("""Pointer to DeliveryUnits"""),
     'lino_xl.lib.products.Product.vat_class' : _("""The VAT class.  Injected by lino_xl.lib.vat. If that plugin is
 not installed, vat_class is a dummy field."""),
+    'lino_xl.lib.products.Products' : _("""Base class for all tables of products."""),
     'lino_xl.lib.products.ProductCat' : _("""Django model to represent a product category."""),
     'lino_xl.lib.products.ProductCat.product_type' : _("""The product type to apply to products of this category."""),
     'lino_xl.lib.products.ProductType.text' : _("""The verbose name of this product type."""),
@@ -1739,4 +1740,5 @@ lino_xl.lib.sepa.Payable.get_payable_sums_dict()."""),
     'lino_xl.lib.vat.DeclarationField' : _("""Base class for all fields of VAT declarations."""),
     'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of other declaration
 fields to be observed by this field."""),
+    'lino_xl.lib.vat.VatColumnsChecker' : _("""Check VAT columns configuration."""),
 }
