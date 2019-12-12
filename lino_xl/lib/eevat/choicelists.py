@@ -147,12 +147,10 @@ mfld("9", DEBIT, '61',
     "metalltoodete käive (KMS § 411) ning teises liikmesriigis paigaldatava või "
     "kokkupandava kauba maksustatav väärtus")
 
-wfld("10", CREDIT, None, "Täpsustused -", editable=True)
-wfld("11", DEBIT, None, "Täpsustused +", editable=True)
+wfld("10", CREDIT, None, "Täpsustused (-)", editable=True)
+wfld("11", DEBIT, None, "Täpsustused (+)", editable=True)
 
-sfld("12", DEBIT, None,
-    "Tasumisele kuuluv käibemaks (lahter 4 + lahter 41 - lahter 5 + "
-    "lahter 10 - lahter 11)", is_payable=True, fieldnames="4 41 5 10 11", both_dc=False)
-sfld("13", CREDIT, None,
-    "Enammakstud käibemaks (lahter 4 + lahter 41 - lahter 5 + "
-    "lahter 10 - lahter 11)", is_payable=True, fieldnames="4 41 5 10 11", both_dc=False)
+sfld("13", DEBIT, None,
+    "Tasumisele kuuluv(+) või enammakstud (-) käibemaks "
+    "(lahter 4 + lahter 41 - lahter 5 + lahter 10 - lahter 11)",
+    is_payable=True, fieldnames="4 41 5 10 11")

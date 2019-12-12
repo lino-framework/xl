@@ -142,7 +142,7 @@ sfld("YY", CREDIT, None, _("Total of deductible taxes"),
      "59 62 64")
 
 # Actually only one of them
-sfld("71", CREDIT, None, _("Total to pay"), "XX YY")
-sfld("72", DEBIT, None, _("Total to pay"), "XX YY")
+# sfld("71", CREDIT, None, _("Total to pay"), "XX YY")
+sfld("72", DEBIT, None, _("Total to pay (+) or to return (-)"), "XX YY")
 
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

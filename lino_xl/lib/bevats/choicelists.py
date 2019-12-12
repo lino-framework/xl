@@ -94,6 +94,6 @@ wfld("81", CREDIT, None, _("Miscellaneous corrections due"),
 wfld("82", DEBIT, None, _("Miscellaneous corrections returnable"),
      is_payable=True)
 
-sfld("83", CREDIT, None, _("Total to pay"), "80 81 82")
-
+# NB with bevats you will never ask to return VAT, i.e. the result is always positive
+sfld("83", CREDIT, None, _("Total to pay (+) or to return (-)"), "80 81 82")
 # print("20170711b {}".format(DeclarationFields.get_list_items()))

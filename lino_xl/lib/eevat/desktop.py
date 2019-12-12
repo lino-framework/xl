@@ -71,7 +71,6 @@ class DeclarationDetail(dd.DetailLayout):
     F9
     F10
     F11
-    F12
     F13
     """
 
