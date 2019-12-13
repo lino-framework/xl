@@ -101,6 +101,6 @@ class Declarations(dd.Table):
 class DeclarationsByJournal(ledger.ByJournal, Declarations):
     params_panel_hidden = True
     #master = journals.Journal
-    column_names = "number_with_year entry_date start_period end_period accounting_period F12 F13 workflow_buttons *"
+    column_names = "number_with_year entry_date start_period end_period accounting_period F13 workflow_buttons *"
 
 ledger.VoucherTypes.add_item_lazy(DeclarationsByJournal)
