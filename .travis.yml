@@ -23,6 +23,7 @@ script:
 # after_success:
 #   - coveralls
 
+# Thanks to https://github.com/plume-lib/trigger-travis
 jobs:
   include:
     - stage: trigger downstream
