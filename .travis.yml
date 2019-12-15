@@ -22,3 +22,18 @@ script:
 
 # after_success:
 #   - coveralls
+
+jobs:
+  include:
+    - stage: trigger downstream
+      script: |
+        echo "TRAVIS_BRANCH=$TRAVIS_BRANCH TRAVIS_PULL_REQUEST=$TRAVIS_PULL_REQUEST"
+        if [[ ($TRAVIS_BRANCH == master) &&
+              ($TRAVIS_PULL_REQUEST == false) ]] ; then
+          curl -LO --retry 3 https://raw.githubusercontent.com/plume-lib/trigger-travis/master/trigger-travis.sh
+          sh trigger-travis.sh lino-framework welfare $TRAVIS_ACCESS_TOKEN
+          sh trigger-travis.sh lino-framework presto $TRAVIS_ACCESS_TOKEN
+          sh trigger-travis.sh lino-framework ciao $TRAVIS_ACCESS_TOKEN
+          sh trigger-travis.sh lino-framework amici $TRAVIS_ACCESS_TOKEN
+          sh trigger-travis.sh lino-framework book $TRAVIS_ACCESS_TOKEN
+        fi
