@@ -594,7 +594,7 @@ def post_init_excerpt(sender, instance=None, **kwargs):
             self.language = settings.SITE.DEFAULT_LANGUAGE.django_code
 
 
-if has_davlink or settings.SITE.webdav_protocol:
+if settings.SITE.webdav_protocol:
 
     class ExcerptDetail(dd.DetailLayout):
         window_size = (80, 20)
