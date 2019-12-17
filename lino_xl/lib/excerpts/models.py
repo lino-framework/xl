@@ -2,13 +2,9 @@
 # Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 import logging ; logger = logging.getLogger(__name__)
 
 from os.path import join, dirname
-
 import datetime
 
 from django.utils import translation
@@ -21,26 +17,21 @@ from django.contrib.humanize.templatetags.humanize import naturaltime
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
-from lino.api import dd, rt, gettext, _
-from lino import mixins
 from etgen.html import E
+
+from lino import mixins
+from lino.api import dd, rt, gettext, _
 from lino.utils import join_elems
 from lino.core.exceptions import UnresolvedChoice
-
 from lino.modlib.gfks.mixins import Controllable
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.users.choicelists import SiteAdmin
 from lino.modlib.printing.mixins import PrintableType, TypedPrintable
-
-# davlink = settings.SITE.plugins.get('davlink', None)
-# has_davlink = davlink is not None and settings.SITE.use_java
-has_davlink = False
+from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.outbox.mixins import Mailable, MailableType
-
-from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 
 from .mixins import Certifiable
 from .choicelists import Shortcuts
@@ -786,7 +777,7 @@ def set_excerpts_actions(sender, **kw):
 
     try:
         etypes = [(obj, obj.content_type)
-                  for obj in ExcerptType.objects.all().order_by('id')]
+                  for obj in ExcerptType.objects.order_by('id')]
     except (OperationalError, ProgrammingError, UnresolvedChoice) as e:
         dd.logger.debug("Failed to set excerpts actions : %s", e)
         # Happens e.g. when the database has not yet been migrated
@@ -814,7 +805,7 @@ def set_excerpts_actions(sender, **kw):
     # :class:`lino.mixins.printable.BasePrintable` or some subclass
     # thereof.
 
-    for i in Shortcuts.items():
+    for i in Shortcuts.get_list_items():
 
         def f(obj, ar):
             if ar is None:

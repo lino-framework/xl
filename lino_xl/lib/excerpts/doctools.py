@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2018 Rumma & Ko Ltd
-#
+# Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
 A function for usage in a :rst:dir:`django2rst` directive.
@@ -11,9 +10,6 @@ page:
 - http://de.welfare.lino-framework.org/excerpts.html
 """
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
 
 import os
 import shutil
@@ -25,7 +21,7 @@ def show_excerpts(severe=True):
     ses = rt.login()
     # dd.logger.info("20141029 %s", settings.SITE)
     coll = {}
-    
+
     def collect(obj):
         l = coll.setdefault(obj.excerpt_type, [])
         if len(l) > 2:
@@ -47,7 +43,7 @@ def show_excerpts(severe=True):
                 raise Exception("Oops: %s" % rv['message'])
             else:
                 return
-            
+
         # tmppath = settings.SITE.project_dir + rv['open_url']
         tmppath = settings.SITE.cache_dir
         if not 'media' in rv['open_url']:
@@ -81,4 +77,3 @@ def show_excerpts(severe=True):
         return s
 
     return rstgen.ul([asli(k, v) for k, v in coll.items()])
-

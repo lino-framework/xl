@@ -1,13 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
 
-from django.utils.translation import ugettext_lazy as _
-
-from lino.api import dd
+from lino.api import dd, _
 
 
 class Shortcut(dd.Choice):
