@@ -105,7 +105,7 @@ mfld("321", CREDIT, '10', "1) käibemaksutagastusega müük reisijale",
 
 mfld("4",  CREDIT, '40',
     "Käibemaks kokku (20% lahtrist 1 + 9% lahtrist 2)")
-mfld("41", CREDIT, '41',
+mfld("41", DEBIT, '41',
     "Impordilt tasumisele kuuluv käibemaks")
 
 mfld("5",  CREDIT, '50',
@@ -125,7 +125,7 @@ mfld("54", CREDIT, '50',
     "4) osaliselt ettevõtluses kasutatava sõiduauto soetamiselt ja sellise"
     "sõiduauto tarbeks kaupade soetamiselt ja teenuste saamiselt"
     "tasutud või tasumisele kuuluv käibemaks",
-    vat_classes="vehicles")
+    vat_classes="vehicles")  #TODO: add an estonia-specific second vat category for vehicles?
 
 mfld("6", DEBIT, '60',
     "Kauba ühendusesisene soetamine ja teise liikmesriigi "
@@ -150,7 +150,7 @@ mfld("9", DEBIT, '61',
 wfld("10", CREDIT, None, "Täpsustused (-)", editable=True)
 wfld("11", DEBIT, None, "Täpsustused (+)", editable=True)
 
-sfld("13", DEBIT, None,
+sfld("13", CREDIT, None,
     "Tasumisele kuuluv(+) või enammakstud (-) käibemaks "
     "(lahter 4 + lahter 41 - lahter 5 + lahter 10 - lahter 11)",
-    is_payable=True, fieldnames="4 41 5 10 11")
+    is_payable=True, fieldnames="4 41 -5 10 -11")

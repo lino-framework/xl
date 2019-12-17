@@ -157,14 +157,18 @@ class DeclarationField(dd.Choice):
         self.both_dc = both_dc
 
     def attach(self, choicelist):
-        self.observed_fields = set()
+        self.minus_observed_fields = set()
+        self.observed_fields = []
         for n in self.fieldnames.split():
+            if n.startswith('-'):
+                n = n[1:]
+                self.minus_observed_fields.add(n)
             f = choicelist.get_by_value(n)
             if f is None:
                 raise Exception(
                     "Invalid observed field {} for {}".format(
                         n, self))
-            self.observed_fields.add(f)
+            self.observed_fields.append(f)
 
         if is_string(self.vat_regimes):
             vat_regimes = self.vat_regimes
@@ -204,6 +208,7 @@ class DeclarationField(dd.Choice):
             if len(self.vat_classes) == 0:
                 self.vat_classes = None
 
+        # using VAT columns as selector is probably obsolete
         if is_string(self.vat_columns):
             vat_columns = self.vat_columns
             self.vat_columns = set()
@@ -248,10 +253,12 @@ class SumDeclarationField(DeclarationField):
         tot = Decimal()
         for f in self.observed_fields:
             v = field_values[f.name]
+            if f.name in self.minus_observed_fields:
+                v = -v
             if f.dc == self.dc:
                 tot += v
             else:
-                tot += v
+                tot -= v
         field_values[self.name] = tot
 
 class WritableDeclarationField(DeclarationField):
@@ -368,11 +375,16 @@ class DeclarationFieldsBase(dd.ChoiceList):
             "" if fld.both_dc else " only",
             E.br()]
 
-        if fld.observed_fields:
-            elems += [
-                _("Sum of"), ' ',
-                ' '.join(sorted([i.name for i in fld.observed_fields])),
-                E.br()]
+        if len(fld.observed_fields):
+            names = []
+            for f in fld.observed_fields:
+                n = f.name
+                if f.name in fld.minus_observed_fields:
+                    n = "- " + n
+                elif len(names) > 0:
+                    n = "+ " + n
+                names.append(n)
+            elems += ['= ', ' '.join(names), E.br()]
 
         return E.div(*forcetext(elems))
 

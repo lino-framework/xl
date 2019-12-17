@@ -45,17 +45,20 @@ def objects():
     adder = Adder()
     C = adder.add_company
     A = adder.add_account
+    tallinn = rt.models.countries.Place.objects.get(name="Tallinn")
 
     yield C('AS Express Post', 'http://www.expresspost.ee/',
-            country="EE")
+            country="EE", vat_id="EE100041561",
+            street="Peterburi tee", street_no="34", street_box="/5",
+            city=tallinn, zip_code="11415")
     yield A('HABAEE2X', 'EE872200221012067904')
 
     yield C('AS Matsalu Veevärk', 'http://www.matsaluvv.ee',
-            country="EE")
+            country="EE", vat_id="EE100920666")
     yield A('HABAEE2X', 'EE732200221045112758')
 
     yield C('Eesti Energia AS', "http://www.energia.ee",
-            country="EE")
+            country="EE", vat_id="EE100366327")
     yield A('HABAEE2X', 'EE232200001180005555', "Eraklilendile")
     yield A('HABAEE2X', 'EE322200221112223334', "Ärikliendile")
     yield A('EEUHEE2X', 'EE081010002059413005')
@@ -63,18 +66,17 @@ def objects():
     yield A('NDEAEE2X', 'EE43 17000 1700 0115 797')
 
     yield C('IIZI kindlustusmaakler AS', "http://www.iizi.ee",
-            country="EE")
+            country="EE", vat_id="EE100598027")
     yield A('HABAEE2X', 'EE382200221013987931')
 
     yield C('Maksu- ja tolliamet', "http://www.emta.ee",
             country="EE")
     yield A('HABAEE2X', 'EE522200221013264447')
 
-    tallinn = rt.models.countries.Place.objects.get(name="Tallinn")
     yield C('Ragn-Sells AS', "http://www.ragnsells.ee", country="EE",
             street="Suur-Sõjamäe", street_no=50, street_box="a",
             zip_code="11415",
-            city=tallinn)
+            city=tallinn, vat_id="EE100167089")
     yield A('HABAEE2X', 'EE202200221001178338')
     yield A('', 'EE781010220002715011 ')
     yield A('', 'EE321700017000231134')
@@ -115,5 +117,3 @@ def objects():
             country="BE",
             zip_code="4700")
     yield A('GEBABEBB', 'BE38 2480 1735 7572')
-
-
