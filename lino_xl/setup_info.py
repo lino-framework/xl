@@ -11,7 +11,7 @@
 #
 #   $ python setup.py test -s tests.PackagesTests
 
-from __future__ import unicode_literals
+# from __future__ import unicode_literals
 
 
 # install_requires = ['lino', 'odfpy', 'bleach']
@@ -29,7 +29,7 @@ from __future__ import unicode_literals
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='19.12.0',
+    version='19.12.1',
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
