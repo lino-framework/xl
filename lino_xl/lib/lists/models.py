@@ -22,6 +22,7 @@ from lino_xl.lib.contacts.roles import ContactsStaff, ContactsUser
 from lino_xl.lib.appypod.mixins import PrintLabelsAction
 from lino.modlib.printing.mixins import Printable
 from lino.utils.mldbc.mixins import BabelDesignated
+from lino.core.utils import comma
 from etgen.html import E, join_elems
 
 from lino.api import dd
@@ -176,7 +177,7 @@ class MembersByPartner(Members):
     column_names = "list remark *"
     order_by = ['list__ref']
     display_mode = "summary"
-    summary_sep = ', '
+    summary_sep = comma
     insert_layout = """
     list
     remark

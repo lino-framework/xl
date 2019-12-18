@@ -1737,8 +1737,16 @@ VatItemBase by adding unit_price and qty."""),
     'lino_xl.lib.vat.VatDeclaration' : _("""Abstract base class for VAT declarations."""),
     'lino_xl.lib.vat.VatDeclaration.get_payable_sums_dict' : _("""Implements
 lino_xl.lib.sepa.Payable.get_payable_sums_dict()."""),
-    'lino_xl.lib.vat.DeclarationField' : _("""Base class for all fields of VAT declarations."""),
-    'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of other declaration
-fields to be observed by this field."""),
+    'lino_xl.lib.vat.MvtDeclarationField' : _("""A declaration field to be computed by analyzing the ledger movements."""),
+    'lino_xl.lib.vat.WritableDeclarationField' : _("""A declaration field to be entered manually by the end user."""),
+    'lino_xl.lib.vat.SumDeclarationField' : _("""A declaration field that computes the sum of its observed fields."""),
+    'lino_xl.lib.vat.DeclarationField' : _("""Base class for all declaration fields."""),
+    'lino_xl.lib.vat.DeclarationField.editable' : _("""Whether the value of this field is to be manually entered by the end user."""),
+    'lino_xl.lib.vat.DeclarationField.both_dc' : _("""Whether the value of this field is to be manually entered by the end user."""),
+    'lino_xl.lib.vat.DeclarationField.fieldnames' : _("""An optional space-separated list of names of observed fields, i.e.
+other declaration fields to be observed by this field.   If a field name
+is prefixed by a "-", the observed field will additionally be inverted."""),
+    'lino_xl.lib.vat.DeclarationField.is_payable' : _("""Whether the value of this field represents an amount to be paid to the
+tax office."""),
     'lino_xl.lib.vat.VatColumnsChecker' : _("""Check VAT columns configuration."""),
 }
