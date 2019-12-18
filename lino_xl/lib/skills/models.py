@@ -53,7 +53,7 @@ class Skill(BabelNamed, Hierarchical, Sequenced):
         'skills.SkillType', null=True, blank=True)
 
     remarks = dd.RichTextField(_("Remarks"), blank=True)
-    
+
     # topic_group = dd.ForeignKey(
     #     'topics.TopicGroup', blank=True, null=True,
     #     verbose_name=_("Options category"),
@@ -74,7 +74,7 @@ class Competence(UserAuthored, Sequenced):
     .. attribute:: affinity
 
     """
-    
+
     allow_cascaded_delete = "end_user user"
 
     class Meta:
@@ -98,7 +98,7 @@ class Competence(UserAuthored, Sequenced):
             "in this faculty."
             "A number between -{0} and +{0}.").format(MAX_WEIGHT))
     description = dd.RichTextField(_("Description"), blank=True)
-    
+
     # topic = dd.ForeignKey(
     #     'topics.Topic', blank=True, null=True,
     #     verbose_name=_("Option"),
@@ -121,13 +121,13 @@ class Competence(UserAuthored, Sequenced):
         #             "A {0} competence needs a {1} as option")
         super(Competence, self).full_clean(*args, **kw)
 
-    def __unicode__(self):
-        return u'%s #%s' % (self._meta.verbose_name, self.pk)
+    # def __str__(self):
+    #     return u'%s #%s' % (self._meta.verbose_name, self.pk)
 
 
 dd.update_field(Competence, 'user', verbose_name=_("User"))
 
-    
+
 #class Demand(UserAuthored):
 class Demand(dd.Model):
     """A **Skill demand** is when a given *demander* declares to need a
@@ -140,7 +140,7 @@ class Demand(dd.Model):
         How important this skill is for this demand.
 
         Expressed as a number between -MAX_WEIGHT and +MAX_WEIGHT.
-    
+
     """
 
     allow_cascaded_delete = "demander"
@@ -165,5 +165,3 @@ class Demand(dd.Model):
 #     dd.inject_field(
 #         'tickets.Ticket', 'faculty',
 #         dd.ForeignKey("skills.Skill", blank=True, null=True))
-
-

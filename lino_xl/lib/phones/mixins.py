@@ -1,17 +1,15 @@
-# Copyright 2017 Rumma & Ko Ltd
-#
+# Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
-from __future__ import unicode_literals
-from __future__ import print_function
+from etgen.html import E, join_elems
 
-from lino.api import rt, dd
+from lino.api import rt, dd, _
 from lino.core.diff import ChangeWatcher
 from lino.mixins import Contactable, Phonable
 
 class ContactDetailsOwner(Contactable, Phonable):
-    
+
     class Meta:
         abstract = True
 
@@ -30,7 +28,7 @@ class ContactDetailsOwner(Contactable, Phonable):
                     if cdt:
                         self.propagate_contact_detail(cdt)
             super(ContactDetailsOwner, self).after_ui_save(ar, cw)
-                    
+
         def propagate_contact_detail(self, cdt):
             k = cdt.field_name
             if k:
@@ -60,14 +58,24 @@ class ContactDetailsOwner(Contactable, Phonable):
                 self.propagate_contact_detail(cdt)
             if ar is not None:
                 watcher.send_update(ar)
-                
+
         def get_overview_elems(self, ar):
             # elems = super(ContactDetailsOwner, self).get_overview_elems(ar)
             yield rt.models.phones.ContactDetailsByPartner.get_table_summary(
                 self, ar)
 
+        @dd.displayfield(_("Contact details"))
+        def contact_details(self, ar):
+            if ar is None:
+                return ''
+            sar = rt.models.phones.ContactDetailsByPartner.request(parent=ar, master_instance=self)
+            items = [o.detail_type.as_html(o, sar)
+                     for o in sar if not o.end_date]
+            return E.p(*join_elems(items, sep=', '))
+
+
+
     else:
 
         def get_overview_elems(self, ar):
             return []
-        

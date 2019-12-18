@@ -1,11 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from django.utils.translation import ugettext_lazy as _
-
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 
 from lino.utils.mldbc import babeld
 
@@ -35,5 +32,3 @@ def objects():
     yield List(list_type=flags,
                **dd.str2kw('designation', _("Free Software Day 2014")))
     yield List(list_type=flags, **dd.str2kw('designation', _("Schools")))
-
-

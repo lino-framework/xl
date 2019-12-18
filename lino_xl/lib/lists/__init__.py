@@ -1,14 +1,11 @@
-# Copyright 2014-2016 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
 Adds the concept of partner lists.
 """
 
-from lino import ad
-
-from django.utils.translation import ugettext_lazy as _
+from lino import ad, _
 
 
 class Plugin(ad.Plugin):
@@ -16,6 +13,10 @@ class Plugin(ad.Plugin):
     verbose_name = _("Lists")
     partner_model = 'contacts.Partner'
     menu_group = 'contacts'
+
+    def on_site_startup(self, site):
+        self.partner_model = site.models.resolve(self.partner_model)
+        super(Plugin, self).on_site_startup(site)
 
     def setup_main_menu(self, site, user_type, m):
         # mg = site.plugins.contacts

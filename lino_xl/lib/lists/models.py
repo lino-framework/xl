@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Rumma & Ko Ltd
-#
+# Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
 
 """The :xfile:`models.py` module for the :mod:`lino_xl.lib.lists` app.
 
@@ -13,11 +11,7 @@ This module defines the tables
 
 """
 
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
-
+import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
@@ -62,7 +56,7 @@ class PrintMembers(DirectPrintAction):
     # """
     # keep_user_values = True
 
-    
+
 
 #class ListType(mixins.BabelNamed):
 class ListType(BabelDesignated):
@@ -135,7 +129,7 @@ class Lists(dd.Table):
 
     detail_layout = dd.DetailLayout("""
     id ref list_type print_actions
-    designation 
+    designation
     remarks
     MembersByList
     """)
@@ -155,26 +149,46 @@ class Member(mixins.Sequenced):
         related_name="list_memberships")
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
+    def __str__(self):
+        return _("{} is member of {}").format(self.partner, self.list)
+
 
 class Members(dd.Table):
     required_roles = dd.login_required(ContactsUser)
     model = 'lists.Member'
+    detail_layout = dd.DetailLayout("""
+    list
+    partner
+    remark
+    """, window_size=(60, 'auto'))
 
 
 class MembersByList(Members):
     label = _("Members")
     master_key = 'list'
     order_by = ['seqno']
-    column_names = "seqno partner remark workflow_buttons *"
+    # column_names = "seqno partner remark workflow_buttons partner__address_column partner__email partner__gsm *"
+    column_names = "seqno partner remark workflow_buttons partner__address_column partner__contact_details *"
 
 
 class MembersByPartner(Members):
     master_key = 'partner'
     column_names = "list remark *"
     order_by = ['list__ref']
+    display_mode = "summary"
+    summary_sep = ', '
+    insert_layout = """
+    list
+    remark
+    """
+
+    @classmethod
+    def summary_row(cls, ar, obj, **kw):
+        yield ar.obj2html(obj, str(obj.list))
+        if obj.remark:
+            yield obj.remark
+
 
 
 class AllMembers(Members):
     required_roles = dd.login_required(ContactsStaff)
-
-
