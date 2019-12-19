@@ -3,8 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-from __future__ import unicode_literals
-
 import os
 from builtins import object
 from builtins import str
@@ -18,6 +16,7 @@ from .choicelists import CivilStates
 from lino import mixins
 from lino.api import dd, rt, _
 from lino.mixins.duplicable import Duplicable
+from lino.mixins.human import parse_name
 from lino.mixins.periods import ObservedDateRange
 from lino.modlib.printing.mixins import Printable
 from lino.modlib.uploads.mixins import UploadController
@@ -371,6 +370,10 @@ class Person(Human, Born, Partner):
         j.n.value = vobject.vcard.Name(
             family=self.last_name, given=self.first_name )
 
+    @classmethod
+    def parse_to_dict(cls, text):
+        return parse_name(text)
+
 class PersonDetail(PartnerDetail):
 
     name_box = "last_name first_name:15 gender #prefix:10"
@@ -538,6 +541,30 @@ class Role(dd.Model, Addressable):
         if self.person_id:
             return self.person.language
         return super(Role, self).get_print_language()
+
+    @dd.chooser()
+    def person_choices(cls):
+        # needed to activate create_person_choice
+        return rt.models.contacts.Person.objects.all()
+
+    def create_person_choice(self, text):
+        """
+        Called when an unknown person name was given.
+        If the given text looks like a full name of a person, create it.
+        """
+        person_model = rt.models.contacts.Person
+        try:
+            values = person_model.parse_to_dict(text)
+        except Exception as e:
+            raise ValidationError(
+                _("Could not create {person} from '{text}'").format(
+                person=person_model._meta.verbose_name, text=text))
+        obj = person_model(**values)
+        obj.full_clean()
+        obj.save()
+        return obj
+
+
 
 
 class Roles(dd.Table):

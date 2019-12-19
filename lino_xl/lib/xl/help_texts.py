@@ -366,8 +366,16 @@ city. zip_code) and lino_xl.lib.contacts.AddresssLocation
 Setting this field will automatically uncheck any previousl
 primary addresses and update the owner's address fields."""),
     'lino_xl.lib.addresses.Addresses' : _("""Shows all addresses in the database."""),
+    'lino_xl.lib.addresses.Addresses.partner' : _("""Show only addresses of the given partner in Address.partner."""),
+    'lino_xl.lib.addresses.Addresses.place' : _("""Show only addresses having the given place in Address.city."""),
+    'lino_xl.lib.addresses.Addresses.address_type' : _("""Show only addresses having the given type."""),
     'lino_xl.lib.addresses.AddressesByPartner' : _("""Shows all addresses of this partner."""),
     'lino_xl.lib.addresses.AddressOwner' : _("""Base class for the "addressee" of any address."""),
+    'lino_xl.lib.addresses.AddressOwner.get_primary_address' : _("""Return the primary address of this address owner.  If the owner has no
+direct address, look up the "address parent" and return its primary
+address."""),
+    'lino_xl.lib.addresses.AddressTypes' : _("""A choicelist with all available address types."""),
+    'lino_xl.lib.addresses.DataSources' : _("""A choicelist with all available data sources."""),
     'lino_xl.lib.addresses.AddressOwnerChecker' : _("""Checks for the following data problems:"""),
     'lino_xl.lib.ana.Account.ref' : _("""The unique reference."""),
     'lino_xl.lib.ana.Account.group' : _("""The analytic account group this account belongs to."""),
@@ -810,6 +818,7 @@ method, ..."""),
     'lino_xl.lib.countries.AddressLocation.addr2' : _("""Address line to print below street line."""),
     'lino_xl.lib.countries.AddressLocation.addess_column' : _("""Virtual field which returns the location as a comma-separated
 one-line string."""),
+    'lino_xl.lib.countries.AddressLocation.get_primary_address' : _("""Return the primary address of this partner."""),
     'lino_xl.lib.countries.AddressLocation.address_location' : _("""Return the plain text postal address location part.  Lines are
 separated by linesep which defaults to "\\n"."""),
     'lino_xl.lib.countries.PlaceChecker' : _("""The name of a geographical place should not consist of only digits."""),
