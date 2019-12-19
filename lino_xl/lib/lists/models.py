@@ -144,10 +144,10 @@ class Member(mixins.Sequenced):
         verbose_name = _("List membership")
         verbose_name_plural = _("List memberships")
 
+    quick_search_fields = "partner__name remark"
+
     list = dd.ForeignKey('lists.List', related_name="members")
-    partner = dd.ForeignKey(
-        partner_model,
-        related_name="list_memberships")
+    partner = dd.ForeignKey(partner_model, related_name="list_memberships")
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     def __str__(self):
