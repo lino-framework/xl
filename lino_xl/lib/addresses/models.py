@@ -2,9 +2,6 @@
 # License: BSD (see file COPYING for details)
 
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 from django.db import models
 from lino.api import dd, rt, _
 from lino.modlib.checkdata.choicelists import Checker
@@ -15,7 +12,6 @@ from .choicelists import AddressTypes, DataSources
 from .mixins import AddressOwner
 
 
-
 class Address(AddressLocation):
 
     class Meta:
@@ -23,12 +19,11 @@ class Address(AddressLocation):
         verbose_name = _("Address")
         verbose_name_plural = _("Addresses")
 
-    data_source = DataSources.field(
-        editable=False,
-        default=DataSources.as_callable('manually'))
+    quick_search_fields = "partner__name city__name street"
+
+    data_source = DataSources.field(editable=False, default='manually')
     # address_type = AddressTypes.field(blank=True, null=True)
-    address_type = AddressTypes.field(
-        default=AddressTypes.as_callable('official'))
+    address_type = AddressTypes.field(default='official')
     partner = dd.ForeignKey(
         dd.plugins.addresses.partner_model,
         related_name='addresses_by_partner')
@@ -58,6 +53,36 @@ class Address(AddressLocation):
         lines = list(self.address_location_lines())
         return self.address_type.living_text + ' ' + ', '.join(lines)
 
+    @classmethod
+    def setup_parameters(cls, fields):
+        fields.update(
+            place=dd.ForeignKey('countries.Place', blank=True, null=True))
+        super(Address, cls).setup_parameters(fields)
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        qs = super(Address, cls).get_request_queryset(ar, **filter)
+        pv = ar.param_values
+        if pv.place:
+            qs = qs.filter(city=pv.place)
+        return qs
+
+    @classmethod
+    def get_title_tags(self, ar):
+        for t in super(Address, self).get_title_tags(ar):
+            yield t
+        pv = ar.param_values
+        if pv.place:
+            yield str(pv.place)
+
+    @classmethod
+    def get_simple_parameters(cls):
+        for p in  super(Address, cls).get_simple_parameters():
+            yield p
+        yield 'partner'
+        yield 'address_type'
+
+
 
 Address.ADDRESS_FIELDS = dd.fields_list(
     Address,
@@ -75,14 +100,17 @@ def clear_partner_on_delete(sender=None, request=None, **kw):
 class Addresses(dd.Table):
     model = 'addresses.Address'
     required_roles = dd.login_required(SiteStaff)
+    params_layout = "place partner address_type"
     column_names = (
         "partner address_type:10 remark:10 "
         "address_column:30 primary data_source *")
+
     insert_layout = """
     country city
     street street_no street_box
     address_type remark
     """
+
     detail_layout = dd.DetailLayout("""
     country city zip_code
     addr1

@@ -168,8 +168,10 @@ class MembersByList(Members):
     label = _("Members")
     master_key = 'list'
     order_by = ['seqno']
-    # column_names = "seqno partner remark workflow_buttons partner__address_column partner__email partner__gsm *"
-    column_names = "seqno partner remark workflow_buttons partner__address_column partner__contact_details *"
+    if dd.is_installed("phones"):
+        column_names = "seqno partner remark workflow_buttons partner__address_column partner__contact_details *"
+    else:
+        column_names = "seqno partner remark workflow_buttons partner__address_column partner__email partner__gsm *"
 
 
 class MembersByPartner(Members):

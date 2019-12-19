@@ -1,13 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
 from builtins import str
 from builtins import object
 
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
@@ -145,15 +143,11 @@ class AddressLocation(CountryRegionCity, Addressable):
         max_length=200, blank=True)
     street_prefix = models.CharField(
         _("Street prefix"), max_length=200, blank=True)
-    street = models.CharField(
-        _("Street"), max_length=200, blank=True)
-    street_no = models.CharField(
-        _("No."), max_length=10, blank=True)
-    street_box = models.CharField(
-        _("Box"), max_length=10, blank=True)
+    street = models.CharField(_("Street"), max_length=200, blank=True)
+    street_no = models.CharField(_("No."), max_length=10, blank=True)
+    street_box = models.CharField(_("Box"), max_length=10, blank=True)
     addr2 = models.CharField(
-        _("Address line after street"),
-        max_length=200, blank=True)
+        _("Address line after street"), max_length=200, blank=True)
 
     def on_create(self, ar):
         sc = settings.SITE.site_config.site_company
@@ -162,14 +156,8 @@ class AddressLocation(CountryRegionCity, Addressable):
         super(AddressLocation, self).on_create(ar)
 
     def get_primary_address(self):
-        """Return the primary address of this partner.
-
-        Return value must be either None or an instance of
-        :class:`AddressLocation`.
-
-        """
         return self
-        
+
     def address_location_lines(self):
         #~ lines = []
         #~ lines = [self.name]
@@ -199,5 +187,3 @@ class AddressLocation(CountryRegionCity, Addressable):
     @dd.displayfield(_("Address"))
     def address_column(self, ar):
         return self.address_location(', ')
-
-
