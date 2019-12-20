@@ -1381,6 +1381,8 @@ debit and credit movements."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.start_period' : _("""Start of observed period range."""),
     'lino_xl.lib.ledger.AccountingPeriodRange.end_period' : _("""Optional end of observed period range.  Leave empty to
 consider only the Start period."""),
+    'lino_xl.lib.lists.List' : _("""Django model to represent a partner list."""),
+    'lino_xl.lib.lists.Member' : _("""Django model to represent a membership of a partner in a list."""),
     'lino_xl.lib.deploy.Deployment' : _("""A wish (formerly "deployment") is the fact that a given ticket
 is being fixed (or installed or activated) by a given milestone
 (to a given site)."""),
