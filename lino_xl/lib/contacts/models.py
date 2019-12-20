@@ -553,6 +553,8 @@ class Role(dd.Model, Addressable):
         If the given text looks like a full name of a person, create it.
         """
         person_model = rt.models.contacts.Person
+        if person_model.disable_create_choice:
+            return
         try:
             values = person_model.parse_to_dict(text)
         except Exception as e:
