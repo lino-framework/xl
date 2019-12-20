@@ -145,6 +145,7 @@ class Member(mixins.Sequenced):
         verbose_name_plural = _("List memberships")
 
     quick_search_fields = "partner__name remark"
+    show_in_site_search = False
 
     list = dd.ForeignKey('lists.List', related_name="members")
     partner = dd.ForeignKey(partner_model, related_name="list_memberships")
