@@ -1,14 +1,10 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Luc Saffre
-#
+# Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
 import six
-from builtins import str
 
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
@@ -115,7 +111,7 @@ class Household(contacts.Partner):
     def after_ui_save(self, ar, cw):
         super(Household, self).after_ui_save(ar, cw)
         self.populate_members.run_from_code(ar)
-        
+
     def add_member(self, person, role=None):
         mbr = rt.models.households.Member(
             household=self, person=person, role=role)
@@ -172,30 +168,40 @@ class Household(contacts.Partner):
 
 class HouseholdDetail(dd.DetailLayout):
 
-    main = """
-    type prefix name language:10 id
-    address_box
-    bottom_box
-    """
+    if dd.is_installed('addresses') and dd.is_installed('phones'):
+        main = """
+        address_box
+        bottom_box
+        """
+        address_box = "overview:50 data_box:30"
+        data_box = """
+        type
+        prefix
+        name
+        language id
+        """
+    else:
+        main = """
+        type prefix name language:10 id
+        address_box
+        bottom_box
+        """
 
-    # intro_box = """
-    # """
+        address_box = "box3 contact_box"
 
-    box3 = """
-    country region
-    city zip_code:10
-    street_prefix street:25 street_no street_box
-    addr2:40
-    """
+        box3 = """
+        country region
+        city zip_code:10
+        street_prefix street:25 street_no street_box
+        addr2:40
+        """
 
-    box4 = """
-    phone
-    gsm
-    email:40
-    url
-    """
-
-    address_box = "box3 box4"
+        contact_box = """
+        phone
+        gsm
+        email:40
+        url
+        """
 
     bottom_box = "#remarks households.MembersByHousehold"
 
@@ -296,7 +302,7 @@ class Member(mixins.DateRange, mixins.Human, mixins.Born):
                     obj.full_clean()
                     obj.save()
                 self.person = obj
-    
+
         super(Member, self).full_clean()
 
         if not settings.SITE.loading_from_dump:
@@ -451,7 +457,7 @@ class SiblingsByPerson(Members):
             else:
                 elems += [obj.format_family_member(ar, m)]
             return elems
-            
+
         items = []
         for m in sar.data_iterator:
             items.append(E.li(*format_item(m)))
@@ -546,7 +552,7 @@ class MembersByPerson(Members):
 
         items = []
         for m in sar.data_iterator:
-            
+
             args = (str(m.role), gettext(" in "),
                     ar.obj2html(m.household))
             if m.primary:
@@ -575,7 +581,5 @@ class MembersByPerson(Members):
                     # " ",
                     # rt.models.households.Household._meta.verbose_name,
                     "."]
-            
+
         return E.div(*elems)
-
-
