@@ -258,7 +258,7 @@ class EventGenerator(dd.Model):
             return
         return rset
 
-    def get_wanted_auto_events(self, ar):
+    def get_wanted_auto_events(self, ar=None):
         wanted = dict()
         unwanted = dict()
         rset = self.has_auto_events()
@@ -556,7 +556,7 @@ class RecurrenceSet(Started, Ended):
         return ''
 
     @dd.displayfield(_("When"))
-    def weekdays_text(self, ar):
+    def weekdays_text(self, ar=None):
         if self.every_unit == Recurrencies.once:
             if self.end_date and self.end_date != self.start_date:
                 return gettext("{0}-{1}").format(
@@ -574,7 +574,7 @@ class RecurrenceSet(Started, Ended):
                 for i in self.positions.split():
                     positions.append(str(POSITION_TEXTS.get(i, "?!")))
                 every_text = " {} ".format(gettext("and")).join(positions) \
-                    + " " + self.weekdays_text_(_(' or '), _("day")) \
+                    + " " + self.weekdays_text_(gettext(' and '), gettext("day")) \
                     + " " + gettext("of the month")
             else:
                 every_text = gettext("month")
