@@ -3,8 +3,6 @@
 # License: BSD (see file COPYING for details)
 
 
-from __future__ import print_function, unicode_literals
-from builtins import str
 from collections import OrderedDict
 
 from django.conf import settings
@@ -598,7 +596,7 @@ class RecurrentEvents(dd.Table):
     name
     id user event_type
     start_date start_time  end_date end_time
-    every_unit every max_events
+    every_unit every positions max_events
     monday tuesday wednesday thursday friday saturday sunday
     description cal.EntriesByController
     """

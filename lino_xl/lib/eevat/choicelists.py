@@ -2,17 +2,14 @@
 # Copyright 2012-2019 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT
-
-from lino.api import dd, rt, _
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
 from lino_xl.lib.vat.choicelists import VatRegimes, VatAreas, VatRules
 from lino_xl.lib.ledger.choicelists import CommonAccounts
 
+from lino.api import dd, rt, _
 
 NAT = VatAreas.national
 EU = VatAreas.eu
