@@ -2,10 +2,6 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
-
 from decimal import Decimal
 
 from django.conf import settings
@@ -468,7 +464,9 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
         abstract = True
 
     def get_match(self):
-        return self.get_default_match()  # no manual match field
+        # A VAT declaration has no manual match field.
+        # return self.get_default_match()
+        return self
 
     def full_clean(self, *args, **kw):
         if self.entry_date:

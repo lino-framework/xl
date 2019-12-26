@@ -174,7 +174,7 @@ class MovementsByDeclaration(ByDeclaration, Movements):
     label = _("Declared movements")
     master = VatDeclaration
     exclude = dict(vat_class="")
-    column_names = "value_date voucher_link description debit credit vat_class vat_regime *"
+    column_names = "value_date voucher_link description debit credit account__vat_column vat_class vat_regime *"
 
 
 

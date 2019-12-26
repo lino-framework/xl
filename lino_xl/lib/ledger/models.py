@@ -2,8 +2,6 @@
 # Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals, print_function
-
 import datetime
 
 from atelier.utils import last_day_of_month
@@ -475,11 +473,12 @@ class ChangeState(dd.Action):
     """
     Toggle the state of the invoice
     """
-    show_in_bbar = False
+    # show_in_bbar = False
     # button_text = _("Toggle state")
     # sort_index = 52
     label = _("Toggle state")
     # action_name = "changemystate"
+    button_text = "Õ"
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
@@ -699,8 +698,11 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
         return Journal(trade_type=trade_type, voucher_type=vt, **kw)
 
     def __str__(self):
-        if self.number is None:
+        # if self.number is None:
+        if self.state not in dd.plugins.ledger.registered_states:
+            # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
             return "{0}#{1}".format(self.journal.ref, self.id)
+        assert self.number is not None
         if self.journal.yearly_numbering:
             return "{0} {1}/{2}".format(self.journal.ref, self.number,
                                         self.accounting_period.year)
@@ -709,38 +711,22 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
         #     return "%s %s" % (self.journal.ref,self.number)
         # return "#%s (%s %s)" % (self.number,self.journal,self.year)
 
-    def get_default_match(self):
-        return str(self)
+    # def get_default_match(self): removed 20191226
+    #     return str(self)
         # return "%s#%s" % (self.journal.ref, self.id)
         # return "%s%s" % (self.id, self.journal.ref)
 
     # def get_voucher_match(self):
     #     return str(self)  # "{0}{1}".format(self.journal.ref, self.number)
 
-    def set_workflow_state(self, ar, state_field, newstate):
-        """"""
-        if newstate.name == 'registered':
-            self.register_voucher(ar)
-        elif newstate.name == 'draft':
+    def after_state_change(self, ar, oldstate, newstate):
+        # movements are created *after* having changed the state, because
+        # otherwise the match isn't correct.
+        if newstate.name == 'draft':
             self.deregister_voucher(ar)
-        super(Voucher, self).set_workflow_state(ar, state_field, newstate)
-
-        # doit(ar)
-
-        # if newstate.name == 'registered':
-        #     ar.confirm(
-        #         doit,
-        #         _("Are you sure you want to register "
-        #           "voucher {0}?").format(self))
-        # else:
-        #     doit(ar)
-
-    # def before_state_change(self, ar, old, new):
-    #     if new.name == 'registered':
-    #         self.register_voucher(ar)
-    #     elif new.name == 'draft':
-    #         self.deregister_voucher(ar)
-    #     super(Voucher, self).before_state_change(ar, old, new)
+        elif newstate.name == 'registered':
+            self.register_voucher(ar)
+        super(Voucher, self).after_state_change(ar, oldstate, newstate)
 
     def register_voucher(self, ar=None, do_clear=True):
         """
@@ -1099,9 +1085,7 @@ class VoucherChecker(Checker):
             return obj.seqno
 
         wanted = dict()
-        registered_states = (VoucherStates.registered,
-                             VoucherStates.signed)
-        if obj.state in registered_states:
+        if obj.state in dd.plugins.ledger.registered_states:
             seqno = 0
             fcu = dd.plugins.ledger.suppress_movements_until
             try:

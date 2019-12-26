@@ -121,7 +121,8 @@ class Matching(dd.Model):
         return cls.get_match_choices(journal, partner)
 
     def get_match(self):
-        return self.match or self.get_default_match()
+        # return self.match or self.get_default_match()
+        return self.match or self  # 20191226
 
 
 class VoucherItem(dd.Model):

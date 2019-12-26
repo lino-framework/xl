@@ -595,7 +595,7 @@ class RecurrentEvents(dd.Table):
     detail_layout = """
     name
     id user event_type
-    start_date start_time  end_date end_time
+    start_date start_time end_date end_time
     every_unit every positions max_events
     monday tuesday wednesday thursday friday saturday sunday
     description cal.EntriesByController

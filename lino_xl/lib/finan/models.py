@@ -151,7 +151,8 @@ class PaymentOrder(FinancialVoucher, Printable):
         if not item_partner:
             yield self.create_movement(
                 None, (acc, None), None, not self.journal.dc, amount,
-                partner=self.journal.partner, match=self.get_default_match())
+                partner=self.journal.partner, match=self)
+                # 20191226 partner=self.journal.partner, match=self.get_default_match())
 
     def add_item_from_due(self, obj, **kwargs):
         # if obj.bank_account is None:

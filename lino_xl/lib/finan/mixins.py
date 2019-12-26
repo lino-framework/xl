@@ -117,14 +117,18 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     def add_item_from_due(self, obj, **kwargs):
         return self.voucher.add_item_from_due(obj, **kwargs)
 
-    def get_default_match(self):
-        """The string to use as `match` when no explicit match is specified on
-        this voucher.
+    # def get_default_match(self): # 20191226
+    def __str__(self):
+        """Used as `match` when no explicit match is specified for
+        this movement.
 
         """
-        return "%s %s:%s" % (
-            self.voucher.journal.ref, self.voucher.number, self.seqno)
-        # return str(self.date)
+        if self.voucher_id and self.voucher.journal_id:
+            return "%s %s:%s" % (
+                self.voucher.journal.ref, self.voucher.number, self.seqno)
+            # return str(self.date)
+        return models.Model.__str__(self)
+        # return super(FinancialVoucherItem, self).__str__()
 
     def get_siblings(self):
         return self.voucher.items.all()

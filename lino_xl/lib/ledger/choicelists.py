@@ -2,8 +2,6 @@
 # Copyright 2008-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from builtins import str
-
 from django.conf import settings
 from django.db import models
 from django.utils.text import format_lazy

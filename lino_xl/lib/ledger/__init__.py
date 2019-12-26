@@ -107,16 +107,28 @@ class Plugin(ad.Plugin):
     purchase_stories = True
     """Whether demo fixture should generate purchase invoices."""
 
+    registered_states = "registered signed"
+    """The voucher states to be considered as registered.
+
+    This is specified as a string with a space-separated list of state names,
+    and during startup it is resolved into a set of instances of
+    VoucherStates.
+
+    """
+
+    def on_site_startup(self, site):
+        if isinstance(self.registered_states, str):
+            self.registered_states = {
+                site.models.ledger.VoucherStates.get_by_name(i)
+                    for i in self.registered_states.split()}
+        super(Plugin, self).on_site_startup(site)
+
     def post_site_startup(self, site):
         super(Plugin, self).post_site_startup(site)
         site.models.ledger.CommonAccounts.sort()
         site.models.ledger.VoucherTypes.sort()
         if self.worker_model is not None:
             self.worker_model = site.models.resolve(self.worker_model)
-
-    # def on_site_startup(self, site):
-        # self.person_model = site.models.resolve(self.person_model)
-        # super(Plugin, self).on_site_startup(site)
 
     def setup_main_menu(self, site, user_type, m):
         """
