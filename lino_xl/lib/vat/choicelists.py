@@ -2,9 +2,6 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
 from django.db import models
 from atelier.utils import is_string
 from decimal import Decimal
@@ -188,6 +185,8 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_regimes) == 0:
                 self.vat_regimes = None
+            if len(self.exclude_vat_regimes) == 0:
+                self.exclude_vat_regimes = None
 
         if is_string(self.vat_classes):
             vat_classes = self.vat_classes
@@ -207,6 +206,8 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_classes) == 0:
                 self.vat_classes = None
+            if len(self.exclude_vat_classes) == 0:
+                self.exclude_vat_classes = None
 
         # using VAT columns as selector is probably obsolete
         if is_string(self.vat_columns):
@@ -227,6 +228,8 @@ class DeclarationField(dd.Choice):
                 s.add(v)
             if len(self.vat_columns) == 0:
                 self.vat_columns = None
+            if len(self.exclude_vat_columns) == 0:
+                self.exclude_vat_columns = None
 
         super(DeclarationField, self).attach(choicelist)
 
@@ -280,16 +283,19 @@ class MvtDeclarationField(DeclarationField):
         if self.vat_classes is not None:
             if not mvt.vat_class in self.vat_classes:
                 return
+        if self.exclude_vat_classes is not None:
             if mvt.vat_class in self.exclude_vat_classes:
                 return
         if self.vat_columns is not None:
             if not mvt.account.vat_column in self.vat_columns:
                 return
+        if self.exclude_vat_columns is not None:
             if mvt.account.vat_column in self.exclude_vat_columns:
                 return
         if self.vat_regimes is not None:
             if not mvt.vat_regime in self.vat_regimes:
                 return
+        if self.exclude_vat_regimes is not None:
             if mvt.vat_regime in self.exclude_vat_regimes:
                 return
         if mvt.dc == self.dc:
