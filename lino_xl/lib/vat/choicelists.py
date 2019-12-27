@@ -17,6 +17,7 @@ class VatClasses(dd.ChoiceList):
     verbose_name = _("VAT class")
     verbose_name_plural = _("VAT classes")
     required_roles = dd.login_required(LedgerStaff)
+    show_values = False
 
 add = VatClasses.add_item
 add('010', _("Goods at normal VAT rate"), 'goods')    # everything else

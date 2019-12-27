@@ -90,9 +90,9 @@ dd.inject_field(
 dd.inject_field(
     'ledger.Movement', 'vat_class', VatClasses.field(blank=True))
 
-dd.inject_field('ledger.Account',
-                'vat_column',
-                VatColumns.field(blank=True, null=True))
+# dd.inject_field('ledger.Account',
+#                 'vat_column',
+#                 VatColumns.field(blank=True, null=True))
 
 
 class VatColumnsChecker(Checker):

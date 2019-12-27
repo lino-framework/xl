@@ -44,7 +44,7 @@ add(None, '0', None, None, "exempt")
 for vat_class, rate in VAT_CLASSES_AND_RATES:
     for vat_regime, area in [('intracom', EU), ('cocontractor', NAT)]:
         add(vat_class, rate, area, 'purchases', vat_regime, CommonAccounts.vat_deductible, CommonAccounts.vat_returnable)
-        add(vat_class, rate, area, 'sales',     vat_regime, CommonAccounts.vat_due, CommonAccounts.vat_returnable)
+        add(vat_class, None, area, 'sales',     vat_regime)
 
 for vat_class, rate in VAT_CLASSES_AND_RATES:
     add(vat_class, rate, NAT,  'purchases', None, CommonAccounts.vat_deductible)

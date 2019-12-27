@@ -25,7 +25,7 @@ from lino.core.fields import TableRow
 from lino.utils import SumCollector
 from lino.utils import mti
 from lino_xl.lib.contacts.choicelists import PartnerEvents
-from lino_xl.lib.vat.choicelists import VatClasses
+from lino_xl.lib.vat.choicelists import VatClasses, VatColumns
 
 from .choicelists import CommonAccounts
 # from .utils import get_due_movements, check_clearings_by_partner
@@ -440,16 +440,16 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
     needs_partner = models.BooleanField(_("Needs partner"), default=False)
     clearable = models.BooleanField(_("Clearable"), default=False)
     # default_dc = DebitOrCreditField(_("Default booking direction"))
+    vat_column = VatColumns.field(blank=True)
     vat_class = VatClasses.field(blank=True)
     default_amount = dd.PriceField(
         _("Default amount"), blank=True, null=True)
 
-
-
-    # def __str__(self):
-    #     return "(%(ref)s) %(title)s" % dict(
-    #         ref=self.ref,
-    #         title=settings.SITE.babelattr(self, 'name'))
+    @classmethod
+    def get_simple_parameters(cls):
+        yield "vat_class"
+        yield "vat_column"
+        yield "common_account"
 
     @dd.chooser()
     def sheet_item_choices(cls):
@@ -478,7 +478,7 @@ class ChangeState(dd.Action):
     # sort_index = 52
     label = _("Toggle state")
     # action_name = "changemystate"
-    button_text = "Õ"
+    button_text = "⏼" # 23FC Toggle power
 
     def run_from_ui(self, ar, **kw):
         obj = ar.selected_rows[0]
