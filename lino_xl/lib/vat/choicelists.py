@@ -360,9 +360,10 @@ class DeclarationFieldsBase(dd.ChoiceList):
         elems = [fld.help_text, E.br()]
         def x(label, lst, xlst):
             if lst is None:
-                return
-            lst = sorted([i.name or i.value for i in lst])
-            spec = ' '.join(lst)
+                spec = ''
+            else:
+                lst = sorted([i.name or i.value for i in lst])
+                spec = ' '.join(lst)
             if xlst is not None:
                 xlst = sorted(["!"+(i.name or i.value) for i in xlst])
                 spec += ' ' + ' '.join(xlst)

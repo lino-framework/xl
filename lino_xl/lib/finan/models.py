@@ -127,7 +127,8 @@ class PaymentOrder(FinancialVoucher, Printable):
         :meth:`lino_xl.lib.ledger.Voucher.get_wanted_movements`
         for payment orders.
 
-        The generated movements
+        As a side effect this also computes the :attr:`total` field and saves
+        the voucher.
 
         """
         # dd.logger.info("20151211 cosi.PaymentOrder.get_wanted_movements()")
@@ -153,6 +154,10 @@ class PaymentOrder(FinancialVoucher, Printable):
                 None, (acc, None), None, not self.journal.dc, amount,
                 partner=self.journal.partner, match=self)
                 # 20191226 partner=self.journal.partner, match=self.get_default_match())
+
+        # side effect!:
+        self.full_clean()
+        self.save()
 
     def add_item_from_due(self, obj, **kwargs):
         # if obj.bank_account is None:
@@ -200,6 +205,14 @@ class BankStatement(DatedFinancialVoucher):
         super(BankStatement, self).on_duplicate(ar, master)
 
     def get_wanted_movements(self):
+        """Implements
+        :meth:`lino_xl.lib.ledger.Voucher.get_wanted_movements`
+        for bank statements.
+
+        As a side effect this also computes the :attr:`balance1` and
+        :attr:`balance2` fields and saves the voucher.
+
+        """
         # dd.logger.info("20151211 cosi.BankStatement.get_wanted_movements()")
         a = self.journal.account
         if not a:
@@ -213,6 +226,9 @@ class BankStatement(DatedFinancialVoucher):
             yield m
         yield self.create_movement(
             None, (a, None), None, self.journal.dc, amount)
+        # side effect!:
+        self.full_clean()
+        self.save()
 
 
 class JournalEntryItem(DatedFinancialVoucherItem):

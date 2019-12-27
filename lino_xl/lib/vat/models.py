@@ -2,11 +2,6 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-
-from __future__ import print_function
-from __future__ import unicode_literals
-
 from django.conf import settings
 from django.db import models
 

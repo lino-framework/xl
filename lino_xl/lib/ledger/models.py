@@ -746,6 +746,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
 
             fcu = dd.plugins.ledger.suppress_movements_until
             for m in movements:
+                # don't create movements before suppress_movements_until
                 if fcu and m.value_date <= fcu:
                     continue
                 # if we don't set seqno, Sequenced.full_clean will do
@@ -762,13 +763,18 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
                 m.save()
                 if m.partner:
                     partners.add(m.partner)
+            if settings.SITE.history_aware_logging:
+                dd.logger.info("Register %s (%d movements, %d partners)",
+                    self, seqno, len(partners))
 
         self.do_and_clear(doit, do_clear)
 
     def deregister_voucher(self, ar, do_clear=True):
 
         def doit(partners):
-            pass
+            if settings.SITE.history_aware_logging:
+                dd.logger.info("Deregister %s (%d partners)", self, len(partners))
+
         self.do_and_clear(doit, do_clear)
 
     def do_and_clear(self, func, do_clear):

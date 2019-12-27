@@ -23,8 +23,6 @@ from lino_xl.lib.sepa.mixins import Payable
 
 from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
-DECLARED_IN = False
-
 class PartnerDetailMixin(dd.DetailLayout):
     """
     Defines a panel :attr:`ledger`, to be added as a tab panel to your
@@ -488,62 +486,9 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
         # self.compute_fields()
         super(VatDeclaration, self).full_clean(*args, **kw)
 
-    def register_voucher(self, *args, **kwargs):
-        # self.compute_fields()
-        if DECLARED_IN:
-            count = 0
-            for doc in rt.models.ledger.Voucher.objects.filter(
-                # journal=jnl,
-                # year=self.accounting_period.year,
-                # entry_date__month=month,
-                journal__must_declare=True,
-                entry_date__gte=self.start_date,
-                entry_date__lte=self.end_date,
-                declared_in__isnull=True
-            ):
-                #~ logger.info("20121208 a can_declare %s",doc)
-                count += 1
-                doc.declared_in = self
-                doc.save()
-                #~ declared_docs.append(doc)
-        if False: # write match to declared movements
-            flt = self.get_period_filter(
-                'voucher__accounting_period',
-                match='',
-                account__clearable=True,
-                account__needs_partner=False,
-                voucher__journal__must_declare=True)
-            qs = rt.models.ledger.Movement.objects.filter(**flt)
-            for mvt in qs:
-                mvt.match = self.get_match()
-                mvt.save()
-        super(VatDeclaration, self).register_voucher(*args, **kwargs)
-
-
-    def deregister_voucher(self, *args, **kwargs):
-        if DECLARED_IN:
-            for doc in rt.models.ledger.Voucher.objects.filter(
-                    declared_in=self):
-                doc.declared_in = None
-                doc.save()
-
-        if False:  # remove match from declared movements
-            flt = self.get_period_filter(
-                'voucher__accounting_period',
-                match=self.get_match(),
-                account__clearable=True,
-                account__needs_partner=False,
-                voucher__journal__must_declare=True)
-            qs = rt.models.ledger.Movement.objects.filter(**flt)
-            for mvt in qs:
-                mvt.match = ''
-                mvt.save()
-
-        # deregister
-        super(VatDeclaration, self).deregister_voucher(*args, **kwargs)
-
-
     def get_payable_sums_dict(self):
+        # side effect : calling this will also update the fields and save the
+        # declaration.
         fields = self.fields_list.get_list_items()
         payable_sums = SumCollector()
         sums = dict()  # field sums
@@ -555,10 +500,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
         flt = self.get_period_filter(
             'voucher__accounting_period',
-            # voucher__journal=jnl,
-            # voucher__year=self.accounting_period.year,
             voucher__journal__must_declare=True)
-            # voucher__declared_in__isnull=True)
 
 
         qs = rt.models.ledger.Movement.objects.filter(**flt)
@@ -579,19 +521,14 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
         # dd.logger.info("20170713 value in 55 is %s", sums['F55'])
 
-        #~ print 20121209, item_models
-        #~ for m in item_models:
-        #~ for m in rt.models_by_base(VatDocument):
-            #~ for item in m.objects.filter(voucher__declaration=self):
-                #~ logger.info("20121208 b document %s",doc)
-                #~ self.collect_item(sums,item)
-
         for fld in fields:
             if not fld.editable:
                 setattr(self, fld.name, sums[fld.name])
+                
+        # side effect!:
+        self.full_clean()
+        self.save()
 
-        # self.full_clean()
-        # self.save()
         return payable_sums
 
     def print_declared_values(self):

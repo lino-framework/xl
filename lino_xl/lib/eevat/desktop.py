@@ -1,28 +1,10 @@
 # Copyright 2012-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-
 from lino.api import dd, _
 
 ledger = dd.resolve_app('ledger')
 
-#from .choicelists import DeclarationFields
-
-from lino_xl.lib.vat.mixins import DECLARED_IN
-
-if DECLARED_IN:
-
-    class VouchersByDeclaration(ledger.Vouchers):
-        column_names = 'overview entry_date accounting_period user *'
-        master_key = 'declared_in'
-        order_by = ['entry_date']
-        editable = False
-# else:
-
-#     class VouchersByDeclaration(dd.Table):
-#         abstract = True
-#         required_roles = set([1])
 
 class DeclarationDetail(dd.DetailLayout):
     main = "info values vat.MovementsByDeclaration"

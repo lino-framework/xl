@@ -2,9 +2,6 @@
 # Copyright 2014-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-
 from django.db import models
 from django.core.exceptions import ValidationError
 
