@@ -2,34 +2,19 @@
 # Copyright 2009-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-# ~ Note that this module may not have a docstring because any
-# ~ global variable defined here will override the global
-# ~ namespace of lino/__init__.py who includes it with execfile.
+# Note that this module may not have a docstring because any
+# global variable defined here will override the global
+# namespace of lino/__init__.py who includes it with execfile.
 
 # This module is part of the Lino test suite.
 # To test only this module:
 #
 #   $ python setup.py test -s tests.PackagesTests
 
-# from __future__ import unicode_literals
-
-
-# install_requires = ['lino', 'odfpy', 'bleach']
-
-# under Python 3, appy is installed using a symbolic link, so we don't
-# declare it in install_requires because otherwise :cmd:`setup.py
-# test` doesn't see it and tries to install it, which fails since appy
-# itself works only on Python 2
-# import sys
-# PY2 = sys.version_info[0] == 2
-# if PY2:
-#     install_requires.append('appy')
-# else:
-#     pass
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='19.12.4',
+    version='19.12.5',
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
