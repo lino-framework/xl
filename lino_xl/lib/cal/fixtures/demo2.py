@@ -2,22 +2,18 @@
 # Copyright 2011-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-import logging
-logger = logging.getLogger(__name__)
-
+import logging ; logger = logging.getLogger(__name__)
 
 import datetime
 from dateutil.relativedelta import relativedelta
-from lino.utils import ONE_DAY
-DEMO_DURATION = relativedelta(hours=1, minutes=30)
 
 from django.conf import settings
-from django.utils.translation import ugettext as _
 
 from lino.utils import Cycler
+from lino.utils import ONE_DAY
+from lino.api import dd, rt, _
 
-from lino.api import dd, rt
+DEMO_DURATION = relativedelta(hours=1, minutes=30)
 
 cal = dd.resolve_app('cal')
 Event = dd.resolve_model('cal.Event')
@@ -93,20 +89,20 @@ def objects():
                        + DURATIONS.pop())
         yield e
 
-    # ETYPES = Cycler(EventType.objects.filter(is_appointment=True, fill_presences=False))
-    absence = EventType.objects.get(**dd.str2kw('name', _("Absences")))
-    date = settings.SITE.demo_date(-2)
-    s = _("Absent for private reasons")
-    for i in range(10):
-        u = USERS.pop()
-        date += ONE_DAY
-        kw = dict(user=u,
-                  start_date=date,
-                  end_date=date + datetime.timedelta(days=(i%3)+1),
-                  event_type=absence,
-                  summary=s)
-        kw.update(state=STATES.pop())
-        yield Event(**kw)
+    if dd.plugins.cal.demo_absences:
+        absence = EventType.objects.get(**dd.str2kw('name', _("Absences")))
+        date = settings.SITE.demo_date(-2)
+        s = _("Absent for private reasons")
+        for i in range(10):
+            u = USERS.pop()
+            date += ONE_DAY
+            kw = dict(user=u,
+                      start_date=date,
+                      end_date=date + datetime.timedelta(days=(i%3)+1),
+                      event_type=absence,
+                      summary=s)
+            kw.update(state=STATES.pop())
+            yield Event(**kw)
 
 
     # # some conflicting events

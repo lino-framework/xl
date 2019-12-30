@@ -28,6 +28,9 @@ class Plugin(ad.Plugin):
     ignore_dates_after = None
     beginning_of_time = None
 
+    demo_absences = True
+    """Whether to generate absences in demo calendar."""
+
     def on_init(self):
         tod = self.site.today()
         # self.ignore_dates_after = tod.replace(year=tod.year+5, day=28)
@@ -42,7 +45,7 @@ class Plugin(ad.Plugin):
     #     from lino.core.utils import models_by_base
     #     for m in models_by_base(Reservation):
     #         state_field = m.get_field()
-        
+
     def setup_main_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
 
@@ -96,7 +99,7 @@ class Plugin(ad.Plugin):
 
     def get_dashboard_items(self, user):
         from lino.core.dashboard import ActorItem
-        
+
         if user.authenticated:
             # yield self.site.models.cal.LastWeek
             # yield self.site.models.cal.ComingWeek
