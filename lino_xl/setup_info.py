@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2019 Rumma & Ko Ltd
+# Copyright 2009-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 # Note that this module may not have a docstring because any
@@ -14,7 +14,7 @@
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='19.12.6',
+    version='20.1.0',
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
@@ -26,30 +26,6 @@ SETUP_INFO = dict(
     test_suite='tests')
 
 SETUP_INFO.update(long_description="""
-
-    <a href="https://travis-ci.org/lino-framework/xl" target="_blank"><img
-    src="https://travis-ci.org/lino-framework/xl.svg?branch=master"/></a>
-
-    <a class="reference external"
-    href="http://lino.readthedocs.io/en/latest/?badge=latest"><img
-    alt="Documentation Status"
-    src="https://readthedocs.org/projects/lino/badge/?version=latest"
-    /></a>
-
-    <a class="reference external"
-    href="https://coveralls.io/github/lino-framework/book?branch=master"><img
-    alt="coverage"
-    src="https://coveralls.io/repos/github/lino-framework/book/badge.svg?branch=master"
-    /></a>
-
-    <a class="reference external" href="https://travis-ci.org/lino-framework/book?branch=stable"><img alt="build" src="https://travis-ci.org/lino-framework/book.svg?branch=stable" /></a>
-
-    <a class="reference external" href="https://pypi.python.org/pypi/lino/"><img alt="pypi_v" src="https://img.shields.io/pypi/v/lino.svg" /></a>
-
-    <a class="reference external"
-    href="https://pypi.python.org/pypi/lino/"><img alt="PyPI"
-    src="https://img.shields.io/pypi/l/lino.svg" /></a>
-
 
 The **Lino Extensions Library** is a collection of plugins used by many Lino
 applications.
