@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
 
 from lino.api import dd, rt, _
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT
@@ -97,19 +94,25 @@ def objects():
         kw.update(dc=CREDIT)
         yield finan.BankStatement.create_journal(**kw)
 
-        kw.update(dd.str2kw('name', _("Miscellaneous transactions")))
-        kw.update(dd.str2kw('printed_name', _("Transaction")))
         kw.update(journal_group=JournalGroups.misc)
         kw.update(account=CommonAccounts.cash.get_object(), ref="MSC")
         kw.update(dc=CREDIT)
+        kw.update(dd.str2kw('name', _("Miscellaneous transactions")))
+        kw.update(dd.str2kw('printed_name', _("Transaction")))
         yield finan.JournalEntry.create_journal(**kw)
 
+        kw.update(preliminary=True, ref="PRE")
+        kw.update(dd.str2kw('name', _("Preliminary transactions")))
+        yield finan.JournalEntry.create_journal(**kw)
+
+        kw = dict(journal_group=JournalGroups.wages)
         kw.update(dd.str2kw('name', _("Paychecks")))
         kw.update(dd.str2kw('printed_name', _("Paycheck")))
-        kw.update(journal_group=JournalGroups.wages)
         kw.update(account=CommonAccounts.cash.get_object(), ref="SAL")
         kw.update(dc=CREDIT)
         yield finan.JournalEntry.create_journal(**kw)
+
+
 
     for m in (bevat, bevats, eevat):
         if not m:

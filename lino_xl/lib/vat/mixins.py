@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from decimal import Decimal
@@ -500,6 +500,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
 
         flt = self.get_period_filter(
             'voucher__accounting_period',
+            voucher__journal__preliminary=False,
             voucher__journal__must_declare=True)
 
 
@@ -524,7 +525,7 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
         for fld in fields:
             if not fld.editable:
                 setattr(self, fld.name, sums[fld.name])
-                
+
         # side effect!:
         self.full_clean()
         self.save()

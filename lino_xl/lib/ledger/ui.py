@@ -210,7 +210,7 @@ class Vouchers(dd.Table):
         return [{'key': 'x',
                 'ctrl': True,
                 'shift': False,
-                'ba': 'change_state'}]
+                'ba': 'toggle_state'}]
 
 
 

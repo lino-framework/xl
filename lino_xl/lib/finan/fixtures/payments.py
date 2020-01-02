@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
 
 import datetime
 from dateutil.relativedelta import relativedelta as delta
@@ -63,7 +60,7 @@ def objects(refs="PMO BNK"):
     Journal = rt.models.ledger.Journal
     Company = rt.models.contacts.Company
     Movement = rt.models.ledger.Movement
-    
+
     USERS = Cycler(settings.SITE.user_model.objects.all())
     OFFSETS = Cycler(12, 20, 28)
 
@@ -97,7 +94,7 @@ def objects(refs="PMO BNK"):
             acct = add_demo_account(site_company)
             jnl.sepa_account = acct
             yield jnl
-            
+
         offset = OFFSETS.pop()
         date = datetime.date(START_YEAR, 1, 1)
         while date < end_date:
@@ -165,4 +162,3 @@ def objects(refs="PMO BNK"):
         # ar.run()
         # bs.register(REQUEST)
         # bs.save()
-

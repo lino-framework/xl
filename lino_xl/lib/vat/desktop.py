@@ -1,11 +1,7 @@
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from lino.api import dd, rt, _
-
-# from etgen.html import E
-# from django.db.models import Q
-
 
 from lino_xl.lib.ledger.ui import (
     PartnerVouchers, ByJournal, PrintableByJournal,
@@ -17,18 +13,6 @@ from lino_xl.lib.ledger.mixins import ItemsByVoucher, VouchersByPartnerBase
 
 from .choicelists import VatRegimes, VatAreas
 from .mixins import VatDeclaration, VatDocument, VatVoucher
-
-
-# class VatRules(dd.Table):
-
-#     model = 'vat.VatRule'
-#     required_roles = dd.login_required(LedgerStaff)
-#     column_names = "seqno vat_area trade_type vat_class vat_regime \
-#     #start_date #end_date rate can_edit \
-#     vat_account vat_returnable vat_returnable_account *"
-#     hide_sums = True
-#     auto_fit_column_widths = True
-#     order_by = ['seqno']
 
 
 class InvoiceDetail(dd.DetailLayout):
@@ -173,7 +157,7 @@ class ByDeclaration(dd.Table):
 class MovementsByDeclaration(ByDeclaration, Movements):
     label = _("Declared movements")
     master = VatDeclaration
-    exclude = dict(vat_class="")
+    # exclude = dict(vat_class="")
     column_names = "value_date voucher_link description debit credit account__vat_column vat_class vat_regime *"
 
 

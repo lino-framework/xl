@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
-
+import logging ; logger = logging.getLogger(__name__)
 
 import datetime
 from dateutil.relativedelta import relativedelta as delta

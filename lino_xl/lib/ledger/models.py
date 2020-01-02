@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import datetime
@@ -72,6 +72,8 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
         _("Fill suggestions"), default=True)
     force_sequence = models.BooleanField(
         _("Force chronological sequence"), default=False)
+    preliminary = models.BooleanField(_("Preliminary"), default=False)
+
     account = dd.ForeignKey('ledger.Account', blank=True, null=True)
     partner = dd.ForeignKey('contacts.Company', blank=True, null=True)
     printed_name = dd.BabelCharField(
@@ -469,10 +471,7 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
 
 
 
-class ChangeState(dd.Action):
-    """
-    Toggle the state of the invoice
-    """
+class ToggleState(dd.Action):
     # show_in_bbar = False
     # button_text = _("Toggle state")
     # sort_index = 52
@@ -512,7 +511,7 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
     state = VoucherStates.field(default='draft')
-    change_state = ChangeState()
+    toggle_state = ToggleState()
     workflow_state_field = 'state'
 
     #~ @classmethod

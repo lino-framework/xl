@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """This is Lino's standard plugin for General Ledger.
@@ -13,8 +13,6 @@ See :doc:`/specs/ledger`.
     management.commands.reregister
 
 """
-
-from __future__ import unicode_literals
 
 from django.utils.functional import lazystr
 
