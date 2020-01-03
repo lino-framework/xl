@@ -37,9 +37,9 @@ VAT_CLASSES_AND_RATES = [
     ("reduced", "0.09")]
 VatRules.clear()
 add = VatRules.add_item
-#   vat_class      rate vat_area trade_type   vat_regime  vat_account   vat_returnable_account vat_returnable
+#   vat_class rate vat_area trade_type vat_regime  vat_account   vat_returnable_account vat_returnable
 add(None, '0', None, None, "exempt")
-
+add(None, '0', None, None, "outside")
 
 for vat_class, rate in VAT_CLASSES_AND_RATES:
     for vat_regime, area in [('intracom', EU), ('cocontractor', NAT)]:
@@ -81,12 +81,12 @@ wfld = DeclarationFields.add_writable_field
 # value dc vat_columns text // fieldnames both_dc vat_regimes vat_classes
 
 mfld("1",  CREDIT, '10', "20% määraga maksustatavad toimingud ja tehingud",
-    vat_classes="goods services", vat_regimes="!exempt !tax_free !intracom !cocontractor")
+    vat_classes="goods services", vat_regimes="normal subject")
 mfld("2",  CREDIT, '10', "9% määraga maksustatavad toimingud ja tehingud",
-    vat_classes="reduced", vat_regimes="!exempt !tax_free !intracom !cocontractor")
+    vat_classes="reduced", vat_regimes="normal subject")
 
 mfld("3",  CREDIT, '10', "0% määraga maksustatavad toimingud ja tehingud, sh",
-    vat_regimes="exempt tax_free intracom cocontractor")
+    vat_regimes="!normal !subject")
 
 mfld("31", CREDIT, '10',
     "1) kauba ühendusesisene käive ja teise liikmesriigi maksukohustuslasele / "
