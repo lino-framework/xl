@@ -218,8 +218,8 @@ class VatDocument(ProjectRelated, VatTotal):
                     sums.collect(
                         (acc_tuple, self.project,
                          i.vat_class, self.vat_regime),
-                        vat_amount)
-                    vat_amount = - vat_amount
+                        - vat_amount)
+                    # vat_amount = - vat_amount
                 sums.collect(
                     ((rule.vat_account.get_object(), None), self.project,
                      i.vat_class, self.vat_regime),
