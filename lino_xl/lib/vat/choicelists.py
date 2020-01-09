@@ -1,12 +1,12 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from django.db import models
 from atelier.utils import is_string
 from decimal import Decimal
 from lino.api import dd, _, gettext
 from etgen.html import E, forcetext
+from django.db import models
 from lino_xl.lib.ledger.roles import LedgerStaff
 from lino_xl.lib.ledger.choicelists import TradeTypes, CommonAccounts
 
@@ -164,8 +164,7 @@ class DeclarationField(dd.Choice):
             f = choicelist.get_by_value(n)
             if f is None:
                 raise Exception(
-                    "Invalid observed field {} for {}".format(
-                        n, self))
+                    "Invalid observed field {} for {}".format(n, self))
             self.observed_fields.append(f)
 
         if is_string(self.vat_regimes):
@@ -257,12 +256,13 @@ class SumDeclarationField(DeclarationField):
         tot = Decimal()
         for f in self.observed_fields:
             v = field_values[f.name]
-            if f.name in self.minus_observed_fields:
+            if f.value in self.minus_observed_fields:
                 v = -v
-            if f.dc == self.dc:
-                tot += v
-            else:
-                tot -= v
+            tot += v
+            # if f.dc == self.dc:
+            #     tot += v
+            # else:
+            #     tot -= v
         field_values[self.name] = tot
 
 class WritableDeclarationField(DeclarationField):
@@ -386,8 +386,8 @@ class DeclarationFieldsBase(dd.ChoiceList):
         if len(fld.observed_fields):
             names = []
             for f in fld.observed_fields:
-                n = f.name
-                if f.name in fld.minus_observed_fields:
+                n = f.value
+                if f.value in fld.minus_observed_fields:
                     n = "- " + n
                 elif len(names) > 0:
                     n = "+ " + n

@@ -80,10 +80,22 @@ wfld = DeclarationFields.add_writable_field
 
 # value dc vat_columns text // fieldnames both_dc vat_regimes vat_classes
 
-mfld("1",  CREDIT, '10', "20% määraga maksustatavad toimingud ja tehingud",
+mfld("1a", CREDIT, '10', "20% määraga maksustatavad müügid",
     vat_classes="goods services", vat_regimes="normal subject")
-mfld("2",  CREDIT, '10', "9% määraga maksustatavad toimingud ja tehingud",
+mfld("1b", DEBIT, '60 61', "20% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
+    vat_classes="goods services", vat_regimes="intracom")
+sfld("1", CREDIT, None,
+    "20% määraga maksustatavad toimingud ja tehingud",
+    fieldnames="1a 1b")
+
+mfld("2a", CREDIT, '10', "9% määraga maksustatavad müügid",
     vat_classes="reduced", vat_regimes="normal subject")
+mfld("2b", DEBIT, '60 61', "9% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
+    vat_classes="reduced", vat_regimes="intracom")
+sfld("2", CREDIT, None,
+    "9% määraga maksustatavad toimingud ja tehingud",
+    fieldnames="2a 2b")
+
 
 mfld("3",  CREDIT, '10', "0% määraga maksustatavad toimingud ja tehingud, sh",
     vat_regimes="!normal !subject")

@@ -16,15 +16,22 @@ class DeclarationDetail(dd.DetailLayout):
 
     values = dd.Panel("""
     partner user workflow_buttons
-    c1 c2 c3 c4
+    c1 c5 c2 c3 c4
     # VouchersByDeclaration
     # vat.SalesByDeclaration vat.PurchasesByDeclaration
     vat.SalesByDeclaration vat.PurchasesByDeclaration
     """, label=_("Values"))
 
     c1 = """
+    F1a
+    F1b
     F1
+    F2a
+    F2b
     F2
+    """
+
+    c5 = """
     F3
     F31
     F311
