@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-import six
 from django.db import models
 from django.db.models import OuterRef, Subquery, Sum
 from etgen.html import E
@@ -36,13 +35,12 @@ class Accounts(dd.Table):
     """
 
 
-
 class JournalDetail(dd.DetailLayout):
     main = """
     name ref:5
     journal_group:15 voucher_type:20 trade_type:20 seqno:5 id:5
     account partner build_method:20 template:20 uploads_volume
-    dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare preliminary 
+    dc force_sequence #invert_due_dc yearly_numbering auto_fill_suggestions auto_check_clearings must_declare preliminary
     printed_name
     MatchRulesByJournal
     """
@@ -65,23 +63,47 @@ class Journals(dd.Table):
 class JournalsOverview(Journals):
     required_roles = dd.login_required(LedgerUser)
     column_names = "description num_vouchers this_year this_month state_draft warnings *"
+    display_mode = "summary"
+    editable = False
+
+    @classmethod
+    def get_table_summary(cls, mi, ar):
+        if ar is None:
+            return None
+        items = []
+        for obj in cls.get_request_queryset(ar):
+            elems = []
+            table_class = obj.get_doc_report()
+            sar = table_class.request(master_instance=obj)
+            # elems.append(str(sar.get_total_count()))
+            # elems.append(" ")
+            # elems.append(ar.href_to_request(sar, text=str(obj)))
+            elems.append(ar.href_to_request(
+                sar, text="{} {}".format(sar.get_total_count(), obj)))
+            if True:
+                sar = table_class.insert_action.request_from(ar, master_instance=obj)
+                # print(20170217, sar)
+                sar.known_values.update(journal=obj)
+                # txt = dd.babelattr(obj, 'printed_name')
+                # btn = sar.ar2button(None, _("New {}").format(txt), icon_name=None)
+                btn = sar.ar2button(label="⊕", icon_name=None) # U+2295 Circled Plus Unicode Character.
+                # btn = sar.ar2button()
+                # btn.set("style", "padding-left:10px")
+                btn.set("style", "text-decoration:none")
+                elems.append(" ")
+                elems.append(btn)
+            else:
+                elems.append(" / ")
+                elems.append(obj.insert_voucher_button(ar))
+            items.append(E.li(*elems))
+        return E.ul(*items)
 
     @dd.displayfield(_("Description"))
-    def description(cls, self, ar):
+    def description(cls, obj, ar):
         elems = []
-        elems.append(str(self))
-        table_class = self.voucher_type.table_class
-        sar = table_class.insert_action.request_from(ar, master_instance=self)
-        # print(20170217, sar)
-        sar.known_values.update(journal=self)
-        # sar.known_values.update(journal=self, user=ar.get_user())
-        if ar.get_user().authenticated:
-            txt = dd.babelattr(self, 'printed_name')
-            # txt = self.voucher_type.model._meta.verbose_name_plural
-            btn = sar.ar2button(None, _("New {}").format(txt), icon_name=None)
-            # btn.set("style", "padding-left:10px")
-            elems.append(btn)
-
+        elems.append(str(obj))
+        # if ar.get_user().authenticated:
+        elems.append(obj.insert_voucher_button(ar))
         return E.p(*join_elems(elems, " / "))
 
     @dd.requestfield(_("Total"))
@@ -143,9 +165,9 @@ class ByJournal(dd.Table):
     @classmethod
     def create_journal(cls, trade_type=None, account=None, **kw):
         vt = VoucherTypes.get_for_table(cls)
-        if isinstance(trade_type, six.string_types):
+        if isinstance(trade_type, str):
             trade_type = TradeTypes.get_by_name(trade_type)
-        if isinstance(account, six.string_types):
+        if isinstance(account, str):
             account = rt.models.ledger.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
@@ -1052,14 +1074,10 @@ class MovementsByPartner(Movements):
         return E.p(*join_elems(elems, " | "))
 
     @classmethod
-    def get_table_summary(cls, obj, ar):
-        """The :meth:`summary view <lino.core.actors.Actor.get_table_summary>`
-        for this table.
-
-        """
+    def get_table_summary(cls, mi, ar):
         elems = []
         sar = ar.spawn(rt.models.ledger.Movements, param_values=dict(
-            cleared=dd.YesNo.no, partner=obj))
+            cleared=dd.YesNo.no, partner=mi))
         bal = ZERO
         for mvt in sar:
             if mvt.dc:
@@ -1172,7 +1190,7 @@ class MovementsByMatch(Movements):
     """
     column_names = 'value_date voucher_link description '\
                    'debit credit cleared *'
-    master = six.text_type  # 'ledger.Matching'
+    master = str  # 'ledger.Matching'
     variable_row_height = True
     order_by = dd.plugins.ledger.remove_dummy(
         '-value_date', 'account__ref', 'project', 'id')

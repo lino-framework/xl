@@ -218,10 +218,18 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
         template_groups = [voucher_type.model.get_template_group()]
         return cls.get_template_choices(build_method, template_groups)
 
+    def insert_voucher_button(self, ar):
+        table_class = self.get_doc_report()
+        sar = table_class.insert_action.request_from(ar, master_instance=self)
+        # print(20170217, sar)
+        sar.known_values.update(journal=self)
+        # sar.known_values.update(journal=self, user=ar.get_user())
+        txt = dd.babelattr(self, 'printed_name')
+        # txt = self.voucher_type.model._meta.verbose_name_plural
+        btn = sar.ar2button(None, _("New {}").format(txt), icon_name=None)
+        # btn.set("style", "padding-left:10px")
+        return btn
 
-#
-#
-#
 
 
 class AccountingPeriod(DateRange, Referrable):
@@ -688,9 +696,9 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
     @classmethod
     def create_journal(cls, trade_type=None, account=None, **kw):
         vt = VoucherTypes.get_for_model(cls)
-        if isinstance(trade_type, six.string_types):
+        if isinstance(trade_type, str):
             trade_type = TradeTypes.get_by_name(trade_type)
-        if isinstance(account, six.string_types):
+        if isinstance(account, str):
             account = rt.models.ledger.Account.get_by_ref(account)
         if account is not None:
             kw.update(account=account)
@@ -845,12 +853,12 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
     #~ def add_voucher_item(self,account=None,**kw):
         #~ if account is not None:
             #~ if not isinstance(account,ledger.Account):
-            #~ if isinstance(account,six.string_types):
+            #~ if isinstance(account, str):
                 #~ account = self.journal.chart.get_account_by_ref(account)
             #~ kw['account'] = account
     def add_voucher_item(self, account=None, **kw):
         if account is not None:
-            if isinstance(account, six.string_types):
+            if isinstance(account, str):
                 account = rt.models.ledger.Account.get_by_ref(account)
             kw['account'] = account
         kw.update(voucher=self)
