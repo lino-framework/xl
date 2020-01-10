@@ -35,21 +35,22 @@ Groupware
     votes
 
 
-Calendar & Co
-====================
+Calendar functionalities
+========================
 
 .. autosummary::
    :toctree:
 
     cal
+    calview
     extensible
     reception
     rooms
     courses
 
 
-Office
-======
+Office functionalities
+======================
 
 .. autosummary::
    :toctree:

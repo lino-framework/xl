@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2019 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-import six
 
 import sys
 from datetime import datetime
@@ -26,6 +24,7 @@ from lino.mixins.periods import ObservedDateRange
 from lino_xl.lib.tickets.roles import Triager, TicketsStaff
 from lino_xl.lib.tickets.choicelists import (
     TicketEvents, TicketStates)
+from lino_xl.lib.calview.ui import Day, Days
 
 from .roles import Worker
 from .choicelists import ReportingTypes
@@ -252,7 +251,6 @@ class MySessionsByDate(MySessions):
         kw.update(start_date=ar.param_values.start_date)
         return super(MySessions, self).create_instance(ar, **kw)
 
-from lino_xl.lib.cal.models import Day
 
 class MySessionsByDay(MySessionsByDate):
 
@@ -447,7 +445,7 @@ class DurationReport(VentilatedColumns):
         #     return dd.VirtualField(dd.DurationField(verbose_name), func)
 
         for rpttype in ReportingTypes.objects():
-            yield w(rpttype, six.text_type(rpttype))
+            yield w(rpttype, str(rpttype))
         # yield w(None, _("N/A"))
 
 class SessionsByReport(Sessions, DurationReport):
@@ -692,8 +690,6 @@ class SummariesByUser(UserSummaries):
 
 
 
-from lino_xl.lib.cal.models import Day, Days
-
 class Day(Day):
     def __init__(self, *args, **kwargs):
         super(Day, self).__init__(*args, **kwargs)
@@ -765,7 +761,7 @@ class WorkedHours(Days, dd.VentilatingTable):
             return dd.VirtualField(dd.DurationField(verbose_name), func)
 
         for rpttype in ReportingTypes.objects():
-            yield w(rpttype, six.text_type(rpttype))
+            yield w(rpttype, str(rpttype))
         # yield w(None, _("N/A"))
         yield w(TOTAL_KEY, _("Total"))
 

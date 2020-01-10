@@ -516,15 +516,6 @@ entry state."""),
 this type."""),
     'lino_xl.lib.cal.EventType.fill_guests' : _("""Planned name for fill_presences."""),
     'lino_xl.lib.cal.EventTypes' : _("""The list of entry types defined on this site."""),
-    'lino_xl.lib.cal.CalendarView' : _("""Base class for all calendar views (daily, weekly and monthly)."""),
-    'lino_xl.lib.cal.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
-    'lino_xl.lib.cal.WeeklyView' : _("""Shows a calendar navigator with a configurable weekly view."""),
-    'lino_xl.lib.cal.MonthlyView' : _("""Shows a calendar navigator with a configurable monthly view."""),
-    'lino_xl.lib.cal.DailyPlanner' : _("""The virtual table used to render the daily planner."""),
-    'lino_xl.lib.cal.PlannerColumns' : _("""A choicelist that defines the columns to appear in the daily
-planner. This list can be modified locally."""),
-    'lino_xl.lib.cal.DailyPlannerRow' : _("""A database object that represents one row of the daily planner.
-The default configuration has "AM", "PM" and "All day"."""),
     'lino_xl.lib.cal.Calendar' : _("""The django model representing a calendar."""),
     'lino_xl.lib.cal.Calendar.color' : _("""The color to use for entries of this calendar (in
 lino_xl.lib.extensible)."""),
@@ -659,6 +650,15 @@ as done e.g. by vilma."""),
     'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of
 days allowed by their type."""),
     'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
+    'lino_xl.lib.calview.CalendarView' : _("""Base class for all calendar views (daily, weekly and monthly)."""),
+    'lino_xl.lib.calview.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
+    'lino_xl.lib.calview.WeeklyView' : _("""Shows a calendar navigator with a configurable weekly view."""),
+    'lino_xl.lib.calview.MonthlyView' : _("""Shows a calendar navigator with a configurable monthly view."""),
+    'lino_xl.lib.calview.DailyPlanner' : _("""The virtual table used to render the daily planner."""),
+    'lino_xl.lib.calview.PlannerColumns' : _("""A choicelist that defines the columns to appear in the daily
+planner. This list can be modified locally."""),
+    'lino_xl.lib.calview.DailyPlannerRow' : _("""A database object that represents one row of the daily planner.
+The default configuration has "AM", "PM" and "All day"."""),
     'lino_xl.lib.clients.ClientContactBase' : _("""Also used by aids.RefundPartner."""),
     'lino_xl.lib.clients.ClientBase' : _("""Base class for a client. The model specified as
 client_model must implement this."""),

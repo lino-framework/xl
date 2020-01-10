@@ -1,4 +1,4 @@
-# Copyright 2013-2019 Rumma & Ko Ltd
+# Copyright 2013-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """This is Lino's calendar module. See :doc:`/specs/cal`.
@@ -62,10 +62,6 @@ class Plugin(ad.Plugin):
         m.add_action('cal.MyOverdueAppointments')
         # m.add_action('cal.DailyPlanner')
 
-        # a = site.models.cal.WeeklyView
-        a = site.models.cal.MonthlyView
-        m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action, label=_("Calendar view"))
-
     def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('cal.Calendars')
@@ -82,7 +78,6 @@ class Plugin(ad.Plugin):
         m.add_action('cal.EventTypes')
         m.add_action('cal.EventPolicies')
         m.add_action('cal.RemoteCalendars')
-        m.add_action('cal.DailyPlannerRows')
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
@@ -108,6 +103,5 @@ class Plugin(ad.Plugin):
                 self.site.models.cal.MyEntries, min_count=None)
             yield self.site.models.cal.MyOverdueAppointments
             yield self.site.models.cal.MyUnconfirmedAppointments
-            yield self.site.models.cal.DailyPlanner
         else:
             yield self.site.models.cal.PublicEntries

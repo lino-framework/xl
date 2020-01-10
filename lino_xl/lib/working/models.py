@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2019 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-
 
 from django.conf import settings
 from django.db import models
@@ -81,7 +78,7 @@ class Session(UserAuthored, Started, Ended, Workable):
         time_zone = TimeZones.field()
     else:
         time_zone = dd.DummyField()
-    
+
     end_session = EndThisSession()
     show_today = ShowMySessionsByDay('start_date')
     # print_activity_report = PrintActivityReport()
@@ -96,22 +93,22 @@ class Session(UserAuthored, Started, Ended, Workable):
 
     def get_ticket(self):
         return self.ticket
-    
+
     def on_create(self, ar):
         super(Session, self).on_create(ar)
         if settings.USE_TZ:
             self.time_zone = self.user.time_zone or \
                              rt.models.about.TimeZones.default
-        
+
     def get_time_zone(self):
         return self.time_zone
-    
+
     def full_clean(self, *args, **kwargs):
         if self.user_id and not self.time_zone:
             # can be removed when all production sites have migrated:
             self.time_zone = self.user.time_zone or \
                              rt.models.about.TimeZones.default
-            
+
         if not settings.SITE.loading_from_dump:
             if self.start_time is None:
                 self.set_datetime('start', timezone.now())
@@ -129,7 +126,7 @@ class Session(UserAuthored, Started, Ended, Workable):
                     self.end_date = self.start_date
             if self.ticket_id:
                 self.ticket.on_worked(self)
-                    
+
         super(Session, self).full_clean(*args, **kwargs)
 
     def unused_save(self, *args, **kwargs):
@@ -156,7 +153,7 @@ class Session(UserAuthored, Started, Ended, Workable):
     #     super(Session, self).after_ui_save(ar, cw)
     #     if self.ticket_id:
     #         self.ticket.on_worked(self, ar, cw)
-        
+
     def get_root_project(self):
         """Return the root project for this session (or None if session has no
         ticket).
@@ -177,7 +174,7 @@ class Session(UserAuthored, Started, Ended, Workable):
         if diff and self.break_time:
             diff -= self.break_time
         return diff
-        
+
         # if self.end_time is None:
         #     diff = datetime.timedelta()
         # else:
@@ -334,7 +331,7 @@ class SiteSummary(SummaryBySession):
         #         setattr(self, k, 0)
         self.active_tickets = 0
         self.inactive_tickets = 0
-            
+
     def get_summary_collectors(self):
         if self.year is None:
             qs = rt.models.tickets.Ticket.objects.filter(site=self.master)
@@ -348,7 +345,7 @@ class SiteSummary(SummaryBySession):
             qs = qs.filter(
                 start_date__year=self.year)
         yield (self.add_from_session, qs)
-    
+
     def add_from_ticket(self, obj):
         ts = obj.state
         # k = ts.get_summary_field()
@@ -436,14 +433,14 @@ def welcome_messages(ar):
 
     # your open sessions (i.e. those you are busy with)
     qs = Session.objects.filter(end_time__isnull=True)
-    working = {me:[E.b(six.text_type(_("You are busy with ")))]}
+    working = {me:[E.b(str(_("You are busy with ")))]}
     if qs.count() == 0:
         return
     for ses in qs:
         if ses.user not in working:
             working[ses.user] = [ar.obj2html(ses.user),
                                  gettext(" is working on: ")]
-        txt = six.text_type(ses.ticket)
+        txt = str(ses.ticket)
         working[ses.user].append(
             ar.obj2html(ses.ticket, txt, title=getattr(ses.ticket,'summary',"") or
                                                getattr(ses.ticket,'name',"")))
@@ -547,7 +544,7 @@ class TicketSessionsChecker(Checker):
                     "Fixing session exists but ticket not marked as fixed"))
 
 TicketSessionsChecker.activate()
-    
+
 
 # dd.inject_field(
 #     'tickets.Project',

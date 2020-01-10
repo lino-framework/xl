@@ -1,16 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Rumma & Ko Ltd
-#
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from lino.api import dd, rt, _
 from lino.core.gfks import gfk2lookup
 from .choicelists import EntryStates, GuestStates
-
 
 
 class ShowEntriesByDay(dd.Action):
@@ -31,21 +26,6 @@ class ShowEntriesByDay(dd.Action):
         sar = ar.spawn(rt.models.cal.EntriesByDay, param_values=pv)
         js = ar.renderer.request_handler(sar)
         ar.set_response(eval_js=js)
-
-class InsertEvent(dd.Action):
-    """Wrapper to insert an event in the daily view cal table.
-    Returns a js to eval which equates to running the insert window action for Events with the correct known values."""
-    label = _("Create new Event")
-    icon_name = 'add'  # if action rendered as toolbar button
-    help_text = _("Create a new Event")
-    show_in_bbar = True
-
-    def run_from_ui(self, ar, **kw):
-        Event = rt.models.cal.Event
-        sar = Event.get_default_table().insert_action.request_from(ar)
-        sar.known_values = dict(
-            start_date=str(ar.selected_rows[0].date))
-        ar.set_response(eval_js=ar.renderer.ar2js(sar, None))
 
 
 class UpdateGuests(dd.Action):

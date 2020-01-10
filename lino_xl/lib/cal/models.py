@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2019 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from builtins import str
-import six
 
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -82,24 +78,6 @@ register_calendartype('local', LocalCalendar())
 register_calendartype('google', GoogleCalendar())
 
 
-class DailyPlannerRow(mixins.BabelDesignated, mixins.Sequenced):
-
-    class Meta:
-        app_label = 'cal'
-        abstract = dd.is_abstract_model(__name__, 'PlannerRow')
-        verbose_name = _("Planner row")
-        verbose_name_plural = _("Planner rows")
-        ordering = ['start_time','-seqno']
-
-    start_time = dd.TimeField(
-        blank=True, null=True,
-        verbose_name=_("Start time"))
-    end_time = dd.TimeField(
-        blank=True, null=True,
-        verbose_name=_("End time"))
-
-dd.update_field(DailyPlannerRow, 'overview', verbose_name=_("Time range"))
-
 class RemoteCalendar(mixins.Sequenced):
 
     class Meta:
@@ -155,7 +133,7 @@ dd.update_field(
 #     ref = models.CharField(max_length=1)
 
 
-# 
+#
 class EventType(mixins.BabelNamed, Referrable, mixins.Sequenced, MailableType):
     templates_group = 'cal/Event'
     ref_max_length = 4
@@ -348,7 +326,7 @@ class RecurrentEvent(mixins.BabelNamed, RecurrenceSet, EventGenerator,
         return self.event_type
 
     def update_cal_summary(self, et, i):
-        return six.text_type(self)
+        return str(self)
 
     def care_about_conflicts(self, we):
         return False
@@ -841,12 +819,12 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         if event.user is not None and event.user != ar.get_user():
             if event.access_class == AccessClasses.show_busy:
                 s = _("Busy")
-            s = event.user.username + ': ' + six.text_type(s)
+            s = event.user.username + ': ' + str(s)
         elif settings.SITE.project_model is not None \
                 and event.project is not None:
-            s += " " + six.text_type(_("with")) + " " + six.text_type(event.project)
+            s += " " + str(_("with")) + " " + str(event.project)
         if event.state:
-            s = ("(%s) " % six.text_type(event.state)) + s
+            s = ("(%s) " % str(event.state)) + s
         n = event.guest_set.all().count()
         if n:
             s = ("[%d] " % n) + s
@@ -1214,7 +1192,7 @@ if False:  # removed 20160610 because it is probably not used
 
         def run_from_ui(self, ar, **kw):
             user = ar.selected_rows[0]
-            dd.logger.info("Updating reminders for %s", six.text_type(user))
+            dd.logger.info("Updating reminders for %s", str(user))
             n = update_reminders_for_user(user, ar)
             msg = _("%(num)d reminders for %(user)s have been updated."
                     ) % dict(user=user, num=n)

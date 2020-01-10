@@ -1,5 +1,4 @@
-# Copyright 2016-2018 Rumma & Ko Ltd
-#
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -9,7 +8,7 @@ To be used as a :attr:`user_types_module
 <lino.core.site.Site.user_types_module>`.
 """
 
-from lino.core.roles import UserRole
+from lino.core.roles import UserRole, SiteUser
 from lino.modlib.office.roles import OfficeStaff, OfficeUser
 from lino.modlib.comments.roles import CommentsUser, CommentsStaff
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
@@ -19,7 +18,7 @@ from lino_xl.lib.polls.roles import PollsUser, PollsAdmin
 from lino_xl.lib.excerpts.roles import ExcerptsUser, ExcerptsStaff
 
 
-class SiteUser(OfficeUser, GuestOperator, ContactsUser, PollsUser,
+class SiteUser(SiteUser, OfficeUser, GuestOperator, ContactsUser, PollsUser,
                ExcerptsUser, CommentsUser, NotesUser):
     pass
 
