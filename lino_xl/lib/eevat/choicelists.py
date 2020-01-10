@@ -62,8 +62,8 @@ add('10', _("Sales turnover"), CommonAccounts.sales)
 add('40', _("VAT due"), CommonAccounts.vat_due)
 add('41', _("VAT returnable"), CommonAccounts.vat_returnable)
 add('50', _("VAT deductible"), CommonAccounts.vat_deductible)
-add('60', _("Purchase of goods"), CommonAccounts.purchase_of_goods)
-add('61', _("Other purchases"), CommonAccounts.purchase_of_services)
+add('60', _("Base amounts of purchases"), CommonAccounts.purchase_of_goods)
+# add('61', _("Other purchases"), CommonAccounts.purchase_of_investments)
 # add('62', _("Purchase of services"), CommonAccounts.purchase_of_services)
 # add('63', _("Purchase of investments"), CommonAccounts.purchase_of_investments)
 
@@ -82,7 +82,7 @@ wfld = DeclarationFields.add_writable_field
 
 mfld("1a", CREDIT, '10', "20% määraga maksustatavad müügid",
     vat_classes="goods services", vat_regimes="normal subject")
-mfld("1b", DEBIT, '60 61', "20% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
+mfld("1b", DEBIT, '60', "20% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
     vat_classes="goods services", vat_regimes="intracom")
 sfld("1", CREDIT, None,
     "20% määraga maksustatavad toimingud ja tehingud",
@@ -90,7 +90,7 @@ sfld("1", CREDIT, None,
 
 mfld("2a", CREDIT, '10', "9% määraga maksustatavad müügid",
     vat_classes="reduced", vat_regimes="normal subject")
-mfld("2b", DEBIT, '60 61', "9% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
+mfld("2b", DEBIT, '60', "9% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
     vat_classes="reduced", vat_regimes="intracom")
 sfld("2", CREDIT, None,
     "9% määraga maksustatavad toimingud ja tehingud",
@@ -117,20 +117,20 @@ mfld("4",  CREDIT, '40',
 mfld("41", DEBIT, '41',
     "Impordilt tasumisele kuuluv käibemaks")
 
-mfld("5",  CREDIT, '50',
+mfld("5",  DEBIT, '50',
     "Kokku sisendkäibemaksusumma, mis on seadusega lubatud maha arvata, sh")
-mfld("51", CREDIT, '50',
+mfld("51", DEBIT, '50',
     "1) impordilt tasutud või tasumisele kuuluv käibemaks",
     vat_regimes="intracom")
-mfld("52", CREDIT, '50',
+mfld("52", DEBIT, '50',
     "2) põhivara soetamiselt tasutud või tasumisele kuuluv käibemaks",
     vat_classes="real_estate")
-mfld("53", CREDIT, '50',
+mfld("53", DEBIT, '50',
     "3) ettevõtluses (100%) kasutatava sõiduauto soetamiselt ja sellise"
     "sõiduauto tarbeks kaupade soetamiselt ja teenuste saamiselt"
     "tasutud või tasumisele kuuluv käibemaks",
     vat_classes="vehicles")
-mfld("54", CREDIT, '50',
+mfld("54", DEBIT, '50',
     "4) osaliselt ettevõtluses kasutatava sõiduauto soetamiselt ja sellise"
     "sõiduauto tarbeks kaupade soetamiselt ja teenuste saamiselt"
     "tasutud või tasumisele kuuluv käibemaks",
@@ -151,10 +151,11 @@ mfld("71", DEBIT, '60',
     vat_regimes="!intracom", vat_classes="!goods") # not yet handled
 
 mfld("8", DEBIT, '60', "Maksuvaba käive", vat_classes="exempt")
-mfld("9", DEBIT, '61',
+mfld("9", DEBIT, '60',
     "Erikorra alusel maksustatava kinnisasja, metallijäätmete, väärismetalli ja "
     "metalltoodete käive (KMS § 411) ning teises liikmesriigis paigaldatava või "
-    "kokkupandava kauba maksustatav väärtus")
+    "kokkupandava kauba maksustatav väärtus",
+    vat_classes="!goods !services !real_estate !vehicles")
 
 wfld("10", CREDIT, None, "Täpsustused (-)", editable=True)
 wfld("11", DEBIT, None, "Täpsustused (+)", editable=True)

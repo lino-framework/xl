@@ -1010,19 +1010,10 @@ class Movements(dd.Table):
 
 
 class AllMovements(Movements):
-    """
-    Displayed by :menuselection:`Explorer --> Accounting --> Movements`.
-
-    See also :class:`lino_xl.lib.ledger.models.Movement`.
-    """
     required_roles = dd.login_required(LedgerStaff)
 
-
+   
 class MovementsByVoucher(Movements):
-    """Show the ledger movements of a voucher.
-
-    See also :class:`lino_xl.lib.ledger.models.Movement`.
-    """
     master_key = 'voucher'
     column_names = 'account project partner debit credit match_link cleared *'
     sum_text_column = 3
@@ -1033,8 +1024,6 @@ class MovementsByVoucher(Movements):
 
 
 class MovementsByPartner(Movements):
-    """Show the ledger movements of a partner.
-    """
     master_key = 'partner'
     # display_mode = "html"
     display_mode = "summary"
@@ -1092,9 +1081,6 @@ class MovementsByPartner(Movements):
 
 
 class MovementsByProject(MovementsByPartner):
-    """Show the ledger movements of a project.
-    See also :class:`lino_xl.lib.ledger.models.Movement`.
-    """
     master_key = 'project'
     display_mode = "html"
     order_by = ['-value_date', 'partner', 'id']
@@ -1127,21 +1113,6 @@ class MovementsByProject(MovementsByPartner):
 
 
 class MovementsByAccount(Movements):
-    """Shows the movements done on a given general account.
-
-    See also :class:`lino_xl.lib.ledger.models.Movement`.
-
-    .. attribute:: description
-
-        A virtual field showing a comma-separated list of the
-        following items:
-
-        - voucher narration
-        - voucher partner
-        - transaction's partner
-        - transaction's project
-
-    """
     master_key = 'account'
     column_names = 'value_date voucher_link description \
     debit credit match_link *'
@@ -1181,13 +1152,6 @@ class MovementsByAccount(Movements):
 
 
 class MovementsByMatch(Movements):
-    """Show all movements having a given :attr:`match`.
-
-    This is another example of a slave table whose master is not a
-    database object, and the first example of a slave table whose
-    master is a simple string.
-
-    """
     column_names = 'value_date voucher_link description '\
                    'debit credit cleared *'
     master = str  # 'ledger.Matching'

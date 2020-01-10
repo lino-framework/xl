@@ -1,12 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-import logging
+import logging ; logger = logging.getLogger(__name__)
 import glob
 import os
+
 from django.db import models
 from django.core.exceptions import MultipleObjectsReturned, ValidationError
 from django.utils import translation
@@ -19,7 +18,6 @@ from lino_xl.lib.sepa.fields import IBANField, BICField
 from .camt import CamtParser
 from .febelfin import code2desc
 
-logger = logging.getLogger(__name__)
 
 
 class ImportStatements(dd.Action):
@@ -338,5 +336,5 @@ class Transaction(dd.Model):
             with translation.override('fr'):
                 return force_text(code2desc(self.txcd[:4]))
         return "{0}:{1}".format(self.txcd_issuer, self.txcd)
-        
+
 from .ui import *

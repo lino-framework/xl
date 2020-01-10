@@ -282,27 +282,33 @@ class AccountingPeriod(DateRange, Referrable):
 
         # return "{0.year}-{0.month:0>2}".format(d)
 
-    """The template used for building the :attr:`ref` of an
-    :class:`AccountingPeriod`.
-
-    `Format String Syntax
-    <https://docs.python.org/2/library/string.html#formatstrings>`_
-
-    """
+        # """The template used for building the :attr:`ref` of an
+        # :class:`AccountingPeriod`.
+        #
+        # `Format String Syntax
+        # <https://docs.python.org/2/library/string.html#formatstrings>`_
+        #
+        # """
 
     @classmethod
     def get_periods_in_range(cls, p1, p2):
         return cls.objects.filter(ref__gte=p1.ref, ref__lte=p2.ref)
 
     @classmethod
-    def get_period_filter(cls, fieldname, p1, p2, **kwargs):
+    def get_period_filter(cls, voucher_prefix, p1, p2, **kwargs):
         if p1 is None:
             return kwargs
+
+        # ignore preliminary movements if a start_period is given:
+        kwargs[voucher_prefix+"journal__preliminary"] = False
+
+        accounting_period = voucher_prefix + "accounting_period"
+
         if p2 is None:
-            kwargs[fieldname] = p1
+            kwargs[accounting_period] = p1
         else:
             periods = cls.get_periods_in_range(p1, p2)
-            kwargs[fieldname+'__in'] = periods
+            kwargs[accounting_period+'__in'] = periods
         return kwargs
 
     @classmethod
@@ -894,7 +900,7 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         verbose_name = _("Movement")
         verbose_name_plural = _("Movements")
 
-    observable_period_field = 'voucher__accounting_period'
+    observable_period_prefix = 'voucher__'
 
     voucher = dd.ForeignKey('ledger.Voucher')
     partner = dd.ForeignKey(

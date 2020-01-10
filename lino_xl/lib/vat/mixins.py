@@ -78,7 +78,7 @@ class VatTotal(dd.Model):
             self.total_incl = None
             self.total_vat = None
         else:
-            if rule.vat_returnable:
+            if rule.vat_returnable_account is not None:
                 self.total_incl = self.total_base
                 self.total_vat = None
             else:
@@ -94,7 +94,7 @@ class VatTotal(dd.Model):
         if self.total_base is None:
             self.total_base = ZERO
         rule = self.get_vat_rule(self.get_trade_type())
-        if rule is not None and rule.vat_returnable:
+        if rule is not None and rule.vat_returnable_account is not None:
             self.total_incl = self.total_base
             self.total_vat = None
         else:
@@ -111,7 +111,7 @@ class VatTotal(dd.Model):
             self.total_base = None
             self.total_vat = None
         else:
-            if rule.vat_returnable:
+            if rule.vat_returnable_account is not None:
                 self.total_base = self.total_incl
                 self.total_vat = None
             else:
@@ -185,44 +185,35 @@ class VatDocument(ProjectRelated, VatTotal):
         #     raise Exception("No VAT account for %s." % tt)
         for i in self.items.order_by('seqno'):
             rule = i.get_vat_rule(tt)
-            b = i.get_base_account(tt)
+            base_account = i.get_base_account(tt)
             ana_account = i.get_ana_account()
             if i.total_base:
-                if b is None:
+                if base_account is None:
                     msg = "No base account for {0} (tt {1}, total_base {2})"
                     raise Warning(msg.format(i, tt, i.total_base))
                 sums.collect(
-                    ((b, ana_account), self.project, i.vat_class, self.vat_regime),
+                    ((base_account, ana_account), self.project, i.vat_class, self.vat_regime),
                     i.total_base)
 
             if rule is not None:
-                if rule.vat_returnable:
-                    vat_amount = myround(i.total_base * rule.rate)
-                else:
+                if rule.vat_returnable_account is None:
                     vat_amount = i.total_vat
+                else:
+                    vat_amount = myround(i.total_base * rule.rate)
                 if not vat_amount:
                     continue
-                if not rule.vat_account:
-                    msg = _("This rule ({}) does not allow any VAT.")
-                    raise Warning(msg.format(rule))
 
-                if rule.vat_returnable:
-                    if rule.vat_returnable_account is None:
-                        acc_tuple = (b, ana_account)
-                    else:
-                        acc = rule.vat_returnable_account.get_object()
-                        # if acc is None:
-                        #     msg = "No base account for {0} (tt {1}, total_base {2})"
-                        #     raise Warning(msg.format(i, tt, i.total_base))
-                        acc_tuple = (acc, None)
+                if rule.vat_returnable_account is not None:
+                    acc_tuple = (rule.vat_returnable_account.get_object(), None)
                     sums.collect(
-                        (acc_tuple, self.project,
-                         i.vat_class, self.vat_regime),
+                        (acc_tuple, self.project, i.vat_class, self.vat_regime),
                         - vat_amount)
-                    # vat_amount = - vat_amount
+                if rule.vat_account is None:
+                    acc_tuple = (base_account, ana_account)
+                else:
+                    acc_tuple = (rule.vat_account.get_object(), None)
                 sums.collect(
-                    ((rule.vat_account.get_object(), None), self.project,
-                     i.vat_class, self.vat_regime),
+                    (acc_tuple, self.project, i.vat_class, self.vat_regime),
                     vat_amount)
         return sums
 
@@ -390,7 +381,7 @@ class VatItemBase(VoucherItem, VatTotal):
         if self.voucher.edit_totals and self.voucher.total_incl:
             rule = self.get_vat_rule(self.get_trade_type())
             qs = self.voucher.items.exclude(id=self.id)
-            if rule.vat_returnable:
+            if rule.vat_returnable_account is not None:
                 total = qs.aggregate(models.Sum('total_base'))['total_base__sum'] or Decimal()
                 self.total_base = self.voucher.total_incl - total
                 self.total_base_changed(ar)
@@ -499,8 +490,8 @@ class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
                 sums[fld.name] = Decimal('0.00')  # ZERO
 
         flt = self.get_period_filter(
-            'voucher__accounting_period',
-            voucher__journal__preliminary=False,
+            'voucher__',
+            # voucher__journal__preliminary=False,
             voucher__journal__must_declare=True)
 
 

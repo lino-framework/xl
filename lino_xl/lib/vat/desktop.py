@@ -147,12 +147,11 @@ class ByDeclaration(dd.Table):
 
     @classmethod
     def param_defaults(self, ar, **kw):
-        kw = super(ByDeclaration, self).param_defaults(ar, **kw)
         mi = ar.master_instance
         if mi is not None:
             kw.update(start_period=mi.start_period, end_period=mi.end_period)
         # print("20191205", kw)
-        return kw
+        return super(ByDeclaration, self).param_defaults(ar, **kw)
 
 class MovementsByDeclaration(ByDeclaration, Movements):
     label = _("Declared movements")

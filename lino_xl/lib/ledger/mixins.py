@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from builtins import str
 
 from django.db import models
 
@@ -218,16 +215,16 @@ class PeriodRange(dd.Model):
         related_name="%(app_label)s_%(class)s_set_by_end_period")
 
 
-    def get_period_filter(self, fieldname, **kwargs):
+    def get_period_filter(self, voucher_prefix='', **kwargs):
         return rt.models.ledger.AccountingPeriod.get_period_filter(
-            fieldname, self.start_period, self.end_period, **kwargs)
+            voucher_prefix, self.start_period, self.end_period, **kwargs)
 
 
 class PeriodRangeObservable(dd.Model):
     class Meta:
         abstract = True
 
-    observable_period_field = 'accounting_period'
+    observable_period_prefix = ''
 
     @classmethod
     def setup_parameters(cls, fields):
@@ -252,7 +249,7 @@ class PeriodRangeObservable(dd.Model):
         pv = ar.param_values
         qs = super(PeriodRangeObservable, cls).get_request_queryset(ar, **kwargs)
         flt = rt.models.ledger.AccountingPeriod.get_period_filter(
-            cls.observable_period_field, pv.start_period, pv.end_period)
+            cls.observable_period_prefix, pv.start_period, pv.end_period)
         return qs.filter(**flt)
 
     @classmethod

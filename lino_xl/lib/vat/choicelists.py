@@ -406,20 +406,20 @@ class VatRule(dd.Choice):
     vat_regime = None
     rate = ZERO
     vat_account = None
-    vat_returnable = None
+    # vat_returnable = None
     vat_returnable_account = None
 
     def __init__(self,
                  vat_class=None, rate=None,
                  vat_area=None, trade_type=None,
                  vat_regime=None, vat_account=None,
-                 vat_returnable_account=None, vat_returnable=None):
+                 vat_returnable_account=None):
         kw = dict(vat_area=vat_area)
         if rate is not None:
             kw.update(rate=Decimal(rate))
-        if vat_returnable is None:
-            vat_returnable = vat_returnable_account is not None
-        kw.update(vat_returnable=vat_returnable)
+        # if vat_returnable is None:
+        #     vat_returnable = vat_returnable_account is not None
+        # kw.update(vat_returnable=vat_returnable)
         if trade_type:
             kw.update(trade_type=TradeTypes.get_by_name(trade_type))
         if vat_regime:
@@ -429,8 +429,7 @@ class VatRule(dd.Choice):
         if vat_account:
             kw.update(vat_account=vat_account)
         if vat_returnable_account:
-            kw.update(
-                vat_returnable_account=vat_returnable_account)
+            kw.update(vat_returnable_account=vat_returnable_account)
         # text = "{trade_type} {vat_area} {vat_class} {rate}".format(**kw)
         super(VatRule, self).__init__(None, None, **kw)
 
@@ -450,7 +449,7 @@ class VatRule(dd.Choice):
             lst.append(gettext("if ({}) then".format(', '.join(only))))
         lst.append(gettext("apply {} %".format(rule.rate)))
         lst.append(gettext("and book to {}").format(rule.vat_account))
-        if rule.vat_returnable:
+        if rule.vat_returnable_account is not None:
             lst.append(gettext("(return to {})").format(rule.vat_returnable_account))
         return '\n'.join(lst)
 

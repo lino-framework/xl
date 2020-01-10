@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma 6 Ko Ltd
+# Copyright 2012-2020 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
 
 # from django.db import models
 # from django.conf import settings
@@ -34,8 +31,8 @@ VatRules.clear()
 add = VatRules.add_item
 for vat_class, rate in VAT_CLASSES_AND_RATES:
     add(vat_class,  rate, NAT, 'purchases', 'subject',  CommonAccounts.vat_deductible)
-    add(vat_class,  rate, EU, 'purchases', 'intracom',      CommonAccounts.vat_due, vat_returnable=True)
-    add(vat_class,  rate, EU, 'purchases', 'intracom_supp', CommonAccounts.vat_due, vat_returnable=True)
+    add(vat_class,  rate, EU, 'purchases', 'intracom',      None, CommonAccounts.vat_due)
+    add(vat_class,  rate, EU, 'purchases', 'intracom_supp', None, CommonAccounts.vat_due)
 add()  # allow any other combination with rate 0
 
 # print('\n'.join(["{}:{}".format(i.vat_area, i.vat_regime) for i in VatRules.get_list_items()]))
