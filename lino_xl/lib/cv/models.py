@@ -1,16 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.cv`.
-
-"""
-
-from __future__ import unicode_literals
-
-from builtins import str
-
-import six
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
@@ -81,7 +72,7 @@ class LanguageKnowledge(dd.Model):
         elif self.written:
             return _(u"%s (w)") % self.language
         else:
-            return six.text_type(self.language)
+            return str(self.language)
 
 
 class LanguageKnowledges(dd.Table):
@@ -305,7 +296,7 @@ class Training(SectorFunction, EducationEntry):
         verbose_name=_("Certificates"))
 
     def __str__(self):
-        return six.text_type(self.type)
+        return str(self.type)
 
     @dd.chooser()
     def type_choices(cls):
@@ -387,7 +378,7 @@ class Study(EducationEntry):
     # success = models.BooleanField(verbose_name=_("Success"), default=False)
 
     def __str__(self):
-        return six.text_type(self.type)
+        return str(self.type)
 
     @dd.chooser()
     def type_choices(cls):
@@ -613,7 +604,7 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
         verbose_name=_("Termination reason"))
 
     def __str__(self):
-        return six.text_type(self.title)
+        return str(self.title)
 
 
 class Experiences(PeriodTable):

@@ -5,7 +5,6 @@
 
 import datetime
 from dateutil.relativedelta import relativedelta
-#from lino.mixins.periods import ObservedDateRange
 from etgen.html import E
 from lino.utils import join_elems
 
@@ -21,16 +20,17 @@ from django.utils.text import format_lazy
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
+from lino.mixins import Referrable
 from lino.utils.quantities import Duration
 from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
 from lino.modlib.printing.mixins import Printable
 from lino.modlib.users.mixins import UserAuthored, Assignable
+from lino.modlib.office.roles import OfficeStaff
+from lino.modlib.publisher.mixins import Publishable
 from lino_xl.lib.postings.mixins import Postable
 from lino_xl.lib.outbox.mixins import MailableType, Mailable
 from lino_xl.lib.contacts.mixins import ContactRelated
-from lino.modlib.office.roles import OfficeStaff
-from lino.mixins import Referrable
 from .choicelists import (
     DurationUnits, Recurrencies, Weekdays, AccessClasses, PlannerColumns, EventEvents, DisplayColors)
 
@@ -369,7 +369,7 @@ class ExtAllDayField(dd.VirtualField):
 
 
 
-class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
+class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Publishable):
     class Meta:
         app_label = 'cal'
         abstract = dd.is_abstract_model(__name__, 'Event')
@@ -378,6 +378,8 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable):
         verbose_name_plural = _("Calendar entries")
         # verbose_name = pgettext("cal", "Event")
         # verbose_name_plural = pgettext("cal", "Events")
+
+    publisher_location = "cal"
 
     update_guests = UpdateGuests()
     update_events = UpdateEntriesByEvent()
