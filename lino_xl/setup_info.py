@@ -72,6 +72,8 @@ lino_xl.lib.cal.fixtures
 lino_xl.lib.cal.management
 lino_xl.lib.cal.management.commands
 lino_xl.lib.cal.workflows
+lino_xl.lib.calview
+lino_xl.lib.calview.fixtures
 lino_xl.lib.clients
 lino_xl.lib.coachings
 lino_xl.lib.coachings.fixtures
