@@ -1,13 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2017 Luc Saffre
-#
+# Copyright 2009-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Database models for this plugin.
-
-"""
-
-from builtins import str
 
 from io import StringIO
 from lxml import etree
@@ -22,6 +16,7 @@ from lino import mixins
 from lino.modlib.gfks.mixins import Controllable
 from lino_xl.lib.topics.models import AddInterestField
 from lino.modlib.users.mixins import My, UserAuthored
+from lino.modlib.publisher.mixins import Publishable
 # from lino.modlib.printing.mixins import PrintableType, TypedPrintable
 from lino.mixins.periods import CombinedDateTime
 # from lino.core.requests import BaseRequest
@@ -68,7 +63,7 @@ class EntryTypes(dd.Table):
 
 
 class Entry(UserAuthored, Controllable, CombinedDateTime,
-            Previewable):
+            Previewable, Publishable):
 
     """A blog entry is a short article with a title, published on a given
     date and time by a given user.
@@ -86,7 +81,7 @@ class Entry(UserAuthored, Controllable, CombinedDateTime,
         _("Publication time"), blank=True, null=True)
     entry_type = dd.ForeignKey('blogs.EntryType', blank=True, null=True)
     language = dd.LanguageField()
-    
+
     def __str__(self):
         if self.pub_date:
             return _("{} by {}").format(self.pub_date, self.user)
@@ -102,8 +97,14 @@ class Entry(UserAuthored, Controllable, CombinedDateTime,
             self.language = ar.get_user().language
         super(Entry, self).on_create(ar)
 
-
     add_interest = AddInterestField()
+
+
+    @classmethod
+    def get_dashboard_items(cls, user):
+        qs = cls.objects.filter(Q(pub_date__isnull=False)).order_by("-pub_date")
+        return qs[:5]
+
 
     # @classmethod
     # def latest_entries(cls, ar, max_num=10, **context):
@@ -118,7 +119,7 @@ class Entry(UserAuthored, Controllable, CombinedDateTime,
     #         context.update(obj=e)
     #         s += render(ar, 'blogs/entry.html', context)
     #     return s
-    
+
 
 # class Tagging(dd.Model):
 #     """A **tag** is the fact that a given entry mentions a given topic.
@@ -142,7 +143,7 @@ class Entry(UserAuthored, Controllable, CombinedDateTime,
 
 class EntryDetail(dd.DetailLayout):
     main = """
-    title entry_type:12 id 
+    title entry_type:12 id
     # summary
     pub_date pub_time user:10 language:10 owner add_interest
     body:60 topics.InterestsByController:20 #TaggingsByEntry:20
@@ -225,7 +226,7 @@ class EntriesByController(Entries):
             elems.append(E.p(*toolbar))
 
         return ar.html_text(E.div(*elems))
-    
+
 
 
 class LatestEntries(Entries):
@@ -238,7 +239,7 @@ class LatestEntries(Entries):
 
     @classmethod
     def get_table_summary(cls, obj, ar, max_num=10, **context):
-        
+
         context = ar.get_printable_context(**context)
         qs = rt.models.blogs.Entry.objects.filter(pub_date__isnull=False)
         qs = qs.order_by("-pub_date")
@@ -266,7 +267,7 @@ class LatestEntries(Entries):
         return E.div(*elems)
 
 
-    
+
 # class Taggings(dd.Table):
 #     model = 'blogs.Tagging'
 
@@ -276,9 +277,7 @@ class LatestEntries(Entries):
 # class TaggingsByEntry(Taggings):
 #     master_key = 'entry'
 #     column_names = 'topic *'
-    
+
 # class TaggingsByTopic(Taggings):
 #     master_key = 'topic'
 #     column_names = 'entry *'
-    
-    

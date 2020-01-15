@@ -380,6 +380,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         # verbose_name_plural = pgettext("cal", "Events")
 
     publisher_location = "cal"
+    publisher_template = "cal/event.pub.html"
 
     update_guests = UpdateGuests()
     update_events = UpdateEntriesByEvent()

@@ -1,11 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Rumma & Ko Ltd
-#
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Defines the :class:`Page` model.
-
-"""
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -17,6 +13,8 @@ from etgen.html import E, tostring_pretty
 from lino.core.renderer import add_user_language
 
 from lino import mixins
+from lino.mixins import Referrable, Hierarchical, Sequenced
+from lino.modlib.publisher.mixins import Publishable
 from django.conf import settings
 from .utils import render_node
 
@@ -50,7 +48,7 @@ from .utils import render_node
     #~ """
 
 
-class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
+class Page(Referrable, Hierarchical, Sequenced, Publishable):
 
     class Meta:
         verbose_name = _("Node")
@@ -58,8 +56,13 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
 
     title = dd.BabelCharField(_("Title"), max_length=200, blank=True)
     body = dd.BabelTextField(_("Body"), blank=True, format='plain')
-
     raw_html = models.BooleanField(_("raw html"), default=False)
+
+    @classmethod
+    def get_dashboard_items(cls, user):
+        obj = cls.get_by_ref('index', None)
+        if obj is not None:
+            yield obj
 
     def get_absolute_url(self, **kwargs):
         if self.ref:
@@ -72,7 +75,7 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
         if self.title:
             return dd.babelattr(self, 'title')
         if self.ref == 'index':
-            return unicode(_('Home'))
+            return str(_('Home'))
         if self.ref:
             return self.ref
         return str(self.id)
@@ -109,7 +112,7 @@ class Page(mixins.Referrable, mixins.Hierarchical, mixins.Sequenced):
     def get_sidebar_menu(self, request):
         qs = Page.objects.filter(parent__isnull=True)
         #~ qs = self.children.all()
-        yield ('/', 'index', unicode(_('Home')))
+        yield ('/', 'index', str(_('Home')))
             #~ yield ('/downloads/', 'downloads', 'Downloads')
         #~ yield ('/about', 'about', 'About')
         #~ if qs is not None:

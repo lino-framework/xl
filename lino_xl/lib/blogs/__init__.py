@@ -1,24 +1,14 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Rumma & Ko Ltd
-#
+# Copyright 2013-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-"""
-.. autosummary::
-   :toctree:
 
-    models
-
-
-"""
-
-from lino.ad import Plugin
-from django.utils.translation import ugettext_lazy as _
+from lino.ad import Plugin, _
 
 
 class Plugin(Plugin):
 
     verbose_name = _("Blog")
-    
+
     needs_plugins = ['lino_xl.lib.topics']
 
 
@@ -38,11 +28,11 @@ class Plugin(Plugin):
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('blogs.AllEntries')
         # m.add_action('blogs.AllTaggings')
-        
-    def get_dashboard_items(self, user):
-        from lino.core.dashboard import ActorItem
-        yield ActorItem(
-            self.site.models.blogs.LatestEntries, header_level=None)
+
+    # def get_dashboard_items(self, user):
+    #     from lino.core.dashboard import ActorItem
+    #     yield ActorItem(
+    #         self.site.models.blogs.LatestEntries, header_level=None)
         # yield CustomItem(
         #     'blogs.Entry.latest_entries',
         #     self.models.blogs.Entry.latest_entries, max_num=10)
