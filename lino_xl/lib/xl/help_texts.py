@@ -37,10 +37,6 @@ protocol handler responsible for running eidreader."""),
 sending the actions' AJAX request."""),
     'lino_xl.lib.bevat.Plugin' : _("""This is a subclass of lino.core.plugin.Plugin."""),
     'lino_xl.lib.bevats.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.blogs.Entry' : _("""A blog entry is a short article with a title, published on a given
-date and time by a given user."""),
-    'lino_xl.lib.blogs.Entry.on_create' : _("""Sets the pub_date and pub_time to now."""),
-    'lino_xl.lib.blogs.LatestEntries' : _("""Show the most recent blog entries."""),
     'lino_xl.lib.boards.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.boards.BoardDecision' : _("""Mixin for models that represent a board decision.  Base class for
 lino_welfare.modlib.aids.mixins.Confirmation."""),

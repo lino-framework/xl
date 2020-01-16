@@ -1,19 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Luc Saffre
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
-"""
-Database models  for this plugin.
-
-"""
-
-from __future__ import unicode_literals
-from builtins import str
-
-from django.utils.translation import ugettext_lazy as _
-
-from lino.api import dd
+from lino.api import dd, _
 
 from lino.modlib.uploads.models import *
 from lino_xl.lib.contacts.mixins import ContactRelated
@@ -69,11 +59,11 @@ class Upload(Upload, mixins.ProjectRelated, ContactRelated,
     `ProjectRelated` and `DateRange` mixins and two fields.
 
     .. attribute:: remark
-    
+
         A remark about this document.
 
     .. attribute:: needed
-    
+
         Whether this particular upload is a needed document. Default value
         is `True` if the new Upload has an UploadType with a nonempty
         `warn_expiry_unit`.
@@ -125,7 +115,6 @@ dd.update_field(Upload, 'end_date', verbose_name=_("Valid until"))
 
 
 class UploadDetail(dd.DetailLayout):
-    "The Detail layout for Upload"
 
     main = """
     user project id
@@ -189,7 +178,7 @@ class Uploads(Uploads):
             qs = qs.filter(project__coachings_by_client__user=pv.coached_by)
             # MyExpiringUploads wants only needed uploads
             qs = qs.filter(needed=True)
-            
+
         # if pv.pupload_type:
         #     qs = qs.filter(type=pv.pupload_type)
 
@@ -227,8 +216,8 @@ class MyUploads(My, Uploads):
 class MyExpiringUploads(MyUploads):
     "Expiring uploads for client coached by me"
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
-    label = _("My expiring uploads")
-    help_text = _("Show needed uploads whose validity expires soon")
+    label = _("My expiring upload files")
+    help_text = _("Show needed files whose validity expires soon")
     column_names = "project type description_link user \
     start_date end_date needed *"
     order_by = ['end_date']
@@ -256,7 +245,6 @@ class UploadsByController(Uploads, UploadsByController):
 
 
 class UploadsByClient(AreaUploads, UploadsByController):
-    "Uploads by Client"
     master = dd.plugins.clients.client_model  # 'pcsw.Client'
     master_key = 'project'
     column_names = "type end_date needed description_link user *"
@@ -282,5 +270,3 @@ class UploadsByClient(AreaUploads, UploadsByController):
             return None
         return super(UploadsByClient, self).format_row_in_slave_summary(
             ar, obj)
-
-    
