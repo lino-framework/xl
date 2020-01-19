@@ -270,7 +270,7 @@ class ItemsByVoucher(dd.Table):
     master_key = 'voucher'
     order_by = ["seqno"]
     auto_fit_column_widths = True
-    display_mode = 'html'
+    # display_mode = 'html'
     preview_limit = 0
 
 class VouchersByPartnerBase(dd.VirtualTable):

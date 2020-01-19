@@ -1,10 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Rumma & Ko Ltd
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
 
 import re
 
@@ -21,7 +17,7 @@ class WriteXML(DirectPrintAction):
     """
     combo_group = "writexml"
     label = _("XML")
-    
+
     build_method = "xml"
     icon_name = None
     # show_in_bbar = False
@@ -34,7 +30,7 @@ object.
     """
 
     tplname = "pain_001"
-    
+
     def get_printable_context(self, bm, elem, ar):
         context = super(
             WritePaymentsInitiation, self).get_printable_context(
@@ -54,7 +50,7 @@ object.
             context.update(our_issuer='KBO-BCE')
         # raise Exception(str(context))
         return context
-    
+
     def before_build(self, bm, elem):
         # if not elem.execution_date:
         #     raise Warning(_("You must specify an execution date"))
@@ -66,7 +62,7 @@ object.
             raise Warning(
                 _("SEPA account for journal {} has no BIC").format(
                     elem.journal))
-        
+
         return super(WritePaymentsInitiation, self).before_build(bm, elem)
 
     def validate_result_file(self, filename):

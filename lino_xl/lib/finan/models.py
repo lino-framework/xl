@@ -1,11 +1,7 @@
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
 import six
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.db import models
 # from django.core.exceptions import ValidationError
@@ -508,9 +504,11 @@ class SuggestionsByVoucher(ledger.ExpectedMovements):
     @classmethod
     def get_dc(cls, ar=None):
         if ar is None:
+            raise Exception("20200119 ar is None")
             return None
         voucher = ar.master_instance
         if voucher is None:
+            raise Exception("20200119 voucher is None")
             return None
         return not voucher.journal.dc
 
