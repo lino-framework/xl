@@ -252,6 +252,11 @@ class DeclarationField(dd.Choice):
 
 class SumDeclarationField(DeclarationField):
 
+    def __init__(self, *args, **kwargs):
+        super(SumDeclarationField, self).__init__(*args, **kwargs)
+        if self.is_payable:
+            raise Exception("SumDeclarationField may not be payable")
+
     def collect_from_sums(self, dcl, field_values, payable_sums):
         tot = Decimal()
         for f in self.observed_fields:
@@ -311,7 +316,8 @@ class MvtDeclarationField(DeclarationField):
         if self.is_payable:
             if self.dc == dcl.journal.dc:
                 amount = - amount
-            k = ((mvt.account, None), mvt.project, mvt.vat_class, mvt.vat_regime)
+            # k = ((mvt.account, None), mvt.project, mvt.vat_class, mvt.vat_regime)
+            k = ((mvt.account, None), None, None, None)
             payable_sums.collect(k, amount)
             # k = (dcl.journal.account, None, None, None)
             # payable_sums.collect(k, amount)

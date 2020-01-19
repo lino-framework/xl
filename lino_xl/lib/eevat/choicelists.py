@@ -113,12 +113,13 @@ mfld("321", CREDIT, '10', "1) käibemaksutagastusega müük reisijale",
     vat_regimes="tax_free")
 
 mfld("4",  CREDIT, '40',
-    "Käibemaks kokku (20% lahtrist 1 + 9% lahtrist 2)")
+    "Käibemaks kokku (20% lahtrist 1 + 9% lahtrist 2)", is_payable=True)
 mfld("41", DEBIT, '41',
-    "Impordilt tasumisele kuuluv käibemaks")
+    "Impordilt tasumisele kuuluv käibemaks", is_payable=True)
 
 mfld("5",  DEBIT, '50',
-    "Kokku sisendkäibemaksusumma, mis on seadusega lubatud maha arvata, sh")
+    "Kokku sisendkäibemaksusumma, mis on seadusega lubatud maha arvata, sh",
+    is_payable=True)
 mfld("51", DEBIT, '50',
     "1) impordilt tasutud või tasumisele kuuluv käibemaks",
     vat_regimes="intracom")
@@ -157,10 +158,10 @@ mfld("9", DEBIT, '60',
     "kokkupandava kauba maksustatav väärtus",
     vat_classes="!goods !services !real_estate !vehicles")
 
-wfld("10", CREDIT, None, "Täpsustused (-)", editable=True)
-wfld("11", DEBIT, None, "Täpsustused (+)", editable=True)
+wfld("10", CREDIT, None, "Täpsustused (-)", editable=True, is_payable=True)
+wfld("11", DEBIT, None, "Täpsustused (+)", editable=True, is_payable=True)
 
 sfld("13", CREDIT, None,
     "Tasumisele kuuluv(+) või enammakstud (-) käibemaks "
     "(lahter 4 + lahter 41 - lahter 5 + lahter 10 - lahter 11)",
-    is_payable=True, fieldnames="4 41 -5 10 -11")
+    fieldnames="4 41 -5 10 -11")
