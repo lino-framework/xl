@@ -333,6 +333,7 @@ class ExpectedMovements(dd.VirtualTable):
 
     @classmethod
     def get_row_by_pk(cls, ar, pk):
+        # this is tricky.
         # for i in ar.data_iterator:
         #     if i.id == pk:
         #         return i
@@ -1012,7 +1013,7 @@ class Movements(dd.Table):
 class AllMovements(Movements):
     required_roles = dd.login_required(LedgerStaff)
 
-   
+
 class MovementsByVoucher(Movements):
     master_key = 'voucher'
     column_names = 'account project partner debit credit match_link cleared *'

@@ -1,26 +1,18 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015-2018 Rumma & Ko Ltd
+# Copyright 2015-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
 
 from decimal import Decimal
 
 from django.db import models
 
+from lino.utils import SumCollector
+from lino_xl.lib.ledger.mixins import (
+    Payable, ProjectRelated, AccountVoucherItem, Matching)
+from lino_xl.lib.sepa.mixins import BankAccount
+from lino_xl.lib.ledger.models import Voucher
 from lino.api import dd, _
 
-from lino.utils import SumCollector
-
-from lino_xl.lib.ledger.mixins import (
-    ProjectRelated,  # PartnerRelated,
-    AccountVoucherItem, Matching)
-from lino_xl.lib.sepa.mixins import Payable, BankAccount
-from lino_xl.lib.ledger.models import Voucher
-# from lino_xl.lib.ledger.choicelists import TradeTypes
 
 class AccountInvoice(BankAccount, Payable, Voucher, Matching, ProjectRelated):
 

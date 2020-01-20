@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from django.db import models
@@ -11,8 +11,7 @@ from lino.utils.mldbc.mixins import BabelNamed
 from lino.modlib.memo.mixins import body_subject_to_elems
 # from lino.mixins.periods import DateRange
 
-from lino_xl.lib.sepa.mixins import Payable
-from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem
+from lino_xl.lib.ledger.mixins import Matching, SequencedVoucherItem, Payable
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.choicelists import TradeTypes
 from lino_xl.lib.ledger.choicelists import VoucherTypes

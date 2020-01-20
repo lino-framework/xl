@@ -12,14 +12,12 @@ from lino.utils import SumCollector
 # from lino.utils.dates import AMONTH, ADAY
 from lino.api import dd, rt, _
 
-from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
-from lino_xl.lib.ledger.mixins import PeriodRange, PeriodRangeObservable
+from lino_xl.lib.ledger.mixins import Declaration, Payable
 from lino_xl.lib.ledger.models import Voucher
 from lino_xl.lib.ledger.utils import ZERO, ONE
-from lino_xl.lib.sepa.mixins import Payable
 
 from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
@@ -447,35 +445,10 @@ class QtyVatItemBase(VatItemBase):
                 self.set_amount(ar, myround(self.unit_price * self.qty))
 
 
-class VatDeclaration(Payable, Voucher, Certifiable, PeriodRange):
+class VatDeclaration(Declaration, Voucher):
 
     class Meta:
         abstract = True
-
-    def get_match(self):
-        # A VAT declaration has no manual match field.
-        # return self.get_default_match()
-        return self
-
-    def full_clean(self, *args, **kw):
-        if self.entry_date:
-            AP = rt.models.ledger.AccountingPeriod
-            # declare the previous month by default
-            if not self.start_period_id:
-                self.start_period = AP.get_default_for_date(
-                    self.entry_date)
-                # self.start_period = AP.get_default_for_date(
-                #     self.entry_date - AMONTH)
-
-            # if not self.start_date:
-            #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)
-            # if not self.end_date:
-            #     self.end_date = self.start_date + AMONTH - ADAY
-        # if self.voucher_date <= self.end_date:
-        #    raise ValidationError(
-        #        "Voucher date must be after the covered period")
-        # self.compute_fields()
-        super(VatDeclaration, self).full_clean(*args, **kw)
 
     def get_payable_sums_dict(self):
         # side effect : calling this will also update the fields and save the

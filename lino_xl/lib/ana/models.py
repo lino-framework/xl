@@ -99,8 +99,7 @@ class MovementsByAccount(dd.Table):
 
 
 from lino_xl.lib.ledger.models import Voucher
-from lino_xl.lib.ledger.mixins import Matching, AccountVoucherItem
-from lino_xl.lib.sepa.mixins import Payable
+from lino_xl.lib.ledger.mixins import Matching, AccountVoucherItem, Payable
 from lino_xl.lib.vat.mixins import VatVoucher, VatItemBase
 from lino_xl.lib.ledger.ui import PartnerVouchers, ByJournal, PrintableByJournal
 

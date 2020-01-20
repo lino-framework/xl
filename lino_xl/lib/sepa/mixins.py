@@ -1,12 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from django.db import models
 from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt, _
-from lino.utils import SumCollector
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.ledger.utils import DEBIT
 from lino_xl.lib.ledger.choicelists import TradeTypes
@@ -61,102 +60,6 @@ class BankAccount(dd.Model):
 
         """
         return self.bank_account
-
-
-class Payable(PartnerRelated):
-    class Meta:
-        abstract = True
-
-    your_ref = models.CharField(
-        _("Your reference"), max_length=200, blank=True)
-    due_date = models.DateField(_("Due date"), blank=True, null=True)
-    # title = models.CharField(_("Description"), max_length=200, blank=True)
-
-    def full_clean(self):
-        if self.payment_term is None and self.partner_id is not None:
-            self.payment_term = self.partner.payment_term
-        if not self.due_date:
-            if self.payment_term:
-                self.due_date = self.payment_term.get_due_date(
-                    self.voucher_date or self.entry_date)
-        super(Payable, self).full_clean()
-
-    @classmethod
-    def get_registrable_fields(cls, site):
-        for f in super(Payable, cls).get_registrable_fields(site):
-            yield f
-        yield 'your_ref'
-
-    def get_due_date(self):
-        return self.due_date or self.voucher_date
-
-    def get_payable_sums_dict(self):
-        raise NotImplemented()
-
-    def get_movement_description(self, mvt, ar=None):
-        for chunk in super(Payable, self).get_movement_description(mvt, ar):
-            yield chunk
-        if self.your_ref:
-            yield self.your_ref
-
-    def get_wanted_movements(self):
-        item_sums = self.get_payable_sums_dict()
-        # logger.info("20120901 get_wanted_movements %s", sums_dict)
-        counter_sums = SumCollector()
-        partner = self.get_partner()
-        has_vat = dd.is_installed('vat')
-        kw = dict()
-        for k, amount in item_sums.items():
-            # amount = myround(amount)
-            # first item of each tuple k is itself a tuple (account, ana_account)
-            acc_tuple, prj, vat_class, vat_regime = k
-            account, ana_account = acc_tuple
-            # if not isinstance(acc_tuple, tuple):
-            #     raise Exception("Not a tuple: {}".format(acc_tuple))
-            if not isinstance(account, rt.models.ledger.Account):
-                raise Exception("Not an account: {}".format(account))
-            if has_vat:
-                kw.update(
-                    vat_class=vat_class, vat_regime=vat_regime)
-
-            if account.needs_partner:
-                kw.update(partner=partner)
-            yield self.create_movement(
-                None, acc_tuple, prj, self.journal.dc, amount, **kw)
-            counter_sums.collect(prj, amount)
-
-        tt = self.get_trade_type()
-        if tt is None:
-            if len(counter_sums.items()):
-                raise Warning("No trade type for {}".format(self))
-            return
-        acc = self.get_trade_type().get_main_account()
-        if acc is None:
-            if len(counter_sums.items()):
-                raise Warning("No main account for {}".format(tt))
-            return
-
-        total_amount = 0
-        for prj, amount in counter_sums.items():
-            total_amount += amount
-            yield self.create_movement(
-                None, (acc, None), prj, not self.journal.dc, amount,
-                partner=partner if acc.needs_partner else None,
-                match=self.get_match())
-
-        if dd.plugins.ledger.worker_model \
-                and TradeTypes.clearings.main_account \
-                and self.payment_term_id and self.payment_term.worker:
-            worker = self.payment_term.worker
-            dc = self.journal.dc
-            # one movement to nullify the credit that was booked to the partner account,
-            # another movment to book it to the worker's account:
-            yield self.create_movement(
-                None, (acc, None), None, dc, total_amount,
-                partner=partner, match=self.get_match())
-            yield self.create_movement(
-                None, (TradeTypes.clearings.get_main_account(), None), None, not dc, total_amount,
-                partner=worker, match=self.get_match())
 
 
 class BankAccountChecker(Checker):
