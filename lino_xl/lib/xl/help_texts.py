@@ -1367,6 +1367,15 @@ PaymentTerm."""),
     'lino_xl.lib.ledger.ProjectRelated.project' : _("""Pointer to the "project". This field exists only if the
 project_model setting is
 nonempty."""),
+    'lino_xl.lib.ledger.Payable' : _("""Model mixin for objects that represent a payable transaction."""),
+    'lino_xl.lib.ledger.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
+    'lino_xl.lib.ledger.Payable.title' : _("""A char field with a description for this transaction."""),
+    'lino_xl.lib.ledger.Payable.get_payable_sums_dict' : _("""To be implemented by subclasses.  Expected to return a dict which maps
+4-tuples (acc_tuple, project, vat_class, vat_regime) to the payable
+amount. acc_tuple is itself a tuple (general_account,
+analytic_account), vat_class is a lino_xl.lib.vat.VatClasses
+choice and vat_regime a lino_xl.lib.vat.VatRegimes choice."""),
+    'lino_xl.lib.ledger.Payable.get_wanted_movements' : _("""Implements lino_xl.lib.ledger.Voucher.get_wanted_movements()."""),
     'lino_xl.lib.ledger.PeriodRange' : _("""Model mixin for objects that cover a range of accounting periods."""),
     'lino_xl.lib.ledger.PeriodRange.start_period' : _("""The first period of the range to cover."""),
     'lino_xl.lib.ledger.PeriodRange.end_period' : _("""The last period of the range to cover."""),
@@ -1527,16 +1536,6 @@ IBAN number."""),
     'lino_xl.lib.sepa.AccountsByPartner' : _("""Show the bank account(s) defined for a given partner. To be
 included to a detail window on partner."""),
     'lino_xl.lib.sepa.BankAccount' : _("""Defines a field bank_account and its chooser."""),
-    'lino_xl.lib.sepa.Payable' : _("""Mixin for models that represent payable transactions.  To be combined
-with some mixin which defines a field partner."""),
-    'lino_xl.lib.sepa.Payable.payment_term' : _("""See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"""),
-    'lino_xl.lib.sepa.Payable.title' : _("""A char field with a description for this transaction."""),
-    'lino_xl.lib.sepa.Payable.get_payable_sums_dict' : _("""To be implemented by subclasses.  Expected to return a dict which maps
-4-tuples (acc_tuple, project, vat_class, vat_regime) to the payable
-amount. acc_tuple is itself a tuple (general_account,
-analytic_account), vat_class is a lino_xl.lib.vat.VatClasses
-choice and vat_regime a lino_xl.lib.vat.VatRegimes choice."""),
-    'lino_xl.lib.sepa.Payable.get_wanted_movements' : _("""Implements lino_xl.lib.ledger.Voucher.get_wanted_movements()."""),
     'lino_xl.lib.sheets.SheetTypes' : _("""The global list of sheet types ."""),
     'lino_xl.lib.sheets.SheetTypes.balance' : _("""A balance sheet or statement of financial position is a
 summary of the financial balances of an organisation."""),

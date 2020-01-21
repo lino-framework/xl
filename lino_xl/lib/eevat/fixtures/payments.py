@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2019 Rumma & Ko Ltd
+# Copyright 2017-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
 
 import datetime
 
@@ -21,11 +18,7 @@ def objects():
     Declaration = rt.models.eevat.Declaration
     Place = rt.models.countries.Place
 
-    office = Company(
-        name="Maksu- ja Tolliamet",
-        street="Lõõtsa 8a",
-        country_id="EE", zip_code="15176", city=Place.objects.get(name="Tallinn"))
-    yield office
+    office = Company.objects.get(name="Maksu- ja Tolliamet") # created in sepa demo fixture
 
     USERS = Cycler(settings.SITE.user_model.objects.all())
     JOURNAL = Journal.objects.get(ref=rt.models.eevat.DEMO_JOURNAL_NAME)

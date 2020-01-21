@@ -72,11 +72,18 @@ def objects():
         if va is None:
             raise Exception("20190408 no VAT area for {}".format(obj.country))
         regs = va2regimes.get(va)
-        reg = regs.pop()
-        if not obj.vat_id:
-            while reg.needs_vat_id:
-                reg = regs.pop()
-        if not reg:
-            raise Exception("20190408 no VAT regime for {}".format(obj))
+        regs = list(regs.items)
+        reg = regs.pop(0)
+        if obj.vat_id:
+            # prefer a reg that needs vat id
+            while len(regs) and not reg.needs_vat_id:
+                reg = regs.pop(0)
+                # print("20200121a", reg, regs)
+        else:
+            while len(regs) and reg.needs_vat_id:
+                reg = regs.pop(0)
+                # print("20200121b", reg, regs)
         obj.vat_regime = reg
         yield obj
+        # else:
+        #     raise Exception("20190408 no VAT regime for {}".format(obj))

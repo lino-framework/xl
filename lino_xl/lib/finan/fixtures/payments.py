@@ -111,7 +111,7 @@ def objects(refs="PMO BNK"):
             # run the action:
             ar.run()
 
-            # some items differ from what was suggested:
+            # manually introduce some payment differences:
             if ref == 'BNK':
                 for item in voucher.items.all():
                     pd = PAYMENT_DIFFS.pop()

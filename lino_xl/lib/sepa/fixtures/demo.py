@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
 
 from lino.utils.instantiator import Instantiator
 from lino.api import rt, dd
@@ -31,6 +29,11 @@ class Adder(object):
         #         obj.vat_regime = VatRegimes.intracom
         self.current_partner = obj
         self.primary = True
+        # if dd.is_installed('vat') and obj.vat_id:
+        #     if obj.vat_id[:2] == obj.country.iso_code:
+        #         obj.vat_regime = rt.models.vat.VatRegimes.subject
+        #     else:
+        #         obj.vat_regime = rt.models.vat.VatRegimes.intracom
         return obj
 
     def add_account(self, bic, iban, remark=''):
@@ -69,8 +72,10 @@ def objects():
             country="EE", vat_id="EE100598027")
     yield A('HABAEE2X', 'EE382200221013987931')
 
-    yield C('Maksu- ja tolliamet', "http://www.emta.ee",
-            country="EE")
+    yield C('Maksu- ja Tolliamet', "http://www.emta.ee",
+            street="Lõõtsa 8a",
+            country="EE", zip_code="15176", city=tallinn)
+            # needed by eevat payments fixture
     yield A('HABAEE2X', 'EE522200221013264447')
 
     yield C('Ragn-Sells AS', "http://www.ragnsells.ee", country="EE",

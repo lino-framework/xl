@@ -106,7 +106,7 @@ class VatInvoices(PartnerVouchers):
     # order_by = ['entry_date', 'partner']
     # order_by = ['entry_date', 'id']
     # order_by = ['entry_date', 'number']
-    order_by = ['number']
+    order_by = ['accounting_period', 'number']
     hidden_elements = frozenset(
         """entry_date journal__trade_type journal number
         journal__trade_type state user""".split())
