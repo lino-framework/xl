@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2019 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-
-import six
 from django.conf import settings
 from django.db.models import Q
 from django.utils.text import format_lazy
@@ -22,13 +19,7 @@ from .roles import TicketsReader, Reporter, Searcher, Triager, TicketsStaff
 
 site_model = dd.plugins.tickets.site_model
 milestone_model = dd.plugins.tickets.milestone_model
-
-
 end_user_model = dd.plugins.tickets.end_user_model
-# if dd.is_installed('tickets'):
-#     site_model = dd.plugins.tickets.site_model
-# else:
-#     site_model = None
 
 
 # class ProjectTypes(dd.Table):
@@ -218,7 +209,7 @@ class LinksByTicket(Links):
 
         items = []
         for lnktype, lst in tbt.items():
-            items.append(E.li(six.text_type(lnktype), ": ", *join_elems(lst, ', ')))
+            items.append(E.li(str(lnktype), ": ", *join_elems(lst, ', ')))
         elems = []
         if len(items) > 0:
             # elems += join_elems(items)
@@ -757,7 +748,7 @@ class MyTickets(My, Tickets):
 
 class MyTicketsToWork(Tickets):
     label = _("Tickets to work")
-    order_by = ["priority", "-id"]
+    order_by = ["priority", "-modified"]
     required_roles = dd.login_required(Reporter)
     column_names = 'priority overview:50 workflow_buttons:30 *'
     params_layout = """
