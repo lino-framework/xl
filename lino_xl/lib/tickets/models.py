@@ -43,6 +43,31 @@ end_user_model = dd.plugins.tickets.end_user_model
 #     site_model = None
 #     milestone_model = None
 
+class QuickAssignTo(dd.Action):
+    """Quickly assign a ticket to another team member.
+    """
+    label = _("Assign to")
+    icon_name = None
+    show_in_bbar = False
+    no_params_window = True
+    parameters = dict(
+        assign_to=dd.ForeignKey("users.User"),
+        comment=models.CharField(_("Comment"), max_length=200, blank=True))
+
+    params_layout = """
+    assign_to
+    comment
+    """
+
+    def run_from_ui(self, ar, **kw):
+        obj = ar.selected_rows[0]
+        pv = ar.action_param_values
+        obj.assigned_to = pv.assign_to
+        obj.full_clean()
+        obj.save()
+        ar.success(refresh=True)
+
+
 
 class Prioritized(dd.Model):
     class Meta:
@@ -555,6 +580,33 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     comments = GenericRelation('comments.Comment',
         content_type_field='owner_type', object_id_field='owner_id',
         related_query_name="ticket")
+
+    quick_assign_to_action = QuickAssignTo()
+
+    @dd.displayfield(_("Assign to"))
+    def quick_assign_to(self, ar):
+        if ar is None:
+            return ''
+        elems = []
+        found_existing = False
+        if self.site and self.site.group:
+            for m in self.site.group.members.all():
+                kw = dict(action_param_values=dict(assign_to=m.user))
+                u = m.user
+                label = u.initials or u.username or str(u.pk)
+                if m.user == self.assigned_to:
+                    elems.append(label)
+                    found_existing = True
+                else:
+                    elems.append(ar.instance_action_button(
+                        self.quick_assign_to_action, label=label, request_kwargs=kw))
+        if self.assigned_to_id and not found_existing:
+            u = self.assigned_to
+            label = u.initials or u.username or str(u.pk)
+            elems.append(label + "!")
+            # ticket is assigned to a user who is not member of the team
+        return E.p(*join_elems(elems, sep=", "))
+
 
     @classmethod
     def get_user_queryset(cls, user):
