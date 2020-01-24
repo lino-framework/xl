@@ -11,6 +11,7 @@ from lino.api import dd, rt, _, gettext
 from lino.mixins import ObservedDateRange
 from lino.core.roles import Explorer
 from lino.core.fields import TableRow
+from lino.core.tables import VentilatedColumns
 from lino.core import fields
 from lino.utils.format_date import monthname
 from lino.utils.format_date import day_and_month, day_and_weekday
@@ -251,7 +252,7 @@ class Days(dd.VirtualTable):
         #     days.append(d)
         #     pk += step
 
-class CalPlannerTable():
+class CalPlannerTable(object):
 
     editable = False
     hide_top_toolbar = True # no selections no toolbar
@@ -468,8 +469,72 @@ class PlannerByDay(DailyPlanner):
 
 ######################### Weekly ########################"
 
+class WeeklyColumns(VentilatedColumns):
+    abstract = True
+    column_names_template = "overview:4 {vcolumns}"
+    ventilated_column_suffix = ':20'
 
-class WeeklyPlanner(CalPlannerTable, EventsParameters,  dd.Table):
+    # @classmethod
+    # def setup_columns(self):
+    #     names = ''
+    #     for i, vf in enumerate(self.get_ventilated_columns()):
+    #         self.add_virtual_field('vc' + str(i), vf)
+    #         names += ' ' + vf.name + ':20'
+    #
+    #     self.column_names = "overview:4 {}".format(names)
+
+    @classmethod
+    def get_weekday_field(cls, week_day):
+
+        Event = rt.models.cal.Event
+        
+        def func(fld, obj, ar):
+            # obj is the DailyPlannerRow instance
+            pv = ar.param_values
+            qs = Event.objects.all()
+            #I not sure should we use all the objects or start with filter as following !!!
+            # qs = Event.objects.filter(event_type__planner_column=pc)
+            qs = Event.calendar_param_filter(qs, pv)
+
+            delta_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
+            current_day = dd.today() + timedelta(days=delta_days)
+            current_week_day = current_day + \
+                timedelta(days=int(week_day.value) -
+                          current_day.weekday() - 1)
+            qs = qs.filter(start_date=current_week_day)
+            if obj.start_time:
+                qs = qs.filter(start_time__gte=obj.start_time,
+                               start_time__isnull=False)
+            if obj.end_time:
+                qs = qs.filter(start_time__lt=obj.end_time,
+                               start_time__isnull=False)
+            if not obj.start_time and not obj.end_time:
+                qs = qs.filter(start_time__isnull=True)
+                link = str(current_week_day.day) \
+                    if current_week_day != dd.today() \
+                    else E.b(str(current_week_day.day))
+
+                link = E.p(*gen_insert_button(
+                    cls, [link], Event, ar, current_week_day),
+                       align="center")
+            else:
+                link = ''
+            qs = qs.order_by('start_time')
+            chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
+            return E.table(E.tr(E.td(E.div(*join_elems([link] + chunks)))),
+                           CLASS="fixed-table")
+
+        return dd.VirtualField(dd.HtmlBox(week_day.text), func)
+
+
+    @classmethod
+    def get_ventilated_columns(cls):
+
+        for wd in Weekdays.objects():
+            yield cls.get_weekday_field(wd)
+
+
+class WeeklyPlanner(WeeklyColumns, CalPlannerTable, EventsParameters, dd.Table):
     model = 'calview.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
@@ -479,63 +544,6 @@ class WeeklyPlanner(CalPlannerTable, EventsParameters,  dd.Table):
         kw = super(WeeklyPlanner, cls).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         return kw
-
-    @classmethod
-    def setup_columns(self):
-        names = ''
-        for i, vf in enumerate(self.get_ventilated_columns()):
-            self.add_virtual_field('vc' + str(i), vf)
-            names += ' ' + vf.name + ':20'
-
-        self.column_names = "overview:4 {}".format(names)
-
-    @classmethod
-    def get_ventilated_columns(cls):
-
-        Event = rt.models.cal.Event
-
-        def w(pc, verbose_name):
-            def func(fld, obj, ar):
-                # obj is the DailyPlannerRow instance
-                pv = ar.param_values
-                qs = Event.objects.all()
-                #I not sure should we use all the objects or start with filter as following !!!
-                # qs = Event.objects.filter(event_type__planner_column=pc)
-                qs = Event.calendar_param_filter(qs, pv)
-
-                delata_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
-                current_day = dd.today() + timedelta(days=delata_days)
-                current_week_day = current_day + \
-                    timedelta(days=int(pc.value) -
-                              current_day.weekday() - 1)
-                qs = qs.filter(start_date=current_week_day)
-                if obj.start_time:
-                    qs = qs.filter(start_time__gte=obj.start_time,
-                                   start_time__isnull=False)
-                if obj.end_time:
-                    qs = qs.filter(start_time__lt=obj.end_time,
-                                   start_time__isnull=False)
-                if not obj.start_time and not obj.end_time:
-                    qs = qs.filter(start_time__isnull=True)
-                    link = str(current_week_day.day) \
-                        if current_week_day != dd.today() \
-                        else E.b(str(current_week_day.day))
-
-                    link = E.p(*gen_insert_button(cls, [link], Event, ar, current_week_day),
-                               align="center")
-                else:
-                    link = ''
-                qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
-                return E.table(E.tr(E.td(E.div(*join_elems([link] + chunks)))),
-                               CLASS="fixed-table")
-
-            return dd.VirtualField(dd.HtmlBox(verbose_name), func)
-
-        for pc in Weekdays.objects():
-            yield w(pc, pc.text)
-
-
 
 class WeeklyDetail(dd.DetailLayout):
     main = "body"
