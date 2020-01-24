@@ -2,7 +2,6 @@
 # Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 from collections import OrderedDict
 
 from django.conf import settings
@@ -127,35 +126,6 @@ def check_subscription(user, calendar):
         sub = Subscription(user=user, calendar=calendar)
         sub.full_clean()
         sub.save()
-
-def gen_insert_button(actor,header_items, Event, ar, target_day):
-    """Hackish solution to not having to recreate a new sub request when generating lots of insert buttons.
-    Stores values in the actor as a cache, and uses id(ar) to check if it's a new request and needs updating.
-    Works by replacing known unique value with the correct known value for the insert window."""
-    if ar.get_user().authenticated:
-
-        if (getattr(actor, "insert_button",None) is not None
-                and actor.insert_button_ar_id == id(ar)):
-
-            insert_button= actor.insert_button.__copy__()
-        else:
-            # print("Making button")
-            sar = Event.get_default_table().insert_action.request_from(ar)
-        # print(20170217, sar)
-            sar.known_values = dict(
-            start_date="PLACEHOLDER")
-            actor.insert_button = sar.ar2button(None,
-                                # _(" Reply "), icon_name=None
-                                )
-            actor.insert_button_ar_id = id(ar)
-            insert_button = actor.insert_button.__copy__()
-
-
-        insert_button.set("href", insert_button.get("href").replace("PLACEHOLDER", str(target_day)))
-        insert_button = E.span(insert_button , style="float: right;")
-        header_items.append(insert_button)
-        # btn.set("style", "padding-left:10px")
-    return header_items
 
 class UserDetailMixin(dd.DetailLayout):
 
