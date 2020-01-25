@@ -1,27 +1,19 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2019 Rumma & Ko Ltd
+# Copyright 2013-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-from builtins import str
-from builtins import object
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 
-# om atelier import rstgen
+from etgen import html as xghtml
+from etgen.html import E
+
 from lino.api import dd, rt
 from lino import mixins
 from lino.utils import join_elems
 from lino.core.fields import TableRow
-
-from etgen import html as xghtml
-from etgen.html import E
-
 from lino.mixins import Referrable
-
 from lino.modlib.users.mixins import My, UserAuthored
 
 from .utils import ResponseStates, PollStates

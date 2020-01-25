@@ -11,7 +11,7 @@ from lino.api import dd, rt, _, gettext
 from lino.mixins import ObservedDateRange
 from lino.core.roles import Explorer
 from lino.core.fields import TableRow
-from lino.core.tables import VentilatedColumns
+from lino.core.tables import VentilatedColumns, AbstractTable
 from lino.core import fields
 from lino.utils.format_date import monthname
 from lino.utils.format_date import day_and_month, day_and_weekday
@@ -37,7 +37,9 @@ def date2pk(date):
     return delta.days
 
 def weekname(date):
-    return _("Week {1} / {0}").format(*date.isocalendar())
+    year, week, day = date.isocalendar()
+    text = (date + timedelta(days=-day+1)).strftime("%d %B")
+    return _("Week {1} / {0} ({2})").format(year, week, text)
 
 def gen_insert_button(actor,header_items, Event, ar, target_day):
     """Hackish solution to not having to recreate a new sub request when generating lots of insert buttons.
@@ -84,7 +86,9 @@ class InsertEvent(dd.Action):
             start_date=str(ar.selected_rows[0].date))
         ar.set_response(eval_js=ar.renderer.ar2js(sar, None))
 
-class EventsParameters(object):
+class EventsParameters(dd.Actor):
+
+    abstract = True
 
     @classmethod
     def class_init(cls):
@@ -93,7 +97,8 @@ class EventsParameters(object):
 
     @classmethod
     def setup_parameters(cls, params):
-        return rt.models.cal.Event.setup_parameters(params)
+        super(EventsParameters, cls).setup_parameters(params)
+        rt.models.cal.Event.setup_parameters(params)
 
 
 class DailyPlannerRows(EventsParameters, dd.Table):
@@ -133,13 +138,13 @@ def make_link_funcs(ar):
     rnd = settings.SITE.kernel.default_renderer
 
     def weekly(day, text):
-        return rnd.ar2button(sar_weekly,day,text, style="", icon_name=None)
+        return rnd.ar2button(sar_weekly, day, text, style="", icon_name=None)
 
     def daily(day, text):
-        return rnd.ar2button(sar_daily,day,text, style="", icon_name=None)
+        return rnd.ar2button(sar_daily, day, text, style="", icon_name=None)
 
     def monthly(day, text):
-        return rnd.ar2button(sar_monthly,day,text, style="", icon_name=None)
+        return rnd.ar2button(sar_monthly, day, text, style="", icon_name=None)
 
     return daily, weekly, monthly
 
@@ -252,12 +257,29 @@ class Days(dd.VirtualTable):
         #     days.append(d)
         #     pk += step
 
-class CalPlannerTable(object):
+class CalPlannerTable(AbstractTable):
+    # todo: rename to DaysSlave ?
 
     editable = False
     hide_top_toolbar = True # no selections no toolbar
     preview_limit = 0       # no paginator & all rows.
     use_detail_params_value = True # Get PV values from detail view.
+
+    master = 'calview.Day'
+    navigation_mode = "day"  # or "week" or "month"
+
+    @classmethod
+    def get_master_instance(cls, ar, model, pk):
+        return model(int(pk), ar, cls.navigation_mode)
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        mi = ar.master_instance
+        if mi is None:
+            return []
+        # filter.update()
+        ar.param_values.update(date=mi.date)
+        return super(CalPlannerTable, cls).get_request_queryset(ar, **filter)
 
 
 class CalendarView(Days):
@@ -450,91 +472,48 @@ class DailyPlanner(CalPlannerTable, DailyPlannerRows):
 
 
 class PlannerByDay(DailyPlanner):
-    master = 'calview.Day'
     # display_mode = "html"
     navigation_mode = 'day'
 
-    @classmethod
-    def get_master_instance(cls, ar, model, pk):
-        return model(int(pk), ar, cls.navigation_mode)
-
-    @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        mi = ar.master_instance
-        if mi is None:
-            return []
-        # filter.update()
-        ar.param_values.update(date=mi.date)
-        return super(PlannerByDay, cls).get_request_queryset(ar, **filter)
 
 ######################### Weekly ########################"
 
-class WeeklyColumns(VentilatedColumns):
+class WeeklyColumns(EventsParameters, CalPlannerTable, VentilatedColumns):
     abstract = True
     column_names_template = "overview:4 {vcolumns}"
     ventilated_column_suffix = ':20'
-
-    # @classmethod
-    # def setup_columns(self):
-    #     names = ''
-    #     for i, vf in enumerate(self.get_ventilated_columns()):
-    #         self.add_virtual_field('vc' + str(i), vf)
-    #         names += ' ' + vf.name + ':20'
-    #
-    #     self.column_names = "overview:4 {}".format(names)
+    navigation_mode = "week"
 
     @classmethod
     def get_weekday_field(cls, week_day):
 
         Event = rt.models.cal.Event
-        
+
         def func(fld, obj, ar):
-            # obj is the DailyPlannerRow instance
-            pv = ar.param_values
+            # obj is a Plannable instance
             qs = Event.objects.all()
-            #I not sure should we use all the objects or start with filter as following !!!
-            # qs = Event.objects.filter(event_type__planner_column=pc)
-            qs = Event.calendar_param_filter(qs, pv)
-
+            qs = Event.calendar_param_filter(qs, ar.param_values)
             delta_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
-            current_day = dd.today() + timedelta(days=delta_days)
+            # current_day = dd.today() + timedelta(days=delta_days)
+            current_day = dd.today(delta_days)
             current_week_day = current_day + \
-                timedelta(days=int(week_day.value) -
-                          current_day.weekday() - 1)
+                timedelta(days=int(week_day.value) - current_day.weekday() - 1)
             qs = qs.filter(start_date=current_week_day)
-            if obj.start_time:
-                qs = qs.filter(start_time__gte=obj.start_time,
-                               start_time__isnull=False)
-            if obj.end_time:
-                qs = qs.filter(start_time__lt=obj.end_time,
-                               start_time__isnull=False)
-            if not obj.start_time and not obj.end_time:
-                qs = qs.filter(start_time__isnull=True)
-                link = str(current_week_day.day) \
-                    if current_week_day != dd.today() \
-                    else E.b(str(current_week_day.day))
-
-                link = E.p(*gen_insert_button(
-                    cls, [link], Event, ar, current_week_day),
-                       align="center")
-            else:
-                link = ''
             qs = qs.order_by('start_time')
-            chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
-            return E.table(E.tr(E.td(E.div(*join_elems([link] + chunks)))),
-                           CLASS="fixed-table")
+            chunks = obj.get_weekly_chunks(ar, qs, current_week_day)
+            return E.table(E.tr(E.td(E.div(*join_elems(chunks)))),
+                CLASS="fixed-table")
 
         return dd.VirtualField(dd.HtmlBox(week_day.text), func)
 
 
     @classmethod
     def get_ventilated_columns(cls):
-
         for wd in Weekdays.objects():
             yield cls.get_weekday_field(wd)
 
 
-class WeeklyPlanner(WeeklyColumns, CalPlannerTable, EventsParameters, dd.Table):
+class WeeklyPlanner(WeeklyColumns, dd.Table):
     model = 'calview.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
@@ -547,7 +526,7 @@ class WeeklyPlanner(WeeklyColumns, CalPlannerTable, EventsParameters, dd.Table):
 
 class WeeklyDetail(dd.DetailLayout):
     main = "body"
-    body = "navigation_panel:15 calview.WeeklyPlanner:85"
+    body = dd.Panel("navigation_panel:15 calview.WeeklyPlanner:85", label=_("Planner"))
 
 class WeeklyView(EventsParameters, CalendarView):
     label = _("Weekly view")
