@@ -259,7 +259,7 @@ class Days(dd.VirtualTable):
 
 class CalPlannerTable(AbstractTable):
     # todo: rename to DaysSlave ?
-
+    abstract = True
     editable = False
     hide_top_toolbar = True # no selections no toolbar
     preview_limit = 0       # no paginator & all rows.
@@ -424,7 +424,7 @@ class DailyView(EventsParameters, CalendarView):
 
 
 
-class DailyPlanner(CalPlannerTable, DailyPlannerRows):
+class DailyPlanner(DailyPlannerRows, CalPlannerTable):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Daily planner")
 
