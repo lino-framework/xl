@@ -11,15 +11,18 @@ from django.core.exceptions import ValidationError
 from lino.utils import SumCollector
 # from lino.utils.dates import AMONTH, ADAY
 from lino.api import dd, rt, _
+# from lino.mixins.registrable import Registrable
 
 from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
-from lino_xl.lib.ledger.mixins import Declaration, Payable
-from lino_xl.lib.ledger.models import Voucher
+from lino_xl.lib.ledger.mixins import Payable
+from lino_xl.lib.ledger.models import RegistrableVoucher, VoucherStates
 from lino_xl.lib.ledger.utils import ZERO, ONE
 
 from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
+
+ledger = dd.resolve_app("ledger")
 
 class PartnerDetailMixin(dd.DetailLayout):
     """
@@ -138,13 +141,14 @@ class ComputeSums(dd.Action):
         ar.success(refresh=True)
 
 
-class VatDocument(ProjectRelated, VatTotal):
+class VatDocument(RegistrableVoucher, ProjectRelated, VatTotal):
 
     # refresh_after_item_edit = False
 
     class Meta:
         abstract = True
 
+    state = VoucherStates.field(default='draft')
     vat_regime = VatRegimes.field()
     items_edited = models.BooleanField(default=False)
 
@@ -297,10 +301,10 @@ class VatDocument(ProjectRelated, VatTotal):
 # dd.update_field(VatDocument, 'total_incl', verbose_name=_("Total to pay"))
 
 
-class VatVoucher(VatDocument, Payable, Voucher):
+class VatVoucher(VatDocument, Payable):
+    # todo: merge VatDocument and VatVoucher?
     class Meta:
         abstract = True
-
 
 
 class VatItemBase(VoucherItem, VatTotal):
@@ -445,7 +449,7 @@ class QtyVatItemBase(VatItemBase):
                 self.set_amount(ar, myround(self.unit_price * self.qty))
 
 
-class VatDeclaration(Declaration, Voucher):
+class VatDeclaration(ledger.Declaration):
 
     class Meta:
         abstract = True

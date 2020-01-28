@@ -10,17 +10,18 @@ from lino.utils import SumCollector
 from lino_xl.lib.ledger.mixins import (
     Payable, ProjectRelated, AccountVoucherItem, Matching)
 from lino_xl.lib.sepa.mixins import BankAccount
-from lino_xl.lib.ledger.models import Voucher
+from lino_xl.lib.ledger.models import RegistrableVoucher, VoucherStates
 from lino.api import dd, _
 
 
-class AccountInvoice(BankAccount, Payable, Voucher, Matching, ProjectRelated):
+class AccountInvoice(BankAccount, Payable, RegistrableVoucher, Matching, ProjectRelated):
 
     class Meta:
         app_label = 'vatless'
         verbose_name = _("Invoice")
         verbose_name_plural = _("Invoices")
 
+    state = VoucherStates.field(default='draft')
     amount = dd.PriceField(_("Amount"), blank=True, null=True)
 
     # _total_fields = set(['amount'])
@@ -94,3 +95,5 @@ class InvoiceItem(AccountVoucherItem, ProjectRelated):
 
 
 from .ui import *
+
+# print(VouchersByPartner)

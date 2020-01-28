@@ -9,9 +9,8 @@ from etgen.html import E
 from lino.utils import SumCollector
 from lino.mixins import Sequenced
 from lino.api import dd, rt, _
-from lino_xl.lib.excerpts.mixins import Certifiable
 
-from .choicelists import VoucherTypes, TradeTypes
+from .choicelists import VoucherTypes, TradeTypes, VoucherStates
 from .roles import LedgerUser
 
 
@@ -379,6 +378,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
     slave summary.
 
     """
+    abstract = True
     label = _("Partner vouchers")
     required_roles = dd.login_required(LedgerUser)
 
@@ -387,7 +387,8 @@ class VouchersByPartnerBase(dd.VirtualTable):
     display_mode = 'summary'
 
     _master_field_name = 'partner'
-    _voucher_base = PartnerRelated
+    # _voucher_base = PartnerRelated
+    _voucher_base = Payable
 
     @classmethod
     def get_data_rows(self, ar):
@@ -416,9 +417,9 @@ class VouchersByPartnerBase(dd.VirtualTable):
     def entry_date(self, row, ar):
         return row.entry_date
 
-    @dd.virtualfield('ledger.Voucher.state')
-    def state(self, row, ar):
-        return row.state
+    # @dd.virtualfield('ledger.Voucher.state')
+    # def state(self, row, ar):
+    #     return row.state
 
     @classmethod
     def get_table_summary(self, obj, ar):
@@ -429,6 +430,7 @@ class VouchersByPartnerBase(dd.VirtualTable):
         for voucher in sar:
             vc = voucher.get_mti_leaf()
             if vc and vc.state.name == "draft":
+            # if voucher.state.name == "draft":
                 elems += [ar.obj2html(vc), " "]
 
         vtypes = []
@@ -458,32 +460,3 @@ class VouchersByPartnerBase(dd.VirtualTable):
 
             elems += [E.br(), str(_("Create voucher in journal")), " "] + actions
         return E.div(*elems)
-
-
-class Declaration(Payable, Certifiable, PeriodRange):
-    class Meta:
-        abstract = True
-
-    def get_match(self):
-        # A declaration has no manual match field.
-        return self
-
-    def full_clean(self, *args, **kw):
-        if self.entry_date:
-            AP = rt.models.ledger.AccountingPeriod
-            # declare the previous month by default
-            if not self.start_period_id:
-                self.start_period = AP.get_default_for_date(
-                    self.entry_date)
-                # self.start_period = AP.get_default_for_date(
-                #     self.entry_date - AMONTH)
-
-            # if not self.start_date:
-            #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)
-            # if not self.end_date:
-            #     self.end_date = self.start_date + AMONTH - ADAY
-        # if self.voucher_date <= self.end_date:
-        #    raise ValidationError(
-        #        "Voucher date must be after the covered period")
-        # self.compute_fields()
-        super(Declaration, self).full_clean(*args, **kw)

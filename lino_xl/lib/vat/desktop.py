@@ -186,6 +186,7 @@ class IntracomInvoices(VatInvoices):
 class IntracomSales(IntracomInvoices):
     _trade_type = TradeTypes.sales
     label = _("Intra-Community sales")
+    # model = "sales.VatProductInvoice"
 
 class IntracomPurchases(IntracomInvoices):
     _trade_type = TradeTypes.purchases

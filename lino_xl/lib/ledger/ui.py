@@ -205,6 +205,7 @@ class PaymentTerms(dd.Table):
 
 
 class Vouchers(dd.Table):
+    abstract = True
     required_roles = dd.login_required(LedgerUser)
     model = 'ledger.Voucher'
     editable = False
@@ -213,7 +214,7 @@ class Vouchers(dd.Table):
     parameters = dict(
         year=dd.ForeignKey('ledger.FiscalYear', blank=True),
         journal=JournalRef(blank=True))
-    params_layout = "journal start_period end_period state user"
+    params_layout = "journal start_period end_period #state user"
 
     @classmethod
     def get_request_queryset(cls, ar, **kwargs):
@@ -226,14 +227,6 @@ class Vouchers(dd.Table):
         if pv.journal:
             qs = qs.filter(journal=pv.journal)
         return qs
-
-    @classmethod
-    def get_actions_hotkeys(cls):
-        return [{'key': 'x',
-                'ctrl': True,
-                'shift': False,
-                'ba': 'toggle_state'}]
-
 
 
 class AllVouchers(Vouchers):
@@ -1015,6 +1008,7 @@ class AllMovements(Movements):
 
 
 class MovementsByVoucher(Movements):
+    # master = 'ledger.Voucher'
     master_key = 'voucher'
     column_names = 'account project partner debit credit match_link cleared *'
     sum_text_column = 3

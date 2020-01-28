@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2019 Rumma & Ko Ltd
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from builtins import str
 
 from django.db import models
 from django.conf import settings
@@ -70,7 +67,7 @@ class SalesRules(dd.Table):
     invoice_recipient
     paper_type
     """, window_size=(40, 'auto'))
-    
+
 
 class PartnersByInvoiceRecipient(SalesRules):
     help_text = _("Show partners having this as invoice recipient.")
@@ -98,7 +95,7 @@ class Tariff(BabelDesignated):
     # allow_cascaded_delete = 'product'
 
     # product = dd.OneToOneField('products.Product', primary_key=True)
-    
+
     number_of_events = models.IntegerField(
         _("Number of events"), blank=True, null=True,
         help_text=_("Number of events paid per invoicing."))
@@ -108,7 +105,7 @@ class Tariff(BabelDesignated):
         help_text=_("Minimum quantity to pay in advance."))
 
     max_asset = models.IntegerField(
-        _("Maximum threshold"), blank=True, null=True, 
+        _("Maximum threshold"), blank=True, null=True,
         help_text=_("Maximum quantity to pay per period."))
 
     # invoicing_cycle = InvoicingCycles.field(default="once")
@@ -127,7 +124,7 @@ class Tariffs(dd.Table):
     order_by = ['designation']
 
 
-# 
+#
 class Area(BabelDesignated, Sequenced):
     class Meta:
         app_label = 'invoicing'
@@ -192,7 +189,7 @@ class Plan(UserPlan):
         if self.max_date:
             return self.max_date
         return self.today - ONE_DAY
-    
+
     def get_generators_for_plan(self, partner=None):
         for m in rt.models_by_base(InvoiceGenerator):
             for obj in m.get_generators_for_plan(self, partner):
@@ -201,11 +198,11 @@ class Plan(UserPlan):
 
     def reset_plan(self):
         self.items.all().delete()
-        
+
     def run_update_plan(self, ar):
         self.reset_plan()
         self.fill_plan(ar)
-        
+
     def fill_plan(self, ar):
         self.full_clean()
         Item = rt.models.invoicing.Item
@@ -224,12 +221,12 @@ class Plan(UserPlan):
 
             invoice = self.create_invoice(
                 partner=partner, user=ar.get_user())
-        
+
             # dd.logger.info("20181114 b", obj)
             info = ig.compute_invoicing_info(max_date)
             # if not info.invoiceable_product:
             #     continue
-            
+
             invoice_items = list(ig.get_invoice_items(info, invoice, ar))
             if len(invoice_items) == 0:
                 # dd.logger.debug("20181126 no invoice items for %s", ig)
@@ -243,7 +240,7 @@ class Plan(UserPlan):
             else:
                 item = Item(plan=self, partner=partner, generator=ig)
                 # collected[obj] = item
-                
+
                 # gfk = self._meta.get_field('owner')
                 # kwargs = gfk2lookup(gfk, self, **kwargs)
                 # return model.objects.filter(**kwargs)
@@ -307,8 +304,8 @@ class Plan(UserPlan):
                         **ctx)
                 elif n == ItemsByPlan.row_height:
                     item.preview += '...'
-                
-                
+
+
             item.amount = total_amount
             # item.number_of_invoiceables += 1
             item.full_clean()
@@ -326,7 +323,7 @@ class Plan(UserPlan):
         invoice = M(**kwargs)
         invoice.fill_defaults()
         return invoice
-        
+
 
     toggle_selections = ToggleSelection()
 
@@ -363,7 +360,7 @@ class Item(dd.Model):
         'generator_type', 'generator_id',
         verbose_name=generator_label)
 
-    
+
     # first_date = models.DateField(_("First date"))
     # last_date = models.DateField(_("Last date"))
     amount = dd.PriceField(_("Amount"), default=ZERO)
@@ -387,7 +384,7 @@ class Item(dd.Model):
             if ar.actor.get_row_permission(self, ar, None, ba):
                 return ar.action_button(ba, self)
         return ''
-    
+
     def create_invoice(self,  ar):
         if self.plan.area_id is None:
             raise Warning(_("No area specified"))
@@ -413,7 +410,7 @@ class Item(dd.Model):
                 pt = ig.get_invoiceable_paper_type()
                 if pt:
                     invoice.paper_type = pt
-                    
+
                 # for i in ig.get_invoice_items(info, ITEM_MODEL, ar):
                 for i in ig.get_invoice_items(info, invoice, ar):
                     # kwargs.update(voucher=invoice)
@@ -443,9 +440,9 @@ class Item(dd.Model):
             #     i.title = ig.get_invoiceable_title(invoice)
             # compute the sales_price and amounts, but don't change
             # title and description
-            
+
             # title = i.title
-            # i.product_changed()  
+            # i.product_changed()
             i.discount_changed()
             # i.title = title
             i.full_clean()
@@ -583,5 +580,3 @@ def install_start_action(sender=None, **kwargs):
     # vt.table_class.start_invoicing = StartInvoicingForJournal()
 
     rt.models.contacts.Partner.start_invoicing = StartInvoicingForPartner()
-    
-

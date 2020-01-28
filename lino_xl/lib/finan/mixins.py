@@ -1,10 +1,11 @@
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from decimal import Decimal
 from django.db import models
 from django.core.exceptions import ValidationError
 
+# from lino.mixins.registrable import Registrable
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, MAX_AMOUNT
@@ -20,13 +21,15 @@ from lino_xl.lib.ledger.choicelists import VoucherStates
 ledger = dd.resolve_app('ledger')
 
 
-class FinancialVoucher(ledger.Voucher, Certifiable):
+class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
 
     auto_compute_amount = False
 
     class Meta:
         abstract = True
+        app_label = "finan"
 
+    state = ledger.VoucherStates.field(default='draft')
     item_account = dd.ForeignKey(
         'ledger.Account',
         verbose_name=_("Default account"),
@@ -59,8 +62,11 @@ class FinancialVoucher(ledger.Voucher, Certifiable):
             i.dc = not i.dc
         return i
 
-    def get_wanted_movements(self):
-        raise NotImplemented()
+    def get_partner(self):
+        return None
+
+    # def get_wanted_movements(self):
+    #     raise NotImplemented()
 
     def get_finan_movements(self):
         """Yield the movements to be booked for this finanical voucher.
@@ -100,6 +106,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         abstract = True
         verbose_name = _("Item")
         verbose_name_plural = _("Items")
+        app_label = "finan"
 
     amount = dd.PriceField(_("Amount"), default=ZERO, null=False)
     dc = DebitOrCreditField()

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-01-16 18:32+0200\n"
-"PO-Revision-Date: 2020-01-16 18:33+0200\n"
+"POT-Creation-Date: 2020-01-28 18:24+0200\n"
+"PO-Revision-Date: 2020-01-28 18:25+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -96,17 +96,17 @@ msgstr "Adresse"
 #: lino_xl/lib/cv/models.py:523 lino_xl/lib/cv/models.py:550
 #: lino_xl/lib/deploy/models.py:184 lino_xl/lib/excerpts/models.py:58
 #: lino_xl/lib/groups/models.py:127 lino_xl/lib/healthcare/models.py:31
-#: lino_xl/lib/ledger/models.py:246
+#: lino_xl/lib/ledger/models.py:247
 #: lino_xl/lib/lists/config/lists/List/list_members.weasy.html:68
 #: lino_xl/lib/lists/models.py:152 lino_xl/lib/notes/models.py:49
 #: lino_xl/lib/notes/models.py:80
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:78
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:97
-#: lino_xl/lib/orders/models.py:89 lino_xl/lib/orders/models.py:278
-#: lino_xl/lib/orders/models.py:385 lino_xl/lib/phones/models.py:35
-#: lino_xl/lib/polls/models.py:647 lino_xl/lib/polls/models.py:652
-#: lino_xl/lib/polls/models.py:787 lino_xl/lib/sepa/models.py:36
-#: lino_xl/lib/thirds/models.py:29 lino_xl/lib/tickets/models.py:181
+#: lino_xl/lib/orders/models.py:89 lino_xl/lib/orders/models.py:287
+#: lino_xl/lib/orders/models.py:394 lino_xl/lib/phones/models.py:35
+#: lino_xl/lib/polls/models.py:639 lino_xl/lib/polls/models.py:644
+#: lino_xl/lib/polls/models.py:779 lino_xl/lib/sepa/models.py:36
+#: lino_xl/lib/thirds/models.py:29 lino_xl/lib/tickets/models.py:203
 #: lino_xl/lib/topics/models.py:93 lino_xl/lib/trends/models.py:92
 #: lino_xl/lib/uploads/models.py:75
 msgid "Remark"
@@ -115,7 +115,7 @@ msgstr "Bemerkung"
 #: lino_xl/lib/addresses/models.py:32 lino_xl/lib/coachings/models.py:100
 #: lino_xl/lib/excerpts/models.py:76 lino_xl/lib/excerpts/models.py:104
 #: lino_xl/lib/households/models.py:279 lino_xl/lib/phones/models.py:36
-#: lino_xl/lib/sepa/models.py:39 lino_xl/lib/tickets/models.py:282
+#: lino_xl/lib/sepa/models.py:39 lino_xl/lib/tickets/models.py:304
 msgid "Primary"
 msgstr "Primär"
 
@@ -159,69 +159,69 @@ msgstr "Analysekonto"
 msgid "Analytical accounts"
 msgstr "Analysekonten"
 
-#: lino_xl/lib/ana/models.py:211
+#: lino_xl/lib/ana/models.py:210
 msgid "Analytic invoice"
 msgstr "Analytische Rechnung"
 
-#: lino_xl/lib/ana/models.py:212
+#: lino_xl/lib/ana/models.py:211
 msgid "Analytic invoices"
 msgstr "Analytische Rechnungen"
 
-#: lino_xl/lib/ana/models.py:222
+#: lino_xl/lib/ana/models.py:221
 msgid "Analytic invoice item"
 msgstr "Analytische Rechnungsposition"
 
-#: lino_xl/lib/ana/models.py:223
+#: lino_xl/lib/ana/models.py:222
 msgid "Analytic invoice items"
 msgstr "Analytische Rechnungspositionen"
 
-#: lino_xl/lib/ana/models.py:227 lino_xl/lib/cal/mixins.py:547 lino_xl/lib/cal/mixins.py:808
+#: lino_xl/lib/ana/models.py:226 lino_xl/lib/cal/mixins.py:547 lino_xl/lib/cal/mixins.py:808
 #: lino_xl/lib/cal/models.py:121 lino_xl/lib/cal/models.py:149 lino_xl/lib/cal/models.py:217
 #: lino_xl/lib/cal/models.py:310 lino_xl/lib/courses/models.py:109
 #: lino_xl/lib/courses/models.py:202 lino_xl/lib/github/models.py:173
-#: lino_xl/lib/groups/models.py:31 lino_xl/lib/ledger/ui.py:101 lino_xl/lib/ledger/ui.py:598
-#: lino_xl/lib/ledger/ui.py:997 lino_xl/lib/ledger/ui.py:1046 lino_xl/lib/ledger/ui.py:1095
-#: lino_xl/lib/ledger/ui.py:1134 lino_xl/lib/ledger/ui.py:1175
+#: lino_xl/lib/groups/models.py:31 lino_xl/lib/ledger/ui.py:101 lino_xl/lib/ledger/ui.py:592
+#: lino_xl/lib/ledger/ui.py:991 lino_xl/lib/ledger/ui.py:1041 lino_xl/lib/ledger/ui.py:1090
+#: lino_xl/lib/ledger/ui.py:1129 lino_xl/lib/ledger/ui.py:1170
 #: lino_xl/lib/meetings/models.py:69 lino_xl/lib/orders/models.py:88
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:53
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:31
-#: lino_xl/lib/sales/mixins.py:80 lino_xl/lib/sales/models.py:333
+#: lino_xl/lib/sales/mixins.py:80 lino_xl/lib/sales/models.py:332
 #: lino_xl/lib/sheets/models.py:239 lino_xl/lib/skills/models.py:100
-#: lino_xl/lib/tickets/models.py:180 lino_xl/lib/tickets/models.py:245
-#: lino_xl/lib/tickets/models.py:496 lino_xl/lib/vat/choicelists.py:357
-#: lino_xl/lib/vat/choicelists.py:501 lino_xl/lib/vat/models.py:39
-#: lino_xl/lib/vatless/models.py:100 lino_xl/lib/votes/models.py:180
+#: lino_xl/lib/tickets/models.py:202 lino_xl/lib/tickets/models.py:267
+#: lino_xl/lib/tickets/models.py:518 lino_xl/lib/vat/choicelists.py:363
+#: lino_xl/lib/vat/choicelists.py:507 lino_xl/lib/vat/models.py:38
+#: lino_xl/lib/vatless/models.py:93 lino_xl/lib/votes/models.py:180
 #: lino_xl/lib/working/models.py:66 lino_xl/lib/working/ui.py:317
 #: lino_xl/lib/working/ui.py:491
 msgid "Description"
 msgstr "Beschreibung"
 
-#: lino_xl/lib/ana/models.py:259 lino_xl/lib/cal/fixtures/std.py:27
+#: lino_xl/lib/ana/models.py:258 lino_xl/lib/cal/fixtures/std.py:27
 #: lino_xl/lib/courses/desktop.py:145 lino_xl/lib/excerpts/models.py:610
-#: lino_xl/lib/finan/models.py:282 lino_xl/lib/finan/models.py:296
-#: lino_xl/lib/finan/models.py:303 lino_xl/lib/mailbox/ui.py:35
+#: lino_xl/lib/finan/models.py:278 lino_xl/lib/finan/models.py:292
+#: lino_xl/lib/finan/models.py:299 lino_xl/lib/mailbox/ui.py:35
 #: lino_xl/lib/meetings/desktop.py:57 lino_xl/lib/orders/ui.py:62
-#: lino_xl/lib/polls/models.py:172 lino_xl/lib/polls/models.py:355
-#: lino_xl/lib/rooms/models.py:149 lino_xl/lib/sales/models.py:209
-#: lino_xl/lib/tickets/ui.py:268 lino_xl/lib/tickets/ui.py:789 lino_xl/lib/vat/desktop.py:34
+#: lino_xl/lib/polls/models.py:164 lino_xl/lib/polls/models.py:347
+#: lino_xl/lib/rooms/models.py:149 lino_xl/lib/sales/models.py:208
+#: lino_xl/lib/tickets/ui.py:259 lino_xl/lib/tickets/ui.py:780 lino_xl/lib/vat/desktop.py:34
 #: lino_xl/lib/vatless/ui.py:50 lino_xl/lib/vatless/ui.py:65
 msgid "General"
 msgstr "Allgemein"
 
-#: lino_xl/lib/ana/models.py:275 lino_xl/lib/sales/models.py:219
+#: lino_xl/lib/ana/models.py:274 lino_xl/lib/sales/models.py:218
 #: lino_xl/lib/vat/desktop.py:39 lino_xl/lib/vatless/ui.py:55
 msgid "Ledger"
 msgstr "Buchhaltung"
 
-#: lino_xl/lib/ana/models.py:321
+#: lino_xl/lib/ana/models.py:320
 msgid "Analytic Account Balances"
 msgstr "Saldenliste Analysekonten"
 
-#: lino_xl/lib/ana/models.py:345
+#: lino_xl/lib/ana/models.py:344
 msgid "Purchase journal (analytic)"
 msgstr "Einkaufsjournal (Analytische Buchhaltung)"
 
-#: lino_xl/lib/ana/models.py:366
+#: lino_xl/lib/ana/models.py:365
 msgid "Needs analytical account"
 msgstr "Braucht AK"
 
@@ -231,8 +231,8 @@ msgstr "Diplome"
 
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:32
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:47
-#: lino_xl/lib/ana/fixtures/minimal_ledger.py:52 lino_xl/lib/ledger/choicelists.py:42
-#: lino_xl/lib/ledger/choicelists.py:150 lino_xl/lib/ledger/choicelists.py:357
+#: lino_xl/lib/ana/fixtures/minimal_ledger.py:52 lino_xl/lib/ledger/choicelists.py:43
+#: lino_xl/lib/ledger/choicelists.py:151 lino_xl/lib/ledger/choicelists.py:358
 #: lino_xl/lib/ledger/fixtures/std.py:121
 msgid "Wages"
 msgstr "Löhne und Gehälter"
@@ -1281,11 +1281,11 @@ msgstr "Übersetzung"
 #: lino_xl/lib/countries/mixins.py:147
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:68
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
-#: lino_xl/lib/ledger/models.py:525 lino_xl/lib/ledger/models.py:557
+#: lino_xl/lib/ledger/models.py:504 lino_xl/lib/ledger/models.py:527
 #: lino_xl/lib/lists/config/lists/List/list_members.weasy.html:63
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:75
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:94
-#: lino_xl/lib/polls/models.py:215
+#: lino_xl/lib/polls/models.py:207
 msgid "No."
 msgstr "Nr."
 
@@ -1293,9 +1293,9 @@ msgstr "Nr."
 msgid "The sequence number of this transaction in the statement."
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:280 lino_xl/lib/finan/mixins.py:104
-#: lino_xl/lib/invoicing/models.py:369 lino_xl/lib/vatless/models.py:32
-#: lino_xl/lib/vatless/models.py:101
+#: lino_xl/lib/b2c/models.py:280 lino_xl/lib/finan/mixins.py:109
+#: lino_xl/lib/invoicing/models.py:366 lino_xl/lib/vatless/models.py:25
+#: lino_xl/lib/vatless/models.py:94
 msgid "Amount"
 msgstr "Betrag"
 
@@ -1338,12 +1338,12 @@ msgstr "Handelsart"
 msgid "TxCd issuer"
 msgstr "eID-Karte ausgestellt durch"
 
-#: lino_xl/lib/b2c/models.py:296 lino_xl/lib/finan/models.py:111
+#: lino_xl/lib/b2c/models.py:296 lino_xl/lib/finan/models.py:107
 msgid "Execution date"
 msgstr "Ausführungsdatum"
 
 #: lino_xl/lib/b2c/models.py:297 lino_xl/lib/b2c/models.py:326
-#: lino_xl/lib/ledger/models.py:916
+#: lino_xl/lib/ledger/models.py:925
 msgid "Value date"
 msgstr "Valuta"
 
@@ -1536,8 +1536,8 @@ msgid "ID card valid from"
 msgstr "ID-Karte gültig von"
 
 #: lino_xl/lib/beid/mixins.py:89 lino_xl/lib/beid/mixins.py:142
-#: lino_xl/lib/coachings/models.py:225 lino_xl/lib/invoicing/models.py:180
-#: lino_xl/lib/invoicing/models.py:521 lino_xl/lib/ledger/ui.py:483
+#: lino_xl/lib/coachings/models.py:225 lino_xl/lib/invoicing/models.py:177
+#: lino_xl/lib/invoicing/models.py:518 lino_xl/lib/ledger/ui.py:477
 msgid "until"
 msgstr "bis"
 
@@ -1665,30 +1665,30 @@ msgid "Sales basis 3"
 msgstr ""
 
 #: lino_xl/lib/bevat/choicelists.py:61 lino_xl/lib/bevats/choicelists.py:54
-#: lino_xl/lib/eevat/choicelists.py:62 lino_xl/lib/ledger/choicelists.py:135
+#: lino_xl/lib/eevat/choicelists.py:62 lino_xl/lib/ledger/choicelists.py:136
 msgid "VAT due"
 msgstr "Geschuldete Mehrwertsteuer"
 
 #: lino_xl/lib/bevat/choicelists.py:62 lino_xl/lib/bevats/choicelists.py:55
-#: lino_xl/lib/eevat/choicelists.py:63 lino_xl/lib/ledger/choicelists.py:137
+#: lino_xl/lib/eevat/choicelists.py:63 lino_xl/lib/ledger/choicelists.py:138
 msgid "VAT returnable"
 msgstr "Rückzahlbare Mehrwertsteuer"
 
 #: lino_xl/lib/bevat/choicelists.py:63 lino_xl/lib/bevats/choicelists.py:56
-#: lino_xl/lib/eevat/choicelists.py:64 lino_xl/lib/ledger/choicelists.py:136
+#: lino_xl/lib/eevat/choicelists.py:64 lino_xl/lib/ledger/choicelists.py:137
 msgid "VAT deductible"
 msgstr "Abziehbare Mehrwertsteuer"
 
-#: lino_xl/lib/bevat/choicelists.py:64 lino_xl/lib/ledger/choicelists.py:146
+#: lino_xl/lib/bevat/choicelists.py:64 lino_xl/lib/ledger/choicelists.py:147
 msgid "Purchase of goods"
 msgstr "Wareneinkäufe"
 
 #: lino_xl/lib/bevat/choicelists.py:65 lino_xl/lib/bevats/choicelists.py:60
-#: lino_xl/lib/ledger/choicelists.py:147
+#: lino_xl/lib/ledger/choicelists.py:148
 msgid "Purchase of services"
 msgstr "Einkäufe von Dienstleistungen"
 
-#: lino_xl/lib/bevat/choicelists.py:66 lino_xl/lib/ledger/choicelists.py:148
+#: lino_xl/lib/bevat/choicelists.py:66 lino_xl/lib/ledger/choicelists.py:149
 msgid "Purchase of investments"
 msgstr "Investierungskäufe"
 
@@ -1801,7 +1801,7 @@ msgid "Total to pay (+) or to return (-)"
 msgstr ""
 
 #: lino_xl/lib/bevat/desktop.py:14 lino_xl/lib/eevat/desktop.py:15
-#: lino_xl/lib/ledger/ui.py:345
+#: lino_xl/lib/ledger/ui.py:339
 msgid "Info"
 msgstr ""
 
@@ -1917,8 +1917,8 @@ msgstr ""
 msgid "Blog Entries"
 msgstr "Blog-Einträge"
 
-#: lino_xl/lib/blogs/models.py:77 lino_xl/lib/polls/models.py:93
-#: lino_xl/lib/polls/models.py:222 lino_xl/lib/sales/models.py:286
+#: lino_xl/lib/blogs/models.py:77 lino_xl/lib/polls/models.py:85
+#: lino_xl/lib/polls/models.py:214 lino_xl/lib/sales/models.py:285
 msgid "Heading"
 msgstr "Überschrift"
 
@@ -1972,7 +1972,7 @@ msgstr "Gremienmitglieder"
 msgid "Calendar"
 msgstr "Kalender"
 
-#: lino_xl/lib/cal/actions.py:12 lino_xl/lib/calview/ui.py:331
+#: lino_xl/lib/cal/actions.py:12 lino_xl/lib/calview/ui.py:383
 #: lino_xl/lib/excerpts/models.py:739
 msgid "Today"
 msgstr "Heute"
@@ -2156,8 +2156,8 @@ msgstr "Beweglich mit Ostern"
 msgid "Access Class"
 msgstr "Zugriffsklasse"
 
-#: lino_xl/lib/cal/choicelists.py:141 lino_xl/lib/tickets/models.py:192
-#: lino_xl/lib/tickets/models.py:490 lino_xl/lib/tickets/ui.py:360
+#: lino_xl/lib/cal/choicelists.py:141 lino_xl/lib/tickets/models.py:214
+#: lino_xl/lib/tickets/models.py:512 lino_xl/lib/tickets/ui.py:351
 msgid "Private"
 msgstr "Privat"
 
@@ -2186,7 +2186,7 @@ msgid "Task states"
 msgstr "Aufgaben-Zustände"
 
 #: lino_xl/lib/cal/choicelists.py:162 lino_xl/lib/deploy/models.py:292
-#: lino_xl/lib/tickets/choicelists.py:111 lino_xl/lib/tickets/ui.py:358
+#: lino_xl/lib/tickets/choicelists.py:111 lino_xl/lib/tickets/ui.py:349
 msgid "To do"
 msgstr "Zu tun"
 
@@ -2199,14 +2199,15 @@ msgctxt "cal"
 msgid "Started"
 msgstr "Begonnen"
 
-#: lino_xl/lib/cal/choicelists.py:165 lino_xl/lib/votes/choicelists.py:78
+#: lino_xl/lib/cal/choicelists.py:165 lino_xl/lib/orders/choicelists.py:19
+#: lino_xl/lib/votes/choicelists.py:78
 msgid "Done"
 msgstr "Erledigt"
 
 #: lino_xl/lib/cal/choicelists.py:167 lino_xl/lib/cal/choicelists.py:257
-#: lino_xl/lib/courses/choicelists.py:64 lino_xl/lib/ledger/choicelists.py:425
-#: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/rooms/models.py:33
-#: lino_xl/lib/votes/choicelists.py:80
+#: lino_xl/lib/courses/choicelists.py:53 lino_xl/lib/ledger/choicelists.py:428
+#: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/orders/choicelists.py:20
+#: lino_xl/lib/rooms/models.py:33 lino_xl/lib/votes/choicelists.py:80
 msgid "Cancelled"
 msgstr "Storniert"
 
@@ -2261,7 +2262,7 @@ msgstr "nicht blockierend"
 msgid "No auto"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:225 lino_xl/lib/cal/ui.py:354
+#: lino_xl/lib/cal/choicelists.py:225 lino_xl/lib/cal/ui.py:324
 msgid "Guest state"
 msgstr "Zustand Gast"
 
@@ -2269,8 +2270,8 @@ msgstr "Zustand Gast"
 msgid "Suggested"
 msgstr "Vorschlag"
 
-#: lino_xl/lib/cal/choicelists.py:241 lino_xl/lib/courses/choicelists.py:39
-#: lino_xl/lib/ledger/choicelists.py:422 lino_xl/lib/meetings/choicelists.py:27
+#: lino_xl/lib/cal/choicelists.py:241 lino_xl/lib/courses/choicelists.py:28
+#: lino_xl/lib/ledger/choicelists.py:425 lino_xl/lib/meetings/choicelists.py:27
 #: lino_xl/lib/polls/utils.py:16 lino_xl/lib/polls/utils.py:35
 #: lino_xl/lib/rooms/models.py:30 lino_xl/lib/tickets/choicelists.py:78
 msgid "Draft"
@@ -2339,7 +2340,7 @@ msgstr "Stunden"
 msgid "fourth last"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:63 lino_xl/lib/cal/ui.py:239 lino_xl/lib/cal/ui.py:401
+#: lino_xl/lib/cal/mixins.py:63 lino_xl/lib/cal/ui.py:209 lino_xl/lib/cal/ui.py:371
 #, python-format
 msgid "Dates %(min)s to %(max)s"
 msgstr "Daten von %(min)s bis %(max)s"
@@ -2389,7 +2390,7 @@ msgstr "... alle"
 msgid "Positions"
 msgstr "Positionen"
 
-#: lino_xl/lib/cal/mixins.py:506 lino_xl/lib/invoicing/models.py:103
+#: lino_xl/lib/cal/mixins.py:506 lino_xl/lib/invoicing/models.py:100
 msgid "Number of events"
 msgstr "Anzahl Termine"
 
@@ -2444,7 +2445,7 @@ msgstr " %ss"
 msgid "Every %snd %s"
 msgstr "Jeden %s. %s"
 
-#: lino_xl/lib/cal/mixins.py:734 lino_xl/lib/courses/choicelists.py:33
+#: lino_xl/lib/cal/mixins.py:734 lino_xl/lib/courses/choicelists.py:22
 #, fuzzy
 msgid "Editable"
 msgstr "Stabil"
@@ -2479,7 +2480,7 @@ msgstr "Externe Kalender"
 
 #: lino_xl/lib/cal/models.py:90 lino_xl/lib/humanlinks/models.py:63
 #: lino_xl/lib/humanlinks/models.py:68 lino_xl/lib/inspect/desktop.py:238
-#: lino_xl/lib/tickets/models.py:808 lino_xl/lib/tickets/models.py:813
+#: lino_xl/lib/tickets/models.py:857 lino_xl/lib/tickets/models.py:862
 msgid "Type"
 msgstr "Art"
 
@@ -2512,7 +2513,7 @@ msgid "Responsible"
 msgstr "Verantwortlicher"
 
 #: lino_xl/lib/cal/models.py:126 lino_xl/lib/clients/models.py:61
-#: lino_xl/lib/rooms/models.py:129 lino_xl/lib/tickets/models.py:267
+#: lino_xl/lib/rooms/models.py:129 lino_xl/lib/tickets/models.py:289
 msgid "Contact person"
 msgstr "Kontaktperson"
 
@@ -2603,10 +2604,10 @@ msgstr "Aufgabe"
 msgid "Tasks"
 msgstr "Aufgaben"
 
-#: lino_xl/lib/cal/models.py:255 lino_xl/lib/ledger/ui.py:367 lino_xl/lib/ledger/ui.py:766
+#: lino_xl/lib/cal/models.py:255 lino_xl/lib/ledger/mixins.py:99
+#: lino_xl/lib/ledger/ui.py:361 lino_xl/lib/ledger/ui.py:760
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:103
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:75
-#: lino_xl/lib/sepa/mixins.py:72
 msgid "Due date"
 msgstr "Zahlungsziel"
 
@@ -2639,7 +2640,7 @@ msgid "Calendar entry"
 msgstr "Kalendereintrag"
 
 #: lino_xl/lib/cal/models.py:378 lino_xl/lib/courses/models.py:410
-#: lino_xl/lib/orders/models.py:212
+#: lino_xl/lib/orders/models.py:221
 msgid "Calendar entries"
 msgstr "Kalendereinträge"
 
@@ -2647,7 +2648,7 @@ msgstr "Kalendereinträge"
 msgid "all day"
 msgstr "ganztags"
 
-#: lino_xl/lib/cal/models.py:407 lino_xl/lib/cal/ui.py:201
+#: lino_xl/lib/cal/models.py:407 lino_xl/lib/cal/ui.py:171
 msgid "Managed by"
 msgstr "Verwaltet durch"
 
@@ -2693,7 +2694,7 @@ msgstr ""
 msgid "Reminder"
 msgstr "Erinnerung"
 
-#: lino_xl/lib/cal/models.py:926 lino_xl/lib/cal/ui.py:340
+#: lino_xl/lib/cal/models.py:926 lino_xl/lib/cal/ui.py:310
 msgid "Responsible user"
 msgstr "Verantwortlicher"
 
@@ -2741,7 +2742,7 @@ msgstr "Dauer überschreitende Kalendereinträge"
 msgid "Presence"
 msgstr "Anwesenheit"
 
-#: lino_xl/lib/cal/models.py:1041 lino_xl/lib/cal/ui.py:459
+#: lino_xl/lib/cal/models.py:1041 lino_xl/lib/cal/ui.py:429
 #: lino_xl/lib/courses/models.py:482
 msgid "Presences"
 msgstr "Anwesenheiten"
@@ -2812,92 +2813,92 @@ msgstr ""
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
 
-#: lino_xl/lib/cal/ui.py:203 lino_xl/lib/cal/ui.py:342
+#: lino_xl/lib/cal/ui.py:173 lino_xl/lib/cal/ui.py:312
 #, fuzzy
 msgid "Only rows managed by this user."
 msgstr "%d zugewiesene Termine"
 
-#: lino_xl/lib/cal/ui.py:207 lino_xl/lib/tickets/ui.py:348 lino_xl/lib/votes/models.py:165
+#: lino_xl/lib/cal/ui.py:177 lino_xl/lib/tickets/ui.py:339 lino_xl/lib/votes/models.py:165
 msgid "Only rows having this state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:275 lino_xl/lib/votes/models.py:397
+#: lino_xl/lib/cal/ui.py:245 lino_xl/lib/votes/models.py:397
 msgid "My tasks"
 msgstr "Meine Aufgaben"
 
-#: lino_xl/lib/cal/ui.py:350
+#: lino_xl/lib/cal/ui.py:320
 msgid "Event state"
 msgstr "Zustand Termin"
 
-#: lino_xl/lib/cal/ui.py:351
+#: lino_xl/lib/cal/ui.py:321
 #, fuzzy
 msgid "Only rows on calendar entries having this state."
 msgstr "Datenobjekt"
 
-#: lino_xl/lib/cal/ui.py:355
+#: lino_xl/lib/cal/ui.py:325
 msgid "Only rows having this guest state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:448
+#: lino_xl/lib/cal/ui.py:418
 msgid "Guests are filled automatically."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:479
+#: lino_xl/lib/cal/ui.py:449
 msgid "My presences"
 msgstr "Meine Anwesenheiten"
 
-#: lino_xl/lib/cal/ui.py:514
+#: lino_xl/lib/cal/ui.py:484
 msgid "My pending invitations"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:529
+#: lino_xl/lib/cal/ui.py:499
 msgid "My guests"
 msgstr "Meine Gäste"
 
-#: lino_xl/lib/cal/ui.py:737
+#: lino_xl/lib/cal/ui.py:707
 msgid "Show events conflicting with this one."
 msgstr "Überschneidende Termine anzeigen"
 
-#: lino_xl/lib/cal/ui.py:768
+#: lino_xl/lib/cal/ui.py:738
 msgid "Appointments today"
 msgstr "Termine heute"
 
-#: lino_xl/lib/cal/ui.py:976
+#: lino_xl/lib/cal/ui.py:946
 #, fuzzy
 msgid "{} : {}"
 msgstr " in "
 
-#: lino_xl/lib/cal/ui.py:1077
+#: lino_xl/lib/cal/ui.py:1047
 msgid "My appointments"
 msgstr "Meine Termine"
 
-#: lino_xl/lib/cal/ui.py:1104
+#: lino_xl/lib/cal/ui.py:1074
 msgid "My appointments today"
 msgstr "Meine Termine heute"
 
-#: lino_xl/lib/cal/ui.py:1117
+#: lino_xl/lib/cal/ui.py:1087
 msgid "Appointments assigned to me"
 msgstr "Mir zugewiesene Termine"
 
-#: lino_xl/lib/cal/ui.py:1132
+#: lino_xl/lib/cal/ui.py:1102
 msgid "{} appointments have been assigned to you."
 msgstr "{} Termine wurden dir zugewiesen."
 
-#: lino_xl/lib/cal/ui.py:1138
+#: lino_xl/lib/cal/ui.py:1108
 msgid "Overdue appointments"
 msgstr "Überfällige Termine"
 
-#: lino_xl/lib/cal/ui.py:1152
+#: lino_xl/lib/cal/ui.py:1122
 msgid "My overdue appointments"
 msgstr "Meine überfälligen Termine"
 
-#: lino_xl/lib/cal/ui.py:1158
+#: lino_xl/lib/cal/ui.py:1128
 msgid "My unconfirmed appointments"
 msgstr "Meine unbestätigten Termine"
 
 #: lino_xl/lib/cal/config/cal/Event/detail.html:11 lino_xl/lib/events/models.py:78
-#: lino_xl/lib/finan/mixins.py:320 lino_xl/lib/notes/models.py:118
-#: lino_xl/lib/outbox/models.py:208 lino_xl/lib/polls/models.py:319
+#: lino_xl/lib/finan/mixins.py:325 lino_xl/lib/notes/models.py:118
+#: lino_xl/lib/outbox/models.py:208 lino_xl/lib/polls/models.py:311
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:38
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:19
 #: lino_xl/lib/trends/models.py:88
@@ -3071,73 +3072,78 @@ msgstr "ganztags"
 msgid "Calendar view"
 msgstr "Kalenderansicht"
 
-#: lino_xl/lib/calview/models.py:13
+#: lino_xl/lib/calview/models.py:15
 msgid "Planner row"
 msgstr "Tagesplanerzeile"
 
-#: lino_xl/lib/calview/models.py:14
+#: lino_xl/lib/calview/models.py:16
 msgid "Planner rows"
 msgstr "Tagesplanerzeilen"
 
-#: lino_xl/lib/calview/models.py:19
+#: lino_xl/lib/calview/models.py:21
 msgid "Start time"
 msgstr "Beginnt um"
 
-#: lino_xl/lib/calview/models.py:22
+#: lino_xl/lib/calview/models.py:24
 msgid "End time"
 msgstr "Endet um"
 
-#: lino_xl/lib/calview/models.py:24
+#: lino_xl/lib/calview/models.py:48
 msgid "Time range"
 msgstr "Zeitabschnitt"
 
-#: lino_xl/lib/calview/ui.py:39
-msgid "Week {1} / {0}"
+#: lino_xl/lib/calview/ui.py:42
+msgid "Week {1} / {0} ({2})"
 msgstr ""
 
-#: lino_xl/lib/calview/ui.py:45
+#: lino_xl/lib/calview/ui.py:77
 #, fuzzy
 msgid "Create new Event"
 msgstr "einen neuen erstellen"
 
-#: lino_xl/lib/calview/ui.py:47
+#: lino_xl/lib/calview/ui.py:79
 #, fuzzy
 msgid "Create a new Event"
 msgstr "einen neuen erstellen"
 
-#: lino_xl/lib/calview/ui.py:157
+#: lino_xl/lib/calview/ui.py:192
 msgid "Day number"
 msgstr "Tag Nr."
 
-#: lino_xl/lib/calview/ui.py:332
+#: lino_xl/lib/calview/ui.py:384
 msgid "This week"
 msgstr ""
 
-#: lino_xl/lib/calview/ui.py:333 lino_xl/lib/ledger/ui.py:125
+#: lino_xl/lib/calview/ui.py:385 lino_xl/lib/ledger/ui.py:125
 msgid "This month"
 msgstr "Dieser Monat"
 
-#: lino_xl/lib/calview/ui.py:369
+#: lino_xl/lib/calview/ui.py:421
 msgid "Daily view"
 msgstr "Tagesansicht"
 
-#: lino_xl/lib/calview/ui.py:377
+#: lino_xl/lib/calview/ui.py:429
 msgid "Daily planner"
 msgstr "Tagesplaner"
 
-#: lino_xl/lib/calview/ui.py:446
+#: lino_xl/lib/calview/ui.py:519
 msgid "Weekly planner"
 msgstr "Diese Woche"
 
-#: lino_xl/lib/calview/ui.py:516
+#: lino_xl/lib/calview/ui.py:529
+#, fuzzy
+msgid "Planner"
+msgstr "Tagesplaner"
+
+#: lino_xl/lib/calview/ui.py:532
 msgid "Weekly view"
 msgstr "Wochenansicht"
 
-#: lino_xl/lib/calview/ui.py:526
+#: lino_xl/lib/calview/ui.py:542
 msgid "Monthly planner"
 msgstr "Monatsplaner"
 
-#: lino_xl/lib/calview/ui.py:615
+#: lino_xl/lib/calview/ui.py:631
 msgid "Monthly view"
 msgstr "Monatsansicht"
 
@@ -3221,21 +3227,21 @@ msgstr "Empfänger (Organisation)"
 msgid "Show client contacts using this as contact person."
 msgstr ""
 
-#: lino_xl/lib/clients/desktop.py:66 lino_xl/lib/invoicing/models.py:77
+#: lino_xl/lib/clients/desktop.py:66 lino_xl/lib/invoicing/models.py:74
 #, python-format
 msgid "%(master)s used as invoice recipient"
 msgstr ""
 
-#: lino_xl/lib/clients/mixins.py:36
+#: lino_xl/lib/clients/mixins.py:35
 msgid "Only clients having a contact of that type"
 msgstr ""
 
-#: lino_xl/lib/clients/mixins.py:40
+#: lino_xl/lib/clients/mixins.py:39
 #, fuzzy
 msgid "Client contact organization"
 msgstr "Empfänger (Organisation)"
 
-#: lino_xl/lib/clients/mixins.py:41
+#: lino_xl/lib/clients/mixins.py:40
 msgid "Only clients having a contact with that organization"
 msgstr ""
 
@@ -3495,7 +3501,7 @@ msgstr ""
 
 #: lino_xl/lib/contacts/models.py:89 lino_xl/lib/households/choicelists.py:27
 #: lino_xl/lib/households/models.py:499 lino_xl/lib/sheets/models.py:188
-#: lino_xl/lib/xl/help_texts.py:1522
+#: lino_xl/lib/xl/help_texts.py:1531
 msgid "Partner"
 msgstr "Partner"
 
@@ -3793,89 +3799,89 @@ msgstr "Aktivitäten"
 msgid "Instructor"
 msgstr "Kursleiter"
 
-#: lino_xl/lib/courses/actions.py:19 lino_xl/lib/courses/models.py:222
+#: lino_xl/lib/courses/actions.py:17 lino_xl/lib/courses/models.py:222
 msgid "Presence sheet"
 msgstr "Anwesenheitsliste"
 
-#: lino_xl/lib/courses/actions.py:26 lino_xl/lib/working/actions.py:162
+#: lino_xl/lib/courses/actions.py:24 lino_xl/lib/working/actions.py:162
 msgid "Show remarks"
 msgstr "Bemerkungen drucken"
 
-#: lino_xl/lib/courses/actions.py:28 lino_xl/lib/working/actions.py:164
+#: lino_xl/lib/courses/actions.py:26 lino_xl/lib/working/actions.py:164
 msgid "Show states"
 msgstr "Einschreibestatus drucken"
 
-#: lino_xl/lib/courses/choicelists.py:31 lino_xl/lib/courses/desktop.py:188
-#: lino_xl/lib/tickets/choicelists.py:75 lino_xl/lib/tickets/ui.py:815
-#: lino_xl/lib/tickets/ui.py:836
+#: lino_xl/lib/courses/choicelists.py:20 lino_xl/lib/courses/desktop.py:188
+#: lino_xl/lib/tickets/choicelists.py:75 lino_xl/lib/tickets/ui.py:806
+#: lino_xl/lib/tickets/ui.py:827
 msgid "Exposed"
 msgstr "Exponiert"
 
-#: lino_xl/lib/courses/choicelists.py:32
+#: lino_xl/lib/courses/choicelists.py:21
 #, fuzzy
 msgid "Invoiceable"
 msgstr "Fakturierbar"
 
-#: lino_xl/lib/courses/choicelists.py:35 lino_xl/lib/rooms/models.py:27
+#: lino_xl/lib/courses/choicelists.py:24 lino_xl/lib/rooms/models.py:27
 #, fuzzy
 msgid "Update calendar"
 msgstr "Standard-Kalender"
 
-#: lino_xl/lib/courses/choicelists.py:41 lino_xl/lib/meetings/choicelists.py:29
+#: lino_xl/lib/courses/choicelists.py:30 lino_xl/lib/meetings/choicelists.py:29
 msgid "Started"
 msgstr "Gestartet"
 
-#: lino_xl/lib/courses/choicelists.py:43 lino_xl/lib/meetings/choicelists.py:32
+#: lino_xl/lib/courses/choicelists.py:32 lino_xl/lib/meetings/choicelists.py:32
 #: lino_xl/lib/online/users/choicelists.py:22
 msgid "Inactive"
 msgstr "Inaktiv"
 
-#: lino_xl/lib/courses/choicelists.py:45 lino_xl/lib/ledger/choicelists.py:58
+#: lino_xl/lib/courses/choicelists.py:34 lino_xl/lib/ledger/choicelists.py:59
 #: lino_xl/lib/polls/utils.py:18 lino_xl/lib/tickets/choicelists.py:86
-#: lino_xl/lib/tickets/choicelists.py:125 lino_xl/lib/tickets/models.py:60
+#: lino_xl/lib/tickets/choicelists.py:125 lino_xl/lib/tickets/models.py:82
 msgid "Closed"
 msgstr "Abgeschlossen"
 
-#: lino_xl/lib/courses/choicelists.py:53
+#: lino_xl/lib/courses/choicelists.py:42
 msgid "invoiceable"
 msgstr "Fakturierbar"
 
-#: lino_xl/lib/courses/choicelists.py:54
+#: lino_xl/lib/courses/choicelists.py:43
 msgid "Uses a place"
 msgstr "Besetzt einen Platz"
 
-#: lino_xl/lib/courses/choicelists.py:61 lino_xl/lib/courses/models.py:453
+#: lino_xl/lib/courses/choicelists.py:50 lino_xl/lib/courses/models.py:453
 msgid "Requested"
 msgstr "Angefragt"
 
-#: lino_xl/lib/courses/choicelists.py:62 lino_xl/lib/courses/models.py:469
+#: lino_xl/lib/courses/choicelists.py:51 lino_xl/lib/courses/models.py:469
 msgid "Trying"
 msgstr "Test"
 
-#: lino_xl/lib/courses/choicelists.py:63 lino_xl/lib/courses/models.py:461
+#: lino_xl/lib/courses/choicelists.py:52 lino_xl/lib/courses/models.py:461
 msgid "Confirmed"
 msgstr "Bestätigt"
 
-#: lino_xl/lib/courses/choicelists.py:88
+#: lino_xl/lib/courses/choicelists.py:77
 msgid "Layout"
 msgstr ""
 
-#: lino_xl/lib/courses/choicelists.py:89
+#: lino_xl/lib/courses/choicelists.py:78
 msgid "Course layouts"
 msgstr "Aktivitätenlayouts"
 
-#: lino_xl/lib/courses/choicelists.py:98
+#: lino_xl/lib/courses/choicelists.py:87
 #, fuzzy
 msgid "Table"
 msgstr "Stabil"
 
 #: lino_xl/lib/courses/desktop.py:158 lino_xl/lib/courses/desktop.py:657
 #: lino_xl/lib/courses/models.py:473 lino_xl/lib/courses/models.py:548
-#: lino_xl/lib/orders/models.py:224 lino_xl/lib/orders/models.py:266
+#: lino_xl/lib/orders/models.py:233 lino_xl/lib/orders/models.py:275
 msgid "Enrolments"
 msgstr "Einschreibungen"
 
-#: lino_xl/lib/courses/desktop.py:189 lino_xl/lib/tickets/ui.py:816
+#: lino_xl/lib/courses/desktop.py:189 lino_xl/lib/tickets/ui.py:807
 msgid "Whether to show rows in an exposed state"
 msgstr ""
 
@@ -4031,7 +4037,7 @@ msgid "Available places"
 msgstr "Verfügbare Plätze"
 
 #: lino_xl/lib/courses/models.py:214 lino_xl/lib/properties/models.py:106
-#: lino_xl/lib/tickets/models.py:183
+#: lino_xl/lib/tickets/models.py:205
 msgid "Designation"
 msgstr "Bezeichnung"
 
@@ -4044,7 +4050,7 @@ msgid " (HTML)"
 msgstr ""
 
 #: lino_xl/lib/courses/models.py:224 lino_xl/lib/excerpts/models.py:265
-#: lino_xl/lib/finan/models.py:116 lino_xl/lib/lists/models.py:101
+#: lino_xl/lib/finan/models.py:112 lino_xl/lib/lists/models.py:101
 #: lino_xl/lib/postings/models.py:44
 msgid "Print"
 msgstr "Drucken"
@@ -4053,7 +4059,7 @@ msgstr "Drucken"
 msgid "Free places"
 msgstr "Freie Plätze"
 
-#: lino_xl/lib/courses/models.py:547 lino_xl/lib/orders/models.py:265
+#: lino_xl/lib/courses/models.py:547 lino_xl/lib/orders/models.py:274
 msgid "Enrolment"
 msgstr "Einschreibung"
 
@@ -4106,7 +4112,7 @@ msgid "Cannot confirm %(pupil)s : %(message)s"
 msgstr "Einschreibung %(pupil)s kann nicht bestätigt werden: %(message)s"
 
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:70
-#: lino_xl/lib/ledger/ui.py:770
+#: lino_xl/lib/ledger/ui.py:764
 msgid "Age"
 msgstr "Alter"
 
@@ -4218,7 +4224,7 @@ msgstr "Schrift (passiv)"
 msgid "Mother tongue"
 msgstr "Muttersprache"
 
-#: lino_xl/lib/cv/models.py:56 lino_xl/lib/ledger/models.py:521
+#: lino_xl/lib/cv/models.py:56 lino_xl/lib/ledger/models.py:500
 msgid "Entry date"
 msgstr "Erfassungsdatum"
 
@@ -4380,7 +4386,7 @@ msgstr "Ersatz"
 msgid "Interim"
 msgstr "Schwester"
 
-#: lino_xl/lib/cv/fixtures/std.py:121 lino_xl/lib/ledger/models.py:432
+#: lino_xl/lib/cv/fixtures/std.py:121 lino_xl/lib/ledger/models.py:433
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:76
 #: lino_xl/lib/working/models.py:204 lino_xl/lib/working/models.py:244
 msgid "Worker"
@@ -4464,8 +4470,8 @@ msgstr ""
 msgid "Side effect"
 msgstr ""
 
-#: lino_xl/lib/deploy/models.py:42 lino_xl/lib/tickets/models.py:498
-#: lino_xl/lib/tickets/models.py:613
+#: lino_xl/lib/deploy/models.py:42 lino_xl/lib/tickets/models.py:520
+#: lino_xl/lib/tickets/models.py:662
 #, fuzzy
 msgid "Resolution"
 msgstr "Lösung"
@@ -4475,7 +4481,7 @@ msgid "Aftermath"
 msgstr ""
 
 #: lino_xl/lib/deploy/models.py:127 lino_xl/lib/skills/models.py:88
-#: lino_xl/lib/tickets/models.py:507 lino_xl/lib/tickets/ui.py:320
+#: lino_xl/lib/tickets/models.py:529 lino_xl/lib/tickets/ui.py:311
 msgid "End user"
 msgstr "Endbenutzer"
 
@@ -4579,36 +4585,36 @@ msgstr ""
 msgid "Excerpt shortcuts"
 msgstr ""
 
-#: lino_xl/lib/excerpts/mixins.py:22
+#: lino_xl/lib/excerpts/mixins.py:17
 msgid "Clear print cache"
 msgstr "Cache löschen"
 
-#: lino_xl/lib/excerpts/mixins.py:34
+#: lino_xl/lib/excerpts/mixins.py:29
 #, fuzzy
 msgid "Oops, the print cache was already cleared."
 msgstr "Dokument %s wurde generiert."
 
-#: lino_xl/lib/excerpts/mixins.py:39
+#: lino_xl/lib/excerpts/mixins.py:34
 #, fuzzy
 msgid "Print cache file has been cleared."
 msgstr "Dokument %s wurde generiert."
 
-#: lino_xl/lib/excerpts/mixins.py:43
+#: lino_xl/lib/excerpts/mixins.py:38
 #, python-format
 msgid "Going to clear the print cache file of %s"
 msgstr ""
 
-#: lino_xl/lib/excerpts/config/excerpts/base.weasy.html:11 lino_xl/lib/excerpts/mixins.py:57
-#: lino_xl/lib/excerpts/mixins.py:94 lino_xl/lib/postings/models.py:38
+#: lino_xl/lib/excerpts/config/excerpts/base.weasy.html:11 lino_xl/lib/excerpts/mixins.py:52
+#: lino_xl/lib/excerpts/mixins.py:89 lino_xl/lib/postings/models.py:38
 msgid "Printed"
 msgstr "Ausgedruckt"
 
-#: lino_xl/lib/excerpts/mixins.py:123
+#: lino_xl/lib/excerpts/mixins.py:118
 #, fuzzy
 msgid "Excerpt title"
 msgstr "Auszugsart"
 
-#: lino_xl/lib/excerpts/mixins.py:126
+#: lino_xl/lib/excerpts/mixins.py:121
 msgid "The title to be used when printing an excerpt."
 msgstr ""
 
@@ -4688,8 +4694,8 @@ msgstr "Auszug"
 msgid "Unprinted %s #%s"
 msgstr "Ungedruckter %s #%s"
 
-#: lino_xl/lib/excerpts/models.py:505 lino_xl/lib/invoicing/models.py:371
-#: lino_xl/lib/mailbox/models.py:36 lino_xl/lib/polls/models.py:362
+#: lino_xl/lib/excerpts/models.py:505 lino_xl/lib/invoicing/models.py:368
+#: lino_xl/lib/mailbox/models.py:36 lino_xl/lib/polls/models.py:354
 msgid "Preview"
 msgstr "Vorschau"
 
@@ -4812,171 +4818,171 @@ msgstr "Mutter"
 msgid "Family"
 msgstr "Familie"
 
-#: lino_xl/lib/finan/__init__.py:21 lino_xl/lib/ledger/choicelists.py:43
+#: lino_xl/lib/finan/__init__.py:21 lino_xl/lib/ledger/choicelists.py:44
 msgid "Financial"
 msgstr "Finanzjournale"
 
-#: lino_xl/lib/finan/actions.py:23
+#: lino_xl/lib/finan/actions.py:19
 msgid "XML"
 msgstr ""
 
-#: lino_xl/lib/finan/actions.py:44
+#: lino_xl/lib/finan/actions.py:40
 msgid "You must specify a site owner"
 msgstr ""
 
-#: lino_xl/lib/finan/actions.py:64
+#: lino_xl/lib/finan/actions.py:60
 #, fuzzy
 msgid "Journal {} has no SEPA account"
 msgstr "Basis Einkauf"
 
-#: lino_xl/lib/finan/actions.py:67
+#: lino_xl/lib/finan/actions.py:63
 msgid "SEPA account for journal {} has no BIC"
 msgstr ""
 
-#: lino_xl/lib/finan/actions.py:76
+#: lino_xl/lib/finan/actions.py:72
 msgid "Oops, the generated XML file {} is invalid: {}"
 msgstr ""
 
-#: lino_xl/lib/finan/mixins.py:32
+#: lino_xl/lib/finan/mixins.py:34
 msgid "Default account"
 msgstr "Standardwert Konto"
 
-#: lino_xl/lib/finan/mixins.py:35 lino_xl/lib/finan/mixins.py:107
-#: lino_xl/lib/sepa/mixins.py:71
+#: lino_xl/lib/finan/mixins.py:37 lino_xl/lib/finan/mixins.py:112
+#: lino_xl/lib/ledger/mixins.py:98
 msgid "Your reference"
 msgstr "Ihr Zeichen"
 
-#: lino_xl/lib/finan/mixins.py:101
+#: lino_xl/lib/finan/mixins.py:106
 msgid "Item"
 msgstr "Position"
 
-#: lino_xl/lib/finan/mixins.py:102
+#: lino_xl/lib/finan/mixins.py:107
 msgid "Items"
 msgstr "Positionen"
 
-#: lino_xl/lib/finan/mixins.py:175
+#: lino_xl/lib/finan/mixins.py:180
 msgid "{} suggestions"
 msgstr "{} Vorschläge"
 
-#: lino_xl/lib/finan/mixins.py:280
+#: lino_xl/lib/finan/mixins.py:285
 msgid "Check for invalid account/partner combination"
 msgstr ""
 
-#: lino_xl/lib/finan/mixins.py:287
+#: lino_xl/lib/finan/mixins.py:292
 #, fuzzy
 msgid "Account {} needs a partner"
 msgstr "Braucht Partner"
 
-#: lino_xl/lib/finan/mixins.py:291
+#: lino_xl/lib/finan/mixins.py:296
 msgid "Account {} cannot be used with a partner"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:37
+#: lino_xl/lib/finan/models.py:33
 msgid "Field '{0}' in journal '{0}' is empty!"
 msgstr "Feld '{0}' im Journal '{1}' ist leer!"
 
-#: lino_xl/lib/finan/models.py:88
+#: lino_xl/lib/finan/models.py:84
 msgid "Journal Entry"
 msgstr "Diverse Buchung"
 
-#: lino_xl/lib/finan/models.py:89
+#: lino_xl/lib/finan/models.py:85
 msgid "Journal Entries"
 msgstr "Diverse Buchungen"
 
-#: lino_xl/lib/finan/models.py:97
+#: lino_xl/lib/finan/models.py:93
 msgid "Missing amount {} in movements"
 msgstr "Es fehlt ein Betrag von {}."
 
-#: lino_xl/lib/finan/models.py:106
+#: lino_xl/lib/finan/models.py:102
 msgid "Payment Order"
 msgstr "Zahlungsauftrag"
 
-#: lino_xl/lib/finan/models.py:107
+#: lino_xl/lib/finan/models.py:103
 msgid "Payment Orders"
 msgstr "Zahlungsaufträge"
 
-#: lino_xl/lib/finan/models.py:109 lino_xl/lib/ledger/ui.py:109
+#: lino_xl/lib/finan/models.py:105 lino_xl/lib/ledger/ui.py:109
 #: lino_xl/lib/working/ui.py:766
 #, fuzzy
 msgid "Total"
 msgstr "Summen"
 
-#: lino_xl/lib/finan/models.py:177
+#: lino_xl/lib/finan/models.py:173
 msgid "Bank Statement"
 msgstr "Kontoauszug"
 
-#: lino_xl/lib/finan/models.py:178
+#: lino_xl/lib/finan/models.py:174
 msgid "Bank Statements"
 msgstr "Kontoauszüge"
 
-#: lino_xl/lib/finan/models.py:180 lino_xl/lib/ledger/ui.py:603
+#: lino_xl/lib/finan/models.py:176 lino_xl/lib/ledger/ui.py:597
 msgid "Old balance"
 msgstr "Alter Saldo"
 
-#: lino_xl/lib/finan/models.py:181 lino_xl/lib/ledger/ui.py:613
+#: lino_xl/lib/finan/models.py:177 lino_xl/lib/ledger/ui.py:607
 msgid "New balance"
 msgstr "Neuer Saldo"
 
-#: lino_xl/lib/finan/models.py:237
+#: lino_xl/lib/finan/models.py:233
 msgid "Journal Entry item"
 msgstr "Belegszeile Diverse Buchungen"
 
-#: lino_xl/lib/finan/models.py:238
+#: lino_xl/lib/finan/models.py:234
 msgid "Journal Entry items"
 msgstr "Belegszeilen Diverse Buchungen"
 
-#: lino_xl/lib/finan/models.py:240 lino_xl/lib/ledger/models.py:932
-#: lino_xl/lib/ledger/ui.py:625 lino_xl/lib/ledger/utils.py:24
+#: lino_xl/lib/finan/models.py:236 lino_xl/lib/ledger/models.py:947
+#: lino_xl/lib/ledger/ui.py:619 lino_xl/lib/ledger/utils.py:24
 #: lino_xl/lib/sheets/models.py:134
 msgid "Debit"
 msgstr ""
 
-#: lino_xl/lib/finan/models.py:241 lino_xl/lib/ledger/models.py:938
-#: lino_xl/lib/ledger/ui.py:629 lino_xl/lib/ledger/utils.py:25
+#: lino_xl/lib/finan/models.py:237 lino_xl/lib/ledger/models.py:953
+#: lino_xl/lib/ledger/ui.py:623 lino_xl/lib/ledger/utils.py:25
 #: lino_xl/lib/sheets/models.py:135
 msgid "Credit"
 msgstr "Kredit"
 
-#: lino_xl/lib/finan/models.py:247
+#: lino_xl/lib/finan/models.py:243
 msgid "Bank Statement item"
 msgstr "Belegszeile Kontoauszüge"
 
-#: lino_xl/lib/finan/models.py:248
+#: lino_xl/lib/finan/models.py:244
 msgid "Bank Statement items"
 msgstr "Belegszeilen Kontoauszüge"
 
-#: lino_xl/lib/finan/models.py:250
+#: lino_xl/lib/finan/models.py:246
 msgid "Income"
 msgstr "Eingang"
 
-#: lino_xl/lib/finan/models.py:251
+#: lino_xl/lib/finan/models.py:247
 msgid "Expense"
 msgstr "Ausgabe"
 
-#: lino_xl/lib/finan/models.py:257
+#: lino_xl/lib/finan/models.py:253
 msgid "Payment Order item"
 msgstr "Belegszeile Zahlungsaufträge"
 
-#: lino_xl/lib/finan/models.py:258
+#: lino_xl/lib/finan/models.py:254
 msgid "Payment Order items"
 msgstr "Belegszeilen Zahlungsaufträge"
 
-#: lino_xl/lib/finan/models.py:288 lino_xl/lib/meetings/desktop.py:75
-#: lino_xl/lib/polls/models.py:359 lino_xl/lib/sales/models.py:214
-#: lino_xl/lib/tickets/ui.py:283
+#: lino_xl/lib/finan/models.py:284 lino_xl/lib/meetings/desktop.py:75
+#: lino_xl/lib/polls/models.py:351 lino_xl/lib/sales/models.py:213
+#: lino_xl/lib/tickets/ui.py:274
 msgid "More"
 msgstr "Mehr"
 
-#: lino_xl/lib/finan/models.py:425
+#: lino_xl/lib/finan/models.py:421
 msgid "Fill"
 msgstr "Füllen"
 
-#: lino_xl/lib/finan/models.py:445 lino_xl/lib/finan/models.py:489
+#: lino_xl/lib/finan/models.py:441 lino_xl/lib/finan/models.py:485
 #, fuzzy, python-format
 msgid "%d items have been added to %s."
 msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
 
-#: lino_xl/lib/finan/models.py:497 lino_xl/lib/invoicing/models.py:493
+#: lino_xl/lib/finan/models.py:493 lino_xl/lib/invoicing/models.py:490
 msgid "Suggestions"
 msgstr "Vorschläge"
 
@@ -5046,7 +5052,7 @@ msgstr "Gemeinschaft"
 msgid "Author"
 msgstr ""
 
-#: lino_xl/lib/github/models.py:154 lino_xl/lib/tickets/models.py:477
+#: lino_xl/lib/github/models.py:154 lino_xl/lib/tickets/models.py:499
 msgid "Ticket"
 msgstr ""
 
@@ -5067,7 +5073,7 @@ msgstr ""
 msgid "Commit page"
 msgstr ""
 
-#: lino_xl/lib/github/models.py:181
+#: lino_xl/lib/github/models.py:181 lino_xl/lib/tickets/models.py:55
 #, fuzzy
 msgid "Comment"
 msgstr "Neuantrag"
@@ -5134,7 +5140,7 @@ msgstr " in "
 #: lino_xl/lib/groups/models.py:132
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:17
 #: lino_xl/lib/skills/models.py:128 lino_xl/lib/stars/models.py:159
-#: lino_xl/lib/tickets/models.py:302 lino_xl/lib/xl/user_types.py:36
+#: lino_xl/lib/tickets/models.py:324 lino_xl/lib/xl/user_types.py:36
 #, fuzzy
 msgid "User"
 msgstr "Benutzer"
@@ -5249,7 +5255,7 @@ msgstr "Freie Krankenkasse"
 msgid "Households"
 msgstr "Haushalte"
 
-#: lino_xl/lib/households/choicelists.py:10 lino_xl/lib/tickets/models.py:793
+#: lino_xl/lib/households/choicelists.py:10 lino_xl/lib/tickets/models.py:842
 msgid "Dependency"
 msgstr "Abhängigkeit"
 
@@ -5285,7 +5291,7 @@ msgstr "Ehepartner"
 msgid "Cohabitant"
 msgstr "Mitbewohner"
 
-#: lino_xl/lib/households/choicelists.py:29 lino_xl/lib/tickets/models.py:805
+#: lino_xl/lib/households/choicelists.py:29 lino_xl/lib/tickets/models.py:854
 msgid "Child"
 msgstr "Kind"
 
@@ -5590,12 +5596,12 @@ msgstr "Wer ist..."
 msgid "To whom..."
 msgstr "Von wem..."
 
-#: lino_xl/lib/humanlinks/models.py:76 lino_xl/lib/tickets/models.py:821
+#: lino_xl/lib/humanlinks/models.py:76 lino_xl/lib/tickets/models.py:870
 #, python-format
 msgid "%(child)s is %(what)s"
 msgstr "%(child)s ist %(what)s"
 
-#: lino_xl/lib/humanlinks/models.py:81 lino_xl/lib/tickets/models.py:826
+#: lino_xl/lib/humanlinks/models.py:81 lino_xl/lib/tickets/models.py:875
 #, python-format
 msgid "%(type)s of %(parent)s"
 msgstr "%(type)s von %(parent)s"
@@ -5749,116 +5755,116 @@ msgstr "Produktrechnung"
 msgid "Invoicing info"
 msgstr "Fakturationsplan"
 
-#: lino_xl/lib/invoicing/models.py:43
+#: lino_xl/lib/invoicing/models.py:40
 msgid "Sales rule"
 msgstr "Verkaufsregel"
 
-#: lino_xl/lib/invoicing/models.py:44
+#: lino_xl/lib/invoicing/models.py:41
 msgid "Sales rules"
 msgstr "Verkaufsregeln"
 
-#: lino_xl/lib/invoicing/models.py:51
+#: lino_xl/lib/invoicing/models.py:48
 msgid "Invoicing address"
 msgstr "Fakturationsadresse"
 
-#: lino_xl/lib/invoicing/models.py:76
+#: lino_xl/lib/invoicing/models.py:73
 msgid "Show partners having this as invoice recipient."
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:95
+#: lino_xl/lib/invoicing/models.py:92
 msgid "Flatrate"
 msgstr "Pauschale"
 
-#: lino_xl/lib/invoicing/models.py:96
+#: lino_xl/lib/invoicing/models.py:93
 msgid "Flatrates"
 msgstr "Pauschalen"
 
-#: lino_xl/lib/invoicing/models.py:104
+#: lino_xl/lib/invoicing/models.py:101
 msgid "Number of events paid per invoicing."
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:107
+#: lino_xl/lib/invoicing/models.py:104
 msgid "Minimum threshold"
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:108
+#: lino_xl/lib/invoicing/models.py:105
 msgid "Minimum quantity to pay in advance."
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:111
+#: lino_xl/lib/invoicing/models.py:108
 msgid "Maximum threshold"
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:112
+#: lino_xl/lib/invoicing/models.py:109
 msgid "Maximum quantity to pay per period."
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:135
+#: lino_xl/lib/invoicing/models.py:132
 msgid "Invoicing area"
 msgstr "Fakturationsbereich"
 
-#: lino_xl/lib/invoicing/models.py:136
+#: lino_xl/lib/invoicing/models.py:133
 msgid "Invoicing areas"
 msgstr "Fakturationsbereiche"
 
-#: lino_xl/lib/invoicing/models.py:173
+#: lino_xl/lib/invoicing/models.py:170
 msgid "Invoicing plan"
 msgstr "Fakturationsplan"
 
-#: lino_xl/lib/invoicing/models.py:174
+#: lino_xl/lib/invoicing/models.py:171
 msgid "Invoicing plans"
 msgstr "Fakturationspläne"
 
-#: lino_xl/lib/invoicing/models.py:178 lino_xl/lib/invoicing/models.py:518
+#: lino_xl/lib/invoicing/models.py:175 lino_xl/lib/invoicing/models.py:515
 msgid "Invoiceables from"
 msgstr "Fakturierbar von"
 
-#: lino_xl/lib/invoicing/models.py:338
+#: lino_xl/lib/invoicing/models.py:335
 #, fuzzy
 msgid "Generator"
 msgstr "Allgemein"
 
-#: lino_xl/lib/invoicing/models.py:346
+#: lino_xl/lib/invoicing/models.py:343
 msgid "Invoicing suggestion"
 msgstr "Fakturationsvorschlag"
 
-#: lino_xl/lib/invoicing/models.py:347
+#: lino_xl/lib/invoicing/models.py:344
 msgid "Invoicing suggestions"
 msgstr "Fakturationsvorschläge"
 
-#: lino_xl/lib/invoicing/models.py:356 lino_xl/lib/invoicing/models.py:528
+#: lino_xl/lib/invoicing/models.py:353 lino_xl/lib/invoicing/models.py:525
 msgid "(type)"
 msgstr "(Modell)"
 
-#: lino_xl/lib/invoicing/models.py:361 lino_xl/lib/invoicing/models.py:534
+#: lino_xl/lib/invoicing/models.py:358 lino_xl/lib/invoicing/models.py:531
 msgid "(object)"
 msgstr "(Objekt)"
 
-#: lino_xl/lib/invoicing/models.py:372
+#: lino_xl/lib/invoicing/models.py:369
 msgid "Selected"
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:375 lino_xl/lib/invoicing/models.py:381
+#: lino_xl/lib/invoicing/models.py:372 lino_xl/lib/invoicing/models.py:378
 #: lino_xl/lib/ledger/fixtures/minimal_ledger.py:41
 #: lino_xl/lib/ledger/fixtures/minimal_ledger.py:55 lino_xl/lib/vat/desktop.py:142
-#: lino_xl/lib/vat/models.py:20 lino_xl/lib/vatless/models.py:29
+#: lino_xl/lib/vat/models.py:19 lino_xl/lib/vatless/models.py:21
 msgid "Invoice"
 msgstr "Rechnung"
 
-#: lino_xl/lib/invoicing/models.py:393
+#: lino_xl/lib/invoicing/models.py:390
 msgid "No area specified"
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:395
+#: lino_xl/lib/invoicing/models.py:392
 msgid "No journal configured for {}"
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:430
+#: lino_xl/lib/invoicing/models.py:427
 #, python-format
 msgid "No invoiceables found for %s."
 msgstr ""
 
-#: lino_xl/lib/invoicing/models.py:502
+#: lino_xl/lib/invoicing/models.py:499
 msgid "Invoicings"
 msgstr "Fakturierungen"
 
@@ -5881,184 +5887,192 @@ msgstr "Grafschaft"
 msgid "Accounting"
 msgstr "Buchhaltung"
 
-#: lino_xl/lib/ledger/choicelists.py:21
+#: lino_xl/lib/ledger/choicelists.py:22
 msgid "No account pointing to {}"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:35
+#: lino_xl/lib/ledger/choicelists.py:36
 msgid "Journal group"
 msgstr "Journalgruppe"
 
-#: lino_xl/lib/ledger/choicelists.py:36
+#: lino_xl/lib/ledger/choicelists.py:37
 msgid "Journal groups"
 msgstr "Journalgruppen"
 
-#: lino_xl/lib/ledger/choicelists.py:40 lino_xl/lib/ledger/choicelists.py:153
-#: lino_xl/lib/ledger/choicelists.py:346 lino_xl/lib/sales/__init__.py:16
+#: lino_xl/lib/ledger/choicelists.py:41 lino_xl/lib/ledger/choicelists.py:154
+#: lino_xl/lib/ledger/choicelists.py:347 lino_xl/lib/sales/__init__.py:16
 msgid "Sales"
 msgstr "Verkauf"
 
-#: lino_xl/lib/ledger/choicelists.py:41 lino_xl/lib/ledger/choicelists.py:350
+#: lino_xl/lib/ledger/choicelists.py:42 lino_xl/lib/ledger/choicelists.py:351
 msgid "Purchases"
 msgstr "Einkauf"
 
-#: lino_xl/lib/ledger/choicelists.py:45
+#: lino_xl/lib/ledger/choicelists.py:46
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:94
-#: lino_xl/lib/vat/__init__.py:25 lino_xl/lib/vat/mixins.py:60
+#: lino_xl/lib/vat/__init__.py:25 lino_xl/lib/vat/mixins.py:61
 msgid "VAT"
 msgstr "MwSt."
 
-#: lino_xl/lib/ledger/choicelists.py:46 lino_xl/lib/ledger/fixtures/minimal_ledger.py:100
+#: lino_xl/lib/ledger/choicelists.py:47 lino_xl/lib/ledger/fixtures/minimal_ledger.py:100
 #, fuzzy
 msgid "Miscellaneous transactions"
 msgstr "Diverse Buchungen"
 
-#: lino_xl/lib/ledger/choicelists.py:57 lino_xl/lib/postings/models.py:35
+#: lino_xl/lib/ledger/choicelists.py:58 lino_xl/lib/postings/models.py:35
 msgid "Open"
 msgstr "In Bearbeitung"
 
-#: lino_xl/lib/ledger/choicelists.py:103
+#: lino_xl/lib/ledger/choicelists.py:104
 msgid "Common account"
 msgstr "Gemeinkonto"
 
-#: lino_xl/lib/ledger/choicelists.py:104
+#: lino_xl/lib/ledger/choicelists.py:105
 msgid "Common accounts"
 msgstr "Gemeinkonten"
 
-#: lino_xl/lib/ledger/choicelists.py:120 lino_xl/lib/ledger/models.py:457
+#: lino_xl/lib/ledger/choicelists.py:121 lino_xl/lib/ledger/models.py:458
 msgid "Clearable"
 msgstr "Auszugleichen"
 
-#: lino_xl/lib/ledger/choicelists.py:127 lino_xl/lib/sheets/choicelists.py:113
+#: lino_xl/lib/ledger/choicelists.py:128 lino_xl/lib/sheets/choicelists.py:113
 msgid "Net income (loss)"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:129
+#: lino_xl/lib/ledger/choicelists.py:130
 msgid "Customers"
 msgstr "Kunden"
 
-#: lino_xl/lib/ledger/choicelists.py:130 lino_xl/lib/skills/mixins.py:28
+#: lino_xl/lib/ledger/choicelists.py:131 lino_xl/lib/skills/mixins.py:28
 msgid "Suppliers"
 msgstr "Lieferanten"
 
-#: lino_xl/lib/ledger/choicelists.py:131
+#: lino_xl/lib/ledger/choicelists.py:132
 msgid "Employees"
 msgstr "Angestellte"
 
-#: lino_xl/lib/ledger/choicelists.py:132
+#: lino_xl/lib/ledger/choicelists.py:133
 msgid "Pending Payment Orders"
 msgstr "Offene Zahlungsaufträge"
 
-#: lino_xl/lib/ledger/choicelists.py:133
+#: lino_xl/lib/ledger/choicelists.py:134
 msgid "Tax Offices"
 msgstr "Steuerämter"
 
-#: lino_xl/lib/ledger/choicelists.py:138
+#: lino_xl/lib/ledger/choicelists.py:139
 msgid "VAT declared"
 msgstr "Deklarierte Mehrwertsteuer"
 
-#: lino_xl/lib/ledger/choicelists.py:140
+#: lino_xl/lib/ledger/choicelists.py:141
 #, fuzzy
 msgid "Internal clearings"
 msgstr "Begleichung prüfen"
 
-#: lino_xl/lib/ledger/choicelists.py:141
+#: lino_xl/lib/ledger/choicelists.py:142
 msgid "Waiting account"
 msgstr "Wartekonto"
 
-#: lino_xl/lib/ledger/choicelists.py:143
+#: lino_xl/lib/ledger/choicelists.py:144
 msgid "BestBank"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:144
+#: lino_xl/lib/ledger/choicelists.py:145
 msgid "Cash"
 msgstr "Kasse"
 
-#: lino_xl/lib/ledger/choicelists.py:151 lino_xl/lib/sheets/choicelists.py:120
+#: lino_xl/lib/ledger/choicelists.py:152 lino_xl/lib/sheets/choicelists.py:120
 #, fuzzy
 msgid "Net income"
 msgstr "Eingang"
 
-#: lino_xl/lib/ledger/choicelists.py:154 lino_xl/lib/sheets/choicelists.py:123
+#: lino_xl/lib/ledger/choicelists.py:155 lino_xl/lib/sheets/choicelists.py:123
 msgid "Net loss"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:200
+#: lino_xl/lib/ledger/choicelists.py:201
 msgid "Voucher type"
 msgstr "Belegart"
 
-#: lino_xl/lib/ledger/choicelists.py:201
+#: lino_xl/lib/ledger/choicelists.py:202
 msgid "Voucher types"
 msgstr "Belegarten"
 
-#: lino_xl/lib/ledger/choicelists.py:282
+#: lino_xl/lib/ledger/choicelists.py:283
 msgid "(undefined)"
 msgstr "(undefiniert)"
 
-#: lino_xl/lib/ledger/choicelists.py:291
+#: lino_xl/lib/ledger/choicelists.py:292
 msgid "Trade type"
 msgstr "Handelsart"
 
-#: lino_xl/lib/ledger/choicelists.py:292
+#: lino_xl/lib/ledger/choicelists.py:293
 msgid "Trade types"
 msgstr "Handelsarten"
 
-#: lino_xl/lib/ledger/choicelists.py:294
+#: lino_xl/lib/ledger/choicelists.py:295
 msgid "The type of trade, e.g. 'sales' or 'purchases' or 'wages'."
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:298
+#: lino_xl/lib/ledger/choicelists.py:299
 msgid "Main account"
 msgstr "Hauptkonto"
 
-#: lino_xl/lib/ledger/choicelists.py:302
+#: lino_xl/lib/ledger/choicelists.py:303
 msgid "Base account"
 msgstr "Basiskonto"
 
-#: lino_xl/lib/ledger/choicelists.py:306
+#: lino_xl/lib/ledger/choicelists.py:307
 msgid "Product account field"
 msgstr "Produktkontofeld"
 
-#: lino_xl/lib/ledger/choicelists.py:312
+#: lino_xl/lib/ledger/choicelists.py:313
 msgid "Price field"
 msgstr "Preisfeld"
 
-#: lino_xl/lib/ledger/choicelists.py:318
+#: lino_xl/lib/ledger/choicelists.py:319
 msgid "Invoice account field"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:354
+#: lino_xl/lib/ledger/choicelists.py:355
 msgid "Purchase account"
 msgstr "Konto Einkauf"
 
-#: lino_xl/lib/ledger/choicelists.py:361
+#: lino_xl/lib/ledger/choicelists.py:362
 msgid "Taxes"
 msgstr "Steuern"
 
-#: lino_xl/lib/ledger/choicelists.py:365
+#: lino_xl/lib/ledger/choicelists.py:366
 msgid "Clearings"
 msgstr "Begleichungen"
 
-#: lino_xl/lib/ledger/choicelists.py:368
+#: lino_xl/lib/ledger/choicelists.py:369
 msgid "Bank payment orders"
 msgstr "Zahlungsaufträge"
 
-#: lino_xl/lib/ledger/choicelists.py:423 lino_xl/lib/polls/utils.py:36
+#: lino_xl/lib/ledger/choicelists.py:417
+msgid "Voucher state"
+msgstr "Belegzustand"
+
+#: lino_xl/lib/ledger/choicelists.py:418
+msgid "Voucher states"
+msgstr "Belegzustände"
+
+#: lino_xl/lib/ledger/choicelists.py:426 lino_xl/lib/polls/utils.py:36
 #: lino_xl/lib/rooms/models.py:32
 msgid "Registered"
 msgstr "Registriert"
 
-#: lino_xl/lib/ledger/choicelists.py:424
+#: lino_xl/lib/ledger/choicelists.py:427
 msgid "Signed"
 msgstr "Unterschrieben"
 
-#: lino_xl/lib/ledger/choicelists.py:432 lino_xl/lib/ledger/choicelists.py:438
-#: lino_xl/lib/ledger/choicelists.py:439 lino_xl/lib/polls/utils.py:40
+#: lino_xl/lib/ledger/choicelists.py:435 lino_xl/lib/ledger/choicelists.py:441
+#: lino_xl/lib/ledger/choicelists.py:442 lino_xl/lib/polls/utils.py:40
 msgid "Register"
 msgstr "Registrieren"
 
-#: lino_xl/lib/ledger/choicelists.py:434 lino_xl/lib/ledger/choicelists.py:442
-#: lino_xl/lib/ledger/choicelists.py:444 lino_xl/lib/polls/utils.py:42
+#: lino_xl/lib/ledger/choicelists.py:437 lino_xl/lib/ledger/choicelists.py:445
+#: lino_xl/lib/ledger/choicelists.py:447 lino_xl/lib/polls/utils.py:42
 msgid "Deregister"
 msgstr "Entregistrieren"
 
@@ -6066,257 +6080,248 @@ msgstr "Entregistrieren"
 msgid "Debit (not checked) or Credit (checked)"
 msgstr ""
 
-#: lino_xl/lib/ledger/mixins.py:97 lino_xl/lib/ledger/models.py:914
-#: lino_xl/lib/ledger/models.py:964 lino_xl/lib/ledger/ui.py:361
+#: lino_xl/lib/ledger/mixins.py:195 lino_xl/lib/ledger/models.py:923
+#: lino_xl/lib/ledger/models.py:981 lino_xl/lib/ledger/ui.py:355
 msgid "Match"
 msgstr ""
 
-#: lino_xl/lib/ledger/mixins.py:98
+#: lino_xl/lib/ledger/mixins.py:196
 #, fuzzy
 msgid "The movement to be matched."
 msgstr "Der Termin hat stattgefunden"
 
-#: lino_xl/lib/ledger/mixins.py:208
+#: lino_xl/lib/ledger/mixins.py:306
 #, fuzzy
 msgid "Start period"
 msgstr "Gestartet"
 
-#: lino_xl/lib/ledger/mixins.py:214
+#: lino_xl/lib/ledger/mixins.py:312
 #, fuzzy
 msgid "End period"
 msgstr "Absender"
 
-#: lino_xl/lib/ledger/mixins.py:235 lino_xl/lib/xl/help_texts.py:1385
+#: lino_xl/lib/ledger/mixins.py:333 lino_xl/lib/xl/help_texts.py:1394
 msgid "Start of observed period range."
 msgstr ""
 
-#: lino_xl/lib/ledger/mixins.py:236 lino_xl/lib/ledger/ui.py:482
+#: lino_xl/lib/ledger/mixins.py:334 lino_xl/lib/ledger/ui.py:476
 #, fuzzy
 msgid "Period from"
 msgstr "gültig von"
 
-#: lino_xl/lib/ledger/mixins.py:241
+#: lino_xl/lib/ledger/mixins.py:339
 msgid "Optional end of observed period range. Leave empty to observe only the start period."
 msgstr ""
 
-#: lino_xl/lib/ledger/mixins.py:244
+#: lino_xl/lib/ledger/mixins.py:342
 #, fuzzy
 msgid "Period until"
 msgstr "Gültig bis"
 
-#: lino_xl/lib/ledger/mixins.py:268 lino_xl/lib/sales/models.py:321
+#: lino_xl/lib/ledger/mixins.py:366 lino_xl/lib/sales/models.py:320
 msgid "Content"
 msgstr "Inhalt"
 
-#: lino_xl/lib/ledger/mixins.py:283
+#: lino_xl/lib/ledger/mixins.py:381
 msgid "Partner vouchers"
 msgstr "Partnerbelege"
 
-#: lino_xl/lib/ledger/mixins.py:308 lino_xl/lib/ledger/models.py:516
-#: lino_xl/lib/ledger/models.py:944 lino_xl/lib/vatless/ui.py:136
+#: lino_xl/lib/ledger/mixins.py:406 lino_xl/lib/ledger/models.py:492
+#: lino_xl/lib/ledger/models.py:959 lino_xl/lib/vatless/ui.py:136
 msgid "Voucher"
 msgstr "Beleg"
 
-#: lino_xl/lib/ledger/mixins.py:360
+#: lino_xl/lib/ledger/mixins.py:459
 msgid "Create voucher in journal"
 msgstr "Beleg erstellen in Journal"
 
-#: lino_xl/lib/ledger/models.py:47
+#: lino_xl/lib/ledger/models.py:48
 #, fuzzy
 msgid "Last entry date"
 msgstr "Buchungsdatum"
 
-#: lino_xl/lib/ledger/models.py:61
+#: lino_xl/lib/ledger/models.py:62
 msgid "Journal"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:62
+#: lino_xl/lib/ledger/models.py:63
 msgid "Journals"
 msgstr "Journale"
 
-#: lino_xl/lib/ledger/models.py:70
+#: lino_xl/lib/ledger/models.py:71
 msgid "Check clearing"
 msgstr "Begleichung prüfen"
 
-#: lino_xl/lib/ledger/models.py:72
+#: lino_xl/lib/ledger/models.py:73
 #, fuzzy
 msgid "Fill suggestions"
 msgstr "{} Vorschläge"
 
-#: lino_xl/lib/ledger/models.py:74
+#: lino_xl/lib/ledger/models.py:75
 msgid "Force chronological sequence"
 msgstr "Chronologische Reihenfolge"
 
-#: lino_xl/lib/ledger/models.py:75
+#: lino_xl/lib/ledger/models.py:76
 #, fuzzy
 msgid "Preliminary"
 msgstr "Primär"
 
-#: lino_xl/lib/ledger/models.py:80
+#: lino_xl/lib/ledger/models.py:81
 msgid "Printed document designation"
 msgstr "Dokumentbezeichnung Ausdruck"
 
-#: lino_xl/lib/ledger/models.py:81
+#: lino_xl/lib/ledger/models.py:82
 msgid "Primary booking direction"
 msgstr "Primäre Buchungsrichtung"
 
-#: lino_xl/lib/ledger/models.py:83
+#: lino_xl/lib/ledger/models.py:84
 msgid "Yearly numbering"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:199
+#: lino_xl/lib/ledger/models.py:200
 #, python-format
 msgid "%s is not the last voucher in journal"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:229
+#: lino_xl/lib/ledger/models.py:230
 #, fuzzy
 msgid "New {}"
 msgstr "Am {0}"
 
-#: lino_xl/lib/ledger/models.py:238
+#: lino_xl/lib/ledger/models.py:239
 msgid "Accounting period"
 msgstr "Buchungsperiode"
 
-#: lino_xl/lib/ledger/models.py:239
+#: lino_xl/lib/ledger/models.py:240
 msgid "Accounting periods"
 msgstr "Buchungsperioden"
 
-#: lino_xl/lib/ledger/models.py:349
+#: lino_xl/lib/ledger/models.py:350
 msgid "Fiscal year"
 msgstr "Geschäftsjahr"
 
-#: lino_xl/lib/ledger/models.py:350
+#: lino_xl/lib/ledger/models.py:351
 msgid "Fiscal years"
 msgstr "Geschäftsjahre"
 
-#: lino_xl/lib/ledger/models.py:418
+#: lino_xl/lib/ledger/models.py:419
 msgid "Payment term"
 msgstr "Zahlungsbedingungen"
 
-#: lino_xl/lib/ledger/models.py:419
+#: lino_xl/lib/ledger/models.py:420
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:107
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:79
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/trailer.html:10
 msgid "Payment terms"
 msgstr "Zahlungsbedingungen"
 
-#: lino_xl/lib/ledger/models.py:423
+#: lino_xl/lib/ledger/models.py:424
 msgid "Days"
 msgstr "Tage"
 
-#: lino_xl/lib/ledger/models.py:424
+#: lino_xl/lib/ledger/models.py:425
 msgid "Months"
 msgstr "Monate"
 
-#: lino_xl/lib/ledger/models.py:425
+#: lino_xl/lib/ledger/models.py:426
 msgid "End of month"
 msgstr "Monatsende"
 
-#: lino_xl/lib/ledger/models.py:428
+#: lino_xl/lib/ledger/models.py:429
 msgid "Printed text"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:449 lino_xl/lib/sheets/models.py:167
+#: lino_xl/lib/ledger/models.py:450 lino_xl/lib/sheets/models.py:167
 #: lino_xl/lib/sheets/models.py:310
 msgid "Account"
 msgstr "Konto"
 
-#: lino_xl/lib/ledger/models.py:450
+#: lino_xl/lib/ledger/models.py:451
 msgid "Accounts"
 msgstr "Konten"
 
-#: lino_xl/lib/ledger/models.py:456
+#: lino_xl/lib/ledger/models.py:457
 msgid "Needs partner"
 msgstr "Braucht Partner"
 
-#: lino_xl/lib/ledger/models.py:462
+#: lino_xl/lib/ledger/models.py:463
 msgid "Default amount"
 msgstr "Vorschlag Betrag"
 
-#: lino_xl/lib/ledger/models.py:492
-#, fuzzy
-msgid "Toggle state"
-msgstr "Stimmabgabezustände"
-
-#: lino_xl/lib/ledger/models.py:504
-msgid "Cannot toggle from state {}"
-msgstr ""
-
-#: lino_xl/lib/ledger/models.py:517 lino_xl/lib/ledger/ui.py:775
+#: lino_xl/lib/ledger/models.py:493 lino_xl/lib/ledger/ui.py:769
 msgid "Vouchers"
 msgstr "Belege"
 
-#: lino_xl/lib/ledger/models.py:522
+#: lino_xl/lib/ledger/models.py:501
 msgid "Voucher date"
 msgstr "Belegdatum"
 
-#: lino_xl/lib/ledger/models.py:526
+#: lino_xl/lib/ledger/models.py:505
 msgid "Narration"
 msgstr "Schilderung"
 
-#: lino_xl/lib/ledger/models.py:900
+#: lino_xl/lib/ledger/models.py:907
 msgid "Movement"
 msgstr "Bewegung"
 
-#: lino_xl/lib/ledger/models.py:901 lino_xl/lib/ledger/ui.py:608
+#: lino_xl/lib/ledger/models.py:908 lino_xl/lib/ledger/ui.py:602
 msgid "Movements"
 msgstr "Bewegungen"
 
-#: lino_xl/lib/ledger/models.py:910
+#: lino_xl/lib/ledger/models.py:919
 msgid "Seq.No."
 msgstr "Seq.-Nr."
 
-#: lino_xl/lib/ledger/models.py:915
+#: lino_xl/lib/ledger/models.py:924
 msgid "Cleared"
 msgstr "Beglichen"
 
-#: lino_xl/lib/ledger/models.py:952
+#: lino_xl/lib/ledger/models.py:968
 msgid "Voucher partner"
 msgstr "Partner"
 
-#: lino_xl/lib/ledger/models.py:1041
+#: lino_xl/lib/ledger/models.py:1058
 msgid "Match rule"
 msgstr "Begleichungsregel"
 
-#: lino_xl/lib/ledger/models.py:1042
+#: lino_xl/lib/ledger/models.py:1059
 msgid "Match rules"
 msgstr "Begleichungsregeln"
 
-#: lino_xl/lib/ledger/models.py:1069
+#: lino_xl/lib/ledger/models.py:1086
 msgid "Whether this account is available for {} transactions."
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1078
+#: lino_xl/lib/ledger/models.py:1095
 msgid "The default payment term for sales invoices to this customer."
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1083
+#: lino_xl/lib/ledger/models.py:1100
 msgid "Check integrity of ledger vouchers"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1085
+#: lino_xl/lib/ledger/models.py:1102
 msgid "Missing movement {0}."
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1086
+#: lino_xl/lib/ledger/models.py:1103
 #, fuzzy
 msgid "Unexpected movement {0}."
 msgstr "Keine offenen Bewegungen"
 
-#: lino_xl/lib/ledger/models.py:1087
+#: lino_xl/lib/ledger/models.py:1104
 msgid "Movement {0} : {1}"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1088
+#: lino_xl/lib/ledger/models.py:1105
 msgid "Failed to get movements for {0} : {1}"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1097
+#: lino_xl/lib/ledger/models.py:1114
 msgid "Voucher without MTI leaf"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:1151
+#: lino_xl/lib/ledger/models.py:1169
 #, fuzzy
 msgid "Has open movements"
 msgstr "{0} offene Bewegungen ({1} {2})"
@@ -6333,177 +6338,177 @@ msgstr "Nicht fertig"
 msgid "Warnings"
 msgstr "Warnungen"
 
-#: lino_xl/lib/ledger/ui.py:263 lino_xl/lib/ledger/ui.py:373
+#: lino_xl/lib/ledger/ui.py:256 lino_xl/lib/ledger/ui.py:367
 msgid "Debts"
 msgstr "Schulden"
 
-#: lino_xl/lib/ledger/ui.py:270
+#: lino_xl/lib/ledger/ui.py:263
 msgid "Date until"
 msgstr "Datum bis"
 
-#: lino_xl/lib/ledger/ui.py:274
+#: lino_xl/lib/ledger/ui.py:267
 msgid "Clearable by"
 msgstr "Begleichbar durch"
 
-#: lino_xl/lib/ledger/ui.py:278
+#: lino_xl/lib/ledger/ui.py:271
 msgid "With SEPA"
 msgstr "Mit SEPA"
 
-#: lino_xl/lib/ledger/ui.py:279
+#: lino_xl/lib/ledger/ui.py:272
 msgid "Same D/C"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:368
+#: lino_xl/lib/ledger/ui.py:362
 msgid "Due date of the eldest debt in this match group"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:373
+#: lino_xl/lib/ledger/ui.py:367
 msgid "List of invoices in this match group"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:379
+#: lino_xl/lib/ledger/ui.py:373
 msgid "Payments"
 msgstr "Zahlungen"
 
-#: lino_xl/lib/ledger/ui.py:379
+#: lino_xl/lib/ledger/ui.py:373
 msgid "List of payments in this match group"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:384 lino_xl/lib/ledger/ui.py:762
+#: lino_xl/lib/ledger/ui.py:378 lino_xl/lib/ledger/ui.py:756
 msgid "Balance"
 msgstr "Saldo"
 
-#: lino_xl/lib/ledger/ui.py:401 lino_xl/lib/sepa/models.py:26
+#: lino_xl/lib/ledger/ui.py:395 lino_xl/lib/sepa/models.py:26
 msgid "Bank account"
 msgstr "Bankkonto"
 
-#: lino_xl/lib/ledger/ui.py:451
+#: lino_xl/lib/ledger/ui.py:445
 msgid "Show cleared vouchers"
 msgstr "Beglichene Bewegungen zeigen"
 
-#: lino_xl/lib/ledger/ui.py:488
+#: lino_xl/lib/ledger/ui.py:482
 msgid "Start of observed period range"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:493
+#: lino_xl/lib/ledger/ui.py:487
 msgid ""
 "Optional end of observed period range. Leave empty to consider only the Start period."
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:501 lino_xl/lib/sheets/models.py:330
+#: lino_xl/lib/ledger/ui.py:495 lino_xl/lib/sheets/models.py:330
 msgid "Select at least a start period"
 msgstr "Wähle mindestens eine Anfangsperiode aus"
 
-#: lino_xl/lib/ledger/ui.py:504 lino_xl/lib/sheets/models.py:333
+#: lino_xl/lib/ledger/ui.py:498 lino_xl/lib/sheets/models.py:333
 msgid "End period must be after start period"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:510
+#: lino_xl/lib/ledger/ui.py:504
 msgid "Periods {}...{}"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:513
+#: lino_xl/lib/ledger/ui.py:507
 msgid "Period {}"
 msgstr "Periode {}"
 
-#: lino_xl/lib/ledger/ui.py:515
+#: lino_xl/lib/ledger/ui.py:509
 msgid "All periods"
 msgstr "Alle Perioden"
 
-#: lino_xl/lib/ledger/ui.py:594
+#: lino_xl/lib/ledger/ui.py:588
 msgid "Reference"
 msgstr "Ihr Zeichen"
 
-#: lino_xl/lib/ledger/ui.py:617 lino_xl/lib/sheets/models.py:132
+#: lino_xl/lib/ledger/ui.py:611 lino_xl/lib/sheets/models.py:132
 msgid "Debit before"
 msgstr ""
 "Debit\n"
 "vorher"
 
-#: lino_xl/lib/ledger/ui.py:621 lino_xl/lib/sheets/models.py:133
+#: lino_xl/lib/ledger/ui.py:615 lino_xl/lib/sheets/models.py:133
 msgid "Credit before"
 msgstr ""
 "Kredit\n"
 "vorher"
 
-#: lino_xl/lib/ledger/ui.py:633 lino_xl/lib/sheets/models.py:149
+#: lino_xl/lib/ledger/ui.py:627 lino_xl/lib/sheets/models.py:149
 msgid "Debit after"
 msgstr ""
 "Debit\n"
 "nachher"
 
-#: lino_xl/lib/ledger/ui.py:637 lino_xl/lib/sheets/models.py:153
+#: lino_xl/lib/ledger/ui.py:631 lino_xl/lib/sheets/models.py:153
 msgid "Credit after"
 msgstr ""
 "Kredit\n"
 "nachher"
 
-#: lino_xl/lib/ledger/ui.py:649
+#: lino_xl/lib/ledger/ui.py:643
 msgid "General Account Balances"
 msgstr "Saldenliste Generalkonten"
 
-#: lino_xl/lib/ledger/ui.py:669
+#: lino_xl/lib/ledger/ui.py:663
 msgid "Partner Account Balances {}"
 msgstr "Saldenliste Partner {}"
 
-#: lino_xl/lib/ledger/ui.py:679
+#: lino_xl/lib/ledger/ui.py:673
 msgid "Ref"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:758
+#: lino_xl/lib/ledger/ui.py:752
 msgid "ID"
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:787
+#: lino_xl/lib/ledger/ui.py:781
 msgid "Debtors"
 msgstr "Schuldner"
 
-#: lino_xl/lib/ledger/ui.py:788
+#: lino_xl/lib/ledger/ui.py:782
 msgid "List of partners who are in debt towards us (usually customers)."
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:794
+#: lino_xl/lib/ledger/ui.py:788
 msgid "Creditors"
 msgstr "Gläubiger"
 
-#: lino_xl/lib/ledger/ui.py:795
+#: lino_xl/lib/ledger/ui.py:789
 msgid "List of partners who are giving credit to us (usually suppliers)."
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:811
+#: lino_xl/lib/ledger/ui.py:805
 #, fuzzy
 msgid "Situation"
 msgstr "Postsendung"
 
-#: lino_xl/lib/ledger/ui.py:812
+#: lino_xl/lib/ledger/ui.py:806
 msgid "Overview of the financial situation on a given date."
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:933
+#: lino_xl/lib/ledger/ui.py:927
 msgid "Show cleared movements"
 msgstr "Beglichene Bewegungen zeigen"
 
-#: lino_xl/lib/ledger/ui.py:968
+#: lino_xl/lib/ledger/ui.py:962
 msgid "Balance {1} ({0} movements)"
 msgstr "Saldo {1} ({0} Bewegungen)"
 
-#: lino_xl/lib/ledger/ui.py:993
+#: lino_xl/lib/ledger/ui.py:987
 msgid "only uncleared"
 msgstr "nur offene"
 
-#: lino_xl/lib/ledger/ui.py:995
+#: lino_xl/lib/ledger/ui.py:989
 msgid "only cleared"
 msgstr "nur beglichene"
 
-#: lino_xl/lib/ledger/ui.py:1044
+#: lino_xl/lib/ledger/ui.py:1039
 msgid "No uncleared movements"
 msgstr "Keine offenen Bewegungen"
 
-#: lino_xl/lib/ledger/ui.py:1076
+#: lino_xl/lib/ledger/ui.py:1071
 msgid "{0} open movements ({1} {2})"
 msgstr "{0} offene Bewegungen ({1} {2})"
 
-#: lino_xl/lib/ledger/ui.py:1162
+#: lino_xl/lib/ledger/ui.py:1157
 #, python-format
 msgid "%(details)s matching '%(master)s'"
 msgstr "%(details)s für %(master)s"
@@ -6516,7 +6521,7 @@ msgstr ""
 msgid "Cash Robin"
 msgstr ""
 
-#: lino_xl/lib/ledger/fixtures/minimal_ledger.py:44 lino_xl/lib/sales/models.py:147
+#: lino_xl/lib/ledger/fixtures/minimal_ledger.py:44 lino_xl/lib/sales/models.py:146
 msgid "Sales invoices"
 msgstr "Verkaufsrechnungen"
 
@@ -6723,7 +6728,7 @@ msgstr ""
 msgid "Delete {} messages."
 msgstr ""
 
-#: lino_xl/lib/mailbox/ui.py:42 lino_xl/lib/tickets/ui.py:352
+#: lino_xl/lib/mailbox/ui.py:42 lino_xl/lib/tickets/ui.py:343
 #: lino_xl/lib/votes/choicelists.py:77
 msgid "Assigned"
 msgstr "Zugewiesen"
@@ -6737,8 +6742,9 @@ msgid "Finished"
 msgstr ""
 
 #: lino_xl/lib/meetings/desktop.py:101 lino_xl/lib/online/users/choicelists.py:21
-#: lino_xl/lib/polls/utils.py:17 lino_xl/lib/tickets/choicelists.py:80
-#: lino_xl/lib/tickets/choicelists.py:110 lino_xl/lib/tickets/ui.py:357
+#: lino_xl/lib/orders/choicelists.py:18 lino_xl/lib/polls/utils.py:17
+#: lino_xl/lib/tickets/choicelists.py:80 lino_xl/lib/tickets/choicelists.py:110
+#: lino_xl/lib/tickets/ui.py:348
 msgid "Active"
 msgstr "Aktiv"
 
@@ -6832,7 +6838,7 @@ msgstr "Ereignisart (Form)"
 msgid "Subject"
 msgstr "Betreff"
 
-#: lino_xl/lib/notes/models.py:168 lino_xl/lib/tickets/models.py:266
+#: lino_xl/lib/notes/models.py:168 lino_xl/lib/tickets/models.py:288
 #, fuzzy
 msgid "Client"
 msgstr "Empfänger"
@@ -6952,11 +6958,15 @@ msgstr ""
 msgid "About me"
 msgstr ""
 
-#: lino_xl/lib/orders/__init__.py:17 lino_xl/lib/orders/models.py:68
+#: lino_xl/lib/orders/__init__.py:17 lino_xl/lib/orders/models.py:66
 msgid "Orders"
 msgstr "Aufträge"
 
-#: lino_xl/lib/orders/models.py:67
+#: lino_xl/lib/orders/choicelists.py:17 lino_xl/lib/reception/models.py:68
+msgid "Waiting"
+msgstr "Wartet"
+
+#: lino_xl/lib/orders/models.py:65
 msgid "Order"
 msgstr "Auftrag"
 
@@ -6964,24 +6974,24 @@ msgstr "Auftrag"
 msgid "Invoice recipient"
 msgstr "Rechnungsempfänger"
 
-#: lino_xl/lib/orders/models.py:277
+#: lino_xl/lib/orders/models.py:286
 msgid "Role in calendar entries"
 msgstr "Rolle in Kalendereinträgen"
 
-#: lino_xl/lib/orders/models.py:375
+#: lino_xl/lib/orders/models.py:384
 #, fuzzy
 msgid "Order item"
 msgstr "mittelmäßig"
 
-#: lino_xl/lib/orders/models.py:376
+#: lino_xl/lib/orders/models.py:385
 msgid "Order items"
 msgstr "Auftragspositionen"
 
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:96
-#: lino_xl/lib/orders/models.py:383
+#: lino_xl/lib/orders/models.py:392
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:55
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:33
-#: lino_xl/lib/vat/mixins.py:426
+#: lino_xl/lib/vat/mixins.py:428
 msgid "Quantity"
 msgstr "Menge"
 
@@ -7214,141 +7224,141 @@ msgstr "Mehrere primäre Adressen."
 msgid "Print table using Pisa"
 msgstr ""
 
-#: lino_xl/lib/polls/__init__.py:23 lino_xl/lib/polls/models.py:90
+#: lino_xl/lib/polls/__init__.py:23 lino_xl/lib/polls/models.py:82
 msgid "Polls"
 msgstr "Umfragen"
 
-#: lino_xl/lib/polls/models.py:37
+#: lino_xl/lib/polls/models.py:29
 #, fuzzy
 msgid "Choice Set"
 msgstr "Auswahliste"
 
-#: lino_xl/lib/polls/models.py:38
+#: lino_xl/lib/polls/models.py:30
 #, fuzzy
 msgid "Choice Sets"
 msgstr "Auswahliste"
 
-#: lino_xl/lib/polls/models.py:58
+#: lino_xl/lib/polls/models.py:50
 #, fuzzy
 msgid "Choice"
 msgstr "Rechnung"
 
-#: lino_xl/lib/polls/models.py:59
+#: lino_xl/lib/polls/models.py:51
 #, fuzzy
 msgid "Choices"
 msgstr "Rechnungen"
 
-#: lino_xl/lib/polls/models.py:89
+#: lino_xl/lib/polls/models.py:81
 msgid "Poll"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:95 lino_xl/lib/polls/models.py:217
+#: lino_xl/lib/polls/models.py:87 lino_xl/lib/polls/models.py:209
 #, fuzzy
 msgid "Details"
 msgstr "täglich"
 
-#: lino_xl/lib/polls/models.py:101
+#: lino_xl/lib/polls/models.py:93
 #, fuzzy
 msgid "Default Choiceset"
 msgstr "Mehrfachauswahl"
 
-#: lino_xl/lib/polls/models.py:104 lino_xl/lib/polls/models.py:221
+#: lino_xl/lib/polls/models.py:96 lino_xl/lib/polls/models.py:213
 msgid "Allow multiple choices"
 msgstr "Mehrfachauswahl erlauben"
 
-#: lino_xl/lib/polls/models.py:107
+#: lino_xl/lib/polls/models.py:99
 msgid "Questions to add"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:108
+#: lino_xl/lib/polls/models.py:100
 msgid "Paste text for questions to add. Every non-empty line will create one question."
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:179
+#: lino_xl/lib/polls/models.py:171
 msgid "Results"
 msgstr "Resultate"
 
-#: lino_xl/lib/polls/models.py:208 lino_xl/lib/polls/models.py:584
-#: lino_xl/lib/polls/models.py:613
+#: lino_xl/lib/polls/models.py:200 lino_xl/lib/polls/models.py:576
+#: lino_xl/lib/polls/models.py:605
 msgid "Question"
 msgstr "Frage"
 
-#: lino_xl/lib/polls/models.py:209
+#: lino_xl/lib/polls/models.py:201
 msgid "Questions"
 msgstr "Fragen"
 
-#: lino_xl/lib/polls/models.py:216
+#: lino_xl/lib/polls/models.py:208
 msgctxt "polls"
 msgid "Title"
 msgstr "Titel"
 
-#: lino_xl/lib/polls/models.py:314 lino_xl/lib/polls/models.py:783
+#: lino_xl/lib/polls/models.py:306 lino_xl/lib/polls/models.py:775
 msgid "Response"
 msgstr "Befragung"
 
-#: lino_xl/lib/polls/models.py:315
+#: lino_xl/lib/polls/models.py:307
 msgid "Responses"
 msgstr "Befragungen"
 
-#: lino_xl/lib/polls/models.py:321
+#: lino_xl/lib/polls/models.py:313
 msgid "My general remark"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:332
+#: lino_xl/lib/polls/models.py:324
 #, python-format
 msgid "%(user)s's response to %(poll)s"
 msgstr "%(user)s zu %(poll)s"
 
-#: lino_xl/lib/polls/models.py:334
+#: lino_xl/lib/polls/models.py:326
 msgid "{poll} {partner} {date}"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:426
+#: lino_xl/lib/polls/models.py:418
 msgid "Answer Choice"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:427
+#: lino_xl/lib/polls/models.py:419
 #, fuzzy
 msgid "Answer Choices"
 msgstr "Auswahlmöglichkeiten"
 
-#: lino_xl/lib/polls/models.py:439 lino_xl/lib/polls/models.py:667
+#: lino_xl/lib/polls/models.py:431 lino_xl/lib/polls/models.py:659
 msgid "My answer"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:457
+#: lino_xl/lib/polls/models.py:449
 #, fuzzy
 msgid "Answer Remark"
 msgstr "Bemerkung"
 
-#: lino_xl/lib/polls/models.py:458
+#: lino_xl/lib/polls/models.py:450
 #, fuzzy
 msgid "Answer Remarks"
 msgstr "Bemerkung"
 
-#: lino_xl/lib/polls/models.py:465 lino_xl/lib/polls/models.py:499
+#: lino_xl/lib/polls/models.py:457 lino_xl/lib/polls/models.py:491
 #, fuzzy
 msgid "My remark"
 msgstr "Bemerkung"
 
-#: lino_xl/lib/polls/models.py:537 lino_xl/lib/polls/models.py:764
+#: lino_xl/lib/polls/models.py:529 lino_xl/lib/polls/models.py:756
 msgid "N/A"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:589 lino_xl/lib/polls/models.py:769
+#: lino_xl/lib/polls/models.py:581 lino_xl/lib/polls/models.py:761
 msgid "Answers"
 msgstr "Antworten"
 
-#: lino_xl/lib/polls/models.py:791
+#: lino_xl/lib/polls/models.py:783
 msgid "Answer"
 msgstr "Antwort"
 
-#: lino_xl/lib/polls/models.py:812
+#: lino_xl/lib/polls/models.py:804
 #, fuzzy
 msgid "#Answers"
 msgstr "Partner"
 
-#: lino_xl/lib/polls/models.py:817
+#: lino_xl/lib/polls/models.py:809
 msgid "A1"
 msgstr ""
 
@@ -7612,10 +7622,6 @@ msgstr "Eigenschaft"
 msgid "Reception"
 msgstr "Empfang"
 
-#: lino_xl/lib/reception/models.py:68
-msgid "Waiting"
-msgstr "Wartet"
-
 #: lino_xl/lib/reception/models.py:70
 msgid "Gone"
 msgstr "Gegangen"
@@ -7785,70 +7791,70 @@ msgstr "Ermäßigung"
 msgid "You must specify a product if there is an amount."
 msgstr ""
 
-#: lino_xl/lib/sales/models.py:25
+#: lino_xl/lib/sales/models.py:24
 msgid "Sales price"
 msgstr "Verkaufspreis"
 
-#: lino_xl/lib/sales/models.py:27
+#: lino_xl/lib/sales/models.py:26
 #, fuzzy
 msgid "Sales account"
 msgstr "Basiskonto"
 
-#: lino_xl/lib/sales/models.py:37
+#: lino_xl/lib/sales/models.py:36
 msgid "Paper type"
 msgstr "Papierart"
 
-#: lino_xl/lib/sales/models.py:38
+#: lino_xl/lib/sales/models.py:37
 msgid "Paper types"
 msgstr "Papierarten"
 
-#: lino_xl/lib/sales/models.py:40
+#: lino_xl/lib/sales/models.py:39
 msgid "Template"
 msgstr "Vorlage"
 
-#: lino_xl/lib/sales/models.py:146
+#: lino_xl/lib/sales/models.py:145
 msgid "Sales invoice"
 msgstr "Verkaufsrechnung"
 
-#: lino_xl/lib/sales/models.py:170
+#: lino_xl/lib/sales/models.py:169
 msgid "Balance to pay"
 msgstr "Saldo zu zahlen"
 
-#: lino_xl/lib/sales/models.py:179
+#: lino_xl/lib/sales/models.py:178
 msgid "Balance before"
 msgstr "Saldo vorher"
 
-#: lino_xl/lib/sales/models.py:198
+#: lino_xl/lib/sales/models.py:197
 msgid "Totals"
 msgstr "Summen"
 
-#: lino_xl/lib/sales/models.py:204
+#: lino_xl/lib/sales/models.py:203
 msgid "Header"
 msgstr "Kopfdaten"
 
-#: lino_xl/lib/sales/models.py:259
+#: lino_xl/lib/sales/models.py:258
 msgid "Sales invoice journal"
 msgstr "Journal für Verkaufsrechnungen"
 
-#: lino_xl/lib/sales/models.py:263
+#: lino_xl/lib/sales/models.py:262
 msgid "Due invoices"
 msgstr "Offene Rechnungen"
 
-#: lino_xl/lib/sales/models.py:281
+#: lino_xl/lib/sales/models.py:280
 #, fuzzy
 msgid "Sales invoice item"
 msgstr "Analytische Rechnungsposition"
 
-#: lino_xl/lib/sales/models.py:282
+#: lino_xl/lib/sales/models.py:281
 #, fuzzy
 msgid "Sales invoice items"
 msgstr "Verkaufsrechnungen"
 
-#: lino_xl/lib/sales/models.py:342
+#: lino_xl/lib/sales/models.py:341
 msgid "({qty}*{unit_price}/{unit})"
 msgstr ""
 
-#: lino_xl/lib/sales/models.py:380
+#: lino_xl/lib/sales/models.py:379
 #, python-format
 msgid "Going to sign %d documents as user %s. Are you sure?"
 msgstr ""
@@ -7863,7 +7869,7 @@ msgstr ""
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:54
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:32
-#: lino_xl/lib/vat/mixins.py:425
+#: lino_xl/lib/vat/mixins.py:427
 msgid "Unit price"
 msgstr "Stückpreis"
 
@@ -7873,7 +7879,7 @@ msgid "Price"
 msgstr "Preis"
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:93
-#: lino_xl/lib/vat/mixins.py:59
+#: lino_xl/lib/vat/mixins.py:60
 msgid "Total excl. VAT"
 msgstr "Total zzgl. MwSt."
 
@@ -7901,11 +7907,11 @@ msgstr "Blanko-Papier"
 msgid "SEPA"
 msgstr ""
 
-#: lino_xl/lib/sepa/mixins.py:168
+#: lino_xl/lib/sepa/mixins.py:71
 msgid "Check for partner mismatches in bank accounts"
 msgstr ""
 
-#: lino_xl/lib/sepa/mixins.py:171
+#: lino_xl/lib/sepa/mixins.py:74
 msgid "Bank account owner ({0}) differs from partner ({1})"
 msgstr ""
 
@@ -8321,7 +8327,7 @@ msgstr "Drittpartner"
 msgid "Third Parties"
 msgstr "Drittpartner"
 
-#: lino_xl/lib/tickets/__init__.py:21 lino_xl/lib/tickets/models.py:478
+#: lino_xl/lib/tickets/__init__.py:21 lino_xl/lib/tickets/models.py:500
 msgid "Tickets"
 msgstr "Anfragen"
 
@@ -8387,281 +8393,286 @@ msgstr "Suggeriert durch"
 msgid "Obsoleted by"
 msgstr "Ersetzt durch"
 
-#: lino_xl/lib/tickets/models.py:63
+#: lino_xl/lib/tickets/models.py:49 lino_xl/lib/tickets/models.py:586
+#, fuzzy
+msgid "Assign to"
+msgstr "Zugewiesen zu"
+
+#: lino_xl/lib/tickets/models.py:85
 msgid "Planned time"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:83
+#: lino_xl/lib/tickets/models.py:105
 msgid "Ticket type"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:84
+#: lino_xl/lib/tickets/models.py:106
 msgid "Ticket types"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:165
+#: lino_xl/lib/tickets/models.py:187
 #, fuzzy
 msgctxt "Ticketing"
 msgid "Site"
 msgstr "Visite"
 
-#: lino_xl/lib/tickets/models.py:166
+#: lino_xl/lib/tickets/models.py:188
 #, fuzzy
 msgctxt "Ticketing"
 msgid "Sites"
 msgstr "Minuten"
 
-#: lino_xl/lib/tickets/models.py:186 lino_xl/lib/tickets/models.py:513
+#: lino_xl/lib/tickets/models.py:208 lino_xl/lib/tickets/models.py:535
 msgid "Deadline"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:191
+#: lino_xl/lib/tickets/models.py:213
 #, fuzzy
 msgid "Hours paid"
 msgstr "Stunden"
 
-#: lino_xl/lib/tickets/models.py:275
+#: lino_xl/lib/tickets/models.py:297
 #, fuzzy
 msgid "Site subscription"
 msgstr "Abonnement"
 
-#: lino_xl/lib/tickets/models.py:276
+#: lino_xl/lib/tickets/models.py:298
 #, fuzzy
 msgid "Site subscriptions"
 msgstr "Abonnements"
 
-#: lino_xl/lib/tickets/models.py:429
+#: lino_xl/lib/tickets/models.py:451
 msgid "Spawn a new child ticket {0} this one."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:438
+#: lino_xl/lib/tickets/models.py:460
 msgid "New ticket {0} #{1}"
 msgstr "Neues Ticket {0} #{1}"
 
-#: lino_xl/lib/tickets/models.py:460
+#: lino_xl/lib/tickets/models.py:482
 msgid "New ticket {0} has been spawned as child of {1}."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:493
+#: lino_xl/lib/tickets/models.py:515
 msgctxt "Ticket"
 msgid "Summary"
 msgstr "Zusammenfassung"
 
-#: lino_xl/lib/tickets/models.py:495
+#: lino_xl/lib/tickets/models.py:517
 msgid "Short summary of the problem."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:502 lino_xl/lib/tickets/models.py:616
+#: lino_xl/lib/tickets/models.py:524 lino_xl/lib/tickets/models.py:665
 msgid "Duplicate of"
 msgstr "Dublette von"
 
-#: lino_xl/lib/tickets/models.py:522
+#: lino_xl/lib/tickets/models.py:544
 msgid "Milestone for which this ticket has been reported."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:528
+#: lino_xl/lib/tickets/models.py:550
 msgid "The milestone for which this ticket has been fixed."
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:532
+#: lino_xl/lib/tickets/models.py:554
 msgid "Reporter"
 msgstr "Anfrager"
 
-#: lino_xl/lib/tickets/models.py:534
+#: lino_xl/lib/tickets/models.py:556
 msgid "Waiting for"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:536
+#: lino_xl/lib/tickets/models.py:558
 msgid "Feedback"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:537
+#: lino_xl/lib/tickets/models.py:559
 msgid "Standby"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:540
+#: lino_xl/lib/tickets/models.py:562
 msgid "Spawn triggered ticket"
 msgstr "Neues Ticket auslösen"
 
-#: lino_xl/lib/tickets/models.py:546
+#: lino_xl/lib/tickets/models.py:568
 #, fuzzy
 msgid "Fixed since"
 msgstr "Aktive Tickets"
 
-#: lino_xl/lib/tickets/models.py:554 lino_xl/lib/tickets/ui.py:364
+#: lino_xl/lib/tickets/models.py:576 lino_xl/lib/tickets/ui.py:355
 msgid "Commented Last"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:556
+#: lino_xl/lib/tickets/models.py:578
 msgid "Last user to make a comment"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:719
+#: lino_xl/lib/tickets/models.py:768
 msgid " by "
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:721
+#: lino_xl/lib/tickets/models.py:770
 msgid "for"
 msgstr ""
 
-#: lino_xl/lib/tickets/models.py:727 lino_xl/lib/tickets/models.py:731
+#: lino_xl/lib/tickets/models.py:776 lino_xl/lib/tickets/models.py:780
 msgid "assigned to"
 msgstr "Zugewiesen zu"
 
-#: lino_xl/lib/tickets/models.py:794 lino_xl/lib/tickets/ui.py:164
+#: lino_xl/lib/tickets/models.py:843 lino_xl/lib/tickets/ui.py:155
 msgid "Dependencies"
 msgstr "Verknüpfungen"
 
-#: lino_xl/lib/tickets/models.py:800
+#: lino_xl/lib/tickets/models.py:849
 msgid "Parent"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:258
+#: lino_xl/lib/tickets/ui.py:249
 msgid "Create dependency as "
 msgstr "Verknüpfung erstellen als"
 
-#: lino_xl/lib/tickets/ui.py:272
+#: lino_xl/lib/tickets/ui.py:263
 msgid "History"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:322
+#: lino_xl/lib/tickets/ui.py:313
 msgid "Only rows concerning this end user."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:326
+#: lino_xl/lib/tickets/ui.py:317
 #, fuzzy
 msgid "Assigned_to"
 msgstr "Zugewiesen zu"
 
-#: lino_xl/lib/tickets/ui.py:328
+#: lino_xl/lib/tickets/ui.py:319
 msgid "Only tickets with this user assigned."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:332
+#: lino_xl/lib/tickets/ui.py:323
 msgid "Not assigned to"
 msgstr "Nicht zugewiesen zu"
 
-#: lino_xl/lib/tickets/ui.py:334
+#: lino_xl/lib/tickets/ui.py:325
 msgid "Only that this user is not assigned to."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:337 lino_xl/lib/working/models.py:222
+#: lino_xl/lib/tickets/ui.py:328 lino_xl/lib/working/models.py:222
 msgid "Interesting for"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:339 lino_xl/lib/working/models.py:224
+#: lino_xl/lib/tickets/ui.py:330 lino_xl/lib/working/models.py:224
 msgid "Only tickets interesting for this partner."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:349 lino_xl/lib/votes/models.py:86
+#: lino_xl/lib/tickets/ui.py:340 lino_xl/lib/votes/models.py:86
 #: lino_xl/lib/xl/choicelists.py:14
 msgid "Priority"
 msgstr "Priorität"
 
-#: lino_xl/lib/tickets/ui.py:351
+#: lino_xl/lib/tickets/ui.py:342
 #, fuzzy
 msgid "Only rows having this priority."
 msgstr "%d zugewiesene Termine"
 
-#: lino_xl/lib/tickets/ui.py:354
+#: lino_xl/lib/tickets/ui.py:345
 #, fuzzy
 msgid "Deployed"
 msgstr "Angestellter"
 
-#: lino_xl/lib/tickets/ui.py:355
+#: lino_xl/lib/tickets/ui.py:346
 msgid "Whether to show tickets with at least one deployment"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:359
+#: lino_xl/lib/tickets/ui.py:350
 #, fuzzy
 msgid "Has site"
 msgstr "Aufgaben-Zustände"
 
-#: lino_xl/lib/tickets/ui.py:361
+#: lino_xl/lib/tickets/ui.py:352
 #, fuzzy
 msgid "Has reference"
 msgstr "Ihr Zeichen"
 
-#: lino_xl/lib/tickets/ui.py:366
+#: lino_xl/lib/tickets/ui.py:357
 msgid "Only tickets that have this use commenting last."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:369
+#: lino_xl/lib/tickets/ui.py:360
 msgid "Not Commented Last"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:371
+#: lino_xl/lib/tickets/ui.py:362
 msgid "Only tickets where this use is not the last commenter."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:374
+#: lino_xl/lib/tickets/ui.py:365
 #, fuzzy
 msgid "Site Subscriber"
 msgstr "Abonnement"
 
-#: lino_xl/lib/tickets/ui.py:376
+#: lino_xl/lib/tickets/ui.py:367
 msgid "Limit tickets to tickets that have a site this user is subscribed to."
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:521
+#: lino_xl/lib/tickets/ui.py:512
 msgid "All tickets"
 msgstr "Alle Tickets"
 
-#: lino_xl/lib/tickets/ui.py:526
+#: lino_xl/lib/tickets/ui.py:517
 msgid "Duplicates"
 msgstr ""
 
-#: lino_xl/lib/tickets/ui.py:535
+#: lino_xl/lib/tickets/ui.py:526
 #, fuzzy
 msgid "Reference Tickets"
 msgstr "Eingereichte Tickets"
 
-#: lino_xl/lib/tickets/ui.py:555
+#: lino_xl/lib/tickets/ui.py:546
 msgid "Unassigned Tickets"
 msgstr "Nicht zugewiesene Tickets"
 
-#: lino_xl/lib/tickets/ui.py:607
+#: lino_xl/lib/tickets/ui.py:598
 #, fuzzy
 msgid "Public tickets"
 msgstr "Alle Tickets"
 
-#: lino_xl/lib/tickets/ui.py:624
+#: lino_xl/lib/tickets/ui.py:615
 msgid "Tickets to triage"
 msgstr "Zu klassierende Tickets"
 
-#: lino_xl/lib/tickets/ui.py:626
+#: lino_xl/lib/tickets/ui.py:617
 msgid "Triage"
 msgstr "Sortieren"
 
-#: lino_xl/lib/tickets/ui.py:642
+#: lino_xl/lib/tickets/ui.py:633
 msgid "Tickets to talk"
 msgstr "Zu besprechende Tickets"
 
-#: lino_xl/lib/tickets/ui.py:657
+#: lino_xl/lib/tickets/ui.py:648
 #, fuzzy
 msgid "Tickets needing my feedback"
 msgstr "Meine Warteschlange"
 
-#: lino_xl/lib/tickets/ui.py:670
+#: lino_xl/lib/tickets/ui.py:661
 #, fuzzy
 msgid "My tickets needing feedback"
 msgstr "Meine Warteschlange"
 
-#: lino_xl/lib/tickets/ui.py:683 lino_xl/lib/working/models.py:307
+#: lino_xl/lib/tickets/ui.py:674 lino_xl/lib/working/models.py:307
 msgid "Active tickets"
 msgstr "Aktive Tickets"
 
-#: lino_xl/lib/tickets/ui.py:759
+#: lino_xl/lib/tickets/ui.py:750
 #, fuzzy
 msgid "Tickets to work"
 msgstr "Zu besprechende Tickets"
 
-#: lino_xl/lib/tickets/ui.py:836
+#: lino_xl/lib/tickets/ui.py:827
 #, fuzzy
 msgid "{}: {}"
 msgstr " in "
 
-#: lino_xl/lib/tickets/ui.py:869
+#: lino_xl/lib/tickets/ui.py:860
 msgid "My sites"
 msgstr "Meine Baustellen"
 
@@ -8866,61 +8877,61 @@ msgstr "Stimmabgabezustände"
 msgid "Needs VAT id"
 msgstr ""
 
-#: lino_xl/lib/vat/choicelists.py:331
+#: lino_xl/lib/vat/choicelists.py:337
 #, fuzzy
 msgid "Declaration fields"
 msgstr "MwSt.-Erklärungen"
 
-#: lino_xl/lib/vat/choicelists.py:375
+#: lino_xl/lib/vat/choicelists.py:381
 #, fuzzy
 msgid "columns"
 msgstr "Konten"
 
-#: lino_xl/lib/vat/choicelists.py:376
+#: lino_xl/lib/vat/choicelists.py:382
 #, fuzzy
 msgid "regimes"
 msgstr "MwSt.-Regimes"
 
-#: lino_xl/lib/vat/choicelists.py:377
+#: lino_xl/lib/vat/choicelists.py:383
 #, fuzzy
 msgid "classes"
 msgstr "MwSt.-Klassen"
 
-#: lino_xl/lib/vat/choicelists.py:439
+#: lino_xl/lib/vat/choicelists.py:445
 #, fuzzy
 msgid "VAT rule {}: "
 msgstr "Begleichungsregel"
 
-#: lino_xl/lib/vat/choicelists.py:449
+#: lino_xl/lib/vat/choicelists.py:455
 msgid "if ({}) then"
 msgstr ""
 
-#: lino_xl/lib/vat/choicelists.py:450
+#: lino_xl/lib/vat/choicelists.py:456
 msgid "apply {} %"
 msgstr ""
 
-#: lino_xl/lib/vat/choicelists.py:451
+#: lino_xl/lib/vat/choicelists.py:457
 msgid "and book to {}"
 msgstr ""
 
-#: lino_xl/lib/vat/choicelists.py:453
+#: lino_xl/lib/vat/choicelists.py:459
 #, fuzzy
 msgid "(return to {})"
 msgstr "Rückzahlbare Mehrwertsteuer"
 
-#: lino_xl/lib/vat/choicelists.py:466
+#: lino_xl/lib/vat/choicelists.py:472
 msgid "VAT rule"
 msgstr "MwSt.-Regel"
 
-#: lino_xl/lib/vat/choicelists.py:467
+#: lino_xl/lib/vat/choicelists.py:473
 msgid "VAT rules"
 msgstr "MwSt-Regeln"
 
-#: lino_xl/lib/vat/choicelists.py:492
+#: lino_xl/lib/vat/choicelists.py:498
 msgid "No VAT rule for ({!r},{!r},{!r},{!r},{!r})"
 msgstr ""
 
-#: lino_xl/lib/vat/desktop.py:69 lino_xl/lib/xl/help_texts.py:1692
+#: lino_xl/lib/vat/desktop.py:69 lino_xl/lib/xl/help_texts.py:1691
 msgid "Purchase journal"
 msgstr ""
 
@@ -8953,60 +8964,60 @@ msgstr "Einkauf"
 msgid "Intra-Community sales"
 msgstr "Innergemeinschaftlich"
 
-#: lino_xl/lib/vat/desktop.py:192
+#: lino_xl/lib/vat/desktop.py:193
 #, fuzzy
 msgid "Intra-Community purchases"
 msgstr "Innergemeinschaftlich"
 
-#: lino_xl/lib/vat/mixins.py:58
+#: lino_xl/lib/vat/mixins.py:59
 msgid "Total to pay"
 msgstr "Saldo zu zahlen"
 
-#: lino_xl/lib/vat/mixins.py:123
+#: lino_xl/lib/vat/mixins.py:124
 msgid "Compute sums"
 msgstr ""
 
-#: lino_xl/lib/vat/mixins.py:239
+#: lino_xl/lib/vat/mixins.py:241
 #, fuzzy
 msgid "{} is not configured"
 msgstr "{0} wurde aus Beobachtungsliste entfernt."
 
-#: lino_xl/lib/vat/mixins.py:277
+#: lino_xl/lib/vat/mixins.py:279
 msgid "Cannot use VAT regime {} for partner without VAT id"
 msgstr ""
 
-#: lino_xl/lib/vat/models.py:21 lino_xl/lib/vatless/models.py:30
+#: lino_xl/lib/vat/models.py:20 lino_xl/lib/vatless/models.py:22
 #: lino_xl/lib/vatless/ui.py:127
 msgid "Invoices"
 msgstr "Rechnungen"
 
-#: lino_xl/lib/vat/models.py:25
+#: lino_xl/lib/vat/models.py:24
 msgid "Provider's invoice number"
 msgstr ""
 
-#: lino_xl/lib/vat/models.py:35
+#: lino_xl/lib/vat/models.py:34
 #, fuzzy
 msgid "Account invoice item"
 msgstr "Rechnungsposition"
 
-#: lino_xl/lib/vat/models.py:36
+#: lino_xl/lib/vat/models.py:35
 #, fuzzy
 msgid "Account invoice items"
 msgstr "Rechnungspositionen"
 
-#: lino_xl/lib/vat/models.py:85
+#: lino_xl/lib/vat/models.py:84
 msgid "VAT id"
 msgstr "MwSt.-Nr."
 
-#: lino_xl/lib/vat/models.py:101 lino_xl/lib/xl/help_texts.py:1764
+#: lino_xl/lib/vat/models.py:100 lino_xl/lib/xl/help_texts.py:1763
 msgid "Check VAT columns configuration."
 msgstr ""
 
-#: lino_xl/lib/vat/models.py:109
+#: lino_xl/lib/vat/models.py:108
 msgid "No account defined as {} (needed by VAT column {})"
 msgstr ""
 
-#: lino_xl/lib/vat/models.py:118
+#: lino_xl/lib/vat/models.py:117
 msgid "Account {} must have VAT column {}"
 msgstr ""
 
@@ -9014,11 +9025,11 @@ msgstr ""
 msgid "VAT-less invoicing"
 msgstr "Fakturierung ohne MwSt"
 
-#: lino_xl/lib/vatless/models.py:96
+#: lino_xl/lib/vatless/models.py:89
 msgid "Invoice item"
 msgstr "Rechnungsposition"
 
-#: lino_xl/lib/vatless/models.py:97
+#: lino_xl/lib/vatless/models.py:90
 msgid "Invoice items"
 msgstr "Rechnungspositionen"
 
@@ -12521,12 +12532,12 @@ msgstr ""
 msgid "Django model representing a users group."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1013 lino_xl/lib/xl/help_texts.py:1632
+#: lino_xl/lib/xl/help_texts.py:1013 lino_xl/lib/xl/help_texts.py:1631
 #, fuzzy
 msgid "The reference."
 msgstr "Ihr Zeichen"
 
-#: lino_xl/lib/xl/help_texts.py:1014 lino_xl/lib/xl/help_texts.py:1633
+#: lino_xl/lib/xl/help_texts.py:1014 lino_xl/lib/xl/help_texts.py:1632
 msgid "The designation in different languages."
 msgstr ""
 
@@ -13675,562 +13686,18 @@ msgid ""
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1370
-msgid "Model mixin for objects that cover a range of accounting periods."
+msgid "Model mixin for objects that represent a payable transaction."
 msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1371
-msgid "The first period of the range to cover."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1372
-msgid "The last period of the range to cover."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1373
-msgid ""
-"Model mixin for objects that can be filtered by a range of accounting\n"
-"periods. This adds two parameter fields\n"
-"start_period and end_period to every table on this model."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1376
-#, fuzzy
-msgid "Shows the items of this voucher."
-msgstr "Datenobjekt"
-
-#: lino_xl/lib/xl/help_texts.py:1377
-msgid "A volatile object representing a group of matching movements."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1378
-msgid "The common match string of these movments"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1379
-msgid ""
-"Whether I mean my debts and payments (towards that partner)\n"
-"or those of the partner (towards me)."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1381
-msgid ""
-"A table which shows a list of general ledger accounts during the\n"
-"observed period, showing their old and new balances and the sum of\n"
-"debit and credit movements."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1384
-msgid "A parameter panel with two fields:"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1386
-msgid ""
-"Optional end of observed period range.  Leave empty to\n"
-"consider only the Start period."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1388
-#, fuzzy
-msgid "Django model to represent a partner list."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1389
-#, fuzzy
-msgid "Django model to represent a membership of a partner in a list."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1390
-msgid ""
-"A wish (formerly \"deployment\") is the fact that a given ticket\n"
-"is being fixed (or installed or activated) by a given milestone\n"
-"(to a given site)."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1393
-msgid "The milestone (activity) containing this wish."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1394
-msgid ""
-"When a ticket occurs in a milestone, then we might want to qualify\n"
-"how or why it occured. We call it the \"type\" of that \"wish\"."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1396
-msgid "a new ticket was created as the result of this milestone"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1397
-msgid "Show the milestones where this ticket occurs as a wish."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1398
-msgid "A project is something on which several users work together."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1399
-msgid ""
-"The user to whom new tickets will be assigned.\n"
-"See Ticket.assigned_to."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1401
-msgid "The type of a Project."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1402
-msgid ""
-"Model mixin for things which represent a time investment.  This\n"
-"currently just defines a group of three fields:"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1404
-msgid ""
-"Whether this investment is closed, i.e. certain things should\n"
-"not change anymore."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1406
-msgid ""
-"Whether this investment is private, i.e. should not be\n"
-"publicly visible anywhere."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1408
-msgid "The time (in hours) we plan to work on this project or ticket."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1409
-msgid "The type of a Session."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1410
-msgid "Django model representing a work session."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1411
-msgid "The date when you started to work."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1412
-msgid ""
-"The time (in hh:mm) when you started working on this\n"
-"session."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1414
-msgid "Leave this field blank if it is the same date as start_date."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1415
-msgid "The time (in hh:mm) when the worker stopped to work."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1416
-msgid ""
-"The time (in hh:mm) to remove from the duration resulting\n"
-"from the difference between start_time and\n"
-"end_time."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1419
-msgid ""
-"The faculty that has been used during this session. On a new\n"
-"session this defaults to the needed faculty currently specified\n"
-"on the ticket."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1422
-msgid "The \"Sessions\" panel in the detail of a ticket."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1423
-msgid "This panel shows:"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1424
-msgid "Start a session on this ticket."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1425
-msgid "Close this session, i.e. stop working it for now."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1426
-msgid "Close this session, i.e. stop working on that ticket now."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1427
-msgid "Base class for things that workers can work on."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1428
-msgid ""
-"Return True if the given user can start a work session on\n"
-"this object."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1430
-msgid ""
-"This is automatically called when a work session has been\n"
-"created or modified."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1432
-msgid "See StartTicketSession."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1433
-msgid "See EndTicketSession."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1434
-msgid "The Django model representing a service report."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1435
-msgid ""
-"This can be empty and will then show the working time of all\n"
-"users."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1437
-#, fuzzy
-msgid "Show only tickets on sites assigned to this partner."
-msgstr "%d zugewiesene Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1438
-#, fuzzy
-msgid "Show only tickets having this state."
-msgstr "%d zugewiesene Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1439
-msgid "See lino_xl.lib.exerpts.Certifiable.printed"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1440
-msgid "The list of tickets mentioned in a service report."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1441
-#, fuzzy
-msgid "Show all sessions on the same day."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1442
-msgid ""
-"Select only tickets for which there has been at least one session\n"
-"during the given period."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1444
-msgid ""
-"Select only projects for which there has been at least one session\n"
-"during the given period."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1446
-msgid "A user who is candidate for working on a ticket."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1447
-msgid "An automatically generated record with yearly summary data about a site."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1448
-msgid "Shows the summary records for a given site."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1449
-msgid "An automatically generated record with monthly summary data about a user."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1450
-msgid "Shows the summary records for a given user."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1451
-msgid ""
-"Has access to office functionality like calendar, notes and\n"
-"uploads."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1453
-msgid ""
-"Can manage office functionality for other users (but not for\n"
-"himself)."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1455
-msgid "Can manage configuration of office functionality."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1456
-msgid ""
-"The name of field on the ContactDetailsOwner where\n"
-"the value of the primary item of this type is to be mirrored."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1458
-msgid "The list of \"built-in\" types of contact detail items."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1459
-msgid ""
-"Whether this item is the primary contact detail for this type\n"
-"and this owner.  Setting this field will automatically uncheck\n"
-"any previously primary items and update the owner's contact\n"
-"detail fields."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1463
-msgid "Model mixin for the potential owner of contact details."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1464
-msgid "Checks for mismatches between contact details and owner."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1465
-msgid "A series of questions."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1466
-msgid "Show all polls of all users."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1467
-msgid "A question of a poll."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1468
-msgid "The number of this question within this poll."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1469
-msgid "See ToggleChoice"
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1470
-msgid ""
-"Show all responses for a given partner.  Default view shows a\n"
-"summary of all responses for a that partner using a bullet list\n"
-"grouped by poll."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1473
-msgid ""
-"The table used for answering to a poll. This is a virtual table\n"
-"and its rows are volatile AnswersByResponseRow instances."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1475
-msgid ""
-"A virtual field that displays the currently selected answer(s) for\n"
-"this question, eventually (if editing is permitted) together with\n"
-"buttons to modify the selection."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1478
-msgid ""
-"Volatile object to represent the one and only answer to a given\n"
-"question in a given response."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1480
-msgid "An editable virtual field."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1481
-msgid ""
-"The rows of this table are volatile AnswersByQuestionRow\n"
-"instances."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1483
-msgid "Volatile object to represent a row of AnswersByQuestion."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1484
-msgid "Shows a summay of responses to this poll."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1485
-msgid "A user who has access to polls functionality."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1486
-msgid "A user who manages configuration of polls functionality."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1487
-msgid "Toggle the given choice for the given question in this response."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1488
-#, fuzzy
-msgid "The list of possible states of a Poll."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1489
-#, fuzzy
-msgid "The list of possible states of a Response."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1490
-msgid "Django model to represent a product."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1491
-#, fuzzy
-msgid "The description of this product."
-msgstr "Eventueller Adelstitel"
-
-#: lino_xl/lib/xl/help_texts.py:1492
-#, fuzzy
-msgid "The type of this product."
-msgstr "Eventueller Adelstitel"
-
-#: lino_xl/lib/xl/help_texts.py:1493
-#, fuzzy
-msgid "The category of this product."
-msgstr "Eventueller Adelstitel"
-
-#: lino_xl/lib/xl/help_texts.py:1494
-#, fuzzy
-msgid "Pointer to DeliveryUnits"
-msgstr "Einschreibungs-Zustände"
-
-#: lino_xl/lib/xl/help_texts.py:1495
-msgid ""
-"The VAT class.  Injected by lino_xl.lib.vat. If that plugin is\n"
-"not installed, vat_class is a dummy field."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1497
-#, fuzzy
-msgid "Base class for all tables of products."
-msgstr "Jahresbericht"
-
-#: lino_xl/lib/xl/help_texts.py:1498
-msgid "Django model to represent a product category."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1499
-msgid "The product type to apply to products of this category."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1500
-#, fuzzy
-msgid "The verbose name of this product type."
-msgstr "Eventueller Adelstitel"
-
-#: lino_xl/lib/xl/help_texts.py:1501
-msgid "The name of the table to use for displaying a list of products with this type."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1502
-#, fuzzy
-msgid "The list of product types."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1503
-#, fuzzy
-msgid "The list of possible delivery units of a product."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1504
-msgid "A choicelist of \"price factors\"."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1505
-#, fuzzy
-msgid "The list of price rules."
-msgstr "Alle meine Termine"
-
-#: lino_xl/lib/xl/help_texts.py:1506
-msgid ""
-"The type of the values that a property accepts.\n"
-"Each PropType may (or may not) imply a list of choices."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1508
-msgid ""
-"The default value to set when creating a PropertyOccurence.\n"
-"This is currently used only in some fixture..."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1510
-msgid ""
-"A Choice for a given PropType.  text is the text to be displayed\n"
-"in combo boxes."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1512
-msgid ""
-"A Property Group defines a list of Properties that fit together\n"
-"under a common name.  Examples of Property Groups: Skills, Soft\n"
-"Skills, Obstacles There will be one menu entry per Group."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1515
-#, fuzzy
-msgid "Represents a property."
-msgstr "Vertreten durch"
-
-#: lino_xl/lib/xl/help_texts.py:1516
-msgid ""
-"A Property Occurence is when a Property occurs, possibly having a\n"
-"certain value."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1518
-msgid ""
-"A list of possible answers to questions of type \"How well ...?\":\n"
-"\"not at all\", \"a bit\", \"moderate\", \"quite well\" and \"very well\" "
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1520
-msgid "A list of possible answers to questions of type \"How much do you like ...?\"."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1521
-msgid "A bank account related to a given partner."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1523
-msgid ""
-"A virtual field which displays the date of the last imported\n"
-"statement for this account. Clicking on this date will open\n"
-"the B2C account <lino_xl.lib.b2c.models.Account> with same\n"
-"IBAN number."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1527
-msgid ""
-"Show the bank account(s) defined for a given partner. To be\n"
-"included to a detail window on partner."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1529
-msgid "Defines a field bank_account and its chooser."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1530
-msgid ""
-"Mixin for models that represent payable transactions.  To be combined\n"
-"with some mixin which defines a field partner."
-msgstr ""
-
-#: lino_xl/lib/xl/help_texts.py:1532
 msgid "See lino_xl.lib.ledger.mixins.PartnerRelated.payment_term"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1533
+#: lino_xl/lib/xl/help_texts.py:1372
 msgid "A char field with a description for this transaction."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1534
+#: lino_xl/lib/xl/help_texts.py:1373
 msgid ""
 "To be implemented by subclasses.  Expected to return a dict which maps\n"
 "4-tuples (acc_tuple, project, vat_class, vat_regime) to the payable\n"
@@ -14239,66 +13706,608 @@ msgid ""
 "choice and vat_regime a lino_xl.lib.vat.VatRegimes choice."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1539
+#: lino_xl/lib/xl/help_texts.py:1378
 msgid "Implements lino_xl.lib.ledger.Voucher.get_wanted_movements()."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1540
+#: lino_xl/lib/xl/help_texts.py:1379
+msgid "Model mixin for objects that cover a range of accounting periods."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1380
+msgid "The first period of the range to cover."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1381
+msgid "The last period of the range to cover."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1382
+msgid ""
+"Model mixin for objects that can be filtered by a range of accounting\n"
+"periods. This adds two parameter fields\n"
+"start_period and end_period to every table on this model."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1385
+#, fuzzy
+msgid "Shows the items of this voucher."
+msgstr "Datenobjekt"
+
+#: lino_xl/lib/xl/help_texts.py:1386
+msgid "A volatile object representing a group of matching movements."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1387
+msgid "The common match string of these movments"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1388
+msgid ""
+"Whether I mean my debts and payments (towards that partner)\n"
+"or those of the partner (towards me)."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1390
+msgid ""
+"A table which shows a list of general ledger accounts during the\n"
+"observed period, showing their old and new balances and the sum of\n"
+"debit and credit movements."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1393
+msgid "A parameter panel with two fields:"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1395
+msgid ""
+"Optional end of observed period range.  Leave empty to\n"
+"consider only the Start period."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1397
+#, fuzzy
+msgid "Django model to represent a partner list."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1398
+#, fuzzy
+msgid "Django model to represent a membership of a partner in a list."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1399
+msgid ""
+"A wish (formerly \"deployment\") is the fact that a given ticket\n"
+"is being fixed (or installed or activated) by a given milestone\n"
+"(to a given site)."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1402
+msgid "The milestone (activity) containing this wish."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1403
+msgid ""
+"When a ticket occurs in a milestone, then we might want to qualify\n"
+"how or why it occured. We call it the \"type\" of that \"wish\"."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1405
+msgid "a new ticket was created as the result of this milestone"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1406
+msgid "Show the milestones where this ticket occurs as a wish."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1407
+msgid "A project is something on which several users work together."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1408
+msgid ""
+"The user to whom new tickets will be assigned.\n"
+"See Ticket.assigned_to."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1410
+msgid "The type of a Project."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1411
+msgid ""
+"Model mixin for things which represent a time investment.  This\n"
+"currently just defines a group of three fields:"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1413
+msgid ""
+"Whether this investment is closed, i.e. certain things should\n"
+"not change anymore."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1415
+msgid ""
+"Whether this investment is private, i.e. should not be\n"
+"publicly visible anywhere."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1417
+msgid "The time (in hours) we plan to work on this project or ticket."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1418
+msgid "The type of a Session."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1419
+msgid "Django model representing a work session."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1420
+msgid "The date when you started to work."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1421
+msgid ""
+"The time (in hh:mm) when you started working on this\n"
+"session."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1423
+msgid "Leave this field blank if it is the same date as start_date."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1424
+msgid "The time (in hh:mm) when the worker stopped to work."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1425
+msgid ""
+"The time (in hh:mm) to remove from the duration resulting\n"
+"from the difference between start_time and\n"
+"end_time."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1428
+msgid ""
+"The faculty that has been used during this session. On a new\n"
+"session this defaults to the needed faculty currently specified\n"
+"on the ticket."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1431
+msgid "The \"Sessions\" panel in the detail of a ticket."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1432
+msgid "This panel shows:"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1433
+msgid "Start a session on this ticket."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1434
+msgid "Close this session, i.e. stop working it for now."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1435
+msgid "Close this session, i.e. stop working on that ticket now."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1436
+msgid "Base class for things that workers can work on."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1437
+msgid ""
+"Return True if the given user can start a work session on\n"
+"this object."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1439
+msgid ""
+"This is automatically called when a work session has been\n"
+"created or modified."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1441
+msgid "See StartTicketSession."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1442
+msgid "See EndTicketSession."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1443
+msgid "The Django model representing a service report."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1444
+msgid ""
+"This can be empty and will then show the working time of all\n"
+"users."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1446
+#, fuzzy
+msgid "Show only tickets on sites assigned to this partner."
+msgstr "%d zugewiesene Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1447
+#, fuzzy
+msgid "Show only tickets having this state."
+msgstr "%d zugewiesene Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1448
+msgid "See lino_xl.lib.exerpts.Certifiable.printed"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1449
+msgid "The list of tickets mentioned in a service report."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1450
+#, fuzzy
+msgid "Show all sessions on the same day."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1451
+msgid ""
+"Select only tickets for which there has been at least one session\n"
+"during the given period."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1453
+msgid ""
+"Select only projects for which there has been at least one session\n"
+"during the given period."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1455
+msgid "A user who is candidate for working on a ticket."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1456
+msgid "An automatically generated record with yearly summary data about a site."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1457
+msgid "Shows the summary records for a given site."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1458
+msgid "An automatically generated record with monthly summary data about a user."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1459
+msgid "Shows the summary records for a given user."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1460
+msgid ""
+"Has access to office functionality like calendar, notes and\n"
+"uploads."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1462
+msgid ""
+"Can manage office functionality for other users (but not for\n"
+"himself)."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1464
+msgid "Can manage configuration of office functionality."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1465
+msgid ""
+"The name of field on the ContactDetailsOwner where\n"
+"the value of the primary item of this type is to be mirrored."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1467
+msgid "The list of \"built-in\" types of contact detail items."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1468
+msgid ""
+"Whether this item is the primary contact detail for this type\n"
+"and this owner.  Setting this field will automatically uncheck\n"
+"any previously primary items and update the owner's contact\n"
+"detail fields."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1472
+msgid "Model mixin for the potential owner of contact details."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1473
+msgid "Checks for mismatches between contact details and owner."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1474
+msgid "A series of questions."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1475
+msgid "Show all polls of all users."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1476
+msgid "A question of a poll."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1477
+msgid "The number of this question within this poll."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1478
+msgid "See ToggleChoice"
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1479
+msgid ""
+"Show all responses for a given partner.  Default view shows a\n"
+"summary of all responses for a that partner using a bullet list\n"
+"grouped by poll."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1482
+msgid ""
+"The table used for answering to a poll. This is a virtual table\n"
+"and its rows are volatile AnswersByResponseRow instances."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1484
+msgid ""
+"A virtual field that displays the currently selected answer(s) for\n"
+"this question, eventually (if editing is permitted) together with\n"
+"buttons to modify the selection."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1487
+msgid ""
+"Volatile object to represent the one and only answer to a given\n"
+"question in a given response."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1489
+msgid "An editable virtual field."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1490
+msgid ""
+"The rows of this table are volatile AnswersByQuestionRow\n"
+"instances."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1492
+msgid "Volatile object to represent a row of AnswersByQuestion."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1493
+msgid "Shows a summay of responses to this poll."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1494
+msgid "A user who has access to polls functionality."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1495
+msgid "A user who manages configuration of polls functionality."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1496
+msgid "Toggle the given choice for the given question in this response."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1497
+#, fuzzy
+msgid "The list of possible states of a Poll."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1498
+#, fuzzy
+msgid "The list of possible states of a Response."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1499
+msgid "Django model to represent a product."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1500
+#, fuzzy
+msgid "The description of this product."
+msgstr "Eventueller Adelstitel"
+
+#: lino_xl/lib/xl/help_texts.py:1501
+#, fuzzy
+msgid "The type of this product."
+msgstr "Eventueller Adelstitel"
+
+#: lino_xl/lib/xl/help_texts.py:1502
+#, fuzzy
+msgid "The category of this product."
+msgstr "Eventueller Adelstitel"
+
+#: lino_xl/lib/xl/help_texts.py:1503
+#, fuzzy
+msgid "Pointer to DeliveryUnits"
+msgstr "Einschreibungs-Zustände"
+
+#: lino_xl/lib/xl/help_texts.py:1504
+msgid ""
+"The VAT class.  Injected by lino_xl.lib.vat. If that plugin is\n"
+"not installed, vat_class is a dummy field."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1506
+#, fuzzy
+msgid "Base class for all tables of products."
+msgstr "Jahresbericht"
+
+#: lino_xl/lib/xl/help_texts.py:1507
+msgid "Django model to represent a product category."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1508
+msgid "The product type to apply to products of this category."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1509
+#, fuzzy
+msgid "The verbose name of this product type."
+msgstr "Eventueller Adelstitel"
+
+#: lino_xl/lib/xl/help_texts.py:1510
+msgid "The name of the table to use for displaying a list of products with this type."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1511
+#, fuzzy
+msgid "The list of product types."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1512
+#, fuzzy
+msgid "The list of possible delivery units of a product."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1513
+msgid "A choicelist of \"price factors\"."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1514
+#, fuzzy
+msgid "The list of price rules."
+msgstr "Alle meine Termine"
+
+#: lino_xl/lib/xl/help_texts.py:1515
+msgid ""
+"The type of the values that a property accepts.\n"
+"Each PropType may (or may not) imply a list of choices."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1517
+msgid ""
+"The default value to set when creating a PropertyOccurence.\n"
+"This is currently used only in some fixture..."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1519
+msgid ""
+"A Choice for a given PropType.  text is the text to be displayed\n"
+"in combo boxes."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1521
+msgid ""
+"A Property Group defines a list of Properties that fit together\n"
+"under a common name.  Examples of Property Groups: Skills, Soft\n"
+"Skills, Obstacles There will be one menu entry per Group."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1524
+#, fuzzy
+msgid "Represents a property."
+msgstr "Vertreten durch"
+
+#: lino_xl/lib/xl/help_texts.py:1525
+msgid ""
+"A Property Occurence is when a Property occurs, possibly having a\n"
+"certain value."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1527
+msgid ""
+"A list of possible answers to questions of type \"How well ...?\":\n"
+"\"not at all\", \"a bit\", \"moderate\", \"quite well\" and \"very well\" "
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1529
+msgid "A list of possible answers to questions of type \"How much do you like ...?\"."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1530
+msgid "A bank account related to a given partner."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1532
+msgid ""
+"A virtual field which displays the date of the last imported\n"
+"statement for this account. Clicking on this date will open\n"
+"the B2C account <lino_xl.lib.b2c.models.Account> with same\n"
+"IBAN number."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1536
+msgid ""
+"Show the bank account(s) defined for a given partner. To be\n"
+"included to a detail window on partner."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1538
+msgid "Defines a field bank_account and its chooser."
+msgstr ""
+
+#: lino_xl/lib/xl/help_texts.py:1539
 #, fuzzy
 msgid "The global list of sheet types ."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1541
+#: lino_xl/lib/xl/help_texts.py:1540
 msgid ""
 "A balance sheet or statement of financial position is a\n"
 "summary of the financial balances of an organisation."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1543
+#: lino_xl/lib/xl/help_texts.py:1542
 msgid "https://en.wikipedia.org/wiki/Statement_of_comprehensive_income#Requirements_of_IFRS"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1544
+#: lino_xl/lib/xl/help_texts.py:1543
 msgid "The global list of common sheet items ."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1545
+#: lino_xl/lib/xl/help_texts.py:1544
 msgid "Corresponds to the ref field in Item"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1546
+#: lino_xl/lib/xl/help_texts.py:1545
 msgid ""
 "In this table the uer can configure their local list of items for\n"
 "both sheet types."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1548
+#: lino_xl/lib/xl/help_texts.py:1547
 msgid ""
 "An entry is the computed value of given item for a given\n"
 "report."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1550
+#: lino_xl/lib/xl/help_texts.py:1549
 msgid "The Django model used to represent a ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1551
+#: lino_xl/lib/xl/help_texts.py:1550
 msgid ""
 "The author or reporter of this ticket. The user who reported this\n"
 "ticket to the database and is responsible for managing it."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1553
+#: lino_xl/lib/xl/help_texts.py:1552
 msgid ""
 "The end user who is asking for help.  This may be an external person\n"
 "who is not registered as a system user."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1555
+#: lino_xl/lib/xl/help_texts.py:1554
 msgid "The user who has been assigned to work on this ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1556
+#: lino_xl/lib/xl/help_texts.py:1555
 msgid ""
 "A complete and concise description of the ticket. This should\n"
 "describe in more detail what this ticket is about. If the\n"
@@ -14306,78 +14315,78 @@ msgid ""
 "version."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1560
+#: lino_xl/lib/xl/help_texts.py:1559
 msgid ""
 "The site this ticket belongs to.\n"
 "You can select only sites you are subscribed to."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1562
+#: lino_xl/lib/xl/help_texts.py:1561
 msgid ""
 "A formatted text field meant for writing instructions for the\n"
 "hoster's site administrator when doing an upgrade where this\n"
 "ticket is being deployed."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1565
+#: lino_xl/lib/xl/help_texts.py:1564
 msgid ""
 "What to do next. An unformatted one-line text which describes\n"
 "what this ticket is waiting for."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1567
+#: lino_xl/lib/xl/help_texts.py:1566
 msgid "The state of this ticket. See TicketStates."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1568
+#: lino_xl/lib/xl/help_texts.py:1567
 msgid ""
 "A pointer to another ticket which is regarded as the first occurence of\n"
 "the same problem."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1570
+#: lino_xl/lib/xl/help_texts.py:1569
 msgid "Specify that the ticket must be done for a given date."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1571
+#: lino_xl/lib/xl/help_texts.py:1570
 msgid "How urgent this ticket is."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1572
+#: lino_xl/lib/xl/help_texts.py:1571
 msgid "How the author rates the work which has been done on this ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1573
+#: lino_xl/lib/xl/help_texts.py:1572
 msgid ""
 "An indication about who is going to pay for work on this\n"
 "site.  See ReportingTypes."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1575
+#: lino_xl/lib/xl/help_texts.py:1574
 #, fuzzy
 msgid "The choicelist for the state of a ticket."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1576
+#: lino_xl/lib/xl/help_texts.py:1575
 msgid ""
 "Somebody reported this ticket, but there was no response yet. The\n"
 "ticket needs to be triaged."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1578
+#: lino_xl/lib/xl/help_texts.py:1577
 msgid ""
 "Some worker needs discussion with the author.  We don't yet\n"
 "know exactly what to do with it."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1580
+#: lino_xl/lib/xl/help_texts.py:1579
 msgid ""
 "The ticket is confirmed and we are working on it.\n"
 "It appears in the todo list of somebody (either the assigned\n"
 "worker, or our general todo list)"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1583
+#: lino_xl/lib/xl/help_texts.py:1582
 msgid ""
 "The ticket is theoretically done, but we want to confirm this\n"
 "somehow, and it is not clear who should do the next step. If\n"
@@ -14387,256 +14396,256 @@ msgid ""
 "todo."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1589
+#: lino_xl/lib/xl/help_texts.py:1588
 msgid ""
 "Waiting for some external event. We didn't decide what to do\n"
 "with it."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1591
+#: lino_xl/lib/xl/help_texts.py:1590
 msgid ""
 "The ticket is basically done, but some detail still\n"
 "needs to be done by the user (e.g. testing,\n"
 "confirmation, documentation,..)"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1594
+#: lino_xl/lib/xl/help_texts.py:1593
 #, fuzzy
 msgid "The ticket has been done."
 msgstr "Dokument %s wurde generiert."
 
-#: lino_xl/lib/xl/help_texts.py:1595
+#: lino_xl/lib/xl/help_texts.py:1594
 msgid "It has been decided that we won't fix this ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1596
+#: lino_xl/lib/xl/help_texts.py:1595
 msgid "The Django model representing a site."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1597
+#: lino_xl/lib/xl/help_texts.py:1596
 #, fuzzy
 msgid "Base class for all Sites tables."
 msgstr "Jahresbericht"
 
-#: lino_xl/lib/xl/help_texts.py:1598
+#: lino_xl/lib/xl/help_texts.py:1597
 msgid "Shows the sites for which I have a subscription."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1599
+#: lino_xl/lib/xl/help_texts.py:1598
 msgid "Shows all sites in explorer menu."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1600
+#: lino_xl/lib/xl/help_texts.py:1599
 #, fuzzy
 msgid "The Django model used to represent a ticket type."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1601
+#: lino_xl/lib/xl/help_texts.py:1600
 msgid ""
 "Which reporting type to use in a service report.\n"
 "See :class:ReportingTypes`."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1603
+#: lino_xl/lib/xl/help_texts.py:1602
 #, fuzzy
 msgid "The list of all ticket types."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1604
+#: lino_xl/lib/xl/help_texts.py:1603
 #, fuzzy
 msgid "A choicelist with the possible link types."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1605
+#: lino_xl/lib/xl/help_texts.py:1604
 msgid "The parent ticket requires the child ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1606
+#: lino_xl/lib/xl/help_texts.py:1605
 #, fuzzy
 msgid "The parent ticket triggers the child ticket."
 msgstr "Neues Ticket auslösen"
 
-#: lino_xl/lib/xl/help_texts.py:1607
+#: lino_xl/lib/xl/help_texts.py:1606
 msgid "The parent ticket is a deployment which deploys the child ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1608
+#: lino_xl/lib/xl/help_texts.py:1607
 #, fuzzy
 msgid "Base class for all tables of tickets."
 msgstr "Jahresbericht"
 
-#: lino_xl/lib/xl/help_texts.py:1609
+#: lino_xl/lib/xl/help_texts.py:1608
 msgid "Select a site if you want to see only tickets for this site."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1610
+#: lino_xl/lib/xl/help_texts.py:1609
 msgid "Show only (or hide) tickets that are marked private."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1611
+#: lino_xl/lib/xl/help_texts.py:1610
 msgid ""
 "Show only (or hide) tickets which are todo (i.e. state is New\n"
 "or ToDo)."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1613
+#: lino_xl/lib/xl/help_texts.py:1612
 msgid ""
 "Show only (or hide) tickets which are active (i.e. state is Talk\n"
 "or ToDo)."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1615
+#: lino_xl/lib/xl/help_texts.py:1614
 msgid "Show only (or hide) tickets that are assigned to somebody."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1616
+#: lino_xl/lib/xl/help_texts.py:1615
 msgid "Show only (or hide) tickets which have a site assigned."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1617
+#: lino_xl/lib/xl/help_texts.py:1616
 msgid "Show only tickets for which the given supplier is competent."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1618
+#: lino_xl/lib/xl/help_texts.py:1617
 #, fuzzy
 msgid "Shows all tickets."
 msgstr "Alle Tickets"
 
-#: lino_xl/lib/xl/help_texts.py:1619
+#: lino_xl/lib/xl/help_texts.py:1618
 msgid "Shows all tickets that have a reference."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1620
+#: lino_xl/lib/xl/help_texts.py:1619
 #, fuzzy
 msgid "Shows all public tickets."
 msgstr "Produktrechnungen"
 
-#: lino_xl/lib/xl/help_texts.py:1621
+#: lino_xl/lib/xl/help_texts.py:1620
 msgid ""
 "Shows tickets that need to be triaged.  Currently this is\n"
 "equivalent to those having their state set to new."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1623
+#: lino_xl/lib/xl/help_texts.py:1622
 #, fuzzy
 msgid "Shows tickets that are waiting for my feedback."
 msgstr "Meine Warteschlange"
 
-#: lino_xl/lib/xl/help_texts.py:1624
+#: lino_xl/lib/xl/help_texts.py:1623
 msgid "Shows tickets assigned to me and waiting for feedback from others."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1625
+#: lino_xl/lib/xl/help_texts.py:1624
 msgid "Show all tickets that are in an active state."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1626
+#: lino_xl/lib/xl/help_texts.py:1625
 msgid "Show all active tickets reported by me."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1627
+#: lino_xl/lib/xl/help_texts.py:1626
 msgid ""
 "Shows the tickets which are marked as duplicates of this\n"
 "(i.e. whose duplicate_of field points to this ticket."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1629
+#: lino_xl/lib/xl/help_texts.py:1628
 #, fuzzy
 msgid "Abstract base class for ticket tables with a summary."
 msgstr "Die standardmäßige Zugriffsklasse für Ihre Termine und Aufgaben"
 
-#: lino_xl/lib/xl/help_texts.py:1630
+#: lino_xl/lib/xl/help_texts.py:1629
 #, fuzzy
 msgid "Show all active tickets assigned to me."
 msgstr "%d zugewiesene Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1631
+#: lino_xl/lib/xl/help_texts.py:1630
 msgid "Django model representing a topic."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1634
+#: lino_xl/lib/xl/help_texts.py:1633
 msgid "Rich text field for a longer multi-line description."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1635
+#: lino_xl/lib/xl/help_texts.py:1634
 msgid ""
 "Virtual field which includes the formatted structured reference and the\n"
 "description_text."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1637
+#: lino_xl/lib/xl/help_texts.py:1636
 msgid "Deprecated. Don't use."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1638
+#: lino_xl/lib/xl/help_texts.py:1637
 msgid "Django model representing an interest."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1639
+#: lino_xl/lib/xl/help_texts.py:1638
 msgid ""
 "This model is deprecated.  We use the Topic.ref for structuring\n"
 "topics."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1641
+#: lino_xl/lib/xl/help_texts.py:1640
 msgid "Currently not used."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1642
+#: lino_xl/lib/xl/help_texts.py:1641
 #, fuzzy
 msgid ""
 "Represents a possible choice for the trend_area field of a\n"
 "TrendStage."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1644 lino_xl/lib/xl/help_texts.py:1649
+#: lino_xl/lib/xl/help_texts.py:1643 lino_xl/lib/xl/help_texts.py:1648
 #, fuzzy
 msgid "Pointer to the TrendArea."
 msgstr "Kontaktperson"
 
-#: lino_xl/lib/xl/help_texts.py:1645
+#: lino_xl/lib/xl/help_texts.py:1644
 msgid "Whether this stage should cause subject column to be added ."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1646
+#: lino_xl/lib/xl/help_texts.py:1645
 msgid "The subject we are talking about."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1647
+#: lino_xl/lib/xl/help_texts.py:1646
 msgid "The user who entered this data."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1648
+#: lino_xl/lib/xl/help_texts.py:1647
 msgid "The date when the subject reached the stage."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1650
+#: lino_xl/lib/xl/help_texts.py:1649
 #, fuzzy
 msgid "Pointer to the TrendStage."
 msgstr "Kontaktperson"
 
-#: lino_xl/lib/xl/help_texts.py:1651
+#: lino_xl/lib/xl/help_texts.py:1650
 msgid "A free text field."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1652
+#: lino_xl/lib/xl/help_texts.py:1651
 #, fuzzy
 msgid "Shows all trend events of that subject."
 msgstr "Alle Termine am gleichen Tag zeigen"
 
-#: lino_xl/lib/xl/help_texts.py:1653
+#: lino_xl/lib/xl/help_texts.py:1652
 msgid ""
 "Mixin that should be inherited by the Plugin.subject_model so that\n"
 "Lino automatically adds virtual columns for each trend stage having"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1655
+#: lino_xl/lib/xl/help_texts.py:1654
 msgid ""
 "A Summary on\n"
 "SiteConfig."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1657
+#: lino_xl/lib/xl/help_texts.py:1656
 msgid ""
 "The number of active users. A user is considered active if\n"
 "their start_date\n"
@@ -14645,162 +14654,162 @@ msgid ""
 "after the first day of this month or year."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1662
+#: lino_xl/lib/xl/help_texts.py:1661
 msgid ""
 "Base class for the items of VatRegimes.  Each VAT regime is an\n"
 "instance of this and has two properties:"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1664
+#: lino_xl/lib/xl/help_texts.py:1663
 msgid "In which VAT area this regime is available.  See VatAreas."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1665
+#: lino_xl/lib/xl/help_texts.py:1664
 msgid "Whether unit prices are VAT included or not."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1666
+#: lino_xl/lib/xl/help_texts.py:1665
 msgid ""
 "Whether this VAT regime requires that partner to have a\n"
 "vat_id."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1668
+#: lino_xl/lib/xl/help_texts.py:1667
 msgid ""
 "The global list of VAT regimes.  Each item of this list is an instance of\n"
 "VatRegime."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1670
+#: lino_xl/lib/xl/help_texts.py:1669
 msgid "The global list of VAT classes."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1671
+#: lino_xl/lib/xl/help_texts.py:1670
 msgid ""
 "A rule which defines how VAT is to be handled for a given invoice\n"
 "item."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1673
+#: lino_xl/lib/xl/help_texts.py:1672
 #, fuzzy
 msgid "The sequence number."
 msgstr "Hausnummer"
 
-#: lino_xl/lib/xl/help_texts.py:1674
+#: lino_xl/lib/xl/help_texts.py:1673
 msgid "The regime for which this rule applies."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1675
+#: lino_xl/lib/xl/help_texts.py:1674
 msgid ""
 "The VAT rate to be applied. Note that a VAT rate of 20 percent is\n"
 "stored as 0.20 (not 20)."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1677
+#: lino_xl/lib/xl/help_texts.py:1676
 msgid "The general account where VAT is to be booked."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1678
+#: lino_xl/lib/xl/help_texts.py:1677
 msgid ""
 "Whether VAT is returnable. Returnable VAT does not increase the total\n"
 "amount of the voucher, it causes an additional movement into the\n"
 "vat_returnable_account. See About returnable VAT."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1681
+#: lino_xl/lib/xl/help_texts.py:1680
 msgid ""
 "Where to book returnable VAT. If this field is empty and\n"
 "vat_returnable is True, then VAT will be added to the base\n"
 "account. See About returnable VAT."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1684
+#: lino_xl/lib/xl/help_texts.py:1683
 #, fuzzy
 msgid "The table of all VatRule objects."
 msgstr "Alle meine Aufgaben"
 
-#: lino_xl/lib/xl/help_texts.py:1685
+#: lino_xl/lib/xl/help_texts.py:1684
 msgid "The global list of VAT areas."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1686
+#: lino_xl/lib/xl/help_texts.py:1685
 msgid "Return the VatArea instance for this country."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1687
+#: lino_xl/lib/xl/help_texts.py:1686
 msgid "Django model for storing  accounting invoices."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1688
+#: lino_xl/lib/xl/help_texts.py:1687
 #, fuzzy
 msgid "Django model for representing items of accounting invoices."
 msgstr "Alle meine Termine"
 
-#: lino_xl/lib/xl/help_texts.py:1689
+#: lino_xl/lib/xl/help_texts.py:1688
 #, fuzzy
 msgid "The table of all VatAccountInvoice objects."
 msgstr "Jahresbericht"
 
-#: lino_xl/lib/xl/help_texts.py:1690
+#: lino_xl/lib/xl/help_texts.py:1689
 msgid ""
 "Shows all invoices of a given journal (whose voucher_type must be\n"
 "VatAccountInvoice)"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1693
+#: lino_xl/lib/xl/help_texts.py:1692
 msgid "The detail layout used by Invoices."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1694 lino_xl/lib/xl/help_texts.py:1698
+#: lino_xl/lib/xl/help_texts.py:1693 lino_xl/lib/xl/help_texts.py:1697
 msgid "Show a list of all sales invoices whose VAT regime is Intra-Community."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1695 lino_xl/lib/xl/help_texts.py:1699
+#: lino_xl/lib/xl/help_texts.py:1694 lino_xl/lib/xl/help_texts.py:1698
 msgid "Show a list of all purchase invoices whose VAT regime is Intra-Community."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1696
+#: lino_xl/lib/xl/help_texts.py:1695
 msgid ""
 "Common base class for SalesByDeclaration and\n"
 "PurchasesByDeclaration"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1700
+#: lino_xl/lib/xl/help_texts.py:1699
 msgid ""
 "Common base class for IntracomSales and\n"
 "IntracomPurchases"
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1702
+#: lino_xl/lib/xl/help_texts.py:1701
 msgid ""
 "Model mixin which defines the database fields total_incl,\n"
 "total_base and total_vat and some related behaviour."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1704
+#: lino_xl/lib/xl/help_texts.py:1703
 msgid "The amount VAT included."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1705
+#: lino_xl/lib/xl/help_texts.py:1704
 msgid "The amount VAT excluded."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1706
+#: lino_xl/lib/xl/help_texts.py:1705
 msgid "The amount of VAT."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1707
+#: lino_xl/lib/xl/help_texts.py:1706
 msgid "Subclasses of VatTotal must implement this method."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1708
+#: lino_xl/lib/xl/help_texts.py:1707
 msgid ""
 "Return the VAT rule for this voucher or voucher item. Called\n"
 "when user edits a total field in the document header when\n"
 "edit_totals is True."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1711
+#: lino_xl/lib/xl/help_texts.py:1710
 msgid ""
 "Called when user has edited the total_base field.  If\n"
 "total_base has been set to blank, then Lino fills it using\n"
@@ -14810,7 +14819,7 @@ msgid ""
 "total_vat are set to None."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1717
+#: lino_xl/lib/xl/help_texts.py:1716
 msgid ""
 "Called when user has edited the total_vat field.  If it has been\n"
 "set to blank, then Lino fills it using\n"
@@ -14819,7 +14828,7 @@ msgid ""
 "set to None."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1722
+#: lino_xl/lib/xl/help_texts.py:1721
 msgid ""
 "Called when user has edited the total_incl field.  If total_incl\n"
 "has been set to blank, then Lino fills it using\n"
@@ -14829,25 +14838,25 @@ msgid ""
 "disabled, so this method will never be called."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1728
+#: lino_xl/lib/xl/help_texts.py:1727
 msgid "Abstract base class for invoices, offers and other vouchers."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1729
+#: lino_xl/lib/xl/help_texts.py:1728
 msgid ""
 "Whether the user usually wants to edit the total amount or\n"
 "not."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1731
+#: lino_xl/lib/xl/help_texts.py:1730
 msgid "Pointer to a lino_xl.lib.ledger.Plugin.project_model."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1732
+#: lino_xl/lib/xl/help_texts.py:1731
 msgid "Mandatory field to be defined in the implementing class."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1733
+#: lino_xl/lib/xl/help_texts.py:1732
 msgid ""
 "An automatically managed boolean field which says whether the\n"
 "user has manually edited the items of this document.  If this\n"
@@ -14856,88 +14865,88 @@ msgid ""
 "partner and vat_regime and total_incl."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1738
+#: lino_xl/lib/xl/help_texts.py:1737
 msgid "The VAT regime to be used in this document."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1739
+#: lino_xl/lib/xl/help_texts.py:1738
 msgid "Calls ComputeSums for this document."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1740
+#: lino_xl/lib/xl/help_texts.py:1739
 msgid ""
 "Compute the sum fields of a VatDocument based on its\n"
 "items."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1742
+#: lino_xl/lib/xl/help_texts.py:1741
 msgid "Model mixin for items of a VatDocument."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1743
+#: lino_xl/lib/xl/help_texts.py:1742
 msgid ""
 "The VAT class to be applied for this item. A pointer to\n"
 "VatClasses."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1745
+#: lino_xl/lib/xl/help_texts.py:1744
 msgid "Return the VatRule which applies for this item."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1746
+#: lino_xl/lib/xl/help_texts.py:1745
 msgid ""
 "Model mixin for items of a VatTotal.  Extends\n"
 "VatItemBase by adding unit_price and qty."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1748
+#: lino_xl/lib/xl/help_texts.py:1747
 msgid "The unit price for this item."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1749
+#: lino_xl/lib/xl/help_texts.py:1748
 msgid "The global list of VAT columns."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1750
+#: lino_xl/lib/xl/help_texts.py:1749
 #, fuzzy
 msgid "Abstract base class for VAT declarations."
 msgstr "Die standardmäßige Zugriffsklasse für Ihre Termine und Aufgaben"
 
-#: lino_xl/lib/xl/help_texts.py:1751
+#: lino_xl/lib/xl/help_texts.py:1750
 msgid ""
 "Implements\n"
 "lino_xl.lib.sepa.Payable.get_payable_sums_dict()."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1753
+#: lino_xl/lib/xl/help_texts.py:1752
 msgid "A declaration field to be computed by analyzing the ledger movements."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1754
+#: lino_xl/lib/xl/help_texts.py:1753
 msgid "A declaration field to be entered manually by the end user."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1755
+#: lino_xl/lib/xl/help_texts.py:1754
 msgid "A declaration field that computes the sum of its observed fields."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1756
+#: lino_xl/lib/xl/help_texts.py:1755
 #, fuzzy
 msgid "Base class for all declaration fields."
 msgstr "Jahresbericht"
 
-#: lino_xl/lib/xl/help_texts.py:1757 lino_xl/lib/xl/help_texts.py:1758
+#: lino_xl/lib/xl/help_texts.py:1756 lino_xl/lib/xl/help_texts.py:1757
 msgid "Whether the value of this field is to be manually entered by the end user."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1759
+#: lino_xl/lib/xl/help_texts.py:1758
 msgid ""
 "An optional space-separated list of names of observed fields, i.e.\n"
 "other declaration fields to be observed by this field.   If a field name\n"
 "is prefixed by a \"-\", the observed field will additionally be inverted."
 msgstr ""
 
-#: lino_xl/lib/xl/help_texts.py:1762
+#: lino_xl/lib/xl/help_texts.py:1761
 msgid ""
 "Whether the value of this field represents an amount to be paid to the\n"
 "tax office."
@@ -14974,3 +14983,6 @@ msgstr "Verwalter"
 
 #~ msgid "Sum of"
 #~ msgstr " von "
+
+#~ msgid "Toggle state"
+#~ msgstr "Stimmabgabezustände"

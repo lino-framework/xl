@@ -1,9 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Rumma & Ko Ltd
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
 
 from django.db import models
 
@@ -33,5 +31,3 @@ class PrintPresenceSheet(DirectPrintAction):
     show_states
     """
     keep_user_values = True
-
-

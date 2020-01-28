@@ -1,18 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
-
-"""
-Choicelists for this plugin.
-
-"""
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _

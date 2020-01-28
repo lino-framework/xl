@@ -9,6 +9,7 @@ from django.utils.text import format_lazy
 from etgen.html import E
 
 from lino.api import dd, rt, _, gettext
+from lino.mixins.registrable import RegistrableState
 
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT
 from .roles import LedgerStaff
@@ -407,12 +408,14 @@ def inject_tradetype_fields(sender, **kw):
                               blank=True, null=True))
 
 
-class VoucherState(dd.State):
+class VoucherState(RegistrableState):
     is_editable = False
 
 
 class VoucherStates(dd.Workflow):
     item_class = VoucherState
+    verbose_name = _("Voucher state")
+    verbose_name_plural = _("Voucher states")
 
     @classmethod
     def get_editable_states(cls):

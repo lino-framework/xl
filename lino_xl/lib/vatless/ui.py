@@ -1,10 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015-2018 Rumma & Ko Ltd
+# Copyright 2015-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-
-from __future__ import unicode_literals
 
 from lino.api import dd, rt, _
 
@@ -122,7 +118,7 @@ class ProjectInvoicesByJournal(InvoicesByJournal):
     entry_date
     """
     detail_layout = ProjectInvoiceDetail()
-    
+
 
 VoucherTypes.add_item_lazy(InvoicesByJournal, _("Invoices"))
 VoucherTypes.add_item_lazy(ProjectInvoicesByJournal, _("Project invoices"))
@@ -130,9 +126,9 @@ VoucherTypes.add_item_lazy(ProjectInvoicesByJournal, _("Project invoices"))
 from lino_xl.lib.ledger.mixins import VouchersByPartnerBase
 
 class VouchersByPartner(VouchersByPartnerBase):
-    column_names = "entry_date voucher amount state"
+    column_names = "entry_date voucher amount #state"
     # _voucher_base = AccountInvoice
-    
+
     @dd.displayfield(_("Voucher"))
     def voucher(self, row, ar):
         return ar.obj2html(row)
@@ -145,4 +141,3 @@ class VouchersByPartner(VouchersByPartnerBase):
     @dd.virtualfield('vatless.AccountInvoice.amount')
     def amount(self, row, ar):
         return row.amount
-

@@ -1,11 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.humanize.templatetags.humanize import naturaltime

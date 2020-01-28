@@ -1,10 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2019 Rumma & Ko Ltd
+# Copyright 2019-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
 
 # from decimal import Decimal
 from lino_xl.lib.ledger.utils import ZERO, ONE
@@ -16,15 +12,16 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 from django.utils.text import format_lazy
+from etgen.html import E, join_elems, tostring
 
 from lino.api import dd, rt
 from lino import mixins
 
-from etgen.html import E, join_elems, tostring
 from lino.mixins import ProjectRelated
 from lino.mixins.human import parse_name
 from lino.mixins.duplicable import Duplicable
 from lino.mixins.periods import DateRange
+# from lino.mixins.registrable import Registrable
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.excerpts.mixins import ExcerptTitle
 from lino.modlib.users.mixins import UserAuthored
@@ -35,7 +32,7 @@ from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.utils import day_and_month
 from lino_xl.lib.cal.mixins import RecurrenceSet, EventGenerator
 from lino_xl.lib.contacts.mixins import ContactRelated
-from lino_xl.lib.ledger.models import Voucher
+from lino_xl.lib.ledger.models import RegistrableVoucher
 from lino_xl.lib.ledger.mixins import SequencedVoucherItem
 # from lino_xl.lib.sales.mixins import SalesDocument, ProductDocItem
 from lino_xl.lib.excerpts.mixins import Certifiable
@@ -43,7 +40,7 @@ from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.utils.dates import DateRangeValue
 
 # from .actions import PrintPresenceSheet
-# from .choicelists import OrderStates, OrderAreas
+from .choicelists import OrderStates
 
 try:
     worker_model = dd.plugins.orders.worker_model
@@ -56,16 +53,19 @@ except AttributeError:
 
 from lino.modlib.uploads.mixins import UploadController
 
-# 
+#
 # class Order(SalesDocument, UserAuthored, UploadController, RecurrenceSet, EventGenerator, Duplicable):
 # class Order(SalesDocument, Voucher, RecurrenceSet, EventGenerator, Duplicable):
-class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, ProjectRelated):
+# class Order(Registrable, Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, ProjectRelated):
+class Order(Certifiable, RegistrableVoucher, RecurrenceSet, EventGenerator, Duplicable, ProjectRelated):
 
     class Meta:
         app_label = 'orders'
         abstract = dd.is_abstract_model(__name__, 'Order')
         verbose_name = _("Order")
         verbose_name_plural = _('Orders')
+
+    state = OrderStates.field(default='draft')
 
     # order_area = OrderAreas.field(default='default')
     # client = dd.ForeignKey(
@@ -134,6 +134,15 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
     def update_cal_until(self):
         return self.max_date
 
+    def get_partner(self):
+        if self.invoice_recipient is not None:
+            return self.invoice_recipient
+        if self.project is not None:
+            return self.project.get_partner()
+
+    def get_wanted_movements(self):
+        return []
+
     # @classmethod
     # def add_param_filter(
     #         cls, qs, lookup_prefix='', show_exposed=None, **kwargs):
@@ -146,7 +155,7 @@ class Order(Certifiable, Voucher, RecurrenceSet, EventGenerator, Duplicable, Pro
     #     elif show_exposed == dd.YesNo.yes:
     #         qs = qs.filter(**fkw)
     #     return qs
-        
+
 
     @classmethod
     def get_registrable_fields(cls, site):
@@ -305,7 +314,7 @@ class Enrolment(dd.Model):
 
     def get_guest_role(self):
         return self.guest_role
-    
+
     def make_guest_for(self, event):
         gr = self.get_guest_role()
         if gr is not None:

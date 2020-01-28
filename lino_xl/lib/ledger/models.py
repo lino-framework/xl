@@ -26,12 +26,13 @@ from lino.utils import SumCollector
 from lino.utils import mti
 from lino_xl.lib.contacts.choicelists import PartnerEvents
 from lino_xl.lib.vat.choicelists import VatClasses, VatColumns
+from lino_xl.lib.excerpts.mixins import Certifiable
 
 from .choicelists import CommonAccounts
 # from .utils import get_due_movements, check_clearings_by_partner
 from .choicelists import PeriodStates
 from .fields import DebitOrCreditField
-from .mixins import ProjectRelated, VoucherNumber, PeriodRangeObservable
+from .mixins import ProjectRelated, VoucherNumber, PeriodRange, PeriodRangeObservable, Payable
 from .roles import VoucherSupervisor
 # from .mixins import FKMATCH
 from .ui import *
@@ -483,39 +484,17 @@ class Account(StructuredReferrable, BabelNamed, Sequenced):
             if new is not None:
                 new.set_object(self)
 
-
-
-class ToggleState(dd.Action):
-    # show_in_bbar = False
-    # button_text = _("Toggle state")
-    # sort_index = 52
-    label = _("Toggle state")
-    # action_name = "changemystate"
-    button_text = "⏼" # 23FC Toggle power
-
-    def run_from_ui(self, ar, **kw):
-        obj = ar.selected_rows[0]
-        # print("20190722", obj)
-        if obj.state == VoucherStates.draft:
-            obj.set_workflow_state(ar, ar.actor.workflow_state_field, VoucherStates.registered)
-        elif obj.state == VoucherStates.registered:
-            obj.set_workflow_state(ar, ar.actor.workflow_state_field, VoucherStates.draft)
-        else:
-            raise Warning(_("Cannot toggle from state {}").format(obj.state))
-        # obj.full_clean()
-        # obj.save()
-        ar.set_response(refresh=True)
-
-
-
-
-class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRangeObservable):
-    manager_roles_required = dd.login_required(VoucherSupervisor)
+class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable):
+# class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRangeObservable):
 
     class Meta:
+        # abstract = True
         verbose_name = _("Voucher")
         verbose_name_plural = _("Vouchers")
         app_label = 'ledger'
+
+    manager_roles_required = dd.login_required(VoucherSupervisor)
+    # workflow_state_field = 'state'
 
     journal = JournalRef()
     entry_date = models.DateField(_("Entry date"))
@@ -524,15 +503,19 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
         'ledger.AccountingPeriod', blank=True)
     number = VoucherNumber(_("No."), blank=True, null=True)
     narration = models.CharField(_("Narration"), max_length=200, blank=True)
-    state = VoucherStates.field(default='draft')
-    toggle_state = ToggleState()
-    workflow_state_field = 'state'
 
-    #~ @classmethod
-    #~ def create_journal(cls,id,**kw):
-        #~ doctype = get_doctype(cls)
-        #~ jnl = Journal(doctype=doctype,id=id,**kw)
-        #~ return jnl
+    # state = VoucherStates.field(default='draft')
+
+    def unused_get_partner(self):
+        # return None
+        raise NotImplementedError(
+            "{} must define get_partner()".format(self.__class__))
+
+    def unused_get_wanted_movements(self):
+        # deactivated this because MRO is complex, see 20200128
+        # return []
+        raise NotImplementedError(
+            "{} must define get_wanted_movements()".format(self.__class__))
 
     @property
     def currency(self):
@@ -540,19 +523,6 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
 
         """
         return dd.plugins.ledger.currency_symbol
-
-    # @classmethod
-    # def setup_parameters(cls, **fields):
-    #     fields.setdefault(
-    #         'accounting_period', dd.ForeignKey(
-    #             'ledger.AccountingPeriod', blank=True, null=True))
-    #     return super(Voucher, cls).setup_parameters(**fields)
-
-    # @classmethod
-    # def get_simple_parameters(cls):
-    #     s = super(Voucher, cls).get_simple_parameters()
-    #     s.add('accounting_period')
-    #     return s
 
     @dd.displayfield(_("No."))
     def number_with_year(self, ar):
@@ -585,6 +555,21 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
                 FiscalYear.get_or_create_from_date(dd.today())}
             return models.Q(**kw)
         return super(Voucher, model).quick_search_filter(search_text, prefix)
+
+    def __str__(self):
+        if self.number is None:
+            return "{0}#{1}".format(self.journal.ref, self.id)
+        # moved to implementing subclasses:
+        #   if self.state not in dd.plugins.ledger.registered_states:
+        #     # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
+        assert self.number is not None
+        if self.journal.yearly_numbering:
+            return "{0} {1}/{2}".format(self.journal.ref, self.number,
+                                        self.accounting_period.year)
+        return "{0} {1}".format(self.journal.ref, self.number)
+        # if self.journal.ref:
+        #     return "%s %s" % (self.journal.ref,self.number)
+        # return "#%s (%s %s)" % (self.number,self.journal,self.year)
 
     def full_clean(self, *args, **kwargs):
         if self.entry_date is None:
@@ -653,9 +638,6 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
     def get_printed_name(self):
         return dd.babelattr(self.journal, 'printed_name')
 
-    def get_partner(self):
-        return None
-
     def get_movement_description(self, mvt, ar=None):
         if ar is None:
             return
@@ -710,20 +692,6 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
             kw.update(account=account)
         return Journal(trade_type=trade_type, voucher_type=vt, **kw)
 
-    def __str__(self):
-        # if self.number is None:
-        if self.state not in dd.plugins.ledger.registered_states:
-            # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
-            return "{0}#{1}".format(self.journal.ref, self.id)
-        assert self.number is not None
-        if self.journal.yearly_numbering:
-            return "{0} {1}/{2}".format(self.journal.ref, self.number,
-                                        self.accounting_period.year)
-        return "{0} {1}".format(self.journal.ref, self.number)
-        # if self.journal.ref:
-        #     return "%s %s" % (self.journal.ref,self.number)
-        # return "#%s (%s %s)" % (self.number,self.journal,self.year)
-
     # def get_default_match(self): removed 20191226
     #     return str(self)
         # return "%s#%s" % (self.journal.ref, self.id)
@@ -731,64 +699,6 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
 
     # def get_voucher_match(self):
     #     return str(self)  # "{0}{1}".format(self.journal.ref, self.number)
-
-    def after_state_change(self, ar, oldstate, newstate):
-        # movements are created *after* having changed the state, because
-        # otherwise the match isn't correct.
-        if newstate.name == 'draft':
-            self.deregister_voucher(ar)
-        elif newstate.name == 'registered':
-            self.register_voucher(ar)
-        super(Voucher, self).after_state_change(ar, oldstate, newstate)
-
-    def register_voucher(self, ar=None, do_clear=True):
-        """
-        Delete any existing movements and re-create them.
-        """
-        # dd.logger.info("20151211 cosi.Voucher.register_voucher()")
-        # self.year = FiscalYears.get_or_create_from_date(self.entry_date)
-        # dd.logger.info("20151211 movement_set.all().delete()")
-
-        def doit(partners):
-            seqno = 0
-            # dd.logger.info("20151211 gonna call get_wanted_movements()")
-            movements = self.get_wanted_movements()
-            # dd.logger.info("20151211 gonna save %d movements", len(movements))
-            # self.full_clean()
-            # self.save()
-
-            fcu = dd.plugins.ledger.suppress_movements_until
-            for m in movements:
-                # don't create movements before suppress_movements_until
-                if fcu and m.value_date <= fcu:
-                    continue
-                # if we don't set seqno, Sequenced.full_clean will do
-                # it, but at the price of an additional database
-                # lookup.
-                seqno += 1
-                m.seqno = seqno
-                # m.cleared = True
-                try:
-                    m.full_clean()
-                except ValidationError as e:
-                    dd.logger.warning("20181116 %s : %s", e, dd.obj2str(m))
-                    return
-                m.save()
-                if m.partner:
-                    partners.add(m.partner)
-            if settings.SITE.history_aware_logging:
-                dd.logger.info("Register %s (%d movements, %d partners)",
-                    self, seqno, len(partners))
-
-        self.do_and_clear(doit, do_clear)
-
-    def deregister_voucher(self, ar, do_clear=True):
-
-        def doit(partners):
-            if settings.SITE.history_aware_logging:
-                dd.logger.info("Deregister %s (%d partners)", self, len(partners))
-
-        self.do_and_clear(doit, do_clear)
 
     def do_and_clear(self, func, do_clear):
         existing_mvts = self.movement_set.all()
@@ -815,10 +725,6 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
         if msg is not None:
             return msg
         return super(Voucher, self).disable_delete(ar)
-
-    def get_wanted_movements(self):
-        return []
-        # raise NotImplementedError()
 
     def create_movement(self, item, acc_tuple, project, dc, amount, **kw):
         # dd.logger.info("20151211 ledger.create_movement()")
@@ -881,16 +787,118 @@ class Voucher(UserAuthored, Duplicable, Registrable, UploadController, PeriodRan
         return None
         # raise NotImplementedError()
 
-
     def get_uploads_volume(self):
         if self.journal_id:
             return self.journal.uploads_volume
 
 
+
 Voucher.set_widget_options('number_with_year', width=8)
 # Voucher.set_widget_options('number', hide_sum=True)
 
+class RegistrableVoucher(Registrable, Voucher):
 
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        # if not isinstance(dd.plugins.ledger.registered_states, tuple):
+        #     raise Exception("registered_states is {}".format(dd.plugins.ledger.registered_states))
+        # if not isinstance(self.state, dd.plugins.ledger.registered_states):
+        if self.state.is_editable:
+            # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
+            return "{0}#{1}".format(self.journal.ref, self.id)
+        return super(RegistrableVoucher, self).__str__()
+
+    def after_state_change(self, ar, oldstate, newstate):
+        # movements are created *after* having changed the state, because
+        # otherwise the match isn't correct.
+        if newstate.name == 'draft':
+            self.deregister_voucher(ar)
+        elif newstate.name == 'registered':
+            self.register_voucher(ar)
+        super(RegistrableVoucher, self).after_state_change(ar, oldstate, newstate)
+
+    def register_voucher(self, ar=None, do_clear=True):
+        """
+        Delete any existing movements and re-create them.
+        """
+        # dd.logger.info("20151211 cosi.Voucher.register_voucher()")
+        # self.year = FiscalYears.get_or_create_from_date(self.entry_date)
+        # dd.logger.info("20151211 movement_set.all().delete()")
+
+        def doit(partners):
+            seqno = 0
+            # dd.logger.info("20151211 gonna call get_wanted_movements()")
+            movements = self.get_wanted_movements()
+            # dd.logger.info("20151211 gonna save %d movements", len(movements))
+            # self.full_clean()
+            # self.save()
+
+            fcu = dd.plugins.ledger.suppress_movements_until
+            for m in movements:
+                # don't create movements before suppress_movements_until
+                if fcu and m.value_date <= fcu:
+                    continue
+                # if we don't set seqno, Sequenced.full_clean will do
+                # it, but at the price of an additional database
+                # lookup.
+                seqno += 1
+                m.seqno = seqno
+                # m.cleared = True
+                try:
+                    m.full_clean()
+                except ValidationError as e:
+                    dd.logger.warning("20181116 %s : %s", e, dd.obj2str(m))
+                    return
+                m.save()
+                if m.partner:
+                    partners.add(m.partner)
+            if settings.SITE.history_aware_logging:
+                dd.logger.info("Register %s (%d movements, %d partners)",
+                    self, seqno, len(partners))
+
+        self.do_and_clear(doit, do_clear)
+
+    def deregister_voucher(self, ar, do_clear=True):
+
+        def doit(partners):
+            if settings.SITE.history_aware_logging:
+                dd.logger.info("Deregister %s (%d partners)", self, len(partners))
+
+        self.do_and_clear(doit, do_clear)
+
+
+class Declaration(Payable, RegistrableVoucher, Certifiable, PeriodRange):
+    class Meta:
+        abstract = True
+        app_label = "ledger"
+
+    state = VoucherStates.field(default="draft")
+
+    def get_match(self):
+        # A declaration has no manual match field.
+        return self
+
+    def full_clean(self, *args, **kw):
+        if self.entry_date:
+            AP = rt.models.ledger.AccountingPeriod
+            # declare the previous month by default
+            if not self.start_period_id:
+                self.start_period = AP.get_default_for_date(
+                    self.entry_date)
+                # self.start_period = AP.get_default_for_date(
+                #     self.entry_date - AMONTH)
+
+            # if not self.start_date:
+            #     self.start_date = (self.voucher_date-AMONTH).replace(day=1)
+            # if not self.end_date:
+            #     self.end_date = self.start_date + AMONTH - ADAY
+        # if self.voucher_date <= self.end_date:
+        #    raise ValidationError(
+        #        "Voucher date must be after the covered period")
+        # self.compute_fields()
+        super(Declaration, self).full_clean(*args, **kw)
 
 class Movement(ProjectRelated, PeriodRangeObservable):
     allow_cascaded_delete = ['voucher']
@@ -902,6 +910,8 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     observable_period_prefix = 'voucher__'
 
+    # journal = JournalRef()
+    # voucher_id = models.PositiveIntegerField(_("Voucher Id"))
     voucher = dd.ForeignKey('ledger.Voucher')
     partner = dd.ForeignKey(
         'contacts.Partner',
@@ -924,9 +934,15 @@ class Movement(ProjectRelated, PeriodRangeObservable):
 
     def select_text(self):
         v = self.voucher.get_mti_leaf()
+        # v = self.voucher
         if v is None:
             return str(self.voucher)
         return "%s (%s)" % (v, v.entry_date)
+
+    # @property
+    # def voucher(self):
+    #     return self.journal.voucher_type.model.objects.get(pk=self.voucher_id)
+    #
 
     @dd.virtualfield(dd.PriceField(
         _("Debit")), sortable_by=['amount', 'value_date'])
@@ -948,12 +964,14 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         if ar is None:
             return ''
         return ar.obj2html(self.voucher.get_mti_leaf())
+        # return ar.obj2html(self.voucher)
 
     @dd.displayfield(_("Voucher partner"))
     def voucher_partner(self, ar):
         if ar is None:
             return ''
         voucher = self.voucher.get_mti_leaf()
+        # voucher = self.voucher
         if voucher is None:
             return ''
         p = voucher.get_partner()
@@ -1104,7 +1122,8 @@ class VoucherChecker(Checker):
             return obj.seqno
 
         wanted = dict()
-        if obj.state in dd.plugins.ledger.registered_states:
+        # if obj.state in dd.plugins.ledger.registered_states:
+        if not obj.state.is_editable:
             seqno = 0
             fcu = dd.plugins.ledger.suppress_movements_until
             try:
@@ -1218,6 +1237,7 @@ class DueMovement(TableRow):
             self.has_unsatisfied_movement = True
 
         voucher = mvt.voucher.get_mti_leaf()
+        # voucher = mvt.voucher
         if voucher is None:
             return
         due_date = voucher.get_due_date()

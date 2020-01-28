@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from builtins import str
 from django.conf import settings
 
 from lino.api import dd, rt, _
@@ -74,7 +73,7 @@ class ClientContactBase(ContactRelated):
 
     class Meta:
         abstract = True
-        
+
     type = dd.ForeignKey(
         'clients.ClientContactType', blank=True, null=True)
 
@@ -96,5 +95,3 @@ class ClientContactBase(ContactRelated):
 
     def __str__(self):
         return str(self.contact_person or self.company or self.type)
-
-
