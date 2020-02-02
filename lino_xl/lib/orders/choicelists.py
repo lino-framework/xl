@@ -15,6 +15,7 @@ class OrderStates(VoucherStates):
 
 add = OrderStates.add_item
 add('10', _("Waiting"), 'draft', is_editable=True)
-add('20', _("Active"), 'registered')
-add('30', _("Done"), 'signed')
-add('40', _("Cancelled"), 'cancelled')
+add('20', _("Active"), 'active', is_editable=True)
+add('30', _("Urgent"), 'urgent', is_editable=True)
+add('40', _("Done"), 'registered')
+add('50', _("Cancelled"), 'cancelled')

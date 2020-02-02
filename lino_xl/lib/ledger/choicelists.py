@@ -200,6 +200,7 @@ class VoucherTypes(dd.ChoiceList):
     required_roles = dd.login_required(LedgerStaff)
     verbose_name = _("Voucher type")
     verbose_name_plural = _("Voucher types")
+    column_names = "value name text model_name"
 
     item_class = VoucherType
     max_length = 100
@@ -231,6 +232,11 @@ class VoucherTypes(dd.ChoiceList):
         if len(candidates) == 1:
             return candidates.pop()
         return default
+
+    @dd.displayfield(_("Model"))
+    def model_name(cls, vt, ar):
+        return str(vt.model)
+
 
     # @classmethod
     # def add_item(cls, *args, **kwargs):
@@ -416,10 +422,15 @@ class VoucherStates(dd.Workflow):
     item_class = VoucherState
     verbose_name = _("Voucher state")
     verbose_name_plural = _("Voucher states")
+    column_names = "value name text is_editable"
 
     @classmethod
     def get_editable_states(cls):
         return [o for o in cls.objects() if o.is_editable]
+
+    @dd.virtualfield(models.BooleanField(_("Editable")))
+    def is_editable(cls, choice, ar):
+        return choice.is_editable
 
 add = VoucherStates.add_item
 add('10', _("Draft"), 'draft', is_editable=True)

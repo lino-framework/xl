@@ -23,26 +23,14 @@ class DailyPlannerRow(BabelDesignated, Sequenced, Plannable):
         blank=True, null=True,
         verbose_name=_("End time"))
 
-    def get_weekly_chunks(obj, ar, qs, current_week_day):
+    def get_weekly_chunks(obj, ar, qs, today):
         if obj.start_time:
             qs = qs.filter(start_time__gte=obj.start_time,
                            start_time__isnull=False)
         if obj.end_time:
             qs = qs.filter(start_time__lt=obj.end_time,
                            start_time__isnull=False)
-        if not obj.start_time and not obj.end_time:
-            qs = qs.filter(start_time__isnull=True)
-            link = str(current_week_day.day) \
-                if current_week_day != dd.today() \
-                else E.b(str(current_week_day.day))
-
-            link = E.p(*gen_insert_button(
-                ar.actor, [link], rt.models.cal.Event, ar, current_week_day),
-                   align="center")
-        else:
-            link = ''
-        chunks = [e.obj2href(ar, e.colored_calendar_fmt(ar.param_values)) for e in qs]
-        return [link] + chunks
+        return [e.obj2href(ar, e.colored_calendar_fmt(ar.param_values)) for e in qs]
 
 
 dd.update_field(DailyPlannerRow, 'overview', verbose_name=_("Time range"))

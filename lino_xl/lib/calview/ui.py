@@ -27,7 +27,7 @@ from lino_xl.lib.cal.utils import when_text
 
 from calendar import Calendar as PythonCalendar
 from datetime import timedelta, datetime
-
+from .mixins import gen_insert_button, Plannable
 
 CALENDAR = PythonCalendar()
 
@@ -40,35 +40,6 @@ def weekname(date):
     year, week, day = date.isocalendar()
     text = (date + timedelta(days=-day+1)).strftime("%d %B")
     return _("Week {1} / {0} ({2})").format(year, week, text)
-
-def gen_insert_button(actor,header_items, Event, ar, target_day):
-    """Hackish solution to not having to recreate a new sub request when generating lots of insert buttons.
-    Stores values in the actor as a cache, and uses id(ar) to check if it's a new request and needs updating.
-    Works by replacing known unique value with the correct known value for the insert window."""
-    if ar.get_user().authenticated:
-
-        if (getattr(actor, "insert_button",None) is not None
-                and actor.insert_button_ar_id == id(ar)):
-
-            insert_button= actor.insert_button.__copy__()
-        else:
-            # print("Making button")
-            sar = Event.get_default_table().insert_action.request_from(ar)
-        # print(20170217, sar)
-            sar.known_values = dict(
-            start_date="PLACEHOLDER")
-            actor.insert_button = sar.ar2button(None,
-                                # _(" Reply "), icon_name=None
-                                )
-            actor.insert_button_ar_id = id(ar)
-            insert_button = actor.insert_button.__copy__()
-
-
-        insert_button.set("href", insert_button.get("href").replace("PLACEHOLDER", str(target_day)))
-        insert_button = E.span(insert_button , style="float: right;")
-        header_items.append(insert_button)
-        # btn.set("style", "padding-left:10px")
-    return header_items
 
 
 class InsertEvent(dd.Action):
@@ -100,11 +71,28 @@ class EventsParameters(dd.Actor):
         super(EventsParameters, cls).setup_parameters(params)
         rt.models.cal.Event.setup_parameters(params)
 
+class TableWithHeaderRow(dd.Table):
+    abstract = True
 
-class DailyPlannerRows(EventsParameters, dd.Table):
+    @classmethod
+    def class_init(cls):
+        super(TableWithHeaderRow, cls).class_init()
+        if cls.model is not None:
+            cls.HEADER_ROW = cls.model.get_plannable_header_row()
+
+    @classmethod
+    def get_data_rows(cls, ar):
+        yield cls.HEADER_ROW
+        for obj in cls.get_request_queryset(ar):
+            yield obj
+
+
+class DailyPlannerRows(EventsParameters, dd.Table): # TableWithHeaderRow):
     model = 'calview.DailyPlannerRow'
     column_names = "seqno designation start_time end_time"
     required_roles = dd.login_required(OfficeStaff)
+
+
 
 class Day(TableRow):
 
@@ -257,8 +245,8 @@ class Days(dd.VirtualTable):
         #     days.append(d)
         #     pk += step
 
-class CalPlannerTable(AbstractTable):
-    # todo: rename to DaysSlave ?
+class CalendarSlave(AbstractTable):
+    # table mixin for both database and virtual tables
     abstract = True
     editable = False
     hide_top_toolbar = True # no selections no toolbar
@@ -279,7 +267,7 @@ class CalPlannerTable(AbstractTable):
             return []
         # filter.update()
         ar.param_values.update(date=mi.date)
-        return super(CalPlannerTable, cls).get_request_queryset(ar, **filter)
+        return super(CalendarSlave, cls).get_request_queryset(ar, **filter)
 
 
 class CalendarView(Days):
@@ -424,7 +412,7 @@ class DailyView(EventsParameters, CalendarView):
 
 
 
-class DailyPlanner(DailyPlannerRows, CalPlannerTable):
+class DailyPlanner(TableWithHeaderRow, DailyPlannerRows, CalendarSlave):
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     label = _("Daily planner")
 
@@ -453,14 +441,15 @@ class DailyPlanner(DailyPlannerRows, CalPlannerTable):
                 current_day = pv.get('date',dd.today())
                 if current_day:
                     qs = qs.filter(start_date=current_day)
-                if obj.start_time:
-                    qs = qs.filter(start_time__gte=obj.start_time,
-                                   start_time__isnull=False)
-                if obj.end_time:
-                    qs = qs.filter(start_time__lt=obj.end_time,
-                                   start_time__isnull=False)
-                if not obj.start_time and not obj.end_time:
+                if obj is cls.HEADER_ROW:
                     qs = qs.filter(start_time__isnull=True)
+                else:
+                    if obj.start_time:
+                        qs = qs.filter(start_time__gte=obj.start_time,
+                                       start_time__isnull=False)
+                    if obj.end_time:
+                        qs = qs.filter(start_time__lt=obj.end_time,
+                                       start_time__isnull=False)
                 qs = qs.order_by('start_time')
                 chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
                 return E.p(*join_elems(chunks))
@@ -478,7 +467,7 @@ class PlannerByDay(DailyPlanner):
 
 ######################### Weekly ########################"
 
-class WeeklyColumns(EventsParameters, CalPlannerTable, VentilatedColumns):
+class WeeklyColumns(EventsParameters, CalendarSlave, TableWithHeaderRow, VentilatedColumns):
     abstract = True
     column_names_template = "overview:4 {vcolumns}"
     ventilated_column_suffix = ':20'
@@ -495,12 +484,16 @@ class WeeklyColumns(EventsParameters, CalPlannerTable, VentilatedColumns):
             qs = Event.calendar_param_filter(qs, ar.param_values)
             delta_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
             # current_day = dd.today() + timedelta(days=delta_days)
-            current_day = dd.today(delta_days)
-            current_week_day = current_day + \
-                timedelta(days=int(week_day.value) - current_day.weekday() - 1)
-            qs = qs.filter(start_date=current_week_day)
+            delta_days += int(week_day.value) - dd.today().weekday() - 1
+            today = dd.today(delta_days)
+            # current_week_day = current_day + \
+            #     timedelta(days=int(week_day.value) - current_day.weekday() - 1)
+            qs = qs.filter(start_date=today)
             qs = qs.order_by('start_time')
-            chunks = obj.get_weekly_chunks(ar, qs, current_week_day)
+            if obj is cls.HEADER_ROW:
+                chunks = obj.get_header_chunks(ar, qs, today)
+            else:
+                chunks = obj.get_weekly_chunks(ar, qs, today)
             return E.table(E.tr(E.td(E.div(*join_elems(chunks)))),
                 CLASS="fixed-table")
 
@@ -513,7 +506,7 @@ class WeeklyColumns(EventsParameters, CalPlannerTable, VentilatedColumns):
             yield cls.get_weekday_field(wd)
 
 
-class WeeklyPlanner(WeeklyColumns, dd.Table):
+class WeeklyPlanner(WeeklyColumns, TableWithHeaderRow):
     model = 'calview.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Weekly planner")
@@ -537,7 +530,7 @@ class WeeklyView(EventsParameters, CalendarView):
 ######################### Monthly ########################
 
 
-class MonthlyPlanner(CalPlannerTable, EventsParameters, dd.VirtualTable):
+class MonthlyPlanner(CalendarSlave, EventsParameters, dd.VirtualTable):
     # required_roles = dd.login_required(OfficeStaff)
     label = _("Monthly planner")
 

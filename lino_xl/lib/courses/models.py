@@ -2,10 +2,6 @@
 # Copyright 2012-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
-
 # from decimal import Decimal
 from lino_xl.lib.ledger.utils import ZERO, ONE
 

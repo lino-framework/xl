@@ -1,18 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
-
-import logging
-logger = logging.getLogger(__name__)
-
-from decimal import Decimal
-ZERO = Decimal()
-ONE = Decimal(1)
 
 from django.db import models
 from django.db.models import Q
@@ -32,8 +21,10 @@ from etgen.html import E
 
 from lino_xl.lib.ledger.ui import ByJournal
 from lino_xl.lib.ledger.choicelists import VoucherTypes
+from lino_xl.lib.sales.models import InvoicesByPartner
 
 from .roles import OrdersUser, OrdersStaff
+from .choicelists import OrderStates
 
 # cal = dd.resolve_app('cal')
 
@@ -51,30 +42,31 @@ class OrderDetail(dd.DetailLayout):
     # end = "end_date end_time"
     # freq = "every every_unit"
     # start end freq
-    
+
     main = "general cal_tab enrolments"
-    
+
     general = dd.Panel("""
-    entry_date subject printed #print_actions:15 workflow_buttons
+    entry_date subject printed #print_actions:15 workflow_buttons start_date
     project invoice_recipient
     description
     EnrolmentsByOrder ItemsByOrder
     """, label=_("General"))
 
     cal_tab = dd.Panel("""
-    first_entry_panel repeat_panel
+    start_time end_time #end_date every_unit every max_events max_date
+    monday tuesday wednesday thursday friday saturday sunday
     cal.EntriesByController
     """, label=_("Calendar"))
 
-    first_entry_panel = dd.Panel("""
-    start_date start_time 
-    end_time end_date
-    """, label=_("First appointment"))
+    # first_entry_panel = dd.Panel("""
+    # start_time
+    # end_time #end_date
+    # """, label=_("First appointment"))
 
-    repeat_panel = dd.Panel("""
-    every_unit every max_events max_date 
-    monday tuesday wednesday thursday friday saturday sunday
-    """, label=_("Recursion"))
+    # repeat_panel = dd.Panel("""
+    #
+    #
+    # """, label=_("Recursion"))
 
     enrolments_top = 'journal number id:8 user'
 
@@ -82,13 +74,11 @@ class OrderDetail(dd.DetailLayout):
     enrolments_top
     InvoicesByOrder
     # EnrolmentsByOrder
-    remark 
+    remark
     """, label=_("Miscellaneous"))
 
 # Order.detail_layout_class = OrderDetail
 
-
-from lino_xl.lib.sales.models import InvoicesByPartner
 
 class InvoicesByOrder(InvoicesByPartner):
 
@@ -184,8 +174,8 @@ class OrdersByJournal(Orders, ByJournal):
     entry_date
     """
 
-
 VoucherTypes.add_item_lazy(OrdersByJournal)
+
 
 class AllOrders(Orders):
     # _order_area = None
@@ -209,10 +199,48 @@ class OrdersByRecipient(Orders):
     column_names = "project entry_date:8 journal number workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
 
+
+class WaitingOrders(Orders):
+    label = _("Waiting orders")
+    order_by = ['entry_date']
+    column_names = "entry_date:8 detail_link workflow_buttons user " \
+                   "weekdays_text:10 times_text:10 *"
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(WaitingOrders, self).param_defaults(ar, **kw)
+        kw.update(state=OrderStates.draft)
+        return kw
+
+class ActiveOrders(Orders):
+    label = _("Active orders")
+    order_by = ['entry_date']
+    column_names = "entry_date:8 detail_link workflow_buttons user " \
+                   "weekdays_text:10 times_text:10 *"
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(ActiveOrders, self).param_defaults(ar, **kw)
+        kw.update(state=OrderStates.active)
+        return kw
+
+
+class UrgentOrders(Orders):
+    label = _("Urgent orders")
+    order_by = ['entry_date']
+    column_names = "entry_date:8 detail_link workflow_buttons user " \
+                   "weekdays_text:10 times_text:10 *"
+    @classmethod
+    def param_defaults(self, ar, **kw):
+        kw = super(UrgentOrders, self).param_defaults(ar, **kw)
+        kw.update(state=OrderStates.urgent)
+        return kw
+
+
+
+
 # class MyOrders(My, Orders):
 #     column_names = "entry_date:8 name id workflow_buttons *"
 #     order_by = ['entry_date']
-    
+
     # @classmethod
     # def param_defaults(self, ar, **kw):
     #     kw = super(MyOrders, self).param_defaults(ar, **kw)
@@ -312,7 +340,7 @@ class EnrolmentsByOrder(Enrolments):
     # display_mode = 'html'
 
     insert_layout = """
-    worker 
+    worker
     guest_role
     remark
     """
@@ -356,5 +384,3 @@ class ItemsByOrder(OrderItems):
     order_by = ["seqno"]
     required_roles = dd.login_required(OrdersUser)
     column_names = "product qty remark *"
-
-

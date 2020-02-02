@@ -25,15 +25,16 @@ class Plugin(ad.Plugin):
         from lino_xl.lib.courses.mixins import Enrollable
         self.worker_model = site.models.resolve(self.worker_model)
         super(Plugin, self).on_site_startup(site)
-        
-    # def setup_main_menu(self, site, user_type, main):
-    #     m = main.add_menu(self.app_label, self.verbose_name)
-    #     m.add_action('orders.MyOrders')
-    #     for i in site.models.orders.OrderAreas.get_list_items():
-    #         m.add_action(i.orders_table)
+
+    def setup_main_menu(self, site, user_type, main):
+        m = main.add_menu(self.app_label, self.verbose_name)
+        m.add_action('orders.WaitingOrders')
+        m.add_action('orders.ActiveOrders')
+        m.add_action('orders.UrgentOrders')
+        # for i in site.models.orders.OrderAreas.get_list_items():
+        #     m.add_action(i.orders_table)
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('orders.AllOrders')
         m.add_action('orders.AllEnrolments')
-

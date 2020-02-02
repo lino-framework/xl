@@ -10,4 +10,4 @@ def objects():
     DPR = rt.models.calview.DailyPlannerRow
     yield DPR(end_time="12:00", **dd.str2kw('designation', _("AM")))
     yield DPR(start_time="12:00", **dd.str2kw('designation', _("PM")))
-    yield DPR(**dd.str2kw('designation', _("All day")))
+    # yield DPR(**dd.str2kw('designation', _("All day")))

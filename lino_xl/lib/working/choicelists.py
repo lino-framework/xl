@@ -1,13 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 from lino.api import dd, _
 
-from lino.utils.quantities import Duration
-
-ZERO_DURATION = Duration('0:00')
+from lino.utils.quantities import ZERO_DURATION
 
 class ReportingTypes(dd.ChoiceList):
     verbose_name = _("Reporting type")

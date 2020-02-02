@@ -666,8 +666,9 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
 
     @classmethod
     def get_journals(cls):
-        vt = VoucherTypes.get_for_model(cls)
-        return Journal.objects.filter(voucher_type=vt).order_by('seqno')
+        vtypes = (vt for vt in VoucherTypes.get_list_items() if issubclass(cls, vt.model))
+        # vt = VoucherTypes.get_for_model(cls)
+        return Journal.objects.filter(voucher_type__in=vtypes).order_by('seqno')
 
     @dd.chooser()
     def unused_accounting_period_choices(cls, entry_date):
