@@ -2,8 +2,6 @@
 # Copyright 2011-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-
 import six
 # from builtins import str
 
@@ -76,7 +74,7 @@ class AddInterestField(dd.VirtualField):
 #     # """
 
 
-#    
+#
 class Interest(Controllable):
     class Meta:
         app_label = 'topics'
@@ -88,13 +86,13 @@ class Interest(Controllable):
     topic = dd.ForeignKey(
         'topics.Topic',
         related_name='interests_by_topic')
-    
+
     remark = dd.RichTextField(
         _("Remark"), blank=True, format="plain")
 
     # def __str__(self):
     #     return str(self.topic)
-    
+
     # used in lino_tera
     partner = dd.ForeignKey(
         dd.plugins.topics.partner_model,
@@ -104,11 +102,11 @@ class Interest(Controllable):
 
 # dd.update_field(Interest, 'user', verbose_name=_("User"))
 
-# 
+#
 class Topic(StructuredReferrable, BabelNamed):
 
     ref_max_length = 5
-    
+
     class Meta:
         app_label = 'topics'
         verbose_name = _("Topic")
@@ -166,21 +164,21 @@ class Interests(dd.Table):
 class AllInterests(Interests):
     required_roles = dd.login_required(dd.SiteStaff)
 
-    
+
 class InterestsByPartner(Interests):
     master_key = 'partner'
     order_by = ["topic"]
     column_names = 'topic *'
     display_mode = 'summary'
     stay_in_grid = True
-    
+
     insert_layout = dd.InsertLayout("""
     topic
     remark
     """, window_size=(60, 10))
 
     # summary_sep = comma
-    
+
     @classmethod
     def summary_row(cls, ar, obj, **kwargs):
         if ar is None:
@@ -199,9 +197,9 @@ class InterestsByController(Interests):
     topic partner
     remark
     """, window_size=(60, 10))
-    
+
     # summary_sep = comma
-    
+
     @classmethod
     def summary_row(cls, ar, obj, **kwargs):
         if ar is None:
@@ -230,5 +228,3 @@ class InterestsByTopic(Interests):
     master_key = 'topic'
     order_by = ["id"]
     column_names = 'partner owner *'
-
-
