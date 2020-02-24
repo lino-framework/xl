@@ -216,9 +216,9 @@ class Site(Referrable, ContactRelated, Starrable, DateRange):
     def __str__(self):
         return self.ref or self.name
 
-    def get_change_observers(self, ar=None):
-        for s in rt.models.tickets.Subscription.objects.filter(site=self):
-            yield (s.user, s.user.mail_mode)
+    #def get_change_observers(self, ar=None):
+    #    for s in rt.models.tickets.Subscription.objects.filter(site=self):
+    #        yield (s.user, s.user.mail_mode)
 
     def get_row_permission(self, ar, state, ba):
         """
