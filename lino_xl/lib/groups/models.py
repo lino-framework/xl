@@ -126,6 +126,8 @@ class Membership(UserAuthored):
     group = dd.ForeignKey('groups.Group', related_name="members")
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
+    allow_cascaded_delete = ['site', 'user','group']
+
     def __str__(self):
         return _('{} in {}').format(self.user, self.group)
 
