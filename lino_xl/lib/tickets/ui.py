@@ -492,7 +492,7 @@ class Tickets(dd.Table):
             qs = qs.exclude(last_commenter=pv.not_last_commenter)
 
         if pv.subscriber:
-            sqs = rt.models.tickets.Subscription.objects.filter(user=pv.subscriber)
+            sqs = rt.models.groups.Group.objects.filter(user=pv.subscriber)
             subscribed_sites = sqs.values_list('site')
             qs = qs.filter(site__in=subscribed_sites)
         return qs
@@ -781,17 +781,6 @@ class SiteDetail(dd.DetailLayout):
     main = """general meetings.MeetingsBySite"""
 
 
-class Subscriptions(dd.Table):
-    required_roles = dd.login_required(TicketsStaff)
-    model = 'tickets.Subscription'
-
-class SubscriptionsBySite(Subscriptions):
-    master_key = 'site'
-    column_names = 'user primary'
-
-class SubscriptionsByUser(Subscriptions):
-    master_key = 'user'
-    column_names = 'site primary'
 
 class Sites(dd.Table):
     # required_roles = set()  # also for anonymous

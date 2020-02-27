@@ -290,40 +290,6 @@ dd.update_field(Site, 'contact_person', verbose_name=_("Contact person"))
 # dd.update_field(Site, 'detail_link', verbose_name=_("Site"))
 
 
-class Subscription(UserAuthored):
-
-    class Meta:
-        app_label = 'tickets'
-        verbose_name = _("Site subscription")
-        verbose_name_plural = _("Site subscriptions")
-
-    site = dd.ForeignKey(
-        'tickets.Site',
-        related_name='subscriptions_by_site')
-    primary = models.BooleanField(
-        _("Primary"), default=False)
-
-    allow_cascaded_delete = ['site', 'user']
-
-    def __str__(self):
-        return "{}@{}".format(self.user, self.site)
-
-    def after_ui_save(self, ar, cw):
-        super(Subscription, self).after_ui_save(ar, cw)
-        mi = self.user
-        if mi is None:
-            return
-        if self.primary:
-            for o in self.__class__.objects.filter(user=mi).exclude(id=self.id):
-                if o.primary:
-                    o.primary = False
-                    o.save()
-                    ar.set_response(refresh_all=True)
-
-dd.update_field(
-    Subscription, 'user', verbose_name=_("User"))
-
-
 #
 # class Competence(UserAuthored, Prioritized):
 

@@ -86,7 +86,7 @@ class Plugin(ad.Plugin):
         # m.add_action('tickets.Projects')
         m.add_action('tickets.Links')
         m.add_action('tickets.TicketStates')
-        m.add_action('tickets.Subscriptions')
+        #m.add_action('tickets.Subscriptions')
         # m.add_action('tickets.AllCompetences')
         # m.add_action('tickets.AllWishes')
         
