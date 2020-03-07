@@ -18,7 +18,7 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, user_type, m):
         mg = site.plugins.cal
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        for nav in site.models.calview.Navigators.get_list_items():
+        for nav in site.models.calview.Planners.get_list_items():
             a = nav.default_view
             m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action,
                 label=nav.text)

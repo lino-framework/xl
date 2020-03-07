@@ -5,7 +5,7 @@
 from lino.mixins import BabelDesignated, Sequenced
 from lino.api import dd, rt, _
 
-from .mixins import Plannable, Navigators
+from .mixins import Plannable, Planners
 
 
 class DailyPlannerRow(BabelDesignated, Sequenced, Plannable):

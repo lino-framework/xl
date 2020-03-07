@@ -20,14 +20,14 @@ def button_func(ar, actor):
             return rnd.ar2button(sar, day, text, style="", icon_name=None, title=str(day))
     return func
 
-class Navigator(dd.Choice):
+class Planner(dd.Choice):
     daily_view = None
     weekly_view = None
     monthly_view = None
     default_view = None
 
     def __init__(self, value_and_name, text, dv, wv, mv, **kwargs):
-        super(Navigator, self).__init__(value_and_name, text, value_and_name, **kwargs)
+        super(Planner, self).__init__(value_and_name, text, value_and_name, **kwargs)
         self.daily_view = dv
         self.weekly_view = wv
         self.monthly_view = mv
@@ -40,11 +40,11 @@ class Navigator(dd.Choice):
         for a in (self.daily_view, self.weekly_view, self.monthly_view):
             if a is None:
                 continue
-            if a.navigator is not None:
+            if a.planner is not None:
                 raise Exception(
-                    "Cannot use {} for navigator {} as it is already used for {}".format(
-                    a, self, a.navigator))
-            a.navigator = self
+                    "Cannot use {} for planner {} as it is already used for {}".format(
+                    a, self, a.planner))
+            a.planner = self
 
     def daily_button_func(self, ar):
         return button_func(ar, self.daily_view)
@@ -56,16 +56,16 @@ class Navigator(dd.Choice):
         return button_func(ar, self.monthly_view)
 
 
-class Navigators(dd.ChoiceList):
-    item_class = Navigator
+class Planners(dd.ChoiceList):
+    item_class = Planner
 
     @classmethod
     def class_init(cls):
-        super(Navigators, cls).class_init()
+        super(Planners, cls).class_init()
         for nav in cls.get_list_items():
             nav.on_class_init()
 
-add = Navigators.add_item
+add = Planners.add_item
 add("default", _("Calendar"), "calview.DailyView", "calview.WeeklyView", "calview.MonthlyView")
 
 
