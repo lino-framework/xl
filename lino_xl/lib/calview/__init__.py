@@ -7,6 +7,7 @@
 
 from lino.api import ad, _
 from dateutil.relativedelta import relativedelta
+from django.utils.text import format_lazy
 
 
 class Plugin(ad.Plugin):
@@ -17,8 +18,25 @@ class Plugin(ad.Plugin):
     def setup_main_menu(self, site, user_type, m):
         mg = site.plugins.cal
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        a = site.models.calview.MonthlyView
-        m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action, label=_("Calendar view"))
+        for nav in site.models.calview.Navigators.get_list_items():
+            a = nav.default_view
+            m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action,
+                label=nav.text)
+
+        # a = site.models.calview.MonthlyView
+        # a = site.models.calview.WeeklyView
+        # m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action,
+        #     label=_("Calendar view"))
+        #
+        # from lino_xl.lib.calview.mixins import Plannable
+        # from lino.core.utils import models_by_base
+        # for pm in models_by_base(Plannable):
+        #     a = pm.weekly_planner
+        #     # a = site.models.calview.MonthlyView
+        #     # a = site.models.calview.WeeklyView
+        #     print(20200215, a)
+        #     m.add_instance_action(a.get_row_by_pk(None, "0"), action=a.default_action,
+        #         label=format_lazy(_("Calendar view {}"), pm._meta.verbose_name_plural))
 
     def setup_config_menu(self, site, user_type, m):
         mg = site.plugins.cal
@@ -26,5 +44,13 @@ class Plugin(ad.Plugin):
         m.add_action('calview.DailyPlannerRows')
 
     def get_dashboard_items(self, user):
-        if user.authenticated:
-            yield self.site.models.calview.DailyPlanner
+        # if user.authenticated:
+        yield self.site.models.calview.DailyPlanner
+
+    # def before_analyze(self):
+    #     # dynamically create the calendar views
+    #     from lino_xl.lib.calview.ui import make_calview_actors
+    #     from lino_xl.lib.calview.mixins import Plannable
+    #     from lino.core.utils import models_by_base
+    #     for pm in models_by_base(Plannable):
+    #         make_calview_actors(self.site, pm)

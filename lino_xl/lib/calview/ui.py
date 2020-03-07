@@ -2,7 +2,9 @@
 # Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
+import datetime
 from collections import OrderedDict
+from calendar import Calendar as PythonCalendar
 
 from django.conf import settings
 from django.db import models
@@ -18,16 +20,14 @@ from lino.utils.format_date import day_and_month, day_and_weekday
 from lino.modlib.users.mixins import My
 from lino.modlib.office.roles import OfficeUser, OfficeStaff, OfficeOperator
 
-from lino.utils import join_elems
+from lino.utils import join_elems, ONE_DAY, ONE_WEEK
 from etgen.html import E, forcetext
 
 from lino_xl.lib.cal.choicelists import PlannerColumns, Weekdays
 from lino_xl.lib.cal.choicelists import DurationUnits, YearMonths
 from lino_xl.lib.cal.utils import when_text
 
-from calendar import Calendar as PythonCalendar
-from datetime import timedelta, datetime
-from .mixins import gen_insert_button, Plannable
+from .mixins import Plannable, Navigator
 
 CALENDAR = PythonCalendar()
 
@@ -38,7 +38,7 @@ def date2pk(date):
 
 def weekname(date):
     year, week, day = date.isocalendar()
-    text = (date + timedelta(days=-day+1)).strftime("%d %B")
+    text = (date + datetime.timedelta(days=-day+1)).strftime("%d %B")
     return _("Week {1} / {0} ({2})").format(year, week, text)
 
 
@@ -57,8 +57,24 @@ class InsertEvent(dd.Action):
             start_date=str(ar.selected_rows[0].date))
         ar.set_response(eval_js=ar.renderer.ar2js(sar, None))
 
-class EventsParameters(dd.Actor):
 
+class DailyPlannerRows(dd.Table):
+    # used for configuring the planner rows
+    model = 'calview.DailyPlannerRow'
+    column_names = "seqno designation start_time end_time"
+    required_roles = dd.login_required(OfficeStaff)
+
+
+class EventsParameters(dd.Actor):
+    """
+
+    Mixin for actors that inherit parameters and params_layout from the
+    cal.Events table as defined by the application.
+
+    The takeover must happen *after* the custom_layout_module has been loaded.
+    So we override the class_init() method.
+
+    """
     abstract = True
 
     @classmethod
@@ -71,90 +87,149 @@ class EventsParameters(dd.Actor):
         super(EventsParameters, cls).setup_parameters(params)
         rt.models.cal.Event.setup_parameters(params)
 
-class TableWithHeaderRow(dd.Table):
-    abstract = True
-
     @classmethod
-    def class_init(cls):
-        super(TableWithHeaderRow, cls).class_init()
-        if cls.model is not None:
-            cls.HEADER_ROW = cls.model.get_plannable_header_row()
-
-    @classmethod
-    def get_data_rows(cls, ar):
-        yield cls.HEADER_ROW
-        for obj in cls.get_request_queryset(ar):
-            yield obj
+    def get_calendar_entries(cls, ar, obj):
+        Event = rt.models.cal.Event
+        if obj is None:
+            qs = Event.objects.all()
+        else:
+            qs = obj.get_my_plannable_entries(ar)
+        # qs = Event.objects.all()
+        return Event.calendar_param_filter(qs, ar.param_values)
 
 
-class DailyPlannerRows(EventsParameters, dd.Table): # TableWithHeaderRow):
-    model = 'calview.DailyPlannerRow'
-    column_names = "seqno designation start_time end_time"
-    required_roles = dd.login_required(OfficeStaff)
 
+# class TableWithHeaderRow(dd.Table):
+#     """
+#
+#     Mixin for tables that insert a virtual header row where all-day events are
+#     shown.  Used in daily and weekly view but not in monthly view.
+#
+#     """
+#     abstract = True
+#
+#     @classmethod
+#     def get_request_queryset(cls, ar):
+#     # def get_data_rows(cls, ar):
+#         yield cls.model.HEADER_ROW
+#         for obj in super(TableWithHeaderRow, cls).get_request_queryset(ar):
+#             yield obj
 
 
 class Day(TableRow):
 
-    def __init__(self, offset=0, ar=None, navigation_mode="day"):
+    navigation_mode = None
+    navigator = None
+
+    def __init__(self, offset=0, ar=None, navigation_mode=None, navigator=None):
         self.date = dd.today(offset)
         self.pk = offset
         self.ar = ar
         self.navigation_mode = navigation_mode
+        if navigator is not None:
+            assert isinstance(navigator, Navigator)
+            self.navigator = navigator
+        str(self)
+        # if cal_view is not None:
+        #     self.navigation_mode = cal_view.navigation_mode
+        #     if issubclass(cal_view, DayNavigator):
+        #         self.cal_view = cal_view
 
     def __str__(self):
         if self.navigation_mode == "day":
             return when_text(self.date)
         elif self.navigation_mode == "week":
             return weekname(self.date)
-        else:
+        elif self.navigation_mode == "month":
             return monthname(self.date.month) + " " + str(self.date.year)
+        else:
+            raise Exception(
+                "Invalid navigation_mode {} ({})".format(
+                    self.navigation_mode, self.ar))
 
     def skipmonth(self, n):
         return DurationUnits.months.add_duration(self.date, n)
 
-class DayDetail(dd.DetailLayout):
-    main = "body"
-    body = "navigation_panel:15 calview.PlannerByDay:85"
+
+class DaysTable(dd.VirtualTable):
+    abstract = True
+    model = 'calview.Day'
+    # navigation_mode = None  # "day" or "week" or "month"
+    navigation_mode = "day"  # "day" or "week" or "month"
+
+    @classmethod
+    def get_navigator(cls):
+        pass
+
+    @classmethod
+    def get_row_by_pk(cls, ar, pk):
+        """
+        pk is the offset from today in days
+        """
+        return cls.model(int(pk), ar, cls.navigation_mode, cls.get_navigator())
+
+    # @classmethod
+    # def get_request_queryset(cls, ar, **filter):
+    @classmethod
+    def get_data_rows(cls, ar):
+        home = cls.get_row_by_pk(ar, 0)
+        # ni = cls.get_navinfo(ar, home)
+
+        pv = ar.param_values
+        # date = pv.start_date or dd.today(ni['first'])
+        # last = pv.end_date or dd.today(ni['last'])
+        # start_date = dd.plugins.cal.beginning_of_time
+        # end_date = dd.plugins.cal.ignore_dates_after
+
+        if cls.navigation_mode == "day":
+            step = lambda x: x + ONE_DAY
+            delta = 7
+        elif cls.navigation_mode == "week":
+            step = lambda x: x + ONE_WEEK
+            delta = 7*2
+        elif cls.navigation_mode == "month":
+            step = lambda x: DurationUnits.months.add_duration(x, 1)
+            delta = 40
+        else:
+            step = lambda x: DurationUnits.years.add_duration(x, 1)
+            delta = 40
+
+        date = pv.start_date or dd.today(-delta)
+        last = pv.end_date or dd.today(delta)
+
+        while date <= last:
+            yield cls.get_row_by_pk(ar, date2pk(date))
+            date = step(date)
 
 
-def make_link_funcs(ar):
-    sar_daily = ar.spawn(DailyView)
-    sar_weekly = ar.spawn(WeeklyView)
-    sar_monthly = ar.spawn(MonthlyView)
-    sar_monthly.param_values = sar_weekly.param_values = sar_daily.param_values = ar.param_values
-    rnd = settings.SITE.kernel.default_renderer
 
-    def weekly(day, text):
-        return rnd.ar2button(sar_weekly, day, text, style="", icon_name=None)
+class DayNavigator(DaysTable):
+    """
 
-    def daily(day, text):
-        return rnd.ar2button(sar_daily, day, text, style="", icon_name=None)
+    Base class for the three calendar views, but also used for independent
+    tables like working.WorkedHours. A virtual table whose rows are calview.Day
+    instances.  Subclasses must set navigation_mode.
 
-    def monthly(day, text):
-        return rnd.ar2button(sar_monthly, day, text, style="", icon_name=None)
+    """
 
-    return daily, weekly, monthly
-
-
-
-class Days(dd.VirtualTable):
     # every row is a Day instance. Note that Day can be overridden.
 
+    abstract = True
+    editable = False
     # required_roles = dd.login_required((OfficeUser, OfficeOperator))
     required_roles = dd.login_required(OfficeUser)
-    column_names = "detail_link *"
     parameters = ObservedDateRange(
         user=dd.ForeignKey('users.User', null=True, blank=True))
-    model = 'calview.Day'
-    editable = False
-    navigation_mode = "day"  # or "week" or "month"
-    abstract = True
+    column_names = "detail_link *"
+    params_panel_hidden = False
+    display_mode = "html"
+    # hide_top_toolbar = True
+    navigator = None  # must be set for concrete subclasses
 
     @classmethod
     def get_navinfo(cls, ar, day):
         assert isinstance(day, Day)
-        day.navigation_mode = ar.actor.navigation_mode  # so that str() gives the right formar
+        day.navigation_mode = cls.navigation_mode  # so that str() gives the right format
         ni = dict(recno=day.pk, message=str(day))
 
         if cls.navigation_mode == "month":
@@ -188,109 +263,22 @@ class Days(dd.VirtualTable):
         # return cls.get_data_elem('day_number')
         return cls.day_number.return_type
 
-    @classmethod
-    def get_row_by_pk(cls, ar, pk):
-        """
-        pk is the offset from beginning_of_time
-        """
-        #if pk is None:
-        #    pk = "0"
-        # return dd.today(int(pk))
-        # if ar is None:
-        #     return cls.model(int(pk))
-        # return cls.model(int(pk), ar.actor.navigation_mode)
-        return cls.model(int(pk), ar, cls.navigation_mode)
+class CalendarView(DayNavigator):
+    """
+    A calendar view opens in detail view by default, the grid view is useless.
 
-    @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        home = cls.get_row_by_pk(ar, 0)
-        ni = cls.get_navinfo(ar, home)
-
-        pv = ar.param_values
-        date = pv.start_date or dd.today(ni['first'])
-        last = pv.end_date or dd.today(ni['last'])
-        if cls.navigation_mode == "day":
-            step = lambda x: x + timedelta(days=1)
-        elif cls.navigation_mode == "week":
-            step = lambda x: x + timedelta(days=7)
-        else:
-            step = lambda x: DurationUnits.months.add_duration(x, 1)
-
-        while date <= last:
-            yield cls.get_row_by_pk(ar, date2pk(date))
-            date = step(date)
-
-        # # return []  # not needed for detail view
-        # days = []
-        # pv = ar.param_values
-        # sd = pv.start_date or dd.today()
-        # ed = pv.end_date or sd
-        # if sd > ed:
-        #     return []
-        # # while sd <= ed:
-        # #     days.append(sd)
-        # #     sd = sd + relativedelta(days=1)
-        #
-        # if cls.reverse_sort_order:
-        #     step = -1
-        #     pk = date2pk(ed)
-        # else:
-        #     pk = date2pk(sd)
-        #     step = 1
-        # while True:  # sd <= ed:
-        #     # print(20181229, sd)
-        #     d = cls.model(pk, ar)
-        #     if d.date > ed or d.date < sd:
-        #         return days
-        #     days.append(d)
-        #     pk += step
-
-class CalendarSlave(AbstractTable):
-    # table mixin for both database and virtual tables
-    abstract = True
-    editable = False
-    hide_top_toolbar = True # no selections no toolbar
-    preview_limit = 0       # no paginator & all rows.
-    use_detail_params_value = True # Get PV values from detail view.
-
-    master = 'calview.Day'
-    navigation_mode = "day"  # or "week" or "month"
-
-    @classmethod
-    def get_master_instance(cls, ar, model, pk):
-        return model(int(pk), ar, cls.navigation_mode)
-
-    @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        mi = ar.master_instance
-        if mi is None:
-            return []
-        # filter.update()
-        ar.param_values.update(date=mi.date)
-        return super(CalendarSlave, cls).get_request_queryset(ar, **filter)
-
-
-class CalendarView(Days):
+    The detail of a calendar view usually has a calendar navigator panel at the
+    left side.  The right side varies, but it usually shows at least one slave
+    table which is usually a subclass of DaySlave.
 
     """
-    Base class for the three calendar views.
-
-    We want all calendar view actors to inherit params_layout from the
-    cal.Events table as defined by the application. But *after* the
-    custom_layout_module has been loaded.  So we override the class_init()
-    method.
-
-    """
-
-    # parameters = Calendarparameters
-    # params_layout = Calendarparams_layout
-    # reverse_sort_order = False
     abstract = True
     use_detail_param_panel = True
-    params_panel_hidden = False
-    display_mode = "html"
-    # hide_top_toolbar = True
-    detail_layout = 'calview.DayDetail'
+    # plannable_model = None  # must be set for concrete subclasses
+
+    @classmethod
+    def get_navigator(cls):
+        return cls.navigator
 
     @classmethod
     def get_default_action(cls):
@@ -298,39 +286,64 @@ class CalendarView(Days):
 
     @dd.htmlbox()
     def navigation_panel(cls, obj, ar):
+        if ar is None:
+            return None
+        # if ar.actor.navigator is None:
+        #     # raise Exception("Oops, {} has no navigator".format(cls))
+        #     print("Oops, {} has no navigator".format(cls))
+        #     return None
 
-        day_view = bool(cls.navigation_mode == 'day')
-        weekly_view = bool(cls.navigation_mode == 'week')
-        month_view = bool(cls.navigation_mode == 'month')
+        today = obj.date
+        # daily, weekly, monthly = obj.cal_view.navigator.make_link_funcs(ar)
+
+        daily = obj.navigator.daily_button_func(ar)
+        weekly = obj.navigator.weekly_button_func(ar)
+        monthly = obj.navigator.monthly_button_func(ar)
+
+        if obj.navigation_mode == 'day':
+            long_unit = DurationUnits.months
+            short_unit = DurationUnits.days
+            current_view = daily
+        elif obj.navigation_mode == 'week':
+            long_unit = DurationUnits.months
+            short_unit = DurationUnits.weeks
+            current_view = weekly
+        elif obj.navigation_mode == 'month':
+            long_unit = DurationUnits.years
+            short_unit = DurationUnits.months
+            current_view = monthly
+        else:
+            raise Exception("20200224")
+
+        daily_mode = bool(obj.navigation_mode == 'day')
+        weekly_view = bool(obj.navigation_mode == 'week')
+        month_view = bool(obj.navigation_mode == 'month')
 
         # todo ensure that the end of the month is always in the view.
-        today = obj.date
-        daily, weekly, monthly = make_link_funcs(ar)
-        long_unit = DurationUnits.years if month_view else DurationUnits.months
-        prev_month = Day(date2pk(long_unit.add_duration(today, -1)))
-        next_month = Day(date2pk(long_unit.add_duration(today, 1)))
-        next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
-        prev_view = Day(date2pk(next_unit.add_duration(today, -1)))
-        next_view = Day(date2pk(next_unit.add_duration(today, 1)))
+        # long_unit = DurationUnits.years if month_view else DurationUnits.months
+        long_prev = cls.get_row_by_pk(ar, date2pk(long_unit.add_duration(today, -1)))
+        long_next = cls.get_row_by_pk(ar, date2pk(long_unit.add_duration(today, 1)))
+        # next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
+        short_prev = cls.get_row_by_pk(ar, date2pk(short_unit.add_duration(today, -1)))
+        short_next = cls.get_row_by_pk(ar, date2pk(short_unit.add_duration(today, 1)))
         # current_view = weekly if weekly_view else daily
-        current_view = daily
-        if not day_view:
-            current_view = monthly if month_view else weekly
+        # current_view = daily
+        # if not day_view:
+        #     current_view = monthly if month_view else weekly
 
         elems = [] #cls.calender_header(ar)
 
         # Month div
         rows, cells = [], []
         for i, month in enumerate(YearMonths.get_list_items()):
-            # each week is a list of seven datetime.date objects.
-            pk = date2pk(DurationUnits.months.add_duration(today, int(month.value) - today.month))
-            if today.month == int(month.value):
+            pk = date2pk(DurationUnits.months.add_duration(today, i+1 - today.month))
+            if today.month == i+1:
                 if not month_view:
-                    cells.append(E.td(E.b(monthly(Day(pk), str(month)))))
+                    cells.append(E.td(E.b(monthly(cls.get_row_by_pk(ar, pk), str(month)))))
                 else:
                     cells.append(E.td(E.b(str(month))))
             else:
-                cells.append(E.td(monthly(Day(pk), str(month))))
+                cells.append(E.td(monthly(cls.get_row_by_pk(ar, pk), str(month))))
             if (i+1) % 3 == 0:
                 rows.append(E.tr(*cells, align="center"))
                 cells = []
@@ -338,9 +351,9 @@ class CalendarView(Days):
             *rows, align="center"), CLASS="cal-month-table")
 
         header = [
-            current_view(prev_month, "<<"), " " , current_view(prev_view, "<"),
+            current_view(long_prev, "<<"), " " , current_view(short_prev, "<"),
             E.span(E.span("{} {}".format(monthname(today.month), today.year), E.br(), monthly_div)),
-            current_view(next_view, ">"), " ", current_view(next_month, ">>")]
+            current_view(short_next, ">"), " ", current_view(long_next, ">>")]
         elems.append(E.h2(*header, align="center"))
         weekdaysFirstLetter = " " + "".join([gettext(week.text)[0] for week in Weekdays.objects()])
         rows = [E.tr(*[E.td(E.b(day_of_week)) for day_of_week in weekdaysFirstLetter], align='center')]
@@ -351,10 +364,10 @@ class CalendarView(Days):
             this_week = False
             for day in week:
                 pk = date2pk(day)
-                link = daily(Day(pk), str(day.day))
+                link = daily(cls.get_row_by_pk(ar, pk), str(day.day))
                 if day == dd.today():
                     link = E.b(link, CLASS="cal-nav-today")
-                if day == today and day_view:
+                if day == today and daily_mode:
                     cells.append(E.td(E.b(str(day.day))))
                 else:
                     cells.append(E.td(link))
@@ -362,126 +375,193 @@ class CalendarView(Days):
                     this_week = True
             else:
                 cells = [
-                            E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(Day(pk), str(current_week)),
-                                 CLASS="cal-week")
+                    E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(cls.get_row_by_pk(ar, pk), str(current_week)),
+                         CLASS="cal-week")
                          ] + cells
             rows.append(E.tr(*cells, align="center"))
 
+        today = cls.get_row_by_pk(ar, 0)
         elems.append(E.table(*rows, align="center"))
-        elems.append(E.p(daily(Day(), gettext("Today")), align="center"))
-        elems.append(E.p(weekly(Day(), gettext("This week")), align="center"))
-        elems.append(E.p(monthly(Day(), gettext("This month")), align="center"))
+        elems.append(E.p(daily(today, gettext("Today")), align="center"))
+        elems.append(E.p(weekly(today, gettext("This week")), align="center"))
+        elems.append(E.p(monthly(today, gettext("This month")), align="center"))
 
         # for o in range(-10, 10):
         #     elems.append(ar.goto_pk(o, str(o)))
         #     elems.append(" ")
         return E.div(*elems, CLASS="lino-nav-cal")
 
-    # @classmethod
-    # def get_disabled_fields(cls, obj, ar):
-    #     return set()
-
-    # @dd.displayfield(_("Date"))
-    # def detail_pointer(cls, obj, ar):
-    #     # print("20181230 detail_pointer() {}".format(cls))
-    #     a = cls.detail_action
-    #     if ar is None:
-    #         return None
-    #     if a is None:
-    #         return None
-    #     if not a.get_view_permission(ar.get_user().user_type):
-    #         return None
-    #     text = (str(obj),)
-    #     # url = ar.renderer.get_detail_url(cls, cls.date2pk(obj))
-    #     # url = ar.renderer.get_detail_url(cls, obj.pk)
-    #     url = settings.SITE.kernel.default_ui.renderer.get_detail_url(cls, obj.pk)
-    #     return ar.href_button(url, text)
-
-    # @dd.displayfield(_("Date"))
-    # def long_date(cls, obj, ar=None):
-    #     if obj is None:
-    #         return ''
-    #     return dd.fdl(obj.date)
 
 
+class DaySlave(AbstractTable):
 
-class DailyView(EventsParameters, CalendarView):
-    label = _("Daily view")
-    # hide_top_toolbar = True
-    insert_event = InsertEvent()
+    """
+    Table mixin for slave tables of tables on calview.Day.
 
+    Used by both database and virtual tables.
+    """
 
-
-class DailyPlanner(TableWithHeaderRow, DailyPlannerRows, CalendarSlave):
-    required_roles = dd.login_required((OfficeUser, OfficeOperator))
-    label = _("Daily planner")
+    abstract = True
+    editable = False
+    hide_top_toolbar = True # no selections no toolbar
+    preview_limit = 0       # no paginator & all rows.
+    use_detail_params_value = True # Get parameter values from detail view.
+    master = 'calview.Day'
+    # navigation_mode = "day"  # or "week" or "month"
+    calendar_view = None
+    with_header_row = True
 
     @classmethod
-    def setup_columns(self):
-        names = ''
-        for i, vf in enumerate(self.get_ventilated_columns()):
-            self.add_virtual_field('vc' + str(i), vf)
-            names += ' ' + vf.name + ':20'
+    def class_init(cls):
+        super(DaySlave, cls).class_init()
+        if isinstance(cls.calendar_view, str):
+            cls.calendar_view = rt.models.resolve(cls.calendar_view)
 
-        self.column_names = "overview:3 {}".format(names)
+    @classmethod
+    def get_master_instance(cls, ar, model, pk):
+        return model(int(pk), ar, cls.calendar_view.navigation_mode, cls.calendar_view.navigator)
 
-        # ~ logger.info("20131114 setup_columns() --> %s",self.column_names)
+    @classmethod
+    def get_calendar_entries(cls, ar, obj):
+        if obj is None:
+            return rt.models.cal.Event.objects.all()
+        else:
+            return obj.get_my_plannable_entries(ar)
+
+    @classmethod
+    def get_data_rows(cls, ar):
+        if cls.with_header_row:
+            yield cls.model.HEADER_ROW
+        # mi = ar.master_instance
+        # if mi is None:
+        #     return
+        # # filter.update()
+        # ar.param_values.update(date=mi.date)
+        if issubclass(cls, dd.Table):
+            # print("20200307 {}".format(super(DaySlave, cls).get_request_queryset))
+            try:
+                get_request_queryset = super(DaySlave, cls).get_request_queryset
+            except AttributeError:
+                raise Exception("{} has no get_request_queryset() method".format(cls))
+                # when inheriting from DaySlave and a model-based table, model-based
+                # table must come before DaySlave in the MRO
+
+            for obj in get_request_queryset(ar):
+                yield obj
+        else:
+            get_data_rows = super(DaySlave, cls).get_data_rows
+            if get_data_rows is None:
+                raise Exception("{} has no get_data_rows() method".format(cls))
+            for obj in get_data_rows(ar):
+                yield obj
+        # return super(DaySlave, cls).get_request_queryset(ar, **filter)
+
+    @classmethod
+    def get_calview_chunks(cls, self, ar):
+        """yield a series of HTML elements or strings that will be combined to a <span>
+        """
+        chunks = []
+        pv = ar.param_values
+        if self.start_time:
+            chunks.append(str(self.start_time)[:5])
+
+        # elif not pv.start_date:
+            # t.append(str(self.start_date))
+        if not pv.user and self.user:
+            chunks.append(str(self.user))
+        if self.summary:
+            chunks.append(self.summary)
+        if not pv.event_type and self.event_type:
+            chunks.append(str(self.event_type))
+        if not pv.room and self.room:
+            chunks.append(str(self.room))
+        if settings.SITE.project_model is not None and not pv.project and self.project:
+            chunks.append(str(self.project))
+        return " ".join(chunks)
+
+    @classmethod
+    def get_calview_div(cls, obj, ar):
+
+        """Return a <div> for this element in the calendar view given by ar.
+
+        """
+        ele = E.span(*cls.get_calview_chunks(obj, ar))
+        data_color = obj.get_diplay_color()
+        if data_color:
+            dot  = E.span("\u00A0", CLASS="dot")
+            # ele.attrib['style'] = "color: white;background-color: {};".format(data_color)
+            dot.attrib['style'] = "background-color: {};".format(data_color)
+            return E.div(*[dot, ele])
+        else:
+            return E.div(*[ele])
+
+class DailyPlannerBase(DaySlave, VentilatedColumns):
+    abstract = True
+    label = _("Daily planner")
+    column_names_template = "overview:3 {vcolumns}"
+    ventilated_column_suffix = ':20'
+    required_roles = dd.login_required((OfficeUser, OfficeOperator))
+    calendar_view = "calview.DailyView"
+    details_of_master_template = _("%(details)s on %(master)s")
 
     @classmethod
     def get_ventilated_columns(cls):
-
-        Event = rt.models.cal.Event
-
-        def w(pc, verbose_name):
-            def func(fld, obj, ar):
-                # obj is the DailyPlannerRow instance
-                pv = ar.param_values
-                qs = Event.objects.filter(event_type__planner_column=pc)
-                qs = Event.calendar_param_filter(qs, pv)
-                current_day = pv.get('date',dd.today())
-                if current_day:
-                    qs = qs.filter(start_date=current_day)
-                if obj is cls.HEADER_ROW:
-                    qs = qs.filter(start_time__isnull=True)
-                else:
-                    if obj.start_time:
-                        qs = qs.filter(start_time__gte=obj.start_time,
-                                       start_time__isnull=False)
-                    if obj.end_time:
-                        qs = qs.filter(start_time__lt=obj.end_time,
-                                       start_time__isnull=False)
-                qs = qs.order_by('start_time')
-                chunks = [e.obj2href(ar, e.colored_calendar_fmt(pv)) for e in qs]
-                return E.p(*join_elems(chunks))
-
-            return dd.VirtualField(dd.HtmlBox(verbose_name), func)
-
         for pc in PlannerColumns.objects():
-            yield w(pc, pc.text)
-
-
-class PlannerByDay(DailyPlanner):
-    # display_mode = "html"
-    navigation_mode = 'day'
-
-
-######################### Weekly ########################"
-
-class WeeklyColumns(EventsParameters, CalendarSlave, TableWithHeaderRow, VentilatedColumns):
-    abstract = True
-    column_names_template = "overview:4 {vcolumns}"
-    ventilated_column_suffix = ':20'
-    navigation_mode = "week"
+            yield cls.get_daily_field(pc)
 
     @classmethod
-    def get_weekday_field(cls, week_day):
-
+    def get_daily_field(cls, pc):
         Event = rt.models.cal.Event
+        def func(fld, obj, ar):
+            # obj is a DailyPlannerRow instance
+            qs = cls.get_calendar_entries(ar, obj)
+            qs = qs.filter(event_type__planner_column=pc)
+            pv = ar.param_values
+            # qs = Event.calendar_param_filter(qs, pv)
+            current_day = pv.get('date', dd.today())
+            if current_day:
+                qs = qs.filter(start_date=current_day)
+            # if obj is cls.model.HEADER_ROW:
+            #     qs = qs.filter(start_time__isnull=True)
+            # else:
+            #     get_plannable_entries
+            #     if obj.start_time:
+            #         qs = qs.filter(start_time__gte=obj.start_time,
+            #                        start_time__isnull=False)
+            #     if obj.end_time:
+            #         qs = qs.filter(start_time__lt=obj.end_time,
+            #                        start_time__isnull=False)
+            qs = qs.order_by('start_time')
+            chunks = [e.obj2href(ar, cls.get_calview_div(e, ar)) for e in qs]
+            return E.p(*join_elems(chunks))
+
+        return dd.VirtualField(dd.HtmlBox(pc.text), func)
+
+
+class WeeklyPlannerBase(DaySlave, VentilatedColumns):
+
+    """subclassed by WeeklyPlanner, but also in Presto where we define a custom
+    weekly planner as a class WorkersByWeek(Workers, WeeklyPlannerBase)"""
+
+    abstract = True
+    label = _("Weekly planner")
+    column_names_template = "overview:4 {vcolumns}"
+    ventilated_column_suffix = ':20'
+    # navigation_mode = "week"
+    calendar_view = "calview.WeeklyView"
+    details_of_master_template = _("%(details)s in %(master)s")
+
+    @classmethod
+    def get_ventilated_columns(cls):
+        for wd in Weekdays.objects():
+            yield cls.get_weekly_field(wd)
+
+    @classmethod
+    def get_weekly_field(cls, week_day):
 
         def func(fld, obj, ar):
             # obj is a Plannable instance
-            qs = Event.objects.all()
-            qs = Event.calendar_param_filter(qs, ar.param_values)
+            qs = cls.get_calendar_entries(ar, obj)
             delta_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
             # current_day = dd.today() + timedelta(days=delta_days)
             delta_days += int(week_day.value) - dd.today().weekday() - 1
@@ -490,7 +570,7 @@ class WeeklyColumns(EventsParameters, CalendarSlave, TableWithHeaderRow, Ventila
             #     timedelta(days=int(week_day.value) - current_day.weekday() - 1)
             qs = qs.filter(start_date=today)
             qs = qs.order_by('start_time')
-            if obj is cls.HEADER_ROW:
+            if obj is cls.model.HEADER_ROW:
                 chunks = obj.get_header_chunks(ar, qs, today)
             else:
                 chunks = obj.get_weekly_chunks(ar, qs, today)
@@ -500,16 +580,96 @@ class WeeklyColumns(EventsParameters, CalendarSlave, TableWithHeaderRow, Ventila
         return dd.VirtualField(dd.HtmlBox(week_day.text), func)
 
 
+class MonthlyPlannerBase(DaySlave, VentilatedColumns):
+    abstract = True
+    label = _("Monthly planner")
+    column_names_template = "week_number:2 {vcolumns}"
+    ventilated_column_suffix = ':20'
+    # navigation_mode = "week"
+    calendar_view = "calview.MonthlyView"
+    details_of_master_template = _("%(details)s in %(master)s")
+
     @classmethod
     def get_ventilated_columns(cls):
-        for wd in Weekdays.objects():
-            yield cls.get_weekday_field(wd)
+        for wd in Weekdays.get_list_items():
+            yield cls.get_monthly_field(wd)
+
+    @classmethod
+    def get_monthly_field(cls, wd):
+        verbose_name = wd.text
+        Event = rt.models.cal.Event
+        Events = rt.models.cal.Events
+
+        def func(fld, obj, ar):
+            # obj is the first day of the week to show
+            # pv = ar.param_values
+            today = dd.today()
+            # if pv is None:
+            #     return
+            qs = cls.get_calendar_entries(ar, None)
+            # qs = Event.objects.all()
+            # qs = Event.calendar_param_filter(qs, pv)
+            mi = ar.master_instance
+            if mi is None:
+                return
+            target_day = cls.get_row_by_pk(ar, obj.pk + int(wd.value) - 1)
+            current_month = mi.date.month
+            nav = mi.navigator
+
+            # offset = ar.master_instance.pk
+            # offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
+            # current_date = dd.today(offset)
+            # pk = offset + int(wd.value) - 1
+            # target_day = cls.get_row_by_pk(ar, pk)
+            # if target_day is None:
+            #     return
+            # target_day = week[int(wd.value)-1]
+            qs = qs.filter(start_date=target_day.date)
+            qs = qs.order_by('start_time')
+            chunks = [E.p(e.obj2href(ar, cls.get_calview_div(e, ar))) for e in qs]
+
+            # pk = date2pk(target_day)
 
 
-class WeeklyPlanner(WeeklyColumns, TableWithHeaderRow):
-    model = 'calview.DailyPlannerRow'
+            # nav.daily_view
+            # sar = ar.spawn_request(actor=actor, param_values=ar.param_values)
+            # rnd = settings.SITE.kernel.default_renderer
+            # def func(day, text):
+            #     # day.navigation_mode = actor.navigation_mode
+            #     return rnd.ar2button(sar, day, text, style="", icon_name=None, title=str(day))
+            #
+
+            daily = nav.daily_button_func(ar)
+            daily_link = daily(target_day, str(target_day.date.day))
+            if target_day.date == today:
+                daily_link = E.b(daily_link)
+
+            # header_items = [daily_link]
+            # header_items = Event.gen_insert_button(cls, header_items, ar, target_day)
+            header_items = [daily_link]
+            btn = ar.gen_insert_button(Events, start_date=target_day.date)
+            if btn:
+                header_items.append(btn)
+
+            header = E.div(*header_items, align="center", CLASS="header" )
+            return E.table(E.tr(E.td(*[header, E.div(*join_elems(chunks))])),
+                           CLASS="fixed-table cal-month-cell {} {} {}".format(
+                             "current-month" if current_month == target_day.date.month else "other-month",
+                             "current-day" if target_day.date == today else "",
+                             "cal-in-past" if target_day.date < today else ""
+                         ))
+
+        return dd.VirtualField(dd.HtmlBox(verbose_name), func)
+
+
+class DailyPlanner(EventsParameters, DailyPlannerBase, DailyPlannerRows):
+    # display_mode = "html"
+    navigation_mode = 'day'
+
+class WeeklyPlanner(EventsParameters, WeeklyPlannerBase, DailyPlannerRows):
+    # model = 'calview.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
-    label = _("Weekly planner")
+    # display_mode = "html"
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -517,40 +677,53 @@ class WeeklyPlanner(WeeklyColumns, TableWithHeaderRow):
         kw.update(user=ar.get_user())
         return kw
 
-class WeeklyDetail(dd.DetailLayout):
-    main = "body"
-    body = dd.Panel("navigation_panel:15 calview.WeeklyPlanner:85", label=_("Planner"))
-
-class WeeklyView(EventsParameters, CalendarView):
-    label = _("Weekly view")
-    detail_layout = 'calview.WeeklyDetail'
-    navigation_mode = "week"
-
-
-######################### Monthly ########################
-
-
-class MonthlyPlanner(CalendarSlave, EventsParameters, dd.VirtualTable):
+class MonthlyPlanner(EventsParameters, MonthlyPlannerBase, DaysTable):
     # required_roles = dd.login_required(OfficeStaff)
-    label = _("Monthly planner")
+    with_header_row = False
+    navigation_mode = "month"
 
     @classmethod
-    def get_data_rows(self, ar):
-        # every row in this table is a "week", i.e. a list of seven datetime.date objects
-        delta_days = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
-        current_day = dd.today() + timedelta(days=delta_days)
-        # weeks = [week[0].isocalendar()[1] for week in CALENDAR.monthdatescalendar(current_day.year, current_day.month)]
-        return CALENDAR.monthdatescalendar(current_day.year, current_day.month)
-        # return weeks
+    def get_navigator(cls):
+        return cls.calendar_view.navigator
+
+    @classmethod
+    def get_data_rows(cls, ar):
+        mi = ar.master_instance  # a Day instance
+        if mi is None:
+            return
+
+        year, month = mi.date.year, mi.date.month
+        # inspired by calendar.Calendar.itermonthdates
+        date = datetime.date(year, month, 1)
+        # Go back to the beginning of the week
+        days = (date.weekday() - CALENDAR.firstweekday) % 7
+        date -= datetime.timedelta(days=days)
+        # date = CALENDAR.itermonthdates(year, month).next()
+        while True:
+            yield cls.get_row_by_pk(ar, date2pk(date))
+            try:
+                date += ONE_WEEK
+            except OverflowError:
+                # Adding could fail after datetime.MAXYEAR
+                break
+            if date.month != month and date.weekday() == CALENDAR.firstweekday:
+                break
 
     @dd.displayfield("Week")
-    def week_number(cls, week, ar):
-        label = str(week[0].isocalendar()[1])
-        pk = date2pk(week[0])
+    def week_number(cls, obj, ar):
+        # obj is the first day of the week
+        if not isinstance(obj, Day):
+            raise Exception("{} is not a Day".format(obj))
         if ar.param_values is None:
             return None
-        daily, weekly, monthly = make_link_funcs(ar)
-        link = weekly(Day(pk), label)
+        label = str(obj.date.isocalendar()[1])
+        # label = str(week[0].isocalendar()[1])
+        # pk = date2pk(week[0])
+        # nav = ar.master_instance.ar.actor.navigator  # 20200224
+        # daily, weekly, monthly = nav.make_link_funcs(ar)
+        # weekly = nav.weekly_button_func(ar)
+        # link = weekly(Day(pk), label)
+        link = label
         return E.div(*[link], align="center")
 
     @classmethod
@@ -559,68 +732,32 @@ class MonthlyPlanner(CalendarSlave, EventsParameters, dd.VirtualTable):
         kw.update(user=ar.get_user())
         return kw
 
-    @classmethod
-    def setup_columns(self):
-        names = ''
-        for i, vf in enumerate(self.get_ventilated_columns()):
-            self.add_virtual_field('vc' + str(i), vf)
-            names += ' ' + vf.name + ':20'
-            # names += ' ' + vf.name + (':20' if i != 0 else ":3")
 
-        self.column_names = "week_number:2 {}".format(names)
+class DayDetail(dd.DetailLayout):
+    main = "body"
+    body = "navigation_panel:15 calview.DailyPlanner:85"
 
-    @classmethod
-    def get_ventilated_columns(cls):
+class WeekDetail(dd.DetailLayout):
+    main = "body"
+    # body = dd.Panel("navigation_panel:15 calview.WeeklyPlanner:85", label=_("Planner"))
+    body = "navigation_panel:15 calview.WeeklyPlanner:85"
 
-        Event = rt.models.cal.Event
-
-        def w(pc):
-            verbose_name = pc.text
-
-            def func(fld, week, ar):
-                pv = ar.param_values
-                if pv is None:
-                    return
-                qs = Event.objects.all()
-                qs = Event.calendar_param_filter(qs, pv)
-                offset = int(ar.rqdata.get('mk', 0) or 0) if ar.rqdata else ar.master_instance.pk
-                today = dd.today()
-                current_date = dd.today(offset)
-                target_day = week[int(pc.value)-1]
-                qs = qs.filter(start_date=target_day)
-                qs = qs.order_by('start_time')
-                chunks = [E.p(e.obj2href(ar, e.colored_calendar_fmt(pv))) for e in qs]
-
-                pk = date2pk(target_day)
-                daily, weekly, monthly = make_link_funcs(ar)
-                daily_link = daily(Day(pk),str(target_day.day))
-                if target_day == today:
-                    daily_link = E.b(daily_link)
-
-                header_items = [daily_link]
-                header_items = gen_insert_button(cls, header_items, Event, ar, target_day)
-
-                header = E.div(*header_items, align="center",CLASS="header" )
-                return E.table(E.tr(E.td(*[header,E.div(*join_elems(chunks))])),
-                               CLASS="fixed-table cal-month-cell {} {} {}".format(
-                                 "current-month" if current_date.month == target_day.month else "other-month",
-                                 "current-day" if target_day == today else "",
-                                 "cal-in-past" if target_day < today else ""
-                             ))
-
-            return dd.VirtualField(dd.HtmlBox(verbose_name), func)
-
-        for pc in Weekdays.get_list_items():
-            yield w(pc)
-
-
-
-class MonthlyDetail(dd.DetailLayout):
+class MonthDetail(dd.DetailLayout):
     main = "body"
     body = "navigation_panel:15 calview.MonthlyPlanner:85"
 
+class DailyView(EventsParameters, CalendarView):
+    label = _("Daily view")
+    detail_layout = 'calview.DayDetail'
+    navigation_mode = "day"
+    insert_event = InsertEvent()
+
+class WeeklyView(EventsParameters, CalendarView):
+    label = _("Weekly view")
+    detail_layout = 'calview.WeekDetail'
+    navigation_mode = "week"
 
 class MonthlyView(EventsParameters, CalendarView):
     label = _("Monthly view")
-    detail_layout = 'calview.MonthlyDetail'
+    detail_layout = 'calview.MonthDetail'
     navigation_mode = "month"

@@ -492,44 +492,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         if self.room:
             return self.room.display_color
 
-    def calendar_fmt(self,pv):
-        # if pv.user:
-        # if pv.assigned_to:
-        # if settings.SITE.project_model is not None and pv.project:
-        # if pv.event_type:
-        t = []
-        if self.start_time:
-            t.append(str(self.start_time)[:5])
-        # elif not pv.start_date:
-            # t.append(str(self.start_date))
-        if not pv.user and self.user:
-            t.append(str(self.user))
-        if self.summary:
-            t.append(self.summary)
-        if not pv.event_type and self.event_type:
-            t.append(str(self.event_type))
-        if not pv.room and self.room:
-            t.append(str(self.room))
-        if settings.SITE.project_model is not None and not pv.project and self.project:
-            t.append(str(self.project))
-
-        # if u is None:
-        #     return "{} {}".format(t, self.room) if self.room else t
-        # u = u.initials or u.username or str(u)
-        return E.span(" ".join(t))
-        # return "{} {}".format(t, u)
-
-    def colored_calendar_fmt(self,pv):
-        ele = E.span(self.calendar_fmt(pv))
-        data_color = self.get_diplay_color()
-        if data_color:
-            dot  = E.span(u"\u00A0",CLASS="dot")
-            # ele.attrib['style'] = "color: white;background-color: {};".format(data_color)
-            dot.attrib['style'] = "background-color: {};".format(data_color)
-            return E.div(*[dot,ele])
-        else:
-            return E.div(*[ele])
-
     def __str__(self):
         if self.summary:
             s = self.summary

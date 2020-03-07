@@ -19,8 +19,6 @@ Some calendar utilities
 
 """
 
-from __future__ import unicode_literals
-
 import datetime
 
 from dateutil.tz import tzlocal
@@ -45,7 +43,7 @@ def dt2kw(dt, name, **d):
     name of the fields.
 
     Examples:
-    
+
     >>> dt = datetime.datetime(2013, 12, 25, 17, 15, 0)
     >>> dt2kw(dt,'foo') == {'foo_date': datetime.date(2013, 12, 25), 'foo_time': datetime.time(17, 15)}
     True
@@ -82,11 +80,11 @@ def when_text(d, t=None):
 
     >>> print(when_text(datetime.date(2013,12,25)))
     Wed 25/12/2013
-    
+
     >>> print(when_text(
     ...     datetime.date(2013,12,25), datetime.time(17,15,00)))
     Wed 25/12/2013 (17:15)
-    
+
     >>> print(when_text(None))
     <BLANKLINE>
 
@@ -179,5 +177,3 @@ def update_reminder(type, owner, user, orig, msg, num, unit):
         unit.add_duration(orig, -num),
         msg,
         owner)
-
-

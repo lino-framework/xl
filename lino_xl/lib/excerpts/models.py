@@ -37,8 +37,7 @@ from .mixins import Certifiable
 from .choicelists import Shortcuts
 from .roles import ExcerptsUser, ExcerptsStaff
 
-ONE_WEEK = datetime.timedelta(days=7)
-ONE_DAY = datetime.timedelta(days=1)
+from lino.utils import ONE_DAY, ONE_WEEK
 
 
 class ExcerptType(mixins.BabelNamed, PrintableType, MailableType):

@@ -1,11 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 import os
-from builtins import object
-from builtins import str
 
 from django.conf import settings
 from django.core.exceptions import ValidationError

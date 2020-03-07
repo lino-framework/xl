@@ -24,7 +24,7 @@ from lino.mixins.periods import ObservedDateRange
 from lino_xl.lib.tickets.roles import Triager, TicketsStaff
 from lino_xl.lib.tickets.choicelists import (
     TicketEvents, TicketStates)
-from lino_xl.lib.calview.ui import Day, Days
+from lino_xl.lib.calview.ui import Day, EventsParameters, DayNavigator, DaySlave, DaysTable
 
 from .roles import Worker
 from .choicelists import ReportingTypes
@@ -252,36 +252,11 @@ class MySessionsByDate(MySessions):
         return super(MySessions, self).create_instance(ar, **kw)
 
 
-class MySessionsByDay(MySessionsByDate):
-
-    master = Day
-    # display_mode = "html"
-    # use_detail_params_value = True
-
-    @classmethod
-    def get_master_instance(cls, ar, model, pk):
-        return model(int(pk))
-
-    @classmethod
-    def get_request_queryset(cls, ar, **flt):
-        mi = ar.master_instance
-        if mi is None:
-            return []
-        pv = ar.param_values
-        pv.update(start_date=mi.date, end_date=mi.date)
-        pv.update(observed_event=dd.PeriodEvents.started)
-        if mi.ar is not None:
-            pv.update(user=mi.ar.get_user() if (mi.ar.param_values is None or
-                                                mi.ar.param_values.user is None
-                                                )else mi.ar.param_values.user)
-        return super(MySessionsByDay, cls).get_request_queryset(ar, **flt)
-
-
-def load_sessions(self, sar):
+def load_sessions(self, sessions):
     self._root2tot = {}
     self._tickets = set()
     grand_tot = Duration()
-    for ses in sar:
+    for ses in sessions:
         self._tickets.add(ses.ticket)
         d = ses.get_duration() or MIN_DURATION
         grand_tot += d
@@ -690,27 +665,18 @@ class SummariesByUser(UserSummaries):
 
 
 
-class Day(Day):
-    def __init__(self, *args, **kwargs):
-        super(Day, self).__init__(*args, **kwargs)
-        self.sar = self.ar.spawn(rt.models.working.MySessionsByDay, master_instance=self)
-        load_sessions(self, self.sar)
-
-class DayDetail(dd.DetailLayout):
-    main = "working.MySessionsByDay"
-    # main = "working.MySessionsByDay cal.PlannerByDay"
-
-
-class WorkedHours(Days, dd.VentilatingTable):
+# class WorkedHours(Days, dd.VentilatingTable):
+# class WorkedHours(CalendarView):
+# class WorkedHours(EventsParameters, DayNavigator, dd.VentilatingTable):
+class WorkedHours(EventsParameters, DaysTable, dd.VentilatingTable):
     label = _("Worked hours")
     # column_names_template = 'day_number long_date detail_link description {vcolumns}'
     column_names_template = 'detail_link worked_tickets {vcolumns} *'
     # reverse_sort_order = True
-    model = Day
-    detail_layout = DayDetail()
-
+    model = 'working.Day'
+    detail_layout = 'working.DayDetail'
+    # navigation_mode = "day"  # "day" or "week" or "month"
     params_layout = "user start_date end_date"
-    # navigation_mode = "week"
 
     # parameters = Sessions.parameters
     # params_layout = Sessions.params_layout
@@ -718,9 +684,11 @@ class WorkedHours(Days, dd.VentilatingTable):
     # params_panel_hidden = False
 
     @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        lst = list(super(WorkedHours, cls).get_request_queryset(ar, **filter))
-        return list(reversed(lst))
+    def get_data_rows(cls, ar):
+    # def get_request_queryset(cls, ar, **filter):
+        # lst = list(super(WorkedHours, cls).get_data_rows(ar))
+        # return list(reversed(lst))
+        return reversed(list(super(WorkedHours, cls).get_data_rows(ar)))
 
     @dd.displayfield(_("Worked tickets"))
     def worked_tickets(self, obj, ar):
@@ -765,7 +733,6 @@ class WorkedHours(Days, dd.VentilatingTable):
         # yield w(None, _("N/A"))
         yield w(TOTAL_KEY, _("Total"))
 
-
     # @dd.displayfield(_("Description"))
     # def detail_link(cls, obj, ar):
     #     if ar is None:
@@ -774,3 +741,41 @@ class WorkedHours(Days, dd.VentilatingTable):
     #     sar = ar.spawn(cls.detail_action)
     #     sar.param_values = ar.param_values
     #     return E.div(settings.SITE.kernel.default_renderer.ar2button(sar, obj ,str(obj), style="", icon_name=None))
+
+
+class Day(Day):
+    def __init__(self, *args, **kwargs):
+        super(Day, self).__init__(*args, **kwargs)
+        self.sar = self.ar.spawn(rt.models.working.MySessionsByDay, master_instance=self)
+        load_sessions(self, self.sar)
+
+
+class DayDetail(dd.DetailLayout):
+    main = "working.MySessionsByDay"
+    # main = "working.MySessionsByDay cal.PlannerByDay"
+
+
+class MySessionsByDay(MySessionsByDate):
+#class MySessionsByDay(MySessionsByDate, DaySlave):
+    # with_header_row = False
+    master = 'working.Day'
+    # display_mode = "html"
+    # use_detail_params_value = True
+
+    @classmethod
+    def get_master_instance(cls, ar, model, pk):
+        return model(int(pk), ar, 'day')
+
+    @classmethod
+    def get_request_queryset(cls, ar):
+        mi = ar.master_instance
+        if mi is None:
+            return []
+        pv = ar.param_values
+        pv.update(start_date=mi.date, end_date=mi.date)
+        pv.update(observed_event=dd.PeriodEvents.started)
+        if mi.ar is not None:
+            pv.update(user=mi.ar.get_user() if (mi.ar.param_values is None or
+                                                mi.ar.param_values.user is None
+                                                )else mi.ar.param_values.user)
+        return super(MySessionsByDay, cls).get_request_queryset(ar)
