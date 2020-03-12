@@ -15,7 +15,8 @@ from lino import mixins
 from lino.api import dd, rt, _
 from lino.mixins.duplicable import Duplicable
 from lino.mixins.human import parse_name
-from lino.mixins.periods import ObservedDateRange
+# from lino.mixins.periods import ObservedDateRange
+from lino.mixins.periods import DateRangeObservable
 from lino.modlib.printing.mixins import Printable
 from lino.modlib.uploads.mixins import UploadController
 from lino.utils import join_words
@@ -77,7 +78,7 @@ class ExportVCardFile(dd.Action):
 
 
 class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
-              AddressOwner, UploadController, Feasible, Printable):
+              AddressOwner, UploadController, Feasible, Printable, DateRangeObservable):
     preferred_foreignkey_width = 20
     # preferred width for ForeignKey fields to a Partner
 
@@ -289,7 +290,7 @@ class Partners(dd.Table):
     model = 'contacts.Partner'
     column_names = "name id mti_navigator email * "
     order_by = ['name', 'id']
-    parameters = ObservedDateRange()
+    # parameters = ObservedDateRange()
     # detail_layout = 'contacts.PartnerDetail'
     # removed for #2777 ()
     # insert_layout = """

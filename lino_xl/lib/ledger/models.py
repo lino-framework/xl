@@ -1171,11 +1171,11 @@ class PartnerHasOpenMovements(ObservedEvent):
     text = _("Has open movements")
 
     def add_filter(self, qs, pv):
-        qs = qs.filter(movement__cleared=False)
+        qs = qs.filter(ledger_movement_set_by_partner__cleared=False)
         if pv.end_date:
-            qs = qs.filter(movement__value_date__lte=pv.end_date)
+            qs = qs.filter(ledger_movement_set_by_partner__value_date__lte=pv.end_date)
         if pv.start_date:
-            qs = qs.filter(movement__value_date__gte=pv.start_date)
+            qs = qs.filter(ledger_movement_set_by_partner__value_date__gte=pv.start_date)
         return qs.distinct()
 
 PartnerEvents.add_item_instance(

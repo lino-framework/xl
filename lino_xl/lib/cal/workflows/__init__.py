@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Some standard workflow definition modules for
@@ -11,8 +11,6 @@
     feedback
 
 """
-
-from __future__ import unicode_literals
 
 
 from django.conf import settings
@@ -37,4 +35,3 @@ TaskStates.cancelled.add_transition(
     required_states='todo started important', icon_name=f('cancel'))
 TaskStates.important.add_transition(
     required_states='todo started', icon_name=f('lightning'))
-

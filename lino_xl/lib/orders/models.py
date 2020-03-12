@@ -111,6 +111,10 @@ class Order(Certifiable, RegistrableVoucher, RecurrenceSet, EventGenerator, Dupl
     #     build_method='weasy2html',
     #     label=format_lazy(u"{}{}",_("Presence sheet"), _(" (HTML)")))
 
+    def get_worker_choices(self):
+        worker = dd.resolve_model(worker_model)
+        return worker.objects.all()
+
     def full_clean(self, *args, **kwargs):
         if self.entry_date is None:
             self.entry_date = dd.today()
@@ -288,8 +292,7 @@ class Enrolment(dd.Model):
 
     @dd.chooser()
     def worker_choices(cls, order):
-        worker = dd.resolve_model(worker_model)
-        return worker.objects.all()
+        return order.get_worker_choices()
 
     # def create_worker_choice(self, text):
     #     """

@@ -1033,7 +1033,7 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
     def get_mailable_recipients(self):
         yield ('to', self.partner)
 
-    @dd.displayfield(_("Event"))
+    @dd.displayfield(_("Calendar entry"))
     def event_summary(self, ar):
         if ar is None:
             return ''

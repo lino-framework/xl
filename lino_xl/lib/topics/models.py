@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-import six
-# from builtins import str
 
 from etgen.html import E
 from lino.api import dd, rt, _
@@ -182,9 +179,9 @@ class InterestsByPartner(Interests):
     @classmethod
     def summary_row(cls, ar, obj, **kwargs):
         if ar is None:
-            yield six.text_type(obj.topic)
+            yield str(obj.topic)
         else:
-            yield ar.obj2html(obj, six.text_type(obj.topic))
+            yield ar.obj2html(obj, str(obj.topic))
 
 
 class InterestsByController(Interests):
@@ -203,24 +200,9 @@ class InterestsByController(Interests):
     @classmethod
     def summary_row(cls, ar, obj, **kwargs):
         if ar is None:
-            yield six.text_type(obj.topic)
+            yield str(obj.topic)
         else:
-            yield ar.obj2html(obj, six.text_type(obj.topic))
-
-    # @classmethod
-    # def get_table_summary(self, obj, ar):
-    #     sar = self.request_from(ar, master_instance=obj)
-    #     # tags = [str(c.topic) for c in sar]
-    #     tags = [six.text_type(c.topic) for c in sar]
-    #     # tags = [c.obj2href(ar) for c in sar]
-    #     # chunks = join_elems(tags, sep=', ')
-    #     # iar = self.insert_action.request_from(sar)
-    #     # if iar.get_permission():
-    #     #     chunks.append(' ')
-    #     #     chunks.append(iar.ar2button())
-    #     # return ar.html_text(E.p(*chunks))
-    #     return ar.html_text(E.p(', '.join(tags)))
-
+            yield ar.obj2html(obj, str(obj.topic))
 
 
 

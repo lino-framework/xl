@@ -1,17 +1,12 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2015-2017 Rumma & Ko Ltd
+# Copyright 2015-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Database models for this plugin.
 
 """
 
-from __future__ import unicode_literals
-
 from lino.api import dd, rt, _
 
-# from lino_xl.lib.contacts.models import Person
-# from lino_noi.lib.contacts.models import Person
-# Person = dd.resolve_model('contacts.Person')
 contacts = dd.resolve_app('contacts')
 Person = contacts.Person
 
@@ -43,7 +38,7 @@ class CheckedSubmitInsert(SubmitInsert):
 
             ar.error(msg)
             return
-        
+
         def ok(ar2):
             SubmitInsert.run_from_ui(self, ar, **kw)
             # self.save_new_instance(ar2, obj)
@@ -82,7 +77,7 @@ class VerifyUser(dd.Action):
     # @dd.constant()
     # def instruct(self, *args):
     #     return _("Enter the verification code you received.")
-    
+
     def get_action_permission(self, ar, obj, state):
         if not obj.verification_code:
             return False
@@ -106,9 +101,9 @@ class VerifyUser(dd.Action):
         user.save()
         ar.success(_("User {} is now verified.").format(user))
 
-    
 
-# 
+
+#
 #class User(User, Phonable, AddressLocation):
 class User(User, Person):
 
@@ -140,21 +135,21 @@ class User(User, Person):
         _('Others may contact me'), default=True)
 
     verification_code = models.CharField(max_length=200, blank=True)
-    
+
     user_state = UserStates.field(default=UserStates.as_callable('new'))
 
     submit_insert = CheckedSubmitInsert()
     verify = VerifyUser()
 
     # partner = dd.DummyField()
-    
+
     def get_person(self):
         return self
-    
+
     def on_create(self, ar):
         self.verification_code = id_generator(12)
         return super(User, self).on_create(ar)
-    
+
     def get_detail_action(self, ar):
         a = super(User, self).get_detail_action(ar)
         if a is not None:
@@ -163,11 +158,11 @@ class User(User, Person):
             a = rt.models.users.OtherUsers.detail_action
         if a is not None and a.get_view_permission(ar.get_user().user_type):
             return a
-        
+
     @dd.htmlbox(_("About me"))
     def about_me(self, ar):
         return self.remarks
-        
+
     @classmethod
     def get_simple_parameters(cls):
         s = list(super(User, cls).get_simple_parameters())
@@ -177,7 +172,7 @@ class User(User, Person):
     # def get_default_table(self, ar):
     #     tbl = super(User, self).get_default_table(ar)
     #     return rt.models.users.OtherUsers
-    
+
     # def __str__(self):
     #     s = self.get_full_name()
     #     if self.callme_mode:
@@ -187,4 +182,3 @@ class User(User, Person):
 
 
 dd.update_field('users.User', 'remarks', verbose_name=_("About me"))
-
