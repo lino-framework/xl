@@ -714,13 +714,14 @@ invoices from this partner."""),
     'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
     'lino_xl.lib.contacts.Person' : _("""A physical person and an individual human being.
 See also lino.tutorial.human."""),
-    'lino_xl.lib.contacts.Companies' : _("""An organisation.  The verbose name is "Organization" while the
+    'lino_xl.lib.contacts.Company' : _("""An organisation.  The verbose name is "Organization" while the
 internal name is "Company" because the latter easier to type and
 for historical reasons."""),
-    'lino_xl.lib.contacts.Companies.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.contacts.Companies.phone' : _("""These fields (and some others) are defined in the base model
+    'lino_xl.lib.contacts.Company.type' : _("""Pointer to the CompanyType."""),
+    'lino_xl.lib.contacts.Company.phone' : _("""These fields (and some others) are defined in the base model
 Partner, they are what companies and persons have in
 common."""),
+    'lino_xl.lib.contacts.Companies' : _("""Base table for all tables showing companies."""),
     'lino_xl.lib.contacts.ExportVCardFile' : _("""Download all records as a .vcf file which you can import to another
 contacts application."""),
     'lino_xl.lib.contacts.Plugin.region_label' : _("""The verbose_name of the region field."""),
@@ -732,6 +733,8 @@ data as a vcf file."""),
     'lino_xl.lib.contacts.ContactsUser' : _("""A user who has access to full contacts functionality."""),
     'lino_xl.lib.contacts.ContactsStaff' : _("""A user who can configure contacts functionality."""),
     'lino_xl.lib.contacts.PartnerEvents' : _("""A choicelist of observable partner events."""),
+    'lino_xl.lib.contacts.PartnerEvents.has_open_movements' : _("""See has_open_movements in xl.specs.ledger.
+This choice exists only when lino_xl.lib.ledger is installed."""),
     'lino_xl.lib.contacts.CompanyType' : _("""A type of organization. Used by Company.type field."""),
     'lino_xl.lib.contacts.RoleType' : _("""A function (RoleType) is what a given Person
 can be in a given Company."""),
@@ -1318,9 +1321,8 @@ partner and can be None."""),
     'lino_xl.lib.ledger.VoucherType' : _("""Base class for all items of VoucherTypes."""),
     'lino_xl.lib.ledger.VoucherType.model' : _("""The database model used to store vouchers of this type.
 A subclass of lino_xl.lib.ledger.models.Voucher`."""),
-    'lino_xl.lib.ledger.VoucherType.table_class' : _("""Must be a table on model and with master_key set to
-the
-journal."""),
+    'lino_xl.lib.ledger.VoucherType.table_class' : _("""Must be a table on model having master_key set to
+the journal."""),
     'lino_xl.lib.ledger.VoucherState' : _("""Base class for items of VoucherStates."""),
     'lino_xl.lib.ledger.VoucherState.is_editable' : _("""Whether a voucher in this state is editable."""),
     'lino_xl.lib.ledger.VoucherStates' : _("""The list of possible states of a voucher."""),
