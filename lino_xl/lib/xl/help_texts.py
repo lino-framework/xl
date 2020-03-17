@@ -718,9 +718,6 @@ See also lino.tutorial.human."""),
 internal name is "Company" because the latter easier to type and
 for historical reasons."""),
     'lino_xl.lib.contacts.Company.type' : _("""Pointer to the CompanyType."""),
-    'lino_xl.lib.contacts.Company.phone' : _("""These fields (and some others) are defined in the base model
-Partner, they are what companies and persons have in
-common."""),
     'lino_xl.lib.contacts.Companies' : _("""Base table for all tables showing companies."""),
     'lino_xl.lib.contacts.ExportVCardFile' : _("""Download all records as a .vcf file which you can import to another
 contacts application."""),
