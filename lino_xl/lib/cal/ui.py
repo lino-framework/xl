@@ -234,6 +234,8 @@ class TasksByController(Tasks):
     column_names = 'priority start_date summary workflow_buttons id'
     # hidden_columns = set('owner_id owner_type'.split())
     auto_fit_column_widths = True
+    display_mode = "summary"
+
 
 
 class TasksByUser(Tasks):

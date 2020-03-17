@@ -842,7 +842,7 @@ Whether this is private, public or between."""))  # iCal:CLASS
         #~ raise NotImplementedError
         #~ self.user_modified = True
     def summary_row(self, ar, **kw):
-        #~ logger.info("20120217 Component.summary_row() %s", self)
+        # dd.logger.info("20120217 Component.summary_row() %s", ar.renderer)
         #~ if self.owner and not self.auto_type:
         html = [ar.obj2html(self)]
         if self.start_time:
@@ -857,9 +857,12 @@ Whether this is private, public or between."""))  # iCal:CLASS
         #~ if self.owner and not self.owner.__class__.__name__ in ('Person','Company'):
             #~ html += " (%s)" % reports.summary_row(self.owner,ui,rr)
         if self.project is not None:
-            html.append(" (%s)" % self.project.summary_row(ar, **kw))
+            # html.append(" (%s)" % self.project.summary_row(ar, **kw))
+            html.append(" (")
+            # html.extend(self.project.summary_row(ar, **kw))
+            html.extend(ar.summary_row(self.project, **kw))
+            html.append(")")
             #~ print 20120217, self.project.__class__, self
-            #~ html += " (%s)" % self.project.summary_row(ui)
         return html
         #~ return super(Event,self).summary_row(ui,rr,**kw)
 

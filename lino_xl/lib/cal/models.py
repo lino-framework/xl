@@ -282,8 +282,9 @@ class Task(Component):
             cls, """start_date start_time summary""")
         super(Task, cls).on_analyze(lino)
 
-    # def __unicode__(self):
-        # ~ return "#" + str(self.pk)
+    def __str__(self):
+        return "#" + str(self.pk)
+        
 
 class EventPolicy(mixins.BabelNamed, RecurrenceSet):
     class Meta:

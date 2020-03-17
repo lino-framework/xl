@@ -55,7 +55,7 @@ class OrderDetail(dd.DetailLayout):
     cal_tab = dd.Panel("""
     start_time end_time #end_date every_unit every max_events max_date
     monday tuesday wednesday thursday friday saturday sunday
-    cal.EntriesByController
+    cal.EntriesByController  cal.TasksByController
     """, label=_("Calendar"))
 
     # first_entry_panel = dd.Panel("""
