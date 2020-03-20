@@ -15,12 +15,13 @@ from django.core.validators import MaxValueValidator
 from django.core.validators import MinValueValidator
 from django.core.exceptions import ValidationError
 from django.utils import timezone
-from django.utils.text import format_lazy
+# from django.utils.text import format_lazy
 
 from lino import mixins
 from lino.api import dd, rt, _, pgettext
 
 from lino.mixins import Referrable
+# from lino.mixins.periods import DateRangeObservable
 from lino.utils.quantities import Duration
 from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.printing.mixins import TypedPrintable
@@ -256,24 +257,24 @@ class Task(Component):
     due_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("Due time"))
-    # ~ done = models.BooleanField(_("Done"),default=False) # iCal:COMPLETED
-    # iCal:PERCENT
     percent = models.IntegerField(_("Duration value"), null=True, blank=True)
-    state = TaskStates.field(
-        default=TaskStates.as_callable('todo'))  # iCal:STATUS
+    state = TaskStates.field(default=TaskStates.as_callable('todo'))
 
-    # def before_ui_save(self, ar, **kw):
-    #     if self.state == TaskStates.todo:
-    #         self.state = TaskStates.started
-    #     return super(Task, self).before_ui_save(ar, **kw)
+    @classmethod
+    def get_simple_parameters(cls):
+        for p in super(Task, cls).get_simple_parameters():
+            yield p
+        yield 'state'
 
-    # def on_user_change(self,request):
-        # if not self.state:
-            # self.state = TaskState.todo
-        # self.user_modified = True
-
-    def is_user_modified(self):
-        return self.state != TaskStates.todo
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        qs = super(Task, cls).get_request_queryset(ar, **filter)
+        pv = ar.param_values
+        if pv.start_date:
+            qs = qs.filter(start_date__gte=pv.start_date)
+        if pv.end_date:
+            qs = qs.filter(start_date__lte=pv.end_date)
+        return qs
 
     @classmethod
     def on_analyze(cls, lino):
@@ -284,7 +285,18 @@ class Task(Component):
 
     def __str__(self):
         return "#" + str(self.pk)
-        
+
+    def is_user_modified(self):
+        return self.state != TaskStates.todo
+
+    # @classmethod
+    # def setup_parameters(cls, fields):
+    #     fields.update(
+    #         observed_event=CommentEvents.field(blank=True))
+    #     super(Comment, cls).setup_parameters(fields)
+
+
+
 
 class EventPolicy(mixins.BabelNamed, RecurrenceSet):
     class Meta:
@@ -403,61 +415,68 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
 
     @classmethod
     def setup_parameters(cls, params):
-        params.update(mixins.ObservedDateRange(
-            user=dd.ForeignKey(settings.SITE.user_model,
-                               verbose_name=_("Managed by"),
-                               blank=True, null=True),
-            event_type=dd.ForeignKey('cal.EventType', blank=True, null=True),
-            room=dd.ForeignKey('cal.Room', blank=True, null=True),
-            project=dd.ForeignKey(settings.SITE.project_model, blank=True, null=True),
-            assigned_to=dd.ForeignKey(settings.SITE.user_model,
-                                      verbose_name=_("Assigned to"),
-                                      blank=True, null=True),
-            state=EntryStates.field(blank=True),
+        super(Event, cls).setup_parameters(params)
+        params.update(
+            # user=dd.ForeignKey(settings.SITE.user_model,
+            #                    verbose_name=_("Managed by"),
+            #                    blank=True, null=True),
+            # event_type=dd.ForeignKey('cal.EventType', blank=True, null=True),
+            # room=dd.ForeignKey('cal.Room', blank=True, null=True),
+            # project=dd.ForeignKey(settings.SITE.project_model, blank=True, null=True),
+            # assigned_to=dd.ForeignKey(settings.SITE.user_model,
+            #                           verbose_name=_("Assigned to"),
+            #                           blank=True, null=True),
+            # state=EntryStates.field(blank=True),
             # unclear = models.BooleanField(_("Unclear events"))
             observed_event=EventEvents.field(blank=True),
             show_appointments=dd.YesNo.field(_("Appointments"), blank=True),
             presence_guest=dd.ForeignKey(
                 dd.plugins.cal.partner_model, verbose_name=_("Guest"),
                 blank=True, null=True)
-        ))
-        if settings.SITE.project_model:
-            params['project'].help_text = format_lazy(
-                _("Show only entries having this {project}."),
-                project=settings.SITE.project_model._meta.verbose_name)
-        return params
+        )
+        # if settings.SITE.project_model:
+        #     params['project'].help_text = format_lazy(
+        #         _("Show only entries having this {project}."),
+        #         project=settings.SITE.project_model._meta.verbose_name)
 
-    # params_layout = """
-    # start_date end_date observed_event state
-    # user assigned_to project event_type room show_appointments
-    # """
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        qs = super(Event, cls).get_request_queryset(ar, **filter)
+        return cls.calendar_param_filter(qs, ar.param_values)
 
-    # cal_params_layout = """user event_type room project presence_guest"""
+    @classmethod
+    def get_simple_parameters(cls):
+        for p in super(Event, cls).get_simple_parameters():
+            yield p
+        yield 'state'
+        yield 'room'
+        yield 'event_type'
 
     @classmethod
     def calendar_param_filter(cls, qs, pv):
-        if pv.user:
-            qs = qs.filter(user=pv.user)
-        if pv.assigned_to:
-            qs = qs.filter(assigned_to=pv.assigned_to)
-
-        if settings.SITE.project_model is not None and pv.project:
-            qs = qs.filter(project=pv.project)
+        # if pv.user:
+        #     qs = qs.filter(user=pv.user)
+        # if pv.assigned_to:
+        #     qs = qs.filter(assigned_to=pv.assigned_to)
+        #
+        # if settings.SITE.project_model is not None and pv.project:
+        #     qs = qs.filter(project=pv.project)
 
         if pv.event_type:
-            qs = qs.filter(event_type=pv.event_type)
+            # qs = qs.filter(event_type=pv.event_type)
+            pass
         else:
             if pv.show_appointments == dd.YesNo.yes:
                 qs = qs.filter(event_type__is_appointment=True)
             elif pv.show_appointments == dd.YesNo.no:
                 qs = qs.filter(event_type__is_appointment=False)
 
-        if pv.state:
-            qs = qs.filter(state=pv.state)
+        # if pv.state:
+        #     qs = qs.filter(state=pv.state)
 
-        if pv.room:
-            qs = qs.filter(room=pv.room)
-
+        # if pv.room:
+        #     qs = qs.filter(room=pv.room)
+        #
         if pv.observed_event == EventEvents.stable:
             qs = qs.filter(state__in=set(EntryStates.filter(fixed=True)))
         elif pv.observed_event == EventEvents.pending:
@@ -472,7 +491,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
             c1 = Q(end_date__isnull=True, start_date__lte=pv.end_date)
             c2 = Q(end_date__isnull=False, end_date__lte=pv.end_date)
             qs = qs.filter(c1|c2)
-
             qs = qs.filter(Q(end_date__isnull=True, start_date__lte=pv.end_date)|Q(end_date__gte=pv.end_date))
         if pv.presence_guest:
             qs = qs.filter(Q(guest__partner=pv.presence_guest)|Q(event_type__all_rooms=True))

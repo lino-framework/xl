@@ -127,13 +127,13 @@ class Orders(dd.Table):
     #         return self._order_area.text
     #     return super(Orders, self).get_actor_label()
 
-    @classmethod
-    def get_simple_parameters(cls):
-        s = list(super(Orders, cls).get_simple_parameters())
-        s.append('project')
-        # s.append('order_state')
-        # s.add('user')
-        return s
+    # @classmethod
+    # def get_simple_parameters(cls):
+    #     s = list(super(Orders, cls).get_simple_parameters())
+    #     s.append('project')
+    #     # s.append('order_state')
+    #     # s.add('user')
+    #     return s
 
     # @classmethod
     # def get_request_queryset(self, ar, **kwargs):

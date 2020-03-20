@@ -15,6 +15,7 @@ from lino.core.roles import Explorer
 from lino.core.fields import TableRow
 from lino.core.tables import VentilatedColumns, AbstractTable
 from lino.core import fields
+from lino.core.utils import dbfield2params_field
 from lino.utils.format_date import monthname
 from lino.utils.format_date import day_and_month, day_and_weekday
 from lino.modlib.users.mixins import My
@@ -149,6 +150,22 @@ class Day(TableRow):
 
     def skipmonth(self, n):
         return DurationUnits.months.add_duration(self.date, n)
+
+    @classmethod
+    def setup_parameters(cls, params):
+        super(Day, cls).setup_parameters(params)
+        Event = rt.models.cal.Event
+        Event.setup_parameters(params)
+
+        # simulate for get_simple_parameters
+        # event_fields = ['user', 'event_type', 'room']
+        # if settings.SITE.project_model:
+        #     event_fields.append('project')
+        # for k in event_fields:
+        for k in ('user', 'event_type', 'room', 'project'):
+            params[k] = dbfield2params_field(Event.get_data_elem(k))
+            # params[k] = dbfield2params_field(Event._meta.get_field(k))
+
 
 
 class DaysTable(dd.VirtualTable):

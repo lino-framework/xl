@@ -10,7 +10,7 @@ from etgen.html import E, forcetext
 
 from lino.api import dd, rt, _, gettext
 from lino.utils import join_elems
-from lino.mixins import ObservedDateRange
+from lino.mixins import ObservedDateRange  # todo: convert also Guests to DateRangeObservable
 from lino.core.roles import Explorer
 from lino.core.fields import TableRow
 from lino.core import fields
@@ -166,58 +166,58 @@ class Tasks(dd.Table):
 
     params_panel_hidden = True
 
-    parameters = ObservedDateRange(
-        user=dd.ForeignKey(settings.SITE.user_model,
-                           verbose_name=_("Managed by"),
-                           blank=True, null=True,
-                           help_text=_("Only rows managed by this user.")),
-        project=dd.ForeignKey(settings.SITE.project_model,
-                              blank=True, null=True),
-        state=TaskStates.field(blank=True,
-                               help_text=_("Only rows having this state.")),
-    )
+    # parameters = ObservedDateRange(
+    #     user=dd.ForeignKey(settings.SITE.user_model,
+    #                        verbose_name=_("Managed by"),
+    #                        blank=True, null=True,
+    #                        help_text=_("Only rows managed by this user.")),
+    #     project=dd.ForeignKey(settings.SITE.project_model,
+    #                           blank=True, null=True),
+    #     state=TaskStates.field(blank=True,
+    #                            help_text=_("Only rows having this state.")),
+    # )
 
     params_layout = """
     start_date end_date user state project
     """
 
-    @classmethod
-    def get_request_queryset(self, ar, **kwargs):
-        # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
-        qs = super(Tasks, self).get_request_queryset(ar, **kwargs)
+    # @classmethod
+    # def get_request_queryset(self, ar, **kwargs):
+    #     # logger.info("20121010 Clients.get_request_queryset %s",ar.param_values)
+    #     qs = super(Tasks, self).get_request_queryset(ar, **kwargs)
+    #
+    #     if ar.param_values.user:
+    #         qs = qs.filter(user=ar.param_values.user)
+    #
+    #     if settings.SITE.project_model is not None and ar.param_values.project:
+    #         qs = qs.filter(project=ar.param_values.project)
+    #
+    #     if ar.param_values.state:
+    #         qs = qs.filter(state=ar.param_values.state)
+    #
+    #     if ar.param_values.start_date:
+    #         qs = qs.filter(start_date__gte=ar.param_values.start_date)
+    #     if ar.param_values.end_date:
+    #         qs = qs.filter(start_date__lte=ar.param_values.end_date)
+    #     return qs
 
-        if ar.param_values.user:
-            qs = qs.filter(user=ar.param_values.user)
-
-        if settings.SITE.project_model is not None and ar.param_values.project:
-            qs = qs.filter(project=ar.param_values.project)
-
-        if ar.param_values.state:
-            qs = qs.filter(state=ar.param_values.state)
-
-        if ar.param_values.start_date:
-            qs = qs.filter(start_date__gte=ar.param_values.start_date)
-        if ar.param_values.end_date:
-            qs = qs.filter(start_date__lte=ar.param_values.end_date)
-        return qs
-
-    @classmethod
-    def get_title_tags(self, ar):
-        for t in super(Tasks, self).get_title_tags(ar):
-            yield t
-        if ar.param_values.start_date or ar.param_values.end_date:
-            yield str(_("Dates %(min)s to %(max)s") % dict(
-                min=ar.param_values.start_date or'...',
-                max=ar.param_values.end_date or '...'))
-
-        if ar.param_values.state:
-            yield str(ar.param_values.state)
-
-        # if ar.param_values.user:
-        #     yield str(ar.param_values.user)
-
-        if settings.SITE.project_model is not None and ar.param_values.project:
-            yield str(ar.param_values.project)
+    # @classmethod
+    # def get_title_tags(self, ar):
+    #     for t in super(Tasks, self).get_title_tags(ar):
+    #         yield t
+    #     if ar.param_values.start_date or ar.param_values.end_date:
+    #         yield str(_("Dates %(min)s to %(max)s") % dict(
+    #             min=ar.param_values.start_date or'...',
+    #             max=ar.param_values.end_date or '...'))
+    #
+    #     if ar.param_values.state:
+    #         yield str(ar.param_values.state)
+    #
+    #     # if ar.param_values.user:
+    #     #     yield str(ar.param_values.user)
+    #
+    #     if settings.SITE.project_model is not None and ar.param_values.project:
+    #         yield str(ar.param_values.project)
 
     @classmethod
     def apply_cell_format(self, ar, row, col, recno, td):
@@ -641,12 +641,12 @@ class Events(dd.Table):
         # print("20181121 get_table_summary", cls)
         return get_calendar_summary(cls, obj, ar)
 
-    @classmethod
-    def get_request_queryset(self, ar, **kwargs):
-        # print("20181121a get_request_queryset", self)
-        qs = super(Events, self).get_request_queryset(ar, **kwargs)
-        pv = ar.param_values
-        return rt.models.cal.Event.calendar_param_filter(qs, pv)
+    # @classmethod
+    # def get_request_queryset(self, ar, **kwargs):
+    #     # print("20181121a get_request_queryset", self)
+    #     qs = super(Events, self).get_request_queryset(ar, **kwargs)
+    #     pv = ar.param_values
+    #     return rt.models.cal.Event.calendar_param_filter(qs, pv)
 
 
     @classmethod

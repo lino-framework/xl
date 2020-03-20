@@ -385,8 +385,8 @@ class Tickets(dd.Table):
         yield 'site'
         yield 'priority'
         yield 'last_commenter'
-        if not dd.is_installed('votes'):
-            yield 'assigned_to'
+        # if not dd.is_installed('votes'):
+        #     yield 'assigned_to'
 
     @classmethod
     def get_queryset(self, ar, **filter):

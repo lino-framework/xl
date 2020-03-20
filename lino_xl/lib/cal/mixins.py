@@ -18,6 +18,7 @@ from lino.api import dd, rt
 from lino.utils import ONE_DAY
 from etgen.html import E, tostring
 from lino.mixins.periods import Started, Ended
+from lino.mixins.periods import DateRangeObservable
 from lino.core.exceptions import ChangedAPI
 from lino.modlib.office.roles import OfficeStaff, OfficeOperator
 from lino.modlib.uploads.mixins import UploadController
@@ -784,7 +785,7 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
             self.update_reminders(ar)
 
 
-class Component(Started,
+class Component(Started, DateRangeObservable,
                 mixins.ProjectRelated,
                 UserAuthored,
                 Controllable,
