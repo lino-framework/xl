@@ -73,7 +73,7 @@ class ExportVCardFile(dd.Action):
                 wf.write(j.serialize())
 
         ar.set_response(success=True)
-        ar.set_response(open_url=mf.url)
+        ar.set_response(open_url=mf.get_url(ar.request))
 
 
 
@@ -235,8 +235,18 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
             pass
 
     def fill_vcard(self, j):
+        j.add('n')
+        j.n.value = vobject.vcard.Name(family=self.name)
         j.add('fn')
         j.fn.value = self.name
+        if self.city:
+            j.add('adr')
+            j.adr.street = self.street
+            j.adr.box = (self.street_no + " " + self.street_box).strip()
+            j.adr.city = str(self.city)
+            j.adr.region = str(self.region)
+            j.adr.country = str(self.country)
+            j.adr.code = self.zip_code
         if self.email:
             j.add('email')
             j.email.value = self.email
@@ -365,7 +375,6 @@ class Person(Human, Born, Partner):
 
     def fill_vcard(self, j):
         super(Person, self).fill_vcard(j)
-        j.add('n')
         j.n.value = vobject.vcard.Name(
             family=self.last_name, given=self.first_name )
 
