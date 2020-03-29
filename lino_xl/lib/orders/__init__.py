@@ -38,3 +38,10 @@ class Plugin(ad.Plugin):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('orders.AllOrders')
         m.add_action('orders.AllEnrolments')
+
+    def get_dashboard_items(self, user):
+        for i in super(Plugin, self).get_dashboard_items(user):
+            yield i
+        yield self.site.models.orders.WaitingOrders
+        yield self.site.models.orders.ActiveOrders
+        yield self.site.models.orders.UrgentOrders

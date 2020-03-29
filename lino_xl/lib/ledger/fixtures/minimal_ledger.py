@@ -44,6 +44,9 @@ def objects():
     kw.update(dd.str2kw('name', _("Sales invoices")))
     yield MODEL.create_journal(**kw)
 
+    if dd.plugins.vat.declaration_plugin is None:
+        return
+
     kw.update(ref="SLC", dc=DEBIT)
     kw.update(dd.str2kw('name', _("Sales credit notes")))
     kw.update(dd.str2kw('printed_name', _("Credit note")))

@@ -102,8 +102,8 @@ class Plugin(ad.Plugin):
     sales_stories = True
     """Whether demo fixtures should generate manual sales invoices."""
 
-    purchase_stories = True
-    """Whether demo fixture should generate purchase invoices."""
+    # purchase_stories = True
+    # """Whether demo fixture should generate purchase invoices."""
 
     # registered_states = "registered signed"
     # """The voucher states to be considered as registered.
@@ -153,16 +153,17 @@ class Plugin(ad.Plugin):
                                 params=dict(master_instance=jnl))
 
     def setup_reports_menu(self, site, user_type, m):
-        mg = site.plugins.ledger
-        m = m.add_menu(mg.app_label, mg.verbose_name)
-        # m.add_action('ledger.Situation')
-        # m.add_action('ledger.ActivityReport')
-        # m.add_action('ledger.AccountingReport')
-        # m.add_action('ledger.GeneralAccountBalances')
-        # m.add_action('ledger.CustomerAccountBalances')
-        # m.add_action('ledger.SupplierAccountBalances')
-        m.add_action('ledger.Debtors')
-        m.add_action('ledger.Creditors')
+        if site.is_installed("finan"):
+            mg = site.plugins.ledger
+            m = m.add_menu(mg.app_label, mg.verbose_name)
+            # m.add_action('ledger.Situation')
+            # m.add_action('ledger.ActivityReport')
+            # m.add_action('ledger.AccountingReport')
+            # m.add_action('ledger.GeneralAccountBalances')
+            # m.add_action('ledger.CustomerAccountBalances')
+            # m.add_action('ledger.SupplierAccountBalances')
+            m.add_action('ledger.Debtors')
+            m.add_action('ledger.Creditors')
 
     def setup_config_menu(self, site, user_type, m):
         mg = site.plugins.ledger

@@ -404,8 +404,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
     transparent = models.BooleanField(_("Transparent"), default=False)
     room = dd.ForeignKey('cal.Room', null=True, blank=True)
     # priority = dd.ForeignKey(Priority, null=True, blank=True)
-    state = EntryStates.field(
-        default=EntryStates.as_callable('suggested'))
+    state = EntryStates.field(default='suggested')
     all_day = ExtAllDayField(_("all day"))
 
     move_next = MoveEntryNext()
@@ -795,24 +794,30 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         #     for obj in self.owner.suggest_cal_guests(self):
         #         yield obj
 
-    def get_event_summary(event, ar):
+    summary_project_template = _("for {project}")
+    summary_show_user = True
+
+    def get_event_summary(self, ar):
         # from django.utils.translation import ugettext as _
-        s = event.summary
-        # if event.owner_id:
-        #     s += " ({0})".format(event.owner)
-        if event.user is not None and event.user != ar.get_user():
-            if event.access_class == AccessClasses.show_busy:
+        s = self.summary
+        u = self.user
+        if self.owner is not None:
+            s = "{} {}".format(self.owner, s)
+        if u is not None and u != ar.get_user():
+            if self.access_class == AccessClasses.show_busy:
                 s = _("Busy")
-            s = event.user.username + ': ' + str(s)
-        elif settings.SITE.project_model is not None \
-                and event.project is not None:
-            s += " " + str(_("with")) + " " + str(event.project)
-        if event.state:
-            s = ("(%s) " % str(event.state)) + s
-        n = event.guest_set.all().count()
-        if n:
-            s = ("[%d] " % n) + s
+            if self.summary_show_user:
+                s = "{} {}".format(u.initials or u.username, s)
+        if self.project is not None:
+            # s += " " + "{} {}".format(self.summary_project_template, self.project).strip()
+            s += " " + self.summary_project_template.format(project=self.project)
+        if self.state.button_text:
+            s = str(self.state.button_text) + " " + s
+        # n = event.guest_set.all().count()
+        # if n:
+        #     s = ("[%d] " % n) + s
         return s
+
 
     def get_postable_recipients(self):
         """return or yield a list of Partners"""
@@ -1040,7 +1045,7 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
     # author_field_name = 'user'
 
     def __str__(self):
-        return u'%s #%s (%s)' % (
+        return '%s #%s (%s)' % (
             self._meta.verbose_name, self.pk, self.event.strftime())
 
     # def get_printable_type(self):
@@ -1052,8 +1057,13 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
     def get_mailable_recipients(self):
         yield ('to', self.partner)
 
+    # @dd.virtualfield('cal.Event.summary')
     @dd.displayfield(_("Calendar entry"))
     def event_summary(self, ar):
+        """
+        Note that this is not the same as the Event.summary field.
+        TODO: rename one of them to something else.
+        """
         if ar is None:
             return ''
         return ar.obj2html(self.event, self.event.get_event_summary(ar))

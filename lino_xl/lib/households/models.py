@@ -483,7 +483,7 @@ class SiblingsByPerson(Members):
                 elems.append(', ')
             text = join_elems(
                 [parent.format_family_member(ar, p) for p in parents],
-                sep=gettext(" and "))
+                sep=" {} ".format(gettext("and")))
             elems += [tt, gettext(" of ")] + text
         return elems
 

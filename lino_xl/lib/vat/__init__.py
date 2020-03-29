@@ -74,6 +74,9 @@ class Plugin(ad.Plugin):
     :mod:`lino_xl.lib.bevats` and
     :mod:`lino_xl.lib.eevat`.
 
+    This can remain `None` e.g. in applicatons that use the ledger plugin for
+    orders or invoicing, but don't care about general accounting functionality.
+
     """
 
     def get_vat_class(self, tt, item):
@@ -114,6 +117,8 @@ class Plugin(ad.Plugin):
                 self.default_vat_class)
 
     def setup_reports_menu(self, site, user_type, m):
+        if self.declaration_plugin is None:
+            return
         # mg = site.plugins.ledger
         # mg = site.plugins.vat
         mg = self  # don't merge into sales menus for reports

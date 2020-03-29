@@ -65,6 +65,8 @@ class Order(Certifiable, RegistrableVoucher, RecurrenceSet, EventGenerator, Dupl
         verbose_name = _("Order")
         verbose_name_plural = _('Orders')
 
+    hide_editable_number = False
+
     state = OrderStates.field(default='draft')
 
     # order_area = OrderAreas.field(default='default')

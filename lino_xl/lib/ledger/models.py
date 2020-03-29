@@ -562,7 +562,7 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
         # moved to implementing subclasses:
         #   if self.state not in dd.plugins.ledger.registered_states:
         #     # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
-        assert self.number is not None
+        # assert self.number is not None
         if self.journal.yearly_numbering:
             return "{0} {1}/{2}".format(self.journal.ref, self.number,
                                         self.accounting_period.year)
@@ -802,13 +802,22 @@ class RegistrableVoucher(Registrable, Voucher):
     class Meta:
         abstract = True
 
+    hide_editable_number = True
+
+    """We usually don't want to see the number of a voucher in an editable state
+    because that number may change. We prefer to see the primary key prefixed
+    with a hash to indicate that the voucher is not registered.  But sometimes
+    (e.g. in :mod:`lino_xl.lib.orders`) we want to disable this feature. NB we
+    might simply override :meth:`__str__`, but maybe this feature will be used
+    in other contexts as well."""
+
     def __str__(self):
         # if not isinstance(dd.plugins.ledger.registered_states, tuple):
         #     raise Exception("registered_states is {}".format(dd.plugins.ledger.registered_states))
         # if not isinstance(self.state, dd.plugins.ledger.registered_states):
-        if self.state.is_editable:
+        if self.hide_editable_number and self.state.is_editable:
             # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
-            return "{0}#{1}".format(self.journal.ref, self.id)
+            return "{0} #{1}".format(self.journal.ref, self.id)
         return super(RegistrableVoucher, self).__str__()
 
     def after_state_change(self, ar, oldstate, newstate):

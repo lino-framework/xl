@@ -27,7 +27,8 @@ class Plugin(ad.Plugin):
         mg = self
         # mg = site.plugins.vat
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        m.add_action('sales.DueInvoices')
+        if site.is_installed("finan"):
+            m.add_action('sales.DueInvoices')
         m.add_action('sales.PrintableInvoicesByJournal')
 
     def setup_config_menu(self, site, user_type, m):
@@ -35,7 +36,7 @@ class Plugin(ad.Plugin):
         # mg = site.plugins.vat
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('sales.PaperTypes')
-       
+
     def setup_explorer_menu(self, site, user_type, m):
         mg = self
         # mg = site.plugins.vat

@@ -203,7 +203,7 @@ class OrdersByRecipient(Orders):
 class WaitingOrders(Orders):
     label = _("Waiting orders")
     order_by = ['entry_date']
-    column_names = "entry_date:8 detail_link workflow_buttons user " \
+    column_names = "entry_date:8 project detail_link workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -214,7 +214,7 @@ class WaitingOrders(Orders):
 class ActiveOrders(Orders):
     label = _("Active orders")
     order_by = ['entry_date']
-    column_names = "entry_date:8 detail_link workflow_buttons user " \
+    column_names = "entry_date:8 project detail_link workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
     @classmethod
     def param_defaults(self, ar, **kw):
@@ -226,7 +226,7 @@ class ActiveOrders(Orders):
 class UrgentOrders(Orders):
     label = _("Urgent orders")
     order_by = ['entry_date']
-    column_names = "entry_date:8 detail_link workflow_buttons user " \
+    column_names = "entry_date:8 project detail_link workflow_buttons user " \
                    "weekdays_text:10 times_text:10 *"
     @classmethod
     def param_defaults(self, ar, **kw):

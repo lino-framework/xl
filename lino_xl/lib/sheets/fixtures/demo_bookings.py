@@ -14,6 +14,9 @@ REQUEST = settings.SITE.login()  # BaseRequest()
 
 def objects():
 
+    if dd.plugins.vat.declaration_plugin is None:
+        return
+
     JournalEntryItem = rt.models.finan.JournalEntryItem
     USERS = Cycler(settings.SITE.user_model.objects.all())
     PARTNERS = Cycler(rt.models.contacts.Partner.objects.order_by("-id"))

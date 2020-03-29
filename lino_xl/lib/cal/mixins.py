@@ -10,8 +10,13 @@ from django.db import models
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as gettext
+from django.utils.translation import ngettext
 from django.contrib.contenttypes.models import ContentType
+# from django.contrib.humanize.templatetags.humanize import ordinal
+# Django's ordinal() works only for English
 from django.utils.encoding import force_text
+
+from num2words import num2words
 
 from lino import mixins
 from lino.api import dd, rt
@@ -562,27 +567,41 @@ class RecurrenceSet(Started, Ended):
                 # return _("From {0} until {1}").format(
                 #     dd.fdf(self.start_date), dd.fdf(self.end_date))
             return gettext("On {0}").format(dd.fdf(self.start_date))
-        elif self.every_unit == Recurrencies.weekly:
-            every_text = self.weekdays_text_(', ')
         elif self.every_unit == Recurrencies.daily:
-            every_text = gettext("day")
+            day_text = gettext("day")
+        elif self.every_unit == Recurrencies.weekly:
+            day_text = self.weekdays_text_(', ')
+            if not day_text:
+                return gettext("Every week")
         elif self.every_unit == Recurrencies.monthly:
             if self.positions:
+                if self.every != 1:
+                    raise Exception("Cannot specify position together with repeat value!")
                 positions = []
                 for i in self.positions.split():
                     positions.append(str(POSITION_TEXTS.get(i, "?!")))
-                every_text = " {} ".format(gettext("and")).join(positions) \
-                    + " " + self.weekdays_text_(gettext(' and '), gettext("day")) \
-                    + " " + gettext("of the month")
+                # day_text = " {} ".format(gettext("and")).join(positions) \
+                #     + " " + self.weekdays_text_(gettext(' and '), gettext("day")) \
+                #     + " " + gettext("of the month")
+                day_text = " {} ".format(gettext("and")).join(positions) \
+                    + " " + self.weekdays_text_(" {} ".format(gettext("and")), gettext("day"))
+                return gettext("Every {day} of the month").format(day=day_text)
             else:
-                every_text = gettext("month")
+                s = ngettext("Every month", "Every {count} months", self.every)
+                return s.format(count=self.every)
+
         elif self.every_unit in (Recurrencies.yearly, Recurrencies.easter):
-            every_text = gettext("year")
+            s = ngettext("Every year", "Every {count} years", self.every)
+            return s.format(count=self.every)
         else:
-            return ''
-        if self.every == 1:
-            return gettext("Every %s") % every_text
-        return gettext("Every %snd %s") % (self.every, every_text)
+            return "Invalid recurrency unit {}".format(self.every_unit)
+        s = ngettext("Every {day}", "Every {ord_count} {day}", self.every)
+        return s.format(ord_count=num2words(self.every, to='ordinal', lang=translation.get_language()), day=day_text)
+        # if self.every == 1:
+        #     return gettext("Every {what}").format(what=every_text)
+        # return gettext("Every {ordinal} {what}").format(
+        #     ordinal=ordinal(self.every), what=every_text)
+        # return gettext("Every %snd %s") % (self.every, every_text)
 
     def weekdays_text_(self, sep, any=''):
         weekdays = []
@@ -845,26 +864,23 @@ Whether this is private, public or between."""))  # iCal:CLASS
     def summary_row(self, ar, **kw):
         # dd.logger.info("20120217 Component.summary_row() %s", ar.renderer)
         #~ if self.owner and not self.auto_type:
-        html = [ar.obj2html(self)]
+        for e in super(Component, self).summary_row(ar):
+            yield e
+        # yield ar.obj2html(self)
         if self.start_time:
-            html += [_(" at "),
-                     dd.strftime(self.start_time)]
+            # yield _(" at ")
+            # yield dd.strftime(self.start_time)
+            yield " "
+            yield _("at {time}").format(time=dd.strftime(self.start_time))
         if self.state:
-            html += [' [%s]' % force_text(self.state)]
+            yield ' [%s]' % force_text(self.state)
         if self.summary:
-            html += [': %s' % force_text(self.summary)]
-            #~ html += ui.href_to(self,force_text(self.summary))
-        #~ html += _(" on ") + dbutils.dtos(self.start_date)
-        #~ if self.owner and not self.owner.__class__.__name__ in ('Person','Company'):
-            #~ html += " (%s)" % reports.summary_row(self.owner,ui,rr)
-        if self.project is not None:
-            # html.append(" (%s)" % self.project.summary_row(ar, **kw))
-            html.append(" (")
-            # html.extend(self.project.summary_row(ar, **kw))
-            html.extend(ar.summary_row(self.project, **kw))
-            html.append(")")
-            #~ print 20120217, self.project.__class__, self
-        return html
+            yield ': %s' % force_text(self.summary)
+        # if self.project is not None:
+        #     html.append(" (")
+        #     html.extend(ar.summary_row(self.project, **kw))
+        #     html.append(")")
+        # return html
         #~ return super(Event,self).summary_row(ui,rr,**kw)
 
     # def get_change_owner(self):
