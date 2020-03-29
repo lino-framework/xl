@@ -105,3 +105,6 @@ class Plugin(ad.Plugin):
             yield self.site.models.cal.MyUnconfirmedAppointments
         else:
             yield self.site.models.cal.PublicEntries
+
+    def get_requirements(self, site):
+        yield "num2words"
