@@ -1,12 +1,6 @@
-<html>
-<head>
-{%- block head %}
-<meta charset="UTF-8"> 
-{%- endblock %}
-</head>
-<body>
+{% extends "weasyprint/base.weasy.html" %}
 {%- block header %}
-<h1>{{obj}} ({{obj.project}})</h1>
+<h1>{{obj}}</h1>
 {%- endblock %}
 
 {%- block intro %}
@@ -14,12 +8,5 @@
 {% for k in ['project', 'entry_date', 'user', 'start_date', 'invoice_recipient', 'state'] %}
 <li>{{obj._meta.get_field(k).verbose_name}} : {{getattr(obj, k, "---")}}</li>
 {% endfor %}
-
 </ul>
 {%- endblock %}
-
-{%- block main %}
-{%- endblock %}
-</body>
-</html>
-
