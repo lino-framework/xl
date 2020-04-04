@@ -1,4 +1,4 @@
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for managing contacts.
@@ -25,9 +25,23 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.countries', 'lino.modlib.system']
 
     region_label = _('Region')
+    """The verbose name of the :attr:`Partner.region` field."""
 
     use_vcard_export = False
+    """Whether Lino should provide a button for exporting contact
+    data as a vcf file.
+
+    If this is `True`, Lino will install `vobject
+    <http://eventable.github.io/vobject/>`__ into your Python environment.
+    """
+
     with_roles_history = False
+    """Whether we maintain a history of contact persons.
+
+    Setting this to True will define two additional fields
+    :attr:`Role.start_date` and :attr:`Role.end_date`.
+
+    """
 
     def get_requirements(self, site):
         if site.plugins.contacts.use_vcard_export:

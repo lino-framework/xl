@@ -2,19 +2,19 @@
 # Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 import os
 
+from etgen.html import E, join_elems, forcetext
 from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
-from etgen.html import E, join_elems, forcetext
+from django.db.models import Q
 
-from .choicelists import CivilStates
 from lino import mixins
 from lino.api import dd, rt, _
 from lino.mixins.duplicable import Duplicable
-from lino.mixins.human import parse_name
+from lino.mixins.human import name2kw, Human, Born, parse_name
+from lino.mixins.sequenced import Sequenced
 # from lino.mixins.periods import ObservedDateRange
 from lino.mixins.periods import DateRangeObservable
 from lino.modlib.printing.mixins import Printable
@@ -26,6 +26,10 @@ from lino_xl.lib.addresses.mixins import AddressOwner
 from lino_xl.lib.phones.mixins import ContactDetailsOwner
 from lino_xl.lib.skills.mixins import Feasible
 
+from .choicelists import CivilStates
+from .roles import SimpleContactsUser, ContactsStaff
+from .choicelists import PartnerEvents
+
 if dd.plugins.contacts.use_vcard_export:
     try:
         import vobject
@@ -35,17 +39,8 @@ if dd.plugins.contacts.use_vcard_export:
         #     "use_vcard_export is True but vobject is not installed")
         vobject = None
 
-
-# from .mixins import ContactRelated, PartnerDocument, OldCompanyContact
-# from lino.mixins import Contactable, Phonable
-from .roles import SimpleContactsUser, ContactsStaff
-from .choicelists import PartnerEvents
-
-from lino.mixins.human import name2kw, Human, Born
-
 with_roles_history = dd.plugins.contacts.with_roles_history
 
-# from lino.core import actions
 
 PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 
@@ -438,6 +433,15 @@ class Company(Partner):
         return join_words(self.prefix, self.name)
     full_name = property(get_full_name)
 
+    def get_signers(self, today=None):
+        if today is None:
+            today = dd.today()
+        qs = rt.models.contacts.Role.objects.filter(company=self).order_by('type')
+        qs = qs.filter(type__can_sign=True)
+        if with_roles_history:
+            qs = qs.filter(Q(start_date__isnull) | Q(start_date__lte=today))
+            qs = qs.filter(Q(end_date__isnull) | Q(end_date__gte=today))
+        return qs
 
 
 class CompanyDetail(PartnerDetail):
@@ -489,6 +493,8 @@ class RoleType(mixins.BabelNamed):
         verbose_name = _("Function")
         verbose_name_plural = _("Functions")
 
+    can_sign = models.BooleanField(_("Authorized to sign"), default=False)
+
 
 class RoleTypes(dd.Table):
     required_roles = dd.login_required(ContactsStaff)
@@ -501,8 +507,8 @@ class Role(dd.Model, Addressable):
     class Meta(object):
         app_label = 'contacts'  # avoid RemovedInDjango19Warning
         abstract = dd.is_abstract_model(__name__, 'Role')
-        verbose_name = _("Contact Person")
-        verbose_name_plural = _("Contact Persons")
+        verbose_name = _("Contact person")
+        verbose_name_plural = _("Contact persons")
 
     type = dd.ForeignKey(
         'contacts.RoleType',
@@ -527,7 +533,7 @@ class Role(dd.Model, Addressable):
             return super(Role, self).__str__()
         if self.type is None:
             return str(self.person)
-        return u"%s (%s)" % (self.person, self.type)
+        return "%s (%s)" % (self.person, self.type)
 
     def address_person_lines(self):
         if self.company:
@@ -631,3 +637,24 @@ def company_tables_alias(sender, **kw):
 
 def PartnerField(**kw):
     return dd.ForeignKey(Partner, **kw)
+
+
+# class Signer(Sequenced):
+#
+#     class Meta(object):
+#         app_label = 'contacts'  # avoid RemovedInDjango19Warning
+#         abstract = dd.is_abstract_model(__name__, 'Signer')
+#         verbose_name = _("Signer")
+#         verbose_name_plural = _("Signers")
+#
+#     signer = dd.ForeignKey("contacts.Role")
+#
+#     @dd.chooser()
+#     def signer_choices(cls):
+#         return rt.models.contacts.Role.objects.filter(
+#             company=settings.SITE.site_config.site_company)
+#
+#
+# class Signers(dd.Table):
+#     model = "contacts.Signer"
+#     column_names = "seqno signer *"  # signer__person signer__type *"

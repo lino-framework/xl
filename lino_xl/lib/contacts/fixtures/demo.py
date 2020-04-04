@@ -1,35 +1,36 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2019 Rumma & Ko Ltd
+# Copyright 2009-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from builtins import str
-import six
 
 from django.conf import settings
 from lino.utils.instantiator import Instantiator
 from lino.utils import Cycler
 from lino.api import dd, rt
-
 from lino.utils.demonames.bel import streets_of_eupen
+
 STREETS = Cycler(streets_of_eupen())
 Place = rt.models.countries.Place
 
-def site_company_objects():
-
-    company = Instantiator(
-        'contacts.Company',
-        "name zip_code city:name street street_no",
-        country='EE').build
-    rumma = company(
-        'Rumma & Ko OÜ', '78003', 'Vigala', 'Uus tn', '1',
-        url="http://www.saffre-rumma.net/")
-    if dd.is_installed('vat'):
-        rumma.vat_id = "EE100588749"
-        # a vat_id is required for generating valid XML from payment order
-    yield rumma
-
-    settings.SITE.site_config.update(site_company=rumma)
+# def site_company_objects():
+#
+#     company = Instantiator(
+#         'contacts.Company',
+#         "name zip_code city:name street street_no",
+#         country='EE').build
+#     rumma = company(
+#         'Rumma & Ko OÜ', '78003', 'Vigala', 'Uus tn', '1',
+#         url="http://www.saffre-rumma.net/")
+#     if dd.is_installed('vat'):
+#         rumma.vat_id = "EE100588749"
+#         # a vat_id is required for generating valid XML from payment order
+#     yield rumma
+#     settings.SITE.site_config.update(site_company=rumma)
+#
+#     luc = person("Vigala", 'Luc', 'Saffre', gender=dd.Genders.male)
+#     yield luc
+#     ceo = rt.models.contacts.RoleType.objects.get(rt.lookup_filter('name', "CEO"))
+#     yield rt.models.contacts.Role(company=rumma, person=luc, type=ceo)
 
 
 def lookup_city(name):
@@ -47,7 +48,7 @@ def lookup_city(name):
 
 
 def person(city, first_name, last_name, **kwargs):
-    if isinstance(city, six.string_types):
+    if isinstance(city, str):
         city = lookup_city(city)
     if city is None:
         return
@@ -57,12 +58,12 @@ def person(city, first_name, last_name, **kwargs):
     return rt.models.contacts.Person(**kwargs)
 
 
-def company(name, zip_code, city, street, street_no):
-    if isinstance(city, six.string_types):
+def company(name, zip_code, city, street, street_no, **kwargs):
+    if isinstance(city, str):
         city = lookup_city(city)
     if city is None:
         return
-    kwargs = dict(
+    kwargs.update(
         country=city.country, name=name, zip_code=zip_code,
         city=city, street=street, street_no=street_no)
     return rt.models.contacts.Company(**kwargs)
@@ -73,7 +74,20 @@ def company(name, zip_code, city, street, street_no):
 
 def objects():
 
-    yield site_company_objects()
+    ceo = rt.models.contacts.RoleType.objects.filter(
+        rt.lookup_filter('name', "CEO")).first()
+    # if qs.count() != 1:
+    #     raise Exception("Oops, we have {} CEO's in {}".format(qs.count(), qs))
+    # yield site_company_objects()
+
+    rumma = company(
+        'Rumma & Ko OÜ', '78003', 'Vigala', 'Uus tn', '1',
+        url="http://www.saffre-rumma.net/")
+    if dd.is_installed('vat'):
+        rumma.vat_id = "EE100588749"
+        # a vat_id is required for generating valid XML from payment order
+    yield rumma
+    settings.SITE.site_config.update(site_company=rumma)
 
     aachen = lookup_city('Aachen')
     eupen = lookup_city('Eupen')
@@ -81,51 +95,32 @@ def objects():
     angleur = lookup_city('Angleur')
     paris = lookup_city('Paris')
     amsterdam = lookup_city('Amsterdam')
+    vigala = lookup_city('Vigala')
 
-    # company = Instantiator(
-    #     'contacts.Company', "name zip_code city:name street street_no",
-    #     country='BE').build
-    yield company('Bäckerei Ausdemwald', '4700', eupen,
-                  'Vervierser Straße', '45')
-    yield company('Bäckerei Mießen',     '4700', eupen,
-                  'Gospert', '103')
-    yield company('Bäckerei Schmitz',    '4700', eupen,
-                  'Aachener Straße', '53')
-    yield company('Garage Mergelsberg',  '4730', raeren,
-                  'Hauptstraße', '13')
+    ausdemwald = company('Bäckerei Ausdemwald', '4700', eupen, 'Vervierser Straße', '45')
+    yield ausdemwald
+    yield company('Bäckerei Mießen',     '4700', eupen, 'Gospert', '103')
+    yield company('Bäckerei Schmitz',    '4700', eupen, 'Aachener Straße', '53')
+    mergelsberg = company('Garage Mergelsberg',  '4730', raeren, 'Hauptstraße', '13')
+    yield mergelsberg
 
-    # company = Instantiator(
-    #     'contacts.Company',
-    #     "name zip_code city:name street street_no", country='NL').build
     yield company('Donderweer BV', '4816 AR', 'Breda', 'Edisonstraat', '12')
     yield company('Van Achter NV', '4836 LG', 'Breda', 'Hazeldonk', '2')
 
-    # company = Instantiator(
-    #     'contacts.Company',
-    #     "name zip_code city:name street street_no", country='DE').build
-    yield company('Hans Flott & Co', '22453', 'Hamburg',
-                  'Niendorfer Weg', '532')
-    yield company('Bernd Brechts Bücherladen', '80333',
-                  aachen, 'Brienner Straße', '18')
-    yield company('Reinhards Baumschule', '12487 ',
-                  'Berlin', 'Segelfliegerdamm', '123')
+    yield company('Hans Flott & Co', '22453', 'Hamburg', 'Niendorfer Weg', '532')
+    yield company('Bernd Brechts Bücherladen', '80333', aachen, 'Brienner Straße', '18')
+    yield company('Reinhards Baumschule', '12487 ', 'Berlin', 'Segelfliegerdamm', '123')
 
-    # company = Instantiator(
-    #     'contacts.Company',
-    #     "name zip_code city:name street street_no", country='FR').build
-    yield company('Moulin Rouge', '75018', 'Paris',
-                  'Boulevard de Clichy', '82')
-    yield company('Auto École Verte', '54000 ', 'Nancy',
-                  'rue de Mon Désert', '12')
+    yield company('Moulin Rouge', '75018', 'Paris', 'Boulevard de Clichy', '82')
+    yield company('Auto École Verte', '54000 ', 'Nancy', 'rue de Mon Désert', '12')
 
-    # person = Instantiator("contacts.Person", "first_name last_name",
-    #                       country='BE', city=eupen, zip_code='4700').build
     yield person(eupen, 'Andreas',  'Arens', gender=dd.Genders.male,
                  phone="+32 87123456", email="andreas@arens.com")
     yield person(eupen, 'Annette',  'Arens', gender=dd.Genders.female,
                  phone="+32 87123457", email="annette@arens.com")
     yield person(eupen, 'Hans',     'Altenberg', gender=dd.Genders.male)
-    yield person(eupen, 'Alfons',   'Ausdemwald', gender=dd.Genders.male)
+    alfons = person(eupen, 'Alfons',   'Ausdemwald', gender=dd.Genders.male)
+    yield alfons
     yield person(eupen, 'Laurent',  'Bastiaensen', gender=dd.Genders.male)
     yield person(eupen, 'Charlotte', 'Collard', gender=dd.Genders.female)
     yield person(eupen, 'Ulrike',   'Charlier', gender=dd.Genders.female)
@@ -161,10 +156,6 @@ def objects():
     yield person(eupen, 'Michael', 'Mießen', gender=dd.Genders.male)
     yield person(eupen, 'Marie-Louise', 'Meier', gender=dd.Genders.female)
 
-    # person = Instantiator(
-    #     "contacts.Person", "first_name last_name",
-    #     country='BE', language=settings.SITE.DEFAULT_LANGUAGE.django_code,
-    #     city=raeren, zip_code='4730').build
     yield person(raeren, 'Erich',    'Emonts', gender=dd.Genders.male)
     yield person(raeren, 'Erwin',    'Emontspool', gender=dd.Genders.male)
     yield person(raeren, 'Erna',     'Emonts-Gast', gender=dd.Genders.female)
@@ -183,19 +174,15 @@ def objects():
     # special challenges for alphabetic ordering
     yield person(raeren, 'Didier',  'di Rupo', gender=dd.Genders.male)
     yield person(raeren, 'David',   'da Vinci', gender=dd.Genders.male)
-    yield person(raeren, 'Vincent', 'van Veen', gender=dd.Genders.male)
+    yield person(amsterdam, 'Vincent', 'van Veen', gender=dd.Genders.male)
     yield person(raeren, 'Õie',     'Õunapuu', gender=dd.Genders.female)
-    yield person(raeren, 'Otto',   'Östges', gender=dd.Genders.male)
+    otto = person(raeren, 'Otto',   'Östges', gender=dd.Genders.male)
+    yield otto
     yield person(raeren, 'Erna',   'Ärgerlich', gender=dd.Genders.female)
 
-    # person = Instantiator("contacts.Person", country='BE',
-    #                       city=Place.objects.get(name__exact='Angleur')).build
     yield person(angleur, 'Bernard', 'Bodard', title='Dr.')
     yield person(angleur, 'Jean', 'Dupont')
 
-    # person = Instantiator("contacts.Person", country='NL',
-    #                       city=Place.objects.get(
-    #                           name__exact='Amsterdam')).build
     yield person(amsterdam, 'Mark', 'Martelaer',
                  gender=dd.Genders.male)
     yield person(amsterdam, 'Rik', 'Radermecker',
@@ -203,13 +190,11 @@ def objects():
     yield person(amsterdam, 'Marie-Louise', 'Vandenmeulenbos',
                  gender=dd.Genders.female)
 
-    # person = Instantiator("contacts.Person", country='DE').build
     yield person(aachen, 'Emil', 'Eierschal', gender=dd.Genders.male)
     yield person(aachen, 'Lisa', 'Lahm', gender=dd.Genders.female)
     yield person(aachen, 'Bernd', 'Brecht', gender=dd.Genders.male)
     yield person(aachen, 'Karl', 'Keller', gender=dd.Genders.male)
 
-    # person = Instantiator("contacts.Person", country='FR').build
     yield person(paris, 'Robin', 'Dubois', gender=dd.Genders.male)
     yield person(paris, 'Denis', 'Denon', gender=dd.Genders.male)
     yield person(paris, 'Jérôme', 'Jeanémart', gender=dd.Genders.male)
@@ -220,3 +205,12 @@ def objects():
         p.stret_no = str(nr)
         p.save()
         nr += 1
+
+    yield rt.models.contacts.Role(company=ausdemwald, person=alfons, type=ceo)
+    yield rt.models.contacts.Role(company=mergelsberg, person=otto, type=ceo)
+    yield rt.models.contacts.Role(company=rumma, person=otto, type=ceo)
+
+    # adding one person here causes 46 doctest failures...
+    # luc = person(vigala, 'Luc', 'Saffre', gender=dd.Genders.male)
+    # yield luc
+    # yield rt.models.contacts.Role(company=rumma, person=luc, type=ceo)

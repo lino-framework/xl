@@ -1,10 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2018 Rumma & Ko Ltd
+# Copyright 2009-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from builtins import filter
-
+# from builtins import filter
 
 from django.db import models
 from django.conf import settings
@@ -14,7 +12,6 @@ from lino.api.dd import babel_values
 
 from lino.core.utils import resolve_model
 from lino.utils.instantiator import Instantiator
-
 
 companyType = Instantiator('contacts.CompanyType', "abbr name").build
 roletype = Instantiator('contacts.RoleType', "name").build
@@ -71,12 +68,12 @@ for ln in COMPANY_TYPES_TEXT.splitlines():
         if len(a) != 4:
             raise Exception("Line %r has %d fields (expected 4)" % len(a))
         d = dict()
-        for index, i in list(LANGS.items()):
+        for index, i in LANGS.items():
             kw = parse(a[i])
             if index == 0:
                 d.update(kw)
             else:
-                for k, v in list(kw.items()):
+                for k, v in kw.items():
                     d[k + settings.SITE.languages[index].suffix] = v
 
         def not_empty(x):
@@ -92,17 +89,26 @@ def objects():
 
     Partner = rt.models.contacts.Partner
     Person = rt.models.contacts.Person
-    
+
     for ct in COMPANY_TYPES:
         yield companyType(**ct)
 
-    yield roletype(**babel_values('name', en="Manager", fr='Gérant', de="Geschäftsführer", et="Tegevjuht"))
-    yield roletype(**babel_values('name', en="Director", fr='Directeur', de="Direktor", et="Direktor"))
-    yield roletype(**babel_values('name', en="Secretary", fr='Secrétaire', de="Sekretär", et="Sekretär"))
-    yield roletype(**babel_values('name', en="IT Manager", fr='Gérant informatique', de="EDV-Manager", et="IT manager"))
-    yield roletype(**babel_values('name', en="President", fr='Président', de="Präsident", et="President"))
+    # qs = rt.models.contacts.RoleType.objects.filter(rt.lookup_filter('name', "CEO"))
+    # if qs.count():
+    #     raise Exception("Oops, there is already a CEO in {}".format(qs))
+    # dd.logger.info("Creating the CEO function")
+    yield roletype(**dd.str2kw('name', _("CEO"), can_sign=True))
+    yield roletype(**dd.str2kw('name', _("Director"), can_sign=True))
+    yield roletype(**dd.str2kw('name', _("Secretary")))
+    yield roletype(**dd.str2kw('name', _("IT manager")))
+    yield roletype(**dd.str2kw('name', _("President"), can_sign=True))
+    # yield roletype(**babel_values('name', en="Manager", fr='Gérant', de="Geschäftsführer", et="Tegevjuht"))
+    # yield roletype(**babel_values('name', en="Director", fr='Directeur', de="Direktor", et="Direktor"))
+    # yield roletype(**babel_values('name', en="Secretary", fr='Secrétaire', de="Sekretär", et="Sekretär"))
+    # yield roletype(**babel_values('name', en="IT Manager", fr='Gérant informatique', de="EDV-Manager", et="IT manager"))
+    # yield roletype(**babel_values('name', en="President", fr='Président', de="Präsident", et="President"))
 
-    
+
     if dd.is_installed('excerpts') and dd.is_installed('appypod'):
         ExcerptType = rt.models.excerpts.ExcerptType
         ContentType = rt.models.contenttypes.ContentType
@@ -113,6 +119,8 @@ def objects():
             **dd.str2kw('name', _("Terms & conditions")))
 
     if dd.is_installed('contenttypes'):
+        # TODO: remove this because the feature isn't used. But afterwards adapt
+        # the doctests!
         ContentType = rt.models.contenttypes.ContentType
         I = Instantiator('gfks.HelpText',
                          'content_type field help_text').build
@@ -127,7 +135,7 @@ def objects():
     #~ </ul>
     #~ """)
 
-        t = ContentType.objects.get_for_model(Partner)
-        yield I(t, 'language', u"""\
+        ct = ContentType.objects.get_for_model(Partner)
+        yield I(ct, 'language', u"""\
     Die Sprache, in der Dokumente ausgestellt werden sollen.
     """)

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-03-29 09:35+0300\n"
-"PO-Revision-Date: 2020-03-29 09:36+0300\n"
+"POT-Creation-Date: 2020-04-04 06:54+0300\n"
+"PO-Revision-Date: 2020-04-04 07:01+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -83,7 +83,7 @@ msgstr "Lu depuis carte d'identité"
 msgid "Manage addresses"
 msgstr "Gestion d'adresses"
 
-#: lino_xl/lib/addresses/models.py:19 lino_xl/lib/contacts/models.py:280
+#: lino_xl/lib/addresses/models.py:19 lino_xl/lib/contacts/models.py:275
 #: lino_xl/lib/countries/mixins.py:187 lino_xl/lib/outbox/models.py:52
 msgid "Address"
 msgstr "Adresse"
@@ -100,8 +100,8 @@ msgstr "Adresse"
 #: lino_xl/lib/lists/config/lists/List/list_members.weasy.html:68
 #: lino_xl/lib/lists/models.py:152 lino_xl/lib/notes/models.py:49
 #: lino_xl/lib/notes/models.py:80
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:78
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:97
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:26
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:45
 #: lino_xl/lib/orders/models.py:91 lino_xl/lib/orders/models.py:293
 #: lino_xl/lib/orders/models.py:399 lino_xl/lib/phones/models.py:35
 #: lino_xl/lib/polls/models.py:639 lino_xl/lib/polls/models.py:644
@@ -1227,7 +1227,7 @@ msgstr "Nom d'utilisateur"
 msgid "Last transaction"
 msgstr "Confirmation"
 
-#: lino_xl/lib/b2c/models.py:219 lino_xl/lib/contacts/models.py:89
+#: lino_xl/lib/b2c/models.py:219 lino_xl/lib/contacts/models.py:84
 msgid "Partners"
 msgstr "Partenaires"
 
@@ -1251,7 +1251,7 @@ msgid "Combination of the year and the legal sequential number of the paper stat
 msgstr ""
 
 #: lino_xl/lib/b2c/models.py:251 lino_xl/lib/cal/models.py:158
-#: lino_xl/lib/contacts/models.py:517
+#: lino_xl/lib/contacts/models.py:523
 #, fuzzy
 msgid "Start date"
 msgstr ""
@@ -1260,7 +1260,7 @@ msgstr ""
 "#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
 "Date début"
 
-#: lino_xl/lib/b2c/models.py:252 lino_xl/lib/contacts/models.py:519
+#: lino_xl/lib/b2c/models.py:252 lino_xl/lib/contacts/models.py:525
 #, fuzzy
 msgid "End date"
 msgstr "Échéance"
@@ -1296,8 +1296,8 @@ msgstr "Confirmation"
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
 #: lino_xl/lib/ledger/models.py:504 lino_xl/lib/ledger/models.py:527
 #: lino_xl/lib/lists/config/lists/List/list_members.weasy.html:63
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:75
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:94
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:23
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:42
 #: lino_xl/lib/polls/models.py:207
 msgid "No."
 msgstr ""
@@ -2557,7 +2557,8 @@ msgid "Responsible"
 msgstr "Utilisateur responsable"
 
 #: lino_xl/lib/cal/models.py:127 lino_xl/lib/clients/models.py:61
-#: lino_xl/lib/rooms/models.py:129 lino_xl/lib/tickets/models.py:289
+#: lino_xl/lib/contacts/models.py:510 lino_xl/lib/rooms/models.py:129
+#: lino_xl/lib/tickets/models.py:289
 msgid "Contact person"
 msgstr "Personne de contact"
 
@@ -2782,7 +2783,7 @@ msgid "Presences"
 msgstr "Présences"
 
 #: lino_xl/lib/cal/models.py:1033 lino_xl/lib/households/choicelists.py:21
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:77
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:25
 msgid "Role"
 msgstr "Rôle"
 
@@ -3308,7 +3309,7 @@ msgstr "Contact client"
 msgid "Client Contacts"
 msgstr "Contacts client"
 
-#: lino_xl/lib/clients/models.py:49 lino_xl/lib/contacts/models.py:99
+#: lino_xl/lib/clients/models.py:49 lino_xl/lib/contacts/models.py:94
 #: lino_xl/lib/cv/models.py:159 lino_xl/lib/cv/models.py:599 lino_xl/lib/lists/models.py:93
 #: lino_xl/lib/skills/models.py:55
 msgid "Remarks"
@@ -3447,7 +3448,7 @@ msgstr "Console"
 msgid "Concept"
 msgstr "Concept"
 
-#: lino_xl/lib/concepts/models.py:43 lino_xl/lib/contacts/models.py:414
+#: lino_xl/lib/concepts/models.py:43 lino_xl/lib/contacts/models.py:409
 msgid "Abbreviation"
 msgstr "Abbréviation"
 
@@ -3530,7 +3531,7 @@ msgstr "Séparé de fait"
 msgid "Cohabitating"
 msgstr "Cohabitant"
 
-#: lino_xl/lib/contacts/mixins.py:24 lino_xl/lib/contacts/models.py:428
+#: lino_xl/lib/contacts/mixins.py:24 lino_xl/lib/contacts/models.py:423
 #, fuzzy
 msgid "Organization"
 msgstr "Confirmation"
@@ -3547,36 +3548,36 @@ msgstr "en tant que"
 msgid "Company"
 msgstr "Organisation"
 
-#: lino_xl/lib/contacts/models.py:53
+#: lino_xl/lib/contacts/models.py:48
 msgid "Export as vCard"
 msgstr ""
 
-#: lino_xl/lib/contacts/models.py:88 lino_xl/lib/households/choicelists.py:27
+#: lino_xl/lib/contacts/models.py:83 lino_xl/lib/households/choicelists.py:27
 #: lino_xl/lib/households/models.py:499 lino_xl/lib/sheets/models.py:188
 #: lino_xl/lib/xl/help_texts.py:1528
 msgid "Partner"
 msgstr "Partenaire"
 
-#: lino_xl/lib/contacts/models.py:95
+#: lino_xl/lib/contacts/models.py:90
 #, fuzzy
 msgid "Name prefix"
 msgstr "Préfixe rue"
 
-#: lino_xl/lib/contacts/models.py:97 lino_xl/lib/contacts/models.py:156
+#: lino_xl/lib/contacts/models.py:92 lino_xl/lib/contacts/models.py:151
 #: lino_xl/lib/courses/models.py:80 lino_xl/lib/inspect/desktop.py:221
 #: lino_xl/lib/outbox/models.py:53
 msgid "Name"
 msgstr "Nom"
 
-#: lino_xl/lib/contacts/models.py:168
+#: lino_xl/lib/contacts/models.py:163
 msgid "See as "
 msgstr "Vue:"
 
-#: lino_xl/lib/contacts/models.py:196
+#: lino_xl/lib/contacts/models.py:191
 msgid "Extended filter criteria"
 msgstr ""
 
-#: lino_xl/lib/contacts/models.py:288
+#: lino_xl/lib/contacts/models.py:283
 #, fuzzy
 msgid "Contact"
 msgstr ""
@@ -3585,64 +3586,80 @@ msgstr ""
 "#-#-#-#-#  0catalog.po  #-#-#-#-#\n"
 "Plan comptable"
 
-#: lino_xl/lib/contacts/models.py:339
+#: lino_xl/lib/contacts/models.py:334
 msgid "Person"
 msgstr "Personne"
 
-#: lino_xl/lib/contacts/models.py:340
+#: lino_xl/lib/contacts/models.py:335
 msgid "Persons"
 msgstr "Personnes"
 
-#: lino_xl/lib/contacts/models.py:411
+#: lino_xl/lib/contacts/models.py:406
 msgid "Organization type"
 msgstr "Type d'organisation"
 
-#: lino_xl/lib/contacts/models.py:412
+#: lino_xl/lib/contacts/models.py:407
 msgid "Organization types"
 msgstr "Types d'organisation"
 
-#: lino_xl/lib/contacts/models.py:429
+#: lino_xl/lib/contacts/models.py:424
 msgid "Organizations"
 msgstr "Organisations"
 
-#: lino_xl/lib/contacts/models.py:489
+#: lino_xl/lib/contacts/models.py:493
 msgid "Function"
 msgstr "Fonction"
 
-#: lino_xl/lib/contacts/models.py:490
+#: lino_xl/lib/contacts/models.py:494
 msgid "Functions"
 msgstr "Fonctions"
 
-#: lino_xl/lib/contacts/models.py:504
-msgid "Contact Person"
-msgstr "Personne de contact"
-
-#: lino_xl/lib/contacts/models.py:505
-msgid "Contact Persons"
-msgstr "Personnes de contact"
-
-#: lino_xl/lib/contacts/models.py:570
-msgid "Could not create {person} from '{text}'"
+#: lino_xl/lib/contacts/models.py:496
+msgid "Authorized to sign"
 msgstr ""
 
-#: lino_xl/lib/contacts/models.py:589
+#: lino_xl/lib/contacts/models.py:511 lino_xl/lib/contacts/models.py:595
 msgid "Contact persons"
 msgstr "Personnes de contact"
 
-#: lino_xl/lib/contacts/models.py:599
+#: lino_xl/lib/contacts/models.py:576
+msgid "Could not create {person} from '{text}'"
+msgstr ""
+
+#: lino_xl/lib/contacts/models.py:605
 msgid "Contact for"
 msgstr "contact pour"
 
-#: lino_xl/lib/contacts/models.py:611
+#: lino_xl/lib/contacts/models.py:617
 msgid "Next partner id"
 msgstr ""
 
-#: lino_xl/lib/contacts/models.py:612
+#: lino_xl/lib/contacts/models.py:618
 #, fuzzy
 msgid "The next automatic id for any new partner."
 msgstr "Identifiant automatique pour la personne ounla société suivante"
 
-#: lino_xl/lib/contacts/fixtures/std.py:113
+#: lino_xl/lib/contacts/fixtures/std.py:96
+msgid "CEO"
+msgstr "Gérant"
+
+#: lino_xl/lib/contacts/fixtures/std.py:97
+msgid "Director"
+msgstr "Directeur"
+
+#: lino_xl/lib/contacts/fixtures/std.py:98
+msgid "Secretary"
+msgstr "Secrétaire"
+
+#: lino_xl/lib/contacts/fixtures/std.py:99
+msgid "IT manager"
+msgstr "Gérant informatique"
+
+#: lino_xl/lib/contacts/fixtures/std.py:100
+msgid "President"
+msgstr "Président"
+
+#: lino_xl/lib/contacts/fixtures/std.py:115
 #, fuzzy
 msgid "Terms & conditions"
 msgstr "Titre de noblesse"
@@ -4461,7 +4478,7 @@ msgid "Interim"
 msgstr "Intérim"
 
 #: lino_xl/lib/cv/fixtures/std.py:121 lino_xl/lib/ledger/models.py:433
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:76
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:24
 #: lino_xl/lib/working/models.py:204 lino_xl/lib/working/models.py:244
 msgid "Worker"
 msgstr "Ouvrier"
@@ -7146,7 +7163,7 @@ msgstr "Facturable"
 msgid "Order items"
 msgstr "Séries de cours"
 
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:96
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:44
 #: lino_xl/lib/orders/models.py:397
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:55
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:33
@@ -7187,7 +7204,7 @@ msgstr "Ouvrier"
 msgid "Needed per mission"
 msgstr ""
 
-#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:95
+#: lino_xl/lib/orders/config/orders/Order/default.weasy.html:43
 #: lino_xl/lib/products/models.py:49
 msgid "Product"
 msgstr ""
@@ -15144,3 +15161,9 @@ msgstr "Administrateur"
 
 #~ msgid "with"
 #~ msgstr "avec"
+
+#~ msgid "Contact Person"
+#~ msgstr "Personne de contact"
+
+#~ msgid "Contact Persons"
+#~ msgstr "Personnes de contact"
