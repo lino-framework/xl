@@ -80,15 +80,6 @@ def objects():
     #     raise Exception("Oops, we have {} CEO's in {}".format(qs.count(), qs))
     # yield site_company_objects()
 
-    rumma = company(
-        'Rumma & Ko OÜ', '78003', 'Vigala', 'Uus tn', '1',
-        url="http://www.saffre-rumma.net/")
-    if dd.is_installed('vat'):
-        rumma.vat_id = "EE100588749"
-        # a vat_id is required for generating valid XML from payment order
-    yield rumma
-    settings.SITE.site_config.update(site_company=rumma)
-
     aachen = lookup_city('Aachen')
     eupen = lookup_city('Eupen')
     raeren = lookup_city('Raeren')
@@ -96,6 +87,15 @@ def objects():
     paris = lookup_city('Paris')
     amsterdam = lookup_city('Amsterdam')
     vigala = lookup_city('Vigala')
+
+    rumma = company(
+        'Rumma & Ko OÜ', '78003', vigala, 'Uus tn', '1',
+        url="http://www.saffre-rumma.net/")
+    if dd.is_installed('vat'):
+        rumma.vat_id = "EE100588749"
+        # a vat_id is required for generating valid XML from payment order
+    yield rumma
+    settings.SITE.site_config.update(site_company=rumma)
 
     ausdemwald = company('Bäckerei Ausdemwald', '4700', eupen, 'Vervierser Straße', '45')
     yield ausdemwald
@@ -116,8 +116,9 @@ def objects():
 
     yield person(eupen, 'Andreas',  'Arens', gender=dd.Genders.male,
                  phone="+32 87123456", email="andreas@arens.com")
-    yield person(eupen, 'Annette',  'Arens', gender=dd.Genders.female,
+    annette = person(eupen, 'Annette',  'Arens', gender=dd.Genders.female,
                  phone="+32 87123457", email="annette@arens.com")
+    yield annette
     yield person(eupen, 'Hans',     'Altenberg', gender=dd.Genders.male)
     alfons = person(eupen, 'Alfons',   'Ausdemwald', gender=dd.Genders.male)
     yield alfons
@@ -174,11 +175,12 @@ def objects():
     # special challenges for alphabetic ordering
     yield person(raeren, 'Didier',  'di Rupo', gender=dd.Genders.male)
     yield person(raeren, 'David',   'da Vinci', gender=dd.Genders.male)
-    yield person(amsterdam, 'Vincent', 'van Veen', gender=dd.Genders.male)
+    yield person(raeren, 'Vincent', 'van Veen', gender=dd.Genders.male)
     yield person(raeren, 'Õie',     'Õunapuu', gender=dd.Genders.female)
     otto = person(raeren, 'Otto',   'Östges', gender=dd.Genders.male)
     yield otto
-    yield person(raeren, 'Erna',   'Ärgerlich', gender=dd.Genders.female)
+    erna = person(raeren, 'Erna',   'Ärgerlich', gender=dd.Genders.female)
+    yield erna
 
     yield person(angleur, 'Bernard', 'Bodard', title='Dr.')
     yield person(angleur, 'Jean', 'Dupont')
@@ -196,8 +198,10 @@ def objects():
     yield person(aachen, 'Karl', 'Keller', gender=dd.Genders.male)
 
     yield person(paris, 'Robin', 'Dubois', gender=dd.Genders.male)
-    yield person(paris, 'Denis', 'Denon', gender=dd.Genders.male)
-    yield person(paris, 'Jérôme', 'Jeanémart', gender=dd.Genders.male)
+    denis = person(paris, 'Denis', 'Denon', gender=dd.Genders.male)
+    yield denis
+    jerome = person(paris, 'Jérôme', 'Jeanémart', gender=dd.Genders.male)
+    yield jerome
 
     nr = 1
     for p in rt.models.contacts.Person.objects.filter(city=eupen):
@@ -206,9 +210,9 @@ def objects():
         p.save()
         nr += 1
 
-    yield rt.models.contacts.Role(company=ausdemwald, person=alfons, type=ceo)
-    yield rt.models.contacts.Role(company=mergelsberg, person=otto, type=ceo)
-    yield rt.models.contacts.Role(company=rumma, person=otto, type=ceo)
+    yield rt.models.contacts.Role(company=ausdemwald, person=annette, type=ceo)
+    yield rt.models.contacts.Role(company=mergelsberg, person=erna, type=ceo)
+    yield rt.models.contacts.Role(company=rumma, person=erna, type=ceo)
 
     # adding one person here causes 46 doctest failures...
     # luc = person(vigala, 'Luc', 'Saffre', gender=dd.Genders.male)
