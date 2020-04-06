@@ -16,7 +16,10 @@ from django.contrib.contenttypes.models import ContentType
 # Django's ordinal() works only for English
 from django.utils.encoding import force_text
 
-from num2words import num2words
+try:
+    from num2words import num2words
+except ImportError:
+    pass  # run `manage.py install` to install it
 
 from lino import mixins
 from lino.api import dd, rt

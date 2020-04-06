@@ -1,11 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2009-2018 Rumma & Ko Ltd
+# Copyright 2009-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
+import logging; logger = logging.getLogger(__name__)
 
 import os
 
@@ -22,7 +19,7 @@ except ImportError:
         from appy.pod.buffers import EvaluationError
     except ImportError:
         EvaluationError = Exception
-        # Run the python manage.py configure to install appy correctly.
+        # Run the python manage.py install to install appy correctly.
 
 
 class AppyBuildMethod(SimpleBuildMethod):
