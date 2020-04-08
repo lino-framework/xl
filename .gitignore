@@ -23,3 +23,4 @@ docs/warnings_html.txt
 .coverage
 .coverage.*
 .eggs
+dist
