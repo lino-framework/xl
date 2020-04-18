@@ -4,7 +4,7 @@
 
 
 from lino.api import dd, rt
-from django.db.utils import OperationalError
+from django.db.utils import OperationalError, ProgrammingError
 
 class TrendObservable(dd.Model):
     class Meta:
@@ -28,5 +28,6 @@ class TrendObservable(dd.Model):
                 name = "trend_date_" + str(ts.id)
                 vf = dd.VirtualField(dd.DateField(str(ts)), w(ts), wildcard_data_elem=True)
                 cls.define_action(**{name: vf})
-        except OperationalError:
-            pass
+        except (OperationalError, ProgrammingError) as e:
+            # Error can differ depending on the database engine.
+            dd.logger.debug("Failed to load trend stages : %s", e)
