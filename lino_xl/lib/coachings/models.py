@@ -1,12 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
-
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.db.models import Q
@@ -155,6 +151,8 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
     def __str__(self):
         #~ return _("Coaching of %(client)s by %(user)s") % dict(client=self.client,user=self.user)
         #~ return self.user.username+' / '+self.client.first_name+' '+self.client.last_name[0]
+        if not self.client_id:
+            return super(Coaching, self).__str__()
         cl = self.client
         if self.user_id is None:
             return "{} {}".format(
