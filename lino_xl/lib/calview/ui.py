@@ -130,11 +130,6 @@ class Day(TableRow):
         if planner is not None:
             assert isinstance(planner, Planner)
             self.planner = planner
-        str(self)
-        # if cal_view is not None:
-        #     self.navigation_mode = cal_view.navigation_mode
-        #     if issubclass(cal_view, DayNavigator):
-        #         self.cal_view = cal_view
 
     def __str__(self):
         if self.navigation_mode == "day":
@@ -474,43 +469,50 @@ class DaySlave(AbstractTable):
         # return super(DaySlave, cls).get_request_queryset(ar, **filter)
 
     @classmethod
-    def get_calview_chunks(cls, self, ar):
-        """yield a series of HTML elements or strings that will be combined to a <span>
+    def unused_get_calview_chunks(cls, self, ar):
         """
-        chunks = []
+
+        Yield a series of HTML elements or strings that represent the given
+        calendar entry as a paragraph.
+
+        """
         pv = ar.param_values
         if self.start_time:
-            chunks.append(str(self.start_time)[:5])
+            yield str(self.start_time)[:5]
 
         # elif not pv.start_date:
             # t.append(str(self.start_date))
         if not pv.user and self.user:
-            chunks.append(str(self.user))
+            yield str(self.user)
         if self.summary:
-            chunks.append(self.summary)
+            yield self.summary
         if not pv.event_type and self.event_type:
-            chunks.append(str(self.event_type))
+            yield str(self.event_type)
         if not pv.room and self.room:
-            chunks.append(str(self.room))
+            yield str(self.room)
         if settings.SITE.project_model is not None and not pv.project and self.project:
-            chunks.append(str(self.project))
-        return " ".join(chunks)
+            yield str(self.project)
 
     @classmethod
     def get_calview_div(cls, obj, ar):
-
-        """Return a <div> for this element in the calendar view given by ar.
+        """Return a <div> for this calendar entry in the view given by ar.
 
         """
-        ele = E.span(*cls.get_calview_chunks(obj, ar))
-        data_color = obj.get_diplay_color()
-        if data_color:
-            dot  = E.span("\u00A0", CLASS="dot")
+        time_text = ""
+        if obj.start_time:
+            time_text = "{} ".format(obj.start_time)[:5]
+
+        # text = E.span(*cls.get_calview_chunks(obj, ar))
+        text = E.span(time_text, *obj.get_event_summary(ar))
+        color = obj.get_diplay_color()
+        if color:
+            dot  = E.span("\u00A0", CLASS="dot",
+                style="background-color: {};".format(color))
             # ele.attrib['style'] = "color: white;background-color: {};".format(data_color)
-            dot.attrib['style'] = "background-color: {};".format(data_color)
-            return E.div(*[dot, ele])
+            # dot.attrib['style'] = "background-color: {};".format(data_color)
+            return E.div(dot, text)
         else:
-            return E.div(*[ele])
+            return E.div(text)
 
 class DailySlaveBase(DaySlave, VentilatedColumns):
     abstract = True

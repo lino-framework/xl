@@ -11,10 +11,7 @@ Database models for `lino_xl.lib.extensible`.
 """
 
 
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 import datetime
 
@@ -26,6 +23,7 @@ from lino.api import dd, rt
 from lino.core import constants
 
 from lino.modlib.office.roles import OfficeUser
+from lino.utils import join_elems
 
 from lino_xl.lib.cal.models import Calendars, Events
 
@@ -70,9 +68,9 @@ class ExtDateTimeField(dd.VirtualField):
 class ExtSummaryField(dd.VirtualField):
 
     """
-    An editable virtual field needed for 
+    An editable virtual field needed for
     communication with the Ext.ensible CalendarPanel
-    because we want a customized "virtual summary" 
+    because we want a customized "virtual summary"
     that includes the project name.
     """
     editable = True
@@ -90,7 +88,9 @@ class ExtSummaryField(dd.VirtualField):
 
     def value_from_object(self, obj, ar):
         #~ logger.info("20120118 value_from_object() %s",dd.obj2str(obj))
-        return obj.get_event_summary(ar)
+        if ar is None:
+            return ''
+        return join_elems(obj.get_event_summary(ar))
 
 
 class CalendarPanel(dd.Frame):

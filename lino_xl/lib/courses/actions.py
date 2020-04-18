@@ -30,4 +30,4 @@ class PrintPresenceSheet(DirectPrintAction):
     show_remarks
     show_states
     """
-    keep_user_values = True
+    # keep_user_values = True

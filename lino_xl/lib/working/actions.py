@@ -77,7 +77,7 @@ class EndTicketSession(EndSession):
                 user=ar.get_user(), ticket=obj.get_ticket(),
                 end_time__isnull=True)
             yield ses
-    
+
     # def get_action_permission(self, ar, obj, state):
     #     # u = ar.get_user()
     #     # if not u.user_type.has_required_roles([SiteUser]):
@@ -87,7 +87,7 @@ class EndTicketSession(EndSession):
     #             ar, obj, state):
     #         return False
     #     user = ar.get_user()
-            
+
     #     Session = rt.models.working.Session
     #     qs = Session.objects.filter(
     #         user=user, ticket=obj.get_ticket(), end_time__isnull=True)
@@ -168,7 +168,7 @@ class PrintActivityReport(DirectPrintAction):
     show_remarks
     show_states
     """
-    keep_user_values = True
+    # keep_user_values = True
     # default_format = 'json'
     # http_method = 'POST'
 
@@ -190,4 +190,3 @@ class ShowMySessionsByDay(dd.Action):
         sar = ar.spawn(rt.models.working.MySessionsByDate, param_values=pv)
         js = ar.renderer.request_handler(sar)
         ar.set_response(eval_js=js)
-

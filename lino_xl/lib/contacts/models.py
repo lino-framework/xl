@@ -148,10 +148,6 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
         return join_words(self.prefix, self.name)
     full_name = property(get_full_name)
 
-    @dd.displayfield(_("Name"))
-    def name_column(self, request):
-        return str(self)
-
     def get_partner_instance(self):
         return self  # compatibility with lino.modlib.partners
 

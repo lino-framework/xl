@@ -165,6 +165,7 @@ We override everything in Excerpt to not call the class method.""")
 
     @classmethod
     def update_for_model(cls, model, **kw):
+        "Update the primary ExcerptType for the given model."
         obj = cls.get_for_model(model)
         for k, v in kw.items():
             setattr(obj, k, v)

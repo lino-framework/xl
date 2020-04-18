@@ -800,24 +800,26 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
     def get_event_summary(self, ar):
         # from django.utils.translation import ugettext as _
         s = self.summary
-        u = self.user
         if self.owner is not None:
             s = "{} {}".format(self.owner, s)
+
+        u = self.user
         if u is not None and u != ar.get_user():
             if self.access_class == AccessClasses.show_busy:
                 s = _("Busy")
             if self.summary_show_user:
                 s = "{} {}".format(u.initials or u.username, s)
-        if self.project is not None:
-            # s += " " + "{} {}".format(self.summary_project_template, self.project).strip()
-            s += " " + self.summary_project_template.format(project=self.project)
-        if self.state.button_text:
-            s = str(self.state.button_text) + " " + s
+
         # n = event.guest_set.all().count()
         # if n:
         #     s = ("[%d] " % n) + s
-        return s
 
+        if self.state.button_text:
+            yield str(self.state.button_text) + " "
+        yield s
+        if self.project is not None:
+            # s += " " + "{} {}".format(self.summary_project_template, self.project).strip()
+            yield " " + self.summary_project_template.format(project=self.project)
 
     def get_postable_recipients(self):
         """return or yield a list of Partners"""
@@ -1066,7 +1068,7 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
         """
         if ar is None:
             return ''
-        return ar.obj2html(self.event, self.event.get_event_summary(ar))
+        return ar.obj2html(self.event, tuple(self.event.get_event_summary(ar)))
 
 
 def migrate_reminder(obj, reminder_date, reminder_text,
