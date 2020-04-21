@@ -13,6 +13,8 @@ from django.utils.translation import pgettext_lazy as pgettext
 
 from lino.api import dd, _
 from lino.utils.format_date import fds
+# from lino.core.choicelists import ChoiceList
+
 
 from .utils import day_and_month
 

@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2017 Rumma & Ko Ltd
-#
+# Copyright 2013-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Defines the calendar workflows for systes like :ref:`voga` or
@@ -11,31 +10,22 @@ This is a :attr:`workflows_module
 
 """
 
-from __future__ import unicode_literals
-
+from lino.api import dd, _
 from lino_xl.lib.cal.workflows import *
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import pgettext_lazy as pgettext
+# from django.utils.translation import ugettext_lazy as _
+# from django.utils.translation import pgettext_lazy as pgettext
 
-from ..choicelists import GuestStates, EntryStates
+from lino_xl.lib.cal.choicelists import GuestStates, EntryStates
+from lino_xl.lib.cal.actions import RefuseGuestStates
 
 
-class MarkEventTookPlace(dd.ChangeStateAction):
+class MarkEventTookPlace(RefuseGuestStates):
     required_states = 'suggested draft cancelled'
-    
-    def before_execute(self, ar, obj):
-        if obj.event_type and obj.event_type.force_guest_states:
-            return
-        qs = obj.guest_set.filter(state=GuestStates.invited)
-        count = qs.count()
-        if count > 0:
-            msg = _("Cannot mark as {state} because {count} "
-                    "participants are invited.")
-            raise Warning(msg.format(
-                count=count, state=self.target_state))
+    refuse_guest_states = 'invited'
+
 
 class ResetEvent(dd.ChangeStateAction):
-    """Reset this event to 'suggested' state."""
+    """Reset this calendar entry to 'suggested' state."""
     button_text = EntryStates.suggested.button_text
     label = _("Reset")
     # show_in_workflow = True
@@ -43,7 +33,6 @@ class ResetEvent(dd.ChangeStateAction):
     # required_states = 'draft took_place cancelled'
     required_states = 'suggested took_place cancelled'
     # readonly = False
-
 
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
@@ -138,7 +127,3 @@ EntryStates.cancelled.add_transition(
     # help_text=_("Event was cancelled."),
     required_states='suggested draft took_place')
     # icon_name='cross')
-
-# from lino.api import rt
-# rt.models.cal.Event.define_action(reset_event=ResetEvent())
-

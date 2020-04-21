@@ -7,7 +7,6 @@
    :toctree:
 
     utils
-    workflows
 
 """
 
@@ -24,12 +23,35 @@ class Plugin(ad.Plugin):
 
     # partner_model = 'contacts.Partner'
     partner_model = 'contacts.Person'  # TODO: rename to "guest_model"
+    """
+    The model to use as the guest of a presence.
+    """
+
     ignore_dates_before = None
+    """
+    Ignore dates before the given date.
+
+    Default value is `None`, meaning "no limit".
+
+    Unlike :attr:`hide_events_before
+    <lino.modlib.system.SiteConfig.hide_events_before>`
+    this is not editable through the web interface.
+    """
+
     ignore_dates_after = None
+    """
+    Ignore dates after the given date.  This should never be `None`.
+    Default value is 5 years after :meth:`today
+    <lino.core.site.Site.today>`.
+    """
+
     beginning_of_time = None
 
     demo_absences = True
     """Whether to generate absences in demo calendar."""
+
+    default_guest_state = 'invited'
+    """Default value for the Guest.state field."""
 
     def on_init(self):
         tod = self.site.today()

@@ -90,3 +90,52 @@ class UpdateAllGuests(UpdateGuests):
             txt = ', '.join([fmt(e.start_date) for e in qs])
             ar.confirm(ok, _("Update presences for {} events: {}").format(
                 qs.count(), txt))
+
+
+class RefuseGuestStates(dd.ChangeStateAction):
+
+    """Mixin for transition actions on calendar entries that refuse to execute
+    when at least one guest is in a guest state which is forbidden for the
+    target entry state.
+
+    If at least one guest with one of the refused states is found, Lino raises a
+    user warning.
+
+    """
+
+    refuse_guest_states = None
+    """Either None or a string with a space-separated list of the guest states to refuse.
+
+    If it is a string, it will be converted into a set of gest state objects at
+    startup.
+
+    """
+
+    def attach_to_workflow(self, wf, name):
+        super(RefuseGuestStates, self).attach_to_workflow(wf, name)
+        if isinstance(self.refuse_guest_states, str):
+            self.refuse_guest_states = {GuestStates.get_by_name(x) for x in self.refuse_guest_states.split()}
+
+    def before_execute(self, ar, obj):
+        if obj.event_type and obj.event_type.force_guest_states:
+            # no need to check guest states because they will be forced
+            return
+
+        rgs = self.refuse_guest_states
+        if not rgs:
+            return
+
+        # presto changes refuse_guest_states in its workflow_module, that's why
+        # we re-evaluate it here for each request.
+
+        # rgs = (GuestStates.get_by_name(x) for x in self.refuse_guest_states.split())
+
+        # qs = obj.guest_set.filter(state=GuestStates.invited)
+        qs = obj.guest_set.filter(state__in=self.refuse_guest_states)
+        count = qs.count()
+        if count > 0:
+            guest_states = (" "+_("or")+" ").join([s.text for s in rgs])
+            msg = _("Cannot mark as {state} because {count} "
+                    "participants are {guest_states}.")
+            raise Warning(msg.format(
+                count=count, state=self.target_state, guest_states=guest_states))

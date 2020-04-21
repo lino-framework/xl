@@ -2,23 +2,13 @@
 # Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Some standard workflow definition modules for
-:mod:`lino_xl.lib.cal`.
-
-.. autosummary::
-   :toctree:
-
-    feedback
+"""Some standard workflow definition modules for :mod:`lino_xl.lib.cal`.
 
 """
 
 
 from django.conf import settings
-
-from django.utils.translation import ugettext_lazy as _
-
-
-from lino.api import dd
+from lino.api import _
 
 from lino_xl.lib.cal.choicelists import TaskStates
 

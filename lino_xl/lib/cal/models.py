@@ -1033,7 +1033,7 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
     partner = dd.ForeignKey(dd.plugins.cal.partner_model)  # TODO: rename to "guest"
     role = dd.ForeignKey(
         'cal.GuestRole', verbose_name=_("Role"), blank=True, null=True)
-    state = GuestStates.field(default='invited')
+    state = GuestStates.field(default=dd.plugins.cal.default_guest_state)
     remark = models.CharField(_("Remark"), max_length=200, blank=True)
 
     allow_merge_action = False

@@ -1,6 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2016 Rumma & Ko Ltd
-#
+# Copyright 2013-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds feedback-based workflow to :mod:`lino_xl.lib.cal`.
@@ -9,11 +8,6 @@ Used e.g. by :ref:`welfare`.
 
 """
 
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
-
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 from django.conf import settings
@@ -21,7 +15,7 @@ from django.conf import settings
 from lino.modlib.notify.actions import NotifyingAction
 from lino.api import dd
 
-from ..choicelists import EntryStates, GuestStates
+from lino_xl.lib.cal.choicelists import EntryStates, GuestStates
 
 add = EntryStates.add_item
 # add('40', _("Notified"), 'published', fill_guests=True,
@@ -120,8 +114,6 @@ class MarkExcused(dd.ChangeStateAction):
 
     """
     label = _("Excused")
-
-
 
 class ResetEvent(dd.ChangeStateAction):
     label = _("Reset")
