@@ -27,7 +27,7 @@ from lino_xl.lib.excerpts.mixins import ExcerptTitle
 from lino.modlib.users.mixins import UserAuthored
 from lino.modlib.printing.mixins import Printable
 # from lino.modlib.printing.utils import PrintableObject
-from lino_xl.lib.cal.mixins import Reservation
+# from lino_xl.lib.cal.mixins import Reservation
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.utils import day_and_month
 from lino_xl.lib.cal.mixins import RecurrenceSet, EventGenerator

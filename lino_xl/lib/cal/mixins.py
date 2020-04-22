@@ -754,11 +754,12 @@ class ReservationStates(Workflow):
     is_editable = models.BooleanField(_("Editable"), default=True)
 
 
-class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
-                  UserAuthored):
+class Reservation(RecurrenceSet, EventGenerator, UserAuthored):
 
     class Meta:
         abstract = True
+
+    workflow_state_field = 'state'
 
     room = dd.ForeignKey('cal.Room', blank=True, null=True)
     max_date = models.DateField(
@@ -767,6 +768,8 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
 
     @classmethod
     def on_analyze(cls, site):
+        if cls.workflow_state_field is None:
+            raise Exception("{} has no workflow_state_field".format(cls))
         super(Reservation, cls).on_analyze(site)
         ic = cls.workflow_state_field.choicelist
         k = 'auto_update_calendar'
@@ -794,12 +797,12 @@ class Reservation(RecurrenceSet, EventGenerator, mixins.Registrable,
     def update_cal_room(self, i):
         return self.room
 
-    @classmethod
-    def get_registrable_fields(cls, site):
-        for f in super(Reservation, cls).get_registrable_fields(site):
-            yield f
-        yield 'room'
-        yield 'max_date'
+    # @classmethod
+    # def get_registrable_fields(cls, site):
+    #     for f in super(Reservation, cls).get_registrable_fields(site):
+    #         yield f
+    #     yield 'room'
+    #     yield 'max_date'
 
     def after_state_change(self, ar, old, target_state):
         super(Reservation, self).after_state_change(ar, old, target_state)
