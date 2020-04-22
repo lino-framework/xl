@@ -503,7 +503,7 @@ class DaySlave(AbstractTable):
             time_text = "{} ".format(obj.start_time)[:5]
 
         # text = E.span(*cls.get_calview_chunks(obj, ar))
-        text = E.span(time_text, *obj.get_event_summary(ar))
+        text = E.span(time_text, " ", *obj.get_event_summary(ar))
         color = obj.get_diplay_color()
         if color:
             dot  = E.span("\u00A0", CLASS="dot",
