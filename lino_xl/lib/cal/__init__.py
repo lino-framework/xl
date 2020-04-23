@@ -112,6 +112,9 @@ class Plugin(ad.Plugin):
         m.add_action('cal.EntryStates')
         m.add_action('cal.GuestStates')
         m.add_action('cal.TaskStates')
+        m.add_action('cal.PlannerColumns')
+        m.add_action('cal.AccessClasses')
+        m.add_action('cal.DisplayColors')
         # m.add_action(RecurrenceSets)
 
     def get_dashboard_items(self, user):
