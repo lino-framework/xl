@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-24 00:21+0300\n"
+"POT-Creation-Date: 2020-04-24 00:48+0300\n"
 "PO-Revision-Date: 2020-04-04 07:00+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: et\n"
@@ -2061,320 +2061,334 @@ msgid "Cannot mark as {state} because {count} participants are {guest_states}."
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:22
-msgid "Display Color"
+msgid "Display color"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:29
+#: lino_xl/lib/cal/choicelists.py:23
+msgid "Display colors"
+msgstr ""
+
+#: lino_xl/lib/cal/choicelists.py:30
 msgid "Weekday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:31
+#: lino_xl/lib/cal/choicelists.py:32
 msgid "Monday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:32
+#: lino_xl/lib/cal/choicelists.py:33
 msgid "Tuesday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:33
+#: lino_xl/lib/cal/choicelists.py:34
 msgid "Wednesday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:34
+#: lino_xl/lib/cal/choicelists.py:35
 msgid "Thursday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:35
+#: lino_xl/lib/cal/choicelists.py:36
 msgid "Friday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:36
+#: lino_xl/lib/cal/choicelists.py:37
 msgid "Saturday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:37
+#: lino_xl/lib/cal/choicelists.py:38
 msgid "Sunday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:44
+#: lino_xl/lib/cal/choicelists.py:45
 #, fuzzy
 msgid "YearMonths"
 msgstr "Summa"
 
-#: lino_xl/lib/cal/choicelists.py:46
+#: lino_xl/lib/cal/choicelists.py:47
 msgid "January"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:47
+#: lino_xl/lib/cal/choicelists.py:48
 msgid "February"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:48
+#: lino_xl/lib/cal/choicelists.py:49
 #, fuzzy
 msgid "March"
 msgstr "Marokko"
 
-#: lino_xl/lib/cal/choicelists.py:49
+#: lino_xl/lib/cal/choicelists.py:50
 msgid "April"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:50
+#: lino_xl/lib/cal/choicelists.py:51
 #, fuzzy
 msgid "May"
 msgstr "päev"
 
-#: lino_xl/lib/cal/choicelists.py:51
+#: lino_xl/lib/cal/choicelists.py:52
 msgid "June"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:52
+#: lino_xl/lib/cal/choicelists.py:53
 msgid "July"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:53
+#: lino_xl/lib/cal/choicelists.py:54
 msgid "August"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:54
+#: lino_xl/lib/cal/choicelists.py:55
 #, fuzzy
 msgid "September"
 msgstr "Listi tellimused"
 
-#: lino_xl/lib/cal/choicelists.py:55
+#: lino_xl/lib/cal/choicelists.py:56
 #, fuzzy
 msgid "October"
 msgstr "Sõnavõtja"
 
-#: lino_xl/lib/cal/choicelists.py:56
+#: lino_xl/lib/cal/choicelists.py:57
 #, fuzzy
 msgid "November"
 msgstr "Listi tellimused"
 
-#: lino_xl/lib/cal/choicelists.py:57
+#: lino_xl/lib/cal/choicelists.py:58
 #, fuzzy
 msgid "December"
 msgstr "Listi tellimused"
 
-#: lino_xl/lib/cal/choicelists.py:108
+#: lino_xl/lib/cal/choicelists.py:109
 msgid "Duration Unit"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:113
+#: lino_xl/lib/cal/choicelists.py:114
 msgid "seconds"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:114
+#: lino_xl/lib/cal/choicelists.py:115
 msgid "minutes"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:115
+#: lino_xl/lib/cal/choicelists.py:116
 msgid "hours"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:116
+#: lino_xl/lib/cal/choicelists.py:117
 msgid "days"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:117
+#: lino_xl/lib/cal/choicelists.py:118
 msgid "weeks"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:118
+#: lino_xl/lib/cal/choicelists.py:119
 msgid "months"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:119
+#: lino_xl/lib/cal/choicelists.py:120
 msgid "years"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:123 lino_xl/lib/cal/mixins.py:498
+#: lino_xl/lib/cal/choicelists.py:124 lino_xl/lib/cal/mixins.py:498
 #: lino_xl/lib/courses/models.py:108
 msgid "Recurrency"
 msgstr "Korduvus"
 
-#: lino_xl/lib/cal/choicelists.py:127
+#: lino_xl/lib/cal/choicelists.py:128
 #, fuzzy
 msgid "once"
 msgstr "Telefon"
 
-#: lino_xl/lib/cal/choicelists.py:128
+#: lino_xl/lib/cal/choicelists.py:129
 msgid "daily"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:129
+#: lino_xl/lib/cal/choicelists.py:130
 msgid "weekly"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:130
+#: lino_xl/lib/cal/choicelists.py:131
 msgid "monthly"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:131
+#: lino_xl/lib/cal/choicelists.py:132
 msgid "yearly"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:132
+#: lino_xl/lib/cal/choicelists.py:133
 msgid "per weekday"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:133
+#: lino_xl/lib/cal/choicelists.py:134
 msgid "Relative to Easter"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:141
-msgid "Access Class"
+#: lino_xl/lib/cal/choicelists.py:142
+msgid "Access class"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:143 lino_xl/lib/tickets/models.py:214
+#: lino_xl/lib/cal/choicelists.py:143
+#, fuzzy
+msgid "Access classes"
+msgstr "Ost"
+
+#: lino_xl/lib/cal/choicelists.py:145 lino_xl/lib/tickets/models.py:214
 #: lino_xl/lib/tickets/models.py:478 lino_xl/lib/tickets/ui.py:351
 msgid "Private"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:144
+#: lino_xl/lib/cal/choicelists.py:146
 msgid "Show busy"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:145
+#: lino_xl/lib/cal/choicelists.py:147
 msgid "Public"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:149
+#: lino_xl/lib/cal/choicelists.py:151
 msgid "Planner column"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:151
+#: lino_xl/lib/cal/choicelists.py:152
+#, fuzzy
+msgid "Planner columns"
+msgstr "Kontod"
+
+#: lino_xl/lib/cal/choicelists.py:154
 #, fuzzy
 msgid "External"
 msgstr "Nimetus"
 
-#: lino_xl/lib/cal/choicelists.py:152 lino_xl/lib/cal/fixtures/std.py:68
+#: lino_xl/lib/cal/choicelists.py:155 lino_xl/lib/cal/fixtures/std.py:68
 #, fuzzy
 msgid "Internal"
 msgstr "Nimetus"
 
-#: lino_xl/lib/cal/choicelists.py:157
+#: lino_xl/lib/cal/choicelists.py:160
 msgid "Task states"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:164 lino_xl/lib/deploy/models.py:292
+#: lino_xl/lib/cal/choicelists.py:167 lino_xl/lib/deploy/models.py:292
 #: lino_xl/lib/tickets/choicelists.py:111 lino_xl/lib/tickets/ui.py:349
 msgid "To do"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:165
+#: lino_xl/lib/cal/choicelists.py:168
 msgid "Important"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:166
+#: lino_xl/lib/cal/choicelists.py:169
 #, fuzzy
 msgctxt "cal"
 msgid "Started"
 msgstr "Tänav"
 
-#: lino_xl/lib/cal/choicelists.py:167 lino_xl/lib/orders/choicelists.py:19
+#: lino_xl/lib/cal/choicelists.py:170 lino_xl/lib/orders/choicelists.py:19
 #: lino_xl/lib/votes/choicelists.py:78
 #, fuzzy
 msgid "Done"
 msgstr "Telefon"
 
-#: lino_xl/lib/cal/choicelists.py:169 lino_xl/lib/cal/choicelists.py:259
+#: lino_xl/lib/cal/choicelists.py:172 lino_xl/lib/cal/choicelists.py:262
 #: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/ledger/choicelists.py:439
 #: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/orders/choicelists.py:20
 #: lino_xl/lib/rooms/models.py:26 lino_xl/lib/votes/choicelists.py:80
 msgid "Cancelled"
 msgstr "Tühistatud"
 
-#: lino_xl/lib/cal/choicelists.py:184
+#: lino_xl/lib/cal/choicelists.py:187
 #, fuzzy
 msgid "Presence states"
 msgstr "Kohalolekud"
 
-#: lino_xl/lib/cal/choicelists.py:188
+#: lino_xl/lib/cal/choicelists.py:191
 msgid "Afterwards"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:196 lino_xl/lib/cal/workflows/feedback.py:39
+#: lino_xl/lib/cal/choicelists.py:199 lino_xl/lib/cal/workflows/feedback.py:39
 #: lino_xl/lib/cal/workflows/voga.py:60 lino_xl/lib/votes/choicelists.py:72
 msgid "Invited"
 msgstr "Kutsutud"
 
-#: lino_xl/lib/cal/choicelists.py:212 lino_xl/lib/clients/choicelists.py:17
+#: lino_xl/lib/cal/choicelists.py:215 lino_xl/lib/clients/choicelists.py:17
 #: lino_xl/lib/contacts/choicelists.py:9 lino_xl/lib/tickets/choicelists.py:27
 #: lino_xl/lib/votes/choicelists.py:103
 msgid "Observed event"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:213 lino_xl/lib/clients/choicelists.py:18
+#: lino_xl/lib/cal/choicelists.py:216 lino_xl/lib/clients/choicelists.py:18
 #: lino_xl/lib/contacts/choicelists.py:10 lino_xl/lib/tickets/choicelists.py:28
 #: lino_xl/lib/votes/choicelists.py:104
 msgid "Observed events"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:215 lino_xl/lib/cal/choicelists.py:224
+#: lino_xl/lib/cal/choicelists.py:218 lino_xl/lib/cal/choicelists.py:227
 #: lino_xl/lib/tickets/choicelists.py:82
 msgid "Stable"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:216
+#: lino_xl/lib/cal/choicelists.py:219
 msgid "Unstable"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:219
+#: lino_xl/lib/cal/choicelists.py:222
 #, fuzzy
 msgid "Entry states"
 msgstr "Kasutaja olekud"
 
-#: lino_xl/lib/cal/choicelists.py:223 lino_xl/lib/cal/models.py:155
+#: lino_xl/lib/cal/choicelists.py:226 lino_xl/lib/cal/models.py:155
 #, fuzzy
 msgid "Fill guests"
 msgstr "Ettepanekud"
 
-#: lino_xl/lib/cal/choicelists.py:225 lino_xl/lib/cal/models.py:168
+#: lino_xl/lib/cal/choicelists.py:228 lino_xl/lib/cal/models.py:168
 #: lino_xl/lib/cal/models.py:404
 msgid "Transparent"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:226
+#: lino_xl/lib/cal/choicelists.py:229
 msgid "No auto"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:227 lino_xl/lib/cal/ui.py:327
+#: lino_xl/lib/cal/choicelists.py:230 lino_xl/lib/cal/ui.py:327
 msgid "Guest state"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:240
+#: lino_xl/lib/cal/choicelists.py:243
 msgid "Suggested"
 msgstr "Ettepanek"
 
-#: lino_xl/lib/cal/choicelists.py:243 lino_xl/lib/courses/choicelists.py:29
+#: lino_xl/lib/cal/choicelists.py:246 lino_xl/lib/courses/choicelists.py:29
 #: lino_xl/lib/ledger/choicelists.py:436 lino_xl/lib/meetings/choicelists.py:27
 #: lino_xl/lib/polls/utils.py:16 lino_xl/lib/polls/utils.py:35
 #: lino_xl/lib/rooms/models.py:23 lino_xl/lib/tickets/choicelists.py:78
 msgid "Draft"
 msgstr "Kavand"
 
-#: lino_xl/lib/cal/choicelists.py:246 lino_xl/lib/cal/workflows/feedback.py:22
+#: lino_xl/lib/cal/choicelists.py:249 lino_xl/lib/cal/workflows/feedback.py:22
 msgid "Published"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:248
+#: lino_xl/lib/cal/choicelists.py:251
 #, fuzzy
 msgid "Visit"
 msgstr "Maakond"
 
-#: lino_xl/lib/cal/choicelists.py:249
+#: lino_xl/lib/cal/choicelists.py:252
 msgid "Rescheduled"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:250
+#: lino_xl/lib/cal/choicelists.py:253
 msgid "Took place"
 msgstr "Leidis aset"
 
-#: lino_xl/lib/cal/choicelists.py:260
+#: lino_xl/lib/cal/choicelists.py:263
 msgid "Cancelled with valid reason."
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:264
+#: lino_xl/lib/cal/choicelists.py:267
 msgid "Omitted"
 msgstr ""
 
@@ -15081,5 +15095,11 @@ msgid "Administrator"
 msgstr "Administraator"
 
 #~ msgid "Cannot mark as {state} because {count} participants are invited."
+#~ msgstr ""
+
+#~ msgid "Display Color"
+#~ msgstr ""
+
+#~ msgid "Access Class"
 #~ msgstr ""
 
