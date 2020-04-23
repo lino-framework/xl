@@ -4,11 +4,12 @@
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 
-from lino.api import dd
+from lino.api import dd, _
 
-class CourseState(dd.State):
+from lino.mixins.registrable import RegistrableState
+
+class CourseState(RegistrableState):
     is_active = True
     is_editable = True
     is_invoiceable = True

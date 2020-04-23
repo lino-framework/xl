@@ -171,7 +171,6 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
             'excerpts')
 
 
-
 class Course(Reservation, Duplicable, Printable):
 
     class Meta:
@@ -245,7 +244,6 @@ class Course(Reservation, Duplicable, Printable):
         elif show_exposed == dd.YesNo.yes:
             qs = qs.filter(**fkw)
         return qs
-
 
     @classmethod
     def get_registrable_fields(cls, site):

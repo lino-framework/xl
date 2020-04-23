@@ -25,6 +25,7 @@ from lino import mixins
 from lino.api import dd, rt
 from lino.utils import ONE_DAY
 from etgen.html import E, tostring
+from lino.mixins import Registrable
 from lino.mixins.periods import Started, Ended
 from lino.mixins.periods import DateRangeObservable
 from lino.core.exceptions import ChangedAPI
@@ -754,7 +755,7 @@ class ReservationStates(Workflow):
     is_editable = models.BooleanField(_("Editable"), default=True)
 
 
-class Reservation(RecurrenceSet, EventGenerator, UserAuthored):
+class Reservation(RecurrenceSet, EventGenerator, Registrable, UserAuthored):
 
     class Meta:
         abstract = True
@@ -797,12 +798,12 @@ class Reservation(RecurrenceSet, EventGenerator, UserAuthored):
     def update_cal_room(self, i):
         return self.room
 
-    # @classmethod
-    # def get_registrable_fields(cls, site):
-    #     for f in super(Reservation, cls).get_registrable_fields(site):
-    #         yield f
-    #     yield 'room'
-    #     yield 'max_date'
+    @classmethod
+    def get_registrable_fields(cls, site):
+        for f in super(Reservation, cls).get_registrable_fields(site):
+            yield f
+        yield 'room'
+        yield 'max_date'
 
     def after_state_change(self, ar, old, target_state):
         super(Reservation, self).after_state_change(ar, old, target_state)

@@ -793,23 +793,42 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
             return self.journal.uploads_volume
 
 
-
 Voucher.set_widget_options('number_with_year', width=8)
 # Voucher.set_widget_options('number', hide_sum=True)
+
+
+class ToggleState(dd.Action):
+    # show_in_bbar = False
+    # button_text = _("Toggle state")
+    # sort_index = 52
+    label = _("Toggle state")
+    # action_name = "changemystate"
+    button_text = "⏼" # 23FC Toggle power
+
+    def run_from_ui(self, ar, **kw):
+        obj = ar.selected_rows[0]
+        fld = ar.actor.workflow_state_field
+        chl = fld.choicelist  # VoucherStates
+        # print("20190722", obj)
+        if obj.state == chl.draft:
+            obj.set_workflow_state(ar, fld, chl.registered)
+        elif obj.state == chl.registered:
+            obj.set_workflow_state(ar, fld, chl.draft)
+        else:
+            raise Warning(_("Cannot toggle from state {}").format(obj.state))
+        # obj.full_clean()
+        # obj.save()
+        ar.set_response(refresh=True)
+
 
 class RegistrableVoucher(Registrable, Voucher):
 
     class Meta:
         abstract = True
 
+    toggle_state = ToggleState()
     hide_editable_number = True
 
-    """We usually don't want to see the number of a voucher in an editable state
-    because that number may change. We prefer to see the primary key prefixed
-    with a hash to indicate that the voucher is not registered.  But sometimes
-    (e.g. in :mod:`lino_xl.lib.orders`) we want to disable this feature. NB we
-    might simply override :meth:`__str__`, but maybe this feature will be used
-    in other contexts as well."""
 
     def __str__(self):
         # if not isinstance(dd.plugins.ledger.registered_states, tuple):
@@ -819,6 +838,13 @@ class RegistrableVoucher(Registrable, Voucher):
             # raise Exception("20191223 {} is not in {}".format(self.state, dd.plugins.ledger.registered_states))
             return "{0} #{1}".format(self.journal.ref, self.id)
         return super(RegistrableVoucher, self).__str__()
+
+    @classmethod
+    def get_actions_hotkeys(cls):
+        return [{'key': 'x',
+                'ctrl': True,
+                'shift': False,
+                'ba': 'toggle_state'}]
 
     def after_state_change(self, ar, oldstate, newstate):
         # movements are created *after* having changed the state, because

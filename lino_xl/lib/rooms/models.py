@@ -1,28 +1,21 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2018 Rumma & Ko Ltd
+# Copyright 2013-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Database models for `lino_xl.lib.rooms`.
-
-"""
-
-from __future__ import unicode_literals
-
-import logging
-logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
 
 from lino.api import dd, _
 from lino import mixins
-
+from lino.mixins.registrable import RegistrableState
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.cal.mixins import Reservation, ReservationStates
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino.modlib.office.roles import OfficeStaff
 
 class BookingStates(ReservationStates):
+    item_class = RegistrableState
     required_roles = dd.login_required(OfficeStaff)
     auto_update_calendar = models.BooleanField(_("Update calendar"), default=True)
 
