@@ -21,6 +21,7 @@ from .utils import day_and_month
 class DisplayColors(dd.ChoiceList):
     verbose_name = _("Display color")
     verbose_name_plural = _("Display colors")
+    required_roles = dd.login_required(dd.SiteStaff)
 add = DisplayColors.add_item
 cssColos = 'White Silver Gray Black Red Maroon Yellow Olive Lime Green Aqua Teal Blue Navy Fuchsia Purple'
 for color in cssColos.split():
@@ -141,6 +142,7 @@ def amonthago():
 class AccessClasses(dd.ChoiceList):
     verbose_name = _("Access class")
     verbose_name_plural = _("Access classes")
+    required_roles = dd.login_required(dd.SiteStaff)
 add = AccessClasses.add_item
 add('10', _('Private'), 'private')
 add('20', _('Show busy'), 'show_busy')
@@ -150,6 +152,7 @@ add('30', _('Public'), 'public')
 class PlannerColumns(dd.ChoiceList):
     verbose_name = _("Planner column")
     verbose_name_plural = _("Planner columns")
+    required_roles = dd.login_required(dd.SiteStaff)
 add = PlannerColumns.add_item
 add('10', _('External'), 'external')
 add('20', _('Internal'), 'internal')
