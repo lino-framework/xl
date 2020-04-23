@@ -66,6 +66,7 @@ class Order(Certifiable, RegistrableVoucher, RecurrenceSet, EventGenerator, Dupl
         verbose_name_plural = _('Orders')
 
     hide_editable_number = False
+    quick_search_fields = "subject project__name"
 
     state = OrderStates.field(default='draft')
 
@@ -162,6 +163,11 @@ class Order(Certifiable, RegistrableVoucher, RecurrenceSet, EventGenerator, Dupl
     #         qs = qs.filter(**fkw)
     #     return qs
 
+    @classmethod
+    def get_simple_parameters(cls):
+        for f in super(Order, cls).get_simple_parameters():
+            yield f
+        yield 'journal__room'
 
     @classmethod
     def get_registrable_fields(cls, site):
