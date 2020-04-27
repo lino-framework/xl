@@ -1,15 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2018 Rumma & Ko Ltd
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
 Model mixins for `lino_xl.lib.invoicing`.
 
 """
-
-from __future__ import unicode_literals
-
-import six
 
 from etgen.html import E, join_elems
 from lino.api import dd, _, gettext
@@ -38,17 +34,17 @@ class InvoicingInfo(object):
     def __init__(self, enr, max_date=None):
         self.generator = enr
         self.max_date = max_date
-        
+
         max_date = self.max_date or dd.today()
         end_date = enr.get_invoiceable_end_date()
         if end_date:
             max_date = min(max_date, end_date)
-        
+
         product = enr.get_invoiceable_product(max_date)
         # if not product:
         #     # dd.logger.info("20181116c no product")
         #     return
-        
+
         start_date = enr.get_invoiceable_start_date(max_date)
 
         # if hasattr(product, 'tariff'):
@@ -78,7 +74,7 @@ class InvoicingInfo(object):
         self.invoicings = qs
 
         self.invoiced_events = enr.get_invoiceable_free_events() or 0
-            
+
         for obj in self.invoicings:
             # tariff = getattr(obj.product, 'tariff', None)
             # if tariff:
@@ -103,7 +99,7 @@ class InvoicingInfo(object):
         self.used_events = list(enr.get_invoiceable_events(
             start_date, max_date))
         asset = self.invoiced_events - len(self.used_events)
-        
+
         # dd.logger.info(
         #     "20181119 %s %s %s %s",
         #     start_date, max_date, asset, self.min_asset)
@@ -114,7 +110,7 @@ class InvoicingInfo(object):
             # print("20160414 c", self.used_events)
             # used_events = qs.count()
             # paid_events = invoiced_qty * fee.number_of_events
-            
+
             if end_date and end_date < max_date and asset >= 0:
                 # ticket #1040 : a participant who declared to stop before
                 # their asset got negative should not get any invoice for
@@ -138,13 +134,16 @@ class InvoicingInfo(object):
             self.asset_to_buy = 1
         else:
             return
-        
+
         # qty = self.asset_to_buy * enr.get_invoiceable_qty()
-            
+
         self.invoiceable_product = product
         # self.invoiceable_qty = qty
         # self.asset_to_buy = asset_to_buy
 
+
+    def __str__(self):
+        return "{}({})".format(self.__class__.__name__, self.__dict__)
 
     def format_as_html(self, ar):
         elems = []
@@ -212,8 +211,8 @@ class InvoiceGenerator(dd.Model):
     #         return de.value_from_object(self)
     #     cls.get_invoiceable_event_date = func
     #     # if isinstance(cls.invoiceable_date_field, six.string_types):
-    #     #     cls.invoiceable_date_field = 
-            
+    #     #     cls.invoiceable_date_field =
+
     def get_invoicings(self, **kwargs):
         # deprecated. use invoicings instead.
         item_model = dd.plugins.invoicing.item_model
@@ -223,7 +222,7 @@ class InvoiceGenerator(dd.Model):
 
     def get_last_invoicing(self):
         return self.invoicings.order_by('voucher__voucher_date').last()
-        
+
     def allow_group_invoices(self):
         return True
 
@@ -234,7 +233,7 @@ class InvoiceGenerator(dd.Model):
             return
 
         kwargs = dict(invoiceable=self, product=info.invoiceable_product)
-        
+
         if info.number_of_events is None:
             qty = info.asset_to_buy * self.get_invoiceable_qty()
             kwargs.update(
@@ -255,7 +254,7 @@ class InvoiceGenerator(dd.Model):
             asset_to_buy -= info.number_of_events
 
     def get_invoiceable_title(self, number=None):
-        return six.text_type(self)
+        return str(self)
 
     def compute_invoicing_info(self, max_date=None):
         if self._invoicing_info is None \
@@ -289,7 +288,7 @@ class InvoiceGenerator(dd.Model):
 
     def get_invoiceable_events(self, start_date, max_date):
         yield self
-    
+
     def get_invoiceable_event_formatter(self):
         def fmt(ev, ar=None):
             txt = day_and_month(ev.start_date)
@@ -297,7 +296,7 @@ class InvoiceGenerator(dd.Model):
                 return txt
             return ar.obj2html(ev, txt)
         return fmt
-    
+
     def get_invoiceable_free_events(self):
         return 0
 
@@ -306,10 +305,10 @@ class InvoiceGenerator(dd.Model):
 
     # def get_invoiceable_amount(self, ie):
     #     return ie.amount
-    
+
     # def get_invoiceable_event_date(self, ie):
     #     return ie.start_date
-    
+
     # def get_invoiceable_amount(self):
     #     return None
 
@@ -328,4 +327,3 @@ class InvoiceGenerator(dd.Model):
 
     def setup_invoice_item(self, item):
         pass
-    

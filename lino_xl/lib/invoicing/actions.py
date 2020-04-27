@@ -1,12 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2019 Rumma & Ko Ltd
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
-from __future__ import unicode_literals
-
 from lino.api import dd, rt, _
-
 from lino.modlib.users.mixins import StartPlan
 
 
@@ -54,13 +51,13 @@ class ExecuteItem(ExecutePlan):
     label = _("Execute item")
     show_in_workflow = True
     show_in_bbar = False
-    
+
 
     def get_action_permission(self, ar, obj, state):
         if obj.invoice_id:
             return False
         return super(ExecuteItem, self).get_action_permission(ar, obj, state)
-        
+
     def run_from_ui(self, ar, **kw):
         for item in ar.selected_rows:
             if item.invoice_id:
@@ -80,4 +77,3 @@ class ToggleSelection(dd.Action):
             item.selected = not item.selected
             item.save()
         ar.success(refresh=True)
-

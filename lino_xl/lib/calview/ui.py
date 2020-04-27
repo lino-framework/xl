@@ -96,7 +96,9 @@ class EventsParameters(dd.Actor):
         else:
             qs = obj.get_my_plannable_entries(ar)
         # qs = Event.objects.all()
-        return Event.calendar_param_filter(qs, ar.param_values)
+        qs = Event.calendar_param_filter(qs, ar.param_values)
+        # print("20200424", ar.master_instance, obj, qs.query)
+        return qs
 
 
 
@@ -517,7 +519,7 @@ class DaySlave(AbstractTable):
 class DailySlaveBase(DaySlave, VentilatedColumns):
     abstract = True
     label = _("Daily planner")
-    column_names_template = "overview:3 {vcolumns}"
+    column_names_template = "overview:12 {vcolumns}"
     ventilated_column_suffix = ':20'
     required_roles = dd.login_required((OfficeUser, OfficeOperator))
     calendar_view = "calview.DailyView"
@@ -533,13 +535,17 @@ class DailySlaveBase(DaySlave, VentilatedColumns):
         Event = rt.models.cal.Event
         def func(fld, obj, ar):
             # obj is a DailyPlannerRow instance
+            mi = ar.master_instance
+            if mi is None:  # e.g. when using DailySlave from dashboard.
+                mi = cls.calendar_view.get_row_by_pk(ar, 0)
             qs = cls.get_calendar_entries(ar, obj)
             qs = qs.filter(event_type__planner_column=pc)
-            pv = ar.param_values
+            qs = qs.filter(start_date=mi.date)
+            # pv = ar.param_values
             # qs = Event.calendar_param_filter(qs, pv)
-            current_day = pv.get('date', dd.today())
-            if current_day:
-                qs = qs.filter(start_date=current_day)
+            # current_day = pv.get('date', dd.today())
+            # if current_day:
+            #     qs = qs.filter(start_date=current_day)
             # if obj is cls.model.HEADER_ROW:
             #     qs = qs.filter(start_time__isnull=True)
             # else:
@@ -564,7 +570,7 @@ class WeeklySlaveBase(DaySlave, VentilatedColumns):
 
     abstract = True
     label = _("Weekly planner")
-    column_names_template = "overview:4 {vcolumns}"
+    column_names_template = "overview:12 {vcolumns}"
     ventilated_column_suffix = ':20'
     # navigation_mode = "week"
     calendar_view = "calview.WeeklyView"

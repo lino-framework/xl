@@ -1,10 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
 from builtins import object
-
 
 from lino.api import dd, rt
 from django.utils.translation import ugettext_lazy as _
@@ -73,5 +71,3 @@ class CountryDrivers(object):
     EE = CountryDriver('20', '50 51 52 55 61 62 70')
     DE = CountryDriver('10', '50 51 52 70')
     FR = CountryDriver('24', '50 51 52 70')
-
-

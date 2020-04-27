@@ -43,6 +43,13 @@ class Plugin(ad.Plugin):
 
     """
 
+    municipality_type = '50'
+    """The place type to be considered as administrativ municipality.
+
+    See :attr:`lino_xl.lib.courses.CountryCity.municipality`
+
+    """
+
     def before_analyze(self):
         super(Plugin, self).before_analyze()
         from lino_xl.lib.countries.mixins import AddressLocation
@@ -69,4 +76,3 @@ class Plugin(ad.Plugin):
             return Country.objects.get(pk=self.country_code)
         except Country.DoesNotExist:
             return
-

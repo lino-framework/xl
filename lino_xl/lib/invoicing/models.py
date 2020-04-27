@@ -207,9 +207,7 @@ class Plan(UserPlan):
         self.full_clean()
         Item = rt.models.invoicing.Item
         collected = dict()
-        # dd.logger.info("20181114 a")
         max_date = self.get_max_date()
-
         for ig in self.get_generators_for_plan():
             partner = ig.get_invoiceable_partner()
             if partner is None:
@@ -226,6 +224,7 @@ class Plan(UserPlan):
             info = ig.compute_invoicing_info(max_date)
             # if not info.invoiceable_product:
             #     continue
+            # print("20200425", ig, info, invoice)
 
             invoice_items = list(ig.get_invoice_items(info, invoice, ar))
             if len(invoice_items) == 0:

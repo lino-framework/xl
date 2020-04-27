@@ -34,14 +34,11 @@
 <br>{{_("Your customer id")}}: {{obj.partner.id}}
 </td>
 <td>
-{{_("Your VAT id")}}: {{obj.partner.vat_no}}
+{{_("Your VAT id")}}: {{obj.partner.vat_no or _("N/A")}} ({{obj.vat_regime}})
 <br>{{_("Date")}}: {{fdl(obj.voucher_date)}}
 </td></tr></table>
 
 <br><br><br><br>
-
-{{ super() }}
-
 
 <div>
 {% block body %}

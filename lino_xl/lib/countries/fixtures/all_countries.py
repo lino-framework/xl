@@ -25,8 +25,6 @@ extends this data by attaching Belgian INS codes to these countries.
 
 """
 
-from __future__ import print_function
-
 import logging ; logger = logging.getLogger('lino')
 
 import os

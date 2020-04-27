@@ -1,11 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from builtins import str
-from builtins import object
-
-import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
@@ -83,6 +78,20 @@ class CountryCity(dd.Model):
             if city.zip_code:
                 self.zip_code = city.zip_code
         super(CountryCity, self).full_clean(*args, **kw)
+
+    # @dd.displayfield(_("Municipality"))
+    @dd.virtualfield(dd.ForeignKey("countries.Place", verbose_name=_("Municipality")))
+    def municipality(self, ar):
+        pl = self.city
+        mt = dd.plugins.countries.municipality_type
+        while pl and pl.parent_id and pl.type and pl.type.value > mt:
+            pl = pl.parent
+        return pl
+
+    @dd.chooser()
+    def municipality_choices(cls):
+        mt = dd.plugins.countries.municipality_type
+        return rt.models.countries.Place.objects.filter(type=mt)
 
 
 class CountryRegionCity(CountryCity):
