@@ -11,12 +11,13 @@ from django.utils.text import format_lazy
 
 
 class Plugin(ad.Plugin):
+    "The descriptor for this plugin. See :class:`lino.core.Plugin`."
     verbose_name = _("Calendar view")
 
     needs_plugins = ['lino_xl.lib.cal']
 
     params_layout = """user assigned_to project event_type room state show_appointments"""
-    """The params_layout to use for filtering calendar views."""
+    """The actor parameter layout to use for filtering calendar views."""
 
     def setup_main_menu(self, site, user_type, m):
         mg = site.plugins.cal

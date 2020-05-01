@@ -18,7 +18,7 @@ from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.Plugin`."
+    "The descriptor for this plugin. See :class:`lino.core.Plugin`."
     verbose_name = _("Addresses")
     partner_model = 'contacts.Partner'
     needs_plugins = ['lino.modlib.checkdata']
