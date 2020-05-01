@@ -65,8 +65,70 @@ class DailyPlannerRows(dd.Table):
     column_names = "seqno designation start_time end_time"
     required_roles = dd.login_required(OfficeStaff)
 
+class ParameterClone(dd.Actor):
+    abstract = True
+    clone_from = 'cal.Events'
+    # clone_from = None
+    # """subclasses must set this"""
 
-class EventsParameters(dd.Actor):
+    @classmethod
+    def class_init(cls):
+        super(ParameterClone, cls).class_init()
+        if isinstance(cls.clone_from, str):
+            cls.clone_from = rt.models.resolve(cls.clone_from)
+
+    @classmethod
+    def init_layouts(cls):
+        super(ParameterClone, cls).init_layouts()
+        # cls.params_layout = rt.models.cal.Events.params_layout
+        cls.params_layout = dd.plugins.calview.params_layout
+
+    # @classmethod
+    # def init_layouts(cls):
+    #     super(ParameterClone, cls).init_layouts()
+    #     if cls.abstract:
+    #         return
+    #     cls.params_layout = cls.clone_from.params_layout
+
+    @classmethod
+    def setup_parameters(cls, params):
+        super(ParameterClone, cls).setup_parameters(params)
+        if cls.abstract:
+            return
+        cls.clone_from.setup_parameters(params)
+
+    @classmethod
+    def get_data_elem(cls, name):
+        # return cls.clone_from.get_data_elem(name)
+        e = super(ParameterClone, cls).get_data_elem(name)
+        if e is None:
+            e = cls.clone_from.get_data_elem(name)
+        return e
+
+    @classmethod
+    def get_simple_parameters(cls):
+        for p in super(ParameterClone, cls).get_simple_parameters():
+            yield p
+        for p in cls.clone_from.get_simple_parameters():
+            yield p
+
+    @classmethod
+    def param_defaults(cls, ar, **kwargs):
+        kwargs = super(ParameterClone, cls).param_defaults(ar, **kwargs)
+        return cls.clone_from.param_defaults(ar, **kwargs)
+
+    # @classmethod
+    # def get_calendar_entries(cls, ar, obj):
+    #     qs = cls.clone_from.get_request_queryset(ar)
+    #     if obj is not None:
+    #         qs = obj.get_my_plannable_entries(qs, ar)
+    #     # qs = Event.objects.all()
+    #     # qs = Event.calendar_param_filter(qs, ar.param_values)
+    #     # print("20200430", ar.master_instance, obj, qs.query)
+    #     return qs
+
+
+class EventsParameters(ParameterClone):
     """
 
     Mixin for actors that inherit parameters and params_layout from the
@@ -77,29 +139,36 @@ class EventsParameters(dd.Actor):
 
     """
     abstract = True
+    # clone_from = 'cal.Events'
+    # clone_from = 'cal.EntriesByDay'
 
-    @classmethod
-    def class_init(cls):
-        cls.params_layout = rt.models.cal.Events.params_layout
-        super(EventsParameters, cls).class_init()
-
-    @classmethod
-    def setup_parameters(cls, params):
-        super(EventsParameters, cls).setup_parameters(params)
-        rt.models.cal.Event.setup_parameters(params)
-
-    @classmethod
-    def get_calendar_entries(cls, ar, obj):
-        Event = rt.models.cal.Event
-        if obj is None:
-            qs = Event.objects.all()
-        else:
-            qs = obj.get_my_plannable_entries(ar)
-        # qs = Event.objects.all()
-        qs = Event.calendar_param_filter(qs, ar.param_values)
-        # print("20200424", ar.master_instance, obj, qs.query)
-        return qs
-
+    # @classmethod
+    # def setup_parameters(cls, params):
+    #     super(EventsParameters, cls).setup_parameters(params)
+    #     rt.models.cal.Events.setup_parameters(params)
+    #
+    # @classmethod
+    # def get_simple_parameters(cls):
+    #     for p in super(EventsParameters, cls).get_simple_parameters():
+    #         yield p
+    #     for p in rt.models.cal.Events.get_simple_parameters():
+    #         yield p
+    #
+    # @classmethod
+    # def param_defaults(self, ar, **kwargs):
+    #     kwargs = super(EventsParameters, cls).param_defaults(ar, **kwargs)
+    #     return rt.models.cal.Events.param_defaults(ar, **kwargs)
+    #
+    # @classmethod
+    # def get_calendar_entries(cls, ar, obj):
+    #     qs = rt.models.cal.Events.get_request_queryset(ar)
+    #     if obj is not None:
+    #         qs = obj.get_my_plannable_entries(qs, ar)
+    #     # qs = Event.objects.all()
+    #     # qs = Event.calendar_param_filter(qs, ar.param_values)
+    #     # print("20200430", ar.master_instance, obj, qs.query)
+    #     return qs
+    #
 
 
 # class TableWithHeaderRow(dd.Table):
@@ -437,37 +506,41 @@ class DaySlave(AbstractTable):
 
     @classmethod
     def get_calendar_entries(cls, ar, obj):
-        if obj is None:
-            return rt.models.cal.Event.objects.all()
-        else:
-            return obj.get_my_plannable_entries(ar)
+        qs = rt.models.cal.Events.get_request_queryset(ar)
+        if obj is not None:
+            qs = obj.get_my_plannable_entries(qs, ar)
+        return qs
+
+    @classmethod
+    def get_dayslave_rows(cls, ar):
+        # subclasses must implement this. they must not use the default
+        # get_request_queryset() because we are cloning filter parameters.
+        return []
 
     @classmethod
     def get_data_rows(cls, ar):
         if cls.with_header_row:
             yield cls.model.HEADER_ROW
-        # mi = ar.master_instance
-        # if mi is None:
-        #     return
-        # # filter.update()
-        # ar.param_values.update(date=mi.date)
-        if issubclass(cls, dd.Table):
-            # print("20200307 {}".format(super(DaySlave, cls).get_request_queryset))
-            try:
-                get_request_queryset = super(DaySlave, cls).get_request_queryset
-            except AttributeError:
-                raise Exception("{} has no get_request_queryset() method".format(cls))
-                # when inheriting from DaySlave and a model-based table, model-based
-                # table must come before DaySlave in the MRO
+        for obj in cls.get_dayslave_rows(ar):
+            yield obj
 
-            for obj in get_request_queryset(ar):
-                yield obj
-        else:
-            get_data_rows = super(DaySlave, cls).get_data_rows
-            if get_data_rows is None:
-                raise Exception("{} has no get_data_rows() method".format(cls))
-            for obj in get_data_rows(ar):
-                yield obj
+        # if issubclass(cls, dd.Table):
+        #     # print("20200307 {}".format(super(DaySlave, cls).get_request_queryset))
+        #     try:
+        #         get_request_queryset = super(DaySlave, cls).get_request_queryset
+        #     except AttributeError:
+        #         raise Exception("{} has no get_request_queryset() method".format(cls))
+        #         # when inheriting from DaySlave and a model-based table, model-based
+        #         # table must come before DaySlave in the MRO
+        #
+        #     for obj in get_request_queryset(ar):
+        #         yield obj
+        # else:
+        #     get_data_rows = super(DaySlave, cls).get_data_rows
+        #     if get_data_rows is None:
+        #         raise Exception("{} has no get_data_rows() method".format(cls))
+        #     for obj in get_data_rows(ar):
+        #         yield obj
         # return super(DaySlave, cls).get_request_queryset(ar, **filter)
 
     @classmethod
@@ -526,6 +599,10 @@ class DailySlaveBase(DaySlave, VentilatedColumns):
     details_of_master_template = _("%(details)s on %(master)s")
 
     @classmethod
+    def get_dayslave_rows(cls, ar):
+        return rt.models.calview.DailyPlannerRow.objects.all()
+
+    @classmethod
     def get_ventilated_columns(cls):
         for pc in PlannerColumns.objects():
             yield cls.get_daily_field(pc)
@@ -577,13 +654,16 @@ class WeeklySlaveBase(DaySlave, VentilatedColumns):
     details_of_master_template = _("%(details)s in %(master)s")
 
     @classmethod
+    def get_dayslave_rows(cls, ar):
+        return rt.models.calview.DailyPlannerRow.objects.all()
+
+    @classmethod
     def get_ventilated_columns(cls):
         for wd in Weekdays.objects():
             yield cls.get_weekly_field(wd)
 
     @classmethod
     def get_weekly_field(cls, week_day):
-
         def func(fld, obj, ar):
             # obj is a Plannable instance
             qs = cls.get_calendar_entries(ar, obj)
@@ -621,10 +701,7 @@ class MonthlySlaveBase(DaySlave, VentilatedColumns):
 
     @classmethod
     def get_monthly_field(cls, wd):
-        verbose_name = wd.text
-        Event = rt.models.cal.Event
         Events = rt.models.cal.Events
-
         def func(fld, obj, ar):
             # obj is the first day of the week to show
             # pv = ar.param_values
@@ -684,10 +761,11 @@ class MonthlySlaveBase(DaySlave, VentilatedColumns):
                              "cal-in-past" if target_day.date < today else ""
                          ))
 
-        return dd.VirtualField(dd.HtmlBox(verbose_name), func)
+        return dd.VirtualField(dd.HtmlBox(wd.text), func)
 
 
 class DailyPlanner(EventsParameters, DailySlaveBase, DailyPlannerRows):
+# 20200430 class DailyPlanner(DailySlaveBase, DailyPlannerRows):
     # display_mode = "html"
     navigation_mode = 'day'
 
@@ -697,6 +775,7 @@ class DailySlave(DailyPlanner):
     def get_actor_label(self): return None
 
 class WeeklySlave(EventsParameters, WeeklySlaveBase, DailyPlannerRows):
+# 20200430 class WeeklySlave(WeeklySlaveBase, DailyPlannerRows):
     # model = 'calview.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     # display_mode = "html"
@@ -705,13 +784,14 @@ class WeeklySlave(EventsParameters, WeeklySlaveBase, DailyPlannerRows):
     @classmethod
     def get_actor_label(self): return None
 
-    @classmethod
-    def param_defaults(cls, ar, **kw):
-        kw = super(WeeklySlave, cls).param_defaults(ar, **kw)
-        kw.update(user=ar.get_user())
-        return kw
+    # @classmethod
+    # def param_defaults(cls, ar, **kw):
+    #     kw = super(WeeklySlave, cls).param_defaults(ar, **kw)
+    #     kw.update(user=ar.get_user())  # TODO: not sure whether we want this
+    #     return kw
 
 class MonthlySlave(EventsParameters, MonthlySlaveBase, DaysTable):
+# 20200430 class MonthlySlave(MonthlySlaveBase, DaysTable):
     # required_roles = dd.login_required(OfficeStaff)
     with_header_row = False
     navigation_mode = "month"
@@ -785,17 +865,20 @@ class MonthDetail(dd.DetailLayout):
     body = "navigation_panel:15 calview.MonthlySlave:85"
 
 class DailyView(EventsParameters, CalendarView):
+# 20200430 class DailyView(CalendarView):
     label = _("Daily view")
     detail_layout = 'calview.DayDetail'
     navigation_mode = "day"
     insert_event = InsertEvent()
 
 class WeeklyView(EventsParameters, CalendarView):
+# 20200430 class WeeklyView(CalendarView):
     label = _("Weekly view")
     detail_layout = 'calview.WeekDetail'
     navigation_mode = "week"
 
 class MonthlyView(EventsParameters, CalendarView):
+# 20200430 class MonthlyView(CalendarView):
     label = _("Monthly view")
     detail_layout = 'calview.MonthDetail'
     navigation_mode = "month"

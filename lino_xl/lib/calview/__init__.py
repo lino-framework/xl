@@ -15,6 +15,9 @@ class Plugin(ad.Plugin):
 
     needs_plugins = ['lino_xl.lib.cal']
 
+    params_layout = """user assigned_to project event_type room state show_appointments"""
+    """The params_layout to use for filtering calendar views."""
+
     def setup_main_menu(self, site, user_type, m):
         mg = site.plugins.cal
         m = m.add_menu(mg.app_label, mg.verbose_name)

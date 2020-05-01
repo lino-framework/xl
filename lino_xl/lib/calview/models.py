@@ -34,8 +34,8 @@ class DailyPlannerRow(BabelDesignated, Sequenced, Plannable):
     #     return [e.obj2href(ar, ar.actor.get_calview_div(e, ar)) for e in qs]
     #
     @classmethod
-    def get_plannable_entries(cls, obj, ar):
-        qs = rt.models.cal.Event.objects.all()
+    def get_plannable_entries(cls, obj, qs, ar):
+        # qs = rt.models.cal.Event.objects.all()
         if obj is cls.HEADER_ROW:
             return qs.filter(start_time__isnull=True)
         if obj.start_time:

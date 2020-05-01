@@ -81,22 +81,23 @@ class Plannable(dd.Model):
         cls.HEADER_ROW = HeaderRow(cls)
 
     @classmethod
-    def get_plannable_entries(cls, obj, ar):
+    def get_plannable_entries(cls, obj, qs, ar):
         """
 
-        Return a queryset of cal.Event objects to be shown in this calendar view
-        for the given plannable object `obj`. Date and time filter will be
-        applied later.
+        Modify the given queryset of cal.Event objects to be shown in this
+        calendar view for the given plannable object `obj`, which is either an
+        instance of cls or a HeaderRow instance.
 
-        Default implementation returns all calendar entries.
+        Date and time filter will be applied later.
 
-        The `obj` is either an instance of cls or a HeaderRow instance.
+        Default implementation does not modify the queryset.
 
         """
-        return rt.models.cal.Event.objects.none()
+        return qs
+        # return rt.models.cal.Event.objects.none()
 
-    def get_my_plannable_entries(self, ar):
-        return self.get_plannable_entries(self, ar)
+    def get_my_plannable_entries(self, qs, ar):
+        return self.get_plannable_entries(self, qs, ar)
 
     def get_header_chunks(obj, ar, entries, today):
         if not isinstance(obj, HeaderRow):

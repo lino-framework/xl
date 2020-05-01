@@ -439,11 +439,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         #         project=settings.SITE.project_model._meta.verbose_name)
 
     @classmethod
-    def get_request_queryset(cls, ar, **filter):
-        qs = super(Event, cls).get_request_queryset(ar, **filter)
-        return cls.calendar_param_filter(qs, ar.param_values)
-
-    @classmethod
     def get_simple_parameters(cls):
         for p in super(Event, cls).get_simple_parameters():
             yield p
@@ -452,7 +447,12 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         yield 'event_type'
 
     @classmethod
-    def calendar_param_filter(cls, qs, pv):
+    def get_request_queryset(cls, ar, **filter):
+        qs = super(Event, cls).get_request_queryset(ar, **filter)
+        # print("20200430 cal.Event.get_request_queryset", ar.param_values.project, qs.query)
+        # return cls.calendar_param_filter(qs, ar.param_values)
+        pv = ar.param_values
+
         # if pv.user:
         #     qs = qs.filter(user=pv.user)
         # if pv.assigned_to:

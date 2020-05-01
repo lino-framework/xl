@@ -124,6 +124,7 @@ add('Y', _('years'), 'years')
 class Recurrencies(dd.ChoiceList):
     verbose_name = _("Recurrency")
     item_class = DurationUnit
+    preferred_foreignkey_width = 12
 
 add = Recurrencies.add_item
 add('O', _('once'), 'once')
