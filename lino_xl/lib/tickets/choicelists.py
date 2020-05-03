@@ -1,10 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2018 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
 
 from django.utils.text import format_lazy
 from django.db import models
@@ -58,7 +55,7 @@ TicketEvents.add_item_instance(TicketEventModified('modified'))
 # class ProjectEvents(dd.ChoiceList):
 #     verbose_name = _("Observed event")
 #     verbose_name_plural = _("Observed events")
-    
+
 # ProjectEvents.add_item_instance(PeriodStarted('started'))
 # ProjectEvents.add_item_instance(PeriodActive('active'))
 # ProjectEvents.add_item_instance(PeriodEnded('ended'))
@@ -67,7 +64,7 @@ TicketEvents.add_item_instance(TicketEventModified('modified'))
 
 class SiteState(dd.State):
     is_exposed = False
-    
+
 class SiteStates(dd.Workflow):
     verbose_name_plural = _("Site states")
     item_class = SiteState
@@ -80,7 +77,7 @@ add('10', _("Draft"), 'draft', is_exposed=True,
 add('20', _("Active"), 'active', is_exposed=True,
     button_text = "⚒")  # HAMMER AND PICK (U+2692
 add('30', _("Stable"), 'stable', is_exposed=True,
-    button_text = "☉")  # SUN (U+2609)	
+    button_text = "☉")  # SUN (U+2609)
 add('40', _("Sleeping"), 'sleeping',
     button_text = "☾")  # LAST QUARTER MOON (U+263E)
 add('50', _("Closed"), 'closed',
@@ -92,15 +89,15 @@ SiteStates.stable.add_transition()
 SiteStates.sleeping.add_transition()
 SiteStates.closed.add_transition()
 
-    
+
 class TicketState(dd.State):
     active = False
     show_in_todo = False
-    
+
     def get_summary_field(self):
         return self.name + '_tickets'
         # return 'tickets_in_' + self.name
-   
+
 class TicketStates(dd.Workflow):
 
     # verbose_name = _("Ticket state")
@@ -131,19 +128,19 @@ if settings.SITE.use_new_unicode_symbols:
 
     TicketStates.new.button_text =u"📥"  # INBOX TRAY (U+1F4E5)
     TicketStates.talk.button_text =u"🗪"  # TWO SPEECH BUBBLES (U+1F5EA)
-    TicketStates.opened.button_text = u"☉"  # SUN (U+2609)	
+    TicketStates.opened.button_text = u"☉"  # SUN (U+2609)
     TicketStates.working.button_text=u"🐜"  # ANT (U+1F41C)
     TicketStates.cancelled.button_text=u"🗑"  # WASTEBASKET (U+1F5D1)
     # TicketStates.sticky.button_text=u"📌"  # PUSHPIN (U+1F4CC)
-    TicketStates.sleeping.button_text = u"🕸"  # SPIDER WEB (U+1F578)	
+    TicketStates.sleeping.button_text = u"🕸"  # SPIDER WEB (U+1F578)
     TicketStates.ready.button_text = "\u2610"  # BALLOT BOX
     TicketStates.closed.button_text = "\u2611"  # BALLOT BOX WITH CHECK
 
-else:    
+else:
     TicketStates.new.button_text = "⛶"  # SQUARE FOUR CORNERS (U+26F6)
     # TicketStates.talk.button_text = "⚔"  # CROSSED SWORDS (U+2694)
     TicketStates.talk.button_text = "☎"  # Black Telephone (U+260E)
-    TicketStates.opened.button_text = "☉"  # SUN (U+2609)	
+    TicketStates.opened.button_text = "☉"  # SUN (U+2609)
     # TicketStates.working.button_text="☭"  # HAMMER AND SICKLE (U+262D)
     TicketStates.working.button_text = "⚒"  # HAMMER AND PICK (U+2692
     # TicketStates.sticky.button_text="♥"  # BLACK HEART SUIT (U+2665)
@@ -186,9 +183,7 @@ add('40', 'obsoletes', _("Obsoletes"), _("Obsoleted by"))
 # add('30', 'seealso', _("See also"), _("Referred by"))
 # deprecated (use "fixed_for" field instead):
 # add('40', 'deploys', _("Deploys"), _("Deployed by"))
-# replaced by FK field "duplicate_of"):
-# add('50', 'duplicates', _("Duplicates"), _("Duplicate of"))
+# will replace FK field "duplicate_of"):
+add('50', 'duplicates', _("Duplicates"), _("Duplicate of"))
 
 # LinkTypes.addable_types = [LinkTypes.requires, LinkTypes.duplicates]
-
-
