@@ -139,7 +139,6 @@ class TicketTypes(dd.Table):
 #     column_names = "ref name *"
 
 
-
 class Links(dd.Table):
     model = 'tickets.Link'
     required_roles = dd.login_required(TicketsStaff)
@@ -288,12 +287,16 @@ class Tickets(dd.Table):
     order_by = ["-id"]
     focus_on_quick_search = True
     column_names = 'id summary:50 user:10 #topic #faculty ' \
-                   'workflow_buttons:30 #site:10 #project:10 *' # Site commented to not disturbe care
+                   'workflow_buttons:30 #site:10 #project:10 *'  # Site commented to not disturbe care
     detail_layout = 'tickets.TicketDetail'
     insert_layout = """
     summary
     end_user
     """
+    card_layout = dd.Panel(
+        """summary user 
+        workflow_buttons""", label=_("Cards"))
+
     # insert_layout = dd.InsertLayout("""
     # # reporter #product
     # summary
@@ -338,8 +341,8 @@ class Tickets(dd.Table):
             blank=True,
             help_text=_("Only rows having this state.")),
         priority=Priorities.field(_("Priority"),
-            blank=True,
-            help_text=_("Only rows having this priority.")),
+                                  blank=True,
+                                  help_text=_("Only rows having this priority.")),
         show_assigned=dd.YesNo.field(_("Assigned"), blank=True),
         show_deployed=dd.YesNo.field(
             _("Deployed"), blank=True,
@@ -392,7 +395,7 @@ class Tickets(dd.Table):
     def get_queryset(self, ar, **filter):
         qs = super(Tickets, self).get_queryset(ar, **filter)
         return qs.select_related(
-            'user', 'assigned_to', # 'project',
+            'user', 'assigned_to',  # 'project',
             'duplicate_of', 'end_user')
 
     @classmethod
@@ -512,6 +515,7 @@ class AllTickets(Tickets):
     label = _("All tickets")
     use_paging = True
 
+
 class DuplicatesByTicket(Tickets):
     display_mode = 'html'
     label = _("Duplicates")
@@ -521,7 +525,6 @@ class DuplicatesByTicket(Tickets):
     required_roles = set([])
 
 
-
 class RefTickets(Tickets):
     label = _("Reference Tickets")
     required_roles = dd.login_required(Triager)
@@ -529,6 +532,7 @@ class RefTickets(Tickets):
     column_names = 'id ref:20 summary:50 user:10 site:10 ' \
                    'workflow_buttons:30 *'
     order_by = ["ref"]
+
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(RefTickets, self).param_defaults(ar, **kw)
@@ -536,6 +540,7 @@ class RefTickets(Tickets):
             has_ref=dd.YesNo.yes
         )
         return kw
+
 
 class UnassignedTickets(Tickets):
     if dd.is_installed('votes'):
@@ -555,7 +560,6 @@ class UnassignedTickets(Tickets):
         # kw.update(show_closed=dd.YesNo.no)
         kw.update(state=TicketStates.opened)
         return kw
-
 
 
 class TicketsByEndUser(Tickets):
@@ -598,6 +602,7 @@ class PublicTickets(Tickets):
     label = _("Public tickets")
     order_by = ["-id"]
     column_names = 'overview:50 ticket_type:10 site:10 *'
+
     # filter = Q(assigned_to=None)
 
     @classmethod
@@ -686,6 +691,7 @@ class ActiveTickets(Tickets):
         # kw.update(show_standby=dd.YesNo.no)
         return kw
 
+
 class MyTickets(My, Tickets):
     # label = _("My tickets")
     required_roles = dd.login_required(Reporter)
@@ -703,6 +709,7 @@ class MyTickets(My, Tickets):
         # kw.update(show_closed=dd.YesNo.no)
         # kw.update(show_standby=dd.YesNo.no)
         return kw
+
 
 # class TicketsSummary(Tickets):
 #     # order_by = ["state", "priority", "-id"]
@@ -765,7 +772,6 @@ class MyTicketsToWork(Tickets):
         return kw
 
 
-
 class SiteDetail(dd.DetailLayout):
     bottom_left = """
     description
@@ -779,7 +785,6 @@ class SiteDetail(dd.DetailLayout):
         workflow_buttons:1 remark
         bottom""", label=_("General"))
     main = """general meetings.MeetingsBySite"""
-
 
 
 class Sites(dd.Table):
@@ -833,7 +838,6 @@ class Sites(dd.Table):
         return qs
 
 
-
 # def get_summary_columns():
 #     for ts in TicketStates.get_list_items():
 #         if ts.active:
@@ -844,6 +848,7 @@ class Sites(dd.Table):
 class SitesByGroup(Sites):
     master_key = 'group'
     column_names = "detail_link parsed_description workflow_buttons *"
+
 
 class MySites(Sites):
     label = _("My sites")
@@ -862,19 +867,19 @@ class MySites(Sites):
     #     cls.column_names += ' '.join(get_summary_columns())
 
 
-
 # class SitesOverview(MySites):
 #     label = _("Sites Overview")
 
-    # @classmethod
-    # def param_defaults(self, ar, **kw):
-    #     kw = super(MySitesDashboard, self).param_defaults(ar, **kw)
-    #     if ar.get_user().user_type.has_required_roles([TicketsStaff]):
-    #         kw['watcher'] = None
-    #     return kw
+# @classmethod
+# def param_defaults(self, ar, **kw):
+#     kw = super(MySitesDashboard, self).param_defaults(ar, **kw)
+#     if ar.get_user().user_type.has_required_roles([TicketsStaff]):
+#         kw['watcher'] = None
+#     return kw
 
 class AllSites(Sites):
     required_roles = dd.login_required(TicketsStaff)
+
 
 # # List of sites that user X has stared?
 # class SitesByPartner(Sites):
@@ -896,6 +901,7 @@ class TicketsBySite(Tickets):
     # label = _("Known problems")
     master_key = 'site'
     column_names = "priority overview:50 ticket_type workflow_buttons *"
+
     # order_by = ["priority", "-id"]
 
     @classmethod
