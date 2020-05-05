@@ -1,11 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2017 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Database models for this plugin.
 
 """
-
-from __future__ import unicode_literals
 
 from django.db import models
 
@@ -46,7 +44,7 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 
 
 
-# 
+#
 # class Milestone(UserAuthored, DateRange, Certifiable):
 #     """A **Milestone** is a named step of evolution on a given Site.  In
 #     Scrum they are called sprints.
@@ -64,7 +62,7 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 #         verbose_name_plural = _('Milestones')
 
 #     site_field_name = 'site'
-    
+
 #     project = dd.ForeignKey(
 #         'tickets.Project',
 #         related_name='milestones_by_project', blank=True, null=True)
@@ -109,8 +107,10 @@ add('60', _("Aftermath"), "aftermath")  # Nachwehe
 #         return super(Milestone, cls).quick_search_filter(search_text, prefix)
 
 
+if False:  # broke after changes for #3621. If we want it back, I'd rather write
+           # a new action from scratch instead of inheriting.
 
-class SpawnTicketFromWish(SpawnTicket):
+  class SpawnTicketFromWish(SpawnTicket):
     # label = _("Spawn new ticket")
     # label = "\u2611" "☑"
     # "\u2687"
@@ -173,7 +173,7 @@ class Deployment(Sequenced, Workable):
         verbose_name = _("Wish")
         verbose_name_plural = _('Wishes')
 
-    SpawnTicket = SpawnTicketFromWish(_("New Ticket"), LinkTypes.triggers)
+    # SpawnTicket = SpawnTicketFromWish(_("New Ticket"), LinkTypes.triggers)
 
     allow_cascaded_copy = 'milestone'
     ticket = dd.ForeignKey(
@@ -196,13 +196,13 @@ class Deployment(Sequenced, Workable):
 
     def get_ticket(self):
         return self.ticket
-    
+
     def get_siblings(self):
         "Overrides :meth:`lino.mixins.Sequenced.get_siblings`"
         qs = self.__class__.objects.filter(milestone=self.milestone)
         # print(20170321, qs)
         return qs
-    
+
     @dd.chooser()
     def unused_milestone_choices(cls, ticket):
         # if not ticket:
@@ -228,7 +228,7 @@ class Deployment(Sequenced, Workable):
                     Deployment, milestone=self.deferred_to,
                     ticket=self.ticket, wish_type=self.wish_type,
                     remark=self.remark)
-                
+
 
     def milestone_changed(self, ar):
         self.ticket_changed(ar)
@@ -302,6 +302,3 @@ class TicketEventToDo(ObservedEvent):
 
 
 TicketEvents.add_item_instance(TicketEventToDo('todo'))
-
-
-    

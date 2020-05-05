@@ -7,7 +7,7 @@ from django.db.models import Q
 from django.utils.text import format_lazy
 from etgen.html import E
 from lino import mixins
-from lino.api import dd, rt, _
+from lino.api import dd, rt, _, gettext
 from lino.modlib.users.mixins import My
 from lino.utils import join_elems
 
@@ -149,6 +149,13 @@ class Links(dd.Table):
     child
     """, window_size=(40, 'auto'))
 
+    insert_layout = """
+    parent
+    type
+    child
+    """
+
+
 
 class LinksByTicket(Links):
     label = _("Dependencies")
@@ -219,7 +226,7 @@ class LinksByTicket(Links):
 
         # Buttons for creating relationships:
 
-        sar = obj.spawn_triggered.request_from(ar)
+        sar = obj.spawn_ticket.request_from(ar)
         if ar.renderer.is_interactive and sar.get_permission():
             btn = sar.ar2button(obj)
             elems += [E.br(), btn]
@@ -232,11 +239,13 @@ class LinksByTicket(Links):
                     actions.append(E.br())
                     sar.known_values.update(type=lt, parent=obj)
                     sar.known_values.pop('child', None)
+                    sar._status = None  # disable status cache
                     btn = sar.ar2button(None, lt.as_parent(), icon_name=None)
                     if not lt.symmetric:
                         # actions.append('/')
                         sar.known_values.update(type=lt, child=obj)
                         sar.known_values.pop('parent', None)
+                        sar._status = None  # disable status cache
                         btn2 = sar.ar2button(None, lt.as_child(), icon_name=None)
                         # actions.append(btn)
                         btn = E.span(btn, '/', btn2)
@@ -245,7 +254,7 @@ class LinksByTicket(Links):
                 # actions = join_elems(actions, E.br)
 
                 if len(actions) > 0:
-                    elems += [E.br(), _("Create dependency as ")] + actions
+                    elems += [E.br(), gettext("Create dependency as ")] + actions
         return E.div(*elems)
 
 

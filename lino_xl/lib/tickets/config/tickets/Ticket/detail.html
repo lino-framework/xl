@@ -6,7 +6,7 @@
 <h1>#{{obj.id}} ({{obj.summary}})</h1>
 {{tostring(navigator)}}
 <p style="background-color:#eeeeee; padding:6pt;">
-<b>State:</b> {{obj.state}}  
+<b>State:</b> {{obj.state}}
 {% if obj.closed %} (closed){% endif %}
 {% if obj.standby %} (standby){% endif %}
 (last update {{obj.modified}})
@@ -34,7 +34,7 @@
 {{memo(obj.description)}}
 {% for comm in rt.models.comments.comments_by_owner(obj) %}
 <ul>
-{{rt.models.comments.Comments.as_li(comm, ar)}}
+{{comm.as_summary_row(ar)}}
 </ul>
 {% endfor %}
 {% endif %}
@@ -42,4 +42,3 @@
 <div>{{ar.show('tickets.LinksByTicket', obj)}}</div>
 </div>
 {% endblock %}
-

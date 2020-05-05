@@ -13,6 +13,7 @@ from etgen.utils import join_elems, forcetext
 from lino import mixins
 from lino.api import dd, rt, _, pgettext, gettext
 from lino.core.actions import CreateRow
+from lino.core.utils import db2param
 from lino.mixins.ref import Referrable
 from lino.mixins.periods import DateRange
 from lino.modlib.comments.mixins import Commentable, PrivateCommentsReader
@@ -404,52 +405,45 @@ dd.update_field(Site, 'contact_person', verbose_name=_("Contact person"))
 
 
 class SpawnTicket(dd.Action):
-    # label = _("Spawn new ticket")
+    label = _("Spawn child ticket")
     # label = "\u2611" "☑"
     # label = "⚇"  # "\u2687"
-    show_in_workflow = False
-    show_in_bbar = False
-    goto_new = True
+    # show_in_workflow = False
+    # show_in_bbar = False
+    # goto_new = True
+    params_layout = """
+    link_type
+    ticket_summary
+    """
 
-    def __init__(self, label, link_type):
-        self.label = label
-        self.link_type = link_type
-        self.help_text = _(
-            "Spawn a new child ticket {0} this one.").format(
-            link_type.as_child())
-        super(SpawnTicket, self).__init__()
+    parameters = dict(
+        link_type=LinkTypes.field(default='requires'),
+        ticket_summary=models.CharField(
+            pgettext("Ticket", "Summary"), max_length=200,
+            blank=False)
+        )
 
-    def spawn_ticket(self, ar, p):
-        c = rt.models.tickets.Ticket(
-            user=ar.get_user(),
-            summary=_("New ticket {0} #{1}".format(
-                self.link_type.as_child(), p.id)))
-        return c
-
-    def make_link(self, ar, new, old):
-        d = rt.models.tickets.Link(
-            parent=old, child=new,
-            type=self.link_type)
-        d.full_clean()
-        d.save()
-
-    def get_parent_ticket(self, ar):
-        return ar.selected_rows[0]
+    # def setup_parameters(self, params):
+    #     super(SpawnTicket, self).setup_parameters(params)
+    #     params.update(
+    #         link_type=db2param('tickets.Link.type'),
+    #         ticket_summary=db2param('tickets.Ticket.summary'))
 
     def run_from_ui(self, ar, **kw):
-        old = self.get_parent_ticket(ar)
-        new = self.spawn_ticket(ar, old)
-        for k in ('site', 'private'):
-            setattr(new, k, getattr(old, k))
-        new.full_clean()
-        new.save_new_instance(ar)
-        self.make_link(ar, new, old)
-        ar.success(
-            _("New ticket {0} has been spawned as child of {1}.").format(
-                new, old))
-        if self.goto_new:
-            ar.goto_instance(new)
-
+        pv = ar.action_param_values
+        parent = ar.selected_rows[0]
+        child = rt.models.tickets.Ticket(
+            user=ar.get_user(),
+            summary=pv.ticket_summary,
+            site=parent.site)
+        child.full_clean()
+        child.save_new_instance(ar)
+        link = rt.models.tickets.Link(
+            parent=parent, child=child, type=pv.link_type)
+        link.full_clean()
+        link.save(force_insert=True)
+        ar.goto_instance(child)
+        ar.success()
 
 
 class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
@@ -524,11 +518,11 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         _("Feedback"), default=False)
     standby = models.BooleanField(_("Standby"), default=False)
 
-    spawn_triggered = SpawnTicket(
-        _("Spawn triggered ticket"),
-        LinkTypes.triggers)
+    # spawn_triggered = SpawnTicket(
+    #     _("Spawn triggered ticket"),
+    #     LinkTypes.triggers)
     # spawn_triggered = SpawnTicket("⚇", LinkTypes.triggers)  # "\u2687"
-    # spawn_ticket = SpawnTicket("", LinkTypes.requires)  # "\u2687"
+    spawn_ticket = SpawnTicket()  # "\u2687"
 
     fixed_since = models.DateTimeField(
         _("Fixed since"), blank=True, null=True, editable=False)
@@ -808,8 +802,12 @@ class Link(dd.Model):
         verbose_name = _("Dependency")
         verbose_name_plural = _("Dependencies")
 
-    type = LinkTypes.field(
-        default=LinkTypes.as_callable('requires'))
+    allow_cascaded_delete = 'parent child'
+    # when i delete a ticket that is child of another ticket, then Lino also
+    # deletes the relationship with the ticket. But Lino does not allow me to
+    # delete a ticket that is itself parent to one or more other tickets.
+
+    type = LinkTypes.field(default='requires')
     parent = dd.ForeignKey(
         'tickets.Ticket',
         verbose_name=_("Parent"),
