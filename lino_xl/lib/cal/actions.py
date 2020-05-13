@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 from django.conf import settings
-from lino.api import dd, rt, _
+from lino.api import dd, rt, _, gettext
 from lino.core.gfks import gfk2lookup
 from .choicelists import EntryStates, GuestStates
 
@@ -134,8 +134,9 @@ class RefuseGuestStates(dd.ChangeStateAction):
         qs = obj.guest_set.filter(state__in=self.refuse_guest_states)
         count = qs.count()
         if count > 0:
-            guest_states = (" "+_("or")+" ").join([s.text for s in rgs])
-            msg = _("Cannot mark as {state} because {count} "
-                    "participants are {guest_states}.")
+            guest_states = (" " + gettext("or") + " ").join([str(s.text) for s in rgs])
+            msg = gettext(
+                "Cannot mark as {state} because {count} "
+                "participants are {guest_states}.")
             raise Warning(msg.format(
                 count=count, state=self.target_state, guest_states=guest_states))
