@@ -215,7 +215,7 @@ class AddressOwnerChecker(Checker):
                 yield (False, self.messages['multiple_primary'])
         if addr and diffs:
             diffstext = [
-                _("{0}:{1}->{2}").format(k, *v) for k, v in diffs.items()]
+                _("{0}:{1}->{2}").format(k, *v) for k, v in sorted(diffs.items())]
             msg = self.messages['primary_differs'].format(', '.join(diffstext))
             yield (False, msg)
 

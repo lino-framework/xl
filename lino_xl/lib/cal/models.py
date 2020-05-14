@@ -737,6 +737,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
 
     def on_create(self, ar):
         if self.event_type is None:
+            # print("20200513", ar.user)
             self.event_type = ar.user.event_type or \
                 settings.SITE.site_config.default_event_type
         self.start_date = self.start_date or settings.SITE.today()
