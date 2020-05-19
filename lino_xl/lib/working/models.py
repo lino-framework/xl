@@ -20,6 +20,7 @@ from lino_xl.lib.cal.mixins import Started, Ended
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.tickets.choicelists import TicketStates
+from lino_xl.lib.invoicing.mixins import InvoiceGenerator
 
 from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
 from .choicelists import ReportingTypes, ZERO_DURATION
@@ -47,7 +48,7 @@ class SessionType(mixins.BabelNamed):
 
 
 
-class Session(UserAuthored, Started, Ended, Workable):
+class Session(UserAuthored, Started, Ended, Workable, InvoiceGenerator):
     class Meta:
         app_label = 'working'
         verbose_name = _("Session")
@@ -199,6 +200,57 @@ class Session(UserAuthored, Started, Ended, Workable):
         if ar is None:
             return str(site)
         return site.obj2href(ar)
+
+    def get_invoiceable_partner(self):
+        if self.ticket_id and self.ticket.site_id:
+            return self.ticket.site.company
+
+    def get_invoiceable_product(self, max_date=None):
+        par = self.get_invoiceable_partner()
+        # par = self.project
+        # if self.project_id is None:
+        if par is None:
+            return None
+        return rt.models.products.Product.get_rule_fee(par, self.session_type)
+
+    def get_invoiceable_qty(self):
+        qty = self.get_duration()
+        if qty is not None:
+            return Duration(qty)
+
+    @classmethod
+    def get_generators_for_plan(cls, plan, partner=None):
+        # pre-select all Event objects that potentially will generate
+        # an invoice.
+
+        qs = cls.objects.all()
+        # qs = qs.filter(state=EntryStates.took_place)
+        # if plan.area_id:
+        #     qs = qs.filter(room__invoicing_area=plan.area)
+        #
+        # if plan.order is not None:
+        #     qs = qs.filter(**gfk2lookup(cls.owner, plan.order))
+
+        # dd.logger.info("20181113 c %s", qs)
+
+        if partner is None:
+            partner = plan.partner
+
+        if partner is None:
+            # only courses with a partner (because only these get invoiced
+            # per course).
+            qs = qs.filter(ticket__site__company__isnull=False)
+        else:
+            q1 = models.Q(
+                ticket__site__company__salesrule__invoice_recipient__isnull=True,
+                ticket__site__company=partner)
+            q2 = models.Q(
+                ticket__site__company__salesrule__invoice_recipient=partner)
+            qs = qs.filter(models.Q(q1 | q2))
+
+        # dd.logger.info("20200518 %s (%d rows)", qs.query, qs.count())
+        return qs.order_by('id')
+
 
 dd.update_field(
     Session, 'user', blank=False, null=False, verbose_name=_("Worker"))

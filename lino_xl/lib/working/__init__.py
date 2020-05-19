@@ -1,4 +1,4 @@
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
 Adds functionality for managing workting time.
@@ -6,8 +6,6 @@ Adds functionality for managing workting time.
 See :doc:`/specs/noi/working`.
 
 """
-
-import six
 
 from lino.api import ad, _
 
@@ -44,7 +42,7 @@ class Plugin(ad.Plugin):
         #     # raise Exception(msg)
         #     site.logger.warning(msg)
 
-        if isinstance(self.default_reporting_type, six.string_types):
+        if isinstance(self.default_reporting_type, str):
             x = site.models.working.ReportingTypes.get_by_name(
                 self.default_reporting_type)
             self.default_reporting_type = x

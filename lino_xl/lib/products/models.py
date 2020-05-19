@@ -85,7 +85,7 @@ class Product(mixins.BabelNamed, Duplicable):
         # the list
 
     @classmethod
-    def get_rule_fee(cls, partner, event_type):
+    def get_rule_fee(cls, partner, selector):
         if partner is None:
             return
         for rule in rt.models.products.PriceRule.objects.order_by('seqno'):
@@ -100,7 +100,7 @@ class Product(mixins.BabelNamed, Duplicable):
             # if rule.tariff and rule.tariff != tariff:
             #     # print("20181128b {} != {}".format(rule.tariff, tariff))
             #     ok = False
-            if rule.event_type and rule.event_type != event_type:
+            if rule.selector and rule.selector != selector:
                 # print("20181128c {} != {}".format(rule.event_type, event_type))
                 ok = False
 
@@ -166,14 +166,14 @@ class PriceRule(Sequenced):
         verbose_name = _("Price rule")
         verbose_name_plural = _("Price rules")
 
-    # tariff = PartnerTariffs.field(blank=True)
-    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
+    # event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
+    selector = dd.ForeignKey(dd.plugins.products.fee_selector, blank=True, null=True)
     fee = dd.ForeignKey('products.Product', blank=True, null=True)
 
 
 class PriceRules(dd.Table):
     model = "products.PriceRule"
-    column_names_tpl = "seqno {factors} #tariff event_type fee *"
+    column_names_tpl = "seqno {factors} #tariff selector fee *"
     order_by = ['seqno']
 
     @classmethod
