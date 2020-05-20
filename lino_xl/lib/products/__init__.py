@@ -21,7 +21,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Products")
     needs_plugins = ['lino_xl.lib.xl']
     menu_group = 'products'
-    fee_selector = 'cal.EventType'
+    price_selector = 'cal.EventType'
 
     def setup_config_menu(self, site, user_type, m):
         mg = self.get_menu_group()

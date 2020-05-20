@@ -211,7 +211,7 @@ class Session(UserAuthored, Started, Ended, Workable, InvoiceGenerator):
         # if self.project_id is None:
         if par is None:
             return None
-        return rt.models.products.Product.get_rule_fee(par, self.session_type)
+        return rt.models.products.Product.get_ruled_price(par, self.session_type)
 
     def get_invoiceable_qty(self):
         qty = self.get_duration()

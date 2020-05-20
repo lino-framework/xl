@@ -26,4 +26,4 @@ def objects():
     kw.update(dd.str2kw('name', _("Development")))
     obj = Product(**kw)
     yield obj
-    yield PriceRule(fee=obj)
+    yield PriceRule(product=obj)
