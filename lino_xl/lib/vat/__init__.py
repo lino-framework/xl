@@ -67,7 +67,7 @@ class Plugin(ad.Plugin):
     """
 
     declaration_plugin = None
-    """The plugin to use as your *national VAT implementation*.
+    """The plugin to use as your :term:`national declaration module`.
 
     Available VAT declaration plugins are:
     :mod:`lino_xl.lib.bevat`,
