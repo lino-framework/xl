@@ -79,6 +79,10 @@ class Plugin(ad.Plugin):
 
     """
 
+    item_vat = False
+    """Whether item prices in trade documents are meant VAT included.
+    """
+
     def get_vat_class(self, tt, item):
         """Return the VAT class to be used for given trade type and given
         invoice item. Return value must be an item of

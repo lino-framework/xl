@@ -82,13 +82,13 @@ class VatColumns(dd.ChoiceList):
 class VatRegime(dd.Choice):
     vat_area = None
     needs_vat_id = False
-    item_vat = True
+    # item_vat = True  # 20200521 no longer used
 
     def __init__(self, value, text, name, vat_area=None, item_vat=True, needs_vat_id=False):
         super(VatRegime, self).__init__(value, text, name)
         self.vat_area = vat_area
         self.needs_vat_id = needs_vat_id
-        self.item_vat = item_vat
+        # self.item_vat = item_vat
 
     def is_allowed_for(self, vat_area):
         if self.vat_area is None:
@@ -99,7 +99,7 @@ class VatRegime(dd.Choice):
 class VatRegimes(dd.ChoiceList):
     verbose_name = _("VAT regime")
     verbose_name_plural = _("VAT regimes")
-    column_names = "value name text vat_area needs_vat_id item_vat"
+    column_names = "value name text vat_area needs_vat_id #item_vat"
     item_class = VatRegime
     required_roles = dd.login_required(LedgerStaff)
 
@@ -107,9 +107,9 @@ class VatRegimes(dd.ChoiceList):
     def vat_area(cls, regime, ar):
         return regime.vat_area
 
-    @dd.virtualfield(dd.BooleanField(_("item VAT")))
-    def item_vat(cls, regime, ar):
-        return regime.item_vat
+    # @dd.virtualfield(dd.BooleanField(_("item VAT")))
+    # def item_vat(cls, regime, ar):
+    #     return regime.item_vat
 
     @dd.virtualfield(dd.BooleanField(_("Needs VAT id")))
     def needs_vat_id(cls, regime, ar):

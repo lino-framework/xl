@@ -50,7 +50,11 @@
 <td>{{_("Description")}}</td>
 <td>{{_("Unit price")}}</td>
 <td>{{_("Quantity")}}</td>
+{% if dd.plugins.vat.item_vat %}
 <td>{{_("Price")}}</td>
+{% else %}
+<td>{{rt.models.sales.InvoiceItem.total_base.field.verbose_name}}</td>
+{% endif %}
 </tr>
 {% for item in obj.items.order_by('seqno') %}
 <tr>
@@ -75,7 +79,11 @@
 {% endif %}
 </td>
 <td align="right">
+{% if dd.plugins.vat.item_vat %}
 {{item.total_incl or ''}}
+{% else %}
+{{item.total_base or ''}}
+{% endif %}
 </td>
 </tr>
 {% endfor %}

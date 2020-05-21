@@ -315,18 +315,25 @@ class InvoiceItems(dd.Table):
 
     stay_in_grid = True
 
-
 class ItemsByInvoice(InvoiceItems):
     label = _("Content")
     master_key = 'voucher'
     order_by = ["seqno"]
     required_roles = dd.login_required(LedgerUser)
-    column_names = "product title discount unit_price qty total_incl *"
+    # column_names = "product title discount unit_price qty item_total *"
+    if dd.plugins.vat.item_vat:
+        column_names = "product title discount unit_price qty total_incl *"
+    else:
+        column_names = "product title discount unit_price qty total_base *"
 
 
 
 class ItemsByInvoicePrint(ItemsByInvoice):
-    column_names = "description_print unit_price qty total_incl"
+    # column_names = "description_print unit_price qty item_total"
+    if dd.plugins.vat.item_vat:
+        column_names = "description_print unit_price qty total_incl"
+    else:
+        column_names = "description_print unit_price qty total_base"
     include_qty_in_description = False
 
     @dd.displayfield(_("Description"))
@@ -348,7 +355,10 @@ class ItemsByInvoicePrint(ItemsByInvoice):
 
 
 class ItemsByInvoicePrintNoQtyColumn(ItemsByInvoicePrint):
-    column_names = "description_print total_incl"
+    if dd.plugins.vat.item_vat:
+        column_names = "description_print total_incl"
+    else:
+        column_names = "description_print total_base"
     include_qty_in_description = True
     hide_sums = True
 
