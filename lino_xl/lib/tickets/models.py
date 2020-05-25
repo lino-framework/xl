@@ -60,7 +60,11 @@ class QuickAssignTo(dd.Action):
     comment
     """
 
+    def get_action_permission(self, ar, obj, state):
+        return not ar.get_user().is_anonymous
+
     def run_from_ui(self, ar, **kw):
+
         obj = ar.selected_rows[0]
         pv = ar.action_param_values
         obj.assigned_to = pv.assign_to
