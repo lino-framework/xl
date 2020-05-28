@@ -7,6 +7,7 @@ from etgen.html import E, join_elems
 from lino.api import rt, dd, _
 from lino.core.diff import ChangeWatcher
 from lino.mixins import Contactable, Phonable
+from .choicelists import ContactDetailTypes
 
 class ContactDetailsOwner(Contactable, Phonable):
 
@@ -16,7 +17,6 @@ class ContactDetailsOwner(Contactable, Phonable):
     if dd.is_installed('phones'):
 
         def after_ui_save(self, ar, cw):
-            ContactDetailTypes = rt.models.phones.ContactDetailTypes
             if cw is None:  # it's a new instance
                 for cdt in ContactDetailTypes.get_list_items():
                     self.propagate_contact_detail(cdt)
@@ -52,7 +52,6 @@ class ContactDetailsOwner(Contactable, Phonable):
                         cd.save()
 
         def propagate_contact_details(self, ar=None):
-            ContactDetailTypes = rt.models.phones.ContactDetailTypes
             watcher = ChangeWatcher(self)
             for cdt in ContactDetailTypes.get_list_items():
                 self.propagate_contact_detail(cdt)
@@ -79,3 +78,19 @@ class ContactDetailsOwner(Contactable, Phonable):
 
         def get_overview_elems(self, ar):
             return []
+
+        @dd.displayfield(_("Contact details"))
+        def contact_details(self, ar):
+            # if ar is None:
+            #     return ''
+            items = []
+            for cdt in ContactDetailTypes.get_list_items():
+                if cdt.field_name:
+                    value = getattr(self, cdt.field_name)
+                if value:
+                    items.append(cdt.format(value))
+            # items.append(ContactDetailTypes.email.format(self.email))
+            # # items.append(E.a(self.email, href="mailto:" + self.email))
+            # items.append(self.phone)
+            # items.append(E.a(self.url, href=self.url))
+            return E.p(*join_elems(items, sep=', '))

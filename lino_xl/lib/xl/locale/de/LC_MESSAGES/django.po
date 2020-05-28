@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-04-25 04:28+0300\n"
-"PO-Revision-Date: 2020-04-25 04:30+0300\n"
+"PO-Revision-Date: 2020-05-23 22:33+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -7878,7 +7878,7 @@ msgstr ""
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:34
 msgid "Your customer id"
-msgstr "Ihr Kundennummer"
+msgstr "Ihre Kundennummer"
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:37
 msgid "Your VAT id"
@@ -7898,7 +7898,7 @@ msgstr "Preis"
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:90
 #: lino_xl/lib/vat/mixins.py:60
 msgid "Total excl. VAT"
-msgstr "Total zzgl. MwSt."
+msgstr "Total ohne MwSt."
 
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.weasy.html:92
 msgid "Total incl. VAT"

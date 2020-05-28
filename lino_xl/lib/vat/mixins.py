@@ -13,12 +13,11 @@ from lino.utils import SumCollector
 from lino.api import dd, rt, _
 # from lino.mixins.registrable import Registrable
 
-from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
 from lino_xl.lib.ledger.mixins import Payable
 from lino_xl.lib.ledger.models import RegistrableVoucher, VoucherStates
-from lino_xl.lib.ledger.utils import ZERO, ONE
+from lino_xl.lib.ledger.utils import ZERO, ONE, myround
 
 from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
