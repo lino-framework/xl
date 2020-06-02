@@ -304,7 +304,8 @@ class Tickets(dd.Table):
     """
     card_layout = dd.Panel(
         """summary user 
-        workflow_buttons""", label=_("Cards"))
+        workflow_buttons
+        comments.CommentsByRFC""", label=_("Cards"))
 
     # insert_layout = dd.InsertLayout("""
     # # reporter #product
