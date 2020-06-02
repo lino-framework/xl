@@ -13,12 +13,11 @@ from lino.utils import SumCollector
 from lino.api import dd, rt, _
 # from lino.mixins.registrable import Registrable
 
-from lino_xl.lib.ledger.utils import myround
 from lino_xl.lib.ledger.choicelists import CommonAccounts
 from lino_xl.lib.ledger.mixins import ProjectRelated, VoucherItem
 from lino_xl.lib.ledger.mixins import Payable
 from lino_xl.lib.ledger.models import RegistrableVoucher, VoucherStates
-from lino_xl.lib.ledger.utils import ZERO, ONE
+from lino_xl.lib.ledger.utils import ZERO, ONE, myround
 
 from .choicelists import VatClasses, VatRegimes, VatAreas, VatRules
 
@@ -313,6 +312,7 @@ class VatItemBase(VoucherItem, VatTotal):
         abstract = True
 
     vat_class = VatClasses.field(blank=True)  # , default=get_default_vat_class)
+    # item_total = dd.field_alias('total_incl' if dd.plugins.vat.item_vat else 'total_base')
 
     def delete(self, **kw):
         super(VatItemBase, self).delete(**kw)
@@ -333,7 +333,8 @@ class VatItemBase(VoucherItem, VatTotal):
 
     def vat_class_changed(self, ar):
         # dd.logger.info("20121204 vat_class_changed")
-        if self.voucher.vat_regime.item_vat:
+        # if self.voucher.vat_regime.item_vat:
+        if dd.plugins.vat.item_vat:
             self.total_incl_changed(ar)
         else:
             self.total_base_changed(ar)
@@ -365,13 +366,15 @@ class VatItemBase(VoucherItem, VatTotal):
         # self.voucher.save()
 
     def get_amount(self):
-        if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
+        # if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
+        if dd.plugins.vat.item_vat:
             return self.total_incl
         return self.total_base
 
     def set_amount(self, ar, amount):
         self.voucher.fill_defaults()
-        if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
+        # if self.voucher.vat_regime.item_vat:  # unit_price_includes_vat
+        if dd.plugins.vat.item_vat:  # unit_price_includes_vat
             self.total_incl = myround(amount)
             self.total_incl_changed(ar)
         else:

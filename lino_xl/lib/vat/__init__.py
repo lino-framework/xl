@@ -67,7 +67,7 @@ class Plugin(ad.Plugin):
     """
 
     declaration_plugin = None
-    """The plugin to use as your *national VAT implementation*.
+    """The plugin to use as your :term:`national declaration module`.
 
     Available VAT declaration plugins are:
     :mod:`lino_xl.lib.bevat`,
@@ -77,6 +77,10 @@ class Plugin(ad.Plugin):
     This can remain `None` e.g. in applicatons that use the ledger plugin for
     orders or invoicing, but don't care about general accounting functionality.
 
+    """
+
+    item_vat = False
+    """Whether item prices in trade documents are meant VAT included.
     """
 
     def get_vat_class(self, tt, item):

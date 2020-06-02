@@ -70,7 +70,7 @@ class Product(mixins.BabelNamed, Duplicable):
 
     @classmethod
     def get_product_choices(cls, partner):
-        """Return a list of products (fees) that are allowed for the specified partner.
+        """Return a list of products that are allowed for the specified partner.
         """
         Product = cls
         qs = Product.objects.filter(product_type=ProductTypes.default)
@@ -85,7 +85,7 @@ class Product(mixins.BabelNamed, Duplicable):
         # the list
 
     @classmethod
-    def get_rule_fee(cls, partner, event_type):
+    def get_ruled_price(cls, partner, selector):
         if partner is None:
             return
         for rule in rt.models.products.PriceRule.objects.order_by('seqno'):
@@ -100,12 +100,12 @@ class Product(mixins.BabelNamed, Duplicable):
             # if rule.tariff and rule.tariff != tariff:
             #     # print("20181128b {} != {}".format(rule.tariff, tariff))
             #     ok = False
-            if rule.event_type and rule.event_type != event_type:
+            if rule.selector and rule.selector != selector:
                 # print("20181128c {} != {}".format(rule.event_type, event_type))
                 ok = False
 
-            if ok and rule.fee is not None:
-                return rule.fee
+            if ok and rule.product is not None:
+                return rule.product
 
     def full_clean(self):
         # print("20191210", self.name, self.vat_class)
@@ -166,14 +166,14 @@ class PriceRule(Sequenced):
         verbose_name = _("Price rule")
         verbose_name_plural = _("Price rules")
 
-    # tariff = PartnerTariffs.field(blank=True)
-    event_type = dd.ForeignKey('cal.EventType', blank=True, null=True)
-    fee = dd.ForeignKey('products.Product', blank=True, null=True)
+    # allow_cascaded_delete = ["selector"]
+    selector = dd.ForeignKey(dd.plugins.products.price_selector, blank=True, null=True)
+    product = dd.ForeignKey('products.Product', blank=True, null=True)
 
 
 class PriceRules(dd.Table):
     model = "products.PriceRule"
-    column_names_tpl = "seqno {factors} #tariff event_type fee *"
+    column_names_tpl = "seqno {factors} selector product *"
     order_by = ['seqno']
 
     @classmethod

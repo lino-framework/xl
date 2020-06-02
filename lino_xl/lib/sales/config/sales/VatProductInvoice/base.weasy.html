@@ -1,0 +1,158 @@
+{%- extends "weasyprint/base.weasy.html" -%}
+{%- block pagesize %}portrait{%- endblock %}
+
+{%- block header %}
+{% set logo_file = rt.find_config_file("logo.jpg", "weasyprint") %}
+{% if logo_file %}
+<div class="header_div">
+<img src="file://{{logo_file}}" style="height:20mm">
+</div>
+{% endif %}
+{%- endblock header %}
+
+{%- block footer %}
+<div class="footer_div">
+<table><tr>
+<td style="border:none">
+{% set site_op = settings.SITE.site_config.site_company %}
+{% for ln in site_op.get_address_lines() %}
+{{ln}},
+{% endfor %}
+{#{site_op.get_address_html(sep=', ')}#}
+{{tostring(site_op.contact_details)}}
+</td><td style="text-align:right">
+{{babelattr(obj.journal, 'printed_name')}} {{obj.number}}/{{obj.accounting_period.year}}
+<br/>
+<span class="page_num_of"></span>
+<br/>
+<span class="printed_time"></span>
+</td></tr></table>
+</div>
+{%- endblock footer %}
+
+{%- block main %}
+<div style="height:15mm;"></div>
+
+<div class="recipient">
+{{_("Recipient")}}:<br>
+{{obj.recipient.get_address_html()}}
+</div>
+
+<div style="height:5mm;"></div>
+
+<p style="text-align:right;">{{_("Date")}}: {{fdl(obj.voucher_date)}}</p>
+
+<h1>{{babelattr(obj.journal, 'printed_name')}} {{obj.number}}/{{obj.accounting_period.year}}</h1>
+
+<table class="preamble">
+<tr>
+<td>
+{{_("Our reference")}}: {{obj}}
+<br>{{_("Your reference")}}: {{obj.your_ref}}
+</td>
+<td>
+{{_("Your VAT id")}}: {{obj.partner.vat_no or _("N/A")}} ({{obj.vat_regime}})
+<br>{{_("Your customer id")}}: {{obj.partner.id}}
+</td></tr></table>
+
+<div style="height:10mm;"></div>
+
+<div>
+{% block body %}
+{% if False %}
+{{as_table(rt.models.sales.ItemsByInvoicePrint.request(master_instance=obj))}}
+{% else %}
+<table border="1" width="100%">
+<tr>
+<td>{{_("Description")}}</td>
+<td>{{_("Unit price")}}</td>
+<td>{{_("Quantity")}}</td>
+{% if dd.plugins.vat.item_vat %}
+<td>{{_("Price")}}</td>
+{% else %}
+<td>{{rt.models.sales.InvoiceItem.total_base.field.verbose_name}}</td>
+{% endif %}
+</tr>
+{% for item in obj.items.order_by('seqno') %}
+<tr>
+<td>
+{% if item.description %}
+<p><b>{{item.title}}</b></p>
+{% if item.description.startswith("<") %}
+{{item.description}}
+{% else %}
+{{restify(item.description)}}
+{% endif %}
+{% else %}
+<p>{{item.title}}</p>
+{% endif %}
+</td>
+<td class="number-cell">
+{{decfmt(item.unit_price)}}
+</td>
+<td class="number-cell">
+{% if item.unit_price %}
+{{decfmt(item.qty)}}
+{% endif %}
+</td>
+<td class="number-cell">
+{% if dd.plugins.vat.item_vat %}
+{{decfmt(item.total_incl)}}
+{% else %}
+{{decfmt(item.total_base)}}
+{% endif %}
+</td>
+</tr>
+{% endfor %}
+</table>
+{% endif %}
+
+{% endblock %}
+</div>
+
+<div style="height:5mm;"></div>
+
+<div style="width:50mm; float:right;">
+<table border="1">
+<tr><td>{{_("Total excl. VAT")}}</td><td class="number-cell">{{decfmt(obj.total_base)}}</td></tr>
+<tr><td>{{_("VAT")}}</td><td class="number-cell">{{decfmt(obj.total_vat)}}</td></tr>
+<tr><td>{{_("Total incl. VAT")}}</td><td class="number-cell">{{decfmt(obj.total_incl)}}</td></tr>
+</table>
+</div>
+
+<div style="page-break-inside: avoid;">
+
+{% block payment %}
+<p class="Default">
+{% if obj.due_date %}
+{{_("Due date")}} : {{fds(obj.due_date)}}
+<br/>
+{% endif %}
+{% if obj.payment_term %}
+{{_("Payment terms")}} : {{obj.payment_term}}
+{% endif %}
+</p>
+{% endblock payment %}
+
+<div style="clear:right;"></div>
+
+{% block ending %}
+<p class="Default"">
+{{_("With best regards.")}}
+<br>
+<br>
+<br>{{this.user}}
+</p>
+<p class="Default"">
+{% set site_op = settings.SITE.site_config.site_company %}
+{% for ln in site_op.get_address_lines() %}
+{{ln}},
+{% endfor %}
+{#{site_op.get_address_html(sep=', ')}#}
+{{tostring(site_op.contact_details)}}
+</p>
+{% endblock ending %}
+
+</div>
+
+{%- endblock main %}

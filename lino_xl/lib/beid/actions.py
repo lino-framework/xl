@@ -7,7 +7,6 @@
 
 """
 import six
-from builtins import str
 import logging ; logger = logging.getLogger(__name__)
 
 import os
@@ -278,6 +277,7 @@ class BaseBeIdReadCardAction(dd.Action):
         # msg += u'\n<br/>'.join(sorted(diffs))
 
         def yes(ar2):
+            print("20200505 yes")
             msg = _("%s has been saved.") % dd.obj2unicode(obj)
             if not dd.plugins.beid.read_only_simulate:
                 for o in objects:
@@ -288,6 +288,7 @@ class BaseBeIdReadCardAction(dd.Action):
             return self.goto_client_response(ar2, obj, msg)
 
         def no(ar2):
+            print("20200505 no")
             return self.goto_client_response(ar2, oldobj)
         #~ print 20131108, msg
         cb = ar.add_callback(msg)

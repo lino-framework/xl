@@ -1,10 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016 Rumma & Ko Ltd
+# Copyright 2016-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-from __future__ import unicode_literals
-from __future__ import print_function
 
-from lino.api import rt, dd
+from lino.api import rt, dd, _
 
 
 def objects():
@@ -21,3 +19,11 @@ def objects():
         primary=True, certifying=True)
     kw.update(dd.str2kw('name', ServiceReport._meta.verbose_name))
     yield ExcerptType.update_for_model(ServiceReport, **kw)
+
+    Product = rt.models.products.Product
+    PriceRule = rt.models.products.PriceRule
+    kw = dict(sales_price="69.90")
+    kw.update(dd.str2kw('name', _("Development")))
+    obj = Product(**kw)
+    yield obj
+    yield PriceRule(product=obj)

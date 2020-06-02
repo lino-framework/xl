@@ -1,7 +1,5 @@
-# Copyright 2017 Rumma & Ko Ltd
-#
+# Copyright 2017-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
 
 from django.core.validators import validate_email, URLValidator
 
@@ -15,15 +13,16 @@ validate_url = URLValidator()
 
 class ContactDetailType(dd.Choice):
     field_name = None
-    
-    def format(self, value):
-        return value
 
     def validate(self, value):
         return value
 
     def as_html(self, obj, ar):
-        return obj.value
+        return self.format(obj.value)
+
+    def format(self, value):
+        return value
+
 
 STD = ContactDetailType
 
@@ -31,8 +30,8 @@ class EMAIL(ContactDetailType):
     def validate(self, value):
         validate_email(value)
 
-    def as_html(self, obj, ar):
-        return E.a(obj.value, href="mailto:" + obj.value)
+    def format(self, value):
+        return E.a(value, href="mailto:" + value)
 
 
 class URL(ContactDetailType):
@@ -58,5 +57,3 @@ add(STD('030', _("Phone"), 'phone', field_name="phone"))
 add(URL('040', _("Website"), 'url', field_name="url"))
 add(STD('050', _("Fax"), 'fax', field_name="fax"))
 add(STD('090', _("Other"), 'other'))
-
-

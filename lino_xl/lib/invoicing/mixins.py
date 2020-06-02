@@ -232,10 +232,14 @@ class InvoiceGenerator(dd.Model):
         if info.invoiceable_product is None:
             return
 
+        invoiceable_qty = self.get_invoiceable_qty()
+        if invoiceable_qty is None:
+            return
+
         kwargs = dict(invoiceable=self, product=info.invoiceable_product)
 
         if info.number_of_events is None:
-            qty = info.asset_to_buy * self.get_invoiceable_qty()
+            qty = info.asset_to_buy * invoiceable_qty
             kwargs.update(
                 title=self.get_invoiceable_title(), qty=qty)
             yield invoice.add_voucher_item(**kwargs)
@@ -247,9 +251,8 @@ class InvoiceGenerator(dd.Model):
         # number = 0
         while asset_to_buy > 0:
             number += 1
-            qty = self.get_invoiceable_qty()
             kwargs.update(
-                title=self.get_invoiceable_title(number), qty=qty)
+                title=self.get_invoiceable_title(number), qty=invoiceable_qty)
             yield invoice.add_voucher_item(**kwargs)
             asset_to_buy -= info.number_of_events
 
