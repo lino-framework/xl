@@ -227,6 +227,8 @@ class BaseBeIdReadCardAction(dd.Action):
             kw.update(zip_code=str(data.address_zip))
         if data.location_of_birth:
             kw.update(birth_place=data.location_of_birth)
+        if data.nationality:
+            kw.update(nationality_text=data.nationality)
 
         pk = data.eidreader_country
         country = rt.models.countries.Country.objects.get(isocode=pk)

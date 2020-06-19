@@ -71,7 +71,6 @@ class CoachingEnding(mixins.BabelNamed, mixins.Sequenced):
                     "coachings of specified type."))
 
 
-
 class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier):
 
     class Meta:
@@ -90,8 +89,7 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
     workflow_state_field = 'state'
     manager_roles_required = dd.login_required(CoachingsStaff)
 
-    client = dd.ForeignKey(
-        client_model, related_name="coachings_by_client")
+    client = dd.ForeignKey(client_model, related_name="coachings_by_client")
     type = dd.ForeignKey('coachings.CoachingType', blank=True, null=True)
     primary = models.BooleanField(_("Primary"), default=False)
 

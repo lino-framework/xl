@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from builtins import str
 
 import logging ; logger = logging.getLogger(__name__)
 
@@ -73,11 +71,7 @@ class BeIdCardHolder(SSIN):
         blank=True, null=True,
         verbose_name=_("Birth country"), related_name='by_birth_place')
 
-    birth_place = models.CharField(_("Birth place"),
-                                   max_length=200,
-                                   blank=True,
-                                   #~ null=True
-                                   )
+    birth_place = models.CharField(_("Birth place"), max_length=200, blank=True)
     card_number = models.CharField(max_length=20,
                                    blank=True,  # null=True,
                                    verbose_name=_("eID card number"))
@@ -93,6 +87,7 @@ class BeIdCardHolder(SSIN):
     card_issuer = models.CharField(max_length=50,
                                    blank=True,  # null=True,
                                    verbose_name=_("eID card issuer"))
+    nationality_text = models.CharField(_("Nationality (text)"), max_length=200, blank=True)
 
     read_beid = BeIdReadCardAction()
     find_by_beid = FindByBeIdAction()

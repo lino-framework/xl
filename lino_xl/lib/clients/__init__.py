@@ -18,12 +18,23 @@ from lino.api import ad, _
 class Plugin(ad.Plugin):
     verbose_name = _("Clients")
     needs_plugins = ['lino_xl.lib.contacts']
-    
+
     client_model = 'contacts.Person'
     """The model to which :attr:`ClientContact.client` points to."""
 
-    def post_site_startup(self, site):
+    demo_coach = ''
+    """A user for whom demo2 will create upload files."""
+
+    def on_site_startup(self, site):
+        add = site.models.uploads.Shortcuts.add_item
+        # from lino.modlib.uploads.choicelists import add_shortcut as add
+        add(self.client_model, 'id_document', _("Identifying document"),
+            target='uploads.UploadsByClient')
+
         self.client_model = site.models.resolve(self.client_model)
+        super(Plugin, self).on_site_startup(site)
+
+    def post_site_startup(self, site):
         super(Plugin, self).post_site_startup(site)
 
         if not site.is_installed('memo'):
@@ -32,7 +43,7 @@ class Plugin(ad.Plugin):
         rdm = site.plugins.memo.parser.register_django_model
         rdm('client', self.client_model,
             title=lambda obj: obj.get_full_name())
-        
+
     # def setup_main_menu(self, site, user_type, m):
     #     mg = self.get_menu_group()
     #     m = m.add_menu(mg.app_label, mg.verbose_name)
@@ -49,5 +60,3 @@ class Plugin(ad.Plugin):
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('clients.ClientContacts')
         m.add_action('clients.KnownContactTypes')
-        
-
