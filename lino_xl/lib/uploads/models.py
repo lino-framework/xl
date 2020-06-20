@@ -3,6 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 
+from django.db.models import Q
 from lino.api import dd, _
 
 from lino.modlib.uploads.models import *
@@ -86,13 +87,20 @@ class Upload(Upload, mixins.ProjectRelated, ContactRelated,
                 help_text=_("Show only uploads for clients coached by this user.")))
 
     @classmethod
+    def get_simple_parameters(cls):
+        lst = list(super(Upload, cls).get_simple_parameters())
+        lst.append('coached_by')
+        return lst
+
+    @classmethod
     def add_param_filter(cls, qs, lookup_prefix='', coached_by=None, **kwargs):
         if issubclass(settings.SITE.project_model, ClientBase):
             # print("20200619 coached_by={}, kw={}".format(coached_by, kwargs))
             if coached_by:
                 qs = settings.SITE.project_model.add_param_filter(qs, "project__", coached_by=coached_by)
-                # MyExpiringUploads wants only needed uploads
-                qs = qs.filter(needed=True)
+                # # MyExpiringUploads wants only needed uploads
+                # but its irritating to link the condition to coached_by
+                # qs = qs.filter(needed=True)
         return super(Upload, cls).add_param_filter(qs, lookup_prefix, **kwargs)
 
     def on_create(self, ar):
@@ -224,6 +232,7 @@ class MyExpiringUploads(MyUploads):
     column_names = "project type description_link user \
     start_date end_date needed *"
     order_by = ['end_date']
+    filter = Q(needed=True)
 
     @classmethod
     def param_defaults(self, ar, **kw):

@@ -17,13 +17,15 @@ def objects():
     if not dd.plugins.clients.demo_coach:
         return
     ar = rt.login(dd.plugins.clients.demo_coach)
-    user = ar.get_user()
+    # user = ar.get_user()
     # CLIENTS = Cycler(rt.models.pcsw.CoachedClients.request(user=hubert))
-    CLIENTS = Cycler(Client.get_clients_coached_by(user))
+    # CLIENTS = Cycler(Client.get_clients_coached_by(user))
+    CLIENTS = Cycler(Client.objects.all())
     if len(CLIENTS) == 0:
-        raise Exception("{} has no clients?!".format(user))
+        # raise Exception("{} has no clients?!".format(user))
+        raise Exception("No clients?!")
     UPLOAD_TYPES = Cycler(UploadType.objects.all())
-    for i in range(3):
+    for i in range(5):
         cli = CLIENTS.pop()
         for j in range(2):
             obj = Upload(

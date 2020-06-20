@@ -175,6 +175,7 @@ lino_xl.lib.online.users.fixtures
 lino_xl.lib.votes
 lino_xl.lib.votes.fixtures
 lino_xl.lib.uploads
+lino_xl.lib.uploads.fixtures
 """.splitlines() if n])
 
 SETUP_INFO.update(classifiers="""\
