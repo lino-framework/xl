@@ -41,6 +41,16 @@ class ClientBase(ChangeNotifier):
         super(ClientBase, cls).setup_parameters(fields)
 
     @classmethod
+    def get_clients_coached_by(cls, user):
+        return cls.objects.filter(user=user)
+
+    @classmethod
+    def add_param_filter(cls, qs, lookup_prefix='', coached_by=None, **kwargs):
+        if coached_by:
+            qs = qs.filter(**{lookup_prefix+'user':coached_by})
+        return super(ClientBase, cls).add_param_filter(qs, lookup_prefix, **kwargs)
+
+    @classmethod
     def get_request_queryset(self, ar, **filter):
         qs = super(ClientBase, self).get_request_queryset(ar, **filter)
 

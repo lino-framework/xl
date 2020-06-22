@@ -3,6 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 
+from django.db.models import Q
 from lino.api import dd, _
 
 from lino.modlib.uploads.models import *
@@ -10,7 +11,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.cal.utils import update_reminder
 from lino_xl.lib.cal.choicelists import Recurrencies
 from lino_xl.lib.contacts.roles import ContactsUser
-
+from lino_xl.lib.clients.mixins import ClientBase
 
 # add = UploadAreas.add_item
 # add('10', _("Job search uploads"), 'job_search')
@@ -74,6 +75,33 @@ class Upload(Upload, mixins.ProjectRelated, ContactRelated,
 
     remark = models.TextField(_("Remark"), blank=True)
     needed = models.BooleanField(_("Needed"), default=True)
+
+    @classmethod
+    def setup_parameters(cls, params):
+        super(Upload, cls).setup_parameters(params)
+        if issubclass(settings.SITE.project_model, ClientBase):
+            params.update(coached_by=dd.ForeignKey(
+                'users.User',
+                blank=True, null=True,
+                verbose_name=_("Coached by"),
+                help_text=_("Show only uploads for clients coached by this user.")))
+
+    @classmethod
+    def get_simple_parameters(cls):
+        lst = list(super(Upload, cls).get_simple_parameters())
+        lst.append('coached_by')
+        return lst
+
+    @classmethod
+    def add_param_filter(cls, qs, lookup_prefix='', coached_by=None, **kwargs):
+        if issubclass(settings.SITE.project_model, ClientBase):
+            # print("20200619 coached_by={}, kw={}".format(coached_by, kwargs))
+            if coached_by:
+                qs = settings.SITE.project_model.add_param_filter(qs, "project__", coached_by=coached_by)
+                # # MyExpiringUploads wants only needed uploads
+                # but its irritating to link the condition to coached_by
+                # qs = qs.filter(needed=True)
+        return super(Upload, cls).add_param_filter(qs, lookup_prefix, **kwargs)
 
     def on_create(self, ar):
         super(Upload, self).on_create(ar)
@@ -145,12 +173,6 @@ class Uploads(Uploads):
         #     verbose_name=_("Uploaded by")),
         upload_type=dd.ForeignKey(
             'uploads.UploadType', blank=True, null=True),
-        coached_by=dd.ForeignKey(
-            'users.User',
-            blank=True, null=True,
-            verbose_name=_("Coached by"),
-            help_text=_(
-                "Show only uploads for clients coached by this user.")),
         observed_event=dd.PeriodEvents.field(
             _("Validity"),
             blank=True, default=dd.PeriodEvents.as_callable('active')))
@@ -170,17 +192,6 @@ class Uploads(Uploads):
         ce = pv.observed_event
         if ce is not None:
             qs = ce.add_filter(qs, pv)
-
-        # if pv.puser:
-        #     qs = qs.filter(user=pv.puser)
-
-        if pv.coached_by:
-            qs = qs.filter(project__coachings_by_client__user=pv.coached_by)
-            # MyExpiringUploads wants only needed uploads
-            qs = qs.filter(needed=True)
-
-        # if pv.pupload_type:
-        #     qs = qs.filter(type=pv.pupload_type)
 
         return qs
 
@@ -221,16 +232,18 @@ class MyExpiringUploads(MyUploads):
     column_names = "project type description_link user \
     start_date end_date needed *"
     order_by = ['end_date']
+    filter = Q(needed=True)
 
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyExpiringUploads, self).param_defaults(ar, **kw)
-        kw.update(coached_by=ar.get_user())
+        if issubclass(settings.SITE.project_model, ClientBase):
+            kw['user'] = None
+            kw['coached_by'] = ar.get_user()
         kw.update(observed_event=dd.PeriodEvents.ended)
         kw.update(start_date=dd.today())
         kw.update(end_date=dd.today(365))
         return kw
-
 
 class AreaUploads(Uploads, AreaUploads):
     pass

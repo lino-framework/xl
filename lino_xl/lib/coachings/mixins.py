@@ -1,17 +1,13 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2017 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from builtins import str
 from django.conf import settings
 
 from lino.api import dd, rt, _
 from etgen.html import E
 
-# from lino.modlib.notify.mixins import ChangeNotifier
-# from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.clients.mixins import ClientBase
-
 from .utils import only_active_coachings_filter
 
 
@@ -19,6 +15,18 @@ class Coachable(ClientBase):
 
     class Meta:
         abstract = True
+
+    @classmethod
+    def get_clients_coached_by(cls, user):
+        qs = cls.objects.filter(
+            coachings_by_client__user=user, coachings_by_client__primary=True)
+        return qs
+
+    @classmethod
+    def add_param_filter(cls, qs, lookup_prefix='', coached_by=None, **kwargs):
+        if coached_by:
+            qs = qs.filter(**{lookup_prefix+'coachings_by_client__user':coached_by})
+        return super(Coachable, cls).add_param_filter(qs, lookup_prefix, **kwargs)
 
     def get_coachings(self, period=None, *args, **flt):
         qs = self.coachings_by_client.filter(*args, **flt)
@@ -33,7 +41,7 @@ class Coachable(ClientBase):
         # logger.info("20140725 qs is %s", qs)
         if qs.count() == 1:
             return qs[0]
-        
+
     def get_primary_coach(self):
         obj = self.get_primary_coaching()
         if obj is not None:
@@ -68,7 +76,7 @@ class Coachable(ClientBase):
 
     # def get_notify_message_type(self):
     #     return rt.models.notify.MessageTypes.coachings
-    
+
     def get_change_observers(self, ar=None):
         # implements lino.modlib.notify.mixins.ChangeNotifier
         for x in super(Coachable, self).get_change_observers(ar):
@@ -94,5 +102,3 @@ class Coachable(ClientBase):
                 subst_user=obj.user, current_project=self.pk)
             elems += [ar.href_to_request(sar, obj.user.username), ' ']
         return E.div(*elems)
-
-
