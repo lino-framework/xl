@@ -25,17 +25,19 @@ class Plugin(ad.Plugin):
     demo_coach = ''
     """A user for whom demo2 will create upload files."""
 
-    def on_site_startup(self, site):
-        add = site.models.uploads.Shortcuts.add_item
-        # from lino.modlib.uploads.choicelists import add_shortcut as add
+    def before_analyze(self):
+        # print("20200622a", self.client_model)
+        super(Plugin, self).before_analyze()
+        # print("20200622b", self.client_model)
+
+        # add = site.models.uploads.Shortcuts.add_item
+        from lino.modlib.uploads.choicelists import add_shortcut as add
         add(self.client_model, 'id_document', _("Identifying document"),
             target='uploads.UploadsByClient')
 
-        self.client_model = site.models.resolve(self.client_model)
-        super(Plugin, self).on_site_startup(site)
-
     def post_site_startup(self, site):
         super(Plugin, self).post_site_startup(site)
+        self.client_model = site.models.resolve(self.client_model)
 
         if not site.is_installed('memo'):
             return

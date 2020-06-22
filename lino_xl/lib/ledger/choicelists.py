@@ -388,6 +388,7 @@ def inject_tradetype_fields(sender, **kw):
     :class:`TradeTypes`.
 
     """
+    # print(20200622, list([i.invoice_account_field_name for i in TradeTypes.items()]))
     for tt in TradeTypes.items():
         if tt.invoice_account_field_name is not None:
             dd.inject_field(
