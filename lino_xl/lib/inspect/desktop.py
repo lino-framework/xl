@@ -12,7 +12,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 import re
-import cgi
+from html import escape
 import types
 import datetime
 
@@ -233,11 +233,11 @@ class Inspector(dd.VirtualTable):
 
     @dd.displayfield(_("Value"))
     def i_value(self, obj, ar):
-        return cgi.escape(str(obj.value))
+        return escape(str(obj.value), quote=False)
 
     @dd.displayfield(_("Type"))
     def i_type(self, obj, ar):
-        return cgi.escape(str(type(obj.value)))
+        return escape(str(type(obj.value)), quote=False)
 
 
 class SourceFiles(dd.VirtualTable):
