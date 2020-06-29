@@ -241,8 +241,8 @@ class MyExpiringUploads(MyUploads):
             kw['user'] = None
             kw['coached_by'] = ar.get_user()
         kw.update(observed_event=dd.PeriodEvents.ended)
-        kw.update(start_date=dd.today())
-        kw.update(end_date=dd.today(365))
+        kw.update(start_date=dd.today(dd.plugins.uploads.expiring_start))
+        kw.update(end_date=dd.today(dd.plugins.uploads.expiring_end))
         return kw
 
 class AreaUploads(Uploads, AreaUploads):
