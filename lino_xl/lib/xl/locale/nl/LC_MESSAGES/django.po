@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino.modlib.systen\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 08:09+0300\n"
+"POT-Creation-Date: 2020-07-01 23:46+0300\n"
 "PO-Revision-Date: 2014-02-05 09:34+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: nl\n"
@@ -112,11 +112,11 @@ msgstr "Adresse"
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:45
 #: lino_xl/lib/orders/models.py:92 lino_xl/lib/orders/models.py:299
 #: lino_xl/lib/orders/models.py:405 lino_xl/lib/phones/models.py:32
-#: lino_xl/lib/polls/models.py:639 lino_xl/lib/polls/models.py:644
-#: lino_xl/lib/polls/models.py:779 lino_xl/lib/sepa/models.py:36
+#: lino_xl/lib/polls/models.py:646 lino_xl/lib/polls/models.py:653
+#: lino_xl/lib/polls/models.py:788 lino_xl/lib/sepa/models.py:36
 #: lino_xl/lib/thirds/models.py:29 lino_xl/lib/tickets/models.py:208
 #: lino_xl/lib/topics/models.py:88 lino_xl/lib/trends/models.py:92
-#: lino_xl/lib/uploads/models.py:75
+#: lino_xl/lib/uploads/models.py:76
 msgid "Remark"
 msgstr ""
 
@@ -2290,7 +2290,7 @@ msgid "Done"
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:176 lino_xl/lib/cal/choicelists.py:266
-#: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/ledger/choicelists.py:439
+#: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/ledger/choicelists.py:440
 #: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/orders/choicelists.py:20
 #: lino_xl/lib/rooms/models.py:26 lino_xl/lib/votes/choicelists.py:80
 #, fuzzy
@@ -2362,7 +2362,7 @@ msgid "Suggested"
 msgstr ""
 
 #: lino_xl/lib/cal/choicelists.py:250 lino_xl/lib/courses/choicelists.py:29
-#: lino_xl/lib/ledger/choicelists.py:436 lino_xl/lib/meetings/choicelists.py:27
+#: lino_xl/lib/ledger/choicelists.py:437 lino_xl/lib/meetings/choicelists.py:27
 #: lino_xl/lib/polls/utils.py:16 lino_xl/lib/polls/utils.py:35
 #: lino_xl/lib/rooms/models.py:23 lino_xl/lib/tickets/choicelists.py:75
 msgid "Draft"
@@ -2544,7 +2544,7 @@ msgstr[0] ""
 msgstr[1] ""
 
 #: lino_xl/lib/cal/mixins.py:755 lino_xl/lib/courses/choicelists.py:23
-#: lino_xl/lib/ledger/choicelists.py:431
+#: lino_xl/lib/ledger/choicelists.py:432
 #, fuzzy
 msgid "Editable"
 msgstr "Site"
@@ -3302,7 +3302,7 @@ msgstr ""
 msgid "Clients"
 msgstr "EmpfängerEmpfänger"
 
-#: lino_xl/lib/clients/__init__.py:31 lino_xl/lib/uploads/fixtures/std.py:37
+#: lino_xl/lib/clients/__init__.py:35 lino_xl/lib/uploads/fixtures/std.py:37
 msgid "Identifying document"
 msgstr ""
 
@@ -3428,7 +3428,7 @@ msgstr ""
 msgid "Coaching"
 msgstr ""
 
-#: lino_xl/lib/coachings/desktop.py:41 lino_xl/lib/uploads/models.py:85
+#: lino_xl/lib/coachings/desktop.py:41 lino_xl/lib/uploads/models.py:86
 #, fuzzy
 msgid "Coached by"
 msgstr "Verknüpft mit"
@@ -6404,35 +6404,35 @@ msgstr "Änderung"
 msgid "Bank payment orders"
 msgstr ""
 
-#: lino_xl/lib/ledger/choicelists.py:423
+#: lino_xl/lib/ledger/choicelists.py:424
 #, fuzzy
 msgid "Voucher state"
 msgstr "Thema"
 
-#: lino_xl/lib/ledger/choicelists.py:424
+#: lino_xl/lib/ledger/choicelists.py:425
 #, fuzzy
 msgid "Voucher states"
 msgstr "Letzte Seite"
 
-#: lino_xl/lib/ledger/choicelists.py:437 lino_xl/lib/polls/utils.py:36
+#: lino_xl/lib/ledger/choicelists.py:438 lino_xl/lib/polls/utils.py:36
 #: lino_xl/lib/rooms/models.py:25
 #, fuzzy
 msgid "Registered"
 msgstr "Entregistrieren"
 
-#: lino_xl/lib/ledger/choicelists.py:438
+#: lino_xl/lib/ledger/choicelists.py:439
 #, fuzzy
 msgid "Signed"
 msgstr "Drucken"
 
-#: lino_xl/lib/ledger/choicelists.py:446 lino_xl/lib/ledger/choicelists.py:452
-#: lino_xl/lib/ledger/choicelists.py:453 lino_xl/lib/polls/utils.py:40
+#: lino_xl/lib/ledger/choicelists.py:447 lino_xl/lib/ledger/choicelists.py:453
+#: lino_xl/lib/ledger/choicelists.py:454 lino_xl/lib/polls/utils.py:40
 #, fuzzy
 msgid "Register"
 msgstr "Entregistrieren"
 
-#: lino_xl/lib/ledger/choicelists.py:448 lino_xl/lib/ledger/choicelists.py:456
-#: lino_xl/lib/ledger/choicelists.py:458 lino_xl/lib/polls/utils.py:42
+#: lino_xl/lib/ledger/choicelists.py:449 lino_xl/lib/ledger/choicelists.py:457
+#: lino_xl/lib/ledger/choicelists.py:459 lino_xl/lib/polls/utils.py:42
 #, fuzzy
 msgid "Deregister"
 msgstr "Entregistrieren"
@@ -7710,8 +7710,8 @@ msgstr ""
 msgid "Results"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:200 lino_xl/lib/polls/models.py:576
-#: lino_xl/lib/polls/models.py:605
+#: lino_xl/lib/polls/models.py:200 lino_xl/lib/polls/models.py:583
+#: lino_xl/lib/polls/models.py:612
 #, fuzzy
 msgid "Question"
 msgstr "Omschrijving"
@@ -7727,7 +7727,7 @@ msgctxt "polls"
 msgid "Title"
 msgstr "Site"
 
-#: lino_xl/lib/polls/models.py:306 lino_xl/lib/polls/models.py:775
+#: lino_xl/lib/polls/models.py:306 lino_xl/lib/polls/models.py:784
 msgid "Response"
 msgstr ""
 
@@ -7757,7 +7757,7 @@ msgstr ""
 msgid "Answer Choices"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:431 lino_xl/lib/polls/models.py:659
+#: lino_xl/lib/polls/models.py:431 lino_xl/lib/polls/models.py:668
 msgid "My answer"
 msgstr ""
 
@@ -7774,25 +7774,25 @@ msgstr ""
 msgid "My remark"
 msgstr "Jahre"
 
-#: lino_xl/lib/polls/models.py:529 lino_xl/lib/polls/models.py:756
+#: lino_xl/lib/polls/models.py:535 lino_xl/lib/polls/models.py:765
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:54
 msgid "N/A"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:581 lino_xl/lib/polls/models.py:761
+#: lino_xl/lib/polls/models.py:588 lino_xl/lib/polls/models.py:770
 msgid "Answers"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:783
+#: lino_xl/lib/polls/models.py:792
 #, fuzzy
 msgid "Answer"
 msgstr "Aktualisierung"
 
-#: lino_xl/lib/polls/models.py:804
+#: lino_xl/lib/polls/models.py:813
 msgid "#Answers"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:809
+#: lino_xl/lib/polls/models.py:818
 msgid "A1"
 msgstr ""
 
@@ -9201,54 +9201,54 @@ msgstr "Benutzer-Level"
 msgid "Trend events"
 msgstr "Benutzer-Level"
 
-#: lino_xl/lib/uploads/models.py:26
+#: lino_xl/lib/uploads/models.py:27
 msgid "Expiry warning (unit)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:30
+#: lino_xl/lib/uploads/models.py:31
 msgid "Expiry warning (value)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:76
+#: lino_xl/lib/uploads/models.py:77
 msgid "Needed"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:86
+#: lino_xl/lib/uploads/models.py:87
 msgid "Show only uploads for clients coached by this user."
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:128
+#: lino_xl/lib/uploads/models.py:129
 #, fuzzy, python-format
 msgid "%s expires"
 msgstr "Auswahlmöglichkeiten für %s"
 
-#: lino_xl/lib/uploads/models.py:134
+#: lino_xl/lib/uploads/models.py:135
 #, fuzzy
 msgid "Issued by (Organization)"
 msgstr "Omschrijving"
 
-#: lino_xl/lib/uploads/models.py:137
+#: lino_xl/lib/uploads/models.py:138
 msgid "Issued by (Person)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:138
+#: lino_xl/lib/uploads/models.py:139
 msgid "Valid from"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:139
+#: lino_xl/lib/uploads/models.py:140
 #, fuzzy
 msgid "Valid until"
 msgstr "Drucken"
 
-#: lino_xl/lib/uploads/models.py:176
+#: lino_xl/lib/uploads/models.py:177
 msgid "Validity"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:229
+#: lino_xl/lib/uploads/models.py:230
 msgid "My expiring upload files"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:230
+#: lino_xl/lib/uploads/models.py:231
 msgid "Show needed files whose validity expires soon"
 msgstr ""
 

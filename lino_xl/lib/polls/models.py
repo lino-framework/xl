@@ -493,10 +493,14 @@ class AnswerRemarkField(dd.VirtualField):
 
     def set_value_in_object(self, ar, obj, value):
         #~ e = self.get_entry_from_answer(obj)
+        if not isinstance(obj, AnswersByResponseRow):
+            raise Exception("{} is not AnswersByResponseRow".format(obj.__class__))
         obj.remark.remark = value
         obj.remark.save()
 
     def value_from_object(self, obj, ar):
+        if not isinstance(obj, AnswersByResponseRow):
+            raise Exception("{} is not AnswersByResponseRow".format(obj.__class__))
         #~ logger.info("20120118 value_from_object() %s",dd.obj2str(obj))
         #~ e = self.get_entry_from_answer(obj)
         return obj.remark.remark
@@ -504,8 +508,9 @@ class AnswerRemarkField(dd.VirtualField):
 
 
 class AnswersByResponseRow(TableRow):
-    FORWARD_TO_QUESTION = tuple(
-        "full_clean after_ui_save disable_delete save_new_instance save_watched_instance delete_instance".split())
+
+    FORWARD_TO_QUESTION = ("full_clean", "after_ui_save", "disable_delete",
+    "save_new_instance", "save_watched_instance", "delete_instance")
 
     def __init__(self, response, question):
         self.response = response
@@ -523,6 +528,7 @@ class AnswersByResponseRow(TableRow):
             question=question, response=response)
         for k in self.FORWARD_TO_QUESTION:
             setattr(self, k, getattr(question, k))
+            # setattr(self, k, getattr(self.remark, k))
 
     def __str__(self):
         if self.choices.count() == 0:
@@ -549,6 +555,7 @@ class AnswersByResponseRow(TableRow):
 
 class AnswersByResponseBase(dd.VirtualTable):
     master = 'polls.Response'
+    # model = AnswersByResponseRow
 
     @classmethod
     def get_data_rows(self, ar):
@@ -626,13 +633,13 @@ class AnswersByResponseEditor(AnswersByResponseBase):
             cells = [self.question.value_from_object(answer, ar)]
             for r in all_responses:
                 if editable and r == response:
-                    insert.known_values.update(question=answer.question)
-                    detail.known_values.update(question=answer.question)
                     items = [
                         self.answer_buttons.value_from_object(answer, ar)]
                     if answer.remark.remark:
                         items += [E.br(), answer.remark.remark]
                     if answer.remark.pk:
+                        detail.clear_cached_status()
+                        detail.known_values.update(question=answer.question)
                         items += [
                             ' ',
                             detail.ar2button(
@@ -640,6 +647,8 @@ class AnswersByResponseEditor(AnswersByResponseBase):
                                 icon_name=None)]
                             # ar.obj2html(answer.remark, _("Remark"))]
                     else:
+                        insert.clear_cached_status()
+                        insert.known_values.update(question=answer.question)
                         btn = insert.ar2button(
                             answer.remark, _("Remark"), icon_name=None)
                         # sar = RemarksByAnswer.request_from(ar, answer)
