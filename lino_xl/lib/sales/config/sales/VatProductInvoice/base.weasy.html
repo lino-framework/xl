@@ -12,8 +12,9 @@
 
 {%- block footer %}
 <div class="footer_div">
-<table><tr>
-<td style="border:none">
+<table class="footer">
+<tr>
+<td>
 {% set site_op = settings.SITE.site_config.site_company %}
 {% for ln in site_op.get_address_lines() %}
 {{ln}},
@@ -64,13 +65,13 @@
 {% else %}
 <table border="1" width="100%">
 <tr>
-<td>{{_("Description")}}</td>
-<td>{{_("Unit price")}}</td>
-<td>{{_("Quantity")}}</td>
+<th>{{_("Description")}}</th>
+<th>{{_("Unit price")}}</th>
+<th>{{_("Quantity")}}</th>
 {% if dd.plugins.vat.item_vat %}
-<td>{{_("Price")}}</td>
+<th>{{_("Price")}}</th>
 {% else %}
-<td>{{rt.models.sales.InvoiceItem.total_base.field.verbose_name}}</td>
+<th>{{rt.models.sales.InvoiceItem.total_base.field.verbose_name}}</th>
 {% endif %}
 </tr>
 {% for item in obj.items.order_by('seqno') %}

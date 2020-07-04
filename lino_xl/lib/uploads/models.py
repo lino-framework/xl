@@ -2,7 +2,6 @@
 # Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 from django.db.models import Q
 from lino.api import dd, _
 
@@ -163,7 +162,7 @@ class Uploads(Uploads):
 
     insert_layout = """
     type file
-    start_date end_date
+    start_date end_date needed
     description
     """
 
@@ -252,7 +251,7 @@ class AreaUploads(Uploads, AreaUploads):
 class UploadsByController(Uploads, UploadsByController):
     insert_layout = """
     file
-    type end_date
+    type end_date needed
     description
     """
 
@@ -267,7 +266,7 @@ class UploadsByClient(AreaUploads, UploadsByController):
 
     insert_layout = """
     file
-    type end_date
+    type end_date needed
     description
     """
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino 1.6.14\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2020-07-01 23:46+0300\n"
+"POT-Creation-Date: 2020-07-04 11:42+0300\n"
 "PO-Revision-Date: 2014-06-06 11:29+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmx.net>\n"
 "Language: es\n"
@@ -109,7 +109,7 @@ msgstr ""
 #: lino_xl/lib/polls/models.py:788 lino_xl/lib/sepa/models.py:36
 #: lino_xl/lib/thirds/models.py:29 lino_xl/lib/tickets/models.py:208
 #: lino_xl/lib/topics/models.py:88 lino_xl/lib/trends/models.py:92
-#: lino_xl/lib/uploads/models.py:76
+#: lino_xl/lib/uploads/models.py:75
 msgid "Remark"
 msgstr ""
 
@@ -186,7 +186,7 @@ msgstr ""
 #: lino_xl/lib/ledger/ui.py:1041 lino_xl/lib/ledger/ui.py:1090
 #: lino_xl/lib/ledger/ui.py:1129 lino_xl/lib/ledger/ui.py:1170
 #: lino_xl/lib/meetings/models.py:69 lino_xl/lib/orders/models.py:91
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:67
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:68
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:31
 #: lino_xl/lib/sales/mixins.py:80 lino_xl/lib/sales/models.py:339
 #: lino_xl/lib/sheets/models.py:239 lino_xl/lib/skills/models.py:100
@@ -2557,7 +2557,7 @@ msgstr ""
 
 #: lino_xl/lib/cal/models.py:256 lino_xl/lib/ledger/mixins.py:99
 #: lino_xl/lib/ledger/ui.py:361 lino_xl/lib/ledger/ui.py:760
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:128
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:129
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:75
 msgid "Due date"
 msgstr ""
@@ -2825,7 +2825,7 @@ msgstr ""
 #: lino_xl/lib/events/models.py:78 lino_xl/lib/finan/mixins.py:327
 #: lino_xl/lib/notes/models.py:118 lino_xl/lib/outbox/models.py:208
 #: lino_xl/lib/polls/models.py:311
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:43
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:44
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:19
 #: lino_xl/lib/trends/models.py:88
 msgid "Date"
@@ -3207,7 +3207,7 @@ msgstr ""
 msgid "Coaching"
 msgstr ""
 
-#: lino_xl/lib/coachings/desktop.py:41 lino_xl/lib/uploads/models.py:86
+#: lino_xl/lib/coachings/desktop.py:41 lino_xl/lib/uploads/models.py:85
 msgid "Coached by"
 msgstr ""
 
@@ -4652,7 +4652,7 @@ msgstr ""
 
 #: lino_xl/lib/excerpts/config/excerpts/base.body.html:5
 #: lino_xl/lib/orders/models.py:85
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:50
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:51
 msgid "Our reference"
 msgstr ""
 
@@ -4749,7 +4749,7 @@ msgstr ""
 
 #: lino_xl/lib/finan/mixins.py:38 lino_xl/lib/finan/mixins.py:114
 #: lino_xl/lib/ledger/mixins.py:98
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:51
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:52
 msgid "Your reference"
 msgstr ""
 
@@ -5780,7 +5780,7 @@ msgid "Purchases"
 msgstr ""
 
 #: lino_xl/lib/ledger/choicelists.py:46
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:118
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:119
 #: lino_xl/lib/vat/__init__.py:25 lino_xl/lib/vat/mixins.py:60
 msgid "VAT"
 msgstr ""
@@ -6071,7 +6071,7 @@ msgid "Payment term"
 msgstr ""
 
 #: lino_xl/lib/ledger/models.py:420
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:132
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:133
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:79
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/trailer.html:10
 msgid "Payment terms"
@@ -6847,7 +6847,7 @@ msgstr ""
 
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:44
 #: lino_xl/lib/orders/models.py:403
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:69
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:70
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:33
 #: lino_xl/lib/vat/mixins.py:431
 msgid "Quantity"
@@ -6931,7 +6931,7 @@ msgid "Create email"
 msgstr ""
 
 #: lino_xl/lib/outbox/models.py:44 lino_xl/lib/postings/models.py:75
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:37
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:38
 msgid "Recipient"
 msgstr ""
 
@@ -7188,7 +7188,7 @@ msgid "My remark"
 msgstr ""
 
 #: lino_xl/lib/polls/models.py:535 lino_xl/lib/polls/models.py:765
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:54
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:55
 msgid "N/A"
 msgstr ""
 
@@ -7687,35 +7687,35 @@ msgstr ""
 msgid "Going to sign %d documents as user %s. Are you sure?"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:54
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:55
 msgid "Your VAT id"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:55
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:56
 msgid "Your customer id"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:68
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:69
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:32
 #: lino_xl/lib/vat/mixins.py:430
 msgid "Unit price"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:71
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:72
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:34
 msgid "Price"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:117
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:118
 #: lino_xl/lib/vat/mixins.py:59
 msgid "Total excl. VAT"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:119
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:120
 msgid "Total incl. VAT"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:141
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:142
 msgid "With best regards."
 msgstr ""
 
@@ -8499,52 +8499,52 @@ msgstr ""
 msgid "Trend events"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:27
+#: lino_xl/lib/uploads/models.py:26
 msgid "Expiry warning (unit)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:31
+#: lino_xl/lib/uploads/models.py:30
 msgid "Expiry warning (value)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:77
+#: lino_xl/lib/uploads/models.py:76
 msgid "Needed"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:87
+#: lino_xl/lib/uploads/models.py:86
 msgid "Show only uploads for clients coached by this user."
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:129
+#: lino_xl/lib/uploads/models.py:128
 #, python-format
 msgid "%s expires"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:135
+#: lino_xl/lib/uploads/models.py:134
 msgid "Issued by (Organization)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:138
+#: lino_xl/lib/uploads/models.py:137
 msgid "Issued by (Person)"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:139
+#: lino_xl/lib/uploads/models.py:138
 msgid "Valid from"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:140
+#: lino_xl/lib/uploads/models.py:139
 msgid "Valid until"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:177
+#: lino_xl/lib/uploads/models.py:176
 msgid "Validity"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:230
+#: lino_xl/lib/uploads/models.py:229
 msgid "My expiring upload files"
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:231
+#: lino_xl/lib/uploads/models.py:230
 msgid "Show needed files whose validity expires soon"
 msgstr ""
 
