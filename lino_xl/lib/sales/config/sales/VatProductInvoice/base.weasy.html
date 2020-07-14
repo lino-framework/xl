@@ -1,21 +1,13 @@
 {%- extends "weasyprint/base.weasy.html" -%}
 {%- block pagesize %}portrait{%- endblock %}
 
-{%- block header %}
-{% set logo_file = rt.find_config_file("logo.jpg", "weasyprint") %}
-{% if logo_file %}
-<div class="header_div">
-<img src="file://{{logo_file}}" style="height:20mm">
-</div>
-{% endif %}
-{%- endblock header %}
-
 {%- block footer %}
+{% set site_op = settings.SITE.site_config.site_company %}
+{% if site_op  %}
 <div class="footer_div">
 <table class="footer">
 <tr>
 <td>
-{% set site_op = settings.SITE.site_config.site_company %}
 {% for ln in site_op.get_address_lines() %}
 {{ln}},
 {% endfor %}
@@ -29,6 +21,7 @@
 <span class="printed_time"></span>
 </td></tr></table>
 </div>
+{%- endif %}
 {%- endblock footer %}
 
 {%- block main %}

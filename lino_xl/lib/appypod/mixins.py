@@ -1,9 +1,8 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import os
-from builtins import str
 
 from django.conf import settings
 from lino.utils import format_date

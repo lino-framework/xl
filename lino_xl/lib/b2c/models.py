@@ -57,11 +57,11 @@ class ImportStatements(dd.Action):
         dd.logger.info("Importing file %s ...", filename)
         Account = rt.models.b2c.Account
         parser = CamtParser()
-        data_file = open(filename, 'rb').read()
+        data_file = open(filename, 'rb')
         # imported_statements = 0
         self.imported_files += 1
         failed_statements = 0
-        for stmt in parser.parse(data_file):
+        for stmt in parser.parse(data_file.read()):
             iban = stmt.local_account
             if iban is None:
                 dd.logger.warning("Statement %s has no IBAN", stmt)
@@ -176,6 +176,7 @@ class ImportStatements(dd.Action):
                 account.full_clean()
                 account.save()
 
+        data_file.close()
         if failed_statements > 0:
             dd.logger.warning(
                 "%d statements were NOT imported from %s",

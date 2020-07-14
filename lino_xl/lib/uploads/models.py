@@ -155,7 +155,7 @@ LibraryUploads = Uploads
 
 
 class Uploads(Uploads):
-    column_names = 'user project type file start_date end_date ' \
+    column_names = 'user project type file start_date end_date needed ' \
                    'description_link *'
 
     detail_layout = UploadDetail()

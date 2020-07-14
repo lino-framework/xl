@@ -1,21 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
-from __future__ import print_function
-
-# import logging
-# logger = logging.getLogger(__name__)
 
 import os
 from copy import copy
-import six
 from io import open
-# from decimal import Decimal
 
-# from builtins import str
 
 try:
     from appy.pod.renderer import Renderer as OriginalAppyRenderer
@@ -176,7 +166,7 @@ class AppyRenderer(OriginalAppyRenderer):
         try:
             return self.renderXhtml(html, **kw)
         except Exception as e:
-            if not isinstance(html, six.string_types):
+            if not isinstance(html, str):
                 raise
             # some sax parsers refuse unicode strings.
             # appy.pod always expects utf-8 encoding.
@@ -204,21 +194,17 @@ class AppyRenderer(OriginalAppyRenderer):
         #~ insert_marker = insert_marker.encode('utf-8')
         #~ chunk = chunk.encode('utf-8')
         fn = os.path.join(root, leaf)
-        fd = open(fn, encoding='utf-8')
-        s = fd.read()
-        fd.close()
-        chunks = s.split(insert_marker)
-        if len(chunks) != 2:
-            raise Exception("%s contains more than one %s element ?!" %
-                            (fn, insert_marker))
-        #~ ss = ''.join(self.my_automaticstyles.values())
-        #~ print 20120419, ss
-        s = chunks[0] + insert_marker + chunk + chunks[1]
-        #~ fd = open('tmp.xml',"w")
-        fd = open(fn, "w",encoding='utf-8')
-        #~ fd.write(s)
-        fd.write(s)
-        fd.close()
+        with open(fn, encoding='utf-8') as fd:
+            s = fd.read()
+            chunks = s.split(insert_marker)
+            if len(chunks) != 2:
+                raise Exception("%s contains more than one %s element ?!" %
+                                (fn, insert_marker))
+            #~ ss = ''.join(self.my_automaticstyles.values())
+            #~ print 20120419, ss
+            s = chunks[0] + insert_marker + chunk + chunks[1]
+        with open(fn, "w", encoding='utf-8') as fd:
+            fd.write(s)
         #~ raise Exception(fn)
 
     def add_style(self, name, **kw):
