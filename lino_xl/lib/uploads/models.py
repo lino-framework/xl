@@ -78,12 +78,19 @@ class Upload(Upload, mixins.ProjectRelated, ContactRelated,
     @classmethod
     def setup_parameters(cls, params):
         super(Upload, cls).setup_parameters(params)
-        if issubclass(settings.SITE.project_model, ClientBase):
-            params.update(coached_by=dd.ForeignKey(
-                'users.User',
-                blank=True, null=True,
-                verbose_name=_("Coached by"),
-                help_text=_("Show only uploads for clients coached by this user.")))
+        params.update(coached_by=dd.ForeignKey(
+            'users.User',
+            blank=True, null=True,
+            verbose_name=_("Coached by"),
+            help_text=_("Show only uploads for clients coached by this user.")))
+        # if issubclass(settings.SITE.project_model, ClientBase):
+        #     params.update(coached_by=dd.ForeignKey(
+        #         'users.User',
+        #         blank=True, null=True,
+        #         verbose_name=_("Coached by"),
+        #         help_text=_("Show only uploads for clients coached by this user.")))
+        # else:
+        #     params.update(coached_by=dd.DummyField())
 
     @classmethod
     def get_simple_parameters(cls):
