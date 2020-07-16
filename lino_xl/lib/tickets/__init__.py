@@ -30,17 +30,17 @@ class Plugin(ad.Plugin):
 
     site_model = 'tickets.Site'
     """
-    The model to be used for representing "sites". 
+    The model to be used for representing "sites".
     """
 
     milestone_model = 'meetings.Meeting'
     """
-    The model to be used for representing "milestones". 
+    The model to be used for representing "milestones".
     """
 
     end_user_model = 'contacts.Partner'
     """
-    The model to be used for representing "end users". 
+    The model to be used for representing "end users".
     """
 
     def on_site_startup(self, site):
@@ -48,7 +48,7 @@ class Plugin(ad.Plugin):
         self.milestone_model = site.models.resolve(self.milestone_model)
         self.end_user_model = site.models.resolve(self.end_user_model)
         super(Plugin, self).on_site_startup(site)
-        
+
     def setup_main_menu(self, site, user_type, m):
         p = self.get_menu_group()
         m = m.add_menu(p.app_label, p.verbose_name)
@@ -89,13 +89,12 @@ class Plugin(ad.Plugin):
         #m.add_action('tickets.Subscriptions')
         # m.add_action('tickets.AllCompetences')
         # m.add_action('tickets.AllWishes')
-        
+
     def get_dashboard_items(self, user):
-        if user.authenticated:
+        if user.is_authenticated:
             yield self.site.models.tickets.MyTickets
             yield self.site.models.tickets.MySites
             # yield self.site.models.tickets.MyTicketsToWork #in noi
             yield self.site.models.tickets.TicketsToTriage
         else:
             yield self.site.models.tickets.PublicTickets
-    

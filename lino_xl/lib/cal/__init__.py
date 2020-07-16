@@ -120,7 +120,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         from lino.core.dashboard import ActorItem
 
-        if user.authenticated:
+        if user.is_authenticated:
             # yield self.site.models.cal.LastWeek
             # yield self.site.models.cal.ComingWeek
             yield self.site.models.cal.MyTasks

@@ -31,14 +31,14 @@ class Workable(dd.Model):
         return True
 
     if dd.is_installed('working'):
-        
+
         start_session = StartTicketSession()
         end_session = EndTicketSession()
 
         def disabled_fields(self, ar):
             s = super(Workable, self).disabled_fields(ar)
             user = ar.get_user()
-            if not (user.authenticated and self.is_workable_for(user)):
+            if not (user.is_authenticated and self.is_workable_for(user)):
                 s.add('start_session')
                 s.add('end_session')
                 return s
@@ -51,7 +51,7 @@ class Workable(dd.Model):
             else:
                 s.add('end_session')
             return s
-            
+
         def save_new_instance(elem, ar):
             super(Workable, elem).save_new_instance(ar)
 
@@ -63,5 +63,3 @@ class Workable(dd.Model):
                 ses = rt.models.working.Session(ticket=elem, user=me)
                 ses.full_clean()
                 ses.save()
-
-

@@ -35,7 +35,7 @@ class Plugin(ad.Plugin):
         # print("votes.on_site_startup")
         self.votable_model = resolve_model(self.votable_model)
         super(Plugin, self).on_site_startup(site)
-        
+
     def setup_main_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # mg = site.plugins[self.votable_model._meta.app_label]
@@ -55,7 +55,7 @@ class Plugin(ad.Plugin):
         m.add_action('votes.VoteStates')
 
     def get_dashboard_items(self, user):
-        if user.authenticated:
+        if user.is_authenticated:
             yield self.site.models.votes.MyInvitations
             yield self.site.models.votes.MyTasks
             # yield self.site.models.votes.MyOffers

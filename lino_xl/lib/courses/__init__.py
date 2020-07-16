@@ -25,7 +25,7 @@ from lino.api import ad, _
 class Plugin(ad.Plugin):
     verbose_name = _("Activities")
     teacher_model = 'contacts.Person'
-    
+
     teacher_label = _("Instructor")
     """The verbose name of pointers to teacher_model. """
 
@@ -50,7 +50,7 @@ class Plugin(ad.Plugin):
         if not issubclass(self.pupil_model, Enrollable):
             if False: # disabled because it causes sphinx-build to fail
                 site.logger.warning(
-                    "pupil_model must be enrollable but %s isn't", 
+                    "pupil_model must be enrollable but %s isn't",
                     self.pupil_model)
 
         # name = site.models.courses.Course._meta.verbose_name
@@ -62,7 +62,7 @@ class Plugin(ad.Plugin):
         # site.models.courses.EnrolmentStates.verbose_name_plural = format_lazy(_("{} states"), name)
 
         super(Plugin, self).on_site_startup(site)
-        
+
     def setup_main_menu(self, site, user_type, main):
         m = main.add_menu(self.app_label, self.verbose_name)
         m.add_action('courses.MyCourses')
@@ -96,7 +96,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
-        if user.authenticated:
+        if user.is_authenticated:
             yield self.site.models.courses.MyCoursesGiven
             yield self.site.models.courses.MyCourses
         yield self.site.models.courses.StatusReport
