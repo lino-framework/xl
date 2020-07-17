@@ -176,7 +176,7 @@ class BeIdCardHolder(SSIN):
             old = getattr(self, fldname)
             if old != new:
                 diffs.append(
-                    u"{} : {} -> {}".format(
+                    "{} : {} -> {}".format(
                         str(fld.verbose_name), dd.obj2str(old), dd.obj2str(new)))
                 setattr(self, fld.name, new)
         return objects, diffs
