@@ -11,7 +11,7 @@ import os
 from clint.textui import puts, progress
 from django.conf import settings
 from django.db import models
-from atelier.utils import AttrDict
+from lino.utils import AttrDict
 from lino.api import dd, rt
 from lino.utils import dbfreader
 from lino_xl.lib.ledger.utils import DEBIT, CREDIT

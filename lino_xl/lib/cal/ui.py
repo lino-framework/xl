@@ -248,21 +248,19 @@ class MyTasks(Tasks):
     required_roles = dd.login_required(OfficeUser)
     column_names = 'priority start_date summary workflow_buttons project'
     params_panel_hidden = True
-    default_end_date_offset = 30
-    """Number of days to go into the future. The default value for
-    :attr:`end_date` will be :meth:`today
-    <lino.core.site.Site.today>` + that number of days.
-
-    """
+    # default_end_date_offset = 30 # replaced by Plugin.mytasks_end_date
 
     @classmethod
     def param_defaults(self, ar, **kw):
+        cfg = dd.plugins.cal
         kw = super(MyTasks, self).param_defaults(ar, **kw)
         kw.update(user=ar.get_user())
         kw.update(state=TaskStates.todo)
-        # kw.update(start_date=settings.SITE.today())
-        kw.update(end_date=settings.SITE.today(
-            self.default_end_date_offset))
+        if cfg.mytasks_start_date is not None:
+            kw.update(start_date=settings.SITE.today(cfg.mytasks_start_date))
+        if cfg.mytasks_end_date is not None:
+            kw.update(end_date=settings.SITE.today(cfg.mytasks_end_date))
+            # self.default_end_date_offset))
         return kw
 
 

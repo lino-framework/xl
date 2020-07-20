@@ -53,6 +53,17 @@ class Plugin(ad.Plugin):
     default_guest_state = 'invited'
     """Default value for the Guest.state field."""
 
+    mytasks_start_date = None
+    """Offset (in days from today) to compute the default value
+    for :attr:`MyTasks.start_date`.  `None` means no start date.
+
+    """
+
+    mytasks_end_date = 30
+    """Offset (in days from today) to compute the default value
+    for :attr:`MyTasks.end_date`.  `None` means no end date."""
+
+
     def on_init(self):
         tod = self.site.today()
         # self.ignore_dates_after = tod.replace(year=tod.year+5, day=28)

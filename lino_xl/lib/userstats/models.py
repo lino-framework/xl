@@ -11,7 +11,7 @@ from lino.api import dd, rt, _
 
 import datetime
 from lino.modlib.summaries.mixins import MonthlySummarized
-# from atelier.utils import last_day_of_month
+# from lino.utils import last_day_of_month
 from lino.modlib.system.choicelists import PeriodEvents
 
 class UserStat(MonthlySummarized):
