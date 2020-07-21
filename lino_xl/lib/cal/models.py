@@ -902,7 +902,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         super(Event, cls).on_analyze(lino)
 
     def auto_type_changed(self, ar):
-        if self.auto_type:
+        if self.auto_type and self.owner:
             self.summary = self.owner.update_cal_summary(
                 self.event_type, self.auto_type)
 
@@ -979,7 +979,11 @@ class ObsoleteEventTypeChecker(EntryChecker):
             return
         if obj.owner is None:
             msg = _("Has auto_type but no owner.")
-            yield (False, msg)
+            yield (True, msg)
+            if fix:
+                obj.auto_type = None
+                obj.full_clean()
+                obj.save()
             return
         et = obj.owner.update_cal_event_type()
         if obj.event_type != et:
