@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 
-from atelier.sphinxconf.base import py2url_txt
+from rstgen.utils import py2url_txt
 from django.conf import settings
 from django.db import models
 from django.db.models import Q
