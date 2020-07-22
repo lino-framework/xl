@@ -15,15 +15,13 @@
 
 """
 
-from __future__ import unicode_literals, print_function
-
 from clint.textui import progress
 
 from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 from django.db import DEFAULT_DB_ALIAS
 
-from atelier.utils import confirm
+from rstgen.utils import confirm
 from lino.api import dd, rt
 
 from lino.core.requests import BaseRequest
@@ -99,5 +97,5 @@ class Command(BaseCommand):
                     "This is going to rebuild all ledger movements "
                     "in %s. Are you sure (y/n) ?" % dbname):
                 raise CommandError("User abort.")
-            
+
         reregister_vouchers(args)
