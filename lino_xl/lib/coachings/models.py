@@ -18,6 +18,7 @@ from lino.modlib.checkdata.choicelists import Checker
 
 from lino_xl.lib.clients.choicelists import ClientStates
 from .roles import CoachingsStaff
+from .mixins import ClientChecker
 
 from lino.modlib.notify.choicelists import MessageTypes
 MessageTypes.add_item('coachings', dd.plugins.coachings.verbose_name)
@@ -224,12 +225,6 @@ dd.update_field(
     related_name="%(app_label)s_%(class)s_set_by_user")
 
 
-
-class ClientChecker(Checker):
-    model = client_model
-
-    def get_responsible_user(self, obj):
-        return obj.get_primary_coach()
 
 
 
