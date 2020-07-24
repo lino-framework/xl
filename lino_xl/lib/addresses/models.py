@@ -82,11 +82,9 @@ class Address(AddressLocation):
         yield 'partner'
         yield 'address_type'
 
-
-
 Address.ADDRESS_FIELDS = dd.fields_list(
     Address,
-    'street street_no street_box addr1 addr2 zip_code city region country')
+    'street street_prefix street_no street_box addr1 addr2 zip_code city region country')
 
 
 @dd.receiver(dd.pre_ui_delete, sender=Address)

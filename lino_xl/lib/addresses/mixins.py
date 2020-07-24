@@ -1,9 +1,5 @@
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
-from __future__ import print_function
 
 from django.utils.translation import ugettext_lazy as _
 
