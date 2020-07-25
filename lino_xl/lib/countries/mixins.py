@@ -196,3 +196,9 @@ class AddressLocation(CountryRegionCity, Addressable):
     @dd.displayfield(_("Address"))
     def address_column(self, ar):
         return self.address_location(', ')
+
+
+
+AddressLocation.ADDRESS_FIELDS = dd.fields_list(
+    AddressLocation,
+    'street street_prefix street_no street_box addr1 addr2 zip_code city region country')
