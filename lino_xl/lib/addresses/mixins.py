@@ -72,15 +72,14 @@ class AddressOwner(AddressLocation):
                     addr.full_clean()
                     addr.save()
                 else:
-                    self.addresses_by_partner(p)
-
                     for o in obj.addresses_by_partner.filter(primary=True):
                         o.primary = False
                         o.save()
 
             elif pa != self:
-                for k in Address.ADDRESS_FIELDS:
-                    setattr(self, k, getattr(pa, k))
+                pa.sync_from_address(self)
+                pa.full_clean()
+                pa.save()
 
         def get_overview_elems(self, ar):
             # elems = super(AddressOwner, self).get_overview_elems(ar)

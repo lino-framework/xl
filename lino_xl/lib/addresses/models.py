@@ -43,11 +43,10 @@ class Address(AddressLocation):
         if mi is None:
             return
         if self.primary:
-            for o in mi.addresses_by_partner.exclude(id=self.id):
-                if o.primary:
-                    o.primary = False
-                    o.save()
-                    ar.set_response(refresh_all=True)
+            for o in mi.addresses_by_partner.exclude(id=self.id).filter(primary=True):
+                o.primary = False
+                o.save()
+                ar.set_response(refresh_all=True)
         mi.sync_primary_address(ar.request)
 
     def living_at_text(self):

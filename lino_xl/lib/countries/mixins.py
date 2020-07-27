@@ -218,13 +218,12 @@ class AddressLocation(CountryRegionCity, Addressable):
         return True
 
     def sync_from_address(self, other):
-        Address = self.__class__
         if other is None:
             for k in self.ADDRESS_FIELDS:
                 fld = self._meta.get_field(k)
                 setattr(self, k, fld.get_default())
         elif other != self:
-            for k in Address.ADDRESS_FIELDS:
+            for k in self.ADDRESS_FIELDS:
                 setattr(self, k, getattr(other, k))
 
 
