@@ -3,6 +3,7 @@
 
 
 from django.db import models
+from django.db.models import Q
 from lino.api import dd, rt, _
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.countries.mixins import AddressLocation
@@ -144,73 +145,151 @@ class AddressOwnerChecker(Checker):
     verbose_name = _("Check for missing or non-primary address records")
     model = AddressOwner
     messages = dict(
-        no_address=_("Owner with address, but no address record."),
         unique_not_primary=_("Unique address is not marked primary."),
-        no_primary=_("Multiple addresses, but none is primary."),
-        # invalid_partner_model=_("Invalid partner model."),
-        multiple_primary=_("Multiple primary addresses."),
-        primary_differs=_("Primary address differs from owner address ({0})."),
+        sync_to_addr=_("Must sync owner to address."),
+        sync_to_owner=_("Must sync address to owner."),
+        new_primary=_("Must create missing primary address."),
     )
 
+    # def getdiffs(self, owner, addr):
+    #     diffs = {}
+    #     for k in owner.ADDRESS_FIELDS:
+    #         av = getattr(addr, k)
+    #         ov = getattr(owner, k)
+    #         if av != ov:
+    #             diffs[k] = (av, ov)
+    #     return diffs
+    #
+    # def can_sync_to_addr(self, diffs):
+    #     for f, v in diffs.items():
+    #         av, ov = v
+    #         if av:
+    #             return False
+    #     return True
+    #
+    # def can_sync_to_owner(self, diffs):
+    #     for f, v in diffs.items():
+    #         av, ov = v
+    #         if ov:
+    #             return False
+    #     return True
+    #
     def get_checkdata_problems(self, obj, fix=False):
         if not isinstance(obj, dd.plugins.addresses.partner_model):
             return
         Address = rt.models.addresses.Address
-        qs = Address.objects.filter(partner=obj)
-        num = qs.count()
-        if num == 0:
-            kw = dict()
-            for fldname in Address.ADDRESS_FIELDS:
-                value = getattr(obj, fldname)
-                if value:
-                    kw[fldname] = value
-            if kw:
-                yield (True, self.messages['no_address'])
-                if fix:
-                    kw.update(partner=obj, primary=True)
-                    kw.update(address_type=AddressTypes.official)
-                    addr = Address(**kw)
-                    addr.full_clean()
-                    addr.save()
-            return
+        qs = obj.addresses_by_partner.all()
+        qs_marked_primary = qs.filter(primary=True)
 
-        def getdiffs(obj, addr):
-            diffs = {}
-            for k in Address.ADDRESS_FIELDS:
-                my = getattr(addr, k)
-                other = getattr(obj, k)
-                if my != other:
-                    diffs[k] = (my, other)
-            return diffs
+        # Having no primary address is okay when the partner's address is empty.
+        if not obj.has_address():
+            if qs_marked_primary.count() == 0:
+                return
 
-        if num == 1:
+        num_addresses = qs.count()
+        if num_addresses == 1:
             addr = qs[0]
             # check whether it is the same address than the one
             # specified on AddressOwner
-            diffs = getdiffs(obj, addr)
-            if not diffs:
-                if not addr.primary:
-                    yield (True, self.messages['unique_not_primary'])
+            diffs = obj.get_diffs(addr)
+            if diffs:
+                if addr.can_sync_from(diffs):
+                    yield (True, self.messages['sync_to_addr'])
+                    if fix:
+                        addr.primary = True
+                        for k, v in diffs.items():
+                            setattr(addr, k, getattr(obj, k))
+                        addr.full_clean()
+                        addr.save()
+                    return
+                if obj.can_sync_from(diffs):
+                    yield (True, self.messages['sync_to_owner'])
                     if fix:
                         addr.primary = True
                         addr.full_clean()
                         addr.save()
+                        for k, v in diffs.items():
+                            setattr(obj, k, v)
+                        # obj.sync_from_address(addr)
+                        obj.full_clean()
+                        obj.save()
+                    return
+            elif not addr.primary:
+                yield (True, self.messages['unique_not_primary'])
+                if fix:
+                    addr.primary = True
+                    addr.full_clean()
+                    addr.save()
                 return
-        else:
-            addr = None
-            qs = qs.filter(primary=True)
-            num = qs.count()
-            if num == 0:
-                yield (False, self.messages['no_primary'])
-            elif num == 1:
-                addr = qs[0]
-                diffs = getdiffs(obj, addr)
+            # continue below if there are diffs
+
+        # how many addresses match the owner close enough to become primary?
+        filters = []
+        for k in obj.ADDRESS_FIELDS:
+            v = getattr(obj, k, None)
+            if v:
+                fld = obj._meta.get_field(k)
+                filters.append(Q(**{k: fld.get_default()}) | Q(**{k: v}))
+        qs_matching = qs.filter(*filters)
+        num_matching = qs_matching.count()
+        if num_matching == 1:
+            addr = qs_matching[0]
+            if len(addr.get_diffs(obj)):
+                yield (True, _("Primary address is not complete"))
+                if fix:
+                    addr.sync_from_address(obj)
+                    addr.full_clean()
+                    addr.save()
+            if addr.primary:
+                other_primaries = obj.addresses_by_partner.exclude(id=addr.id).filter(primary=True)
+                if other_primaries.count():
+                    yield (True, _("Multiple primary addresses."))
+                    if fix:
+                        other_primaries.update(primary=False)
             else:
-                yield (False, self.messages['multiple_primary'])
+                yield (True, _("Matching address is not marked primary."))
+                if fix:
+                    addr.primary = True
+                    addr.full_clean()
+                    addr.save()
+                    # unmark previous primary
+                    other_primaries = obj.addresses_by_partner.exclude(id=addr.id).filter(primary=True)
+                    other_primaries.update(primary=False)
+            return
+
+
+        addr = None
+        num_primary = qs_marked_primary.count()
+        if num_primary == 0:
+            if num_matching == 0:
+                yield (True, _("Primary address is missing."))
+                if fix:
+                    addr = Address(partner=obj, primary=True, address_type=AddressTypes.official)
+                    addr.sync_from_address(obj)
+                    addr.full_clean()
+                    addr.save()
+            else:
+                yield (False, _("No primary address, but matching addresses exist."))
+            return
+
+        elif num_primary == 1:
+            addr = qs_marked_primary[0]
+            diffs = obj.get_diffs(addr)
+            if not diffs:
+                return  # everything ok
+        else:
+            yield (False, _("Multiple primary addresses."))
         if addr and diffs:
             diffstext = [
-                _("{0}:{1}->{2}").format(k, *v) for k, v in sorted(diffs.items())]
-            msg = self.messages['primary_differs'].format(', '.join(diffstext))
+                _("{0}:{1}->{2}").format(
+                k, getattr(obj, k), v) for k, v in sorted(diffs.items())]
+            msg = _("Primary address differs from owner address ({0}).").format(
+                ', '.join(diffstext))
             yield (False, msg)
+            # if len(diffs) > 1:  # at least two differences
+            #     msg = self.messages['new_primary'].format(', '.join(diffstext))
+            #     yield (True, msg)
+            #     if fix:
+            #         raise NotImplementedError()
 
 AddressOwnerChecker.activate()

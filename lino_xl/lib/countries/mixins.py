@@ -197,6 +197,36 @@ class AddressLocation(CountryRegionCity, Addressable):
     def address_column(self, ar):
         return self.address_location(', ')
 
+    def get_diffs(self, other):
+        """Return a dict describing the differences between self and another Addressable.
+
+        One item for each differing field, mapping field name to value in other.
+
+        """
+        diffs = {}
+        for k in self.ADDRESS_FIELDS:
+            ov = getattr(other, k)
+            if ov != getattr(self, k):
+                diffs[k] = ov
+        return diffs
+
+    def can_sync_from(self, diffs):
+        """Return `True` if the only differences would add data to self"""
+        for k in diffs.keys():
+            if getattr(self, k):
+                return False
+        return True
+
+    def sync_from_address(self, other):
+        Address = self.__class__
+        if other is None:
+            for k in self.ADDRESS_FIELDS:
+                fld = self._meta.get_field(k)
+                setattr(self, k, fld.get_default())
+        elif other != self:
+            for k in Address.ADDRESS_FIELDS:
+                setattr(self, k, getattr(other, k))
+
 
 
 AddressLocation.ADDRESS_FIELDS = dd.fields_list(

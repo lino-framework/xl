@@ -15,6 +15,10 @@ class AddressOwner(AddressLocation):
 
     if dd.is_installed('addresses'):
 
+        # def disabled_fields(self, ar):
+        #     df = super(AddressOwner, self).disabled_fields(ar)
+        #     return df | self.ADDRESS_FIELDS
+
         def get_address_by_type(self, address_type):
             Address = rt.models.addresses.Address
             try:
@@ -43,32 +47,37 @@ class AddressOwner(AddressLocation):
                 return
 
         def before_ui_save(self, ar):
-            self.sync_primary_address_()
+            self.sync_to_addresses(ar)
+            # self.sync_from_address(self.get_primary_address())
             super(AddressOwner, self).before_ui_save(ar)
 
-        def sync_primary_address(self, ar):
+        def sync_primary_address(self, request):
             watcher = ChangeWatcher(self)
-            self.sync_primary_address_()
+            self.sync_from_address(self.get_primary_address())
             self.save()
-            watcher.send_update(ar)
+            watcher.send_update(request)
 
-        def sync_primary_address_(self):
+        def sync_to_addresses(self, ar):
             Address = rt.models.addresses.Address
-            # kw = dict(partner=self, primary=True)
-            # try:
-            #     pa = Address.objects.get(**kw)
-            #     for k in Address.ADDRESS_FIELDS:
-            #         setattr(self, k, getattr(pa, k))
-            # except Address.DoesNotExist:
-            #     pa = None
-            #     for k in Address.ADDRESS_FIELDS:
-            #         fld = self._meta.get_field(k)
-            #         setattr(self, k, fld.get_default())
             pa = self.get_primary_address()
             if pa is None:
+                values = {}
                 for k in Address.ADDRESS_FIELDS:
                     fld = self._meta.get_field(k)
-                    setattr(self, k, fld.get_default())
+                    v = getattr(self, k)
+                    if v != fld.get_default():
+                        values[k] = v
+                if len(values):
+                    addr = Address(partner=self, primary=True, **values)
+                    addr.full_clean()
+                    addr.save()
+                else:
+                    self.addresses_by_partner(p)
+
+                    for o in obj.addresses_by_partner.filter(primary=True):
+                        o.primary = False
+                        o.save()
+
             elif pa != self:
                 for k in Address.ADDRESS_FIELDS:
                     setattr(self, k, getattr(pa, k))

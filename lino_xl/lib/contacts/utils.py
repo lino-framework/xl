@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2010-2017 Rumma & Ko Ltd
+# Copyright 2010-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Some utilities for parsing contact data. See also
@@ -20,16 +20,15 @@ Parse a string to extract the fields street, street_no and street_box.
 Examples:
 
 >>> from pprint import pprint
->>> street2kw("Limburger Weg") == {'street': 'Limburger Weg'}
-True
->>> street2kw("Loten 3") == {'street_box': '', 'street': 'Loten', 'street_no': '3'}
-True
->>> street2kw("Loten 3A") == {'street_box': 'A', 'street': 'Loten', 'street_no': '3'}
-True
+>>> pprint(street2kw("Limburger Weg"))
+{'street': 'Limburger Weg'}
+>>> pprint(street2kw("Loten 3"))
+{'street': 'Loten', 'street_box': '', 'street_no': '3'}
+>>> pprint(street2kw("Loten 3A"))
+{'street': 'Loten', 'street_box': 'A', 'street_no': '3'}
 
->>> street2kw("In den Loten 3A") == {'street_no': '3', 'street': 'In den Loten', 'street_box': 'A'}
-True
-
+>>> pprint(street2kw("In den Loten 3A"))
+{'street': 'In den Loten', 'street_box': 'A', 'street_no': '3'}
 
 >>> pprint(street2kw("Auf'm Bach"))
 {'street': "Auf'm Bach"}
@@ -55,7 +54,7 @@ Edge cases:
 
 >>> street2kw("")
 {}
-    
+
     """
     #~ m = re.match(r"(\D+),?\s*(\d+)\s*(\w*)", s)
     m = re.match(r"(.+),?\s+(\d+)\s*(\D*)$", s)

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2015 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -10,13 +10,8 @@ Defines models
 :class:`CountryDrivers`.
 
 """
-from __future__ import print_function
-from __future__ import unicode_literals
-from builtins import str
-from builtins import object
 
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from django.core.exceptions import ValidationError
 
@@ -56,7 +51,7 @@ class EstonianAddressFormatter(AddressFormatter):
     """Format used in Estonia.
 
     """
-    
+
     def format_place(self, p):
         if p.type == PlaceTypes.municipality:
             return "%s vald" % p
@@ -155,7 +150,7 @@ class PlaceGenerator(InstanceGenerator):
                 "Failed to load %s (%s) : %s",
                 obj, obj.type, e)
         # return super(PlaceGenerator, self).on_new(obj)
-    
+
     def can_be_parent(self, ptype, otype):
         """return True if a place of type pt can be parent for a place of type
         ot.
