@@ -263,8 +263,9 @@ class UploadsByController(Uploads, UploadsByController):
     """
 
 
-class UploadsByClient(AreaUploads, UploadsByController):
-    master = dd.plugins.clients.client_model  # 'pcsw.Client'
+class UploadsByProject(AreaUploads, UploadsByController):
+    # master = dd.plugins.clients.client_model  # 'pcsw.Client'
+    master = settings.SITE.project_model
     master_key = 'project'
     column_names = "type end_date needed description_link user *"
     required_roles = dd.login_required(ContactsUser, (OfficeUser, OfficeOperator))
@@ -279,13 +280,16 @@ class UploadsByClient(AreaUploads, UploadsByController):
 
     @classmethod
     def create_instance(self, ar, **kw):
-        obj = super(UploadsByClient, self).create_instance(ar, **kw)
+        obj = super(UploadsByProject, self).create_instance(ar, **kw)
         obj.owner = obj.project
         return obj
 
-    @classmethod
-    def format_row_in_slave_summary(self, ar, obj):
-        if obj.end_date and obj.end_date < settings.SITE.today():
-            return None
-        return super(UploadsByClient, self).format_row_in_slave_summary(
-            ar, obj)
+    # 20200731 uploads with an end_date before today were being filtered from
+    # the summary. i don't remember why it is here. deactivated this because it
+    # disturbs in avanti.
+    # @classmethod
+    # def format_row_in_slave_summary(self, ar, obj):
+    #     if obj.end_date and obj.end_date < settings.SITE.today():
+    #         return None
+    #     return super(UploadsByProject, self).format_row_in_slave_summary(
+    #         ar, obj)

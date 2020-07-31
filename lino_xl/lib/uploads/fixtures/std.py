@@ -34,8 +34,12 @@ def objects():
     kw.update(dd.str2kw('name', _("Driving licence")))
     yield UploadType(id=UPLOADTYPE_DRIVING_LICENSE, **kw)
 
-    kw.update(dd.str2kw('name', _("Identifying document")))
-    yield UploadType(shortcut=Shortcuts.id_document, **kw)
+    # kw.update(dd.str2kw('name', _("Identifying document")))
+    # yield UploadType(shortcut=Shortcuts.id_document, **kw)
+
+    for us in Shortcuts.get_list_items():
+        kw.update(dd.str2kw('name', us.text))
+        yield UploadType(shortcut=us, **kw)
 
     kw.update(max_number=-1, wanted=False)
     kw.update(warn_expiry_unit='')
