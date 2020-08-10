@@ -23,8 +23,7 @@ class ContactDetail(dd.Model):
         verbose_name = _("Contact detail")
         verbose_name_plural = _("Contact details")
 
-    detail_type = ContactDetailTypes.field(
-        default=ContactDetailTypes.as_callable('email'))
+    detail_type = ContactDetailTypes.field(default='email')
     partner = dd.ForeignKey(
         dd.plugins.phones.partner_model,
         related_name='phones_by_partner')
