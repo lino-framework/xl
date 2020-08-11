@@ -14,7 +14,7 @@
 
 SETUP_INFO = dict(
     name='lino-xl',
-    version='20.8.0',
+    version='20.8.1',
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
