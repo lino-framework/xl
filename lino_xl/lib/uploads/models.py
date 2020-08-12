@@ -168,7 +168,8 @@ class Uploads(Uploads):
     detail_layout = UploadDetail()
 
     insert_layout = """
-    type file
+    file
+    type project
     start_date end_date needed
     description
     """
@@ -272,11 +273,11 @@ class UploadsByProject(AreaUploads, UploadsByController):
     # auto_fit_column_widths = True
     # debug_sql = "20140519"
 
-    insert_layout = """
-    file
-    type end_date needed
-    description
-    """
+    # insert_layout = """
+    # file
+    # type end_date needed
+    # description
+    # """
 
     @classmethod
     def create_instance(self, ar, **kw):

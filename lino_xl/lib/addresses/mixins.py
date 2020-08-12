@@ -49,8 +49,8 @@ class AddressOwner(AddressLocation):
         # def before_ui_save(self, ar):
         #     self.sync_to_addresses(ar)
         #     # self.sync_from_address(self.get_primary_address())
-        #     super(AddressOwner, self).before_ui_save(ar, cw)
-        
+        #     super(AddressOwner, self).before_ui_save(ar)
+
         def after_ui_save(self, ar, cw):
             self.sync_to_addresses(ar)
             # self.sync_from_address(self.get_primary_address())
@@ -73,6 +73,7 @@ class AddressOwner(AddressLocation):
                     if v != fld.get_default():
                         values[k] = v
                 if len(values):
+                    # print(20200812, values)
                     addr = Address(partner=self, primary=True, **values)
                     addr.full_clean()
                     addr.save()
