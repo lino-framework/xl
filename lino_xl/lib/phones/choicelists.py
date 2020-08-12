@@ -30,8 +30,8 @@ class EMAIL(ContactDetailType):
     def validate(self, value):
         validate_email(value)
 
-    def format(self, value):
-        return E.a(value, href="mailto:" + value)
+    def as_html(self, obj, ar):
+        return E.a(obj.value, href="mailto:" + obj.value)
 
 
 class URL(ContactDetailType):

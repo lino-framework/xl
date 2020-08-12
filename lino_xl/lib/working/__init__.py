@@ -69,5 +69,5 @@ class Plugin(ad.Plugin):
 
     def get_dashboard_items(self, user):
         super(Plugin, self).get_dashboard_items(user)
-        if user.authenticated:
+        if user.is_authenticated:
             yield self.site.models.working.WorkedHours

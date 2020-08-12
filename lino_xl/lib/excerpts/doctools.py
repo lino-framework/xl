@@ -13,7 +13,7 @@ page:
 
 import os
 import shutil
-from atelier import rstgen
+import rstgen
 from lino.api import rt
 from django.conf import settings
 

@@ -1,7 +1,7 @@
 import codecs
 import datetime
 from unipath import Path
-from atelier.utils import AttrDict
+from lino.utils import AttrDict
 from lino.api import rt
 
 fn = Path(__file__).parent.child('tractickets.tsv')

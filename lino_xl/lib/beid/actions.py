@@ -1,13 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""
-
-
-"""
-import six
-import logging ; logger = logging.getLogger(__name__)
 
 import os
 import yaml
@@ -48,12 +41,12 @@ def yaml2dict(data):
     #~ raise Exception("20131108 cool: %s" % cd)
     if dd.plugins.beid.data_collector_dir:
         card_number = str(attd.cardNumber)
-        logger.info("Gonna write raw eid card data: %r", raw_data)
+        dd.logger.info("Gonna write raw eid card data: %r", raw_data)
         fn = os.path.join(
             dd.plugins.beid.data_collector_dir,
             card_number + '.txt')
         file(fn, "w").write(raw_data.encode('utf-8'))
-        logger.info("Wrote eid card data to file %s", fn)
+        dd.logger.info("Wrote eid card data to file %s", fn)
 
     return attd
 
@@ -116,13 +109,13 @@ class BaseBeIdReadCardAction(dd.Action):
                 raise Exception("20150730 photo data but no card_number ")
             fn = dd.plugins.beid.holder_model.card_number_to_image_path(card_number)
             if fn.exists():
-                logger.warning("Overwriting existing image file %s.", fn)
+                dd.logger.warning("Overwriting existing image file %s.", fn)
             try:
                 fp = file(fn, 'wb')
                 fp.write(base64.b64decode(data.photo))
                 fp.close()
             except IOError as e:
-                logger.warning("Failed to store image file %s : %s", fn, e)
+                dd.logger.warning("Failed to store image file %s : %s", fn, e)
 
             #~ print 20121117, repr(data['picture'])
             #~ kw.update(picture_data_encoded=data['picture'])
@@ -159,13 +152,13 @@ class BaseBeIdReadCardAction(dd.Action):
                 return dd.Genders.male
             if sex == 'FEMALE':
                 return dd.Genders.female
-            logger.warning("%s : invalid gender code %r", msg1, sex)
+            dd.logger.warning("%s : invalid gender code %r", msg1, sex)
         kw.update(gender=sex2gender(data.gender))
 
         def doctype2cardtype(dt):
             #~ if dt == 1: return BeIdCardTypes.get_by_value("1")
             rv = BeIdCardTypes.get_by_value(str(dt))
-            # logger.info("20130103 documentType %r --> %r", dt, rv)
+            # dd.logger.info("20130103 documentType %r --> %r", dt, rv)
             return rv
         kw.update(card_type=doctype2cardtype(data.documentType))
 
@@ -194,7 +187,7 @@ class BaseBeIdReadCardAction(dd.Action):
 
             fn = holder_model.card_number_to_image_path(card_number)
             if not fn.exists():
-                # logger.warning("Overwriting existing image file %s.", fn)
+                # dd.logger.warning("Overwriting existing image file %s.", fn)
                 rt.makedirs_if_missing(os.path.dirname(fn))
             try:
                 fp = open(fn, 'wb')
@@ -202,12 +195,12 @@ class BaseBeIdReadCardAction(dd.Action):
                 fp.write(base64.b64decode(data.PHOTO_FILE))
                 fp.close()
             except IOError as e:
-                logger.warning("Failed to store image file %s : %s", fn, e)
+                dd.logger.warning("Failed to store image file %s : %s", fn, e)
 
             #~ print 20121117, repr(data['picture'])
             #~ kw.update(picture_data_encoded=data['picture'])
 
-        if isinstance(data.date_of_birth, six.string_types):
+        if isinstance(data.date_of_birth, str):
             data.date_of_birth = IncompleteDate.parse(data.date_of_birth)
             # IncompleteDate(
             #     *data.date_of_birth.split('-'))
@@ -244,13 +237,13 @@ class BaseBeIdReadCardAction(dd.Action):
                 return dd.Genders.male
             if c0 in 'FWV':
                 return dd.Genders.female
-            logger.warning("%s : invalid gender code %r", msg1, sex)
+            dd.logger.warning("%s : invalid gender code %r", msg1, sex)
         kw.update(gender=sex2gender(data.gender))
 
         def doctype2cardtype(dt):
             #~ if dt == 1: return BeIdCardTypes.get_by_value("1")
             rv = BeIdCardTypes.get_by_value(str(dt))
-            # logger.info("20130103 documentType %r --> %r", dt, rv)
+            # dd.logger.info("20130103 documentType %r --> %r", dt, rv)
             return rv
         kw.update(card_type=doctype2cardtype(data.document_type))
         return kw
@@ -266,7 +259,6 @@ class BaseBeIdReadCardAction(dd.Action):
             return self.goto_client_response(
                 ar, obj, _("Client %s is up-to-date") % str(obj))
 
-        oldobj = obj
         watcher = ChangeWatcher(obj)
 
         msg = _("Click OK to apply the following changes for %s") % obj
@@ -275,11 +267,11 @@ class BaseBeIdReadCardAction(dd.Action):
         # UnicodeDecodeError: 'ascii' codec can't decode byte 0xc3 in position 10: ordinal not in range(128)
         diffs = [str(i) for i in diffs]
         diffs = sorted(diffs)
-        msg += u'\n<br/>'.join(diffs)
+        msg += '\n<br/>'.join(diffs)
         # msg += u'\n<br/>'.join(sorted(diffs))
 
         def yes(ar2):
-            print("20200505 yes")
+            # print("20200505 yes")
             msg = _("%s has been saved.") % dd.obj2unicode(obj)
             if not dd.plugins.beid.read_only_simulate:
                 for o in objects:
@@ -290,8 +282,10 @@ class BaseBeIdReadCardAction(dd.Action):
             return self.goto_client_response(ar2, obj, msg)
 
         def no(ar2):
-            print("20200505 no")
-            return self.goto_client_response(ar2, oldobj)
+            # print("20200505 no")
+            # reload original from db:
+            orig = dd.plugins.beid.holder_model.objects.get(pk=obj.pk)
+            return self.goto_client_response(ar2, orig)
         #~ print 20131108, msg
         cb = ar.add_callback(msg)
         cb.add_choice('yes', yes, _("Yes"))

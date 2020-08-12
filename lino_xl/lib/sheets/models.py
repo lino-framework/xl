@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2018-2019 Rumma & Ko Ltd
+# Copyright 2018-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-from builtins import str
-
 # import datetime
 
 from django.db import models

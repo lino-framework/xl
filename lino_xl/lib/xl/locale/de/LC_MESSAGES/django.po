@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version:  lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-19 08:09+0300\n"
-"PO-Revision-Date: 2020-05-23 22:33+0300\n"
+"POT-Creation-Date: 2020-07-23 10:13+0300\n"
+"PO-Revision-Date: 2020-07-02 03:57+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -61,7 +61,6 @@ msgstr "Veraltet"
 #: lino_xl/lib/households/fixtures/std.py:24
 #: lino_xl/lib/phones/choicelists.py:59
 #: lino_xl/lib/products/fixtures/furniture.py:31
-#, fuzzy
 msgid "Other"
 msgstr "Sonstige"
 
@@ -91,7 +90,7 @@ msgid "Address"
 msgstr "Adresse"
 
 #: lino_xl/lib/addresses/models.py:30 lino_xl/lib/blogs/models.py:46
-#: lino_xl/lib/cal/models.py:1038
+#: lino_xl/lib/cal/models.py:1042
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:79
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:38
 #: lino_xl/lib/courses/models.py:198 lino_xl/lib/courses/models.py:567
@@ -106,8 +105,8 @@ msgstr "Adresse"
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:45
 #: lino_xl/lib/orders/models.py:92 lino_xl/lib/orders/models.py:299
 #: lino_xl/lib/orders/models.py:405 lino_xl/lib/phones/models.py:32
-#: lino_xl/lib/polls/models.py:639 lino_xl/lib/polls/models.py:644
-#: lino_xl/lib/polls/models.py:779 lino_xl/lib/sepa/models.py:36
+#: lino_xl/lib/polls/models.py:646 lino_xl/lib/polls/models.py:653
+#: lino_xl/lib/polls/models.py:788 lino_xl/lib/sepa/models.py:36
 #: lino_xl/lib/thirds/models.py:29 lino_xl/lib/tickets/models.py:208
 #: lino_xl/lib/topics/models.py:88 lino_xl/lib/trends/models.py:92
 #: lino_xl/lib/uploads/models.py:75
@@ -177,8 +176,8 @@ msgstr "Analytische Rechnungsposition"
 msgid "Analytic invoice items"
 msgstr "Analytische Rechnungspositionen"
 
-#: lino_xl/lib/ana/models.py:226 lino_xl/lib/cal/mixins.py:554
-#: lino_xl/lib/cal/mixins.py:832 lino_xl/lib/cal/models.py:122
+#: lino_xl/lib/ana/models.py:226 lino_xl/lib/cal/mixins.py:556
+#: lino_xl/lib/cal/mixins.py:834 lino_xl/lib/cal/models.py:122
 #: lino_xl/lib/cal/models.py:150 lino_xl/lib/cal/models.py:218
 #: lino_xl/lib/cal/models.py:323 lino_xl/lib/courses/models.py:105
 #: lino_xl/lib/courses/models.py:197 lino_xl/lib/github/models.py:173
@@ -187,10 +186,10 @@ msgstr "Analytische Rechnungspositionen"
 #: lino_xl/lib/ledger/ui.py:1041 lino_xl/lib/ledger/ui.py:1090
 #: lino_xl/lib/ledger/ui.py:1129 lino_xl/lib/ledger/ui.py:1170
 #: lino_xl/lib/meetings/models.py:69 lino_xl/lib/orders/models.py:91
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:67
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:61
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:31
 #: lino_xl/lib/sales/mixins.py:80 lino_xl/lib/sales/models.py:339
-#: lino_xl/lib/sheets/models.py:239 lino_xl/lib/skills/models.py:100
+#: lino_xl/lib/sheets/models.py:237 lino_xl/lib/skills/models.py:100
 #: lino_xl/lib/tickets/models.py:207 lino_xl/lib/tickets/models.py:272
 #: lino_xl/lib/tickets/models.py:482 lino_xl/lib/vat/choicelists.py:363
 #: lino_xl/lib/vat/choicelists.py:507 lino_xl/lib/vat/models.py:38
@@ -296,19 +295,19 @@ msgstr "Projekt 2"
 msgid "Appy POD"
 msgstr ""
 
-#: lino_xl/lib/appypod/mixins.py:18
+#: lino_xl/lib/appypod/mixins.py:17
 msgid "Table (landscape)"
 msgstr "Tabelle (Querformat)"
 
-#: lino_xl/lib/appypod/mixins.py:87 lino_xl/lib/pisa/models.py:73
+#: lino_xl/lib/appypod/mixins.py:86 lino_xl/lib/pisa/models.py:73
 msgid "Table (portrait)"
 msgstr "Tabelle (Hochformat)"
 
-#: lino_xl/lib/appypod/mixins.py:94
+#: lino_xl/lib/appypod/mixins.py:93
 msgid "Labels"
 msgstr "Etiketten"
 
-#: lino_xl/lib/appypod/mixins.py:95
+#: lino_xl/lib/appypod/mixins.py:94
 msgid "Generate mailing labels for these recipients"
 msgstr ""
 
@@ -1192,107 +1191,107 @@ msgstr "wichtig"
 msgid "Error"
 msgstr "Territorium"
 
-#: lino_xl/lib/b2c/models.py:54 lino_xl/lib/beid/actions.py:308
+#: lino_xl/lib/b2c/models.py:54 lino_xl/lib/beid/actions.py:302
 #: lino_xl/lib/cv/mixins.py:100
 msgid "Success"
 msgstr "Erfolgreich abgeschlossen"
 
-#: lino_xl/lib/b2c/models.py:205
+#: lino_xl/lib/b2c/models.py:206
 #, fuzzy
 msgid "Imported bank account"
 msgstr "Bankkonto"
 
-#: lino_xl/lib/b2c/models.py:206
+#: lino_xl/lib/b2c/models.py:207
 #, fuzzy
 msgid "Imported bank accounts"
 msgstr "Bankkonten"
 
-#: lino_xl/lib/b2c/models.py:208 lino_xl/lib/b2c/models.py:283
+#: lino_xl/lib/b2c/models.py:209 lino_xl/lib/b2c/models.py:284
 #: lino_xl/lib/sepa/models.py:33
 msgid "IBAN"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:209 lino_xl/lib/b2c/models.py:284
+#: lino_xl/lib/b2c/models.py:210 lino_xl/lib/b2c/models.py:285
 #: lino_xl/lib/sepa/models.py:34
 #, fuzzy
 msgid "BIC"
 msgstr "Blindkopie an"
 
-#: lino_xl/lib/b2c/models.py:211
+#: lino_xl/lib/b2c/models.py:212
 #, fuzzy
 msgid "Account name"
 msgstr "Buchhaltung"
 
-#: lino_xl/lib/b2c/models.py:213
+#: lino_xl/lib/b2c/models.py:214
 #, fuzzy
 msgid "Owner name"
 msgstr "mittelmäßig"
 
-#: lino_xl/lib/b2c/models.py:214
+#: lino_xl/lib/b2c/models.py:215
 #, fuzzy
 msgid "Last transaction"
 msgstr "Übersetzung"
 
-#: lino_xl/lib/b2c/models.py:219 lino_xl/lib/contacts/models.py:84
+#: lino_xl/lib/b2c/models.py:220 lino_xl/lib/contacts/models.py:84
 msgid "Partners"
 msgstr "Partner"
 
-#: lino_xl/lib/b2c/models.py:239
+#: lino_xl/lib/b2c/models.py:240
 #, fuzzy
 msgid "Statement"
 msgstr "Kontoauszüge"
 
-#: lino_xl/lib/b2c/models.py:240 lino_xl/lib/sepa/models.py:79
+#: lino_xl/lib/b2c/models.py:241 lino_xl/lib/sepa/models.py:79
 msgid "Statements"
 msgstr "Kontoauszüge"
 
-#: lino_xl/lib/b2c/models.py:247
+#: lino_xl/lib/b2c/models.py:248
 #, fuzzy
 msgid "Statement number"
 msgstr "Hausnummer"
 
-#: lino_xl/lib/b2c/models.py:248
+#: lino_xl/lib/b2c/models.py:249
 msgid ""
 "Combination of the year and the legal sequential number of the paper "
 "statement."
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:251 lino_xl/lib/cal/models.py:158
+#: lino_xl/lib/b2c/models.py:252 lino_xl/lib/cal/models.py:158
 #: lino_xl/lib/contacts/models.py:519
 msgid "Start date"
 msgstr "Beginnt am"
 
-#: lino_xl/lib/b2c/models.py:252 lino_xl/lib/contacts/models.py:521
+#: lino_xl/lib/b2c/models.py:253 lino_xl/lib/contacts/models.py:521
 msgid "End date"
 msgstr "Enddatum"
 
-#: lino_xl/lib/b2c/models.py:254
+#: lino_xl/lib/b2c/models.py:255
 #, fuzzy
 msgid "Initial amount"
 msgstr "Analysekonto"
 
-#: lino_xl/lib/b2c/models.py:255
+#: lino_xl/lib/b2c/models.py:256
 #, fuzzy
 msgid "Final amount"
 msgstr "Vorschlag Betrag"
 
-#: lino_xl/lib/b2c/models.py:257
+#: lino_xl/lib/b2c/models.py:258
 #, fuzzy
 msgid "Currency"
 msgstr "Wiederholung"
 
-#: lino_xl/lib/b2c/models.py:271
+#: lino_xl/lib/b2c/models.py:272
 #: lino_xl/lib/ledger/fixtures/minimal_ledger.py:104
 #, fuzzy
 msgid "Transaction"
 msgstr "Übersetzung"
 
-#: lino_xl/lib/b2c/models.py:272
+#: lino_xl/lib/b2c/models.py:273
 #, fuzzy
 msgid "Transactions"
 msgstr "Übersetzung"
 
-#: lino_xl/lib/b2c/models.py:275 lino_xl/lib/cal/mixins.py:840
+#: lino_xl/lib/b2c/models.py:276 lino_xl/lib/cal/mixins.py:842
 #: lino_xl/lib/countries/mixins.py:156
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:68
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
@@ -1304,122 +1303,122 @@ msgstr "Übersetzung"
 msgid "No."
 msgstr "Nr."
 
-#: lino_xl/lib/b2c/models.py:276
+#: lino_xl/lib/b2c/models.py:277
 msgid "The sequence number of this transaction in the statement."
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:280 lino_xl/lib/finan/mixins.py:111
+#: lino_xl/lib/b2c/models.py:281 lino_xl/lib/finan/mixins.py:111
 #: lino_xl/lib/invoicing/models.py:365 lino_xl/lib/vatless/models.py:25
 #: lino_xl/lib/vatless/models.py:94
 msgid "Amount"
 msgstr "Betrag"
 
-#: lino_xl/lib/b2c/models.py:286 lino_xl/lib/b2c/models.py:313
+#: lino_xl/lib/b2c/models.py:287 lino_xl/lib/b2c/models.py:314
 msgid "Message"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:287
+#: lino_xl/lib/b2c/models.py:288
 #, fuzzy
 msgid "End to end reference"
 msgstr "Ihr Zeichen"
 
-#: lino_xl/lib/b2c/models.py:288
+#: lino_xl/lib/b2c/models.py:289
 msgid "Remote owner"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:290
+#: lino_xl/lib/b2c/models.py:291
 msgid "Remote owner adress"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:291
+#: lino_xl/lib/b2c/models.py:292
 msgid "Remote owner city"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:292
+#: lino_xl/lib/b2c/models.py:293
 msgid "Remote owner postal code"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:293
+#: lino_xl/lib/b2c/models.py:294
 msgid "Remote owner country code"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:294
+#: lino_xl/lib/b2c/models.py:295
 #, fuzzy
 msgid "Transfer type"
 msgstr "Handelsart"
 
-#: lino_xl/lib/b2c/models.py:295
+#: lino_xl/lib/b2c/models.py:296
 #, fuzzy
 msgid "TxCd issuer"
 msgstr "eID-Karte ausgestellt durch"
 
-#: lino_xl/lib/b2c/models.py:296 lino_xl/lib/finan/models.py:107
+#: lino_xl/lib/b2c/models.py:297 lino_xl/lib/finan/models.py:107
 msgid "Execution date"
 msgstr "Ausführungsdatum"
 
-#: lino_xl/lib/b2c/models.py:297 lino_xl/lib/b2c/models.py:326
+#: lino_xl/lib/b2c/models.py:298 lino_xl/lib/b2c/models.py:327
 #: lino_xl/lib/ledger/models.py:962
 msgid "Value date"
 msgstr "Valuta"
 
-#: lino_xl/lib/b2c/models.py:299
+#: lino_xl/lib/b2c/models.py:300
 #, fuzzy
 msgid "Remote account"
 msgstr "Gemeinkonto"
 
-#: lino_xl/lib/b2c/models.py:323
+#: lino_xl/lib/b2c/models.py:324
 #, fuzzy
 msgid "eref:"
 msgstr "Wo"
 
-#: lino_xl/lib/b2c/models.py:327
+#: lino_xl/lib/b2c/models.py:328
 #, fuzzy
 msgid "Booking date"
 msgstr "Buchung"
 
-#: lino_xl/lib/b2c/models.py:331
+#: lino_xl/lib/b2c/models.py:332
 msgid "BkTxCd"
 msgstr ""
 
-#: lino_xl/lib/beid/actions.py:35
+#: lino_xl/lib/beid/actions.py:28
 msgid "Simulation"
 msgstr "Postsendung"
 
-#: lino_xl/lib/beid/actions.py:66
+#: lino_xl/lib/beid/actions.py:59
 msgid "Read eID card"
 msgstr "eID-Karte einlesen"
 
-#: lino_xl/lib/beid/actions.py:76
+#: lino_xl/lib/beid/actions.py:69
 #, python-format
 msgid "Sorry, I cannot handle that case: %s"
 msgstr "Sorry, damit komme ich nicht klar: %s"
 
-#: lino_xl/lib/beid/actions.py:267
+#: lino_xl/lib/beid/actions.py:260
 #, python-format
 msgid "Client %s is up-to-date"
 msgstr "Angaben zu Klient %s sind aktuell"
 
-#: lino_xl/lib/beid/actions.py:272
+#: lino_xl/lib/beid/actions.py:264
 #, python-format
 msgid "Click OK to apply the following changes for %s"
 msgstr "OK um die folgenden Änderungen für Klient %s einzulesen"
 
-#: lino_xl/lib/beid/actions.py:283
+#: lino_xl/lib/beid/actions.py:275
 #, python-format
 msgid "%s has been saved."
 msgstr "%s wurde gespeichert."
 
-#: lino_xl/lib/beid/actions.py:297 lino_xl/lib/polls/fixtures/std.py:34
+#: lino_xl/lib/beid/actions.py:291 lino_xl/lib/polls/fixtures/std.py:34
 #: lino_xl/lib/polls/fixtures/std.py:36
 msgid "Yes"
 msgstr "Ja"
 
-#: lino_xl/lib/beid/actions.py:298 lino_xl/lib/polls/fixtures/std.py:34
+#: lino_xl/lib/beid/actions.py:292 lino_xl/lib/polls/fixtures/std.py:34
 #: lino_xl/lib/polls/fixtures/std.py:36
 msgid "No"
 msgstr "Nein"
 
-#: lino_xl/lib/beid/actions.py:337
+#: lino_xl/lib/beid/actions.py:331
 #, python-format
 msgid ""
 "There is more than one client with national id %(national_id)s in our "
@@ -1428,35 +1427,35 @@ msgstr ""
 "Wir haben mehr als einen Klienten mit NR-Nr. %(national_id)s in unserer "
 "Datenbank."
 
-#: lino_xl/lib/beid/actions.py:367 lino_xl/lib/beid/actions.py:379
+#: lino_xl/lib/beid/actions.py:361 lino_xl/lib/beid/actions.py:373
 #, python-format
 msgid "New client %s has been created"
 msgstr "Neuer Klient %s wurde erstellt."
 
-#: lino_xl/lib/beid/actions.py:381
+#: lino_xl/lib/beid/actions.py:375
 #, python-format
 msgid "Create new client %s : Are you sure?"
 msgstr "Neuen Klienten %s anlegen : Sind Sie sicher?"
 
-#: lino_xl/lib/beid/actions.py:386
+#: lino_xl/lib/beid/actions.py:380
 #, python-format
 msgid ""
 "Cannot create new client because there is already a person named %s in "
 "our database."
 msgstr "Wir haben mehr als einen Klienten mit Namen %s in unserer Datenbank."
 
-#: lino_xl/lib/beid/actions.py:390 lino_xl/lib/beid/actions.py:397
+#: lino_xl/lib/beid/actions.py:384 lino_xl/lib/beid/actions.py:391
 msgid "Oops!"
 msgstr "Upps!"
 
-#: lino_xl/lib/beid/actions.py:393
+#: lino_xl/lib/beid/actions.py:387
 #, python-format
 msgid ""
 "Cannot create new client because there is more than one person named %s "
 "in our database."
 msgstr "Wir haben mehr als einen Klienten mit Namen %s in unserer Datenbank."
 
-#: lino_xl/lib/beid/actions.py:431
+#: lino_xl/lib/beid/actions.py:425
 #, python-format
 msgid "National IDs %s and %s don't match "
 msgstr "NR-Nummer %s und %s stimmen nicht überein"
@@ -2163,7 +2162,7 @@ msgstr "Monate"
 msgid "years"
 msgstr "Jahre"
 
-#: lino_xl/lib/cal/choicelists.py:125 lino_xl/lib/cal/mixins.py:498
+#: lino_xl/lib/cal/choicelists.py:125 lino_xl/lib/cal/mixins.py:500
 #: lino_xl/lib/courses/models.py:108
 msgid "Recurrency"
 msgstr "Wiederholung"
@@ -2257,7 +2256,7 @@ msgid "Done"
 msgstr "Erledigt"
 
 #: lino_xl/lib/cal/choicelists.py:176 lino_xl/lib/cal/choicelists.py:266
-#: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/ledger/choicelists.py:439
+#: lino_xl/lib/courses/choicelists.py:54 lino_xl/lib/ledger/choicelists.py:440
 #: lino_xl/lib/notes/fixtures/demo.py:24 lino_xl/lib/orders/choicelists.py:20
 #: lino_xl/lib/rooms/models.py:26 lino_xl/lib/votes/choicelists.py:80
 msgid "Cancelled"
@@ -2314,7 +2313,7 @@ msgstr "nicht blockierend"
 msgid "No auto"
 msgstr ""
 
-#: lino_xl/lib/cal/choicelists.py:234 lino_xl/lib/cal/ui.py:327
+#: lino_xl/lib/cal/choicelists.py:234 lino_xl/lib/cal/ui.py:325
 msgid "Guest state"
 msgstr "Zustand Gast"
 
@@ -2323,7 +2322,7 @@ msgid "Suggested"
 msgstr "Vorschlag"
 
 #: lino_xl/lib/cal/choicelists.py:250 lino_xl/lib/courses/choicelists.py:29
-#: lino_xl/lib/ledger/choicelists.py:436 lino_xl/lib/meetings/choicelists.py:27
+#: lino_xl/lib/ledger/choicelists.py:437 lino_xl/lib/meetings/choicelists.py:27
 #: lino_xl/lib/polls/utils.py:16 lino_xl/lib/polls/utils.py:35
 #: lino_xl/lib/rooms/models.py:23 lino_xl/lib/tickets/choicelists.py:75
 msgid "Draft"
@@ -2385,7 +2384,7 @@ msgstr "vierten"
 msgid "fourth last"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:70 lino_xl/lib/cal/ui.py:374
+#: lino_xl/lib/cal/mixins.py:70 lino_xl/lib/cal/ui.py:372
 #, python-format
 msgid "Dates %(min)s to %(max)s"
 msgstr "Daten von %(min)s bis %(max)s"
@@ -2406,113 +2405,113 @@ msgstr "Termin verschieben zum nächsten Datum"
 msgid "Update Events"
 msgstr "Termine aktualisieren"
 
-#: lino_xl/lib/cal/mixins.py:207
+#: lino_xl/lib/cal/mixins.py:209
 msgid "{} {}"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:311
+#: lino_xl/lib/cal/mixins.py:313
 msgid "No automatic calendar entries because no entry type is configured"
 msgstr "Keine automatischen Termine, weil keine Terminart konfiguriert ist"
 
-#: lino_xl/lib/cal/mixins.py:414
+#: lino_xl/lib/cal/mixins.py:416
 #, fuzzy
 msgid "Move {} to next available date?"
 msgstr "Termin verschieben zum nächsten Datum"
 
-#: lino_xl/lib/cal/mixins.py:493
+#: lino_xl/lib/cal/mixins.py:495
 msgid "Recurrence Set"
 msgstr "Wiederholungsserie"
 
-#: lino_xl/lib/cal/mixins.py:494
+#: lino_xl/lib/cal/mixins.py:496
 msgid "Recurrence Sets"
 msgstr "Wiederholungsserien"
 
-#: lino_xl/lib/cal/mixins.py:501 lino_xl/lib/courses/models.py:111
+#: lino_xl/lib/cal/mixins.py:503 lino_xl/lib/courses/models.py:111
 msgid "Repeat every"
 msgstr "... alle"
 
-#: lino_xl/lib/cal/mixins.py:502
+#: lino_xl/lib/cal/mixins.py:504
 msgid "Positions"
 msgstr "Positionen"
 
-#: lino_xl/lib/cal/mixins.py:513 lino_xl/lib/invoicing/models.py:100
+#: lino_xl/lib/cal/mixins.py:515 lino_xl/lib/invoicing/models.py:100
 msgid "Number of events"
 msgstr "Anzahl Termine"
 
-#: lino_xl/lib/cal/mixins.py:558
+#: lino_xl/lib/cal/mixins.py:560
 msgid "Times"
 msgstr "Uhrzeiten"
 
-#: lino_xl/lib/cal/mixins.py:565 lino_xl/lib/cal/models.py:850
+#: lino_xl/lib/cal/mixins.py:567 lino_xl/lib/cal/models.py:850
 #: lino_xl/lib/cal/models.py:857 lino_xl/lib/events/models.py:120
 msgid "When"
 msgstr "Wann"
 
-#: lino_xl/lib/cal/mixins.py:569
+#: lino_xl/lib/cal/mixins.py:571
 msgid "{0}-{1}"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:573
+#: lino_xl/lib/cal/mixins.py:575
 msgid "On {0}"
 msgstr "Am {0}"
 
-#: lino_xl/lib/cal/mixins.py:575 lino_xl/lib/cal/mixins.py:591
+#: lino_xl/lib/cal/mixins.py:577 lino_xl/lib/cal/mixins.py:593
 msgid "day"
 msgstr "Tag"
 
-#: lino_xl/lib/cal/mixins.py:579
+#: lino_xl/lib/cal/mixins.py:581
 msgid "Every week"
 msgstr "Jede Woche"
 
-#: lino_xl/lib/cal/mixins.py:590 lino_xl/lib/cal/mixins.py:591
+#: lino_xl/lib/cal/mixins.py:592 lino_xl/lib/cal/mixins.py:593
 #: lino_xl/lib/coachings/desktop.py:115 lino_xl/lib/households/models.py:486
 msgid "and"
 msgstr "und"
 
-#: lino_xl/lib/cal/mixins.py:592
+#: lino_xl/lib/cal/mixins.py:594
 msgid "Every {day} of the month"
 msgstr "Jeden {day} des Monats"
 
-#: lino_xl/lib/cal/fixtures/std.py:126 lino_xl/lib/cal/mixins.py:594
+#: lino_xl/lib/cal/fixtures/std.py:126 lino_xl/lib/cal/mixins.py:596
 msgid "Every month"
 msgid_plural "Every {count} months"
 msgstr[0] "Jeden Monat"
 msgstr[1] "Alle {count} Monate"
 
-#: lino_xl/lib/cal/mixins.py:598
+#: lino_xl/lib/cal/mixins.py:600
 msgid "Every year"
 msgid_plural "Every {count} years"
 msgstr[0] "Jedes Jahr"
 msgstr[1] "Alle {count} Jahre"
 
-#: lino_xl/lib/cal/mixins.py:602
+#: lino_xl/lib/cal/mixins.py:604
 msgid "Every {day}"
 msgid_plural "Every {ord_count} {day}"
 msgstr[0] "Jeden {day} "
 msgstr[1] "Jeden {ord_count}n {day}"
 
-#: lino_xl/lib/cal/mixins.py:755 lino_xl/lib/courses/choicelists.py:23
-#: lino_xl/lib/ledger/choicelists.py:431
+#: lino_xl/lib/cal/mixins.py:757 lino_xl/lib/courses/choicelists.py:23
+#: lino_xl/lib/ledger/choicelists.py:432
 msgid "Editable"
 msgstr "Editierbar"
 
-#: lino_xl/lib/cal/mixins.py:768 lino_xl/lib/orders/models.py:97
+#: lino_xl/lib/cal/mixins.py:770 lino_xl/lib/orders/models.py:97
 msgid "Generate events until"
 msgstr "Termine generieren bis"
 
-#: lino_xl/lib/cal/mixins.py:830
+#: lino_xl/lib/cal/mixins.py:832
 msgid "Short description"
 msgstr "Kurzbeschreibung"
 
-#: lino_xl/lib/cal/mixins.py:837
+#: lino_xl/lib/cal/mixins.py:839
 msgid "Whether this is private, public or between."
 msgstr "Ob dieser Termin  privat, öffentlich oder halb öffentlich ist"
 
-#: lino_xl/lib/cal/mixins.py:839
+#: lino_xl/lib/cal/mixins.py:841
 msgid "Revision"
 msgstr "Revisionsnummer"
 
-#: lino_xl/lib/cal/mixins.py:881
+#: lino_xl/lib/cal/mixins.py:883
 msgid "at {time}"
 msgstr "um {time}"
 
@@ -2656,7 +2655,7 @@ msgstr "Aufgaben"
 
 #: lino_xl/lib/cal/models.py:256 lino_xl/lib/ledger/mixins.py:99
 #: lino_xl/lib/ledger/ui.py:361 lino_xl/lib/ledger/ui.py:760
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:128
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:122
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:75
 msgid "Due date"
 msgstr "Zahlungsziel"
@@ -2685,7 +2684,7 @@ msgstr "Regelmäßiges Ereignis"
 msgid "Recurring events"
 msgstr "Regelmäßige Ereignisse"
 
-#: lino_xl/lib/cal/models.py:390 lino_xl/lib/cal/models.py:1064
+#: lino_xl/lib/cal/models.py:390 lino_xl/lib/cal/models.py:1068
 msgid "Calendar entry"
 msgstr "Kalendereintrag"
 
@@ -2731,7 +2730,7 @@ msgstr ""
 msgid "Reminder"
 msgstr "Erinnerung"
 
-#: lino_xl/lib/cal/models.py:915 lino_xl/lib/cal/ui.py:313
+#: lino_xl/lib/cal/models.py:915 lino_xl/lib/cal/ui.py:311
 msgid "Responsible user"
 msgstr "Verantwortlicher"
 
@@ -2767,81 +2766,81 @@ msgstr "Veraltete generierte Kalendereinträge"
 msgid "Has auto_type but no owner."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:986
+#: lino_xl/lib/cal/models.py:990
 msgid "Event type but {0} (should be {1})."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1001
+#: lino_xl/lib/cal/models.py:1005
 msgid "Too long-lasting calendar entries"
 msgstr "Dauer überschreitende Kalendereinträge"
 
-#: lino_xl/lib/cal/models.py:1029
+#: lino_xl/lib/cal/models.py:1033
 msgid "Presence"
 msgstr "Anwesenheit"
 
-#: lino_xl/lib/cal/models.py:1030 lino_xl/lib/cal/ui.py:432
+#: lino_xl/lib/cal/models.py:1034 lino_xl/lib/cal/ui.py:430
 #: lino_xl/lib/courses/models.py:476
 msgid "Presences"
 msgstr "Anwesenheiten"
 
-#: lino_xl/lib/cal/models.py:1036 lino_xl/lib/households/choicelists.py:21
+#: lino_xl/lib/cal/models.py:1040 lino_xl/lib/households/choicelists.py:21
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:25
 msgid "Role"
 msgstr "Rolle"
 
-#: lino_xl/lib/cal/models.py:1101
+#: lino_xl/lib/cal/models.py:1105
 msgid "due date reached"
 msgstr "Fälligkeitsdatum erreicht"
 
-#: lino_xl/lib/cal/models.py:1118
+#: lino_xl/lib/cal/models.py:1122
 msgid "Default access class"
 msgstr "Standardmäßige Zugriffsklasse"
 
-#: lino_xl/lib/cal/models.py:1119
+#: lino_xl/lib/cal/models.py:1123
 msgid "The default access class for your calendar events and tasks."
 msgstr "Die standardmäßige Zugriffsklasse für Ihre Termine und Aufgaben"
 
-#: lino_xl/lib/cal/models.py:1126 lino_xl/lib/cal/models.py:1136
+#: lino_xl/lib/cal/models.py:1130 lino_xl/lib/cal/models.py:1140
 msgid "Default Event Type"
 msgstr "Standard-Kalenderintragsart"
 
-#: lino_xl/lib/cal/models.py:1127
+#: lino_xl/lib/cal/models.py:1131
 #, fuzzy
 msgid "The default event type for your calendar events."
 msgstr "Die standardmäßige Zugriffsklasse für Ihre Termine und Aufgaben"
 
-#: lino_xl/lib/cal/models.py:1137
+#: lino_xl/lib/cal/models.py:1141
 msgid "The default type of events on this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1147
+#: lino_xl/lib/cal/models.py:1151
 #, fuzzy
 msgid "Site Calendar"
 msgstr "Standard-Kalender"
 
-#: lino_xl/lib/cal/models.py:1148
+#: lino_xl/lib/cal/models.py:1152
 msgid "The default calendar of this site."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1154
+#: lino_xl/lib/cal/models.py:1158
 msgid "Max automatic events"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1156
+#: lino_xl/lib/cal/models.py:1160
 msgid "Maximum number of automatic events to be generated."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1164
+#: lino_xl/lib/cal/models.py:1168
 msgid "Hide events before"
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1166
+#: lino_xl/lib/cal/models.py:1170
 msgid ""
 "If this is specified, certain tables show only\n"
 "events after the given date."
 msgstr ""
 
-#: lino_xl/lib/cal/models.py:1194
+#: lino_xl/lib/cal/models.py:1198
 #, python-format
 msgid "%(num)d reminders for %(user)s have been updated."
 msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
@@ -2850,78 +2849,78 @@ msgstr "%(num)d Erinnerungen für %(user)s wurden aktualisiert."
 msgid "My tasks"
 msgstr "Meine Aufgaben"
 
-#: lino_xl/lib/cal/ui.py:315
+#: lino_xl/lib/cal/ui.py:313
 #, fuzzy
 msgid "Only rows managed by this user."
 msgstr "%d zugewiesene Termine"
 
-#: lino_xl/lib/cal/ui.py:323
+#: lino_xl/lib/cal/ui.py:321
 msgid "Event state"
 msgstr "Zustand Termin"
 
-#: lino_xl/lib/cal/ui.py:324
+#: lino_xl/lib/cal/ui.py:322
 #, fuzzy
 msgid "Only rows on calendar entries having this state."
 msgstr "Datenobjekt"
 
-#: lino_xl/lib/cal/ui.py:328
+#: lino_xl/lib/cal/ui.py:326
 msgid "Only rows having this guest state."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:421
+#: lino_xl/lib/cal/ui.py:419
 msgid "Guests are filled automatically."
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:452
+#: lino_xl/lib/cal/ui.py:450
 msgid "My presences"
 msgstr "Meine Anwesenheiten"
 
-#: lino_xl/lib/cal/ui.py:487
+#: lino_xl/lib/cal/ui.py:485
 msgid "My pending invitations"
 msgstr ""
 
-#: lino_xl/lib/cal/ui.py:502
+#: lino_xl/lib/cal/ui.py:500
 msgid "My guests"
 msgstr "Meine Gäste"
 
-#: lino_xl/lib/cal/ui.py:710
+#: lino_xl/lib/cal/ui.py:708
 msgid "Show events conflicting with this one."
 msgstr "Überschneidende Termine anzeigen"
 
-#: lino_xl/lib/cal/ui.py:741
+#: lino_xl/lib/cal/ui.py:739
 msgid "Appointments today"
 msgstr "Termine heute"
 
-#: lino_xl/lib/cal/ui.py:949
+#: lino_xl/lib/cal/ui.py:947
 #, fuzzy
 msgid "{} : {}"
 msgstr " in "
 
-#: lino_xl/lib/cal/ui.py:1050
+#: lino_xl/lib/cal/ui.py:1048
 msgid "My appointments"
 msgstr "Meine Termine"
 
-#: lino_xl/lib/cal/ui.py:1077
+#: lino_xl/lib/cal/ui.py:1075
 msgid "My appointments today"
 msgstr "Meine Termine heute"
 
-#: lino_xl/lib/cal/ui.py:1090
+#: lino_xl/lib/cal/ui.py:1088
 msgid "Appointments assigned to me"
 msgstr "Mir zugewiesene Termine"
 
-#: lino_xl/lib/cal/ui.py:1105
+#: lino_xl/lib/cal/ui.py:1103
 msgid "{} appointments have been assigned to you."
 msgstr "{} Termine wurden dir zugewiesen."
 
-#: lino_xl/lib/cal/ui.py:1111
+#: lino_xl/lib/cal/ui.py:1109
 msgid "Overdue appointments"
 msgstr "Überfällige Termine"
 
-#: lino_xl/lib/cal/ui.py:1125
+#: lino_xl/lib/cal/ui.py:1123
 msgid "My overdue appointments"
 msgstr "Meine überfälligen Termine"
 
-#: lino_xl/lib/cal/ui.py:1131
+#: lino_xl/lib/cal/ui.py:1129
 msgid "My unconfirmed appointments"
 msgstr "Meine unbestätigten Termine"
 
@@ -2929,7 +2928,7 @@ msgstr "Meine unbestätigten Termine"
 #: lino_xl/lib/events/models.py:78 lino_xl/lib/finan/mixins.py:327
 #: lino_xl/lib/notes/models.py:118 lino_xl/lib/outbox/models.py:208
 #: lino_xl/lib/polls/models.py:311
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:43
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:37
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:19
 #: lino_xl/lib/trends/models.py:88
 msgid "Date"
@@ -3199,7 +3198,7 @@ msgstr "Nachmittags"
 msgid "Clients"
 msgstr "Empfänger"
 
-#: lino_xl/lib/clients/__init__.py:31 lino_xl/lib/uploads/fixtures/std.py:37
+#: lino_xl/lib/clients/__init__.py:35 lino_xl/lib/uploads/fixtures/std.py:37
 msgid "Identifying document"
 msgstr "Identifizierendes Dokument"
 
@@ -3319,7 +3318,7 @@ msgstr "Begleitungen"
 msgid "Coaching"
 msgstr "Begleitung"
 
-#: lino_xl/lib/coachings/desktop.py:41 lino_xl/lib/uploads/models.py:85
+#: lino_xl/lib/coachings/desktop.py:41 lino_xl/lib/uploads/models.py:84
 msgid "Coached by"
 msgstr "Begleitet durch"
 
@@ -3539,7 +3538,7 @@ msgid "Export as vCard"
 msgstr ""
 
 #: lino_xl/lib/contacts/models.py:83 lino_xl/lib/households/choicelists.py:27
-#: lino_xl/lib/households/models.py:499 lino_xl/lib/sheets/models.py:188
+#: lino_xl/lib/households/models.py:499 lino_xl/lib/sheets/models.py:186
 #: lino_xl/lib/xl/help_texts.py:1528
 msgid "Partner"
 msgstr "Partner"
@@ -4801,7 +4800,7 @@ msgstr "Erstellen"
 
 #: lino_xl/lib/excerpts/config/excerpts/base.body.html:5
 #: lino_xl/lib/orders/models.py:85
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:50
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:44
 msgid "Our reference"
 msgstr "Unser Zeichen"
 
@@ -4902,7 +4901,7 @@ msgstr "Standardwert Konto"
 
 #: lino_xl/lib/finan/mixins.py:38 lino_xl/lib/finan/mixins.py:114
 #: lino_xl/lib/ledger/mixins.py:98
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:51
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:45
 msgid "Your reference"
 msgstr "Ihr Zeichen"
 
@@ -4987,13 +4986,13 @@ msgstr "Belegszeilen Diverse Buchungen"
 
 #: lino_xl/lib/finan/models.py:236 lino_xl/lib/ledger/models.py:984
 #: lino_xl/lib/ledger/ui.py:619 lino_xl/lib/ledger/utils.py:24
-#: lino_xl/lib/sheets/models.py:134
+#: lino_xl/lib/sheets/models.py:132
 msgid "Debit"
 msgstr ""
 
 #: lino_xl/lib/finan/models.py:237 lino_xl/lib/ledger/models.py:990
 #: lino_xl/lib/ledger/ui.py:623 lino_xl/lib/ledger/utils.py:25
-#: lino_xl/lib/sheets/models.py:135
+#: lino_xl/lib/sheets/models.py:133
 msgid "Credit"
 msgstr "Kredit"
 
@@ -5977,7 +5976,7 @@ msgid "Purchases"
 msgstr "Einkauf"
 
 #: lino_xl/lib/ledger/choicelists.py:46
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:118
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:112
 #: lino_xl/lib/vat/__init__.py:25 lino_xl/lib/vat/mixins.py:60
 msgid "VAT"
 msgstr "MwSt."
@@ -6118,30 +6117,30 @@ msgstr "Begleichungen"
 msgid "Bank payment orders"
 msgstr "Zahlungsaufträge"
 
-#: lino_xl/lib/ledger/choicelists.py:423
+#: lino_xl/lib/ledger/choicelists.py:424
 msgid "Voucher state"
 msgstr "Belegzustand"
 
-#: lino_xl/lib/ledger/choicelists.py:424
+#: lino_xl/lib/ledger/choicelists.py:425
 msgid "Voucher states"
 msgstr "Belegzustände"
 
-#: lino_xl/lib/ledger/choicelists.py:437 lino_xl/lib/polls/utils.py:36
+#: lino_xl/lib/ledger/choicelists.py:438 lino_xl/lib/polls/utils.py:36
 #: lino_xl/lib/rooms/models.py:25
 msgid "Registered"
 msgstr "Registriert"
 
-#: lino_xl/lib/ledger/choicelists.py:438
+#: lino_xl/lib/ledger/choicelists.py:439
 msgid "Signed"
 msgstr "Unterschrieben"
 
-#: lino_xl/lib/ledger/choicelists.py:446 lino_xl/lib/ledger/choicelists.py:452
-#: lino_xl/lib/ledger/choicelists.py:453 lino_xl/lib/polls/utils.py:40
+#: lino_xl/lib/ledger/choicelists.py:447 lino_xl/lib/ledger/choicelists.py:453
+#: lino_xl/lib/ledger/choicelists.py:454 lino_xl/lib/polls/utils.py:40
 msgid "Register"
 msgstr "Registrieren"
 
-#: lino_xl/lib/ledger/choicelists.py:448 lino_xl/lib/ledger/choicelists.py:456
-#: lino_xl/lib/ledger/choicelists.py:458 lino_xl/lib/polls/utils.py:42
+#: lino_xl/lib/ledger/choicelists.py:449 lino_xl/lib/ledger/choicelists.py:457
+#: lino_xl/lib/ledger/choicelists.py:459 lino_xl/lib/polls/utils.py:42
 msgid "Deregister"
 msgstr "Entregistrieren"
 
@@ -6280,7 +6279,7 @@ msgid "Payment term"
 msgstr "Zahlungsbedingungen"
 
 #: lino_xl/lib/ledger/models.py:420
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:132
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:126
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:79
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/trailer.html:10
 msgid "Payment terms"
@@ -6302,14 +6301,12 @@ msgstr "Monatsende"
 msgid "Printed text"
 msgstr ""
 
-#: lino_xl/lib/ledger/models.py:450 lino_xl/lib/sheets/models.py:167
-#: lino_xl/lib/sheets/models.py:310
-#, fuzzy
+#: lino_xl/lib/ledger/models.py:450 lino_xl/lib/sheets/models.py:165
+#: lino_xl/lib/sheets/models.py:308
 msgid "Account"
 msgstr "Konto"
 
 #: lino_xl/lib/ledger/models.py:451
-#, fuzzy
 msgid "Accounts"
 msgstr "Konten"
 
@@ -6478,11 +6475,11 @@ msgid ""
 "Start period."
 msgstr ""
 
-#: lino_xl/lib/ledger/ui.py:495 lino_xl/lib/sheets/models.py:330
+#: lino_xl/lib/ledger/ui.py:495 lino_xl/lib/sheets/models.py:328
 msgid "Select at least a start period"
 msgstr "Wähle mindestens eine Anfangsperiode aus"
 
-#: lino_xl/lib/ledger/ui.py:498 lino_xl/lib/sheets/models.py:333
+#: lino_xl/lib/ledger/ui.py:498 lino_xl/lib/sheets/models.py:331
 msgid "End period must be after start period"
 msgstr ""
 
@@ -6502,25 +6499,25 @@ msgstr "Alle Perioden"
 msgid "Reference"
 msgstr "Ihr Zeichen"
 
-#: lino_xl/lib/ledger/ui.py:611 lino_xl/lib/sheets/models.py:132
+#: lino_xl/lib/ledger/ui.py:611 lino_xl/lib/sheets/models.py:130
 msgid "Debit before"
 msgstr ""
 "Debit\n"
 "vorher"
 
-#: lino_xl/lib/ledger/ui.py:615 lino_xl/lib/sheets/models.py:133
+#: lino_xl/lib/ledger/ui.py:615 lino_xl/lib/sheets/models.py:131
 msgid "Credit before"
 msgstr ""
 "Kredit\n"
 "vorher"
 
-#: lino_xl/lib/ledger/ui.py:627 lino_xl/lib/sheets/models.py:149
+#: lino_xl/lib/ledger/ui.py:627 lino_xl/lib/sheets/models.py:147
 msgid "Debit after"
 msgstr ""
 "Debit\n"
 "nachher"
 
-#: lino_xl/lib/ledger/ui.py:631 lino_xl/lib/sheets/models.py:153
+#: lino_xl/lib/ledger/ui.py:631 lino_xl/lib/sheets/models.py:151
 msgid "Credit after"
 msgstr ""
 "Kredit\n"
@@ -6596,7 +6593,7 @@ msgstr "{0} offene Bewegungen ({1} {2})"
 msgid "%(details)s matching '%(master)s'"
 msgstr "%(details)s für %(master)s"
 
-#: lino_xl/lib/ledger/config/contacts/Partner/payment_reminder.weasy.html:17
+#: lino_xl/lib/ledger/config/contacts/Partner/payment_reminder.weasy.html:16
 msgid "We remind you that the following invoices are due."
 msgstr ""
 
@@ -6707,12 +6704,12 @@ msgid "Financial assets & liabilities"
 msgstr "Finanzielle Vermögenswerte und Verbindlichkeiten"
 
 #: lino_xl/lib/ledger/fixtures/std.py:119 lino_xl/lib/sheets/choicelists.py:116
-#: lino_xl/lib/sheets/models.py:290
+#: lino_xl/lib/sheets/models.py:288
 msgid "Expenses"
 msgstr "Ausgaben"
 
 #: lino_xl/lib/ledger/fixtures/std.py:122 lino_xl/lib/sheets/choicelists.py:121
-#: lino_xl/lib/sheets/models.py:295
+#: lino_xl/lib/sheets/models.py:293
 msgid "Revenues"
 msgstr "Einnahmen"
 
@@ -7082,7 +7079,7 @@ msgstr "Auftragspositionen"
 
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:44
 #: lino_xl/lib/orders/models.py:403
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:69
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:63
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:33
 #: lino_xl/lib/vat/mixins.py:431
 msgid "Quantity"
@@ -7167,7 +7164,7 @@ msgid "Create email"
 msgstr "per E-Mail"
 
 #: lino_xl/lib/outbox/models.py:44 lino_xl/lib/postings/models.py:75
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:37
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:31
 msgid "Recipient"
 msgstr "Empfänger"
 
@@ -7377,8 +7374,8 @@ msgstr ""
 msgid "Results"
 msgstr "Resultate"
 
-#: lino_xl/lib/polls/models.py:200 lino_xl/lib/polls/models.py:576
-#: lino_xl/lib/polls/models.py:605
+#: lino_xl/lib/polls/models.py:200 lino_xl/lib/polls/models.py:583
+#: lino_xl/lib/polls/models.py:612
 msgid "Question"
 msgstr "Frage"
 
@@ -7391,7 +7388,7 @@ msgctxt "polls"
 msgid "Title"
 msgstr "Titel"
 
-#: lino_xl/lib/polls/models.py:306 lino_xl/lib/polls/models.py:775
+#: lino_xl/lib/polls/models.py:306 lino_xl/lib/polls/models.py:784
 msgid "Response"
 msgstr "Befragung"
 
@@ -7421,9 +7418,9 @@ msgstr ""
 msgid "Answer Choices"
 msgstr "Auswahlmöglichkeiten"
 
-#: lino_xl/lib/polls/models.py:431 lino_xl/lib/polls/models.py:659
+#: lino_xl/lib/polls/models.py:431 lino_xl/lib/polls/models.py:668
 msgid "My answer"
-msgstr ""
+msgstr "Meine Antwort"
 
 #: lino_xl/lib/polls/models.py:449
 #, fuzzy
@@ -7436,29 +7433,28 @@ msgid "Answer Remarks"
 msgstr "Bemerkung"
 
 #: lino_xl/lib/polls/models.py:457 lino_xl/lib/polls/models.py:491
-#, fuzzy
 msgid "My remark"
-msgstr "Bemerkung"
+msgstr "Meine Bemerkung"
 
-#: lino_xl/lib/polls/models.py:529 lino_xl/lib/polls/models.py:756
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:54
+#: lino_xl/lib/polls/models.py:535 lino_xl/lib/polls/models.py:765
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:48
 msgid "N/A"
 msgstr ""
 
-#: lino_xl/lib/polls/models.py:581 lino_xl/lib/polls/models.py:761
+#: lino_xl/lib/polls/models.py:588 lino_xl/lib/polls/models.py:770
 msgid "Answers"
 msgstr "Antworten"
 
-#: lino_xl/lib/polls/models.py:783
+#: lino_xl/lib/polls/models.py:792
 msgid "Answer"
 msgstr "Antwort"
 
-#: lino_xl/lib/polls/models.py:804
+#: lino_xl/lib/polls/models.py:813
 #, fuzzy
 msgid "#Answers"
 msgstr "Partner"
 
-#: lino_xl/lib/polls/models.py:809
+#: lino_xl/lib/polls/models.py:818
 msgid "A1"
 msgstr ""
 
@@ -7961,35 +7957,35 @@ msgstr ""
 msgid "Going to sign %d documents as user %s. Are you sure?"
 msgstr ""
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:54
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:48
 msgid "Your VAT id"
 msgstr "Ihre Mwst.-Nr"
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:55
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:49
 msgid "Your customer id"
 msgstr "Ihre Kundennummer"
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:68
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:62
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:32
 #: lino_xl/lib/vat/mixins.py:430
 msgid "Unit price"
 msgstr "Stückpreis"
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:71
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:65
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:34
 msgid "Price"
 msgstr "Preis"
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:117
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:111
 #: lino_xl/lib/vat/mixins.py:59
 msgid "Total excl. VAT"
 msgstr "Total ohne MwSt."
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:119
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:113
 msgid "Total incl. VAT"
 msgstr "Total inkl. MwSt."
 
-#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:141
+#: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:135
 msgid "With best regards."
 msgstr "Mit freundlichen Grüßen."
 
@@ -8095,7 +8091,7 @@ msgstr "Wiederholungsserien"
 msgid "Non-current assets"
 msgstr "Wiederholungsserien"
 
-#: lino_xl/lib/sheets/choicelists.py:103 lino_xl/lib/sheets/models.py:275
+#: lino_xl/lib/sheets/choicelists.py:103 lino_xl/lib/sheets/models.py:273
 #, fuzzy
 msgid "Passiva"
 msgstr "Russland"
@@ -8147,80 +8143,80 @@ msgstr "Muttersprachen"
 msgid "Net sales"
 msgstr "Gast-Zustände"
 
-#: lino_xl/lib/sheets/models.py:36
+#: lino_xl/lib/sheets/models.py:34
 #, fuzzy
 msgid "Sheet item"
 msgstr "Rechnung erstellen"
 
-#: lino_xl/lib/sheets/models.py:37
+#: lino_xl/lib/sheets/models.py:35
 #, fuzzy
 msgid "Sheet items"
 msgstr "Rechnung erstellen"
 
-#: lino_xl/lib/sheets/models.py:42
+#: lino_xl/lib/sheets/models.py:40
 #, fuzzy
 msgid "Booking direction"
 msgstr "Primäre Buchungsrichtung"
 
-#: lino_xl/lib/sheets/models.py:46
+#: lino_xl/lib/sheets/models.py:44
 msgid "Mirror"
 msgstr ""
 
-#: lino_xl/lib/sheets/models.py:162
+#: lino_xl/lib/sheets/models.py:160
 #, fuzzy
 msgid "General account balance"
 msgstr "Saldenliste Generalkonten"
 
-#: lino_xl/lib/sheets/models.py:163
+#: lino_xl/lib/sheets/models.py:161
 #, fuzzy
 msgid "General account balances"
 msgstr "Saldenliste Generalkonten"
 
-#: lino_xl/lib/sheets/models.py:180
+#: lino_xl/lib/sheets/models.py:178
 #, fuzzy
 msgid "Partner balance"
 msgstr "Neuer Saldo"
 
-#: lino_xl/lib/sheets/models.py:181
+#: lino_xl/lib/sheets/models.py:179
 #, fuzzy
 msgid "Partner balances"
 msgstr "Neuer Saldo"
 
-#: lino_xl/lib/sheets/models.py:232
+#: lino_xl/lib/sheets/models.py:230
 #, fuzzy
 msgid "Sheet item entry"
 msgstr "Buchungsdatum"
 
-#: lino_xl/lib/sheets/models.py:233
+#: lino_xl/lib/sheets/models.py:231
 #, fuzzy
 msgid "Sheet item entries"
 msgstr "Kalendereinträge"
 
-#: lino_xl/lib/sheets/models.py:270
+#: lino_xl/lib/sheets/models.py:268
 #, fuzzy
 msgid "Activa"
 msgstr "Verwandte"
 
-#: lino_xl/lib/sheets/models.py:305
+#: lino_xl/lib/sheets/models.py:303
 #, fuzzy
 msgid "Analytic accounts balance"
 msgstr "Saldenliste Analysekonten"
 
-#: lino_xl/lib/sheets/models.py:306
+#: lino_xl/lib/sheets/models.py:304
 #, fuzzy
 msgid "Analytic accounts balances"
 msgstr "Saldenliste Analysekonten"
 
-#: lino_xl/lib/sheets/models.py:325
+#: lino_xl/lib/sheets/models.py:323
 msgid "Accounting Report"
 msgstr "Buchhaltungsbericht"
 
-#: lino_xl/lib/sheets/models.py:326
+#: lino_xl/lib/sheets/models.py:324
 #, fuzzy
 msgid "Accounting Reports"
 msgstr "Buchhaltungsbericht"
 
-#: lino_xl/lib/sheets/models.py:665
+#: lino_xl/lib/sheets/models.py:663
 #, fuzzy, python-format
 msgid "%(details)s"
 msgstr "täglich"
@@ -8847,40 +8843,40 @@ msgstr "Ablaufwarnung (Wert)"
 msgid "Needed"
 msgstr "Nötig"
 
-#: lino_xl/lib/uploads/models.py:86
+#: lino_xl/lib/uploads/models.py:85
 msgid "Show only uploads for clients coached by this user."
 msgstr ""
 
-#: lino_xl/lib/uploads/models.py:128
+#: lino_xl/lib/uploads/models.py:135
 #, python-format
 msgid "%s expires"
 msgstr "%s wird ungültig"
 
-#: lino_xl/lib/uploads/models.py:134
+#: lino_xl/lib/uploads/models.py:141
 msgid "Issued by (Organization)"
 msgstr "Organisation"
 
-#: lino_xl/lib/uploads/models.py:137
+#: lino_xl/lib/uploads/models.py:144
 msgid "Issued by (Person)"
 msgstr "ausgestellt durch"
 
-#: lino_xl/lib/uploads/models.py:138
+#: lino_xl/lib/uploads/models.py:145
 msgid "Valid from"
 msgstr "Gültig von"
 
-#: lino_xl/lib/uploads/models.py:139
+#: lino_xl/lib/uploads/models.py:146
 msgid "Valid until"
 msgstr "Gültig bis"
 
-#: lino_xl/lib/uploads/models.py:176
+#: lino_xl/lib/uploads/models.py:183
 msgid "Validity"
 msgstr "Gültigkeit"
 
-#: lino_xl/lib/uploads/models.py:229
+#: lino_xl/lib/uploads/models.py:236
 msgid "My expiring upload files"
 msgstr "Meine ablaufenden Upload-Dateien"
 
-#: lino_xl/lib/uploads/models.py:230
+#: lino_xl/lib/uploads/models.py:237
 msgid "Show needed files whose validity expires soon"
 msgstr ""
 
@@ -15109,8 +15105,9 @@ msgstr "Verwalter"
 #~ msgid " and "
 #~ msgstr " und "
 
+#~ msgctxt "(place)"
 #~ msgid " at "
-#~ msgstr " um "
+#~ msgstr " bei "
 
 #~ msgid "with"
 #~ msgstr "mit"
@@ -15139,14 +15136,8 @@ msgstr "Verwalter"
 #~ msgid "New Ticket"
 #~ msgstr "Aktive Tickets"
 
-#~ msgid "Spawn a new child ticket {0} this one."
-#~ msgstr ""
-
 #~ msgid "New ticket {0} #{1}"
 #~ msgstr "Neues Ticket {0} #{1}"
-
-#~ msgid "New ticket {0} has been spawned as child of {1}."
-#~ msgstr ""
 
 #~ msgid "item VAT"
 #~ msgstr "Stimmabgabezustände"
@@ -15165,21 +15156,6 @@ msgstr "Verwalter"
 
 #~ msgid "Spontaneous"
 #~ msgstr "Kontakte"
-
-#~ msgid "Response to offer"
-#~ msgstr ""
-
-#~ msgid "Geographic area"
-#~ msgstr ""
-
-#~ msgid "The area for which we are seeking a job."
-#~ msgstr ""
-
-#~ msgid "Child custody"
-#~ msgstr ""
-
-#~ msgid "Notes concerning child custody."
-#~ msgstr ""
 
 #~ msgid "Aids"
 #~ msgstr "Hilfen"
@@ -15219,9 +15195,6 @@ msgstr "Verwalter"
 #~ msgid "Revoke"
 #~ msgstr "Entstätigen"
 
-#~ msgid "You revoke your signatore from this confirmation."
-#~ msgstr ""
-
 #~ msgid "You revoke your confirmation that %(client)s %(text)s"
 #~ msgstr "Sie annulieren Ihre Bestätigung, dass %(client)s %(text)s"
 
@@ -15234,9 +15207,6 @@ msgstr "Verwalter"
 
 #~ msgid "Date range %(p1)s lies outside of granted period %(p2)s."
 #~ msgstr "Datumsbereich %(p1)s außerhalb der Laufzeit des Beschlusses %(p2)s."
-
-#~ msgid "Check for confirmations outside of granted period"
-#~ msgstr ""
 
 #~ msgid "Confirmation without granting"
 #~ msgstr "Hilfebescheinigung ohne Bestätigung"
@@ -15253,29 +15223,8 @@ msgstr "Verwalter"
 #~ msgid "Integration duty"
 #~ msgstr "Verpflichtung DSBE"
 
-#~ msgid ""
-#~ "Whether aid grantings of this type "
-#~ "are considered as duty for integration"
-#~ " contract."
-#~ msgstr ""
-
-#~ msgid "Whether aid grantings of this type are considered as urgent."
-#~ msgstr ""
-
 #~ msgid "Confirmed by primary coach"
 #~ msgstr "Primärbegleiter bestätigt"
-
-#~ msgid ""
-#~ "Whether grantings for this aid type "
-#~ "are to be signed by the client's"
-#~ " primary coach."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Which client address to print on "
-#~ "confirmations. If this is empty, Lino"
-#~ " will use the primary address."
-#~ msgstr ""
 
 #~ msgid "Aid granting"
 #~ msgstr "Hilfebeschluss"
@@ -15288,12 +15237,6 @@ msgstr "Verwalter"
 
 #~ msgid "Applies from"
 #~ msgstr "Laufzeit von"
-
-#~ msgid "Only rows decided by this board."
-#~ msgstr ""
-
-#~ msgid "Only confirmations about this aid type."
-#~ msgstr ""
 
 #~ msgid "Grantings to confirm"
 #~ msgstr "Zu bestätigende Hilfebeschlüsse"
@@ -15321,12 +15264,6 @@ msgstr "Verwalter"
 
 #~ msgid "Can refund"
 #~ msgstr "Kostenrückerstattung"
-
-#~ msgid ""
-#~ "Whether persons of this type can "
-#~ "be used as doctor of a refund "
-#~ "confirmation."
-#~ msgstr ""
 
 #~ msgid "Refund confirmation"
 #~ msgstr "Kostenübernahmeschein"
@@ -15376,17 +15313,8 @@ msgstr "Verwalter"
 #~ msgid "Subsidizations"
 #~ msgstr "Begründung"
 
-#~ msgid "Tutorate"
-#~ msgstr ""
-
-#~ msgid "Walloon Region"
-#~ msgstr ""
-
 #~ msgid "SINE"
 #~ msgstr "Seit"
-
-#~ msgid "PTP"
-#~ msgstr ""
 
 #~ msgid "Art61 job supplyment"
 #~ msgstr "Art.61-Konvention"
@@ -15399,9 +15327,6 @@ msgstr "Verwalter"
 
 #~ msgid "Art61 job supplyments"
 #~ msgstr "Art.61-Konventionen"
-
-#~ msgid "Only job supplies of type"
-#~ msgstr ""
 
 #~ msgid "Art61 job supplyments and activations"
 #~ msgstr "Art.61-Konventionsarten"
@@ -15418,9 +15343,6 @@ msgstr "Verwalter"
 #~ msgid "Badge Awards"
 #~ msgstr "Badgeprüfungen"
 
-#~ msgid "Holder"
-#~ msgstr ""
-
 #~ msgid "Result"
 #~ msgstr "Resultat"
 
@@ -15435,9 +15357,6 @@ msgstr "Verwalter"
 
 #~ msgid "User Calendar"
 #~ msgstr "Kalender"
-
-#~ msgid "Calendar where your events are published."
-#~ msgstr ""
 
 #~ msgid "Default type for client calendar events"
 #~ msgstr "Kalender für Kliententermine"
@@ -15464,23 +15383,15 @@ msgstr "Verwalter"
 #~ msgid "Managed by"
 #~ msgstr "und durch"
 
-#~ msgid "Created appointment for %(user)s with %(partner)s"
-#~ msgstr ""
-
-#~ msgid "Delegated to client"
-#~ msgstr ""
-
 #~ msgid "CBSS"
 #~ msgstr "ZDSS"
 
+#~ msgctxt "courses"
 #~ msgid "Failed"
-#~ msgstr "Fehlgeschlagen"
+#~ msgstr "Nicht bestanden"
 
 #~ msgid "Validated"
 #~ msgstr "Validiert"
-
-#~ msgid "OK"
-#~ msgstr ""
 
 #~ msgid "Errors"
 #~ msgstr "Fehlermeldungen"
@@ -15488,6 +15399,7 @@ msgstr "Verwalter"
 #~ msgid "Action"
 #~ msgstr "Aktion"
 
+#~ msgctxt "courses"
 #~ msgid "Unregister"
 #~ msgstr "Austragen"
 
@@ -15512,9 +15424,6 @@ msgstr "Verwalter"
 #~ msgid "German"
 #~ msgstr "Deutsch"
 
-#~ msgid "T/A/B"
-#~ msgstr ""
-
 #~ msgid "Request"
 #~ msgstr "Abfrage"
 
@@ -15523,9 +15432,6 @@ msgstr "Verwalter"
 
 #~ msgid "Info messages"
 #~ msgstr "Info-Meldungen"
-
-#~ msgid "Request has been validated against XSD files"
-#~ msgstr ""
 
 #~ msgid "Birth date"
 #~ msgstr "Geburtsdatum"
@@ -15581,18 +15487,6 @@ msgstr "Verwalter"
 #~ msgid "Requesting organisation"
 #~ msgstr "Anfragende Organisation"
 
-#~ msgid "SSDN User Id"
-#~ msgstr ""
-
-#~ msgid "SSDN email address"
-#~ msgstr ""
-
-#~ msgid "HTTP username"
-#~ msgstr ""
-
-#~ msgid "HTTP password"
-#~ msgstr ""
-
 #~ msgid "CBSS summary"
 #~ msgstr "Zusammenfassung ZDSS"
 
@@ -15601,9 +15495,6 @@ msgstr "Verwalter"
 
 #~ msgid "Diplomatic post"
 #~ msgstr "Botschaft"
-
-#~ msgid "Fusion"
-#~ msgstr ""
 
 #~ msgid "Move from "
 #~ msgstr "Wegziehen aus "
@@ -15779,9 +15670,6 @@ msgstr "Verwalter"
 #~ msgid "Retirement Certificates"
 #~ msgstr "Pensionszertifikate"
 
-#~ msgid "Guardians"
-#~ msgstr ""
-
 #~ msgid "Pseudo National Numbers"
 #~ msgstr "Pseudo-Nationalnummern"
 
@@ -15793,9 +15681,6 @@ msgstr "Verwalter"
 
 #~ msgid "Postal address abroad"
 #~ msgstr "Postadresse im Ausland"
-
-#~ msgid "Parental authorities"
-#~ msgstr ""
 
 #~ msgid "National Number"
 #~ msgstr "NR-Nummer"
@@ -15811,9 +15696,6 @@ msgstr "Verwalter"
 
 #~ msgid "Pseudonyms"
 #~ msgstr "Pseudonyme"
-
-#~ msgid "Aliases"
-#~ msgstr ""
 
 #~ msgid "Address Change Intention"
 #~ msgstr "Adressänderungsabsicht"
@@ -15884,9 +15766,6 @@ msgstr "Verwalter"
 #~ msgid "Last Update"
 #~ msgstr "Zuletzt geändert"
 
-#~ msgid "TI"
-#~ msgstr ""
-
 #~ msgid "Technical"
 #~ msgstr "Technisch"
 
@@ -15904,9 +15783,6 @@ msgstr "Verwalter"
 
 #~ msgid "Phonetic search"
 #~ msgstr "Phonetische Suche"
-
-#~ msgid "Confidential data"
-#~ msgstr ""
 
 #~ msgid "Birth location"
 #~ msgstr "Geburtsort"
@@ -15947,33 +15823,17 @@ msgstr "Verwalter"
 #~ msgid "Skills Property Group"
 #~ msgstr "Eigenschaftsgruppe Fähigkeiten"
 
-#~ msgid "The property group to be used as master for the SkillsByPerson table."
-#~ msgstr ""
-
 #~ msgid "Soft Skills Property Group"
 #~ msgstr "Eigenschaftsgruppe Sozialkompetenzen"
 
-#~ msgid ""
-#~ "The property group to be used as"
-#~ " master for the SoftSkillsByPerson table."
-#~ msgstr ""
-
 #~ msgid "Obstacles Property Group"
 #~ msgstr "Eigenschaftsgruppe Hindernisse"
-
-#~ msgid ""
-#~ "The property group to be used as"
-#~ " master for the ObstaclesByPerson table."
-#~ msgstr ""
 
 #~ msgid "Debts mediation"
 #~ msgstr "Schuldnerberatung"
 
 #~ msgid "Financial statement"
 #~ msgstr "Finanzielle Situation"
-
-#~ msgid "Profit & Loss statement"
-#~ msgstr ""
 
 #~ msgid "Account type"
 #~ msgstr "Kontoart"
@@ -15995,29 +15855,6 @@ msgstr "Verwalter"
 
 #~ msgid "Table layouts"
 #~ msgstr "Tabellenlayout"
-
-#~ msgid "Columns"
-#~ msgstr ""
-
-#~ msgid "Description, remarks, yearly amount, actor amounts"
-#~ msgstr ""
-
-#~ msgid "Description, remarks, actor amounts"
-#~ msgstr ""
-
-#~ msgid "Partner, remarks, monthly rate, actor amounts"
-#~ msgstr ""
-
-#~ msgid "Full description, actor amounts"
-#~ msgstr ""
-
-#~ msgid "Debt-collector, partner, remarks, monthly rate, amounts"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "For how many months the entered amount counts. \n"
-#~ "For example 1 means a monthly amount, 12 a yearly amount."
-#~ msgstr ""
 
 #~ msgid "{meeting} on {date} with {user}"
 #~ msgstr "{meeting} am {date} mit {user}"
@@ -16049,29 +15886,11 @@ msgstr "Verwalter"
 #~ msgid "Print to-do list"
 #~ msgstr "To-do-Liste drucken"
 
-#~ msgid ""
-#~ "Einträge im Feld \"To-do\" werden nur ausgedruckt, \n"
-#~ "wenn die Option \"To-dos drucken\" des Budgets angekreuzt ist. \n"
-#~ "Diese Option wird aber momentan noch ignoriert \n"
-#~ "(d.h. To-do-Liste wird gar nicht ausgedruckt), \n"
-#~ "weil wir noch überlegen müssen, *wie* sie ausgedruckt werden sollen. \n"
-#~ "Vielleicht mit Fußnoten?"
-#~ msgstr ""
-
 #~ msgid "Print empty rows"
 #~ msgstr "Auch leere Einträge drucken"
 
-#~ msgid "Check this to print also empty rows for later completion."
-#~ msgstr ""
-
 #~ msgid "Include yearly incomes"
 #~ msgstr "Jährliche Einkommen berücksichtigen"
-
-#~ msgid ""
-#~ "Check this to include yearly incomes "
-#~ "in the Debts Overview table of "
-#~ "this Budget."
-#~ msgstr ""
 
 #~ msgid "Introduction"
 #~ msgstr "Einleitung"
@@ -16137,18 +15956,6 @@ msgstr "Verwalter"
 #~ msgid "Debt collection agency"
 #~ msgstr "Schuldeneintreiber"
 
-#~ msgid ""
-#~ "Leave empty for simple debts, otherwise"
-#~ " select         here the responsible "
-#~ "bailiff or collection agency"
-#~ msgstr ""
-
-#~ msgid "Periods must be > 0"
-#~ msgstr ""
-
-#~ msgid "Cannot set 'Distribute' when 'Monthly rate' is %r"
-#~ msgstr ""
-
 #~ msgid "Master budget"
 #~ msgstr "Budget-Kopiervorlage"
 
@@ -16167,9 +15974,6 @@ msgstr "Verwalter"
 #~ msgid "DM Clients"
 #~ msgstr "SB-Klienten"
 
-#~ msgid "To be filled if there is more than one person involved."
-#~ msgstr ""
-
 #~ msgid "Is actor in these budgets:"
 #~ msgstr "Ist Akteur in folgenden Budgets:"
 
@@ -16184,9 +15988,6 @@ msgstr "Verwalter"
 
 #~ msgid "Yearly amount"
 #~ msgstr "Jährl. Betrag"
-
-#~ msgid "Shows the Incomes & Expenses for this budget."
-#~ msgstr ""
 
 #~ msgid "Incomes & Expenses"
 #~ msgstr "Einnahmen & Ausgaben"
@@ -16237,9 +16038,6 @@ msgstr "Verwalter"
 #~ "proportional zum geschuldeten Betrag "
 #~ "aufgeteilt.\n"
 
-#~ msgid "%"
-#~ msgstr ""
-
 #~ msgid "Monthly payback suggested"
 #~ msgstr "Betrag der monatlichen Rückzahlung"
 
@@ -16270,50 +16068,17 @@ msgstr "Verwalter"
 #~ msgid "Similar clients: {clients}"
 #~ msgstr "Ähnliche Klienten: {clients}"
 
-#~ msgid "ESF"
-#~ msgstr ""
-
 #~ msgid "Participation Certificate"
 #~ msgstr "Behindertenausweis"
 
 #~ msgid "Participation Certificates"
 #~ msgstr "Behindertenausweis"
 
-#~ msgid "Epreuve d’évaluation réussie sans titre spécifique"
-#~ msgstr ""
-
-#~ msgid "ESF field"
-#~ msgstr ""
-
-#~ msgid "ESF fields"
-#~ msgstr ""
-
 #~ msgid "Informative sessions"
 #~ msgstr "Ausbildung"
 
 #~ msgid "Individual consultation"
 #~ msgstr "Übersicht Art.60§7-Konventionen"
-
-#~ msgid "Evaluation of external training"
-#~ msgstr ""
-
-#~ msgid "Certified integration service"
-#~ msgstr ""
-
-#~ msgid "Level tests"
-#~ msgstr ""
-
-#~ msgid "IT basics"
-#~ msgstr ""
-
-#~ msgid "Mobility"
-#~ msgstr ""
-
-#~ msgid "Remedial teaching"
-#~ msgstr ""
-
-#~ msgid "Wake up!"
-#~ msgstr ""
 
 #~ msgid "Getting a professional situation"
 #~ msgstr "Finanzielle Situation"
@@ -16327,17 +16092,8 @@ msgstr "Verwalter"
 #~ msgid "ESF Summary"
 #~ msgstr "Zusammenfassung ZDSS"
 
-#~ msgid "ESF Summaries"
-#~ msgstr ""
-
 #~ msgid "Children at charge"
 #~ msgstr "Kinder zu Lasten"
-
-#~ msgid "Certified handicap"
-#~ msgstr ""
-
-#~ msgid "Other difficulty"
-#~ msgstr ""
 
 #~ msgid "ESF data"
 #~ msgstr "Erfasste Daten"
@@ -16364,24 +16120,6 @@ msgstr "Verwalter"
 #~ msgstr[0] "%(count)d Kind"
 #~ msgstr[1] "%(count)d Kinder"
 
-#~ msgid "Immersion trainings"
-#~ msgstr ""
-
-#~ msgid "Immersion training"
-#~ msgstr ""
-
-#~ msgid "Immersion training type"
-#~ msgstr ""
-
-#~ msgid "Immersion training types"
-#~ msgstr ""
-
-#~ msgid "Immersion training goal"
-#~ msgstr ""
-
-#~ msgid "Immersion training goals"
-#~ msgstr ""
-
 #~ msgid "reference person"
 #~ msgstr "Referenzperson"
 
@@ -16397,17 +16135,11 @@ msgstr "Verwalter"
 #~ msgid "Discover a job"
 #~ msgstr "Sehr harte Stelle"
 
-#~ msgid "Confirm a professional project"
-#~ msgstr ""
-
 #~ msgid "Gain work experience"
 #~ msgstr "eingetragen seit"
 
 #~ msgid "Show competences"
 #~ msgstr "Kompetenzen"
-
-#~ msgid "Internal engagement"
-#~ msgstr ""
 
 #~ msgid "MISIP"
 #~ msgstr "Visite"
@@ -16426,9 +16158,6 @@ msgstr "Verwalter"
 
 #~ msgid "Only active clients"
 #~ msgstr "Nur aktive Klienten"
-
-#~ msgid "Show only clients in 'active' integration phases"
-#~ msgstr ""
 
 #~ msgid "Users with their Clients"
 #~ msgstr "Benutzer und ihre Klienten"
@@ -16463,31 +16192,6 @@ msgstr "Verwalter"
 #~ msgid "Contract endings by type"
 #~ msgstr "Vertragsart"
 
-#~ msgid "PIIS par agent et type"
-#~ msgstr ""
-
-#~ msgid "Art60§7 par agent et type"
-#~ msgstr ""
-
-#~ msgid "PIIS et types de formation"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Nombre de PIIS actifs par \n"
-#~ "    type de formation et type de contrat."
-#~ msgstr ""
-
-#~ msgid "Organisations externes et contrats"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Nombre de PIIS actifs par \n"
-#~ "    organisation externe et type de contrat."
-#~ msgstr ""
-
-#~ msgid "Job providers and contrats"
-#~ msgstr ""
-
 #~ msgid "Activity Report"
 #~ msgstr "Tätigkeitsbericht"
 
@@ -16499,9 +16203,6 @@ msgstr "Verwalter"
 
 #~ msgid "Causes d'arrêt des interventions"
 #~ msgstr "Liste der Begleitungen"
-
-#~ msgid "Internal meetings with client"
-#~ msgstr ""
 
 #~ msgid "Evaluation"
 #~ msgstr "Auswertung"
@@ -16530,9 +16231,6 @@ msgstr "Verwalter"
 #~ msgid "Date range overlaps with {ctype} #{id}."
 #~ msgstr "Datumsbereich überschneidet sich mit {ctype} #{id}"
 
-#~ msgid "%(ctype)s #%(id)s : %(msg)s"
-#~ msgstr ""
-
 #~ msgid "Check for overlapping contracts"
 #~ msgstr "auf Vertragsüberschneidungen prüfen"
 
@@ -16557,9 +16255,6 @@ msgstr "Verwalter"
 #~ msgid "Contract ends before it started."
 #~ msgstr "Vertrag endet bevor er startet."
 
-#~ msgid "You must specify a contract type."
-#~ msgstr ""
-
 #~ msgid "Evaluation %d"
 #~ msgstr "Auswertung %d"
 
@@ -16568,9 +16263,6 @@ msgstr "Verwalter"
 
 #~ msgid "Successfully ended"
 #~ msgstr "Erfolgreich abgeschlossen"
-
-#~ msgid "Only contracts with this company as partner."
-#~ msgstr ""
 
 #~ msgid "ISIP Type"
 #~ msgstr "VSE-Art"
@@ -16586,9 +16278,6 @@ msgstr "Verwalter"
 
 #~ msgid "Examination Policies"
 #~ msgstr "Auswertungsstrategien"
-
-#~ msgid "Generated events will receive this type."
-#~ msgstr ""
 
 #~ msgid "Contract termination reasons"
 #~ msgstr "Vertragsbeendigungsgründe"
@@ -16713,9 +16402,6 @@ msgstr "Verwalter"
 #~ msgid "%(job)s at %(provider)s"
 #~ msgstr "%(job)s bei %(provider)s"
 
-#~ msgid "The possible states of a candidature."
-#~ msgstr ""
-
 #~ msgid "Candidature state"
 #~ msgstr "Kandidatur-Zustand"
 
@@ -16752,18 +16438,6 @@ msgstr "Verwalter"
 #~ msgid "Date when the IA introduced this candidature."
 #~ msgstr "Datum wann der SA die Kandidatur erfasst hat."
 
-#~ msgid "Art.60"
-#~ msgstr ""
-
-#~ msgid "Whether an art.60 contract can satisfy this candidature."
-#~ msgstr ""
-
-#~ msgid "Art.61"
-#~ msgstr ""
-
-#~ msgid "Whether an art.61 contract can satisfy this candidature."
-#~ msgstr ""
-
 #~ msgid "Candidature by %(person)s"
 #~ msgstr "Kandidatur von %(person)s"
 
@@ -16772,12 +16446,6 @@ msgstr "Verwalter"
 
 #~ msgid "Experiences"
 #~ msgstr "Erfahrungen"
-
-#~ msgid ""
-#~ "\n"
-#~ "    Eine Stelle ist ein Arbeitsplatz bei einem Stellenabieter.\n"
-#~ "    "
-#~ msgstr ""
 
 #~ msgid "Job Types"
 #~ msgstr "Stellenarten"
@@ -16790,10 +16458,6 @@ msgstr "Verwalter"
 
 #~ msgid "Contracts Situation"
 #~ msgstr "Übersicht Art.60§7-Konventionen"
-
-#~ msgctxt "(place)"
-#~ msgid " at "
-#~ msgstr " bei "
 
 #~ msgid "Renseignements généraux"
 #~ msgstr "Allgemeine Auskünfte"
@@ -16831,62 +16495,8 @@ msgstr "Verwalter"
 #~ msgid "Payment recipient"
 #~ msgstr "Zahlungsempfänger"
 
-#~ msgid "Eingliederungseinkommen"
-#~ msgstr ""
-
-#~ msgid "Allgemeine Beihilfen"
-#~ msgstr ""
-
-#~ msgid "Fonds Gas und Elektrizität"
-#~ msgstr ""
-
-#~ msgid "Heizkosten- u. Energiebeihilfe"
-#~ msgstr ""
-
-#~ msgid "Beihilfe für Ausländer"
-#~ msgstr ""
-
-#~ msgid "Sozialhilfe"
-#~ msgstr ""
-
-#~ msgid "Mietbeihilfe"
-#~ msgstr ""
-
 #~ msgid "Mietkaution"
 #~ msgstr "Ausbildung"
-
-#~ msgid "Vorschuss auf Vergütungen o.ä."
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Pensionen"
-#~ msgstr ""
-
-#~ msgid "Vorsch. Entsch. Arbeitsunfälle"
-#~ msgstr ""
-
-#~ msgid "Vor. Kranken- u. Invalidengeld"
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Familienzulage"
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Arbeitslosengeld"
-#~ msgstr ""
-
-#~ msgid "Vorschuss auf Behindertenzulag"
-#~ msgstr ""
-
-#~ msgid "Abhebung von pers. Guthaben"
-#~ msgstr ""
-
-#~ msgid "Einn. Dritter: Weiterleitung"
-#~ msgstr ""
-
-#~ msgid "Unber. erh. Beträge + Erstatt."
-#~ msgstr ""
-
-#~ msgid "Gesundheitsbeihilfe"
-#~ msgstr ""
 
 #~ msgid "Collective purchase invoices"
 #~ msgstr "Sammelrechnungen"
@@ -16927,9 +16537,6 @@ msgstr "Verwalter"
 #~ msgid "New clients since"
 #~ msgstr "Neue Klienten seit"
 
-#~ msgid "List of users available for new coachings"
-#~ msgstr ""
-
 #~ msgid "Available Coaches"
 #~ msgstr "Verfügbare Begleiter"
 
@@ -16962,12 +16569,6 @@ msgstr "Verwalter"
 
 #~ msgid "Newcomers Quota"
 #~ msgstr "Quote Erstempfang"
-
-#~ msgid "The Broker who sent this Newcomer."
-#~ msgstr ""
-
-#~ msgid "The Faculty this client has been attributed to."
-#~ msgstr ""
 
 #~ msgid "Event/Note"
 #~ msgstr "Ereignis/Notiz"
@@ -17023,14 +16624,8 @@ msgstr "Verwalter"
 #~ msgid "Unemployed since"
 #~ msgstr "Arbeitslos seit"
 
-#~ msgid "Since when the client has not been employed in any regular job."
-#~ msgstr ""
-
 #~ msgid "Seeking work since"
 #~ msgstr "Sucht Arbeit seit"
-
-#~ msgid "Since when the client is seeking for a job."
-#~ msgstr ""
 
 #~ msgid "Needs residence permit"
 #~ msgstr "Braucht Aufenthaltserlaubnis"
@@ -17092,12 +16687,6 @@ msgstr "Verwalter"
 #~ msgid "Contracts"
 #~ msgstr "Verträge"
 
-#~ msgid "Extended filter criteria, e.g.:"
-#~ msgstr ""
-
-#~ msgid "Active: All those who have some active coaching."
-#~ msgstr ""
-
 #~ msgid "Only primary clients"
 #~ msgstr "Nur primäre Begleitungen"
 
@@ -17137,17 +16726,11 @@ msgstr "Verwalter"
 #~ msgid "Appears in Listing 104"
 #~ msgstr "Listing 104"
 
-#~ msgid "Liste des \"activités\" ou \"codes profession\"."
-#~ msgstr ""
-
 #~ msgid "Dispense reason"
 #~ msgstr "Dispenzgrund"
 
 #~ msgid "Dispense reasons"
 #~ msgstr "Dispenzgründe"
-
-#~ msgid "A list of reasons for being dispensed"
-#~ msgstr ""
 
 #~ msgid "Dispenses"
 #~ msgstr "Dispenzen"
@@ -17163,11 +16746,6 @@ msgstr "Verwalter"
 
 #~ msgid "Unemployment exclusion types"
 #~ msgstr "AG-Sperrgründe"
-
-#~ msgid ""
-#~ "Liste des raisons possibles d'arrêter temporairement\n"
-#~ "    le paiement d'une aide financière prévue."
-#~ msgstr ""
 
 #~ msgid "Exclusion from unemployment"
 #~ msgstr "AG-Sperre"
@@ -17190,17 +16768,11 @@ msgstr "Verwalter"
 #~ msgid "Convictions"
 #~ msgstr "Vorstrafen"
 
-#~ msgid "Prejudicial"
-#~ msgstr ""
-
 #~ msgid "aid type"
 #~ msgstr "Sozialhilfeart"
 
 #~ msgid "aid types"
 #~ msgstr "Sozialhilfearten"
-
-#~ msgid "Liste des types d'aide financière."
-#~ msgstr ""
 
 #~ msgid "Formation"
 #~ msgstr "Ausbildung"
@@ -17247,17 +16819,11 @@ msgstr "Verwalter"
 #~ msgid "Please select a user!"
 #~ msgstr "Bitten wählen Sie einen Benutzer aus!"
 
-#~ msgid "{client} now waiting for {user}"
-#~ msgstr ""
-
 #~ msgid "Create a prompt event for this client with this coach."
 #~ msgstr "%s ausstellen für diesen Klienten."
 
 #~ msgid "Client has no valid eID data!"
 #~ msgstr "Klient muss eID-Karte einlesen!"
-
-#~ msgid "Do you still want to issue an excerpt?"
-#~ msgstr ""
 
 #~ msgid "Create appointment with"
 #~ msgstr "Termin machen mit"
@@ -17268,20 +16834,11 @@ msgstr "Verwalter"
 #~ msgid "Find date"
 #~ msgstr "Termin finden"
 
-#~ msgid "Giro"
-#~ msgstr ""
-
 #~ msgid "Savings"
 #~ msgstr "Sparkonto"
 
-#~ msgid "Deposits"
-#~ msgstr ""
-
 #~ msgid "Managed"
 #~ msgstr "Verwaltet"
-
-#~ msgid "Whether this account is being managed by the PCSW."
-#~ msgstr ""
 
 #~ msgid "First signer function"
 #~ msgstr "Funktion des ersten Unterzeichners"
@@ -17301,498 +16858,23 @@ msgstr "Verwalter"
 #~ msgid "Newcomer consultations"
 #~ msgstr " Erstempfang direkt"
 
-#~ msgid "Accepts prompt consultations for newcomers."
-#~ msgstr ""
-
 #~ msgid "Newcomer appointments"
 #~ msgstr "Erstempfang auf Vereinbarung"
-
-#~ msgid "Accepts appointments for newcomers."
-#~ msgstr ""
 
 #~ msgid "Lino Welfare"
 #~ msgstr "Lino für ÖSHZ"
 
-#~ msgid "The standard migrator for welfare."
-#~ msgstr ""
-
-#~ msgid "The plugin."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Optionally specify the primary key (an integer) of the last\n"
-#~ "granting for whose confirmations you want to suppress checking of\n"
-#~ "date range.  This is useful for keeping legacy confirmations that\n"
-#~ "have been issued before the rule was activated."
-#~ msgstr ""
-
-#~ msgid "A list of the models that may be used as confirmation."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The template defined for the ExcerptType defined for this\n"
-#~ "confirmation type."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A string referring to the model which represents the badge holder in\n"
-#~ "your application.  Default value is 'contacts.Person'."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The descriptor for this plugin. See\n"
-#~ "lino.core.plugin.Plugin."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether executing requests should try to really connect to the\n"
-#~ "CBSS.  Real requests would fail with a timeout if run from behind\n"
-#~ "an IP address that is not registered at the CBSS."
-#~ msgstr ""
-
-#~ msgid "Either None or one of 'test', 'acpt' or 'prod'."
-#~ msgstr ""
-
 #~ msgid "The status of a CBSSRequest."
 #~ msgstr "Antragsdatum"
-
-#~ msgid ""
-#~ "Possible values for the action field of a\n"
-#~ "lino_welfare.modlib.cbss.models.ManageAccessRequest."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Ce service est sollicité au moment du démarrage de l’enquête\n"
-#~ "sociale.  Le CPAS déclare au réseau de la sécurité sociale qu’il\n"
-#~ "possède un dossier pour lequel il a l’autorisation (dispositions\n"
-#~ "légales et réglementaires) d’obtenir des informations des autres\n"
-#~ "institutions en vue de compléter son enquête dans le cadre de\n"
-#~ "l’octroi du revenu d’intégration.  Cette déclaration concerne le\n"
-#~ "répertoire sectoriel des CPAS à la SmalS-MvM et peut concerner\n"
-#~ "plusieurs catégories de personnes : le demandeur, les\n"
-#~ "cohabitants et les tiers concernés et ce, pour des finalités\n"
-#~ "différentes."
-#~ msgstr ""
-
-#~ msgid "L’opération contraire est aussi mise à disposition."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Il est en plus possible d’obtenir une liste des enregistrements\n"
-#~ "dans le répertoire sectoriel des CPAS à la SmalS-MvM ainsi qu’au\n"
-#~ "sein du réseau BCSS."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Possible values for the query_register field of a\n"
-#~ "lino_welfare.modlib.cbss.models.ManageAccessRequest."
-#~ msgstr ""
-
-#~ msgid "Query only the primary register."
-#~ msgstr ""
-
-#~ msgid "Query only the secondary register."
-#~ msgstr ""
 
 #~ msgid "Query both registers."
 #~ msgstr "Abfrageregister"
 
-#~ msgid ""
-#~ "Common Abstract Base Class for SSDNRequest\n"
-#~ "and NewStyleRequest"
-#~ msgstr ""
-
-#~ msgid "alias of builtins.NotImplementedError"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When duplicating a CBSS request, we want re-execute it.  So please\n"
-#~ "duplicate only the parameters, not the execution data like\n"
-#~ "ticket, sent and status.  Note that also the user will\n"
-#~ "be set to the user who asked to duplicate (because this is a\n"
-#~ "subclass of UserAuthored."
-#~ msgstr ""
-
-#~ msgid "CBSS requests that have a ticket may never be modified."
-#~ msgstr ""
-
-#~ msgid "Called when a successful reply has been received."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "This is the common part of a request for both classic and\n"
-#~ "new-style."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "When we print a request, the resulting excerpt should go to the\n"
-#~ "client's history."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Abstract Base Class for Models that represent SSDN (\"classic\")\n"
-#~ "requests."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Validates the generated XML against the XSD files.\n"
-#~ "Used by test suite.\n"
-#~ "It is not necessary to validate "
-#~ "each real request before actually "
-#~ "sending it."
-#~ msgstr ""
-
-#~ msgid "SSDN specific part of a request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Wrap the given service request into the SSDN envelope \n"
-#~ "by adding AuthorizedUser and other information common \n"
-#~ "the all SSDN requests)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Abstract Base Class for Models that represent\n"
-#~ "\"new style\" requests to the CBSS (and responses)."
-#~ msgstr ""
-
-#~ msgid "NewStyle specific part of a request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Abstract base for Requests that have "
-#~ "a field national_id and a method \n"
-#~ ""
-#~ "get_ssin()."
-#~ msgstr ""
-
-#~ msgid "Mixin for models that have certain fields"
-#~ msgstr ""
-
-#~ msgid "An item of an ClientVoucher."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Shows all simple invoices of a given journal (whose\n"
-#~ "Journal.voucher_type must be\n"
-#~ "lino_xl.lib.sales.models.ClientVoucher)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Used for Entry.periods and Account.periods\n"
-#~ "(the latter holds simply the default value for the former).\n"
-#~ "It means: for how many months the entered amount counts.\n"
-#~ "Default value is 1. For yearly amounts set it to 12."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Base class for both the volatile MainActor and the\n"
-#~ "Actor model."
-#~ msgstr ""
-
-#~ msgid "A volatile object that represents the budget partner as actor"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Model mixin to add to the base classes of your application's\n"
-#~ "pcsw.Client model."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Overrides\n"
-#~ "lino.mixins.dupable.Dupable.find_similar_instances(),\n"
-#~ "adding some additional rules."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether to show only primary coachings in the dynamic ventilation\n"
-#~ "columns (coachings per PersonGroup table."
-#~ msgstr ""
-
-#~ msgid "Has access to data used by integration agents."
-#~ msgstr ""
-
-#~ msgid "Can configure social integration functionality."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The list of all known overlap groups to be selected for the\n"
-#~ "overlap_group\n"
-#~ "of a contract type."
-#~ msgstr ""
-
-#~ msgid "Refuse this newcomer request."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Change client's state to 'former'. This will also end any active\n"
-#~ "coachings."
-#~ msgstr ""
-
-#~ msgid "Has limited access to data of social workers. Can see contracts."
-#~ msgstr ""
-
-#~ msgid "Can access data managed by general social workers."
-#~ msgstr ""
-
-#~ msgid "Can configure general social work functionality."
-#~ msgstr ""
-
-#~ msgid "Can manage external courses."
-#~ msgstr ""
-
-#~ msgid "Can manage and configure external courses."
-#~ msgstr ""
-
-#~ msgid "The Django model representing an aid type."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The short name for internal use, e.g. when a user must select\n"
-#~ "an aid type from a combobox."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The database model to use for issuing an aid confirmation of\n"
-#~ "this type. This is a mandatory pointer to\n"
-#~ "ConfirmationTypes."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The designation of this aid type as seen by the user e.g. when\n"
-#~ "selecting an aid type."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The text to print as title in confirmations.\n"
-#~ "See also\n"
-#~ "lino_xl.lib.excerpts.mixins.ExcerptTitle.excerpt_title."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The body template to use when printing a confirmation of this type.\n"
-#~ "If this field is empty, Lino uses the excerpt type's\n"
-#~ "body_template.\n"
-#~ "See also /admin/printing."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether aid grantings of this type are considered as urgent.\n"
-#~ "This is used by Confirmation.get_urgent_granting()"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Pointer to the default lino_xl.lib.boards.models.Board\n"
-#~ "for aid projects of this type."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Whether grantings for this aid type are to be signed by the\n"
-#~ "client's primary coach (see Client.get_primary_coach)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A pointer to the ClientContactType to be used when\n"
-#~ "selecting the pharmacy of a refund confirmation\n"
-#~ "(RefundConfirmation.pharmacy)."
-#~ msgstr ""
-
-#~ msgid "The Django model representing an aid granting."
-#~ msgstr ""
-
-#~ msgid "Pointer to the lino_welfare.modlib.pcsw.models.Client."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The type of aid being granted. Mandatory.\n"
-#~ "Pointer to the AidType."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Pointer to the user who is expected to \"sign\" this granting\n"
-#~ "(i.e. to confirm that it is real)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Pointer to the Board\n"
-#~ "which decided to allocate this aid project."
-#~ msgstr ""
-
-#~ msgid "Currently only used for printing an isip.Contract."
-#~ msgstr ""
-
-#~ msgid "Base class for all aid confirmations."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Return an error message if this confirmation lies outside of\n"
-#~ "granted period."
-#~ msgstr ""
-
-#~ msgid "Base class for both Granting and Confirmation."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The confirmation state of this object. Pointer to\n"
-#~ "ConfirmationStates."
-#~ msgstr ""
-
-#~ msgid "Sign this granting or confirmation, making most fields read-only."
-#~ msgstr ""
-
-#~ msgid "Revoke your signature of this granting or confirmation."
-#~ msgstr ""
-
-#~ msgid "Adds two fields."
-#~ msgstr ""
-
-#~ msgid "Adds a virtual field client."
-#~ msgstr ""
-
-#~ msgid "Virtual field which returns the partner if it is a client."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Default values filled from\n"
-#~ "lino_welfare.modlib.cbss.fixtures.sectors."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Codes qualité (Hoedanigheidscodes).\n"
-#~ "This table is usually filled with the official codes\n"
-#~ "by lino_welfare.modlib.cbss.fixtures.purposes."
-#~ msgstr ""
-
-#~ msgid "A request to the IdentifyPerson service."
-#~ msgstr ""
-
-#~ msgid "A request to the ManageAccess service."
-#~ msgstr ""
-
-#~ msgid "Pointer to Sector."
-#~ msgstr ""
-
-#~ msgid "Pointer to Purpose."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The action to perform.  This must be one of the values in\n"
-#~ "lino_welfare.modlib.cbss.choicelists.ManageActions"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The register to be query.\n"
-#~ "This must be one of the values in\n"
-#~ "lino_welfare.modlib.cbss.choicelists.QueryRegisters"
-#~ msgstr ""
-
-#~ msgid "A request to the RetrieveTIGroups service (aka Tx25)"
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An account is an item of an account chart used to collect\n"
-#~ "ledger transactions or other accountable items."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The account group to which this account belongs.  This must\n"
-#~ "point to an instance of Group."
-#~ msgstr ""
-
-#~ msgid "The sequence number of this account within its group."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The account type of this account.  This must\n"
-#~ "point to an item of\n"
-#~ "lino_welfare.modlib.debts.AccountTypes."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A document which expresses the financial situation of a partner at\n"
-#~ "a given date."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "An actor of a budget is a partner who is part of the household\n"
-#~ "for which the budget has been established."
-#~ msgstr ""
-
-#~ msgid "A detail row of a Budget."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The amount of money. An empty amount is different from a zero\n"
-#~ "amount in that the latter will be printed while the former\n"
-#~ "not."
-#~ msgstr ""
-
-#~ msgid "The related Account."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Inherits from lino_welfare.modlib.contacts.Person and\n"
-#~ "lino_xl.lib.beid.BeIdCardHolder."
-#~ msgstr ""
-
-#~ msgid "Whether Lino should make ESF summaries for this client."
-#~ msgstr ""
-
-#~ msgid "A panel with general information about this client."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A virtual field displaying a group of shortcut links for managing CVs\n"
-#~ "(Curriculum Vitaes)."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "A virtual field displaying a group of buttons for managing the\n"
-#~ "\"identifying document\", i.e. an uploaded document which has been\n"
-#~ "used as alternative to the eID card."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Pointer to PersonGroup.\n"
-#~ "The intergration phase of this client."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The civil state of this client. Allowed choices are defined in\n"
-#~ "CivilState."
-#~ msgstr ""
-
 #~ msgid "Pointer to ClientStates."
 #~ msgstr "DSBE-Klienten"
 
-#~ msgid ""
-#~ "The date when this client got unemployed and stopped to have a\n"
-#~ "regular work."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "The date when this client registered as unemployed and started\n"
-#~ "to look for a new job."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Return the last note of type \"First meeting\" for this client.\n"
-#~ "Usage example see debts and\n"
-#~ "notes."
-#~ msgstr ""
-
 #~ msgid "The list that opens by Contacts ‣ Clients."
 #~ msgstr "Liste der Klientenkontakte"
-
-#~ msgid ""
-#~ "If not empty, show only Clients whose client_state equals\n"
-#~ "the specified value."
-#~ msgstr ""
-
-#~ msgid ""
-#~ "Displays the response of an RetrieveTIGroupsRequest\n"
-#~ "as a table."
-#~ msgstr ""
 
 #~ msgid "Local job office"
 #~ msgstr "Lokales Arbeitsamt"
@@ -17808,12 +16890,6 @@ msgstr "Verwalter"
 
 #~ msgid "usable in contracts"
 #~ msgstr "erlaubt in Verträgen"
-
-#~ msgid ""
-#~ "Whether Links of this type can be"
-#~ " used as contact person of a "
-#~ "job contract."
-#~ msgstr ""
 
 #~ msgid "Integration agent"
 #~ msgstr "Begleiter im DSBE"
@@ -17851,12 +16927,6 @@ msgstr "Verwalter"
 #~ msgid "Accountant (Manager)"
 #~ msgstr "Buchhalter (Verwalter)"
 
-#~ msgid "Supervisor"
-#~ msgstr ""
-
-#~ msgid "Security advisor"
-#~ msgstr ""
-
 #~ msgid "CVs emitted"
 #~ msgstr "Erstellte Lebensläufe"
 
@@ -17875,23 +16945,11 @@ msgstr "Verwalter"
 #~ msgid "External meetings with client"
 #~ msgstr "Beratungen mit Klient"
 
-#~ msgid "External meeting"
-#~ msgstr ""
-
 #~ msgid "Informational meetings"
 #~ msgstr "Erstgespräch"
 
 #~ msgid "Informational meeting"
 #~ msgstr "Erstgespräch"
-
-#~ msgid "Internal meetings"
-#~ msgstr ""
-
-#~ msgid "Internal meeting"
-#~ msgstr ""
-
-#~ msgid "External meetings"
-#~ msgstr ""
 
 #~ msgid "Health insurance"
 #~ msgstr "Krankenkasse"
@@ -17922,12 +16980,6 @@ msgstr "Verwalter"
 
 #~ msgid "A very hard job."
 #~ msgstr "Sehr harte Stelle"
-
-#~ msgid "No supervisor. Only for independent people."
-#~ msgstr ""
-
-#~ msgid "Urgent problem"
-#~ msgstr ""
 
 #~ msgid "Complain"
 #~ msgstr "Beschwerde"
@@ -17989,9 +17041,6 @@ msgstr "Verwalter"
 #~ msgid "List of participants"
 #~ msgstr "Teilnehmerliste"
 
-#~ msgid "List of possible states of a Course Request"
-#~ msgstr ""
-
 #~ msgctxt "courses"
 #~ msgid "Open"
 #~ msgstr "Offen"
@@ -18008,10 +17057,6 @@ msgstr "Verwalter"
 #~ msgstr "Gut bestanden"
 
 #~ msgctxt "courses"
-#~ msgid "Failed"
-#~ msgstr "Nicht bestanden"
-
-#~ msgctxt "courses"
 #~ msgid "Aborted"
 #~ msgstr "Abgebrochen"
 
@@ -18022,15 +17067,8 @@ msgstr "Verwalter"
 #~ msgid "Register this candidate for this course."
 #~ msgstr "Diesen Kandidaten für diesen Kurs eintragen."
 
-#~ msgid "Cannot register to unknown course."
-#~ msgstr ""
-
 #~ msgid "%(person)s has been registered to %(course)s"
 #~ msgstr "%(person)s wurde eingetragen in %(course)s"
-
-#~ msgctxt "courses"
-#~ msgid "Unregister"
-#~ msgstr "Austragen"
 
 #~ msgid "Unregister this candidate from this course."
 #~ msgstr "Diesen Kandidaten aus diesen Kurs austragen."
@@ -18052,9 +17090,6 @@ msgstr "Verwalter"
 
 #~ msgid "Check this if the request is needed for job search."
 #~ msgstr "Ankreuzen, wenn der Kurs für die Arbeitssuche benötigt wird."
-
-#~ msgid "The course which satisfies this request. Leave blank on open requests."
-#~ msgstr ""
 
 #~ msgid "Course found"
 #~ msgstr "Kurs gefunden"

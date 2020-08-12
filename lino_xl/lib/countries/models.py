@@ -1,10 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2019 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-from builtins import str
-from builtins import object
 
 import logging ; logger = logging.getLogger(__name__)
 
@@ -77,7 +73,7 @@ class Countries(dd.Table):
 from lino.mixins import Hierarchical
 
 
-# 
+#
 class Place(Hierarchical, mixins.BabelNamed):
     class Meta(object):
         verbose_name = _("Place")
@@ -92,7 +88,7 @@ class Place(Hierarchical, mixins.BabelNamed):
     zip_code = models.CharField(max_length=8, blank=True)
     type = PlaceTypes.field(blank=True)
     show_type = models.BooleanField(_("Show type"), default=False)
-    
+
     @dd.chooser()
     def type_choices(cls, country):
         if country is not None:

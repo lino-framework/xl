@@ -30,7 +30,7 @@ class Plugin(ad.Plugin):
     """
     The model of objects to be used as :attr:`demander
     <lino_xl.lib.skills.Demand.demander>` of skill
-    demands. 
+    demands.
     """
     # demander_model = 'contacts.Partner'
     # demander_model = 'comments.Comment'
@@ -45,12 +45,12 @@ class Plugin(ad.Plugin):
         self.demander_model = site.models.resolve(self.demander_model)
         # self.supplier_model = site.models.resolve(self.supplier_model)
         super(Plugin, self).on_site_startup(site)
-        
+
     def get_menu_group(self):
         return self
         # return self.site.plugins.get(
         #     self.demander_model._meta.app_label)
-    
+
     def setup_main_menu(self, site, user_type, m):
         mg = self.get_menu_group()
         # mg = site.plugins.tickets
@@ -76,8 +76,7 @@ class Plugin(ad.Plugin):
     def get_dashboard_items(self, user):
         for x in super(Plugin, self).get_dashboard_items(user):
             yield x
-        if user.authenticated:
+        if user.is_authenticated:
             if self.site.is_installed('tickets'):
                 yield self.site.models.skills.SuggestedTicketsByEndUser
             yield self.site.models.skills.TopLevelSkills
-                

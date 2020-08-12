@@ -4,7 +4,7 @@
 
 import datetime
 
-from atelier.utils import last_day_of_month
+from lino.utils import last_day_of_month
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.core.exceptions import ValidationError

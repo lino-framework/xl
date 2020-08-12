@@ -118,6 +118,8 @@ class UpdateEntriesByEvent(UpdateEntries):
     def get_action_permission(self, ar, obj, state):
         if obj.auto_type is None:
             return False
+        if obj.owner is None:
+            return False
         if not obj.owner.has_auto_events():
             return False
         return super(UpdateEntries, self).get_action_permission(

@@ -7,8 +7,14 @@ from django.conf import settings
 from lino.api import dd, rt, _
 from etgen.html import E
 
+from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.clients.mixins import ClientBase
 from .utils import only_active_coachings_filter
+
+try:
+    client_model = dd.plugins.clients.client_model
+except AttributeError:  # for Sphinx autodoc
+    client_model = None
 
 
 class Coachable(ClientBase):
@@ -102,3 +108,10 @@ class Coachable(ClientBase):
                 subst_user=obj.user, current_project=self.pk)
             elems += [ar.href_to_request(sar, obj.user.username), ' ']
         return E.div(*elems)
+
+
+class ClientChecker(Checker):
+    model = client_model
+
+    def get_responsible_user(self, obj):
+        return obj.get_primary_coach()

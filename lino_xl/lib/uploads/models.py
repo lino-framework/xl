@@ -2,7 +2,6 @@
 # Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 from django.db.models import Q
 from lino.api import dd, _
 
@@ -79,12 +78,19 @@ class Upload(Upload, mixins.ProjectRelated, ContactRelated,
     @classmethod
     def setup_parameters(cls, params):
         super(Upload, cls).setup_parameters(params)
-        if issubclass(settings.SITE.project_model, ClientBase):
-            params.update(coached_by=dd.ForeignKey(
-                'users.User',
-                blank=True, null=True,
-                verbose_name=_("Coached by"),
-                help_text=_("Show only uploads for clients coached by this user.")))
+        params.update(coached_by=dd.ForeignKey(
+            'users.User',
+            blank=True, null=True,
+            verbose_name=_("Coached by"),
+            help_text=_("Show only uploads for clients coached by this user.")))
+        # if issubclass(settings.SITE.project_model, ClientBase):
+        #     params.update(coached_by=dd.ForeignKey(
+        #         'users.User',
+        #         blank=True, null=True,
+        #         verbose_name=_("Coached by"),
+        #         help_text=_("Show only uploads for clients coached by this user.")))
+        # else:
+        #     params.update(coached_by=dd.DummyField())
 
     @classmethod
     def get_simple_parameters(cls):
@@ -156,14 +162,15 @@ LibraryUploads = Uploads
 
 
 class Uploads(Uploads):
-    column_names = 'user project type file start_date end_date ' \
+    column_names = 'user project type file start_date end_date needed ' \
                    'description_link *'
 
     detail_layout = UploadDetail()
 
     insert_layout = """
-    type file
-    start_date end_date
+    file
+    type project
+    start_date end_date needed
     description
     """
 
@@ -241,8 +248,8 @@ class MyExpiringUploads(MyUploads):
             kw['user'] = None
             kw['coached_by'] = ar.get_user()
         kw.update(observed_event=dd.PeriodEvents.ended)
-        kw.update(start_date=dd.today())
-        kw.update(end_date=dd.today(365))
+        kw.update(start_date=dd.today(dd.plugins.uploads.expiring_start))
+        kw.update(end_date=dd.today(dd.plugins.uploads.expiring_end))
         return kw
 
 class AreaUploads(Uploads, AreaUploads):
@@ -252,34 +259,38 @@ class AreaUploads(Uploads, AreaUploads):
 class UploadsByController(Uploads, UploadsByController):
     insert_layout = """
     file
-    type end_date
+    type end_date needed
     description
     """
 
 
-class UploadsByClient(AreaUploads, UploadsByController):
-    master = dd.plugins.clients.client_model  # 'pcsw.Client'
+class UploadsByProject(AreaUploads, UploadsByController):
+    # master = dd.plugins.clients.client_model  # 'pcsw.Client'
+    master = settings.SITE.project_model
     master_key = 'project'
     column_names = "type end_date needed description_link user *"
     required_roles = dd.login_required(ContactsUser, (OfficeUser, OfficeOperator))
     # auto_fit_column_widths = True
     # debug_sql = "20140519"
 
-    insert_layout = """
-    file
-    type end_date
-    description
-    """
+    # insert_layout = """
+    # file
+    # type end_date needed
+    # description
+    # """
 
     @classmethod
     def create_instance(self, ar, **kw):
-        obj = super(UploadsByClient, self).create_instance(ar, **kw)
+        obj = super(UploadsByProject, self).create_instance(ar, **kw)
         obj.owner = obj.project
         return obj
 
-    @classmethod
-    def format_row_in_slave_summary(self, ar, obj):
-        if obj.end_date and obj.end_date < settings.SITE.today():
-            return None
-        return super(UploadsByClient, self).format_row_in_slave_summary(
-            ar, obj)
+    # 20200731 uploads with an end_date before today were being filtered from
+    # the summary. i don't remember why it is here. deactivated this because it
+    # disturbs in avanti.
+    # @classmethod
+    # def format_row_in_slave_summary(self, ar, obj):
+    #     if obj.end_date and obj.end_date < settings.SITE.today():
+    #         return None
+    #     return super(UploadsByProject, self).format_row_in_slave_summary(
+    #         ar, obj)

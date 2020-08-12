@@ -2,7 +2,7 @@
 # Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from atelier.utils import is_string
+from lino.utils import is_string
 from decimal import Decimal
 from lino.api import dd, _, gettext
 from etgen.html import E, forcetext

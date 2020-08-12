@@ -2,11 +2,8 @@
 # Copyright 2008-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from __future__ import unicode_literals
-from __future__ import print_function
 
-import logging
-logger = logging.getLogger(__name__)
+import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.db.models import Q
@@ -28,7 +25,7 @@ try:
     client_model = dd.plugins.clients.client_model
 except AttributeError:  # for Sphinx autodoc
     client_model = None
-    
+
 class ClientContactType(mixins.BabelNamed):
     class Meta:
         app_label = 'clients'
@@ -47,7 +44,7 @@ class ClientContact(ClientContactBase):
     #~ type = ClientContactTypes.field(blank=True)
     client = dd.ForeignKey(client_model)
     remark = models.TextField(_("Remarks"), blank=True)  # ,null=True)
-    
+
     # allow_cascaded_delete = 'client'
 
     def full_clean(self, *args, **kw):
@@ -72,4 +69,3 @@ class PartnersByClientContactType(Partners):
     master_key = 'client_contact_type'
     column_names = "name address_column phone gsm email *"
     auto_fit_column_widths = True
-

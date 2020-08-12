@@ -239,13 +239,13 @@ class LinksByTicket(Links):
                     actions.append(E.br())
                     sar.known_values.update(type=lt, parent=obj)
                     sar.known_values.pop('child', None)
-                    sar._status = None  # disable status cache
+                    sar.clear_cached_status()
                     btn = sar.ar2button(None, lt.as_parent(), icon_name=None)
                     if not lt.symmetric:
                         # actions.append('/')
                         sar.known_values.update(type=lt, child=obj)
                         sar.known_values.pop('parent', None)
-                        sar._status = None  # disable status cache
+                        sar.clear_cached_status()
                         btn2 = sar.ar2button(None, lt.as_child(), icon_name=None)
                         # actions.append(btn)
                         btn = E.span(btn, '/', btn2)
@@ -303,7 +303,7 @@ class Tickets(dd.Table):
     end_user
     """
     card_layout = dd.Panel(
-        """summary user 
+        """summary user
         workflow_buttons
         comments.CommentsByRFC""", label=_("Cards"))
 

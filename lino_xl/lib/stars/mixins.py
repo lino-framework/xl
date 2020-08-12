@@ -14,7 +14,7 @@ from six import string_types
 from django.db import IntegrityError
 
 def get_favourite(obj, user, **kws):
-    if user.authenticated:
+    if user.is_authenticated:
         qs = rt.models.stars.Star.for_obj(obj, user=user,**kws)
         # if qs.count() == 0:
         #     return None
@@ -69,7 +69,7 @@ class FullStarObject(StarObject):
 
 class UnstarObject(dd.Action):
     "Unstar this database object."
-    
+
     sort_index = 100
     # label = "-"
     label = u"★"  # 2605
@@ -122,7 +122,7 @@ class Starrable(ChangeNotifier):
             s = super(Starrable, self).disabled_fields(ar)
             Star = rt.models.stars.Star
             user = ar.get_user()
-            if not user.authenticated:
+            if not user.is_authenticated:
                 s.add('unstar_object')
                 s.add('star_object')
                 s.add('full_star_object')

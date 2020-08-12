@@ -1,9 +1,5 @@
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-
-from __future__ import unicode_literals
-from __future__ import print_function
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -18,6 +14,10 @@ class AddressOwner(AddressLocation):
         abstract = True
 
     if dd.is_installed('addresses'):
+
+        # def disabled_fields(self, ar):
+        #     df = super(AddressOwner, self).disabled_fields(ar)
+        #     return df | self.ADDRESS_FIELDS
 
         def get_address_by_type(self, address_type):
             Address = rt.models.addresses.Address
@@ -46,36 +46,46 @@ class AddressOwner(AddressLocation):
             except Address.MultipleObjectsReturned:
                 return
 
-        def before_ui_save(self, ar):
-            self.sync_primary_address_()
-            super(AddressOwner, self).before_ui_save(ar)
+        # def before_ui_save(self, ar):
+        #     self.sync_to_addresses(ar)
+        #     # self.sync_from_address(self.get_primary_address())
+        #     super(AddressOwner, self).before_ui_save(ar)
 
-        def sync_primary_address(self, ar):
+        def after_ui_save(self, ar, cw):
+            self.sync_to_addresses(ar)
+            # self.sync_from_address(self.get_primary_address())
+            super(AddressOwner, self).after_ui_save(ar, cw)
+
+        def sync_primary_address(self, request):
             watcher = ChangeWatcher(self)
-            self.sync_primary_address_()
+            self.sync_from_address(self.get_primary_address())
             self.save()
-            watcher.send_update(ar)
+            watcher.send_update(request)
 
-        def sync_primary_address_(self):
+        def sync_to_addresses(self, ar):
             Address = rt.models.addresses.Address
-            # kw = dict(partner=self, primary=True)
-            # try:
-            #     pa = Address.objects.get(**kw)
-            #     for k in Address.ADDRESS_FIELDS:
-            #         setattr(self, k, getattr(pa, k))
-            # except Address.DoesNotExist:
-            #     pa = None
-            #     for k in Address.ADDRESS_FIELDS:
-            #         fld = self._meta.get_field(k)
-            #         setattr(self, k, fld.get_default())
             pa = self.get_primary_address()
             if pa is None:
+                values = {}
                 for k in Address.ADDRESS_FIELDS:
                     fld = self._meta.get_field(k)
-                    setattr(self, k, fld.get_default())
+                    v = getattr(self, k)
+                    if v != fld.get_default():
+                        values[k] = v
+                if len(values):
+                    # print(20200812, values)
+                    addr = Address(partner=self, primary=True, **values)
+                    addr.full_clean()
+                    addr.save()
+                else:
+                    for o in self.addresses_by_partner.filter(primary=True):
+                        o.primary = False
+                        o.save()
+
             elif pa != self:
-                for k in Address.ADDRESS_FIELDS:
-                    setattr(self, k, getattr(pa, k))
+                pa.sync_from_address(self)
+                pa.full_clean()
+                pa.save()
 
         def get_overview_elems(self, ar):
             # elems = super(AddressOwner, self).get_overview_elems(ar)

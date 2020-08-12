@@ -16,8 +16,7 @@ See :ref:`specs.xl` for the list of plugins.
 
 import os
 
-fn = os.path.join(os.path.dirname(__file__), 'setup_info.py')
-exec(compile(open(fn, "rb").read(), fn, 'exec'))
+from lino_xl.setup_info import SETUP_INFO
 
 __version__ = SETUP_INFO['version']
 
