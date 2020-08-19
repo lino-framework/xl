@@ -718,7 +718,7 @@ invoices from this partner."""),
     'lino_xl.lib.contacts.Partners.detail_layout' : _("""The detail layout of the Partners table is not set by default.
 Especially accounting applications will set it to 'contacts.PartnerDetail'."""),
     'lino_xl.lib.contacts.Person' : _("""Django model used to represent a person."""),
-    'lino_xl.lib.contacts.Person.name' : _("""The full name of this person, used for sorting."""),
+    'lino_xl.lib.contacts.Person.name' : _("""See Partner.name."""),
     'lino_xl.lib.contacts.Persons' : _("""Shows all persons."""),
     'lino_xl.lib.contacts.Company' : _("""Django model used to represent an organization."""),
     'lino_xl.lib.contacts.Company.type' : _("""Pointer to the CompanyType."""),
