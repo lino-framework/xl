@@ -923,3 +923,9 @@ class TicketsBySite(Tickets):
         # kw.update(end_date=dd.today())
         # kw.update(observed_event=TicketEvents.todo)
         return kw
+
+
+class CheckListItemsByTicket(dd.Table):
+    model = "tickets.ChecklistItem"
+    master_key = "ticket"
+    column_names = "details checked"
