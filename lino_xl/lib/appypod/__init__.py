@@ -30,9 +30,10 @@ class Plugin(ad.Plugin):
 
     def get_used_libs(self, html=None):
         try:
-            # ~ import appy
-            from appy import version
-            version = version.verbose
+            # from appy import version
+            # version = appy.version.verbose
+            import appy
+            version = "(unknown)"
         except ImportError:
             version = self.site.not_found_msg
         yield ("Appy", version, "http://appyframework.org/pod.html")
