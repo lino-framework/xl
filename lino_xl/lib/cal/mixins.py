@@ -19,6 +19,7 @@ from django.utils.encoding import force_text
 try:
     from num2words import num2words
 except ImportError:
+    print("num2words not installed, use `python manage.py install` to install")
     pass  # run `manage.py install` to install it
 
 from lino import mixins
