@@ -648,12 +648,14 @@ class WeeklySlaveBase(DaySlave, VentilatedColumns):
     weekly Slave as a class WorkersByWeek(Workers, WeeklySlaveBase)"""
 
     abstract = True
+    # title = _("Weekly planner")
     label = _("Weekly planner")
     column_names_template = "overview:12 {vcolumns}"
     ventilated_column_suffix = ':20'
     # navigation_mode = "week"
     calendar_view = "calview.WeeklyView"
     details_of_master_template = _("%(details)s in %(master)s")
+    # details_of_master_template = _("%(master)s")
 
     @classmethod
     def get_dayslave_rows(cls, ar):
@@ -781,6 +783,8 @@ class WeeklySlave(EventsParameters, WeeklySlaveBase, DailyPlannerRows):
     # model = 'calview.DailyPlannerRow'
     # required_roles = dd.login_required(OfficeStaff)
     # display_mode = "html"
+
+    title = _("Planner")
 
     # label = None
     @classmethod
