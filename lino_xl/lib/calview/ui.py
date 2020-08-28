@@ -399,20 +399,20 @@ class CalendarView(DayNavigator):
             raise Exception("20200224")
 
         daily_mode = bool(obj.navigation_mode == 'day')
-        weekly_view = bool(obj.navigation_mode == 'week')
-        month_view = bool(obj.navigation_mode == 'month')
+        weekly_mode = bool(obj.navigation_mode == 'week')
+        month_mode = bool(obj.navigation_mode == 'month')
 
         # todo ensure that the end of the month is always in the view.
-        # long_unit = DurationUnits.years if month_view else DurationUnits.months
+        # long_unit = DurationUnits.years if month_mode else DurationUnits.months
         long_prev = cls.get_row_by_pk(ar, date2pk(long_unit.add_duration(today, -1)))
         long_next = cls.get_row_by_pk(ar, date2pk(long_unit.add_duration(today, 1)))
-        # next_unit = DurationUnits.weeks if weekly_view else DurationUnits.days if day_view else DurationUnits.months
+        # next_unit = DurationUnits.weeks if weekly_mode else DurationUnits.days if day_view else DurationUnits.months
         short_prev = cls.get_row_by_pk(ar, date2pk(short_unit.add_duration(today, -1)))
         short_next = cls.get_row_by_pk(ar, date2pk(short_unit.add_duration(today, 1)))
-        # current_view = weekly if weekly_view else daily
+        # current_view = weekly if weekly_mode else daily
         # current_view = daily
         # if not day_view:
-        #     current_view = monthly if month_view else weekly
+        #     current_view = monthly if month_mode else weekly
 
         elems = [] #cls.calender_header(ar)
 
@@ -421,7 +421,7 @@ class CalendarView(DayNavigator):
         for i, month in enumerate(YearMonths.get_list_items()):
             pk = date2pk(DurationUnits.months.add_duration(today, i+1 - today.month))
             if today.month == i+1:
-                if not month_view:
+                if not month_mode:
                     cells.append(E.td(E.b(monthly(cls.get_row_by_pk(ar, pk), str(month)))))
                 else:
                     cells.append(E.td(E.b(str(month))))
@@ -457,10 +457,12 @@ class CalendarView(DayNavigator):
                 if day.isocalendar()[1] == today.isocalendar()[1]:
                     this_week = True
             else:
-                cells = [
-                    E.td(E.b(str(current_week)) if this_week and weekly_view else weekly(cls.get_row_by_pk(ar, pk), str(current_week)),
-                         CLASS="cal-week")
-                         ] + cells
+                if this_week and weekly_mode:
+                    txt = E.b(str(current_week))
+                else:
+                    pk = date2pk(week[0])
+                    txt = weekly(cls.get_row_by_pk(ar, pk), str(current_week))
+                cells = [ E.td(txt, CLASS="cal-week") ] + cells
             rows.append(E.tr(*cells, align="center"))
 
         today = cls.get_row_by_pk(ar, 0)
