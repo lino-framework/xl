@@ -798,17 +798,15 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 
 # dd.update_field(Ticket, 'user', verbose_name=_("Reporter"))
 
-class ChecklistItem(dd.Model):
+class CheckListItem(dd.Model):
     class Meta:
         app_label = 'tickets'
         verbose_name = _("Check")
         verbose_name_plural = _("Checks")
 
-    ticket = dd.ForeignKey("tickets.Ticket",
-                           related_name="tickets_checklistitem")
-    details = dd.CharField(max_length=220, verbose_name="Todo details")
-    checked = dd.BooleanField(verbose_name="Finished",
-                              default=False)
+    ticket = dd.ForeignKey("tickets.Ticket")
+    details = dd.CharField(_("Todo details"), max_length=220)
+    checked = dd.BooleanField(_("Finished"), default=False)
 
 
 

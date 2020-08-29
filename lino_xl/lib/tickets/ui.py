@@ -925,7 +925,10 @@ class TicketsBySite(Tickets):
         return kw
 
 
-class CheckListItemsByTicket(dd.Table):
-    model = "tickets.ChecklistItem"
+class CheckListItems(dd.Table):
+    model = "tickets.CheckListItem"
+    column_names = "ticket details checked"
+
+class CheckListItemsByTicket(CheckListItems):
     master_key = "ticket"
     column_names = "details checked"

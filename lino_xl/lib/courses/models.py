@@ -1,8 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-# from decimal import Decimal
 from lino_xl.lib.ledger.utils import ZERO, ONE
 
 from django.db import models
@@ -105,9 +104,7 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
     description = dd.BabelTextField(_("Description"), blank=True)
 
     every_unit = Recurrencies.field(
-        _("Recurrency"),
-        default=Recurrencies.as_callable('weekly'),
-        blank=True)  # iCal:DURATION
+        _("Recurrency"), default='weekly', blank=True)
     every = models.IntegerField(_("Repeat every"), default=1)
 
     event_type = dd.ForeignKey(
@@ -300,7 +297,8 @@ class Course(Reservation, Duplicable, Printable):
         return self.start_date
 
     def update_cal_event_type(self):
-        return self.line.event_type
+        if self.line_id:
+            return self.line.event_type
 
     def update_cal_summary(self, et, i):
         if self.every_unit == Recurrencies.once:
@@ -320,7 +318,8 @@ class Course(Reservation, Duplicable, Printable):
         """Look up enrolments of this course and suggest them as guests."""
         # logger.info("20140314 suggest_guests")
         Enrolment = rt.models.courses.Enrolment
-        if self.line is None:
+        # if self.line is None:
+        if self.line_id is None:
             return
         gr = self.line.guest_role
         if gr is None:
@@ -487,8 +486,7 @@ class Course(Reservation, Duplicable, Printable):
 
 
 
-# customize fields coming from mixins to override their inherited
-# default verbose_names
+# we want to use default values from the activity line
 dd.update_field(Course, 'every_unit', default=models.NOT_PROVIDED)
 dd.update_field(Course, 'every', default=models.NOT_PROVIDED)
 

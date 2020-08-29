@@ -1,14 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
-
-import logging
-logger = logging.getLogger(__name__)
 
 from decimal import Decimal
 ZERO = Decimal()
@@ -108,7 +101,7 @@ class LinesByTopic(Lines):
 
 class EntriesByTeacher(cal.Events):
     "Show calendar entries of activities led by this teacher"
-    
+
     master = teacher_model
     column_names = 'when_text:20 owner room state'
     # column_names = 'when_text:20 course__line room state'
@@ -134,18 +127,18 @@ class CourseDetail(dd.DetailLayout):
     # end = "end_date end_time"
     # freq = "every every_unit"
     # start end freq
-    
+
     main = "general cal_tab enrolments"
-    
+
     general = dd.Panel("""
     line teacher start_date start_time end_time end_date
     room #slot workflow_buttons id:8 user
     name
     description
     """, label=_("General"))
-    
+
     cal_tab = dd.Panel("""
-    max_events max_date every_unit every
+    max_events max_date every_unit every positions
     monday tuesday wednesday thursday friday saturday sunday
     cal.EntriesByController
     """, label=_("Calendar"))
@@ -191,7 +184,7 @@ class Activities(dd.Table):
         can_enroll=dd.YesNo.field(blank=True),
     )
 
-    params_layout = """topic line user teacher state 
+    params_layout = """topic line user teacher state
     room can_enroll:10 start_date end_date show_exposed"""
 
     # simple_parameters = 'line teacher state user'.split()
@@ -255,7 +248,7 @@ class Activities(dd.Table):
 
         qs = self.model.add_param_filter(
             qs, show_exposed=pv.show_exposed)
-        
+
         # if pv.start_date:
         #     # dd.logger.info("20160512 start_date is %r", pv.start_date)
         #     qs = PeriodEvents.started.add_filter(qs, pv)
@@ -303,7 +296,7 @@ class CoursesByTeacher(Activities):
 class MyCourses(My, Activities):
     column_names = "start_date:8 room name line workflow_buttons *"
     order_by = ['start_date']
-    
+
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyCourses, self).param_defaults(ar, **kw)
@@ -338,13 +331,13 @@ class MyCoursesGiven(Activities):
     #     elif u.partner is not None:
     #         ar.master_instance = get_child(u.partner, teacher_model)
     #     super(MyCoursesGiven, self).setup_request(ar)
-    
+
 
 class CoursesByLine(Activities):
     master_key = "line"
     column_names = "detail_link weekdays_text room times_text teacher *"
     order_by = ['room__name', '-start_date']
-    
+
 
 
 class CoursesByTopic(Activities):
@@ -356,7 +349,7 @@ class CoursesByTopic(Activities):
                    "free_places requested trying *"
     # column_names = "start_date:8 line:20 room:10 " \
     #                "weekdays_text:10 times_text:10"
-    
+
     params_layout = """line teacher user state can_enroll:10"""
 
     allow_create = False  # because we cannot set a line for a new
@@ -665,7 +658,7 @@ class EnrolmentsByOption(Enrolments):
     master_key = 'option'
     column_names = 'course pupil remark request_date *'
     order_by = ['request_date']
-    
+
 
 # class EntriesByCourse(cal.Events):
 #     required = dd.login_required(user_groups='office')
@@ -703,5 +696,3 @@ class StatusReport(Report):
             if sar.get_total_count():
                 yield E.h3(str(topic))
                 yield sar
-
-

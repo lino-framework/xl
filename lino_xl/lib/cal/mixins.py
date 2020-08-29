@@ -498,9 +498,7 @@ class RecurrenceSet(Started, Ended):
 
     #~ every_unit = DurationUnits.field(_("Repeat every (unit)"),
     every_unit = Recurrencies.field(
-        _("Recurrency"),
-        default=Recurrencies.as_callable('monthly'),
-        blank=True)  # iCal:DURATION
+        _("Recurrency"), default='monthly', blank=True)
     every = models.IntegerField(_("Repeat every"), default=1)
     positions = models.CharField(_("Positions"), blank=True, max_length=50)
 
@@ -663,7 +661,7 @@ class RecurrenceSet(Started, Ended):
             return rrule(
                 freq=freq,
                 count=2, dtstart=date+ONE_DAY, interval=self.every,
-                bysetpos=bysetpos, byweekday=weekdays)[0]
+                bysetpos=bysetpos, byweekday=weekdays)[0].date()
 
         if self.every_unit == Recurrencies.per_weekday:
             # per_weekday is deprecated to by replaced by daily.
