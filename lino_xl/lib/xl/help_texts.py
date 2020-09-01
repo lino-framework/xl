@@ -69,8 +69,6 @@ the teacher."""),
     'lino_xl.lib.courses.Course.suggest_cal_guests' : _("""Look up enrolments of this course and suggest them as guests."""),
     'lino_xl.lib.courses.Course.update_cal_from' : _("""Note: if recurrency is weekly or per_weekday, actual start may be
 later than self.start_date"""),
-    'lino_xl.lib.courses.Enrolment.create_pupil_choice' : _("""Called when an unknown pupil name was given.
-Try to auto-create it."""),
     'lino_xl.lib.courses.Enrolment.get_body_template' : _("""Overrides lino.core.model.Model.get_body_template()."""),
     'lino_xl.lib.courses.Enrolment.get_confirm_veto' : _("""Called from ConfirmEnrolment.  If this
 returns something else than None, then the enrolment won't
@@ -617,9 +615,13 @@ state."""),
     'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
 See specs.cal.automatic_events."""),
+    'lino_xl.lib.cal.RecurrenceSet.start_date' : _("""The date of the first meeting to be generated."""),
+    'lino_xl.lib.cal.RecurrenceSet.end_date' : _("""The end date of the first meeting to be generated.  Leave
+this field empty if the meetings last less than one day."""),
     'lino_xl.lib.cal.RecurrenceSet.every' : _("""The frequency of periodic iteration: daily, weekly, monthly or yearly."""),
     'lino_xl.lib.cal.RecurrenceSet.every_unit' : _("""The interval between each periodic iteration."""),
-    'lino_xl.lib.cal.RecurrenceSet.positions' : _("""Space-separated list of one or several positions within the recurrency cycle."""),
+    'lino_xl.lib.cal.RecurrenceSet.positions' : _("""Space-separated list of one or several positions within the recurrency
+cycle."""),
     'lino_xl.lib.cal.RecurrenceSet.max_events' : _("""Maximum number of calendar entries to generate."""),
     'lino_xl.lib.cal.RecurrenceSet.weekdays_text' : _("""A virtual field returning the textual formulation of the
 weekdays where the recurrence occurs."""),
@@ -820,14 +822,12 @@ one-line string."""),
     'lino_xl.lib.countries.AddressLocation.address_location' : _("""Return the plain text postal address location part.  Lines are
 separated by linesep which defaults to "\\n"."""),
     'lino_xl.lib.countries.PlaceChecker' : _("""The name of a geographical place should not consist of only digits."""),
-    'lino_xl.lib.courses.Course' : _("""Database fields:"""),
-    'lino_xl.lib.courses.Course.start_date' : _("""The start date of the first meeting to be generated."""),
-    'lino_xl.lib.courses.Course.end_date' : _("""The end date of the first meeting to be generated.  Leave
-this field empty if the meetings last less than one day."""),
+    'lino_xl.lib.courses.Course' : _("""Django database model to represent an activity."""),
     'lino_xl.lib.courses.Course.max_date' : _("""Don't generate meeting having their start date beyond this
 date."""),
+    'lino_xl.lib.courses.Course.enrolments_until' : _("""Until when new enrolments are accepted."""),
     'lino_xl.lib.courses.Course.max_places' : _("""Available places. The maximum number of participants to allow
-in this course."""),
+in this activity."""),
     'lino_xl.lib.courses.Course.free_places' : _("""Number of free places."""),
     'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
     'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
@@ -840,8 +840,7 @@ manager).  Compare MyCoursesGiven."""),
 Compare MyCourses."""),
     'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
     'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
-    'lino_xl.lib.courses.Enrolment' : _("""An enrolment is when a given pupil plans to participate in a
-given course."""),
+    'lino_xl.lib.courses.Enrolment' : _("""Django database model to represent an activity enrolment."""),
     'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.EnrolmentStates."""),
     'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
 participant."""),
@@ -855,8 +854,7 @@ participant."""),
     'lino_xl.lib.courses.EnrolmentStates.cancelled' : _("""The enrolment was cancelled before it even started."""),
     'lino_xl.lib.courses.EnrolmentStates.ended' : _("""The enrolment was was successfully ended."""),
     'lino_xl.lib.courses.EnrolmentStates.abandoned' : _("""The enrolment was abandoned."""),
-    'lino_xl.lib.courses.Line' : _("""An activity line (or series) groups courses into a
-configurable list of categories."""),
+    'lino_xl.lib.courses.Line' : _("""Django database model to represent an activity line."""),
     'lino_xl.lib.courses.Line.name' : _("""The designation of this activity line as seen by the user
 e.g. when selecting the line."""),
     'lino_xl.lib.courses.Line.excerpt_title' : _("""The text to print as title in enrolments."""),

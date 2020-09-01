@@ -371,7 +371,18 @@ class Person(Human, Born, Partner):
 
     @classmethod
     def parse_to_dict(cls, text):
-        return parse_name(text)
+        try:
+            kw = parse_name(text)
+        except Exception as e:
+            return None
+            # raise ValidationError(
+            #     _("Could not create {person} from '{text}'").format(
+            #     person=cls._meta.verbose_name, text=text))
+        if len(kw) != 2:
+            raise ValidationError(
+                "Cannot find first and last names in %r", text)
+        return kw
+
 
 class PersonDetail(PartnerDetail):
 
@@ -558,24 +569,7 @@ class Role(dd.Model, Addressable):
         return rt.models.contacts.Person.objects.all()
 
     def create_person_choice(self, text):
-        """
-        Called when an unknown person name was given.
-        If the given text looks like a full name of a person, create it.
-        """
-        person_model = rt.models.contacts.Person
-        if person_model.disable_create_choice:
-            return
-        try:
-            values = person_model.parse_to_dict(text)
-        except Exception as e:
-            raise ValidationError(
-                _("Could not create {person} from '{text}'").format(
-                person=person_model._meta.verbose_name, text=text))
-        obj = person_model(**values)
-        obj.full_clean()
-        obj.save()
-        return obj
-
+        return rt.models.contacts.Person.create_from_choice(text)
 
 
 

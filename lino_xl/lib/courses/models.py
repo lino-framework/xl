@@ -597,16 +597,20 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         Called when an unknown pupil name was given.
         Try to auto-create it.
         """
+
+    def create_pupil_choice(self, text):
         Pupil = dd.resolve_model(pupil_model)
-        kw = parse_name(text)
-        if len(kw) != 2:
-            raise ValidationError(
-                "Cannot find first and last names in %r to \
-                auto-create pupil", text)
-        p = Pupil(**kw)
-        p.full_clean()
-        p.save()
-        return p
+        return Pupil.create_from_choice(text)
+
+        # kw = parse_name(text)
+        # if len(kw) != 2:
+        #     raise ValidationError(
+        #         "Cannot find first and last names in %r to \
+        #         auto-create pupil", text)
+        # p = Pupil(**kw)
+        # p.full_clean()
+        # p.save()
+        # return p
 
     @dd.chooser()
     def option_choices(cls, course):

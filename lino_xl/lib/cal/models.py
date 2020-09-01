@@ -1075,6 +1075,14 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
             return ''
         return ar.obj2html(self.event, tuple(self.event.get_event_summary(ar)))
 
+    @dd.chooser()
+    def partner_choices(cls):
+        # needed to activate create_person_choice
+        return dd.plugins.cal.partner_model.objects.all()
+
+    def create_partner_choice(self, text):
+        return dd.plugins.cal.partner_model.create_from_choice(text)
+
 
 def migrate_reminder(obj, reminder_date, reminder_text,
                      delay_value, delay_type, reminder_done):
