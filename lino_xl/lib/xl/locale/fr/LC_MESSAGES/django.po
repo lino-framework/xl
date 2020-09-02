@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2020-09-01 21:06+0300\n"
-"PO-Revision-Date: 2020-09-01 21:07+0300\n"
+"PO-Revision-Date: 2020-09-02 04:47+0300\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: fr\n"
 "Language-Team: \n"
@@ -6368,12 +6368,10 @@ msgid "Accounting periods"
 msgstr "Périodes comptables"
 
 #: lino_xl/lib/ledger/models.py:350
-#, fuzzy
 msgid "Fiscal year"
 msgstr "Année comptable"
 
 #: lino_xl/lib/ledger/models.py:351
-#, fuzzy
 msgid "Fiscal years"
 msgstr "Années comptables"
 
@@ -6407,12 +6405,10 @@ msgstr ""
 
 #: lino_xl/lib/ledger/models.py:450 lino_xl/lib/sheets/models.py:165
 #: lino_xl/lib/sheets/models.py:308
-#, fuzzy
 msgid "Account"
 msgstr "Compte"
 
 #: lino_xl/lib/ledger/models.py:451
-#, fuzzy
 msgid "Accounts"
 msgstr "Comptes"
 
