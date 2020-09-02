@@ -777,9 +777,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
                 obj.save()
 
     def can_edit_guests_manually(self):
+        # print("20200901", self.state, self.state.fill_guests)
         if self.state.fill_guests:
             if self.event_type and self.event_type.fill_presences:
                 return False
+        # print("20200901 yes")
         return True
 
     def suggest_guests(self):
@@ -1077,8 +1079,12 @@ class Guest(Printable):   # TODO: rename the model to "Presence"
 
     @dd.chooser()
     def partner_choices(cls):
-        # needed to activate create_person_choice
-        return dd.plugins.cal.partner_model.objects.all()
+        # needed to activate create_partner_choice
+        # returns the same queryset as if there was no chooser
+        t = dd.plugins.cal.partner_model.get_default_table()
+        return t.request().data_iterator
+        # m = dd.plugins.cal.partner_model
+        # return m.objects.order_by(*m.get_default_table().order_by)
 
     def create_partner_choice(self, text):
         return dd.plugins.cal.partner_model.create_from_choice(text)

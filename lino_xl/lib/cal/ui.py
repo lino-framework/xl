@@ -414,9 +414,13 @@ class GuestsByEvent(Guests):
         if msg is not None:
             return msg
         mi = ar.master_instance
-        if mi and mi.can_edit_guests_manually():
+        if mi is None:
+            raise Exception("You must specify a master instance")
+        # assert mi == obj.event
+        if mi.can_edit_guests_manually():
             return None
-        return _("Guests are filled automatically.")
+        # return _("Guests are filled automatically.")
+        return _("Cannot edit guests manually.")
 
 
 

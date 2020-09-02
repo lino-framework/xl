@@ -615,7 +615,7 @@ state."""),
     'lino_xl.lib.cal.MyPendingPresences' : _("""Received invitations waiting for my feedback (accept or reject)."""),
     'lino_xl.lib.cal.RecurrenceSet' : _("""Mixin for models that express a set of repeating calendar events.
 See specs.cal.automatic_events."""),
-    'lino_xl.lib.cal.RecurrenceSet.start_date' : _("""The date of the first meeting to be generated."""),
+    'lino_xl.lib.cal.RecurrenceSet.start_date' : _("""The start date of the first meeting to be generated."""),
     'lino_xl.lib.cal.RecurrenceSet.end_date' : _("""The end date of the first meeting to be generated.  Leave
 this field empty if the meetings last less than one day."""),
     'lino_xl.lib.cal.RecurrenceSet.every' : _("""The frequency of periodic iteration: daily, weekly, monthly or yearly."""),

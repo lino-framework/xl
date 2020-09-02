@@ -71,9 +71,9 @@ class Plugin(ad.Plugin):
         self.ignore_dates_after = tod + relativedelta(years=5)
         self.beginning_of_time = tod + relativedelta(years=-5)
 
-    # def on_site_startup(self, site):
-    #     self.partner_model = site.models.resolve(self.partner_model)
-    #     super(Plugin, self).on_site_startup(site)
+    def on_site_startup(self, site):
+        self.partner_model = site.models.resolve(self.partner_model)
+        super(Plugin, self).on_site_startup(site)
     #     from lino_xl.lib.cal.mixins import Reservation
     #     from lino.core.utils import models_by_base
     #     for m in models_by_base(Reservation):

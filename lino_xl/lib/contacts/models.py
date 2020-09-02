@@ -370,18 +370,19 @@ class Person(Human, Born, Partner):
             family=self.last_name, given=self.first_name )
 
     @classmethod
-    def parse_to_dict(cls, text):
-        try:
-            kw = parse_name(text)
-        except Exception as e:
-            return None
-            # raise ValidationError(
-            #     _("Could not create {person} from '{text}'").format(
-            #     person=cls._meta.verbose_name, text=text))
-        if len(kw) != 2:
-            raise ValidationError(
-                "Cannot find first and last names in %r", text)
-        return kw
+    def choice_text_to_dict(cls, text):
+        return parse_name(text)
+        # try:
+        #     kw = parse_name(text)
+        # except Exception as e:
+        #     return None
+        #     # raise ValidationError(
+        #     #     _("Could not create {person} from '{text}'").format(
+        #     #     person=cls._meta.verbose_name, text=text))
+        # if len(kw) != 2:
+        #     raise ValidationError(
+        #         "Cannot find first and last names in %r", text)
+        # return kw
 
 
 class PersonDetail(PartnerDetail):
