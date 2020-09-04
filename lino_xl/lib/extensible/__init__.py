@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2018 Rumma & Ko Ltd
+# Copyright 2013-2020 Rumma & Ko Ltd
 
 """
 An extension to :mod:`lino_xl.lib.cal` which uses the `Extensible
@@ -68,3 +68,5 @@ class Plugin(ad.Plugin):
         m.add_action('extensible.CalendarPanel')
 
 
+    def get_quicklinks(site, user):
+        yield 'extensible.CalendarPanel'
