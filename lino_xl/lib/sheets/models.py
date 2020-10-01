@@ -3,6 +3,7 @@
 # License: BSD (see file COPYING for details)
 # import datetime
 
+from collections import OrderedDict
 from django.db import models
 from django.db.models import OuterRef, Subquery, Sum
 
@@ -24,9 +25,9 @@ from lino_xl.lib.ledger.mixins import PeriodRange
 from lino.modlib.users.mixins import UserPlan
 from lino_xl.lib.ledger.roles import LedgerStaff
 
-from .choicelists import SheetTypes, CommonItems
+from .choicelists import SheetTypes, CommonItems, ref_max_length
 
-# DEMO_JOURNAL_NAME = "BAL"
+ENTRY_VALUES = "old_d old_c during_d during_c".split()
 
 class Item(StructuredReferrable, BabelDesignated):
     class Meta:
@@ -35,23 +36,23 @@ class Item(StructuredReferrable, BabelDesignated):
         verbose_name_plural = _("Sheet items")
         abstract = dd.is_abstract_model(__name__, 'Item')
 
-    ref_max_length = dd.plugins.sheets.item_ref_width
 
     dc = DebitOrCreditField(_("Booking direction"))
     sheet_type = SheetTypes.field()
     common_item = CommonItems.field(blank=True)
     mirror_ref = models.CharField(
-        _("Mirror"), max_length=ref_max_length,
-        blank=True, null=True)
+        _("Mirror"), max_length=ref_max_length, blank=True, null=True)
 
 
 class Collector(object):
-    def __init__(self, model, fkname, outer_link, **rowmvtfilter):
-        self.entry_model = model
+    def __init__(self, entry_model, fkname, outer_link, **rowmvtfilter):
+        # entry_model is AccountEntry, PartnerEntry, ItemEntry or AnaAccountEntry
+        # fkname is "account" or "partner" or "item" or "ana_account"
+        self.entry_model = entry_model
         self.rowmvtfilter = rowmvtfilter
         self.rowmvtfilter[outer_link] = OuterRef('pk')
         self.fkname = fkname
-        self.fk = model._meta.get_field(fkname)
+        self.fk = entry_model._meta.get_field(fkname)
         self.outer_model = self.fk.remote_field.model
         self.outer_link = outer_link
         # self.outer_link = self.outer_model._meta.model_name
@@ -66,7 +67,9 @@ class Collector(object):
         mvts = mvts.order_by()
         mvts = mvts.values(self.outer_link)  # this was the important thing
         mvts = mvts.annotate(total=Sum(
-            'amount', output_field=dd.PriceField(decimal_places=14)))# For Django2 we need to set decimal_places to 14 which is the max of decimal_places used in ReportEntry fields.
+            'amount', output_field=dd.PriceField(decimal_places=14)))
+            # For Django2 we need to set decimal_places to 14, which is the max
+            # of decimal_places used in ReportEntry fields.
         mvts = mvts.values('total')
         kw[name] = Subquery(mvts, output_field=dd.PriceField(decimal_places=14))
 
@@ -74,16 +77,25 @@ class Collector(object):
         kwargs.update(report=report)
         kwargs[self.fkname] = obj
         old = Balance(obj.old_d, obj.old_c)
-        kwargs.update(old_d = old.d)
-        kwargs.update(old_c = old.c)
-        kwargs.update(during_d = myround(obj.during_d or ZERO)) #In Django2, does not respect the decimal_places for the output_field in the aggregation functions.
-        kwargs.update(during_c = myround(obj.during_c or ZERO))
+        kwargs.update(old_d=myround(old.d))
+        kwargs.update(old_c=myround(old.c))
+        kwargs.update(during_d=myround(obj.during_d or ZERO))
+        kwargs.update(during_c=myround(obj.during_c or ZERO))
+        # print("20200926", obj, kwargs)
         return self.entry_model(**kwargs)
 
-    def compute_sums(self, report):
+    def unused_compute_sums(self, report):
+        # replaced by ReportEntry.compute_sum_entries
         collect = []
         k = self.fkname + '__ref__startswith'
+        # 20200927
+        # headings = rt.models.sheets.Item.get_heading_objects()
+        # # headings = headings.filter()
+        # for obj in headings:
         for obj in self.outer_model.get_heading_objects():
+            # fk = self.outer_model.get_by_ref(obj.ref, None)
+            # if fk is None:
+            #     continue
             qs = self.entry_model.objects.filter(**{k: obj.ref})
             kw = dict()
             kw.update(old_d=models.Sum('old_d'))
@@ -91,15 +103,21 @@ class Collector(object):
             kw.update(during_d=models.Sum('during_d'))
             kw.update(during_c=models.Sum('during_c'))
             d = qs.aggregate(**kw)
+
+            for k in ENTRY_VALUES:
+                if d[k] is not None:
+                    d[k] = myround(d[k])
             if d['old_d'] or d['old_c'] or d['during_d'] or d['during_c']:
                 if d['during_d']:
                     d['during_d'] = myround(d['during_d'])
                 if d['during_c']:
                     d['during_c'] = myround(d['during_c'])
                 d['report'] = report
+                # 20200927
+                # d[self.fkname] = fk
                 d[self.fkname] = obj
                 collect.append(self.entry_model(**d))
-                # print(20180905, d)
+                # print(20200926, d)
 
         for obj in collect:
             obj.full_clean()
@@ -115,7 +133,7 @@ class TradeTypeCollector(Collector):
         kwargs.update(trade_type=self.trade_type)
         return super(TradeTypeCollector, self).create_entry(*args, **kwargs)
 
-    def compute_sums(self, report):
+    def unused_compute_sums(self, report):
         pass
 
 
@@ -127,10 +145,14 @@ class ReportEntry(dd.Model):
     allow_cascaded_delete = ['report']
 
     report = dd.ForeignKey('sheets.Report')
-    old_d = dd.PriceField(_("Debit before"), 14, null=True, blank=True)
-    old_c = dd.PriceField(_("Credit before"), 14, null=True, blank=True)
-    during_d = dd.PriceField(_("Debit"), 14, null=True, blank=True)
-    during_c = dd.PriceField(_("Credit"), 14, null=True, blank=True)
+    old_d = dd.PriceField(_("Debit before"), 14, default=ZERO)
+    old_c = dd.PriceField(_("Credit before"), 14, default=ZERO)
+    during_c = dd.PriceField(_("Credit"), 14, default=ZERO)
+    during_d = dd.PriceField(_("Debit"), 14, default=ZERO)
+    # old_d = dd.PriceField(_("Debit before"), 14, null=True, blank=True)
+    # old_c = dd.PriceField(_("Credit before"), 14, null=True, blank=True)
+    # during_d = dd.PriceField(_("Debit"), 14, null=True, blank=True)
+    # during_c = dd.PriceField(_("Credit"), 14, null=True, blank=True)
 
     def new_balance(self):
         return Balance(self.old_d, self.old_c) + Balance(
@@ -152,6 +174,25 @@ class ReportEntry(dd.Model):
     def new_c(self, ar):
         return self.new_balance().c
 
+    @dd.displayfield(_("Balance before"))
+    def old_dc(self, ar):
+        return str(Balance(self.old_d, self.old_c))
+
+    # @dd.virtualfield(dd.PriceField(_("Balance after")))
+    @dd.displayfield(_("Balance after"))
+    def new_dc(self, ar):
+        return str(self.new_balance())
+
+    @classmethod
+    def compute_sum_entries(cls, report):
+        pass
+
+    # def __str__(self):
+    #     return str(self.description)
+
+# ReportEntry.set_widget_options('old_dc', hide_sum=True)
+# ReportEntry.set_widget_options('new_dc', hide_sum=True)
+
 
 class AccountEntry(ReportEntry):
     class Meta:
@@ -170,6 +211,7 @@ class AccountEntry(ReportEntry):
     @classmethod
     def get_collectors(cls):
         yield Collector(cls, 'account', 'account')
+
 
 class PartnerEntry(ReportEntry):
     class Meta:
@@ -234,6 +276,15 @@ class ItemEntry(ReportEntry):
 
     item = dd.ForeignKey('sheets.Item')
 
+    # def __init__(self, *args, **kwargs):
+    #     super(ItemEntry, self).__init__(*args, **kwargs)
+
+    def full_clean(self):
+        si = self.item
+        if si.mirror_ref and self.new_balance().value(si.dc) < 0:
+            self.item = rt.models.sheets.Item.get_by_ref(si.mirror_ref)
+        super(ItemEntry, self).full_clean()
+
     @dd.displayfield(_("Description"))
     def description(self, ar=None):
         # print(20180831, ar.renderer, ar.user)
@@ -244,56 +295,65 @@ class ItemEntry(ReportEntry):
         yield Collector(cls, 'item', 'account__sheet_item')
 
     @classmethod
-    def setup_parameters(cls, fields):
-        fields.setdefault(
-            'sheet_type', SheetTypes.field())
-        super(ItemEntry, cls).setup_parameters(fields)
+    def compute_sum_entries(cls, report):
+        sum_items = []
+        for i in rt.models.sheets.Item.objects.all():
+            if len(i.ref) != ref_max_length:
+                sum_items.append(cls(report=report, item=i))
+        for entry in cls.objects.filter(report=report):
+            for si in sum_items:
+                if entry.item.ref.startswith(si.item.ref):
+                    si.old_d += entry.old_d
+                    si.old_c += entry.old_c
+                    si.during_d += entry.during_d
+                    si.during_c += entry.during_c
+        for si in sum_items:
+            if si.old_d or si.old_c or si.during_d or si.during_c:
+                si.full_clean()
+                si.save()
 
-    @classmethod
-    def get_request_queryset(self, ar, **filter):
-        qs = super(ItemEntry, self).get_request_queryset(ar, **filter)
-        pv = ar.param_values
-        if pv.sheet_type:
-            qs = qs.filter(item__sheet_type=pv.sheet_type)
-        return qs
 
-    @classmethod
-    def get_title_tags(self, ar):
-        for t in super(ItemEntry, self).get_title_tags(ar):
-            yield t
-        pv = ar.param_values
-        if pv.sheet_type:
-            yield str(pv.sheet_type)
+    # @classmethod
+    # def setup_parameters(cls, fields):
+    #     fields.setdefault(
+    #         'sheet_type', SheetTypes.field())
+    #     super(ItemEntry, cls).setup_parameters(fields)
+
+    # @classmethod
+    # def get_request_queryset(self, ar, **filter):
+    #     qs = super(ItemEntry, self).get_request_queryset(ar, **filter)
+    #     pv = ar.param_values
+    #     if pv.sheet_type:
+    #         qs = qs.filter(item__sheet_type=pv.sheet_type)
+    #     return qs
+
+    # @classmethod
+    # def get_title_tags(self, ar):
+    #     for t in super(ItemEntry, self).get_title_tags(ar):
+    #         yield t
+    #     pv = ar.param_values
+    #     if pv.sheet_type:
+    #         yield str(pv.sheet_type)
 
     @dd.virtualfield(dd.PriceField(_("Activa")))
     def activa(self, ar):
         if self.item.dc is CREDIT:
-            return self.new_balance().c
+            return self.new_balance().value(CREDIT)
 
     @dd.virtualfield(dd.PriceField(_("Passiva")))
     def passiva(self, ar):
         if self.item.dc is DEBIT:
-            return self.new_balance().d
-
-    # @dd.displayfield(_("Activa"), max_length=12)
-    # def activa(self, ar):
-    #     if self.item.dc:
-    #         return self.value2html(ar)
-
-    # @dd.displayfield(_("Passiva"), max_length=12)
-    # def passiva(self, ar):
-    #     if not self.item.dc:
-    #         return self.value2html(ar)
+            return self.new_balance().value(DEBIT)
 
     @dd.virtualfield(dd.PriceField(_("Expenses")))
     def expenses(self, ar):
         if self.item.dc is DEBIT:
-            return self.new_balance().d
+            return self.new_balance().value(DEBIT)
 
     @dd.virtualfield(dd.PriceField(_("Revenues")))
     def revenues(self, ar):
         if self.item.dc is CREDIT:
-            return self.new_balance().c
+            return self.new_balance().value(CREDIT)
 
 
 class AnaAccountEntry(ReportEntry):
@@ -323,6 +383,11 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
         verbose_name = _("Accounting Report")
         verbose_name_plural = _("Accounting Reports")
 
+    # account_entries = dd.ShowSlaveTable('sheets.AccountEntriesByReport')
+    # partner_entries = dd.ShowSlaveTable('sheets.PartnerEntriesByReport')
+    # balance_entries = dd.ShowSlaveTable('sheets.BalanceEntriesByReport')
+    # results_entries = dd.ShowSlaveTable('sheets.ResultsEntriesByReport')
+
     def check_period_range(self):
         if not self.start_period:
             raise Warning(_("Select at least a start period"))
@@ -340,19 +405,26 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
     #         self.start_period = AP.get_default_for_date(dd.today())
     #     super(Report, self).full_clean(*args, **kw)
 
-    def get_balances_queryset(self, coll):
-        # see https://docs.djangoproject.com/en/1.11/ref/models/expressions/#using-aggregates-within-a-subquery-expression
+    def get_outer_queryset(self, coll):
+        """
+        Return the filtered queryset over the rows to show in this
+        report using the given collector.
+
+        Each row is annotated with the fields old_d, old_c, during_d and during_c.
+
+        Outer objects can be ledger or analytical accounts, partners or sheet
+        items.
+
+        """
+        # see https://docs.djangoproject.com/en/3.1/ref/models/expressions/#using-aggregates-within-a-subquery-expression
         AccountingPeriod = rt.models.ledger.AccountingPeriod
         sp = self.start_period or AccountingPeriod.get_default_for_date(
             dd.today())
         ep = self.end_period or sp
-
-        qs = coll.outer_model.objects.all()
-
-        during_periods = AccountingPeriod.objects.filter(
-            ref__gte=sp.ref, ref__lte=ep.ref)
         before_periods = AccountingPeriod.objects.filter(
             ref__lt=sp.ref)
+        during_periods = AccountingPeriod.objects.filter(
+            ref__gte=sp.ref, ref__lte=ep.ref)
 
         oldflt = coll.get_mvt_filter()
         duringflt = coll.get_mvt_filter()
@@ -369,7 +441,7 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
         coll.addann(kw, 'during_d', DEBIT, duringflt)
         coll.addann(kw, 'during_c', CREDIT, duringflt)
 
-        qs = qs.annotate(**kw)
+        qs = coll.outer_model.objects.annotate(**kw)
 
         qs = qs.exclude(
             old_d=ZERO, old_c=ZERO,
@@ -395,14 +467,17 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
         for em in self.get_entry_models():
             em.objects.filter(report=self).delete()
             for coll in em.get_collectors():
-                for obj in self.get_balances_queryset(coll):
+                for obj in self.get_outer_queryset(coll):
                     entry = coll.create_entry(self, obj)
-                    try:
-                        entry.full_clean()
-                        entry.save()
-                    except Exception:
-                        self.get_balances_queryset(coll)
-                coll.compute_sums(self)
+                    entry.full_clean()
+                    entry.save()
+                    # try:
+                    #     entry.full_clean()
+                    #     entry.save()
+                    # except Exception as e:
+                    #     print("20200926 failed to save {} : {}".format(entry, e))
+                # coll.compute_sums(self)
+            em.compute_sum_entries(self)
 
         # TODO: compute net income/loss or not?
         # nil = CommonItems.net_income_loss.get_object()
@@ -428,197 +503,17 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
 
 
     def get_story(self, ar, header_level=None):
-        # if header_level is None:
-        #     header = None
-        #     header = getattr(E, "h{}".format(header_level))
-        # pv = ar.param_values
         self.check_period_range()
-        # bpv = dict(start_period=self.start_period,
-        #            end_period=self.end_period)
-        balances = []
-        if True:
-            balances.append(ar.spawn(
-                AccountEntriesByReport, master_instance=self))
+        yield AccountEntriesByReport.request(self, parent=ar)
         if dd.is_installed('ana'):
-            balances.append(ar.spawn(
-                AnaEntriesByReport, master_instance=self))
+            yield AnaAccountEntriesByReport.request(self, parent=ar)
         for tt in TradeTypes.get_list_items():
-            balances.append(ar.spawn(
-                PartnerEntriesByReport,
-                master_instance=self,
-                param_values=dict(trade_type=tt)))
-        balances.append(ar.spawn(
-            BalanceEntriesByReport,
-            master_instance=self,
-            param_values=dict(sheet_type=SheetTypes.balance)))
-        balances.append(ar.spawn(
-            ResultsEntriesByReport,
-            master_instance=self,
-            param_values=dict(sheet_type=SheetTypes.results)))
-
-        # for st in SheetTypes.get_list_items():
-        #     balances.append(ar.spawn(
-        #         ItemEntriesByReport,
-        #         master_instance=self,
-        #         param_values=dict(sheet_type=st)))
-
-        if True:
-            for sar in balances:
-                # if header:
-                #     yield header(str(sar.get_title()))
-                yield sar
+            yield PartnerEntriesByReport.request(self, parent=ar,
+                param_values=dict(trade_type=tt))
+        yield BalanceEntriesByReport.request(self, parent=ar)
+        yield ResultsEntriesByReport.request(self, parent=ar)
 
 dd.update_field(Report, 'start_period', null=True)
-
-
-# class Entry(SimpleSummary):
-
-#     class Meta:
-#         app_label = 'sheets'
-#         abstract = dd.is_abstract_model(__name__, 'Entry')
-#         verbose_name = _("Sheet entry")
-#         verbose_name_plural = _("Sheet entries")
-
-#     show_in_site_search = False
-
-#     master = dd.ForeignKey('ledger.FiscalYear')
-#     item = dd.ForeignKey('sheets.Item')
-#     value = dd.PriceField(_("Value"))
-
-#     @classmethod
-#     def update_for_master(cls, master):
-#         # a custom update_for_master because here we have multiple
-#         # summary objects per master.
-
-#         cls.objects.filter(master=master).delete()
-
-#         collector = {}
-#         sums = {}
-
-#         for i in rt.models.sheets.Item.objects.all():
-#             obj = cls(item=i, master=master, value=ZERO)
-#             if len(i.ref) == dd.plugins.sheets.ref_length:
-#                 collector[i.ref] = obj
-#             else:
-#                 sums[i.ref] = obj
-
-#         # from django.db.models import Q, Sum
-#         # debits = qs.aggregate(debit=Sum('amount', filter=Q(dc=DEBIT)))
-#         # credits = qs.aggregate(credit=Sum('amount', filter=Q(dc=CREDIT)))
-
-#         qs = rt.models.ledger.Movement.objects.filter(
-#             voucher__accounting_period__year=master)
-#         for mvt in qs:
-#             item = mvt.account.sheet_item
-#             entry = collector[item.ref]
-#             if mvt.dc == item.dc:
-#                 entry.value += mvt.amount
-#             else:
-#                 entry.value -= mvt.amount
-
-#         nil = CommonItems.net_income_loss.get_object()
-#         if collector[nil.ref].value == ZERO:
-#             net_income = ZERO
-#             for entry in collector.values():
-#                 if entry.value:
-#                     if entry.item.sheet_type == SheetTypes.results:
-#                         if entry.item.dc == nil.dc:
-#                             net_income += entry.value
-#                         else:
-#                             net_income -= entry.value
-#             if net_income > 0:
-#                 collector[nil.ref].value = net_income
-#                 e = collector[CommonItems.net_income.value]
-#                 assert e.value == ZERO
-#                 e.value = net_income
-#             elif net_income < 0:
-#                 collector[nil.ref].value = net_income
-#                 e = collector[CommonItems.net_loss.value]
-#                 assert e.value == ZERO
-#                 e.value = - net_income
-
-#         for entry in collector.values():
-#             mr = entry.item.mirror_ref
-#             if mr and entry.value < 0:
-#                 me = collector[mr]
-#                 if me.value:
-#                     raise Exception("20180828 {} {}".format(
-#                         entry.item.ref, me.item.ref))
-#                 me.value = - obj.value
-#                 entry.value = 0
-#                 # obj.item = rt.models.sheets.Item.objects.get(ref=mr)
-
-#         for entry in collector.values():
-#             ref = entry.item.ref[:-1]
-#             while len(ref) > 0:
-#                 se = sums.get(ref, None)
-#                 if se is not None:
-#                     if se.item.dc == entry.item.dc:
-#                         se.value += entry.value
-#                     else:
-#                         se.value -= entry.value
-#                 else:
-#                     # ignore sums for which there is no item
-#                     pass
-#                 ref = ref[:-1]
-#         for entry in list(collector.values()) + list(sums.values()):
-#             if entry.value:
-#                 entry.full_clean()
-#                 entry.save()
-
-#     def value2html(self, ar):
-#         txt = dd.format_currency(self.value, False, True)
-#         if self.item.is_heading():
-#             # return E.b(txt)
-#             return E.div(E.b(txt), align="right")
-#         # return txt
-#         return E.div(txt, align="right")
-
-#     @dd.displayfield(_("Activa"), max_length=12)
-#     def activa(self, ar):
-#         if self.item.dc:
-#             return self.value2html(ar)
-
-#     @dd.displayfield(_("Passiva"), max_length=12)
-#     def passiva(self, ar):
-#         if not self.item.dc:
-#             return self.value2html(ar)
-
-#     @dd.displayfield(_("Expenses"), max_length=12)
-#     def expenses(self, ar):
-#         if not self.item.dc:
-#             return self.value2html(ar)
-
-#     @dd.displayfield(_("Revenues"), max_length=12)
-#     def revenues(self, ar):
-#         if self.item.dc:
-#             return self.value2html(ar)
-
-#     # @dd.displayfield(max_length=dd.plugins.sheets.ref_length*2)
-#     # def item_ref(self, ar):
-#     #     ref = self.item.ref
-#     #     ref = u' ' * (len(ref)-1) + ref
-#     #     return ref
-
-# Entry.set_widget_options('value', hide_sum=True)
-
-
-# class ReportDetail(dd.DetailLayout):
-#     main = "general ledger"
-
-#     general = dd.Panel("""
-#     number entry_date
-#     start_period end_period
-#     workflow_buttons user
-#     EntriesByReport
-#     """, label=_("General"))
-
-#     ledger = dd.Panel("""
-#     journal accounting_period id narration
-#     ledger.MovementsByVoucher
-#     """, label=_("Ledger"))
-
-
 
 
 class Items(dd.Table):
@@ -627,77 +522,83 @@ class Items(dd.Table):
     order_by = ['ref']
     column_names = "ref designation sheet_type dc common_item *"
 
-# class ItemEntries(dd.Table):
-#     required_roles = dd.login_required(LedgerStaff)
-#     model = 'sheets.ItemEntry'
-#     detail_layout = """
-#     report item old_d old_c during_d during_c
-#     MovementsByItemEntry
-#     """
-#     order_by = ['report', 'item__ref']
-#     column_names = 'report item *'
 
-# class BalanceByYear(Entries):
-#     label = SheetTypes.balance.text
-#     master_key = 'master'
-#     # order_by = ['item__ref']
-#     # column_names = 'item_ref item activa passiva'
-#     column_names = 'item__description activa passiva'
-#     filter = models.Q(item__sheet_type=SheetTypes.balance)
-
-# class ResultsByYear(Entries):
-#     label = SheetTypes.results.text
-#     master_key = 'master'
-#     # order_by = ['item__ref']
-#     # column_names = 'item_ref item expenses revenues'
-#     column_names = 'item__description expenses revenues'
-#     filter = models.Q(item__sheet_type=SheetTypes.results)
-
-
-from lino_xl.lib.ledger.ui import Movements
-
-class EntriesByReport(dd.Table):
-    hide_sums = True
-    master_key = 'report'
-    column_names = "description:40 old_d old_c during_d during_c new_c new_d"
-    details_of_master_template = _("%(details)s")
-
-class AccountEntriesByReport(EntriesByReport):
+class AccountEntries(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
     model = 'sheets.AccountEntry'
     order_by = ['account__ref']
 
-class PartnerEntriesByReport(EntriesByReport):
+class PartnerEntries(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
     model = 'sheets.PartnerEntry'
     order_by = ['partner__name']
 
-class AnaAcountEntries(dd.Table):
+class AnaAccountEntries(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
     model = 'sheets.AnaAccountEntry'
     order_by = ['ana_account__ref']
 
-class AnaEntriesByReport(AnaAcountEntries, EntriesByReport):
-    pass
 
-class ItemEntriesByReport(EntriesByReport):
+class ItemEntries(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
     model = 'sheets.ItemEntry'
     order_by = ['item__ref']
+    column_names = "description:40 old_d old_c during_d during_c report *"
     detail_layout = """
     report item old_d old_c during_d during_c
     MovementsByItemEntry
     """
+    sheet_type = None
+    hide_sums = True
 
     @classmethod
-    def get_title(self, ar):
-        return str(ar.param_values.sheet_type.text)
+    def get_title(cls, ar):
+        if cls.sheet_type is None:
+            return super(ItemEntries, cls).get_title(ar)
+        return str(cls.sheet_type.text)
+        # return str(ar.param_values.sheet_type.text)
 
-class BalanceEntriesByReport(ItemEntriesByReport):
+    @classmethod
+    def get_request_queryset(cls, ar):
+        # if ar is None:
+        #     return cls.model.objects.none()
+        # mi = ar.master_instance
+        # if mi is None:
+        #     return cls.model.objects.none()
+        qs = super(ItemEntries, cls).get_request_queryset(ar)
+        if cls.sheet_type is not None:
+            qs = qs.filter(item__sheet_type=cls.sheet_type)
+        return qs
+
+
+class EntriesByReport(dd.Table):
+    # hide_sums = True
+    master_key = 'report'
+    # column_names = "description:40 old_d old_c during_d during_c new_d new_c"
+    column_names = "description:40 old_dc during_d during_c new_dc *"
+    details_of_master_template = _("%(details)s")
+
+
+class AccountEntriesByReport(AccountEntries, EntriesByReport):
+    pass
+
+class PartnerEntriesByReport(PartnerEntries, EntriesByReport):
+    pass
+
+class AnaAccountEntriesByReport(AnaAccountEntries, EntriesByReport):
+    pass
+
+class BalanceEntriesByReport(ItemEntries, EntriesByReport):
     column_names = "description:40 activa passiva"
+    sheet_type = SheetTypes.balance
 
-class ResultsEntriesByReport(ItemEntriesByReport):
+class ResultsEntriesByReport(ItemEntries, EntriesByReport):
     column_names = "description:40 expenses revenues"
+    sheet_type = SheetTypes.results
 
 
 # class ReportDetail(dd.DetailLayout):
-#     main = "first #second AnaEntriesByReport ItemEntriesByReport"
+#     main = "first #second AnaAccountEntriesByReport ItemEntriesByReport"
 
 #     first = dd.Panel("""
 #     start_period end_period printed
@@ -717,21 +618,19 @@ class Reports(dd.Table):
     """
 
 
-# class MovementsByItem(Movements):
-#     master_key = 'account__sheet_item'
+from lino_xl.lib.ledger.ui import Movements
 
 class MovementsByItemEntry(Movements):
     master = 'sheets.ItemEntry'
+
     @classmethod
     def get_request_queryset(cls, ar):
-        qs = super(MovementsByItemEntry, cls).get_request_queryset(ar)
         if ar is None:
             return cls.model.objects.none()
         mi = ar.master_instance
         if mi is None:
             return cls.model.objects.none()
-        # assert isinstance(mi.master, rt.models.ledger.FiscalYear)
-        # print("20180828 {} {}".format(mi.item, mi.master))
+        qs = super(MovementsByItemEntry, cls).get_request_queryset(ar)
         qs = qs.filter(account__sheet_item=mi.item)
         return qs
 

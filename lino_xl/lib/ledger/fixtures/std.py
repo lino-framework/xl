@@ -110,13 +110,13 @@ def objects():
     kwargs = dict(sales_allowed=True)
     yield update(CommonAccounts.sales, **kwargs)
 
-    # add some header accounts
-    Account = rt.models.ledger.Account
-    def account(ref, designation):
-        return Account(ref=ref, **dd.str2kw('name', designation))
-    yield account("4", _("Commercial assets & liabilities"))
-    yield account("5", _("Financial assets & liabilities"))
-    yield account("6", _("Expenses"))
-    yield account("60", _("Operation costs"))
-    yield account("61", _("Wages"))
-    yield account("7", _("Revenues"))
+    # # add some header accounts
+    # Account = rt.models.ledger.Account
+    # def account(ref, designation):
+    #     return Account(ref=ref, **dd.str2kw('name', designation))
+    # yield account("4", _("Commercial assets & liabilities"))
+    # yield account("5", _("Financial assets & liabilities"))
+    # yield account("6", _("Expenses"))
+    # yield account("60", _("Operation costs"))
+    # yield account("61", _("Wages"))
+    # yield account("7", _("Revenues"))

@@ -16,7 +16,7 @@ class Plugin(ad.Plugin):
     verbose_name = _("Accounting report")
     # needs_plugins = ['lino_xl.lib.ledger', 'lino.modlib.summaries']
     needs_plugins = ['lino_xl.lib.ledger']
-    
+
     # ref_length = 4
     item_ref_width = 4
     """
@@ -33,16 +33,20 @@ class Plugin(ad.Plugin):
         mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('sheets.Report', action='start_plan')
-        
+
     def setup_config_menu(self, site, user_type, m):
         mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('sheets.Items')
-        
+
     def setup_explorer_menu(self, site, user_type, m):
         mg = site.plugins.ledger
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('sheets.Reports')
+        m.add_action('sheets.CommonItems')
+        m.add_action('sheets.AccountEntries')
+        m.add_action('sheets.AnaAccountEntries')
+        m.add_action('sheets.PartnerEntries')
+        m.add_action('sheets.ItemEntries')
         # m.add_action('sheets.ItemEntries')
         # m.add_action('sheets.AnaAcountEntries')
-
