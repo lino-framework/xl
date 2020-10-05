@@ -30,7 +30,7 @@ class Plugin(ad.Plugin):
 
     pupil_model = 'contacts.Person'
     pupil_name_fields = "pupil__name"
-    needs_plugins = ['lino_xl.lib.cal']
+    # needs_plugins = ['lino_xl.lib.cal']
 
     def unused_on_plugins_loaded(self, site):
         # from lino.core.fields import fields_list

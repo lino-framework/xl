@@ -1,5 +1,4 @@
-# Copyright 2017 Rumma & Ko Ltd
-#
+# Copyright 2017-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -21,8 +20,7 @@ class Plugin(ad.Plugin):
     subject_model = None
     """The Django model used to represent the "subject" being observed.
 
-    For example in :ref:`avanti` this points to
-    :class:`lino_avanti.lib.avanti.Client`.
+    For example in :ref:`avanti` this points to a client.
 
     """
 

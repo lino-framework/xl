@@ -98,8 +98,9 @@ class Lines(dd.Table):
 class LinesByTopic(Lines):
     master_key = "topic"
 
+if cal is not None:
 
-class EntriesByTeacher(cal.Events):
+  class EntriesByTeacher(cal.Events):
     "Show calendar entries of activities led by this teacher"
 
     master = teacher_model

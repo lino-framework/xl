@@ -261,8 +261,6 @@ class Course(Reservation, Duplicable, Printable):
 
         if self.room is None:
             return "%s (%s)" % (line, dd.fds(self.start_date))
-        # Note that we cannot use super() with
-        # python_2_unicode_compatible
         return "%s (%s %s)" % (line, dd.fds(self.start_date),self.room)
 
     def get_detail_action(self, ar):
@@ -402,9 +400,10 @@ class Course(Reservation, Duplicable, Printable):
 
     @dd.displayfield(_("Calendar entries"))
     def events_text(self, ar=None):
-        return ', '.join([
-            day_and_month(e.start_date)
-            for e in self.events_by_course().order_by('start_date')])
+        if cal is not None:
+            return ', '.join([
+                day_and_month(e.start_date)
+                for e in self.events_by_course().order_by('start_date')])
 
     def events_by_course(self, **kwargs):
         ct = rt.models.contenttypes.ContentType.objects.get_for_model(
@@ -472,17 +471,17 @@ class Course(Reservation, Duplicable, Printable):
         return rt.models.courses.EnrolmentsByCourse.request(
             self, param_values=pv)
 
-    @dd.virtualfield(dd.HtmlBox(_("Presences")))
-    def presences_box(self, ar):
-        # not finished
-        if ar is None:
-            return ''
-        pv = ar.param_values
-        # if not pv.start_date or not pv.end_date:
-        #     return ''
-        events = self.events_by_course().order_by('start_date')
-        events = rt.models.system.PeriodEvents.started.add_filter(events, pv)
-        return "TODO: copy logic from presence_sheet.wk.html"
+    # @dd.virtualfield(dd.HtmlBox(_("Presences")))
+    # def presences_box(self, ar):
+    #     # not finished
+    #     if ar is None:
+    #         return ''
+    #     pv = ar.param_values
+    #     # if not pv.start_date or not pv.end_date:
+    #     #     return ''
+    #     events = self.events_by_course().order_by('start_date')
+    #     events = rt.models.system.PeriodEvents.started.add_filter(events, pv)
+    #     return "TODO: copy logic from presence_sheet.wk.html"
 
 
 
