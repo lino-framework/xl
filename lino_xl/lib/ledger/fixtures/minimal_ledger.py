@@ -3,7 +3,7 @@
 # License: BSD (see file COPYING for details)
 
 from lino.api import dd, rt, _
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import DC
 # from lino_xl.lib.ledger import choicelists as pcmn
 from lino_xl.lib.ledger.choicelists import CommonAccounts
 # from lino.utils import Cycler
@@ -32,12 +32,12 @@ def objects():
     else:
         MODEL = vat.VatAccountInvoice
     kw.update(trade_type='sales')
-    # kw.update(ref="OFF", dc=CREDIT)
+    # kw.update(ref="OFF", dc=DC.credit)
     # kw.update(printed_name=_("Offer"))
     # kw.update(dd.str2kw('name', _("Offers")))
     # yield MODEL.create_journal(**kw)
 
-    kw.update(ref="SLS", dc=CREDIT)
+    kw.update(ref="SLS", dc=DC.credit)
     kw.update(dd.str2kw('printed_name', _("Invoice")))
     # kw.update(dd.str2kw('name', _("Sales invoices")))
     # kw.update(printed_name=_("Invoice"))
@@ -47,7 +47,7 @@ def objects():
     if dd.plugins.vat.declaration_plugin is None:
         return
 
-    kw.update(ref="SLC", dc=DEBIT)
+    kw.update(ref="SLC", dc=DC.debit)
     kw.update(dd.str2kw('name', _("Sales credit notes")))
     kw.update(dd.str2kw('printed_name', _("Credit note")))
     yield MODEL.create_journal(**kw)
@@ -56,7 +56,7 @@ def objects():
     kw.update(trade_type='purchases', ref="PRC")
     kw.update(dd.str2kw('name', _("Purchase invoices")))
     kw.update(dd.str2kw('printed_name', _("Invoice")))
-    kw.update(dc=DEBIT)
+    kw.update(dc=DC.debit)
     if dd.is_installed('ana'):
         yield rt.models.ana.AnaAccountInvoice.create_journal(**kw)
     else:
@@ -80,12 +80,12 @@ def objects():
             partner=bestbank,
             account=CommonAccounts.pending_po.get_object(),
             ref="PMO")
-        kw.update(dc=DEBIT)
+        kw.update(dc=DC.debit)
         yield finan.PaymentOrder.create_journal(**kw)
 
         kw = dict(journal_group=JournalGroups.financial)
         # kw.update(trade_type='')
-        kw.update(dc=CREDIT)
+        kw.update(dc=DC.credit)
         kw.update(account=CommonAccounts.cash.get_object(), ref="CSH")
         kw.update(dd.str2kw('name', _("Cash book")))
         kw.update(dd.str2kw('printed_name', _("Cash statement")))
@@ -94,12 +94,12 @@ def objects():
         kw.update(dd.str2kw('name', _("Bestbank")))
         kw.update(dd.str2kw('printed_name', _("Bank statement")))
         kw.update(account=CommonAccounts.best_bank.get_object(), ref="BNK")
-        kw.update(dc=CREDIT)
+        kw.update(dc=DC.credit)
         yield finan.BankStatement.create_journal(**kw)
 
         kw.update(journal_group=JournalGroups.misc)
         kw.update(account=CommonAccounts.cash.get_object(), ref="MSC")
-        kw.update(dc=CREDIT)
+        kw.update(dc=DC.credit)
         kw.update(dd.str2kw('name', _("Miscellaneous transactions")))
         kw.update(dd.str2kw('printed_name', _("Transaction")))
         yield finan.JournalEntry.create_journal(**kw)
@@ -112,7 +112,7 @@ def objects():
         kw.update(dd.str2kw('name', _("Paychecks")))
         kw.update(dd.str2kw('printed_name', _("Paycheck")))
         kw.update(account=CommonAccounts.cash.get_object(), ref="SAL")
-        kw.update(dc=CREDIT)
+        kw.update(dc=DC.credit)
         yield finan.JournalEntry.create_journal(**kw)
 
 
@@ -126,7 +126,7 @@ def objects():
         kw.update(dd.str2kw('printed_name', _("VAT declaration")))
         kw.update(must_declare=False)
         kw.update(account=CommonAccounts.due_taxes.get_object())
-        kw.update(ref=m.DEMO_JOURNAL_NAME, dc=DEBIT)
+        kw.update(ref=m.DEMO_JOURNAL_NAME, dc=DC.debit)
         yield m.Declaration.create_journal(**kw)
 
     payments = []

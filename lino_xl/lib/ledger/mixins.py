@@ -167,7 +167,7 @@ class Payable(PartnerRelated):
         for prj, amount in counter_sums.items():
             total_amount += amount
             yield self.create_movement(
-                None, (acc, None), prj, not self.journal.dc, amount,
+                None, (acc, None), prj, self.journal.dc, -amount,
                 partner=partner if acc.needs_partner else None,
                 match=self.get_match())
 
@@ -182,7 +182,7 @@ class Payable(PartnerRelated):
                 None, (acc, None), None, dc, total_amount,
                 partner=partner, match=self.get_match())
             yield self.create_movement(
-                None, (TradeTypes.clearings.get_main_account(), None), None, not dc, total_amount,
+                None, (TradeTypes.clearings.get_main_account(), None), None, dc, -total_amount,
                 partner=worker, match=self.get_match())
 
 

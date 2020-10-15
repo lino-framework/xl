@@ -1,17 +1,17 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2018 Rumma & Ko Ltd
+# Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 """Database fields for `lino_xl.lib.ledger`.
 
-
 """
-from builtins import str
+
 from django.db import models
 from lino.api import dd, _
 from lino.core.store import BooleanStoreField
-from .utils import DCLABELS
+# from .utils import DCLABELS
+from .choicelists import DC
 
 
 # def MatchField(verbose_name=None, **kwargs):
@@ -41,6 +41,11 @@ class DcAmountField(dd.VirtualField):
     :attr:`amount` and :attr:`dc` at once. It may be used only on
     models which also defines these two fields.
 
+    When the amount is positive and dc is DC.debit, return None.
+    When the amount is positive and dc is DC.credit, return amount.
+    When the amount is negative and dc is DC.debit, return -amount.
+    When the amount is negative and dc is DC.credit, return None.
+
     """
 
     editable = True
@@ -52,29 +57,32 @@ class DcAmountField(dd.VirtualField):
         dd.VirtualField.__init__(self, dd.PriceField(*args, **kwargs), None)
 
     def set_value_in_object(self, request, obj, value):
-        obj.amount = value
-        obj.dc = self.dc
+        if not value:
+            obj.amount = None
+        elif self.dc == DC.debit:
+            value = -value
+        else:
+            obj.amount = value
 
     def value_from_object(self, obj, ar):
-        if obj.dc == self.dc:
-            return obj.amount
-        return None
-
-class DebitOrCreditStoreField(BooleanStoreField):
-
-    def format_value(self, ar, v):
-        return str(DCLABELS[v])
+        if self.dc == DC.debit:
+            return -obj.amount if obj.amount < 0 else None
+        return obj.amount if obj.amount > 0 else None
 
 
-class DebitOrCreditField(models.BooleanField):
-
-    lino_atomizer_class = DebitOrCreditStoreField
-
-    def __init__(self, *args, **kw):
-        kw.setdefault('help_text',
-                      _("Debit (not checked) or Credit (checked)"))
-        # kw.setdefault('default', None)
-        models.BooleanField.__init__(self, *args, **kw)
-
-
-    
+# class DebitOrCreditStoreField(BooleanStoreField):
+#
+#     def format_value(self, ar, v):
+#         return str(DCLABELS[v])
+#
+#
+# class DebitOrCreditField(models.BooleanField):
+#
+#     lino_atomizer_class = DebitOrCreditStoreField
+#
+#     def __init__(self, *args, **kw):
+#         kw.setdefault('help_text',
+#                       _("Debit (not checked) or Credit (checked)"))
+#         # kw.setdefault('default', None)
+#         models.BooleanField.__init__(self, *args, **kw)
+#

@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt, _
 from lino.modlib.checkdata.choicelists import Checker
-from lino_xl.lib.ledger.utils import DEBIT
+# from lino_xl.lib.ledger.utils import DC
 from lino_xl.lib.ledger.choicelists import TradeTypes
 # from lino_xl.lib.ledger.utils import myround
 

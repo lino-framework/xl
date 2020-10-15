@@ -11,8 +11,49 @@ from etgen.html import E
 from lino.api import dd, rt, _, gettext
 from lino.mixins.registrable import RegistrableState
 
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT
+# from lino_xl.lib.ledger.utils import DC
 from .roles import LedgerStaff
+
+
+
+class Debit(dd.Choice):
+    value = 'D'
+    text  = _("Debit")
+    names = 'debit'
+
+    def normalized_amount(self, n):
+        return -n
+
+    def opposite(self):
+        return self.choicelist.credit
+    def __not__(self):
+        raise Exception("20201013")
+
+class Credit(dd.Choice):
+    value = 'C'
+    text  = _("Credit")
+    names = 'credit'
+
+    def normalized_amount(self, n):
+        return n
+
+    def opposite(self):
+        return self.choicelist.debit
+
+    def __not__(self):
+        raise Exception("20201013")
+
+class DC(dd.ChoiceList):
+    verbose_name = _("Booking direction")
+    verbose_name_plural = _("Booking directions")
+    required_roles = dd.login_required(LedgerStaff)
+
+add = DC.add_item_instance
+add(Debit())
+add(Credit())
+# add('D', _("Debit"), 'debit')
+# add('C', _("Credit"), 'credit')
+
 
 class MissingAccount(object):
     def __init__(self, common_account):
@@ -252,7 +293,7 @@ class TradeType(dd.Choice):
     base_account_field_label = None
     invoice_account_field_name = None
     invoice_account_field_label = None
-    dc = DEBIT
+    dc = DC.debit
 
     def get_base_account(self):
         return self.base_account.get_object()
@@ -350,30 +391,30 @@ class TradeTypes(dd.ChoiceList):
 
 
 TradeTypes.add_item(
-    'S', _("Sales"), 'sales', dc=DEBIT,
+    'S', _("Sales"), 'sales', dc=DC.debit,
     base_account=CommonAccounts.sales,
     main_account=CommonAccounts.customers)
 TradeTypes.add_item(
-    'P', _("Purchases"), 'purchases', dc=CREDIT,
+    'P', _("Purchases"), 'purchases', dc=DC.credit,
     base_account=CommonAccounts.purchase_of_goods,
     main_account=CommonAccounts.suppliers,
     invoice_account_field_name='purchase_account',
     invoice_account_field_label=_("Purchase account")
 )
 TradeTypes.add_item(
-    'W', _("Wages"), 'wages', dc=CREDIT,
+    'W', _("Wages"), 'wages', dc=DC.credit,
     base_account=CommonAccounts.wages,
     main_account=CommonAccounts.employees)
 TradeTypes.add_item(
-    'T', _("Taxes"), 'taxes', dc=DEBIT,
+    'T', _("Taxes"), 'taxes', dc=DC.debit,
     base_account=CommonAccounts.due_taxes,
     main_account=CommonAccounts.tax_offices)
 TradeTypes.add_item(
-    'C', _("Clearings"), 'clearings', dc=DEBIT,
+    'C', _("Clearings"), 'clearings', dc=DC.debit,
     main_account=CommonAccounts.clearings)
 TradeTypes.add_item(
     'B', _("Bank payment orders"), 'bank_po',
-    dc=DEBIT, main_account=CommonAccounts.pending_po)
+    dc=DC.debit, main_account=CommonAccounts.pending_po)
 
 # Note that :mod:`lino_xl.lib.sales.models` and/or
 # :mod:`lino_xl.lib.ledger.models` (if installed) will modify

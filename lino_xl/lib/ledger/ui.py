@@ -15,7 +15,7 @@ from .choicelists import VoucherStates
 from .mixins import JournalRef, PeriodRangeObservable
 from .roles import AccountingReader, LedgerUser, LedgerStaff
 from .utils import Balance
-from .utils import DEBIT, CREDIT, ZERO
+from .utils import DC, ZERO
 
 
 class Accounts(dd.Table):
@@ -277,7 +277,7 @@ class ExpectedMovements(dd.VirtualTable):
 
     @classmethod
     def get_dc(cls, ar=None):
-        return CREDIT
+        return DC.credit
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -301,9 +301,15 @@ class ExpectedMovements(dd.VirtualTable):
             flt.update(partner__sepa_accounts__primary__isnull=True)
 
         if pv.same_dc == dd.YesNo.yes:
-            flt.update(dc=cls.get_dc(ar))
+            if cls.get_dc(ar) == DC.credit:
+                flt.update(amount__lt=0)
+            else:
+                flt.update(amount__gt=0)
         elif pv.same_dc == dd.YesNo.no:
-            flt.update(dc=not cls.get_dc(ar))
+            if cls.get_dc(ar) == DC.debit:
+                flt.update(amount__lt=0)
+            else:
+                flt.update(amount__gt=0)
 
         if pv.date_until is not None:
             flt.update(value_date__lte=pv.date_until)
@@ -421,7 +427,7 @@ class DebtsByPartner(ExpectedMovements):
 
     @classmethod
     def get_dc(cls, ar=None):
-        return DEBIT
+        return DC.debit
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -561,10 +567,10 @@ class AccountBalances(dd.Table):
             kw[name] = Subquery(mvts, output_field=dd.PriceField())
 
         kw = dict()
-        addann(kw, 'old_d', DEBIT, oldflt)
-        addann(kw, 'old_c', CREDIT, oldflt)
-        addann(kw, 'during_d', DEBIT, duringflt)
-        addann(kw, 'during_c', CREDIT, duringflt)
+        addann(kw, 'old_d', DC.debit, oldflt)
+        addann(kw, 'old_c', DC.credit, oldflt)
+        addann(kw, 'during_d', DC.debit, duringflt)
+        addann(kw, 'during_c', DC.credit, duringflt)
 
         qs = qs.annotate(**kw)
 
@@ -583,7 +589,7 @@ class AccountBalances(dd.Table):
     @classmethod
     def normal_dc(cls, row, ar):
         # raise NotImplementedError()
-        return DEBIT  # row.normal_dc
+        return DC.debit  # row.normal_dc
 
     @dd.displayfield(_("Reference"))
     def ref(self, row, ar):
@@ -678,7 +684,7 @@ class PartnerBalancesByTradeType(AccountBalances, contacts.Partners):
     def normal_dc(cls, row, ar):
         tt = ar.master_instance
         if tt is None:
-            return DEBIT
+            return DC.debit
         return tt.dc
 
 
@@ -781,7 +787,7 @@ class Debtors(DebtorsCreditors):
     label = _("Debtors")
     help_text = _("List of partners who are in debt towards us "
                   "(usually customers).")
-    d_or_c = DEBIT
+    d_or_c = DC.debit
 
 
 class Creditors(DebtorsCreditors):
@@ -789,7 +795,7 @@ class Creditors(DebtorsCreditors):
     help_text = _("List of partners who are giving credit to us "
                   "(usually suppliers).")
 
-    d_or_c = CREDIT
+    d_or_c = DC.credit
 
 ##
 
@@ -1064,10 +1070,7 @@ class MovementsByPartner(Movements):
             cleared=dd.YesNo.no, partner=mi))
         bal = ZERO
         for mvt in sar:
-            if mvt.dc:
-                bal -= mvt.amount
-            else:
-                bal += mvt.amount
+            bal += mvt.amount
         txt = _("{0} open movements ({1} {2})").format(
             sar.get_total_count(), bal, dd.plugins.ledger.currency_symbol)
 

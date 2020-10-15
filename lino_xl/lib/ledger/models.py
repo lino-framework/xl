@@ -28,13 +28,11 @@ from lino_xl.lib.contacts.choicelists import PartnerEvents
 from lino_xl.lib.vat.choicelists import VatClasses, VatColumns
 from lino_xl.lib.excerpts.mixins import Certifiable
 
+from .utils import myround
 from .choicelists import CommonAccounts
-# from .utils import get_due_movements, check_clearings_by_partner
-from .choicelists import PeriodStates
-from .fields import DebitOrCreditField
+from .choicelists import DC, PeriodStates
 from .mixins import ProjectRelated, VoucherNumber, PeriodRange, PeriodRangeObservable, Payable
 from .roles import VoucherSupervisor
-# from .mixins import FKMATCH
 from .ui import *
 
 
@@ -79,7 +77,8 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
     partner = dd.ForeignKey('contacts.Company', blank=True, null=True)
     printed_name = dd.BabelCharField(
         _("Printed document designation"), max_length=100, blank=True)
-    dc = DebitOrCreditField(_("Primary booking direction"))
+    dc = DC.field(_("Primary booking direction"))
+    # dc = DebitOrCreditField(_("Primary booking direction"))
     yearly_numbering = models.BooleanField(
         _("Yearly numbering"), default=True)
     must_declare = models.BooleanField(default=True)
@@ -113,22 +112,24 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
         return cl.objects.get(**kw)
 
     def create_voucher(self, **kw):
-        """Create an instance of this Journal's voucher model
-        (:meth:`get_doc_model`).
+        """Create a voucher in this journal.
 
         """
         cl = self.get_doc_model()
         kw.update(journal=self)
-        try:
-            doc = cl()
-            # ~ doc = cl(**kw) # wouldn't work. See Django ticket #10808
-            #~ doc.journal = self
-            for k, v in kw.items():
-                setattr(doc, k, v)
-            #~ print 20120825, kw
-        except TypeError:
-            #~ print 20100804, cl
-            raise
+        doc = cl()
+        # doc = cl(**kw) # wouldn't work. See Django ticket #10808
+        for k, v in kw.items():
+            setattr(doc, k, v)
+        # try:
+        #     doc = cl()
+        #     # doc = cl(**kw) # wouldn't work. See Django ticket #10808
+        #     for k, v in kw.items():
+        #         setattr(doc, k, v)
+        #     #~ print 20120825, kw
+        # except TypeError:
+        #     #~ print 20100804, cl
+        #     raise
         doc.on_create(None)
         #~ doc.full_clean()
         #~ doc.save()
@@ -184,7 +185,7 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
             # elif self.account:
             #     self.dc = self.account.type.dc
             else:
-                self.dc = DEBIT  # cannot be NULL
+                self.dc = DC.debit  # cannot be NULL
 
         if not self.name:
             self.name = self.id
@@ -729,6 +730,7 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
 
     def create_movement(self, item, acc_tuple, project, dc, amount, **kw):
         # dd.logger.info("20151211 ledger.create_movement()")
+        assert type(dc) != type(True)
         account, ana_account = acc_tuple
         if account is None and item is not None:
             raise Warning("No account specified for {}".format(item))
@@ -747,11 +749,9 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
         if dd.plugins.ledger.project_model:
             kw['project'] = project
 
-        if amount < 0:
+        if dc == DC.debit:
             amount = - amount
-            dc = not dc
         kw['amount'] = amount
-        kw['dc'] = dc
 
         b = rt.models.ledger.Movement(**kw)
         return b
@@ -955,8 +955,8 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         blank=True, null=True)
     seqno = models.IntegerField(_("Seq.No."))
     account = dd.ForeignKey('ledger.Account')
-    amount = dd.PriceField(default=0)
-    dc = DebitOrCreditField()
+    amount = dd.PriceField(default=0, max_digits=14, decimal_places=2)
+    # dc = DebitOrCreditField()
     match = models.CharField(_("Match"), blank=True, max_length=20)
     cleared = models.BooleanField(_("Cleared"), default=False)
     value_date = models.DateField(_("Value date"), null=True, blank=True)
@@ -983,14 +983,12 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     @dd.virtualfield(dd.PriceField(
         _("Debit")), sortable_by=['amount', 'value_date'])
     def debit(self, ar):
-        if self.dc is DEBIT:
-            return self.amount
+        return - self.amount if self.amount < 0 else None
 
     @dd.virtualfield(dd.PriceField(
         _("Credit")), sortable_by=['-amount', 'value_date'])
     def credit(self, ar):
-        if self.dc is CREDIT:
-            return self.amount
+        return self.amount if self.amount > 0 else None
 
     @dd.displayfield(
         _("Voucher"), sortable_by=[
@@ -1042,11 +1040,8 @@ class Movement(ProjectRelated, PeriodRangeObservable):
     def get_balance(cls, dc, qs):
         bal = ZERO
         for mvt in qs:
-            if mvt.dc == dc:
-                bal += mvt.amount
-            else:
-                bal -= mvt.amount
-        return bal
+            bal += mvt.amount
+        return dc.normalized_amount(bal)
 
     @classmethod
     def balance_info(cls, dc, **kwargs):
@@ -1055,24 +1050,22 @@ class Movement(ProjectRelated, PeriodRangeObservable):
         bal = ZERO
         s = ''
         for mvt in qs:
-            amount = mvt.amount
-            if mvt.dc == dc:
-                bal -= amount
-                s += ' -' + str(amount)
+            bal += mvt.amount
+            if mvt.amount > 0:
+                s += ' +' + str(dc.normalized_amount(mvt.amount))
             else:
-                bal += amount
-                s += ' +' + str(amount)
+                s += str(mvt.amount)
             s += " ({0}) ".format(mvt.voucher)
             # s += " ({0} {1}) ".format(
             #     mvt.voucher,
             #     dd.fds(mvt.voucher.voucher_date))
         if bal:
-            return s + "= " + str(bal)
+            return s + "= " + str(dc.normalized_amount(bal))
         return ''
         if False:
             from lino_xl.lib.cal.utils import day_and_month
             mvts = []
-            for dm in get_due_movements(CREDIT, models.Q(partner=self.pupil)):
+            for dm in get_due_movements(DC.credit, models.Q(partner=self.pupil)):
                 s = dm.match
                 s += " [{0}]".format(day_and_month(dm.due_date))
                 s += " ("
@@ -1182,8 +1175,7 @@ class VoucherChecker(Checker):
                 yield (False, self.messages['unexpected'].format(em))
                 return
             diffs = []
-            for k in ('partner_id', 'account_id', 'dc', 'amount',
-                      'value_date'):
+            for k in ('partner_id', 'account_id', 'amount', 'value_date'):
                 emv = getattr(em, k)
                 wmv = getattr(wm, k)
                 if emv != wmv:
@@ -1229,12 +1221,15 @@ class DueMovement(TableRow):
         self.project = mvt.project
         self.pk = self.id = mvt.id
         self.obj2href = mvt.obj2href
-
+        self.trade_type = None
+        # for tt in TradeTypes.get_list_items():
+        #     if tt.get_main_account() == self.account:
+        #         self.trade_type = tt
+        #         break
         self.debts = []
         self.payments = []
         self.balance = ZERO
         self.due_date = None
-        self.trade_type = None
         self.has_unsatisfied_movement = False
         self.has_satisfied_movement = False
         self.bank_account = None
@@ -1265,6 +1260,12 @@ class DueMovement(TableRow):
         """
         Add the given movement to the list of movements that are being
         cleared by this DueMovement.
+
+        "debts" here means "movements in the expected direction", "payments"
+        are movements that decrease the balance, i.e. go in the opposite of
+        the expected direction.
+
+
         """
         # dd.logger.info("20160604 collect %s", mvt)
         if mvt.cleared:
@@ -1282,9 +1283,15 @@ class DueMovement(TableRow):
 
         if self.trade_type is None:
             self.trade_type = voucher.get_trade_type()
-        if mvt.dc == self.dc:
+            # print("20201014 found trade type", self.trade_type, "from", mvt)
+        amount = mvt.amount
+        if self.dc == DC.debit:
+            amount = - amount
+        # self.balance += myround(mvt.amount)
+        self.balance += amount
+
+        if amount > 0:
             self.debts.append(mvt)
-            self.balance += mvt.amount
             bank_account = voucher.get_bank_account()
             if bank_account is not None:
                 if self.bank_account != bank_account:
@@ -1297,7 +1304,6 @@ class DueMovement(TableRow):
 
         else:
             self.payments.append(mvt)
-            self.balance -= mvt.amount
 
     def unused_check_clearings(self):
         """Check whether involved movements are cleared or not, and update
@@ -1325,8 +1331,6 @@ def get_due_movements(dc, flt):
     # qs = qs.exclude(match='')
     qs = qs.order_by(*dd.plugins.ledger.remove_dummy(
         'value_date', 'account__ref', 'partner', 'project', 'id'))
-
-
     matches_by_account = dict()
     matches = []
     for mvt in qs:
@@ -1338,15 +1342,9 @@ def get_due_movements(dc, flt):
             matches_by_account[k] = dm
             matches.append(dm)
         dm.collect(mvt)
-        # matches = matches_by_account.setdefault(k, set())
-        # m = mvt.match or mvt
-        # if m not in matches:
-        #     matches.add(m)
-        #     yield DueMovement(dc, mvt)
     for m in matches:
         if m.balance:
             yield m
-    # return matches
 
 
 def check_clearings_by_account(account, matches=[]):
@@ -1371,19 +1369,12 @@ def check_clearings(qs, matches=[]):
     #     qs = qs.exclude(value_date__lte=fcu)
     sums = SumCollector()
     for mvt in qs:
-        # k = (mvt.get_match(), mvt.account)
         k = (mvt.match, mvt.account)
-        mvt_dc = mvt.dc
-        # if mvt.voucher.journal.invert_due_dc:
-        #     mvt_dc = mvt.dc
-        # else:
-        #     mvt_dc = not mvt.dc
-        if mvt_dc == DEBIT:
-            sums.collect(k, mvt.amount)
-        else:
-            sums.collect(k, - mvt.amount)
+        sums.collect(k, mvt.amount)
 
     for k, balance in sums.items():
         match, account = k
         sat = (balance == ZERO)
+        # if not sat:
+        #     print("20201014 {} != {}".format(balance, ZERO))
         qs.filter(account=account, match=match).update(cleared=sat)

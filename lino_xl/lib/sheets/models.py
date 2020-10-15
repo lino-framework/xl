@@ -13,9 +13,9 @@ from lino.api import dd, rt, _
 from lino.mixins import StructuredReferrable, Story
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino.utils.mldbc.mixins import BabelDesignated
-from lino_xl.lib.ledger.models import DebitOrCreditField
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, Balance,myround
-from lino_xl.lib.ledger.choicelists import TradeTypes
+# from lino_xl.lib.ledger.models import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DC, ZERO, Balance,myround
+from lino_xl.lib.ledger.choicelists import DC, TradeTypes
 #from lino_xl.lib.ledger.models import Voucher
 #from lino_xl.lib.ledger.mixins import SequencedVoucherItem
 from lino_xl.lib.ledger.mixins import PeriodRange
@@ -27,7 +27,7 @@ from lino_xl.lib.ledger.roles import LedgerStaff
 
 from .choicelists import SheetTypes, CommonItems, ref_max_length
 
-ENTRY_VALUES = "old_d old_c during_d during_c".split()
+# ENTRY_VALUES = "old_d old_c during_d during_c".split()
 
 class Item(StructuredReferrable, BabelDesignated):
     class Meta:
@@ -37,7 +37,7 @@ class Item(StructuredReferrable, BabelDesignated):
         abstract = dd.is_abstract_model(__name__, 'Item')
 
 
-    dc = DebitOrCreditField(_("Booking direction"))
+    dc = DC.field(_("Booking direction"))
     sheet_type = SheetTypes.field()
     common_item = CommonItems.field(blank=True)
     mirror_ref = models.CharField(
@@ -63,7 +63,12 @@ class Collector(object):
         return flt
 
     def addann(self, kw, name, dc, flt):
-        mvts = rt.models.ledger.Movement.objects.filter(dc=dc, **flt)
+        mvts = rt.models.ledger.Movement.objects.filter(**flt)
+        if dc == DC.debit:
+            mvts = mvts.filter(amount__lt=0)
+        else:
+            # assert dc == DC.debit.opposite()
+            mvts = mvts.filter(amount__gt=0)
         mvts = mvts.order_by()
         mvts = mvts.values(self.outer_link)  # this was the important thing
         mvts = mvts.annotate(total=Sum(
@@ -76,52 +81,14 @@ class Collector(object):
     def create_entry(self, report, obj, **kwargs):
         kwargs.update(report=report)
         kwargs[self.fkname] = obj
-        old = Balance(obj.old_d, obj.old_c)
+        old = Balance(-(obj.old_d or ZERO), obj.old_c)
         kwargs.update(old_d=myround(old.d))
         kwargs.update(old_c=myround(old.c))
-        kwargs.update(during_d=myround(obj.during_d or ZERO))
+        kwargs.update(during_d=-myround(obj.during_d or ZERO))
         kwargs.update(during_c=myround(obj.during_c or ZERO))
-        # print("20200926", obj, kwargs)
+        # if report.id == 1 and self.fkname == 'item':
+        #     print("20201013 create_entry()", obj, kwargs)
         return self.entry_model(**kwargs)
-
-    def unused_compute_sums(self, report):
-        # replaced by ReportEntry.compute_sum_entries
-        collect = []
-        k = self.fkname + '__ref__startswith'
-        # 20200927
-        # headings = rt.models.sheets.Item.get_heading_objects()
-        # # headings = headings.filter()
-        # for obj in headings:
-        for obj in self.outer_model.get_heading_objects():
-            # fk = self.outer_model.get_by_ref(obj.ref, None)
-            # if fk is None:
-            #     continue
-            qs = self.entry_model.objects.filter(**{k: obj.ref})
-            kw = dict()
-            kw.update(old_d=models.Sum('old_d'))
-            kw.update(old_c=models.Sum('old_c'))
-            kw.update(during_d=models.Sum('during_d'))
-            kw.update(during_c=models.Sum('during_c'))
-            d = qs.aggregate(**kw)
-
-            for k in ENTRY_VALUES:
-                if d[k] is not None:
-                    d[k] = myround(d[k])
-            if d['old_d'] or d['old_c'] or d['during_d'] or d['during_c']:
-                if d['during_d']:
-                    d['during_d'] = myround(d['during_d'])
-                if d['during_c']:
-                    d['during_c'] = myround(d['during_c'])
-                d['report'] = report
-                # 20200927
-                # d[self.fkname] = fk
-                d[self.fkname] = obj
-                collect.append(self.entry_model(**d))
-                # print(20200926, d)
-
-        for obj in collect:
-            obj.full_clean()
-            obj.save()
 
 
 class TradeTypeCollector(Collector):
@@ -132,9 +99,6 @@ class TradeTypeCollector(Collector):
     def create_entry(self, *args, **kwargs):
         kwargs.update(trade_type=self.trade_type)
         return super(TradeTypeCollector, self).create_entry(*args, **kwargs)
-
-    def unused_compute_sums(self, report):
-        pass
 
 
 class ReportEntry(dd.Model):
@@ -282,6 +246,7 @@ class ItemEntry(ReportEntry):
     def full_clean(self):
         si = self.item
         if si.mirror_ref and self.new_balance().value(si.dc) < 0:
+            # print("20201013c", self.item, si.mirror_ref, self.new_balance())
             self.item = rt.models.sheets.Item.get_by_ref(si.mirror_ref)
         super(ItemEntry, self).full_clean()
 
@@ -303,10 +268,12 @@ class ItemEntry(ReportEntry):
         for entry in cls.objects.filter(report=report):
             for si in sum_items:
                 if entry.item.ref.startswith(si.item.ref):
+                    # print("20201013a sum_items", entry.item.ref, si.item.ref, entry.during_d)
                     si.old_d += entry.old_d
                     si.old_c += entry.old_c
                     si.during_d += entry.during_d
                     si.during_c += entry.during_c
+        # print("20201013 sum_items", [(si.item.ref, si.old_d, si.old_c, si.during_d, si.during_c) for si in sum_items])
         for si in sum_items:
             if si.old_d or si.old_c or si.during_d or si.during_c:
                 si.full_clean()
@@ -337,23 +304,23 @@ class ItemEntry(ReportEntry):
 
     @dd.virtualfield(dd.PriceField(_("Activa")))
     def activa(self, ar):
-        if self.item.dc is CREDIT:
-            return self.new_balance().value(CREDIT)
+        if self.item.dc == DC.credit:
+            return self.new_balance().value(DC.credit)
 
     @dd.virtualfield(dd.PriceField(_("Passiva")))
     def passiva(self, ar):
-        if self.item.dc is DEBIT:
-            return self.new_balance().value(DEBIT)
+        if self.item.dc == DC.debit:
+            return self.new_balance().value(DC.debit)
 
     @dd.virtualfield(dd.PriceField(_("Expenses")))
     def expenses(self, ar):
-        if self.item.dc is DEBIT:
-            return self.new_balance().value(DEBIT)
+        if self.item.dc == DC.debit:
+            return self.new_balance().value(DC.debit)
 
     @dd.virtualfield(dd.PriceField(_("Revenues")))
     def revenues(self, ar):
-        if self.item.dc is CREDIT:
-            return self.new_balance().value(CREDIT)
+        if self.item.dc == DC.credit:
+            return self.new_balance().value(DC.credit)
 
 
 class AnaAccountEntry(ReportEntry):
@@ -387,6 +354,9 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
     # partner_entries = dd.ShowSlaveTable('sheets.PartnerEntriesByReport')
     # balance_entries = dd.ShowSlaveTable('sheets.BalanceEntriesByReport')
     # results_entries = dd.ShowSlaveTable('sheets.ResultsEntriesByReport')
+
+    def __str__(self):
+        return "Report #{} ({}..{})".format(self.pk, self.start_period, self.end_period)
 
     def check_period_range(self):
         if not self.start_period:
@@ -428,26 +398,18 @@ class Report(UserPlan, PeriodRange, Certifiable, Story):
 
         oldflt = coll.get_mvt_filter()
         duringflt = coll.get_mvt_filter()
-        # oldflt = dict()
-        # oldflt.update(coll.rowmvtflt)
-        # duringflt = dict()
-        # duringflt.update(coll.rowmvtflt)
         oldflt.update(voucher__accounting_period__in=before_periods)
         duringflt.update(voucher__accounting_period__in=during_periods)
 
         kw = dict()
-        coll.addann(kw, 'old_d', DEBIT, oldflt)
-        coll.addann(kw, 'old_c', CREDIT, oldflt)
-        coll.addann(kw, 'during_d', DEBIT, duringflt)
-        coll.addann(kw, 'during_c', CREDIT, duringflt)
+        coll.addann(kw, 'old_d', DC.debit, oldflt)
+        coll.addann(kw, 'old_c', DC.credit, oldflt)
+        coll.addann(kw, 'during_d', DC.debit, duringflt)
+        coll.addann(kw, 'during_c', DC.credit, duringflt)
 
         qs = coll.outer_model.objects.annotate(**kw)
-
-        qs = qs.exclude(
-            old_d=ZERO, old_c=ZERO,
-            during_d=ZERO, during_c=ZERO)
-
-        # print("20170930 {}".format(qs.query))
+        qs = qs.exclude(old_d=ZERO, old_c=ZERO, during_d=ZERO, during_c=ZERO)
+        # print("20201013d {}".format(qs.query))
         return qs
 
     def get_entry_models(self):

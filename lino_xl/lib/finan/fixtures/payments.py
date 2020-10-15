@@ -55,7 +55,7 @@ def add_demo_account(partner):
         acct.save()
     return acct
 
-def objects(refs="PMO BNK"):
+def objects(refs="PMO BNK"):  # welfare calls it with customized refs.
 
     Journal = rt.models.ledger.Journal
     Company = rt.models.contacts.Company
@@ -102,7 +102,7 @@ def objects(refs="PMO BNK"):
                 user=USERS.pop(),
                 entry_date=date + delta(days=offset))
             yield voucher
-
+            # print("20201009", voucher)
             # start action request for do_fill:
             ar = do_fill.request(master_instance=voucher)
             # select all rows:

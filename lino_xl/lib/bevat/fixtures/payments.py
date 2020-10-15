@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2019 Rumma & Ko Ltd
+# Copyright 2017-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
 
 import datetime
 
@@ -24,12 +22,12 @@ def objects():
         street="Vervierser Str. 8",
         country_id="BE", zip_code="4700")
     yield office
-    
+
     USERS = Cycler(settings.SITE.user_model.objects.all())
     JOURNAL = Journal.objects.get(ref=rt.models.bevat.DEMO_JOURNAL_NAME)
 
     date = datetime.date(dd.plugins.ledger.start_year, 1, 4)
-    end_date = settings.SITE.demo_date(-30) 
+    end_date = settings.SITE.demo_date(-30)
     while date < end_date:
         dcl = Declaration(
             journal=JOURNAL,

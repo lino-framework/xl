@@ -14,7 +14,7 @@ from django.db import models
 from lino.utils import AttrDict
 from lino.api import dd, rt
 from lino.utils import dbfreader
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import DC
 
 
 class TimLoader(object):
@@ -122,13 +122,13 @@ class TimLoader(object):
 
     def dc2lino(self, dc):
         if dc == "D":
-            return DEBIT
+            return DC.debit
         elif dc == "C":
-            return CREDIT
+            return DC.credit
         elif dc == "A":
-            return DEBIT
+            return DC.debit
         elif dc == "E":
-            return CREDIT
+            return DC.credit
         raise Exception("Invalid D/C value %r" % dc)
 
     def create_users(self):

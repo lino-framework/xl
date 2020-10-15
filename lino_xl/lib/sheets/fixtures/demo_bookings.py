@@ -7,7 +7,7 @@ import datetime
 from django.conf import settings
 
 from lino.api import dd, rt, _
-from lino_xl.lib.ledger.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import DC, CommonAccounts
 from lino.utils import Cycler
 
 REQUEST = settings.SITE.login()  # BaseRequest()
@@ -32,12 +32,9 @@ def objects():
     def vi(ca, amount, **kwargs):
         # seqno += 1
         kwargs.update(account=ca.get_object(), voucher=voucher)
-        if amount > 0:
-            kwargs.update(dc=jnl.dc)
-            kwargs.update(amount=amount)
-        else:
-            kwargs.update(dc=not jnl.dc)
-            kwargs.update(amount=-amount)
+        if jnl.dc == DC.debit:
+           amount = -amount
+        kwargs.update(amount=amount)
         return JournalEntryItem(**kwargs)
 
     # yield vi(CommonAccounts.net_income_loss, 100)

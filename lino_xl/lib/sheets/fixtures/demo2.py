@@ -1,7 +1,14 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2018 Rumma & Ko Ltd
+# Copyright 2018-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
+"""Create a series of reports.
+
+All reports have the same user, which would not be possible when using the web
+front end because reports are user plans and you can have only one plan per
+user. But programatically it is possible and doesn't disturb.
+
+"""
 
 from lino.api import rt, dd
 
@@ -21,4 +28,3 @@ def objects():
         yield obj
         obj.run_update_plan(ses)
         # dd.logger.info("20180907 %s", year)
-

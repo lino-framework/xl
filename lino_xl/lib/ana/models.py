@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2018 Rumma & Ko Ltd
+# Copyright 2017-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
 
 from django.db import models
 from django.conf import settings
@@ -18,7 +16,7 @@ from lino_xl.lib.ledger.ui import AccountBalances
 from lino_xl.lib.ledger.mixins import ItemsByVoucher
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 # from lino_xl.lib.ledger.fields import DebitOrCreditField
-# from lino_xl.lib.ledger.utils import DEBIT
+# from lino_xl.lib.ledger.utils import DC.debit
 
 
 # class Group(BabelDesignated, Referrable):
@@ -58,7 +56,7 @@ class Account(StructuredReferrable, BabelDesignated, Sequenced):
     # group = dd.ForeignKey(
     #     'ana.Group', verbose_name=_("Group"), blank=True, null=True)
     # normal_dc = DebitOrCreditField(
-    #     _("Normal booking direction"), default=DEBIT)
+    #     _("Normal booking direction"), default=DC.debit)
 
     # def full_clean(self, *args, **kw):
     #     if self.group_id is not None:

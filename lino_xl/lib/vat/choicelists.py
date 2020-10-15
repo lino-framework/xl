@@ -8,9 +8,9 @@ from lino.api import dd, _, gettext
 from etgen.html import E, forcetext
 from django.db import models
 from lino_xl.lib.ledger.roles import LedgerStaff
-from lino_xl.lib.ledger.choicelists import TradeTypes, CommonAccounts
+from lino_xl.lib.ledger.choicelists import DC, TradeTypes, CommonAccounts
 
-from lino_xl.lib.ledger.utils import DCLABELS, ZERO
+from lino_xl.lib.ledger.utils import ZERO
 
 
 class VatClasses(dd.ChoiceList):
@@ -304,13 +304,12 @@ class MvtDeclarationField(DeclarationField):
         if self.exclude_vat_regimes is not None:
             if mvt.vat_regime in self.exclude_vat_regimes:
                 return
-        if mvt.dc == self.dc:
-            amount = mvt.amount
-        elif self.both_dc:
-            amount = -mvt.amount
-        else:
-            return
+        amount = mvt.amount
         if not amount:
+            return
+        if self.dc == DC.debit:
+            amount = -amount
+        if amount < 0 and not self.both_dc:
             return
         field_values[self.name] += amount
         if self.is_payable:
@@ -385,7 +384,7 @@ class DeclarationFieldsBase(dd.ChoiceList):
 
         elems += [
             fld.__class__.__name__, ' ',
-            DCLABELS[fld.dc],
+            str(fld.dc),
             "" if fld.both_dc else " only",
             E.br()]
 

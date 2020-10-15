@@ -8,8 +8,8 @@ from django.core.exceptions import ValidationError
 # from lino.mixins.registrable import Registrable
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.excerpts.mixins import Certifiable
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT, ZERO, MAX_AMOUNT
-from lino_xl.lib.ledger.models import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DC, ZERO, MAX_AMOUNT
+# from lino_xl.lib.ledger.models import DebitOrCreditField
 from lino_xl.lib.ledger.mixins import VoucherItem, SequencedVoucherItem
 from lino_xl.lib.ledger.mixins import ProjectRelated, Matching
 from etgen.html import E
@@ -42,24 +42,28 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
     #     if self.journal.auto_check_clearings:
     #         self.check_clearings()
 
+    def due2itemdict(self, due, **kwargs):
+        if not due.balance:
+            raise Exception("20201010")
+        # print("20201014", due.account, due.trade_type)
+        kwargs.update(match=due.match, account=due.account)
+        if due.trade_type and not due.account:  # 20201014
+            ma = due.trade_type.get_main_account()
+            if ma:
+                kwargs.update(account=ma)
+        if due.project:
+            kwargs.update(project=due.project)
+        if due.partner:
+            kwargs.update(partner=due.partner)
+        if due.dc == self.journal.dc:
+            kwargs.update(amount=-due.balance)
+        else:
+            kwargs.update(amount=due.balance)
+        return kwargs
+
     def add_item_from_due(self, obj, **kwargs):
-        # if not obj.balance:
-        #     raise Exception("20151117")
-        if obj.project:
-            kwargs.update(project=obj.project)
-        if obj.partner:
-            kwargs.update(partner=obj.partner)
-        dc = not obj.dc
-        # if self.journal.invert_due_dc:
-        #     dc = not obj.dc
-        # else:
-        #     dc = obj.dc
-        i = self.add_voucher_item(
-            obj.account, dc=dc,
-            amount=obj.balance, match=obj.match, **kwargs)
-        if i.amount < 0:
-            i.amount = - i.amount
-            i.dc = not i.dc
+        kwargs = self.due2itemdict(obj, **kwargs)
+        i = self.add_voucher_item(**kwargs)
         return i
 
     def get_partner(self):
@@ -75,7 +79,7 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
         movements_and_items)``, where `amount` is the total amount and
         `movements_and_items` is a sequence of tuples ``(mvt, item)``
         where `mvt` is a :class:`Movement` object to be saved and
-        `item` it the (existing) voucher item which caused this
+        `item` is the (existing) voucher item which caused this
         movement.
 
         """
@@ -83,19 +87,17 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
         amount = ZERO
         movements_and_items = []
         for i in self.items.order_by('seqno'):
-            if i.dc == self.journal.dc:
-                amount += i.amount
-            else:
-                amount -= i.amount
             # kw = dict(seqno=i.seqno, partner=i.partner)
             kw = dict(partner=i.get_partner())
             kw.update(match=i.get_match())
             if abs(i.amount > MAX_AMOUNT):
-                dd.logger.warning("Oops, %s is too big", i.amount)
+                raise Exception("Oops, {} is too big ({}, {})".format(i.amount, self, kw))
+                # dd.logger.warning("Oops, %s is too big", i.amount)
                 return (ZERO, [])
             b = self.create_movement(
                 i, (i.account or self.item_account, None),
-                i.project, i.dc, i.amount, **kw)
+                i.project, self.journal.dc, i.amount, **kw)
+            amount += b.amount  # NB create_movement has inversed the sign
             movements_and_items.append((b, i))
         return amount, movements_and_items
 
@@ -109,7 +111,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         app_label = "finan"
 
     amount = dd.PriceField(_("Amount"), default=ZERO, null=False)
-    dc = DebitOrCreditField()
+    # dc = DebitOrCreditField()
     remark = models.CharField(
         _("Your reference"), max_length=200, blank=True)
     account = dd.ForeignKey('ledger.Account', blank=True, null=True)
@@ -203,43 +205,26 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             return
         if self.account.default_amount:
             self.amount = self.account.default_amount
-            self.dc = not self.voucher.journal.dc
+            # self.dc = not self.voucher.journal.dc
             # self.dc = not self.account.type.dc
             return
         if self.voucher.auto_compute_amount:
             total = Decimal()
-            dc = self.voucher.journal.dc
             for item in self.voucher.items.exclude(id=self.id):
-                if item.dc == dc:
-                    total -= item.amount
-                else:
-                    total += item.amount
-            if total < 0:
-                dc = not dc
-                total = - total
-            self.dc = dc
+                total += item.amount
             self.amount = total
 
 
     def get_partner(self):
         return self.partner or self.project
 
-    def fill_suggestion(self, match):
+    def fill_suggestion(self, due):
         """Fill the fields of this item from the given suggestion (a
         `DueMovement` instance).
 
         """
-        # if not match.balance:
-        #     raise Exception("20151117")
-        if match.trade_type:
-            self.account = match.trade_type.get_main_account()
-        if self.account_id is None:
-            self.account = match.account
-        self.dc = match.dc
-        self.amount = - match.balance
-        self.match = match.match
-        self.project = match.project
-        self.partner = match.partner  # when called from match_changed()
+        for k, v in self.voucher.due2itemdict(due).items():
+            setattr(self, k, v)
 
     def guess_amount(self):
         self.account_changed(None)
@@ -251,24 +236,9 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         self.amount = ZERO
 
     def full_clean(self, *args, **kwargs):
-        # if self.amount is None:
-        #     if self.account and self.account.default_amount:
-        #         self.amount = self.account.default_amount
-        #         self.dc = self.account.type.dc
-        #     else:
-        #         self.amount = ZERO
-        if self.dc is None:
-            self.dc = not self.voucher.journal.dc
-            # if self.account is None:
-            #     self.dc = not self.voucher.journal.dc
-            # else:
-            #     self.dc = not self.account.type.dc
         if self.amount is None:
             # amount can be None e.g. if user entered ''
             self.guess_amount()
-        elif self.amount < 0:
-            self.amount = - self.amount
-            self.dc = not self.dc
 
         if False: # temporarily deactivated for data migration
             problems = list(FinancialVoucherItemChecker.check_instance(self))

@@ -57,14 +57,14 @@ Luxemburg
 Deutschland
 Niederlande
 Frankreich
-Großbritannien
+Groï¿½britannien
 Italien
 Irland
 Spanien
 Portugal
 Schweiz
-Österreich
-Dänemark
+ï¿½sterreich
+Dï¿½nemark
 United States of America""")
 
         
@@ -93,8 +93,8 @@ COMPTE1: Character (47)
 NOTVA: Character (18)
 COMPTE3: Character (47)
 IDPGP: Character (2)
-DEBIT: Character (10)
-CREDIT: Character (10)
+DC.debit: Character (10)
+DC.credit: Character (10)
 ATTRIB: Character (5)
 IDMFC: Character (3)
 LANGUE: Character (1)
@@ -122,7 +122,7 @@ GSM: Character (18)""")
         #print s
         ae(s,u"""\
 |000008|Ausdemwald|
-|000012|Müller AG|
+|000012|Mï¿½ller AG|
 |000013|Bodard|
 |000014|Mendelssohn GmbH|
 |000015|INTERMOBIL s.a.|""")
@@ -134,7 +134,7 @@ GSM: Character (18)""")
 Das ist der Memotext zu Norbert Ausdemwald (IdPar 000008).
 Hier ist eine zweite Zeile.
 
-Auf der vierten Zeile kommen weiche Zeilensprünge (ASCII 141) hinzu, die von memoedit() automatisch eingefügt werden, wenn eine Zeile länger als der Texteditor ist. Hinter "von" und "der" müsste jeweils ein ASCII 141 sein.
+Auf der vierten Zeile kommen weiche Zeilensprï¿½nge (ASCII 141) hinzu, die von memoedit() automatisch eingefï¿½gt werden, wenn eine Zeile lï¿½nger als der Texteditor ist. Hinter "von" und "der" mï¿½sste jeweils ein ASCII 141 sein.
 Und jetzt ist Schluss. Ohne Leerzeile hinter dem Ausrufezeichen!""")
 
 

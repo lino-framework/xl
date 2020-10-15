@@ -173,7 +173,7 @@ class VatProductInvoice(SalesDocument, Matching):
             partner=self.get_partner(),
             cleared=False,
             match=self.get_match())
-        return Movement.get_balance(not self.journal.dc, qs)
+        return Movement.get_balance(self.journal.dc.opposite(), qs)
 
     @dd.virtualfield(dd.PriceField(_("Balance before")))
     def balance_before(self, ar):
@@ -183,7 +183,7 @@ class VatProductInvoice(SalesDocument, Matching):
             cleared=False,
             value_date__lte=self.entry_date)
         qs = qs.exclude(voucher=self)
-        return Movement.get_balance(not self.journal.dc, qs)
+        return Movement.get_balance(self.journal.dc.opposite(), qs)
 
 
 class InvoiceDetail(dd.DetailLayout):

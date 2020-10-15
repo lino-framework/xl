@@ -630,7 +630,7 @@ PCMN = """
 54 VALEURS ECHUES A L'ENCAISSEMENT
 540 Chèques à encaisser
 541 Coupons à encaisser
-55 ETABLISSEMENTS DE CREDIT.
+55 ETABLISSEMENTS DE DC.credit.
 5500 Compte courant Banque 1
 5501 Chèques émis Banque 1 
 5509 Réductions de valeur actées Banque 1 

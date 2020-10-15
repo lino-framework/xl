@@ -2,7 +2,7 @@
 # Copyright 2012-2020 Rumma 6 Ko Ltd
 # License: BSD (see file COPYING for details)
 
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import DC
 
 from lino_xl.lib.vat.choicelists import DeclarationFieldsBase
 from lino_xl.lib.vat.choicelists import VatColumns
@@ -80,88 +80,88 @@ wfld = DeclarationFields.add_writable_field
 
 # value dc vat_columns text // fieldnames both_dc vat_regimes vat_classes
 
-mfld("1a", CREDIT, '10', "20% määraga maksustatavad müügid",
+mfld("1a", DC.credit, '10', "20% määraga maksustatavad müügid",
     vat_classes="goods services", vat_regimes="normal subject")
-mfld("1b", DEBIT, '60', "20% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
+mfld("1b", DC.debit, '60', "20% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
     vat_classes="goods services", vat_regimes="intracom")
-sfld("1", CREDIT, None,
+sfld("1", DC.credit, None,
     "20% määraga maksustatavad toimingud ja tehingud",
     fieldnames="1a 1b")
 
-mfld("2a", CREDIT, '10', "9% määraga maksustatavad müügid",
+mfld("2a", DC.credit, '10', "9% määraga maksustatavad müügid",
     vat_classes="reduced", vat_regimes="normal subject")
-mfld("2b", DEBIT, '60', "9% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
+mfld("2b", DC.debit, '60', "9% määraga maksustatavad ostud liikmesriigi maksukohustuslaselt",
     vat_classes="reduced", vat_regimes="intracom")
-sfld("2", CREDIT, None,
+sfld("2", DC.credit, None,
     "9% määraga maksustatavad toimingud ja tehingud",
     fieldnames="2a 2b")
 
 
-mfld("3",  CREDIT, '10', "0% määraga maksustatavad toimingud ja tehingud, sh",
+mfld("3",  DC.credit, '10', "0% määraga maksustatavad toimingud ja tehingud, sh",
     vat_regimes="!normal !subject")
 
-mfld("31", CREDIT, '10',
+mfld("31", DC.credit, '10',
     "1) kauba ühendusesisene käive ja teise liikmesriigi maksukohustuslasele / "
     "piiratud maksukohustuslasele osutatud teenuste käive kokku, sh",
     vat_regimes="intracom cocontractor")
-mfld("311", CREDIT, '10', "1) kauba ühendusesisene käive",
+mfld("311", DC.credit, '10', "1) kauba ühendusesisene käive",
     vat_regimes="intracom")
 
-mfld("32",  CREDIT, '10', "2) kauba eksport, sh",
+mfld("32",  DC.credit, '10', "2) kauba eksport, sh",
     vat_regimes="tax_free exempt")
-mfld("321", CREDIT, '10', "1) käibemaksutagastusega müük reisijale",
+mfld("321", DC.credit, '10', "1) käibemaksutagastusega müük reisijale",
     vat_regimes="tax_free")
 
-mfld("4",  CREDIT, '40',
+mfld("4",  DC.credit, '40',
     "Käibemaks kokku (20% lahtrist 1 + 9% lahtrist 2)", is_payable=True)
-mfld("41", DEBIT, '41',
+mfld("41", DC.debit, '41',
     "Impordilt tasumisele kuuluv käibemaks", is_payable=True)
 
-mfld("5",  DEBIT, '50',
+mfld("5",  DC.debit, '50',
     "Kokku sisendkäibemaksusumma, mis on seadusega lubatud maha arvata, sh",
     is_payable=True)
-mfld("51", DEBIT, '50',
+mfld("51", DC.debit, '50',
     "1) impordilt tasutud või tasumisele kuuluv käibemaks",
     vat_regimes="intracom")
-mfld("52", DEBIT, '50',
+mfld("52", DC.debit, '50',
     "2) põhivara soetamiselt tasutud või tasumisele kuuluv käibemaks",
     vat_classes="real_estate")
-mfld("53", DEBIT, '50',
+mfld("53", DC.debit, '50',
     "3) ettevõtluses (100%) kasutatava sõiduauto soetamiselt ja sellise"
     "sõiduauto tarbeks kaupade soetamiselt ja teenuste saamiselt"
     "tasutud või tasumisele kuuluv käibemaks",
     vat_classes="vehicles")
-mfld("54", DEBIT, '50',
+mfld("54", DC.debit, '50',
     "4) osaliselt ettevõtluses kasutatava sõiduauto soetamiselt ja sellise"
     "sõiduauto tarbeks kaupade soetamiselt ja teenuste saamiselt"
     "tasutud või tasumisele kuuluv käibemaks",
     vat_classes="vehicles")  #TODO: add an estonia-specific second vat category for vehicles?
 
-mfld("6", DEBIT, '60',
+mfld("6", DC.debit, '60',
     "Kauba ühendusesisene soetamine ja teise liikmesriigi "
     "maksukohustuslaselt saadud teenused kokku, sh")
-mfld("61", DEBIT, '60', "1) kauba ühendusesisene soetamine",
+mfld("61", DC.debit, '60', "1) kauba ühendusesisene soetamine",
     vat_regimes="intracom", vat_classes="goods")
 
-mfld("7",  DEBIT, '60',
+mfld("7",  DC.debit, '60',
     "Muu kauba soetamine ja teenuse saamine, mida maksustatakse käibemaksuga, sh",
     vat_regimes="!intracom", vat_classes="!goods")
-mfld("71", DEBIT, '60',
+mfld("71", DC.debit, '60',
     "1) erikorra alusel maksustatava kinnisasja, metallijäätmete, väärismetalli "
     "ja metalltoodete soetamine (KMS § 41¹)",
     vat_regimes="!intracom", vat_classes="!goods") # not yet handled
 
-mfld("8", DEBIT, '60', "Maksuvaba käive", vat_classes="exempt")
-mfld("9", DEBIT, '60',
+mfld("8", DC.debit, '60', "Maksuvaba käive", vat_classes="exempt")
+mfld("9", DC.debit, '60',
     "Erikorra alusel maksustatava kinnisasja, metallijäätmete, väärismetalli ja "
     "metalltoodete käive (KMS § 411) ning teises liikmesriigis paigaldatava või "
     "kokkupandava kauba maksustatav väärtus",
     vat_classes="!goods !services !real_estate !vehicles")
 
-wfld("10", CREDIT, None, "Täpsustused (-)", editable=True, is_payable=True)
-wfld("11", DEBIT, None, "Täpsustused (+)", editable=True, is_payable=True)
+wfld("10", DC.credit, None, "Täpsustused (-)", editable=True, is_payable=True)
+wfld("11", DC.debit, None, "Täpsustused (+)", editable=True, is_payable=True)
 
-sfld("13", CREDIT, None,
+sfld("13", DC.credit, None,
     "Tasumisele kuuluv(+) või enammakstud (-) käibemaks "
     "(lahter 4 + lahter 41 - lahter 5 + lahter 10 - lahter 11)",
     fieldnames="4 41 -5 10 -11")

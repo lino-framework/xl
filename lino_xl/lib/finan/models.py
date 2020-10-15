@@ -1,16 +1,14 @@
 # Copyright 2008-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-import six
-
 from django.db import models
 # from django.core.exceptions import ValidationError
 
 from etgen.html import E, join_elems
 
-from lino_xl.lib.ledger.utils import ZERO, DEBIT, CREDIT, MAX_AMOUNT
+from lino_xl.lib.ledger.utils import ZERO, MAX_AMOUNT
 from lino_xl.lib.ledger.fields import DcAmountField
-from lino_xl.lib.ledger.choicelists import VoucherTypes
+from lino_xl.lib.ledger.choicelists import DC, VoucherTypes
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from lino_xl.lib.ledger.mixins import ProjectRelated
 from lino_xl.lib.ledger.mixins import PartnerRelated
@@ -50,7 +48,7 @@ class ShowSuggestions(dd.Action):
         if actor.suggestions_table is None:
             # logger.info("%s has no suggestions_table", actor)
             return  # don't attach
-        if isinstance(actor.suggestions_table, six.string_types):
+        if isinstance(actor.suggestions_table, str):
             T = rt.models.resolve(actor.suggestions_table)
             if T is None:
                 raise Exception("No table named %s" % actor.suggestions_table)
@@ -134,20 +132,24 @@ class PaymentOrder(FinancialVoucher, Printable):
         # TODO: what if the needs_partner of the journal's account
         # is not checked? Shouldn't we raise an error here?
         amount, movements_and_items = self.get_finan_movements()
-        if abs(amount > MAX_AMOUNT):
-            dd.logger.warning("Oops, %s is too big", amount)
+        if abs(amount) > MAX_AMOUNT:
+            # dd.logger.warning("Oops, {} is too big ({})".format(amount, self))
+            raise Exception("Oops, {} is too big ({})".format(amount, self))
             return
-        self.total = - amount
+        if self.journal.dc == DC.debit:
+            self.total = -amount
+        else:
+            self.total = amount
         item_partner = self.journal.partner is None
         for m, i in movements_and_items:
             yield m
             if item_partner:
                 yield self.create_movement(
-                    i, (acc, None), m.project, not m.dc, m.amount,
+                    i, (acc, None), m.project, self.journal.dc, m.amount,  # 20200114
                     partner=m.partner, match=i.get_match())
         if not item_partner:
             yield self.create_movement(
-                None, (acc, None), None, not self.journal.dc, amount,
+                None, (acc, None), None, self.journal.dc, amount,
                 partner=self.journal.partner, match=self)
                 # 20191226 partner=self.journal.partner, match=self.get_default_match())
 
@@ -214,9 +216,13 @@ class BankStatement(DatedFinancialVoucher):
         if not a:
             warn_jnl_account(self.journal)
         amount, movements_and_items = self.get_finan_movements()
-        self.balance2 = self.balance1 + amount
+        if self.journal.dc == DC.debit:
+            self.balance2 = self.balance1 + amount
+        else:
+            self.balance2 = self.balance1 - amount
         if abs(self.balance2) > MAX_AMOUNT:
-            dd.logger.warning("Oops, %s is too big", self.balance2)
+            # dd.logger.warning("Oops, %s is too big", self.balance2)
+            raise Exception("Oops, {} is too big ({})".format(self.balance2, self))
             return
         for m, i in movements_and_items:
             yield m
@@ -233,8 +239,8 @@ class JournalEntryItem(DatedFinancialVoucherItem):
         verbose_name = _("Journal Entry item")
         verbose_name_plural = _("Journal Entry items")
     voucher = dd.ForeignKey('finan.JournalEntry', related_name='items')
-    debit = DcAmountField(DEBIT, _("Debit"))
-    credit = DcAmountField(CREDIT, _("Credit"))
+    debit = DcAmountField(DC.debit, _("Debit"))
+    credit = DcAmountField(DC.credit, _("Credit"))
 
 
 class BankStatementItem(DatedFinancialVoucherItem):
@@ -243,8 +249,8 @@ class BankStatementItem(DatedFinancialVoucherItem):
         verbose_name = _("Bank Statement item")
         verbose_name_plural = _("Bank Statement items")
     voucher = dd.ForeignKey('finan.BankStatement', related_name='items')
-    debit = DcAmountField(CREDIT, _("Income"))
-    credit = DcAmountField(DEBIT, _("Expense"))
+    expense = DcAmountField(DC.debit, _("Expense"))
+    income = DcAmountField(DC.credit, _("Income"))
 
 
 class PaymentOrderItem(BankAccount, FinancialVoucherItem):
@@ -255,6 +261,7 @@ class PaymentOrderItem(BankAccount, FinancialVoucherItem):
 
     voucher = dd.ForeignKey('finan.PaymentOrder', related_name='items')
     # bank_account = dd.ForeignKey('sepa.Account', blank=True, null=True)
+    to_pay = DcAmountField(DC.debit, _("To pay"))
 
     # def partner_changed(self, ar):
     #     FinancialVoucherItem.partner_changed(self, ar)
@@ -401,7 +408,7 @@ class ItemsByJournalEntry(ItemsByVoucher):
 
 class ItemsByBankStatement(ItemsByVoucher):
     model = 'finan.BankStatementItem'
-    column_names = "seqno date partner account match remark debit credit "\
+    column_names = "seqno date partner account match remark expense income "\
                    "workflow_buttons *"
     sum_text_column = 2
     suggestions_table = 'finan.SuggestionsByBankStatementItem'
@@ -411,7 +418,7 @@ class ItemsByBankStatement(ItemsByVoucher):
 class ItemsByPaymentOrder(ItemsByVoucher):
     model = 'finan.PaymentOrderItem'
     column_names = "seqno partner workflow_buttons bank_account match "\
-                   "amount remark *"
+                   "to_pay remark *"
     suggestions_table = 'finan.SuggestionsByPaymentOrderItem'
     suggest = ShowSuggestions()
     sum_text_column = 1
@@ -445,26 +452,15 @@ class FillSuggestionsToVoucher(dd.Action):
 
 
 class FillSuggestionsToVoucherItem(FillSuggestionsToVoucher):
+
     def run_from_ui(self, ar, **kw):
-        # compare add_item_from_due
         i = ar.master_instance
         voucher = i.voucher
         obj = ar.selected_rows[0]
         # i is the voucher item from which the suggestion table had
         # been called. obj is the first selected DueMovement object
-        # print 20151217, ar.selected_rows, obj
-        i.account = obj.account
-        i.dc = not obj.dc
-        # if voucher.journal.invert_due_dc:
-        #     i.dc = not obj.dc
-        # else:
-        #     i.dc = obj.dc
-        i.amount = obj.balance
-        i.partner = obj.partner
-        i.match = obj.match
-        if i.amount < 0:
-            i.amount = - i.amount
-            i.dc = not i.dc
+        for k, v in voucher.due2itemdict(obj).items():
+            setattr(i, k, v)
         i.full_clean()
         i.save()
 
@@ -510,7 +506,7 @@ class SuggestionsByVoucher(ledger.ExpectedMovements):
         if voucher is None:
             raise Exception("20200119 voucher is None")
             return None
-        return not voucher.journal.dc
+        return voucher.journal.dc
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -572,7 +568,7 @@ class SuggestionsByVoucherItem(SuggestionsByVoucher):
         item = ar.master_instance
         if item is None:
             return None
-        return not item.voucher.journal.dc
+        return item.voucher.journal.dc
 
     @classmethod
     def param_defaults(cls, ar, **kw):

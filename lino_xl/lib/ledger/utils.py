@@ -11,6 +11,7 @@ See :doc:`/specs/ledger`
 
 from decimal import Decimal, ROUND_HALF_UP
 from lino.api import _
+from .choicelists import DC
 
 ZERO = Decimal(0)
 CENT = Decimal('.01')
@@ -18,13 +19,14 @@ HUNDRED = Decimal('100.00')
 ONE = Decimal('1.00')
 MAX_AMOUNT = Decimal("9999999.00")
 
-DEBIT = False
-CREDIT = True
+# DC.debit = False
+# DC.credit = True
+#
+# DCLABELS = {
+#     DC.debit: _("Debit"),
+#     DC.credit: _("Credit")
+# }
 
-DCLABELS = {
-    DEBIT: _("Debit"),
-    CREDIT: _("Credit")
-}
 
 class Balance(object):
 
@@ -62,7 +64,7 @@ class Balance(object):
         return Balance(d1+d2, c1+c2)
 
     def value(self, dc):
-        if dc is DEBIT:
+        if dc is DC.debit:
             return self.d - self.c
         else:
             return self.c - self.d

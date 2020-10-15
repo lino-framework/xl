@@ -6,8 +6,7 @@ from django.db import models
 
 from lino.api import dd, rt, _
 from lino_xl.lib.ledger.roles import LedgerStaff
-from lino_xl.lib.ledger.models import DebitOrCreditField
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.choicelists import DC
 
 ref_max_length = dd.plugins.sheets.item_ref_width
 
@@ -64,14 +63,18 @@ class CommonItems(dd.ChoiceList):
     verbose_name = _("Common sheet item")
     verbose_name_plural = _("Common sheet items")
     item_class = CommonItem
-    column_names = 'value name text sheet_type dc db_object'
+    column_names = 'value name text sheet_type dc db_object mirror_ref'
     required_roles = dd.login_required(LedgerStaff)
 
     @dd.virtualfield(models.CharField(_("Sheet type"), max_length=20))
     def sheet_type(cls, choice, ar):
         return choice.sheet_type
 
-    @dd.virtualfield(DebitOrCreditField(_("D/C")))
+    @dd.virtualfield(models.CharField(_("Mirror"), max_length=20))
+    def mirror_ref(cls, choice, ar):
+        return choice.mirror_ref
+
+    @dd.virtualfield(DC.field(_("D/C")))
     def dc(cls, choice, ar):
         return choice.dc
 
@@ -83,7 +86,7 @@ class CommonItems(dd.ChoiceList):
 def mirror(a, b):
     a = CommonItems.get_by_value(a)
     b = CommonItems.get_by_value(b)
-    if a.dc == b.dc:
+    if a.dc != b.dc.opposite():
         raise Exception("Mirroring items must have opposite D/C")
     for i in (a, b):
         if len(i.value) != ref_max_length:
@@ -94,42 +97,42 @@ def mirror(a, b):
 add = CommonItems.add_item
 
 # Aktiva (Vermögen)
-add('1', _("Assets"), 'assets', DEBIT, 'balance')
+add('1', _("Assets"), 'assets', DC.debit, 'balance')
 # Umlaufvermögen
-add('10', _("Current assets"), None, DEBIT, 'balance')
-add('1000', _("Customers receivable"), 'customers', DEBIT, 'balance')
-add('1010', _("Taxes receivable"), None, DEBIT, 'balance')
-add('1020', _("Cash and cash equivalents"), None, DEBIT, 'balance')
-add('1030', _("Current transfers"), None, DEBIT, 'balance')
-add('1090', _("Other current assets"), None, DEBIT, 'balance')
+add('10', _("Current assets"), None, DC.debit, 'balance')
+add('1000', _("Customers receivable"), 'customers', DC.debit, 'balance')
+add('1010', _("Taxes receivable"), None, DC.debit, 'balance')
+add('1020', _("Cash and cash equivalents"), None, DC.debit, 'balance')
+add('1030', _("Current transfers"), None, DC.debit, 'balance')
+add('1090', _("Other current assets"), None, DC.debit, 'balance')
 # Anlagevermögen
-add('11', _("Non-current assets"), None, DEBIT, 'balance')
+add('11', _("Non-current assets"), None, DC.debit, 'balance')
 
-add('2', _("Passiva"), 'passiva', CREDIT, 'balance')
+add('2', _("Passiva"), 'passiva', DC.credit, 'balance')
 # Fremdkapital
-add('20', _("Liabilities"), 'liabilities', CREDIT, 'balance')
-add('2000', _("Suppliers payable"), 'suppliers', CREDIT, 'balance')
-add('2010', _("Taxes payable"), 'taxes', CREDIT, 'balance')
-add('2020', _("Banks"), 'banks', CREDIT, 'balance')
-add('2030', _("Current transfers"), 'transfers', CREDIT, 'balance')
-add('2090', _("Other liabilities"), 'other', CREDIT, 'balance')
+add('20', _("Liabilities"), 'liabilities', DC.credit, 'balance')
+add('2000', _("Suppliers payable"), 'suppliers', DC.credit, 'balance')
+add('2010', _("Taxes payable"), 'taxes', DC.credit, 'balance')
+add('2020', _("Banks"), 'banks', DC.credit, 'balance')
+add('2030', _("Current transfers"), 'transfers', DC.credit, 'balance')
+add('2090', _("Other liabilities"), 'other', DC.credit, 'balance')
 # Eigenkapital
-add('21', _("Own capital"), 'capital', CREDIT, 'balance')
-add('2150', _("Net income (loss)"), 'net_income_loss', CREDIT, 'balance')
+add('21', _("Own capital"), 'capital', DC.credit, 'balance')
+add('2150', _("Net income (loss)"), 'net_income_loss', DC.credit, 'balance')
 
-add('4', _("Commercial assets & liabilities"), 'com_ass_lia', CREDIT, 'balance')
-add('5', _("Financial assets & liabilities"), 'fin_ass_lia', CREDIT, 'balance')
+add('4', _("Commercial assets & liabilities"), 'com_ass_lia', DC.credit, 'balance')
+add('5', _("Financial assets & liabilities"), 'fin_ass_lia', DC.credit, 'balance')
 
-add('6', _("Expenses"), 'expenses', DEBIT, 'results')
-add('60', _("Operation costs"), 'op_costs', DEBIT, 'results')
-add('6000', _("Cost of sales"), 'costofsales', DEBIT, 'results')
-add('6010', _("Operating expenses"), 'operating', DEBIT, 'results')
-add('6020', _("Other expenses"), 'otherexpenses', DEBIT, 'results')
-add('62', _("Wages"), 'wages', DEBIT, 'results')
-add('6900', _("Net income"), 'net_income', DEBIT, 'results')
-add('7', _("Revenues"), 'revenues', CREDIT, 'results')
-add('7000', _("Net sales"), 'sales', CREDIT, 'results')
-add('7900', _("Net loss"), 'net_loss', CREDIT, 'results')
+add('6', _("Expenses"), 'expenses', DC.debit, 'results')
+add('60', _("Operation costs"), 'op_costs', DC.debit, 'results')
+add('6000', _("Cost of sales"), 'costofsales', DC.debit, 'results')
+add('6010', _("Operating expenses"), 'operating', DC.debit, 'results')
+add('6020', _("Other expenses"), 'otherexpenses', DC.debit, 'results')
+add('62', _("Wages"), 'wages', DC.debit, 'results')
+add('6900', _("Net income"), 'net_income', DC.debit, 'results')
+add('7', _("Revenues"), 'revenues', DC.credit, 'results')
+add('7000', _("Net sales"), 'sales', DC.credit, 'results')
+add('7900', _("Net loss"), 'net_loss', DC.credit, 'results')
 
 mirror('1010', '2010')
 mirror('1020', '2020')

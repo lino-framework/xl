@@ -5,7 +5,7 @@
 # from django.db import models
 # from django.conf import settings
 #from django.utils.translation import string_concat
-from lino_xl.lib.ledger.utils import DEBIT, CREDIT
+from lino_xl.lib.ledger.utils import DC
 
 from lino.api import dd, rt, _
 
@@ -72,25 +72,25 @@ wfld = DeclarationFields.add_writable_field
 
 # II. Opérations à déclarer (montant hors TVA)
 
-mfld("71", DEBIT, '71', _("Intracom supplies"))
-mfld("72", DEBIT, '72', _("New vehicles"))
-mfld("73", DEBIT, '73', _("Excised products"))
-mfld("75", DEBIT, '75', _("Intracom services"))
-mfld("76", DEBIT, '76', _("Other operations"))
-mfld("77", CREDIT, '71 72 73 75',
+mfld("71", DC.debit, '71', _("Intracom supplies"))
+mfld("72", DC.debit, '72', _("New vehicles"))
+mfld("73", DC.debit, '73', _("Excised products"))
+mfld("75", DC.debit, '75', _("Intracom services"))
+mfld("76", DC.debit, '76', _("Other operations"))
+mfld("77", DC.credit, '71 72 73 75',
      _("Credit notes on 71, 72, 73 and 75"), both_dc=False)
-mfld("78", DEBIT, '76',
+mfld("78", DC.debit, '76',
      _("Credit notes on 76"), both_dc=False)
 
 # III. Taxes dues et régularisations de la taxe
 
-mfld("80", CREDIT, '54',
+mfld("80", DC.credit, '54',
      _("Due VAT for 71...76"), is_payable=True)
-wfld("81", CREDIT, None, _("Miscellaneous corrections due"),
+wfld("81", DC.credit, None, _("Miscellaneous corrections due"),
      is_payable=True)
-wfld("82", DEBIT, None, _("Miscellaneous corrections returnable"),
+wfld("82", DC.debit, None, _("Miscellaneous corrections returnable"),
      is_payable=True)
 
 # NB with bevats you will never ask to return VAT, i.e. the result is always positive
-sfld("83", CREDIT, None, _("Total to pay (+) or to return (-)"), "80 81 82")
+sfld("83", DC.credit, None, _("Total to pay (+) or to return (-)"), "80 81 82")
 # print("20170711b {}".format(DeclarationFields.get_list_items()))
