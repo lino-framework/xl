@@ -2,16 +2,9 @@
 # Copyright 2016-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-"""Defines the :manage:`reregister` admin command:
+"""Defines the :manage:`reregister` admin command.
 
-.. management_command:: reregister
-
-.. py2rst::
-
-  from lino_xl.lib.ledger.management.commands.reregister \
-      import Command
-  print(Command.help)
-
+See :doc:`/dev/ledger`.
 
 """
 

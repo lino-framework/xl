@@ -1132,13 +1132,13 @@ that will report the movements of this account."""),
     'lino_xl.lib.ledger.CommonAccount.needs_partner' : _("""Default value for Account.needs_partner."""),
     'lino_xl.lib.ledger.CommonAccount.get_object' : _("""Return the database object representing this common account."""),
     'lino_xl.lib.ledger.CommonAccount.set_object' : _("""Set the cached database object representing this common account."""),
+    'lino_xl.lib.ledger.DC' : _("""A choicelist with the two values "debit" and "credit"."""),
     'lino_xl.lib.ledger.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
-together with its booking direction (debit or credit)."""),
+together with its booking direction (debiting or crediting)."""),
     'lino_xl.lib.ledger.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
     'lino_xl.lib.ledger.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
-    'lino_xl.lib.ledger.DebitOrCreditField' : _("""A field that stores the "direction" of a movement, i.e. either
-DC.debit or DC.credit."""),
-    'lino_xl.lib.ledger.DebitOrCreditStoreField' : _("""Uused as lino_atomizer_class for DebitOrCreditField."""),
+    'lino_xl.lib.ledger.DebitOrCreditField' : _("""After 20201008 this is replaced by DC.field()."""),
+    'lino_xl.lib.ledger.DebitOrCreditStoreField' : _("""No longer used after 20201008."""),
     'lino_xl.lib.ledger.Movement' : _("""Django model used to represent a ledger movement"""),
     'lino_xl.lib.ledger.Movement.value_date' : _("""The date at which this movement is to be entered into the
 ledger.  This is usually the voucher's entry_date, except
@@ -1148,8 +1148,8 @@ value date."""),
     'lino_xl.lib.ledger.Movement.partner' : _("""Pointer to the partner involved in this movement."""),
     'lino_xl.lib.ledger.Movement.seqno' : _("""Sequential number within a voucher."""),
     'lino_xl.lib.ledger.Movement.account' : _("""Pointer to the Account that is being moved by this movement."""),
-    'lino_xl.lib.ledger.Movement.debit' : _("""Virtual field showing amount if dc is DC.debit."""),
-    'lino_xl.lib.ledger.Movement.credit' : _("""Virtual field showing amount if dc is DC.credit."""),
+    'lino_xl.lib.ledger.Movement.debit' : _("""Virtual field showing amount if dc is DEBIT."""),
+    'lino_xl.lib.ledger.Movement.credit' : _("""Virtual field showing amount if dc is CREDIT."""),
     'lino_xl.lib.ledger.Movement.match' : _("""Pointer to the Movement that is being cleared by this
 movement."""),
     'lino_xl.lib.ledger.Movement.cleared' : _("""Whether"""),
@@ -1549,7 +1549,7 @@ summary of the financial balances of an organisation."""),
     'lino_xl.lib.sheets.SheetTypes.results' : _("""https://en.wikipedia.org/wiki/Statement_of_comprehensive_income#Requirements_of_IFRS"""),
     'lino_xl.lib.sheets.CommonItems' : _("""The global list of common sheet items ."""),
     'lino_xl.lib.sheets.CommonItem.value' : _("""Corresponds to the ref field in Item"""),
-    'lino_xl.lib.sheets.Item' : _("""In this table the uer can configure their local list of items for
+    'lino_xl.lib.sheets.Item' : _("""In this table the user can configure their local list of items for
 both sheet types."""),
     'lino_xl.lib.sheets.ItemEntry' : _("""An entry is the computed value of given item for a given
 report."""),
