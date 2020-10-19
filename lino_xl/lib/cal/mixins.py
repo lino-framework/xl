@@ -2,7 +2,6 @@
 # Copyright 2011-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 from dateutil.rrule import rrule
 
 from django.conf import settings
@@ -19,7 +18,8 @@ from django.utils.encoding import force_text
 try:
     from num2words import num2words
 except ImportError:
-    print("num2words not installed, use `python manage.py install` to install")
+    # ignore silently to avoid test failures when it is not installed
+    # print("num2words not installed, use `python manage.py install` to install")
     pass  # run `manage.py install` to install it
 
 from lino import mixins
