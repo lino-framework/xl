@@ -793,9 +793,6 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
                 done.add(o)
                 for obj in o.suggest_cal_guests(self):
                     yield obj
-        # if self.owner:
-        #     for obj in self.owner.suggest_cal_guests(self):
-        #         yield obj
 
     summary_project_template = _("for {project}")
     summary_show_user = True

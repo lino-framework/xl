@@ -35,7 +35,7 @@ from lino.utils.dates import DateRangeValue
 from .choicelists import EnrolmentStates, CourseStates, CourseAreas
 from .actions import PrintPresenceSheet
 
-cal = dd.resolve_app('cal')
+cal = dd.resolve_app('cal')  # returns None if cal is not imported
 
 try:
     teacher_model = dd.plugins.courses.teacher_model
@@ -63,7 +63,6 @@ class StartEndTime(dd.Model):
     end_time = dd.TimeField(
         blank=True, null=True,
         verbose_name=_("End Time"))
-
 
 
 class Slot(mixins.Sequenced, StartEndTime):
@@ -177,7 +176,6 @@ class Course(Reservation, Duplicable, Printable):
         verbose_name_plural = _('Activities')
         # verbose_name = _("Event")
         # verbose_name_plural = _('Events')
-
 
     site_field_name = 'room'
 
@@ -328,7 +326,6 @@ class Course(Reservation, Duplicable, Printable):
         qs = Enrolment.objects.filter(course=self).order_by(
             *[f.name for f in Enrolment.quick_search_fields])
         for obj in qs:
-            # if obj.is_guest_for(event):
             g = obj.make_guest_for(event)
             if g is not None:
                 yield g
