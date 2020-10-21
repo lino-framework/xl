@@ -4,7 +4,7 @@
 
 """Defines the :manage:`reregister` admin command.
 
-See :doc:`/dev/ledger`.
+See :doc:`/specs/ledger`.
 
 """
 
