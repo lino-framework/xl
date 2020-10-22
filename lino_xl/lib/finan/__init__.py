@@ -2,7 +2,7 @@
 # License: BSD (see file COPYING for details)
 
 
-"""Adds functionality for managing financial vouchers.  
+"""Adds functionality for managing financial vouchers.
 
 See :doc:`/specs/finan`.
 

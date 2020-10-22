@@ -77,7 +77,7 @@ def objects(refs="PMO BNK"):  # welfare calls it with customized refs.
         if Movement.objects.filter(partner=p, cleared=False).count():
             add_demo_account(p)
 
-    if dd.plugins.vat.declaration_plugin is None:
+    if dd.is_installed("vat") and dd.plugins.vat.declaration_plugin is None:
         dd.logger.warning("No demo payments because declaration_plugin is None")
         return
 
