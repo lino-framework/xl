@@ -98,8 +98,8 @@ class Plugin(ad.Plugin):
 
         yield 'lino_xl.lib.countries'
 
-        # vat needs ledger but doesn't declare this dependency to avoid
-        # having ledger before sales in menus:
+        # vat needs ledger but doesn't declare this dependency in needs_plugins
+        # to avoid having ledger before sales in menus:
         yield 'lino_xl.lib.ledger'
 
         if self.declaration_plugin is not None:

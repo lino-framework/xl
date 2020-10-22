@@ -3,12 +3,9 @@
 # License: BSD (see file COPYING for details)
 
 from lino.api import dd, rt, _
-from lino_xl.lib.ledger.utils import DC
-# from lino_xl.lib.ledger import choicelists as pcmn
-from lino_xl.lib.ledger.choicelists import CommonAccounts
+from lino_xl.lib.ledger.choicelists import DC, CommonAccounts
 # from lino.utils import Cycler
 
-#accounts = dd.resolve_app('accounts')
 vat = dd.resolve_app('vat')
 sales = dd.resolve_app('sales')
 ledger = dd.resolve_app('ledger')
@@ -45,6 +42,7 @@ def objects():
     yield MODEL.create_journal(**kw)
 
     if dd.plugins.vat.declaration_plugin is None:
+        dd.logger.warning("No journal SLC, BNK, PMO etc because declaration_plugin is None")
         return
 
     kw.update(ref="SLC", dc=DC.debit)
