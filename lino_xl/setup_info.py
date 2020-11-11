@@ -85,6 +85,7 @@ lino_xl.lib.contacts.management.commands
 lino_xl.lib.countries
 lino_xl.lib.countries.fixtures
 lino_xl.lib.courses
+lino_xl.lib.courses.workflows
 lino_xl.lib.cv
 lino_xl.lib.cv.fixtures
 lino_xl.lib.dupable_partners

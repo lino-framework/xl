@@ -315,11 +315,11 @@ class Course(Reservation, Duplicable, Printable):
         # logger.info("20140314 suggest_guests")
         Enrolment = rt.models.courses.Enrolment
         # if self.line is None:
-        if self.line_id is None:
-            return
-        gr = self.line.guest_role
-        if gr is None:
-            return
+        # if self.line_id is None:
+        #     return
+        # gr = self.line.guest_role or settings.SITE.pupil_guestrole
+        # if gr is None:
+        #     return
         # fkw = dict(course=self)
         # states = (EnrolmentStates.requested, EnrolmentStates.confirmed)
         # fkw.update(state__in=states)
@@ -622,7 +622,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
 
     def get_confirm_veto(self, ar):
         """Called from :class:`ConfirmEnrolment
-        <lino_xl.lib.courses.workflows.ConfirmEnrolment>`.  If this
+        <lino_xl.lib.courses.workflows.std.ConfirmEnrolment>`.  If this
         returns something else than `None`, then the enrolment won't
         be confirmed and the return value will be displayed to the
         user.
@@ -637,7 +637,8 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
 
     def get_guest_role(self):
         if self.course.line:
-            return self.course.line.guest_role
+            return self.course.line.guest_role or settings.SITE.site_config.pupil_guestrole
+        return settings.SITE.pupil_guestrole
 
     def make_guest_for(self, event):
         if not self.state.uses_a_place:

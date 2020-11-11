@@ -9,6 +9,7 @@ from dateutil.relativedelta import relativedelta
 
 from django.conf import settings
 
+from lino.modlib.office.roles import OfficeUser
 from lino.utils import Cycler
 from lino.utils import ONE_DAY
 from lino.api import dd, rt, _
@@ -21,6 +22,14 @@ EventType = dd.resolve_model('cal.EventType')
 # Subscription = rt.models.cal.Subscription
 Calendar = dd.resolve_model('cal.Calendar')
 
+PAST_STATES = Cycler(cal.EntryStates.filter(fixed=True))
+FUTURE_STATES = Cycler(cal.EntryStates.filter(fixed=False))
+
+def pop_state(date):
+    if date <= dd.demo_date():
+        return PAST_STATES.pop()
+    else:
+        return FUTURE_STATES.pop()
 
 # def subscribe_all():
 
@@ -46,7 +55,10 @@ def objects():
     def s2time(s):
         h, m = map(int, s.split(':'))
         return datetime.time(h, m)
-    USERS = Cycler(settings.SITE.user_model.objects.exclude(email=''))
+    cal_users = [ut for ut in rt.models.users.UserTypes.get_list_items()
+        if ut.has_required_roles([OfficeUser])]
+    USERS = Cycler(settings.SITE.user_model.objects.exclude(email='').filter(
+        user_type__in=cal_users))
     TIMES = Cycler([s2time(s)
                    for s in ('08:30', '09:40', '10:20', '11:10', '13:30')])
     #~ DURATIONS = Cycler([s2duration(s) for s in ('00:30','00:40','1:00','1:30','2:00','3:00')])
@@ -54,7 +66,6 @@ def objects():
         s2duration(s) for s in (
             '01:00', '01:15', '1:30', '1:45', '2:00', '2:30', '3:00')])
     ACL = Cycler(cal.AccessClasses.items())
-    STATES = Cycler(cal.EntryStates.items())
     SUMMARIES = Cycler((
         dict(en='Lunch', de=u"Mittagessen", fr=u"Diner"),
         dict(en='Dinner', de=u"Abendessen", fr=u"Souper"),
@@ -81,7 +92,8 @@ def objects():
                   start_time=st,
                   summary=s)
         kw.update(access_class=ACL.pop())
-        kw.update(state=STATES.pop())
+        kw.update(state=pop_state(date))
+
         #~ if settings.SITE.project_model:
             #~ kw.update(project=PROJECTS.pop())
         e = Event(**kw)
@@ -101,7 +113,7 @@ def objects():
                       end_date=date + datetime.timedelta(days=(i%3)+1),
                       event_type=absence,
                       summary=s)
-            kw.update(state=STATES.pop())
+            kw.update(state=pop_state(date))
             yield Event(**kw)
 
 

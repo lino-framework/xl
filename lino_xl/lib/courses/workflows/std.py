@@ -1,9 +1,7 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2017 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
-from __future__ import unicode_literals
 
 """Importing this module will install default workflows for
 `lino_xl.lib.courses`.
@@ -12,10 +10,8 @@ from __future__ import unicode_literals
 
 
 from django.utils.translation import ugettext_lazy as _
-
+from lino_xl.lib.courses.choicelists import EnrolmentStates, CourseStates
 from lino.api import dd, rt
-
-from .choicelists import EnrolmentStates, CourseStates
 
 
 class PrintAndChangeStateAction(dd.ChangeStateAction):
@@ -52,7 +48,7 @@ class CertifyEnrolment(PrintAndChangeStateAction):
 
 
 class ConfirmEnrolment(dd.ChangeStateAction):
-    """Confirm this enrolment. 
+    """Confirm this enrolment.
 
     Sets the :attr:`state` to `confirmed` after Check for possible
     problems by calling :meth:`get_confirm_veto
@@ -83,7 +79,7 @@ class ConfirmEnrolment(dd.ChangeStateAction):
 
 @dd.receiver(dd.pre_analyze)
 def my_enrolment_workflows(sender=None, **kw):
-    
+
     EnrolmentStates.confirmed.add_transition(ConfirmEnrolment)
     # EnrolmentStates.certified.add_transition(CertifyEnrolment)
     EnrolmentStates.cancelled.add_transition(

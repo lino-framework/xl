@@ -28,7 +28,7 @@ from .choicelists import DurationUnits
 from .choicelists import EventEvents
 from .mixins import daterange_text
 from .utils import when_text
-from .roles import CalendarReader, GuestOperator
+from .roles import CalendarReader, GuestOperator, CalendarGuest
 
 class RemoteCalendars(dd.Table):
     model = 'cal.RemoteCalendar'
@@ -126,6 +126,7 @@ def check_subscription(user, calendar):
         sub = Subscription(user=user, calendar=calendar)
         sub.full_clean()
         sub.save()
+
 
 class UserDetailMixin(dd.DetailLayout):
 
@@ -393,7 +394,7 @@ class AllGuests(Guests):
 
 class GuestsByEvent(Guests):
     master_key = 'event'
-    required_roles = dd.login_required(GuestOperator)
+    required_roles = dd.login_required((GuestOperator, CalendarGuest))
     # required_roles = dd.login_required(OfficeUser)
     auto_fit_column_widths = True
     column_names = 'partner role workflow_buttons remark *'
@@ -449,7 +450,7 @@ class GuestsByPartner(Guests):
 
 
 class MyPresences(Guests):
-    required_roles = dd.login_required(OfficeUser)
+    required_roles = dd.login_required((OfficeUser, CalendarGuest))
     order_by = ['-event__start_date', '-event__start_time']
     label = _("My presences")
     column_names = 'event__start_date event__start_time event_summary role workflow_buttons remark *'
@@ -605,6 +606,7 @@ class EventInsert(dd.InsertLayout):
 class Events(dd.Table):
 
     model = 'cal.Event'
+    # required_roles = dd.login_required((OfficeUser, CalendarGuest))
     required_roles = dd.login_required(OfficeStaff)
     column_names = 'when_text:20 user summary event_type id *'
 
@@ -786,7 +788,6 @@ class EntriesByDay(Events):
 
 
 class EntriesByRoom(Events):
-
     """
     """
     master_key = 'room'
@@ -1044,7 +1045,7 @@ class OneEvent(Events):
     show_detail_navigator = False
     use_as_default_table = False
     required_roles = dd.login_required(
-        (OfficeOperator, OfficeUser, CalendarReader))
+        (OfficeOperator, OfficeUser, CalendarReader, CalendarGuest))
     # required_roles = dd.login_required(OfficeUser)
 
 

@@ -139,6 +139,7 @@ class Plugin(ad.Plugin):
                 self.site.models.cal.MyEntries, min_count=None)
             yield self.site.models.cal.MyOverdueAppointments
             yield self.site.models.cal.MyUnconfirmedAppointments
+            yield self.site.models.cal.MyPresences
         else:
             yield self.site.models.cal.PublicEntries
 

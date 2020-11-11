@@ -74,7 +74,6 @@ later than self.start_date"""),
 returns something else than None, then the enrolment won't
 be confirmed and the return value will be displayed to the
 user."""),
-    'lino_xl.lib.courses.workflows.ConfirmEnrolment' : _("""Confirm this enrolment."""),
     'lino_xl.lib.cv.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.cv.Plugin.person_model' : _("""The database model to use for representing the person whose career data
 is being stored."""),
@@ -439,6 +438,7 @@ map it to the nationality field."""),
     'lino_xl.lib.beid.BeIdCardHolderChecker' : _("""Invalid NISSes are not refused à priori using a ValidationError
 (see BeIdCardHolder.national_id), but this checker reports
 them."""),
+    'lino_xl.lib.beid.SSINChecker' : _("""A data checker that reports invalid SSINs."""),
     'lino_xl.lib.bevat.Declaration' : _("""Django model to represent a Belgian VAT declaration."""),
     'lino_xl.lib.bevat.DeclarationFields' : _("""The list of fields in a VAT declaration."""),
     'lino_xl.lib.bevats.Declaration' : _("""Implements lino_xl.lib.vat.VatDeclaration."""),
@@ -643,15 +643,16 @@ Returns None is orig is empty."""),
     'lino_xl.lib.cal.Component' : _("""Model mixin inherited by both Event and Task."""),
     'lino_xl.lib.cal.Component.auto_type' : _("""Contains the sequence number if this is an automatically
 generated component. Otherwise this field is empty."""),
-    'lino_xl.lib.cal.CalendarReader' : _("""Can read public calendar entries. This is a kind of minimal
-calendar functionality which can be given to anonymous users,
-as done e.g. by vilma."""),
-    'lino_xl.lib.cal.GuestOperator' : _("""Can see presences and guests of a calendar entry."""),
     'lino_xl.lib.cal.ConflictingEventsChecker' : _("""Check whether this entry conflicts with other events."""),
     'lino_xl.lib.cal.ObsoleteEventTypeChecker' : _("""Check whether the type of this calendar entry should be updated."""),
     'lino_xl.lib.cal.LongEntryChecker' : _("""Check for entries which last longer than the maximum number of
 days allowed by their type."""),
     'lino_xl.lib.cal.EventGuestChecker' : _("""Check for calendar entries without participants."""),
+    'lino_xl.lib.cal.CalendarReader' : _("""Can read public calendar entries. This is a kind of minimal
+calendar functionality that can be given to anonymous users,
+as done e.g. by vilma."""),
+    'lino_xl.lib.cal.GuestOperator' : _("""Can see presences and guests of a calendar entry."""),
+    'lino_xl.lib.cal.GuestUser' : _("""Can manage presences."""),
     'lino_xl.lib.calview.CalendarView' : _("""Base class for all calendar views (daily, weekly and monthly)."""),
     'lino_xl.lib.calview.DailyView' : _("""Shows a calendar navigator with a configurable daily view."""),
     'lino_xl.lib.calview.WeeklyView' : _("""Shows a calendar navigator with a configurable weekly view."""),
