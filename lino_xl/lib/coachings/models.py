@@ -134,9 +134,9 @@ class Coaching(UserAuthored, mixins.DateRange, dd.ImportedFields, ChangeNotifier
                 return _("Cannot delete companies and persons imported from TIM")
         return super(Coaching, self).disable_delete(ar)
 
-    def before_ui_save(self, ar, **kw):
+    def before_ui_save(self, ar, cw):
         #~ logger.info("20121011 before_ui_save %s",self)
-        super(Coaching, self).before_ui_save(ar, **kw)
+        super(Coaching, self).before_ui_save(ar, cw)
         if not self.type:
             self.type = ar.get_user().coaching_type
         if not self.start_date:

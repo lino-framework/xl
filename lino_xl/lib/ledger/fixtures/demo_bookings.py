@@ -134,7 +134,7 @@ def objects():
                     # raise Exception(msg)
                     dd.logger.warning(msg)
                 else:
-                    item.before_ui_save(REQUEST)
+                    item.before_ui_save(REQUEST, None)
                     yield item
             invoice.register(REQUEST)
             invoice.save()

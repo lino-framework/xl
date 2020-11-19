@@ -401,10 +401,10 @@ class VatItemBase(VoucherItem, VatTotal):
             self.vat_class = self.get_default_vat_class(self.get_trade_type())
         super(VatItemBase, self).full_clean()
 
-    def before_ui_save(self, ar):
+    def before_ui_save(self, ar, cw):
         if self.total_incl is None:
             self.reset_totals(ar)
-        super(VatItemBase, self).before_ui_save(ar)
+        super(VatItemBase, self).before_ui_save(ar, cw)
 
     def after_ui_save(self, ar, cw):
         """

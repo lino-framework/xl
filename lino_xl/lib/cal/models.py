@@ -729,11 +729,11 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
     def is_user_modified(self):
         return self.state != EntryStates.suggested
 
-    def before_ui_save(self, ar, **kw):
+    def before_ui_save(self, ar, cw):
         # logger.info("20130528 before_ui_save")
         if self.state is EntryStates.suggested:
             self.state = EntryStates.draft
-        super(Event, self).before_ui_save(ar, **kw)
+        super(Event, self).before_ui_save(ar, cw)
 
     def on_create(self, ar):
         if self.event_type is None:

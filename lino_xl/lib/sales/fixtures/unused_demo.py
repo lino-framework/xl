@@ -53,8 +53,7 @@ def objects():
             for j in range(ITEMCOUNT.pop()):
                 item = InvoiceItem(voucher=invoice, product=PRODUCTS.pop())
                 item.product_changed(REQUEST)
-                item.before_ui_save(REQUEST)
+                item.before_ui_save(REQUEST, None)
                 yield item
             invoice.register(REQUEST)
             invoice.save()
-

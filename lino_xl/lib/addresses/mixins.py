@@ -46,10 +46,10 @@ class AddressOwner(AddressLocation):
             except Address.MultipleObjectsReturned:
                 return
 
-        # def before_ui_save(self, ar):
+        # def before_ui_save(self, ar, cw):
         #     self.sync_to_addresses(ar)
         #     # self.sync_from_address(self.get_primary_address())
-        #     super(AddressOwner, self).before_ui_save(ar)
+        #     super(AddressOwner, self).before_ui_save(ar, cw)
 
         def after_ui_save(self, ar, cw):
             self.sync_to_addresses(ar)
