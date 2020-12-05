@@ -137,7 +137,8 @@ if settings.SITE.use_new_unicode_symbols:
     TicketStates.closed.button_text = "\u2611"  # BALLOT BOX WITH CHECK
 
 else:
-    TicketStates.new.button_text = "⛶"  # SQUARE FOUR CORNERS (U+26F6)
+    # TicketStates.new.button_text = "⛶"  # SQUARE FOUR CORNERS (U+26F6)
+    TicketStates.new.button_text = "⚹"  # U+26B9
     # TicketStates.talk.button_text = "⚔"  # CROSSED SWORDS (U+2694)
     TicketStates.talk.button_text = "☎"  # Black Telephone (U+260E)
     TicketStates.opened.button_text = "☉"  # SUN (U+2609)

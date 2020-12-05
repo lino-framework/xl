@@ -44,6 +44,7 @@ end_user_model = dd.plugins.tickets.end_user_model
 #     site_model = None
 #     milestone_model = None
 
+
 class QuickAssignTo(dd.Action):
     """Quickly assign a ticket to another team member.
     """
@@ -547,7 +548,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
 
     quick_assign_to_action = QuickAssignTo()
 
-    @dd.displayfield(_("Assign to"))
+    @dd.displayfield(_("Assign to"),
+        help_text=_("Assign this ticket to another team member with a single click."))
     def quick_assign_to(self, ar):
         if ar is None:
             return ''
@@ -725,34 +727,39 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     def get_overview_elems(self, ar):
         """Overrides :meth:`lino.core.model.Model.get_overview_elems`.
         """
-        elems = [ar.obj2html(self)]  # show full summary
-        # elems += [' ({})'.format(self.state.button_text)]
-        # elems += [' ', self.state.button_text, ' ']
-        if self.user and self.user != ar.get_user():
-            elems += [' ', _(" by "), self.user.obj2href(ar)]
-        if self.end_user_id:
-            elems += [' ', _("for"), ' ', self.end_user.obj2href(ar)]
+        if self.ref:
+            txt = "{} {}".format(self.ref, self.summary)
+        else:
+            txt = self.summary
+        yield E.h2(txt)
+        if self.description:
+            for e in rich_text_to_elems(ar, self.description):
+                yield e
+        if self.upgrade_notes:
+            yield E.b(_("Resolution") + ": ")
+            for e in rich_text_to_elems(ar, self.upgrade_notes):
+                yield e
 
-        if dd.is_installed('votes'):
-            qs = rt.models.votes.Vote.objects.filter(
-                votable=self, state=VoteStates.assigned)
-            if qs.count() > 0:
-                elems += [', ', _("assigned to"), ' ']
-                elems += join_elems(
-                    [vote.user.obj2href(ar) for vote in qs], sep=', ')
-        elif getattr(self, "assigned_to", None):
-            elems += [", ", _("assigned to"), " ", self.assigned_to.obj2href(ar)]
 
-        return E.p(*forcetext(elems))
-        # return E.p(*join_elems(elems, sep=', '))
-
-        # if ar.actor.model is self.__class__:
-        #     elems += [E.br(), _("{} state:").format(
-        #         self._meta.verbose_name), ' ']
-        #     elems += self.get_workflow_buttons(ar)
-        # else:
-        #     elems += [' (', str(self.state.button_text), ')']
-        # return elems
+        # elems = [ar.obj2html(self)]  # show full summary
+        # # elems += [' ({})'.format(self.state.button_text)]
+        # # elems += [' ', self.state.button_text, ' ']
+        # if self.user and self.user != ar.get_user():
+        #     elems += [' ', _(" by "), self.user.obj2href(ar)]
+        # if self.end_user_id:
+        #     elems += [' ', _("for"), ' ', self.end_user.obj2href(ar)]
+        #
+        # if dd.is_installed('votes'):
+        #     qs = rt.models.votes.Vote.objects.filter(
+        #         votable=self, state=VoteStates.assigned)
+        #     if qs.count() > 0:
+        #         elems += [', ', _("assigned to"), ' ']
+        #         elems += join_elems(
+        #             [vote.user.obj2href(ar) for vote in qs], sep=', ')
+        # elif getattr(self, "assigned_to", None):
+        #     elems += [", ", _("assigned to"), " ", self.assigned_to.obj2href(ar)]
+        #
+        # return E.p(*forcetext(elems))
 
     # def get_change_body(self, ar, cw):
     #     return tostring(E.p(

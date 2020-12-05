@@ -1566,12 +1566,14 @@ ticket has evolved during time, it should reflect the latest
 version."""),
     'lino_xl.lib.tickets.Ticket.site' : _("""The site this ticket belongs to.
 You can select only sites you are subscribed to."""),
+    'lino_xl.lib.tickets.Ticket.ticket_type' : _("""The type of this ticket. The site administrator can configure the list
+of available ticket types."""),
     'lino_xl.lib.tickets.Ticket.upgrade_notes' : _("""A formatted text field meant for writing instructions for the
 hoster's site administrator when doing an upgrade where this
 ticket is being deployed."""),
     'lino_xl.lib.tickets.Ticket.waiting_for' : _("""What to do next. An unformatted one-line text which describes
 what this ticket is waiting for."""),
-    'lino_xl.lib.tickets.Ticket.state' : _("""The state of this ticket. See TicketStates."""),
+    'lino_xl.lib.tickets.Ticket.state' : _("""The workflow state of this ticket."""),
     'lino_xl.lib.tickets.Ticket.duplicate_of' : _("""A pointer to another ticket which is regarded as the first occurence of
 the same problem."""),
     'lino_xl.lib.tickets.Ticket.deadline' : _("""Specify that the ticket must be done for a given date."""),
