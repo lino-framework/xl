@@ -71,11 +71,13 @@ class SiteStates(dd.Workflow):
     column_names = "value name text button_text is_exposed"
     is_exposed = models.BooleanField(_("Exposed"), default=False)
 
+# ⛶: 26F6 (not rendered correctly in Firefox)
+# ⚒: 2692 HAMMER AND PICK 
 add = SiteStates.add_item
 add('10', _("Draft"), 'draft', is_exposed=True,
-    button_text = "⛶")  # SQUARE FOUR CORNERS (U+26F6))
+    button_text = "⚹")
 add('20', _("Active"), 'active', is_exposed=True,
-    button_text = "⚒")  # HAMMER AND PICK (U+2692
+    button_text = "⚒")
 add('30', _("Stable"), 'stable', is_exposed=True,
     button_text = "☉")  # SUN (U+2609)
 add('40', _("Sleeping"), 'sleeping',

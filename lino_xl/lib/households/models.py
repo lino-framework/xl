@@ -1,8 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2019 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-import six
 
 import logging ; logger = logging.getLogger(__name__)
 
@@ -136,7 +134,6 @@ class Household(contacts.Partner):
     def __str__(self):
         if self.type:
             return "{} ({})".format(self.get_full_name(), self.type)
-        # return six.text_type(self.get_full_name())
         return str(self.get_full_name())
 
     def get_name_elems(self, ar):
