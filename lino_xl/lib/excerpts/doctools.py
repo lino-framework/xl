@@ -2,12 +2,13 @@
 # Copyright 2017-2019 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """
-A function for usage in a :rst:dir:`django2rst` directive.
+A function for usage in a :rst:dir:`py2rst` directive.
 
 This is used to generate the list of demo excerpts in the following
 page:
 
-- http://de.welfare.lino-framework.org/excerpts.html
+- https://de.welfare.lino-framework.org/excerpts.html
+- https://welfare.lino-framework.org/specs/aids/
 """
 
 
