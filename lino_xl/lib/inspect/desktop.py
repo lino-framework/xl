@@ -1,35 +1,23 @@
-# Copyright 2012-2018 Rumma & Ko Ltd
+# Copyright 2012-2020 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""
-Database models for `lino.modlib.about`.
-
-"""
-from builtins import str
-from builtins import object
-
-import logging
-logger = logging.getLogger(__name__)
 
 import re
 from html import escape
 import types
 import datetime
 
-from django.utils.translation import ugettext_lazy as _
+from etgen.html import E
+
 from django.db import models
 from django.conf import settings
-
 
 from lino.utils.report import EmptyTable
 from lino.utils import AttrDict
 from lino.core.utils import get_models
-
-from lino.utils.code import codetime, codefiles, SourceFile
-from etgen.html import E
+from lino.utils.code import codefiles, SourceFile
 from lino.utils import join_elems
+from lino.api import rt, dd, _
 
-from lino.api import rt, dd
 # from .mixins import Searchable
 from .roles import SiteSearcher
 from .choicelists import TimeZones
@@ -140,7 +128,7 @@ class Inspector(dd.VirtualTable):
     """
     Shows a simplistic "inspector" which once helped me for debugging.
     Needs more work to become seriously useful...
-    
+
     """
     label = _("Inspector")
     required_roles = dd.login_required(dd.SiteStaff)
@@ -168,7 +156,7 @@ class Inspector(dd.VirtualTable):
 
     @classmethod
     def get_data_rows(self, ar):
-        # logger.info("20120210 %s, %s",ar.quick_search,ar.param_values.inspected)
+        # dd.logger.info("20120210 %s, %s",ar.quick_search,ar.param_values.inspected)
 
         if ar.param_values.show_callables:
             def flt(v):
@@ -188,7 +176,7 @@ class Inspector(dd.VirtualTable):
 
         o = self.get_inspected(ar.param_values.inspected)
         # print(20170207, o)
-        
+
         if isinstance(o, (list, tuple)):
             for i, v in enumerate(o):
                 k = "[" + str(i) + "]"
@@ -260,4 +248,3 @@ class SourceFiles(dd.VirtualTable):
     @dd.virtualfield(models.CharField(_("module name")))
     def module_name(self, obj, ar):
         return obj.modulename
-
