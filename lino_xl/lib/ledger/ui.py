@@ -277,7 +277,7 @@ class ExpectedMovements(dd.VirtualTable):
 
     @classmethod
     def get_dc(cls, ar=None):
-        return DC.credit
+        return DC.credit  # 20201219 ExpectedMovements.get_dc()
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -301,12 +301,12 @@ class ExpectedMovements(dd.VirtualTable):
             flt.update(partner__sepa_accounts__primary__isnull=True)
 
         if pv.same_dc == dd.YesNo.yes:
-            if cls.get_dc(ar) == DC.credit:
+            if cls.get_dc(ar) == DC.debit:  # 20201219 ExpectedMovements.get_data_rows()
                 flt.update(amount__lt=0)
             else:
                 flt.update(amount__gt=0)
         elif pv.same_dc == dd.YesNo.no:
-            if cls.get_dc(ar) == DC.debit:
+            if cls.get_dc(ar) == DC.credit:  # 20201219 ExpectedMovements.get_data_rows()
                 flt.update(amount__lt=0)
             else:
                 flt.update(amount__gt=0)
@@ -427,7 +427,7 @@ class DebtsByPartner(ExpectedMovements):
 
     @classmethod
     def get_dc(cls, ar=None):
-        return DC.debit
+        return DC.credit
 
     @classmethod
     def get_data_rows(cls, ar, **flt):
@@ -787,7 +787,7 @@ class Debtors(DebtorsCreditors):
     label = _("Debtors")
     help_text = _("List of partners who are in debt towards us "
                   "(usually customers).")
-    d_or_c = DC.debit
+    d_or_c = DC.debit   # 20201219 ledger.Creditors
 
 
 class Creditors(DebtorsCreditors):
@@ -795,7 +795,7 @@ class Creditors(DebtorsCreditors):
     help_text = _("List of partners who are giving credit to us "
                   "(usually suppliers).")
 
-    d_or_c = DC.credit
+    d_or_c = DC.credit  # 20201219 ledger.Creditors
 
 ##
 

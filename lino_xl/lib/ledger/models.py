@@ -77,7 +77,7 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
     partner = dd.ForeignKey('contacts.Company', blank=True, null=True)
     printed_name = dd.BabelCharField(
         _("Printed document designation"), max_length=100, blank=True)
-    dc = DC.field(_("Primary booking direction"))
+    dc = DC.field(_("Primary booking direction"), blank=True, null=True)
     # dc = DebitOrCreditField(_("Primary booking direction"))
     yearly_numbering = models.BooleanField(
         _("Yearly numbering"), default=True)
@@ -749,7 +749,7 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
         if dd.plugins.ledger.project_model:
             kw['project'] = project
 
-        if dc == DC.debit:
+        if dc == DC.debit:  # 20201219  ledger.Account.create_movement
             amount = - amount
         kw['amount'] = amount
 
@@ -782,7 +782,7 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
     def get_bank_account(self):
         """Return the `sepa.Account` object to which this voucher is to be
         paid. This is needed by
-        :class:`lino_xl.lib.ledger.utils.DueMovement`.
+        :class:`lino_xl.lib.ledger.DueMovement`.
 
         """
         return None
@@ -1285,12 +1285,12 @@ class DueMovement(TableRow):
             self.trade_type = voucher.get_trade_type()
             # print("20201014 found trade type", self.trade_type, "from", mvt)
         amount = mvt.amount
-        if self.dc == DC.debit:
+        if self.dc == DC.debit:  # 20201219  DueMovement.collect()
             amount = - amount
         # self.balance += myround(mvt.amount)
         self.balance += amount
 
-        if amount > 0:
+        if amount < 0:  # 20201219  DueMovement.collect()
             self.debts.append(mvt)
             bank_account = voucher.get_bank_account()
             if bank_account is not None:

@@ -56,9 +56,9 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
         if due.partner:
             kwargs.update(partner=due.partner)
         if due.dc == self.journal.dc:
-            kwargs.update(amount=-due.balance)
+            kwargs.update(amount=-due.balance)  # 20201219 FinancialVoucher.due2itemdict
         else:
-            kwargs.update(amount=due.balance)
+            kwargs.update(amount=due.balance)  # 20201219 FinancialVoucher.due2itemdict
         return kwargs
 
     def add_item_from_due(self, obj, **kwargs):

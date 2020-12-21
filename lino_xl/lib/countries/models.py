@@ -159,6 +159,13 @@ class Places(dd.Table):
     type parent zip_code id
     PlacesByPlace
     """
+    insert_layout = """
+    name
+    country
+    zip_code type
+    parent
+    """
+
 
 
 class PlacesByPlace(Places):

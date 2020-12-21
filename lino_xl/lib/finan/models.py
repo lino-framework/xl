@@ -136,7 +136,7 @@ class PaymentOrder(FinancialVoucher, Printable):
             # dd.logger.warning("Oops, {} is too big ({})".format(amount, self))
             raise Exception("Oops, {} is too big ({})".format(amount, self))
             return
-        if self.journal.dc == DC.debit:
+        if self.journal.dc == DC.debit:  # PaymentOrder.get_wanted_movements()
             self.total = -amount
         else:
             self.total = amount
@@ -216,7 +216,7 @@ class BankStatement(DatedFinancialVoucher):
         if not a:
             warn_jnl_account(self.journal)
         amount, movements_and_items = self.get_finan_movements()
-        if self.journal.dc == DC.debit:
+        if self.journal.dc == DC.credit:  # 20201219 BankStatement.get_wanted_movements()
             self.balance2 = self.balance1 + amount
         else:
             self.balance2 = self.balance1 - amount
@@ -261,7 +261,7 @@ class PaymentOrderItem(BankAccount, FinancialVoucherItem):
 
     voucher = dd.ForeignKey('finan.PaymentOrder', related_name='items')
     # bank_account = dd.ForeignKey('sepa.Account', blank=True, null=True)
-    to_pay = DcAmountField(DC.debit, _("To pay"))
+    to_pay = DcAmountField(DC.credit, _("To pay"))  # 20201219 PaymentOrderItem
 
     # def partner_changed(self, ar):
     #     FinancialVoucherItem.partner_changed(self, ar)
@@ -506,7 +506,7 @@ class SuggestionsByVoucher(ledger.ExpectedMovements):
         if voucher is None:
             raise Exception("20200119 voucher is None")
             return None
-        return voucher.journal.dc
+        return voucher.journal.dc.opposite()  # 20201219 SuggestionsByVoucher.get_dc()
 
     @classmethod
     def param_defaults(cls, ar, **kw):
