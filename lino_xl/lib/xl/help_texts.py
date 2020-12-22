@@ -125,7 +125,7 @@ otherwise a natural child."""),
     'lino_xl.lib.humanlinks.LinksByHuman.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
     'lino_xl.lib.humanlinks.LinksByHuman.get_table_summary' : _("""The summary view
 for LinksByHuman."""),
-    'lino_xl.lib.humanlinks.LinksByHuman.model' : _("""alias of Link"""),
+    'lino_xl.lib.humanlinks.LinksByHuman.model' : _("""alias of lino_xl.lib.humanlinks.models.Link"""),
     'lino_xl.lib.ledger.fields.DcAmountField' : _("""An editable virtual PriceField to get and set both database fields
 amount and dc at once. It may be used only on
 models which also defines these two fields."""),
@@ -167,7 +167,7 @@ created."""),
     'lino_xl.lib.outbox.Mail.get_row_permission' : _("""Mails may not be edited after they have been sent."""),
     'lino_xl.lib.outbox.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
     'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
-    'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of Mail"""),
+    'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of lino_xl.lib.outbox.models.Mail"""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.postings.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
@@ -302,7 +302,7 @@ field of a vote."""),
     'lino_xl.lib.votes.VoteStates.author' : _("""Reserved for the author's vote.  Lino automatically creates an
 author vote for every author of a ticket (see
 get_vote_raters)."""),
-    'lino_xl.lib.votes.VoteStates.item_class' : _("""alias of VoteState"""),
+    'lino_xl.lib.votes.VoteStates.item_class' : _("""alias of lino_xl.lib.votes.choicelists.VoteState"""),
     'lino_xl.lib.votes.Votable' : _("""Base class for models that can be used as
 lino_xl.lib.votes.Plugin.votable_model."""),
     'lino_xl.lib.votes.Votable.get_vote_raters' : _("""Yield or return a list of the users who are allowed to rate the
@@ -330,22 +330,22 @@ must resolve using resolve_states."""),
 resolve using resolve_states."""),
     'lino_xl.lib.votes.Votes.filter_ticket_states' : _("""A set of ticket states to require (i.e. to filter upon). This
 must resolve using resolve_states."""),
-    'lino_xl.lib.votes.Votes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.Votes.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.votes.Votes.get_detail_title' : _("""Overrides the default beaviour"""),
     'lino_xl.lib.votes.MyVotes' : _("""Show all my votes."""),
-    'lino_xl.lib.votes.MyVotes.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyVotes.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.votes.MyInvitations' : _("""Show my votes in state invited."""),
-    'lino_xl.lib.votes.MyInvitations.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyInvitations.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.votes.MyOffers' : _("""Show the tickets for which I am candidate"""),
-    'lino_xl.lib.votes.MyOffers.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyOffers.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.votes.MyTasks' : _("""Show my votes in states assigned and done"""),
-    'lino_xl.lib.votes.MyTasks.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyTasks.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.votes.MyWatched' : _("""Show my votes in state watching"""),
-    'lino_xl.lib.votes.MyWatched.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.MyWatched.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
     'lino_xl.lib.votes.VotesByVotable.get_table_summary' : _("""Customized summary view for this table."""),
     'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of Vote"""),
+    'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.addresses.Address' : _("""Django model to represent and address record."""),
     'lino_xl.lib.addresses.Address.address_type' : _("""The type of this address record.
 A pointer to AddressTypes.
@@ -1134,8 +1134,8 @@ that will report the movements of this account."""),
     'lino_xl.lib.ledger.CommonAccount.get_object' : _("""Return the database object representing this common account."""),
     'lino_xl.lib.ledger.CommonAccount.set_object' : _("""Set the cached database object representing this common account."""),
     'lino_xl.lib.ledger.DC' : _("""A choicelist with the two values "debit" and "credit"."""),
-    'lino_xl.lib.ledger.Balance' : _("""Light-weight object to represent a balance, i.e. an amount
-together with its booking direction (debiting or crediting)."""),
+    'lino_xl.lib.ledger.Balance' : _("""A light-weight object to represent a balance, i.e. an amount together with
+its booking direction (debiting or crediting)."""),
     'lino_xl.lib.ledger.Balance.d' : _("""The amount of this balance when it is debiting, otherwise zero."""),
     'lino_xl.lib.ledger.Balance.c' : _("""The amount of this balance when it is crediting, otherwise zero."""),
     'lino_xl.lib.ledger.DebitOrCreditField' : _("""After 20201008 this is replaced by DC.field()."""),
@@ -1214,7 +1214,8 @@ vouchers should restart at 1 every year."""),
 vouchers in this journal."""),
     'lino_xl.lib.ledger.Journal.partner' : _("""The partner to use as default partner for all vouchers in this
 journal."""),
-    'lino_xl.lib.ledger.Journal.dc' : _("""The primary booking direction (checked means Credit, unchecked Debit)."""),
+    'lino_xl.lib.ledger.Journal.dc' : _("""The primary booking direction. Voucher items in this direction increase
+the total amount of the voucher."""),
     'lino_xl.lib.ledger.Journal.auto_check_clearings' : _("""Whether to automatically check and update the 'cleared' status
 of involved transactions when (de)registering a voucher of
 this journal."""),
@@ -1545,8 +1546,6 @@ IBAN number."""),
 included to a detail window on partner."""),
     'lino_xl.lib.sepa.BankAccount' : _("""Defines a field bank_account and its chooser."""),
     'lino_xl.lib.sheets.SheetTypes' : _("""The global list of sheet types ."""),
-    'lino_xl.lib.sheets.SheetTypes.balance' : _("""A balance sheet or statement of financial position is a
-summary of the financial balances of an organisation."""),
     'lino_xl.lib.sheets.SheetTypes.results' : _("""https://en.wikipedia.org/wiki/Statement_of_comprehensive_income#Requirements_of_IFRS"""),
     'lino_xl.lib.sheets.CommonItems' : _("""The global list of common sheet items ."""),
     'lino_xl.lib.sheets.CommonItem.value' : _("""Corresponds to the ref field in Item"""),
