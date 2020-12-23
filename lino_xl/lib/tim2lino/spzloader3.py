@@ -63,7 +63,7 @@ Client = rt.models.tera.Client
 ClientContact = rt.models.clients.ClientContact
 Course = rt.models.courses.Course
 Line = rt.models.courses.Line
-CourseAreas = rt.models.courses.CourseAreas
+ActivityLayouts = rt.models.courses.ActivityLayouts
 Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
@@ -124,7 +124,7 @@ class TimLoader(TimLoader):
 
         Line = rt.models.courses.Line
         self.other_groups = Line.objects.filter(
-            course_area=CourseAreas.default).order_by('id')[0]
+            course_area=ActivityLayouts.default).order_by('id')[0]
 
         self.ROOT = User.objects.get(username='luc')
         

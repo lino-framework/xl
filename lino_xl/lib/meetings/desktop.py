@@ -111,14 +111,6 @@ class Meetings(dd.Table):
     # simple_parameters = 'line teacher state user'.split()
 
     @classmethod
-    def create_instance(self, ar, **kw):
-        # dd.logger.info("20160714 %s", kw)
-        obj = super(Meetings, self).create_instance(ar, **kw)
-        # if self._course_area is not None:
-        #     obj.course_area = self._course_area
-        return obj
-
-    @classmethod
     def get_request_queryset(self, ar, **kwargs):
         # dd.logger.info("20160223 %s", self)
         qs = super(Meetings, self).get_request_queryset(ar, **kwargs)
@@ -202,14 +194,14 @@ class InactiveMeetings(Meetings):
         return kw
 
 #
-# class ClosedCourses(Activities):
+# class ClosedActivities(Activities):
 #     label = _("Closed courses")
 #     column_names = 'overview enrolments:8 room *'
 #     hide_sums = True
 #
 #     @classmethod
 #     def param_defaults(self, ar, **kw):
-#         kw = super(ClosedCourses, self).param_defaults(ar, **kw)
+#         kw = super(ClosedActivities, self).param_defaults(ar, **kw)
 #         kw.update(state=CourseStates.closed)
 #         return kw
 

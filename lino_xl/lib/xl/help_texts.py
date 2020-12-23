@@ -835,12 +835,12 @@ in this activity."""),
     'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
     'lino_xl.lib.courses.Courses' : _("""Base table for all activities."""),
     'lino_xl.lib.courses.Courses.show_exposed' : _("""Whether to show or to hide courses in an exposed state."""),
-    'lino_xl.lib.courses.MyCourses' : _("""Show the courses authored by me (i.e. where I am the responsible
+    'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible
 manager).  Compare MyCoursesGiven."""),
     'lino_xl.lib.courses.MyCoursesGiven' : _("""Show the courses given by me (i.e. where I am the teacher).
-Compare MyCourses."""),
-    'lino_xl.lib.courses.CoursesByLine' : _("""Show the courses per course line."""),
-    'lino_xl.lib.courses.CoursesByTopic' : _("""Shows the courses of a given topic."""),
+Compare MyActivities."""),
+    'lino_xl.lib.courses.ActivitiesByLine' : _("""Show the courses per course line."""),
+    'lino_xl.lib.courses.ActivitiesByTopic' : _("""Shows the courses of a given topic."""),
     'lino_xl.lib.courses.Enrolment' : _("""Django database model to represent an activity enrolment."""),
     'lino_xl.lib.courses.Enrolment.state' : _("""One of lino_xl.lib.courses.EnrolmentStates."""),
     'lino_xl.lib.courses.Enrolment.pupil_info' : _("""Virtual HtmlBox field showing the name and address of the
@@ -864,12 +864,12 @@ line.  Leave empty to use the site's default (defined by
 body_template on the
 lino_xl.lib.excerpts.models.ExcerptType for
 Course)"""),
-    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to CourseAreas.  This is used only when an
+    'lino_xl.lib.courses.Line.course_area' : _("""Pointer to ActivityLayouts.  This is used only when an
 application defines several variants of
 EnrolmentsByPupil."""),
-    'lino_xl.lib.courses.CourseAreas' : _("""The global choicelist of course areas.  Every choice is an
-instance of CourseArea."""),
-    'lino_xl.lib.courses.CourseArea.courses_table' : _("""Which table to use for showing courses in this course area."""),
+    'lino_xl.lib.courses.ActivityLayouts' : _("""The global choicelist of course areas.  Every choice is an
+instance of ActivityLayout."""),
+    'lino_xl.lib.courses.ActivityLayout.courses_table' : _("""Which table to use for showing courses in this course area."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.cv.LanguageKnowledge' : _("""Django model to represent a Language knowledge."""),

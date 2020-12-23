@@ -12,7 +12,16 @@ from django.conf import settings
 from lino.api import dd, rt, _
 
 def objects():
-    CourseAreas = rt.models.courses.CourseAreas
+    ActivityLayouts = rt.models.courses.ActivityLayouts
+    EventType = rt.models.cal.EventType
     Line = rt.models.courses.Line
-    for al in CourseAreas.get_list_items():
+
+    # kw = dd.str2kw('name', _("Activities"))
+    # kw.update(dd.str2kw('event_label', _("Hour")))
+    # obj = EventType(**kw)
+    # yield obj
+    # settings.SITE.site_config.default_event_type = obj
+    # yield settings.SITE.site_config
+
+    for al in ActivityLayouts.get_list_items():
         yield Line(**dd.str2kw('name', al.text))

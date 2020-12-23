@@ -124,8 +124,10 @@ Accounting stuff
     ana
     sheets
 
-Differentiator packages
+Plugin namespaces
 =======================
+
+(See :ref:`plugin_namespaces`).
 
 .. autosummary::
    :toctree:

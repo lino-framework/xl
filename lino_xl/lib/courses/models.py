@@ -32,7 +32,7 @@ from lino_xl.lib.contacts.mixins import ContactRelated
 
 from lino.utils.dates import DateRangeValue
 
-from .choicelists import EnrolmentStates, CourseStates, CourseAreas
+from .choicelists import EnrolmentStates, CourseStates, ActivityLayouts
 from .actions import PrintPresenceSheet
 
 cal = dd.resolve_app('cal')  # returns None if cal is not imported
@@ -97,8 +97,8 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
         verbose_name = pgettext("singular form", "Activity line")
         verbose_name_plural = pgettext("plural form", 'Activity lines')
 
-    course_area = CourseAreas.field(default='default')
-    # default=CourseAreas.get_lazy('default')
+    course_area = ActivityLayouts.field(default='default')
+    # default=ActivityLayouts.get_lazy('default')
     topic = dd.ForeignKey(Topic, blank=True, null=True)
     description = dd.BabelTextField(_("Description"), blank=True)
 
@@ -536,7 +536,7 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         verbose_name_plural = _('Enrolments')
         unique_together = ('course', 'pupil')
 
-    course_area = CourseAreas.field(blank=True, editable=False)
+    course_area = ActivityLayouts.field(blank=True, editable=False)
 
     quick_search_fields = pupil_name_fields
 

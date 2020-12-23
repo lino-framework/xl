@@ -77,7 +77,7 @@ Client = rt.models.tera.Client
 ClientContact = rt.models.clients.ClientContact
 Course = rt.models.courses.Course
 Line = rt.models.courses.Line
-CourseAreas = rt.models.courses.CourseAreas
+ActivityLayouts = rt.models.courses.ActivityLayouts
 Enrolment = rt.models.courses.Enrolment
 EnrolmentStates = rt.models.courses.EnrolmentStates
 Country = rt.models.countries.Country
@@ -153,7 +153,7 @@ class TimLoader(TimLoader):
         self.stvith = Team.objects.get(name="St. Vith")
 
         # self.other_groups = Line.objects.filter(
-        #     course_area=CourseAreas.default).order_by('id')[0]
+        #     course_area=ActivityLayouts.default).order_by('id')[0]
         self.guest_role_patient = GuestRole.objects.get(pk=1)
         
         self.civil_states = {
@@ -173,11 +173,11 @@ class TimLoader(TimLoader):
         # plptypes['10'] = LinkTypes.spouse
         # plptypes['11'] = LinkTypes.friend
         # self.linktypes = plptypes
-        # a = CourseAreas.default
+        # a = ActivityLayouts.default
         # self.other_groups = create_row(Line, name=a.text, course_area=a)
-        # a = CourseAreas.life_groups
+        # a = ActivityLayouts.life_groups
         # self.life_groups = create_row(Line, name=a.text, course_area=a)
-        # a = CourseAreas.therapies
+        # a = ActivityLayouts.therapies
         # self.therapies = create_row(Line, name=a.text, course_area=a)
         
     def par_pk(self, pk):
@@ -750,13 +750,13 @@ class TimLoader(TimLoader):
         bulkdel(Line)
 
         with translation.override("de"):
-            a = CourseAreas.therapies
+            a = ActivityLayouts.therapies
             self.therapies = create_row(
                 Line, name=a.text, course_area=a, ref="ET")
-            a = CourseAreas.life_groups
+            a = ActivityLayouts.life_groups
             self.life_groups = create_row(
                 Line, name=a.text, course_area=a, ref="LG")
-            a = CourseAreas.default
+            a = ActivityLayouts.default
             self.other_groups = create_row(
                 Line, name=a.text, course_area=a, ref="TG")
 

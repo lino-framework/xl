@@ -59,25 +59,25 @@ add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 # add('90', _("Abandoned"), 'abandoned', invoiceable=False, uses_a_place=False)
 
 
-class CourseArea(dd.Choice):
+class ActivityLayout(dd.Choice):
 
     # force_guest_states = False
-    courses_table = 'courses.Courses'
+    courses_table = 'courses.ActivitiesByLayout'
 
     def __init__(
             self, value, text, name,
-            courses_table='courses.Courses', **kwargs):
+            courses_table='courses.ActivitiesByLayout', **kwargs):
         self.courses_table = courses_table
-        super(CourseArea, self).__init__(value, text, name, **kwargs)
+        super(ActivityLayout, self).__init__(value, text, name, **kwargs)
 
 
-class CourseAreas(dd.ChoiceList):
+class ActivityLayouts(dd.ChoiceList):
     preferred_width = 10
     # verbose_name = _("Course area")
     # verbose_name_plural = _("Course areas")
     verbose_name = _("Layout")
     verbose_name_plural = _("Course layouts")
-    item_class = CourseArea
+    item_class = ActivityLayout
     column_names = "value name text courses_table #force_guest_states"
     required_roles = dd.login_required(dd.SiteAdmin)
 
@@ -90,7 +90,7 @@ class CourseAreas(dd.ChoiceList):
         return str(choice.courses_table)
 
 
-add = CourseAreas.add_item
+add = ActivityLayouts.add_item
 try:
     add('C', dd.plugins.courses.verbose_name, 'default')
 except AttributeError:

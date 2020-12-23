@@ -64,15 +64,15 @@ class Plugin(ad.Plugin):
 
     def setup_main_menu(self, site, user_type, main):
         m = main.add_menu(self.app_label, self.verbose_name)
-        m.add_action('courses.MyCourses')
-        for ca in site.models.courses.CourseAreas.objects():
+        m.add_action('courses.MyActivities')
+        for ca in site.models.courses.ActivityLayouts.objects():
             m.add_action(ca.courses_table)
         # m.add_action('courses.BasicCourses')
         # m.add_action('courses.JobCourses')
-        # m.add_action('courses.DraftCourses')
-        # m.add_action('courses.ActiveCourses')
-        # m.add_action('courses.InactiveCourses')
-        # m.add_action('courses.ClosedCourses')
+        # m.add_action('courses.DraftActivities')
+        # m.add_action('courses.ActiveActivities')
+        # m.add_action('courses.InactiveActivities')
+        # m.add_action('courses.ClosedActivities')
         m.add_separator()
         m.add_action('courses.Lines')
         m.add_action('courses.PendingRequestedEnrolments')
@@ -89,7 +89,7 @@ class Plugin(ad.Plugin):
         m.add_action('courses.AllActivities')
         m.add_action('courses.AllEnrolments')
         m.add_action('courses.EnrolmentStates')
-        m.add_action('courses.CourseAreas')
+        m.add_action('courses.ActivityLayouts')
         m.add_action('courses.CourseStates')
 
     def get_dashboard_items(self, user):
@@ -97,5 +97,5 @@ class Plugin(ad.Plugin):
             yield x
         if user.is_authenticated:
             yield self.site.models.courses.MyCoursesGiven
-            yield self.site.models.courses.MyCourses
+            yield self.site.models.courses.MyActivities
         yield self.site.models.courses.StatusReport
