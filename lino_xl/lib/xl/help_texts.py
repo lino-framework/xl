@@ -867,9 +867,10 @@ Course)"""),
     'lino_xl.lib.courses.Line.course_area' : _("""Pointer to ActivityLayouts.  This is used only when an
 application defines several variants of
 EnrolmentsByPupil."""),
-    'lino_xl.lib.courses.ActivityLayouts' : _("""The global choicelist of course areas.  Every choice is an
-instance of ActivityLayout."""),
-    'lino_xl.lib.courses.ActivityLayout.courses_table' : _("""Which table to use for showing courses in this course area."""),
+    'lino_xl.lib.courses.ActivityLayouts' : _("""The global choicelist of activity layouts.  Every
+choice is an instance of ActivityLayout."""),
+    'lino_xl.lib.courses.ActivityLayout.text' : _("""The translatable designation used as menu label."""),
+    'lino_xl.lib.courses.ActivityLayout.courses_table' : _("""Which table to use for showing activities having this layout."""),
     'lino_xl.lib.courses.Plugin' : _("""The value to use as quick_search_fields for
 Enrolment."""),
     'lino_xl.lib.cv.LanguageKnowledge' : _("""Django model to represent a Language knowledge."""),
