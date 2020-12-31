@@ -621,7 +621,7 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
             table = self.journal.voucher_type.table_class
             if table:
                 ba = table.detail_action
-                ba = ba.action.defining_actor.detail_action
+                # 20201230 ba = ba.action.defining_actor.detail_action
                 # if ar is None or ba.get_row_permission(ar, self, None):
                 #     return ba
                 if ar is None or ba.get_view_permission(

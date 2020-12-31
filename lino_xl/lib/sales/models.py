@@ -226,6 +226,7 @@ class Invoices(SalesDocuments):
     column_names = "id entry_date partner total_incl user *"
     detail_layout = 'sales.InvoiceDetail'
     insert_layout = dd.InsertLayout("""
+    journal
     partner entry_date
     subject
     """, window_size=(40, 'auto'))
@@ -247,6 +248,10 @@ class Invoices(SalesDocuments):
 class InvoicesByJournal(Invoices, ByJournal):
     quick_search_fields = "partner subject"
     order_by = ["-accounting_period__year", "-number"]
+    insert_layout = """
+    partner entry_date
+    subject
+    """
     params_panel_hidden = True
     params_layout = "partner start_period end_period #year state cleared "
     column_names = "number_with_year entry_date due_date " \
