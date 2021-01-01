@@ -254,9 +254,9 @@ class InvoicesByJournal(Invoices, ByJournal):
     """
     params_panel_hidden = True
     params_layout = "partner start_period end_period #year state cleared "
-    column_names = "number_with_year entry_date due_date " \
+    column_names = "number_with_year entry_date #due_date " \
         "partner " \
-        "total_incl subject:10 " \
+        "subject:10 total_incl " \
         "workflow_buttons *"
 
 class PrintableInvoicesByJournal(PrintableByJournal, Invoices):
