@@ -1026,6 +1026,7 @@ class MovementsByVoucher(Movements):
 
 class MovementsByPartner(Movements):
     editable = True
+    allow_create = False
     master_key = 'partner'
     # display_mode = "html"
     display_mode = "summary"
