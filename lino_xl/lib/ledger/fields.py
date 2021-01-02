@@ -60,7 +60,7 @@ class DcAmountField(dd.VirtualField):
         if not value:
             obj.amount = None
         elif self.dc == DC.debit:
-            value = -value
+            obj.amount = -value
         else:
             obj.amount = value
 

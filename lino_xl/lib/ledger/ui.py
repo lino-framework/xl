@@ -914,6 +914,7 @@ class Situation(Report):
 
 
 class Movements(dd.Table):
+    editable = False  # only MovementsByPartner is editable (and only the match field)
     model = 'ledger.Movement'
     required_roles = dd.login_required(LedgerUser)
     column_names = 'value_date voucher_link description \
@@ -921,7 +922,6 @@ class Movements(dd.Table):
     sum_text_column = 2
     order_by = ['id']
 
-    editable = False
     parameters = mixins.ObservedDateRange(
         year=dd.ForeignKey('ledger.FiscalYear', blank=True),
         journal_group=JournalGroups.field(blank=True),
@@ -1025,6 +1025,7 @@ class MovementsByVoucher(Movements):
 
 
 class MovementsByPartner(Movements):
+    editable = True
     master_key = 'partner'
     # display_mode = "html"
     display_mode = "summary"
@@ -1032,6 +1033,8 @@ class MovementsByPartner(Movements):
     # order_by = ['-value_date', 'voucher__id', 'account__ref']
     order_by = dd.plugins.ledger.remove_dummy(
         '-value_date', 'voucher__id', 'account__ref', 'project', 'id')
+    column_names = 'value_date voucher_link description \
+    debit credit match cleared *'
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -1066,8 +1069,8 @@ class MovementsByPartner(Movements):
     @classmethod
     def get_table_summary(cls, mi, ar):
         elems = []
-        sar = ar.spawn(rt.models.ledger.Movements, param_values=dict(
-            cleared=dd.YesNo.no, partner=mi))
+        sar = ar.spawn(rt.models.ledger.MovementsByPartner,
+            master_instance=mi, param_values=dict(cleared=dd.YesNo.no))
         bal = ZERO
         for mvt in sar:
             bal += mvt.amount

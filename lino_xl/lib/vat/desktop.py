@@ -73,7 +73,7 @@ VoucherTypes.add_item_lazy(InvoicesByJournal)
 class ItemsByInvoice(ItemsByVoucher):
     model = 'vat.InvoiceItem'
     display_mode = 'grid'
-    column_names = "account title vat_class total_base total_vat total_incl"
+    column_names = "account title vat_class total_incl total_base total_vat"
 
 
 class VouchersByPartner(VouchersByPartnerBase):

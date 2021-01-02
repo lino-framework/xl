@@ -47,7 +47,9 @@ for vat_class, rate in VAT_CLASSES_AND_RATES:
         add(vat_class, None, area, 'sales',     vat_regime)
 
 for vat_class, rate in VAT_CLASSES_AND_RATES:
-    add(vat_class, rate, NAT,  'purchases', None, CommonAccounts.vat_deductible)
+    for vat_regime, area in [('subject', NAT)]:
+        add(vat_class, rate, NAT,  'purchases', None, CommonAccounts.vat_deductible)
+for vat_class, rate in VAT_CLASSES_AND_RATES:
     add(vat_class, rate, None, 'sales', None,  CommonAccounts.vat_due)
 
 add()  # allow any other combination with rate 0
