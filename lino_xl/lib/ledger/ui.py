@@ -1083,6 +1083,9 @@ class MovementsByPartner(Movements):
 
 
 class MovementsByProject(MovementsByPartner):
+    editable = False
+    column_names = 'value_date voucher_link description \
+    debit credit match_link cleared *'
     master_key = 'project'
     display_mode = "html"
     order_by = ['-value_date', 'partner', 'id']
