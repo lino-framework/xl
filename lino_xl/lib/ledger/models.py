@@ -652,10 +652,12 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
 
     def after_ui_save(self, ar, cw):
         super(Voucher, self).after_ui_save(ar, cw)
+        tt = self.get_trade_type()
+        if tt is None:
+            return
         p = self.get_partner()
         if p is None:
             return
-        tt = self.get_trade_type()
         account = tt.get_partner_invoice_account(p)
         if account is None:
             return
