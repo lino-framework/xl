@@ -27,6 +27,7 @@ add('100', _("Services"), 'services')
 add('200', _("Investments"), 'investments')
 add('210', _("Real estate"), 'real_estate')
 add('220', _("Vehicles"), 'vehicles')
+add('300', _("Operations without VAT"), 'vatless')  # internal clearings, flight tickets, ...
 
 
 
