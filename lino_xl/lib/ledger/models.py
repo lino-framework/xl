@@ -144,11 +144,14 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
     def get_next_number(self, voucher):
         # ~ self.save() # 20131005 why was this?
         cl = self.get_doc_model()
-        flt = dict()
+        qs = cl.objects.filter(journal=self)
         if self.yearly_numbering:
-            flt.update(accounting_period__year=voucher.accounting_period.year)
-        d = cl.objects.filter(journal=self, **flt).aggregate(
-            models.Max('number'))
+            qs = qs.filter(accounting_period__year=voucher.accounting_period.year)
+        if voucher.pk:
+            # after editing the entry_date of the last voucher of the journal we
+            # don't want its number to increase
+            qs = qs.exclude(pk=voucher.pk)
+        d = qs.aggregate(models.Max('number'))
         number = d['number__max']
         #~ logger.info("20121206 get_next_number %r",number)
         if number is None:

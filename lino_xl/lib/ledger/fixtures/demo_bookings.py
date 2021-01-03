@@ -90,9 +90,10 @@ def objects():
     # print(20151216, START_YEAR, settings.SITE.demo_date(), end_date - date)
 
     PAYMENT_TERMS = Cycler(PaymentTerm.objects.all())
-    VAT_CLASSES = Cycler(VatClasses.get_list_items())
     if len(PAYMENT_TERMS) == 0:
         raise Exception("No PAYMENT_TERMS.")
+    VAT_CLASSES = Cycler(VatClasses.get_list_items()[:-1])
+    # 20210103 We don't use the vatless class because that would break existing doctests.
 
     while date < end_date:
 
