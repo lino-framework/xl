@@ -160,6 +160,8 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
 
         """
         # dd.logger.info("20160329 FinancialMixin.partner_changed")
+        if self.amount is not None:
+            return
         if not self.partner or not self.voucher.journal.auto_fill_suggestions:
             return
         flt = dict(partner=self.partner, cleared=False)
@@ -200,7 +202,13 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             # ar.success(E.tostring(html), alert=True)
             # # ar.confirm(ok, E.tostring(html))
 
+    def amount_changed(self, ar):
+        if not self.amount:
+            self.guess_amount()
+
     def account_changed(self, ar):
+        if self.amount:
+            return
         if not self.account:
             return
         if self.account.default_amount:
@@ -212,7 +220,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             total = Decimal()
             for item in self.voucher.items.exclude(id=self.id):
                 total += item.amount
-            self.amount = total
+            self.amount = -total
 
 
     def get_partner(self):
