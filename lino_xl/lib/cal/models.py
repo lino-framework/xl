@@ -490,7 +490,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
             c1 = Q(end_date__isnull=True, start_date__lte=pv.end_date)
             c2 = Q(end_date__isnull=False, end_date__lte=pv.end_date)
             qs = qs.filter(c1|c2)
-            qs = qs.filter(Q(end_date__isnull=True, start_date__lte=pv.end_date)|Q(end_date__gte=pv.end_date))
+            qs = qs.filter(Q(end_date__isnull=True, start_date__lte=pv.end_date)|Q(end_date__lte=pv.end_date))
         if pv.presence_guest:
             qs = qs.filter(Q(guest__partner=pv.presence_guest)|Q(event_type__all_rooms=True))
         return qs

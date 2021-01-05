@@ -455,12 +455,13 @@ class FillSuggestionsToVoucherItem(FillSuggestionsToVoucher):
 
     def run_from_ui(self, ar, **kw):
         i = ar.master_instance
-        voucher = i.voucher
         obj = ar.selected_rows[0]
         # i is the voucher item from which the suggestion table had
         # been called. obj is the first selected DueMovement object
-        for k, v in voucher.due2itemdict(obj).items():
-            setattr(i, k, v)
+        # voucher = i.voucher
+        i.fill_suggestion(obj)
+        # for k, v in voucher.due2itemdict(obj).items():
+        #     setattr(i, k, v)
         i.full_clean()
         i.save()
 

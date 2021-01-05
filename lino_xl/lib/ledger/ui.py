@@ -1021,7 +1021,7 @@ class MovementsByVoucher(Movements):
     # auto_fit_column_widths = True
     display_mode = "html"
     order_by = dd.plugins.ledger.remove_dummy(
-        'value_date', 'account__ref', 'partner', 'project', 'id')
+        'seqno', 'value_date', 'account__ref', 'partner', 'project', 'id')
 
 
 class MovementsByPartner(Movements):

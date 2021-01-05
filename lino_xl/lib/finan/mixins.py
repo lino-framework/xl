@@ -317,3 +317,8 @@ class DatedFinancialVoucherItem(FinancialVoucherItem):
             obj.last_item_date = self.date
             obj.full_clean()
             obj.save()
+
+    def fill_suggestion(self, due):
+        super(DatedFinancialVoucherItem, self).fill_suggestion(due)
+        if self.voucher.last_item_date:
+            self.date = self.voucher.last_item_date
