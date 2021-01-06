@@ -196,12 +196,12 @@ class Matching(dd.Model):
         help_text=_("The movement to be matched."))
 
     @classmethod
-    def get_match_choices(cls, journal, partner):
+    def get_match_choices(cls, journal, partner, **fkw):
         """This is the general algorithm.
         """
         matchable_accounts = rt.models.ledger.Account.objects.filter(
             matchrule__journal=journal)
-        fkw = dict(account__in=matchable_accounts)
+        fkw.update(account__in=matchable_accounts)
         fkw.update(cleared=False)
         if partner:
             fkw.update(partner=partner)

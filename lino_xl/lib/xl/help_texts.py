@@ -954,10 +954,7 @@ de voucher."""),
     'lino_xl.lib.finan.JournalEntryItem' : _("""Django model to represent an individual item of a journal entry."""),
     'lino_xl.lib.finan.BankStatementItem' : _("""Django model to represent an individual item of a bank statement."""),
     'lino_xl.lib.finan.PaymentOrderItem' : _("""Django model to represent an individual item of a payment order."""),
-    'lino_xl.lib.finan.FinancialVoucher' : _("""Base class for all financial vouchers:
-JournalEntry,
-PaymentOrder and
-BankStatement."""),
+    'lino_xl.lib.finan.FinancialVoucher' : _("""Base class for all financial vouchers."""),
     'lino_xl.lib.finan.FinancialVoucher.item_account' : _("""The default value to use when
 FinancialVoucherItem.account of an item is empty."""),
     'lino_xl.lib.finan.FinancialVoucher.item_remark' : _("""The default value to use when
@@ -975,6 +972,7 @@ cannot be registered."""),
     'lino_xl.lib.finan.FinancialVoucherItem.remark' : _("""External reference. The description of this transation
 as seen by the external partner."""),
     'lino_xl.lib.finan.FinancialVoucherItem.match' : _("""An arbitrary string used to group several movements."""),
+    'lino_xl.lib.finan.DatedFinancialVoucher' : _("""A FinancialVoucher whose items have a date field."""),
     'lino_xl.lib.finan.DatedFinancialVoucherItem' : _("""A FinancialVoucherItem with an additional date
 field."""),
     'lino_xl.lib.finan.DatedFinancialVoucherItem.date' : _("""The value date of this item."""),
@@ -982,9 +980,10 @@ field."""),
 entries to the Explorer menu.  It contains the following
 additional attributes:"""),
     'lino_xl.lib.finan.Plugin.suggest_future_vouchers' : _("""Whether to suggest vouchers whose due_date is in the future."""),
-    'lino_xl.lib.finan.FinancialVouchers' : _("""Base class for the default tables of all other financial voucher
+    'lino_xl.lib.finan.FinancialVouchers' : _("""Base class for the default tables of all financial voucher
 types (JournalEntries , PaymentOrders and
 BankStatements)."""),
+    'lino_xl.lib.finan.JournalEntries' : _("""The base table of all tables on JournalEntry."""),
     'lino_xl.lib.finan.PaymentOrders' : _("""The base table of all tables on PaymentOrder."""),
     'lino_xl.lib.finan.BankStatements' : _("""The base table of all tables on BankStatement."""),
     'lino_xl.lib.finan.ItemsByVoucher' : _("""The base table of all tables which display the items of a given

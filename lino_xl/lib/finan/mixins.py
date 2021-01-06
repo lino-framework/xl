@@ -121,7 +121,10 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
 
     @dd.chooser(simple_values=True)
     def match_choices(cls, voucher, partner):
-        return cls.get_match_choices(voucher.journal, partner)
+        fkw = {}
+        if not dd.plugins.finan.suggest_future_vouchers:
+            fkw.update(value_date__lte=voucher.entry_date)
+        return cls.get_match_choices(voucher.journal, partner, **fkw)
 
     def add_item_from_due(self, obj, **kwargs):
         return self.voucher.add_item_from_due(obj, **kwargs)
@@ -151,7 +154,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         if not dd.plugins.finan.suggest_future_vouchers:
             flt.update(value_date__lte=self.voucher.entry_date)
 
-        self.collect_suggestions(ar, flt)
+        self.collect_suggestions(ar, models.Q(**flt))
 
 
     def partner_changed(self, ar):
@@ -159,8 +162,8 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         :attr:`partner`.
 
         """
-        # dd.logger.info("20160329 FinancialMixin.partner_changed")
-        if self.amount is not None:
+        # dd.logger.info("20210106 FinancialMixin.partner_changed %s", self.amount)
+        if self.amount:
             return
         if not self.partner or not self.voucher.journal.auto_fill_suggestions:
             return
@@ -177,7 +180,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     def collect_suggestions(self, ar, flt):
         suggestions = list(ledger.get_due_movements(
             self.voucher.journal.dc, flt))
-
+        # dd.logger.info("20210106 %s", suggestions)
         if len(suggestions) == 0:
             self.match = ""
         elif len(suggestions) == 1:

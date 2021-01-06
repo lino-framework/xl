@@ -216,6 +216,7 @@ class BankStatement(DatedFinancialVoucher):
         if not a:
             warn_jnl_account(self.journal)
         amount, movements_and_items = self.get_finan_movements()
+        # dd.logger.info("20210106 %s %s %s", self.balance2, self.balance1, amount)
         if self.journal.dc == DC.credit:  # 20201219 BankStatement.get_wanted_movements()
             self.balance2 = self.balance1 + amount
         else:
@@ -458,13 +459,14 @@ class FillSuggestionsToVoucherItem(FillSuggestionsToVoucher):
         obj = ar.selected_rows[0]
         # i is the voucher item from which the suggestion table had
         # been called. obj is the first selected DueMovement object
-        # voucher = i.voucher
+        # dd.logger.info("20210106 %s", i)
         i.fill_suggestion(obj)
         # for k, v in voucher.due2itemdict(obj).items():
         #     setattr(i, k, v)
         i.full_clean()
         i.save()
 
+        voucher = i.voucher
         seqno = i.seqno
         n = 0
         for obj in ar.selected_rows[1:]:
