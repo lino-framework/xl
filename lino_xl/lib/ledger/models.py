@@ -852,7 +852,7 @@ class RegistrableVoucher(Registrable, Voucher):
                 'ba': 'toggle_state'}]
 
     def after_state_change(self, ar, oldstate, newstate):
-        # movements are created *after* having changed the state, because
+        # Movements are created *after* having changed the state because
         # otherwise the match isn't correct.
         if newstate.name == 'draft':
             self.deregister_voucher(ar)
@@ -867,6 +867,9 @@ class RegistrableVoucher(Registrable, Voucher):
         # dd.logger.info("20151211 cosi.Voucher.register_voucher()")
         # self.year = FiscalYears.get_or_create_from_date(self.entry_date)
         # dd.logger.info("20151211 movement_set.all().delete()")
+
+        # if self.number is None:
+        #     self.number = self.journal.get_next_number(self)
 
         def doit(partners):
             seqno = 0

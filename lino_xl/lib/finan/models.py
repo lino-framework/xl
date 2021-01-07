@@ -152,10 +152,9 @@ class PaymentOrder(FinancialVoucher, Printable):
                 None, (acc, None), None, self.journal.dc, amount,
                 partner=self.journal.partner, match=self)
                 # 20191226 partner=self.journal.partner, match=self.get_default_match())
-
-        # side effect!:
-        self.full_clean()
-        self.save()
+        # no need to save() because this is called during set_workflow_state()
+        # self.full_clean()
+        # self.save()
 
     def add_item_from_due(self, obj, **kwargs):
         # if obj.bank_account is None:
@@ -229,9 +228,9 @@ class BankStatement(DatedFinancialVoucher):
             yield m
         yield self.create_movement(
             None, (a, None), None, self.journal.dc, amount)
-        # side effect!:
-        self.full_clean()
-        self.save()
+        # no need to save() because this is called during set_workflow_state()
+        # self.full_clean()
+        # self.save()
 
 
 class JournalEntryItem(DatedFinancialVoucherItem):

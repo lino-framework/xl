@@ -219,7 +219,14 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             # self.dc = not self.voucher.journal.dc
             # self.dc = not self.account.type.dc
             return
-        if self.voucher.auto_compute_amount:
+        if self.account.clearable and self.voucher.journal.auto_fill_suggestions:
+            flt = dict(account=self.account, partner=self.partner, cleared=False)
+            if not dd.plugins.finan.suggest_future_vouchers:
+                flt.update(value_date__lte=self.voucher.entry_date)
+            if self.match:
+                flt.update(match=self.match)
+            self.collect_suggestions(ar, models.Q(**flt))
+        elif self.voucher.auto_compute_amount:
             total = Decimal()
             for item in self.voucher.items.exclude(id=self.id):
                 total += item.amount

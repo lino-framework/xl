@@ -1,10 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2017-2018 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-"""Model mixins for this plugin.
-"""
-from builtins import object
-from builtins import str
 
 from django.db.models import Q
 
@@ -12,7 +8,7 @@ from lino.api import dd, _
 from .choicelists import EnrolmentStates
 
 
-# 
+#
 # class Enrollable(dd.Model):
 #
 #     class Meta(object):

@@ -467,7 +467,7 @@ class PartnerVouchers(Vouchers):
         if pv.cleared == dd.YesNo.yes:
             qs = qs.exclude(movement__cleared=False)
         elif pv.cleared == dd.YesNo.no:
-            qs = qs.filter(movement__cleared=False)
+            qs = qs.filter(movement__cleared=False, movement__account__clearable=True)
         return qs
 
 
