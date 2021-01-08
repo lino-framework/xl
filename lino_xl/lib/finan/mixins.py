@@ -1,4 +1,4 @@
-# Copyright 2008-2020 Rumma & Ko Ltd
+# Copyright 2008-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from decimal import Decimal
@@ -8,8 +8,7 @@ from django.core.exceptions import ValidationError
 # from lino.mixins.registrable import Registrable
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.excerpts.mixins import Certifiable
-from lino_xl.lib.ledger.utils import DC, ZERO, MAX_AMOUNT
-# from lino_xl.lib.ledger.models import DebitOrCreditField
+from lino_xl.lib.ledger.utils import DC, ZERO, MAX_AMOUNT, myround
 from lino_xl.lib.ledger.mixins import VoucherItem, SequencedVoucherItem
 from lino_xl.lib.ledger.mixins import ProjectRelated, Matching
 from etgen.html import E
@@ -145,38 +144,6 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
     def get_siblings(self):
         return self.voucher.items.all()
 
-    def match_changed(self, ar):
-
-        if not self.match or not self.voucher.journal.auto_fill_suggestions:
-            return
-
-        flt = dict(match=self.match, cleared=False)
-        if not dd.plugins.finan.suggest_future_vouchers:
-            flt.update(value_date__lte=self.voucher.entry_date)
-
-        self.collect_suggestions(ar, models.Q(**flt))
-
-
-    def partner_changed(self, ar):
-        """The :meth:`trigger method <lino.core.model.Model.FOO_changed>` for
-        :attr:`partner`.
-
-        """
-        # dd.logger.info("20210106 FinancialMixin.partner_changed %s", self.amount)
-        if self.amount:
-            return
-        if not self.partner or not self.voucher.journal.auto_fill_suggestions:
-            return
-        flt = dict(partner=self.partner, cleared=False)
-
-        if not dd.plugins.finan.suggest_future_vouchers:
-            flt.update(value_date__lte=self.voucher.entry_date)
-
-        if self.match:
-            flt.update(match=self.match)
-
-        self.collect_suggestions(ar, models.Q(**flt))
-
     def collect_suggestions(self, ar, flt):
         suggestions = list(ledger.get_due_movements(
             self.voucher.journal.dc, flt))
@@ -205,9 +172,35 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             # ar.success(E.tostring(html), alert=True)
             # # ar.confirm(ok, E.tostring(html))
 
+    def match_changed(self, ar):
+        if not self.match or not self.voucher.journal.auto_fill_suggestions:
+            return
+        flt = dict(match=self.match, cleared=False)
+        if not dd.plugins.finan.suggest_future_vouchers:
+            flt.update(value_date__lte=self.voucher.entry_date)
+        self.collect_suggestions(ar, models.Q(**flt))
+        self.guess_amount()
+
+    def partner_changed(self, ar):
+        # dd.logger.info("20210106 FinancialMixin.partner_changed %s", self.amount)
+        if self.amount:
+            return
+        if not self.partner or not self.voucher.journal.auto_fill_suggestions:
+            return
+        flt = dict(partner=self.partner, cleared=False)
+        if not dd.plugins.finan.suggest_future_vouchers:
+            flt.update(value_date__lte=self.voucher.entry_date)
+        if self.match:
+            flt.update(match=self.match)
+        self.collect_suggestions(ar, models.Q(**flt))
+        self.guess_amount()
+
+    def debit_changed(self, ar):
+        self.guess_amount()
+    def credit_changed(self, ar):
+        self.guess_amount()
     def amount_changed(self, ar):
-        if not self.amount:
-            self.guess_amount()
+        self.guess_amount()
 
     def account_changed(self, ar):
         if self.amount:
@@ -215,9 +208,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
         if not self.account:
             return
         if self.account.default_amount:
-            self.amount = self.account.default_amount
-            # self.dc = not self.voucher.journal.dc
-            # self.dc = not self.account.type.dc
+            self.amount = self.voucher.journal.dc.normalized_amount(self.account.default_amount)
             return
         if self.account.clearable and self.voucher.journal.auto_fill_suggestions:
             flt = dict(account=self.account, partner=self.partner, cleared=False)
@@ -226,11 +217,7 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             if self.match:
                 flt.update(match=self.match)
             self.collect_suggestions(ar, models.Q(**flt))
-        elif self.voucher.auto_compute_amount:
-            total = Decimal()
-            for item in self.voucher.items.exclude(id=self.id):
-                total += item.amount
-            self.amount = -total
+        self.guess_amount()
 
     def get_partner(self):
         return self.partner or self.project
@@ -244,24 +231,23 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             setattr(self, k, v)
 
     def guess_amount(self):
-        self.account_changed(None)
-        if self.amount is not None:
-            return
-        self.partner_changed(None)
-        if self.amount is not None:
+        if self.amount:
             return
         self.amount = ZERO
+        if self.voucher.auto_compute_amount:
+            q = self.voucher.items.exclude(id=self.id).annotate(models.Sum('amount'))
+            # print("20210108", q[0].amount__sum)
+            self.amount = -myround(q[0].amount__sum)
 
     def full_clean(self, *args, **kwargs):
         if self.amount is None:
-            # amount can be None e.g. if user entered ''
-            self.guess_amount()
+            self.amount = ZERO  # just in case...
 
-        if False: # temporarily deactivated for data migration
+        if True: # temporarily deactivated for data migration
             problems = list(FinancialVoucherItemChecker.check_instance(self))
             if len(problems):
                 raise ValidationError("20181120 {}".format(
-                    '\n'.join([p[1] for p in problems])))
+                    '\n'.join([str(p[1]) for p in problems])))
 
         # dd.logger.info("20151117 FinancialVoucherItem.full_clean a %s", self.amount)
         super(FinancialVoucherItem, self).full_clean(*args, **kwargs)
@@ -274,15 +260,16 @@ class FinancialVoucherItemChecker(Checker):
     verbose_name = _("Check for invalid account/partner combination")
 
     def get_checkdata_problems(self, obj, fix=False):
-        if obj.account_id:
+        # if obj.account_id and not obj.voucher.journal.auto_fill_suggestions:
+        # if obj.account_id and not obj.voucher.auto_compute_amount:
+        if obj.account_id and not obj.voucher.journal.preliminary:
             if obj.account.needs_partner:
                 if not obj.partner_id:
-                    if obj.voucher.journal.refuse_missing_partner():
-                        yield (False, _("Account {} needs a partner"))
+                    yield (False, _("Account {} needs a partner").format(obj.account))
             else:
                 if obj.partner_id:
                     yield (False,
-                           _("Account {} cannot be used with a partner"))
+                           _("Account {} cannot be used with a partner").format(obj.account))
 
 
 FinancialVoucherItemChecker.activate()

@@ -88,12 +88,6 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
     #     help_text=_("Whether to invert booking direction of due movement."),
     #     default=True)
 
-
-    def refuse_missing_partner(self):
-        if self.account is None:
-            return False
-        return True
-
     def get_doc_model(self):
         """The model of vouchers in this Journal.
 
