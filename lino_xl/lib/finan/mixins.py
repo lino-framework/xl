@@ -55,6 +55,7 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
             kwargs.update(project=due.project)
         if due.partner:
             kwargs.update(partner=due.partner)
+        # kwargs.update(amount=due.balance)  # 20201219 FinancialVoucher.due2itemdict
         if due.dc == self.journal.dc:
             kwargs.update(amount=-due.balance)  # 20201219 FinancialVoucher.due2itemdict
         else:
@@ -79,8 +80,7 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
         movements_and_items)``, where `amount` is the total amount and
         `movements_and_items` is a sequence of tuples ``(mvt, item)``
         where `mvt` is a :class:`Movement` object to be saved and
-        `item` is the (existing) voucher item which caused this
-        movement.
+        `item` is the (existing) voucher item that caused this movement.
 
         """
         # dd.logger.info("20151211 get_finan_movements()")
@@ -93,11 +93,11 @@ class FinancialVoucher(ledger.RegistrableVoucher, Certifiable):
             if abs(i.amount > MAX_AMOUNT):
                 raise Exception("Oops, {} is too big ({}, {})".format(i.amount, self, kw))
                 # dd.logger.warning("Oops, %s is too big", i.amount)
-                return (ZERO, [])
+                # return (ZERO, [])
             b = self.create_movement(
                 i, (i.account or self.item_account, None),
-                i.project, self.journal.dc, i.amount, **kw)
-            amount += b.amount  # NB create_movement has inversed the sign
+                i.project, i.amount, **kw)
+            amount += i.amount
             movements_and_items.append((b, i))
         return amount, movements_and_items
 
@@ -231,7 +231,6 @@ class FinancialVoucherItem(VoucherItem, SequencedVoucherItem,
             for item in self.voucher.items.exclude(id=self.id):
                 total += item.amount
             self.amount = -total
-
 
     def get_partner(self):
         return self.partner or self.project

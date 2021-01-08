@@ -144,6 +144,8 @@ class Journal(BabelNamed, Sequenced, Referrable, PrintableType):
     def get_next_number(self, voucher):
         # ~ self.save() # 20131005 why was this?
         cl = self.get_doc_model()
+        assert voucher.journal == self
+        assert cl is voucher.__class__
         qs = cl.objects.filter(journal=self)
         if self.yearly_numbering:
             qs = qs.filter(accounting_period__year=voucher.accounting_period.year)
@@ -733,9 +735,9 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
             return msg
         return super(Voucher, self).disable_delete(ar)
 
-    def create_movement(self, item, acc_tuple, project, dc, amount, **kw):
+    def create_movement(self, item, acc_tuple, project, amount, **kw):
         # dd.logger.info("20151211 ledger.create_movement()")
-        assert type(dc) != type(True)
+        # assert type(dc) != type(True)
         account, ana_account = acc_tuple
         if account is None and item is not None:
             raise Warning("No account specified for {}".format(item))
@@ -754,8 +756,8 @@ class Voucher(UserAuthored, Duplicable, UploadController, PeriodRangeObservable)
         if dd.plugins.ledger.project_model:
             kw['project'] = project
 
-        if dc == DC.debit:  # 20201219  ledger.Account.create_movement
-            amount = - amount
+        # if dc == DC.debit:  # 20201219  ledger.Account.create_movement
+        #     amount = - amount
         kw['amount'] = amount
 
         b = rt.models.ledger.Movement(**kw)
@@ -1292,9 +1294,9 @@ class DueMovement(TableRow):
         if self.trade_type is None:
             self.trade_type = voucher.get_trade_type()
             # print("20201014 found trade type", self.trade_type, "from", mvt)
-        amount = mvt.amount
-        if self.dc == DC.debit:  # 20201219  DueMovement.collect()
-            amount = - amount
+        amount = self.dc.normalized_amount(mvt.amount)  # 20201219  DueMovement.collect()
+        # if self.dc == DC.debit:
+        #     amount = - amount
         # self.balance += myround(mvt.amount)
         self.balance += amount
 

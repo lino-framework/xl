@@ -37,7 +37,7 @@
 {% for item in obj.items.all() %}
 <CdtTrfTxInf>
 <PmtId><EndToEndId>.</EndToEndId></PmtId>
-<Amt><InstdAmt Ccy="EUR">{{item.amount}}</InstdAmt></Amt>
+<Amt><InstdAmt Ccy="EUR">{{ -item.amount }}</InstdAmt></Amt>
 {% if item.bic %}
 <CdtrAgt><FinInstnId><BIC>{{item.bic}}</BIC></FinInstnId></CdtrAgt>
 {% endif %}

@@ -134,7 +134,8 @@ def objects(refs="PMO BNK"):  # welfare calls it with customized refs.
                 #     voucher.execution_date = voucher.entry_date
                 #     assert voucher.execution_date is not None
                 voucher.register(REQUEST)
-                voucher.save()
+                # voucher.full_clean()
+                # voucher.save()
 
                 # for i in voucher.items.all():
                 #     if i.partner:

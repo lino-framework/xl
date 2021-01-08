@@ -148,8 +148,8 @@ class Payable(PartnerRelated):
 
             if account.needs_partner:
                 kw.update(partner=partner)
-            yield self.create_movement(
-                None, acc_tuple, prj, self.journal.dc, amount, **kw)
+            amount = self.journal.dc.normalized_amount(amount)
+            yield self.create_movement(None, acc_tuple, prj, amount, **kw)
             counter_sums.collect(prj, amount)
 
         tt = self.get_trade_type()
@@ -167,7 +167,7 @@ class Payable(PartnerRelated):
         for prj, amount in counter_sums.items():
             total_amount += amount
             yield self.create_movement(
-                None, (acc, None), prj, self.journal.dc, -amount,
+                None, (acc, None), prj, -amount,
                 partner=partner if acc.needs_partner else None,
                 match=self.get_match())
 
@@ -175,14 +175,13 @@ class Payable(PartnerRelated):
                 and TradeTypes.clearings.main_account \
                 and self.payment_term_id and self.payment_term.worker:
             worker = self.payment_term.worker
-            dc = self.journal.dc
             # one movement to nullify the credit that was booked to the partner account,
             # another movment to book it to the worker's account:
             yield self.create_movement(
-                None, (acc, None), None, dc, total_amount,
+                None, (acc, None), None, total_amount,
                 partner=partner, match=self.get_match())
             yield self.create_movement(
-                None, (TradeTypes.clearings.get_main_account(), None), None, dc, -total_amount,
+                None, (TradeTypes.clearings.get_main_account(), None), None, -total_amount,
                 partner=worker, match=self.get_match())
 
 

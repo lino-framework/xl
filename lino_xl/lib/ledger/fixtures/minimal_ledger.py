@@ -78,7 +78,7 @@ def objects():
             partner=bestbank,
             account=CommonAccounts.pending_po.get_object(),
             ref="PMO")
-        kw.update(dc=DC.debit)
+        kw.update(dc=DC.credit)  # 20201219  PMO Journal.dc
         yield finan.PaymentOrder.create_journal(**kw)
 
         kw = dict(journal_group=JournalGroups.financial)

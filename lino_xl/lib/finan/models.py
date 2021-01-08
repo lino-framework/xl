@@ -136,20 +136,21 @@ class PaymentOrder(FinancialVoucher, Printable):
             # dd.logger.warning("Oops, {} is too big ({})".format(amount, self))
             raise Exception("Oops, {} is too big ({})".format(amount, self))
             return
-        if self.journal.dc == DC.debit:  # PaymentOrder.get_wanted_movements()
-            self.total = -amount
-        else:
-            self.total = amount
+        self.total = self.journal.dc.normalized_amount(-amount)  # PaymentOrder.get_wanted_movements()
+        # if self.journal.dc == DC.debit:  # PaymentOrder.get_wanted_movements()
+        #     self.total = -amount
+        # else:
+        #     self.total = amount
         item_partner = self.journal.partner is None
         for m, i in movements_and_items:
             yield m
             if item_partner:
                 yield self.create_movement(
-                    i, (acc, None), m.project, self.journal.dc, m.amount,  # 20200114
+                    i, (acc, None), m.project, -m.amount,  # 20201219 PaymentOrder.get_wanted_movements
                     partner=m.partner, match=i.get_match())
         if not item_partner:
             yield self.create_movement(
-                None, (acc, None), None, self.journal.dc, amount,
+                None, (acc, None), None, -amount,  # 20201219 PaymentOrder.get_wanted_movements
                 partner=self.journal.partner, match=self)
                 # 20191226 partner=self.journal.partner, match=self.get_default_match())
         # no need to save() because this is called during set_workflow_state()
@@ -216,18 +217,18 @@ class BankStatement(DatedFinancialVoucher):
             warn_jnl_account(self.journal)
         amount, movements_and_items = self.get_finan_movements()
         # dd.logger.info("20210106 %s %s %s", self.balance2, self.balance1, amount)
-        if self.journal.dc == DC.credit:  # 20201219 BankStatement.get_wanted_movements()
-            self.balance2 = self.balance1 + amount
-        else:
-            self.balance2 = self.balance1 - amount
+        self.balance2 = self.balance1 + self.journal.dc.normalized_amount(amount)  # 20201219 BankStatement.get_wanted_movements()
+        # if self.journal.dc == DC.credit:  # 20201219 BankStatement.get_wanted_movements()
+        #     self.balance2 = self.balance1 + amount
+        # else:
+        #     self.balance2 = self.balance1 - amount
         if abs(self.balance2) > MAX_AMOUNT:
             # dd.logger.warning("Oops, %s is too big", self.balance2)
             raise Exception("Oops, {} is too big ({})".format(self.balance2, self))
             return
         for m, i in movements_and_items:
             yield m
-        yield self.create_movement(
-            None, (a, None), None, self.journal.dc, amount)
+        yield self.create_movement(None, (a, None), None, amount)
         # no need to save() because this is called during set_workflow_state()
         # self.full_clean()
         # self.save()
@@ -261,7 +262,7 @@ class PaymentOrderItem(BankAccount, FinancialVoucherItem):
 
     voucher = dd.ForeignKey('finan.PaymentOrder', related_name='items')
     # bank_account = dd.ForeignKey('sepa.Account', blank=True, null=True)
-    to_pay = DcAmountField(DC.credit, _("To pay"))  # 20201219 PaymentOrderItem
+    to_pay = DcAmountField(DC.debit, _("To pay"))  # 20201219 PaymentOrderItem
 
     # def partner_changed(self, ar):
     #     FinancialVoucherItem.partner_changed(self, ar)
@@ -508,7 +509,8 @@ class SuggestionsByVoucher(ledger.ExpectedMovements):
         if voucher is None:
             raise Exception("20200119 voucher is None")
             return None
-        return voucher.journal.dc.opposite()  # 20201219 SuggestionsByVoucher.get_dc()
+        # return voucher.journal.dc.opposite()  # 20201219 SuggestionsByVoucher.get_dc()
+        return voucher.journal.dc  # 20201219 SuggestionsByVoucher.get_dc()
 
     @classmethod
     def param_defaults(cls, ar, **kw):
@@ -546,7 +548,7 @@ class SuggestionsByPaymentOrder(SuggestionsByVoucher):
         voucher = ar.master_instance
         if voucher.journal.sepa_account:
             kw.update(show_sepa=dd.YesNo.yes)
-            kw.update(same_dc=dd.YesNo.yes)
+        kw.update(same_dc=dd.YesNo.yes)  # 20201219 SuggestionsByPaymentOrder.param_defaults same_dc
         # kw.update(journal=voucher.journal)
         kw.update(date_until=voucher.execution_date or voucher.entry_date)
         # if voucher.journal.trade_type is not None:
@@ -570,7 +572,8 @@ class SuggestionsByVoucherItem(SuggestionsByVoucher):
         item = ar.master_instance
         if item is None:
             return None
-        return item.voucher.journal.dc
+        # return item.voucher.journal.dc.opposite()  # 20201219 SuggestionsByVoucherItem.get_dc()
+        return item.voucher.journal.dc  # 20201219 SuggestionsByVoucherItem.get_dc()
 
     @classmethod
     def param_defaults(cls, ar, **kw):

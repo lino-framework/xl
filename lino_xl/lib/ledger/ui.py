@@ -1107,13 +1107,6 @@ class MovementsByProject(MovementsByPartner):
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
             elems.extend(voucher.get_movement_description(self, ar))
-            # if voucher.narration:
-            #     elems.append(voucher.narration)
-            # p = voucher.get_partner()
-            # if p is not None:
-            #     elems.append(ar.obj2html(p))
-            # if self.partner and self.partner != p:
-            #     elems.append(ar.obj2html(self.partner))
         return E.p(*join_elems(elems, " / "))
 
 
@@ -1144,13 +1137,6 @@ class MovementsByAccount(Movements):
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
             elems.extend(voucher.get_movement_description(self, ar))
-        #     if voucher.narration:
-        #         elems.append(voucher.narration)
-        #     p = voucher.get_partner()
-        #     if p is not None:
-        #         elems.append(ar.obj2html(p))
-        # if self.partner:
-        #     elems.append(ar.obj2html(self.partner))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
@@ -1188,11 +1174,6 @@ class MovementsByMatch(Movements):
         voucher = self.voucher.get_mti_leaf()
         if voucher is not None:
             elems.extend(voucher.get_movement_description(self, ar))
-            # p = voucher.get_partner()
-            # if p is not None and p != ar.master_instance:
-            #     elems.append(ar.obj2html(p))
-            # elif self.partner:
-            #     elems.append(ar.obj2html(self.partner))
         if self.project:
             elems.append(ar.obj2html(self.project))
         return E.p(*join_elems(elems, " / "))
