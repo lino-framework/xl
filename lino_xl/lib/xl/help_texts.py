@@ -940,10 +940,6 @@ If this is empty, then name is used."""),
     'lino_xl.lib.excerpts.ClearPrinted' : _("""Clear any previously generated printable document.  Mark this
 object as not printed. A subsequent call to print will generate a
 new cache file."""),
-    'lino_xl.lib.finan.JournalEntry' : _("""Django model to represent a journal entry."""),
-    'lino_xl.lib.finan.BankStatement' : _("""Django model to represent a bank statement."""),
-    'lino_xl.lib.finan.BankStatement.balance1' : _("""The old (or start) balance."""),
-    'lino_xl.lib.finan.BankStatement.balance2' : _("""The new (or end) balance."""),
     'lino_xl.lib.finan.PaymentOrder' : _("""Django model to represent a payment order."""),
     'lino_xl.lib.finan.PaymentOrder.entry_date' : _("""The date of the ledger entry."""),
     'lino_xl.lib.finan.PaymentOrder.execution_date' : _("""The execution date of payment order. If this is empty, Lino
@@ -951,9 +947,18 @@ assumes the entry_date when writing the
 pain_001.xml file."""),
     'lino_xl.lib.finan.PaymentOrder.total' : _("""The total amount. This is automatically computed when you register
 de voucher."""),
-    'lino_xl.lib.finan.JournalEntryItem' : _("""Django model to represent an individual item of a journal entry."""),
-    'lino_xl.lib.finan.BankStatementItem' : _("""Django model to represent an individual item of a bank statement."""),
     'lino_xl.lib.finan.PaymentOrderItem' : _("""Django model to represent an individual item of a payment order."""),
+    'lino_xl.lib.finan.PaymentOrders' : _("""The base table of all tables on PaymentOrder."""),
+    'lino_xl.lib.finan.BankStatement' : _("""Django model to represent a bank statement."""),
+    'lino_xl.lib.finan.BankStatement.balance1' : _("""The old (or start) balance."""),
+    'lino_xl.lib.finan.BankStatement.balance2' : _("""The new (or end) balance."""),
+    'lino_xl.lib.finan.BankStatementItem' : _("""Django model to represent an individual item of a bank statement."""),
+    'lino_xl.lib.finan.BankStatements' : _("""The base table of all tables on BankStatement."""),
+    'lino_xl.lib.finan.ItemsByBankStatement' : _("""Shows the items of a bank statement."""),
+    'lino_xl.lib.finan.JournalEntry' : _("""Django model to represent a journal entry."""),
+    'lino_xl.lib.finan.JournalEntryItem' : _("""Django model to represent an individual item of a journal entry."""),
+    'lino_xl.lib.finan.JournalEntries' : _("""The base table of all tables on JournalEntry."""),
+    'lino_xl.lib.finan.ItemsByJournalEntry' : _("""Shows the items of a journal entry."""),
     'lino_xl.lib.finan.FinancialVoucher' : _("""Base class for all financial vouchers."""),
     'lino_xl.lib.finan.FinancialVoucher.item_account' : _("""The default value to use when
 FinancialVoucherItem.account of an item is empty."""),
@@ -983,9 +988,6 @@ additional attributes:"""),
     'lino_xl.lib.finan.FinancialVouchers' : _("""Base class for the default tables of all financial voucher
 types (JournalEntries , PaymentOrders and
 BankStatements)."""),
-    'lino_xl.lib.finan.JournalEntries' : _("""The base table of all tables on JournalEntry."""),
-    'lino_xl.lib.finan.PaymentOrders' : _("""The base table of all tables on PaymentOrder."""),
-    'lino_xl.lib.finan.BankStatements' : _("""The base table of all tables on BankStatement."""),
     'lino_xl.lib.finan.ItemsByVoucher' : _("""The base table of all tables which display the items of a given
 voucher."""),
     'lino_xl.lib.finan.SuggestionsByVoucher' : _("""Shows the suggested items for a given voucher, with a button to

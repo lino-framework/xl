@@ -255,6 +255,7 @@ class MyTasks(Tasks):
     def param_defaults(self, ar, **kw):
         cfg = dd.plugins.cal
         kw = super(MyTasks, self).param_defaults(ar, **kw)
+        assert ar.get_user().is_authenticated
         kw.update(user=ar.get_user())
         kw.update(state=TaskStates.todo)
         if cfg.mytasks_start_date is not None:

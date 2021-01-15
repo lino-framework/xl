@@ -1,10 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011,2013 Rumma & Ko Ltd
-#
+# Copyright 2011-2013 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
-Starts a daemon (or, if daemons are not supported, a nomal console process) 
+Starts a daemon (or, if daemons are not supported, a nomal console process)
 that watches for changes in remote calendars.
 See also :srcref:`docs/tickets/47`
 
@@ -56,8 +55,6 @@ Calendar = dd.resolve_model('cal.Calendar')
 Event = dd.resolve_model('cal.Event')
 RecurrenceSet = dd.resolve_model('cal.RecurrenceSet')
 
-#~ REQUEST = dblogger.PseudoRequest('watch_calendars')
-
 # dblogger.log_changes(REQUEST,obj)
 
 
@@ -108,8 +105,8 @@ def receive(dbcal, calendar):
                 event = comp.instance.vevent
                 if isinstance(event, RecurringComponent):
                     """
-                    in a google calendar, all events are parsed to a 
-                    RecurringComponent. if event.rruleset is None 
+                    in a google calendar, all events are parsed to a
+                    RecurringComponent. if event.rruleset is None
                     we consider them non recurrent.
                     """
 
@@ -263,11 +260,11 @@ def send(dbcal, calendar, client):
 
 def watch():
     """
-    Loops through all remote calendars, 
+    Loops through all remote calendars,
     synchronizing them with their calendar server.
-    We first send local changes to the server, 
+    We first send local changes to the server,
     then retrieve remote changes into our database.
-    
+
     Deserves more documentation.
     """
     for dbcal in Calendar.objects.filter(url_template__isnull=False):

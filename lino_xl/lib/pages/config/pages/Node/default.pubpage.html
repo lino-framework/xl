@@ -1,0 +1,19 @@
+{% extends "bootstrap3/base.html" %}
+
+{% block main %}
+<div class="row-fluid">
+    <h1>{{ obj }}</h1>
+    <p>This is a {{ obj.__class__._meta.verbose_name }}.</p>
+    {{ obj.full_preview }}
+    {% for p in obj.__class__.objects.filter(parent=obj).order_by('seqno') %}
+    {{p.render_from(p.publisher_item_template, ar)}}
+    {% endfor %}
+</div>
+{% endblock %}
+
+{%- block toolbar %}
+    <p align="right">
+        {{ tostring(ar.obj2html(obj, "Edit")) }}
+        <a href="{{ obj.publisher_url() }}">permalink</a>
+    </p>
+{%- endblock %}

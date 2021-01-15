@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2020 Rumma & Ko Ltd
+# Copyright 2011-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
 
 import datetime
 from dateutil.relativedelta import relativedelta
@@ -393,7 +392,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
         # verbose_name_plural = pgettext("cal", "Events")
 
     publisher_location = "cal"
-    publisher_template = "cal/event.pub.html"
+    publisher_page_template = "cal/event.pub.html"
 
     update_guests = UpdateGuests()
     update_events = UpdateEntriesByEvent()

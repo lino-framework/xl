@@ -99,7 +99,6 @@ class Entry(UserAuthored, Controllable, CombinedDateTime,
 
     add_interest = AddInterestField()
 
-
     @classmethod
     def get_dashboard_items(cls, user):
         qs = cls.objects.filter(Q(pub_date__isnull=False)).order_by("-pub_date")

@@ -1,20 +1,21 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2020 Rumma & Ko Ltd
+# Copyright 2012-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
 from django.db import models
-from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import pgettext_lazy
 from django.utils.translation import get_language
 
-from lino.api import dd, rt
+from lino.api import dd, rt, _
 from etgen.html import E, tostring_pretty
 from lino.core.renderer import add_user_language
 
+from lino.utils.mldbc.fields import LanguageField
 from lino import mixins
-from lino.mixins import Referrable, Hierarchical, Sequenced
+from lino.mixins import Hierarchical, Sequenced
 from lino.modlib.publisher.mixins import Publishable
+from lino.modlib.memo.mixins import Previewable
 from django.conf import settings
 from .utils import render_node
 
@@ -48,34 +49,47 @@ from .utils import render_node
     #~ """
 
 
-class Page(Referrable, Hierarchical, Sequenced, Publishable):
+class Page(Hierarchical, Sequenced, Previewable, Publishable):
 
     class Meta:
         verbose_name = _("Node")
         verbose_name_plural = _("Nodes")
+        unique_together = ["ref", "language"]
 
-    title = dd.BabelCharField(_("Title"), max_length=200, blank=True)
-    body = dd.BabelTextField(_("Body"), blank=True, format='plain')
-    raw_html = models.BooleanField(_("raw html"), default=False)
+    publisher_location = "p"
+    publisher_page_template = "pages/Node/default.pubpage.html"
+    publisher_item_template = "pages/Node/default.pubitem.html"
+
+    ref = models.CharField(
+        _("Reference"), max_length=200, blank=True, null=True)
+    language = LanguageField(default=models.NOT_PROVIDED, blank=True)
+    title = dd.CharField(_("Title"), max_length=250, blank=True)
+    # body = dd.BabelTextField(_("Body"), blank=True, format='plain')
+    # raw_html = models.BooleanField(_("raw html"), default=False)
 
     @classmethod
-    def get_dashboard_items(cls, user):
-        obj = cls.get_by_ref('index', None)
-        if obj is not None:
-            yield obj
+    def lookup_page(cls, ref):
+        try:
+            return cls.objects.get(ref=ref, language=get_language())
+        except cls.DoesNotExist:
+            pass
+
+    @classmethod
+    def get_dashboard_objects(cls, user):
+        # print("20210114 get_dashboard_objects()", get_language())
+        qs = Page.objects.filter(parent__isnull=True, language=get_language())
+        for node in qs.order_by("seqno"):
+            yield node
 
     def get_absolute_url(self, **kwargs):
         if self.ref:
             if self.ref != 'index':
-                return dd.plugins.pages.build_plain_url(
-                    self.ref, **kwargs)
+                return dd.plugins.pages.build_plain_url(self.ref, **kwargs)
         return dd.plugins.pages.build_plain_url(**kwargs)
 
     def get_sidebar_caption(self):
         if self.title:
-            return dd.babelattr(self, 'title')
-        if self.ref == 'index':
-            return str(_('Home'))
+            return self.title
         if self.ref:
             return self.ref
         return str(self.id)
@@ -110,15 +124,15 @@ class Page(Referrable, Hierarchical, Sequenced, Publishable):
         return tostring_pretty(e)
 
     def get_sidebar_menu(self, request):
-        qs = Page.objects.filter(parent__isnull=True)
+        qs = Page.objects.filter(parent__isnull=True, language=get_language())
         #~ qs = self.children.all()
         yield ('/', 'index', str(_('Home')))
             #~ yield ('/downloads/', 'downloads', 'Downloads')
         #~ yield ('/about', 'about', 'About')
         #~ if qs is not None:
-        for obj in qs:
+        for obj in qs.order_by("seqno"):
             if obj.ref and obj.title:
-                yield ('/' + obj.ref, obj.ref, dd.babelattr(obj, 'title'))
+                yield ('/' + obj.ref, obj.ref, obj.title)
             #~ else:
                 #~ yield ('/','index',obj.title)
 
@@ -139,15 +153,15 @@ class Page(Referrable, Hierarchical, Sequenced, Publishable):
     #~ """
 class PageDetail(dd.DetailLayout):
     main = """
-    ref parent seqno
+    ref language parent seqno
     title
-    body
+    body pages.PagesByParent
     """
 
 
 class Pages(dd.Table):
     model = 'pages.Page'
-    detail_layout = PageDetail()
+    detail_layout = 'pages.PageDetail'
     column_names = "ref title *"
     #~ column_names = "ref language title user type project *"
     order_by = ["ref"]
@@ -160,22 +174,24 @@ class Pages(dd.Table):
     #~ order_by = ["-modified"]
 
 
-#~ class PagesByType(Pages):
-    #~ master_key = 'type'
+class PagesByParent(Pages):
+    master_key = 'parent'
     #~ column_names = "title user *"
-    #~ order_by = ["-modified"]
+    order_by = ["seqno"]
+    column_names = "seqno title *"
+
 #~ if settings.SITE.project_model:
     #~ class PagesByProject(Pages):
         #~ master_key = 'project'
         #~ column_names = "type title user *"
         #~ order_by = ["-modified"]
-def create_page(**kw):
-    #~ logger.info("20121219 create_page(%r)",kw['ref'])
-    return Page(**kw)
-
-
-def lookup(ref, *args, **kw):
-    return Page.get_by_ref(ref, *args, **kw)
-
-def get_all_pages():
-    return Page.objects.all()
+# def create_page(**kw):
+#     #~ logger.info("20121219 create_page(%r)",kw['ref'])
+#     return Page(**kw)
+#
+#
+# def lookup(ref, *args, **kw):
+#     return Page.get_by_ref(ref, *args, **kw)
+#
+# def get_all_pages():
+#     return Page.objects.all()
