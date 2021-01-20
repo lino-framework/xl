@@ -18,9 +18,12 @@ Lino.beid_read_card_processor = function() {
     // var card = {}
     var my_id = uuid();
     var url = "{{settings.SITE.plugins.beid.urlhandler_prefix}}" + window.location.origin + "/eid/" + my_id;
+    // var current_window = window.window;
     console.log("Gonna open", url);
-    var popup = window.open(url);
-    popup.close();
+    var popup = window.open(url, "eidreader");
+    // while (popup.event) {setTimeout(()=>console.log("waiting", popup.event),1000)};
+    // popup.close();
+    // current_window.focus();
     return { uuid: my_id, timeout: {{settings.SITE.plugins.beid.preprocessor_delay}} };
 
     // var xhttp = new XMLHttpRequest();
