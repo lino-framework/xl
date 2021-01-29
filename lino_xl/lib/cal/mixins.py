@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2020 Rumma & Ko Ltd
+# Copyright 2011-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from dateutil.rrule import rrule
@@ -648,8 +648,11 @@ class RecurrenceSet(Started, Ended):
             bysetpos = [int(i) for i in self.positions.split()]
             freq = self.every_unit.du_freq
             if freq is None:
-                # raise Warning("Cannot use position with {}.".format(self.every_unit))
+                ar.debug("Cannot use position with %s.", self.every_unit)
                 return None
+            kw = dict(freq=freq,
+                count=2, dtstart=date+ONE_DAY, interval=self.every,
+                bysetpos=bysetpos)
             weekdays = []
             if self.monday: weekdays.append(0)
             if self.tuesday: weekdays.append(1)
@@ -658,10 +661,13 @@ class RecurrenceSet(Started, Ended):
             if self.friday : weekdays.append(4)
             if self.saturday : weekdays.append(5)
             if self.sunday: weekdays.append(6)
-            return rrule(
-                freq=freq,
-                count=2, dtstart=date+ONE_DAY, interval=self.every,
-                bysetpos=bysetpos, byweekday=weekdays)[0].date()
+            if len(weekdays):
+                kw.update(byweekday=weekdays)
+            rr = rrule(**kw)
+            if len(rr) == 0:
+                ar.debug("rrule(%s) returned an empty list.", kw)
+                return None
+            return rr[0].date()
 
         if self.every_unit == Recurrencies.per_weekday:
             # per_weekday is deprecated to by replaced by daily.

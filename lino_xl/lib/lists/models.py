@@ -1,17 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-"""The :xfile:`models.py` module for the :mod:`lino_xl.lib.lists` app.
-
-This module defines the tables
-
-- :class:`List`
-- :class:`Membership`
-
-"""
-
-import logging ; logger = logging.getLogger(__name__)
 
 from django.db import models
 from django.conf import settings
@@ -146,7 +135,7 @@ class Member(mixins.Sequenced):
 
     quick_search_fields = "partner__name remark"
     show_in_site_search = False
-    allow_cascaded_delete = "list"
+    allow_cascaded_delete = "list partner"
 
     list = dd.ForeignKey('lists.List', related_name="members")
     partner = dd.ForeignKey(partner_model, related_name="list_memberships")

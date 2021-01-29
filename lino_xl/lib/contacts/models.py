@@ -598,6 +598,7 @@ class RolesByPerson(Roles):
     column_names = 'company type start_date end_date *'
     auto_fit_column_widths = True
     hidden_columns = 'id'
+    details_of_master_template = _("%(master)s is contact person for")
 
 dd.inject_field(
     'system.SiteConfig',
