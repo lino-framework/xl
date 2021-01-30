@@ -6,6 +6,7 @@ from dateutil.rrule import rrule
 
 from django.conf import settings
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.utils import translation
 from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ugettext as gettext
@@ -538,10 +539,15 @@ class RecurrenceSet(Started, Ended):
     def full_clean(self, *args, **kw):
         if self.every_unit == Recurrencies.per_weekday:
             self.every_unit = Recurrencies.weekly
-        elif self.every_unit == Recurrencies.once:
-            self.max_events = 1
-            self.every = 0
+        # elif self.every_unit == Recurrencies.once:
+        #     self.max_events = 1
+        #     self.positions = ''
+        #     self.every = 0
         super(RecurrenceSet, self).full_clean(*args, **kw)
+        # if self.positions:
+        #     if self.every != 1:
+        #         raise ValidationError(
+        #             "Cannot specify positions together with repeat value!")
 
     def disabled_fields(self, ar):
         rv = super(RecurrenceSet, self).disabled_fields(ar)
@@ -580,23 +586,23 @@ class RecurrenceSet(Started, Ended):
                 return gettext("Every week")
         elif self.every_unit == Recurrencies.monthly:
             if self.positions:
-                if self.every != 1:
-                    raise Exception("Cannot specify position together with repeat value!")
-                positions = []
-                for i in self.positions.split():
-                    positions.append(str(POSITION_TEXTS.get(i, "?!")))
+                # assert self.every == 1
                 # day_text = " {} ".format(gettext("and")).join(positions) \
                 #     + " " + self.weekdays_text_(gettext(' and '), gettext("day")) \
                 #     + " " + gettext("of the month")
-                day_text = " {} ".format(gettext("and")).join(positions) \
+                day_text = self.positions_text_(" {} ".format(gettext("and"))) \
                     + " " + self.weekdays_text_(" {} ".format(gettext("and")), gettext("day"))
                 return gettext("Every {day} of the month").format(day=day_text)
             else:
                 s = ngettext("Every month", "Every {count} months", self.every)
                 return s.format(count=self.every)
 
-        elif self.every_unit in (Recurrencies.yearly, Recurrencies.easter):
+        elif self.every_unit == Recurrencies.yearly:
             s = ngettext("Every year", "Every {count} years", self.every)
+            return s.format(count=self.every)
+        elif self.every_unit == Recurrencies.easter:
+            s = ngettext("Every year (with Easter)",
+                "Every {count} years (with Easter)", self.every)
             return s.format(count=self.every)
         else:
             return "Invalid recurrency unit {}".format(self.every_unit)
@@ -609,6 +615,9 @@ class RecurrenceSet(Started, Ended):
         # return gettext("Every %snd %s") % (self.every, every_text)
 
     def weekdays_text_(self, sep, any=''):
+        if self.monday and self.tuesday and self.wednesday and self.thursday \
+            and self.friday and not self.saturday and not self.sunday:
+                return gettext("working day")
         weekdays = []
         for wd in Weekdays.get_list_items():
             if getattr(self, wd.name):
@@ -616,6 +625,12 @@ class RecurrenceSet(Started, Ended):
         if len(weekdays) == 0:
             return any
         return sep.join(weekdays)
+
+    def positions_text_(self, sep):
+        positions = []
+        for i in self.positions.split():
+            positions.append(str(POSITION_TEXTS.get(i, "?!")))
+        return sep.join(positions)
 
     def move_event_to(self, ev, newdate):
         """Move given event to a new date.  Also change `end_date` if
@@ -641,15 +656,13 @@ class RecurrenceSet(Started, Ended):
 
         """
         if self.every_unit == Recurrencies.once:
-            ar.debug("get_next_suggested_date() once --> None.")
+            ar.debug("No next date when recurrency is 'once'.")
             return None
 
-        if self.positions:
+        freq = self.every_unit.du_freq
+        # Recurrencies without du_freq silently ignore positions
+        if freq is not None and self.positions:
             bysetpos = [int(i) for i in self.positions.split()]
-            freq = self.every_unit.du_freq
-            if freq is None:
-                ar.debug("Cannot use position with %s.", self.every_unit)
-                return None
             kw = dict(freq=freq,
                 count=2, dtstart=date+ONE_DAY, interval=self.every,
                 bysetpos=bysetpos)
@@ -664,13 +677,17 @@ class RecurrenceSet(Started, Ended):
             if len(weekdays):
                 kw.update(byweekday=weekdays)
             rr = rrule(**kw)
-            if len(rr) == 0:
-                ar.debug("rrule(%s) returned an empty list.", kw)
+            # if len(rr) == 0:
+            #     ar.debug("rrule(%s) returned an empty list.", kw)
+            #     return None
+            try:
+                return rr[0].date()
+            except IndexError:
+                ar.debug("No date matches your recursion rule(%s).", kw)
                 return None
-            return rr[0].date()
 
         if self.every_unit == Recurrencies.per_weekday:
-            # per_weekday is deprecated to by replaced by daily.
+            # per_weekday is deprecated to be replaced by daily.
             date = date + ONE_DAY
         else:
             date = self.every_unit.add_duration(date, self.every)
@@ -678,7 +695,8 @@ class RecurrenceSet(Started, Ended):
 
     def find_start_date(self, date):
         """Find the first available date for the given date (possibly
-        including that date)
+        including that date), according to the weekdays
+        of this recurrence set.
 
         """
 
