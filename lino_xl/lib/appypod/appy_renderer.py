@@ -37,7 +37,7 @@ from lino.utils.restify import restify
 from lino.utils.html2xhtml import html2xhtml, HAS_TIDYLIB
 from lino.utils.html2odf import html2odf, toxml
 from etgen.html import iselement, tostring
-from lino.api import dd
+from lino.api import dd, rt
 
 from lino.core.elems import NumberFieldElement
 
@@ -113,8 +113,10 @@ class AppyRenderer(OriginalAppyRenderer):
         # logger.info("20160808 %s", self.contentParser.env.context['Decimal'])
         #~ print 20130910, settings.SITE.jinja_env
         env = settings.SITE.plugins.jinja.renderer.jinja_env
+        # filename = rt.find_config_file(template_name)
         template = env.get_template(template_name)
-        #~ print 20130910, template, dir(self)
+        # dd.logger.info("insert_jinja(%s) into odt template", template.filename)
+        # print(20210210, template.filename, dir(self))
         html = template.render(self.contentParser.env.context)
         #self.ar.renderer = saved_renderer
         return self.insert_html(html)
