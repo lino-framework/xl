@@ -1,10 +1,10 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2013-2020 Rumma & Ko Ltd
+# Copyright 2013-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
 Manage information about the *career* or *curriculum vitae* of a
-person.
+person. See :doc:`/specs/cv`
 
 """
 
@@ -14,13 +14,15 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Plugin(ad.Plugin):
-    "See :class:`lino.core.Plugin`."
+    """Defines :term:`plugin configuration settings <plugin configuration setting>`
+    of this plugin."""
 
     verbose_name = _("Career")
     needs_plugins = ['lino.modlib.languages']
 
     person_model = 'contacts.Person'
-    """The database model to use for representing the person whose career data
+
+    """The database model to use for representing the persons whose career data
     is being stored."""
 
     with_language_history = False

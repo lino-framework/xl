@@ -91,9 +91,6 @@ class BiographyOwner(dd.Model):
 
 
 class EducationEntryStates(dd.ChoiceList):
-    """The possible states of an **education entry**.
-
-    """
     verbose_name = _("State")
 
 add = EducationEntryStates.add_item
@@ -103,14 +100,6 @@ add('2', _("Ongoing"), 'ongoing')
 
 
 class HowWell(dd.ChoiceList):
-
-    """A list of possible answers to questions of type "How well ...?":
-    "not at all", "a bit", "moderate", "quite well" and "very well"
-
-    which are stored in the database as '0' to '4',
-    and whose `__str__()` returns their translated text.
-
-    """
     verbose_name = _("How well?")
 
 add = HowWell.add_item
@@ -123,14 +112,6 @@ add('4', _("very well"))
 
 class CefLevel(dd.ChoiceList):
 
-    """
-    Levels of the Common European Framework (CEF).
-
-    | http://www.coe.int/t/dg4/linguistic/CADRE_EN.asp
-    | http://www.coe.int/t/dg4/linguistic/Source/ManualRevision-proofread-FINAL_en.pdf
-    | http://www.telc.net/en/what-telc-offers/cef-levels/a2/
-
-    """
     verbose_name = _("CEF level")
     verbose_name_plural = _("CEF levels")
     # show_values = True
@@ -168,10 +149,6 @@ add('C2+')
 
 class SectorFunction(dd.Model):
 
-    """
-    Abstract base for models that refer to a
-    :class:`Sector` and a :class:`Function`.
-    """
     class Meta:
         abstract = True
 
@@ -186,7 +163,6 @@ class SectorFunction(dd.Model):
 
 
 class PersonHistoryEntry(DateRange):
-    "Base class for Study, Experience"
     class Meta:
         abstract = True
 
@@ -195,12 +171,7 @@ class PersonHistoryEntry(DateRange):
         _("Duration"), max_length=200, blank=True)
 
 
-
 class HistoryByPerson(dd.Table):
-    """Abstract base class for :class:`StudiesByPerson` and
-    :class:`ExperiencesByPerson`
-
-    """
     master_key = 'person'
     order_by = ["start_date"]
     auto_fit_column_widths = True

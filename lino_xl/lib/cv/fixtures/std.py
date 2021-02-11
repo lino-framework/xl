@@ -1,10 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2014 Rumma & Ko Ltd
-#
+# Copyright 2008-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-
 
 from lino.utils.instantiator import Instantiator
 from django.utils.translation import ugettext_lazy as _
@@ -13,7 +9,7 @@ from lino.api import dd
 
 
 def objects():
-    
+
     """
     Education levels in Belgium:
       http://www.guide-enseignement.be/infos_pages/diplomes.html
@@ -24,7 +20,7 @@ def objects():
     Certificat de qualification (C.Q.)
     Certificat d'enseignement secondaire supérieur (C.E.S.S.)
     Certificat relatif aux connaissances de gestion de base
-    Brevet d’enseignement secondaire complémentaire – section "soins infirmiers(E.P.S.C.)" 
+    Brevet d’enseignement secondaire complémentaire – section "soins infirmiers(E.P.S.C.)"
     """
 
     eduLevel = Instantiator('cv.EducationLevel').build

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: lino\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-30 18:34+0200\n"
-"PO-Revision-Date: 2021-01-30 18:35+0200\n"
+"POT-Creation-Date: 2021-02-11 19:37+0200\n"
+"PO-Revision-Date: 2021-02-11 20:43+0200\n"
 "Last-Translator: Luc Saffre <luc.saffre@gmail.com>\n"
 "Language: de\n"
 "Language-Team: \n"
@@ -57,7 +57,7 @@ msgid "Obsolete"
 msgstr "Veraltet"
 
 #: lino_xl/lib/addresses/choicelists.py:24 lino_xl/lib/cal/fixtures/std.py:148
-#: lino_xl/lib/clients/choicelists.py:123 lino_xl/lib/cv/fixtures/std.py:133
+#: lino_xl/lib/clients/choicelists.py:123 lino_xl/lib/cv/fixtures/std.py:129
 #: lino_xl/lib/households/choicelists.py:33 lino_xl/lib/households/fixtures/std.py:24
 #: lino_xl/lib/phones/choicelists.py:59 lino_xl/lib/products/fixtures/furniture.py:31
 msgid "Other"
@@ -93,7 +93,7 @@ msgstr "Adresse"
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:79
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:38
 #: lino_xl/lib/courses/models.py:193 lino_xl/lib/courses/models.py:561
-#: lino_xl/lib/cv/models.py:523 lino_xl/lib/cv/models.py:550
+#: lino_xl/lib/cv/models.py:461 lino_xl/lib/cv/models.py:488
 #: lino_xl/lib/deploy/models.py:184 lino_xl/lib/excerpts/models.py:57
 #: lino_xl/lib/groups/models.py:127 lino_xl/lib/healthcare/models.py:31
 #: lino_xl/lib/ledger/models.py:247
@@ -199,7 +199,7 @@ msgstr "Analytische Rechnungsposition"
 msgid "Analytic invoice items"
 msgstr "Analytische Rechnungspositionen"
 
-#: lino_xl/lib/ana/models.py:224 lino_xl/lib/cal/mixins.py:561 lino_xl/lib/cal/mixins.py:856
+#: lino_xl/lib/ana/models.py:224 lino_xl/lib/cal/mixins.py:561 lino_xl/lib/cal/mixins.py:857
 #: lino_xl/lib/cal/models.py:121 lino_xl/lib/cal/models.py:149 lino_xl/lib/cal/models.py:217
 #: lino_xl/lib/cal/models.py:322 lino_xl/lib/courses/models.py:103
 #: lino_xl/lib/courses/models.py:192 lino_xl/lib/github/models.py:173
@@ -271,8 +271,8 @@ msgstr "Transport"
 
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:34
 #: lino_xl/lib/ana/fixtures/minimal_ledger.py:41
-#: lino_xl/lib/ana/fixtures/minimal_ledger.py:49 lino_xl/lib/cv/models.py:170
-#: lino_xl/lib/cv/models.py:284 lino_xl/lib/cv/models.py:597
+#: lino_xl/lib/ana/fixtures/minimal_ledger.py:49 lino_xl/lib/cv/models.py:159
+#: lino_xl/lib/cv/models.py:243 lino_xl/lib/cv/models.py:531
 msgid "Training"
 msgstr "Ausbildung"
 
@@ -1302,7 +1302,7 @@ msgstr "Übersetzung"
 msgid "Transactions"
 msgstr "Übersetzung"
 
-#: lino_xl/lib/b2c/models.py:276 lino_xl/lib/cal/mixins.py:864
+#: lino_xl/lib/b2c/models.py:276 lino_xl/lib/cal/mixins.py:865
 #: lino_xl/lib/countries/mixins.py:156
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:68
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
@@ -2020,8 +2020,7 @@ msgstr ""
 msgid "Update presences for {} events: {}"
 msgstr ""
 
-#: lino_xl/lib/cal/actions.py:137 lino_xl/lib/cal/mixins.py:594
-#: lino_xl/lib/households/models.py:574
+#: lino_xl/lib/cal/actions.py:137 lino_xl/lib/households/models.py:574
 msgid "or"
 msgstr "oder"
 
@@ -2465,8 +2464,8 @@ msgstr "Tag"
 msgid "Every week"
 msgstr "Jede Woche"
 
-#: lino_xl/lib/cal/mixins.py:593 lino_xl/lib/coachings/desktop.py:115
-#: lino_xl/lib/households/models.py:483
+#: lino_xl/lib/cal/mixins.py:593 lino_xl/lib/cal/mixins.py:594
+#: lino_xl/lib/coachings/desktop.py:115 lino_xl/lib/households/models.py:483
 msgid "and"
 msgstr "und"
 
@@ -2502,28 +2501,28 @@ msgstr[1] "Jeden {ord_count}n {day}"
 msgid "working day"
 msgstr "Arbeitstag"
 
-#: lino_xl/lib/cal/mixins.py:779 lino_xl/lib/courses/choicelists.py:23
+#: lino_xl/lib/cal/mixins.py:780 lino_xl/lib/courses/choicelists.py:23
 #: lino_xl/lib/ledger/choicelists.py:473
 msgid "Editable"
 msgstr "Editierbar"
 
-#: lino_xl/lib/cal/mixins.py:792 lino_xl/lib/orders/models.py:97
+#: lino_xl/lib/cal/mixins.py:793 lino_xl/lib/orders/models.py:97
 msgid "Generate events until"
 msgstr "Termine generieren bis"
 
-#: lino_xl/lib/cal/mixins.py:854
+#: lino_xl/lib/cal/mixins.py:855
 msgid "Short description"
 msgstr "Kurzbeschreibung"
 
-#: lino_xl/lib/cal/mixins.py:861
+#: lino_xl/lib/cal/mixins.py:862
 msgid "Whether this is private, public or between."
 msgstr "Ob dieser Termin  privat, öffentlich oder halb öffentlich ist"
 
-#: lino_xl/lib/cal/mixins.py:863
+#: lino_xl/lib/cal/mixins.py:864
 msgid "Revision"
 msgstr "Revisionsnummer"
 
-#: lino_xl/lib/cal/mixins.py:905
+#: lino_xl/lib/cal/mixins.py:906
 msgid "at {time}"
 msgstr "um {time}"
 
@@ -3306,7 +3305,7 @@ msgid "Client Contacts"
 msgstr "Klientenkontakte"
 
 #: lino_xl/lib/clients/models.py:46 lino_xl/lib/contacts/models.py:94
-#: lino_xl/lib/cv/models.py:159 lino_xl/lib/cv/models.py:599 lino_xl/lib/lists/models.py:82
+#: lino_xl/lib/cv/models.py:149 lino_xl/lib/cv/models.py:533 lino_xl/lib/lists/models.py:82
 #: lino_xl/lib/skills/models.py:55
 #, fuzzy
 msgid "Remarks"
@@ -3535,7 +3534,7 @@ msgstr "Vertreten durch"
 msgid "represented as"
 msgstr "in seiner Eigenschaft als"
 
-#: lino_xl/lib/contacts/mixins.py:213 lino_xl/lib/cv/models.py:590
+#: lino_xl/lib/contacts/mixins.py:213 lino_xl/lib/cv/models.py:524
 msgid "Company"
 msgstr "Organisation"
 
@@ -4251,7 +4250,7 @@ msgstr "CEF-Kategorie"
 msgid "CEF levels"
 msgstr "CEF-Kategorien"
 
-#: lino_xl/lib/cv/mixins.py:195
+#: lino_xl/lib/cv/mixins.py:194
 msgid "Duration"
 msgstr "Dauer"
 
@@ -4303,175 +4302,170 @@ msgstr "%s (W)"
 msgid "%s (w)"
 msgstr "%s (S)"
 
-#: lino_xl/lib/cv/models.py:154
+#: lino_xl/lib/cv/models.py:146
 msgid "Establishment"
 msgstr "Einrichtung"
 
-#: lino_xl/lib/cv/models.py:169 lino_xl/lib/cv/models.py:365
+#: lino_xl/lib/cv/models.py:158 lino_xl/lib/cv/models.py:315
 msgid "Study"
 msgstr "Studium"
 
-#: lino_xl/lib/cv/models.py:177
+#: lino_xl/lib/cv/models.py:166
 msgid "Education Level"
 msgstr "Akademischer Grad"
 
-#: lino_xl/lib/cv/models.py:178
+#: lino_xl/lib/cv/models.py:167
 msgid "Education Levels"
 msgstr "Akademische Grade"
 
-#: lino_xl/lib/cv/models.py:218
+#: lino_xl/lib/cv/models.py:188
 msgid "Education Type"
 msgstr "Bildungsart"
 
-#: lino_xl/lib/cv/models.py:219
+#: lino_xl/lib/cv/models.py:189
 msgid "Education Types"
 msgstr "Bildungsarten"
 
-#: lino_xl/lib/cv/models.py:285
+#: lino_xl/lib/cv/models.py:244
 msgid "Trainings"
 msgstr "Ausbildungen"
 
-#: lino_xl/lib/cv/models.py:291
+#: lino_xl/lib/cv/models.py:250
 msgid "Training content"
 msgstr "Ausbildungsinhalt"
 
-#: lino_xl/lib/cv/models.py:296
+#: lino_xl/lib/cv/models.py:255
 msgid "Certificates"
 msgstr "Diplome"
 
-#: lino_xl/lib/cv/models.py:366
+#: lino_xl/lib/cv/models.py:316
 msgid "Studies"
 msgstr "Studien"
 
-#: lino_xl/lib/cv/models.py:376
+#: lino_xl/lib/cv/models.py:326
 msgid "Study content"
 msgstr "Ausbildungsinhalt"
 
-#: lino_xl/lib/cv/models.py:454
+#: lino_xl/lib/cv/models.py:398
 msgctxt "work experience"
 msgid "Status"
 msgstr "Status"
 
-#: lino_xl/lib/cv/models.py:455
+#: lino_xl/lib/cv/models.py:399
 msgctxt "work experience"
 msgid "Statuses"
 msgstr "Statuus"
 
-#: lino_xl/lib/cv/models.py:476
+#: lino_xl/lib/cv/models.py:418
 msgid "Work Regime"
 msgstr "Arbeitsregime"
 
-#: lino_xl/lib/cv/models.py:477
+#: lino_xl/lib/cv/models.py:419
 msgid "Work Regimes"
 msgstr "Arbeitsregimes"
 
-#: lino_xl/lib/cv/models.py:496
+#: lino_xl/lib/cv/models.py:436
 msgid "Contract Duration"
 msgstr "Vertragsdauer"
 
-#: lino_xl/lib/cv/models.py:497
+#: lino_xl/lib/cv/models.py:437
 msgid "Contract Durations"
 msgstr "Vertragsdauern"
 
-#: lino_xl/lib/cv/models.py:517
-msgid "Job Sector"
+#: lino_xl/lib/cv/models.py:455
+msgid "Activity sector"
 msgstr "Sektor"
 
-#: lino_xl/lib/cv/models.py:518
-msgid "Job Sectors"
+#: lino_xl/lib/cv/models.py:456
+msgid "Activity sectors"
 msgstr "Sektoren"
 
-#: lino_xl/lib/cv/models.py:544
-msgid "Job Function"
-msgstr "Funktion"
+#: lino_xl/lib/cv/models.py:482 lino_xl/lib/cv/models.py:527
+msgid "Job title"
+msgstr "Berufsbezeichnung"
 
-#: lino_xl/lib/cv/models.py:545
-msgid "Job Functions"
-msgstr "Funktionen"
+#: lino_xl/lib/cv/models.py:483
+msgid "Job titles"
+msgstr "Berufsbezeichnungen"
 
-#: lino_xl/lib/cv/models.py:585
+#: lino_xl/lib/cv/models.py:519
 msgid "Job Experience"
 msgstr "Berufserfahrung"
 
-#: lino_xl/lib/cv/models.py:586
+#: lino_xl/lib/cv/models.py:520
 msgid "Job Experiences"
 msgstr "Berufserfahrungen"
 
-#: lino_xl/lib/cv/models.py:593
-#, fuzzy
-msgid "Job title"
-msgstr "Bezeichnung"
-
-#: lino_xl/lib/cv/models.py:604
+#: lino_xl/lib/cv/models.py:538
 msgid "Termination reason"
 msgstr "Beendigungsgrund"
 
-#: lino_xl/lib/cv/fixtures/std.py:95
+#: lino_xl/lib/cv/fixtures/std.py:91
 #, fuzzy
 msgid "Prequalifying"
 msgstr "Bescheinigend"
 
-#: lino_xl/lib/cv/fixtures/std.py:96
+#: lino_xl/lib/cv/fixtures/std.py:92
 #, fuzzy
 msgid "Qualifying"
 msgstr "Bescheinigend"
 
-#: lino_xl/lib/cv/fixtures/std.py:97
+#: lino_xl/lib/cv/fixtures/std.py:93
 msgid "Alpha"
 msgstr ""
 
-#: lino_xl/lib/cv/fixtures/std.py:100
+#: lino_xl/lib/cv/fixtures/std.py:96
 msgid "Unlimited duration"
 msgstr "Unbeschränkte Dauer"
 
-#: lino_xl/lib/cv/fixtures/std.py:101
+#: lino_xl/lib/cv/fixtures/std.py:97
 msgid "Limited duration"
 msgstr "Beschränkte Dauer"
 
-#: lino_xl/lib/cv/fixtures/std.py:102
+#: lino_xl/lib/cv/fixtures/std.py:98
 msgid "Clearly defined job"
 msgstr ""
 
-#: lino_xl/lib/cv/fixtures/std.py:103
+#: lino_xl/lib/cv/fixtures/std.py:99
 msgid "Replacement"
 msgstr "Ersatz"
 
-#: lino_xl/lib/cv/fixtures/std.py:104 lino_xl/lib/cv/fixtures/std.py:128
+#: lino_xl/lib/cv/fixtures/std.py:100 lino_xl/lib/cv/fixtures/std.py:124
 #, fuzzy
 msgid "Interim"
 msgstr "Schwester"
 
-#: lino_xl/lib/cv/fixtures/std.py:121 lino_xl/lib/ledger/models.py:433
+#: lino_xl/lib/cv/fixtures/std.py:117 lino_xl/lib/ledger/models.py:433
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:24
 #: lino_xl/lib/working/models.py:256 lino_xl/lib/working/models.py:296
 msgid "Worker"
 msgstr "Arbeiter"
 
-#: lino_xl/lib/cv/fixtures/std.py:122
+#: lino_xl/lib/cv/fixtures/std.py:118
 msgid "Employee"
 msgstr "Angestellter"
 
-#: lino_xl/lib/cv/fixtures/std.py:123
+#: lino_xl/lib/cv/fixtures/std.py:119
 msgid "Freelancer"
 msgstr "Selbstständiger"
 
-#: lino_xl/lib/cv/fixtures/std.py:124
+#: lino_xl/lib/cv/fixtures/std.py:120
 msgid "Voluntary"
 msgstr "Ehrenamtlicher"
 
-#: lino_xl/lib/cv/fixtures/std.py:125
+#: lino_xl/lib/cv/fixtures/std.py:121
 msgid "Student"
 msgstr "Student"
 
-#: lino_xl/lib/cv/fixtures/std.py:126
+#: lino_xl/lib/cv/fixtures/std.py:122
 msgid "Laboratory"
 msgstr ""
 
-#: lino_xl/lib/cv/fixtures/std.py:131
+#: lino_xl/lib/cv/fixtures/std.py:127
 msgid "Full-time"
 msgstr "Vollzeit"
 
-#: lino_xl/lib/cv/fixtures/std.py:132
+#: lino_xl/lib/cv/fixtures/std.py:128
 msgid "Part-time"
 msgstr "Teilzeit"
 

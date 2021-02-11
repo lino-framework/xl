@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2020 Rumma & Ko Ltd
+# Copyright 2008-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from django.db import models
@@ -83,7 +83,6 @@ class AllLanguageKnowledges(LanguageKnowledges):
     required_roles = dd.login_required(CareerStaff)
 
 class LanguageKnowledgesByPerson(LanguageKnowledges):
-    """Shows the languages known by this person."""
     master_key = 'person'
     column_names = "language native spoken written cef_level has_certificate entry_date *"
     required_roles = dd.login_required(CareerUser)
@@ -140,24 +139,14 @@ class KnowledgesByLanguage(LanguageKnowledges):
 #
 
 class EducationEntry(PersonHistoryEntry, CountryCity):
-    """An **education entry** is when a given person has received some
-    kind of educatio durinng a given period.
-
-    Abstract base class for :class:`Training` and :class:`Study`.
-
-    """
     class Meta:
         abstract = True
 
     language = dd.ForeignKey("languages.Language", blank=True, null=True)
-
     school = models.CharField(_("Establishment"), max_length=200, blank=True)
-
     state = EducationEntryStates.field(blank=True)
-
     remarks = models.TextField(
         blank=True, null=True, verbose_name=_("Remarks"))
-
     type = dd.ForeignKey('cv.StudyType')
 
 
@@ -180,8 +169,6 @@ class EducationLevel(StudyOrTraining, mixins.BabelNamed, mixins.Sequenced):
 
 
 class EducationLevels(dd.Table):
-    """The default table showing all :class:`EducationLevel` instances.
-    """
 
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.EducationLevel'
@@ -195,24 +182,7 @@ class EducationLevels(dd.Table):
 
 
 class StudyType(StudyOrTraining, mixins.BabelNamed):
-    """The **Education Type** of a study or training is a way to group
-    entries according to their type.
 
-    TODO: Rename this to `EducationType`.
-
-    Also used in :attr:`isip.Contract.study_type
-    <lino_welfare.modlib.isip.models.Contract.study_type>` and by
-    :attr:`EducationEntry.type`.
-
-    .. attribute:: education_level
-
-        Pointer to the :class:`EducationLevel`.
-
-    .. attribute:: study_regime
-
-        One choice from :class:`StudyRegimes`.
-
-    """
     class Meta:
         app_label = 'cv'
         verbose_name = _("Education Type")
@@ -225,8 +195,6 @@ class StudyType(StudyOrTraining, mixins.BabelNamed):
 
 
 class StudyTypes(dd.Table):
-    """The default table showing all :class:`StudyType` instances.
-    """
     required_roles = dd.login_required(CareerStaff)
     model = StudyType
     order_by = ["name"]
@@ -269,16 +237,7 @@ class PeriodTable(dd.Table):
 #
 
 
-
 class Training(SectorFunction, EducationEntry):
-    """A **training** is an *education entry* with more practical
-    priorities than a study. There is no school.
-
-    .. attribute:: content
-
-       Describes the content of this training. A free one-line text field.
-
-    """
     class Meta:
         app_label = 'cv'
         verbose_name = _("Training")
@@ -304,9 +263,6 @@ class Training(SectorFunction, EducationEntry):
 
 
 class Trainings(PeriodTable):
-    """Base table for all tables on :class:`Training`.
-
-    """
 
     model = 'cv.Training'
     order_by = "country city type".split()
@@ -331,9 +287,6 @@ class Trainings(PeriodTable):
 
 
 class AllTrainings(Trainings):
-    """Show all :class:`Training` instances.
-
-    """
     required_roles = dd.login_required(CareerStaff)
 
 
@@ -346,7 +299,6 @@ class TrainingsByType(Trainings):
 
 
 class TrainingsByPerson(HistoryByPerson, Trainings):
-    """Show the trainings of a given person."""
     column_names = 'type sector function remarks \
     start_date end_date duration_text \
     school country state certificates *'
@@ -358,8 +310,6 @@ class TrainingsByPerson(HistoryByPerson, Trainings):
 
 
 class Study(EducationEntry):
-    """A **study** is an :class:`EducationEntry` at a higher school or university.
-    """
     class Meta:
         app_label = 'cv'
         verbose_name = _("Study")
@@ -386,8 +336,6 @@ class Study(EducationEntry):
 
 
 class Studies(PeriodTable):
-    """The default table showing all :class:`Study` instances.
-    """
 
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.Study'
@@ -417,10 +365,6 @@ class StudiesByLevel(Studies):
 
 
 class StudiesByPlace(Studies):
-    """
-    Lists all Studies in a given Place.
-    Used as slave grid in Places detail.
-    """
     required_roles = dd.login_required(CareerUser)
     master_key = 'city'
     column_names = 'school type person content start_date end_date \
@@ -457,8 +401,6 @@ class Status(mixins.BabelNamed):
 
 
 class Statuses(dd.Table):
-    """The default table showing all :class:`Status` instances.
-    """
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.Status'
     order_by = ['name']
@@ -479,8 +421,6 @@ class Regime(mixins.BabelNamed):
 
 
 class Regimes(dd.Table):
-    """The default table showing all :class:`Regime` instances.
-    """
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.Regime'
     order_by = ['name']
@@ -499,8 +439,6 @@ class Duration(mixins.BabelNamed):
 
 
 class Durations(dd.Table):
-    """The default table showing all :class:`Duration` instances.
-    """
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.Duration'
     order_by = ['name']
@@ -514,8 +452,8 @@ class Sector(mixins.BabelNamed):
 
     class Meta:
         app_label = 'cv'
-        verbose_name = _("Job Sector")
-        verbose_name_plural = _('Job Sectors')
+        verbose_name = _("Activity sector")
+        verbose_name_plural = _('Activity sectors')
         abstract = dd.is_abstract_model(__name__, 'Sector')
 
     remark = models.TextField(
@@ -541,8 +479,8 @@ class Function(mixins.BabelNamed):
     """Each Job may have a Function."""
     class Meta:
         app_label = 'cv'
-        verbose_name = _("Job Function")
-        verbose_name_plural = _('Job Functions')
+        verbose_name = _("Job title")
+        verbose_name_plural = _('Job titles')
         abstract = dd.is_abstract_model(__name__, 'Function')
 
     remark = models.TextField(
@@ -576,10 +514,6 @@ class FunctionsBySector(Functions):
 
 
 class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
-    """A **work experience** is when a given person has worked for a given
-    period in a given company.
-
-    """
     class Meta:
         app_label = 'cv'
         verbose_name = _("Job Experience")
@@ -608,8 +542,6 @@ class Experience(PersonHistoryEntry, SectorFunction, CountryCity):
 
 
 class Experiences(PeriodTable):
-    """The default table showing all :class:`Experience` instances.
-    """
     required_roles = dd.login_required(CareerStaff)
     model = 'cv.Experience'
     # stay_in_grid = True
