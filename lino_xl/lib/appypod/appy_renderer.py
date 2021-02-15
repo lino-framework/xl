@@ -13,7 +13,7 @@ except ImportError:
     OriginalAppyRenderer = object
     # Run the python manage.py configure to install appy correctly.
 
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.conf import settings
 
 import odf
@@ -435,8 +435,8 @@ class AppyRenderer(OriginalAppyRenderer):
             tc = TableCell(stylename=cell_style)
             tc.addElement(text.P(
                 stylename="Table Column Header",
-                #~ text=force_text(fld.field.verbose_name or fld.name)))
-                text=force_text(h)))
+                #~ text=force_str(fld.field.verbose_name or fld.name)))
+                text=force_str(h)))
             hr.addElement(tc)
 
         sums = [fld.zero for fld in columns]

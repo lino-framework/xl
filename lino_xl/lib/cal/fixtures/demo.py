@@ -3,7 +3,7 @@
 #
 # License: BSD (see file COPYING for details)
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from lino.utils.instantiator import Instantiator
 

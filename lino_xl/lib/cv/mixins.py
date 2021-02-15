@@ -5,7 +5,7 @@
 
 from django.conf import settings
 from django.db import models
-from django.utils.translation import ugettext as gettext
+from django.utils.translation import gettext
 
 from lino.api import dd, rt, _
 from etgen.html import E, join_elems, forcetext

@@ -10,7 +10,7 @@ person. See :doc:`/specs/cv`
 
 from lino import ad
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class Plugin(ad.Plugin):

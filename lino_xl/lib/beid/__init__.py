@@ -154,7 +154,8 @@ class Plugin(ad.Plugin):  # was: use_eidreader
         yield '</applet>'
 
     def get_patterns(self):
-        from django.conf.urls import url
+        # from django.conf.urls import url
+        from django.urls import re_path as url
         from . import views
         urls = [ url('^eid/(?P<uuid>.+)', views.EidStore.as_view()) ]
         return urls

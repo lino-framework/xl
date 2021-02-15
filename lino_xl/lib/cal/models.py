@@ -797,7 +797,7 @@ class Event(Component, Ended, Assignable, TypedPrintable, Mailable, Postable, Pu
     summary_show_user = True
 
     def get_event_summary(self, ar):
-        # from django.utils.translation import ugettext as _
+        # from django.utils.translation import gettext as _
         s = self.summary
         if self.owner is not None:
             s = "{} {}".format(self.owner, s)

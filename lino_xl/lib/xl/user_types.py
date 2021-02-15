@@ -28,7 +28,7 @@ class SiteAdmin(PollsAdmin, GuestOperator, OfficeStaff, ContactsStaff,
     pass
 
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from lino.modlib.users.choicelists import UserTypes
 UserTypes.clear()
 add = UserTypes.add_item

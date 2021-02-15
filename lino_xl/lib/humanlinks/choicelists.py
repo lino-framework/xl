@@ -11,7 +11,7 @@ Choicelists for `lino_xl.lib.humanlinks`.
 from __future__ import unicode_literals
 from __future__ import print_function
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.utils.translation import pgettext_lazy as pgettext
 from django.utils.text import format_lazy
 from lino_xl.lib.contacts.roles import ContactsStaff

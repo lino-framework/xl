@@ -24,7 +24,7 @@ import datetime
 from dateutil.tz import tzlocal
 
 from django.conf import settings
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 from lino.utils.format_date import format_date
 from lino.utils.format_date import fds
@@ -143,7 +143,7 @@ def update_auto_component(
             original_state = dict(obj.__dict__)
             if obj.user != user:
                 obj.user = user
-            summary = force_text(summary)
+            summary = force_str(summary)
             if obj.summary != summary:
                 obj.summary = summary
             if obj.start_date != date:

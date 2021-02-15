@@ -12,7 +12,7 @@ This is a :attr:`workflows_module
 
 from lino.api import dd, _
 from lino_xl.lib.cal.workflows import *
-# from django.utils.translation import ugettext_lazy as _
+# from django.utils.translation import gettext_lazy as _
 # from django.utils.translation import pgettext_lazy as pgettext
 
 from lino_xl.lib.cal.choicelists import GuestStates, EntryStates

@@ -20,7 +20,7 @@ from lino_xl.lib.cal.workflows import *
 from lino_xl.lib.cal.workflows import feedback
 from lino_xl.lib.reception.models import checkout_guest
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 # from django.utils.translation import pgettext_lazy as pgettext
 
 from .models import GuestStates

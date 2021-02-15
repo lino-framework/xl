@@ -14,7 +14,7 @@ from lino_xl.lib.appypod.mixins import PrintTableAction
 from lino.core.tables import AbstractTable
 from lino.utils.media import TmpMediaFile
 from etgen import html as xghtml
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class PrintTableActionPisa(PrintTableAction):

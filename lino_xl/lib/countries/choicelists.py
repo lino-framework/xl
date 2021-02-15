@@ -5,7 +5,7 @@
 from builtins import object
 
 from lino.api import dd, rt
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 
 class PlaceType(dd.Choice):

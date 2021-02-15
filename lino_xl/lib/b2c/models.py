@@ -9,7 +9,7 @@ import os
 from django.db import models
 from django.core.exceptions import MultipleObjectsReturned, ValidationError
 from django.utils import translation
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from lino.api import dd, _, rt
 from etgen.html import E
 from lino.utils import join_elems
@@ -313,7 +313,7 @@ class Transaction(dd.Model):
 
     @dd.displayfield(_("Message"))
     def message_html(self, ar):
-        from django.utils.translation import ugettext as _
+        from django.utils.translation import gettext as _
         elems = []
         # elems += [_("Date"), dd.fds(self.transaction_date), " "]
         # elems += [_("Amount"), ' ', E.b(unicode(self.amount)), " "]
@@ -335,7 +335,7 @@ class Transaction(dd.Model):
             # until we get a list of German translations, users in
             # Eupen prefer FR over EN
             with translation.override('fr'):
-                return force_text(code2desc(self.txcd[:4]))
+                return force_str(code2desc(self.txcd[:4]))
         return "{0}:{1}".format(self.txcd_issuer, self.txcd)
 
 from .ui import *

@@ -14,7 +14,7 @@ logger = logging.getLogger(__name__)
 
 from lino.api import dd
 from lino import mixins
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from lino.modlib.office.roles import OfficeUser
 

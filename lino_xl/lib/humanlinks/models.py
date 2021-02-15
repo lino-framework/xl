@@ -16,7 +16,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 from django.core.exceptions import ValidationError
-#from django.utils.translation import ugettext_lazy as _
+#from django.utils.translation import gettext_lazy as _
 from django.db.models import Q
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 

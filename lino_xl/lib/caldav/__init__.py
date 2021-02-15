@@ -17,7 +17,7 @@ Requires radicale to be installed.
 import logging
 
 from lino import ad
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from . import views
 
 from django.conf.urls import url

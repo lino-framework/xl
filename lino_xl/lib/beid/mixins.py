@@ -12,8 +12,8 @@ from unipath import Path
 
 from django.db import models
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from django.core.exceptions import ValidationError
 
 from etgen.html import E
@@ -126,15 +126,15 @@ class BeIdCardHolder(SSIN):
         elems = []
         if self.card_number:
             elems += ["%s %s (%s)" %
-                      (ugettext("Card no."), self.card_number, self.card_type)]
+                      (gettext("Card no."), self.card_number, self.card_type)]
             if self.card_issuer:
                 elems.append(", %s %s" %
-                             (ugettext("issued by"), self.card_issuer))
+                             (gettext("issued by"), self.card_issuer))
                 #~ card_issuer = _("issued by"),
             if self.card_valid_until is not None:
                 valid = ", %s %s %s %s" % (
-                    ugettext("valid from"), dd.dtos(self.card_valid_from),
-                    ugettext("until"), dd.dtos(self.card_valid_until))
+                    gettext("valid from"), dd.dtos(self.card_valid_from),
+                    gettext("until"), dd.dtos(self.card_valid_until))
                 if self.card_valid_until < dd.today():
                     must_read = True
                     elems.append(E.b(valid))

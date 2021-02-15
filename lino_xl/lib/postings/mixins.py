@@ -8,7 +8,7 @@ Defines models for :mod:`lino_xl.lib.postings`.
 """
 
 from django.contrib.contenttypes.models import ContentType
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from lino.core import actions
 

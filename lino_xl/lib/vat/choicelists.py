@@ -241,7 +241,7 @@ class DeclarationField(dd.Choice):
             help_text=self.help_text)
 
     # def __str__(self):
-    #     # return force_text(self.text, errors="replace")
+    #     # return force_str(self.text, errors="replace")
     #     # return self.text
     #     return "[{}] {}".format(self.value, self.text)
 

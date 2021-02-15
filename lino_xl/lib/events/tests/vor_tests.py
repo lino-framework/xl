@@ -11,7 +11,7 @@ import pprint
 
 from django.db.utils import IntegrityError
 from django.conf import settings
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils import translation
 from django.core.exceptions import ValidationError
 from django.utils import translation

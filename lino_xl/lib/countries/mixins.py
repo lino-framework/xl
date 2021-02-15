@@ -4,7 +4,7 @@
 
 from django.db import models
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.core.exceptions import ValidationError
 
 from lino.api import dd, rt
@@ -41,14 +41,17 @@ class CountryCity(dd.Model):
     def create_city_choice(self, text):
         """
         Called when an unknown city name was given.
-        Try to auto-create it.
-        """
-        if self.country is not None:
-            return rt.models.countries.Place.lookup_or_create(
-                'name', text, country=self.country)
 
-        raise ValidationError(
-            "Cannot auto-create city %r if country is empty", text)
+        This is a create_FOO_choices method, which causes
+        Chooser.can_create_choice for the city field to be True.
+
+        """
+        if self.country is None:
+            raise ValidationError(
+                "Cannot auto-create city %r if country is empty", text)
+        return rt.models.countries.Place.lookup_or_create(
+            'name', text, country=self.country)
+
 
     def country_changed(self, ar):
         """

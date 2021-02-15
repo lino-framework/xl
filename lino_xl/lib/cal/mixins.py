@@ -8,13 +8,13 @@ from django.conf import settings
 from django.db import models
 from django.core.exceptions import ValidationError
 from django.utils import translation
-from django.utils.translation import ugettext_lazy as _
-from django.utils.translation import ugettext as gettext
+from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext
 from django.utils.translation import ngettext
 from django.contrib.contenttypes.models import ContentType
 # from django.contrib.humanize.templatetags.humanize import ordinal
 # Django's ordinal() works only for English
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 
 try:
     from num2words import num2words
@@ -723,7 +723,7 @@ class RecurrenceSet(Started, Ended):
 
     def compare_auto_event(self, obj, ae):
         original_state = dict(obj.__dict__)
-        summary = force_text(ae.summary)
+        summary = force_str(ae.summary)
         if obj.summary != summary:
             obj.summary = summary
         if obj.user != ae.user:
@@ -905,9 +905,9 @@ Whether this is private, public or between."""))  # iCal:CLASS
             yield " "
             yield _("at {time}").format(time=dd.strftime(self.start_time))
         if self.state:
-            yield ' [%s]' % force_text(self.state)
+            yield ' [%s]' % force_str(self.state)
         if self.summary:
-            yield ': %s' % force_text(self.summary)
+            yield ': %s' % force_str(self.summary)
         # if self.project is not None:
         #     html.append(" (")
         #     html.extend(ar.summary_row(self.project, **kw))

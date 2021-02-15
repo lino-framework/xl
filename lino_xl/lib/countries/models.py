@@ -9,7 +9,7 @@ from django.conf import settings
 
 from lino.api import dd
 from lino import mixins
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from lino.modlib.checkdata.choicelists import Checker
 from lino_xl.lib.contacts.roles import ContactsUser, ContactsStaff
 
