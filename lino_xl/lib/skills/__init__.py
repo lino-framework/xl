@@ -1,13 +1,11 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2011-2018 Rumma & Ko Ltd
+# Copyright 2011-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Adds the notions of "skills", including offers and demands thereof.
 
 .. autosummary::
    :toctree:
 
-   models
-   desktop
    roles
 
 """

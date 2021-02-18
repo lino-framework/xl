@@ -6,7 +6,6 @@ for managing online registration.
 .. autosummary::
    :toctree:
 
-    models
     choicelists
     desktop
 

@@ -320,6 +320,7 @@ class InvoiceItems(dd.Table):
 
     stay_in_grid = True
 
+
 class ItemsByInvoice(InvoiceItems):
     label = _("Content")
     master_key = 'voucher'

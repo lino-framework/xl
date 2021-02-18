@@ -1,4 +1,4 @@
-# Copyright 2014-2019 Rumma & Ko Ltd
+# Copyright 2014-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for handling sales.
@@ -6,8 +6,7 @@ See :doc:`/specs/sales`.
 
 """
 
-from lino.api import ad
-from django.utils.translation import gettext_lazy as _
+from lino.api import ad, _
 
 
 class Plugin(ad.Plugin):

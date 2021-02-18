@@ -5,7 +5,8 @@ from django.utils.translation import gettext_lazy as _
 help_texts = {
     'lino_xl.lib.addresses.Plugin' : _("""The descriptor for this plugin. See lino.core.Plugin."""),
     'lino_xl.lib.b2c.Plugin' : _("""See lino.core.plugin.Plugin."""),
-    'lino_xl.lib.b2c.Plugin.import_statements_path' : _("""A path wildcard pointing to xml files which need to get imported."""),
+    'lino_xl.lib.b2c.Plugin.import_statements_path' : _("""The full name of the directory that Lino should watch for incoming xml files
+that need to get imported."""),
     'lino_xl.lib.b2c.Plugin.delete_imported_xml_files' : _("""This attribute define whether, Cosi have to delete the SEPA file
 after it get imported."""),
     'lino_xl.lib.b2c.camt.BankTransaction' : _("""Single transaction that is part of a bank statement."""),
@@ -123,7 +124,7 @@ given persons. Create one if not. If the child has already
 another parent of same sex, then it becomes a foster child,
 otherwise a natural child."""),
     'lino_xl.lib.humanlinks.LinksByHuman' : _("""Show all links for which this human is either parent or child."""),
-    'lino_xl.lib.humanlinks.LinksByHuman.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
+    'lino_xl.lib.humanlinks.LinksByHuman.master' : _("""alias of lino_book.projects.min9.modlib.contacts.models.Person"""),
     'lino_xl.lib.humanlinks.LinksByHuman.get_table_summary' : _("""The summary view
 for LinksByHuman."""),
     'lino_xl.lib.humanlinks.LinksByHuman.model' : _("""alias of lino_xl.lib.humanlinks.models.Link"""),
@@ -140,14 +141,6 @@ of a User."""),
 verifcation code, and that a username and password are set."""),
     'lino_xl.lib.online.users.RegisterUser' : _("""Fill a form in order to register as a new system user."""),
     'lino_xl.lib.online.users.NewUsers' : _("""List of new users to be confirmed by the system admin."""),
-    'lino_xl.lib.online.users.CheckedSubmitInsert' : _("""Like the standard lino.core.actions.SubmitInsert, but
-checks certain things before accepting the new user."""),
-    'lino_xl.lib.online.users.VerifyUser' : _("""Enter your verification code."""),
-    'lino_xl.lib.online.users.User' : _("""Adds the following database fields to the User model."""),
-    'lino_xl.lib.online.users.User.callme_mode' : _("""Whether other users can see my contact data."""),
-    'lino_xl.lib.online.users.User.verification_code' : _("""A random string set for every new user. Used for
-online_registration."""),
-    'lino_xl.lib.online.users.User.user_state' : _("""The registration state of this user."""),
     'lino_xl.lib.outbox.RecipientTypes' : _("""A list of possible values for the type field of a
 Recipient."""),
     'lino_xl.lib.outbox.MailableType' : _("""Mixin for Models that serve as type of a Mailable.
@@ -162,22 +155,11 @@ must also inherit from mixins.Printable or some subclass
 thereof."""),
     'lino_xl.lib.outbox.Mailable.get_mailable_subject' : _("""Return the content of the subject field for the email to be
 created."""),
-    'lino_xl.lib.outbox.Recipient' : _("""Abstract base for inbox.Recipient and outbox.Recipient."""),
-    'lino_xl.lib.outbox.Recipient.get_row_permission' : _("""Recipients of a Mail may not be edited if the Mail is read-only."""),
-    'lino_xl.lib.outbox.SendMail' : _("""Sends an outbox.Mail as an email."""),
-    'lino_xl.lib.outbox.Mail.get_row_permission' : _("""Mails may not be edited after they have been sent."""),
-    'lino_xl.lib.outbox.SentByPartner' : _("""Shows the Mails that have been sent to a given Partner."""),
-    'lino_xl.lib.outbox.SentByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Partner"""),
-    'lino_xl.lib.outbox.SentByPartner.model' : _("""alias of lino_xl.lib.outbox.models.Mail"""),
     'lino_xl.lib.postings.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.postings.CreatePostings' : _("""Creates a series of new Postings from this Postable. 
 The Postable gives the list of recipients, and there will 
 be one Posting for each recipient."""),
     'lino_xl.lib.postings.Postable' : _("""Mixin for models that provide a "Post" button."""),
-    'lino_xl.lib.postings.PostingStates' : _("""List of possible values for the state field of a 
-Posting."""),
-    'lino_xl.lib.postings.Posting' : _("""A Posting is the fact that a letter or other item 
-has been sent using snail mail."""),
     'lino_xl.lib.products.Plugin' : _("""The config descriptor for this plugin."""),
     'lino_xl.lib.properties.Plugin' : _("""See lino.core.Plugin."""),
     'lino_xl.lib.reception.Plugin' : _("""See lino.core.Plugin."""),
@@ -189,7 +171,7 @@ has been sent using snail mail."""),
     'lino_xl.lib.reception.AppointmentsByPartner' : _("""Show the participations in upcoming calendar events for a given
 partner."""),
     'lino_xl.lib.reception.AppointmentsByPartner.model' : _("""alias of lino_xl.lib.cal.models.Guest"""),
-    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
+    'lino_xl.lib.reception.AppointmentsByPartner.master' : _("""alias of lino_book.projects.min9.modlib.contacts.models.Person"""),
     'lino_xl.lib.reception.ExpectedGuests' : _("""General table of all expected guests."""),
     'lino_xl.lib.reception.ExpectedGuests.model' : _("""alias of lino_xl.lib.cal.models.Guest"""),
     'lino_xl.lib.reception.Visitors' : _("""Common base class for the following tables:"""),
@@ -218,18 +200,6 @@ guests. Ask confirmation naming the guests who need to check out."""),
     'lino_xl.lib.sepa.roles.SepaUser' : _("""Can see imported bank statements and movements per partner."""),
     'lino_xl.lib.sepa.roles.SepaStaff' : _("""Can see imported statements and movements also globally in the
 Explorer menu."""),
-    'lino_xl.lib.skills.SuggestedTicketsByEndUser' : _("""Shows the tickets of other users which need help on a faculty for
-which I am competent."""),
-    'lino_xl.lib.skills.SuggestedTicketsByEndUser.master' : _("""alias of lino_xl.lib.contacts.models.Person"""),
-    'lino_xl.lib.skills.SuggestedTicketsByEndUser.model' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.skills.Competence' : _("""A skill offer is when a given user is declared to have a
-given skill."""),
-    'lino_xl.lib.skills.Demand' : _("""A Skill demand is when a given demander declares to need a
-given skill."""),
-    'lino_xl.lib.skills.Demand.importance' : _("""How important this skill is for this demand."""),
-    'lino_xl.lib.skills.Skill' : _("""A skill is a knowledge or ability which can be
-required in order to work e.g. on some ticket, and which
-individual users can have (offer) or not."""),
     'lino_xl.lib.stars.Plugin' : _("""See lino.core.plugin.Plugin."""),
     'lino_xl.lib.stars.Star' : _("""Represents the fact that a given database object is starred by a
 given User."""),
@@ -306,47 +276,6 @@ get_vote_raters)."""),
     'lino_xl.lib.votes.VoteStates.item_class' : _("""alias of lino_xl.lib.votes.choicelists.VoteState"""),
     'lino_xl.lib.votes.Votable' : _("""Base class for models that can be used as
 lino_xl.lib.votes.Plugin.votable_model."""),
-    'lino_xl.lib.votes.Votable.get_vote_raters' : _("""Yield or return a list of the users who are allowed to rate the
-votes on this votable."""),
-    'lino_xl.lib.votes.Votable.get_favourite' : _("""Return the vote of the given user about this votable, or None if no
-vote exists."""),
-    'lino_xl.lib.votes.Votable.set_author_votes' : _("""Verify that every vote rater has a vote."""),
-    'lino_xl.lib.votes.Votable.after_ui_create' : _("""Automatically call set_author_votes() after creation."""),
-    'lino_xl.lib.votes.Vote' : _("""A vote is when a user has an opinion or interest about a given
-ticket (or any other votable)."""),
-    'lino_xl.lib.votes.Vote.votable' : _("""The ticket (or other votable) being voted."""),
-    'lino_xl.lib.votes.Vote.user' : _("""The user who is voting."""),
-    'lino_xl.lib.votes.Vote.state' : _("""The state of this vote.  Pointer to VoteStates."""),
-    'lino_xl.lib.votes.Vote.priority' : _("""My personal priority for this ticket."""),
-    'lino_xl.lib.votes.Vote.rating' : _("""How the ticket author rates my help on this ticket."""),
-    'lino_xl.lib.votes.Vote.remark' : _("""Why I am interested in this ticket."""),
-    'lino_xl.lib.votes.Vote.nickname' : _("""My nickname for this ticket. Optional."""),
-    'lino_xl.lib.votes.Vote.on_create' : _("""Set the default vote state,"""),
-    'lino_xl.lib.votes.Votes' : _("""Table parameters:"""),
-    'lino_xl.lib.votes.Votes.observed_event' : _("""There are two class attributes for defining a filter conditions
-which canot be removed by the user:"""),
-    'lino_xl.lib.votes.Votes.filter_vote_states' : _("""A set of vote states to require (i.e. to filter upon).  This
-must resolve using resolve_states."""),
-    'lino_xl.lib.votes.Votes.exclude_vote_states' : _("""A set of vote states to exclude.  This must
-resolve using resolve_states."""),
-    'lino_xl.lib.votes.Votes.filter_ticket_states' : _("""A set of ticket states to require (i.e. to filter upon). This
-must resolve using resolve_states."""),
-    'lino_xl.lib.votes.Votes.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
-    'lino_xl.lib.votes.Votes.get_detail_title' : _("""Overrides the default beaviour"""),
-    'lino_xl.lib.votes.MyVotes' : _("""Show all my votes."""),
-    'lino_xl.lib.votes.MyVotes.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
-    'lino_xl.lib.votes.MyInvitations' : _("""Show my votes in state invited."""),
-    'lino_xl.lib.votes.MyInvitations.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
-    'lino_xl.lib.votes.MyOffers' : _("""Show the tickets for which I am candidate"""),
-    'lino_xl.lib.votes.MyOffers.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
-    'lino_xl.lib.votes.MyTasks' : _("""Show my votes in states assigned and done"""),
-    'lino_xl.lib.votes.MyTasks.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
-    'lino_xl.lib.votes.MyWatched' : _("""Show my votes in state watching"""),
-    'lino_xl.lib.votes.MyWatched.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
-    'lino_xl.lib.votes.VotesByVotable' : _("""Show the votes about this object."""),
-    'lino_xl.lib.votes.VotesByVotable.get_table_summary' : _("""Customized summary view for this table."""),
-    'lino_xl.lib.votes.VotesByVotable.master' : _("""alias of lino_xl.lib.tickets.models.Ticket"""),
-    'lino_xl.lib.votes.VotesByVotable.model' : _("""alias of lino_xl.lib.votes.models.Vote"""),
     'lino_xl.lib.addresses.Address' : _("""Django model to represent and address record."""),
     'lino_xl.lib.addresses.Address.address_type' : _("""The type of this address record.
 A pointer to AddressTypes.

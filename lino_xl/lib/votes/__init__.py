@@ -7,7 +7,6 @@
    :toctree:
 
     choicelists
-    models
     actions
     mixins
     fixtures.demo2

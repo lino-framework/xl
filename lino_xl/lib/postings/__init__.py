@@ -1,5 +1,4 @@
-# Copyright 2008-2015 Rumma & Ko Ltd
-#
+# Copyright 2008-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 """
@@ -8,7 +7,6 @@ Adds functionality for managing postings.
 .. autosummary::
    :toctree:
 
-    models
     mixins
     dummy
 

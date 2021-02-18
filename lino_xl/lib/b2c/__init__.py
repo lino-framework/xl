@@ -6,7 +6,7 @@ Adds functionality for importing BankToCustomer SEPA statements
 from a bank.  See :doc:`/specs/b2c`.
 
 
-.. autosummary:: 
+.. autosummary::
     :toctree:
 
     camt
@@ -25,20 +25,11 @@ class Plugin(ad.Plugin):
     verbose_name = _("SEPA import")
 
     needs_plugins = ['lino_cosi.lib.cosi']
-    
+
     import_statements_path = None
-    """A path wildcard pointing to xml files which need to get imported.
-
-    As a system admin you can set this e.g. by specifying in your
-    :xfile:`settings.py` (*before* instantiating your
-    :setting:`SITE`)::
-
-       ad.configure_plugin('b2c', import_statements_path="/var/sepa_incoming")
-
-    End-users are supposed to download SEPA statement files to that
-    directory and then to invoke the
-    :class:`lino_xl.lib.b2c.models.ImportStatements` action.
-
+    """
+    The full name of the directory that Lino should watch for incoming xml files
+    that need to get imported.
     """
 
     delete_imported_xml_files = False

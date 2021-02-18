@@ -1,16 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Rumma & Ko Ltd
-#
+# Copyright 2016-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-"""
-Database models for this plugin.
-
-"""
-
-from __future__ import unicode_literals
-from __future__ import print_function
-from builtins import str
-import six
 
 from django.db import models
 from django.conf import settings
@@ -63,8 +53,8 @@ class Vote(UserAuthored, Created, Workable):
         Why I am interested in this ticket.
 
     .. attribute:: nickname
-    
-        My nickname for this ticket. Optional. 
+
+        My nickname for this ticket. Optional.
 
         If this is specified, then I get a quicklink to this ticket.
 
@@ -95,14 +85,14 @@ class Vote(UserAuthored, Created, Workable):
     # @dd.action(_("Cancel"))
     # def cancel_vote(self):
     #     self.state = VoteStates.cancelled
-        
+
     # @dd.action(_("Candidate"))
     # def mark_me_as_candidate(self):
     #     self.state = VoteStates.candidate
-        
+
     quick_search_fields = "nickname votable__summary votable__description"
     workflow_state_field = 'state'
-    
+
     edit_vote = EditVote()
 
     # def full_clean(self):
@@ -125,7 +115,7 @@ class Vote(UserAuthored, Created, Workable):
                 # vote=self.state.vote_name,
                 vote=self._meta.verbose_name,
                 votable=self.votable)
-                
+
         return _("{user}'s {vote} on {votable}").format(
             user=self.user,
             # vote=self.state.vote_name,
@@ -134,7 +124,7 @@ class Vote(UserAuthored, Created, Workable):
 
     def get_ticket(self):
         return self.votable
-    
+
     def disabled_fields(self, ar):
         df = super(Vote, self).disabled_fields(ar)
         if self.votable_id:
@@ -199,11 +189,11 @@ class Vote(UserAuthored, Created, Workable):
                 self.state = VoteStates.invited
         super(Vote, self).on_create(ar)
 
-        
+
 
     # def get_author(self):
     def get_row_permission(self, ar, state, ba):
-        # we bypass the author check because 
+        # we bypass the author check because
         return dd.Model.get_row_permission(self,ar, state, ba)
 
 dd.update_field(Vote, 'user', verbose_name=_("Voter"))
@@ -252,14 +242,14 @@ class Votes(dd.Table):
     params_panel_hidden = True
     # show_detail_navigator = False
     # hide_top_toolbar = True
-    
+
     detail_layout = dd.DetailLayout("""
-    user votable 
+    user votable
     #project
-    mail_mode 
+    mail_mode
     priority nickname
     state
-    rating 
+    rating
     """, window_size=(40, 'auto'))
 
     filter_vote_states = None
@@ -269,8 +259,8 @@ class Votes(dd.Table):
     # @classmethod
     # def on_analyze(self, site):
     #     super(Votes, self).on_analyze(site)
-        
-    
+
+
     @classmethod
     def do_setup(self):
         # print("Votes.to_setup")
@@ -318,7 +308,7 @@ class Votes(dd.Table):
             qs = qs.filter(votable__user=pv.ticket_user)
         if pv.exclude_ticket_user:
             qs = qs.exclude(votable__user=pv.exclude_ticket_user)
-            
+
         # if pv.show_todo == dd.YesNo.no:
         #     qs = qs.exclude(state__in=VoteStates.todo_states)
         # elif pv.show_todo == dd.YesNo.yes:
@@ -327,7 +317,7 @@ class Votes(dd.Table):
         if pv.observed_event:
             qs = pv.observed_event.add_filter(qs, pv)
         return qs
-       
+
     @classmethod
     def get_title_tags(self, ar):
         pv = ar.param_values
@@ -358,7 +348,7 @@ class AllVotes(Votes):
 #     display_mode = 'summary'
 #     stay_in_grid = True
 
-    
+
 
 
 class MyVotes(My, Votes):
@@ -366,15 +356,15 @@ class MyVotes(My, Votes):
     label = _("My votes")
     column_names = "votable_overview workflow_buttons *"
     # hide_top_toolbar = True
-    
+
     detail_layout = dd.DetailLayout("""
     user #project
-    workflow_buttons 
+    workflow_buttons
     mail_mode
     priority nickname
     """, window_size=(40, 'auto'), hidden_elements='user')
-    
-    
+
+
 class MyInvitations(My, Votes):
     """Show my votes in state invited. """
     label = _("My vote invitations")
@@ -382,15 +372,15 @@ class MyInvitations(My, Votes):
     order_by = ['-priority', '-id']
     filter_vote_states = "invited"
     # filter_ticket_states = "opened started talk"
-    
-    
+
+
 class MyOffers(My, Votes):
     """Show the tickets for which I am candidate"""
     label = _("My candidatures")
     column_names = "votable_overview workflow_buttons *"
     filter_vote_states = "candidate"
     filter_ticket_states = "new talk opened working"
-    
+
 
 class MyTasks(My, Votes):
     """Show my votes in states assigned and done"""
@@ -399,14 +389,14 @@ class MyTasks(My, Votes):
     order_by = ['-priority', '-id']
     filter_vote_states = "assigned done"
     filter_ticket_states = "opened working talk"
-    
+
 class MyWatched(My, Votes):
     """Show my votes in state watching"""
     label = _("My watchlist")
     column_names = "votable_overview workflow_buttons *"
     filter_vote_states = "watching"
     # filter_ticket_states = "open talk"
-    
+
     @classmethod
     def param_defaults(self, ar, **kw):
         kw = super(MyWatched, self).param_defaults(ar, **kw)
@@ -429,17 +419,17 @@ class VotesByVotable(Votes):
 
     detail_layout = dd.DetailLayout("""
     #project
-    mail_mode 
+    mail_mode
     # priority nickname
-    workflow_buttons 
-    rating 
+    workflow_buttons
+    rating
     """, window_size=(40, 'auto'))
 
     insert_layout = """
     user
-    mail_mode 
-    workflow_buttons 
-    # rating 
+    mail_mode
+    workflow_buttons
+    # rating
     """
 
     @classmethod
@@ -488,33 +478,33 @@ class VotesByVotable(Votes):
             btn = sar.ar2button()
             # btn = sar.ar2button(None, u"⏍", icon_name=None)  # 23CD SQUARE FOOT
             # btn = sar.ar2button(None, u"⊞", icon_name=None) # 229e SQUARED PLUS
-            
+
             html.append(E.div(btn))
 
-            
+
         return ar.html_text(E.div(*html))
 
-    
+
 
 # class MyOfferedVotes(MyVotes):
 #     """List of my help offers to other users' requests.
 
-#     Only those which need my attention. 
+#     Only those which need my attention.
 
 #     """
-    
+
 #     column_names = "votable state priority rating nickname *"
 #     order_by = ['-id']
-    
+
 # class MyRequestedVotes(MyVotes):
-#     """List of other user's help offers on my requests. 
+#     """List of other user's help offers on my requests.
 
-#     Only those which need my attention. 
+#     Only those which need my attention.
 
 #     """
 #     column_names = "votable state priority rating nickname *"
 #     order_by = ['-id']
-    
+
 
 
 
@@ -530,7 +520,7 @@ page.
     qs = Vote.objects.filter(user=ar.get_user()).exclude(nickname='')
     qs = qs.order_by('priority')
     if qs.count() > 0:
-        chunks = [six.text_type(_("Your favourite {0} are ").format(
+        chunks = [str(_("Your favourite {0} are ").format(
             config.votable_model._meta.verbose_name_plural))]
         chunks += join_elems([
             ar.obj2html(obj.votable, obj.nickname)
@@ -539,4 +529,3 @@ page.
         yield E.span(*chunks)
 
 dd.add_welcome_handler(welcome_messages)
-

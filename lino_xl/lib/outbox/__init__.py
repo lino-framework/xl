@@ -1,5 +1,4 @@
 # Copyright 2013-2015 Rumma & Ko Ltd
-#
 # License: BSD (see file COPYING for details)
 
 """Adds functionality for sending emails from within a Lino application.
@@ -7,7 +6,6 @@
 .. autosummary::
    :toctree:
 
-   models
    mixins
    choicelists
    fixtures.hello
