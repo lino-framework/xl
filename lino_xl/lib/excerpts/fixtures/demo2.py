@@ -1,20 +1,15 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2014-2017 Rumma & Ko Ltd
-#
+# Copyright 2014-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 """Makes sure that there is at least one excerpt for every ExcerptType.
 Render all excerpts by running their do_print method.
 
 """
-from __future__ import unicode_literals
 
 import traceback
 
 from lino.api import rt, dd
 
-# from lino_xl.lib.excerpts.mixins import Certifiable
-
-PRINT_THEM_ALL = True
 SEVERE = True
 
 

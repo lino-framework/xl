@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2012-2020 Rumma & Ko Ltd
+# Copyright 2012-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import datetime
@@ -12,7 +12,10 @@ from lino.utils import Cycler
 from lino.utils.dates import AMONTH
 from lino.api import dd, rt, _
 
+from lino.modlib.uploads.mixins import demo_upload
+
 from lino_xl.lib.vat.mixins import myround
+from lino_xl.lib.ledger import UPLOADTYPE_SOURCE_DOCUMENT
 
 # from lino.core.requests import BaseRequest
 REQUEST = settings.SITE.login()  # BaseRequest()
@@ -95,16 +98,15 @@ def objects():
     VAT_CLASSES = Cycler(VatClasses.get_list_items()[:-1])
     # 20210103 We don't use the vatless class because that would break existing doctests.
 
-    while date < end_date:
+    if dd.is_installed('ana'):
+        invoice_model = rt.models.ana.AnaAccountInvoice
+    else:
+        invoice_model = rt.models.vat.VatAccountInvoice
 
+    while date < end_date:
         for story in PURCHASE_STORIES:
             vd = date + delta(days=DATE_DELTAS.pop())
-            if dd.is_installed('ana'):
-                cl = rt.models.ana.AnaAccountInvoice
-            else:
-                cl = rt.models.vat.VatAccountInvoice
-
-            invoice = cl(
+            invoice = invoice_model(
                 journal=JOURNAL_P, partner=story[0], user=USERS.pop(),
                 voucher_date=vd,
                 payment_term=story[0].payment_term or PAYMENT_TERMS.pop(),
@@ -141,3 +143,12 @@ def objects():
             invoice.save()
 
         date += AMONTH
+
+    UploadType = rt.models.uploads.UploadType
+    source_document = UploadType.objects.get(id=UPLOADTYPE_SOURCE_DOCUMENT)
+    start_uploads = settings.SITE.demo_date(-20)
+    # start_uploads = settings.SITE.demo_date().replace(month=1, day=1)
+    for invoice in invoice_model.objects.filter(entry_date__gte=start_uploads):
+        kw = dict(owner=invoice, upload_date=invoice.entry_date)
+        yield demo_upload("{}.pdf".format(invoice), type=source_document,
+            user=invoice.user, **kw)
