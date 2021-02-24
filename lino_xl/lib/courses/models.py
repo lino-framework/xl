@@ -624,9 +624,9 @@ class Enrolment(UserAuthored, Certifiable, DateRange):
         #~ return _("Confirmation not implemented")
 
     def get_guest_role(self):
+        # voga overrides this
         if self.course.line:
-            return self.course.line.guest_role or settings.SITE.site_config.pupil_guestrole
-        return settings.SITE.pupil_guestrole
+            return self.course.line.guest_role
 
     def make_guest_for(self, event):
         if not self.state.uses_a_place:
