@@ -62,9 +62,6 @@ country_code."""),
     'lino_xl.lib.countries.utils.AddressFormatter' : _("""Format used in BE, DE, FR, NL..."""),
     'lino_xl.lib.countries.utils.EstonianAddressFormatter' : _("""Format used in Estonia."""),
     'lino_xl.lib.courses.Course.before_auto_event_save' : _("""Set room and start_time/end_time for automatic events."""),
-    'lino_xl.lib.courses.Course.get_detail_action' : _("""Custom get_detail_action because the
-detail_layout to use depends on the course's line's
-course_area."""),
     'lino_xl.lib.courses.Course.get_events_user' : _("""The user of generated events is not the course manager (author) but
 the teacher."""),
     'lino_xl.lib.courses.Course.suggest_cal_guests' : _("""Look up enrolments of this course and suggest them as guests."""),
@@ -763,6 +760,10 @@ in this activity."""),
     'lino_xl.lib.courses.Course.requested' : _("""Number of requested places."""),
     'lino_xl.lib.courses.Course.trying' : _("""Number of trying places."""),
     'lino_xl.lib.courses.Course.confirmed' : _("""Number of confirmed places."""),
+    'lino_xl.lib.courses.Course.get_detail_action' : _("""Custom get_detail_action because the
+detail_layout to use depends on the
+activity layout, which is given by the
+Line.course_area field of the activity's line."""),
     'lino_xl.lib.courses.Courses' : _("""Base table for all activities."""),
     'lino_xl.lib.courses.Courses.show_exposed' : _("""Whether to show or to hide courses in an exposed state."""),
     'lino_xl.lib.courses.MyActivities' : _("""Show the courses authored by me (i.e. where I am the responsible

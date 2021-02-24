@@ -61,8 +61,7 @@ add('30', _("Cancelled"), 'cancelled', invoiceable=False, uses_a_place=False)
 
 class ActivityLayout(dd.Choice):
 
-    # force_guest_states = False
-    courses_table = 'courses.ActivitiesByLayout'
+    courses_table = None
 
     def __init__(
             self, value, text, name,

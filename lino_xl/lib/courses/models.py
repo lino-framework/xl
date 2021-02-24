@@ -262,23 +262,11 @@ class Course(Reservation, Duplicable, Printable):
         return "%s (%s %s)" % (line, dd.fds(self.start_date),self.room)
 
     def get_detail_action(self, ar):
-        """Custom :meth:`get_detail_action
-        <lino.core.model.Model.get_detail_action>` because the
-        detail_layout to use depends on the course's line's
-        `course_area`.
-
-        """
-        if self.line_id:
+        if ar is not None and self.line_id:
             area = self.line.course_area
             if area:
                 table = rt.models.resolve(area.courses_table)
-                ba = table.detail_action
-                ba = ba.action.defining_actor.detail_action
-                # if ar is None or ba.get_row_permission(ar, self, None):
-                #     return ba
-                if ar is None or ba.get_view_permission(ar.get_user().user_type):
-                    return ba
-                return None
+                return table.get_request_detail_action(ar)
         return super(Course, self).get_detail_action(ar)
 
     def update_cal_from(self, ar):
