@@ -1,9 +1,6 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2019 Rumma & Ko Ltd
+# Copyright 2017-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
-
-from __future__ import unicode_literals
-from builtins import str
 
 from django.db import models
 from django.conf import settings
@@ -16,6 +13,7 @@ from etgen.html import E, join_elems
 from lino.modlib.comments.mixins import Commentable, PrivateCommentsReader
 from lino.modlib.users.mixins import UserAuthored, My
 from lino.modlib.notify.mixins import ChangeNotifier
+from lino.core.roles import SiteAdmin, SiteUser  # , UserRole
 
 
 class Group(mixins.BabelNamed, mixins.Referrable, ChangeNotifier,
@@ -85,6 +83,7 @@ class Groups(dd.Table):
     model = 'groups.Group'
     column_names = 'ref name *'
     order_by = ['ref']
+    required_roles = dd.login_required(SiteAdmin)
 
     insert_layout = """
     ref name
@@ -111,8 +110,7 @@ class Groups(dd.Table):
 
 class MyGroups(My, Groups):
     column_names = 'overview:10 recent_comments *'
-
-
+    required_roles = dd.login_required(SiteUser)
 
 
 class Membership(UserAuthored):
@@ -135,6 +133,7 @@ dd.update_field(Membership, "user", verbose_name=_("User"))
 
 class Memberships(dd.Table):
     model = 'groups.Membership'
+    required_roles = dd.login_required(SiteAdmin)
     insert_layout = dd.InsertLayout("""
     user
     group
@@ -182,14 +181,13 @@ class MembershipsByGroup(Memberships):
         return E.div(*chunks)
 
 
-
-
 class MembershipsByUser(Memberships):
     master_key = 'user'
     column_names = "group remark *"
     order_by = ['group__ref']
     display_mode = 'summary'
+    required_roles = dd.login_required(SiteUser)
 
 
 class AllMemberships(Memberships):
-    required_roles = dd.login_required(dd.SiteAdmin)
+    required_roles = dd.login_required(SiteAdmin)

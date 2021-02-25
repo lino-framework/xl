@@ -587,7 +587,7 @@ class SitesByReport(Sites, DurationReport):
 
 class ServiceReports(dd.Table):
     """List of service reports."""
-    required_roles = dd.login_required(Worker)
+    required_roles = dd.login_required(Triager)
 
     model = "working.ServiceReport"
     insert_layout = """

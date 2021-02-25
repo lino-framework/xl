@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2016-2017 Rumma & Ko Ltd
+# Copyright 2016-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 
@@ -7,7 +7,6 @@ from django.db import models
 from django.utils import timezone
 
 from lino.api import dd, rt, _
-
 from lino.mixins.periods import Monthly
 from lino.modlib.printing.mixins import DirectPrintAction
 from lino.core.roles import SiteUser
@@ -24,7 +23,7 @@ class WorkerAction(dd.Action):
     #     return ar.selected_rows
 
 class EndSession(WorkerAction):
-    label = u"■"  # BLACK SQUARE (U+25A0)
+    label = "■"  # BLACK SQUARE (U+25A0)
     # label = u"◉"  # FISHEYE (U+25C9)
     # label = u"↘"  # u"\u2198"
     # label = _("End session")

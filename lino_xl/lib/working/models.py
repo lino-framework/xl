@@ -10,6 +10,7 @@ from lino import mixins
 from lino.api import dd, rt, _, gettext
 
 from etgen.html import E
+from lino.core.roles import SiteAdmin
 from lino.utils.quantities import Duration
 from lino.mixins.periods import DateRange
 from lino.modlib.users.mixins import UserAuthored
@@ -20,6 +21,7 @@ from lino_xl.lib.cal.mixins import Started, Ended
 from lino_xl.lib.excerpts.mixins import Certifiable
 from lino_xl.lib.contacts.mixins import ContactRelated
 from lino_xl.lib.tickets.choicelists import TicketStates
+from lino_xl.lib.tickets.roles import Triager
 from lino_xl.lib.invoicing.mixins import InvoiceGenerator
 
 from .actions import EndThisSession, PrintActivityReport, EndTicketSession, ShowMySessionsByDay
@@ -476,18 +478,21 @@ def inject_summary_fields(sender, **kw):
 
 def welcome_messages(ar):
     """Yield messages for the welcome page."""
-    #todo show all users active sessions
 
     Session = rt.models.working.Session
+    Group = rt.models.groups.Group
     # Ticket = rt.models.tickets.Ticket
     # TicketStates = rt.models.tickets.TicketStates
     me = ar.get_user()
 
-    # your open sessions (i.e. those you are busy with)
+    # all open sessions (i.e. those somebody is working on)
     qs = Session.objects.filter(end_time__isnull=True)
-    working = {me:[E.b(str(_("You are busy with ")))]}
+    if not me.user_type.has_required_roles([Triager]):
+        mygroups = Group.objects.filter(members__user=me)
+        qs = qs.filter(ticket__site__group__in=mygroups)
     if qs.count() == 0:
         return
+    working = {me:[E.b(str(_("You are working on ")))]}
     for ses in qs:
         if ses.user not in working:
             working[ses.user] = [ar.obj2html(ses.user),
@@ -506,7 +511,6 @@ def welcome_messages(ar):
         working[ses.user].append(', ')
 
     if len(working[me]) > 1:
-
         working[me][-1] = working[me][-1].replace(", ", ".")
         result = E.p(*working.pop(me))
     else:

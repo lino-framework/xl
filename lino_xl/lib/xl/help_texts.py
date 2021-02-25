@@ -985,7 +985,8 @@ financial voucher."""),
 selected suggestion does not create a new item but replaces the
 item for which it was called."""),
     'lino_xl.lib.groups.Group' : _("""Django model representing a users group."""),
-    'lino_xl.lib.groups.Group.ref' : _("""The reference."""),
+    'lino_xl.lib.groups.Group.ref' : _("""The reference. An optional alphanumeric identifier that, unlike the
+primary key, is editable."""),
     'lino_xl.lib.groups.Group.name' : _("""The designation in different languages."""),
     'lino_xl.lib.groups.Group.user' : _("""The owner of the group"""),
     'lino_xl.lib.groups.Groups' : _("""Shows all groups."""),
@@ -1408,18 +1409,22 @@ end_time."""),
     'lino_xl.lib.working.Session.faculty' : _("""The faculty that has been used during this session. On a new
 session this defaults to the needed faculty currently specified
 on the ticket."""),
+    'lino_xl.lib.working.Session.end_session' : _("""Tell Lino that you stop this session for now.
+This will simply set the end_time to the current time."""),
     'lino_xl.lib.working.SessionsByTicket' : _("""The "Sessions" panel in the detail of a ticket."""),
     'lino_xl.lib.working.SessionsByTicket.slave_summary' : _("""This panel shows:"""),
     'lino_xl.lib.working.StartTicketSession' : _("""Start a session on this ticket."""),
-    'lino_xl.lib.working.EndTicketSession' : _("""Close this session, i.e. stop working it for now."""),
-    'lino_xl.lib.working.EndThisSession' : _("""Close this session, i.e. stop working on that ticket now."""),
+    'lino_xl.lib.working.EndSession' : _("""Common base for EndThisSession and EndTicketSession."""),
+    'lino_xl.lib.working.EndTicketSession' : _("""The action behind Workable.end_session."""),
+    'lino_xl.lib.working.EndThisSession' : _("""The action behind Session.end_session."""),
     'lino_xl.lib.working.Workable' : _("""Base class for things that workers can work on."""),
     'lino_xl.lib.working.Workable.is_workable_for' : _("""Return True if the given user can start a work session on
 this object."""),
     'lino_xl.lib.working.Workable.on_worked' : _("""This is automatically called when a work session has been
 created or modified."""),
     'lino_xl.lib.working.Workable.start_session' : _("""See StartTicketSession."""),
-    'lino_xl.lib.working.Workable.end_session' : _("""See EndTicketSession."""),
+    'lino_xl.lib.working.Workable.end_session' : _("""Tell Lino that you stop working on this ticket for now.
+This will simply set the Session.end_time to the current time."""),
     'lino_xl.lib.working.ServiceReport' : _("""The Django model representing a service report."""),
     'lino_xl.lib.working.ServiceReport.user' : _("""This can be empty and will then show the working time of all
 users."""),

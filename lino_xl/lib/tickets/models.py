@@ -584,7 +584,7 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
                 Q(site__group__members__user__id=user.pk) |
                 Q(user=user) | Q(end_user=user)|
                 Q(assigned_to=user)|
-                Q(private=False, site__private=False))
+                Q(private=False, site__private=False)).distinct()
         return qs
 
     def is_comment_private(self, comment, ar):
