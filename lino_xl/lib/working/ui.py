@@ -94,11 +94,12 @@ class Sessions(dd.Table):
     summary:60 is_fixing workflow_buttons:20
     description
     """
-    insert_layout = """
-    ticket
-    summary
-    session_type
-    """
+    allow_create = False  # don't allow adding a phantom row
+    # insert_layout = """
+    # ticket
+    # summary
+    # session_type
+    # """
 
     order_by = ['-start_date', '-start_time', 'id']
     # order_by = ['start_date', 'start_time']
