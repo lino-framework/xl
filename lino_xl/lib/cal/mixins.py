@@ -607,7 +607,12 @@ class RecurrenceSet(Started, Ended):
         else:
             return "Invalid recurrency unit {}".format(self.every_unit)
         s = ngettext("Every {day}", "Every {ord_count} {day}", self.every)
-        return s.format(ord_count=num2words(self.every, to='ordinal', lang=translation.get_language()), day=day_text)
+        # num2words does not have support for every other language; and raises NotImplementedError.
+        try:
+            ord_count = num2words(self.every, to='ordinal', lang=translation.get_language())
+        except NotImplementedError:
+            ord_count = num2words(self.every, to='ordinal')
+        return s.format(ord_count=ord_count, day=day_text)
         # if self.every == 1:
         #     return gettext("Every {what}").format(what=every_text)
         # return gettext("Every {ordinal} {what}").format(
