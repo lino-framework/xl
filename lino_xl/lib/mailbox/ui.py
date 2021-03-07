@@ -1,16 +1,9 @@
+# -*- coding: UTF-8 -*-
+# Copyright 2013-2021 Rumma & Ko Ltd
+# License: BSD (see file COPYING for details)
 
-"""tables for `lino_xl.lib.mailbox`.
+from lino.api import dd, _
 
-"""
-# import logging
-#
-# logger = logging.getLogger(__name__)
-
-
-
-from django.utils.translation import gettext_lazy as _
-
-from lino.api import dd
 
 class Mailboxes(dd.Table):
     model = "django_mailbox.Mailbox"
@@ -27,7 +20,7 @@ class Mailboxes(dd.Table):
 
 class MessageDetail(dd.DetailLayout):
     main = "general preview"
-    
+
     general = dd.Panel("""
     from_header subject ticket
     to_header
