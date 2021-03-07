@@ -5,10 +5,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: lino-xl 21.2.3\n"
+"Project-Id-Version: lino-xl 21.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2021-03-03 21:11+0200\n"
-"PO-Revision-Date: 2021-03-03 21:11+0200\n"
+"POT-Creation-Date: 2021-03-07 09:36+0200\n"
+"PO-Revision-Date: 2021-03-07 09:37+0200\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: zh_Hant\n"
 "Language-Team: zh_Hant <LL@li.org>\n"
@@ -197,7 +197,7 @@ msgid "Analytic invoice items"
 msgstr ""
 
 #: lino_xl/lib/ana/models.py:224 lino_xl/lib/cal/mixins.py:561
-#: lino_xl/lib/cal/mixins.py:857 lino_xl/lib/cal/models.py:121
+#: lino_xl/lib/cal/mixins.py:862 lino_xl/lib/cal/models.py:121
 #: lino_xl/lib/cal/models.py:149 lino_xl/lib/cal/models.py:217
 #: lino_xl/lib/cal/models.py:322 lino_xl/lib/courses/models.py:103
 #: lino_xl/lib/courses/models.py:192 lino_xl/lib/github/models.py:173
@@ -222,7 +222,7 @@ msgstr ""
 #: lino_xl/lib/ana/models.py:256 lino_xl/lib/cal/fixtures/std.py:27
 #: lino_xl/lib/courses/desktop.py:139 lino_xl/lib/excerpts/models.py:610
 #: lino_xl/lib/finan/models.py:286 lino_xl/lib/finan/models.py:300
-#: lino_xl/lib/finan/models.py:307 lino_xl/lib/mailbox/ui.py:35
+#: lino_xl/lib/finan/models.py:307 lino_xl/lib/mailbox/ui.py:28
 #: lino_xl/lib/meetings/desktop.py:57 lino_xl/lib/orders/ui.py:53
 #: lino_xl/lib/polls/models.py:164 lino_xl/lib/polls/models.py:347
 #: lino_xl/lib/rooms/models.py:142 lino_xl/lib/sales/models.py:208
@@ -1242,7 +1242,7 @@ msgstr ""
 msgid "Transactions"
 msgstr ""
 
-#: lino_xl/lib/b2c/models.py:276 lino_xl/lib/cal/mixins.py:865
+#: lino_xl/lib/b2c/models.py:276 lino_xl/lib/cal/mixins.py:870
 #: lino_xl/lib/countries/mixins.py:159
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.weasy.html:68
 #: lino_xl/lib/courses/config/courses/Course/presence_sheet.wk.html:32
@@ -2415,32 +2415,32 @@ msgid "Every {day}"
 msgid_plural "Every {ord_count} {day}"
 msgstr[0] ""
 
-#: lino_xl/lib/cal/mixins.py:620
+#: lino_xl/lib/cal/mixins.py:625
 msgid "working day"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:780 lino_xl/lib/courses/choicelists.py:23
+#: lino_xl/lib/cal/mixins.py:785 lino_xl/lib/courses/choicelists.py:23
 #: lino_xl/lib/ledger/choicelists.py:473
 msgid "Editable"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:793 lino_xl/lib/orders/models.py:97
+#: lino_xl/lib/cal/mixins.py:798 lino_xl/lib/orders/models.py:97
 msgid "Generate events until"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:855
+#: lino_xl/lib/cal/mixins.py:860
 msgid "Short description"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:862
+#: lino_xl/lib/cal/mixins.py:867
 msgid "Whether this is private, public or between."
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:864
+#: lino_xl/lib/cal/mixins.py:869
 msgid "Revision"
 msgstr ""
 
-#: lino_xl/lib/cal/mixins.py:906
+#: lino_xl/lib/cal/mixins.py:911
 msgid "at {time}"
 msgstr ""
 
@@ -3004,7 +3004,7 @@ msgstr ""
 
 #: lino_xl/lib/cal/workflows/voga.py:54 lino_xl/lib/courses/desktop.py:560
 #: lino_xl/lib/courses/workflows/doodle.py:55
-#: lino_xl/lib/courses/workflows/std.py:28 lino_xl/lib/mailbox/models.py:78
+#: lino_xl/lib/courses/workflows/std.py:28 lino_xl/lib/mailbox/models.py:72
 #: lino_xl/lib/reception/models.py:213 lino_xl/lib/reception/models.py:259
 #: lino_xl/lib/reception/models.py:310 lino_xl/lib/reception/workflows.py:53
 #: lino_xl/lib/working/actions.py:62
@@ -4628,7 +4628,7 @@ msgid "Unprinted %s #%s"
 msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:505 lino_xl/lib/invoicing/models.py:367
-#: lino_xl/lib/mailbox/models.py:36 lino_xl/lib/polls/models.py:354
+#: lino_xl/lib/mailbox/models.py:31 lino_xl/lib/polls/models.py:354
 msgid "Preview"
 msgstr ""
 
@@ -6597,15 +6597,15 @@ msgstr ""
 msgid "Schools"
 msgstr ""
 
-#: lino_xl/lib/mailbox/__init__.py:15
+#: lino_xl/lib/mailbox/__init__.py:29
 msgid "Mailbox"
 msgstr ""
 
-#: lino_xl/lib/mailbox/models.py:77
+#: lino_xl/lib/mailbox/models.py:71
 msgid "Delete {} messages."
 msgstr ""
 
-#: lino_xl/lib/mailbox/ui.py:42 lino_xl/lib/tickets/ui.py:356
+#: lino_xl/lib/mailbox/ui.py:35 lino_xl/lib/tickets/ui.py:356
 #: lino_xl/lib/votes/choicelists.py:77
 msgid "Assigned"
 msgstr ""
