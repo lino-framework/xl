@@ -27,8 +27,7 @@ class Plugin(ad.Plugin):
     def on_init(self):
         super(Plugin, self).on_init()
         if self.site.site_locale is None:
-            import locale
-            self.site.site_locale = '.'.join(locale.getdefaultlocale())
+            self.site.site_locale = 'de_BE.utf-8'
 
     def setup_reports_menu(self, site, user_type, m):
         mg = site.plugins.ledger
