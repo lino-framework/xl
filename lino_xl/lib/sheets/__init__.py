@@ -1,14 +1,15 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2018 Rumma & Ko Ltd
+# Copyright 2018-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-
 """
-Add financial statements that work using "sheet items".  In
-practice this means the *Balance sheet* and the *Income statement*.
+Add functionality for producing accounting statements that work using "sheet
+items".  In practice this means the *Balance sheet* and the *Income statement*.
 
 See :doc:`/specs/sheets`.
 """
+
+import locale
 
 from lino.api import ad, _
 
@@ -17,7 +18,6 @@ class Plugin(ad.Plugin):
     # needs_plugins = ['lino_xl.lib.ledger', 'lino.modlib.summaries']
     needs_plugins = ['lino_xl.lib.ledger']
 
-    # ref_length = 4
     item_ref_width = 4
     """
     The display width of the :guilabel:`Reference` field of a sheet
@@ -27,7 +27,6 @@ class Plugin(ad.Plugin):
     def on_init(self):
         super(Plugin, self).on_init()
         if self.site.site_locale is None:
-            import locale
             self.site.site_locale = '.'.join(locale.getdefaultlocale())
 
     def setup_reports_menu(self, site, user_type, m):
