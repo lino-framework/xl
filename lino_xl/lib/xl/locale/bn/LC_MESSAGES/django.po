@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino-xl 21.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-03-07 09:36+0200\n"
-"PO-Revision-Date: 2021-03-07 18:55+0600\n"
+"PO-Revision-Date: 2021-03-09 17:45+0600\n"
 "Language: bn\n"
 "Language-Team: bn <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
@@ -1239,7 +1239,7 @@ msgstr ""
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:42
 #: lino_xl/lib/polls/models.py:207
 msgid "No."
-msgstr ""
+msgstr "নম্বর."
 
 #: lino_xl/lib/b2c/models.py:277
 msgid "The sequence number of this transaction in the statement."
@@ -2566,7 +2566,7 @@ msgstr ""
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:122
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/default.wk.html:75
 msgid "Due date"
-msgstr ""
+msgstr "বকেয়া পরিশোধের শেষ দিন"
 
 #: lino_xl/lib/cal/models.py:258
 msgid "Due time"
@@ -3193,7 +3193,7 @@ msgstr ""
 #: lino_xl/lib/cv/models.py:149 lino_xl/lib/cv/models.py:533 lino_xl/lib/lists/models.py:82
 #: lino_xl/lib/skills/models.py:55
 msgid "Remarks"
-msgstr ""
+msgstr "মন্তব্য"
 
 #: lino_xl/lib/clients/models.py:53
 msgid "Must fill at least one field."
@@ -3413,7 +3413,7 @@ msgstr ""
 
 #: lino_xl/lib/contacts/mixins.py:37
 msgid "represented as"
-msgstr ""
+msgstr "প্রতিনিধিত্ব"
 
 #: lino_xl/lib/contacts/mixins.py:213 lino_xl/lib/cv/models.py:524
 msgid "Company"
@@ -3427,11 +3427,11 @@ msgstr ""
 #: lino_xl/lib/households/models.py:496 lino_xl/lib/sheets/models.py:192
 #: lino_xl/lib/xl/help_texts.py:1527
 msgid "Partner"
-msgstr ""
+msgstr "সহকর্মী"
 
 #: lino_xl/lib/contacts/models.py:90
 msgid "Name prefix"
-msgstr ""
+msgstr "নাম পূর্বালঙ্করন"
 
 #: lino_xl/lib/contacts/models.py:92 lino_xl/lib/courses/models.py:78
 #: lino_xl/lib/inspect/desktop.py:209 lino_xl/lib/outbox/models.py:53
@@ -3440,7 +3440,7 @@ msgstr ""
 
 #: lino_xl/lib/contacts/models.py:159
 msgid "See as "
-msgstr ""
+msgstr "ব্যবসায়ীক পরিচয়"
 
 #: lino_xl/lib/contacts/models.py:187
 msgid "Extended filter criteria"
@@ -3460,7 +3460,7 @@ msgstr "ব্যক্তি"
 
 #: lino_xl/lib/contacts/models.py:414
 msgid "Organization type"
-msgstr ""
+msgstr "সংস্থার ধরন"
 
 #: lino_xl/lib/contacts/models.py:415
 msgid "Organization types"
@@ -3597,7 +3597,7 @@ msgstr ""
 
 #: lino_xl/lib/countries/choicelists.py:46 lino_xl/lib/countries/mixins.py:86
 msgid "Municipality"
-msgstr ""
+msgstr "পৌরসভা"
 
 #: lino_xl/lib/countries/choicelists.py:47
 msgid "Parish"
@@ -3633,23 +3633,23 @@ msgstr "জিপকোড (Zip code)"
 
 #: lino_xl/lib/countries/mixins.py:154 lino_xl/lib/xl/help_texts.py:741
 msgid "Address line before street"
-msgstr ""
+msgstr "বাসা"
 
 #: lino_xl/lib/countries/mixins.py:157
 msgid "Street prefix"
-msgstr ""
+msgstr "রাস্তা"
 
 #: lino_xl/lib/countries/mixins.py:158
 msgid "Street"
-msgstr ""
+msgstr "গ্রাম/মহল্লা"
 
 #: lino_xl/lib/countries/mixins.py:160
 msgid "Box"
-msgstr ""
+msgstr "বাক্স"
 
 #: lino_xl/lib/countries/mixins.py:162
 msgid "Address line after street"
-msgstr ""
+msgstr "থানা, জেলা, দেশ"
 
 #: lino_xl/lib/countries/models.py:26
 msgid "Country"
@@ -3950,7 +3950,7 @@ msgstr ""
 #: lino_xl/lib/courses/models.py:143 lino_xl/lib/excerpts/models.py:61
 #: lino_xl/lib/excerpts/models.py:366
 msgid "Body template"
-msgstr ""
+msgstr "বডী টেম্পলেট"
 
 #: lino_xl/lib/courses/models.py:175
 msgid "Activity"
@@ -4150,7 +4150,7 @@ msgstr ""
 
 #: lino_xl/lib/cv/models.py:56 lino_xl/lib/ledger/models.py:500
 msgid "Entry date"
-msgstr ""
+msgstr "খসড়ার দিন"
 
 #: lino_xl/lib/cv/models.py:64
 #, python-format
@@ -4502,7 +4502,7 @@ msgstr ""
 #: lino_xl/lib/excerpts/config/excerpts/base.weasy.html:11 lino_xl/lib/excerpts/mixins.py:52
 #: lino_xl/lib/excerpts/mixins.py:89 lino_xl/lib/postings/models.py:38
 msgid "Printed"
-msgstr ""
+msgstr "প্রিন্ট হয়েছে"
 
 #: lino_xl/lib/excerpts/mixins.py:118
 msgid "Excerpt title"
@@ -4514,7 +4514,7 @@ msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:49
 msgid "Excerpt Type"
-msgstr ""
+msgstr "উদ্ধৃতিরূপ"
 
 #: lino_xl/lib/excerpts/models.py:50
 msgid "Excerpt Types"
@@ -4591,7 +4591,7 @@ msgstr ""
 #: lino_xl/lib/excerpts/models.py:505 lino_xl/lib/invoicing/models.py:367
 #: lino_xl/lib/mailbox/models.py:31 lino_xl/lib/polls/models.py:354
 msgid "Preview"
-msgstr ""
+msgstr "প্রাক্রুপ"
 
 #: lino_xl/lib/excerpts/models.py:613
 msgid "Configure"
@@ -4599,11 +4599,11 @@ msgstr ""
 
 #: lino_xl/lib/excerpts/models.py:631 lino_xl/lib/notes/models.py:175
 msgid "Recipient (Organization)"
-msgstr ""
+msgstr "প্রাপক (সংস্থা)"
 
 #: lino_xl/lib/excerpts/models.py:633 lino_xl/lib/notes/models.py:177
 msgid "Recipient (Person)"
-msgstr ""
+msgstr "প্রাপক (ব্যক্তি)"
 
 #: lino_xl/lib/excerpts/models.py:657
 msgid "Certifying excerpts"
@@ -4741,7 +4741,7 @@ msgstr ""
 #: lino_xl/lib/ledger/mixins.py:98
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:45
 msgid "Your reference"
-msgstr ""
+msgstr "আপনার রেফারেন্স"
 
 #: lino_xl/lib/finan/mixins.py:108
 msgid "Item"
@@ -5887,7 +5887,7 @@ msgstr ""
 
 #: lino_xl/lib/ledger/choicelists.py:402
 msgid "Purchase account"
-msgstr ""
+msgstr "খরিদ বই"
 
 #: lino_xl/lib/ledger/choicelists.py:409
 msgid "Taxes"
@@ -5931,7 +5931,7 @@ msgstr ""
 #: lino_xl/lib/ledger/mixins.py:194 lino_xl/lib/ledger/models.py:964
 #: lino_xl/lib/ledger/models.py:1020 lino_xl/lib/ledger/ui.py:361
 msgid "Match"
-msgstr ""
+msgstr "মিল"
 
 #: lino_xl/lib/ledger/mixins.py:195
 msgid "The movement to be matched."
@@ -6029,7 +6029,7 @@ msgstr ""
 
 #: lino_xl/lib/ledger/models.py:239
 msgid "Accounting period"
-msgstr ""
+msgstr "হিসাবরক্ষণ কাল"
 
 #: lino_xl/lib/ledger/models.py:240
 msgid "Accounting periods"
@@ -6045,7 +6045,7 @@ msgstr "আর্থিক বছর"
 
 #: lino_xl/lib/ledger/models.py:419
 msgid "Payment term"
-msgstr ""
+msgstr "পরিশোধের সর্ত"
 
 #: lino_xl/lib/ledger/models.py:420
 #: lino_xl/lib/sales/config/sales/VatProductInvoice/base.weasy.html:126
@@ -6093,11 +6093,11 @@ msgstr "ভাউচার"
 
 #: lino_xl/lib/ledger/models.py:501
 msgid "Voucher date"
-msgstr ""
+msgstr "ভাউচারের দিন"
 
 #: lino_xl/lib/ledger/models.py:505
 msgid "Narration"
-msgstr ""
+msgstr "বিবৃতি"
 
 #: lino_xl/lib/ledger/models.py:805
 msgid "Toggle state"
@@ -6141,7 +6141,7 @@ msgstr ""
 
 #: lino_xl/lib/ledger/models.py:1129
 msgid "The default payment term for sales invoices to this customer."
-msgstr ""
+msgstr "এই ক্রেতার নিকট বিক্রয় চালানের মূল্য পরিশোধের সাধারন সর্ত সমূহ।"
 
 #: lino_xl/lib/ledger/models.py:1134
 msgid "Check integrity of ledger vouchers"
@@ -6185,7 +6185,7 @@ msgstr ""
 
 #: lino_xl/lib/ledger/ui.py:256 lino_xl/lib/ledger/ui.py:373
 msgid "Debts"
-msgstr ""
+msgstr "দেনা"
 
 #: lino_xl/lib/ledger/ui.py:263
 msgid "Date until"
@@ -6593,7 +6593,7 @@ msgstr ""
 
 #: lino_xl/lib/meetings/models.py:81 lino_xl/lib/pages/models.py:66
 msgid "Title"
-msgstr ""
+msgstr "শিরোনাম"
 
 #: lino_xl/lib/meetings/workflows.py:20 lino_xl/lib/meetings/workflows.py:36
 #: lino_xl/lib/meetings/workflows.py:53
@@ -6985,7 +6985,7 @@ msgstr "ফ্যাক্স"
 #: lino_xl/lib/phones/mixins.py:66 lino_xl/lib/phones/mixins.py:82
 #: lino_xl/lib/phones/models.py:24 lino_xl/lib/phones/models.py:98
 msgid "Contact details"
-msgstr ""
+msgstr "যোগাযোগের ঠিকানা"
 
 #: lino_xl/lib/phones/models.py:23
 msgid "Contact detail"
@@ -7558,7 +7558,7 @@ msgstr ""
 
 #: lino_xl/lib/sales/mixins.py:29
 msgid "Subject line"
-msgstr ""
+msgstr "বিষয় বস্তু"
 
 #: lino_xl/lib/sales/mixins.py:81
 msgid "Discount"
@@ -8622,7 +8622,7 @@ msgstr "কর কলাম"
 
 #: lino_xl/lib/vat/choicelists.py:101
 msgid "VAT regime"
-msgstr ""
+msgstr "কর আমল"
 
 #: lino_xl/lib/vat/choicelists.py:102
 msgid "VAT regimes"
@@ -8714,7 +8714,7 @@ msgstr ""
 
 #: lino_xl/lib/vat/mixins.py:58
 msgid "Total to pay"
-msgstr ""
+msgstr "সর্বমোট পরিশোধযোগ্য"
 
 #: lino_xl/lib/vat/mixins.py:123
 msgid "Compute sums"
@@ -8747,7 +8747,7 @@ msgstr ""
 
 #: lino_xl/lib/vat/models.py:84
 msgid "VAT id"
-msgstr ""
+msgstr "কর আই ডি (VAT ID)"
 
 #: lino_xl/lib/vat/models.py:100 lino_xl/lib/xl/help_texts.py:1760
 msgid "Check VAT columns configuration."
@@ -11001,7 +11001,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:636
 msgid "The full name of this partner. Used for alphabetic sorting."
-msgstr ""
+msgstr "সহকর্মীর পূর্ণনাম। বর্ণ মূলক সর্টিং-এ ব্যবহার হয়।"
 
 #: lino_xl/lib/xl/help_texts.py:637
 msgid ""
@@ -11009,36 +11009,38 @@ msgid ""
 "before the name, for persons this is inserted between first\n"
 "name and last name."
 msgstr ""
+"নামের ঐচ্ছিক অংশ। সংস্থার ক্ষেত্রে নামের পূর্বে এবং ব্যক্তির\n"
+"ক্ষেত্রে ব্যক্তির দুই নামের মাজখানে ব্যবহার হয়।"
 
 #: lino_xl/lib/xl/help_texts.py:640
 msgid "The primary email address."
-msgstr ""
+msgstr "প্রাথমিক ইমেইল।"
 
 #: lino_xl/lib/xl/help_texts.py:641
 msgid "The primary phone number."
-msgstr ""
+msgstr "প্রাথমিক ফোন নম্বর।"
 
 #: lino_xl/lib/xl/help_texts.py:642
 msgid "The primary mobile phone number."
-msgstr ""
+msgstr "প্রাথমিক মোবাইল ফোন নম্বর।"
 
 #: lino_xl/lib/xl/help_texts.py:643
 msgid "The language to use when communicating with this partner."
-msgstr ""
+msgstr "সহকর্মীর সাথে যোগাযোগের সময় ব্যাবহার করার ভাষা।"
 
 #: lino_xl/lib/xl/help_texts.py:644
 msgid ""
 "The general account to suggest as default value in purchase\n"
 "invoices from this partner."
-msgstr ""
+msgstr "এই সহকর্মীর চালান সমূহের সাধারন হিসাব বই।"
 
 #: lino_xl/lib/xl/help_texts.py:646
 msgid "The default VAT regime to use on invoices for this partner."
-msgstr ""
+msgstr "এই সহকর্মীর চালানে ব্যবহারের সাধারন কর আমল।"
 
 #: lino_xl/lib/xl/help_texts.py:647
 msgid "The national VAT identification number of this partner."
-msgstr ""
+msgstr "এই সহকর্মীর জাতীয় কর আই ডি (VIN) নম্বর।"
 
 #: lino_xl/lib/xl/help_texts.py:648
 msgid ""
@@ -11064,7 +11066,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:654
 msgid "Pointer to the CompanyType."
-msgstr ""
+msgstr "CompanyType নির্দেশ করে।"
 
 #: lino_xl/lib/xl/help_texts.py:655
 msgid ""
@@ -11171,7 +11173,7 @@ msgstr ""
 msgid ""
 "The optional Role\n"
 "of the contact_person within company."
-msgstr ""
+msgstr "সংস্থায় contact_person এর পদ (ঐচ্ছিক)।"
 
 #: lino_xl/lib/xl/help_texts.py:688
 msgid ""
@@ -11317,11 +11319,11 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:737
 msgid "The locality, i.e. usually a village, city or town."
-msgstr ""
+msgstr "অঞ্চল, সাধারণত গ্রাম অথবা শহর।"
 
 #: lino_xl/lib/xl/help_texts.py:738
 msgid "The municipality, i.e. either the city or a parent of it."
-msgstr ""
+msgstr "পৌরসভা বা নগরী।"
 
 #: lino_xl/lib/xl/help_texts.py:739
 msgid "Adds a region field to a CountryCity."
@@ -11333,23 +11335,23 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:742
 msgid "Text to print before name of street, but to ignore for sorting."
-msgstr ""
+msgstr "ঠিকানায়, মহল্লার নামের পূর্বের অংশ, যেটা সর্ট করায় কাজে আসবে না।"
 
 #: lino_xl/lib/xl/help_texts.py:743
 msgid "Name of street, without house number."
-msgstr ""
+msgstr "পূর্বের অংশ ব্যতীত মহল্লা/রাস্তার নাম।"
 
 #: lino_xl/lib/xl/help_texts.py:744
 msgid "House number."
-msgstr ""
+msgstr "বাড়ির নম্বর।"
 
 #: lino_xl/lib/xl/help_texts.py:745
 msgid "Text to print after street number on the same line."
-msgstr ""
+msgstr "রাস্তা/মহল্লার নামের শেষে লিখিত ঠিকানার প্রথম লাইনের অংশ।"
 
 #: lino_xl/lib/xl/help_texts.py:746
 msgid "Address line to print below street line."
-msgstr ""
+msgstr "ঠিকানার দ্বিতীয় লাইন।"
 
 #: lino_xl/lib/xl/help_texts.py:747
 msgid ""
@@ -11735,25 +11737,31 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:860
 msgid "The type of this excerpt (ForeignKey to ExcerptType)."
-msgstr ""
+msgstr "উল্লেখ্য উদ্ধৃতির ধরন (ExcerptType এর ForeignKey)"
 
 #: lino_xl/lib/xl/help_texts.py:861
 msgid ""
 "The object being printed by this excerpt.\n"
 "See Controllable.owner."
 msgstr ""
+"এই উদ্ধৃতিতে প্রিন্ট করা বস্তু।\n"
+"দেখুনঃ Controllable.owner।"
 
 #: lino_xl/lib/xl/help_texts.py:863
 msgid ""
 "The optional company of the recipient of this\n"
 "excerpt.  See ContactRelated.company."
 msgstr ""
+"এই উদ্ধৃতিটির প্রাপকের ঐচ্ছিক সংস্থা।\n"
+"দেখনঃ ContactRelated.company।"
 
 #: lino_xl/lib/xl/help_texts.py:865
 msgid ""
 "The optional contact person of the recipient of this\n"
 "excerpt.  See ContactRelated.contact_person."
 msgstr ""
+"এই উদ্ধৃতিটির প্রাপকের ঐচ্ছিক যোগাযোগের মাধ্যম।\n"
+"দেখুনঃ ContactRelated.contact_person।"
 
 #: lino_xl/lib/xl/help_texts.py:867
 msgid ""
@@ -11763,7 +11771,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:869
 msgid "The language used for printing this excerpt."
-msgstr ""
+msgstr "এই উদ্ধৃতিটি প্রিন্ট-এ ব্যবহারিত ভাষা।"
 
 #: lino_xl/lib/xl/help_texts.py:870
 msgid ""
@@ -11894,7 +11902,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:915
 msgid "Create an excerpt in order to print this data record."
-msgstr ""
+msgstr "বাছাইকৃত শারিটি প্রিন্ট করার জন্য উদ্ধৃতি তৈরি করুন।"
 
 #: lino_xl/lib/xl/help_texts.py:916
 msgid ""
