@@ -21,7 +21,7 @@ SETUP_INFO = dict(
     license='BSD-2-Clause',
     author='Rumma & Ko Ltd',
     author_email='info@saffre-rumma.net',
-    url="http://www.lino-framework.org",
+    url="https://www.lino-framework.org",
     # ~ test_suite = 'lino_xl.test_apps',
     test_suite='tests')
 
@@ -32,13 +32,12 @@ applications.
 
 - This repository is considered an integral part of the Lino framework, which is
   documented as a whole in the `Lino Book
-  <http://www.lino-framework.org/about/overview.html>`__.
+  <https://www.lino-framework.org/about/overview.html>`__.
 
-- Your feedback is welcome.  Our `community page
-  <http://www.lino-framework.org/community>`__ explains how to contact us.
+- Your feedback is welcome.  See https://community.lino-framework.org
 
 - API changes to this repository are logged at
-  http://www.lino-framework.org/changes/
+  https://www.lino-framework.org/changes/
 
 
 """)
