@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: lino-xl 21.3.0\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
 "POT-Creation-Date: 2021-03-12 13:21+0600\n"
-"PO-Revision-Date: 2021-03-12 19:41+0600\n"
+"PO-Revision-Date: 2021-03-14 17:31+0600\n"
 "Last-Translator: \n"
 "Language: bn\n"
 "Language-Team: bn <LL@li.org>\n"
@@ -110,14 +110,14 @@ msgstr "ঠিকানা"
 #: lino_xl/lib/topics/models.py:88 lino_xl/lib/trends/models.py:89
 #: lino_xl/lib/uploads/models.py:75
 msgid "Remark"
-msgstr ""
+msgstr "মন্তব্য"
 
 #: lino_xl/lib/addresses/models.py:33 lino_xl/lib/coachings/models.py:95
 #: lino_xl/lib/excerpts/models.py:75 lino_xl/lib/excerpts/models.py:103
 #: lino_xl/lib/households/models.py:276 lino_xl/lib/phones/models.py:32
 #: lino_xl/lib/sepa/models.py:39
 msgid "Primary"
-msgstr ""
+msgstr "প্রাথমিক"
 
 #: lino_xl/lib/addresses/models.py:144
 msgid "Check for missing or non-primary address records"
@@ -4476,7 +4476,7 @@ msgstr "উদ্ধৃতি"
 
 #: lino_xl/lib/excerpts/choicelists.py:19
 msgid "Excerpt shortcut"
-msgstr ""
+msgstr "উদ্ধ্রিতির স্বর"
 
 #: lino_xl/lib/excerpts/choicelists.py:20
 msgid "Excerpt shortcuts"
@@ -4523,11 +4523,11 @@ msgstr "উদ্ধৃতিরূপ"
 #: lino_xl/lib/excerpts/models.py:53 lino_xl/lib/excerpts/models.py:103
 #: lino_xl/lib/excerpts/models.py:109
 msgid "Certifying"
-msgstr ""
+msgstr "প্রত্যয়ীকরন"
 
 #: lino_xl/lib/excerpts/models.py:55
 msgid "Whether an excerpt of this type is a unique printout."
-msgstr ""
+msgstr "এই উদ্ধ্রিতিটির ধরন অদ্বিতীয় কিনা।"
 
 #: lino_xl/lib/excerpts/models.py:68 lino_xl/lib/excerpts/models.py:221
 #: lino_xl/lib/ledger/choicelists.py:277
@@ -4543,26 +4543,28 @@ msgid ""
 "Whether this is the default type to use for this model. There's at most one primary type "
 "per model. Enabling this field will automatically make the other types non-primary."
 msgstr ""
+"এই উদ্ধ্রিতিটির জন্য এটি প্রাথমিক মডেল কিনা। একটি উদ্ধ্রিতির জন্য একটি মাত্র প্রাথমিক মডেল থাকতে "
+"পারবে। এই ক্ষেত্রটিতে টিক দিলে অন্য সব মডেল অপ্রাথমিক হয়ে পড়বে।"
 
 #: lino_xl/lib/excerpts/models.py:84
 msgid "Backward compatible"
-msgstr ""
+msgstr "পশ্চাদপোযুক্তি"
 
 #: lino_xl/lib/excerpts/models.py:86
 msgid "Check this to have `this` in template context point to owner instead of excerpt."
-msgstr ""
+msgstr "দেখুন এটাতে `this` আছে কিনা যেটা উদ্ধ্রিতি ব্যতীত এটার অধীশ্বর বুঝায়।"
 
 #: lino_xl/lib/excerpts/models.py:90
 msgid "Print recipient"
-msgstr ""
+msgstr "প্রাপক প্রিন্ট করুন"
 
 #: lino_xl/lib/excerpts/models.py:92
 msgid "Whether to print a recipient field in document."
-msgstr ""
+msgstr "নথিতে প্রাপক ক্ষেত্র প্রিন্ট হবে কিনা।"
 
 #: lino_xl/lib/excerpts/models.py:94
 msgid "Print directly"
-msgstr ""
+msgstr "এখনি প্রিন্ট"
 
 #: lino_xl/lib/excerpts/models.py:102
 #, python-format
@@ -5736,7 +5738,7 @@ msgstr "হিসাবরক্ষণ"
 
 #: lino_xl/lib/ledger/choicelists.py:47 lino_xl/lib/sheets/models.py:40
 msgid "Booking direction"
-msgstr ""
+msgstr "সংরক্ষণের দিক"
 
 #: lino_xl/lib/ledger/choicelists.py:48
 msgid "Booking directions"
@@ -5787,7 +5789,7 @@ msgstr "সাধারন হিসাব"
 
 #: lino_xl/lib/ledger/choicelists.py:162 lino_xl/lib/ledger/models.py:458
 msgid "Clearable"
-msgstr ""
+msgstr "মুছার যোগ্য"
 
 #: lino_xl/lib/ledger/choicelists.py:169 lino_xl/lib/sheets/choicelists.py:121
 msgid "Net income (loss)"
@@ -6081,7 +6083,7 @@ msgstr "হিসাব"
 
 #: lino_xl/lib/ledger/models.py:457
 msgid "Needs partner"
-msgstr ""
+msgstr "সহকর্মীর প্রয়োজন"
 
 #: lino_xl/lib/ledger/models.py:463
 msgid "Default amount"
@@ -6837,7 +6839,7 @@ msgstr ""
 #: lino_xl/lib/orders/config/orders/Order/default.weasy.html:43
 #: lino_xl/lib/products/models.py:49
 msgid "Product"
-msgstr ""
+msgstr "পণ্য"
 
 #: lino_xl/lib/outbox/__init__.py:22 lino_xl/lib/outbox/__init__.py:26
 #: lino_xl/lib/outbox/models.py:315 lino_xl/lib/outbox/models.py:325
@@ -6863,11 +6865,11 @@ msgstr ""
 
 #: lino_xl/lib/outbox/mixins.py:47
 msgid "Attach to email"
-msgstr ""
+msgstr "ইমেইলে সংযুক্তি"
 
 #: lino_xl/lib/outbox/mixins.py:57
 msgid "Email template"
-msgstr ""
+msgstr "ইমেইল টেম্পলেট"
 
 #: lino_xl/lib/outbox/mixins.py:59
 msgid ""
@@ -7642,7 +7644,7 @@ msgstr "কাগজের ধরন"
 
 #: lino_xl/lib/sales/models.py:39
 msgid "Template"
-msgstr ""
+msgstr "টেম্পলেট"
 
 #: lino_xl/lib/sales/models.py:145
 msgid "Sales invoice"
@@ -7761,7 +7763,7 @@ msgstr "হিসাবরক্ষণ রিপোর্ট"
 
 #: lino_xl/lib/sheets/choicelists.py:15 lino_xl/lib/sheets/choicelists.py:69
 msgid "Sheet type"
-msgstr ""
+msgstr "শীটের ধরন"
 
 #: lino_xl/lib/sheets/choicelists.py:16
 msgid "Sheet types"
@@ -7777,7 +7779,7 @@ msgstr ""
 
 #: lino_xl/lib/sheets/choicelists.py:63
 msgid "Common sheet item"
-msgstr ""
+msgstr "সাধারন শীট আইটেম"
 
 #: lino_xl/lib/sheets/choicelists.py:64
 msgid "Common sheet items"
@@ -7785,7 +7787,7 @@ msgstr "প্রচলিত শীট আইটেম"
 
 #: lino_xl/lib/sheets/choicelists.py:73 lino_xl/lib/sheets/models.py:44
 msgid "Mirror"
-msgstr ""
+msgstr "দর্পণ"
 
 #: lino_xl/lib/sheets/choicelists.py:77
 msgid "D/C"
@@ -7885,7 +7887,7 @@ msgstr ""
 
 #: lino_xl/lib/sheets/models.py:35
 msgid "Sheet item"
-msgstr ""
+msgstr "শীট আইটেম"
 
 #: lino_xl/lib/sheets/models.py:36
 msgid "Sheet items"
@@ -11863,34 +11865,38 @@ msgid ""
 "The designation of this excerpt type.\n"
 "One field for every language."
 msgstr ""
+"এই উদ্ধ্রিতিটিকে যে নামে আখ্যায়িত করা হয়।\n"
+"একটি ভাষার জন্য একটি ক্ষেত্র।"
 
 #: lino_xl/lib/xl/help_texts.py:881
 msgid "The database model for which this excerpt type is to be used."
-msgstr ""
+msgstr "এই উদ্ধ্রিতির ডাটাবেইজ মডেল।"
 
 #: lino_xl/lib/xl/help_texts.py:882
 msgid "See lino.modlib.printing.mixins.PrintableType.build_method."
-msgstr ""
+msgstr "দেখুন lino.modlib.printing.mixins.PrintableType.build_method."
 
 #: lino_xl/lib/xl/help_texts.py:883
 msgid "The main template to be used when printing an excerpt of this type."
-msgstr ""
+msgstr "এই উদ্ধ্রিতি প্রিন্ট করায় ব্যবহারিত প্রধান টেম্পলেট।"
 
 #: lino_xl/lib/xl/help_texts.py:884
 msgid "The body template to use when printing an excerpt of this type."
-msgstr ""
+msgstr "এই উদ্ধ্রিতি প্রিন্ট করায় ব্যবহারিত বডি টেম্পলেট।"
 
 #: lino_xl/lib/xl/help_texts.py:885
 msgid ""
 "The template to use when sending this an excerpt of this type\n"
 "by email."
-msgstr ""
+msgstr "এই উদ্ধ্রিতি ইমেইলে পাঠানোর সময় ব্যবহারিত টেম্পলেট।"
 
 #: lino_xl/lib/xl/help_texts.py:887
 msgid ""
 "Optional pointer to a shortcut field.  If this is not empty, then\n"
 "the given shortcut field will manage excerpts of this type."
 msgstr ""
+"একটি ঐচ্ছিক হ্রস্বতর পথ নির্দেশ করে। যদি খালি না হয় তবে\n"
+"হ্রস্বতর বস্তুটি এই উদ্ধ্রিতিকে পরিচালনা করবে।"
 
 #: lino_xl/lib/xl/help_texts.py:889
 msgid "Displays all rows of ExcerptType."
@@ -12545,7 +12551,7 @@ msgstr ""
 
 #: lino_xl/lib/xl/help_texts.py:1091
 msgid "Whether bookings to this account need a partner specified."
-msgstr ""
+msgstr "এই হিসাবে ভুক্তি সহকর্মীর সন্তুষ্টি নির্ভর কিনা।"
 
 #: lino_xl/lib/xl/help_texts.py:1092
 msgid "The default VAT class to use for transactions on this account."
@@ -12586,6 +12592,8 @@ msgid ""
 "Pointer to the item of the balance sheet or income statement\n"
 "that will report the movements of this account."
 msgstr ""
+"তুল্য শীট অথবা আয় বিবরণী নির্দেশ করে যা হিসাবের গতিবিধি\n"
+"বিবরন করে।"
 
 #: lino_xl/lib/xl/help_texts.py:1109
 msgid "The global list of common accounts."
@@ -13868,10 +13876,12 @@ msgid ""
 "The sequence number of this rule. Lino loops over price rules in this order\n"
 "and returns the first one that applies."
 msgstr ""
+"এই নিতিটির সিরিয়াল নম্বর। লিনো মূল্যবিধিগুলো ঘুরে প্রথম যেটি\n"
+"মিল পাবে সেটাকে নিয়ে আসবে।"
 
 #: lino_xl/lib/xl/help_texts.py:1508
 msgid "The product to use for getting the price when this rule applies."
-msgstr ""
+msgstr "মূল্যবিধি মেলাতে ব্যবহারিত পণ্য।"
 
 #: lino_xl/lib/xl/help_texts.py:1509
 msgid "Either None or an additional selector for this price rule."
