@@ -11,7 +11,7 @@ class StartInvoicing(StartPlan):
     label = _("Create invoices")
     icon_name = 'basket'
 
-    def get_plan_model(self):
+    def get_plan_model(self, ar):
         return rt.models.invoicing.Plan
 
 

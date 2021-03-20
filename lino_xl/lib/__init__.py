@@ -5,6 +5,7 @@
 
 Contacts management
 ===================
+
 .. autosummary::
    :toctree:
 
@@ -69,6 +70,7 @@ ERP
 
     products
     orders
+    webshop
 
 System extensions
 =================

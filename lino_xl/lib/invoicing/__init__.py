@@ -52,7 +52,6 @@ class Plugin(Plugin):
     def setup_main_menu(config, site, user_type, m):
         mg = site.plugins.sales
         m = m.add_menu(mg.app_label, mg.verbose_name)
-        # m.add_action('invoicing.MyPlans')
         m.add_action('invoicing.Plan', action='start_plan')
 
         # Area = site.models.invoicing.Area
