@@ -830,7 +830,6 @@ class RegistrableVoucher(Registrable, Voucher):
     toggle_state = ToggleState()
     hide_editable_number = True
 
-
     def __str__(self):
         # if not isinstance(dd.plugins.ledger.registered_states, tuple):
         #     raise Exception("registered_states is {}".format(dd.plugins.ledger.registered_states))

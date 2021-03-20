@@ -15,7 +15,7 @@ class Plugin(ad.Plugin):
     needs_plugins = ['lino_xl.lib.contacts', 'lino_xl.lib.sales']
     # menu_group = 'sales'
 
-    journal_ref = None
+    journal_ref = "SLS"
     """The reference of the journal"""
 
     def get_quicklinks(site, user):
@@ -26,11 +26,12 @@ class Plugin(ad.Plugin):
         mg = site.plugins.sales
         m = m.add_menu(mg.app_label, mg.verbose_name)
         m.add_action('webshop.MyAddresses')
-        m.add_action('webshop.Carts.start_plan')
+        m.add_action('webshop.MyCart.start_plan')
 
     def setup_config_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)
         m.add_action('webshop.PaymentMethods')
+        m.add_action('webshop.DeliveryMethods')
 
     def setup_explorer_menu(self, site, user_type, m):
         m = m.add_menu(self.app_label, self.verbose_name)

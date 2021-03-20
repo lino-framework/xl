@@ -23,6 +23,16 @@ class PaymentMethod(BabelDesignated):
     journal = dd.ForeignKey('ledger.Journal')
 
 
+class DeliveryMethod(BabelDesignated):
+
+    class Meta:
+        app_label = 'webshop'
+        verbose_name = _("Delivery method")
+        verbose_name_plural = _("Delivery methods")
+
+    product = dd.ForeignKey('product.Product')
+
+
 class Address(UserAuthored, AddressLocation):
     # user, person ,company
     class Meta:
@@ -37,12 +47,27 @@ class Address(UserAuthored, AddressLocation):
         return self.address_location(', ')
 
 
+class StartOrder(dd.Action):
+    label = _("Start order")
+    icon_name = 'money'
+    sort_index = 53
+
+    def run_from_ui(self, ar, **kw):
+        # for plan in ar.selected_rows:
+        plan = ar.selected_rows[0]
+        plan.run_start_order(ar)
+        ar.success(refresh=True)
+
+
+
 class Cart(UserPlan):
     class Meta:
         app_label = 'webshop'
         abstract = dd.is_abstract_model(__name__, 'Cart')
         verbose_name = _("Shopping cart")
         verbose_name_plural = _("Shopping carts")
+
+    start_order = StartOrder()
 
     invoicing_address = dd.ForeignKey('webshop.Address',
         blank=True, null=True,
@@ -53,6 +78,7 @@ class Cart(UserPlan):
         verbose_name=_("Delivery address"),
         related_name="carts_by_delivery_address")
     payment_method = dd.ForeignKey(PaymentMethod, blank=True, null=True)
+    delivery_method = dd.ForeignKey(DeliveryMethod, blank=True, null=True)
     invoice = dd.ForeignKey(
         'sales.VatProductInvoice',
         verbose_name=_("Invoice"),
@@ -72,43 +98,21 @@ class Cart(UserPlan):
                 return ar.action_button(ba, self)
         return ''
 
-    def run_update_plan(self, ar):
+    def run_start_order(self, ar):
         self.create_invoice(ar)
 
     def create_invoice(self,  ar):
         if dd.plugins.webshop.journal_ref is None:
             raise Warning(_("No journal configured for webshop"))
-        invoice = self.plan.create_invoice(
-            partner=self.partner, user=ar.get_user())
+        jnl = rt.models.ledger.Journal.get_by_ref(dd.plugins.webshop.journal_ref)
+        partner = ar.get_user().partner or jnl.partner
+        invoice = jnl.create_voucher(partner=partner, user=ar.get_user())
         lng = invoice.get_print_language()
         items = []
-        max_date = self.plan.get_max_date()
         with translation.override(lng):
-            if self.generator:
-                generators = [self.generator]
-            else:
-                generators = [
-                    ig for ig in self.plan.get_generators_for_plan(
-                        self.partner) if ig.allow_group_invoices()]
-            for ig in generators:
-                info = ig.compute_invoicing_info(max_date)
-                pt = ig.get_invoiceable_payment_term()
-                if pt:
-                    invoice.payment_term = pt
-                pt = ig.get_invoiceable_paper_type()
-                if pt:
-                    invoice.paper_type = pt
-
-                # for i in ig.get_invoice_items(info, ITEM_MODEL, ar):
-                for i in ig.get_invoice_items(info, invoice, ar):
-                    # kwargs.update(voucher=invoice)
-                    # i = ITEM_MODEL(**kwargs)
-                    # if 'amount' in kwargs:
-                    #     i.set_amount(ar, kwargs['amount'])
-                    # amount = kwargs.get('amount', ZERO)
-                    # if amount:
-                    #     i.set_amount(ar, amount)
-                    items.append((ig, i))
+            for ci in self.cart_items.all():
+                kwargs = dict(product=ci.product, qty=ci.qty)
+                items.append(invoice.add_voucher_item(**kwargs))
 
         if len(items) == 0:
             # neither invoice nor items are saved
@@ -120,19 +124,10 @@ class Cart(UserPlan):
         invoice.full_clean()
         invoice.save()
 
-        for ig, i in items:
+        for i in items:
             # assign voucher after it has been saved
             i.voucher = invoice
-            ig.setup_invoice_item(i)
-            # if not i.title:
-            #     i.title = ig.get_invoiceable_title(invoice)
-            # compute the sales_price and amounts, but don't change
-            # title and description
-
-            # title = i.title
-            # i.product_changed()
             i.discount_changed()
-            # i.title = title
             i.full_clean()
             i.save()
 
@@ -144,8 +139,7 @@ class Cart(UserPlan):
         invoice.full_clean()
         invoice.save()
         invoice.register(ar)
-
-        return invoice
+        return ar.goto_instance(invoice)
 
 
 class CartItem(dd.Model):
@@ -157,7 +151,7 @@ class CartItem(dd.Model):
 
     allow_cascaded_delete = "cart product"
 
-    cart = dd.ForeignKey('webshop.Cart', related_name="items")
+    cart = dd.ForeignKey('webshop.Cart', related_name="cart_items")
     product = dd.ForeignKey('products.Product', blank=True, null=True)
     qty = dd.QuantityField(_("Quantity"), blank=True, null=True)
 
@@ -168,6 +162,11 @@ class CartItem(dd.Model):
 class PaymentMethods(dd.Table):
     required_roles = dd.login_required(LedgerStaff)
     model = "webshop.PaymentMethod"
+
+
+class DeliveryMethods(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
+    model = "webshop.DeliveryMethod"
 
 class Addresses(dd.Table):
     model = 'webshop.Address'
@@ -194,8 +193,8 @@ class MyAddresses(My, Addresses):
 
 class Carts(dd.Table):
     model = "webshop.Cart"
-    detail_layout = """user today payment_method
-    invoicing_address delivery_address
+    detail_layout = """user today payment_method delivery_method
+    invoicing_address delivery_address invoice
     webshop.ItemsByCart
     """
 
@@ -224,9 +223,7 @@ class AddToCart(dd.Action):
     def run_from_ui(self, ar):
         my_cart = rt.models.webshop.Cart.run_start_plan(ar.get_user())
         texts = []
-
         CartItem = rt.models.webshop.CartItem
-        # count = 0
         for obj in ar.selected_rows:
             texts.append(str(obj))
             qs = CartItem.objects.filter(cart=my_cart, product=obj)
@@ -236,7 +233,7 @@ class AddToCart(dd.Action):
                 cart_item = qs.first()
                 cart_item.qty += 1
             cart_item.full_clean()
-            if not ar.xcallback_answers:  # because this is called again after confirm
+            if not ar.xcallback_answers: # because this is called again after confirm
                 cart_item.save()
 
         def ok(ar2):
@@ -245,4 +242,4 @@ class AddToCart(dd.Action):
         ar.confirm(ok, msg.format(", ".join(texts)))
 
 
-dd.inject_action('products.Product', update_widgets=AddToCart())
+dd.inject_action('products.Product', add_to_cart=AddToCart())
