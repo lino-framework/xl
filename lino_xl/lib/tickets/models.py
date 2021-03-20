@@ -74,13 +74,6 @@ class QuickAssignTo(dd.Action):
         ar.success(refresh=True)
 
 
-
-class Prioritized(dd.Model):
-    class Meta:
-        abstract = True
-    #priority = models.SmallIntegerField(_("Priority"), default=100)
-    priority = Priorities.field(default='normal')
-
 class TimeInvestment(Commentable):
     class Meta:
         abstract = True
@@ -452,7 +445,7 @@ class SpawnTicket(dd.Action):
 
 
 class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
-             Votable, Starrable, Workable, Prioritized, Feasible,
+             Votable, Starrable, Workable, Feasible,
              UploadController, mixins.Referrable):
     quick_search_fields = "summary description ref"
     workflow_state_field = 'state'
@@ -471,11 +464,10 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     #     related_name="tickets_by_project")
     site = dd.ForeignKey(site_model, blank=True, null=True,
                          related_name="tickets_by_site")
-    # topic = dd.ForeignKey('topics.Topic', blank=True, null=True)
-    # nickname = models.CharField(_("Nickname"), max_length=50, blank=True)
+    priority = models.IntegerField(_("Priority"), default=30)
+    # priority = Priorities.field(default='normal')
 
     private = models.BooleanField(_("Private"), default=False)
-
     summary = models.CharField(
         pgettext("Ticket", "Summary"), max_length=200,
         blank=False,
@@ -488,7 +480,6 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
     duplicate_of = dd.ForeignKey(
         'self', blank=True, null=True, verbose_name=_("Duplicate of"),
         related_name="duplicated_tickets")
-
     end_user = dd.ForeignKey(
         end_user_model,
         verbose_name=_("End user"),
@@ -798,6 +789,8 @@ class Ticket(UserAuthored, mixins.CreatedModified, TimeInvestment,
         To skip mixins.Referrable quick_search_filter
         """
         return super(mixins.Referrable, cls).quick_search_filter(search_text, prefix)
+
+Ticket.set_widget_options('priority', preferred_width=8, hide_sum=True)
 
 # from django.contrib.contenttypes.fields import GenericRelation
 # dd.inject_action('comments.Comment', ticket=GenericRelation(Ticket))

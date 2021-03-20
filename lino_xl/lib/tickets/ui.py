@@ -350,9 +350,9 @@ class Tickets(dd.Table):
         state=TicketStates.field(
             blank=True,
             help_text=_("Only rows having this state.")),
-        priority=Priorities.field(_("Priority"),
-                                  blank=True,
-                                  help_text=_("Only rows having this priority.")),
+        # priority=Priorities.field(_("Priority"),
+        #                           blank=True,
+        #                           help_text=_("Only rows having this priority.")),
         show_assigned=dd.YesNo.field(_("Assigned"), blank=True),
         show_deployed=dd.YesNo.field(
             _("Deployed"), blank=True,
@@ -381,7 +381,7 @@ class Tickets(dd.Table):
     )
 
     params_layout = """
-    user end_user assigned_to not_assigned_to interesting_for site state priority deployed_to
+    user end_user assigned_to not_assigned_to interesting_for site state #priority deployed_to
     #has_site show_assigned show_active show_deployed show_todo show_private
     start_date end_date observed_event #topic has_ref"""
 
@@ -396,7 +396,7 @@ class Tickets(dd.Table):
         # yield 'project'
         # yield 'topic'
         yield 'site'
-        yield 'priority'
+        # yield 'priority'
         yield 'last_commenter'
         # if not dd.is_installed('votes'):
         #     yield 'assigned_to'
@@ -630,8 +630,8 @@ class TicketsToTriage(Tickets):
     label = _("Tickets to triage")
     required_roles = dd.login_required(Triager)
     button_label = _("Triage")
-    order_by = "priority -id".split()
-    column_names = 'overview:50 priority site:10 #user:10 ' \
+    order_by = ("-priority", "-id")
+    column_names = 'detail_link:50 priority site:10 #user:10 ' \
                    'quick_assign_to:20 ticket_type:10 workflow_buttons:40 *'
     params_panel_hidden = True
 
@@ -647,7 +647,7 @@ class TicketsToTriage(Tickets):
 class TicketsToTalk(Tickets):
     label = _("Tickets to talk")
     required_roles = dd.login_required(Triager)
-    order_by = ["priority", "-deadline", "-id"]
+    order_by = ["-priority", "-deadline", "-id"]
     # order_by = ["-id"]
     column_names = "overview:50 priority #deadline waiting_for " \
                    "workflow_buttons:40 *"
@@ -709,7 +709,7 @@ class MyTickets(My, Tickets):
     column_names = "priority detail_link assigned_to planned_time SUMMARY_FIELDS workflow_buttons *"
     params_panel_hidden = True
     params_layout = """
-    user end_user site #project state priority
+    user end_user site #project state #priority
     start_date end_date observed_event #topic #feasable_by show_active"""
 
     @classmethod
@@ -765,9 +765,9 @@ class MyTickets(My, Tickets):
 
 class MyTicketsToWork(Tickets):
     label = _("Tickets to work")
-    order_by = ["priority", "-modified"]
+    order_by = ["-priority", "-modified"]
     required_roles = dd.login_required(Reporter)
-    column_names = 'priority overview:50 workflow_buttons:30 *'
+    column_names = 'priority detail_link:50 workflow_buttons:30 site:10 *'
     params_layout = """
     user end_user site assigned_to #project state
     start_date end_date observed_event #topic show_active"""
@@ -911,8 +911,7 @@ class TicketsBySite(Tickets):
     # label = _("Known problems")
     master_key = 'site'
     column_names = "priority overview:50 ticket_type workflow_buttons *"
-
-    # order_by = ["priority", "-id"]
+    order_by = ["-priority", "-id"]
 
     @classmethod
     def param_defaults(self, ar, **kw):
