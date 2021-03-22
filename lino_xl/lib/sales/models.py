@@ -189,21 +189,8 @@ class VatProductInvoice(SalesDocument, Matching):
 class InvoiceDetail(dd.DetailLayout):
     main = "general more ledger"
 
-    totals = dd.Panel("""
-    total_base
-    total_vat
-    total_incl
-    workflow_buttons
-    """, label=_("Totals"))
-
-    invoice_header = dd.Panel("""
-    entry_date partner vat_regime
-    #order subject your_ref match
-    payment_term due_date:20 paper_type printed
-    """, label=_("Header"))  # sales_remark
-
     general = dd.Panel("""
-    invoice_header:60 totals:20
+    panel1:30 panel3:30 panel2 totals:20
     ItemsByInvoice
     """, label=_("General"))
 
@@ -216,6 +203,33 @@ class InvoiceDetail(dd.DetailLayout):
     #voucher_date journal accounting_period number #narration
     vat.MovementsByVoucher
     """, label=_("Ledger"))
+
+    totals = dd.Panel("""
+    total_base
+    total_vat
+    total_incl
+    workflow_buttons
+    """)
+
+    panel1 = dd.Panel("""
+    entry_date
+    #order subject
+    payment_term
+    due_date:20
+    """)
+
+    panel2 = dd.Panel("""
+    partner
+    subject
+    vat_regime
+    your_ref match
+    """)
+
+    panel3 = dd.Panel("""
+    payment_method
+    paper_type
+    printed
+    """)  # sales_remark
 
 
 class Invoices(SalesDocuments):

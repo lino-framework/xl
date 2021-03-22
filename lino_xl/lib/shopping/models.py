@@ -12,31 +12,20 @@ from lino.modlib.users.mixins import UserAuthored, UserPlan, My
 from lino_xl.lib.ledger.roles import LedgerUser, LedgerStaff
 from lino_xl.lib.countries.mixins import AddressLocation
 
-
-class PaymentMethod(BabelDesignated):
-
-    class Meta:
-        app_label = 'webshop'
-        verbose_name = _("Payment method")
-        verbose_name_plural = _("Payment methods")
-
-    journal = dd.ForeignKey('ledger.Journal')
-
-
 class DeliveryMethod(BabelDesignated):
 
     class Meta:
-        app_label = 'webshop'
+        app_label = 'shopping'
         verbose_name = _("Delivery method")
         verbose_name_plural = _("Delivery methods")
 
-    product = dd.ForeignKey('product.Product')
+    product = dd.ForeignKey('products.Product')
 
 
 class Address(UserAuthored, AddressLocation):
     # user, person ,company
     class Meta:
-        app_label = 'webshop'
+        app_label = 'shopping'
         abstract = dd.is_abstract_model(__name__, 'Cart')
         verbose_name = _("Address")
         verbose_name_plural = _("Addresses")
@@ -62,23 +51,22 @@ class StartOrder(dd.Action):
 
 class Cart(UserPlan):
     class Meta:
-        app_label = 'webshop'
+        app_label = 'shopping'
         abstract = dd.is_abstract_model(__name__, 'Cart')
         verbose_name = _("Shopping cart")
         verbose_name_plural = _("Shopping carts")
 
     start_order = StartOrder()
 
-    invoicing_address = dd.ForeignKey('webshop.Address',
+    invoicing_address = dd.ForeignKey('shopping.Address',
         blank=True, null=True,
         verbose_name=_("Invoicing address"),
         related_name="carts_by_invoicing_address")
-    delivery_address = dd.ForeignKey('webshop.Address',
+    delivery_address = dd.ForeignKey('shopping.Address',
         blank=True, null=True,
         verbose_name=_("Delivery address"),
         related_name="carts_by_delivery_address")
-    payment_method = dd.ForeignKey(PaymentMethod, blank=True, null=True)
-    delivery_method = dd.ForeignKey(DeliveryMethod, blank=True, null=True)
+    delivery_method = dd.ForeignKey('shopping.DeliveryMethod', blank=True, null=True)
     invoice = dd.ForeignKey(
         'sales.VatProductInvoice',
         verbose_name=_("Invoice"),
@@ -102,9 +90,9 @@ class Cart(UserPlan):
         self.create_invoice(ar)
 
     def create_invoice(self,  ar):
-        if dd.plugins.webshop.journal_ref is None:
-            raise Warning(_("No journal configured for webshop"))
-        jnl = rt.models.ledger.Journal.get_by_ref(dd.plugins.webshop.journal_ref)
+        if dd.plugins.shopping.journal_ref is None:
+            raise Warning(_("No journal configured for shopping"))
+        jnl = rt.models.ledger.Journal.get_by_ref(dd.plugins.shopping.journal_ref)
         partner = ar.get_user().partner or jnl.partner
         invoice = jnl.create_voucher(partner=partner, user=ar.get_user())
         lng = invoice.get_print_language()
@@ -113,13 +101,12 @@ class Cart(UserPlan):
             for ci in self.cart_items.all():
                 kwargs = dict(product=ci.product, qty=ci.qty)
                 items.append(invoice.add_voucher_item(**kwargs))
+            if self.delivery_method and self.delivery_method.product:
+                kwargs = dict(product=self.delivery_method.product)
+                items.append(invoice.add_voucher_item(**kwargs))
 
         if len(items) == 0:
-            # neither invoice nor items are saved
-            raise Warning(_("No invoiceables found for %s.") % self)
-            # dd.logger.warning(
-            #     _("No invoiceables found for %s.") % self.partner)
-            # return
+            raise Warning(_("Your cart is empty."))
 
         invoice.full_clean()
         invoice.save()
@@ -144,14 +131,14 @@ class Cart(UserPlan):
 
 class CartItem(dd.Model):
     class Meta:
-        app_label = 'webshop'
+        app_label = 'shopping'
         abstract = dd.is_abstract_model(__name__, 'Cart')
         verbose_name = _("Shopping cart item")
         verbose_name_plural = _("Shopping cart items")
 
     allow_cascaded_delete = "cart product"
 
-    cart = dd.ForeignKey('webshop.Cart', related_name="cart_items")
+    cart = dd.ForeignKey('shopping.Cart', related_name="cart_items")
     product = dd.ForeignKey('products.Product', blank=True, null=True)
     qty = dd.QuantityField(_("Quantity"), blank=True, null=True)
 
@@ -159,17 +146,14 @@ class CartItem(dd.Model):
         return "{0} {1}".format(self.cart, self.product)
 
 
-class PaymentMethods(dd.Table):
-    required_roles = dd.login_required(LedgerStaff)
-    model = "webshop.PaymentMethod"
-
 
 class DeliveryMethods(dd.Table):
     required_roles = dd.login_required(LedgerStaff)
-    model = "webshop.DeliveryMethod"
+    model = "shopping.DeliveryMethod"
+
 
 class Addresses(dd.Table):
-    model = 'webshop.Address'
+    model = 'shopping.Address'
     insert_layout = """
     addr1
     street street_no street_box
@@ -192,10 +176,10 @@ class MyAddresses(My, Addresses):
 
 
 class Carts(dd.Table):
-    model = "webshop.Cart"
-    detail_layout = """user today payment_method delivery_method
+    model = "shopping.Cart"
+    detail_layout = """user today delivery_method
     invoicing_address delivery_address invoice
-    webshop.ItemsByCart
+    shopping.ItemsByCart
     """
 
 class MyCart(My, Carts):
@@ -207,7 +191,7 @@ class AllCarts(Carts):
 
 class CartItems(dd.Table):
     required_roles = dd.login_required(LedgerUser)
-    model = "webshop.CartItem"
+    model = "shopping.CartItem"
 
 
 class ItemsByCart(CartItems):
@@ -221,9 +205,9 @@ class AddToCart(dd.Action):
     # icon_name = 'lightning'
 
     def run_from_ui(self, ar):
-        my_cart = rt.models.webshop.Cart.run_start_plan(ar.get_user())
+        my_cart = rt.models.shopping.Cart.run_start_plan(ar.get_user())
         texts = []
-        CartItem = rt.models.webshop.CartItem
+        CartItem = rt.models.shopping.CartItem
         for obj in ar.selected_rows:
             texts.append(str(obj))
             qs = CartItem.objects.filter(cart=my_cart, product=obj)

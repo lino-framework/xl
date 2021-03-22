@@ -173,6 +173,7 @@ class Plugin(ad.Plugin):
         m.add_action('ledger.FiscalYears')
         m.add_action('ledger.AccountingPeriods')
         m.add_action('ledger.PaymentTerms')
+        m.add_action('ledger.PaymentMethods')
 
     def setup_explorer_menu(self, site, user_type, m):
         mg = site.plugins.ledger

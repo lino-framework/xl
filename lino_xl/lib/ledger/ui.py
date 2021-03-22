@@ -204,6 +204,11 @@ class PaymentTerms(dd.Table):
     """
 
 
+class PaymentMethods(dd.Table):
+    required_roles = dd.login_required(LedgerStaff)
+    model = "ledger.PaymentMethod"
+
+
 class Vouchers(dd.Table):
     abstract = True
     required_roles = dd.login_required(LedgerUser)

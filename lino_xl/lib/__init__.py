@@ -70,7 +70,7 @@ ERP
 
     products
     orders
-    webshop
+    shopping
 
 System extensions
 =================

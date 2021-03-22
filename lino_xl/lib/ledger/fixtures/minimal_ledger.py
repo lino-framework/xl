@@ -39,7 +39,8 @@ def objects():
     # kw.update(dd.str2kw('name', _("Sales invoices")))
     # kw.update(printed_name=_("Invoice"))
     kw.update(dd.str2kw('name', _("Sales invoices")))
-    yield MODEL.create_journal(**kw)
+    SLS_JOURNAL = MODEL.create_journal(**kw)
+    yield SLS_JOURNAL
 
     if dd.plugins.vat.declaration_plugin is None:
         dd.logger.warning("No journal SLC, BNK, PMO etc because declaration_plugin is None")
@@ -162,3 +163,14 @@ def objects():
     # if pending_po:
     #     for jnl in ledger.Journal.objects.filter(voucher_type__in=VoucherTypes.finan.BankStatement):
     #         yield MatchRule(journal=jnl, account=pending_po)
+
+
+    PaymentMethod = rt.models.ledger.PaymentMethod
+
+    def payment_method(designation, **kwargs):
+        kwargs.update(journal=SLS_JOURNAL)
+        return PaymentMethod(**dd.str2kw('designation', designation, **kwargs))
+
+    yield payment_method(_("PayPal"))
+    yield payment_method(_("bKash"))
+    yield payment_method(_("Cash on delivery"))

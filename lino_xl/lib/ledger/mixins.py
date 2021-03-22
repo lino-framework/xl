@@ -49,6 +49,9 @@ class PartnerRelated(dd.Model):
         'ledger.PaymentTerm',
         related_name="%(app_label)s_%(class)s_set_by_payment_term",
         blank=True, null=True)
+    payment_method = dd.ForeignKey(
+        'ledger.PaymentMethod',
+        blank=True, null=True)
 
     def get_partner(self):
         """Overrides Voucher.get_partner"""

@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2020 Rumma & Ko Ltd
+# Copyright 2008-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import datetime
@@ -13,6 +13,7 @@ from django.utils.text import format_lazy
 
 from lino.api import _
 from lino.mixins import BabelNamed, Sequenced, StructuredReferrable, Referrable
+from lino.utils.mldbc.mixins import BabelDesignated
 from lino.mixins.periods import DateRange
 from lino.mixins.duplicable import Duplicable
 from lino.mixins.registrable import Registrable
@@ -440,6 +441,16 @@ class PaymentTerm(BabelNamed, Referrable):
         if self.end_of_month:
             d = last_day_of_month(d)
         return d
+
+
+class PaymentMethod(BabelDesignated):
+
+    class Meta:
+        app_label = 'ledger'
+        verbose_name = _("Payment method")
+        verbose_name_plural = _("Payment methods")
+
+    journal = dd.ForeignKey('ledger.Journal')
 
 
 #
