@@ -127,13 +127,13 @@ class Line(Referrable, Duplicable, ExcerptTitle, ContactRelated):
             "Leave empty if you don't want any presences management."))
 
     options_cat = dd.ForeignKey(
-        'products.ProductCat',
+        'products.Category',
         verbose_name=_("Options category"),
         related_name="courses_lines_by_options_cat",
         blank=True, null=True)
 
     fees_cat = dd.ForeignKey(
-        'products.ProductCat',
+        'products.Category',
         verbose_name=_("Fees category"),
         related_name="courses_lines_by_fees_cat",
         blank=True, null=True)

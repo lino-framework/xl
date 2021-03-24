@@ -33,7 +33,7 @@ class Plugin(ad.Plugin):
         for pt in site.models.products.ProductTypes.get_list_items():
             m.add_action(pt.table_name, label=pt.text)
         # m.add_action('products.Products')
-        m.add_action('products.ProductCats')
+        m.add_action('products.Categories')
 
         # mg = site.plugins.sales
         # m2 = m.add_menu(mg.app_label, mg.verbose_name)

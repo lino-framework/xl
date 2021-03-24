@@ -9,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from lino.api import dd, rt
 from lino import mixins
 from lino.mixins import Sequenced
+from lino.mixins import Hierarchical
 from lino.mixins.duplicable import Duplicable
 
 from lino_xl.lib.vat.choicelists import VatClasses
@@ -19,20 +20,20 @@ from .roles import ProductsUser, ProductsStaff
 # vat = dd.resolve_app('vat')
 
 
-class ProductCat(mixins.BabelNamed):
+class Category(mixins.BabelNamed, Hierarchical):
 
     class Meta:
         app_label = 'products'
         verbose_name = _("Product Category")
         verbose_name_plural = _("Product Categories")
-        abstract = dd.is_abstract_model(__name__, 'ProductCat')
+        abstract = dd.is_abstract_model(__name__, 'Category')
 
     product_type = ProductTypes.field(default='default')
     description = models.TextField(blank=True)
 
 
-class ProductCats(dd.Table):
-    model = 'products.ProductCat'
+class Categories(dd.Table):
+    model = 'products.Category'
     required_roles = dd.login_required(ProductsStaff)
     order_by = ["id"]
     detail_layout = """
@@ -53,17 +54,23 @@ class Product(mixins.BabelNamed, Duplicable):
     description = dd.BabelTextField(
         verbose_name=_("Long description"),
         blank=True, null=True)
-    cat = dd.ForeignKey(
-        ProductCat, verbose_name=_("Category"),
+    category = dd.ForeignKey(
+        Category, verbose_name=_("Category"),
         blank=True, null=True)
 
     delivery_unit = DeliveryUnits.field(default='piece')
     product_type = ProductTypes.field()
     vat_class = VatClasses.field(blank=True)
 
+    @classmethod
+    def get_simple_parameters(cls):
+        for p in super(Product, cls).get_simple_parameters():
+            yield p
+        yield "category"
+
     @dd.chooser()
-    def cat_choices(self, product_type):
-        qs = rt.models.products.ProductCats.request().data_iterator
+    def category_choices(self, product_type):
+        qs = rt.models.products.Categories.request().data_iterator
         if product_type is not None:
             qs = qs.filter(product_type=product_type)
         return qs
@@ -110,8 +117,8 @@ class Product(mixins.BabelNamed, Duplicable):
     def full_clean(self):
         # print("20191210", self.name, self.vat_class)
         if self.product_type is None:
-            if self.cat_id:
-                self.product_type = self.cat.product_type or ProductTypes.default
+            if self.category_id:
+                self.product_type = self.category.product_type or ProductTypes.default
             else:
                 self.product_type = ProductTypes.default
         super(Product, self).full_clean()
@@ -120,7 +127,7 @@ class Product(mixins.BabelNamed, Duplicable):
 class ProductDetail(dd.DetailLayout):
 
     main = """
-    id cat #sales_price vat_class delivery_unit
+    id category #sales_price vat_class delivery_unit
     name
     description
     """
@@ -131,10 +138,10 @@ class Products(dd.Table):
     required_roles = dd.login_required(ProductsUser)
     model = 'products.Product'
     order_by = ["name"]
-    column_names = "id name cat vat_class *"
+    column_names = "id name category vat_class *"
 
     insert_layout = """
-    cat
+    category
     name
     """
     detail_layout = "products.ProductDetail"
@@ -156,7 +163,7 @@ class Products(dd.Table):
 
 
 class ProductsByCategory(Products):
-    master_key = 'cat'
+    master_key = 'category'
 
 
 class PriceRule(Sequenced):
