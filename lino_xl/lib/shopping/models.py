@@ -183,7 +183,13 @@ class Carts(dd.Table):
     """
 
 class MyCart(My, Carts):
-    pass
+    hide_navigator = True
+    # hide_top_toolbar = True
+    # default_list_action_name = 'detail'
+    #
+    # @classmethod
+    # def get_default_action(cls):
+    #     return dd.ShowDetail(cls.detail_layout, hide_navigator=True)
 
 class AllCarts(Carts):
     required_roles = dd.login_required(LedgerStaff)

@@ -20,7 +20,7 @@ class Plugin(ad.Plugin):
 
     def get_quicklinks(self, user):
         yield 'products.Products'
-        yield 'shopping.MyCart.start_plan'  # returns the wrong bound action.
+        yield 'shopping.MyCart.start_plan'
 
     def setup_main_menu(self, site, user_type, m):
         mg = self.get_menu_group()
