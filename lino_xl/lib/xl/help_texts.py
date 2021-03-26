@@ -1218,6 +1218,8 @@ for every new voucher."""),
     'lino_xl.lib.ledger.PaymentTerm.worker' : _("""The worker who pays or collects the invoice using internal_clearings."""),
     'lino_xl.lib.ledger.PaymentTerm.printed_text' : _("""Used in sales/VatProductInvoice/trailer.html as
 follows:"""),
+    'lino_xl.lib.ledger.PaymentMethod' : _("""Django model used to store payment methods."""),
+    'lino_xl.lib.ledger.PaymentMethod.days' : _("""Number of days to add to voucher_date."""),
     'lino_xl.lib.ledger.AccountingPeriod' : _("""An accounting period is the smallest time slice to be observed
 (declare) in accounting reports. Usually it corresponds to one
 month. Except for some small companies which declare per
@@ -1488,14 +1490,14 @@ instances."""),
     'lino_xl.lib.products.Product' : _("""Django model to represent a product."""),
     'lino_xl.lib.products.Product.description' : _("""The description of this product."""),
     'lino_xl.lib.products.Product.product_type' : _("""The type of this product."""),
-    'lino_xl.lib.products.Product.cat' : _("""The category of this product."""),
+    'lino_xl.lib.products.Product.category' : _("""The category of this product."""),
     'lino_xl.lib.products.Product.delivery_unit' : _("""Pointer to DeliveryUnits"""),
     'lino_xl.lib.products.Product.vat_class' : _("""The VAT class.  Injected by lino_xl.lib.vat. If that plugin is
 not installed, vat_class is a dummy field."""),
     'lino_xl.lib.products.Product.get_ruled_price' : _("""Return the product to use for this partner and this selector according
 to the price rules."""),
     'lino_xl.lib.products.Products' : _("""Base class for all tables of products."""),
-    'lino_xl.lib.products.Category' : _("""Django model to represent a product category."""),
+    'lino_xl.lib.products.Category' : _("""Django model used to represent a product category."""),
     'lino_xl.lib.products.Category.product_type' : _("""The product type to apply to products of this category."""),
     'lino_xl.lib.products.ProductType.text' : _("""The verbose name of this product type."""),
     'lino_xl.lib.products.ProductType.table_name' : _("""The name of the table to use for displaying a list of products with this type."""),

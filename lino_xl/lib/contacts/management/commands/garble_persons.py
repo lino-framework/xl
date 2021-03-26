@@ -2,10 +2,7 @@
 # Copyright 2009-2016 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
-""".. management_command:: garble_persons
-
-Garbles person names in the database so that it may be used for a
-demo.
+"""Defines the :term:`django-admin command` :manage:`garble_persons`.
 
 """
 
