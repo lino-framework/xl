@@ -76,6 +76,14 @@ class Cart(UserPlan):
     def __str__(self):
         return str(self.user)
 
+    @dd.chooser()
+    def invoicing_address_choices(self, user):
+        return rt.models.shopping.Address.objects.filter(user=user)
+
+    @dd.chooser()
+    def delivery_address_choices(self, user):
+        return rt.models.shopping.Address.objects.filter(user=user)
+
     @dd.displayfield(_("Invoice"))
     def invoice_button(self, ar):
         if ar is not None:

@@ -20,10 +20,13 @@ class CountryCity(dd.Model):
         abstract = True
 
     country = dd.ForeignKey(
-        "countries.Country", blank=True, null=True)
+        "countries.Country",
+        related_name="%(app_label)s_%(class)s_set_by_country",
+        blank=True, null=True)
     city = dd.ForeignKey(
         'countries.Place',
         verbose_name=_('Locality'),
+        related_name="%(app_label)s_%(class)s_set_by_city",
         blank=True, null=True)
     zip_code = models.CharField(_("Zip code"), max_length=10, blank=True)
 
