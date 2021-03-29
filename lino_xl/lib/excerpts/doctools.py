@@ -7,8 +7,8 @@ A function for usage in a :rst:dir:`py2rst` directive.
 This is used to generate the list of demo excerpts in the following
 page:
 
-- http://de.welfare.lino-framework.org/excerpts.html
-- http://welfare.lino-framework.org/specs/aids/
+- https://de.welfare.lino-framework.org/excerpts.html
+- https://welfare.lino-framework.org/specs/aids/
 """
 
 

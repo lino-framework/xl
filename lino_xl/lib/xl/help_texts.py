@@ -1542,6 +1542,16 @@ included to a detail window on partner."""),
 both sheet types."""),
     'lino_xl.lib.sheets.ItemEntry' : _("""An entry is the computed value of given item for a given
 report."""),
+    'lino_xl.lib.shopping.Cart' : _("""Django model used to represent a shopping cart."""),
+    'lino_xl.lib.shopping.Cart.user' : _("""The end user who created this cart."""),
+    'lino_xl.lib.shopping.Cart.date' : _("""The date of last modification."""),
+    'lino_xl.lib.shopping.Cart.delivery_address' : _("""The delivery address. A pointer to a shopping address of this user."""),
+    'lino_xl.lib.shopping.Cart.invoicing_address' : _("""The invoicing address. A pointer to a shopping address of this user."""),
+    'lino_xl.lib.shopping.Cart.invoice' : _("""The invoice that has been created from this shopping cart.  This field is
+empty as long as the user didn't yet run start_order."""),
+    'lino_xl.lib.shopping.CartItem' : _("""Django model used to represent an item of a shopping cart."""),
+    'lino_xl.lib.shopping.Address' : _("""Django model used to represent a shopping address."""),
+    'lino_xl.lib.shopping.DeliverMethod' : _("""Django model used to represent a delivery method."""),
     'lino_xl.lib.tickets.Ticket' : _("""The Django model used to represent a ticket."""),
     'lino_xl.lib.tickets.Ticket.user' : _("""The author or reporter of this ticket. The user who reported this
 ticket to the database and is responsible for managing it."""),
