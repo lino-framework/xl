@@ -83,6 +83,8 @@ class AllLanguageKnowledges(LanguageKnowledges):
     required_roles = dd.login_required(CareerStaff)
 
 class LanguageKnowledgesByPerson(LanguageKnowledges):
+    hide_navigator = True    
+    hide_top_toolbar = True
     master_key = 'person'
     column_names = "language native spoken written cef_level has_certificate entry_date *"
     required_roles = dd.login_required(CareerUser)
@@ -105,10 +107,10 @@ class LanguageKnowledgesByPerson(LanguageKnowledges):
     entry_date
     """, window_size=(50, 'auto'))
 
-    @classmethod
-    def do_setup(self):
-        super(LanguageKnowledgesByPerson, self).do_setup()
-        self.detail_action.action.hide_top_toolbar = True
+    # @classmethod
+    # def do_setup(self):
+    #     super(LanguageKnowledgesByPerson, self).do_setup()
+    #     self.detail_action.action.hide_top_toolbar = True
 
     @classmethod
     def get_detail_title(self, ar, obj):

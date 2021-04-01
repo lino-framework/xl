@@ -1,8 +1,9 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2008-2020 Rumma & Ko Ltd
+# Copyright 2008-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 import os
+from email.utils import parseaddr
 
 from etgen.html import E, join_elems, forcetext
 from django.conf import settings
@@ -47,14 +48,9 @@ PARTNER_NUMBERS_START_AT = 100  # used for generating demo data and tests
 class ExportVCardFile(dd.Action):
     label = _("Export as vCard")
     icon_name = 'vcard'
-    sort_index = -10
-    select_rows = False
+    sort_index = -9
     default_format = 'ajax'
     show_in_bbar = True
-    # combo_group = 'pdf'
-
-    # def is_callable_from(self, caller):
-    #     return isinstance(caller, actions.ShowTable)
 
     def run_from_ui(self, ar, **kw):
         #~ print 20130912
@@ -71,6 +67,61 @@ class ExportVCardFile(dd.Action):
         ar.set_response(open_url=mf.get_url(ar.request))
 
 
+class ImportText(dd.Action):
+    """
+    Example values for text:
+
+    Albert Adam <albert@example.com>
+
+    """
+    label = _("Import from text")
+    sort_index = -10
+    select_rows = False
+    http_method = 'POST'
+    show_in_bbar = True
+
+    parameters = dict(
+        text=dd.RichTextField(_("One line per contact"), format='plain'),
+        confirm_changes=models.BooleanField(_("Confirm every change"), default=True)
+    )
+    params_layout = dd.ActionParamsLayout("""
+    text
+    confirm_changes
+    """, window_size = (60, 15))
+
+    def run_from_ui(self, ar, **kw):
+        pv = ar.action_param_values
+        changes = []
+        for ln in pv.text.splitlines():
+            print(ln)
+            name, addr = parseaddr(ln)
+            kw = name2kw(name, last_name_first=False)
+            values_to_update = dict()
+            qs = rt.models.contacts.Person.objects.filter(**kw)
+            count = qs.count()
+            object_to_update = None
+            if count == 1:
+                object_to_update = qs.first()
+                values_to_update.update(email=addr)
+            elif count == 0:
+                print(qs.query)
+                qs = rt.models.contacts.Partner.objects.filter(name__icontains=name)
+                if qs.count() == 1:
+                    object_to_update = qs.first()
+                    values_to_update.update(email=addr)
+            if object_to_update:
+                # if pv.confirm_changes...
+                for k, v in values_to_update.items():
+                    setattr(object_to_update, k, v)
+                object_to_update.full_clean()
+                object_to_update.save()
+
+            changes.append(("{} <{}> --> {}".format(name, addr, qs)))
+        print(changes)
+        ar.set_response(success='\n'.join(changes), alert=True)
+
+
+
 
 class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
               AddressOwner, UploadController, Feasible, Printable, DateRangeObservable):
@@ -85,6 +136,7 @@ class Partner(Duplicable, ContactDetailsOwner, mixins.Polymorphic,
 
     if dd.plugins.contacts.use_vcard_export:
         export_vcf = ExportVCardFile()
+        import_text = ImportText()
 
     prefix = models.CharField(
         _("Name prefix"), max_length=200, blank=True)
@@ -475,24 +527,7 @@ class Companies(Partners):
     type #id
     """
 
-#~ class List(Partner):
-    #~ pass
 
-#~ class Lists(Partners):
-    #~ model = List
-    #~ order_by = ["name"]
-    #~ detail_layout = """
-    #~ id name
-    #~ language email
-    #~ MembersByList
-    #~ """
-    #~ insert_layout = dd.FormLayout("""
-    #~ name
-    #~ language email
-    #~ """,window_size=(40,'auto'))
-
-
-# class ContactType(mixins.BabelNamed):
 class RoleType(mixins.BabelNamed):
 
     class Meta(object):
@@ -629,24 +664,3 @@ def company_tables_alias(sender, **kw):
 
 def PartnerField(**kw):
     return dd.ForeignKey(Partner, **kw)
-
-
-# class Signer(Sequenced):
-#
-#     class Meta(object):
-#         app_label = 'contacts'  # avoid RemovedInDjango19Warning
-#         abstract = dd.is_abstract_model(__name__, 'Signer')
-#         verbose_name = _("Signer")
-#         verbose_name_plural = _("Signers")
-#
-#     signer = dd.ForeignKey("contacts.Role")
-#
-#     @dd.chooser()
-#     def signer_choices(cls):
-#         return rt.models.contacts.Role.objects.filter(
-#             company=settings.SITE.site_config.site_company)
-#
-#
-# class Signers(dd.Table):
-#     model = "contacts.Signer"
-#     column_names = "seqno signer *"  # signer__person signer__type *"

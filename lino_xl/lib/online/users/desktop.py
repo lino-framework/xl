@@ -25,6 +25,7 @@ Users.parameters.update(user_state=UserStates.field(blank=True))
 
 class OtherUsers(Users):
     hide_top_toolbar = True
+    hide_navigator = True
     use_as_default_table = False
     editable = False
     required_roles = dd.login_required()
@@ -34,7 +35,7 @@ class OtherUsers(Users):
     about_me
     """, window_size=(60, 15))
 
-    
+
 # def site_setup(site):
 #     site.modules.users.Users.set_detail_layout(UserDetail())
 
@@ -47,7 +48,7 @@ class RegisterUserLayout(dd.InsertLayout):
     first_name last_name
     email language
     gsm phone
-    country city 
+    country city
     street street_no
     username
     """
@@ -57,7 +58,7 @@ class RegisterUser(actions.ShowInsert):
     """Fill a form in order to register as a new system user.
 
     """
-    
+
     def get_action_title(self, ar):
         return _("Register new user")
 
@@ -67,7 +68,7 @@ class Register(Users):
     insert_layout = RegisterUserLayout()
     # default_list_action_name = 'insert'
     required_roles = set([])
-    
+
     @classmethod
     def get_insert_action(cls):
         return RegisterUser()
@@ -95,6 +96,3 @@ class NewUsers(Users):
         # kw.update(show_closed=dd.YesNo.no)
         kw.update(user_state=UserStates.new)
         return kw
-
-
-

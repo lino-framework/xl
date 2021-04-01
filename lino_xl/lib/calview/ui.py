@@ -488,7 +488,8 @@ class DaySlave(AbstractTable):
 
     abstract = True
     editable = False
-    hide_top_toolbar = True # no selections no toolbar
+    # hide_top_toolbar = True # no selections no toolbar
+    hide_navigator = True # no selections no toolbar
     preview_limit = 0       # no paginator & all rows.
     use_detail_params_value = True # Get parameter values from detail view.
     master = 'calview.Day'

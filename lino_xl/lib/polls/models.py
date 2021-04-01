@@ -479,6 +479,7 @@ class AnswerRemarks(dd.Table):
 class AnswerRemarksByAnswer(AnswerRemarks):
     use_as_default_table = False
     hide_top_toolbar = True
+    hide_navigator = True
 
 
 class AllAnswerRemarks(AnswerRemarks):

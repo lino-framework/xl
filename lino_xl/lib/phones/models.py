@@ -1,5 +1,5 @@
 # -*- coding: UTF-8 -*-
-# Copyright 2017-2019 Rumma & Ko Ltd
+# Copyright 2017-2021 Rumma & Ko Ltd
 # License: BSD (see file COPYING for details)
 
 from django.db import models
@@ -8,7 +8,8 @@ from etgen.html import E
 from lino.utils import join_elems
 from lino.core.diff import ChangeWatcher
 from lino.modlib.checkdata.choicelists import Checker
-
+from lino.modlib.system.choicelists import PeriodEvents
+from lino.mixins.periods import DateRange
 from lino.api import dd, rt, _
 from lino.core.roles import SiteStaff
 
@@ -17,7 +18,7 @@ from .mixins import ContactDetailsOwner
 
 
 
-class ContactDetail(dd.Model):
+class ContactDetail(DateRange):
     class Meta:
         app_label = 'phones'
         verbose_name = _("Contact detail")
@@ -30,7 +31,7 @@ class ContactDetail(dd.Model):
     value = dd.CharField(_("Value"), max_length=200, blank=True)
     remark = dd.CharField(_("Remark"), max_length=200, blank=True)
     primary = models.BooleanField(_("Primary"), default=False)
-    end_date = models.DateField(_("Until"), blank=True, null=True)
+    # end_date = models.DateField(_("Until"), blank=True, null=True)
 
     allow_cascaded_delete = ['partner']
 
@@ -62,7 +63,27 @@ class ContactDetail(dd.Model):
 
     @classmethod
     def get_simple_parameters(cls):
-        return ['partner', 'detail_type']
+        for p in super(ContactDetail, cls).get_simple_parameters():
+            yield p
+        yield 'partner'
+        yield 'detail_type'
+
+    @classmethod
+    def setup_parameters(cls, fields):
+        fields.update(
+            observed_event=PeriodEvents.field(blank=True))
+        super(ContactDetail, cls).setup_parameters(fields)
+
+    @classmethod
+    def get_request_queryset(cls, ar, **filter):
+        qs = super(ContactDetail, cls).get_request_queryset(ar, **filter)
+        pv = ar.param_values
+        if pv.observed_event:
+            qs = pv.observed_event.add_filter(qs, pv)
+        return qs
+
+
+
 
 @dd.receiver(dd.pre_ui_delete, sender=ContactDetail)
 def clear_partner_on_delete(sender=None, request=None, **kw):
@@ -75,9 +96,7 @@ def clear_partner_on_delete(sender=None, request=None, **kw):
 class ContactDetails(dd.Table):
     model = 'phones.ContactDetail'
     required_roles = dd.login_required(SiteStaff)
-    column_names = (
-        "value:30 detail_type:10 remark:10 partner id "
-        "primary *")
+    column_names = "value:30 detail_type:10 remark:10 partner id primary *"
     insert_layout = """
     detail_type
     value
@@ -88,7 +107,9 @@ class ContactDetails(dd.Table):
     detail_type
     value
     remark
+    start_date end_date
     """, window_size=(60, 'auto'))
+    params_layout = "observed_event start_date end_date partner detail_type"
 
 
 class ContactDetailsByPartner(ContactDetails):
