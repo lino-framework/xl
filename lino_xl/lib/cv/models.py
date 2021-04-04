@@ -83,7 +83,7 @@ class AllLanguageKnowledges(LanguageKnowledges):
     required_roles = dd.login_required(CareerStaff)
 
 class LanguageKnowledgesByPerson(LanguageKnowledges):
-    hide_navigator = True    
+    hide_navigator = True
     hide_top_toolbar = True
     master_key = 'person'
     column_names = "language native spoken written cef_level has_certificate entry_date *"

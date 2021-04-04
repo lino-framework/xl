@@ -805,21 +805,21 @@ class Creditors(DebtorsCreditors):
 ##
 
 
-class Situation(Report):
-    """
-    A report consisting of the following tables:
-
-   -  :class:`Debtors`
-   -  :class:`Creditors`
-
-    """
-    label = _("Situation")
-    help_text = _("Overview of the financial situation on a given date.")
-    required_roles = dd.login_required(AccountingReader)
-
-    parameters = mixins.Today()
-
-    report_items = (Debtors, Creditors)
+# class Situation(Report):
+#     """
+#     A report consisting of the following tables:
+#
+#    -  :class:`Debtors`
+#    -  :class:`Creditors`
+#
+#     """
+#     label = _("Situation")
+#     help_text = _("Overview of the financial situation on a given date.")
+#     required_roles = dd.login_required(AccountingReader)
+#
+#     parameters = mixins.Today()
+#
+#     report_items = (Debtors, Creditors)
 
 
 # class ActivityReport(Report):

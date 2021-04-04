@@ -197,7 +197,7 @@ class MyCart(My, Carts):
     #
     # @classmethod
     # def get_default_action(cls):
-    #     return dd.ShowDetail(cls.detail_layout, hide_navigator=True)
+    #     return cls.detail_action
 
 class AllCarts(Carts):
     required_roles = dd.login_required(LedgerStaff)

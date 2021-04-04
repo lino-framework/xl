@@ -365,7 +365,8 @@ class CalendarView(DayNavigator):
 
     @classmethod
     def get_default_action(cls):
-        return dd.ShowDetail(cls.detail_layout)
+        return cls.detail_action
+        # return dd.ShowDetail(cls.detail_layout)
 
     @dd.htmlbox()
     def navigation_panel(cls, obj, ar):
