@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2014 Luc Saffre
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """This fixture imports all Estonian places from :mod:`commondata.ee`
 (which needs to be installed before loading this fixture).

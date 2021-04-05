@@ -1,6 +1,6 @@
 # Copyright 2014-2015 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Defines "parency links" between two "persons", and a user interface
 to manage them.

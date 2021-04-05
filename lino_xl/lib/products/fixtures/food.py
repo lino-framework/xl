@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2014 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """This is not yet used nor tested.  The idea is to collect some
 product repertoire using real products. To be complete this would

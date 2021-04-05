@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2020 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Some standard workflow definition modules for :mod:`lino_xl.lib.cal`.
 

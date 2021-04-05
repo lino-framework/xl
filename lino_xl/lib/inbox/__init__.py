@@ -1,6 +1,6 @@
 # Copyright 2013-2016 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Adds functionality for receiving and handing them inside a Lino application.
 

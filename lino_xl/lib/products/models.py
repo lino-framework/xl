@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2008-2019 Rumma 6 Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 
 from django.db import models

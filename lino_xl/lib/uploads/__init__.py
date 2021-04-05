@@ -1,5 +1,5 @@
 # Copyright 2014-2020 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Functionality for uploading files to the server and managing them.
 This is an extension of :mod:`lino.modlib.uploads`.

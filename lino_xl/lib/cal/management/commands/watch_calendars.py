@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2011-2013 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 Starts a daemon (or, if daemons are not supported, a nomal console process)

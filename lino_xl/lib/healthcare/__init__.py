@@ -1,5 +1,5 @@
 # Copyright 2018-2019 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 Manage a list of health care plans and their providers, and assign them to your

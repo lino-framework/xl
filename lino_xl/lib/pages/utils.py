@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2012-2016 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 #~ print 20121219, __file__
 

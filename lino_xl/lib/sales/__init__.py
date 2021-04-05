@@ -1,5 +1,5 @@
 # Copyright 2014-2021 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Adds functionality for handling sales.
 See :doc:`/specs/sales`.

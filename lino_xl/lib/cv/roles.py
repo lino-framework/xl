@@ -1,6 +1,6 @@
 # Copyright 2015-2018 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 from lino.api import _
 from lino.core.roles import UserRole

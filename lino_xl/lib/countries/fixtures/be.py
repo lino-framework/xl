@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2010-2014 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Loads all Belgian cities into the database.  Supposes that
 :mod:`few_cities <lino_xl.lib.countries.fixtures.few_cities>` has also

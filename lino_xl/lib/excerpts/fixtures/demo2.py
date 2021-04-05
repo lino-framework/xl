@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2014-2021 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 """Makes sure that there is at least one excerpt for every ExcerptType.
 Render all excerpts by running their do_print method.
 

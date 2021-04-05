@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2012-2018 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Loads default sheet items.
 Sets the :attr:`sheet_item` of common accounts.

@@ -1,5 +1,5 @@
 # Copyright 2014-2016 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Deprecated. We recommend to use :mod:`lino_xl.lib.appypod`
 instead.

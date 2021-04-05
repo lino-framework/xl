@@ -1,5 +1,5 @@
 # Copyright 2009-2014 Luc Saffre
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 """
 Adds an arbitrary selection of a few demo countries.
 """

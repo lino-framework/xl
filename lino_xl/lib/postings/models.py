@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2012-2017 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 Database models for `lino_xl.lib.postings`.

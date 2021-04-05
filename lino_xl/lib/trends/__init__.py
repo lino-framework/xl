@@ -1,5 +1,5 @@
 # Copyright 2017-2020 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 Adds the concept of trends.

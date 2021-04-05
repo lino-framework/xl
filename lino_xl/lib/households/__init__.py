@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2014-2019 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Adds functionality for managing households (i.e. groups of humans
 who live together in a same house).

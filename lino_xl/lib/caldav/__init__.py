@@ -1,6 +1,6 @@
 # Copyright 2017 Tonis Piip, Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """Adds a radicale caldav server to the application.
 

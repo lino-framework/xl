@@ -1,6 +1,6 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2013-2015 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 A rather specialized app used for :mod:`lino.projects.events`.
@@ -8,7 +8,7 @@ A rather specialized app used for :mod:`lino.projects.events`.
 
 
 # Copyright 2008-2015 Rumma & Ko Ltd
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 Adds functionality for managing foos.

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2009-2018 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 from django.conf import settings
 

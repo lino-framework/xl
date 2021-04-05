@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2016 Rumma & Ko Ltd
 #
-# License: BSD (see file COPYING for details)
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 """No longer used. We chose to manually create demo votes in
 :mod:`lino_noi.projects.care.lib.tickets.fixtures.demo`
 
