@@ -18,7 +18,7 @@ SETUP_INFO = dict(
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
-    license='BSD-2-Clause',
+    license='COPYING',
     author='Rumma & Ko Ltd',
     author_email='info@saffre-rumma.net',
     url="https://www.lino-framework.org",
@@ -189,7 +189,7 @@ Environment :: Web Environment
 Framework :: Django
 Intended Audience :: Developers
 Intended Audience :: System Administrators
-License :: OSI Approved :: BSD License
+License :: OSI Approved :: GNU Affero General Public License v3
 Natural Language :: English
 Natural Language :: French
 Natural Language :: German
