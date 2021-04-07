@@ -1,16 +1,6 @@
 #coding: latin1
-## Copyright 2003-2009 Rumma & Ko Ltd
-## This file is part of the Lino project.
-## Lino is free software; you can redistribute it and/or modify 
-## it under the terms of the GNU General Public License as published by
-## the Free Software Foundation; either version 3 of the License, or
-## (at your option) any later version.
-## Lino is distributed in the hope that it will be useful, 
-## but WITHOUT ANY WARRANTY; without even the implied warranty of
-## MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-## GNU General Public License for more details.
-## You should have received a copy of the GNU General Public License
-## along with Lino; if not, see <http://www.gnu.org/licenses/>.
+# Copyright 2003-2009 Rumma & Ko Ltd
+# License: GNU Affero General Public License v3 (see file COPYING for details)
 
 """
 discovering and extending Lars M. Garshol's dbfreader.py
@@ -23,7 +13,7 @@ from lino.utils import dbfreader
 dataPath = os.path.dirname(__file__)
 
 class Case(unittest.TestCase):
-    
+
     def test01(self):
         f = dbfreader.DBFFile(os.path.join(dataPath,"NAT.DBF"),
                               codepage="cp850")
@@ -48,7 +38,7 @@ TVAPICT: Character (25)
 ATTRIB: Character (5)
 IDREG: Character (1)
 ISOCODE: Character (2)""")
-        
+
         s = "\n".join([rec["NAME"].strip() for rec in f.fetchall()])
         #print s
         ae(s,u"""\
@@ -67,11 +57,11 @@ Schweiz
 D�nemark
 United States of America""")
 
-        
+
     def test02(self):
         f = dbfreader.DBFFile(os.path.join(dataPath,"PAR.DBF"),
                               codepage="cp850")
-        
+
         ae = self.assertEqual
         ae(f.has_memo(),True)
         ae(f.get_version(),"dBASE III+ with memo")

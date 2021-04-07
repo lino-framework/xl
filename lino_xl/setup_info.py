@@ -1,15 +1,7 @@
 # -*- coding: UTF-8 -*-
 # Copyright 2009-2021 Rumma & Ko Ltd
 # License: GNU Affero General Public License v3 (see file COPYING for details)
-
-# Note that this module may not have a docstring because any
-# global variable defined here will override the global
-# namespace of lino/__init__.py who includes it with execfile.
-
-# This module is part of the Lino test suite.
-# To test only this module:
-#
-#   $ python setup.py test -s tests.PackagesTests
+# $ python setup.py test -s tests.PackagesTests
 
 
 SETUP_INFO = dict(
@@ -18,11 +10,10 @@ SETUP_INFO = dict(
     install_requires=['lino'],  # odfpy dependency now in lino_xl.lib.appypod
     tests_require=[],
     description="Lino Extensions Library",
-    license='COPYING',
+    license_files=['COPYING'],
     author='Rumma & Ko Ltd',
     author_email='info@saffre-rumma.net',
-    url="https://www.lino-framework.org",
-    # ~ test_suite = 'lino_xl.test_apps',
+    url="https://github.com/lino-framework/xl",
     test_suite='tests')
 
 SETUP_INFO.update(long_description="""
