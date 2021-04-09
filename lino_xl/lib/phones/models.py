@@ -10,7 +10,7 @@ from lino.core.diff import ChangeWatcher
 from lino.modlib.checkdata.choicelists import Checker
 from lino.modlib.system.choicelists import PeriodEvents
 from lino.mixins.periods import DateRange
-from lino.api import dd, rt, _
+from lino.api import dd, rt, gettext, _
 from lino.core.roles import SiteStaff
 
 from .choicelists import ContactDetailTypes
@@ -131,7 +131,7 @@ class ContactDetailsByPartner(ContactDetails):
 
         html = []
         if len(items) == 0:
-            html += _("No contact details")
+            html.append(gettext("No contact details"))
         else:
             html += join_elems(items, sep=', ')
 
