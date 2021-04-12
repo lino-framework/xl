@@ -3,7 +3,7 @@ The ``lino-xl`` package
 =======================
 
 
-
+Warning: This repository is no longer maintained. Development has moved to https://gitlab.com/lino-framework/xl
 
 
 The **Lino Extensions Library** is a collection of plugins used by many Lino
